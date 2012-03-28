@@ -238,6 +238,163 @@ class SensorsTableTest extends HUGnetDBTableTestBase
         $ret = $this->o->exists();
         $this->assertSame($expect, $ret);
     }
+    /**
+    * Data provider for testFromArray
+    *
+    * @return array
+    */
+    public static function dataFromArray()
+    {
+        return array(
+            array(
+                array(
+                    "dev" => 156,
+                    "sensor" => 23,
+                    "id" => 1,
+                    "type" => "asdf",
+                    "location" => "HERE",
+                    "units" => "&deg;C",
+                    "decimals" => 4,
+                    "storageUnits" => "&deg;C",
+                    "unitType" => "Temperature",
+                ),
+                array(
+                    "group" => 'default',
+                    "dev" => 156,
+                    "sensor" => 23,
+                    "id" => 1,
+                    "type" => "asdf",
+                    "location" => "HERE",
+                    "dataType" => UnitsBase::TYPE_RAW,
+                    "units" => '&deg;C',
+                    "decimals" => 4,
+                    "params" => '{"storageUnits":"&deg;C","unitType":"Temperature"}',
+                ),
+            ),
+            array(
+                array(
+                    "dev" => 156,
+                    "sensor" => 23,
+                    "id" => 1,
+                    "type" => "asdf",
+                    "location" => "HERE",
+                    "units" => "&deg;C",
+                    "decimals" => 4,
+                    "params" => '{"storageUnits":"&deg;C","unitType":"Temperature"}',
+                ),
+                array(
+                    "group" => 'default',
+                    "dev" => 156,
+                    "sensor" => 23,
+                    "id" => 1,
+                    "type" => "asdf",
+                    "location" => "HERE",
+                    "dataType" => UnitsBase::TYPE_RAW,
+                    "units" => '&deg;C',
+                    "decimals" => 4,
+                    "params" => '{"storageUnits":"&deg;C","unitType":"Temperature"}',
+                ),
+            ),
+            array(
+                array(
+                    "dev" => 156,
+                    "sensor" => 23,
+                    "id" => 1,
+                    "type" => "asdf",
+                    "location" => "HERE",
+                    "units" => "&deg;C",
+                    "decimals" => 4,
+                    "storageUnits" => "&deg;C",
+                    "unitType" => "Temperature",
+                    "params" => array(1,2,3,4),
+                ),
+                array(
+                    "group" => 'default',
+                    "dev" => 156,
+                    "sensor" => 23,
+                    "id" => 1,
+                    "type" => "asdf",
+                    "location" => "HERE",
+                    "dataType" => UnitsBase::TYPE_RAW,
+                    "units" => '&deg;C',
+                    "decimals" => 4,
+                    "params" => '{"storageUnits":"&deg;C","unitType":"Temperature"}',
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests the insert of a DeviceID
+    *
+    * @param mixed $data    The data to use
+    * @param array $expect  The expected return
+    *
+    * @dataProvider dataFromArray
+    *
+    * @return null
+    */
+    public function testFromArray($data, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($data);
+        $data = $this->readAttribute($this->o, "data");
+        $this->assertEquals($expect, $data);
+    }
+    /**
+    * Data provider for testFromArray
+    *
+    * @return array
+    */
+    public static function data2Array()
+    {
+        return array(
+            array(
+                array(
+                    "dev" => 156,
+                    "sensor" => 23,
+                    "id" => 1,
+                    "type" => "asdf",
+                    "location" => "HERE",
+                    "units" => "&deg;C",
+                    "decimals" => 4,
+                    "storageUnits" => "&deg;C",
+                    "unitType" => "Temperature",
+                    "params" => '{"storageUnits":"&deg;C","unitType":"Temperature"}',
+                ),
+                true,
+                array(
+                    "group" => 'default',
+                    "dev" => 156,
+                    "sensor" => 23,
+                    "id" => 1,
+                    "type" => "asdf",
+                    "location" => "HERE",
+                    "dataType" => UnitsBase::TYPE_RAW,
+                    "units" => '&deg;C',
+                    "decimals" => 4,
+                    "storageUnits" => "&deg;C",
+                    "unitType" => "Temperature",
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests the insert of a DeviceID
+    *
+    * @param mixed $data    The data to use
+    * @param
+    * @param array $expect  The expected return
+    *
+    * @dataProvider data2Array
+    *
+    * @return null
+    */
+    public function test2Array($data, $default, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($data);
+        $this->assertEquals($expect, $this->o->toArray($default));
+    }
 }
 
 ?>

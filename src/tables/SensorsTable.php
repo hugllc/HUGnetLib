@@ -180,6 +180,37 @@ class SensorsTable extends HUGnetDBTable
         $this->dbDriver()->reset();
         return $ret;
     }
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param array $array This is an array of this class's attributes
+    *
+    * @return null
+    */
+    public function fromArray($array)
+    {
+        parent::fromArray($array);
+        if (!isset($array["params"]) || !is_string($array["params"])) {
+            foreach ($this->getProperties() as $key) {
+                unset($array[$key]);
+            }
+            $this->set("params", $array);
+        }
+    }
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param bool $default Return items set to their default?
+    *
+    * @return null
+    */
+    public function toArray($default = true)
+    {
+        $data = parent::toArray($default);
+        $params = json_decode($data["params"], true);
+        unset($data["params"]);
+        return array_merge((array)$params, (array)$data);
+    }
 
     /******************************************************************
      ******************************************************************
