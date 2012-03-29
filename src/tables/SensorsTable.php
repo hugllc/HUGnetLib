@@ -124,6 +124,11 @@ class SensorsTable extends HUGnetDBTable
             "Type" => "smallint",
             "Default" => '2',
         ),
+        "driver" => array(
+            "Name" => "driver",
+            "Type" => "varchar(32)",
+            "Default" => 'SDEFAULT',
+        ),
         "params" => array(
             "Name" => "params",
             "Type" => "longtext",
