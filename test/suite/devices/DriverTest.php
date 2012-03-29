@@ -291,7 +291,53 @@ class DriverTest extends \PHPUnit_Framework_TestCase
             $expect, Driver::getDriver($HWPartNum, $FWPartNum, $FWVersion)
         );
     }
-}
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataGetSensorID()
+    {
+        return array(
+            array(
+                0,
+                "000000100800393701410039380143000004FFFFFFFF01404142434445464748",
+                0x40,
+            ),
+            array(
+                4,
+                "000000100800393701410039380143000004FFFFFFFF01404142434445464748",
+                0x44,
+            ),
+            array(
+                2,
+                "000000100800393701410039380143000004FFFFFFFF01404142434445464748",
+                0x42,
+            ),
+            array(
+                8,
+                "000000100800393701410039380143000004FFFFFFFF01404142434445464748",
+                0x48,
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param int    $sensor   The sensor number
+    * @param string $RawSetup The raw setup to use
+    * @param array  $expect   The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataGetSensorID
+    */
+    public function testGetSensorID($sensor, $RawSetup, $expect)
+    {
+        $this->assertSame(
+            $expect, Driver::getSensorID($sensor, $RawSetup)
+        );
+    }}
 /**
  * Base driver class for devices.
  *

@@ -264,6 +264,19 @@ abstract class Driver
         return array_merge($this->_default, (array)$this->params);
     }
     /**
+    * Gets the ID of the sensor from the raw setup string
+    *
+    * @param int    $sensor   The sensor number
+    * @param string $RawSetup The raw setup string
+    *
+    * @return int The sensor id
+    */
+    public static function getSensorID($sensor, $RawSetup)
+    {
+        $sid = substr($RawSetup, 46 + ($sensor * 2), 2);
+        return hexdec($sid);
+    }
+    /**
     * Returns the driver that should be used for a particular device
     *
     * @param string $HWPartNum The hardware part number

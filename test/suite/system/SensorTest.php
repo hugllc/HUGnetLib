@@ -117,6 +117,14 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
+                        'get' => array(
+                            array("units"),
+                            array("id"),
+                            array("type"),
+                        ),
+                        'set' => array(
+                            array("units", "unknown"),
+                        ),
                     ),
                 ),
             ),
@@ -313,6 +321,14 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                                     "value" => 1,
                                 ),
                             ),
+                        ),
+                        'get' => array(
+                            array("units"),
+                            array("id"),
+                            array("type"),
+                        ),
+                        'set' => array(
+                            array("units", "unknown"),
                         ),
                     ),
                 ),

@@ -61,6 +61,20 @@ require_once dirname(__FILE__)."/../base/SystemTableBase.php";
 class Sensor extends SystemTableBase
 {
     /**
+    * This is the cache for the drivers.
+    */
+    private $_driverCache = array();
+    /**
+    * This is the destructor
+    */
+    public function __destruct()
+    {
+        foreach (array_keys((array)$this->_driverCache) as $key) {
+            unset($this->_driverCache[$key]);
+        }
+        parent::__destruct();
+    }
+    /**
     * This function creates the system.
     *
     * @param mixed  $system (object)The system object to use
@@ -125,6 +139,10 @@ class Sensor extends SystemTableBase
             );
         } else if (is_array($data) || is_string($data)) {
             $this->table()->fromAny($data);
+            $units = $this->table()->get("units");
+            if (empty($units)) {
+                $this->table()->set("units", $this->driver()->get("storageUnit"));
+            }
             $ret = true;
         }
         return (bool)$ret;
@@ -138,14 +156,14 @@ class Sensor extends SystemTableBase
     */
     public function &driver($driver = null)
     {
+        include_once dirname(__FILE__)."/../sensors/Driver.php";
         if (empty($driver)) {
-            $driver = strtoupper((string)$this->table()->get("driver"));
-        }
-        if (empty($driver)) {
-            $driver == "SDEFAULT";
+            $driver = sensors\Driver::getDriver(
+                $this->table()->get("id"),
+                $this->table()->get("type")
+            );
         }
         if (!is_object($this->_driverCache[$driver])) {
-            include_once dirname(__FILE__)."/../sensors/Driver.php";
             $this->_driverCache[$driver] = &sensors\Driver::factory($driver);
         }
         return $this->_driverCache[$driver];

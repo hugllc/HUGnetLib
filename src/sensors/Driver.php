@@ -192,9 +192,8 @@ abstract class Driver
             sprintf("%02X", (int)$sid).":DEFAULT",
         );
         foreach ($try as $mask) {
-            $driver = array_search($mask, (array)self::$_drivers);
-            if ($driver !== false) {
-                return $driver;
+            if (isset(self::$_drivers[$mask])) {
+                return self::$_drivers[$mask];
             }
         }
         return "SDEFAULT";

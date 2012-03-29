@@ -378,6 +378,36 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     */
     public static function dataJson()
     {
+        $sensors = array();
+        for ($i = 0; $i < 13; $i++) {
+            $sensors[$i] = array (
+                'longName' => 'Unknown Sensor',
+                'shortName' => 'Unknown',
+                'unitType' => 'unknown',
+                'bound' => false,
+                'virtual' => false,
+                'extraText' => array(),
+                'extraDefault' => array(),
+                'extraValues' => array(),
+                'storageUnit' => 'unknown',
+                'storageType' => 'raw',
+                'maxDecimals' => 2,
+                'Driver' => 'EDEFAULT',
+                'group' => 'default',
+                'dev' => NULL,
+                'sensor' => NULL,
+                'id' => 2,
+                'type' => '',
+                'location' => '',
+                'dataType' => 'raw',
+                'units' => 'unknown',
+                'decimals' => '2',
+                'driver' => 'SDEFAULT',
+                'params' => NULL,
+                'otherTypes' => array (
+                ),
+            );
+        }
         return array(
             array(
                 array(
@@ -407,6 +437,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         'id' => 2,
                         'asdf' => 3,
                         'params' => array(1,2,3,4),
+                        'sensors' => $sensors,
                     )
                 ),
             ),
@@ -688,7 +719,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 ),
                 "DummyTable",
                 0,
-                "DeviceSensorBase",
+                "\HUGnet\Sensor",
             ),
         );
     }

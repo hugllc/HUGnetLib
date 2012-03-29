@@ -133,8 +133,9 @@ class Device extends SystemTableBase
             $this->driver()->toArray(),
             $this->table()->toArray(true)
         );
-        if (is_string($return["sensors"])) {
-            $return["sensors"] = unserialize(base64_decode($return["sensors"]));
+        $return["sensors"] = array();
+        for ($i = 0; $i < $return["totalSensors"]; $i++) {
+            $return["sensors"][$i] = json_decode($this->sensor($i)->json(), true);
         }
         $params = json_decode($return["params"], true);
         if (!is_array($params)) {
@@ -218,41 +219,31 @@ class Device extends SystemTableBase
     */
     public function &sensor($sid)
     {
-        if (!is_object($this->_plugins)) {
-            include_once "HUGnetLib/containers/PluginsContainer.php";
-            $this->_plugins = new \PluginsContainer(
-                array("dir" => dirname(__FILE__)."/../plugins/")
-            );
-        }
-        $did = $this->get("id");
-        if (!is_object($this->_sensorCache[$did][$sid])) {
-            if (!is_array($this->_sensorCache[$did]["cache"])) {
-                $data = $this->get("sensors");
-                if (is_string($data)) {
-                    $this->_sensorCache[$did]["cache"] = json_decode($data);
-                    if (!is_array($this->_sensorCache[$did]["cache"])) {
-                        $this->_sensorCache[$did]["cache"] = unserialize(base64_decode(
-                            $data
-                        ));
-                    }
-                } else if (is_array($data)) {
-                    $this->_sensorCache[$did]["cache"] = $data;
+        include_once dirname(__FILE__)."/Sensor.php";
+        $data = array(
+            "sensor" => $sid,
+            "dev" => $this->table()->get("id"),
+        );
+        $obj = Sensor::factory($this->system(), $data);
+        if (is_null($obj->get("id"))) {
+            $tSensors = $this->table()->get("sensors");
+            if (is_string($tSensors) && !empty($tSensors)) {
+                $obj->load(unserialize(base64_decode($tSensors)));
+            } else if (is_array($tSensors)) {
+                $obj->load($tSensors);
+            } else {
+                if ($sid < $this->driver()->get("physicalSensors")) {
+                    $data["id"] = devices\Driver::getSensorID(
+                        $sid, $this->table()->get("RawSetup")
+                    );
+                } else {
+                    $data["id"] = 0xFE; // Virtual Sensor
                 }
-                if (!is_array($this->_sensorCache[$did]["cache"])) {
-                    $this->_sensorCache[$did]["cache"] = array();
-                }
+                $obj->load($data);
             }
-            $sensor = $this->_sensorCache[$did]["cache"][$sid]["type"];
-            $senId = sprintf("%02X", $sid);
-            $driver = $this->_plugins->getPlugin(
-                "sensor", $senId.":".$sensor
-            );
-            $class = $driver["Class"];
-            $this->_sensorCache[$did][$sid] = new $class(
-                $this->_sensorCache[$did]["cache"][$sid], $this
-            );
+            $obj->store();
         }
-        return $this->_sensorCache[$did][$sid];
+        return $obj;
     }
     /**
     * Gets one of the parameters

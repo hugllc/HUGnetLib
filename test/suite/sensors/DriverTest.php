@@ -249,6 +249,26 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                 "test",
                 "SDEFAULT",
             ),
+            array(
+                4,
+                "test",
+                "ADuCVishayRTD",
+            ),
+            array(
+                0x41,
+                "",
+                "ADuCVoltage",
+            ),
+            array(
+                0x41,
+                "DEFAULT",
+                "ADuCVoltage",
+            ),
+            array(
+                0x41,
+                "Pressure",
+                "ADuCPressure",
+            ),
         );
     }
     /**
