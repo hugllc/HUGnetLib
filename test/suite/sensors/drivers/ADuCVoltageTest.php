@@ -111,7 +111,7 @@ class ADuCVoltageTest extends DriverTestBase
     *
     * This is called by using parent::sensorTest()
     *
-    * @param array $sensor  The extra array
+    * @param array $sensor The sensor data array
     * @param mixed $A      Data for the sensor to work on
     * @param float $deltaT The time differenct
     * @param mixed $expect The return data to expect

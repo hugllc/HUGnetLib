@@ -90,6 +90,7 @@ abstract class Driver
     * as the driver class name.
     */
     private static $_drivers = array(
+        "04:DEFAULT"  => "ADuCVishayRTD",
         "41:DEFAULT"  => "ADuCVoltage",
         "41:Pressure" => "ADuCPressure",
         "42:DEFAULT"  => "ADuCThermocouple",

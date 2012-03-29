@@ -38,7 +38,7 @@ namespace HUGnet\sensors\drivers;
 /** This is the base class */
 require_once dirname(__FILE__)."/DriverTestBase.php";
 /** This is a required class */
-require_once CODE_BASE.'sensors/drivers/ADuCPressure.php';
+require_once CODE_BASE.'sensors/drivers/ADuCVishayRTD.php';
 
 /**
  * Test class for HUGnetDB.
@@ -54,10 +54,10 @@ require_once CODE_BASE.'sensors/drivers/ADuCPressure.php';
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class ADuCPressureTest extends DriverTestBase
+class ADuCVishayRTDTest extends DriverTestBase
 {
     /** This is the class we are testing */
-    protected $class = "ADuCPressure";
+    protected $class = "ADuCVishayRTD";
     /**
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
@@ -69,7 +69,7 @@ class ADuCPressureTest extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->o = &ADuCPressure::factory();
+        $this->o = &ADuCVishayRTD::factory();
     }
 
     /**
@@ -94,15 +94,27 @@ class ADuCPressureTest extends DriverTestBase
         return array(
             array(
                 array(),
-                256210,
-                1,
-                74.0353,
+                0xFFFB8C55,
+                0,
+                -51.7004,
             ),
             array(
                 array(),
-                100000,
-                1,
-                28.8963,
+                0xFFFA05B5,
+                0,
+                21.2240,
+            ),
+            array(
+                array('extra' => array(2210)),
+                0xFFF87f15,
+                0,
+                97.6624,
+            ),
+            array(
+                array('extra' => array(2210)),
+                0xFF800000,
+                0,
+                null,
             ),
         );
     }
@@ -111,7 +123,7 @@ class ADuCPressureTest extends DriverTestBase
     *
     * This is called by using parent::sensorTest()
     *
-    * @param array $sensor The sensor data array
+    * @param array $sensor The extra array
     * @param mixed $A      Data for the sensor to work on
     * @param float $deltaT The time differenct
     * @param mixed $expect The return data to expect
@@ -123,7 +135,7 @@ class ADuCPressureTest extends DriverTestBase
     public function testGetReading($sensor, $A, $deltaT, $expect)
     {
         $ret = $this->o->getReading($A, $deltaT, $data, $prev, $sensor);
-        $this->assertSame($expect, $ret);
+        $this->assertEquals($expect, $ret, 0.0001);
     }
 
 }
