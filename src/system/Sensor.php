@@ -75,6 +75,37 @@ class Sensor extends SystemTableBase
         return $object;
     }
     /**
+    * Gets a value
+    *
+    * @param string $field the field to get
+    *
+    * @return null
+    */
+    public function get($field)
+    {
+        $ret = $this->driver()->get($field);
+        if (is_null($ret)) {
+            $ret = $this->table()->get($field);
+        }
+        return $ret;
+    }
+    /**
+    * Returns the table as a json string
+    *
+    * @return json string
+    */
+    public function json()
+    {
+        $return = array_merge(
+            $this->driver()->toArray(),
+            $this->table()->toArray(true)
+        );
+        $params = json_decode($return["params"], true);
+        $return["params"] = $params;
+        $return["otherTypes"] = \HUGnet\sensors\Driver::getTypes($return["id"]);
+        return json_encode($return);
+    }
+    /**
     * Loads the data into the table class
     *
     * @param mixed $data (int)The id of the record,
@@ -97,6 +128,27 @@ class Sensor extends SystemTableBase
             $ret = true;
         }
         return (bool)$ret;
+    }
+    /**
+    * This creates the driver
+    *
+    * @param string $driver The driver to use.  Leave blank for automatic.
+    *
+    * @return null
+    */
+    public function &driver($driver = null)
+    {
+        if (empty($driver)) {
+            $driver = strtoupper((string)$this->table()->get("driver"));
+        }
+        if (empty($driver)) {
+            $driver == "SDEFAULT";
+        }
+        if (!is_object($this->_driverCache[$driver])) {
+            include_once dirname(__FILE__)."/../sensors/Driver.php";
+            $this->_driverCache[$driver] = &sensors\Driver::factory($driver);
+        }
+        return $this->_driverCache[$driver];
     }
 
 }

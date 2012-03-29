@@ -26,10 +26,9 @@
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage Devices
+ * @subpackage Sensors
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
- * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
@@ -40,17 +39,13 @@ namespace HUGnet\sensors\drivers;
 defined('_HUGNET') or die('HUGnetSystem not found');
 
 /**
- * Networking for devices.
- *
- * This class will do all of the networking for devices.  It will poll, get configs,
- * update software, and anything else related to talking to devices.
+ * Default sensor driver
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage Devices
+ * @subpackage Sensors
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
- * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
@@ -62,7 +57,7 @@ class SDEFAULT extends \HUGnet\sensors\Driver
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
-    protected $params = array(
+    protected static $params = array(
     );
     /**
     * This function creates the system.

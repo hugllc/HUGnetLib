@@ -169,6 +169,20 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
+    * @param string $name   The name of the variable to test.
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataGet
+    */
+    public function testGetParam($name, $expect)
+    {
+        $this->assertSame($expect, DriverTestClass::getParam($name));
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
     * @return null
     */
     public function testToArray()
@@ -293,8 +307,49 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     */
     public function testGetExtra($extra, $index, $expect)
     {
-        $obj = DriverTestClass::factory();
-        $this->assertSame($expect, $obj->getExtra($index, $extra));
+        $this->assertSame($expect, $this->o->getExtra($index, $extra));
+    }
+    /**
+    * data provider for testGetTypes
+    *
+    * @return array
+    */
+    public static function dataGetTypes()
+    {
+        return array(
+            array(
+                0x41,
+                array(
+                    "DEFAULT" => "ADuCVoltage",
+                    "Pressure" => "ADuCPressure",
+                ),
+            ),
+            array(
+                0x01,
+                array(),
+            ),
+            array(
+                0x42,
+                array(
+                    "DEFAULT" => "ADuCThermocouple"
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param int    $sid     The sensor ID to check
+    * @param string $expect  The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataGetTypes
+    */
+    public function testGetTypes($sid,$expect)
+    {
+        $this->assertSame($expect, Driver::getTypes($sid));
     }
 }
 /**
@@ -315,6 +370,15 @@ class DriverTest extends \PHPUnit_Framework_TestCase
  */
 class DriverTestClass extends Driver
 {
+    /**
+    * This is where the data for the driver is stored.  This array must be
+    * put into all derivative classes, even if it is empty.
+    */
+    protected static $params = array(
+        "unitType" => "asdf", /* This is for test value only */
+        "testParam" => "12345", /* This is for test value only */
+        "extraDefault" => array(2,3,5,7,11),
+    );
     /**
     * This function creates the system.
     *

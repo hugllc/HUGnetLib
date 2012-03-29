@@ -26,10 +26,9 @@
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage Devices
+ * @subpackage Sensors
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
- * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
@@ -48,7 +47,7 @@ require_once dirname(__FILE__)."/../base/UnitsBase.php";
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage Devices
+ * @subpackage Sensors
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
@@ -62,15 +61,12 @@ abstract class Driver
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
-    protected $params = array(
-        "unitType" => "asdf", /* This is for test value only */
-        "testParam" => "12345", /* This is for test value only */
-        "extraDefault" => array(2,3,5,7,11),
+    protected static $params = array(
     );
     /**
     * This is where all of the defaults are stored.
     */
-    private $_default = array(
+    private static $_default = array(
         "longName" => "Unknown Sensor",
         "shortName" => "Unknown",
         "unitType" => "unknown",
@@ -94,11 +90,10 @@ abstract class Driver
     * as the driver class name.
     */
     private static $_drivers = array(
-        "02:DEFAULT"     => "SDEFAULT",
-        "41"             => "ADuCVoltage",
-        "41:ADuCVoltage" => "ADuCVoltage",
-        "43"             => "ADuCVoltage",
-        "43:ADuCVoltage" => "ADuCVoltage"
+        "41:DEFAULT"  => "ADuCVoltage",
+        "41:Pressure" => "ADuCPressure",
+        "42:DEFAULT"  => "ADuCThermocouple",
+        "43:DEFAULT"  => "ADuCVoltage",
     );
     /**
     * This function sets up the driver object, and the database object.  The
@@ -157,15 +152,10 @@ abstract class Driver
     */
     public function present($name)
     {
-        if (isset($this->params[$name])) {
-            return true;
-        } else if (isset($this->_default[$name])) {
-            return true;
-        }
-        return false;
+        return !is_null(self::getParam($name));
     }
     /**
-    * Creates the object from a string
+    * Gets an item
     *
     * @param string $name The name of the property to get
     *
@@ -173,12 +163,7 @@ abstract class Driver
     */
     public function get($name)
     {
-        if (isset($this->params[$name])) {
-            return $this->params[$name];
-        } else if (isset($this->_default[$name])) {
-            return $this->_default[$name];
-        }
-        return null;
+        return self::getParam($name);
     }
     /**
     * Returns all of the parameters and defaults in an array
@@ -187,7 +172,8 @@ abstract class Driver
     */
     public function toArray()
     {
-        return array_merge($this->_default, (array)$this->params);
+        $array = array_merge(self::$_default, (array)static::$params);
+        return $array;
     }
     /**
     * Returns the driver that should be used for a particular device
@@ -211,6 +197,41 @@ abstract class Driver
             }
         }
         return "SDEFAULT";
+    }
+    /**
+    * Returns the driver that should be used for a particular device
+    *
+    * @param string $name The name of the property to check
+    *
+    * @return string The driver to use
+    */
+    public static function getParam($name)
+    {
+        if (isset(static::$params[$name])) {
+            return static::$params[$name];
+        } else if (isset(self::$_default[$name])) {
+            return self::$_default[$name];
+        }
+        return null;
+    }
+    /**
+    * Returns an array of types that this sensor could be
+    *
+    * @param int $sid The ID to check
+    *
+    * @return The extra value (or default if empty)
+    */
+    public static function getTypes($sid)
+    {
+        $array = array();
+        $sensor = sprintf("%02X", (int)$sid);
+        foreach ((array)self::$_drivers as $key => $driver) {
+            $k = explode(":", $key);
+            if (trim(strtoupper($k[0])) == $sensor) {
+                $array[$k[1]] = $driver;
+            }
+        }
+        return (array)$array;
     }
     /**
     * Gets the extra values

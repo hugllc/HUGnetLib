@@ -39,7 +39,7 @@ namespace HUGnet\sensors\drivers;
 defined('_HUGNET') or die('HUGnetSystem not found');
 
 /**
- * Sensor driver for a thermocouple on the ADuC706x
+ * Driver for reading voltage based pressure sensors
  *
  * @category   Libraries
  * @package    HUGnetLib
@@ -51,52 +51,33 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class ADuCThermocouple extends \HUGnet\sensors\Driver
+class ADuCPressure extends \HUGnet\sensors\Driver
 {
-    /** This is the number of decimal places we use for our *MATH*, not the output */
-    const DECIMAL_PLACES = 10;
     /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
     protected static $params = array(
-        "longName" => "ADuC Thermocouple",
-        "shortName" => "ADuCThermo",
-        "unitType" => "Temperature",
-        "storageUnit" => '&#176;C',
+        "longName" => "ADuC Pressure Sensor",
+        "shortName" => "ADuCPressure",
+        "unitType" => "Pressure",
+        "storageUnit" => 'psi',
         "storageType" => \UnitsBase::TYPE_RAW,  // This is the dataType as stored
         "extraText" => array(
-            "R1 to Source (kOhms)",
-            "R2 to Ground (kOhms)",
-            "AtoD Ref Voltage (mV)",
-            "Thermocouple Type",
+            "Min Voltage (V)",
+            "Max Voltage (V)",
+            "Read @ Min Voltage (psi)",
+            "Read @ Max Voltage (psi)",
+            "Voltage Ref (V)",
+            "R input (Ohms)",
+            "R bias  (Ohms)"
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
-        "extraValues" => array(5, 5, 5, array("k" => "k")),
-        "extraDefault" => array(1, 10, 1200, "k"),
+        "extraValues" => array(5, 5, 7, 7, 10, 10, 10),
+        "extraDefault" => array(0, 5, 0, 100, 1.2, 100, 1),
         "maxDecimals" => 4,
-    );
-    /** These are the coeffients of the thermocouple equasion */
-    private $_coeffients = array(
-        "k" => array(
-            "-5.891" => null, // For below -200(-5.891 mV) deg C
-            // From http://srdata.nist.gov/its90/type_k/kcoefficients_inverse.html
-            "0" => array(// For below 0(0 mV) degC
-                0, 2.5173462E1, -1.1662878, -1.0833638, -8.9773540E-1,
-                -3.7342377E-1, -8.6632643E-2, -1.0450598E-2, -5.1920577E-4
-            ),
-            "20.644" => array(// For between 0(0 mV) and 500(20.644 mV) deg C
-                0, 2.508355E1, 7.860106E-2, -2.503131E-1, 8.315270E-2,
-                -1.228034E-2, 9.804036E-4, -4.413030E-5, 1.057734E-6,
-                -1.052755E-8
-            ),
-            "54.886" => array(// For between 500(20.644 mV) and 1370(54.886 mV) deg C
-                -1.318058E2, 4.830222E1, -1.646031, 5.464731E-2, -9.650715E-4,
-                8.802193E-6, -3.110810E-8
-            ),
-        ),
     );
     /**
     * This function creates the system.
@@ -123,52 +104,21 @@ class ADuCThermocouple extends \HUGnet\sensors\Driver
     public function getReading(
         $A, $deltaT = 0, &$data = array(), $prev = null, $sensor = array()
     ) {
-        $Am    = pow(2, 23);
-        $Rin   = $this->getExtra(0, $sensor["extra"]);
-        $Rbias = $this->getExtra(1, $sensor["extra"]);
-        $Vref  = $this->getExtra(2, $sensor["extra"]);
-        $type  = $this->getExtra(3, $sensor["extra"]);
+        $Am   = pow(2, 23);
+        $Vmin  = $this->getExtra(0, $sensor["extra"]);
+        $Vmax  = $this->getExtra(1, $sensor["extra"]);
+        $Pmin  = $this->getExtra(2, $sensor["extra"]);
+        $Pmax  = $this->getExtra(3, $sensor["extra"]);
+        $Vref  = $this->getExtra(4, $sensor["extra"]);
+        $Rin   = $this->getExtra(5, $sensor["extra"]);
+        $Rbias = $this->getExtra(6, $sensor["extra"]);
 
         $A = \HUGnet\Util::getTwosCompliment($A, 32);
         $A = \HUGnet\Util::inputBiasCompensation($A, $Rin, $Rbias);
         $Va = ($A / $Am) * $Vref;
-        $T = $this->_getThermocouple($Va, $data[0]["value"], $type);
-        if (is_null($T)) {
-            return null;
-        }
-        return round($T, $this->get('maxDecimals'));
-    }
-    /**
-    * Changes a raw reading into a output value
-    *
-    * @param float $V     Voltage output of thermocouple in milliVolts
-    * @param float $TCold Cold junction temperature in degrees C
-    * @param float $type  Thermocouple type
-    *
-    * @return mixed The temperature
-    */
-    private function _getThermocouple($V, $TCold, $type = "k")
-    {
-        bcscale(self::DECIMAL_PLACES);
-        foreach ((array)array_keys($this->_coeffients[$type]) as $k) {
-            if ($V < (float)$k) {
-                if (empty($this->_coeffients[$type][$k])) {
-                    break;
-                }
-                $T = 0;
-                $c = &$this->_coeffients[$type][$k];
-                for ($i = 0; isset($c[$i]); $i++) {
-                    /* This is required so when php converts the float to a string
-                     * it is *NOT* in scientific notation.  bc functions don't seem
-                     * to like scientific notation, and they require string inputs */
-                    $coef = number_format($c[$i], self::DECIMAL_PLACES, '.', '');
-                    $T = bcadd($T, bcmul($coef, bcpow($V, $i)));
-                }
-                $T += $TCold;
-                break;
-            }
-        }
-        return $T;
+        $P = \HUGnet\Util::linearBounded($Va, $Vmin, $Vmax, $Pmin, $Pmax);
+        return round($P, $this->get("maxDecimals"));
+
     }
 
 }
