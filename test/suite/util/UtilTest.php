@@ -164,6 +164,11 @@ class UtilTest extends \PHPUnit_Framework_TestCase
                 -1,
             ),
             array(
+                0xFFFFFFFFFFFF,
+                24,
+                -1,
+            ),
+            array(
                 0,
                 24,
                 0,
@@ -193,6 +198,58 @@ class UtilTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, $val);
     }
 
+    /**
+    * data provider for testNumeric
+    *
+    * @return array
+    */
+    public static function dataInputBiasCompensation()
+    {
+        return array(
+            array(
+                8388608,
+                10,
+                0,
+                null,
+            ),
+            array(
+                123456,
+                0,
+                244.252,
+                123456.0,
+            ),
+            array(
+                0,
+                24,
+                1,
+                0.0,
+            ),
+            array(
+                1000,
+                1,
+                100,
+                1010.0,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param int   $A       The integer to feed to the function
+    * @param float $Rin     The input resistance to use
+    * @param float $Rbias   The bias resistance to use
+    * @param int   $expect  The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataInputBiasCompensation
+    */
+    public function testInputBiasComensation($A, $Rin, $Rbias, $expect)
+    {
+        $val = Util::inputBiasCompensation($A, $Rin, $Rbias);
+        $this->assertEquals($expect, $val, 0.0001);
+    }
 
 }
 ?>

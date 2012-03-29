@@ -80,14 +80,14 @@ class SDEFAULT extends \HUGnet\sensors\Driver
     * @param float $deltaT The time delta in seconds between this record
     * @param array &$data  The data from the other sensors that were crunched
     * @param mixed $prev   The previous value for this sensor
-    * @param array $extra  The extra setup that is needed.
+    * @param array $sensor The sensor information
     *
     * @return mixed The value in whatever the units are in the sensor
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function getReading(
-        $A, $deltaT = 0, &$data = array(), $prev = null, $extra = array()
+        $A, $deltaT = 0, &$data = array(), $prev = null, $sensor = array()
     ) {
         return $A;
     }

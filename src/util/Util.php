@@ -166,7 +166,9 @@ class Util
     */
     public static function getTwosCompliment($A, $bits = 24)
     {
-        $A = (int)$A;
+        /* Clear off any excess */
+        $A = (int)($A & (pow(2, $bits) - 1));
+        /* Calculate the top bit */
         $topBit = pow(2, ($bits - 1));
         /* Check to see if the top bit is set */
         if (($A & $topBit) == $topBit) {
@@ -174,6 +176,25 @@ class Util
             $A = -(pow(2, $bits) - $A);
         }
         return $A;
+    }
+    /**
+    * Compensates for an input and bias resistance.
+    *
+    * The bias and input resistance values can be in Ohms, kOhms or even MOhms.  It
+    * doesn't matter as long as they are both the same units.
+    *
+    * @param float $A     The incoming number
+    * @param float $Rin   The input resistor.
+    * @param float $Rbias The bias resistor.
+    *
+    * @return float The compensated value
+    */
+    public static function inputBiasCompensation($A, $Rin, $Rbias)
+    {
+        if ($Rbias == 0) {
+            return null;
+        }
+        return (float)(($A * ($Rin + $Rbias)) / $Rbias);
     }
 }
 

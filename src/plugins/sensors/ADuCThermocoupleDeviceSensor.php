@@ -83,7 +83,7 @@ class ADuCThermocoupleDeviceSensor extends VoltageDeviceSensorBase
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(5, 5, 5),
-        "extraDefault" => array(1, 10, 1.2),
+        "extraDefault" => array(1, 10, 1200),
         "maxDecimals" => 8,
     );
     /** These are the coeffients of the thermocouple equasion */
