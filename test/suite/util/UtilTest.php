@@ -250,6 +250,82 @@ class UtilTest extends \PHPUnit_Framework_TestCase
         $val = Util::inputBiasCompensation($A, $Rin, $Rbias);
         $this->assertEquals($expect, $val, 0.0001);
     }
+    /**
+    * data provider for testNumeric
+    *
+    * @return array
+    */
+    public static function dataLinearBounded()
+    {
+        return array(
+            array(
+                10,
+                0,
+                20,
+                0,
+                100,
+                50.0,
+            ),
+            array(
+                5.4321,
+                0,
+                10,
+                0,
+                100,
+                54.321,
+            ),
+            array(
+                30,
+                0,
+                20,
+                0,
+                100,
+                null,
+            ),
+            array(
+                5,
+                10,
+                20,
+                0,
+                100,
+                null,
+            ),
+            array(
+                5,
+                10,
+                10,
+                0,
+                100,
+                null,
+            ),
+            array(
+                null,
+                10,
+                10,
+                0,
+                100,
+                null,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param int   $A       The integer to feed to the function
+    * @param float $Rin     The input resistance to use
+    * @param float $Rbias   The bias resistance to use
+    * @param int   $expect  The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataLinearBounded
+    */
+    public function testLinearBounded($A, $Imin, $Imax, $Omin, $Omax, $expect)
+    {
+        $val = Util::linearBounded($A, $Imin, $Imax, $Omin, $Omax);
+        $this->assertEquals($expect, $val, 0.0001);
+    }
 
 }
 ?>

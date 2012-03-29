@@ -196,6 +196,36 @@ class Util
         }
         return (float)(($A * ($Rin + $Rbias)) / $Rbias);
     }
+    /**
+    * This makes a line of two ordered pairs, then puts $A on that line
+    *
+    * @param float $A    The incoming value
+    * @param float $Imin The input minimum
+    * @param float $Imax The input maximum
+    * @param float $Omin The output minimum
+    * @param float $Omax The output maximum
+    *
+    * @return output rounded to 4 places
+    */
+    public static function linearBounded($A, $Imin, $Imax, $Omin, $Omax)
+    {
+        if (is_null($A)) {
+            return null;
+        }
+        if ($Imax == $Imin) {
+            return null;
+        }
+        if ($A > $Imax) {
+            return null;
+        }
+        if ($A < $Imin) {
+            return null;
+        }
+        $m = ($Omax - $Omin) / ($Imax - $Imin);
+        $b = $Omax - ($m * $Imax);
+        $O = ($m * $A) + $b;
+        return $O;
+    }
 }
 
 
