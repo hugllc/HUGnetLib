@@ -97,7 +97,16 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     public static function dataCreate()
     {
         return array(
-            array(new DummySystem(), null, "DummyTable", null),
+            array(
+                new DummySystem(),
+                null,
+                "DummyTable",
+                array(
+                    "Table" => array(
+                        "clearData" => array(array()),
+                    ),
+                ),
+            ),
             array(
                 new DummySystem(),
                 array(
@@ -125,6 +134,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "set" => array(
                             array("Driver", "EDEFAULT"),
                         ),
+                        "clearData" => array(array()),
                     ),
                 ),
             ),
@@ -140,6 +150,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "set" => array(
                             array("id", 2),
                         ),
+                        "clearData" => array(array()),
                     ),
                 ),
             ),
@@ -678,6 +689,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
+                        "clearData" => array(array()),
                     ),
                 ),
             ),
@@ -703,6 +715,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
+                        "clearData" => array(array()),
                     ),
                 ),
             ),
@@ -734,6 +747,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
+                        "clearData" => array(array()),
                     ),
                 ),
             ),
@@ -759,7 +773,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $sys->resetMock($config);
         $obj = Device::factory($sys, null, $class);
         $obj->setParam($field, $value);
-        $this->assertSame($expect, $sys->retrieve());
+        $this->assertEquals($expect, $sys->retrieve());
         unset($obj);
     }
     /**

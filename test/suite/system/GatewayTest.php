@@ -93,8 +93,16 @@ class GatewayTest extends \PHPUnit_Framework_TestCase
     public static function dataCreate()
     {
         return array(
-            array(new DummySystem(), null, "DummyTable", array()),
-            array(new DummySystem(), null, "DummyTable", array()),
+            array(
+                new DummySystem(),
+                null,
+                "DummyTable",
+                array(
+                    "Table" => array(
+                        "clearData" => array(array()),
+                    ),
+                ),
+            ),
             array(
                 new DummySystem(),
                 array(
@@ -114,6 +122,7 @@ class GatewayTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
+                        "clearData" => array(array()),
                     ),
                 ),
             ),
@@ -129,6 +138,7 @@ class GatewayTest extends \PHPUnit_Framework_TestCase
                         "set" => array(
                             array("id", 2),
                         ),
+                        "clearData" => array(array()),
                     ),
                 ),
             ),

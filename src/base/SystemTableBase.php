@@ -160,6 +160,7 @@ abstract class SystemTableBase
     public function load($data)
     {
         $ret = false;
+        $this->table()->clearData();
         if (is_int($data)) {
             $this->table()->set($this->table()->sqlId, $data);
             $ret = $this->table()->getRow($data);

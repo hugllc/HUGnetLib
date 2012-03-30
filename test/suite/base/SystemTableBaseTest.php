@@ -120,7 +120,16 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
     public static function dataFactory()
     {
         return array(
-            array(array(), null, "DummyTable", array()),
+            array(
+                array(),
+                null,
+                "DummyTable",
+                array(
+                    "Table" => array(
+                        "clearData" => array(array()),
+                    ),
+                ),
+            ),
             array(
                 array(),
                 array(
@@ -140,6 +149,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
+                        "clearData" => array(array()),
                     ),
                 ),
             ),
@@ -155,6 +165,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                         "set" => array(
                             array("id", 2),
                         ),
+                        "clearData" => array(array()),
                     ),
                 ),
             ),
@@ -211,6 +222,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
+                        "clearData" => array(array(), array()),
                     ),
                 ),
                 true,
@@ -233,6 +245,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                         "set" => array(
                             array("id", 2),
                         ),
+                        "clearData" => array(array(), array()),
                     ),
                 ),
                 false,
@@ -282,6 +295,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                     "Table" => array(
                         "get" => array(array("id")),
                         "updateRow" => array(array()),
+                        "clearData" => array(array()),
                     ),
                 ),
                 true,
@@ -299,6 +313,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                     "Table" => array(
                         "get" => array(array("id")),
                         "insertRow" => array(array(false)),
+                        "clearData" => array(array()),
                     ),
                 ),
                 false,
@@ -316,6 +331,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                     "Table" => array(
                         "get" => array(array("id")),
                         "insertRow" => array(array(true)),
+                        "clearData" => array(array()),
                     ),
                 ),
                 true,

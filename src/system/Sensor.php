@@ -135,6 +135,7 @@ class Sensor extends SystemTableBase
     public function load($data)
     {
         $ret = false;
+        $this->table()->clearData();
         if (is_array($data) && (count($data) == 2)
             && isset($data["dev"]) && isset($data["sensor"])
         ) {

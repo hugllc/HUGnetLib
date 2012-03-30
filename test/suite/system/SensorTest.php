@@ -96,8 +96,16 @@ class SensorTest extends \PHPUnit_Framework_TestCase
     public static function dataCreate()
     {
         return array(
-            array(new DummySystem(), null, "DummyTable", array()),
-            array(new DummySystem(), null, "DummyTable", array()),
+            array(
+                new DummySystem(),
+                null,
+                "DummyTable",
+                array(
+                    "Table" => array(
+                        "clearData" => array(array()),
+                    ),
+                ),
+            ),
             array(
                 new DummySystem(),
                 array(
@@ -125,6 +133,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         'set' => array(
                             array("units", "unknown"),
                         ),
+                        "clearData" => array(array()),
                     ),
                 ),
             ),
@@ -140,6 +149,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                                 array(2, 0),
                             ),
                         ),
+                        "clearData" => array(array()),
                     ),
                 ),
             ),
@@ -333,6 +343,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         'set' => array(
                             array("units", "unknown"),
                         ),
+                        "clearData" => array(array(), array()),
                     ),
                 ),
                 true,
@@ -353,6 +364,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                                 array(2, 0),
                             ),
                         ),
+                        "clearData" => array(array(), array()),
                     ),
                 ),
                 true,
@@ -373,6 +385,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                                 array(2, 0),
                             ),
                         ),
+                        "clearData" => array(array(), array()),
                     ),
                 ),
                 false,
