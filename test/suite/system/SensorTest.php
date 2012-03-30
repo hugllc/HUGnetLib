@@ -258,9 +258,9 @@ class SensorTest extends \PHPUnit_Framework_TestCase
     /**
     * This tests the object creation
     *
-    * @param array  $config The configuration to use
-    * @param mixed  $class  This is either the name of a class or an object
-    * @param mixed  $expect The value we expect back
+    * @param array $config The configuration to use
+    * @param mixed $class  This is either the name of a class or an object
+    * @param mixed $expect The value we expect back
     *
     * @return null
     *
@@ -275,7 +275,8 @@ class SensorTest extends \PHPUnit_Framework_TestCase
         $json = $obj->json();
         $this->assertSame($expect, $json);
         unset($obj);
-    }    /**
+    }
+    /**
     * This tests the object creation
     *
     * @param array  $config The configuration to use
@@ -507,13 +508,13 @@ class SensorTest extends \PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param object $config  The configuration to use
-    * @param object $class   The table class to use
-    * @param int    $A       Output of the A to D converter
-    * @param float  $deltaT  The time delta in seconds between this record
-    * @param array  $prev    The previous reading
-    * @param array  $data    The data from the other sensors that were crunched
-    * @param array  $expect  The expected data
+    * @param object $config The configuration to use
+    * @param object $class  The table class to use
+    * @param int    $A      Output of the A to D converter
+    * @param float  $deltaT The time delta in seconds between this record
+    * @param array  $prev   The previous reading
+    * @param array  $data   The data from the other sensors that were crunched
+    * @param array  $expect The expected data
     *
     * @return null
     *
@@ -527,5 +528,6 @@ class SensorTest extends \PHPUnit_Framework_TestCase
         $obj = Sensor::factory($sys, null, $class);
         $ret = $obj->decodeData($A, $deltaT, $prev, $data);
         $this->assertEquals($expect, $ret);
-    }}
+    }
+}
 ?>

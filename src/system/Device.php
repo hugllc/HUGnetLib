@@ -75,14 +75,6 @@ class Device extends SystemTableBase
     */
     private $_firmware = null;
     /**
-    * This is the plugin container
-    */
-    private $_plugins = null;
-    /**
-    * This is the sensor cache
-    */
-    private $_sensorCache = array();
-    /**
     * This is the destructor
     */
     public function __destruct()

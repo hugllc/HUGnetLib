@@ -161,23 +161,23 @@ class Util
     /**
     * Changes an n-bit twos compliment number into a signed number PHP can use
     *
-    * @param int   $A    The incoming number
-    * @param float $bits The number of bits the incoming number is
+    * @param int   $value The incoming number
+    * @param float $bits  The number of bits the incoming number is
     *
     * @return int A signed integer for PHP to use
     */
-    public static function getTwosCompliment($A, $bits = 24)
+    public static function getTwosCompliment($value, $bits = 24)
     {
         /* Clear off any excess */
-        $A = (int)($A & (pow(2, $bits) - 1));
+        $value = (int)($value & (pow(2, $bits) - 1));
         /* Calculate the top bit */
         $topBit = pow(2, ($bits - 1));
         /* Check to see if the top bit is set */
-        if (($A & $topBit) == $topBit) {
+        if (($value & $topBit) == $topBit) {
             /* This is a negative number */
-            $A = -(pow(2, $bits) - $A);
+            $value = -(pow(2, $bits) - $value);
         }
-        return $A;
+        return $value;
     }
     /**
     * Compensates for an input and bias resistance.
@@ -185,47 +185,47 @@ class Util
     * The bias and input resistance values can be in Ohms, kOhms or even MOhms.  It
     * doesn't matter as long as they are both the same units.
     *
-    * @param float $A     The incoming number
+    * @param float $value The incoming number
     * @param float $Rin   The input resistor.
     * @param float $Rbias The bias resistor.
     *
     * @return float The compensated value
     */
-    public static function inputBiasCompensation($A, $Rin, $Rbias)
+    public static function inputBiasCompensation($value, $Rin, $Rbias)
     {
         if ($Rbias == 0) {
             return null;
         }
-        return (float)(($A * ($Rin + $Rbias)) / $Rbias);
+        return (float)(($value * ($Rin + $Rbias)) / $Rbias);
     }
     /**
     * This makes a line of two ordered pairs, then puts $A on that line
     *
-    * @param float $A    The incoming value
-    * @param float $Imin The input minimum
-    * @param float $Imax The input maximum
-    * @param float $Omin The output minimum
-    * @param float $Omax The output maximum
+    * @param float $value The incoming value
+    * @param float $Imin  The input minimum
+    * @param float $Imax  The input maximum
+    * @param float $Omin  The output minimum
+    * @param float $Omax  The output maximum
     *
     * @return output rounded to 4 places
     */
-    public static function linearBounded($A, $Imin, $Imax, $Omin, $Omax)
+    public static function linearBounded($value, $Imin, $Imax, $Omin, $Omax)
     {
-        if (is_null($A)) {
+        if (is_null($value)) {
             return null;
         }
         if ($Imax == $Imin) {
             return null;
         }
-        if ($A > $Imax) {
+        if ($value > $Imax) {
             return null;
         }
-        if ($A < $Imin) {
+        if ($value < $Imin) {
             return null;
         }
         $m = ($Omax - $Omin) / ($Imax - $Imin);
         $b = $Omax - ($m * $Imax);
-        $O = ($m * $A) + $b;
+        $O = ($m * $value) + $b;
         return $O;
     }
 }

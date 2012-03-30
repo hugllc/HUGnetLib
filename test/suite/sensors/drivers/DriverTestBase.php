@@ -93,9 +93,6 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $name   The name of the variable to test.
-    * @param array  $expect The expected return
-    *
     * @return null
     */
     public function testFactory()
@@ -160,9 +157,9 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     /**
     * Check the string size
     *
-    * @param string $field    The field to check
-    * @param int    $max      The largest it can be
-    * @param int    $min      The smallest it can be
+    * @param string $field The field to check
+    * @param int    $max   The largest it can be
+    * @param int    $min   The smallest it can be
     *
     * @return null
     *
@@ -178,9 +175,9 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     /**
     * Check the string size
     *
-    * @param string $field    The field to check
-    * @param int    $max      The largest it can be
-    * @param int    $min      The smallest it can be
+    * @param string $field The field to check
+    * @param int    $max   The largest it can be
+    * @param int    $min   The smallest it can be
     *
     * @return null
     *
@@ -207,9 +204,9 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     /**
     * Check the string size
     *
-    * @param string $field    The field to check
-    * @param int    $max      The largest it can be
-    * @param int    $min      The smallest it can be
+    * @param string $field The field to check
+    * @param int    $max   The largest it can be
+    * @param int    $min   The smallest it can be
     *
     * @return null
     *
@@ -227,9 +224,9 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     /**
     * Check the string size
     *
-    * @param string $field    The field to check
-    * @param int    $max      The largest it can be
-    * @param int    $min      The smallest it can be
+    * @param string $field The field to check
+    * @param int    $max   The largest it can be
+    * @param int    $min   The smallest it can be
     *
     * @return null
     *
@@ -289,7 +286,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     {
         $size = 26;
         $extra = (array)$this->o->get("extraText");
-        foreach($extra as $key => $value) {
+        foreach ($extra as $key => $value) {
             $this->assertTrue(
                 (strlen($value) < $size),
                 "extraText[$key] must be less than $size chars"
@@ -320,7 +317,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     {
         $size = 26;
         $extra = (array)$this->o->get("extraValues");
-        foreach($extra as $key => $value) {
+        foreach ($extra as $key => $value) {
             $ret = is_null($value);
             $ret = $ret || is_array($value);
             $ret = $ret || is_int($value);

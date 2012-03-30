@@ -50,6 +50,8 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
+ *
+ * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class ADuCThermocouple extends \HUGnet\sensors\Driver
 {

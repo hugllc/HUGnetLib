@@ -278,7 +278,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     *
     * @param string $HWPartNum The hardware part number
     * @param string $FWPartNum The firmware part number
-    * @param string $RWVersion The firmware version
+    * @param string $FWVersion The firmware version
     * @param array  $expect    The expected return
     *
     * @return null
@@ -476,8 +476,8 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $class   The class to use
-    * @param array  $expect  The expected return
+    * @param string $class  The class to use
+    * @param array  $expect The expected return
     *
     * @return null
     *

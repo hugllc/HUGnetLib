@@ -71,7 +71,7 @@ class Network
     * database object is taken from the driver object.
     *
     * @param object &$network The network application object
-    * @param string &$table   The table object
+    * @param string &$device  The table object
     *
     * @return null
     */
@@ -284,7 +284,7 @@ class Network
     /**
     * Writes a data buffer to the Flash
     *
-    * @param FirmwareTable $firmware The data to write
+    * @param \FirmwareTable &$firmware The data to write
     *
     * @return success or failure of the packet sending
     */
@@ -328,7 +328,7 @@ class Network
             return false;
         }
         return true;
-}
+    }
     /**
     * Polls the device in question
     *

@@ -192,17 +192,17 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param int   $A       The integer to feed to the function
-    * @param int   $bits    The number of bits to use
-    * @param int   $expect  The expected data
+    * @param int $value  The integer to feed to the function
+    * @param int $bits   The number of bits to use
+    * @param int $expect The expected data
     *
     * @return null
     *
     * @dataProvider dataGetTwosCompliment
     */
-    public function testGetTwosCompliment($A, $bits, $expect)
+    public function testGetTwosCompliment($value, $bits, $expect)
     {
-        $val = Util::getTwosCompliment($A, $bits);
+        $val = Util::getTwosCompliment($value, $bits);
         $this->assertSame($expect, $val);
     }
 
@@ -244,18 +244,18 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param int   $A       The integer to feed to the function
-    * @param float $Rin     The input resistance to use
-    * @param float $Rbias   The bias resistance to use
-    * @param int   $expect  The expected data
+    * @param int   $value  The integer to feed to the function
+    * @param float $Rin    The input resistance to use
+    * @param float $Rbias  The bias resistance to use
+    * @param int   $expect The expected data
     *
     * @return null
     *
     * @dataProvider dataInputBiasCompensation
     */
-    public function testInputBiasComensation($A, $Rin, $Rbias, $expect)
+    public function testInputBiasComensation($value, $Rin, $Rbias, $expect)
     {
-        $val = Util::inputBiasCompensation($A, $Rin, $Rbias);
+        $val = Util::inputBiasCompensation($value, $Rin, $Rbias);
         $this->assertEquals($expect, $val, 0.0001);
     }
     /**
@@ -320,18 +320,20 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param int   $A       The integer to feed to the function
-    * @param float $Rin     The input resistance to use
-    * @param float $Rbias   The bias resistance to use
-    * @param int   $expect  The expected data
+    * @param int   $value  The integer to feed to the function
+    * @param float $Imin   The Input minimum
+    * @param float $Imax   The Input maximum
+    * @param float $Omin   The Output minimum
+    * @param float $Omax   The Output maximum
+    * @param int   $expect The expected data
     *
     * @return null
     *
     * @dataProvider dataLinearBounded
     */
-    public function testLinearBounded($A, $Imin, $Imax, $Omin, $Omax, $expect)
+    public function testLinearBounded($value, $Imin, $Imax, $Omin, $Omax, $expect)
     {
-        $val = Util::linearBounded($A, $Imin, $Imax, $Omin, $Omax);
+        $val = Util::linearBounded($value, $Imin, $Imax, $Omin, $Omax);
         $this->assertEquals($expect, $val, 0.0001);
     }
 

@@ -54,6 +54,8 @@ require_once dirname(__FILE__)."/../base/UnitsBase.php";
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
+ *
+ * @SuppressWarnings(PHPMD.ShortVariable)
  */
 abstract class Driver
 {
@@ -100,8 +102,6 @@ abstract class Driver
     /**
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
-    *
-    * @param object &$sensor The sensor object
     *
     * @return null
     */

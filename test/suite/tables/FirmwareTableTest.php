@@ -371,7 +371,8 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
             array(
                 // Everything works
                 TEST_CONFIG_BASE."files",
-                "MD5 (003921-00392001C-00.01.04.gz) = 84b01697b6fbc32c457d3b9815585fe0",
+                "MD5 (003921-00392001C-00.01.04.gz) = "
+                ."84b01697b6fbc32c457d3b9815585fe0",
                 true,
                 array(
                     "group" => "default",

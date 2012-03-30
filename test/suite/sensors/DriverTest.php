@@ -320,9 +320,9 @@ class DriverTest extends drivers\DriverTestBase
     /**
     * test the set routine when an extra class exists
     *
-    * @param mixed  $extra   The extra array
-    * @param int    $index   The index to use for the extra array
-    * @param string $expect  The expected data
+    * @param mixed  $extra  The extra array
+    * @param int    $index  The index to use for the extra array
+    * @param string $expect The expected data
     *
     * @return null
     *
@@ -363,8 +363,8 @@ class DriverTest extends drivers\DriverTestBase
     /**
     * test the set routine when an extra class exists
     *
-    * @param int    $sid     The sensor ID to check
-    * @param string $expect  The expected data
+    * @param int    $sid    The sensor ID to check
+    * @param string $expect The expected data
     *
     * @return null
     *

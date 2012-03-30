@@ -433,9 +433,11 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "toArray" => array(
                             "id" => 2,
                             "asdf" => 3,
-                            "params" => base64_encode(serialize(
-                                array("DriverInfo" => array(1,2,3,4))
-                            )),
+                            "params" => base64_encode(
+                                serialize(
+                                    array("DriverInfo" => array(1,2,3,4))
+                                )
+                            ),
                         ),
                     ),
                 ),
@@ -468,9 +470,11 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "toArray" => array(
                             "id" => 2,
                             "asdf" => 3,
-                            "params" => base64_encode(serialize(
-                                array("DriverInfo" => array(1,2,3,4))
-                            )),
+                            "params" => base64_encode(
+                                serialize(
+                                    array("DriverInfo" => array(1,2,3,4))
+                                )
+                            ),
                             "loadable" => true,
                         ),
                     ),
@@ -499,9 +503,9 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     /**
     * This tests the object creation
     *
-    * @param array  $config The configuration to use
-    * @param mixed  $class  This is either the name of a class or an object
-    * @param mixed  $expect The value we expect back
+    * @param array $config The configuration to use
+    * @param mixed $class  This is either the name of a class or an object
+    * @param mixed $expect The value we expect back
     *
     * @return null
     *
@@ -529,13 +533,15 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Table" => array(
                         "get" => array(
-                            "params" => base64_encode(serialize(
-                                array(
-                                    "A" => 1,
-                                    "B" => 2,
-                                    "C" => 3,
+                            "params" => base64_encode(
+                                serialize(
+                                    array(
+                                        "A" => 1,
+                                        "B" => 2,
+                                        "C" => 3,
+                                    )
                                 )
-                            )),
+                            ),
                         ),
                     ),
                 ),
@@ -547,15 +553,17 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Table" => array(
                         "get" => array(
-                            "params" => base64_encode(serialize(
-                                array(
-                                    "DriverInfo" => array(
-                                        "A" => 1,
-                                        "B" => 2,
-                                        "C" => 3,
-                                    ),
+                            "params" => base64_encode(
+                                serialize(
+                                    array(
+                                        "DriverInfo" => array(
+                                            "A" => 1,
+                                            "B" => 2,
+                                            "C" => 3,
+                                        ),
+                                    )
                                 )
-                            )),
+                            ),
                         ),
                     ),
                 ),
@@ -878,11 +886,11 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param array  $config       The configuration to use
-    * @param mixed  $class        This is either the name of a class or an object
-    * @param string $data       The data to use
-    * @param array  $prev       The previous reading
-    * @param array  $expect     The expected data
+    * @param array  $config The configuration to use
+    * @param mixed  $class  This is either the name of a class or an object
+    * @param string $data   The data to use
+    * @param array  $prev   The previous reading
+    * @param array  $expect The expected data
     *
     * @return null
     *
@@ -1058,9 +1066,13 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     "Table" => array(
                         "get" => array(
                             "id" => 5,
-                            "sensors" => base64_encode(serialize(array(
-                                array("id" => 0x18),
-                            ))),
+                            "sensors" => base64_encode(
+                                serialize(
+                                    array(
+                                        array("id" => 0x18),
+                                    )
+                                )
+                            ),
                         ),
                     ),
                 ),
@@ -1108,6 +1120,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     * @param mixed  $class        This is either the name of a class or an object
     * @param string $sensor       The driver to tell it to load
     * @param string $driverExpect The driver we expect to be loaded
+    * @param int    $expect       The expected sensor id
     *
     * @return null
     *
@@ -1170,11 +1183,11 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     /**
     * This tests the object creation
     *
-    * @param array  $config  The configuration to use
-    * @param mixed  $class   This is either the name of a class or an object
-    * @param array  $data    The data to build the history record with.
-    * @param bool   $history History if true, average if false
-    * @param mixed  $expect  The value we expect back
+    * @param array $config  The configuration to use
+    * @param mixed $class   This is either the name of a class or an object
+    * @param array $data    The data to build the history record with.
+    * @param bool  $history History if true, average if false
+    * @param mixed $expect  The value we expect back
     *
     * @return null
     *

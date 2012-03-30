@@ -93,9 +93,6 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $name   The name of the variable to test.
-    * @param array  $expect The expected return
-    *
     * @return null
     */
     public function testFactory()
@@ -154,9 +151,9 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     /**
     * Check the string size
     *
-    * @param string $field    The field to check
-    * @param int    $max      The largest it can be
-    * @param int    $min      The smallest it can be
+    * @param string $field The field to check
+    * @param int    $max   The largest it can be
+    * @param int    $min   The smallest it can be
     *
     * @return null
     *
@@ -172,9 +169,9 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     /**
     * Check the string size
     *
-    * @param string $field    The field to check
-    * @param int    $max      The largest it can be
-    * @param int    $min      The smallest it can be
+    * @param string $field The field to check
+    * @param int    $max   The largest it can be
+    * @param int    $min   The smallest it can be
     *
     * @return null
     *
@@ -205,9 +202,9 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     /**
     * Check the string size
     *
-    * @param string $field    The field to check
-    * @param int    $max      The largest it can be
-    * @param int    $min      The smallest it can be
+    * @param string $field The field to check
+    * @param int    $max   The largest it can be
+    * @param int    $min   The smallest it can be
     *
     * @return null
     *
@@ -225,9 +222,9 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     /**
     * Check the string size
     *
-    * @param string $field    The field to check
-    * @param int    $max      The largest it can be
-    * @param int    $min      The smallest it can be
+    * @param string $field The field to check
+    * @param int    $max   The largest it can be
+    * @param int    $min   The smallest it can be
     *
     * @return null
     *

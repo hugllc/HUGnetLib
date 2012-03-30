@@ -210,6 +210,7 @@ abstract class SystemTableBase
     * Sets a value
     *
     * @param string $field the field to set
+    * @param mixed  $value the value to set
     *
     * @return null
     */

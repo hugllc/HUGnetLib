@@ -182,6 +182,8 @@ class Sensor extends SystemTableBase
     * @param array &$data  The data from the other sensors that were crunched
     *
     * @return float The direction in degrees
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
     */
     public function decodeData($A, $deltaT = 0, &$prev = null, &$data = array())
     {

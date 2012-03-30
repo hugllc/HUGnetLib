@@ -176,8 +176,6 @@ abstract class Driver
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
     *
-    * @param string &$table The table object
-    *
     * @return null
     */
     private function __construct()
@@ -278,7 +276,7 @@ abstract class Driver
     *
     * @param string $HWPartNum The hardware part number
     * @param string $FWPartNum The firmware part number
-    * @param string $RWVersion The firmware version
+    * @param string $FWVersion The firmware version
     *
     * @return string The driver to use
     */

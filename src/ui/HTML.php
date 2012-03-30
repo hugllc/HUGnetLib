@@ -35,7 +35,7 @@
 namespace HUGnet\ui;
 /** This is our system class */
 require_once dirname(__FILE__)."/../system/System.php";
-include_once dirname(__FILE__)."/HTMLArgs.php";
+require_once dirname(__FILE__)."/HTMLArgs.php";
 
 /**
  * This code routes packets to their correct destinations.
@@ -77,7 +77,7 @@ class HTML
     * Creates the object
     *
     * @param array &$config The configuration to use
-    * @param mixed &$args   The argument configuration
+    * @param mixed $args    The argument configuration
     *
     * @return null
     */
@@ -126,8 +126,8 @@ class HTML
         $config["debug"] = true;
         \HUGnet\VPrint::config($config);
         include_once dirname(__FILE__)."/../containers/ConfigContainer.php";
-        $c = &\ConfigContainer::singleton();
-        $c->forceConfig($this->_config);
+        $conf = &\ConfigContainer::singleton();
+        $conf->forceConfig($this->_config);
 
         return $this->_config;
     }

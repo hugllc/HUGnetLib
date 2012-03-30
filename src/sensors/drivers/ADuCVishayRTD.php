@@ -132,7 +132,7 @@ class ADuCVishayRTD extends \HUGnet\sensors\Driver
     * This function should be called with the values set for the specific
     * thermistor that is used.
     *
-    * @param float $inp    The input value
+    * @param float $input  The input value
     * @param array &$table The table to look through.
     *
     * @return float The Temperature in degrees C

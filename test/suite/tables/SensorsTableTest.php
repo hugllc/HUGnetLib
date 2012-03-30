@@ -330,8 +330,8 @@ class SensorsTableTest extends HUGnetDBTableTestBase
     /**
     * Tests the insert of a DeviceID
     *
-    * @param mixed $data    The data to use
-    * @param array $expect  The expected return
+    * @param mixed $data   The data to use
+    * @param array $expect The expected return
     *
     * @dataProvider dataFromArray
     *
@@ -387,7 +387,7 @@ class SensorsTableTest extends HUGnetDBTableTestBase
     * Tests the insert of a DeviceID
     *
     * @param mixed $data    The data to use
-    * @param
+    * @param bool  $default Whether to return default items
     * @param array $expect  The expected return
     *
     * @dataProvider data2Array
