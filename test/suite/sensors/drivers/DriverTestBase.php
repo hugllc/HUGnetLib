@@ -122,6 +122,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
             array("extraDefault", "array"),
             array("bound", "boolean"),
             array("virtual", "boolean"),
+            array("total", "boolean"),
             array("storageUnit", "string"),
             array("maxDecimals", "int"),
             array("unitType", "string"),

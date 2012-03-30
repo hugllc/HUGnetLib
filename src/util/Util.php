@@ -58,14 +58,16 @@ class Util
     /**
     * This function gives us access to the table class
     *
-    * @param string $class The class to find
-    * @param string $dir   The directory to look into
-    * @param bool   $quiet If true no exception is thrown
+    * @param string $class     The class to find
+    * @param string $dir       The directory to look into
+    * @param bool   $quiet     If true no exception is thrown
+    * @param string $namespace The namespace to try
     *
     * @return reference to the table class object
     */
-    public static function findClass($class, $dir="tables", $quiet=false)
-    {
+    public static function findClass(
+        $class, $dir="tables", $quiet=false, $namespace = "\HUGnet"
+    ) {
         /** This is our table class */
         @include_once dirname(__FILE__)."/../".$dir."/".$class.".php";
         $baseclass = $class;
@@ -73,7 +75,7 @@ class Util
             $class = "\\".$class;
         }
         if (!class_exists($class)) {
-            $class = "\\HUGnet".$class;
+            $class = $namespace.$class;
         }
         if (class_exists($class)) {
             return $class;

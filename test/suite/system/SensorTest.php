@@ -235,6 +235,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         "unitType" => "unknown",
                         "bound" => false,
                         "virtual" => false,
+                        "total" => false,
                         "extraText" => array(),
                         "extraDefault" => array(),
                         "extraValues" => array(),
@@ -244,9 +245,10 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         'id' => 0x41,
                         'asdf' => 3,
                         'params' => array(1,2,3,4),
+                        'type' => "SDEFAULT",
                         'otherTypes' => array(
                             "DEFAULT" => "ADuCVoltage",
-                            "Pressure" => "ADuCPressure",
+                            "ADuCPressure" => "ADuCPressure",
                         ),
                     )
                 ),
@@ -399,57 +401,131 @@ class SensorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectTable, $class->retrieve(), "Data Wrong");
     }
     /**
-    * Data provider for testCreate
+    * data provider for testSensor
     *
     * @return array
     */
-    public static function dataDriver()
+    public static function dataDecodeData()
     {
         return array(
             array(
-                new DummySystem(),
                 array(
-                    "id" => 5,
-                    "name" => 3,
-                    "value" => 1,
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 0x41,
+                            "type" => "ADuCPressure",
+                        ),
+                    ),
                 ),
-                "DummyTable",
-                "asdf",
-                "HUGnet\\sensors\\drivers\\SDEFAULT",
+                new DummyTable("Table"),
+                0x23451,
+                300,
+                0x12345,
+                array(
+                    array(
+                        "value" => 25.2134,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 28.5282,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 12.3455,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 82.1253,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                ),
+                array(
+                    "value" => 41.7451,
+                    "units" => "psi",
+                    "unitType" => "Pressure",
+                    "dataType" => \UnitsBase::TYPE_RAW,
+                ),
             ),
             array(
-                new DummySystem(),
                 array(
-                    "id" => 5,
-                    "name" => 3,
-                    "value" => 1,
-                    "Driver" => "SDEFAULT",
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 0x41,
+                            "type" => "ADuCPressure",
+                            "dataType" => \UnitsBase::TYPE_DIFF,
+                        ),
+                    ),
                 ),
-                "DummyTable",
-                null,
-                "HUGnet\\sensors\\drivers\\SDEFAULT",
+                new DummyTable("Table"),
+                0x23451,
+                300,
+                0x12345,
+                array(
+                    array(
+                        "value" => 25.2134,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 28.5282,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 12.3455,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 82.1253,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                ),
+                array(
+                    "value" => 41.7451,
+                    "units" => "psi",
+                    "unitType" => "Pressure",
+                    "dataType" => \UnitsBase::TYPE_RAW,
+                ),
             ),
         );
     }
+
     /**
-    * This tests the object creation
+    * test the set routine when an extra class exists
     *
-    * @param array  $config       The configuration to use
-    * @param mixed  $device       The device to set
-    * @param mixed  $class        This is either the name of a class or an object
-    * @param string $driver       The driver to tell it to load
-    * @param string $driverExpect The driver we expect to be loaded
+    * @param object $config  The configuration to use
+    * @param object $class   The table class to use
+    * @param int    $A       Output of the A to D converter
+    * @param float  $deltaT  The time delta in seconds between this record
+    * @param array  $prev    The previous reading
+    * @param array  $data    The data from the other sensors that were crunched
+    * @param array  $expect  The expected data
     *
     * @return null
     *
-    * @dataProvider dataDriver
+    * @dataProvider dataDecodeData
     */
-    public function testDriver(
-        $config, $device, $class, $driver, $driverExpect
+    public function testDecodeData(
+        $config, $class, $A, $deltaT, $prev, $data, $expect
     ) {
-        $obj = Sensor::factory($config, $device, $class);
-        $this->assertSame($driverExpect, get_class($obj->driver($driver)));
-        unset($obj);
-    }
-}
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = Sensor::factory($sys, null, $class);
+        $ret = $obj->decodeData($A, $deltaT, $prev, $data);
+        $this->assertEquals($expect, $ret);
+    }}
 ?>

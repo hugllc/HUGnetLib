@@ -72,6 +72,7 @@ abstract class Driver
         "unitType" => "unknown",
         "bound" => false,                // This says if this sensor is changeable
         "virtual" => false,              // This says if we are a virtual sensor
+        "total"   => false,              // Whether to total instead of average
         "extraText" => array(),
         "extraDefault" => array(),
         // Integer is the size of the field needed to edit
@@ -92,7 +93,7 @@ abstract class Driver
     private static $_drivers = array(
         "04:DEFAULT"  => "ADuCVishayRTD",
         "41:DEFAULT"  => "ADuCVoltage",
-        "41:Pressure" => "ADuCPressure",
+        "41:ADuCPressure" => "ADuCPressure",
         "42:DEFAULT"  => "ADuCThermocouple",
         "43:DEFAULT"  => "ADuCVoltage",
     );
@@ -266,7 +267,6 @@ abstract class Driver
     abstract public function getReading(
         $A, $deltaT = 0, &$data = array(), $prev = null, $sensor = array()
     );
-
 }
 
 

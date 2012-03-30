@@ -337,7 +337,158 @@ class DriverTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(
             $expect, Driver::getSensorID($sensor, $RawSetup)
         );
-    }}
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataDecodeSensorString()
+    {
+        return array(
+            array(
+                "ThisIsString",
+                array(
+                    "DataIndex" => 0,
+                    "timeConstant" => 0,
+                    0 => 0,
+                ),
+            ),
+            array(
+                "012805100000200000300000400000500000600000700000800000900000",
+                array(
+                    "DataIndex" => 1,
+                    "timeConstant" => 5,
+                    0 => 0x10,
+                    1 => 0x20,
+                    2 => 0x30,
+                    3 => 0x40,
+                    4 => 0x50,
+                    5 => 0x60,
+                    6 => 0x70,
+                    7 => 0x80,
+                    8 => 0x90,
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $string The string to decode
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataDecodeSensorString
+    */
+    public function testDecodeSensorString($string, $expect)
+    {
+        $obj = &DriverTestClass::factory();
+        $this->assertEquals($expect, $obj->decodeSensorString($string));
+    }
+    /**
+    * data provider for testHistoryTable
+    *
+    * @return array
+    */
+    public static function dataHistoryTable()
+    {
+        return array(
+            array(
+                "\HUGnet\devices\DriverTestClass",
+                true,
+                "E00392800HistoryTable"
+            ),
+            array(
+                "\HUGnet\devices\DriverTestClass",
+                false,
+                "E00392800AverageTable"
+            ),
+            array(
+                "\HUGnet\devices\DriverTestClass2",
+                true,
+                "EDEFAULTHistoryTable"
+            ),
+            array(
+                "\HUGnet\devices\DriverTestClass2",
+                false,
+                "EDEFAULTAverageTable"
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $class   The class to use
+    * @param bool   $history Whether or not to get a history table
+    * @param array  $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataHistoryTable
+    */
+    public function testHistoryTable($class, $history, $expect)
+    {
+        $obj = &$class::factory();
+        $this->assertEquals($expect, $obj->historyTable($history));
+    }
+    /**
+    * data provider for testToArray
+    *
+    * @return array
+    */
+    public static function dataToArray()
+    {
+        return array(
+            array(
+                "\HUGnet\devices\DriverTestClass",
+                array(
+                    'packetTimeout' => 6,
+                    'totalSensors' => 13,
+                    'physicalSensors' => 9,
+                    'virtualSensors' => 4,
+                    'historyTable' => 'E00392800HistoryTable',
+                    'averageTable' => 'E00392800AverageTable',
+                    'loadable' => false,
+                    'bootloader' => false,
+                    'outputSize' => 3,
+                    'testParam' => '12345',
+                ),
+            ),
+            array(
+                "\HUGnet\devices\DriverTestClass2",
+                array(
+                    'packetTimeout' => 9,
+                    'totalSensors' => 13,
+                    'physicalSensors' => 9,
+                    'virtualSensors' => 4,
+                    'historyTable' => 'ABADHistoryTable',
+                    'averageTable' => 'ABADAverageTable',
+                    'loadable' => false,
+                    'bootloader' => false,
+                    'outputSize' => 3,
+                    'testParam' => '54321',
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $class   The class to use
+    * @param array  $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataToArray
+    */
+    public function testToArray($class, $expect)
+    {
+        $obj = &$class::factory();
+        $this->assertEquals($expect, $obj->toArray());
+    }
+}
 /**
  * Base driver class for devices.
  *
@@ -356,6 +507,54 @@ class DriverTest extends \PHPUnit_Framework_TestCase
  */
 class DriverTestClass extends Driver
 {
+    /**
+    * This is where the data for the driver is stored.  This array must be
+    * put into all derivative classes, even if it is empty.
+    */
+    protected $params = array(
+        "packetTimeout" => 6, /* This is for test value only */
+        "testParam" => "12345", /* This is for test value only */
+        "historyTable" => "E00392800HistoryTable",
+        "averageTable" => "E00392800AverageTable",
+    );
+    /**
+    * This function creates the system.
+    *
+    * @return null
+    */
+    public static function &factory()
+    {
+        return parent::intFactory();
+    }
+}
+/**
+ * Base driver class for devices.
+ *
+ * This class deals with loading the drivers and figuring out what driver needs
+ * to be loaded.
+ *
+ * @category   Libraries
+ * @package    HUGnetLib
+ * @subpackage Devices
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2012 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.9.7
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @since      0.9.7
+ */
+class DriverTestClass2 extends Driver
+{
+    /**
+    * This is where the data for the driver is stored.  This array must be
+    * put into all derivative classes, even if it is empty.
+    */
+    protected $params = array(
+        "packetTimeout" => 9, /* This is for test value only */
+        "testParam" => "54321", /* This is for test value only */
+        "historyTable" => "ABADHistoryTable",
+        "averageTable" => "ABADAverageTable",
+    );
     /**
     * This function creates the system.
     *

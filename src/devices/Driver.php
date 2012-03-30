@@ -62,8 +62,6 @@ abstract class Driver
     * put into all derivative classes, even if it is empty.
     */
     protected $params = array(
-        "packetTimeout" => 6, /* This is for test value only */
-        "testParam" => "12345", /* This is for test value only */
     );
     /**
     * This is where all of the defaults are stored.
@@ -77,6 +75,7 @@ abstract class Driver
         "averageTable" => "EDEFAULTAverageTable",
         "loadable" => false,
         "bootloader" => false,
+        "outputSize" => 3,
     );
     /**
     * This is where all of the driver information is stored.
@@ -211,13 +210,11 @@ abstract class Driver
     */
     public static function &factory($driver)
     {
-        $class = '\\HUGnet\\devices\\drivers\\'.$driver;
-        $file = dirname(__FILE__)."/drivers/".$driver.".php";
-        if (file_exists($file) || class_exists($class)) {
-            include_once $file;
-            if (class_exists($class)) {
-                return $class::factory();
-            }
+        $class = \HUGnet\Util::findClass(
+            $driver, "devices/drivers", true, "\\HUGnet\\devices\\drivers"
+        );
+        if (class_exists($class)) {
+            return $class::factory();
         }
         include_once dirname(__FILE__)."/drivers/EDEFAULT.php";
         return \HUGnet\devices\drivers\EDEFAULT::factory();
@@ -303,6 +300,77 @@ abstract class Driver
         }
         return "EDEFAULT";
     }
+    /**
+    * Takes in a raw string from a sensor and makes an int out it
+    *
+    * The sensor data is stored little-endian, so it just takes that and adds
+    * the bytes together.
+    *
+    * @param string $string The string to convert
+    *
+    * @return int
+    */
+    protected function sensorStringToInt($string)
+    {
+        $bytes = str_split($string, 2);
+        $shift = 0;
+        $return = 0;
+        foreach ($bytes as $b) {
+            $return += hexdec($b) << $shift;
+            $shift += 8;
+        }
+        return $return;
+    }
+    /**
+    * Decodes the sensor string
+    *
+    * @param string $string The string of sensor data
+    *
+    * @return null
+    */
+    public function decodeSensorString($string)
+    {
+        $data = str_split(substr($string, 6), ($this->get("outputSize") * 2));
+        $ret = array();
+        foreach ($data as $key => $str) {
+            $ret[$key] = $this->sensorStringToInt($str);
+        }
+        $ret["DataIndex"] = hexdec(substr($string, 0, 2));
+        $ret["timeConstant"] = hexdec(substr($string, 4, 2));
+        return $ret;
+    }
+    /**
+    * Returns the name of the history table
+    *
+    * @param bool $history History if true, average if false
+    *
+    * @return string
+    */
+    public function historyTable($history = true)
+    {
+        if ($history) {
+            $class = \HUGnet\Util::findClass(
+                $this->get("historyTable"), "plugins/historyTable", true
+            );
+            if (is_null($class)) {
+                $class = \HUGnet\Util::findClass(
+                    "EDEFAULTHistoryTable", "plugins/historyTable", true
+                );
+            }
+        } else {
+            $class = \HUGnet\Util::findClass(
+                $this->get("averageTable"), "plugins/averageTable", true
+            );
+            if (is_null($class)) {
+                $class = \HUGnet\Util::findClass(
+                    "EDEFAULTAverageTable", "plugins/averageTable", true
+                );
+            }
+        }
+        return $class;
+    }
+
+
 }
 
 

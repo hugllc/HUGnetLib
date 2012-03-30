@@ -365,10 +365,10 @@ class FirmwareTable extends HUGnetDBTable
     public function checkFile($filename)
     {
         $this->clearData();
-        $this->filename = $filename;
-        if (is_null($this->filename)) {
+        if (is_null($filename)) {
             return false;
         }
+        $this->filename = $filename;
         $fname = explode("-", $this->filename);
         $this->HWPartNum = $fname[0];
         $this->FWPartNum = $fname[1];

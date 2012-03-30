@@ -43,6 +43,8 @@ require_once CODE_BASE.'system/System.php';
 require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
 /** This is a required class */
 require_once CODE_BASE.'util/VPrint.php';
+/** This is our base class */
+require_once dirname(__FILE__)."/drivers/DriverTestBase.php";
 
 /**
  * Test class for HUGnetDB.
@@ -58,7 +60,7 @@ require_once CODE_BASE.'util/VPrint.php';
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DriverTest extends \PHPUnit_Framework_TestCase
+class DriverTest extends drivers\DriverTestBase
 {
     /**
     * Sets up the fixture, for example, opens a network connection.
@@ -193,9 +195,10 @@ class DriverTest extends \PHPUnit_Framework_TestCase
             'unitType' => 'asdf',
             'virtual' => false,
             'bound' => false,
-            'extraText' => Array (),
+            'total' => false,
+            'extraText' => Array ("a", "b", "c", "d", "e"),
             'extraDefault' => Array (2,3,5,7,11),
-            'extraValues' => Array (),
+            'extraValues' => Array (5, 5, 5, 5, 5),
             'storageUnit' => 'unknown',
             'storageType' => 'raw',
             'maxDecimals' => 2,
@@ -266,7 +269,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 0x41,
-                "Pressure",
+                "ADuCPressure",
                 "ADuCPressure",
             ),
         );
@@ -341,7 +344,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                 0x41,
                 array(
                     "DEFAULT" => "ADuCVoltage",
-                    "Pressure" => "ADuCPressure",
+                    "ADuCPressure" => "ADuCPressure",
                 ),
             ),
             array(
@@ -398,6 +401,8 @@ class DriverTestClass extends Driver
         "unitType" => "asdf", /* This is for test value only */
         "testParam" => "12345", /* This is for test value only */
         "extraDefault" => array(2,3,5,7,11),
+        "extraText" => array("a","b","c","d","e"),
+        "extraValues" => array(5, 5, 5, 5, 5),
     );
     /**
     * This function creates the system.

@@ -39,6 +39,8 @@ namespace HUGnet;
 require_once CODE_BASE.'system/Device.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
+/** This is a required class */
+require_once CODE_BASE.'system/Sensor.php';
 /** This is the dummy table container */
 require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
 /** This is the dummy table container */
@@ -379,34 +381,13 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     public static function dataJson()
     {
         $sensors = array();
+        $obj = Sensor::factory(
+            new DummySystem("TestStuff"),
+            array(
+            )
+        );
         for ($i = 0; $i < 13; $i++) {
-            $sensors[$i] = array (
-                'longName' => 'Unknown Sensor',
-                'shortName' => 'Unknown',
-                'unitType' => 'unknown',
-                'bound' => false,
-                'virtual' => false,
-                'extraText' => array(),
-                'extraDefault' => array(),
-                'extraValues' => array(),
-                'storageUnit' => 'unknown',
-                'storageType' => 'raw',
-                'maxDecimals' => 2,
-                'Driver' => 'EDEFAULT',
-                'group' => 'default',
-                'dev' => NULL,
-                'sensor' => NULL,
-                'id' => 2,
-                'type' => '',
-                'location' => '',
-                'dataType' => 'raw',
-                'units' => 'unknown',
-                'decimals' => '2',
-                'driver' => 'SDEFAULT',
-                'params' => NULL,
-                'otherTypes' => array (
-                ),
-            );
+            $sensors[$i] = json_decode($obj->json(), true);
         }
         return array(
             array(
@@ -434,6 +415,78 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         'averageTable' => 'EDEFAULTAverageTable',
                         'loadable' => false,
                         'bootloader' => false,
+                        'outputSize' => 3,
+                        'id' => 2,
+                        'asdf' => 3,
+                        'params' => array(1,2,3,4),
+                        'sensors' => $sensors,
+                    )
+                ),
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "Driver" => "EDEFAULT",
+                            "id" => 2,
+                        ),
+                        "toArray" => array(
+                            "id" => 2,
+                            "asdf" => 3,
+                            "params" => base64_encode(serialize(
+                                array("DriverInfo" => array(1,2,3,4))
+                            )),
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                json_encode(
+                    array(
+                        'packetTimeout' => 5,
+                        'totalSensors' => 13,
+                        'physicalSensors' => 9,
+                        'virtualSensors' => 4,
+                        'historyTable' => 'EDEFAULTHistoryTable',
+                        'averageTable' => 'EDEFAULTAverageTable',
+                        'loadable' => false,
+                        'bootloader' => false,
+                        'outputSize' => 3,
+                        'id' => 2,
+                        'asdf' => 3,
+                        'params' => array(1,2,3,4),
+                        'sensors' => $sensors,
+                    )
+                ),
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "Driver" => "EDEFAULT",
+                            "id" => 2,
+                        ),
+                        "toArray" => array(
+                            "id" => 2,
+                            "asdf" => 3,
+                            "params" => base64_encode(serialize(
+                                array("DriverInfo" => array(1,2,3,4))
+                            )),
+                            "loadable" => true,
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                json_encode(
+                    array(
+                        'packetTimeout' => 5,
+                        'totalSensors' => 13,
+                        'physicalSensors' => 9,
+                        'virtualSensors' => 4,
+                        'historyTable' => 'EDEFAULTHistoryTable',
+                        'averageTable' => 'EDEFAULTAverageTable',
+                        'loadable' => true,
+                        'bootloader' => false,
+                        'outputSize' => 3,
                         'id' => 2,
                         'asdf' => 3,
                         'params' => array(1,2,3,4),
@@ -702,6 +755,283 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         unset($obj);
     }
     /**
+    * data provider for testSensor
+    *
+    * @return array
+    */
+    public static function dataDecodeSensorData()
+    {
+        return array(
+            array(
+                array(
+                    "SDTable" => array(
+                        "get" => array(
+                            "id" => 5,
+                        ),
+                    ),
+                ),
+                new DummyTable("SDTable"),
+                array(
+                    "deltaT" => 1,
+                    0 => 10,
+                    1 => 20,
+                    2 => 30,
+                    3 => 40,
+                    4 => 50,
+                    5 => 60,
+                    6 => 70,
+                    7 => 80,
+                    8 => 90,
+                    9 => 100,
+                    10 => 110,
+                    11 => 120,
+                    12 => 130,
+                ),
+                array(
+                    null, 10, null, null
+                ),
+                array(
+                    "deltaT" => 1,
+                    array(
+                        "value" => 10,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 20,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 30,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 40,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 50,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 60,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 70,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 80,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 90,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 100,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 110,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 120,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 130,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $config       The configuration to use
+    * @param mixed  $class        This is either the name of a class or an object
+    * @param string $data       The data to use
+    * @param array  $prev       The previous reading
+    * @param array  $expect     The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataDecodeSensorData
+    */
+    public function testDecodeSensorData(
+        $config, $class, $data, $prev, $expect
+    ) {
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = Device::factory($sys, null, $class);
+        $data = $obj->decodeSensorData($data, $prev);
+        $this->assertSame($expect, $data);
+    }
+    /**
+    * data provider for testSensor
+    *
+    * @return array
+    */
+    public static function dataDecodeData()
+    {
+        return array(
+            array(
+                array(
+                    "SDTable" => array(
+                        "get" => array(
+                            "id" => 5,
+                        ),
+                    ),
+                ),
+                new DummyTable("SDTable"),
+                "010001100000200000300000400000500000600000700000800000900000",
+                0x55,
+                300,
+                array(
+                    null, 10, null, null
+                ),
+                array(
+                    "deltaT" => 300,
+                    "DataIndex" => 1,
+                    "timeConstant" => 1,
+                    array(
+                        "value" => 0x10,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 0x20,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 0x30,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 0x40,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 0x50,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 0x60,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 0x70,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 0x80,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 0x90,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => null,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => null,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => null,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => null,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \UnitsBase::TYPE_RAW,
+                    ),
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $config  The configuration to use
+    * @param mixed  $class   This is either the name of a class or an object
+    * @param string $data    The data to use
+    * @param int    $command The command that was used
+    * @param float  $deltaT  The number of seconds between readings
+    * @param array  $prev    The previous reading
+    * @param array  $expect  The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataDecodeData
+    */
+    public function testDecodeData(
+        $config, $class, $data, $command, $deltaT, $prev, $expect
+    ) {
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = Device::factory($sys, null, $class);
+        $data = $obj->decodeData($data, $command, $deltaT, $prev);
+        $this->assertEquals($expect, $data);
+    }
+    /**
     * Data provider for testCreate
     *
     * @return array
@@ -714,12 +1044,60 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     "Table" => array(
                         "get" => array(
                             "id" => 5,
+                            "sensors" => array(array("id" => 0x15)),
                         ),
                     ),
                 ),
                 "DummyTable",
                 0,
                 "\HUGnet\Sensor",
+                0x15,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "sensors" => base64_encode(serialize(array(
+                                array("id" => 0x18),
+                            ))),
+                        ),
+                    ),
+                ),
+                "DummyTable",
+                0,
+                "\HUGnet\Sensor",
+                0x18,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "sensors" => true,
+                        ),
+                    ),
+                ),
+                "DummyTable",
+                10,
+                "\HUGnet\Sensor",
+                0xFE,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "sensors" => true,
+                            "RawSetup" => "000000100800393701410039380143000004"
+                            ."FFFFFFFF01044242424241414141"
+                        ),
+                    ),
+                ),
+                "DummyTable",
+                1,
+                "\HUGnet\Sensor",
+                0x42,
             ),
         );
     }
@@ -736,15 +1114,80 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     * @dataProvider dataSensor
     */
     public function testSensor(
-        $config, $class, $sensor, $driverExpect
+        $config, $class, $sensor, $driverExpect, $expect
     ) {
         $sys = new DummySystem("System");
         $sys->resetMock($config);
         $obj = Device::factory($sys, null, $class);
+        $sen = $obj->sensor($sensor);
         $this->assertTrue(
-            is_a($obj->sensor($sensor), $driverExpect),
+            is_a($sen, $driverExpect),
             "Return is not a ".$driverExpect
         );
+        $this->assertSame($sen->get("id"), $expect, "Wrong sensor returned");
+        unset($obj);
+    }
+    /**
+    * Data provider for testHistoryFactory
+    *
+    * @return array
+    */
+    public static function dataHistoryFactory()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "Driver" => "EDEFAULT",
+                            "id" => 2,
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                array(
+                ),
+                true,
+                'EDEFAULTHistoryTable',
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "Driver" => "EDEFAULT",
+                            "id" => 2,
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                array(
+                ),
+                false,
+                'EDEFAULTAverageTable',
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config  The configuration to use
+    * @param mixed  $class   This is either the name of a class or an object
+    * @param array  $data    The data to build the history record with.
+    * @param bool   $history History if true, average if false
+    * @param mixed  $expect  The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataHistoryFactory
+    */
+    public function testHistoryFactory(
+        $config, $class, $data, $history, $expect
+    ) {
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = Device::factory($sys, null, $class);
+        $hist = $obj->historyFactory($data, $history);
+        $this->assertSame($expect, get_class($hist));
         unset($obj);
     }
 }

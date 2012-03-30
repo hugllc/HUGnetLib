@@ -121,6 +121,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
             array("averageTable", "string"),
             array("loadable", "boolean"),
             array("bootloader", "boolean"),
+            array("outputSize", "int"),
         );
     }
     /**
@@ -198,6 +199,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
             array("totalSensors", 30, 0),
             array("physicalSensors", 20, 0),
             array("virtualSensors", 30, 0),
+            array("outputSize", 10, 2),
         );
     }
     /**

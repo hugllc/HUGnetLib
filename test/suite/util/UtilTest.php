@@ -88,12 +88,16 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     public static function dataFindClass()
     {
         return array(
-            array("Error", "system", false, "\HUGnet\Error", null),
+            array("Error", "system", false, "\HUGnet", "\HUGnet\Error", null),
             array(
-                "ThisIsAVeryBadClass", "NoWhere", false, null,
+                "Driver", "devices", true, "\\HUGnet\\devices",
+                "\\HUGnet\\devices\\Driver", null
+            ),
+            array(
+                "ThisIsAVeryBadClass", "NoWhere", false, "\HUGnet", null,
                 "InvalidArgumentException"
             ),
-            array("ThisIsAVeryBadClass", "NoWhere", true, null, null),
+            array("ThisIsAVeryBadClass", "NoWhere", true, "\HUGnet", null, null),
         );
     }
     /**
@@ -102,6 +106,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     * @param string $class     The class to find
     * @param string $dir       The directory to look in
     * @param bool   $quiet     If true no exceptions are thrown
+    * @param string $namespace The namespace to try
     * @param string $expect    The class as we found it
     * @param string $exception If it is a string we are expecting an exception
     *
@@ -109,12 +114,15 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     *
     * @dataProvider dataFindClass
     */
-    public function testFindClass($class, $dir, $quiet, $expect, $exception)
-    {
+    public function testFindClass(
+        $class, $dir, $quiet, $namespace, $expect, $exception
+    ) {
         if (is_string($exception)) {
             $this->setExpectedException($exception);
         }
-        $this->assertSame($expect, Util::findClass($class, $dir, $quiet));
+        $this->assertSame(
+            $expect, Util::findClass($class, $dir, $quiet, $namespace)
+        );
     }
 
     /**

@@ -115,6 +115,11 @@ class Sensor extends SystemTableBase
             $this->table()->toArray(true)
         );
         $params = json_decode($return["params"], true);
+        if (empty($return["type"])) {
+            $return["type"] = implode(
+                "", array_slice(explode('\\', get_class($this->driver())), -1)
+            );
+        }
         $return["params"] = $params;
         $return["otherTypes"] = \HUGnet\sensors\Driver::getTypes($return["id"]);
         return json_encode($return);
@@ -154,7 +159,7 @@ class Sensor extends SystemTableBase
     *
     * @return null
     */
-    public function &driver($driver = null)
+    protected function &driver($driver = null)
     {
         include_once dirname(__FILE__)."/../sensors/Driver.php";
         if (empty($driver)) {
@@ -167,6 +172,32 @@ class Sensor extends SystemTableBase
             $this->_driverCache[$driver] = &sensors\Driver::factory($driver);
         }
         return $this->_driverCache[$driver];
+    }
+    /**
+    * Gets the direction from a direction sensor made out of a POT.
+    *
+    * @param int   $A      Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
+    * @param array &$prev  The previous reading
+    * @param array &$data  The data from the other sensors that were crunched
+    *
+    * @return float The direction in degrees
+    */
+    public function decodeData($A, $deltaT = 0, &$prev = null, &$data = array())
+    {
+        $ret = array();
+        if ($this->storageType == \UnitsBase::TYPE_DIFF) {
+            $ret["value"] = $this->driver()->getReading(
+                ($A - $prev), $deltaT, $data, $prev
+            );
+            $ret["raw"] = $A;
+        } else {
+            $ret["value"] = $this->driver()->getReading($A, $deltaT, $data, $prev);
+        }
+        $ret["units"] = $this->get("storageUnit");
+        $ret["unitType"] = $this->get("unitType");
+        $ret["dataType"] = $this->get("storageType");
+        return $ret;
     }
 
 }

@@ -69,6 +69,7 @@ class E00393700 extends \HUGnet\devices\Driver
         "historyTable" => "E00393700HistoryTable",
         "averageTable" => "E00393700AverageTable",
         "loadable" => true,
+        "outputSize" => 4,
     );
     /**
     * This function creates the system.

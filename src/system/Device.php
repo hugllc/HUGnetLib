@@ -143,13 +143,13 @@ class Device extends SystemTableBase
             $params = $params["DriverInfo"];
         }
         $return["params"] = $params;
-        if ($this->get("loadable")) {
+        if ($return["loadable"]) {
             $this->firmware()->set("HWPartNum", $return["HWPartNum"]);
             $this->firmware()->set("FWPartNum", $return["FWPartNum"]);
             $this->firmware()->set("RelStatus", \FirmwareTable::DEV);
             $this->firmware()->getLatest();
             $new = $this->firmware()->compareVersion(
-                $this->get("FWVersion"), $this->firmware()->Version
+                $return["FWVersion"], $this->firmware()->Version
             );
             if ($new < 0) {
                 $return["update"] = $this->firmware()->Version;
@@ -228,9 +228,10 @@ class Device extends SystemTableBase
         if (is_null($obj->get("id"))) {
             $tSensors = $this->table()->get("sensors");
             if (is_string($tSensors) && !empty($tSensors)) {
-                $obj->load(unserialize(base64_decode($tSensors)));
+                $tSensors = unserialize(base64_decode($tSensors));
+                $obj->load((array)$tSensors[$sid]);
             } else if (is_array($tSensors)) {
-                $obj->load($tSensors);
+                $obj->load((array)$tSensors[$sid]);
             } else {
                 if ($sid < $this->driver()->get("physicalSensors")) {
                     $data["id"] = devices\Driver::getSensorID(
@@ -327,6 +328,66 @@ class Device extends SystemTableBase
             );
         }
         return $ret;
+    }
+    /**
+    * Creates a sensor object
+    *
+    * @param array $data The data to decode
+    * @param array $prev The previous raw reading
+    *
+    * @return Returns an array of the data decoded
+    */
+    public function decodeSensorData($data, $prev = null)
+    {
+        $ret = array(
+            "deltaT" => $data["deltaT"],
+        );
+        // This is for the physical sensors
+        $sensors = $this->get("totalSensors");
+        for ($i = 0; $i < $sensors; $i++) {
+            $ret[$i] = $this->sensor($i)->decodeData(
+                $data[$i], $data["deltaT"], $prev[$i], $ret
+            );
+        }
+        return $ret;
+    }
+    /**
+    * Decodes the sensor data
+    *
+    * @param string $string  The string of sensor data
+    * @param string $command The command that was used to get the data
+    * @param float  $deltaT  The time difference between this packet and the next
+    * @param float  $prev    The previous record
+    *
+    * @return null
+    *
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function decodeData($string, $command="", $deltaT = 0, $prev = null)
+    {
+        $data = $this->driver()->decodeSensorString((string)$string);
+        $data["deltaT"] = $deltaT;
+        $ret = $this->decodeSensorData($data, $prev);
+        $ret["DataIndex"] = $data["DataIndex"];
+        $ret["timeConstant"] = $data["timeConstant"];
+        $ret["deltaT"] = $data["deltaT"];
+        return $ret;
+    }
+    /**
+    * returns a history object for this device
+    *
+    * @param array $data    The data to build the history record with.
+    * @param bool  $history History if true, average if false
+    *
+    * @return string
+    */
+    public function &historyFactory($data, $history = true)
+    {
+        $class = $this->driver()->historyTable($history);
+        $obj = new $class($data);
+        //$obj->labels($this->historyHeader());
+        $obj->device = &$this;
+        return $obj;
     }
 }
 
