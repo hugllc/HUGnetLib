@@ -171,6 +171,24 @@ abstract class SystemTableBase
         return (bool)$ret;
     }
     /**
+    * Changes data that is in the table and saves it
+    *
+    * @param mixed $data (int)The id of the record,
+    *                    (array) or (string) data info array
+    *
+    * @return null
+    */
+    public function change($data)
+    {
+        $ret = false;
+        if (is_array($data) || is_string($data)) {
+            $this->table()->fromAny($data);
+            $this->table()->updateRow();
+            $ret = true;
+        }
+        return (bool)$ret;
+    }
+    /**
     * Returns the table as a json string
     *
     * @return json string

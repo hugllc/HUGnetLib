@@ -275,6 +275,80 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectTable, $class->retrieve(), "Data Wrong");
     }
     /**
+    * Data provider for testChange
+    *
+    * @return array
+    */
+    public static function dataChange()
+    {
+        return array(
+            array(
+                array(),
+                new DummyTable(),
+                array(
+                    "id" => 5,
+                    "name" => 3,
+                    "value" => 1,
+                ),
+                array(
+                    "Table" => array(
+                        "fromAny" => array(
+                            array(
+                                array(
+                                    "id" => 5,
+                                    "name" => 3,
+                                    "value" => 1,
+                                ),
+                            ),
+                        ),
+                        "clearData" => array(array()),
+                        "updateRow" => array(array()),
+                    ),
+                ),
+                true,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        array(
+                            "getRow" => false,
+                        )
+                    ),
+                ),
+                new DummyTable("Table"),
+                2,
+                array(
+                    "Table" => array(
+                        "clearData" => array(array()),
+                    ),
+                ),
+                false,
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param object $config      The configuration to use
+    * @param object $class       The table class to use
+    * @param mixed  $gateway     The gateway data to set
+    * @param array  $expectTable The table to expect
+    * @param bool   $return      The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataChange
+    */
+    public function testChange($config, $class, $gateway, $expectTable, $return)
+    {
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = SystemTableBaseTestStub::factory($sys, null, $class);
+        $ret = $obj->change($gateway);
+        $this->assertSame($return, $ret, "Return Wrong");
+        $this->assertEquals($expectTable, $class->retrieve(), "Data Wrong");
+    }
+    /**
     * Data provider for testStore
     *
     * @return array
