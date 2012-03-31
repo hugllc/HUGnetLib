@@ -184,17 +184,17 @@ class Device extends SystemTableBase
     /**
     * This creates the driver
     *
+    * It doesn't worry too much about a valid driver.  If the driver is not valid
+    * then devices\Driver::factory returns an EDEFAULT object.
+    *
     * @param string $driver The driver to use.  Leave blank for automatic.
     *
     * @return null
     */
-    public function &driver($driver = null)
+    protected function &driver($driver = null)
     {
         if (empty($driver)) {
             $driver = strtoupper((string)$this->table()->get("Driver"));
-        }
-        if (empty($driver)) {
-            $driver == "EDEFAULT";
         }
         if (!is_object($this->_driverCache[$driver])) {
             include_once dirname(__FILE__)."/../devices/Driver.php";
