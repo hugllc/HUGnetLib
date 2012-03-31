@@ -25,7 +25,7 @@
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage CLI
+ * @subpackage UI
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
@@ -45,7 +45,7 @@ require_once dirname(__FILE__)."/../system/System.php";
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage CLI
+ * @subpackage UI
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License

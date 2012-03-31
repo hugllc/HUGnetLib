@@ -26,7 +26,7 @@
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage System
+ * @subpackage Network
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -44,7 +44,7 @@ namespace HUGnet\network;
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage System
+ * @subpackage Network
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
