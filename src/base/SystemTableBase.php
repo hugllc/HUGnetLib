@@ -207,6 +207,7 @@ abstract class SystemTableBase
     public function store($replace = false)
     {
         $sid = $this->table()->get($this->table()->sqlId);
+        $this->fixTable();
         if (!empty($sid)) {
             $ret = $this->table()->updateRow();
         } else {
@@ -248,6 +249,18 @@ abstract class SystemTableBase
     public function ids($where = "1", $data = array())
     {
         return $this->table()->selectIDs($where, $data);
+    }
+    /**
+    * This function should be overloaded to make changes to the table based on
+    * changes to incoming data.
+    *
+    * This is a way to make sure that the data is consistant before it gets stored
+    * in the database
+    *
+    * @return null
+    */
+    protected function fixTable()
+    {
     }
 }
 

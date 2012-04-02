@@ -202,6 +202,19 @@ class Sensor extends SystemTableBase
         $ret["dataType"] = $this->get("storageType");
         return $ret;
     }
+    /**
+    * This function should be overloaded to make changes to the table based on
+    * changes to incoming data.
+    *
+    * This is a way to make sure that the data is consistant before it gets stored
+    * in the database
+    *
+    * @return null
+    */
+    protected function fixTable()
+    {
+        $this->table()->set("units", $this->driver()->get("storageUnit"));
+    }
 
 }
 
