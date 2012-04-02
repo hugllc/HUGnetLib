@@ -216,34 +216,6 @@ class Device extends SystemTableBase
             "sensor" => $sid,
             "dev" => $this->table()->get("id"),
         );
-        $obj = $this->driver()->sensor(
-            $sid, (int)$data['dev'], $this->system()
-        );
-        if (is_null($obj->get("id"))) {
-            $tSensors = $this->table()->get("sensors");
-            if (is_string($tSensors) && !empty($tSensors)) {
-                $sensors = unserialize(base64_decode($tSensors));
-                if (is_array($sensors[$sid])) {
-                    $data = array_merge($sensors[$sid], $data);
-                }
-            } else if (is_array($tSensors)) {
-                $data = array_merge((array)$tSensors[$sid], $data);
-            } else {
-                $data["id"] = devices\Driver::getSensorID(
-                    $sid, $this->table()->get("RawSetup")
-                );
-            }
-            $obj = $this->driver()->sensor(
-                $sid, $data, $this->system()
-            );
-        }
-        return $obj;
-/*
-        include_once dirname(__FILE__)."/Sensor.php";
-        $data = array(
-            "sensor" => $sid,
-            "dev" => $this->table()->get("id"),
-        );
         $obj = Sensor::factory($this->system(), $data);
         if (is_null($obj->get("id"))) {
             $tSensors = $this->table()->get("sensors");
@@ -265,9 +237,6 @@ class Device extends SystemTableBase
             $obj->store();
         }
         return $obj;
-
-*/
-
     }
     /**
     * Gets one of the parameters

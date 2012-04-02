@@ -110,34 +110,19 @@ class Sensor extends SystemTableBase
     */
     public function json()
     {
-        return json_encode($this->toArray());
-    }
-    /**
-    * Returns the table as a json string
-    *
-    * @param bool $default Whether or not to get default items
-    *
-    * @return json string
-    */
-    public function toArray($default = true)
-    {
-        if ($default) {
-            $return = array_merge(
-                $this->driver()->toArray(),
-                $this->table()->toArray(true)
-            );
-        } else {
-            $return = $this->table()->toArray(false);
-        }
+        $return = array_merge(
+            $this->driver()->toArray(),
+            $this->table()->toArray(true)
+        );
         $params = json_decode($return["params"], true);
         if (empty($return["type"])) {
             $return["type"] = implode(
                 "", array_slice(explode('\\', get_class($this->driver())), -1)
             );
         }
-        $return["params"] = (array)$params;
+        $return["params"] = $params;
         $return["otherTypes"] = \HUGnet\sensors\Driver::getTypes($return["id"]);
-        return $return;
+        return json_encode($return);
     }
     /**
     * Loads the data into the table class

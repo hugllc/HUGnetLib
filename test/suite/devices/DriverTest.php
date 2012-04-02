@@ -42,8 +42,6 @@ require_once CODE_BASE.'system/System.php';
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
 /** This is a required class */
-require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
-/** This is a required class */
 require_once CODE_BASE.'util/VPrint.php';
 
 /**
@@ -489,56 +487,6 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     {
         $obj = &$class::factory();
         $this->assertEquals($expect, $obj->toArray());
-    }
-    /**
-    * data provider for testToArray
-    *
-    * @return array
-    */
-    public static function dataSensor()
-    {
-        return array(
-            array(
-                0,
-                array(
-                    'location' => "hereNthere",
-                    'dev' => 5,
-                    'sensor' => 6,
-                    'id' => 23,
-                ),
-                array(
-                ),
-                array(
-                    'dev' => 5,
-                    'sensor' => 0,
-                    'id' => 23,
-                    'location' => 'hereNthere',
-                    'units' => 'unknown',
-                    'type' => 'SDEFAULT',
-                    'params' => array(),
-                    'otherTypes' => array(),
-                ),
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $class  The class to use
-    * @param array  $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataSensor
-    */
-    public function testSensor($sid, $data, $config, $expect)
-    {
-        $sys = new \HUGnet\DummySystem("System");
-        $sys->resetMocks($config);
-        $obj = &DriverTestClass::factory();
-        $this->assertEquals(
-            $expect, $obj->sensor($sid, $data, $sys)->toArray(false)
-        );
     }
 }
 /**

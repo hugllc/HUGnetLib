@@ -268,7 +268,7 @@ abstract class Driver
     */
     public static function getSensorID($sensor, $RawSetup)
     {
-        $sid = substr((string)$RawSetup, 46 + ($sensor * 2), 2);
+        $sid = substr($RawSetup, 46 + ($sensor * 2), 2);
         return hexdec($sid);
     }
     /**
@@ -368,38 +368,6 @@ abstract class Driver
         return $class;
     }
 
-    /**
-    * This creates the sensor drivers
-    *
-    * @param int    $sid    The sensor id to get.  They are labaled 0 to sensors
-    * @param mixed  $dev    Normally, this will just be the id of the device.
-    *                    However, it might be an array.  That is to convert the
-    *                    old way of storing sensors.
-    * @param object $system The system object to use
-    *
-    * @return sensor object or null
-    */
-    public function &sensor($sid, $dev, $system)
-    {
-        include_once dirname(__FILE__)."/../system/Sensor.php";
-        if (is_int($data)) {
-            $data = array(
-                "sensor" => $sid,
-                "dev" => $dev,
-            );
-            $obj = \HUGnet\Sensor::factory($system, $data);
-        } else if (is_array($dev)) {
-            $dev["sensor"] = $sid;
-            $obj = \HUGnet\Sensor::factory($system, $dev);
-            if ($sid >= $this->get("physicalSensors")) {
-                $obj->set("id", 0xFE); // Virtual Sensor
-            }
-            $obj->store();
-        } else {
-            $obj = \HUGnet\Sensor::factory($system, array());
-        }
-        return $obj;
-    }
 
 }
 
