@@ -344,8 +344,19 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
             array(
             )
         );
-        for ($i = 0; $i < 13; $i++) {
+        $obj2 = Sensor::factory(
+            new DummySystem("TestStuff"),
+            array(
+                'id' => 0xFE,
+            )
+        );
+        /* Physical Sensors */
+        for ($i = 0; $i < 9; $i++) {
             $sensors[$i] = json_decode($obj->json(), true);
+        }
+        /* Virtual Sensors */
+        for ($i = 9; $i < 13; $i++) {
+            $sensors[$i] = json_decode($obj2->json(), true);
         }
         return array(
             array(
