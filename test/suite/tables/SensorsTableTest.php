@@ -146,6 +146,7 @@ class SensorsTableTest extends HUGnetDBTableTestBase
             array("dataType", "asdffdsas", UnitsBase::TYPE_RAW),
             array("params", "asdfasdfasdfasdf", "asdfasdfasdfasdf"),
             array("params", array(1,2,3,4), "[1,2,3,4]"),
+            array("extra", array(1,2,3,4), array(1,2,3,4)),
         );
     }
 
@@ -164,7 +165,7 @@ class SensorsTableTest extends HUGnetDBTableTestBase
     {
         $this->o->$var = $value;
         $data = $this->readAttribute($this->o, "data");
-        $this->assertSame($expect, $data[$var]);
+        $this->assertSame($expect, $this->o->get($var));
     }
     /**
     * Data provider for testInsertRow

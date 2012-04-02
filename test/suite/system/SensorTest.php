@@ -184,42 +184,6 @@ class SensorTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataGet()
-    {
-        return array(
-            array(
-                array(
-                    "Table" => array(
-                        "get" => array(
-                            "driver" => "SDEFAULT",
-                            "id" => 2,
-                        ),
-                    ),
-                ),
-                new DummyTable("Table"),
-                "id",
-                2,
-            ),
-            array(
-                array(
-                    "Table" => array(
-                        "get" => array(
-                            "driver" => "SDEFAULT",
-                            "id" => 2,
-                        ),
-                    ),
-                ),
-                new DummyTable("Table"),
-                "longName",
-                "Unknown Sensor",
-            ),
-        );
-    }
-    /**
-    * Data provider for testCreate
-    *
-    * @return array
-    */
     public static function dataJson()
     {
         return array(
@@ -285,6 +249,42 @@ class SensorTest extends \PHPUnit_Framework_TestCase
         $json = $obj->json();
         $this->assertSame($expect, $json);
         unset($obj);
+    }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataGet()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "driver" => "SDEFAULT",
+                            "id" => 2,
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                "id",
+                2,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "driver" => "SDEFAULT",
+                            "id" => 2,
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                "longName",
+                "Unknown Sensor",
+            ),
+        );
     }
     /**
     * This tests the object creation
@@ -411,6 +411,149 @@ class SensorTest extends \PHPUnit_Framework_TestCase
         $sys->resetMock($config);
         $obj = Sensor::factory($sys, null, $class);
         $ret = $obj->load($data);
+        $this->assertSame($return, $ret, "Return Wrong");
+        $this->assertEquals($expectTable, $class->retrieve(), "Data Wrong");
+    }
+    /**
+    * Data provider for testLoad
+    *
+    * @return array
+    */
+    public static function dataChange()
+    {
+        return array(
+            array(
+                array(
+                ),
+                new DummyTable(),
+                array(
+                    "id" => 5,
+                    "name" => 3,
+                    "value" => 1,
+                ),
+                array(
+                    "Table" => array(
+                        "fromAny" => array(
+                            array(
+                                array(
+                                    "id" => 5,
+                                    "name" => 3,
+                                    "value" => 1,
+                                ),
+                            ),
+                        ),
+                        "updateRow" => array(array()),
+                        'get' => array(
+                            array(
+                                'id',
+                            ),
+                            array(
+                                'type',
+                            ),
+                            array(
+                                'extra',
+                            ),
+                            array(
+                                'id'
+                            ),
+                            array(
+                                'type'
+                            ),
+                        ),
+                        'set' => array(
+                            array(
+                                'units', 'unknown'
+                            ),
+                        ),
+                    ),
+                ),
+                true,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "selectOneInto" => true,
+                        "get" => array(
+                            'extra' => array(1,2,3,4,5,6,7,8),
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                array("dev" => 2, "sensor" => 0, "extra" => array(1,2,3,4,5,6,7,8)),
+                array(
+                    "Table" => array(
+                        'fromAny' => array(
+                            array(
+                                array(
+                                    'dev' => 2,
+                                    'sensor' => 0,
+                                    "extra" => array(1,2,3,4,5,6,7,8),
+                                ),
+                            )
+                        ),
+                        'updateRow' => array(array()),
+                        'get' => array(
+                            array(
+                                'id',
+                            ),
+                            array(
+                                'type',
+                            ),
+                            array(
+                                'extra',
+                            ),
+                            array(
+                                'id'
+                            ),
+                            array(
+                                'type'
+                            ),
+                        ),
+                        'set' => array(
+                            array(
+                                'units', 'unknown'
+                            ),
+                            array(
+                                'extra', array()
+                            ),
+                        ),
+                    ),
+                ),
+                true,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "selectOneInto" => false,
+                    ),
+                ),
+                new DummyTable("Table"),
+                false,
+                array(
+                ),
+                false,
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param object $config      The configuration to use
+    * @param object $class       The table class to use
+    * @param mixed  $data        The gateway data to set
+    * @param array  $expectTable The table to expect
+    * @param bool   $return      The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataChange
+    */
+    public function testChange($config, $class, $data, $expectTable, $return)
+    {
+        $sys = new DummySystem("System");
+        $obj = Sensor::factory($sys, null, $class);
+        $sys->resetMock($config);
+        $ret = $obj->change($data);
         $this->assertSame($return, $ret, "Return Wrong");
         $this->assertEquals($expectTable, $class->retrieve(), "Data Wrong");
     }

@@ -172,6 +172,42 @@ class SensorsTable extends HUGnetDBTable
         $this->create();
     }
     /**
+    * Overload the set attribute
+    *
+    * @param string $name  This is the attribute to set
+    * @param mixed  $value The value to set it to
+    *
+    * @return mixed The value of the attribute
+    */
+    public function set($name, $value)
+    {
+        if (array_key_exists($name, $this->default)) {
+            $ret = parent::set($name, $value);
+        } else {
+            $array = (array)json_decode(parent::get("params"), true);
+            $array[$name] = $value;
+            parent::set("params", $array);
+        }
+        return $ret;
+    }
+    /**
+    * Overload the get attribute
+    *
+    * @param string $name This is the attribute to get
+    *
+    * @return mixed The value of the attribute
+    */
+    public function get($name)
+    {
+        $ret = parent::get($name);
+        if (is_null($ret)) {
+            $array = (array)json_decode(parent::get("params"), true);
+            $ret = $array[$name];
+        }
+        return $ret;
+    }
+
+    /**
     * Checks to see if our deviceID exists in the database
     *
     * @return bool True if it exists, false otherwise

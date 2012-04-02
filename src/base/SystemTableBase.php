@@ -183,6 +183,7 @@ abstract class SystemTableBase
         $ret = false;
         if (is_array($data) || is_string($data)) {
             $this->table()->fromAny($data);
+            $this->fixTable();
             $this->table()->updateRow();
             $ret = true;
         }

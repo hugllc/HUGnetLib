@@ -99,7 +99,7 @@ class Sensor extends SystemTableBase
     {
         $ret = $this->driver()->get($field);
         if (is_null($ret)) {
-            $ret = $this->table()->get($field);
+            $ret = parent::get($field);
         }
         return $ret;
     }
@@ -120,7 +120,7 @@ class Sensor extends SystemTableBase
                 "", array_slice(explode('\\', get_class($this->driver())), -1)
             );
         }
-        $return["params"] = $params;
+        $return["params"] = (array)$params;
         $return["otherTypes"] = \HUGnet\sensors\Driver::getTypes($return["id"]);
         return json_encode($return);
     }
@@ -214,6 +214,11 @@ class Sensor extends SystemTableBase
     protected function fixTable()
     {
         $this->table()->set("units", $this->driver()->get("storageUnit"));
+        $extra = (array)$this->table()->get("extra");
+        $extraDefault = (array)$this->driver()->get("extraDefault");
+        if (count($extra) != count($extraDefault)) {
+            $this->table()->set("extra", array());
+        }
     }
 
 }
