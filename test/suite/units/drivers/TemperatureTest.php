@@ -58,6 +58,8 @@ class TemperatureTest extends DriverTestBase
 {
     /** This is the class we are testing */
     protected $class = "Temperature";
+    /** This is the units that are valid */
+    protected static $units = array('&#176;F', '&#176;C', 'K');
     /**
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
@@ -83,6 +85,15 @@ class TemperatureTest extends DriverTestBase
     protected function tearDown()
     {
         parent::tearDown();
+    }
+    /**
+    * data provider for testGetTypes
+    *
+    * @return array
+    */
+    public static function dataConversions()
+    {
+        return self::dataConversionsData();
     }
     /**
     * data provider for testGetTypes
@@ -148,6 +159,38 @@ class TemperatureTest extends DriverTestBase
     {
         return array(
             array(
+                273.15, "&#176;C", "K", \HUGnet\units\Driver::TYPE_RAW,
+                true, 0.0
+            ),
+            array(
+                273.15, "&#176;F", "K", \HUGnet\units\Driver::TYPE_RAW,
+                true, 32.0
+            ),
+            array(
+                373.15, "&#176;C", "K", \HUGnet\units\Driver::TYPE_RAW,
+                true, 100.0
+            ),
+            array(
+                373.15, "&#176;F", "K", \HUGnet\units\Driver::TYPE_RAW,
+                true, 212.0
+            ),
+            array(
+                0.0, "K", "&#176;C", \HUGnet\units\Driver::TYPE_RAW,
+                true, 273.15
+            ),
+            array(
+                32, "K", "&#176;F", \HUGnet\units\Driver::TYPE_RAW,
+                true, 273.15
+            ),
+            array(
+                100.0, "K", "&#176;C", \HUGnet\units\Driver::TYPE_RAW,
+                true, 373.15
+            ),
+            array(
+                212.0, "K", "&#176;F", \HUGnet\units\Driver::TYPE_RAW,
+                true, 373.15
+            ),
+            array(
                 12.312, "&#176;C", "&#176;F", \HUGnet\units\Driver::TYPE_RAW,
                 true, -10.937777777778
             ),
@@ -164,7 +207,8 @@ class TemperatureTest extends DriverTestBase
                 true, 12.312
             ),
             array(
-                -10.937777777778, "&#176;F", "&#176;C", \HUGnet\units\Driver::TYPE_RAW,
+                -10.937777777778, "&#176;F", "&#176;C",
+                \HUGnet\units\Driver::TYPE_RAW,
                 true, 12.312
             ),
             array(
@@ -178,6 +222,38 @@ class TemperatureTest extends DriverTestBase
             array(
                 12.312, "&#176;C", "&#176;C", \HUGnet\units\Driver::TYPE_DIFF,
                 true, 12.312
+            ),
+            array(
+                100,
+                "&#176;F",
+                "&#176;C",
+                \HUGnet\units\Driver::TYPE_RAW,
+                true,
+                212.0,
+            ),
+            array(
+                -40,
+                "&#176;C",
+                "&#176;C",
+                \HUGnet\units\Driver::TYPE_RAW,
+                true,
+                -40,
+            ),
+            array(
+                100,
+                "&#176;F",
+                "&#176;C",
+                \HUGnet\units\Driver::TYPE_DIFF,
+                true,
+                180.0,
+            ),
+            array(
+                18,
+                "&#176;C",
+                "&#176;F",
+                \HUGnet\units\Driver::TYPE_DIFF,
+                true,
+                10.0,
             ),
         );
     }

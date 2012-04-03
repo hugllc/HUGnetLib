@@ -38,7 +38,7 @@ namespace HUGnet\units\drivers;
 /** This is the base class */
 require_once dirname(__FILE__)."/DriverTestBase.php";
 /** This is a required class */
-require_once CODE_BASE.'units/drivers/GENERIC.php';
+require_once CODE_BASE.'units/drivers/Percent.php';
 
 /**
  * Test class for HUGnetDB.
@@ -54,12 +54,12 @@ require_once CODE_BASE.'units/drivers/GENERIC.php';
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class GENERICTest extends DriverTestBase
+class PercentTest extends DriverTestBase
 {
     /** This is the class we are testing */
-    protected $class = "GENERIC";
+    protected $class = "Percent";
     /** This is the units that are valid */
-    protected static $units = array("test");
+    protected static $units = array('decimal', '%');
     /**
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
@@ -71,7 +71,7 @@ class GENERICTest extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->o = &GENERIC::factory("test");
+        $this->o = &Percent::factory();
     }
 
     /**
@@ -91,31 +91,26 @@ class GENERICTest extends DriverTestBase
     *
     * @return array
     */
+    public static function dataConversions()
+    {
+        return self::dataConversionsData();
+    }
+    /**
+    * data provider for testGetTypes
+    *
+    * @return array
+    */
     public static function dataGetValid()
     {
         return array(
             array(
-                "&#176;C",
+                "&deg;C",
                 array(
-                    '&#176;C' => '&#176;C',
+                    'decimal' => 'decimal',
+                    '%' => '%',
                 ),
             ),
         );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $units  The units to check
-    * @param string $expect The expected data
-    *
-    * @return null
-    *
-    * @dataProvider dataGetValid
-    */
-    public function testGetValid($units, $expect)
-    {
-        $obj = GENERIC::factory($units);
-        $this->assertEquals($expect, $obj->getValid());
     }
 
     /**
@@ -127,32 +122,14 @@ class GENERICTest extends DriverTestBase
     {
         return array(
             array(
-                "K",
-                "K",
+                "%",
                 true,
             ),
             array(
                 "psi",
-                "K",
                 false,
             ),
         );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $units  The units to setup up for
-    * @param string $check  The units to check
-    * @param string $expect The expected data
-    *
-    * @return null
-    *
-    * @dataProvider dataValid
-    */
-    public function testValid($units, $check, $expect)
-    {
-        $obj = GENERIC::factory($units);
-        $this->assertSame($expect, $obj->valid($check));
     }
     /**
     * data provider for testGetTypes
@@ -163,32 +140,14 @@ class GENERICTest extends DriverTestBase
     {
         return array(
             array(
-                "K",
-                "K",
+                "%",
                 true,
             ),
             array(
                 "psi",
-                "K",
                 false,
             ),
         );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $units  The units to setup up for
-    * @param string $check  The units to check
-    * @param string $expect The expected data
-    *
-    * @return null
-    *
-    * @dataProvider dataNumeric
-    */
-    public function testNumeric($units, $check, $expect)
-    {
-        $obj = GENERIC::factory($units);
-        $this->assertSame($expect, $obj->numeric($check));
     }
     /**
     * data provider for testGetTypes
@@ -199,8 +158,33 @@ class GENERICTest extends DriverTestBase
     {
         return array(
             array(
-                12.312, "&#176;C", "&#176;F", \HUGnet\units\Driver::TYPE_RAW,
-                false, 12.312
+                12.312, "decimal", "%", \HUGnet\units\Driver::TYPE_RAW,
+                true, .12312
+            ),
+            array(
+                .12312, "%", "decimal", \HUGnet\units\Driver::TYPE_RAW,
+                true, 12.312
+            ),
+            array(
+                12.312, "decimal", "%", \HUGnet\units\Driver::TYPE_DIFF,
+                true, .12312
+            ),
+            array(
+                .12312, "%", "decimal", \HUGnet\units\Driver::TYPE_DIFF,
+                true, 12.312
+            ),
+            array(
+                0.1, "%", "decimal", \HUGnet\units\Driver::TYPE_DIFF, true, 10.0
+            ),
+            array(
+                42.13, "decimal", "%", \HUGnet\units\Driver::TYPE_DIFF, true, 0.4213
+            ),
+            array(
+                42.13, "%", "%", \HUGnet\units\Driver::TYPE_DIFF, true, 42.13
+            ),
+            array(
+                0.42, "decimal", "decimal", \HUGnet\units\Driver::TYPE_DIFF,
+                true, 0.42
             ),
         );
     }

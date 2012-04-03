@@ -27,7 +27,7 @@
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage PluginsUnits
+ * @subpackage Units
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -40,12 +40,14 @@ namespace HUGnet\units\drivers;
 defined('_HUGNET') or die('HUGnetSystem not found');
 
 /**
- * This class has functions that relate to the manipulation of elements
- * of the devInfo array.
+ * This class represents temperature in the HUGnet system.
+ *
+ * Information on conversion factors was found at:
+ * http://en.wikipedia.org/wiki/Temperature
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage PluginsUnits
+ * @subpackage Units
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -74,21 +76,36 @@ class Temperature extends \HUGnet\units\Driver
     * @param mixed  &$data The data to convert
     * @param string $to    The units to convert to
     * @param string $from  The units to convert from
+    * @param string $type  The data type to convert
     *
     * @return mixed The value returned
     */
     public function convert(&$data, $to, $from, $type)
     {
-        if (($from == '&#176;C') && ($to == '&#176;F')) {
-            $this->cToF($data, $type);
-        } else if (($from == '&#176;C') && ($to == 'K')) {
-            $this->cToK($data, $type);
-        } else if (($from == '&#176;F') && ($to == '&#176;C')) {
-            $this->fToC($data, $type);
+        if (($to == 'K') && ($from == '&#176;F')) {
+            $this->fToC(&$data, $type);
+            $this->cToK(&$data, $type);
+            $ret = true;
+        } else if (($to == 'K') && ($from == '&#176;C')) {
+            $this->cToK(&$data, $type);
+            $ret = true;
+        } else if (($to == '&#176;F') && ($from == 'K')) {
+            $this->kToC(&$data, $type);
+            $this->cToF(&$data, $type);
+            $ret = true;
+        } else if (($to == '&#176;F') && ($from == '&#176;C')) {
+            $this->cToF(&$data, $type);
+            $ret = true;
+        } else if (($to == '&#176;C') && ($from == 'K')) {
+            $this->kToC(&$data, $type);
+            $ret = true;
+        } else if (($to == '&#176;C') && ($from == '&#176;F')) {
+            $this->fToC(&$data, $type);
+            $ret = true;
         } else {
             return parent::convert($data, $to, $from, $type);
         }
-        return true;
+        return $ret;
     }
 
     /**
@@ -112,6 +129,25 @@ class Temperature extends \HUGnet\units\Driver
         $data = (float)$data;
     }
     /**
+    *  Converts from &#176; F to &#176; C.
+    *
+    * If the temperature is differential we can't subtract 32 like we would
+    * for an absolute temperature.  This is because it is already factored
+    * out by the subtraction in the difference.
+    *
+    * @param float  &$data The temperature to convert
+    * @param string $type  The type of data (raw or differential)
+    *
+    * @return null
+    */
+    protected function fToC(&$data, $type)
+    {
+        if ($type != \HUGnet\units\Driver::TYPE_DIFF) {
+            $data -= 32.0;
+        }
+        $data = (float)((5/9)*$data);
+    }
+    /**
     * Converts from &#176; C to &#176; F.
     *
     * If the temperature is differential we can't add 32 like we would
@@ -130,11 +166,10 @@ class Temperature extends \HUGnet\units\Driver
         }
         $data = (float)$data;
     }
-
     /**
-    *  Converts from &#176; F to &#176; C.
+    * Converts from &#176; C to &#176; F.
     *
-    * If the temperature is differential we can't subtract 32 like we would
+    * If the temperature is differential we can't add 32 like we would
     * for an absolute temperature.  This is because it is already factored
     * out by the subtraction in the difference.
     *
@@ -143,12 +178,12 @@ class Temperature extends \HUGnet\units\Driver
     *
     * @return null
     */
-    protected function fToC(&$data, $type)
+    protected function kToC(&$data, $type)
     {
         if ($type != \HUGnet\units\Driver::TYPE_DIFF) {
-            $data -= 32.0;
+            $data -= 273.15;
         }
-        $data = (float)((5/9)*$data);
+        $data = (float)$data;
     }
 }
 ?>

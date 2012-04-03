@@ -64,6 +64,8 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     protected $class = "";
     /** This is the object we are testing */
     protected $o = null;
+    /** This is the units that are valid */
+    protected static $units = array(null);
 
     /**
     * Sets up the fixture, for example, opens a network connection.
@@ -102,16 +104,61 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
         );
     }
     /**
+    * data provider for testGetTypes
+    *
+    * @return array
+    */
+    public static function dataConversionsData()
+    {
+        $ret = array();
+        foreach (static::$units as $unit1) {
+            foreach (static::$units as $unit2) {
+                $ret[] = array($unit1, $unit2, \HUGnet\units\Driver::TYPE_RAW);
+                $ret[] = array($unit1, $unit2, \HUGnet\units\Driver::TYPE_DIFF);
+            }
+        }
+        return $ret;
+    }
+    /**
+    * data provider for testGetTypes
+    *
+    * @return array
+    */
+    public static function dataConversions()
+    {
+        return self::dataConversionsData();
+    }
+    /**
+    * test all the valid units
+    *
+    *
+    * @return null
+    *
+    * @dataProvider dataConversions
+    */
+    public function testConversions($unit1, $unit2, $type)
+    {
+        $data = 1;
+        $this->o->convert($data, $unit1, $unit2, $type);
+        $this->o->convert($data, $unit2, $unit1, $type);
+        $this->assertEquals(
+            1, $data, "$unit1 to $unit2 conversion failed", 0.01
+        );
+    }
+
+    /**
     * test all the valid units
     *
     * @return null
     */
     public function testAllValid()
     {
-        $units = $this->o->getValid();
-        foreach ($units as $unit) {
-            $this->assertTrue($this->o->valid($unit), "$unit is not valid");
+        $valid = $this->o->getValid();
+        $ret = array();
+        foreach ($valid as $val) {
+            $ret[] = $val;
         }
+        $this->assertEquals(static::$units, $ret);
     }
     /**
     * data provider for testGetTypes

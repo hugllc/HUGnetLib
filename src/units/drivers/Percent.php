@@ -55,29 +55,28 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class GENERIC extends \HUGnet\units\Driver
+class Percent extends \HUGnet\units\Driver
 {
+    /** @var The units that are valid for conversion */
+    protected $valid = array("decimal", "%");
+    /** @var Unit conversion multipliers */
+    protected $multiplier = array(
+        "%" => array(
+            "decimal" => 100,
+        ),
+        "decimal" => array(
+            "%" => 0.01,
+        ),
+    );
     /**
     * This function creates the system.
     *
     * @return null
     */
-    public static function &factory($units)
+    public static function &factory()
     {
-        $class = parent::intFactory();
-        $class->setUnits($units);
-        return $class;
+        return parent::intFactory();
     }
-    /**
-    * This sets what units we are using.
-    *
-    * @param string $units The units to check for validity
-    *
-    * @return mixed The value returned
-    */
-    public function setUnits($units)
-    {
-        $this->valid = array($units);
-    }
+
 }
 ?>

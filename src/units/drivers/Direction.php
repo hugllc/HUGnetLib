@@ -35,7 +35,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\units;
+namespace HUGnet\units\drivers;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 
@@ -55,114 +55,108 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-abstract class Driver
+class Direction extends \HUGnet\units\Driver
 {
-    /** This is a raw record */
-    const TYPE_RAW = "raw";
-    /** This is a differential record */
-    const TYPE_DIFF = "diff";
-    /** This is a raw record */
-    const TYPE_IGNORE = "ignore";
-
     /** @var The units that are valid for conversion */
-    protected $valid = array();
-    /** @var Unit conversion multipliers */
-    protected $multiplier = array();
-
-    /**
-    * Sets everything up
-    *
-    * @param array $data The data to start with
-    *
-    * @return null
-    */
-    private function __construct()
-    {
-    }
-
-    /**
-    * This function creates the system.
-    *
-    * @return null
-    */
-    protected static function &intFactory()
-    {
-        $class = get_called_class();
-        $object = new $class();
-        return $object;
-    }
+    protected $valid = array('Direction', '&#176;');
+    /** @var These are the direction names */
+    private $_directions = array(
+        "N" => 0,
+        "NNE" => 22.5,
+        "NE" => 45,
+        "ENE" => 67.5,
+        "E" => 90,
+        "ESE" => 112.5,
+        "SE" => 135,
+        "SSE" => 157.5,
+        "S" => 180,
+        "SSW" => 202.5,
+        "SW" => 225,
+        "WSW" => 247.5,
+        "W" => 270,
+        "WNW" => 292.5,
+        "NW" => 315,
+        "NNW" => 337.5,
+    );
     /**
     * This function creates the system.
     *
-    * @param string $unitType The type of unit to load
-    * @param string $units    The units we are loading
-    *
     * @return null
     */
-    public static function &factory($unitType, $units)
+    public static function &factory()
     {
-        $class = '\\HUGnet\\units\\drivers\\'.$unitType;
-        $file = dirname(__FILE__)."/drivers/".$unitType.".php";
-        if (file_exists($file)) {
-            include_once $file;
-        }
-        if (class_exists($class)) {
-            return $class::factory($units);
-        }
-        include_once dirname(__FILE__)."/drivers/GENERIC.php";
-        return \HUGnet\units\drivers\GENERIC::factory($units);
+        return parent::intFactory();
     }
-
     /**
     * Does the actual conversion
     *
     * @param mixed  &$data The data to convert
     * @param string $to    The units to convert to
     * @param string $from  The units to convert from
-    * @param string $type  The data type we are converting (raw or differential)
+    * @param string $type  The data type to convert
     *
     * @return mixed The value returned
-    *
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function convert(&$data, $to, $from, $type)
     {
-        $ret = false;
-        if (isset($this->multiplier[$to]) && isset($this->multiplier[$to][$from])) {
-            $data *= $this->multiplier[$to][$from];
-            $ret = true;
-        } else if ($from == $to) {
-            $ret = true;
+        if (($from == '&#176;') && ($to == 'Direction')) {
+            $data = $this->_numDirtoDir($data);
+        } else if (($from == 'Direction') && ($to == '&#176;')) {
+            $data = $this->_dirToNumDir($data);
+        } else {
+            return parent::convert($data, $to, $from, $type);
         }
-        return $ret;
+        return true;
+    }
+    /**
+    * Converts from a numeric compass direction to a textual direction
+    * abbreviation.
+    *
+    * So this converts 0 &#176; into 'N', 22.5 &#176; into 'NNE', etc.
+    * This function is set up so that any number greater than the previous
+    * number but less than or equal to the current number is taken for that
+    * direction.  So if we got an input of 10 &#176; then it would return 'NNE'.
+    *
+    * If the number give is out of range (less than 0 or greater than 360)
+    * 'N' is returned.
+    *
+    * @param float $ndir The numeric direction from 0 to 360 &#176;
+    *
+    * @return string The text direction
+    *
+    */
+    private function _numDirtoDir($ndir)
+    {
+        foreach ($this->_directions as $name => $val) {
+            if ($ndir <= $val) {
+                return $name;
+            }
+        }
+        return "N";
     }
 
     /**
-    * Checks to see if units are valid
+    * Converts from a textual direction abbreviation to a numberic
+    * compass direction.
     *
-    * @param string $units The units to check for validity
+    * So this converts 'N' into 0 &#176;, 'NNE' into 22.5 &#176;, etc.
     *
-    * @return mixed The value returned
+    * This function returns 0 if it gets an abbreviation that it does not
+    * understand.
+    *
+    * @param string $ndir The text direction
+    *
+    * @return float The text direction from 0 to 360 &#176;
+    *
     */
-    public function valid($units)
+    private function _dirToNumDir($ndir)
     {
-        return in_array($units, (array)$this->valid);
-    }
-
-    /**
-    * Checks to see if units are valid
-    *
-    * @return array Array of units returned
-    */
-    public function getValid()
-    {
-        $ret = array();
-        foreach ((array)$this->valid as $valid) {
-            $ret[$valid] = $valid;
+        $ndir = trim(strtoupper($ndir));
+        if (isset($this->_directions[$ndir])) {
+            return $this->_directions[$ndir];
         }
-        return $ret;
+        return 0;
     }
-
     /**
     * Checks to see if value the units represent is numeric
     *
@@ -172,9 +166,11 @@ abstract class Driver
     */
     public function numeric($units)
     {
-        // This only replies true for units that it knows about
-        return in_array($units, (array)$this->valid);
+        // Degrees are numeric.  Nothing else here is.
+        if ($units === "&#176;") {
+            return true;
+        }
+        return false;
     }
-
 }
 ?>

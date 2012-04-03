@@ -62,6 +62,8 @@ require_once dirname(__FILE__)."/drivers/DriverTestBase.php";
  */
 class DriverTest extends drivers\DriverTestBase
 {
+    /** This is the units that are valid */
+    protected static $units = array('&#176;F', '&#176;C', '&#176;R', 'K');
     /**
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.

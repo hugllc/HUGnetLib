@@ -40,8 +40,10 @@ namespace HUGnet\units\drivers;
 defined('_HUGNET') or die('HUGnetSystem not found');
 
 /**
- * This class has functions that relate to the manipulation of elements
- * of the devInfo array.
+ * This class represents pressure in the HUGnet system.
+ *
+ * Information on conversion factors was found at:
+ * http://en.wikipedia.org/wiki/Pressure
  *
  * @category   Libraries
  * @package    HUGnetLib
@@ -55,29 +57,64 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class GENERIC extends \HUGnet\units\Driver
+class Pressure extends \HUGnet\units\Driver
 {
+    /** @var The units that are valid for conversion */
+    protected $valid = array("Pa", "bar", "at", "atm", "Torr", "psi");
+    /** @var Unit conversion multipliers */
+    protected $multiplier = array(
+        "Pa" => array(
+            "bar"  => 1E5,
+            "at"   => 0.980665E5,
+            "atm"  => 1.01324E5,
+            "Torr" => 133.322,
+            "psi"  => 6.895E3,
+        ),
+        "bar" => array(
+            "Pa"   => 1E-5,
+            "at"   => 0.980665,
+            "atm"  => 1.01325,
+            "Torr" => 1.332E-3,
+            "psi"  => 68.948E-3,
+        ),
+        "at" => array(
+            "Pa"   => 1.0197E-5,
+            "bar"  => 1.0197,
+            "atm"  => 1.0332,
+            "Torr" => 1.3595E-3,
+            "psi"  => 70.307E-3,
+        ),
+        "atm" => array(
+            "Pa"   => 9.8692E-6,
+            "bar"  => 0.98692,
+            "at"   => 0.96784,
+            "Torr" => 1.3158E-3,
+            "psi"  => 68.046E-3,
+        ),
+        "Torr" => array(
+            "Pa"   => 7.5006E-3,
+            "bar"  => 750.06,
+            "at"   => 735.56,
+            "atm"  => 760,
+            "psi"  => 51.715,
+        ),
+        "psi" => array(
+            "Pa"   => 145.04E-6,
+            "bar"  => 14.5037744,
+            "at"   => 14.223,
+            "atm"  => 14.696,
+            "Torr" => 19.337E-3,
+        ),
+    );
     /**
     * This function creates the system.
     *
     * @return null
     */
-    public static function &factory($units)
+    public static function &factory()
     {
-        $class = parent::intFactory();
-        $class->setUnits($units);
-        return $class;
+        return parent::intFactory();
     }
-    /**
-    * This sets what units we are using.
-    *
-    * @param string $units The units to check for validity
-    *
-    * @return mixed The value returned
-    */
-    public function setUnits($units)
-    {
-        $this->valid = array($units);
-    }
+
 }
 ?>
