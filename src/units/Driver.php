@@ -92,19 +92,20 @@ abstract class Driver
     /**
     * This function creates the system.
     *
-    * @param string $driver The driver to load
+    * @param string $unitType The type of unit to load
+    * @param string $units    The units we are loading
     *
     * @return null
     */
     public static function &factory($unitType, $units)
     {
-        $class = '\\HUGnet\\units\\drivers\\'.$driver;
-        $file = dirname(__FILE__)."/drivers/".$driver.".php";
-        if (file_exists($file) || class_exists($class)) {
+        $class = '\\HUGnet\\units\\drivers\\'.$unitType;
+        $file = dirname(__FILE__)."/drivers/".$unitType.".php";
+        if (file_exists($file)) {
             include_once $file;
-            if (class_exists($class)) {
-                return $class::factory($units);
-            }
+        }
+        if (class_exists($class)) {
+            return $class::factory($units);
         }
         include_once dirname(__FILE__)."/drivers/GENERIC.php";
         return \HUGnet\units\drivers\GENERIC::factory($units);

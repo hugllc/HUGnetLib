@@ -120,8 +120,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     */
     public function testGetValid($class, $expect)
     {
-        $obj = $class::factory();
-        $this->assertEquals($expect, $obj->getValid());
+        $this->assertEquals($expect, $this->o->getValid());
     }
     /**
     * data provider for testGetTypes
@@ -141,12 +140,55 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     *
     * @dataProvider dataValid
     */
-    public function testValid($class, $units, $expect)
+    public function testValid($units, $expect)
     {
-        $obj = $class::factory($units);
-        $this->assertSame($expect, $obj->valid($units));
+        $this->assertSame($expect, $this->o->valid($units));
+    }
+    /**
+    * data provider for testGetTypes
+    *
+    * @return array
+    */
+    abstract public static function dataNumeric();
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $units  The units to check
+    * @param string $expect The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataNumeric
+    */
+    public function testNumeric($units, $expect)
+    {
+        $this->assertSame($expect, $this->o->numeric($units));
     }
 
+    /**
+    * data provider for testGetTypes
+    *
+    * @return array
+    */
+    abstract public static function dataConvert();
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $class  The class to use
+    * @param string $units  The units to check
+    * @param string $expect The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataConvert
+    */
+    public function testConvert($data, $to, $from, $return, $expect)
+    {
+        $this->assertSame(
+            $return, $this->o->convert($data, $to, $from), "Return is wrong"
+        );
+        $this->assertSame($expect, $data, "Result is wrong");
+    }
 
 }
 ?>

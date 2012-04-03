@@ -153,15 +153,43 @@ class DriverTest extends drivers\DriverTestBase
     {
         return array(
             array(
-                "\\HUGnet\\units\\DriverTestClass",
                 "&deg;K",
                 true,
             ),
             array(
-                "\\HUGnet\\units\\DriverTestClass",
                 "psi",
                 false,
             ),
+        );
+    }
+    /**
+    * data provider for testGetTypes
+    *
+    * @return array
+    */
+    public static function dataNumeric()
+    {
+        return array(
+            array(
+                "&deg;K",
+                true,
+            ),
+            array(
+                "psi",
+                false,
+            ),
+        );
+    }
+    /**
+    * data provider for testGetTypes
+    *
+    * @return array
+    */
+    public static function dataConvert()
+    {
+        return array(
+            array(12.312, "&deg;C", "&deg;F", false, 12.312),
+            array(12.312, "&deg;C", "&deg;C", true, 12.312),
         );
     }
 }

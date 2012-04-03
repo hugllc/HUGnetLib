@@ -93,7 +93,6 @@ class GENERICTest extends DriverTestBase
     {
         return array(
             array(
-                "\\HUGnet\\units\\drivers\\GENERIC",
                 "&deg;C",
                 array(
                     '&deg;C' => '&deg;C',
@@ -104,7 +103,6 @@ class GENERICTest extends DriverTestBase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $class  The class to use
     * @param string $units  The units to check
     * @param string $expect The expected data
     *
@@ -112,9 +110,9 @@ class GENERICTest extends DriverTestBase
     *
     * @dataProvider dataGetValid
     */
-    public function testGetValid($class, $units, $expect)
+    public function testGetValid($units, $expect)
     {
-        $obj = $class::factory($units);
+        $obj = GENERIC::factory($units);
         $this->assertEquals($expect, $obj->getValid());
     }
 
@@ -127,13 +125,11 @@ class GENERICTest extends DriverTestBase
     {
         return array(
             array(
-                "\\HUGnet\\units\\drivers\\GENERIC",
                 "&deg;K",
                 "&deg;K",
                 true,
             ),
             array(
-                "\\HUGnet\\units\\drivers\\GENERIC",
                 "psi",
                 "&deg;K",
                 false,
@@ -143,7 +139,6 @@ class GENERICTest extends DriverTestBase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $class  The class to use
     * @param string $units  The units to setup up for
     * @param string $check  The units to check
     * @param string $expect The expected data
@@ -152,10 +147,57 @@ class GENERICTest extends DriverTestBase
     *
     * @dataProvider dataValid
     */
-    public function testValid($class, $units, $check, $expect)
+    public function testValid($units, $check, $expect)
     {
-        $obj = $class::factory($units);
+        $obj = GENERIC::factory($units);
         $this->assertSame($expect, $obj->valid($check));
+    }
+    /**
+    * data provider for testGetTypes
+    *
+    * @return array
+    */
+    public static function dataNumeric()
+    {
+        return array(
+            array(
+                "&deg;K",
+                "&deg;K",
+                true,
+            ),
+            array(
+                "psi",
+                "&deg;K",
+                false,
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $units  The units to setup up for
+    * @param string $check  The units to check
+    * @param string $expect The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataNumeric
+    */
+    public function testNumeric($units, $check, $expect)
+    {
+        $obj = GENERIC::factory($units);
+        $this->assertSame($expect, $obj->numeric($check));
+    }
+    /**
+    * data provider for testGetTypes
+    *
+    * @return array
+    */
+    public static function dataConvert()
+    {
+        return array(
+            array(12.312, "&deg;C", "&deg;F", false, 12.312),
+        );
     }
 
 }
