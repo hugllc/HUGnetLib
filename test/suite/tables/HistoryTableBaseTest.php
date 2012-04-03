@@ -39,7 +39,7 @@ require_once CODE_BASE.'tables/HistoryTableBase.php';
 /** This is a required class */
 require_once CODE_BASE.'containers/DeviceContainer.php';
 /** This is a required class */
-require_once CODE_BASE.'base/UnitsBase.php';
+require_once CODE_BASE.'units/Driver.php';
 /** This is a required class */
 require_once TEST_BASE."tables/HUGnetDBTableTestBase.php";
 
@@ -814,7 +814,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                         "Sensors" => 1,
                         0 => array(
                             "id" => 0,
-                            "dataType" => UnitsBase::TYPE_DIFF,
+                            "dataType" => \HUGnet\units\Driver::TYPE_DIFF,
                         ),
                     ),
                 ),
@@ -858,7 +858,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                         "Sensors" => 1,
                         0 => array(
                             "id" => 0,
-                            "dataType" => UnitsBase::TYPE_DIFF,
+                            "dataType" => \HUGnet\units\Driver::TYPE_DIFF,
                         ),
                     ),
                 ),

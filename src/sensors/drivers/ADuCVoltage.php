@@ -64,7 +64,7 @@ class ADuCVoltage extends \HUGnet\sensors\Driver
         "shortName" => "ADuCVoltage",
         "unitType" => "Voltage",
         "storageUnit" => 'V',
-        "storageType" => \UnitsBase::TYPE_RAW,  // This is the dataType as stored
+        "storageType" => \HUGnet\units\Driver::TYPE_RAW, // Storage dataType
         "extraText" => array(
             "R1 to Source (kOhms)",
             "R2 to Ground (kOhms)",

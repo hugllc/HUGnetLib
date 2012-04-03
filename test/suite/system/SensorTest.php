@@ -44,7 +44,7 @@ require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
 /** This is the dummy table container */
 require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
 /** This is our units class */
-require_once CODE_BASE."base/UnitsBase.php";
+require_once CODE_BASE."units/Driver.php";
 
 /**
  * Test class for HUGnetDB.
@@ -214,7 +214,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         "extraDefault" => array(),
                         "extraValues" => array(),
                         "storageUnit" => "unknown",
-                        "storageType" => \UnitsBase::TYPE_RAW,
+                        "storageType" => \HUGnet\units\Driver::TYPE_RAW,
                         "maxDecimals" => 2,
                         'id' => 0x41,
                         'asdf' => 3,
@@ -614,32 +614,32 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         "value" => 25.2134,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => \UnitsBase::TYPE_RAW,
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
                     ),
                     array(
                         "value" => 28.5282,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => \UnitsBase::TYPE_RAW,
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
                     ),
                     array(
                         "value" => 12.3455,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => \UnitsBase::TYPE_RAW,
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
                     ),
                     array(
                         "value" => 82.1253,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => \UnitsBase::TYPE_RAW,
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
                     ),
                 ),
                 array(
                     "value" => 41.7451,
                     "units" => "psi",
                     "unitType" => "Pressure",
-                    "dataType" => \UnitsBase::TYPE_RAW,
+                    "dataType" => \HUGnet\units\Driver::TYPE_RAW,
                 ),
             ),
             array(
@@ -648,7 +648,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 0x41,
                             "type" => "ADuCPressure",
-                            "dataType" => \UnitsBase::TYPE_DIFF,
+                            "dataType" => \HUGnet\units\Driver::TYPE_DIFF,
                         ),
                     ),
                 ),
@@ -661,32 +661,32 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         "value" => 25.2134,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => \UnitsBase::TYPE_RAW,
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
                     ),
                     array(
                         "value" => 28.5282,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => \UnitsBase::TYPE_RAW,
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
                     ),
                     array(
                         "value" => 12.3455,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => \UnitsBase::TYPE_RAW,
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
                     ),
                     array(
                         "value" => 82.1253,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => \UnitsBase::TYPE_RAW,
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
                     ),
                 ),
                 array(
                     "value" => 41.7451,
                     "units" => "psi",
                     "unitType" => "Pressure",
-                    "dataType" => \UnitsBase::TYPE_RAW,
+                    "dataType" => \HUGnet\units\Driver::TYPE_RAW,
                 ),
             ),
         );

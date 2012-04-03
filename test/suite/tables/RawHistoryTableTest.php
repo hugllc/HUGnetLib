@@ -620,12 +620,10 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                             1 => array(),
                             2 => array(
                                 "id" => 0x70,
-                                //"dataType" => UnitsBase::TYPE_DIFF,
                                 "type" => "maximumAnemometer",
                             ),
                             3 => array(
                                 "id" => 0x70,
-                                //"dataType" => UnitsBase::TYPE_DIFF,
                                 "type" => "maximumRainGauge",
                             ),
                             4 => array(),

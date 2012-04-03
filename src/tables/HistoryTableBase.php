@@ -38,6 +38,8 @@
 require_once dirname(__FILE__)."/../base/HUGnetDBTable.php";
 /** This is for the configuration */
 require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
+/** This is for the configuration */
+require_once dirname(__FILE__)."/../units/Driver.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -292,8 +294,8 @@ abstract class HistoryTableBase extends HUGnetDBTable
                 $col = "Data".$i;
                 $sensor = &$this->device->sensor($i);
                 // This changes raw mode into differential mode
-                if (($sensor->storageType === UnitsBase::TYPE_RAW)
-                    && ($sensor->dataType === UnitsBase::TYPE_DIFF)
+                if (($sensor->storageType === \HUGnet\units\Driver::TYPE_RAW)
+                    && ($sensor->dataType === \HUGnet\units\Driver::TYPE_DIFF)
                 ) {
                     if (is_null($this->prev[$col])) {
                         $this->data[$col] = null;

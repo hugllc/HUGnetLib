@@ -39,7 +39,7 @@ require_once dirname(__FILE__)."/../base/HUGnetDBTable.php";
 /** This is for the configuration */
 require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
 /** This is for some constants */
-require_once dirname(__FILE__)."/../base/UnitsBase.php";
+require_once dirname(__FILE__)."/../units/Driver.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -112,7 +112,7 @@ class SensorsTable extends HUGnetDBTable
         "dataType" => array(
             "Name" => "dataType",
             "Type" => "varchar(32)",
-            "Default" => UnitsBase::TYPE_RAW,
+            "Default" => \HUGnet\units\Driver::TYPE_RAW,
         ),
         "units" => array(
             "Name" => "units",
@@ -282,9 +282,9 @@ class SensorsTable extends HUGnetDBTable
     */
     protected function setDataType($value)
     {
-        if (($value == UnitsBase::TYPE_RAW)
-            || ($value == UnitsBase::TYPE_DIFF)
-            || ($value == UnitsBase::TYPE_IGNORE)
+        if (($value == \HUGnet\units\Driver::TYPE_RAW)
+            || ($value == \HUGnet\units\Driver::TYPE_DIFF)
+            || ($value == \HUGnet\units\Driver::TYPE_IGNORE)
         ) {
             $this->data["dataType"] = $value;
         }

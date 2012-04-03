@@ -251,9 +251,9 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 "storageType", array(
-                    \UnitsBase::TYPE_RAW,
-                    \UnitsBase::TYPE_DIFF,
-                    \UnitsBase::TYPE_IGNORE,
+                    \HUGnet\units\Driver::TYPE_RAW,
+                    \HUGnet\units\Driver::TYPE_DIFF,
+                    \HUGnet\units\Driver::TYPE_IGNORE,
                 ),
             ),
         );

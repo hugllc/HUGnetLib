@@ -40,6 +40,7 @@ namespace HUGnet;
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our base class */
 require_once dirname(__FILE__)."/../base/SystemTableBase.php";
+require_once dirname(__FILE__)."/../units/Driver.php";
 
 /**
  * Base system class.
@@ -204,7 +205,7 @@ class Sensor extends SystemTableBase
     public function decodeData($A, $deltaT = 0, &$prev = null, &$data = array())
     {
         $ret = array();
-        if ($this->storageType == \UnitsBase::TYPE_DIFF) {
+        if ($this->storageType == \HUGnet\units\Driver::TYPE_DIFF) {
             $ret["value"] = $this->driver()->getReading(
                 ($A - $prev), $deltaT, $data, $prev
             );

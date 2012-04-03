@@ -142,7 +142,7 @@ class DriverTest extends drivers\DriverTestBase
             ),
             array(
                 "storageType",
-                \UnitsBase::TYPE_RAW,
+                \HUGnet\units\Driver::TYPE_RAW,
             ),
             array(
                 "testParam",

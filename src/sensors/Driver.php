@@ -38,7 +38,7 @@ namespace HUGnet\sensors;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our units class */
-require_once dirname(__FILE__)."/../base/UnitsBase.php";
+require_once dirname(__FILE__)."/../units/Driver.php";
 /**
  * Base driver class for devices.
  *
@@ -82,7 +82,7 @@ abstract class Driver
         // Null    nothing
         "extraValues" => array(),
         "storageUnit" => "unknown",
-        "storageType" => \UnitsBase::TYPE_RAW,  // This is the dataType as stored
+        "storageType" => \HUGnet\units\Driver::TYPE_RAW, // Storage dataType
         "maxDecimals" => 2,
     );
     /**
