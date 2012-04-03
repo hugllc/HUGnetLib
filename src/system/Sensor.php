@@ -122,6 +122,7 @@ class Sensor extends SystemTableBase
         }
         $return["params"] = (array)$params;
         $return["otherTypes"] = \HUGnet\sensors\Driver::getTypes($return["id"]);
+        $return["validUnits"] = $this->units()->getValid();
         return json_encode($return);
     }
     /**
@@ -158,7 +159,7 @@ class Sensor extends SystemTableBase
     *
     * @param string $driver The driver to use.  Leave blank for automatic.
     *
-    * @return null
+    * @return object
     */
     protected function &driver($driver = null)
     {
@@ -173,6 +174,20 @@ class Sensor extends SystemTableBase
             $this->_driverCache[$driver] = &sensors\Driver::factory($driver);
         }
         return $this->_driverCache[$driver];
+    }
+    /**
+    * This creates the units driver
+    *
+    * @return object
+    */
+    protected function &units()
+    {
+        include_once dirname(__FILE__)."/../units/Driver.php";
+        $units = \HUGnet\units\Driver::factory(
+            $this->driver()->get("unitType"),
+            $this->driver()->get("storageUnit")
+        );
+        return $units;
     }
     /**
     * Gets the direction from a direction sensor made out of a POT.
@@ -213,7 +228,9 @@ class Sensor extends SystemTableBase
     */
     protected function fixTable()
     {
-        $this->table()->set("units", $this->driver()->get("storageUnit"));
+        if (!$this->units()->valid($this->table()->get("units"))) {
+            $this->table()->set("units", $this->driver()->get("storageUnit"));
+        }
         $extra = (array)$this->table()->get("extra");
         $extraDefault = (array)$this->driver()->get("extraDefault");
         if (count($extra) != count($extraDefault)) {

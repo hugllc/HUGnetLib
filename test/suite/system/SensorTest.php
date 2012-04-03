@@ -224,6 +224,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             "DEFAULT" => "ADuCVoltage",
                             "ADuCPressure" => "ADuCPressure",
                         ),
+                        'validUnits' => array("unknown" => "unknown"),
                     )
                 ),
             ),
@@ -451,7 +452,22 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                                 'type',
                             ),
                             array(
-                                'extra',
+                                'id',
+                            ),
+                            array(
+                                'type'
+                            ),
+                            array(
+                                'units'
+                            ),
+                            array(
+                                'id'
+                            ),
+                            array(
+                                'type'
+                            ),
+                            array(
+                                'extra'
                             ),
                             array(
                                 'id'
@@ -500,7 +516,22 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                                 'type',
                             ),
                             array(
-                                'extra',
+                                'id',
+                            ),
+                            array(
+                                'type'
+                            ),
+                            array(
+                                'units'
+                            ),
+                            array(
+                                'id'
+                            ),
+                            array(
+                                'type'
+                            ),
+                            array(
+                                'extra'
                             ),
                             array(
                                 'id'
