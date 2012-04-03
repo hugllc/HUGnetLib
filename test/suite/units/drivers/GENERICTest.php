@@ -93,9 +93,9 @@ class GENERICTest extends DriverTestBase
     {
         return array(
             array(
-                "&deg;C",
+                "&#176;C",
                 array(
-                    '&deg;C' => '&deg;C',
+                    '&#176;C' => '&#176;C',
                 ),
             ),
         );
@@ -125,13 +125,13 @@ class GENERICTest extends DriverTestBase
     {
         return array(
             array(
-                "&deg;K",
-                "&deg;K",
+                "K",
+                "K",
                 true,
             ),
             array(
                 "psi",
-                "&deg;K",
+                "K",
                 false,
             ),
         );
@@ -161,13 +161,13 @@ class GENERICTest extends DriverTestBase
     {
         return array(
             array(
-                "&deg;K",
-                "&deg;K",
+                "K",
+                "K",
                 true,
             ),
             array(
                 "psi",
-                "&deg;K",
+                "K",
                 false,
             ),
         );
@@ -196,7 +196,10 @@ class GENERICTest extends DriverTestBase
     public static function dataConvert()
     {
         return array(
-            array(12.312, "&deg;C", "&deg;F", false, 12.312),
+            array(
+                12.312, "&#176;C", "&#176;F", \HUGnet\units\Driver::TYPE_RAW,
+                false, 12.312
+            ),
         );
     }
 

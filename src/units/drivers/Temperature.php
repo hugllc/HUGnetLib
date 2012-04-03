@@ -27,7 +27,7 @@
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage Base
+ * @subpackage PluginsUnits
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -35,7 +35,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\units;
+namespace HUGnet\units\drivers;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 
@@ -45,7 +45,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage Base
+ * @subpackage PluginsUnits
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -55,121 +55,100 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-abstract class Driver
+class Temperature extends \HUGnet\units\Driver
 {
-    /** This is a raw record */
-    const TYPE_RAW = "raw";
-    /** This is a differential record */
-    const TYPE_DIFF = "diff";
-    /** This is a raw record */
-    const TYPE_IGNORE = "ignore";
-
     /** @var The units that are valid for conversion */
-    protected $valid = array();
-
-    /**
-    * Sets everything up
-    *
-    * @param array $data The data to start with
-    *
-    * @return null
-    */
-    private function __construct()
-    {
-    }
-
+    protected $valid = array("&#176;F", "&#176;C", "K");
     /**
     * This function creates the system.
     *
     * @return null
     */
-    protected static function &intFactory()
+    public static function &factory()
     {
-        $class = get_called_class();
-        $object = new $class();
-        return $object;
+        return parent::intFactory();
     }
-    /**
-    * This function creates the system.
-    *
-    * @param string $unitType The type of unit to load
-    * @param string $units    The units we are loading
-    *
-    * @return null
-    */
-    public static function &factory($unitType, $units)
-    {
-        $class = '\\HUGnet\\units\\drivers\\'.$unitType;
-        $file = dirname(__FILE__)."/drivers/".$unitType.".php";
-        if (file_exists($file)) {
-            include_once $file;
-        }
-        if (class_exists($class)) {
-            return $class::factory($units);
-        }
-        include_once dirname(__FILE__)."/drivers/GENERIC.php";
-        return \HUGnet\units\drivers\GENERIC::factory($units);
-    }
-
     /**
     * Does the actual conversion
     *
     * @param mixed  &$data The data to convert
     * @param string $to    The units to convert to
     * @param string $from  The units to convert from
-    * @param string $type  The data type we are converting (raw or differential)
     *
     * @return mixed The value returned
-    *
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function convert(&$data, $to, $from, $type)
     {
-        if ($from == $to) {
-            return true;
+        if (($from == '&#176;C') && ($to == '&#176;F')) {
+            $this->cToF($data, $type);
+        } else if (($from == '&#176;C') && ($to == 'K')) {
+            $this->cToK($data, $type);
+        } else if (($from == '&#176;F') && ($to == '&#176;C')) {
+            $this->fToC($data, $type);
         } else {
-            return false;
+            return parent::convert($data, $to, $from, $type);
         }
+        return true;
     }
 
     /**
-    * Checks to see if units are valid
+    * Converts from &#176; C to &#176; F.
     *
-    * @param string $units The units to check for validity
+    * If the temperature is differential we can't add 32 like we would
+    * for an absolute temperature.  This is because it is already factored
+    * out by the subtraction in the difference.
     *
-    * @return mixed The value returned
+    * @param float  &$data The temperature to convert
+    * @param string $type  The type of data (raw or differential)
+    *
+    * @return null
     */
-    public function valid($units)
+    protected function cToF(&$data, $type)
     {
-        return in_array($units, (array)$this->valid);
-    }
-
-    /**
-    * Checks to see if units are valid
-    *
-    * @return array Array of units returned
-    */
-    public function getValid()
-    {
-        $ret = array();
-        foreach ((array)$this->valid as $valid) {
-            $ret[$valid] = $valid;
+        $data = ((9*$data)/5);
+        if ($type != \HUGnet\units\Driver::TYPE_DIFF) {
+            $data += 32.0;
         }
-        return $ret;
+        $data = (float)$data;
+    }
+    /**
+    * Converts from &#176; C to &#176; F.
+    *
+    * If the temperature is differential we can't add 32 like we would
+    * for an absolute temperature.  This is because it is already factored
+    * out by the subtraction in the difference.
+    *
+    * @param float  &$data The temperature to convert
+    * @param string $type  The type of data (raw or differential)
+    *
+    * @return null
+    */
+    protected function cToK(&$data, $type)
+    {
+        if ($type != \HUGnet\units\Driver::TYPE_DIFF) {
+            $data += 273.15;
+        }
+        $data = (float)$data;
     }
 
     /**
-    * Checks to see if value the units represent is numeric
+    *  Converts from &#176; F to &#176; C.
     *
-    * @param string $units The units to check
+    * If the temperature is differential we can't subtract 32 like we would
+    * for an absolute temperature.  This is because it is already factored
+    * out by the subtraction in the difference.
     *
-    * @return bool True if they are numeric, false otherwise
+    * @param float  &$data The temperature to convert
+    * @param string $type  The type of data (raw or differential)
+    *
+    * @return null
     */
-    public function numeric($units)
+    protected function fToC(&$data, $type)
     {
-        // This only replies true for units that it knows about
-        return in_array($units, (array)$this->valid);
+        if ($type != \HUGnet\units\Driver::TYPE_DIFF) {
+            $data -= 32.0;
+        }
+        $data = (float)((5/9)*$data);
     }
-
 }
 ?>

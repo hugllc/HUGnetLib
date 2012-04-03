@@ -102,6 +102,18 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
         );
     }
     /**
+    * test all the valid units
+    *
+    * @return null
+    */
+    public function testAllValid()
+    {
+        $units = $this->o->getValid();
+        foreach ($units as $unit) {
+            $this->assertTrue($this->o->valid($unit), "$unit is not valid");
+        }
+    }
+    /**
     * data provider for testGetTypes
     *
     * @return array
@@ -174,20 +186,22 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $class  The class to use
-    * @param string $units  The units to check
-    * @param string $expect The expected data
-    *
+    * @param mixed  $data   The data to convert
+    * @param string $to     The unit to convert to
+    * @param string $from   The unit to convert from
+    * @param string $type   The data type
+    * @param bool   $return The expected return
+    * @param mixed  $expect The expected data after the conversion
     * @return null
     *
     * @dataProvider dataConvert
     */
-    public function testConvert($data, $to, $from, $return, $expect)
+    public function testConvert($data, $to, $from, $type, $return, $expect)
     {
         $this->assertSame(
-            $return, $this->o->convert($data, $to, $from), "Return is wrong"
+            $return, $this->o->convert($data, $to, $from, $type), "Return is wrong"
         );
-        $this->assertSame($expect, $data, "Result is wrong");
+        $this->assertEquals($expect, $data, "Result is wrong", 0.000001);
     }
 
 }
