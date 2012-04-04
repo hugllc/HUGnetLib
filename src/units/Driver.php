@@ -72,8 +72,6 @@ abstract class Driver
     /**
     * Sets everything up
     *
-    * @param array $data The data to start with
-    *
     * @return null
     */
     private function __construct()

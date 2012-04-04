@@ -60,6 +60,8 @@ class GENERIC extends \HUGnet\units\Driver
     /**
     * This function creates the system.
     *
+    * @param string $units The unuts with which to set this up.
+    *
     * @return null
     */
     public static function &factory($units)

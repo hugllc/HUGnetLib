@@ -142,7 +142,11 @@ class SensorsTableTest extends HUGnetDBTableTestBase
     public static function dataSet()
     {
         return array(
-            array("dataType", \HUGnet\units\Driver::TYPE_DIFF, \HUGnet\units\Driver::TYPE_DIFF),
+            array(
+                "dataType",
+                \HUGnet\units\Driver::TYPE_DIFF,
+                \HUGnet\units\Driver::TYPE_DIFF
+            ),
             array("dataType", "asdffdsas", \HUGnet\units\Driver::TYPE_RAW),
             array("params", "asdfasdfasdfasdf", "asdfasdfasdfasdf"),
             array("params", array(1,2,3,4), "[1,2,3,4]"),

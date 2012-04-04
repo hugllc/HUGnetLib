@@ -131,6 +131,9 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     /**
     * test all the valid units
     *
+    * @param string $unit1 The first unit
+    * @param string $unit2 The second unit
+    * @param string $type  The data type
     *
     * @return null
     *
@@ -191,7 +194,6 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $class  The class to use
     * @param string $units  The units to check
     * @param string $expect The expected data
     *
@@ -239,6 +241,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     * @param string $type   The data type
     * @param bool   $return The expected return
     * @param mixed  $expect The expected data after the conversion
+    *
     * @return null
     *
     * @dataProvider dataConvert
