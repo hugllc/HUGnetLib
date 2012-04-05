@@ -716,5 +716,150 @@ class SensorTest extends \PHPUnit_Framework_TestCase
         $ret = $obj->decodeData($A, $deltaT, $prev, $data);
         $this->assertEquals($expect, $ret);
     }
+    /**
+    * data provider for testConvertUnits
+    *
+    * @return array
+    */
+    public static function dataConvertUnits()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 0x04,
+                            "type" => "",
+                            "units" => "&#176;F",
+                            "decimals" => 2,
+                        )
+                    ),
+                ),
+                new DummyTable("Table"),
+                array(
+                    "value" => 0.0,
+                    "units" => "&#176;C",
+                    "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    "unitType" => "Temperature",
+                ),
+                "K",
+                array(
+                    "value" => 273.15,
+                    "units" => "K",
+                    "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    "unitType" => "Temperature",
+                ),
+                true,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 0x04,
+                            "type" => "",
+                            "units" => "&#176;F",
+                            "decimals" => 2,
+                        )
+                    ),
+                ),
+                new DummyTable("Table"),
+                array(
+                    "value" => 0.0,
+                    "units" => "&#176;C",
+                    "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    "unitType" => "Temperature",
+                ),
+                null,
+                array(
+                    "value" => 32.0,
+                    "units" => "&#176;F",
+                    "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    "unitType" => "Temperature",
+                ),
+                true,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 0x04,
+                            "type" => "",
+                            "units" => "&#176;F",
+                            "decimals" => 2,
+                        )
+                    ),
+                ),
+                new DummyTable("Table"),
+                array(
+                    "value" => 12.0,
+                    "units" => "&#176;C",
+                    "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    "unitType" => "Temperature",
+                ),
+                "psi",
+                array(
+                    "value" => 12.0,
+                    "units" => "&#176;C",
+                    "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    "unitType" => "Temperature",
+                ),
+                false,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 0x04,
+                            "type" => "",
+                            "units" => "&#176;F",
+                            "decimals" => 2,
+                        )
+                    ),
+                ),
+                new DummyTable("Table"),
+                array(
+                    "value" => null,
+                    "units" => "&#176;C",
+                    "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    "unitType" => "Temperature",
+                ),
+                "&#176;F",
+                array(
+                    "value" => null,
+                    "units" => "&#176;C",
+                    "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    "unitType" => "Temperature",
+                ),
+                true,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param object $config The configuration to use
+    * @param object $class  The table class to use
+    * @param mixed  $data   The value to send
+    * @param string $units  The units to convert to
+    * @param string $expect The expected data
+    * @param bool   $ret    The return value expected
+    *
+    * @return null
+    *
+    * @dataProvider dataConvertUnits
+    */
+    public function testConvertUnits($config, $class, $data, $units, $expect, $ret)
+    {
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = Sensor::factory($sys, null, $class);
+        $this->assertSame(
+            $ret,
+            $obj->convertUnits($data, $units),
+            "The return value is wrong"
+        );
+        $this->assertSame($expect, $data, "Data is wrong");
+    }
 }
 ?>

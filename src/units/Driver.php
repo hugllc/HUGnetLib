@@ -132,6 +132,7 @@ abstract class Driver
         } else if ($from == $to) {
             $ret = true;
         }
+
         return $ret;
     }
 

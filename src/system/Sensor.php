@@ -238,6 +238,37 @@ class Sensor extends SystemTableBase
             $this->table()->set("extra", array());
         }
     }
+    /**
+    * Converts data between units
+    *
+    * @param mixed  &$data The data to convert
+    * @param string $units The units to convert to
+    *
+    * @return true on success, false on failure
+    */
+    public function convertUnits(&$data, $units = null)
+    {
+        if (is_array($data) && !is_null($data["value"])) {
+            if (is_null($units)) {
+                $units = $this->table()->get("units");
+            }
+            $ret = $this->units()->convert(
+                $data["value"],
+                $units,
+                $data["units"],
+                $data["unitType"]
+            );
+            if ($ret === true) {
+                $data["units"] = $units;
+            }
+            if (is_numeric($data["value"])) {
+                $data["value"] = round($data["value"], (int)$this->get("decimals"));
+            }
+        } else {
+            $ret = true;
+        }
+        return $ret;
+    }
 
 }
 

@@ -322,28 +322,6 @@ class Device extends SystemTableBase
         return $ret;
     }
     /**
-    * Creates a sensor object
-    *
-    * @param array $data The data to decode
-    * @param array $prev The previous raw reading
-    *
-    * @return Returns an array of the data decoded
-    */
-    public function decodeSensorData($data, $prev = null)
-    {
-        $ret = array(
-            "deltaT" => $data["deltaT"],
-        );
-        // This is for the physical sensors
-        $sensors = $this->get("totalSensors");
-        for ($i = 0; $i < $sensors; $i++) {
-            $ret[$i] = $this->sensor($i)->decodeData(
-                $data[$i], $data["deltaT"], $prev[$i], $ret
-            );
-        }
-        return $ret;
-    }
-    /**
     * Decodes the sensor data
     *
     * @param string $string  The string of sensor data
@@ -359,7 +337,14 @@ class Device extends SystemTableBase
     {
         $data = $this->driver()->decodeSensorString((string)$string);
         $data["deltaT"] = $deltaT;
-        $ret = $this->decodeSensorData($data, $prev);
+        $ret = array();
+        $sensors = $this->get("totalSensors");
+        for ($i = 0; $i < $sensors; $i++) {
+            $ret[$i] = $this->sensor($i)->decodeData(
+                $data[$i], $deltaT, $prev[$i], $ret
+            );
+        }
+        $ret["deltaT"] = $deltaT;
         $ret["DataIndex"] = $data["DataIndex"];
         $ret["timeConstant"] = $data["timeConstant"];
         $ret["deltaT"] = $data["deltaT"];
