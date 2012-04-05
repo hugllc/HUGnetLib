@@ -322,6 +322,23 @@ class Device extends SystemTableBase
         return $ret;
     }
     /**
+    * Changes the units on the data
+    *
+    * The data coming in to this function should be the same as that produced
+    * by decodeData.
+    *
+    * @param array &$data The data to convert.
+    *
+    * @return null
+    */
+    public function setUnits(&$data)
+    {
+        $sensors = $this->get("totalSensors");
+        for ($i = 0; $i < $sensors; $i++) {
+            $this->sensor($i)->convertUnits($data[$i]);
+        }
+    }
+    /**
     * Decodes the sensor data
     *
     * @param string $string  The string of sensor data

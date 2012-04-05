@@ -857,6 +857,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $data = $obj->decodeData($data, $command, $deltaT, $prev);
         $this->assertEquals($expect, $data);
     }
+
     /**
     * Data provider for testCreate
     *
@@ -1020,6 +1021,217 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $hist = $obj->historyFactory($data, $history);
         $this->assertSame($expect, get_class($hist));
         unset($obj);
+    }
+
+    /**
+    * data provider for testSetUnits
+    *
+    * @return array
+    */
+    public static function dataSetUnits()
+    {
+        return array(
+            array(
+                array(
+                    "SDTable" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "RawSetup" => "000000100800393701410039380143000004"
+                            ."FFFFFFFF01040404040404040404",
+                            "sensors" => "",
+                        ),
+                    ),
+                ),
+                new DummyTable("SDTable"),
+                array(
+                    "deltaT" => 300,
+                    "DataIndex" => 1,
+                    "timeConstant" => 1,
+                    array(
+                        "value" => (float)0x10,
+                        "units" => "&#176;C",
+                        "unitType" => "Temperature",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => (float)0x20,
+                        "units" => "&#176;F",
+                        "unitType" => "Temperature",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => (float)0x30,
+                        "units" => "&#176;C",
+                        "unitType" => "Temperature",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => (float)0x40,
+                        "units" => "&#176;C",
+                        "unitType" => "Temperature",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => (float)0x50,
+                        "units" => "&#176;C",
+                        "unitType" => "Temperature",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => (float)0x60,
+                        "units" => "&#176;C",
+                        "unitType" => "Temperature",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => (float)0x70,
+                        "units" => "&#176;C",
+                        "unitType" => "Temperature",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => (float)0x80,
+                        "units" => "&#176;C",
+                        "unitType" => "Temperature",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => (float)0x90,
+                        "units" => "&#176;C",
+                        "unitType" => "Temperature",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => null,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => null,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => null,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => null,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                ),
+                array(
+                    "deltaT" => 300,
+                    "DataIndex" => 1,
+                    "timeConstant" => 1,
+                    array(
+                        "value" => (float)0x10,
+                        "units" => "&#176;C",
+                        "unitType" => "Temperature",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => (float)0.0,
+                        "units" => "&#176;C",
+                        "unitType" => "Temperature",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => (float)0x30,
+                        "units" => "&#176;C",
+                        "unitType" => "Temperature",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => (float)0x40,
+                        "units" => "&#176;C",
+                        "unitType" => "Temperature",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => (float)0x50,
+                        "units" => "&#176;C",
+                        "unitType" => "Temperature",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => (float)0x60,
+                        "units" => "&#176;C",
+                        "unitType" => "Temperature",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => (float)0x70,
+                        "units" => "&#176;C",
+                        "unitType" => "Temperature",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => (float)0x80,
+                        "units" => "&#176;C",
+                        "unitType" => "Temperature",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => (float)0x90,
+                        "units" => "&#176;C",
+                        "unitType" => "Temperature",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => null,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => null,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => null,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => null,
+                        "units" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $config The configuration to use
+    * @param mixed  $class  This is either the name of a class or an object
+    * @param string $data   The data to use
+    * @param array  $expect The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataSetUnits
+    */
+    public function testSetUnits($config, $class, $data, $expect)
+    {
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = Device::factory($sys, null, $class);
+        $obj->setUnits($data);
+        $this->assertEquals($expect, $data);
     }
 }
 
