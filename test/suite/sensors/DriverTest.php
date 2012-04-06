@@ -206,7 +206,8 @@ class DriverTest extends drivers\DriverTestBase
             "dataTypes" => array(
                 \HUGnet\units\Driver::TYPE_RAW => \HUGnet\units\Driver::TYPE_RAW,
                 \HUGnet\units\Driver::TYPE_DIFF => \HUGnet\units\Driver::TYPE_DIFF,
-                \HUGnet\units\Driver::TYPE_IGNORE => \HUGnet\units\Driver::TYPE_IGNORE,
+                \HUGnet\units\Driver::TYPE_IGNORE
+                    => \HUGnet\units\Driver::TYPE_IGNORE,
             ),
             'defMin' => 0,
             'defMax' => 150,
