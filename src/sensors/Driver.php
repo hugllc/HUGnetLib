@@ -84,6 +84,11 @@ abstract class Driver
         "storageUnit" => "unknown",
         "storageType" => \HUGnet\units\Driver::TYPE_RAW, // Storage dataType
         "maxDecimals" => 2,
+        "dataTypes" => array(
+            \HUGnet\units\Driver::TYPE_RAW => \HUGnet\units\Driver::TYPE_RAW,
+            \HUGnet\units\Driver::TYPE_DIFF => \HUGnet\units\Driver::TYPE_DIFF,
+            \HUGnet\units\Driver::TYPE_IGNORE => \HUGnet\units\Driver::TYPE_IGNORE,
+        ),
     );
     /**
     * This is where all of the driver information is stored.
@@ -98,6 +103,7 @@ abstract class Driver
         "41:ADuCPressure" => "ADuCPressure",
         "42:DEFAULT"  => "ADuCThermocouple",
         "43:DEFAULT"  => "ADuCVoltage",
+        "FE:DEFAULT"  => "EmptyVirtual",
     );
     /**
     * This function sets up the driver object, and the database object.  The
@@ -136,11 +142,11 @@ abstract class Driver
     {
         $class = '\\HUGnet\\sensors\\drivers\\'.$driver;
         $file = dirname(__FILE__)."/drivers/".$driver.".php";
-        if (file_exists($file) || class_exists($class)) {
+        if (file_exists($file)) {
             include_once $file;
-            if (class_exists($class)) {
-                return $class::factory();
-            }
+        }
+        if (class_exists($class)) {
+            return $class::factory();
         }
         include_once dirname(__FILE__)."/drivers/SDEFAULT.php";
         return \HUGnet\sensors\drivers\SDEFAULT::factory();

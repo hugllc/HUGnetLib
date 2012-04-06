@@ -84,6 +84,26 @@ class SDEFAULTTest extends DriverTestBase
     {
         parent::tearDown();
     }
+    /**
+     * Data provider for testGetReading
+     *
+     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     *
+     * @return array
+     */
+    public static function dataGetReading()
+    {
+        return array(
+            array(
+                array(),
+                256210,
+                1,
+                array(),
+                array(),
+                256210,
+            ),
+        );
+    }
 
 }
 ?>

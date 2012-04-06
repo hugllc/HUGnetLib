@@ -123,6 +123,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
             array("storageUnit", "string"),
             array("maxDecimals", "int"),
             array("unitType", "string"),
+            array("dataTypes", "array"),
         );
     }
     /**
@@ -276,6 +277,47 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
             "$field must be one of ".implode(",", (array)$values)
         );
     }
+    /**
+    * Check the extraText value size
+    *
+    * @return null
+    */
+    public function testDataTypesKeys()
+    {
+        $validTypes = array(
+            \HUGnet\units\Driver::TYPE_RAW => '\HUGnet\units\Driver::TYPE_RAW',
+            \HUGnet\units\Driver::TYPE_DIFF => '\HUGnet\units\Driver::TYPE_DIFF',
+            \HUGnet\units\Driver::TYPE_IGNORE => '\HUGnet\units\Driver::TYPE_IGNORE',
+        );
+        $extra = (array)$this->o->get("dataTypes");
+        foreach ($extra as $key => $value) {
+            $this->assertTrue(
+                isset($validTypes[$key]),
+                "Valid dataTypes keys are ".implode(", ", $validTypes)
+            );
+            $this->assertSame(
+                $key,
+                $value,
+                "In dataTypes, key must equal value, ".$validTypes[$key]
+                ." != ".$validTypes[$value]
+            );
+        }
+    }
+    /**
+    * Check the number of entries in extraText
+    *
+    * @return null
+    */
+    public function testDataTypesCount()
+    {
+        $count = 3;
+        $extra   = (array)$this->o->get("dataTypes");
+        $this->assertLessThanOrEqual(
+            $count,
+            count($dataTypes),
+            "dataTypes must have $count or less entries"
+        );
+    }
 
     /**
     * Check the extraText value size
@@ -370,6 +412,35 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     public function testGet($name, $expect)
     {
         $this->assertSame($expect, $this->o->get($name));
+    }
+    /**
+     * Data provider for testGetReading
+     *
+     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     *
+     * @return array
+     */
+    abstract public static function dataGetReading();
+    /**
+    * Generic function for testing sensor routines
+    *
+    * This is called by using parent::sensorTest()
+    *
+    * @param array $sensor The sensor data array
+    * @param mixed $A      Data for the sensor to work on
+    * @param float $deltaT The time differenct
+    * @param array $data   The data array being built
+    * @param array $prev   The previous record
+    * @param mixed $expect The return data to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataGetReading()
+    */
+    public function testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+    {
+        $ret = $this->o->getReading($A, $deltaT, $data, $prev, $sensor);
+        $this->assertEquals($expect, $ret, 0.00001);
     }
 }
 ?>

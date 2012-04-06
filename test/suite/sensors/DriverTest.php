@@ -203,6 +203,11 @@ class DriverTest extends drivers\DriverTestBase
             'storageType' => 'raw',
             'maxDecimals' => 2,
             'testParam' => '12345',
+            "dataTypes" => array(
+                \HUGnet\units\Driver::TYPE_RAW => \HUGnet\units\Driver::TYPE_RAW,
+                \HUGnet\units\Driver::TYPE_DIFF => \HUGnet\units\Driver::TYPE_DIFF,
+                \HUGnet\units\Driver::TYPE_IGNORE => \HUGnet\units\Driver::TYPE_IGNORE,
+            ),
         );
         $this->assertEquals($expect, $this->o->toArray());
     }
@@ -373,6 +378,26 @@ class DriverTest extends drivers\DriverTestBase
     public function testGetTypes($sid,$expect)
     {
         $this->assertSame($expect, Driver::getTypes($sid));
+    }
+    /**
+     * Data provider for testGetReading
+     *
+     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     *
+     * @return array
+     */
+    public static function dataGetReading()
+    {
+        return array(
+            array(
+                array(),
+                256210,
+                1,
+                array(),
+                array(),
+                null,
+            ),
+        );
     }
 }
 /**

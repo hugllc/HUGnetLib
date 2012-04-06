@@ -87,6 +87,8 @@ class ADuCVishayRTDTest extends DriverTestBase
     /**
      * Data provider for testGetReading
      *
+     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     *
      * @return array
      */
     public static function dataGetReading()
@@ -96,47 +98,59 @@ class ADuCVishayRTDTest extends DriverTestBase
                 array(),
                 0xFFFB8C55,
                 0,
+                array(),
+                array(),
                 -51.7004,
             ),
             array(
                 array(),
                 0xFFFA05B5,
                 0,
+                array(),
+                array(),
                 21.2240,
             ),
             array(
                 array('extra' => array(2210)),
                 0xFFF87f15,
                 0,
+                array(),
+                array(),
                 97.6624,
             ),
             array(
                 array('extra' => array(2210)),
                 0xFF800000,
                 0,
+                array(),
+                array(),
+                null,
+            ),
+            array(
+                array('extra' => array(2210)),
+                pow(2, 23) - 1,
+                0,
+                array(),
+                array(),
+                null,
+            ),
+            array(
+                array('extra' => array(2210)),
+                pow(2, 23) + 1,
+                0,
+                array(),
+                array(),
+                null,
+            ),
+            array(
+                array('extra' => array(2210)),
+                0,
+                0,
+                array(),
+                array(),
                 null,
             ),
         );
     }
-    /**
-    * Generic function for testing sensor routines
-    *
-    * This is called by using parent::sensorTest()
-    *
-    * @param array $sensor The extra array
-    * @param mixed $A      Data for the sensor to work on
-    * @param float $deltaT The time differenct
-    * @param mixed $expect The return data to expect
-    *
-    * @return null
-    *
-    * @dataProvider dataGetReading()
-    */
-    public function testGetReading($sensor, $A, $deltaT, $expect)
-    {
-        $ret = $this->o->getReading($A, $deltaT, $data, $prev, $sensor);
-        $this->assertEquals($expect, $ret, 0.0001);
-    }
-
 }
 ?>

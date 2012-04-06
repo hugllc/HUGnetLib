@@ -87,6 +87,8 @@ class ADuCVoltageTest extends DriverTestBase
     /**
      * Data provider for testGetReading
      *
+     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     *
      * @return array
      */
     public static function dataGetReading()
@@ -96,34 +98,19 @@ class ADuCVoltageTest extends DriverTestBase
                 array(),
                 0xFF800000,
                 1,
+                array(),
+                array(),
                 -121.2
             ),
             array(
                 array(),
                 0xFFFFFFFF,
                 1,
+                array(),
+                array(),
                 -1.445E-5
             ),
         );
-    }
-    /**
-    * Generic function for testing sensor routines
-    *
-    * This is called by using parent::sensorTest()
-    *
-    * @param array $sensor The sensor data array
-    * @param mixed $A      Data for the sensor to work on
-    * @param float $deltaT The time differenct
-    * @param mixed $expect The return data to expect
-    *
-    * @return null
-    *
-    * @dataProvider dataGetReading()
-    */
-    public function testGetReading($sensor, $A, $deltaT, $expect)
-    {
-        $ret = $this->o->getReading($A, $deltaT, $data, $prev, $sensor);
-        $this->assertSame($expect, $ret);
     }
 
 }

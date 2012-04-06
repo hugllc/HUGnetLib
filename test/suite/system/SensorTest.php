@@ -216,6 +216,14 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         "storageUnit" => "unknown",
                         "storageType" => \HUGnet\units\Driver::TYPE_RAW,
                         "maxDecimals" => 2,
+                        "dataTypes" => array(
+                            \HUGnet\units\Driver::TYPE_RAW
+                                => \HUGnet\units\Driver::TYPE_RAW,
+                            \HUGnet\units\Driver::TYPE_DIFF
+                                => \HUGnet\units\Driver::TYPE_DIFF,
+                            \HUGnet\units\Driver::TYPE_IGNORE
+                                => \HUGnet\units\Driver::TYPE_IGNORE,
+                        ),
                         'id' => 0x41,
                         'asdf' => 3,
                         'params' => array(1,2,3,4),

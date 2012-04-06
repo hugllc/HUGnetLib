@@ -87,6 +87,8 @@ class ADuCThermocoupleTest extends DriverTestBase
     /**
      * Data provider for testGetReading
      *
+     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     *
      * @return array
      */
     public static function dataGetReading()
@@ -97,6 +99,7 @@ class ADuCThermocoupleTest extends DriverTestBase
                 0xFFFFFFFFFF - 23920, // (-3.76411915 mV)
                 1,
                 array(0 => array("value" => 10)),
+                array(),
                 -96.9944,
             ),
             array( //#1 Verified by http://srdata.nist.gov/its90/download/type_k.tab
@@ -104,6 +107,7 @@ class ADuCThermocoupleTest extends DriverTestBase
                 23927, // (3.76506329 mV)
                 1,
                 array(0 => array("value" => 10)),
+                array(),
                 101.9745,
             ),
             array( //#2 Verified by http://srdata.nist.gov/its90/download/type_k.tab
@@ -111,6 +115,7 @@ class ADuCThermocoupleTest extends DriverTestBase
                 239241, // (37.64591217 mV)
                 1,
                 array(0 => array("value" => 10)),
+                array(),
                 918.0423,
             ),
             array( //#3 Too low
@@ -118,6 +123,7 @@ class ADuCThermocoupleTest extends DriverTestBase
                 0xFFFFFFFFFF - 47120, // (-7.41478443 mV)
                 1,
                 array(0 => array("value" => 10)),
+                array(),
                 null,
             ),
             array( //#4 Too high
@@ -125,29 +131,10 @@ class ADuCThermocoupleTest extends DriverTestBase
                 480241, // (75.56892872 mV)
                 1,
                 array(0 => array("value" => 10)),
+                array(),
                 null,
             ),
         );
-    }
-    /**
-    * Generic function for testing sensor routines
-    *
-    * This is called by using parent::sensorTest()
-    *
-    * @param array $sensor The extra array
-    * @param mixed $A      Data for the sensor to work on
-    * @param float $deltaT The time differenct
-    * @param array $data   The data from the previous sensors
-    * @param mixed $expect The return data to expect
-    *
-    * @return null
-    *
-    * @dataProvider dataGetReading()
-    */
-    public function testGetReading($sensor, $A, $deltaT, $data, $expect)
-    {
-        $ret = $this->o->getReading($A, $deltaT, $data, $prev, $sensor);
-        $this->assertEquals($expect, $ret, 0.000001);
     }
 
 }
