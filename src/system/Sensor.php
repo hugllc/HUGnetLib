@@ -207,11 +207,13 @@ class Sensor extends SystemTableBase
         $ret = array();
         if ($this->storageType == \HUGnet\units\Driver::TYPE_DIFF) {
             $ret["value"] = $this->driver()->getReading(
-                ($A - $prev), $deltaT, $data, $prev
+                ($A - $prev), $deltaT, $data, $prev, $this->table()->toArray()
             );
             $ret["raw"] = $A;
         } else {
-            $ret["value"] = $this->driver()->getReading($A, $deltaT, $data, $prev);
+            $ret["value"] = $this->driver()->getReading(
+                $A, $deltaT, $data, $prev, $this->table()->toArray()
+            );
         }
         $ret["units"] = $this->get("storageUnit");
         $ret["unitType"] = $this->get("unitType");

@@ -196,7 +196,7 @@ class Util
         if ($Rbias == 0) {
             return null;
         }
-        return (float)(($value * ($Rin + $Rbias)) / $Rbias);
+        return (float)bcdiv(bcmul($value, bcadd($Rin, $Rbias)), $Rbias);
     }
     /**
     * This makes a line of two ordered pairs, then puts $A on that line
@@ -223,9 +223,9 @@ class Util
         if ($value < $Imin) {
             return null;
         }
-        $m = ($Omax - $Omin) / ($Imax - $Imin);
-        $b = $Omax - ($m * $Imax);
-        $O = ($m * $value) + $b;
+        $m = bcdiv(bcsub($Omax, $Omin), bcsub($Imax, $Imin));
+        $b = bcsub($Omax, bcmul($m, $Imax));
+        $O = bcadd(bcmul($m, $value), $b);
         return $O;
     }
 }

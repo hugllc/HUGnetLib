@@ -255,6 +255,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     */
     public function testInputBiasComensation($value, $Rin, $Rbias, $expect)
     {
+        bcscale(10);
         $val = Util::inputBiasCompensation($value, $Rin, $Rbias);
         $this->assertEquals($expect, $val, 0.0001);
     }
@@ -333,6 +334,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     */
     public function testLinearBounded($value, $Imin, $Imax, $Omin, $Omax, $expect)
     {
+        bcscale(10);
         $val = Util::linearBounded($value, $Imin, $Imax, $Omin, $Omax);
         $this->assertEquals($expect, $val, 0.0001);
     }

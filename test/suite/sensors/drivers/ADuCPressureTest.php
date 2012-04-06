@@ -104,6 +104,31 @@ class ADuCPressureTest extends DriverTestBase
                 1,
                 28.8963,
             ),
+            array(
+                array(
+                    "extra" => array(0, 5, 0, 1000, 1.2, 100, 1)
+                ),
+                83055,
+                1,
+                239.9985,
+            ),
+            array(
+                array(
+                    "extra" => array(0, 5, 0, 150, 1.2, 100, 1)
+                ),
+                83055,
+                1,
+                35.9998,
+            ),
+            array(
+                array(
+                    "extra" => array(0, 5, 0, 150, 1.2, 100, 1)
+                ),
+                88072,
+                1,
+                38.1744,
+            ),
+
         );
     }
     /**
@@ -123,7 +148,7 @@ class ADuCPressureTest extends DriverTestBase
     public function testGetReading($sensor, $A, $deltaT, $expect)
     {
         $ret = $this->o->getReading($A, $deltaT, $data, $prev, $sensor);
-        $this->assertSame($expect, $ret);
+        $this->assertEquals($expect, $ret, 0.00001);
     }
 
 }

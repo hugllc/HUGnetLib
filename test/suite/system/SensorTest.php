@@ -602,13 +602,24 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 0x41,
                             "type" => "ADuCPressure",
+                            "unitType" => "Pressure",
+                            "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                            "storageUnit" => "psi",
+                        ),
+                        "toArray" => array(
+                            "id" => 0x41,
+                            "type" => "ADuCPressure",
+                            "extra" => array(0, 5, 0, 1000, 1.2, 100, 1),
+                            "unitType" => "Pressure",
+                            "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                            "storageUnit" => "psi",
                         ),
                     ),
                 ),
                 new DummyTable("Table"),
-                0x23451,
+                83055,
                 300,
-                0x12345,
+                12345,
                 array(
                     array(
                         "value" => 25.2134,
@@ -636,7 +647,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(
-                    "value" => 41.7451,
+                    "value" => 239.9985,
                     "units" => "psi",
                     "unitType" => "Pressure",
                     "dataType" => \HUGnet\units\Driver::TYPE_RAW,

@@ -106,6 +106,7 @@ class ADuCPressure extends \HUGnet\sensors\Driver
     public function getReading(
         $A, $deltaT = 0, &$data = array(), $prev = null, $sensor = array()
     ) {
+        bcscale(10);
         $Am   = pow(2, 23);
         $Vmin  = $this->getExtra(0, $sensor["extra"]);
         $Vmax  = $this->getExtra(1, $sensor["extra"]);
@@ -117,6 +118,7 @@ class ADuCPressure extends \HUGnet\sensors\Driver
 
         $A = \HUGnet\Util::getTwosCompliment($A, 32);
         $A = \HUGnet\Util::inputBiasCompensation($A, $Rin, $Rbias);
+
         $Va = ($A / $Am) * $Vref;
         $P = \HUGnet\Util::linearBounded($Va, $Vmin, $Vmax, $Pmin, $Pmax);
         return round($P, $this->get("maxDecimals"));
