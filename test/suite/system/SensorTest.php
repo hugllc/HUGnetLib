@@ -224,6 +224,8 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             \HUGnet\units\Driver::TYPE_IGNORE
                                 => \HUGnet\units\Driver::TYPE_IGNORE,
                         ),
+                        "defMin" => 0,
+                        "defMax" => 150,
                         'id' => 0x41,
                         'asdf' => 3,
                         'params' => array(1,2,3,4),
@@ -483,10 +485,34 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             array(
                                 'type'
                             ),
+                            array(
+                                'min'
+                            ),
+                            array(
+                                'max'
+                            ),
+                            array(
+                                'id'
+                            ),
+                            array(
+                                'type'
+                            ),
+                            array(
+                                'id'
+                            ),
+                            array(
+                                'type'
+                            ),
                         ),
                         'set' => array(
                             array(
                                 'units', 'unknown'
+                            ),
+                            array(
+                                'min', 0
+                            ),
+                            array(
+                                'max', 150
                             ),
                         ),
                     ),
@@ -547,6 +573,24 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             array(
                                 'type'
                             ),
+                            array(
+                                'min'
+                            ),
+                            array(
+                                'max'
+                            ),
+                            array(
+                                'id'
+                            ),
+                            array(
+                                'type'
+                            ),
+                            array(
+                                'id'
+                            ),
+                            array(
+                                'type'
+                            ),
                         ),
                         'set' => array(
                             array(
@@ -554,6 +598,12 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             ),
                             array(
                                 'extra', array()
+                            ),
+                            array(
+                                'min', 0
+                            ),
+                            array(
+                                'max', 150
                             ),
                         ),
                     ),

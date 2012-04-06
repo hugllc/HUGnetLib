@@ -208,6 +208,8 @@ class DriverTest extends drivers\DriverTestBase
                 \HUGnet\units\Driver::TYPE_DIFF => \HUGnet\units\Driver::TYPE_DIFF,
                 \HUGnet\units\Driver::TYPE_IGNORE => \HUGnet\units\Driver::TYPE_IGNORE,
             ),
+            'defMin' => 0,
+            'defMax' => 150,
         );
         $this->assertEquals($expect, $this->o->toArray());
     }

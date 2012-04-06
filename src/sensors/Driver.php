@@ -89,6 +89,8 @@ abstract class Driver
             \HUGnet\units\Driver::TYPE_DIFF => \HUGnet\units\Driver::TYPE_DIFF,
             \HUGnet\units\Driver::TYPE_IGNORE => \HUGnet\units\Driver::TYPE_IGNORE,
         ),
+        "defMin" => 0,
+        "defMax" => 150,
     );
     /**
     * This is where all of the driver information is stored.

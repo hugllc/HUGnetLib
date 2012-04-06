@@ -344,6 +344,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
             array(
             )
         );
+        $obj->change(array());
         for ($i = 0; $i < 13; $i++) {
             $sensors[$i] = json_decode($obj->json(), true);
         }

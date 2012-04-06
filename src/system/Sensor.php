@@ -239,6 +239,14 @@ class Sensor extends SystemTableBase
         if (count($extra) != count($extraDefault)) {
             $this->table()->set("extra", array());
         }
+        $min = $this->table()->get("min");
+        $max = $this->table()->get("max");
+        if (!is_numeric($min) || ($min == $max)) {
+            $this->table()->set("min", $this->driver()->get("defMin"));
+        }
+        if (!is_numeric($max) || ($min == $max)) {
+            $this->table()->set("max", $this->driver()->get("defMax"));
+        }
     }
     /**
     * Converts data between units
