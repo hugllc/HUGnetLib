@@ -98,21 +98,55 @@ class Sensor extends SystemTableBase
     */
     public function get($field)
     {
-        $ret = $this->driver()->get($field);
+        return $this->_get($field, $this->driver());
+    }
+    /**
+    * Gets a value
+    *
+    * @param string $field  the field to get
+    * @param object $driver The driver to use
+    *
+    * @return null
+    */
+    private function _get($field, $driver)
+    {
+        $ret = $driver->get($field);
         if (is_null($ret)) {
             $ret = parent::get($field);
+        } else if (is_string($ret)) {
+            $this->_getExtra($ret);
         }
         return $ret;
     }
     /**
-    * Returns the table as a json string
+    * Gets a value
     *
-    * @return json string
+    * @param string $field the field to get
+    *
+    * @return null
     */
-    public function json()
+    private function _getExtra(&$value)
     {
+        if (is_string($value) && (strtolower(substr($value, 0, 8)) === "getextra")) {
+            $value = $this->driver()->getExtra(
+                (int)substr($value, 8),
+                $this->table()->get("extra")
+            );
+        }
+    }
+    /**
+    * Returns the table as an array
+    *
+    * @return array
+    */
+    public function toArray()
+    {
+        $driver = $this->driver()->toArray();
+        foreach (array_keys($driver) as $key) {
+            $this->_getExtra($driver[$key]);
+        }
         $return = array_merge(
-            $this->driver()->toArray(),
+            $driver,
             $this->table()->toArray(true)
         );
         $params = json_decode($return["params"], true);
@@ -124,7 +158,16 @@ class Sensor extends SystemTableBase
         $return["params"] = (array)$params;
         $return["otherTypes"] = \HUGnet\sensors\Driver::getTypes($return["id"]);
         $return["validUnits"] = $this->units()->getValid();
-        return json_encode($return);
+        return (array)$return;
+    }
+    /**
+    * Returns the table as a json string
+    *
+    * @return json string
+    */
+    public function json()
+    {
+        return json_encode($this->toArray(true));
     }
     /**
     * Loads the data into the table class
@@ -147,10 +190,7 @@ class Sensor extends SystemTableBase
             );
         } else if (is_array($data) || is_string($data)) {
             $this->table()->fromAny($data);
-            $units = $this->table()->get("units");
-            if (empty($units)) {
-                $this->table()->set("units", $this->driver()->get("storageUnit"));
-            }
+            $this->fixTable();
             $ret = true;
         }
         return (bool)$ret;
@@ -185,8 +225,8 @@ class Sensor extends SystemTableBase
     {
         include_once dirname(__FILE__)."/../units/Driver.php";
         $units = \HUGnet\units\Driver::factory(
-            $this->driver()->get("unitType"),
-            $this->driver()->get("storageUnit")
+            $this->get("unitType"),
+            $this->get("storageUnit")
         );
         return $units;
     }
@@ -205,7 +245,7 @@ class Sensor extends SystemTableBase
     public function decodeData($A, $deltaT = 0, &$prev = null, &$data = array())
     {
         $ret = array();
-        if ($this->storageType == \HUGnet\units\Driver::TYPE_DIFF) {
+        if ($this->get("storageType") == \HUGnet\units\Driver::TYPE_DIFF) {
             $ret["value"] = $this->driver()->getReading(
                 ($A - $prev), $deltaT, $data, $prev, $this->table()->toArray()
             );
@@ -231,21 +271,23 @@ class Sensor extends SystemTableBase
     */
     protected function fixTable()
     {
-        if (!$this->units()->valid($this->table()->get("units"))) {
-            $this->table()->set("units", $this->driver()->get("storageUnit"));
+        $table =& $this->table();
+        $driver =& $this->driver();
+        if (!$this->units()->valid($table->get("units"))) {
+            $table->set("units", $this->_get("storageUnit", $driver));
         }
-        $extra = (array)$this->table()->get("extra");
-        $extraDefault = (array)$this->driver()->get("extraDefault");
+        $extra = (array)$table->get("extra");
+        $extraDefault = (array)$this->_get("extraDefault", $driver);
         if (count($extra) != count($extraDefault)) {
-            $this->table()->set("extra", array());
+            $table->set("extra", array());
         }
-        $min = $this->table()->get("min");
-        $max = $this->table()->get("max");
+        $min = $table->get("min");
+        $max = $table->get("max");
         if (!is_numeric($min) || ($min == $max)) {
-            $this->table()->set("min", $this->driver()->get("defMin"));
+            $table->set("min", $this->_get("defMin", $driver));
         }
         if (!is_numeric($max) || ($min == $max)) {
-            $this->table()->set("max", $this->driver()->get("defMax"));
+            $table->set("max", $this->_get("defMax", $driver));
         }
     }
     /**

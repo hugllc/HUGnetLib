@@ -243,6 +243,23 @@ abstract class Driver
         return (array)$array;
     }
     /**
+    * Registers an extra driver to be used by the class
+    *
+    * The new class will only be registered if it doesn't already exist
+    *
+    * @param string $key   The key to use for the class
+    * @param string $class The class to use for the key
+    *
+    * @return null
+    */
+    public static function register($key, $class)
+    {
+        $driver = '\\HUGnet\\sensors\\drivers\\'.$class;
+        if (class_exists($driver) && !isset(self::$_drivers[$key])) {
+            self::$_drivers[$key] = $class;
+        }
+    }
+    /**
     * Gets the extra values
     *
     * @param int   $index The extra index to use
@@ -250,7 +267,7 @@ abstract class Driver
     *
     * @return The extra value (or default if empty)
     */
-    protected function getExtra($index, $extra)
+    public function getExtra($index, $extra)
     {
         if (!(is_array($extra) && isset($extra[$index]))) {
             $extra = $this->get("extraDefault");

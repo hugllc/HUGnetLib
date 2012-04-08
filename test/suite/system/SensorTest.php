@@ -38,6 +38,8 @@ namespace HUGnet;
 /** This is a required class */
 require_once CODE_BASE.'system/Sensor.php';
 /** This is a required class */
+require_once CODE_BASE.'sensors/Driver.php';
+/** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is the dummy table container */
 require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
@@ -72,6 +74,8 @@ class SensorTest extends \PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
+        \HUGnet\sensors\Driver::register("FD:DEFAULT", "TestSensorDriver1");
+        \HUGnet\sensors\Driver::register("FC:DEFAULT", "TestSensorDriver2");
         parent::setUp();
     }
 
@@ -100,11 +104,6 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                 new DummySystem(),
                 null,
                 "DummyTable",
-                array(
-                    "Table" => array(
-                        "clearData" => array(array()),
-                    ),
-                ),
             ),
             array(
                 new DummySystem(),
@@ -114,44 +113,11 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                     "value" => 1,
                 ),
                 "DummyTable",
-                array(
-                    "Table" => array(
-                        "fromAny" => array(
-                            array(
-                                array(
-                                    "id" => 5,
-                                    "name" => 3,
-                                    "value" => 1,
-                                ),
-                            ),
-                        ),
-                        'get' => array(
-                            array("units"),
-                            array("id"),
-                            array("type"),
-                        ),
-                        'set' => array(
-                            array("units", "unknown"),
-                        ),
-                        "clearData" => array(array()),
-                    ),
-                ),
             ),
             array(
                 new DummySystem(),
                 array("dev" => 2, "sensor" => 0),
                 new DummyTable(),
-                array(
-                    "Table" => array(
-                        "selectOneInto" => array(
-                            array(
-                                "dev = ? AND sensor = ?",
-                                array(2, 0),
-                            ),
-                        ),
-                        "clearData" => array(array()),
-                    ),
-                ),
             ),
         );
     }
@@ -161,13 +127,12 @@ class SensorTest extends \PHPUnit_Framework_TestCase
     * @param array $config      The configuration to use
     * @param mixed $gateway     The gateway to set
     * @param mixed $class       This is either the name of a class or an object
-    * @param array $expectTable The table to expect
     *
     * @return null
     *
     * @dataProvider dataCreate
     */
-    public function testCreate($config, $gateway, $class, $expectTable)
+    public function testCreate($config, $gateway, $class)
     {
         $table = new DummyTable();
         // This just resets the mock
@@ -175,9 +140,6 @@ class SensorTest extends \PHPUnit_Framework_TestCase
         $obj = Sensor::factory($config, $gateway, $class);
         // Make sure we have the right object
         $this->assertTrue((get_class($obj) === "HUGnet\Sensor"), "Class wrong");
-        if (is_object($table)) {
-            $this->assertEquals($expectTable, $table->retrieve(), "Data Wrong");
-        }
     }
     /**
     * Data provider for testCreate
@@ -191,11 +153,10 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Table" => array(
                         "get" => array(
-                            "Driver" => "EDEFAULT",
-                            "id" => 2,
+                            "id" => 0xFD,
                         ),
                         "toArray" => array(
-                            "id" => 0x41,
+                            "id" => 0xFD,
                             "asdf" => 3,
                             "params" => json_encode(array(1,2,3,4)),
                         ),
@@ -204,18 +165,18 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                 new DummyTable("Table"),
                 json_encode(
                     array(
-                        "longName" => "Unknown Sensor",
-                        "shortName" => "Unknown",
-                        "unitType" => "unknown",
+                        "longName" => "Silly Sensor Driver 1",
+                        "shortName" => "SSD1",
+                        "unitType" => "Temperature",
                         "bound" => false,
                         "virtual" => false,
                         "total" => false,
-                        "extraText" => array(),
-                        "extraDefault" => array(),
-                        "extraValues" => array(),
-                        "storageUnit" => "unknown",
+                        "extraText" => array("Silliness Factor", "Storage Unit"),
+                        "extraDefault" => array(2210, '&#176;C'),
+                        "extraValues" => array(5, array('&#176;C', '&#176;F', 'K')),
+                        "storageUnit" => "&#176;C",
                         "storageType" => \HUGnet\units\Driver::TYPE_RAW,
-                        "maxDecimals" => 2,
+                        "maxDecimals" => 4,
                         "dataTypes" => array(
                             \HUGnet\units\Driver::TYPE_RAW
                                 => \HUGnet\units\Driver::TYPE_RAW,
@@ -226,15 +187,18 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         ),
                         "defMin" => 0,
                         "defMax" => 150,
-                        'id' => 0x41,
+                        'id' => 0xFD,
                         'asdf' => 3,
                         'params' => array(1,2,3,4),
-                        'type' => "SDEFAULT",
+                        'type' => "TestSensorDriver1",
                         'otherTypes' => array(
-                            "DEFAULT" => "ADuCVoltage",
-                            "ADuCPressure" => "ADuCPressure",
+                            "DEFAULT" => "TestSensorDriver1",
                         ),
-                        'validUnits' => array("unknown" => "unknown"),
+                        'validUnits' => array(
+                            "&#176;F" => "&#176;F",
+                            "&#176;C" => "&#176;C",
+                            "K" => "K"
+                        ),
                     )
                 ),
             ),
@@ -295,6 +259,20 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                 "longName",
                 "Unknown Sensor",
             ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "driver" => "TestSensorDriver1",
+                            "id" => 0xFD,
+                            "extra" => array("a", "b"),
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                "storageUnit",
+                "b",
+            ),
         );
     }
     /**
@@ -347,12 +325,21 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             ),
                         ),
                         'get' => array(
-                            array("units"),
                             array("id"),
                             array("type"),
+                            array("id"),
+                            array("type"),
+                            array("id"),
+                            array("type"),
+                            array("units"),
+                            array("extra"),
+                            array("min"),
+                            array("max"),
                         ),
                         'set' => array(
                             array("units", "unknown"),
+                            array("min", 0),
+                            array("max", 150),
                         ),
                         "clearData" => array(array(), array()),
                     ),
@@ -468,40 +455,22 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                                 'type'
                             ),
                             array(
+                                'id'
+                            ),
+                            array(
+                                'type'
+                            ),
+                            array(
                                 'units'
                             ),
                             array(
-                                'id'
-                            ),
-                            array(
-                                'type'
-                            ),
-                            array(
                                 'extra'
-                            ),
-                            array(
-                                'id'
-                            ),
-                            array(
-                                'type'
                             ),
                             array(
                                 'min'
                             ),
                             array(
                                 'max'
-                            ),
-                            array(
-                                'id'
-                            ),
-                            array(
-                                'type'
-                            ),
-                            array(
-                                'id'
-                            ),
-                            array(
-                                'type'
                             ),
                         ),
                         'set' => array(
@@ -556,40 +525,22 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                                 'type'
                             ),
                             array(
+                                'id'
+                            ),
+                            array(
+                                'type'
+                            ),
+                            array(
                                 'units'
                             ),
                             array(
-                                'id'
-                            ),
-                            array(
-                                'type'
-                            ),
-                            array(
                                 'extra'
-                            ),
-                            array(
-                                'id'
-                            ),
-                            array(
-                                'type'
                             ),
                             array(
                                 'min'
                             ),
                             array(
                                 'max'
-                            ),
-                            array(
-                                'id'
-                            ),
-                            array(
-                                'type'
-                            ),
-                            array(
-                                'id'
-                            ),
-                            array(
-                                'type'
                             ),
                         ),
                         'set' => array(
@@ -658,15 +609,15 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Table" => array(
                         "get" => array(
-                            "id" => 0x41,
-                            "type" => "ADuCPressure",
+                            "id" => 0xFD,
+                            "type" => "TestSensorDriver1",
                             "unitType" => "Pressure",
                             "dataType" => \HUGnet\units\Driver::TYPE_RAW,
                             "storageUnit" => "psi",
                         ),
                         "toArray" => array(
-                            "id" => 0x41,
-                            "type" => "ADuCPressure",
+                            "id" => 0xFD,
+                            "type" => "TestSensorDriver1",
                             "extra" => array(0, 5, 0, 1000, 1.2, 100, 1),
                             "unitType" => "Pressure",
                             "dataType" => \HUGnet\units\Driver::TYPE_RAW,
@@ -705,9 +656,9 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(
-                    "value" => 239.9985,
-                    "units" => "psi",
-                    "unitType" => "Pressure",
+                    "value" => 166110,
+                    "units" => "&#176;C",
+                    "unitType" => "Temperature",
                     "dataType" => \HUGnet\units\Driver::TYPE_RAW,
                 ),
             ),
@@ -715,14 +666,14 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Table" => array(
                         "get" => array(
-                            "id" => 0x41,
-                            "type" => "ADuCPressure",
+                            "id" => 0xFD,
+                            "type" => "TestSensorDriver1",
                             "dataType" => \HUGnet\units\Driver::TYPE_DIFF,
                         ),
                     ),
                 ),
                 new DummyTable("Table"),
-                0x23451,
+                430,
                 300,
                 0x12345,
                 array(
@@ -752,10 +703,58 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(
-                    "value" => 41.7451,
-                    "units" => "psi",
-                    "unitType" => "Pressure",
+                    "value" => 860,
+                    "units" => "&#176;C",
+                    "unitType" => "Temperature",
                     "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                ),
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 0xFC,
+                            "type" => "TestSensorDriver2",
+                            "dataType" => \HUGnet\units\Driver::TYPE_DIFF,
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                100,
+                300,
+                50,
+                array(
+                    array(
+                        "value" => 25.2134,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 28.5282,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 12.3455,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 82.1253,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                ),
+                array(
+                    "value" => 25,
+                    "units" => "&#176;C",
+                    "unitType" => "Temperature",
+                    "dataType" => \HUGnet\units\Driver::TYPE_DIFF,
+                    "raw" => 100,
                 ),
             ),
         );
@@ -931,4 +930,137 @@ class SensorTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, $data, "Data is wrong");
     }
 }
+
+namespace HUGnet\sensors\drivers;
+
+/**
+ * Default sensor driver
+ *
+ * @category   Libraries
+ * @package    HUGnetLib
+ * @subpackage Sensors
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2012 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.9.7
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @since      0.9.7
+ *
+ * @SuppressWarnings(PHPMD.ShortVariable)
+ */
+class TestSensorDriver1 extends \HUGnet\sensors\Driver
+{
+    /**
+    * This is where the data for the driver is stored.  This array must be
+    * put into all derivative classes, even if it is empty.
+    */
+    protected static $params = array(
+        "longName" => "Silly Sensor Driver 1",
+        "shortName" => "SSD1",
+        "unitType" => "Temperature",
+        "storageUnit" => 'getExtra1',
+        "storageType" => \HUGnet\units\Driver::TYPE_RAW,  // Storage dataType
+        "extraText" => array("Silliness Factor", "Storage Unit"),
+        // Integer is the size of the field needed to edit
+        // Array   is the values that the extra can take
+        // Null    nothing
+        "extraValues" => array(5, array('&#176;C', '&#176;F', 'K')),
+        "extraDefault" => array(2210, '&#176;C'),
+        "maxDecimals" => 4,
+    );
+    /**
+    * This function creates the system.
+    *
+    * @return null
+    */
+    public static function &factory()
+    {
+        return parent::intFactory();
+    }
+    /**
+    * Changes a raw reading into a output value
+    *
+    * @param int   $A      Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
+    * @param array &$data  The data from the other sensors that were crunched
+    * @param mixed $prev   The previous value for this sensor
+    * @param array $sensor The sensor information
+    *
+    * @return mixed The value in whatever the units are in the sensor
+    *
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function getReading(
+        $A, $deltaT = 0, &$data = array(), $prev = null, $sensor = array()
+    ) {
+        return $A * 2;
+    }
+
+}
+/**
+ * Default sensor driver
+ *
+ * @category   Libraries
+ * @package    HUGnetLib
+ * @subpackage Sensors
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2012 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.9.7
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @since      0.9.7
+ *
+ * @SuppressWarnings(PHPMD.ShortVariable)
+ */
+class TestSensorDriver2 extends \HUGnet\sensors\Driver
+{
+    /**
+    * This is where the data for the driver is stored.  This array must be
+    * put into all derivative classes, even if it is empty.
+    */
+    protected static $params = array(
+        "longName" => "Silly Sensor Driver 2",
+        "shortName" => "SSD2",
+        "unitType" => "Temperature",
+        "storageUnit" => 'getExtra1',
+        "storageType" => \HUGnet\units\Driver::TYPE_DIFF,  // Storage dataType
+        "extraText" => array("Silliness Factor", "Storage Unit"),
+        // Integer is the size of the field needed to edit
+        // Array   is the values that the extra can take
+        // Null    nothing
+        "extraValues" => array(5, array('&#176;C', '&#176;F', 'K')),
+        "extraDefault" => array(2210, '&#176;C'),
+        "maxDecimals" => 4,
+    );
+    /**
+    * This function creates the system.
+    *
+    * @return null
+    */
+    public static function &factory()
+    {
+        return parent::intFactory();
+    }
+    /**
+    * Changes a raw reading into a output value
+    *
+    * @param int   $A      Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
+    * @param array &$data  The data from the other sensors that were crunched
+    * @param mixed $prev   The previous value for this sensor
+    * @param array $sensor The sensor information
+    *
+    * @return mixed The value in whatever the units are in the sensor
+    *
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function getReading(
+        $A, $deltaT = 0, &$data = array(), $prev = null, $sensor = array()
+    ) {
+        return $A / 2;
+    }
+
+}
+
+
 ?>
