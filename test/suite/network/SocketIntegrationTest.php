@@ -110,6 +110,8 @@ class SocketIntegrationTest extends \PHPUnit_Framework_TestCase
     {
         $port = self::findPort();
         $file = sys_get_temp_dir()."/serverInteg".mt_rand();
+        $file2 = sys_get_temp_dir()."/serverInteg2".mt_rand();
+        touch($file2);
         return array(
             array( // #0
                 array(
@@ -223,6 +225,47 @@ class SocketIntegrationTest extends \PHPUnit_Framework_TestCase
                 "",
                 array(
                     "default" => "",
+                ),
+                null,
+            ),
+            array( // #3 File already exists
+                array(
+                    "type" => AF_UNIX,
+                    "location" => $file2,
+                    "bus" => true,
+                    "force" => true,
+                ),
+                array(
+                    "default" => array(
+                        "type" => AF_UNIX,
+                        "location" => $file2,
+                        "name" => "default",
+                    ),
+                ),
+                10,
+                // There must be data from each client before they actually connect
+                // therefore, numbers should be lower in the client array.
+                array(
+                    2 => "02",
+                    4 => "04",
+                    6 => "06",
+                ),
+                array(
+                    "default" => array(
+                        0 => "",
+                        1 => "01",
+                        2 => "",
+                        3 => "03",
+                        4 => "",
+                        5 => "05",
+                        6 => "",
+                        7 => "07",
+                        8 => "",
+                    ),
+                ),
+                "01030507",
+                array(
+                    "default" => "020406",
                 ),
                 null,
             ),
