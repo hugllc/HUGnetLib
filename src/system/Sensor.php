@@ -119,9 +119,9 @@ class Sensor extends SystemTableBase
         return $ret;
     }
     /**
-    * Gets a value
+    * Sets the value of a getExtra parameter if it finds one.
     *
-    * @param string $field the field to get
+    * @param string $value Set the value to check
     *
     * @return null
     */

@@ -124,9 +124,9 @@ class SensorTest extends \PHPUnit_Framework_TestCase
     /**
     * This tests the object creation
     *
-    * @param array $config      The configuration to use
-    * @param mixed $gateway     The gateway to set
-    * @param mixed $class       This is either the name of a class or an object
+    * @param array $config  The configuration to use
+    * @param mixed $gateway The gateway to set
+    * @param mixed $class   This is either the name of a class or an object
     *
     * @return null
     *
