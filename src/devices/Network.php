@@ -150,7 +150,7 @@ class Network
     public function getCRC($config = array())
     {
         $reply = $this->_sendPkt("GETCRC", null, $config);
-        if (is_object($reply)) {
+        if (is_object($reply) && is_string($reply->Reply())) {
             return $reply->Reply();
         }
         return false;
@@ -168,7 +168,7 @@ class Network
     public function setCRC($config = array())
     {
         $reply = $this->_sendPkt("SETCRC", null, $config);
-        if (is_object($reply)) {
+        if (is_object($reply) && is_string($reply->Reply())) {
             return $reply->Reply();
         }
         return false;

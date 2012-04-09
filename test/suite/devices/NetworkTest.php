@@ -42,6 +42,8 @@ require_once CODE_BASE.'network/Packet.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
+require_once CODE_BASE.'tables/FirmwareTable.php';
+/** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummyNetwork.php';
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
@@ -292,6 +294,42 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => 21,
                     ),
                     "Network" => array(
+                        "send" => \HUGnet\network\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => null,
+                            )
+                        ),
+                    ),
+                ),
+                array(),
+                array(
+                    "Table" => array(
+                        "get" => array(array("id")),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'GETCRC',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                false,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
                         "send" => false,
                     ),
                 ),
@@ -338,7 +376,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         $net->resetMock($mocks);
         $devnet = &Network::factory($net, $table);
         $ret = $devnet->getCRC($config);
-        $this->assertEquals($return, $ret,  "Return Wrong");
+        $this->assertSame($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
         $this->assertEquals($expect, $ret,  "Calls Wrong");
 
@@ -393,6 +431,42 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => 21,
                     ),
                     "Network" => array(
+                        "send" => \HUGnet\network\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => null,
+                            )
+                        ),
+                    ),
+                ),
+                array(),
+                array(
+                    "Table" => array(
+                        "get" => array(array("id")),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'SETCRC',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                false,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
                         "send" => false,
                     ),
                 ),
@@ -439,7 +513,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         $net->resetMock($mocks);
         $devnet = &Network::factory($net, $table);
         $ret = $devnet->setCRC($config);
-        $this->assertEquals($return, $ret,  "Return Wrong");
+        $this->assertSame($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
         $this->assertEquals($expect, $ret,  "Calls Wrong");
 
@@ -1660,6 +1734,1292 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expect, $ret,  "Calls Wrong");
     }
 
+    /**
+    * Data provider for testMatcher
+    *
+    * @return array
+    */
+    public static function dataLoadFirmware()
+    {
+        return array(
+            array( // #0 Not running boot loader
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => array(
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => null,
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                new \FirmwareTable(),
+                array(
+                    "Table" => array(
+                        "get" => array(array("id")),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'BOOTLOADER',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                false,
+            ),
+            array( // #1 No reply to config
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => array(
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "",
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                new \FirmwareTable(),
+                array(
+                    "Table" => array(
+                        "get" => array(array("id"), array("id")),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'BOOTLOADER',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'CONFIG',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                false,
+            ),
+            array( // #2 No data in Firmware
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => array(
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "00000000E800392801410039201343000009"
+                                    ."FFFFFF50010202020202020202",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory( // This contains errors
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "21FFFFFFFFFFFFFFFFFF0039201343"
+                                    ."000008FFFFFF500102020202101002026F6F6F6F6F7"
+                                    ."0707001000000000000000200000000000000102700"
+                                    ."1027000000102700102700000010270010270000001"
+                                    ."0270010270000001027001027000000102700102700"
+                                    ."0000202700102700000020270010270000002027001"
+                                    ."02700000020",
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                new \FirmwareTable(
+                    array(
+                        "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
+                        ."FFFFFF500102020202101002026F46
+S12300206F6F6F6F707070010000000000000002000000000000001027001027000000102F
+S12300402700102700000010270010270000001027001027000000102700102700000010E4
+S1230060270010270000002027001027000000202700102700000020270010270000002084
+S1230080270010270000002027001027000000202700102700000020270010270000002064
+S12300A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
+S9030000FC",
+                        "CodeHash" => "",
+                        "Data" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
+                        ."FFFFFF500102020202101002026F46
+S12300206F6F6F6F707070010000000000000002000000000000001027001027000000102F
+S12300402700102700000010270010270000001027001027000000102700102700000010E4
+S1230060270010270000002027001027000000202700102700000020270010270000002084
+S1230080270010270000002027001027000000202700102700000020270010270000002064
+S12300A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
+S9030000FC",
+                        "DataHash" => "",
+                        "HWPartNum" => "0039-21-01-A",
+                        "FWPartNum" => "0039-20-01-C",
+                        "Version" => "1.2.3",
+                        "RelStatus" => \FirmwareTable::RELEASE,
+
+                    )
+                ),
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'BOOTLOADER',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'CONFIG',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_FLASH',
+                                    "Data" => "0000FFFFFFFFFFFFFFFFFFFF0039201343"
+                                    ."000008FFFFFF500102020202101002026F6F6F6F6F7"
+                                    ."0707001000000000000000200000000000000102700"
+                                    ."1027000000102700102700000010270010270000001"
+                                    ."0270010270000001027001027000000102700102700"
+                                    ."0000202700102700000020270010270000002027001"
+                                    ."02700000020",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                false,
+            ),
+            array( // #3 Firmware code good, data bad.
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => array(
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "00000000E800392801410039201343000009"
+                                    ."FFFFFF50010202020202020202",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "FFFFFFFFFFFFFFFFFFFF0039201343"
+                                    ."000008FFFFFF500102020202101002026F6F6F6F6F7"
+                                    ."0707001000000000000000200000000000000102700"
+                                    ."1027000000102700102700000010270010270000001"
+                                    ."0270010270000001027001027000000102700102700"
+                                    ."0000202700102700000020270010270000002027001"
+                                    ."02700000020",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "270010270000002027001027000000"
+                                    ."2027001027000000202700102700000020270010270"
+                                    ."000002027001027000000FFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFF",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory( // This contains errors
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "21FFFFFFFFFFFFFFFFFF0039201343"
+                                    ."000008FFFFFF500102020202101002026F6F6F6F6F7"
+                                    ."0707001000000000000000200000000000000102700"
+                                    ."1027000000102700102700000010270010270000001"
+                                    ."0270010270000001027001027000000102700102700"
+                                    ."0000202700102700000020270010270000002027001"
+                                    ."02700000020",
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                new \FirmwareTable(
+                    array(
+                        "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
+                        ."FFFFFF500102020202101002026F46
+S12300206F6F6F6F707070010000000000000002000000000000001027001027000000102F
+S12300402700102700000010270010270000001027001027000000102700102700000010E4
+S1230060270010270000002027001027000000202700102700000020270010270000002084
+S1230080270010270000002027001027000000202700102700000020270010270000002064
+S12300A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
+S9030000FC",
+                        "CodeHash" => "",
+                        "Data" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
+                        ."FFFFFF500102020202101002026F46
+S12300206F6F6F6F707070010000000000000002000000000000001027001027000000102F
+S12300402700102700000010270010270000001027001027000000102700102700000010E4
+S1230060270010270000002027001027000000202700102700000020270010270000002084
+S1230080270010270000002027001027000000202700102700000020270010270000002064
+S12300A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
+S9030000FC",
+                        "DataHash" => "",
+                        "HWPartNum" => "0039-21-01-A",
+                        "FWPartNum" => "0039-20-01-C",
+                        "Version" => "1.2.3",
+                        "RelStatus" => \FirmwareTable::RELEASE,
+
+                    )
+                ),
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'BOOTLOADER',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'CONFIG',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_FLASH',
+                                    "Data" => "0000FFFFFFFFFFFFFFFFFFFF0039201343"
+                                    ."000008FFFFFF500102020202101002026F6F6F6F6F7"
+                                    ."0707001000000000000000200000000000000102700"
+                                    ."1027000000102700102700000010270010270000001"
+                                    ."0270010270000001027001027000000102700102700"
+                                    ."0000202700102700000020270010270000002027001"
+                                    ."02700000020",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_FLASH',
+                                    "Data" => "0080270010270000002027001027000000"
+                                    ."2027001027000000202700102700000020270010270"
+                                    ."000002027001027000000FFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFF",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_E2',
+                                    "Data" => "0000FFFFFFFFFFFFFFFFFFFF0039201343"
+                                    ."000008FFFFFF500102020202101002026F6F6F6F6F7"
+                                    ."0707001000000000000000200000000000000102700"
+                                    ."1027000000102700102700000010270010270000001"
+                                    ."0270010270000001027001027000000102700102700"
+                                    ."0000202700102700000020270010270000002027001"
+                                    ."02700000020",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                false,
+            ),
+            array( // #4 Firmware code good, data good, crc bad.
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => array(
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "00000000E800392801410039201343000009"
+                                    ."FFFFFF50010202020202020202",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "FFFFFFFFFFFFFFFFFFFF0039201343"
+                                    ."000008FFFFFF500102020202101002026F6F6F6F6F7"
+                                    ."0707001000000000000000200000000000000102700"
+                                    ."1027000000102700102700000010270010270000001"
+                                    ."0270010270000001027001027000000102700102700"
+                                    ."0000202700102700000020270010270000002027001"
+                                    ."02700000020",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "270010270000002027001027000000"
+                                    ."2027001027000000202700102700000020270010270"
+                                    ."000002027001027000000FFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFF",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "FFFFFFFFFFFFFFFFFFFF0039201343"
+                                    ."000008FFFFFF500102020202101002026F6F6F6F6F7"
+                                    ."0707001000000000000000200000000000000102700"
+                                    ."1027000000102700102700000010270010270000001"
+                                    ."0270010270000001027001027000000102700102700"
+                                    ."0000202700102700000020270010270000002027001"
+                                    ."02700000020",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "270010270000002027001027000000"
+                                    ."2027001027000000202700102700000020270010270"
+                                    ."000002027001027000000FFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFF",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => null,
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                new \FirmwareTable(
+                    array(
+                        "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
+                        ."FFFFFF500102020202101002026F46
+S12300206F6F6F6F707070010000000000000002000000000000001027001027000000102F
+S12300402700102700000010270010270000001027001027000000102700102700000010E4
+S1230060270010270000002027001027000000202700102700000020270010270000002084
+S1230080270010270000002027001027000000202700102700000020270010270000002064
+S12300A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
+S9030000FC",
+                        "CodeHash" => "",
+                        "Data" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
+                        ."FFFFFF500102020202101002026F46
+S12300206F6F6F6F707070010000000000000002000000000000001027001027000000102F
+S12300402700102700000010270010270000001027001027000000102700102700000010E4
+S1230060270010270000002027001027000000202700102700000020270010270000002084
+S1230080270010270000002027001027000000202700102700000020270010270000002064
+S12300A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
+S9030000FC",
+                        "DataHash" => "",
+                        "HWPartNum" => "0039-21-01-A",
+                        "FWPartNum" => "0039-20-01-C",
+                        "Version" => "1.2.3",
+                        "RelStatus" => \FirmwareTable::RELEASE,
+
+                    )
+                ),
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'BOOTLOADER',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'CONFIG',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_FLASH',
+                                    "Data" => "0000FFFFFFFFFFFFFFFFFFFF0039201343"
+                                    ."000008FFFFFF500102020202101002026F6F6F6F6F7"
+                                    ."0707001000000000000000200000000000000102700"
+                                    ."1027000000102700102700000010270010270000001"
+                                    ."0270010270000001027001027000000102700102700"
+                                    ."0000202700102700000020270010270000002027001"
+                                    ."02700000020",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_FLASH',
+                                    "Data" => "0080270010270000002027001027000000"
+                                    ."2027001027000000202700102700000020270010270"
+                                    ."000002027001027000000FFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFF",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_E2',
+                                    "Data" => "0000FFFFFFFFFFFFFFFFFFFF0039201343"
+                                    ."000008FFFFFF500102020202101002026F6F6F6F6F7"
+                                    ."0707001000000000000000200000000000000102700"
+                                    ."1027000000102700102700000010270010270000001"
+                                    ."0270010270000001027001027000000102700102700"
+                                    ."0000202700102700000020270010270000002027001"
+                                    ."02700000020",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_E2',
+                                    "Data" => "0080270010270000002027001027000000"
+                                    ."2027001027000000202700102700000020270010270"
+                                    ."000002027001027000000FFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFF",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'SETCRC',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                false,
+            ),
+            array( // #5 Firmware code good, data good, good crc, no run.
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => array(
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "00000000E800392801410039201343000009"
+                                    ."FFFFFF50010202020202020202",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "FFFFFFFFFFFFFFFFFFFF0039201343"
+                                    ."000008FFFFFF500102020202101002026F6F6F6F6F7"
+                                    ."0707001000000000000000200000000000000102700"
+                                    ."1027000000102700102700000010270010270000001"
+                                    ."0270010270000001027001027000000102700102700"
+                                    ."0000202700102700000020270010270000002027001"
+                                    ."02700000020",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "270010270000002027001027000000"
+                                    ."2027001027000000202700102700000020270010270"
+                                    ."000002027001027000000FFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFF",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "FFFFFFFFFFFFFFFFFFFF0039201343"
+                                    ."000008FFFFFF500102020202101002026F6F6F6F6F7"
+                                    ."0707001000000000000000200000000000000102700"
+                                    ."1027000000102700102700000010270010270000001"
+                                    ."0270010270000001027001027000000102700102700"
+                                    ."0000202700102700000020270010270000002027001"
+                                    ."02700000020",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "270010270000002027001027000000"
+                                    ."2027001027000000202700102700000020270010270"
+                                    ."000002027001027000000FFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFF",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "1234",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => null,
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                new \FirmwareTable(
+                    array(
+                        "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
+                        ."FFFFFF500102020202101002026F46
+S12300206F6F6F6F707070010000000000000002000000000000001027001027000000102F
+S12300402700102700000010270010270000001027001027000000102700102700000010E4
+S1230060270010270000002027001027000000202700102700000020270010270000002084
+S1230080270010270000002027001027000000202700102700000020270010270000002064
+S12300A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
+S9030000FC",
+                        "CodeHash" => "",
+                        "Data" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
+                        ."FFFFFF500102020202101002026F46
+S12300206F6F6F6F707070010000000000000002000000000000001027001027000000102F
+S12300402700102700000010270010270000001027001027000000102700102700000010E4
+S1230060270010270000002027001027000000202700102700000020270010270000002084
+S1230080270010270000002027001027000000202700102700000020270010270000002064
+S12300A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
+S9030000FC",
+                        "DataHash" => "",
+                        "HWPartNum" => "0039-21-01-A",
+                        "FWPartNum" => "0039-20-01-C",
+                        "Version" => "1.2.3",
+                        "RelStatus" => \FirmwareTable::RELEASE,
+
+                    )
+                ),
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'BOOTLOADER',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'CONFIG',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_FLASH',
+                                    "Data" => "0000FFFFFFFFFFFFFFFFFFFF0039201343"
+                                    ."000008FFFFFF500102020202101002026F6F6F6F6F7"
+                                    ."0707001000000000000000200000000000000102700"
+                                    ."1027000000102700102700000010270010270000001"
+                                    ."0270010270000001027001027000000102700102700"
+                                    ."0000202700102700000020270010270000002027001"
+                                    ."02700000020",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_FLASH',
+                                    "Data" => "0080270010270000002027001027000000"
+                                    ."2027001027000000202700102700000020270010270"
+                                    ."000002027001027000000FFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFF",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_E2',
+                                    "Data" => "0000FFFFFFFFFFFFFFFFFFFF0039201343"
+                                    ."000008FFFFFF500102020202101002026F6F6F6F6F7"
+                                    ."0707001000000000000000200000000000000102700"
+                                    ."1027000000102700102700000010270010270000001"
+                                    ."0270010270000001027001027000000102700102700"
+                                    ."0000202700102700000020270010270000002027001"
+                                    ."02700000020",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_E2',
+                                    "Data" => "0080270010270000002027001027000000"
+                                    ."2027001027000000202700102700000020270010270"
+                                    ."000002027001027000000FFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFF",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'SETCRC',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'BOOT',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                false,
+            ),
+            array( // #5 Everything works!
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => array(
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "00000000E800392801410039201343000009"
+                                    ."FFFFFF50010202020202020202",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "FFFFFFFFFFFFFFFFFFFF0039201343"
+                                    ."000008FFFFFF500102020202101002026F6F6F6F6F7"
+                                    ."0707001000000000000000200000000000000102700"
+                                    ."1027000000102700102700000010270010270000001"
+                                    ."0270010270000001027001027000000102700102700"
+                                    ."0000202700102700000020270010270000002027001"
+                                    ."02700000020",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "270010270000002027001027000000"
+                                    ."2027001027000000202700102700000020270010270"
+                                    ."000002027001027000000FFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFF",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "FFFFFFFFFFFFFFFFFFFF0039201343"
+                                    ."000008FFFFFF500102020202101002026F6F6F6F6F7"
+                                    ."0707001000000000000000200000000000000102700"
+                                    ."1027000000102700102700000010270010270000001"
+                                    ."0270010270000001027001027000000102700102700"
+                                    ."0000202700102700000020270010270000002027001"
+                                    ."02700000020",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "270010270000002027001027000000"
+                                    ."2027001027000000202700102700000020270010270"
+                                    ."000002027001027000000FFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFF",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "1234",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "",
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                new \FirmwareTable(
+                    array(
+                        "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
+                        ."FFFFFF500102020202101002026F46
+S12300206F6F6F6F707070010000000000000002000000000000001027001027000000102F
+S12300402700102700000010270010270000001027001027000000102700102700000010E4
+S1230060270010270000002027001027000000202700102700000020270010270000002084
+S1230080270010270000002027001027000000202700102700000020270010270000002064
+S12300A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
+S9030000FC",
+                        "CodeHash" => "",
+                        "Data" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
+                        ."FFFFFF500102020202101002026F46
+S12300206F6F6F6F707070010000000000000002000000000000001027001027000000102F
+S12300402700102700000010270010270000001027001027000000102700102700000010E4
+S1230060270010270000002027001027000000202700102700000020270010270000002084
+S1230080270010270000002027001027000000202700102700000020270010270000002064
+S12300A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
+S9030000FC",
+                        "DataHash" => "",
+                        "HWPartNum" => "0039-21-01-A",
+                        "FWPartNum" => "0039-20-01-C",
+                        "Version" => "1.2.3",
+                        "RelStatus" => \FirmwareTable::RELEASE,
+
+                    )
+                ),
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'BOOTLOADER',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'CONFIG',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_FLASH',
+                                    "Data" => "0000FFFFFFFFFFFFFFFFFFFF0039201343"
+                                    ."000008FFFFFF500102020202101002026F6F6F6F6F7"
+                                    ."0707001000000000000000200000000000000102700"
+                                    ."1027000000102700102700000010270010270000001"
+                                    ."0270010270000001027001027000000102700102700"
+                                    ."0000202700102700000020270010270000002027001"
+                                    ."02700000020",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_FLASH',
+                                    "Data" => "0080270010270000002027001027000000"
+                                    ."2027001027000000202700102700000020270010270"
+                                    ."000002027001027000000FFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFF",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_E2',
+                                    "Data" => "0000FFFFFFFFFFFFFFFFFFFF0039201343"
+                                    ."000008FFFFFF500102020202101002026F6F6F6F6F7"
+                                    ."0707001000000000000000200000000000000102700"
+                                    ."1027000000102700102700000010270010270000001"
+                                    ."0270010270000001027001027000000102700102700"
+                                    ."0000202700102700000020270010270000002027001"
+                                    ."02700000020",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_E2',
+                                    "Data" => "0080270010270000002027001027000000"
+                                    ."2027001027000000202700102700000020270010270"
+                                    ."000002027001027000000FFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFF",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'SETCRC',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'BOOT',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                true,
+            ),
+            array( // #5 Everything works, no Data section
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => array(
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "00000000E800392801410039201343000009"
+                                    ."FFFFFF50010202020202020202",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "FFFFFFFFFFFFFFFFFFFF0039201343"
+                                    ."000008FFFFFF500102020202101002026F6F6F6F6F7"
+                                    ."0707001000000000000000200000000000000102700"
+                                    ."1027000000102700102700000010270010270000001"
+                                    ."0270010270000001027001027000000102700102700"
+                                    ."0000202700102700000020270010270000002027001"
+                                    ."02700000020",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "270010270000002027001027000000"
+                                    ."2027001027000000202700102700000020270010270"
+                                    ."000002027001027000000FFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFF",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "1234",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "",
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                new \FirmwareTable(
+                    array(
+                        "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
+                        ."FFFFFF500102020202101002026F46
+S12300206F6F6F6F707070010000000000000002000000000000001027001027000000102F
+S12300402700102700000010270010270000001027001027000000102700102700000010E4
+S1230060270010270000002027001027000000202700102700000020270010270000002084
+S1230080270010270000002027001027000000202700102700000020270010270000002064
+S12300A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
+S9030000FC",
+                        "CodeHash" => "",
+                        "Data" => "",
+                        "DataHash" => "",
+                        "HWPartNum" => "0039-21-01-A",
+                        "FWPartNum" => "0039-20-01-C",
+                        "Version" => "1.2.3",
+                        "RelStatus" => \FirmwareTable::RELEASE,
+
+                    )
+                ),
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                            array("id"),
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'BOOTLOADER',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'CONFIG',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_FLASH',
+                                    "Data" => "0000FFFFFFFFFFFFFFFFFFFF0039201343"
+                                    ."000008FFFFFF500102020202101002026F6F6F6F6F7"
+                                    ."0707001000000000000000200000000000000102700"
+                                    ."1027000000102700102700000010270010270000001"
+                                    ."0270010270000001027001027000000102700102700"
+                                    ."0000202700102700000020270010270000002027001"
+                                    ."02700000020",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_FLASH',
+                                    "Data" => "0080270010270000002027001027000000"
+                                    ."2027001027000000202700102700000020270010270"
+                                    ."000002027001027000000FFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                                    ."FFFFFFFFFFF",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'SETCRC',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'BOOT',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                true,
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param array $mocks  The data to reset the mocks with
+    * @param array $config The configuration array
+    * @param array $expect The expected calls in the mock
+    * @param bool  $return The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataLoadFirmware()
+    */
+    public function testLoadFirmware($mocks, $config, $expect, $return)
+    {
+        $net   = new \HUGnet\network\DummyNetwork("Network");
+        $table = new \HUGnet\DummyTable();
+        $net->resetMock($mocks);
+        $devnet = &Network::factory($net, $table);
+        $ret = $devnet->loadFirmware($config);
+        $this->assertSame($return, $ret,  "Return Wrong");
+        $ret = $net->retrieve();
+        $this->assertEquals($expect, $ret,  "Calls Wrong");
+
+    }
 
 }
 ?>
