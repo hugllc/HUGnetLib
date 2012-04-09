@@ -1848,7 +1848,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                     ."FFFFFF50010202020202020202",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory( // This contains errors
+                            \HUGnet\network\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "21FFFFFFFFFFFFFFFFFF0039201343"
@@ -1987,7 +1987,7 @@ S9030000FC",
                                     ."FFFFFFFFFFF",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory( // This contains errors
+                            \HUGnet\network\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "21FFFFFFFFFFFFFFFFFF0039201343"

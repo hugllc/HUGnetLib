@@ -121,7 +121,7 @@ class Sensor extends SystemTableBase
     /**
     * Sets the value of a getExtra parameter if it finds one.
     *
-    * @param string $value Set the value to check
+    * @param string &$value Set the value to check
     *
     * @return null
     */
