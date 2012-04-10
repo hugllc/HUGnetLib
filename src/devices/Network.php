@@ -418,7 +418,13 @@ class Network
             foreach ($buffer as $page => $data) {
                 $data = str_pad($data, $chunkSize*2, $empty);
                 $addr = $start + ($page * $chunkSize);
-                $ret = $this->_writeMem($addr, $data, $command);
+                $ret = $this->_writeMem(
+                    $addr,
+                    $data,
+                    $command,
+                    null,
+                    array("find" => false)
+                );
                 if ($ret === false) {
                     \HUGnet\VPrint::out(
                         "Writing ".$memName." Page ".($page + 1)." of $pages in "
