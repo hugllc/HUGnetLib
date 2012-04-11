@@ -60,6 +60,8 @@ final class Device
     private $_network = null;
     /** This is our configuration */
     private $_config = array();
+    /** This is our configuration */
+    private $_device = null;
     /** These are the packets we are sending */
     private $_defaultConfig = array(
     );
@@ -114,8 +116,25 @@ final class Device
         if ($pkt->to() === $this->_config["id"]) {
             if (($pkt->type() === "PING") || ($pkt->type() === "FINDPING")) {
                 $this->_reply($pkt, $pkt->data());
+            } else if (($pkt->type() === "CONFIG")) {
+                $this->_reply($pkt, $this->_getConfig());
             }
         }
+    }
+    /**
+    * Creates a device ovject
+    *
+    * @return null
+    */
+    private function _getConfig()
+    {
+        $ver = explode(
+            ".", file_get_contents(CODE_BASE.'/VERSION.TXT')
+        );
+        $version = sprintf("%02X%02X%02X", $ver[0], $ver[1], $ver[2]);
+        $config  = sprintf("%010X", $this->_config["id"]);
+        $config .= "00392601500039260150".$version."FFFFFFFF";
+        return $config;
     }
     /**
     * Replies to a packet

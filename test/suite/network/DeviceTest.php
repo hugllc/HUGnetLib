@@ -40,6 +40,8 @@ require_once CODE_BASE.'network/Device.php';
 /** This is a required class */
 require_once CODE_BASE.'network/Packet.php';
 /** This is a required class */
+require_once CODE_BASE.'system/System.php';
+/** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummyNetwork.php';
 /** This is a required class */
 require_once CODE_BASE.'util/VPrint.php';
@@ -188,6 +190,10 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     */
     public static function dataPacket()
     {
+        $ver = explode(
+            ".", file_get_contents(CODE_BASE.'/VERSION.TXT')
+        );
+        $version = sprintf("%02X%02X%02X", $ver[0], $ver[1], $ver[2]);
         return array(
             array(
                 array(
@@ -199,7 +205,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     array(
                         "to"      => "000001",
                         "from"    => "000002",
-                        "command" => "03",
+                        "command" => "FINDPING",
                         "data"    => "0102030405",
                     )
                 ),
@@ -210,6 +216,63 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 "to"      => "000002",
                                 "command" => "01",
                                 "data"    => "0102030405",
+                            )
+                        ),
+                        null,
+                        array("tries" => 1, "find" => false),
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    "id" => "000001",
+                ),
+                array(
+                ),
+                Packet::factory(
+                    array(
+                        "to"      => "000001",
+                        "from"    => "000002",
+                        "command" => "PING",
+                        "data"    => "0102030405",
+                    )
+                ),
+                array(
+                    array(
+                        Packet::factory(
+                            array(
+                                "to"      => "000002",
+                                "command" => "01",
+                                "data"    => "0102030405",
+                            )
+                        ),
+                        null,
+                        array("tries" => 1, "find" => false),
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    "id" => "000001",
+                ),
+                array(
+                ),
+                Packet::factory(
+                    array(
+                        "to"      => "000001",
+                        "from"    => "000002",
+                        "command" => "CONFIG",
+                        "data"    => "0102030405",
+                    )
+                ),
+                array(
+                    array(
+                        Packet::factory(
+                            array(
+                                "to"      => "000002",
+                                "command" => "01",
+                                "data"    => "000000000100392601500039260150"
+                                .$version."FFFFFFFF",
                             )
                         ),
                         null,
