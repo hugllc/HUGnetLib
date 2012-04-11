@@ -236,6 +236,24 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                 "E00391200",
             ),
             array(
+                "0039-12-02-C",
+                "0039-38-01-C",
+                "5.6.7",
+                "E00391200",
+            ),
+            array(
+                "0039-28-01-A",
+                "0039-38-01-C",
+                "1.2.3",
+                "E00392800",
+            ),
+            array(
+                "0039-28-01-A",
+                "0039-20-18-C",
+                "1.2.3",
+                "E00392801",
+            ),
+            array(
                 "0039-21-01-A",
                 "0039-38-02-C",
                 "5.6.7",
@@ -263,6 +281,18 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                 "0039-37-01-A",
                 "0039-38-02-C",
                 "5.6.7",
+                "E00393802",
+            ),
+            array(
+                "0039-21-01-A",
+                "0039-38-02-C",
+                "1.2.3",
+                "E00393802",
+            ),
+            array(
+                "0039-21-02-A",
+                "0039-38-02-C",
+                "1.2.3",
                 "E00393802",
             ),
             array(
@@ -270,6 +300,18 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                 "0039-38-01-C",
                 "5.6.7",
                 "E00393700",
+            ),
+            array(
+                "0039-12-02-B",
+                "0039-11-08-A",
+                "0.0.2",
+                "E00391201",
+            ),
+            array(
+                "0039-28-FF-A",
+                "0039-38-01-C",
+                "0.0.2",
+                "EDEFAULT",
             ),
         );
     }
@@ -287,9 +329,25 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     */
     public function testGetDriver($HWPartNum, $FWPartNum, $FWVersion, $expect)
     {
-        $this->assertSame(
-            $expect, Driver::getDriver($HWPartNum, $FWPartNum, $FWVersion)
-        );
+        $driver = Driver::getDriver($HWPartNum, $FWPartNum, $FWVersion);
+        $this->assertSame($expect, $driver);
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $HWPartNum The hardware part number
+    * @param string $FWPartNum The firmware part number
+    * @param string $FWVersion The firmware version
+    * @param array  $expect    The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataGetDriver
+    */
+    public function testDriverExists($HWPartNum, $FWPartNum, $FWVersion, $expect)
+    {
+        $driver = Driver::getDriver($HWPartNum, $FWPartNum, $FWVersion);
+        $this->assertFileExists(CODE_BASE."/devices/drivers/".$driver.".php");
     }
     /**
     * data provider for testDeviceID

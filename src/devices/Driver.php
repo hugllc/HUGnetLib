@@ -85,92 +85,45 @@ abstract class Driver
     * as the driver class name.
     */
     private static $_drivers = array(
-        "E00393802" => array(
-            "0039-20-06-C:0039-21-01-A:DEFAULT",
-            "0039-20-15-C:0039-21-02-A:DEFAULT",
-            "0039-20-16-C:0039-21-02-A:DEFAULT",
-            "0039-38-02-C:DEFAULT:DEFAULT",
-        ),
-        "E00391200" => array(
-            "0039-11-02-B:0039-12-00-A:DEFAULT",
-            "0039-11-02-B:0039-12-01-A:DEFAULT",
-            "0039-11-02-B:0039-12-02-A:DEFAULT",
-            "0039-11-02-B:0039-12-01-B:DEFAULT",
-            "0039-11-02-B:0039-12-02-B:DEFAULT",
-            "0039-11-03-B:0039-12-00-A:DEFAULT",
-            "0039-11-03-B:0039-12-01-A:DEFAULT",
-            "0039-11-03-B:0039-12-02-A:DEFAULT",
-            "0039-11-03-B:0039-12-01-B:DEFAULT",
-            "0039-11-03-B:0039-12-02-B:DEFAULT",
-            "0039-20-02-C:0039-12-02-A:DEFAULT",
-            "0039-20-02-C:0039-12-02-B:DEFAULT",
-            "0039-20-03-C:0039-12-02-A:DEFAULT",
-            "0039-20-03-C:0039-12-02-B:DEFAULT",
-            "0039-20-07-C:0039-12-02-A:DEFAULT",
-            "0039-20-07-C:0039-12-02-B:DEFAULT",
-            "0039-20-17-C:0039-12-02-C:DEFAULT",
-            "0039-38-01-C:0039-12-02-C:DEFAULT",
-            "DEFAULT:0039-12-00-A:DEFAULT",
-            "DEFAULT:0039-12-01-A:DEFAULT",
-            "DEFAULT:0039-12-02-A:DEFAULT",
-            "DEFAULT:0039-12-01-B:DEFAULT",
-            "DEFAULT:0039-12-02-B:DEFAULT",
-            "DEFAULT:0039-12-02-C:DEFAULT",
-        ),
-        "E00391201" => array(
-            "0039-11-06-A:0039-12-01-B:DEFAULT",
-            "0039-11-06-A:0039-12-02-B:DEFAULT",
-            "0039-11-07-A:0039-12-01-B:DEFAULT",
-            "0039-11-07-A:0039-12-02-B:DEFAULT",
-            "0039-11-08-A:0039-12-01-B:DEFAULT",
-            "0039-11-08-A:0039-12-02-B:DEFAULT",
-            "0039-20-04-C:0039-12-02-B:DEFAULT",
-            "0039-20-05-C:0039-12-02-B:DEFAULT",
-        ),
-        "E00392100" => array(
-            "0039-20-01-C:0039-21-01-A:DEFAULT",
-            "0039-20-14-C:0039-21-02-A:DEFAULT",
-            "0039-38-01-C:0039-21-01-A:DEFAULT",
-            "0039-38-01-C:0039-21-02-A:DEFAULT",
-        ),
-        "E00392600" => array(
-            "DEFAULT:0039-26-00-P:DEFAULT",
-            "DEFAULT:0039-26-01-P:DEFAULT",
-            "DEFAULT:0039-26-02-P:DEFAULT",
-            "DEFAULT:0039-26-03-P:DEFAULT",
-            "DEFAULT:0039-26-04-P:DEFAULT",
-            "DEFAULT:0039-26-05-P:DEFAULT",
-            "DEFAULT:0039-26-07-P:DEFAULT",
-        ),
-        "E00392606" => array(
-            "DEFAULT:0039-26-06-P:DEFAULT",
-        ),
-        "E00392800" => array(
-            "0039-20-12-C:0039-28-01-A:DEFAULT",
-            "0039-20-12-C:0039-28-01-B:DEFAULT",
-            "0039-20-12-C:0039-28-01-C:DEFAULT",
-            "0039-20-13-C:0039-28-01-A:DEFAULT",
-            "0039-20-13-C:0039-28-01-B:DEFAULT",
-            "0039-20-13-C:0039-28-01-C:DEFAULT",
-            "0039-38-01-C:0039-28-01-A:DEFAULT",
-            "0039-38-01-C:0039-28-01-B:DEFAULT",
-            "0039-38-01-C:0039-28-01-C:DEFAULT",
-            "DEFAULT:0039-28-01-A:DEFAULT",
-            "DEFAULT:0039-28-01-B:DEFAULT",
-            "DEFAULT:0039-28-01-C:DEFAULT",
-        ),
-        "E00392801" => array(
-            "0039-20-18-C:0039-28-01-A:DEFAULT",
-            "0039-20-18-C:DEFAULT:DEFAULT",
-        ),
-        "E00393700" => array(
-            "0039-38-01-C:0039-37-01-A:DEFAULT",
-            "DEFAULT:0039-37-01-A:DEFAULT",
-        ),
-        "EVIRTUAL" => array(
-            "DEFAULT:VIRTUAL:DEFAULT",
-            "DEFAULT:0039-24-02-P:DEFAULT",
-        ),
+        "0039-20-06-C:0039-21-01-A:DEFAULT" => "E00393802",
+        "0039-20-15-C:0039-21-02-A:DEFAULT" => "E00393802",
+        "0039-20-16-C:0039-21-02-A:DEFAULT" => "E00393802",
+        "0039-38-02-C:DEFAULT:DEFAULT"      => "E00393802",
+        "DEFAULT:0039-12-00-A:DEFAULT"      => "E00391200",
+        "DEFAULT:0039-12-01-A:DEFAULT"      => "E00391200",
+        "DEFAULT:0039-12-02-A:DEFAULT"      => "E00391200",
+        "DEFAULT:0039-12-01-B:DEFAULT"      => "E00391200",
+        "DEFAULT:0039-12-02-B:DEFAULT"      => "E00391200",
+        "DEFAULT:0039-12-02-C:DEFAULT"      => "E00391200",
+        "0039-11-06-A:0039-12-01-B:DEFAULT" => "E00391201",
+        "0039-11-06-A:0039-12-02-B:DEFAULT" => "E00391201",
+        "0039-11-07-A:0039-12-01-B:DEFAULT" => "E00391201",
+        "0039-11-07-A:0039-12-02-B:DEFAULT" => "E00391201",
+        "0039-11-08-A:0039-12-01-B:DEFAULT" => "E00391201",
+        "0039-11-08-A:0039-12-02-B:DEFAULT" => "E00391201",
+        "0039-20-04-C:0039-12-02-B:DEFAULT" => "E00391201",
+        "0039-20-05-C:0039-12-02-B:DEFAULT" => "E00391201",
+        "0039-20-01-C:0039-21-01-A:DEFAULT" => "E00392100",
+        "0039-20-14-C:0039-21-02-A:DEFAULT" => "E00392100",
+        "0039-38-01-C:0039-21-01-A:DEFAULT" => "E00392100",
+        "0039-38-01-C:0039-21-02-A:DEFAULT" => "E00392100",
+        "DEFAULT:0039-26-00-P:DEFAULT"      => "E00392600",
+        "DEFAULT:0039-26-01-P:DEFAULT"      => "E00392600",
+        "DEFAULT:0039-26-02-P:DEFAULT"      => "E00392600",
+        "DEFAULT:0039-26-03-P:DEFAULT"      => "E00392600",
+        "DEFAULT:0039-26-04-P:DEFAULT"      => "E00392600",
+        "DEFAULT:0039-26-05-P:DEFAULT"      => "E00392600",
+        "DEFAULT:0039-26-07-P:DEFAULT"      => "E00392600",
+        "DEFAULT:0039-26-06-P:DEFAULT"      => "E00392606",
+        "DEFAULT:0039-28-01-A:DEFAULT"      => "E00392800",
+        "DEFAULT:0039-28-01-B:DEFAULT"      => "E00392800",
+        "DEFAULT:0039-28-01-C:DEFAULT"      => "E00392800",
+        "0039-20-18-C:0039-28-01-A:DEFAULT" => "E00392801",
+        "0039-20-18-C:DEFAULT:DEFAULT"      => "E00392801",
+        "0039-38-01-C:0039-37-01-A:DEFAULT" => "E00393700",
+        "DEFAULT:0039-37-01-A:DEFAULT"      => "E00393700",
+        "DEFAULT:VIRTUAL:DEFAULT"           => "EVIRTUAL",
+        "DEFAULT:0039-24-02-P:DEFAULT"      => "EVIRTUAL",
     );
     /**
     * This function sets up the driver object, and the database object.  The
@@ -289,11 +242,9 @@ abstract class Driver
             "DEFAULT:".$HWPartNum.":DEFAULT",
             $FWPartNum.":DEFAULT:".$FWVersion,
         );
-        foreach ($try as $mask) {
-            foreach (self::$_drivers as $driver => $stuff) {
-                if (in_array($mask, $stuff)) {
-                    return $driver;
-                }
+        foreach ($try as $key) {
+            if (isset(self::$_drivers[$key])) {
+                return self::$_drivers[$key];
             }
         }
         return "EDEFAULT";
