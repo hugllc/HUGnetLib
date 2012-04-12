@@ -329,12 +329,18 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             array("type"),
                             array("id"),
                             array("type"),
+                            array("sensor"),
                             array("id"),
                             array("type"),
+                            array("sensor"),
                             array("units"),
+                            array("sensor"),
                             array("extra"),
+                            array("sensor"),
                             array("min"),
                             array("max"),
+                            array("sensor"),
+                            array("sensor"),
                         ),
                         'set' => array(
                             array("units", "unknown"),
@@ -442,36 +448,22 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         ),
                         "updateRow" => array(array()),
                         'get' => array(
-                            array(
-                                'id',
-                            ),
-                            array(
-                                'type',
-                            ),
-                            array(
-                                'id',
-                            ),
-                            array(
-                                'type'
-                            ),
-                            array(
-                                'id'
-                            ),
-                            array(
-                                'type'
-                            ),
-                            array(
-                                'units'
-                            ),
-                            array(
-                                'extra'
-                            ),
-                            array(
-                                'min'
-                            ),
-                            array(
-                                'max'
-                            ),
+                            array("id"),
+                            array("type"),
+                            array("id"),
+                            array("type"),
+                            array("sensor"),
+                            array("id"),
+                            array("type"),
+                            array("sensor"),
+                            array("units"),
+                            array("sensor"),
+                            array("extra"),
+                            array("sensor"),
+                            array("min"),
+                            array("max"),
+                            array("sensor"),
+                            array("sensor"),
                         ),
                         'set' => array(
                             array(
@@ -512,36 +504,22 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         ),
                         'updateRow' => array(array()),
                         'get' => array(
-                            array(
-                                'id',
-                            ),
-                            array(
-                                'type',
-                            ),
-                            array(
-                                'id',
-                            ),
-                            array(
-                                'type'
-                            ),
-                            array(
-                                'id'
-                            ),
-                            array(
-                                'type'
-                            ),
-                            array(
-                                'units'
-                            ),
-                            array(
-                                'extra'
-                            ),
-                            array(
-                                'min'
-                            ),
-                            array(
-                                'max'
-                            ),
+                            array("id"),
+                            array("type"),
+                            array("id"),
+                            array("type"),
+                            array("sensor"),
+                            array("id"),
+                            array("type"),
+                            array("sensor"),
+                            array("units"),
+                            array("sensor"),
+                            array("extra"),
+                            array("sensor"),
+                            array("min"),
+                            array("max"),
+                            array("sensor"),
+                            array("sensor"),
                         ),
                         'set' => array(
                             array(

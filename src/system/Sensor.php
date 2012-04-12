@@ -110,7 +110,7 @@ class Sensor extends SystemTableBase
     */
     private function _get($field, $driver)
     {
-        $ret = $driver->get($field);
+        $ret = $driver->get($field, $this->table()->get("sensor"));
         if (is_null($ret)) {
             $ret = parent::get($field);
         } else if (is_string($ret)) {
@@ -141,7 +141,7 @@ class Sensor extends SystemTableBase
     */
     public function toArray()
     {
-        $driver = $this->driver()->toArray();
+        $driver = $this->driver()->toArray($this->table()->get("sensor"));
         foreach (array_keys($driver) as $key) {
             $this->_getExtra($driver[$key]);
         }

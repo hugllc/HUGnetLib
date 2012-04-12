@@ -101,6 +101,7 @@ abstract class Driver
     */
     private static $_drivers = array(
         "04:DEFAULT"  => "ADuCVishayRTD",
+        "11:DEFAULT"  => "ADuCPower",
         "41:DEFAULT"  => "ADuCVoltage",
         "41:ADuCPressure" => "ADuCPressure",
         "42:DEFAULT"  => "ADuCThermocouple",
@@ -156,31 +157,35 @@ abstract class Driver
     /**
     * Checks to see if a piece of data exists
     *
-    * @param string $name The name of the property to check
+    * @param string $name   The name of the property to check
+    * @param int    $sensor The sensor number
     *
     * @return true if the property exists, false otherwise
     */
-    public function present($name)
+    public function present($name, $sensor = null)
     {
-        return !is_null(self::getParam($name));
+        return !is_null(static::getParam($name, $sensor));
     }
     /**
     * Gets an item
     *
-    * @param string $name The name of the property to get
+    * @param string $name   The name of the property to get
+    * @param int    $sensor The sensor number
     *
     * @return null
     */
-    public function get($name)
+    public function get($name, $sensor = null)
     {
-        return self::getParam($name);
+        return static::getParam($name, $sensor);
     }
     /**
     * Returns all of the parameters and defaults in an array
     *
-    * @return null
+    * @param int $sensor The sensor number
+    *
+    * @return array of data from the sensor
     */
-    public function toArray()
+    public function toArray($sensor = null)
     {
         $array = array_merge(self::$_default, (array)static::$params);
         return $array;
@@ -210,11 +215,12 @@ abstract class Driver
     /**
     * Returns the driver that should be used for a particular device
     *
-    * @param string $name The name of the property to check
+    * @param string $name   The name of the property to check
+    * @param int    $sensor The sensor number
     *
     * @return string The driver to use
     */
-    public static function getParam($name)
+    public static function getParam($name, $sensor = null)
     {
         if (isset(static::$params[$name])) {
             return static::$params[$name];
