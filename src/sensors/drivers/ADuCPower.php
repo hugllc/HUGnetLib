@@ -63,6 +63,7 @@ class ADuCPower extends \HUGnet\sensors\Driver
         "longName" => "ADuC Power Meter",
         "shortName" => "ADuCPower",
         "unitType" => array(
+            0 => "Unknown",
             1 => "Current",
             2 => "Voltage",
             3 => "Current",
@@ -73,6 +74,7 @@ class ADuCPower extends \HUGnet\sensors\Driver
             8 => "Impedance",
         ),
         "storageUnit" => array(
+            0 => 'Unknown',
             1 => 'A',
             2 => 'V',
             3 => 'A',
@@ -177,11 +179,7 @@ class ADuCPower extends \HUGnet\sensors\Driver
     */
     public function toArray($sensor)
     {
-        \HUGnet\System::exception(
-            "Sensor needs to be an int not a ".gettype($sensor)." ($sensor)",
-            "InvalidArgument",
-            !is_int($sensor)
-        );
+        $sensor = (int)$sensor;
         $array = parent::toArray($sensor);
         $array["unitType"] = $array["unitType"][$sensor];
         $array["storageUnit"] = $array["storageUnit"][$sensor];
@@ -202,11 +200,7 @@ class ADuCPower extends \HUGnet\sensors\Driver
     */
     public static function getParam($name, $sensor)
     {
-        \HUGnet\System::exception(
-            "Sensor needs to be an int not a ".gettype($sensor)." ($sensor)",
-            "InvalidArgument",
-            !is_int($sensor)
-        );
+        $sensor = (int)$sensor;
         $param = parent::getParam($name, $sensor);
         if (($name == "unitType") || ($name == "storageUnit")) {
             $param = $param[$sensor];

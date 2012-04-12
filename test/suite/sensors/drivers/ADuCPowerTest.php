@@ -175,8 +175,8 @@ class ADuCPowerTest extends DriverTestBase
     public static function dataArrayFieldTypeNull()
     {
         $ret = array(
-            array("storageUnit", null, 1),
-            array("unitType", null, 1),
+            array("storageUnit", null, 0),
+            array("unitType", null, 0),
         );
         return $ret;
     }
@@ -193,7 +193,6 @@ class ADuCPowerTest extends DriverTestBase
     */
     public function testFieldTypeNull($field, $sensor, $expect)
     {
-        $this->setExpectedException('InvalidArgumentException');
         $name = $this->o->get($field, $sensor);
         $exp = $this->o->get($field, $expect);
         $this->assertSame($exp, $name);
@@ -211,7 +210,6 @@ class ADuCPowerTest extends DriverTestBase
     */
     public function testArrayFieldTypeNull($field, $sensor, $expect)
     {
-        $this->setExpectedException('InvalidArgumentException');
         $name = $this->o->toArray($sensor);
         $exp = $this->o->toArray($expect);
         $this->assertSame($exp, $name);
