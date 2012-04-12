@@ -193,9 +193,10 @@ class ADuCPowerTest extends DriverTestBase
     */
     public function testFieldTypeNull($field, $sensor, $expect)
     {
+        $this->setExpectedException('InvalidArgumentException');
         $name = $this->o->get($field, $sensor);
-        $expect = $this->o->get($field, $sensor2);
-        $this->assertSame($expect, $name);
+        $exp = $this->o->get($field, $expect);
+        $this->assertSame($exp, $name);
     }
     /**
     * Check the variable type
@@ -210,9 +211,10 @@ class ADuCPowerTest extends DriverTestBase
     */
     public function testArrayFieldTypeNull($field, $sensor, $expect)
     {
-        $name = $this->o->toArray($field, $sensor);
-        $expect = $this->o->toArray($field, $sensor2);
-        $this->assertSame($expect, $name);
+        $this->setExpectedException('InvalidArgumentException');
+        $name = $this->o->toArray($sensor);
+        $exp = $this->o->toArray($expect);
+        $this->assertSame($exp, $name);
     }
     /**
     * Check the variable type
@@ -260,7 +262,7 @@ class ADuCPowerTest extends DriverTestBase
     */
     public function testArrayFieldSizeMin($field, $sensor, $min, $max)
     {
-        $name = $this->o->get($field);
+        $name = $this->o->get($field, $sensor);
         $this->assertGreaterThanOrEqual(
             $min, strlen($name), "$field:$sensor must be at least $min characters"
         );
@@ -278,7 +280,7 @@ class ADuCPowerTest extends DriverTestBase
     */
     public function testArrayFieldSizeMax($field, $sensor, $min, $max)
     {
-        $name = $this->o->get($field);
+        $name = $this->o->get($field, $sensor);
         $this->assertLessThanOrEqual(
             $max, strlen($name), "$field:$sensor must be at most $max characters"
         );

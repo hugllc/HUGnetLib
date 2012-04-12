@@ -108,20 +108,20 @@ class ADuCPressure extends \HUGnet\sensors\Driver
     ) {
         bcscale(10);
         $Am   = pow(2, 23);
-        $Vmin  = $this->getExtra(0, $sensor["extra"]);
-        $Vmax  = $this->getExtra(1, $sensor["extra"]);
-        $Pmin  = $this->getExtra(2, $sensor["extra"]);
-        $Pmax  = $this->getExtra(3, $sensor["extra"]);
-        $Vref  = $this->getExtra(4, $sensor["extra"]);
-        $Rin   = $this->getExtra(5, $sensor["extra"]);
-        $Rbias = $this->getExtra(6, $sensor["extra"]);
+        $Vmin  = $this->getExtra(0, $sensor);
+        $Vmax  = $this->getExtra(1, $sensor);
+        $Pmin  = $this->getExtra(2, $sensor);
+        $Pmax  = $this->getExtra(3, $sensor);
+        $Vref  = $this->getExtra(4, $sensor);
+        $Rin   = $this->getExtra(5, $sensor);
+        $Rbias = $this->getExtra(6, $sensor);
 
         $A = \HUGnet\Util::getTwosCompliment($A, 32);
         $A = \HUGnet\Util::inputBiasCompensation($A, $Rin, $Rbias);
 
         $Va = ($A / $Am) * $Vref;
         $P = \HUGnet\Util::linearBounded($Va, $Vmin, $Vmax, $Pmin, $Pmax);
-        return round($P, $this->get("maxDecimals"));
+        return round($P, $this->get("maxDecimals", 1));
 
     }
 

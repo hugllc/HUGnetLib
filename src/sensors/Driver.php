@@ -174,7 +174,7 @@ abstract class Driver
     *
     * @return null
     */
-    public function get($name, $sensor = null)
+    public function get($name, $sensor)
     {
         return static::getParam($name, $sensor);
     }
@@ -185,7 +185,7 @@ abstract class Driver
     *
     * @return array of data from the sensor
     */
-    public function toArray($sensor = null)
+    public function toArray($sensor)
     {
         $array = array_merge(self::$_default, (array)static::$params);
         return $array;
@@ -220,7 +220,7 @@ abstract class Driver
     *
     * @return string The driver to use
     */
-    public static function getParam($name, $sensor = null)
+    public static function getParam($name, $sensor)
     {
         if (isset(static::$params[$name])) {
             return static::$params[$name];
@@ -232,7 +232,7 @@ abstract class Driver
     /**
     * Returns an array of types that this sensor could be
     *
-    * @param int $sid The ID to check
+    * @param int $sid    The ID to check
     *
     * @return The extra value (or default if empty)
     */
@@ -268,15 +268,21 @@ abstract class Driver
     /**
     * Gets the extra values
     *
-    * @param int   $index The extra index to use
-    * @param array $extra The extra array
+    * @param int   $index  The extra index to use
+    * @param array $sensor The sensor information array
     *
     * @return The extra value (or default if empty)
     */
-    public function getExtra($index, $extra)
+    public function getExtra($index, $sensor)
     {
-        if (!(is_array($extra) && isset($extra[$index]))) {
-            $extra = $this->get("extraDefault");
+
+        if (is_array($sensor) && is_array($sensor["extra"])) {
+            $extra = $sensor["extra"];
+        } else {
+            $extra = array();
+        }
+        if (!isset($extra[$index])) {
+            $extra = $this->get("extraDefault", $sensor["sensor"]);
         }
         return $extra[$index];
     }

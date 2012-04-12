@@ -63,10 +63,10 @@ class ADuCPower extends \HUGnet\sensors\Driver
         "longName" => "ADuC Power Meter",
         "shortName" => "ADuCPower",
         "unitType" => array(
-            1 => "Voltage",
-            2 => "Current",
-            3 => "Voltage",
-            4 => "Current",
+            1 => "Current",
+            2 => "Voltage",
+            3 => "Current",
+            4 => "Voltage",
             5 => "Power",
             6 => "Impedance",
             7 => "Power",
@@ -125,34 +125,37 @@ class ADuCPower extends \HUGnet\sensors\Driver
     ) {
         bcscale(10);
         $Am   = pow(2, 23);
-        $Vref  = $this->getExtra(0, $sensor["extra"]);
         $A = \HUGnet\Util::getTwosCompliment($A, 32);
-
+        $maxDecimals = $this->get("maxDecimals", $sensor["sensor"]);
         if (($sensor["sensor"] == 2) || ($sensor["sensor"] == 4)) {
             /* Voltage */
-            $Rin   = $this->getExtra(2, $sensor["extra"]);
-            $Rbias = $this->getExtra(3, $sensor["extra"]);
+            $sensor["sensor"] = 1;
+            $Vref  = $this->getExtra(0, $sensor);
+            $Rin   = $this->getExtra(2, $sensor);
+            $Rbias = $this->getExtra(3, $sensor);
             $A = \HUGnet\Util::inputBiasCompensation($A, $Rin, $Rbias);
             $Va = ($A / $Am) * $Vref;
-            return round($Va, $this->get("maxDecimals"));
+            return round($Va, $maxDecimals);
         } else if (($sensor["sensor"] == 1) || ($sensor["sensor"] == 3)) {
             /* Current */
-            $R = $this->getExtra(1, $sensor["extra"]);
-            $Rin   = $this->getExtra(4, $sensor["extra"]);
-            $Rbias = $this->getExtra(5, $sensor["extra"]);
+            $sensor["sensor"] = 1;
+            $Vref  = $this->getExtra(0, $sensor);
+            $R = $this->getExtra(1, $sensor);
+            $Rin   = $this->getExtra(4, $sensor);
+            $Rbias = $this->getExtra(5, $sensor);
             if ($R == 0) {
                 return null;
             }
             $A = \HUGnet\Util::inputBiasCompensation($A, $Rin, $Rbias);
             $Va = ($A / $Am) * $Vref;
             $I = $Va / $R;
-            return round($I, $this->get("maxDecimals"));
+            return round($I, $maxDecimals);
         } else if (($sensor["sensor"] == 5) || ($sensor["sensor"] == 7)) {
             /* Power */
             $I = $data[$sensor["sensor"] - 4]["value"];
             $V = $data[$sensor["sensor"] - 3]["value"];
             $P = $I * $V;
-            return round($P, $this->get("maxDecimals"));
+            return round($P, $maxDecimals);
         } else if (($sensor["sensor"] == 6) || ($sensor["sensor"] == 8)) {
             /* Impedance */
             $I = $data[$sensor["sensor"] - 5]["value"];
@@ -161,7 +164,7 @@ class ADuCPower extends \HUGnet\sensors\Driver
                 return null;
             }
             $R = $V / $I;
-            return round($R, $this->get("maxDecimals"));
+            return round($R, $maxDecimals);
         }
         return null;
     }
@@ -172,11 +175,13 @@ class ADuCPower extends \HUGnet\sensors\Driver
     *
     * @return array of data from the sensor
     */
-    public function toArray($sensor = null)
+    public function toArray($sensor)
     {
-        if (!is_int($sensor)) {
-            $sensor = 1;
-        }
+        \HUGnet\System::exception(
+            "Sensor needs to be an int not a ".gettype($sensor)." ($sensor)",
+            "InvalidArgument",
+            !is_int($sensor)
+        );
         $array = parent::toArray($sensor);
         $array["unitType"] = $array["unitType"][$sensor];
         $array["storageUnit"] = $array["storageUnit"][$sensor];
@@ -195,11 +200,13 @@ class ADuCPower extends \HUGnet\sensors\Driver
     *
     * @return string The driver to use
     */
-    public static function getParam($name, $sensor = null)
+    public static function getParam($name, $sensor)
     {
-        if (!is_int($sensor)) {
-            $sensor = 1;
-        }
+        \HUGnet\System::exception(
+            "Sensor needs to be an int not a ".gettype($sensor)." ($sensor)",
+            "InvalidArgument",
+            !is_int($sensor)
+        );
         $param = parent::getParam($name, $sensor);
         if (($name == "unitType") || ($name == "storageUnit")) {
             $param = $param[$sensor];

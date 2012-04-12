@@ -138,7 +138,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     */
     final public function testInternalType($field, $type)
     {
-        $name = $this->o->get($field);
+        $name = $this->o->get($field, 1);
         $this->assertInternalType($type, $name, "$field must be a $type");
     }
     /**
@@ -168,7 +168,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     */
     final public function testStringMaxSize($field, $max, $min)
     {
-        $name = (string)$this->o->get($field);
+        $name = (string)$this->o->get($field, 1);
         $this->assertLessThanOrEqual(
             $max, strlen($name), "$field must be less than $max chars"
         );
@@ -186,7 +186,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     */
     final public function testStringMinSize($field, $max, $min)
     {
-        $name = (string)$this->o->get($field);
+        $name = (string)$this->o->get($field, 1);
         $this->assertGreaterThanOrEqual(
             $min, strlen($name), "$field must be more than $min characters"
         );
@@ -216,7 +216,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     final public function testIntMaxSize($field, $max, $min)
     {
         if (!is_null($max)) {
-            $name = (string)$this->o->get($field);
+            $name = (string)$this->o->get($field, 1);
             $this->assertLessThanOrEqual(
                 $max, $name, "$field must be less than $max chars"
             );
@@ -236,7 +236,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     final public function testIntMinSize($field, $max, $min)
     {
         if (!is_null($min)) {
-            $name = (string)$this->o->get($field);
+            $name = (string)$this->o->get($field, 1);
             $this->assertGreaterThanOrEqual(
                 $min, $name, "$field must be more than $min characters"
             );
@@ -271,7 +271,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     */
     final public function testValues($field, $values)
     {
-        $name = $this->o->get($field);
+        $name = $this->o->get($field, 1);
         $this->assertTrue(
             in_array($name, (array)$values),
             "$field must be one of ".implode(",", (array)$values)
@@ -289,7 +289,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
             \HUGnet\units\Driver::TYPE_DIFF => '\HUGnet\units\Driver::TYPE_DIFF',
             \HUGnet\units\Driver::TYPE_IGNORE => '\HUGnet\units\Driver::TYPE_IGNORE',
         );
-        $extra = (array)$this->o->get("dataTypes");
+        $extra = (array)$this->o->get("dataTypes", 1);
         foreach ($extra as $key => $value) {
             $this->assertTrue(
                 isset($validTypes[$key]),
@@ -311,7 +311,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     public function testDataTypesCount()
     {
         $count = 3;
-        $extra   = (array)$this->o->get("dataTypes");
+        $extra   = (array)$this->o->get("dataTypes", 1);
         $this->assertLessThanOrEqual(
             $count,
             count($dataTypes),
@@ -327,7 +327,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     public function testExtraTextValueSize()
     {
         $size = 26;
-        $extra = (array)$this->o->get("extraText");
+        $extra = (array)$this->o->get("extraText", 1);
         foreach ($extra as $key => $value) {
             $this->assertTrue(
                 (strlen($value) < $size),
@@ -342,8 +342,8 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     */
     public function testExtraTextCount()
     {
-        $extra   = (array)$this->o->get("extraText");
-        $default = (array)$this->o->get("extraDefault");
+        $extra   = (array)$this->o->get("extraText", 1);
+        $default = (array)$this->o->get("extraDefault", 1);
         $this->assertSame(
             count($default),
             count($extra),
@@ -358,7 +358,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     public function testExtraValuesElementTypes()
     {
         $size = 26;
-        $extra = (array)$this->o->get("extraValues");
+        $extra = (array)$this->o->get("extraValues", 1);
         foreach ($extra as $key => $value) {
             $ret = is_null($value);
             $ret = $ret || is_array($value);
@@ -376,8 +376,8 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     */
     public function testExtraValuesCount()
     {
-        $extra   = (array)$this->o->get("extraValues");
-        $default = (array)$this->o->get("extraDefault");
+        $extra   = (array)$this->o->get("extraValues", 1);
+        $default = (array)$this->o->get("extraDefault", 1);
         $this->assertSame(
             count($default),
             count($extra),
@@ -411,7 +411,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     */
     public function testGet($name, $expect)
     {
-        $this->assertSame($expect, $this->o->get($name));
+        $this->assertSame($expect, $this->o->get($name, 1));
     }
     /**
      * Data provider for testGetReading

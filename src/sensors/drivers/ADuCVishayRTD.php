@@ -117,7 +117,7 @@ class ADuCVishayRTD extends \HUGnet\sensors\Driver
         $A, $deltaT = 0, &$data = array(), $prev = null, $sensor = array()
     ) {
         $Am    = pow(2, 23);
-        $Rbias = $this->getExtra(0, $sensor["extra"]);
+        $Rbias = $this->getExtra(0, $sensor);
 
         $A = \HUGnet\Util::getTwosCompliment($A, 32);
         $A = abs($A);
@@ -126,7 +126,7 @@ class ADuCVishayRTD extends \HUGnet\sensors\Driver
         }
         $R = (float)(($A * $Rbias) / ($Am - $A));
         $T = $this->_tableInterpolate($R, $this->_valueTable);
-        return round($T, $this->get('maxDecimals'));
+        return round($T, $this->get('maxDecimals', 1));
     }
     /**
     * This function should be called with the values set for the specific

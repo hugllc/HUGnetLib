@@ -130,7 +130,7 @@ class Sensor extends SystemTableBase
         if (is_string($value) && (strtolower(substr($value, 0, 8)) === "getextra")) {
             $value = $this->driver()->getExtra(
                 (int)substr($value, 8),
-                $this->table()->get("extra")
+                $this->table()->toArray()
             );
         }
     }
@@ -210,6 +210,7 @@ class Sensor extends SystemTableBase
                 $this->table()->get("id"),
                 $this->table()->get("type")
             );
+            $this->table()->set("driver", $driver);
         }
         if (!is_object($this->_driverCache[$driver])) {
             $this->_driverCache[$driver] = &sensors\Driver::factory($driver);

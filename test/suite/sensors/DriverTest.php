@@ -126,7 +126,7 @@ class DriverTest extends drivers\DriverTestBase
     */
     public function testPresent($name, $expect)
     {
-        $this->assertSame($expect, $this->o->present($name));
+        $this->assertSame($expect, $this->o->present($name, 1));
     }
     /**
     * data provider for testDeviceID
@@ -166,7 +166,7 @@ class DriverTest extends drivers\DriverTestBase
     */
     public function testGet($name, $expect)
     {
-        $this->assertSame($expect, $this->o->get($name));
+        $this->assertSame($expect, $this->o->get($name, 1));
     }
     /**
     * test the set routine when an extra class exists
@@ -180,7 +180,7 @@ class DriverTest extends drivers\DriverTestBase
     */
     public function testGetParam($name, $expect)
     {
-        $this->assertSame($expect, DriverTestClass::getParam($name));
+        $this->assertSame($expect, DriverTestClass::getParam($name, 1));
     }
     /**
     * test the set routine when an extra class exists
@@ -212,7 +212,7 @@ class DriverTest extends drivers\DriverTestBase
             'defMin' => 0,
             'defMax' => 150,
         );
-        $this->assertEquals($expect, $this->o->toArray());
+        $this->assertEquals($expect, $this->o->toArray(1));
     }
     /**
     * data provider for testDeviceID
@@ -308,17 +308,22 @@ class DriverTest extends drivers\DriverTestBase
     {
         return array(
             array(
-                array(6,5,4),
+                array("sensor" => 1, "extra" => array(6,5,4)),
                 1,
                 5
             ),
             array(
-                array(6,5,4),
+                array("sensor" => 1, "extra" => array(6,5,4)),
                 3,
                 7
             ),
             array(
-                array(6,5,4),
+                array("sensor" => 1, "extra" => array(6,5,4)),
+                100,
+                null
+            ),
+            array(
+                null,
                 100,
                 null
             ),

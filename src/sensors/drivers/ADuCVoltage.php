@@ -103,14 +103,14 @@ class ADuCVoltage extends \HUGnet\sensors\Driver
         $A, $deltaT = 0, &$data = array(), $prev = null, $sensor = array()
     ) {
         $Am    = pow(2, 23);
-        $Rin   = $this->getExtra(0, $sensor["extra"]);
-        $Rbias = $this->getExtra(1, $sensor["extra"]);
-        $Vref  = $this->getExtra(2, $sensor["extra"]);
+        $Rin   = $this->getExtra(0, $sensor);
+        $Rbias = $this->getExtra(1, $sensor);
+        $Vref  = $this->getExtra(2, $sensor);
 
         $A = \HUGnet\Util::getTwosCompliment($A, 32);
         $A = \HUGnet\Util::inputBiasCompensation($A, $Rin, $Rbias);
         $Va = ($A / $Am) * $Vref;
-        return round($Va, $this->get('maxDecimals'));
+        return round($Va, $this->get('maxDecimals', 1));
     }
 
 }
