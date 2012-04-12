@@ -180,6 +180,11 @@ class ADuCPower extends \HUGnet\sensors\Driver
         $array = parent::toArray($sensor);
         $array["unitType"] = $array["unitType"][$sensor];
         $array["storageUnit"] = $array["storageUnit"][$sensor];
+        if (($sensor != 1) && ($sensor != 3)) {
+            $array["extraDefault"] = array();
+            $array["extraValues"] = array();
+            $array["extraText"] = array();
+        }
         return $array;
     }
     /**
@@ -198,6 +203,13 @@ class ADuCPower extends \HUGnet\sensors\Driver
         $param = parent::getParam($name, $sensor);
         if (($name == "unitType") || ($name == "storageUnit")) {
             $param = $param[$sensor];
+        } else if (($sensor != 1) && ($sensor != 3)) {
+            if (($name == "extraDefault")
+                || ($name == "extraText")
+                || ($name == "extraValues")
+            ) {
+                $param = array();
+            }
         }
         return $param;
     }
