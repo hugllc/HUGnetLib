@@ -73,10 +73,10 @@ class ADuCPower extends \HUGnet\sensors\Driver
             8 => "Impedance",
         ),
         "storageUnit" => array(
-            1 => 'V',
-            2 => 'A',
-            3 => 'V',
-            4 => 'A',
+            1 => 'A',
+            2 => 'V',
+            3 => 'A',
+            4 => 'V',
             5 => 'W',
             6 => 'Ohms',
             7 => 'W',
@@ -128,14 +128,14 @@ class ADuCPower extends \HUGnet\sensors\Driver
         $Vref  = $this->getExtra(0, $sensor["extra"]);
         $A = \HUGnet\Util::getTwosCompliment($A, 32);
 
-        if (($sensor["sensor"] == 1) || ($sensor["sensor"] == 3)) {
+        if (($sensor["sensor"] == 2) || ($sensor["sensor"] == 4)) {
             /* Voltage */
             $Rin   = $this->getExtra(2, $sensor["extra"]);
             $Rbias = $this->getExtra(3, $sensor["extra"]);
             $A = \HUGnet\Util::inputBiasCompensation($A, $Rin, $Rbias);
             $Va = ($A / $Am) * $Vref;
             return round($Va, $this->get("maxDecimals"));
-        } else if (($sensor["sensor"] == 2) || ($sensor["sensor"] == 4)) {
+        } else if (($sensor["sensor"] == 1) || ($sensor["sensor"] == 3)) {
             /* Current */
             $R = $this->getExtra(1, $sensor["extra"]);
             $Rin   = $this->getExtra(4, $sensor["extra"]);
@@ -149,14 +149,14 @@ class ADuCPower extends \HUGnet\sensors\Driver
             return round($I, $this->get("maxDecimals"));
         } else if (($sensor["sensor"] == 5) || ($sensor["sensor"] == 7)) {
             /* Power */
-            $V = $data[$sensor["sensor"] - 4]["value"];
-            $I = $data[$sensor["sensor"] - 3]["value"];
+            $I = $data[$sensor["sensor"] - 4]["value"];
+            $V = $data[$sensor["sensor"] - 3]["value"];
             $P = $I * $V;
             return round($P, $this->get("maxDecimals"));
         } else if (($sensor["sensor"] == 6) || ($sensor["sensor"] == 8)) {
             /* Impedance */
-            $V = $data[$sensor["sensor"] - 5]["value"];
-            $I = $data[$sensor["sensor"] - 4]["value"];
+            $I = $data[$sensor["sensor"] - 5]["value"];
+            $V = $data[$sensor["sensor"] - 4]["value"];
             if ($I == 0) {
                 return null;
             }
