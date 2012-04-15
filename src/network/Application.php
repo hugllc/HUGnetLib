@@ -133,15 +133,16 @@ final class Application
     *
     * The function should take 1 argument.  That will be the packet.
     *
-    * @param mixed $callback the callback function.
+    * @param mixed  $callback the callback function.
+    * @param string $DeviceID The device ID to take packets from
     *
     * @return bool true on success, fales of failure
     */
-    public function unsolicited($callback)
+    public function unsolicited($callback, $DeviceID = '000000')
     {
         $return = is_callable($callback);
         if ($return) {
-            $this->_unsolicited[] = $callback;
+            $this->_unsolicited[$DeviceID][] = $callback;
         }
         return (bool)$return;
     }
@@ -174,8 +175,8 @@ final class Application
     */
     private function _unsolicited(&$packet)
     {
-        if (!is_null($packet)) {
-            foreach ($this->_unsolicited as $callback) {
+        if (!is_null($packet) && is_object($packet)) {
+            foreach ((array)$this->_unsolicited[$packet->To()] as $callback) {
                 if (is_callable($callback)) {
                     call_user_func($callback, $packet);
                 }
