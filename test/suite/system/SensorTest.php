@@ -267,6 +267,9 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             "id" => 0xFD,
                             "extra" => array("a", "b"),
                         ),
+                        "toArray" => array(
+                            "extra" => array("a", "b"),
+                        ),
                     ),
                 ),
                 new DummyTable("Table"),
@@ -343,6 +346,9 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             array("sensor"),
                         ),
                         'set' => array(
+                            array("driver", "SDEFAULT"),
+                            array("driver", "SDEFAULT"),
+                            array("driver", "SDEFAULT"),
                             array("units", "unknown"),
                             array("min", 0),
                             array("max", 150),
@@ -466,6 +472,9 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             array("sensor"),
                         ),
                         'set' => array(
+                            array("driver", "SDEFAULT"),
+                            array("driver", "SDEFAULT"),
+                            array("driver", "SDEFAULT"),
                             array(
                                 'units', 'unknown'
                             ),
@@ -522,6 +531,9 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             array("sensor"),
                         ),
                         'set' => array(
+                            array("driver", "SDEFAULT"),
+                            array("driver", "SDEFAULT"),
+                            array("driver", "SDEFAULT"),
                             array(
                                 'units', 'unknown'
                             ),
@@ -596,7 +608,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         "toArray" => array(
                             "id" => 0xFD,
                             "type" => "TestSensorDriver1",
-                            "extra" => array(0, 5, 0, 1000, 1.2, 100, 1),
+                            "extra" => array(),
                             "unitType" => "Pressure",
                             "dataType" => \HUGnet\units\Driver::TYPE_RAW,
                             "storageUnit" => "psi",
