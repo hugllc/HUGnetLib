@@ -118,7 +118,7 @@ final class Application
     {
         if (!is_object($this->_device)) {
             include_once dirname(__FILE__)."/Device.php";
-            $this->_device = &Device::factory($this, (array)$config);
+            $this->_device = &Device::factory($this, $this->_system, (array)$config);
         }
         return $this->_device;
     }

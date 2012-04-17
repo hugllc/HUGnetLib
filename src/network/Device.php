@@ -62,6 +62,8 @@ final class Device
     private $_config = array();
     /** This is our configuration */
     private $_device = null;
+    /** This is our configuration */
+    private $_system = null;
     /** These are the packets we are sending */
     private $_defaultConfig = array(
         "HWPartNum" => "0039-26-00-P",
@@ -71,12 +73,14 @@ final class Device
     * Sets our configuration
     *
     * @param object &$application The application network layer to use
+    * @param object &$system      The system object to use
     * @param array  $config       The configuration to use
     */
-    private function __construct(&$application, $config)
+    private function __construct(&$application, &$system, $config)
     {
         $this->_config  = array_merge($this->_defaultConfig, $config);
         $this->_network = &$application;
+        $this->_system  = &$system;
         $this->_config["FWPartNum"] = "0039-26-00-P";
         $this->_config["FWVersion"] = @file_get_contents(
             dirname(__FILE__).'/../VERSION.TXT'
@@ -90,13 +94,14 @@ final class Device
     * Creates the object
     *
     * @param object &$application The application network layer to use
+    * @param object &$system      The system object to use
     * @param array  $config       The configuration to use
     *
     * @return Matcher Object
     */
-    public function &factory(&$application, $config)
+    public function &factory(&$application, &$system, $config)
     {
-        return new Device($application, (array)$config);
+        return new Device($application, $system, (array)$config);
     }
 
     /**
@@ -108,6 +113,7 @@ final class Device
     {
         // Remove our network
         unset($this->_network);
+        unset($this->_system);
     }
 
     /**
@@ -122,7 +128,7 @@ final class Device
         if (($pkt->type() === "PING") || ($pkt->type() === "FINDPING")) {
             $this->_reply($pkt, $pkt->data());
         } else if (($pkt->type() === "CONFIG")) {
-            $this->_reply($pkt, $this->_getConfig());
+            $this->_reply($pkt, $this->_device()->config()->encode());
         }
     }
     /**
@@ -134,24 +140,9 @@ final class Device
     {
         if (!is_object($this->_device)) {
             include_once dirname(__FILE__)."/../system/Device.php";
-            $this->_device = \HUGnet\Device::factory($this->_config);
+            $this->_device = \HUGnet\Device::factory($this->_system, $this->_config);
         }
         return $this->_device;
-    }
-    /**
-    * Creates a device ovject
-    *
-    * @return null
-    */
-    private function _getConfig()
-    {
-        $ver = explode(
-            ".", file_get_contents(dirname(__FILE__).'/../VERSION.TXT')
-        );
-        $version = sprintf("%02X%02X%02X", $ver[0], $ver[1], $ver[2]);
-        $config  = sprintf("%010X", $this->_config["id"]);
-        $config .= "00392601500039260150".$version."FFFFFFFF";
-        return $config;
     }
     /**
     * Replies to a packet

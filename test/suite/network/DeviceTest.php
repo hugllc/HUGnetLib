@@ -44,6 +44,8 @@ require_once CODE_BASE.'system/System.php';
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummyNetwork.php';
 /** This is a required class */
+require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
+/** This is a required class */
 require_once CODE_BASE.'util/VPrint.php';
 
 /**
@@ -165,9 +167,10 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     public function testGetID($config, $mocks, $min, $max, $send)
     {
         $name = "Network";
+        $sys = new \HUGnet\DummySystem();
         $net = new \HUGnet\network\DummyNetwork($name);
         $net->resetMock($mocks);
-        $device = &Device::factory($net, $config);
+        $device = &Device::factory($net, $sys, $config);
         $this->assertTrue(
             hexdec($device->getID()) >= 0xFE0000, "The id is too low"
         );
@@ -199,6 +202,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "id" => "000001",
+                    "HWPartNum" => "0039-26-01-P",
                 ),
                 array(
                 ),
@@ -239,6 +243,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "id" => "000001",
+                    "HWPartNum" => "0039-26-01-P",
                 ),
                 array(
                 ),
@@ -279,6 +284,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "id" => "000001",
+                    "HWPartNum" => "0039-26-01-P",
                 ),
                 array(
                 ),
@@ -308,7 +314,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             array(
                                 "to"      => "000002",
                                 "command" => "01",
-                                "data"    => "000000000100392601500039260150"
+                                "data"    => "000000000100392601500039260050"
                                 .$version."FFFFFFFF",
                             )
                         ),
@@ -334,9 +340,10 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     public function testPacket($config, $mocks, $pkt, $expect)
     {
         $name = "Network";
+        $sys = new \HUGnet\DummySystem();
         $net = new \HUGnet\network\DummyNetwork($name);
         $net->resetMock($mocks);
-        $device = &Device::factory($net, $config);
+        $device = &Device::factory($net, $sys, $config);
         $device->packet($pkt);
         $ret = $net->retrieve();
         $this->assertEquals($expect, $ret["Network"]["send"]);
