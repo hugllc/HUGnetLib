@@ -56,6 +56,8 @@ final class Application
 {
     /** This is our network */
     private $_transport;
+    /** This is our system */
+    private $_system;
     /** This is our device */
     private $_device;
     /** These are the monitor callbacks */
@@ -77,11 +79,13 @@ final class Application
     * Sets our configuration
     *
     * @param object &$transport The network transport to use
+    * @param object &$system    The system object to use
     * @param array  $config     The configuration to use
     */
-    private function __construct(&$transport, $config)
+    private function __construct(&$transport, &$system, $config)
     {
         $this->_config = array_merge($this->_defaultConfig, $config);
+        $this->_system = &$system;
         $this->_transport =& $transport;
         if (empty($this->_config["from"])) {
             $this->_config["from"] = sprintf("%06X", mt_rand(0xFD0000, 0xFDFFFF));
@@ -92,13 +96,14 @@ final class Application
     * Creates the object
     *
     * @param object &$transport The network transport to use
+    * @param object &$system    The system object to use
     * @param array  $config     The configuration to use
     *
     * @return null
     */
-    public function &factory(&$transport, $config = array())
+    public function &factory(&$transport, &$system, $config = array())
     {
-        $obj = new Application($transport, (array)$config);
+        $obj = new Application($transport, $system, (array)$config);
         return $obj;
     }
 
@@ -127,6 +132,7 @@ final class Application
     {
         // Shut down the network
         unset($this->_transport);
+        unset($this->_system);
     }
     /**
     * Sets callbacks for incoming packets

@@ -151,7 +151,7 @@ class System
                     $network, $this->_config["network"]
                 );
                 $this->_network = &network\Application::factory(
-                    $transport, $this->_config["network"]
+                    $transport, $this, $this->_config["network"]
                 );
             }
         }
