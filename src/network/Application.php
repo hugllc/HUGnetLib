@@ -114,10 +114,6 @@ final class Application
         if (!is_object($this->_device)) {
             include_once dirname(__FILE__)."/Device.php";
             $this->_device = &Device::factory($this, (array)$config);
-            /* This sets us up to receive packets for this device */
-            $this->unsolicited(
-                array($this->_device, "packet"), $this->_device->getID()
-            );
         }
         return $this->_device;
     }

@@ -178,8 +178,9 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(
             isset($ret[$name]["unsolicited"]), "Unsolicited was not called"
         );
-        $this->assertTrue(
-            count($ret[$name]["send"]) == $send, "Send was not called enough"
+        /* It is send -1 because a powerup packet will be sent */
+        $this->assertSame(
+            $send, count($ret[$name]["send"]) - 1, "Send was not called enough"
         );
 
     }
@@ -213,6 +214,18 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     array(
                         Packet::factory(
                             array(
+                                "to"      => "000000",
+                                "from"      => "000001",
+                                "command" => "POWERUP",
+                                "data"    => "0000000001",
+                            )
+                        ),
+                        null,
+                        array("tries" => 1, "find" => false),
+                    ),
+                    array(
+                        Packet::factory(
+                            array(
                                 "to"      => "000002",
                                 "command" => "01",
                                 "data"    => "0102030405",
@@ -241,6 +254,18 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     array(
                         Packet::factory(
                             array(
+                                "to"      => "000000",
+                                "from"      => "000001",
+                                "command" => "POWERUP",
+                                "data"    => "0000000001",
+                            )
+                        ),
+                        null,
+                        array("tries" => 1, "find" => false),
+                    ),
+                    array(
+                        Packet::factory(
+                            array(
                                 "to"      => "000002",
                                 "command" => "01",
                                 "data"    => "0102030405",
@@ -266,6 +291,18 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     )
                 ),
                 array(
+                    array(
+                        Packet::factory(
+                            array(
+                                "to"      => "000000",
+                                "from"      => "000001",
+                                "command" => "POWERUP",
+                                "data"    => "0000000001",
+                            )
+                        ),
+                        null,
+                        array("tries" => 1, "find" => false),
+                    ),
                     array(
                         Packet::factory(
                             array(

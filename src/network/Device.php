@@ -64,6 +64,7 @@ final class Device
     private $_device = null;
     /** These are the packets we are sending */
     private $_defaultConfig = array(
+        "HWPartNum" => "0039-26-00-P",
     );
 
     /**
@@ -76,9 +77,14 @@ final class Device
     {
         $this->_config  = array_merge($this->_defaultConfig, $config);
         $this->_network = &$application;
+        $this->_config["FWPartNum"] = "0039-26-00-P";
+        $this->_config["FWVersion"] = @file_get_contents(
+            dirname(__FILE__).'/../VERSION.TXT'
+        );
         $this->getID();
+        $this->_network->unsolicited(array($this, "packet"), $this->_config["id"]);
         // Send the powerup packet
-        $this->_network->unsolicited(array($this, "packet"));
+        $this->_powerup();
     }
     /**
     * Creates the object
@@ -113,13 +119,24 @@ final class Device
     */
     public function packet($pkt)
     {
-        if ($pkt->to() === $this->_config["id"]) {
-            if (($pkt->type() === "PING") || ($pkt->type() === "FINDPING")) {
-                $this->_reply($pkt, $pkt->data());
-            } else if (($pkt->type() === "CONFIG")) {
-                $this->_reply($pkt, $this->_getConfig());
-            }
+        if (($pkt->type() === "PING") || ($pkt->type() === "FINDPING")) {
+            $this->_reply($pkt, $pkt->data());
+        } else if (($pkt->type() === "CONFIG")) {
+            $this->_reply($pkt, $this->_getConfig());
         }
+    }
+    /**
+    * Gets the device associated with this
+    *
+    * @return null
+    */
+    private function _device()
+    {
+        if (!is_object($this->_device)) {
+            include_once dirname(__FILE__)."/../system/Device.php";
+            $this->_device = \HUGnet\Device::factory($this->_config);
+        }
+        return $this->_device;
     }
     /**
     * Creates a device ovject
@@ -129,7 +146,7 @@ final class Device
     private function _getConfig()
     {
         $ver = explode(
-            ".", file_get_contents(CODE_BASE.'/VERSION.TXT')
+            ".", file_get_contents(dirname(__FILE__).'/../VERSION.TXT')
         );
         $version = sprintf("%02X%02X%02X", $ver[0], $ver[1], $ver[2]);
         $config  = sprintf("%010X", $this->_config["id"]);
