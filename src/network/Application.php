@@ -114,6 +114,10 @@ final class Application
         if (!is_object($this->_device)) {
             include_once dirname(__FILE__)."/Device.php";
             $this->_device = &Device::factory($this, (array)$config);
+            /* This sets us up to receive packets for this device */
+            $this->unsolicited(
+                array($this->_device, "packet"), $this->_device->getID()
+            );
         }
         return $this->_device;
     }
@@ -176,12 +180,14 @@ final class Application
     private function _unsolicited(&$packet)
     {
         if (!is_null($packet) && is_object($packet)) {
+            /* Monitor is first because unsolicited might print a reply packet */
+            /* If this happens they come out backwards if unsolicited is first */
+            $this->_monitor($packet);
             foreach ((array)$this->_unsolicited[$packet->To()] as $callback) {
                 if (is_callable($callback)) {
                     call_user_func($callback, $packet);
                 }
             }
-            $this->_monitor($packet);
         }
     }
     /**
