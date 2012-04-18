@@ -488,6 +488,65 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, $obj->get($field));
         unset($obj);
     }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataSet()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "Driver" => "EDEFAULT",
+                            "id" => 2,
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                "id",
+                2,
+                array(array("id", 2)),
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 5,
+                    ),
+                ),
+                new DummyTable("Table"),
+                "packetTimeout",
+                4,
+                array(array("packetTimeout", 4)),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config The configuration to use
+    * @param mixed  $class  This is either the name of a class or an object
+    * @param string $field  The field to get
+    * @param mixed  $value  The value to set
+    * @param mixed  $expect The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataSet
+    */
+    public function testSet(
+        $config, $class, $field, $value, $expect
+    ) {
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = SystemTableBaseTestStub::factory($sys, null, $class);
+        $obj->set($field, $value);
+        $ret = $sys->retrieve();
+        $this->assertSame($expect, $ret["Table"]["set"]);
+        unset($obj);
+    }
 
 }
 /**
