@@ -547,6 +547,93 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, $ret["Table"]["set"]);
         unset($obj);
     }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataIds()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "selectIDs" => array(
+                            "A", "B", "C"
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                "id",
+                2,
+                array("A", "B", "C"),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config The configuration to use
+    * @param mixed  $class  This is either the name of a class or an object
+    * @param string $where  The field to get
+    * @param array  $data   The value to set
+    * @param mixed  $expect The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataIds
+    */
+    public function testIds(
+        $config, $class, $where, $data, $expect
+    ) {
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = SystemTableBaseTestStub::factory($sys, null, $class);
+        $ret = $obj->Ids($field, $value);
+        $this->assertSame($expect, $ret);
+        unset($obj);
+    }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataJson()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "toArray" => array(
+                            "A", "B", "C"
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                '["A","B","C"]',
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config The configuration to use
+    * @param mixed  $class  This is either the name of a class or an object
+    * @param mixed  $expect The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataJson
+    */
+    public function testJson(
+        $config, $class, $expect
+    ) {
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = SystemTableBaseTestStub::factory($sys, null, $class);
+        $this->assertSame($expect, $obj->json());
+        unset($obj);
+    }
 
 }
 /**
