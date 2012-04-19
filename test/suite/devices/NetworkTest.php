@@ -159,8 +159,9 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     {
         $net   = new \HUGnet\network\DummyNetwork("Network");
         $table = new \HUGnet\DummyTable();
+        $driver = new \HUGnet\DummyBase("Driver");
         $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $table);
+        $devnet = &Network::factory($net, $table, $driver);
         $ret = $devnet->poll($callback, $config);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
@@ -236,8 +237,9 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     {
         $net   = new \HUGnet\network\DummyNetwork("Network");
         $table = new \HUGnet\DummyTable();
+        $driver = new \HUGnet\DummyBase("Driver");
         $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $table);
+        $devnet = &Network::factory($net, $table, $driver);
         $ret = $devnet->config($callback, $config);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
@@ -373,8 +375,9 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     {
         $net   = new \HUGnet\network\DummyNetwork("Network");
         $table = new \HUGnet\DummyTable();
+        $driver = new \HUGnet\DummyBase("Driver");
         $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $table);
+        $devnet = &Network::factory($net, $table, $driver);
         $ret = $devnet->getCRC($config);
         $this->assertSame($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
@@ -510,8 +513,9 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     {
         $net   = new \HUGnet\network\DummyNetwork("Network");
         $table = new \HUGnet\DummyTable();
+        $driver = new \HUGnet\DummyBase("Driver");
         $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $table);
+        $devnet = &Network::factory($net, $table, $driver);
         $ret = $devnet->setCRC($config);
         $this->assertSame($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
@@ -646,8 +650,9 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     {
         $net   = new \HUGnet\network\DummyNetwork("Network");
         $table = new \HUGnet\DummyTable();
+        $driver = new \HUGnet\DummyBase("Driver");
         $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $table);
+        $devnet = &Network::factory($net, $table, $driver);
         $ret = $devnet->runBootloader($config);
         $this->assertSame($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
@@ -782,8 +787,9 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     {
         $net   = new \HUGnet\network\DummyNetwork("Network");
         $table = new \HUGnet\DummyTable();
+        $driver = new \HUGnet\DummyBase("Driver");
         $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $table);
+        $devnet = &Network::factory($net, $table, $driver);
         $ret = $devnet->runApplication($config);
         $this->assertSame($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
@@ -921,8 +927,9 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     ) {
         $net   = new \HUGnet\network\DummyNetwork("Network");
         $table = new \HUGnet\DummyTable();
+        $driver = new \HUGnet\DummyBase("Driver");
         $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $table);
+        $devnet = &Network::factory($net, $table, $driver);
         $ret = $devnet->writeFlash($address, $data, $callback, $config);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
@@ -1060,8 +1067,9 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     ) {
         $net   = new \HUGnet\network\DummyNetwork("Network");
         $table = new \HUGnet\DummyTable();
+        $driver = new \HUGnet\DummyBase("Driver");
         $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $table);
+        $devnet = &Network::factory($net, $table, $driver);
         $ret = $devnet->writeE2($address, $data, $callback, $config);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
@@ -1401,8 +1409,9 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     ) {
         $net   = new \HUGnet\network\DummyNetwork("Network");
         $table = new \HUGnet\DummyTable();
+        $driver = new \HUGnet\DummyBase("Driver");
         $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $table);
+        $devnet = &Network::factory($net, $table, $driver);
         $ret = $devnet->writeFlashBuffer($data, $address, $chunkSize, $empty);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
@@ -1742,8 +1751,9 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     ) {
         $net   = new \HUGnet\network\DummyNetwork("Network");
         $table = new \HUGnet\DummyTable();
+        $driver = new \HUGnet\DummyBase("Driver");
         $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $table);
+        $devnet = &Network::factory($net, $table, $driver);
         $ret = $devnet->writeE2Buffer($data, $address, $chunkSize, $empty);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
@@ -3046,8 +3056,9 @@ S9030000FC",
     {
         $net   = new \HUGnet\network\DummyNetwork("Network");
         $table = new \HUGnet\DummyTable();
+        $driver = new \HUGnet\DummyBase("Driver");
         $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $table);
+        $devnet = &Network::factory($net, $table, $driver);
         $ret = $devnet->loadFirmware($config);
         $this->assertSame($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();

@@ -63,19 +63,24 @@ class Network
     */
     private $_network = null;
     /**
-    * This is the cache object
+    * This is the driver object
     */
-    private $_device = null;
+    private $_driver = null;
+    /**
+    * This is the table object
+    */
+    private $_table = null;
     /**
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
     *
     * @param object &$network The network application object
-    * @param string &$device  The table object
+    * @param object &$table   The device table object
+    * @param object &$driver  The device driver object
     *
     * @return null
     */
-    private function __construct(&$network, &$device)
+    private function __construct(&$network, &$table, &$driver)
     {
         \HUGnet\System::exception(
             get_class($this)." needs to be passed a network object",
@@ -83,30 +88,39 @@ class Network
             !is_object($network)
         );
         \HUGnet\System::exception(
-            get_class($this)." needs to be passed a device object",
+            get_class($this)." needs to be passed a driver object",
             "InvalidArgument",
-            !is_object($device)
+            !is_object($driver)
+        );
+        \HUGnet\System::exception(
+            get_class($this)." needs to be passed a driver object",
+            "InvalidArgument",
+            !is_object($table)
         );
         $this->_network = &$network;
-        $this->_device  = &$device;
+        $this->_driver  = &$driver;
+        $this->_table   = &$table;
     }
     /**
     * This is the destructor
     */
     public function __destruct()
     {
+        unset($this->_driver);
+        unset($this->_table);
     }
     /**
     * This function creates the system.
     *
     * @param mixed  &$network (object)The system object to use
     * @param string &$table   (object)The table to use
+    * @param object &$driver  The device driver object
     *
     * @return null
     */
-    public static function &factory(&$network, &$table)
+    public static function &factory(&$network, &$table, &$driver)
     {
-        $object = new Network($network, $table);
+        $object = new Network($network, $table, $driver);
         return $object;
     }
     /**
@@ -351,7 +365,7 @@ class Network
             $config["block"] = true;
         }
         $pkt = array(
-            "To" => $this->_device->get("id"),
+            "To" => $this->_table->get("id"),
             "Command" => $command,
         );
         if (!is_null($data) && (is_array($data) || is_string($data))) {
@@ -414,7 +428,7 @@ class Network
         if (strlen($buffer) > 0) {
             $buffer = str_split($buffer, $chunkSize*2);
             $pages = count($buffer);
-            $devID = $this->_device->get("id");
+            $devID = $this->_table->get("id");
             foreach ($buffer as $page => $data) {
                 $data = str_pad($data, $chunkSize*2, $empty);
                 $addr = $start + ($page * $chunkSize);

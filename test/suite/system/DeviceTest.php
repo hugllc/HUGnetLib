@@ -226,7 +226,6 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             "HUGnet\devices\Network", get_class($obj->network()), "Wrong Class"
         );
-        $this->assertSame($obj->network(), $obj->network(), "Wrong Object Returned");
         unset($obj);
     }
     /**

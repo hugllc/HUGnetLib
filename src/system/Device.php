@@ -157,14 +157,12 @@ class Device extends SystemTableBase
     */
     public function &network()
     {
-        if (!is_object($this->_network)) {
-            include_once dirname(__FILE__)."/../devices/Network.php";
-            $this->_network = \HUGnet\devices\Network::factory(
-                $this->system()->network(),
-                $this
-            );
-        }
-        return $this->_network;
+        include_once dirname(__FILE__)."/../devices/Network.php";
+        return \HUGnet\devices\Network::factory(
+            $this->system()->network(),
+            $this->table(),
+            $this->driver()
+        );
     }
     /**
     * This function creates the system.
