@@ -230,9 +230,10 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     */
     public function testDecode($mocks, $string, $expect)
     {
-        $table = new \HUGnet\DummyTable();
+        $table  = new \HUGnet\DummyTable();
+        $driver = new \HUGnet\DummyBase("Driver");
         $table->resetMock($mocks);
-        $obj = Config::factory($table);
+        $obj = Config::factory($table, $driver);
         $obj->decode($string);
         $ret = $table->retrieve();
         $this->assertSame($expect, $ret);
@@ -334,9 +335,10 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     */
     public function testEncode($mocks, $expect)
     {
-        $table = new \HUGnet\DummyTable();
+        $table  = new \HUGnet\DummyTable();
+        $driver = new \HUGnet\DummyBase("Driver");
         $table->resetMock($mocks);
-        $obj = Config::factory($table);
+        $obj = Config::factory($table, $driver);
         $ret = $obj->encode();
         $this->assertSame($expect, $ret);
     }

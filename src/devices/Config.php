@@ -75,21 +75,32 @@ class Config
     */
     private $_table = null;
     /**
+    * This is the cache object
+    */
+    private $_driver = null;
+    /**
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
     *
-    * @param string &$table The table object
+    * @param object &$table  The device table object
+    * @param object &$driver The device driver object
     *
     * @return null
     */
-    private function __construct(&$table)
+    private function __construct(&$table, &$driver)
     {
         \HUGnet\System::exception(
             get_class($this)." needs to be passed a table object",
             "InvalidArgument",
             !is_object($table)
         );
-        $this->_table   = &$table;
+        \HUGnet\System::exception(
+            get_class($this)." needs to be passed a driver object",
+            "InvalidArgument",
+            !is_object($driver)
+        );
+        $this->_table  = &$table;
+        $this->_driver = &$driver;
     }
     /**
     * This is the destructor
@@ -100,13 +111,14 @@ class Config
     /**
     * This function creates the system.
     *
-    * @param object &$table (object)The table to use
+    * @param object &$table  (object)The table to use
+    * @param object &$driver The device driver object
     *
     * @return null
     */
-    public static function &factory(&$table)
+    public static function &factory(&$table, &$driver)
     {
-        $obj = new Config($table);
+        $obj = new Config($table, $driver);
         return $obj;
     }
     /**

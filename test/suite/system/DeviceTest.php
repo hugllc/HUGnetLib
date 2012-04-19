@@ -269,7 +269,6 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             "HUGnet\devices\Config", get_class($obj->config()), "Wrong Class"
         );
-        $this->assertSame($obj->config(), $obj->config(), "Wrong Object Returned");
         unset($obj);
     }
     /**

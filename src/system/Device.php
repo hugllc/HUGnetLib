@@ -67,10 +67,6 @@ class Device extends SystemTableBase
     */
     private $_driverCache = array();
     /**
-    * This is the cache for the drivers.
-    */
-    private $_network = null;
-    /**
     * This is the firmware table
     */
     private $_firmware = null;
@@ -82,7 +78,7 @@ class Device extends SystemTableBase
         foreach (array_keys($this->_driverCache) as $key) {
             unset($this->_driverCache[$key]);
         }
-        unset($this->_network);
+        unset($this->_firmware);
         parent::__destruct();
     }
     /**
@@ -171,13 +167,11 @@ class Device extends SystemTableBase
     */
     public function &config()
     {
-        if (!is_object($this->_config)) {
-            include_once dirname(__FILE__)."/../devices/Config.php";
-            $this->_config = \HUGnet\devices\Config::factory(
-                $this->table()
-            );
-        }
-        return $this->_config;
+        include_once dirname(__FILE__)."/../devices/Config.php";
+        return \HUGnet\devices\Config::factory(
+            $this->table(),
+            $this->driver()
+        );
     }
     /**
     * This creates the driver
