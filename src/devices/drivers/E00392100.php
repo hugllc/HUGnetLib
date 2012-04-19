@@ -58,6 +58,8 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  */
 class E00392100 extends \HUGnet\devices\Driver
 {
+    /** The placeholder for the reading the downstream units from a controller */
+    const COMMAND_READDOWNSTREAM = "56";
     /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
@@ -78,6 +80,29 @@ class E00392100 extends \HUGnet\devices\Driver
     {
         return parent::intFactory();
     }
+
+    /**
+    * This function returns the configuration packet arrays
+    *
+    * @return array
+    */
+    public function config()
+    {
+        return array(
+            array(
+                "Command" => "CONFIG",
+            ),
+            array(
+                "Command" => self::COMMAND_READDOWNSTREAM,
+                "Data" => "00",
+            ),
+            array(
+                "Command" => self::COMMAND_READDOWNSTREAM,
+                "Data" => "01",
+            ),
+        );
+    }
+
 
 }
 

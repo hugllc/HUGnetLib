@@ -285,5 +285,55 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame($expect, $this->o->get($name));
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataNetworkFunctions()
+    {
+        return array(
+            array("config"),
+            array("poll"),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $name   The name of the variable to test.
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataNetworkFunctions
+    */
+    public function testNetworkFunctions($name)
+    {
+        if (method_exists($this->o, $name)) {
+            $ret = $this->o->$name();
+            $this->assertInternalType(
+                "array", $ret, "Return of $name must be an array"
+            );
+            $this->assertGreaterThanOrEqual(
+                1, count($ret), "Return of $name must have at least 1 element"
+            );
+            foreach ($ret as $key => $pkt) {
+                $this->assertInternalType(
+                    "array", $pkt,
+                    "Element $key returned by $name must be an array"
+                );
+                $this->assertInternalType(
+                    "string", $pkt["Command"],
+                    "'Command' must be a string in element array $key"
+                    ." returned by $name"
+                );
+                $this->assertGreaterThanOrEqual(
+                    2, strlen($pkt["Command"]),
+                    "'Command' must be at least two characters in element array $key"
+                    ." returned by $name"
+                );
+            }
+        }
+    }
 }
 ?>
