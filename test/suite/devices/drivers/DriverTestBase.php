@@ -301,7 +301,6 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     * test the set routine when an extra class exists
     *
     * @param string $name   The name of the variable to test.
-    * @param array  $expect The expected return
     *
     * @return null
     *

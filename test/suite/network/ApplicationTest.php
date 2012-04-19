@@ -633,7 +633,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                     "timeout" =>  1,
                     "from" => "000200",
                 ),
-                get_class, // This will take a single arguemnt of an object
+                "get_class", // This will take a single arguemnt of an object
                 Packet::factory(
                     array(
                         "From"    => "000200",

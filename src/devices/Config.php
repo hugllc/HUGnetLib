@@ -168,8 +168,6 @@ class Config
     /**
     * Returns the object as a string
     *
-    * @param bool $default Return items set to their default?
-    *
     * @return string
     */
     public function encode()
