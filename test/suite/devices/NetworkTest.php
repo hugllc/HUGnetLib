@@ -48,6 +48,8 @@ require_once TEST_CONFIG_BASE.'stubs/DummyNetwork.php';
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
 /** This is a required class */
+require_once TEST_CONFIG_BASE.'stubs/DummyDeviceDriver.php';
+/** This is a required class */
 require_once CODE_BASE.'util/VPrint.php';
 
 /**
@@ -112,6 +114,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                new \HUGnet\DummyBase("Driver"),
                 null,
                 array(),
                 array(
@@ -127,10 +130,61 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             )
                         ),
+                    ),
+                ),
+                \HUGnet\network\Packet::factory(
+                    array(
+                        "From" => 21,
+                        "Reply" => "123456",
+                    )
+                ),
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => "123456",
+                            )
+                        ),
+                    ),
+                    "Driver" => array(
+                        "poll" => array(array("Command" => "SENSORREAD")),
+                    ),
+                ),
+                new \HUGnet\devices\drivers\DummyDeviceDriver("Driver"),
+                null,
+                array(),
+                array(
+                    "Table" => array(
+                        "get" => array(array("id")),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    array(
+                                        "To" => 21,
+                                        "Command" => 'SENSORREAD',
+                                    ),
+                                ),
+                                null,
+                                array(
+
+                                ),
+                            )
+                        ),
+                    ),
+                    "Driver" => array(
+                        "poll" => array(array()),
                     ),
                 ),
                 \HUGnet\network\Packet::factory(
@@ -145,21 +199,21 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     /**
     * Tests the iteration and preload functions
     *
-    * @param array $mocks    The data to reset the mocks with
-    * @param mixed $callback The function to call on packet reply
-    * @param array $config   The configuration array
-    * @param array $expect   The expected calls in the mock
-    * @param bool  $return   The expected return
+    * @param array  $mocks    The data to reset the mocks with
+    * @param object $driver   The driver to use
+    * @param mixed  $callback The function to call on packet reply
+    * @param array  $config   The configuration array
+    * @param array  $expect   The expected calls in the mock
+    * @param bool   $return   The expected return
     *
     * @return null
     *
     * @dataProvider dataPoll()
     */
-    public function testPoll($mocks, $callback, $config, $expect, $return)
+    public function testPoll($mocks, $driver, $callback, $config, $expect, $return)
     {
         $net   = new \HUGnet\network\DummyNetwork("Network");
         $table = new \HUGnet\DummyTable();
-        $driver = new \HUGnet\DummyBase("Driver");
         $net->resetMock($mocks);
         $devnet = &Network::factory($net, $table, $driver);
         $ret = $devnet->poll($callback, $config);
@@ -190,6 +244,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                new \HUGnet\DummyBase("Driver"),
                 null,
                 array(),
                 array(
@@ -205,10 +260,61 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             )
                         ),
+                    ),
+                ),
+                \HUGnet\network\Packet::factory(
+                    array(
+                        "From" => 21,
+                        "Reply" => "123456",
+                    )
+                ),
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => "123456",
+                            )
+                        ),
+                    ),
+                    "Driver" => array(
+                        "config" => array(array("Command" => "CONFIG")),
+                    ),
+                ),
+                new \HUGnet\devices\drivers\DummyDeviceDriver("Driver"),
+                null,
+                array(),
+                array(
+                    "Table" => array(
+                        "get" => array(array("id")),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    array(
+                                        "To" => 21,
+                                        "Command" => 'CONFIG',
+                                    ),
+                                ),
+                                null,
+                                array(
+
+                                ),
+                            )
+                        ),
+                    ),
+                    "Driver" => array(
+                        "config" => array(array()),
                     ),
                 ),
                 \HUGnet\network\Packet::factory(
@@ -223,21 +329,21 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     /**
     * Tests the iteration and preload functions
     *
-    * @param array $mocks    The data to reset the mocks with
-    * @param mixed $callback The function to call on packet reply
-    * @param array $config   The configuration array
-    * @param array $expect   The expected calls in the mock
-    * @param bool  $return   The expected return
+    * @param array  $mocks    The data to reset the mocks with
+    * @param object $driver   The driver to use
+    * @param mixed  $callback The function to call on packet reply
+    * @param array  $config   The configuration array
+    * @param array  $expect   The expected calls in the mock
+    * @param bool   $return   The expected return
     *
     * @return null
     *
     * @dataProvider dataConfig()
     */
-    public function testConfig($mocks, $callback, $config, $expect, $return)
+    public function testConfig($mocks, $driver, $callback, $config, $expect, $return)
     {
         $net   = new \HUGnet\network\DummyNetwork("Network");
         $table = new \HUGnet\DummyTable();
-        $driver = new \HUGnet\DummyBase("Driver");
         $net->resetMock($mocks);
         $devnet = &Network::factory($net, $table, $driver);
         $ret = $devnet->config($callback, $config);
@@ -282,7 +388,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             )
                         ),
@@ -318,7 +424,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             )
                         ),
@@ -335,7 +441,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "send" => false,
                     ),
                 ),
-                "",
+                array(),
                 array(
                     "Table" => array(
                         "get" => array(array("id")),
@@ -349,7 +455,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             )
                         ),
@@ -420,7 +526,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             )
                         ),
@@ -456,7 +562,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             )
                         ),
@@ -473,7 +579,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "send" => false,
                     ),
                 ),
-                "",
+                array(),
                 array(
                     "Table" => array(
                         "get" => array(array("id")),
@@ -487,7 +593,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             )
                         ),
@@ -558,7 +664,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             )
                         ),
@@ -593,7 +699,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             )
                         ),
@@ -610,7 +716,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "send" => false,
                     ),
                 ),
-                "",
+                array(),
                 array(
                     "Table" => array(
                         "get" => array(array("id")),
@@ -624,7 +730,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             )
                         ),
@@ -695,7 +801,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             )
                         ),
@@ -730,7 +836,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             )
                         ),
@@ -747,7 +853,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "send" => false,
                     ),
                 ),
-                "",
+                array(),
                 array(
                     "Table" => array(
                         "get" => array(array("id")),
@@ -761,7 +867,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             )
                         ),
@@ -835,7 +941,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             )
                         ),
@@ -875,7 +981,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             )
                         ),
@@ -975,7 +1081,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             )
                         ),
@@ -1015,7 +1121,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             )
                         ),
@@ -1132,7 +1238,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -1144,7 +1250,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -1156,7 +1262,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -1213,7 +1319,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -1225,7 +1331,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -1237,7 +1343,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -1294,7 +1400,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -1306,7 +1412,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -1474,7 +1580,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -1486,7 +1592,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -1498,7 +1604,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -1555,7 +1661,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -1567,7 +1673,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -1579,7 +1685,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -1636,7 +1742,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -1648,7 +1754,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -1798,7 +1904,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             )
                         ),
@@ -1836,7 +1942,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             ),
                             array(
@@ -1846,7 +1952,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             ),
                         ),
@@ -1934,7 +2040,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             ),
                             array(
@@ -1944,7 +2050,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             ),
                             array(
@@ -1961,7 +2067,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -2077,7 +2183,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             ),
                             array(
@@ -2087,7 +2193,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             ),
                             array(
@@ -2104,7 +2210,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -2122,7 +2228,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -2140,7 +2246,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -2276,7 +2382,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             ),
                             array(
@@ -2286,7 +2392,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             ),
                             array(
@@ -2303,7 +2409,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -2321,7 +2427,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -2339,7 +2445,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -2357,7 +2463,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -2368,7 +2474,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             ),
                         ),
@@ -2510,7 +2616,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             ),
                             array(
@@ -2520,7 +2626,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             ),
                             array(
@@ -2537,7 +2643,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -2555,7 +2661,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -2573,7 +2679,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -2591,7 +2697,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -2602,7 +2708,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             ),
                             array(
@@ -2612,7 +2718,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             ),
                         ),
@@ -2754,7 +2860,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             ),
                             array(
@@ -2764,7 +2870,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             ),
                             array(
@@ -2781,7 +2887,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -2799,7 +2905,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -2817,7 +2923,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -2835,7 +2941,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -2846,7 +2952,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             ),
                             array(
@@ -2856,7 +2962,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             ),
                         ),
@@ -2964,7 +3070,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             ),
                             array(
@@ -2974,7 +3080,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             ),
                             array(
@@ -2991,7 +3097,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -3009,7 +3115,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                     "find" => false,
                                 ),
                             ),
@@ -3020,7 +3126,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             ),
                             array(
@@ -3030,7 +3136,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "block" => true,
+
                                 ),
                             ),
                         ),

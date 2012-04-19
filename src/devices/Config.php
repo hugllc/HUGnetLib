@@ -143,7 +143,8 @@ class Config
             "DeviceGroup", trim(strtoupper(substr($string, self::GROUP, 6)))
         );
         $this->_table->set("RawSetup", $string);
-        $leftover =substr($string, self::CONFIGEND);
+        $leftover = substr($string, self::CONFIGEND);
+        return $leftover;
     }
     /**
     * Checks to see if the string is valid
@@ -171,7 +172,7 @@ class Config
     *
     * @return string
     */
-    public function encode($default = true)
+    public function encode()
     {
         $string  = sprintf("%010X", $this->_table->get("id"));
         $string .= $this->_hexifyPartNum($this->_table->get("HWPartNum"));

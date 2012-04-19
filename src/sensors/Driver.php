@@ -184,6 +184,7 @@ abstract class Driver
     * @param int $sensor The sensor number
     *
     * @return array of data from the sensor
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function toArray($sensor)
     {
@@ -219,6 +220,7 @@ abstract class Driver
     * @param int    $sensor The sensor number
     *
     * @return string The driver to use
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public static function getParam($name, $sensor)
     {

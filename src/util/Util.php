@@ -223,10 +223,10 @@ class Util
         if ($value < $Imin) {
             return null;
         }
-        $m = bcdiv(bcsub($Omax, $Omin), bcsub($Imax, $Imin));
-        $b = bcsub($Omax, bcmul($m, $Imax));
-        $O = bcadd(bcmul($m, $value), $b);
-        return $O;
+        $mult = bcdiv(bcsub($Omax, $Omin), bcsub($Imax, $Imin));
+        $Yint = bcsub($Omax, bcmul($mult, $Imax));
+        $Out = bcadd(bcmul($mult, $value), $Yint);
+        return $Out;
     }
 }
 

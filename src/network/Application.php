@@ -208,6 +208,9 @@ final class Application
         $qid = uniqid();
         $this->_queue[$qid]["callback"] = $callback;
         $this->_queue[$qid]["config"] = (array)$config;
+        if (!is_callable($callback)) {
+            $this->_queue[$qid]["config"]["block"] = true;
+        }
         if (is_array($packet)) {
             $packet = array_change_key_case($packet);
             if (!isset($packet["command"])) {

@@ -135,7 +135,11 @@ class Network
     */
     public function poll($callback = null, $config = array())
     {
-        return $this->_sendPkt("SENSORREAD", $callback, $config);
+        $command = "SENSORREAD";
+        if (method_exists($this->_driver, "poll")) {
+            $command = $this->_driver->poll();
+        }
+        return $this->_sendPkt($command, $callback, $config);
     }
     /**
     * Gets the configuration for the device in question
@@ -149,7 +153,11 @@ class Network
     */
     public function config($callback = null, $config = array())
     {
-        return $this->_sendPkt("CONFIG", $callback, $config);
+        $command = "CONFIG";
+        if (method_exists($this->_driver, "config")) {
+            $command = $this->_driver->config();
+        }
+        return $this->_sendPkt($command, $callback, $config);
     }
     /**
     * Gets the application CRC for the device in question.
@@ -163,7 +171,7 @@ class Network
     */
     public function getCRC($config = array())
     {
-        $reply = $this->_sendPkt("GETCRC", null, $config);
+        $reply = $this->_sendPkt("GETCRC", null, (array)$config);
         if (is_object($reply) && is_string($reply->Reply())) {
             return $reply->Reply();
         }
@@ -181,7 +189,7 @@ class Network
     */
     public function setCRC($config = array())
     {
-        $reply = $this->_sendPkt("SETCRC", null, $config);
+        $reply = $this->_sendPkt("SETCRC", null, (array)$config);
         if (is_object($reply) && is_string($reply->Reply())) {
             return $reply->Reply();
         }
@@ -346,7 +354,7 @@ class Network
     /**
     * Polls the device in question
     *
-    * @param string $command  The command to send the packet with
+    * @param mixed  $pkt      The command to send the packet with
     * @param string $callback The name of the function to call when the packet
     *                   arrives.  If this is not callable, it will block until the
     *                   packet arrives.
@@ -356,22 +364,22 @@ class Network
     * @return success or failure of the packet sending
     */
     private function _sendPkt(
-        $command, $callback = null, $config = array(), $data = null
+        $pkt, $callback = null, $config = array(), $data = null
     ) {
-        if (!is_array($config)) {
-            $config = array();
+        if (!is_array($pkt)) {
+            $pkt = array(
+                "To" => $this->_table->get("id"),
+                "Command" => $pkt,
+            );
+            if (!is_null($data) && (is_array($data) || is_string($data))) {
+                $pkt["Data"] = $data;
+            }
+        } else {
+            foreach (array_keys($pkt) as $key) {
+                $pkt[$key]["To"] = $this->_table->get("id");
+            }
         }
-        if (!is_callable($callback)) {
-            $config["block"] = true;
-        }
-        $pkt = array(
-            "To" => $this->_table->get("id"),
-            "Command" => $command,
-        );
-        if (!is_null($data) && (is_array($data) || is_string($data))) {
-            $pkt["Data"] = $data;
-        }
-        $ret = $this->_network->send($pkt, $callback, $config);
+        $ret = $this->_network->send($pkt, $callback, (array)$config);
         return $ret;
     }
     /**

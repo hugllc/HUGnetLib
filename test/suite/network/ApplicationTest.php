@@ -557,10 +557,83 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(
+                    "timeout" =>  1,
+                    "from" => "000200",
+                ),
+                null,
+                Packet::factory(
+                    array(
+                        "From"    => "000200",
+                        "To"      => "000100",
+                        "Command" => "23",
+                        "Data"    => "010203",
+                    )
+                ),
+                Packet::factory(
+                    array(
+                        "From"    => "000200",
+                        "To"      => "000100",
+                        "Command" => "23",
+                        "Data"    => "010203",
+                        "Reply"   => "01",
+                    )
+                ),
+                array(
+                    "Transport" => array(
+                        "send" => array(
+                            array(
+                                Packet::factory(
+                                    array(
+                                        "From"    => "000200",
+                                        "To"      => "000100",
+                                        "Command" => "23",
+                                        "Data"    => "010203",
+                                        "Reply"   => "01",
+                                    )
+                                ),
+                                array(
+                                    'block' => true,
+                                ),
+                            ),
+                        ),
+                        "receive" => array(
+                            array(
+                                "thisIsAToken",
+                            ),
+                            array(
+                                "thisIsAToken",
+                            ),
+                        ),
+                        "unsolicited" => array(array()),
+                    ),
+                ),
+                null,
+            ),
+            array(  // #0 // No sockets
+                array(
+                    "Transport" => array(
+                        "receive" => array(
+                            null,
+                            "thisIsAToken" => Packet::factory(
+                                array(
+                                    "From"    => "000100",
+                                    "To"      => "000200",
+                                    "Command" => "23",
+                                    "Data"    => "01",
+                                )
+                            ),
+                        ),
+                        "send" => array(
+                            "thisIsAToken",
+                        ),
+                    ),
+                ),
+                array(
                     "block" => true,
                     "timeout" =>  1,
                     "from" => "000200",
                 ),
+                get_class, // This will take a single arguemnt of an object
                 Packet::factory(
                     array(
                         "From"    => "000200",
@@ -615,6 +688,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     *
     * @param array  $mock      The string to give to the class
     * @param array  $config    The configuration to send the class
+    * @param string $callback  The function to call
     * @param array  $send      Array of "function" => Packets to send out
     * @param array  $expect    The info to expect returned
     * @param mixed  $calls     The expected mock calls
@@ -625,7 +699,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     * @dataProvider dataBlocking()
     */
     public function testBlocking(
-        $mock, $config, $send, $expect, $calls, $exception
+        $mock, $config, $callback, $send, $expect, $calls, $exception
     ) {
         if (!is_null($exception)) {
             $this->setExpectedException($exception);
@@ -634,7 +708,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $system = new \HUGnet\DummySystem();
         $transport->resetMock($mock);
         $application = &Application::factory($transport, $system, $config);
-        $ret = $application->send($send, null);
+        $ret = $application->send($send, $callback);
         $this->assertEquals($expect, $ret, "The return was wrong");
         $this->assertEquals($calls, $transport->retrieve(), "Calls wrong");
     }
