@@ -252,7 +252,8 @@ class ADuCPowerTest extends DriverTestBase
     *
     * @param string $field  The field to check
     * @param int    $sensor The sensor number
-    * @param string $type   The type it should be
+    * @param int    $min    The minimum size
+    * @param int    $max    The maximum size
     *
     * @return null
     *
@@ -270,7 +271,8 @@ class ADuCPowerTest extends DriverTestBase
     *
     * @param string $field  The field to check
     * @param int    $sensor The sensor number
-    * @param string $type   The type it should be
+    * @param int    $min    The minimum size
+    * @param int    $max    The maximum size
     *
     * @return null
     *

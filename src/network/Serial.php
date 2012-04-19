@@ -160,7 +160,10 @@ final class Serial
     /**
     * Sets up the connection to the socket
     *
+    * This is not really testable
+    *
     * @return null
+    * @codeCoverageIgnore
     */
     private function _setupPort()
     {
@@ -173,7 +176,10 @@ final class Serial
     /**
     * Sets up the connection to the socket
     *
+    * This is not really testable
+    *
     * @return null
+    * @codeCoverageIgnore
     */
     private function _setupPortLinux()
     {
@@ -202,7 +208,10 @@ final class Serial
     * Also see
     * http://stackoverflow.com/questions/627965/serial-comm-with-php-on-windows
     *
+    * This is not really testable
+    *
     * @return null
+    * @codeCoverageIgnore
     */
     private function _setupPortWindows()
     {
@@ -225,6 +234,7 @@ final class Serial
             ($return  != 0) && !$this->_config["quiet"]
         );
     }
+    /* @codeCoverageIgnoreEnd */
     /**
     * Reads from all ready to read from and sends the data back out to everyone
     *

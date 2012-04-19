@@ -232,7 +232,7 @@ abstract class Driver
     /**
     * Returns an array of types that this sensor could be
     *
-    * @param int $sid    The ID to check
+    * @param int $sid The ID to check
     *
     * @return The extra value (or default if empty)
     */

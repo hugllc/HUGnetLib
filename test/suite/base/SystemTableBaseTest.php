@@ -617,9 +617,9 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
     /**
     * This tests the object creation
     *
-    * @param array  $config The configuration to use
-    * @param mixed  $class  This is either the name of a class or an object
-    * @param mixed  $expect The value we expect back
+    * @param array $config The configuration to use
+    * @param mixed $class  This is either the name of a class or an object
+    * @param mixed $expect The value we expect back
     *
     * @return null
     *
