@@ -318,6 +318,31 @@ abstract class Driver
         }
         return $class;
     }
+    /**
+    * Returns an array of information about the sensors
+    *
+    * @param string $string  The string to decode
+    * @param object &$device The device object
+    * @param object &$driver The device driver object
+    *
+    * @return array
+    */
+    public function decode($string, &$device, &$driver)
+    {
+        $device->set("TimeConstant", hexdec(substr($string, 0, 2)));
+        $sensors = $this->get("physicalSensors");
+        for($i = 0; $i < $sensors; $i++) {
+            $sid = substr($string, 2 + (2 * $i), 2);
+            // Only do this if we have enough string
+            if (strlen($sid) === 2) {
+                $device->sensor($i)->change(
+                    array(
+                        "id" => hexdec($sid),
+                    )
+                );
+            }
+        }
+    }
 
 
 }

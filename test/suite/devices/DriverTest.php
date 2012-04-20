@@ -546,6 +546,107 @@ class DriverTest extends \PHPUnit_Framework_TestCase
         $obj = &$class::factory();
         $this->assertEquals($expect, $obj->toArray());
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataDecode()
+    {
+        return array(
+            array( // #0
+                array(
+                    "Device" => array(
+                        "sensor" => new \HUGnet\DummyBase("Sensor"),
+                    )
+                ),
+                "0102030405060708090A",
+                array(
+                    "Device" => array(
+                        "set" => array(
+                            array("TimeConstant", 1),
+                        ),
+                        "sensor" => array(
+                            array(0),
+                            array(1),
+                            array(2),
+                            array(3),
+                            array(4),
+                            array(5),
+                            array(6),
+                            array(7),
+                            array(8),
+                        ),
+                    ),
+                    'Sensor' => array(
+                        'change' => array(
+                            array(array("id" => 2)),
+                            array(array("id" => 3)),
+                            array(array("id" => 4)),
+                            array(array("id" => 5)),
+                            array(array("id" => 6)),
+                            array(array("id" => 7)),
+                            array(array("id" => 8)),
+                            array(array("id" => 9)),
+                            array(array("id" => 10)),
+                        ),
+                    ),
+                ),
+            ),
+            array( // #1 String not big enough
+                array(
+                    "Device" => array(
+                        "sensor" => new \HUGnet\DummyBase("Sensor"),
+                    )
+                ),
+                "010203040506",
+                array(
+                    "Device" => array(
+                        "set" => array(
+                            array("TimeConstant", 1),
+                        ),
+                        "sensor" => array(
+                            array(0),
+                            array(1),
+                            array(2),
+                            array(3),
+                            array(4),
+                        ),
+                    ),
+                    'Sensor' => array(
+                        'change' => array(
+                            array(array("id" => 2)),
+                            array(array("id" => 3)),
+                            array(array("id" => 4)),
+                            array(array("id" => 5)),
+                            array(array("id" => 6)),
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $mocks  The value to preload into the mocks
+    * @param string $string The setup string to test
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataDecode
+    */
+    public function testDecode($mocks, $string, $expect)
+    {
+        $device  = new \HUGnet\DummyTable("Device");
+        $driver = new \HUGnet\DummyBase("Driver");
+        $device->resetMock($mocks);
+        $obj = DriverTestClass::factory();
+        $obj->decode($string, $device, $driver);
+        $ret = $device->retrieve();
+        $this->assertEquals($expect, $ret);
+    }
 }
 /**
  * Base driver class for devices.

@@ -110,6 +110,15 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                             ),
                         ),
                     ),
+                    'Driver' => array(
+                        'decode' => array(
+                            0 => array(
+                                0 => false,
+                                1 => new \HUGnet\DummyTable("Table"),
+                                2 => new \HUGnet\DummyBase('Driver'),
+                            ),
+                        ),
+                    ),
                 ),
             ),
             array( // #1
@@ -130,6 +139,15 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                             ),
                         ),
                     ),
+                    'Driver' => array(
+                        'decode' => array(
+                            0 => array(
+                                0 => false,
+                                1 => new \HUGnet\DummyTable("Table"),
+                                2 => new \HUGnet\DummyBase('Driver'),
+                            ),
+                        ),
+                    ),
                 ),
             ),
             array( // #2
@@ -147,6 +165,15 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                             array(
                                 "RawSetup",
                                 "00000000E80039CE01410039246743000005FFFFFF1E"
+                            ),
+                        ),
+                    ),
+                    'Driver' => array(
+                        'decode' => array(
+                            0 => array(
+                                0 => false,
+                                1 => new \HUGnet\DummyTable("Table"),
+                                2 => new \HUGnet\DummyBase('Driver'),
                             ),
                         ),
                     ),
@@ -171,6 +198,15 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                             ),
                         ),
                     ),
+                    'Driver' => array(
+                        'decode' => array(
+                            0 => array(
+                                0 => "0123456789",
+                                1 => new \HUGnet\DummyTable("Table"),
+                                2 => new \HUGnet\DummyBase('Driver'),
+                            ),
+                        ),
+                    ),
                 ),
             ),
             array(  // #4
@@ -188,6 +224,15 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                             array(
                                 "RawSetup",
                                 "00000000E80039CC01410039256743000005FFFFFF2101"
+                            ),
+                        ),
+                    ),
+                    'Driver' => array(
+                        'decode' => array(
+                            0 => array(
+                                0 => '01',
+                                1 => new \HUGnet\DummyTable("Table"),
+                                2 => new \HUGnet\DummyBase('Driver'),
                             ),
                         ),
                     ),
@@ -236,7 +281,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $obj = Config::factory($table, $driver);
         $obj->decode($string);
         $ret = $table->retrieve();
-        $this->assertSame($expect, $ret);
+        $this->assertEquals($expect, $ret);
     }
     /**
     * data provider for testDeviceID

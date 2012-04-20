@@ -73,7 +73,7 @@ class Config
     /**
     * This is the cache object
     */
-    private $_table = null;
+    private $_device = null;
     /**
     * This is the cache object
     */
@@ -82,24 +82,24 @@ class Config
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
     *
-    * @param object &$table  The device table object
+    * @param object &$device The device object
     * @param object &$driver The device driver object
     *
     * @return null
     */
-    private function __construct(&$table, &$driver)
+    private function __construct(&$device, &$driver)
     {
         \HUGnet\System::exception(
-            get_class($this)." needs to be passed a table object",
+            get_class($this)." needs to be passed a device object",
             "InvalidArgument",
-            !is_object($table)
+            !is_object($device)
         );
         \HUGnet\System::exception(
             get_class($this)." needs to be passed a driver object",
             "InvalidArgument",
             !is_object($driver)
         );
-        $this->_table  = &$table;
+        $this->_device = &$device;
         $this->_driver = &$driver;
     }
     /**
@@ -134,17 +134,19 @@ class Config
             return;
         }
         $did = hexdec(substr($string, 0, 10));
-        $this->_table->set("id", $did);
-        $this->_table->set("DeviceID", $did);
-        $this->_table->set("HWPartNum", substr($string, self::HW_START, 10));
-        $this->_table->set("FWPartNum", substr($string, self::FW_START, 10));
-        $this->_table->set("FWVersion", substr($string, self::FWV_START, 6));
-        $this->_table->set(
+        $this->_device->set("id", $did);
+        $this->_device->set("DeviceID", $did);
+        $this->_device->set("HWPartNum", substr($string, self::HW_START, 10));
+        $this->_device->set("FWPartNum", substr($string, self::FW_START, 10));
+        $this->_device->set("FWVersion", substr($string, self::FWV_START, 6));
+        $this->_device->set(
             "DeviceGroup", trim(strtoupper(substr($string, self::GROUP, 6)))
         );
-        $this->_table->set("RawSetup", $string);
-        $leftover = substr($string, self::CONFIGEND);
-        return $leftover;
+        $this->_device->set("RawSetup", $string);
+        $this->_driver->decode(
+            substr($string, self::CONFIGEND),
+            $this->_device, $this->_driver
+        );
     }
     /**
     * Checks to see if the string is valid
@@ -172,15 +174,15 @@ class Config
     */
     public function encode()
     {
-        $string  = sprintf("%010X", $this->_table->get("id"));
-        $string .= $this->_hexifyPartNum($this->_table->get("HWPartNum"));
-        $string .= $this->_hexifyPartNum($this->_table->get("FWPartNum"));
-        $string .= $this->_hexifyVersion($this->_table->get("FWVersion"));
-        $string .= sprintf("%06X", hexdec($this->_table->get("DeviceGroup")));
+        $string  = sprintf("%010X", $this->_device->get("id"));
+        $string .= $this->_hexifyPartNum($this->_device->get("HWPartNum"));
+        $string .= $this->_hexifyPartNum($this->_device->get("FWPartNum"));
+        $string .= $this->_hexifyVersion($this->_device->get("FWVersion"));
+        $string .= sprintf("%06X", hexdec($this->_device->get("DeviceGroup")));
         $string .= "FF";
         return $string;
-
     }
+
     /**
     * Hexifies a version in x.y.z form.
     *

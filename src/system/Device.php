@@ -169,7 +169,7 @@ class Device extends SystemTableBase
     {
         include_once dirname(__FILE__)."/../devices/Config.php";
         return \HUGnet\devices\Config::factory(
-            $this->table(),
+            $this,
             $this->driver()
         );
     }
