@@ -272,7 +272,7 @@ abstract class Driver
     *
     * @param int   $index   The extra index to use
     * @param array &$sensor The sensor information array
-    * @param int   &$sid    Alternative sensor ID to use
+    * @param int   $sid     Alternative sensor ID to use
     *
     * @return The extra value (or default if empty)
     */
