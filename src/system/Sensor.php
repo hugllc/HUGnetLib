@@ -129,8 +129,7 @@ class Sensor extends SystemTableBase
     {
         if (is_string($value) && (strtolower(substr($value, 0, 8)) === "getextra")) {
             $value = $this->driver()->getExtra(
-                (int)substr($value, 8),
-                $this->table()->toArray()
+                (int)substr($value, 8), $this
             );
         }
     }
@@ -248,12 +247,12 @@ class Sensor extends SystemTableBase
         $ret = array();
         if ($this->get("storageType") == \HUGnet\units\Driver::TYPE_DIFF) {
             $ret["value"] = $this->driver()->getReading(
-                ($A - $prev), $deltaT, $data, $prev, $this->table()->toArray()
+                ($A - $prev), $this, $deltaT, $data, $prev
             );
             $ret["raw"] = $A;
         } else {
             $ret["value"] = $this->driver()->getReading(
-                $A, $deltaT, $data, $prev, $this->table()->toArray()
+                $A, $this, $deltaT, $data, $prev
             );
         }
         $ret["units"] = $this->get("storageUnit");

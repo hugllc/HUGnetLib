@@ -331,7 +331,7 @@ abstract class Driver
     {
         $device->set("TimeConstant", hexdec(substr($string, 0, 2)));
         $sensors = $this->get("physicalSensors");
-        for($i = 0; $i < $sensors; $i++) {
+        for ($i = 0; $i < $sensors; $i++) {
             $sid = substr($string, 2 + (2 * $i), 2);
             // Only do this if we have enough string
             if (strlen($sid) === 2) {

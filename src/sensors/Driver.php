@@ -270,21 +270,20 @@ abstract class Driver
     /**
     * Gets the extra values
     *
-    * @param int   $index  The extra index to use
-    * @param array $sensor The sensor information array
+    * @param int   $index   The extra index to use
+    * @param array &$sensor The sensor information array
+    * @param int   &$sid    Alternative sensor ID to use
     *
     * @return The extra value (or default if empty)
     */
-    public function getExtra($index, $sensor)
+    public function getExtra($index, &$sensor, $sid = null)
     {
-
-        if (is_array($sensor) && is_array($sensor["extra"])) {
-            $extra = $sensor["extra"];
-        } else {
-            $extra = array();
+        if (!is_int($sid)) {
+            $sid = $sensor->get("sensor");
         }
+        $extra = (array)$sensor->get("extra");
         if (!isset($extra[$index])) {
-            $extra = $this->get("extraDefault", $sensor["sensor"]);
+            $extra = $this->get("extraDefault", $sid);
         }
         return $extra[$index];
     }
@@ -293,18 +292,18 @@ abstract class Driver
     /**
     * Changes a raw reading into a output value
     *
-    * @param int   $A      Output of the A to D converter
-    * @param float $deltaT The time delta in seconds between this record
-    * @param array &$data  The data from the other sensors that were crunched
-    * @param mixed $prev   The previous value for this sensor
-    * @param array $sensor The sensor information
+    * @param int   $A       Output of the A to D converter
+    * @param array &$sensor The sensor information
+    * @param float $deltaT  The time delta in seconds between this record
+    * @param array &$data   The data from the other sensors that were crunched
+    * @param mixed $prev    The previous value for this sensor
     *
     * @return mixed The value in whatever the units are in the sensor
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     abstract public function getReading(
-        $A, $deltaT = 0, &$data = array(), $prev = null, $sensor = array()
+        $A, &$sensor, $deltaT = 0, &$data = array(), $prev = null
     );
 }
 

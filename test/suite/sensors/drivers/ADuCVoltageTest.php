@@ -95,7 +95,13 @@ class ADuCVoltageTest extends DriverTestBase
     {
         return array(
             array(
-                array(),
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(),
+                        ),
+                    ),
+                ),
                 0xFF800000,
                 1,
                 array(),
@@ -103,7 +109,13 @@ class ADuCVoltageTest extends DriverTestBase
                 -121.2
             ),
             array(
-                array(),
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(),
+                        ),
+                    ),
+                ),
                 0xFFFFFFFF,
                 1,
                 array(),

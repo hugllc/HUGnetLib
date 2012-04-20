@@ -95,7 +95,13 @@ class ADuCPressureTest extends DriverTestBase
     {
         return array(
             array(
-                array(),
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array()
+                        ),
+                    ),
+                ),
                 256210,
                 1,
                 array(),
@@ -103,7 +109,13 @@ class ADuCPressureTest extends DriverTestBase
                 74.0353,
             ),
             array(
-                array(),
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array()
+                        ),
+                    ),
+                ),
                 100000,
                 1,
                 array(),
@@ -112,7 +124,11 @@ class ADuCPressureTest extends DriverTestBase
             ),
             array(
                 array(
-                    "extra" => array(0, 5, 0, 1000, 1.2, 100, 1)
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(0, 5, 0, 1000, 1.2, 100, 1)
+                        ),
+                    ),
                 ),
                 83055,
                 1,
@@ -122,7 +138,11 @@ class ADuCPressureTest extends DriverTestBase
             ),
             array(
                 array(
-                    "extra" => array(0, 5, 0, 150, 1.2, 100, 1)
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(0, 5, 0, 150, 1.2, 100, 1)
+                        ),
+                    ),
                 ),
                 83055,
                 1,
@@ -132,7 +152,11 @@ class ADuCPressureTest extends DriverTestBase
             ),
             array(
                 array(
-                    "extra" => array(0, 5, 0, 150, 1.2, 100, 1)
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(0, 5, 0, 150, 1.2, 100, 1)
+                        ),
+                    ),
                 ),
                 88072,
                 1,

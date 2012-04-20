@@ -308,22 +308,34 @@ class DriverTest extends drivers\DriverTestBase
     {
         return array(
             array(
-                array("sensor" => 1, "extra" => array(6,5,4)),
+                array(
+                    "Sensor" => array(
+                        "get" => array("sensor" => 1, "extra" => array(6,5,4)),
+                    ),
+                ),
                 1,
                 5
             ),
             array(
-                array("sensor" => 1, "extra" => array(6,5,4)),
+                array(
+                    "Sensor" => array(
+                        "get" => array("sensor" => 1, "extra" => array(6,5,4)),
+                    ),
+                ),
                 3,
                 7
             ),
             array(
-                array("sensor" => 1, "extra" => array(6,5,4)),
+                array(
+                    "Sensor" => array(
+                        "get" => array("sensor" => 1, "extra" => array(6,5,4)),
+                    ),
+                ),
                 100,
                 null
             ),
             array(
-                null,
+                array(),
                 100,
                 null
             ),
@@ -343,7 +355,9 @@ class DriverTest extends drivers\DriverTestBase
     */
     public function testGetExtra($extra, $index, $expect)
     {
-        $this->assertSame($expect, $this->o->getExtra($index, $extra));
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($extra);
+        $this->assertSame($expect, $this->o->getExtra($index, $sensor));
     }
     /**
     * data provider for testGetTypes
@@ -461,18 +475,18 @@ class DriverTestClass extends Driver
     /**
     * Changes a raw reading into a output value
     *
-    * @param int   $A      Output of the A to D converter
-    * @param float $deltaT The time delta in seconds between this record
-    * @param array &$data  The data from the other sensors that were crunched
-    * @param mixed $prev   The previous value for this sensor
-    * @param array $extra  The extra setup that is needed.
+    * @param int   $A       Output of the A to D converter
+    * @param array &$sensor The sensor information
+    * @param float $deltaT  The time delta in seconds between this record
+    * @param array &$data   The data from the other sensors that were crunched
+    * @param mixed $prev    The previous value for this sensor
     *
     * @return mixed The value in whatever the units are in the sensor
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function getReading(
-        $A, $deltaT = 0, &$data = array(), $prev = null, $extra = array()
+        $A, &$sensor, $deltaT = 0, &$data = array(), $prev = null
     ) {
         return null;
     }

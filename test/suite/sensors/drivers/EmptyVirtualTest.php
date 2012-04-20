@@ -95,7 +95,13 @@ class EmptyVirtualTest extends DriverTestBase
     {
         return array(
             array(
-                array(),
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(),
+                        ),
+                    ),
+                ),
                 256210,
                 1,
                 array(),

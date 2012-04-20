@@ -95,7 +95,13 @@ class ADuCVishayRTDTest extends DriverTestBase
     {
         return array(
             array(
-                array(),
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array()
+                        ),
+                    ),
+                ),
                 0xFFFB8C55,
                 0,
                 array(),
@@ -103,7 +109,13 @@ class ADuCVishayRTDTest extends DriverTestBase
                 -51.7004,
             ),
             array(
-                array(),
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(),
+                        ),
+                    ),
+                ),
                 0xFFFA05B5,
                 0,
                 array(),
@@ -111,7 +123,13 @@ class ADuCVishayRTDTest extends DriverTestBase
                 21.2240,
             ),
             array(
-                array('extra' => array(2210)),
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            'extra' => array(2210),
+                        ),
+                    ),
+                ),
                 0xFFF87f15,
                 0,
                 array(),
@@ -119,7 +137,13 @@ class ADuCVishayRTDTest extends DriverTestBase
                 97.6624,
             ),
             array(
-                array('extra' => array(2210)),
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            'extra' => array(2210),
+                        ),
+                    ),
+                ),
                 0xFF800000,
                 0,
                 array(),
@@ -127,7 +151,13 @@ class ADuCVishayRTDTest extends DriverTestBase
                 null,
             ),
             array(
-                array('extra' => array(2210)),
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            'extra' => array(2210),
+                        ),
+                    ),
+                ),
                 pow(2, 23) - 1,
                 0,
                 array(),
@@ -135,7 +165,13 @@ class ADuCVishayRTDTest extends DriverTestBase
                 null,
             ),
             array(
-                array('extra' => array(2210)),
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            'extra' => array(2210),
+                        ),
+                    ),
+                ),
                 pow(2, 23) + 1,
                 0,
                 array(),
@@ -143,7 +179,13 @@ class ADuCVishayRTDTest extends DriverTestBase
                 null,
             ),
             array(
-                array('extra' => array(2210)),
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            'extra' => array(2210),
+                        ),
+                    ),
+                ),
                 0,
                 0,
                 array(),

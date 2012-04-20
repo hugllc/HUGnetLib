@@ -112,39 +112,38 @@ class ADuCPower extends \HUGnet\sensors\Driver
     /**
     * Changes a raw reading into a output value
     *
-    * @param int   $A      Output of the A to D converter
-    * @param float $deltaT The time delta in seconds between this record
-    * @param array &$data  The data from the other sensors that were crunched
-    * @param mixed $prev   The previous value for this sensor
-    * @param array $sensor The sensor information
+    * @param int   $A       Output of the A to D converter
+    * @param array &$sensor The sensor information
+    * @param float $deltaT  The time delta in seconds between this record
+    * @param array &$data   The data from the other sensors that were crunched
+    * @param mixed $prev    The previous value for this sensor
     *
     * @return mixed The value in whatever the units are in the sensor
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function getReading(
-        $A, $deltaT = 0, &$data = array(), $prev = null, $sensor = array()
+        $A, &$sensor, $deltaT = 0, &$data = array(), $prev = null
     ) {
         bcscale(10);
         $Am   = pow(2, 23);
         $A = \HUGnet\Util::getTwosCompliment($A, 32);
-        $maxDecimals = $this->get("maxDecimals", $sensor["sensor"]);
-        if (($sensor["sensor"] == 2) || ($sensor["sensor"] == 4)) {
+        $sid = $sensor->get("sensor");
+        $maxDecimals = $this->get("maxDecimals", $sid);
+        if (($sid == 2) || ($sid == 4)) {
             /* Voltage */
-            $sensor["sensor"] = 1;
-            $Vref  = $this->getExtra(0, $sensor);
-            $Rin   = $this->getExtra(2, $sensor);
-            $Rbias = $this->getExtra(3, $sensor);
+            $Vref  = $this->getExtra(0, $sensor, $sid - 1);
+            $Rin   = $this->getExtra(2, $sensor, $sid - 1);
+            $Rbias = $this->getExtra(3, $sensor, $sid - 1);
             $A = \HUGnet\Util::inputBiasCompensation($A, $Rin, $Rbias);
             $Va = ($A / $Am) * $Vref;
             return round($Va, $maxDecimals);
-        } else if (($sensor["sensor"] == 1) || ($sensor["sensor"] == 3)) {
+        } else if (($sid == 1) || ($sid == 3)) {
             /* Current */
-            $sensor["sensor"] = 1;
-            $Vref  = $this->getExtra(0, $sensor);
-            $R = $this->getExtra(1, $sensor);
-            $Rin   = $this->getExtra(4, $sensor);
-            $Rbias = $this->getExtra(5, $sensor);
+            $Vref  = $this->getExtra(0, $sensor, $sid);
+            $R     = $this->getExtra(1, $sensor, $sid);
+            $Rin   = $this->getExtra(4, $sensor, $sid);
+            $Rbias = $this->getExtra(5, $sensor, $sid);
             if ($R == 0) {
                 return null;
             }
@@ -152,16 +151,16 @@ class ADuCPower extends \HUGnet\sensors\Driver
             $Va = ($A / $Am) * $Vref;
             $I = $Va / $R;
             return round($I, $maxDecimals);
-        } else if (($sensor["sensor"] == 5) || ($sensor["sensor"] == 7)) {
+        } else if (($sid == 5) || ($sid == 7)) {
             /* Power */
-            $I = $data[$sensor["sensor"] - 4]["value"];
-            $V = $data[$sensor["sensor"] - 3]["value"];
+            $I = $data[$sid - 4]["value"];
+            $V = $data[$sid - 3]["value"];
             $P = $I * $V;
             return round($P, $maxDecimals);
-        } else if (($sensor["sensor"] == 6) || ($sensor["sensor"] == 8)) {
+        } else if (($sid == 6) || ($sid == 8)) {
             /* Impedance */
-            $I = $data[$sensor["sensor"] - 5]["value"];
-            $V = $data[$sensor["sensor"] - 4]["value"];
+            $I = $data[$sid - 5]["value"];
+            $V = $data[$sid - 4]["value"];
             if ($I == 0) {
                 return null;
             }

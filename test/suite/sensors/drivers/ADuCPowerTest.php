@@ -297,7 +297,11 @@ class ADuCPowerTest extends DriverTestBase
         return array(
             array(
                 array(
-                    "sensor" => 2,
+                    "Sensor" => array(
+                        "get" => array(
+                            "sensor" => 2,
+                        ),
+                    ),
                 ),
                 1000000,
                 1,
@@ -307,7 +311,11 @@ class ADuCPowerTest extends DriverTestBase
             ),
             array(
                 array(
-                    "sensor" => 1,
+                    "Sensor" => array(
+                        "get" => array(
+                            "sensor" => 1,
+                        ),
+                    ),
                 ),
                 1000000,
                 1,
@@ -317,7 +325,11 @@ class ADuCPowerTest extends DriverTestBase
             ),
             array(
                 array(
-                    "sensor" => 5,
+                    "Sensor" => array(
+                        "get" => array(
+                            "sensor" => 5,
+                        ),
+                    ),
                 ),
                 1000000,
                 1,
@@ -334,7 +346,11 @@ class ADuCPowerTest extends DriverTestBase
             ),
             array(
                 array(
-                    "sensor" => 6,
+                    "Sensor" => array(
+                        "get" => array(
+                            "sensor" => 6,
+                        ),
+                    ),
                 ),
                 1000000,
                 1,
@@ -352,7 +368,11 @@ class ADuCPowerTest extends DriverTestBase
             /* Second sensor location */
             array(
                 array(
-                    "sensor" => 4,
+                    "Sensor" => array(
+                        "get" => array(
+                            "sensor" => 4,
+                        ),
+                    ),
                 ),
                 1000000,
                 1,
@@ -362,7 +382,11 @@ class ADuCPowerTest extends DriverTestBase
             ),
             array(
                 array(
-                    "sensor" => 3,
+                    "Sensor" => array(
+                        "get" => array(
+                            "sensor" => 3,
+                        ),
+                    ),
                 ),
                 1000000,
                 1,
@@ -372,7 +396,25 @@ class ADuCPowerTest extends DriverTestBase
             ),
             array(
                 array(
-                    "sensor" => 7,
+                    "Sensor" => array(
+                        "get" => array(
+                            "sensor" => 1,
+                        ),
+                    ),
+                ),
+                1000000,
+                1,
+                array(),
+                array(),
+                0.314713,
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "sensor" => 7,
+                        ),
+                    ),
                 ),
                 1000000,
                 1,
@@ -389,7 +431,11 @@ class ADuCPowerTest extends DriverTestBase
             ),
             array(
                 array(
-                    "sensor" => 8,
+                    "Sensor" => array(
+                        "get" => array(
+                            "sensor" => 8,
+                        ),
+                    ),
                 ),
                 1000000,
                 1,
@@ -407,7 +453,11 @@ class ADuCPowerTest extends DriverTestBase
             /* Current is 0 for impedance calculation */
             array(
                 array(
-                    "sensor" => 8,
+                    "Sensor" => array(
+                        "get" => array(
+                            "sensor" => 8,
+                        ),
+                    ),
                 ),
                 1000000,
                 1,
@@ -418,7 +468,11 @@ class ADuCPowerTest extends DriverTestBase
             ),
             array(
                 array(
-                    "sensor" => 6,
+                    "Sensor" => array(
+                        "get" => array(
+                            "sensor" => 6,
+                        ),
+                    ),
                 ),
                 1000000,
                 1,
@@ -430,8 +484,12 @@ class ADuCPowerTest extends DriverTestBase
             /* Resistance is 0 for current calculation */
             array(
                 array(
-                    "sensor" => 1,
-                    "extra" => array(1.2, 0, 100, 1, 1, 10),
+                    "Sensor" => array(
+                        "get" => array(
+                            "sensor" => 1,
+                            "extra" => array(1.2, 0, 100, 1, 1, 10),
+                        ),
+                    ),
                 ),
                 1000000,
                 1,
@@ -441,8 +499,12 @@ class ADuCPowerTest extends DriverTestBase
             ),
             array(
                 array(
-                    "sensor" => 3,
-                    "extra" => array(1.2, 0, 100, 1, 1, 10),
+                    "Sensor" => array(
+                        "get" => array(
+                            "sensor" => 3,
+                            "extra" => array(1.2, 0, 100, 1, 1, 10),
+                        ),
+                    ),
                 ),
                 1000000,
                 1,
@@ -453,7 +515,11 @@ class ADuCPowerTest extends DriverTestBase
             /* Sensor out of bounds */
             array(
                 array(
-                    "sensor" => 0,
+                    "Sensor" => array(
+                        "get" => array(
+                            "sensor" => 0,
+                        ),
+                    ),
                 ),
                 1000000,
                 1,

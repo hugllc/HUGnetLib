@@ -439,7 +439,9 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     */
     public function testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
     {
-        $ret = $this->o->getReading($A, $deltaT, $data, $prev, $sensor);
+        $sen = new \HUGnet\DummyBase("Sensor");
+        $sen->resetMock($sensor);
+        $ret = $this->o->getReading($A, $sen, $deltaT, $data, $prev);
         $this->assertEquals($expect, $ret, 0.00001);
     }
 }
