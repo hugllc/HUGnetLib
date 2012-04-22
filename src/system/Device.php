@@ -177,6 +177,8 @@ class Device extends SystemTableBase
     /**
     * This builds the class from a setup string
     *
+    * @param string $string The setup string to decode
+    *
     * @return Reference to the network object
     */
     public function decode($string)

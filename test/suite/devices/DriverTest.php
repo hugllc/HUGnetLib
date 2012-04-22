@@ -725,8 +725,8 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param array  $mocks  The value to preload into the mocks
-    * @param array  $expect The expected return
+    * @param array $mocks  The value to preload into the mocks
+    * @param array $expect The expected return
     *
     * @return null
     *
