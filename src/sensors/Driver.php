@@ -295,6 +295,7 @@ abstract class Driver
     * @param object &$sensor The sensor object
     *
     * @return array
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function decode($string, &$sensor)
     {
@@ -306,6 +307,7 @@ abstract class Driver
     * @param object &$sensor The device object
     *
     * @return array
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function encode(&$sensor)
     {
