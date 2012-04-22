@@ -383,6 +383,11 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                             ),
                         ),
                     ),
+                    array(
+                        "name" => "packet3",
+                        "packet" => array(
+                        ),
+                    ),
                 ),
                 array(
                     "Transport" => array(
