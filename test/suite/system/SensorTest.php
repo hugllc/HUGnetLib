@@ -919,6 +919,169 @@ class SensorTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertSame($expect, $data, "Data is wrong");
     }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataEncode()
+    {
+        return array(
+            array(
+                new DummySystem(),
+                null,
+                "DummyTable",
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "HWPartNum"    => "0039-12-01-C",
+                            "FWPartNum"    => "0039-20-03-C",
+                            "FWVersion"    => "1.2.3",
+                            "DeviceGroup"  => "FFFFFF",
+                            "TimeConstant" => "01",
+                        ),
+                    ),
+                ),
+                "05",
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config The configuration to use
+    * @param mixed  $device The device to set
+    * @param mixed  $class  This is either the name of a class or an object
+    * @param array  $mocks  The mocks to use
+    * @param string $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataEncode
+    */
+    public function testEncode(
+        $config, $device, $class, $mocks, $expect
+    ) {
+        $config->resetMock($mocks);
+        $obj = Sensor::factory($config, $device, $class);
+        $this->assertEquals(
+            $expect, $obj->encode(), "Return Wrong"
+        );
+        unset($obj);
+    }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataDecode()
+    {
+        return array(
+            array(
+                new DummySystem(),
+                null,
+                "DummyTable",
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "HWPartNum"    => "0039-12-01-C",
+                            "FWPartNum"    => "0039-20-03-C",
+                            "FWVersion"    => "1.2.3",
+                            "DeviceGroup"  => "FFFFFF",
+                            "TimeConstant" => 1,
+                        ),
+                    ),
+                ),
+                "051234",
+                array(
+                    array("id", 5),
+                    array("driver", "SDEFAULT"),
+                    array("driver", "SDEFAULT"),
+                    array("driver", "SDEFAULT"),
+                    array("driver", "SDEFAULT"),
+                    array("units", "unknown"),
+                    array("extra", array()),
+                    array("min", 0),
+                    array("max", 150),
+                ),
+            ),
+            array(
+                new DummySystem(),
+                null,
+                "DummyTable",
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "HWPartNum"    => "0039-12-01-C",
+                            "FWPartNum"    => "0039-20-03-C",
+                            "FWVersion"    => "1.2.3",
+                            "DeviceGroup"  => "FFFFFF",
+                            "TimeConstant" => 1,
+                        ),
+                    ),
+                ),
+                "05",
+                array(
+                    array("id", 5),
+                    array("driver", "SDEFAULT"),
+                    array("driver", "SDEFAULT"),
+                    array("driver", "SDEFAULT"),
+                    array("units", "unknown"),
+                    array("extra", array()),
+                    array("min", 0),
+                    array("max", 150),
+                ),
+            ),
+            array(
+                new DummySystem(),
+                null,
+                "DummyTable",
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "HWPartNum"    => "0039-12-01-C",
+                            "FWPartNum"    => "0039-20-03-C",
+                            "FWVersion"    => "1.2.3",
+                            "DeviceGroup"  => "FFFFFF",
+                            "TimeConstant" => 1,
+                        ),
+                    ),
+                ),
+                "", // This is a bad input.
+                null,
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config The configuration to use
+    * @param mixed  $device The device to set
+    * @param mixed  $class  This is either the name of a class or an object
+    * @param array  $mocks  The mocks to use
+    * @param string $string The string to feed into the decode
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataDecode
+    */
+    public function testDecode(
+        $config, $device, $class, $mocks, $string, $expect
+    ) {
+        $config->resetMock($mocks);
+        $obj = Sensor::factory($config, $device, $class);
+        $obj->decode($string);
+        $ret = $config->retrieve();
+        $this->assertEquals(
+            $expect, $ret["Table"]["set"], "Calls Wrong"
+        );
+        unset($obj);
+    }
 }
 
 namespace HUGnet\sensors\drivers;

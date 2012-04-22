@@ -321,6 +321,36 @@ class Sensor extends SystemTableBase
         }
         return $ret;
     }
+    /**
+    * This takes the class and makes it into a setup string
+    *
+    * @return Reference to the network object
+    */
+    public function encode()
+    {
+        $string  = sprintf("%02X", ($this->get("id") & 0xFF));
+        $string .= $this->driver()->encode($this);
+        return $string;
+    }
+    /**
+    * This builds the class from a setup string
+    *
+    * @param string $string The setup string to decode
+    *
+    * @return Reference to the network object
+    */
+    public function decode($string)
+    {
+        if (!is_string($string) || (strlen($string) < 2)) {
+            return;
+        }
+        $this->set("id", hexdec(substr($string, 0, 2)));
+        $extra = substr($string, 2);
+        if (strlen($extra) > 1) {
+            $this->driver()->decode($extra, $this);
+        }
+        $this->fixTable();
+    }
 
 }
 

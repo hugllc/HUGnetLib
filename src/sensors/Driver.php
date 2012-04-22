@@ -288,6 +288,30 @@ abstract class Driver
         return $extra[$index];
     }
 
+    /**
+    * Decodes the driver portion of the setup string
+    *
+    * @param string $string  The string to decode
+    * @param object &$sensor The sensor object
+    *
+    * @return array
+    */
+    public function decode($string, &$sensor)
+    {
+        /* Do nothing by default */
+    }
+    /**
+    * Encodes this driver as a setup string
+    *
+    * @param object &$sensor The device object
+    *
+    * @return array
+    */
+    public function encode(&$sensor)
+    {
+        $string  = "";
+        return $string;
+    }
 
     /**
     * Changes a raw reading into a output value
