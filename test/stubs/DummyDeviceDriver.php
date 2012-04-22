@@ -92,6 +92,26 @@ class DummyDeviceDriver extends \HUGnet\DummyBase
         return $ret;
     }
 
+    /**
+    * Reads from the socket
+    *
+    * @return string on success, False on failure
+    */
+    public function sensorConfig()
+    {
+        $ret = parent::__call("sensorConfig", func_get_args());
+        return $ret;
+    }
+    /**
+    * Reads from the socket
+    *
+    * @return string on success, False on failure
+    */
+    public function setSensorConfig()
+    {
+        $ret = parent::__call("setSensorConfig", func_get_args());
+        return $ret;
+    }
 
 
 }

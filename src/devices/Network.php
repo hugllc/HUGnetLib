@@ -178,6 +178,9 @@ class Network
                 "Data" => sprintf("%02X", ($sensor & 0xFF)),
             ),
         );
+        if (method_exists($this->_driver, "sensorConfig")) {
+            $command = $this->_driver->sensorConfig($sensor);
+        }
         return $this->_sendPkt($command, $callback, $config);
     }
     /**
@@ -204,6 +207,9 @@ class Network
                 "Data" => sprintf("%02X", ($sensor & 0xFF)).$sensorConfig,
             ),
         );
+        if (method_exists($this->_driver, "setSensorConfig")) {
+            $command = $this->_driver->setSensorConfig($sensor, $sensorConfig);
+        }
         return $this->_sendPkt($command, $callback, $config);
     }
     /**

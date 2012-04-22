@@ -407,6 +407,64 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     )
                 ),
             ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => "123456",
+                            )
+                        ),
+                    ),
+                    "Driver" => array(
+                        "sensorConfig" => array(
+                            array(
+                                "Command" => "SENSORCONFIG",
+                                "Data" => "03",
+                            ),
+                        ),
+                    ),
+                ),
+                new \HUGnet\devices\drivers\DummyDeviceDriver("Driver"),
+                3,
+                null,
+                array(),
+                array(
+                    "Table" => array(
+                        "get" => array(array("id")),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    array(
+                                        "To" => 21,
+                                        "Command" => 'SENSORCONFIG',
+                                        "Data" => "03",
+                                    ),
+                                ),
+                                null,
+                                array(
+
+                                ),
+                            )
+                        ),
+                    ),
+                    "Driver" => array(
+                        "sensorConfig" => array(array(3)),
+                    ),
+                ),
+                \HUGnet\network\Packet::factory(
+                    array(
+                        "From" => 21,
+                        "Reply" => "123456",
+                    )
+                ),
+            ),
         );
     }
     /**
@@ -538,6 +596,65 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                 ),
                 false,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => "123456",
+                            )
+                        ),
+                    ),
+                    "Driver" => array(
+                        "setSensorConfig" => array(
+                            array(
+                                "Command" => "SETSENSORCONFIG",
+                                "Data" => "0102030405",
+                            ),
+                        ),
+                    ),
+                ),
+                new \HUGnet\devices\drivers\DummyDeviceDriver("Driver"),
+                3,
+                "09080706",
+                null,
+                array(),
+                array(
+                    "Table" => array(
+                        "get" => array(array("id")),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    array(
+                                        "To" => 21,
+                                        "Command" => 'SETSENSORCONFIG',
+                                        "Data" => "0102030405",
+                                    ),
+                                ),
+                                null,
+                                array(
+
+                                ),
+                            )
+                        ),
+                    ),
+                    "Driver" => array(
+                        "setSensorConfig" => array(array(3, "09080706")),
+                    ),
+                ),
+                \HUGnet\network\Packet::factory(
+                    array(
+                        "From" => 21,
+                        "Reply" => "123456",
+                    )
+                ),
             ),
         );
     }
