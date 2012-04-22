@@ -160,6 +160,53 @@ class Network
         return $this->_sendPkt($command, $callback, $config);
     }
     /**
+    * Gets the configuration for the device in question
+    *
+    * @param int    $sensor   The sensor to read info on
+    * @param string $callback The name of the function to call when the packet
+    *                   arrives.  If this is not callable, it will block until the
+    *                   packet arrives.
+    * @param array  $config   The network config to use for the packet
+    *
+    * @return success or failure of the packet sending
+    */
+    public function sensorConfig($sensor, $callback = null, $config = array())
+    {
+        $command = array(
+            array(
+                "Command" => "SENSORCONFIG",
+                "Data" => sprintf("%02X", ($sensor & 0xFF)),
+            ),
+        );
+        return $this->_sendPkt($command, $callback, $config);
+    }
+    /**
+    * Gets the configuration for the device in question
+    *
+    * @param int    $sensor       The sensor to read info on
+    * @param string $sensorConfig The string to set the sensor config to
+    * @param string $callback     The name of the function to call when the packet
+    *                   arrives.  If this is not callable, it will block until the
+    *                   packet arrives.
+    * @param array  $config       The network config to use for the packet
+    *
+    * @return success or failure of the packet sending
+    */
+    public function setSensorConfig(
+        $sensor, $sensorConfig, $callback = null, $config = array()
+    ) {
+        if (!is_string($sensorConfig) || (strlen($sensorConfig) == 0)) {
+            return false;
+        }
+        $command = array(
+            array(
+                "Command" => "SETSENSORCONFIG",
+                "Data" => sprintf("%02X", ($sensor & 0xFF)).$sensorConfig,
+            ),
+        );
+        return $this->_sendPkt($command, $callback, $config);
+    }
+    /**
     * Gets the application CRC for the device in question.
     *
     * This only works on devices that have loadable firmware, and only when they are

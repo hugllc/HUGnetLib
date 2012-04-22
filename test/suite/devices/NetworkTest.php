@@ -357,6 +357,224 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
+    public static function dataSensorConfig()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => "123456",
+                            )
+                        ),
+                    ),
+                ),
+                new \HUGnet\DummyBase("Driver"),
+                3,
+                null,
+                array(),
+                array(
+                    "Table" => array(
+                        "get" => array(array("id")),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    array(
+                                        "To" => 21,
+                                        "Command" => 'SENSORCONFIG',
+                                        "Data" => "03",
+                                    ),
+                                ),
+                                null,
+                                array(
+
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                \HUGnet\network\Packet::factory(
+                    array(
+                        "From" => 21,
+                        "Reply" => "123456",
+                    )
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param array  $mocks    The data to reset the mocks with
+    * @param object $driver   The driver to use
+    * @param int    $sensor   The sensor to write
+    * @param mixed  $callback The function to call on packet reply
+    * @param array  $config   The configuration array
+    * @param array  $expect   The expected calls in the mock
+    * @param bool   $return   The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataSensorConfig()
+    */
+    public function testSensorConfig(
+        $mocks, $driver, $sensor, $callback, $config, $expect, $return
+    ) {
+        $net   = new \HUGnet\network\DummyNetwork("Network");
+        $table = new \HUGnet\DummyTable();
+        $net->resetMock($mocks);
+        $devnet = &Network::factory($net, $table, $driver);
+        $ret = $devnet->sensorConfig($sensor, $callback, $config);
+        $this->assertEquals($return, $ret,  "Return Wrong");
+        $ret = $net->retrieve();
+        $this->assertEquals($expect, $ret,  "Calls Wrong");
+
+    }
+    /**
+    * Data provider for testMatcher
+    *
+    * @return array
+    */
+    public static function dataSetSensorConfig()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => "123456",
+                            )
+                        ),
+                    ),
+                ),
+                new \HUGnet\DummyBase("Driver"),
+                3,
+                "09080706",
+                null,
+                array(),
+                array(
+                    "Table" => array(
+                        "get" => array(array("id")),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    array(
+                                        "To" => 21,
+                                        "Command" => 'SETSENSORCONFIG',
+                                        "Data" => "0309080706",
+                                    ),
+                                ),
+                                null,
+                                array(
+
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                \HUGnet\network\Packet::factory(
+                    array(
+                        "From" => 21,
+                        "Reply" => "123456",
+                    )
+                ),
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => "123456",
+                            )
+                        ),
+                    ),
+                ),
+                new \HUGnet\DummyBase("Driver"),
+                3,
+                "",           // Empty String
+                null,
+                array(),
+                array(
+                ),
+                false,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => "123456",
+                            )
+                        ),
+                    ),
+                ),
+                new \HUGnet\DummyBase("Driver"),
+                3,
+                array(),  // This is not a string
+                null,
+                array(),
+                array(
+                ),
+                false,
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param array  $mocks        The data to reset the mocks with
+    * @param object $driver       The driver to use
+    * @param int    $sensor       The sensor to write
+    * @param string $sensorConfig The config for the sensor
+    * @param mixed  $callback     The function to call on packet reply
+    * @param array  $config       The configuration array
+    * @param array  $expect       The expected calls in the mock
+    * @param bool   $return       The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataSetSensorConfig()
+    */
+    public function testSetSensorConfig(
+        $mocks, $driver, $sensor, $sensorConfig, $callback, $config, $expect, $return
+    ) {
+        $net   = new \HUGnet\network\DummyNetwork("Network");
+        $table = new \HUGnet\DummyTable();
+        $net->resetMock($mocks);
+        $devnet = &Network::factory($net, $table, $driver);
+        $ret = $devnet->setSensorConfig($sensor, $sensorConfig, $callback, $config);
+        $this->assertEquals($return, $ret,  "Return Wrong");
+        $ret = $net->retrieve();
+        $this->assertEquals($expect, $ret,  "Calls Wrong");
+
+    }
+    /**
+    * Data provider for testMatcher
+    *
+    * @return array
+    */
     public static function dataGetCRC()
     {
         return array(
