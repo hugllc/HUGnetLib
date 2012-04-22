@@ -71,82 +71,29 @@ class Config
     /** Where in the config string the configuration ends  */
     const CONFIGEND = 44;
     /**
-    * This is the cache object
-    */
-    private $_device = null;
-    /**
-    * This is the cache object
-    */
-    private $_driver = null;
-    /**
-    * This function sets up the driver object, and the database object.  The
-    * database object is taken from the driver object.
-    *
-    * @param object &$device The device object
-    * @param object &$driver The device driver object
-    *
-    * @return null
-    */
-    private function __construct(&$device, &$driver)
-    {
-        \HUGnet\System::exception(
-            get_class($this)." needs to be passed a device object",
-            "InvalidArgument",
-            !is_object($device)
-        );
-        \HUGnet\System::exception(
-            get_class($this)." needs to be passed a driver object",
-            "InvalidArgument",
-            !is_object($driver)
-        );
-        $this->_device = &$device;
-        $this->_driver = &$driver;
-    }
-    /**
-    * This is the destructor
-    */
-    public function __destruct()
-    {
-    }
-    /**
-    * This function creates the system.
-    *
-    * @param object &$table  (object)The table to use
-    * @param object &$driver The device driver object
-    *
-    * @return null
-    */
-    public static function &factory(&$table, &$driver)
-    {
-        $obj = new Config($table, $driver);
-        return $obj;
-    }
-    /**
     * Creates the object from a string
     *
-    * @param string $string This is the raw string for the device
+    * @param string $string  This is the raw string for the device
+    * @param object &$device The device to use
     *
-    * @return null
+    * @return string The left over string
     */
-    public function decode($string)
+    public static function decode($string, &$device)
     {
-        if (!$this->_checkSetupString($string)) {
-            return;
+        if (!self::checkSetupString($string)) {
+            return false;
         }
         $did = hexdec(substr($string, 0, 10));
-        $this->_device->set("id", $did);
-        $this->_device->set("DeviceID", $did);
-        $this->_device->set("HWPartNum", substr($string, self::HW_START, 10));
-        $this->_device->set("FWPartNum", substr($string, self::FW_START, 10));
-        $this->_device->set("FWVersion", substr($string, self::FWV_START, 6));
-        $this->_device->set(
+        $device->set("id", $did);
+        $device->set("DeviceID", $did);
+        $device->set("HWPartNum", substr($string, self::HW_START, 10));
+        $device->set("FWPartNum", substr($string, self::FW_START, 10));
+        $device->set("FWVersion", substr($string, self::FWV_START, 6));
+        $device->set(
             "DeviceGroup", trim(strtoupper(substr($string, self::GROUP, 6)))
         );
-        $this->_device->set("RawSetup", $string);
-        $this->_driver->decode(
-            substr($string, self::CONFIGEND),
-            $this->_device, $this->_driver
-        );
+        $device->set("RawSetup", $string);
+        return substr($string, self::CONFIGEND);
     }
     /**
     * Checks to see if the string is valid
@@ -155,7 +102,7 @@ class Config
     *
     * @return null
     */
-    private function _checkSetupString($string)
+    public static function checkSetupString($string)
     {
         if (substr($string, self::HW_START, 4) !== "0039") {
             return false;
@@ -163,22 +110,23 @@ class Config
         if (substr($string, self::FW_START, 4) !== "0039") {
             return false;
         }
-
         return true;
     }
 
     /**
     * Returns the object as a string
     *
+    * @param object &$device The device to use
+    *
     * @return string
     */
-    public function encode()
+    public static function encode(&$device)
     {
-        $string  = sprintf("%010X", $this->_device->get("id"));
-        $string .= $this->_hexifyPartNum($this->_device->get("HWPartNum"));
-        $string .= $this->_hexifyPartNum($this->_device->get("FWPartNum"));
-        $string .= $this->_hexifyVersion($this->_device->get("FWVersion"));
-        $string .= sprintf("%06X", hexdec($this->_device->get("DeviceGroup")));
+        $string  = sprintf("%010X", $device->get("id"));
+        $string .= self::hexifyPartNum($device->get("HWPartNum"));
+        $string .= self::hexifyPartNum($device->get("FWPartNum"));
+        $string .= self::hexifyVersion($device->get("FWVersion"));
+        $string .= sprintf("%06X", hexdec($device->get("DeviceGroup")));
         $string .= "FF";
         return $string;
     }
@@ -190,7 +138,7 @@ class Config
     *
     * @return string Hexified version (asciihex)
     */
-    private function _hexifyVersion($version)
+    public static function hexifyVersion($version)
     {
         $ver = explode(".", $version);
         return sprintf(
@@ -208,7 +156,7 @@ class Config
     *
     * @return string Hexified version (asciihex)
     */
-    private function _hexifyPartNum($PartNum)
+    public static function hexifyPartNum($PartNum)
     {
         $part = explode("-", $PartNum);
         $chr  = ord($part[3]);

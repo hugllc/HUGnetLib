@@ -139,9 +139,11 @@ class Device extends SystemTableBase
             $new = $this->firmware()->compareVersion(
                 $return["FWVersion"], $this->firmware()->Version
             );
+            // @codeCoverageIgnoreStart
             if ($new < 0) {
                 $return["update"] = $this->firmware()->Version;
             }
+            // @codeCoverageIgnoreEnd
         }
         return json_encode($return);
     }
@@ -161,17 +163,27 @@ class Device extends SystemTableBase
         );
     }
     /**
-    * This function creates the system.
+    * This takes the class and makes it into a setup string
     *
     * @return Reference to the network object
     */
-    public function &config()
+    public function encode()
     {
         include_once dirname(__FILE__)."/../devices/Config.php";
-        return \HUGnet\devices\Config::factory(
-            $this,
-            $this->driver()
-        );
+        $string  = \HUGnet\devices\Config::encode($this);
+        $string .= $this->driver()->encode($this);
+        return $string;
+    }
+    /**
+    * This builds the class from a setup string
+    *
+    * @return Reference to the network object
+    */
+    public function decode($string)
+    {
+        include_once dirname(__FILE__)."/../devices/Config.php";
+        $extra = \HUGnet\devices\Config::decode($string, $this);
+        $this->driver()->decode($extra, $this);
     }
     /**
     * This creates the driver

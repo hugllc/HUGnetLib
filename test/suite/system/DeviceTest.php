@@ -233,7 +233,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataConfig()
+    public static function dataEncode()
     {
         return array(
             array(
@@ -245,6 +245,87 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 ),
                 "DummyTable",
                 array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "HWPartNum"    => "0039-12-01-C",
+                            "FWPartNum"    => "0039-20-03-C",
+                            "FWVersion"    => "1.2.3",
+                            "DeviceGroup"  => "FFFFFF",
+                            "TimeConstant" => "01",
+                        ),
+                    ),
+                ),
+                "000000000500391201430039200343010203FFFFFFFF01000000000000000000",
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config The configuration to use
+    * @param mixed  $device The device to set
+    * @param mixed  $class  This is either the name of a class or an object
+    * @param array  $mocks  The mocks to use
+    * @param string $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataEncode
+    */
+    public function testEncode(
+        $config, $device, $class, $mocks, $expect
+    ) {
+        $config->resetMock($mocks);
+        $obj = Device::factory($config, $device, $class);
+        $this->assertEquals(
+            $expect, $obj->encode(), "Return Wrong"
+        );
+        unset($obj);
+    }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataDecode()
+    {
+        return array(
+            array(
+                new DummySystem(),
+                array(
+                    "id" => 5,
+                    "name" => 3,
+                    "value" => 1,
+                ),
+                "DummyTable",
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "HWPartNum"    => "0039-12-01-C",
+                            "FWPartNum"    => "0039-20-03-C",
+                            "FWVersion"    => "1.2.3",
+                            "DeviceGroup"  => "FFFFFF",
+                            "TimeConstant" => 1,
+                        ),
+                    ),
+                ),
+                "000000000500391201430039200343010203FFFFFFFF01000000000000000000",
+                array(
+                    array("Driver", "EDEFAULT"),
+                    array("id", 5),
+                    array("DeviceID", 5),
+                    array("HWPartNum", "0039120143"),
+                    array("FWPartNum", "0039200343"),
+                    array("FWVersion", "010203"),
+                    array("DeviceGroup", "FFFFFF"),
+                    array(
+                        "RawSetup",
+                        "000000000500391201430039200343010203FFFFFFFF"
+                        ."01000000000000000000"
+                    ),
+                    array("TimeConstant", 1),
                 ),
             ),
         );
@@ -252,22 +333,26 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     /**
     * This tests the object creation
     *
-    * @param array $config The configuration to use
-    * @param mixed $device The device to set
-    * @param mixed $class  This is either the name of a class or an object
-    * @param array $mocks  The mocks to use
+    * @param array  $config The configuration to use
+    * @param mixed  $device The device to set
+    * @param mixed  $class  This is either the name of a class or an object
+    * @param array  $mocks  The mocks to use
+    * @param string $string The string to feed into the decode
+    * @param array  $expect The expected return
     *
     * @return null
     *
-    * @dataProvider dataConfig
+    * @dataProvider dataDecode
     */
-    public function testConfig(
-        $config, $device, $class, $mocks
+    public function testDecode(
+        $config, $device, $class, $mocks, $string, $expect
     ) {
         $config->resetMock($mocks);
         $obj = Device::factory($config, $device, $class);
+        $obj->decode($string);
+        $ret = $config->retrieve();
         $this->assertEquals(
-            "HUGnet\devices\Config", get_class($obj->config()), "Wrong Class"
+            $expect, $ret["Table"]["set"], "Calls Wrong"
         );
         unset($obj);
     }

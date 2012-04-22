@@ -640,12 +640,105 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     public function testDecode($mocks, $string, $expect)
     {
         $device  = new \HUGnet\DummyTable("Device");
-        $driver = new \HUGnet\DummyBase("Driver");
         $device->resetMock($mocks);
         $obj = DriverTestClass::factory();
-        $obj->decode($string, $device, $driver);
+        $obj->decode($string, $device);
         $ret = $device->retrieve();
         $this->assertEquals($expect, $ret);
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataEncode()
+    {
+        return array(
+            array( // #0
+                array(
+                    "Device" => array(
+                        "sensor" => array(
+                            0 => new \HUGnet\DummyBase("Sensor0"),
+                            1 => new \HUGnet\DummyBase("Sensor1"),
+                            2 => new \HUGnet\DummyBase("Sensor2"),
+                            3 => new \HUGnet\DummyBase("Sensor3"),
+                            4 => new \HUGnet\DummyBase("Sensor4"),
+                            5 => new \HUGnet\DummyBase("Sensor5"),
+                            6 => new \HUGnet\DummyBase("Sensor6"),
+                            7 => new \HUGnet\DummyBase("Sensor7"),
+                            8 => new \HUGnet\DummyBase("Sensor8"),
+                        ),
+                        "get" => array(
+                            "TimeConstant" => 7,
+                        ),
+                    ),
+                    'Sensor0' => array(
+                        'get' => array(
+                            "id" => 3,
+                        ),
+                    ),
+                    'Sensor1' => array(
+                        'get' => array(
+                            "id" => 4,
+                        ),
+                    ),
+                    'Sensor2' => array(
+                        'get' => array(
+                            "id" => 5,
+                        ),
+                    ),
+                    'Sensor3' => array(
+                        'get' => array(
+                            "id" => 6,
+                        ),
+                    ),
+                    'Sensor4' => array(
+                        'get' => array(
+                            "id" => 7,
+                        ),
+                    ),
+                    'Sensor5' => array(
+                        'get' => array(
+                            "id" => 8,
+                        ),
+                    ),
+                    'Sensor6' => array(
+                        'get' => array(
+                            "id" => 9,
+                        ),
+                    ),
+                    'Sensor7' => array(
+                        'get' => array(
+                            "id" => 10,
+                        ),
+                    ),
+                    'Sensor8' => array(
+                        'get' => array(
+                            "id" => 11,
+                        ),
+                    ),
+                ),
+                "07030405060708090A0B",
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $mocks  The value to preload into the mocks
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataEncode
+    */
+    public function testEncode($mocks, $expect)
+    {
+        $device  = new \HUGnet\DummyTable("Device");
+        $device->resetMock($mocks);
+        $obj = DriverTestClass::factory();
+        $ret = $obj->encode($device);
+        $this->assertSame($expect, $ret);
     }
 }
 /**

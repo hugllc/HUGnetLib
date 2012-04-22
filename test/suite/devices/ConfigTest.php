@@ -96,7 +96,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                 array(),
                 "00000000E80039CF01410039246743000302FFFFFF50",
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "set" => array(
                             array("id", 0xE8),
                             array("DeviceID", 0xE8),
@@ -110,22 +110,14 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                             ),
                         ),
                     ),
-                    'Driver' => array(
-                        'decode' => array(
-                            0 => array(
-                                0 => false,
-                                1 => new \HUGnet\DummyTable("Table"),
-                                2 => new \HUGnet\DummyBase('Driver'),
-                            ),
-                        ),
-                    ),
                 ),
+                "",
             ),
             array( // #1
                 array(),
                 "00000000E80039CF01410039246743000102FFFFFF50",
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "set" => array(
                             array("id", 0xE8),
                             array("DeviceID", 0xE8),
@@ -139,22 +131,14 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                             ),
                         ),
                     ),
-                    'Driver' => array(
-                        'decode' => array(
-                            0 => array(
-                                0 => false,
-                                1 => new \HUGnet\DummyTable("Table"),
-                                2 => new \HUGnet\DummyBase('Driver'),
-                            ),
-                        ),
-                    ),
                 ),
+                "",
             ),
             array( // #2
                 array(),
                 "00000000E80039CE01410039246743000005FFFFFF1E",
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "set" => array(
                             array("id", 0xE8),
                             array("DeviceID", 0xE8),
@@ -168,22 +152,14 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                             ),
                         ),
                     ),
-                    'Driver' => array(
-                        'decode' => array(
-                            0 => array(
-                                0 => false,
-                                1 => new \HUGnet\DummyTable("Table"),
-                                2 => new \HUGnet\DummyBase('Driver'),
-                            ),
-                        ),
-                    ),
                 ),
+                "",
             ),
             array( // #3
                 array(),
                 "00000000E80039CD01410039456743000005FFFFFF530123456789",
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "set" => array(
                             array("id", 0xE8),
                             array("DeviceID", 0xE8),
@@ -198,22 +174,14 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                             ),
                         ),
                     ),
-                    'Driver' => array(
-                        'decode' => array(
-                            0 => array(
-                                0 => "0123456789",
-                                1 => new \HUGnet\DummyTable("Table"),
-                                2 => new \HUGnet\DummyBase('Driver'),
-                            ),
-                        ),
-                    ),
                 ),
+                "0123456789",
             ),
             array(  // #4
                 array(),
                 "00000000E80039CC01410039256743000005FFFFFF2101",
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "set" => array(
                             array("id", 0xE8),
                             array("DeviceID", 0xE8),
@@ -227,16 +195,8 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                             ),
                         ),
                     ),
-                    'Driver' => array(
-                        'decode' => array(
-                            0 => array(
-                                0 => '01',
-                                1 => new \HUGnet\DummyTable("Table"),
-                                2 => new \HUGnet\DummyBase('Driver'),
-                            ),
-                        ),
-                    ),
                 ),
+                "01",
             ),
             array(  // #5 Bad HWPartNum
                 array(
@@ -244,6 +204,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                 "00000000E80038CC01410039256743000005FFFFFF2101",
                 array(
                ),
+               false,
             ),
             array(  // #6 Bad FWPartNum
                 array(
@@ -251,6 +212,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                 "00000000E80039CC01410038256743000005FFFFFF2101",
                 array(
                ),
+               false,
             ),
             array(  // #7 Specific example
                 array(
@@ -259,29 +221,30 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                     ."7046707070707008200820082008204F034F034F034F03",
                 array(
                ),
+               false,
             ),
         );
     }
     /**
     * test the set routine when an extra class exists
     *
-    * @param array  $mocks  The value to preload into the mocks
-    * @param string $string The setup string to test
-    * @param array  $expect The expected return
+    * @param array  $mocks       The value to preload into the mocks
+    * @param string $string      The setup string to test
+    * @param array  $expect      The expected return
+    * @param string $expectExtra The extra stuff returned
     *
     * @return null
     *
     * @dataProvider dataDecode
     */
-    public function testDecode($mocks, $string, $expect)
+    public function testDecode($mocks, $string, $expect, $expectExtra)
     {
-        $table  = new \HUGnet\DummyTable();
-        $driver = new \HUGnet\DummyBase("Driver");
-        $table->resetMock($mocks);
-        $obj = Config::factory($table, $driver);
-        $obj->decode($string);
-        $ret = $table->retrieve();
-        $this->assertEquals($expect, $ret);
+        $driver = new \HUGnet\DummyBase("Device");
+        $driver->resetMock($mocks);
+        $extra = Config::decode($string, $driver);
+        $this->assertEquals($expectExtra, $extra, "Return Wrong");
+        $ret = $driver->retrieve();
+        $this->assertEquals($expect, $ret, "Calls Wrong");
     }
     /**
     * data provider for testDeviceID
@@ -293,7 +256,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(
                             "id" => 0xE8,
                             "DeviceID" => "0000E8",
@@ -308,7 +271,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(
                             "id" => 0xE8,
                             "DeviceID" => "0000E8",
@@ -323,7 +286,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(
                             "id" => 0xE8,
                             "DeviceID" => "0000E8",
@@ -338,7 +301,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(
                             "id" => 0xE8,
                             "DeviceID" => "0000E8",
@@ -353,7 +316,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(
                             "id" => 0xE8,
                             "DeviceID" => "0000E8",
@@ -380,12 +343,10 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     */
     public function testEncode($mocks, $expect)
     {
-        $table  = new \HUGnet\DummyTable();
-        $driver = new \HUGnet\DummyBase("Driver");
-        $table->resetMock($mocks);
-        $obj = Config::factory($table, $driver);
-        $ret = $obj->encode();
-        $this->assertSame($expect, $ret);
+        $driver = new \HUGnet\DummyBase("Device");
+        $driver->resetMock($mocks);
+        $ret = Config::encode($driver);
+        $this->assertEquals($expect, $ret);
     }
 }
 ?>

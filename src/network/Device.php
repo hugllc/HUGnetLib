@@ -128,7 +128,7 @@ final class Device
         if (($pkt->type() === "PING") || ($pkt->type() === "FINDPING")) {
             $this->_reply($pkt, $pkt->data());
         } else if (($pkt->type() === "CONFIG")) {
-            $this->_reply($pkt, $this->_device()->config()->encode());
+            $this->_reply($pkt, $this->_device()->encode());
         }
     }
     /**
