@@ -359,18 +359,17 @@ class Device extends SystemTableBase
     public function decodeData($string, $command="", $deltaT = 0, $prev = null)
     {
         $data = $this->driver()->decodeSensorString((string)$string);
-        $data["deltaT"] = $deltaT;
-        $ret = array();
+        $ret = array(
+            "deltaT" => $deltaT,
+            "DataIndex" => $data["DataIndex"],
+            "timeConstant" => $data["timeConstant"],
+        );
         $sensors = $this->get("totalSensors");
         for ($i = 0; $i < $sensors; $i++) {
             $ret[$i] = $this->sensor($i)->decodeData(
                 $data[$i], $deltaT, $prev[$i], $ret
             );
         }
-        $ret["deltaT"] = $deltaT;
-        $ret["DataIndex"] = $data["DataIndex"];
-        $ret["timeConstant"] = $data["timeConstant"];
-        $ret["deltaT"] = $data["deltaT"];
         return $ret;
     }
     /**

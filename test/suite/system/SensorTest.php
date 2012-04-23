@@ -251,7 +251,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                     "Table" => array(
                         "get" => array(
                             "driver" => "SDEFAULT",
-                            "id" => 2,
+                            "id" => 1,
                         ),
                     ),
                 ),
@@ -309,6 +309,13 @@ class SensorTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 0xFA,
+                            "type" => "raw",
+                            "sensor" => 5,
+                        ),
+                    ),
                 ),
                 new DummyTable(),
                 array(
@@ -350,6 +357,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             array("driver", "SDEFAULT"),
                             array("driver", "SDEFAULT"),
                             array("units", "unknown"),
+                            array("extra", array()),
                             array("min", 0),
                             array("max", 150),
                         ),
@@ -434,6 +442,13 @@ class SensorTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 0xFA,
+                            "type" => "raw",
+                            "sensor" => 5,
+                        ),
+                    ),
                 ),
                 new DummyTable(),
                 array(
@@ -475,15 +490,10 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             array("driver", "SDEFAULT"),
                             array("driver", "SDEFAULT"),
                             array("driver", "SDEFAULT"),
-                            array(
-                                'units', 'unknown'
-                            ),
-                            array(
-                                'min', 0
-                            ),
-                            array(
-                                'max', 150
-                            ),
+                            array('units', 'unknown'),
+                            array("extra", array()),
+                            array('min', 0),
+                            array('max', 150),
                         ),
                     ),
                 ),
