@@ -64,7 +64,7 @@ class AVRBC2322640 extends \HUGnet\sensors\Driver
         "shortName" => "AVRBC2322640",
         "unitType" => "Temperature",
         "storageUnit" => '&#176;C',
-        "storageType" => \HUGnet\units\Driver::TYPE_RAW,  // This is the dataType as stored
+        "storageType" => \HUGnet\units\Driver::TYPE_RAW,  // Data stored as
         "extraText" => array(
             "Bias Resistor (kOhms)",
             "Value @25&#176;C (kOhms)"
