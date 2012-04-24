@@ -102,7 +102,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -118,7 +118,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 null,
                 array(),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(array("id")),
                     ),
                     "Network" => array(
@@ -145,7 +145,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -164,7 +164,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 null,
                 array(),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(array("id")),
                     ),
                     "Network" => array(
@@ -213,9 +213,9 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     public function testPoll($mocks, $driver, $callback, $config, $expect, $return)
     {
         $net   = new \HUGnet\network\DummyNetwork("Network");
-        $table = new \HUGnet\DummyTable();
+        $device = new \HUGnet\DummyBase("Device");
         $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $table, $driver);
+        $devnet = &Network::factory($net, $device, $driver);
         $ret = $devnet->poll($callback, $config);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
@@ -232,7 +232,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -248,7 +248,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 null,
                 array(),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(array("id")),
                     ),
                     "Network" => array(
@@ -275,7 +275,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -294,7 +294,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 null,
                 array(),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(array("id")),
                     ),
                     "Network" => array(
@@ -343,9 +343,9 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     public function testConfig($mocks, $driver, $callback, $config, $expect, $return)
     {
         $net   = new \HUGnet\network\DummyNetwork("Network");
-        $table = new \HUGnet\DummyTable();
+        $device = new \HUGnet\DummyBase("Device");
         $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $table, $driver);
+        $devnet = &Network::factory($net, $device, $driver);
         $ret = $devnet->config($callback, $config);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
@@ -362,7 +362,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -379,7 +379,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 null,
                 array(),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(array("id")),
                     ),
                     "Network" => array(
@@ -409,7 +409,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -434,7 +434,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 null,
                 array(),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(array("id")),
                     ),
                     "Network" => array(
@@ -486,9 +486,9 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         $mocks, $driver, $sensor, $callback, $config, $expect, $return
     ) {
         $net   = new \HUGnet\network\DummyNetwork("Network");
-        $table = new \HUGnet\DummyTable();
+        $device = new \HUGnet\DummyBase("Device");
         $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $table, $driver);
+        $devnet = &Network::factory($net, $device, $driver);
         $ret = $devnet->sensorConfig($sensor, $callback, $config);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
@@ -505,7 +505,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -523,7 +523,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 null,
                 array(),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(array("id")),
                     ),
                     "Network" => array(
@@ -553,7 +553,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -576,7 +576,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -599,7 +599,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -625,7 +625,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 null,
                 array(),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(array("id")),
                     ),
                     "Network" => array(
@@ -678,9 +678,9 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         $mocks, $driver, $sensor, $sensorConfig, $callback, $config, $expect, $return
     ) {
         $net   = new \HUGnet\network\DummyNetwork("Network");
-        $table = new \HUGnet\DummyTable();
+        $device = new \HUGnet\DummyBase("Device");
         $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $table, $driver);
+        $devnet = &Network::factory($net, $device, $driver);
         $ret = $devnet->setSensorConfig($sensor, $sensorConfig, $callback, $config);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
@@ -697,7 +697,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -711,7 +711,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(array("id")),
                     ),
                     "Network" => array(
@@ -733,7 +733,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -747,7 +747,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(array("id")),
                     ),
                     "Network" => array(
@@ -769,7 +769,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -778,7 +778,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(array("id")),
                     ),
                     "Network" => array(
@@ -815,10 +815,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     public function testGetCRC($mocks, $config, $expect, $return)
     {
         $net   = new \HUGnet\network\DummyNetwork("Network");
-        $table = new \HUGnet\DummyTable();
+        $device = new \HUGnet\DummyBase("Device");
         $driver = new \HUGnet\DummyBase("Driver");
         $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $table, $driver);
+        $devnet = &Network::factory($net, $device, $driver);
         $ret = $devnet->getCRC($config);
         $this->assertSame($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
@@ -835,7 +835,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -849,7 +849,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(array("id")),
                     ),
                     "Network" => array(
@@ -871,7 +871,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -885,7 +885,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(array("id")),
                     ),
                     "Network" => array(
@@ -907,7 +907,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -916,7 +916,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(array("id")),
                     ),
                     "Network" => array(
@@ -953,10 +953,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     public function testSetCRC($mocks, $config, $expect, $return)
     {
         $net   = new \HUGnet\network\DummyNetwork("Network");
-        $table = new \HUGnet\DummyTable();
+        $device = new \HUGnet\DummyBase("Device");
         $driver = new \HUGnet\DummyBase("Driver");
         $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $table, $driver);
+        $devnet = &Network::factory($net, $device, $driver);
         $ret = $devnet->setCRC($config);
         $this->assertSame($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
@@ -973,7 +973,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -987,7 +987,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(array("id")),
                     ),
                     "Network" => array(
@@ -1009,7 +1009,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -1022,7 +1022,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(array("id")),
                     ),
                     "Network" => array(
@@ -1044,7 +1044,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -1053,7 +1053,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(array("id")),
                     ),
                     "Network" => array(
@@ -1090,10 +1090,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     public function testRunBootloader($mocks, $config, $expect, $return)
     {
         $net   = new \HUGnet\network\DummyNetwork("Network");
-        $table = new \HUGnet\DummyTable();
+        $device = new \HUGnet\DummyBase("Device");
         $driver = new \HUGnet\DummyBase("Driver");
         $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $table, $driver);
+        $devnet = &Network::factory($net, $device, $driver);
         $ret = $devnet->runBootloader($config);
         $this->assertSame($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
@@ -1110,7 +1110,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -1124,7 +1124,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(array("id")),
                     ),
                     "Network" => array(
@@ -1146,7 +1146,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -1159,7 +1159,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(array("id")),
                     ),
                     "Network" => array(
@@ -1181,7 +1181,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -1190,7 +1190,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(array("id")),
                     ),
                     "Network" => array(
@@ -1227,10 +1227,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     public function testRunApplication($mocks, $config, $expect, $return)
     {
         $net   = new \HUGnet\network\DummyNetwork("Network");
-        $table = new \HUGnet\DummyTable();
+        $device = new \HUGnet\DummyBase("Device");
         $driver = new \HUGnet\DummyBase("Driver");
         $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $table, $driver);
+        $devnet = &Network::factory($net, $device, $driver);
         $ret = $devnet->runApplication($config);
         $this->assertSame($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
@@ -1246,7 +1246,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -1263,7 +1263,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 null,
                 array(),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(array("id")),
                     ),
                     "Network" => array(
@@ -1286,7 +1286,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -1303,7 +1303,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 null,
                 array(),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(array("id")),
                     ),
                     "Network" => array(
@@ -1326,7 +1326,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -1367,10 +1367,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         $mocks, $address, $data, $callback, $config, $expect, $return
     ) {
         $net   = new \HUGnet\network\DummyNetwork("Network");
-        $table = new \HUGnet\DummyTable();
+        $device = new \HUGnet\DummyBase("Device");
         $driver = new \HUGnet\DummyBase("Driver");
         $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $table, $driver);
+        $devnet = &Network::factory($net, $device, $driver);
         $ret = $devnet->writeFlash($address, $data, $callback, $config);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
@@ -1386,7 +1386,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -1403,7 +1403,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 null,
                 array(),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(array("id")),
                     ),
                     "Network" => array(
@@ -1426,7 +1426,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -1443,7 +1443,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 null,
                 array(),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(array("id")),
                     ),
                     "Network" => array(
@@ -1466,7 +1466,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -1507,10 +1507,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         $mocks, $address, $data, $callback, $config, $expect, $return
     ) {
         $net   = new \HUGnet\network\DummyNetwork("Network");
-        $table = new \HUGnet\DummyTable();
+        $device = new \HUGnet\DummyBase("Device");
         $driver = new \HUGnet\DummyBase("Driver");
         $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $table, $driver);
+        $devnet = &Network::factory($net, $device, $driver);
         $ret = $devnet->writeE2($address, $data, $callback, $config);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
@@ -1527,7 +1527,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -1558,7 +1558,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 6,
                 "FF",
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(
                             array("id"), array("id"), array("id"), array("id"),
                         ),
@@ -1608,7 +1608,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -1639,7 +1639,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 6,
                 "FF",
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(
                             array("id"), array("id"), array("id"), array("id"),
                         ),
@@ -1689,7 +1689,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -1720,7 +1720,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 6,
                 "FF",
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(
                             array("id"), array("id"), array("id"),
                         ),
@@ -1758,7 +1758,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -1794,7 +1794,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -1849,10 +1849,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         $mocks, $address, $data, $chunkSize, $empty, $expect, $return
     ) {
         $net   = new \HUGnet\network\DummyNetwork("Network");
-        $table = new \HUGnet\DummyTable();
+        $device = new \HUGnet\DummyBase("Device");
         $driver = new \HUGnet\DummyBase("Driver");
         $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $table, $driver);
+        $devnet = &Network::factory($net, $device, $driver);
         $ret = $devnet->writeFlashBuffer($data, $address, $chunkSize, $empty);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
@@ -1869,7 +1869,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -1900,7 +1900,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 6,
                 "FF",
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(
                             array("id"), array("id"), array("id"), array("id"),
                         ),
@@ -1950,7 +1950,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -1981,7 +1981,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 6,
                 "FF",
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(
                             array("id"), array("id"), array("id"), array("id"),
                         ),
@@ -2031,7 +2031,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -2062,7 +2062,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 6,
                 "FF",
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(
                             array("id"), array("id"), array("id"),
                         ),
@@ -2100,7 +2100,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -2136,7 +2136,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -2191,10 +2191,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         $mocks, $address, $data, $chunkSize, $empty, $expect, $return
     ) {
         $net   = new \HUGnet\network\DummyNetwork("Network");
-        $table = new \HUGnet\DummyTable();
+        $device = new \HUGnet\DummyBase("Device");
         $driver = new \HUGnet\DummyBase("Driver");
         $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $table, $driver);
+        $devnet = &Network::factory($net, $device, $driver);
         $ret = $devnet->writeE2Buffer($data, $address, $chunkSize, $empty);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
@@ -2211,7 +2211,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         return array(
             array( // #0 Not running boot loader
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -2227,7 +2227,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 new \FirmwareTable(),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(array("id")),
                     ),
                     "Network" => array(
@@ -2249,7 +2249,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             ),
             array( // #1 No reply to config
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -2265,7 +2265,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 new \FirmwareTable(),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(array("id"), array("id")),
                     ),
                     "Network" => array(
@@ -2297,7 +2297,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             ),
             array( // #2 No data in Firmware
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -2358,7 +2358,7 @@ S9030000FC",
                     )
                 ),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(
                             array("id"),
                             array("id"),
@@ -2413,7 +2413,7 @@ S9030000FC",
             ),
             array( // #3 Firmware code good, data bad.
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -2498,7 +2498,7 @@ S9030000FC",
                     )
                 ),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(
                             array("id"),
                             array("id"),
@@ -2592,7 +2592,7 @@ S9030000FC",
             ),
             array( // #4 Firmware code good, data good, crc bad.
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -2695,7 +2695,7 @@ S9030000FC",
                     )
                 ),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(
                             array("id"),
                             array("id"),
@@ -2819,7 +2819,7 @@ S9030000FC",
             ),
             array( // #5 Firmware code good, data good, good crc, no run.
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -2928,7 +2928,7 @@ S9030000FC",
                     )
                 ),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(
                             array("id"),
                             array("id"),
@@ -3063,7 +3063,7 @@ S9030000FC",
             ),
             array( // #5 Everything works!
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -3172,7 +3172,7 @@ S9030000FC",
                     )
                 ),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(
                             array("id"),
                             array("id"),
@@ -3307,7 +3307,7 @@ S9030000FC",
             ),
             array( // #5 Everything works, no Data section
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => 21,
                     ),
                     "Network" => array(
@@ -3385,7 +3385,7 @@ S9030000FC",
                     )
                 ),
                 array(
-                    "Table" => array(
+                    "Device" => array(
                         "get" => array(
                             array("id"),
                             array("id"),
@@ -3496,10 +3496,10 @@ S9030000FC",
     public function testLoadFirmware($mocks, $config, $expect, $return)
     {
         $net   = new \HUGnet\network\DummyNetwork("Network");
-        $table = new \HUGnet\DummyTable();
+        $device = new \HUGnet\DummyBase("Device");
         $driver = new \HUGnet\DummyBase("Driver");
         $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $table, $driver);
+        $devnet = &Network::factory($net, $device, $driver);
         $ret = $devnet->loadFirmware($config);
         $this->assertSame($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
