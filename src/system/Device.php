@@ -158,7 +158,7 @@ class Device extends SystemTableBase
         include_once dirname(__FILE__)."/../devices/Network.php";
         return \HUGnet\devices\Network::factory(
             $this->system()->network(),
-            $this->table(),
+            $this,
             $this->driver()
         );
     }
