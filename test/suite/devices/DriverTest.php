@@ -718,26 +718,95 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                true,
                 "07030405060708090A0B",
+            ),
+            array( // #0
+                array(
+                    "Device" => array(
+                        "sensor" => array(
+                            0 => new \HUGnet\DummyBase("Sensor0"),
+                            1 => new \HUGnet\DummyBase("Sensor1"),
+                            2 => new \HUGnet\DummyBase("Sensor2"),
+                            3 => new \HUGnet\DummyBase("Sensor3"),
+                            4 => new \HUGnet\DummyBase("Sensor4"),
+                            5 => new \HUGnet\DummyBase("Sensor5"),
+                            6 => new \HUGnet\DummyBase("Sensor6"),
+                            7 => new \HUGnet\DummyBase("Sensor7"),
+                            8 => new \HUGnet\DummyBase("Sensor8"),
+                        ),
+                        "get" => array(
+                            "TimeConstant" => 7,
+                        ),
+                    ),
+                    'Sensor0' => array(
+                        'get' => array(
+                            "id" => 3,
+                        ),
+                    ),
+                    'Sensor1' => array(
+                        'get' => array(
+                            "id" => 4,
+                        ),
+                    ),
+                    'Sensor2' => array(
+                        'get' => array(
+                            "id" => 5,
+                        ),
+                    ),
+                    'Sensor3' => array(
+                        'get' => array(
+                            "id" => 6,
+                        ),
+                    ),
+                    'Sensor4' => array(
+                        'get' => array(
+                            "id" => 7,
+                        ),
+                    ),
+                    'Sensor5' => array(
+                        'get' => array(
+                            "id" => 8,
+                        ),
+                    ),
+                    'Sensor6' => array(
+                        'get' => array(
+                            "id" => 9,
+                        ),
+                    ),
+                    'Sensor7' => array(
+                        'get' => array(
+                            "id" => 10,
+                        ),
+                    ),
+                    'Sensor8' => array(
+                        'get' => array(
+                            "id" => 11,
+                        ),
+                    ),
+                ),
+                false,
+                "07",
             ),
         );
     }
     /**
     * test the set routine when an extra class exists
     *
-    * @param array $mocks  The value to preload into the mocks
-    * @param array $expect The expected return
+    * @param array $mocks     The value to preload into the mocks
+    * @param bool  $showFixed Show the fixed portion of the data
+    * @param array $expect    The expected return
     *
     * @return null
     *
     * @dataProvider dataEncode
     */
-    public function testEncode($mocks, $expect)
+    public function testEncode($mocks, $showFixed, $expect)
     {
         $device  = new \HUGnet\DummyTable("Device");
         $device->resetMock($mocks);
         $obj = DriverTestClass::factory();
-        $ret = $obj->encode($device);
+        $ret = $obj->encode($device, $showFixed);
         $this->assertSame($expect, $ret);
     }
 }

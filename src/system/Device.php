@@ -165,13 +165,15 @@ class Device extends SystemTableBase
     /**
     * This takes the class and makes it into a setup string
     *
+    * @param bool $showFixed Show the fixed portion of the data
+    *
     * @return Reference to the network object
     */
-    public function encode()
+    public function encode($showFixed = true)
     {
         include_once dirname(__FILE__)."/../devices/Config.php";
-        $string  = \HUGnet\devices\Config::encode($this);
-        $string .= $this->driver()->encode($this);
+        $string  = \HUGnet\devices\Config::encode($this, $showFixed);
+        $string .= $this->driver()->encode($this, $showFixed);
         return $string;
     }
     /**

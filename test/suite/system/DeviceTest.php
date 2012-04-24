@@ -256,30 +256,55 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                true,
                 "000000000500391201430039200343010203FFFFFFFF01000000000000000000",
+            ),
+            array(
+                new DummySystem(),
+                array(
+                    "id" => 5,
+                    "name" => 3,
+                    "value" => 1,
+                ),
+                "DummyTable",
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "HWPartNum"    => "0039-12-01-C",
+                            "FWPartNum"    => "0039-20-03-C",
+                            "FWVersion"    => "1.2.3",
+                            "DeviceGroup"  => "FFFFFF",
+                            "TimeConstant" => "01",
+                        ),
+                    ),
+                ),
+                false,
+                "FFFFFFFF01",
             ),
         );
     }
     /**
     * This tests the object creation
     *
-    * @param array  $config The configuration to use
-    * @param mixed  $device The device to set
-    * @param mixed  $class  This is either the name of a class or an object
-    * @param array  $mocks  The mocks to use
-    * @param string $expect The expected return
+    * @param array  $config    The configuration to use
+    * @param mixed  $device    The device to set
+    * @param mixed  $class     This is either the name of a class or an object
+    * @param array  $mocks     The mocks to use
+    * @param bool   $showFixed Show the fixed portion of the data
+    * @param string $expect    The expected return
     *
     * @return null
     *
     * @dataProvider dataEncode
     */
     public function testEncode(
-        $config, $device, $class, $mocks, $expect
+        $config, $device, $class, $mocks, $showFixed, $expect
     ) {
         $config->resetMock($mocks);
         $obj = Device::factory($config, $device, $class);
         $this->assertEquals(
-            $expect, $obj->encode(), "Return Wrong"
+            $expect, $obj->encode($showFixed), "Return Wrong"
         );
         unset($obj);
     }

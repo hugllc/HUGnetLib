@@ -116,16 +116,20 @@ class Config
     /**
     * Returns the object as a string
     *
-    * @param object &$device The device to use
+    * @param object &$device   The device to use
+    * @param bool   $showFixed Show the fixed portion of the data
     *
     * @return string
     */
-    public static function encode(&$device)
+    public static function encode(&$device, $showFixed = true)
     {
-        $string  = sprintf("%010X", $device->get("id"));
-        $string .= self::hexifyPartNum($device->get("HWPartNum"));
-        $string .= self::hexifyPartNum($device->get("FWPartNum"));
-        $string .= self::hexifyVersion($device->get("FWVersion"));
+        $string = "";
+        if ($showFixed) {
+            $string .= sprintf("%010X", $device->get("id"));
+            $string .= self::hexifyPartNum($device->get("HWPartNum"));
+            $string .= self::hexifyPartNum($device->get("FWPartNum"));
+            $string .= self::hexifyVersion($device->get("FWVersion"));
+        }
         $string .= sprintf("%06X", hexdec($device->get("DeviceGroup")));
         $string .= "FF";
         return $string;

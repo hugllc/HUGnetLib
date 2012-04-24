@@ -267,6 +267,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                true,
                 "00000000E80039CF01410039246743000302FFFFFFFF",
             ),
             array(
@@ -282,6 +283,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                true,
                 "00000000E80039CF01410039246743123456FFFFFFFF",
             ),
             array(
@@ -297,6 +299,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                true,
                 "00000000E80039CE01410039246743000005FFFFFFFF",
             ),
             array(
@@ -312,6 +315,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                true,
                 "00000000E80039CD01410123456743000005FFFFFFFF",
             ),
             array(
@@ -327,25 +331,43 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                true,
                 "00000000E80039CC01410039256743000005FFFFFFFF",
+            ),
+            array(
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "id" => 0xE8,
+                            "DeviceID" => "0000E8",
+                            "HWPartNum" => "0039-CC-01-A",
+                            "FWPartNum" => "0039-25-67-C",
+                            "FWVersion" => "0.0.5",
+                            "DeviceGroup" => "FFFFFF",
+                        ),
+                    ),
+                ),
+                false,
+                "FFFFFFFF",
             ),
         );
     }
     /**
     * test the set routine when an extra class exists
     *
-    * @param array $mocks  The value to preload into the mocks
-    * @param array $expect The expected return
+    * @param array $mocks     The value to preload into the mocks
+    * @param bool  $showFixed Show the fixed portion of the data
+    * @param array $expect    The expected return
     *
     * @return null
     *
     * @dataProvider dataEncode
     */
-    public function testEncode($mocks, $expect)
+    public function testEncode($mocks, $showFixed, $expect)
     {
         $driver = new \HUGnet\DummyBase("Device");
         $driver->resetMock($mocks);
-        $ret = Config::encode($driver);
+        $ret = Config::encode($driver, $showFixed);
         $this->assertEquals($expect, $ret);
     }
 }

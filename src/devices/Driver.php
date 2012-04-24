@@ -345,19 +345,22 @@ abstract class Driver
     /**
     * Encodes this driver as a setup string
     *
-    * @param object &$device The device object
+    * @param object &$device   The device object
+    * @param bool   $showFixed Show the fixed portion of the data
     *
     * @return array
     */
-    public function encode(&$device)
+    public function encode(&$device, $showFixed = true)
     {
         $string  = "";
         $string .= sprintf("%02X", ($device->get("TimeConstant") & 0xFF));
-        $sensors = $this->get("physicalSensors");
-        for ($i = 0; $i < $sensors; $i++) {
-            $string .= sprintf(
-                "%02X", ($device->sensor($i)->get("id") & 0xFF)
-            );
+        if ($showFixed) {
+            $sensors = $this->get("physicalSensors");
+            for ($i = 0; $i < $sensors; $i++) {
+                $string .= sprintf(
+                    "%02X", ($device->sensor($i)->get("id") & 0xFF)
+                );
+            }
         }
         return $string;
     }
