@@ -106,6 +106,8 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "t" => false,
                     "n" => true,
                 ),
+                array(
+                ),
                 null,
                 array(
                     "quiet" => true,
@@ -128,6 +130,9 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "loose" => array("123456"),
                     "i" => "000ABC",
                     "n" => true,
+                    "test" => false,
+                ),
+                array(
                 ),
                 null,
                 array(
@@ -152,6 +157,8 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "q" => true,
                     "t"  => true,
                 ),
+                array(
+                ),
                 null,
                 array(
                     "quiet" => true,
@@ -170,6 +177,8 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "f" => TEST_CONFIG_BASE."files/config.ini",
+                ),
+                array(
                 ),
                 null,
                 array(
@@ -213,6 +222,8 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                 ),
+                array(
+                ),
                 TEST_CONFIG_BASE."files/config.ini",
                 array(
                     "hugnet_database" => "MyDatabase",
@@ -247,6 +258,37 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                 ),
                 "Found config at ./config.ini",
             ),
+            array(  // #5 // Simple example
+                array(
+                ),
+                0,
+                array(
+                    "i" => array("args" => true),
+                ),
+                array(
+                    "i" => "000ABC",
+                    "v" => 3,
+                    "q" => true,
+                    "d" => false,
+                    "t" => false,
+                    "n" => true,
+                ),
+                array(
+                    "i" => "000ABC",
+                    "v" => 3,
+                    "q" => true,
+                    "n" => true,
+                ),
+                null,
+                array(
+                    "quiet" => true,
+                    "verbose" => 3,
+                    "debug" => false,
+                    "test" => false,
+                    "file" => '',
+                ),
+                "",
+            ),
         );
     }
     /**
@@ -255,6 +297,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
     * @param array  $argv      The array of arguments (first should be name)
     * @param int    $argc      The number of arguments
     * @param array  $config    The config array to feed it
+    * @param array  $set       Values to set
     * @param array  $arguments The arguments we expect to be set
     * @param string $file      The file to copy to this directory.  Null for no file
     * @param array  $expect    The config array we are expecting
@@ -265,13 +308,16 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
     * @dataProvider dataArgs()
     */
     public function testArgs(
-        $argv, $argc, $config, $arguments, $file, $expect, $output
+        $argv, $argc, $config, $set, $arguments, $file, $expect, $output
     ) {
         if (!is_null($file)) {
             copy($file, "./".basename($file));
             $this->_files[] = "./".basename($file);
         }
         $args = &Args::factory($argv, $argc, $config);
+        foreach ((array)$set as $name => $value) {
+            $args->set($name, $value);
+        }
         foreach ($arguments as $key => $value) {
             $this->assertSame($value, $args->$key, "Argument $key wrong");
         }

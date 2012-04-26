@@ -63,17 +63,17 @@ namespace HUGnet\ui;
 class Args
 {
     /** This is our network */
-    private $_arguments = array();
+    protected $arguments = array();
     /** This is the argument array */
-    private $_argv = array();
+    protected $argv = array();
     /** This the number of arguments */
-    private $_argc = 0;
+    protected $argc = 0;
     /** This is our name */
-    private $_name = "";
+    protected $name = "";
     /** These are pretty standard config changes */
-    private $_config = array();
+    protected $config = array();
     /** These are pretty standard config changes */
-    private $_defaultConfig = array(
+    protected $defaultConfig = array(
         "q" => array("name" => "quiet", "type" => "bool", "default" => false),
         "v" => array("name" => "verbose", "type" => "int", "default" => 0),
         "d" => array("name" => "debug", "type" => "bool", "default" => false),
@@ -82,7 +82,7 @@ class Args
         "n" => array("type" => "bool"),
     );
     /** These are the locations we are going to try to find a config, in order */
-    private $_configLocations = array(
+    protected $configLocations = array(
         "./config.ini", "/etc/hugnet/config.ini"
     );
 
@@ -93,13 +93,13 @@ class Args
     * @param int   $count  The argument count
     * @param array $config The configuration of command line args
     */
-    private function __construct($args, $count, $config)
+    protected function __construct($args, $count, $config)
     {
-        $this->_argv = $args;
-        $this->_argc = $count;
-        $this->_config = array_merge($this->_defaultConfig, $config);
+        $this->argv = $args;
+        $this->argc = $count;
+        $this->config = array_merge($this->defaultConfig, $config);
         $this->_defaults();
-        $this->_interpret();
+        $this->interpret();
     }
     /**
     * Creates the object
@@ -132,7 +132,31 @@ class Args
     */
     public function __get($name)
     {
-        return $this->_value($name);
+        if (isset($this->arguments[$name])) {
+            return $this->_value($name);
+        }
+        foreach ($this->config as $arg => $stuff) {
+            if ($stuff["name"] === $name) {
+                return $this->_value($arg);
+            }
+        }
+        return null;
+    }
+    /**
+    * Adds an INI file location to the check path.
+    *
+    * @param string $name  The parameter to set
+    * @param mixed  $value The value to set it to
+    *
+    * @return Bool Whether or not it was set
+    */
+    public function set($name, $value)
+    {
+        if (isset($this->config[$name])) {
+            $this->arguments[$name] = $value;
+            return true;
+        }
+        return false;
     }
     /**
     * Creates the object
@@ -144,19 +168,19 @@ class Args
     private function _value($name)
     {
         $return = null;
-        if (isset($this->_arguments[$name])) {
-            switch ($this->_config[$name]["type"]) {
+        if (isset($this->arguments[$name])) {
+            switch ($this->config[$name]["type"]) {
             case "int":
-                $return = (int)$this->_arguments[$name];
+                $return = (int)$this->arguments[$name];
                 break;
             case "string":
-                $return = (string)$this->_arguments[$name];
+                $return = (string)$this->arguments[$name];
                 break;
             case "bool":
-                $return = (bool)$this->_arguments[$name];
+                $return = (bool)$this->arguments[$name];
                 break;
             default:
-                $return = $this->_arguments[$name];
+                $return = $this->arguments[$name];
                 break;
             }
         }
@@ -169,14 +193,14 @@ class Args
     */
     public function config()
     {
-        $return = array();
         if (file_exists($this->f)) {
             \HUGnet\VPrint::out("Using config at ".$this->f);
             $return = parse_ini_file($this->f, true);
         } else if (!$this->n) {
             $return = $this->_findConfig();
         }
-        foreach ($this->_config as $key => $conf) {
+        $return = array_merge((array)$config, (array)$return);
+        foreach ($this->config as $key => $conf) {
             if (isset($conf["name"])) {
                 $return[$conf["name"]] = $this->_value($key);
             }
@@ -190,10 +214,10 @@ class Args
     */
     private function _findConfig()
     {
-        foreach ($this->_configLocations as $file) {
+        foreach ($this->configLocations as $file) {
             if (file_exists($file)) {
                 \HUGnet\VPrint::out("Found config at $file");
-                $this->_arguments["f"] = $file;
+                $this->arguments["f"] = $file;
                 return parse_ini_file($file, true);
             }
         }
@@ -206,13 +230,13 @@ class Args
     */
     private function _defaults()
     {
-        foreach ($this->_config as $key => $conf) {
+        foreach ($this->config as $key => $conf) {
             if (isset($conf["default"])) {
                 $val = $conf["default"];
                 if (is_bool($val)) {
                     $val = (int)$val;
                 }
-                $this->_arguments[$key] = $val;
+                $this->arguments[$key] = $val;
             }
         }
 
@@ -222,19 +246,19 @@ class Args
     *
     * @return null
     */
-    private function _interpret()
+    protected function interpret()
     {
-        $this->_name = trim($this->_argv[0]);
-        for ($i = 1; $i < $this->_argc; $i++) {
-            $arg = $this->_fixArg($this->_argv[$i]);
-            if (isset($this->_config[$arg]["args"])
-                && (substr($this->_argv[$i+1], 0, 1) != "-")
-                && (strlen($this->_argv[$i+1]) > 0)
+        $this->name = trim($this->argv[0]);
+        for ($i = 1; $i < $this->argc; $i++) {
+            $arg = $this->_fixArg($this->argv[$i]);
+            if (isset($this->config[$arg]["args"])
+                && (substr($this->argv[$i+1], 0, 1) != "-")
+                && (strlen($this->argv[$i+1]) > 0)
             ) {
-                $this->_arguments[$arg] = $this->_argv[$i+1];
+                $this->arguments[$arg] = $this->argv[$i+1];
                 $i++;
             } else if (strlen($arg) > 0) {
-                $this->_arguments[$arg]++;
+                $this->arguments[$arg]++;
             }
         }
     }
@@ -251,11 +275,11 @@ class Args
         if (substr($arg, 0, 1) == "-") {
             $args = str_split(substr($arg, 1), 1);
             for ($i = 0; $i < (count($args) - 1); $i++) {
-                $this->_arguments[$args[$i]]++;
+                $this->arguments[$args[$i]]++;
             }
             $ret = $args[$i];
         } else {
-            $this->_arguments["loose"][] = $arg;
+            $this->arguments["loose"][] = $arg;
         }
         return $ret;
     }

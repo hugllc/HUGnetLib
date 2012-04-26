@@ -109,7 +109,7 @@ class HTML
     protected function setConfig(&$config)
     {
         if (is_object($config)) {
-            if (is_a($config, "HUGnet\ui\HTMLArgs")) {
+            if (is_a($config, "HUGnet\ui\Args")) {
                 $this->_config = $config->config();
                 $this->_args = $config;
             } else {
