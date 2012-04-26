@@ -210,7 +210,14 @@ class Network
         if (method_exists($this->_driver, "setSensorConfig")) {
             $command = $this->_driver->setSensorConfig($sensor, $sensorConfig);
         }
-        return $this->_sendPkt($command, $callback, $config);
+        $reply = $this->_sendPkt($command, $callback, $config);
+        $data = substr($command[0]["Data"], 2);
+        if (is_object($reply) && is_string($reply->Reply())) {
+            if (strtoupper($reply->reply()) === strtoupper($data)) {
+                return true;
+            }
+        }
+        return false;
     }
     /**
     * Gets the application CRC for the device in question.

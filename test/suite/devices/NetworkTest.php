@@ -512,7 +512,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "send" => \HUGnet\network\Packet::factory(
                             array(
                                 "From" => 21,
-                                "Reply" => "123456",
+                                "Reply" => "09080706",
                             )
                         ),
                     ),
@@ -544,12 +544,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-                \HUGnet\network\Packet::factory(
-                    array(
-                        "From" => 21,
-                        "Reply" => "123456",
-                    )
-                ),
+                true,
             ),
             array(
                 array(
@@ -606,7 +601,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "send" => \HUGnet\network\Packet::factory(
                             array(
                                 "From" => 21,
-                                "Reply" => "123456",
+                                "Reply" => "02030405",
                             )
                         ),
                     ),
@@ -649,12 +644,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "setSensorConfig" => array(array(3, "09080706")),
                     ),
                 ),
-                \HUGnet\network\Packet::factory(
-                    array(
-                        "From" => 21,
-                        "Reply" => "123456",
-                    )
-                ),
+                true,
             ),
         );
     }

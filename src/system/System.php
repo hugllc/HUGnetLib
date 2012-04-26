@@ -113,11 +113,10 @@ class System
     public function config($config = array())
     {
         $this->_config = array_merge($this->_configDefault, (array)$config);
-
         // This is so that the rest of the system works when we call it through
         // This class.  This should be removed when ConfigContainer is retired.
-        //include_once dirname(__FILE__).'/../containers/ConfigContainer.php';
-        //\ConfigContainer::singleton()->forceConfig($this->_config);
+        include_once dirname(__FILE__).'/../containers/ConfigContainer.php';
+        \ConfigContainer::singleton()->forceConfig($this->_config);
 
         // Return the configuration
         return $this->_config;
