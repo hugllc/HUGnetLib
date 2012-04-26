@@ -189,6 +189,8 @@ class Args
     /**
     * Creates the config to go with the command line
     *
+    * @param array $config The configuration array to add in.
+    *
     * @return Configuration array
     */
     public function config($config = array())
