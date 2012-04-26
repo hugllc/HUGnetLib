@@ -191,7 +191,7 @@ class Args
     *
     * @return Configuration array
     */
-    public function config()
+    public function config($config = array())
     {
         if (file_exists($this->f)) {
             \HUGnet\VPrint::out("Using config at ".$this->f);
