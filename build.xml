@@ -118,6 +118,8 @@
 
     <target name="build" depends="clean,setup,pdepend,phpmd,phpcpd,phpcs,docblox,phploc,phpunit,phpcb,cleanafter"/>
     <target name="deb" depends="deb.build"/>
+    <target name="post" depends="deb.post"/>
+    <target name="testpost" depends="deb.testpost"/>
     <target name="package" depends="package.build,deb.build"/>
     <target name="distclean" depends="clean,deb.clean,package.clean">
         <delete dir="${basedir}/build/rel"/>

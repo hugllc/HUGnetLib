@@ -136,7 +136,7 @@ class Args
             return $this->_value($name);
         }
         foreach ($this->config as $arg => $stuff) {
-            if ($stuff["name"] === $name) {
+            if (isset($stuff["name"]) && ($stuff["name"] === $name)) {
                 return $this->_value($arg);
             }
         }

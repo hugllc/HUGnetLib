@@ -7,12 +7,15 @@
     <property name="deb.staging" value="${basedir}/build/deb"/>
     <property name="deb.release" value="" />
     <property name="deb.versionfile" value="${basedir}/src/VERSION.TXT" />
+
     <exec executable="grep" failonerror="true"
         outputproperty="deb.version" errorproperty="deb.versionerror">
-        <arg line='-o -e "[0-9]\{1,\}\.[0-9]\{1,\}\.[0-9]\{1,\}" ${deb.versionfile}'
+        <arg line='-o -e "[0-9]\{1,\}\.[0-9]\{1,\}\.[0-9]\{1,\}[-alpha0-9]\{0,\}" ${deb.versionfile}'
             />
     </exec>
     <property name="deb.builddir" value="${basedir}/rel" />
+    <property name="deb.outputfile" value="${deb.builddir}/HUGnetLib_${deb.version}${deb.release}_all.deb" />
+    <property name="deb.postloc" value="hugnet.int.hugllc.com:/home/reprepro/incoming/" />
 
     <target name="clean" description="Clean up and create artifact directories">
         <delete dir="${deb.staging}" failonerror="false"/>
@@ -43,12 +46,30 @@
         <mkdir dir="${deb.builddir}"/>
         <exec executable="dpkg" failonerror="true">
             <arg line="-b ${deb.staging}
-                       ${deb.builddir}/HUGnetLib_${deb.version}${deb.release}_all.deb"/>
+                       ${deb.outputfile}"/>
+        </exec>
+    </target>
+    <target name="sign" description="sign the deb">
+        <exec executable="dpkg-sig" failonerror="true" dir="${deb.builddir}">
+            <arg line="-s builder
+                       ${deb.outputfile}"/>
+        </exec>
+    </target>
+    <target name="post" description="post the deb" depends="build">
+        <exec executable="rsync" failonerror="true" dir="${deb.builddir}">
+            <arg line="-av ${deb.outputfile}
+                        ${deb.postloc}main/"/>
+        </exec>
+    </target>
+    <target name="testpost" description="post the deb" depends="build">
+        <exec executable="rsync" failonerror="true" dir="${deb.builddir}">
+            <arg line="-av ${deb.outputfile}
+                        ${deb.postloc}testing/"/>
         </exec>
     </target>
     <target name="postclean" description="build the deb">
         <delete dir="${deb.staging}"/>
     </target>
-    <target name="build" depends="clean,setup,deb,postclean"/>
+    <target name="build" depends="clean,setup,deb,sign,postclean"/>
 
 </project>
