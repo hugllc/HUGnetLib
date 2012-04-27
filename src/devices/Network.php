@@ -61,7 +61,7 @@ class Network
     /**
     * This is the system object
     */
-    private $_network = null;
+    private $_system = null;
     /**
     * This is the driver object
     */
@@ -74,18 +74,18 @@ class Network
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
     *
-    * @param object &$network The network application object
-    * @param object &$device  The device device object
-    * @param object &$driver  The device driver object
+    * @param object &$system The network application object
+    * @param object &$device The device device object
+    * @param object &$driver The device driver object
     *
     * @return null
     */
-    private function __construct(&$network, &$device, &$driver)
+    private function __construct(&$system, &$device, &$driver)
     {
         \HUGnet\System::exception(
-            get_class($this)." needs to be passed a network object",
+            get_class($this)." needs to be passed a system object",
             "InvalidArgument",
-            !is_object($network)
+            !is_object($system)
         );
         \HUGnet\System::exception(
             get_class($this)." needs to be passed a driver object",
@@ -97,7 +97,7 @@ class Network
             "InvalidArgument",
             !is_object($device)
         );
-        $this->_network = &$network;
+        $this->_system = &$system;
         $this->_driver  = &$driver;
         $this->_device  = &$device;
     }
@@ -473,7 +473,7 @@ class Network
                 $pkt[$key]["To"] = $this->_device->get("id");
             }
         }
-        $ret = $this->_network->send($pkt, $callback, (array)$config);
+        $ret = $this->_system->network()->send($pkt, $callback, (array)$config);
         return $ret;
     }
     /**

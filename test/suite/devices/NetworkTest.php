@@ -44,7 +44,7 @@ require_once CODE_BASE.'system/System.php';
 /** This is a required class */
 require_once CODE_BASE.'tables/FirmwareTable.php';
 /** This is a required class */
-require_once TEST_CONFIG_BASE.'stubs/DummyNetwork.php';
+require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
 /** This is a required class */
@@ -212,13 +212,13 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     */
     public function testPoll($mocks, $driver, $callback, $config, $expect, $return)
     {
-        $net   = new \HUGnet\network\DummyNetwork("Network");
+        $system   = new \HUGnet\DummySystem();
         $device = new \HUGnet\DummyBase("Device");
-        $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $device, $driver);
+        $system->resetMock($mocks);
+        $devnet = &Network::factory($system, $device, $driver);
         $ret = $devnet->poll($callback, $config);
         $this->assertEquals($return, $ret,  "Return Wrong");
-        $ret = $net->retrieve();
+        $ret = $system->retrieve();
         $this->assertEquals($expect, $ret,  "Calls Wrong");
 
     }
@@ -342,13 +342,13 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     */
     public function testConfig($mocks, $driver, $callback, $config, $expect, $return)
     {
-        $net   = new \HUGnet\network\DummyNetwork("Network");
+        $system   = new \HUGnet\DummySystem();
         $device = new \HUGnet\DummyBase("Device");
-        $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $device, $driver);
+        $system->resetMock($mocks);
+        $devnet = &Network::factory($system, $device, $driver);
         $ret = $devnet->config($callback, $config);
         $this->assertEquals($return, $ret,  "Return Wrong");
-        $ret = $net->retrieve();
+        $ret = $system->retrieve();
         $this->assertEquals($expect, $ret,  "Calls Wrong");
 
     }
@@ -485,13 +485,13 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     public function testSensorConfig(
         $mocks, $driver, $sensor, $callback, $config, $expect, $return
     ) {
-        $net   = new \HUGnet\network\DummyNetwork("Network");
+        $system   = new \HUGnet\DummySystem();
         $device = new \HUGnet\DummyBase("Device");
-        $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $device, $driver);
+        $system->resetMock($mocks);
+        $devnet = &Network::factory($system, $device, $driver);
         $ret = $devnet->sensorConfig($sensor, $callback, $config);
         $this->assertEquals($return, $ret,  "Return Wrong");
-        $ret = $net->retrieve();
+        $ret = $system->retrieve();
         $this->assertEquals($expect, $ret,  "Calls Wrong");
 
     }
@@ -667,13 +667,13 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     public function testSetSensorConfig(
         $mocks, $driver, $sensor, $sensorConfig, $callback, $config, $expect, $return
     ) {
-        $net   = new \HUGnet\network\DummyNetwork("Network");
+        $system   = new \HUGnet\DummySystem();
         $device = new \HUGnet\DummyBase("Device");
-        $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $device, $driver);
+        $system->resetMock($mocks);
+        $devnet = &Network::factory($system, $device, $driver);
         $ret = $devnet->setSensorConfig($sensor, $sensorConfig, $callback, $config);
         $this->assertEquals($return, $ret,  "Return Wrong");
-        $ret = $net->retrieve();
+        $ret = $system->retrieve();
         $this->assertEquals($expect, $ret,  "Calls Wrong");
 
     }
@@ -804,14 +804,14 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     */
     public function testGetCRC($mocks, $config, $expect, $return)
     {
-        $net   = new \HUGnet\network\DummyNetwork("Network");
+        $system   = new \HUGnet\DummySystem();
         $device = new \HUGnet\DummyBase("Device");
         $driver = new \HUGnet\DummyBase("Driver");
-        $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $device, $driver);
+        $system->resetMock($mocks);
+        $devnet = &Network::factory($system, $device, $driver);
         $ret = $devnet->getCRC($config);
         $this->assertSame($return, $ret,  "Return Wrong");
-        $ret = $net->retrieve();
+        $ret = $system->retrieve();
         $this->assertEquals($expect, $ret,  "Calls Wrong");
 
     }
@@ -942,14 +942,14 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     */
     public function testSetCRC($mocks, $config, $expect, $return)
     {
-        $net   = new \HUGnet\network\DummyNetwork("Network");
+        $system   = new \HUGnet\DummySystem();
         $device = new \HUGnet\DummyBase("Device");
         $driver = new \HUGnet\DummyBase("Driver");
-        $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $device, $driver);
+        $system->resetMock($mocks);
+        $devnet = &Network::factory($system, $device, $driver);
         $ret = $devnet->setCRC($config);
         $this->assertSame($return, $ret,  "Return Wrong");
-        $ret = $net->retrieve();
+        $ret = $system->retrieve();
         $this->assertEquals($expect, $ret,  "Calls Wrong");
 
     }
@@ -1079,14 +1079,14 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     */
     public function testRunBootloader($mocks, $config, $expect, $return)
     {
-        $net   = new \HUGnet\network\DummyNetwork("Network");
+        $system   = new \HUGnet\DummySystem();
         $device = new \HUGnet\DummyBase("Device");
         $driver = new \HUGnet\DummyBase("Driver");
-        $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $device, $driver);
+        $system->resetMock($mocks);
+        $devnet = &Network::factory($system, $device, $driver);
         $ret = $devnet->runBootloader($config);
         $this->assertSame($return, $ret,  "Return Wrong");
-        $ret = $net->retrieve();
+        $ret = $system->retrieve();
         $this->assertEquals($expect, $ret,  "Calls Wrong");
 
     }
@@ -1216,14 +1216,14 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     */
     public function testRunApplication($mocks, $config, $expect, $return)
     {
-        $net   = new \HUGnet\network\DummyNetwork("Network");
+        $system   = new \HUGnet\DummySystem();
         $device = new \HUGnet\DummyBase("Device");
         $driver = new \HUGnet\DummyBase("Driver");
-        $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $device, $driver);
+        $system->resetMock($mocks);
+        $devnet = &Network::factory($system, $device, $driver);
         $ret = $devnet->runApplication($config);
         $this->assertSame($return, $ret,  "Return Wrong");
-        $ret = $net->retrieve();
+        $ret = $system->retrieve();
         $this->assertEquals($expect, $ret,  "Calls Wrong");
     }
     /**
@@ -1356,14 +1356,14 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     public function testWriteFlash(
         $mocks, $address, $data, $callback, $config, $expect, $return
     ) {
-        $net   = new \HUGnet\network\DummyNetwork("Network");
+        $system   = new \HUGnet\DummySystem();
         $device = new \HUGnet\DummyBase("Device");
         $driver = new \HUGnet\DummyBase("Driver");
-        $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $device, $driver);
+        $system->resetMock($mocks);
+        $devnet = &Network::factory($system, $device, $driver);
         $ret = $devnet->writeFlash($address, $data, $callback, $config);
         $this->assertEquals($return, $ret,  "Return Wrong");
-        $ret = $net->retrieve();
+        $ret = $system->retrieve();
         $this->assertEquals($expect, $ret,  "Calls Wrong");
     }
     /**
@@ -1496,14 +1496,14 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     public function testWriteE2(
         $mocks, $address, $data, $callback, $config, $expect, $return
     ) {
-        $net   = new \HUGnet\network\DummyNetwork("Network");
+        $system   = new \HUGnet\DummySystem();
         $device = new \HUGnet\DummyBase("Device");
         $driver = new \HUGnet\DummyBase("Driver");
-        $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $device, $driver);
+        $system->resetMock($mocks);
+        $devnet = &Network::factory($system, $device, $driver);
         $ret = $devnet->writeE2($address, $data, $callback, $config);
         $this->assertEquals($return, $ret,  "Return Wrong");
-        $ret = $net->retrieve();
+        $ret = $system->retrieve();
         $this->assertEquals($expect, $ret,  "Calls Wrong");
 
     }
@@ -1838,14 +1838,14 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     public function testWriteFlashBuffer(
         $mocks, $address, $data, $chunkSize, $empty, $expect, $return
     ) {
-        $net   = new \HUGnet\network\DummyNetwork("Network");
+        $system   = new \HUGnet\DummySystem();
         $device = new \HUGnet\DummyBase("Device");
         $driver = new \HUGnet\DummyBase("Driver");
-        $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $device, $driver);
+        $system->resetMock($mocks);
+        $devnet = &Network::factory($system, $device, $driver);
         $ret = $devnet->writeFlashBuffer($data, $address, $chunkSize, $empty);
         $this->assertEquals($return, $ret,  "Return Wrong");
-        $ret = $net->retrieve();
+        $ret = $system->retrieve();
         $this->assertEquals($expect, $ret,  "Calls Wrong");
     }
 
@@ -2180,14 +2180,14 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     public function testWriteE2Buffer(
         $mocks, $address, $data, $chunkSize, $empty, $expect, $return
     ) {
-        $net   = new \HUGnet\network\DummyNetwork("Network");
+        $system   = new \HUGnet\DummySystem();
         $device = new \HUGnet\DummyBase("Device");
         $driver = new \HUGnet\DummyBase("Driver");
-        $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $device, $driver);
+        $system->resetMock($mocks);
+        $devnet = &Network::factory($system, $device, $driver);
         $ret = $devnet->writeE2Buffer($data, $address, $chunkSize, $empty);
         $this->assertEquals($return, $ret,  "Return Wrong");
-        $ret = $net->retrieve();
+        $ret = $system->retrieve();
         $this->assertEquals($expect, $ret,  "Calls Wrong");
     }
 
@@ -3677,14 +3677,14 @@ S9030000FC",
     */
     public function testLoadFirmware($mocks, $config, $loadData, $expect, $return)
     {
-        $net   = new \HUGnet\network\DummyNetwork("Network");
+        $system   = new \HUGnet\DummySystem();
         $device = new \HUGnet\DummyBase("Device");
         $driver = new \HUGnet\DummyBase("Driver");
-        $net->resetMock($mocks);
-        $devnet = &Network::factory($net, $device, $driver);
+        $system->resetMock($mocks);
+        $devnet = &Network::factory($system, $device, $driver);
         $ret = $devnet->loadFirmware($config, $loadData);
         $this->assertSame($return, $ret,  "Return Wrong");
-        $ret = $net->retrieve();
+        $ret = $system->retrieve();
         $this->assertEquals($expect, $ret,  "Calls Wrong");
 
     }
