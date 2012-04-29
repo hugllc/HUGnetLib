@@ -164,8 +164,20 @@ abstract class SystemTableBase
         if (is_int($data)) {
             $this->table()->set($this->table()->sqlId, $data);
             $ret = $this->table()->getRow($data);
-        } else if (is_array($data) || is_string($data)) {
+        } else if (is_array($data)) {
+            $where = "";
+            $whereData = array();
+            $sep = "";
+            foreach ($data as $key => $value) {
+                $where .= "$sep`$key` = ?";
+                $sep = " AND ";
+                $whereData[] = $value;
+            }
+            $ret = $this->table()->selectOneInto($where, $whereData);
+        }
+        if (!$ret && (is_array($data) || is_string($data))) {
             $this->table()->fromAny($data);
+            $this->fixTable();
             $ret = true;
         }
         return (bool)$ret;

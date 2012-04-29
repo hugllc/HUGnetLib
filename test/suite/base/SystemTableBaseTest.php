@@ -150,6 +150,12 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                             ),
                         ),
                         "clearData" => array(array()),
+                        "selectOneInto" => array(
+                            array(
+                                "`id` = ? AND `name` = ? AND `value` = ?",
+                                array(5, 3, 1),
+                            ),
+                        ),
                     ),
                 ),
             ),
@@ -223,6 +229,12 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                             ),
                         ),
                         "clearData" => array(array(), array()),
+                        "selectOneInto" => array(
+                            array(
+                                "`id` = ? AND `name` = ? AND `value` = ?",
+                                array(5, 3, 1),
+                            ),
+                        ),
                     ),
                 ),
                 true,

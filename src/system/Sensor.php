@@ -169,32 +169,6 @@ class Sensor extends SystemTableBase
         return json_encode($this->toArray(true));
     }
     /**
-    * Loads the data into the table class
-    *
-    * @param mixed $data (int)The id of the record,
-    *                    (array) or (string) data info array
-    *
-    * @return null
-    */
-    public function load($data)
-    {
-        $ret = false;
-        $this->table()->clearData();
-        if (is_array($data) && (count($data) == 2)
-            && isset($data["dev"]) && isset($data["sensor"])
-        ) {
-            $ret = $this->table()->selectOneInto(
-                "dev = ? AND sensor = ?",
-                array($data["dev"], $data["sensor"])
-            );
-        } else if (is_array($data) || is_string($data)) {
-            $this->table()->fromAny($data);
-            $this->fixTable();
-            $ret = true;
-        }
-        return (bool)$ret;
-    }
-    /**
     * This creates the driver
     *
     * @param string $driver The driver to use.  Leave blank for automatic.

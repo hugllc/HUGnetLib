@@ -123,6 +123,12 @@ class GatewayTest extends \PHPUnit_Framework_TestCase
                             ),
                         ),
                         "clearData" => array(array()),
+                        "selectOneInto" => array(
+                            array(
+                                "`id` = ? AND `name` = ? AND `value` = ?",
+                                array(5, 3, 1),
+                            ),
+                        ),
                     ),
                 ),
             ),

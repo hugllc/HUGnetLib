@@ -362,6 +362,12 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             array("max", 150),
                         ),
                         "clearData" => array(array(), array()),
+                        "selectOneInto" => array(
+                            array(
+                                "`id` = ? AND `name` = ? AND `value` = ?",
+                                array(5, 3, 1),
+                            ),
+                        ),
                     ),
                 ),
                 true,
@@ -378,7 +384,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                     "Table" => array(
                         "selectOneInto" => array(
                             array(
-                                "dev = ? AND sensor = ?",
+                                "`dev` = ? AND `sensor` = ?",
                                 array(2, 0),
                             ),
                         ),
@@ -391,22 +397,62 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Table" => array(
                         "selectOneInto" => false,
+                        "get" => array(
+                            "id" => 0xFA,
+                            "type" => "raw",
+                            "sensor" => 5,
+                        ),
                     ),
                 ),
                 new DummyTable("Table"),
                 array("dev" => 2, "sensor" => 0),
                 array(
                     "Table" => array(
+                        "fromAny" => array(
+                            array(
+                                array(
+                                    "dev" => 2,
+                                    "sensor" => 0,
+                                ),
+                            ),
+                        ),
+                        'get' => array(
+                            array("id"),
+                            array("type"),
+                            array("id"),
+                            array("type"),
+                            array("sensor"),
+                            array("id"),
+                            array("type"),
+                            array("sensor"),
+                            array("units"),
+                            array("sensor"),
+                            array("extra"),
+                            array("sensor"),
+                            array("min"),
+                            array("max"),
+                            array("sensor"),
+                            array("sensor"),
+                        ),
+                        'set' => array(
+                            array("driver", "SDEFAULT"),
+                            array("driver", "SDEFAULT"),
+                            array("driver", "SDEFAULT"),
+                            array("units", "unknown"),
+                            array("extra", array()),
+                            array("min", 0),
+                            array("max", 150),
+                        ),
                         "selectOneInto" => array(
                             array(
-                                "dev = ? AND sensor = ?",
+                                "`dev` = ? AND `sensor` = ?",
                                 array(2, 0),
                             ),
                         ),
                         "clearData" => array(array(), array()),
                     ),
                 ),
-                false,
+                true,
             ),
         );
     }

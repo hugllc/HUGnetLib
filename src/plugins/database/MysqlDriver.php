@@ -149,11 +149,15 @@ class MysqlDriver extends HUGnetDBDriver
         $return = true;
         $error = "";
         $this->lock();
+        $this->verbose(10);
         $ret = $this->query("FLUSH TABLES ".$this->table());
         $ret = $this->query("CHECK TABLE ".$this->table());
         if (($ret[count($ret)-1]["Msg_text"] != "OK") || $force) {
             $ret = $this->query("REPAIR TABLE ".$this->table());
-            if ($ret[count($ret)-1]["Msg_text"] != "OK") {
+            $errText = $ret[count($ret)-1]["Msg_text"];
+            if (($errText != "OK")
+                && (strpos(strtolower($errText), "doesn't support repair") === false)
+            ) {
                 // @codeCoverageIgnoreStart
                 // It is impossible to make this run, since it only runs when the
                 // table is corrupt and not fixable
