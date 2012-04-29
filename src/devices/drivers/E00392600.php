@@ -63,6 +63,9 @@ class E00392600 extends \HUGnet\devices\Driver
     * put into all derivative classes, even if it is empty.
     */
     protected $params = array(
+        "physicalSensors" => 0,
+        "virtualSensors" => 0,
+        "totalSensors" => 0,
     );
     /**
     * This function creates the system.
