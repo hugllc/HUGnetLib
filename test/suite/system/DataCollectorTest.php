@@ -163,7 +163,9 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
         $table->resetMock();
         $obj = DataCollector::factory($config, $gateway, $class);
         // Make sure we have the right object
-        $this->assertTrue((get_class($obj) === "HUGnet\DataCollector"), "Class wrong");
+        $this->assertTrue(
+            (get_class($obj) === "HUGnet\DataCollector"), "Class wrong"
+        );
         if (is_object($table)) {
             $this->assertEquals($expectTable, $table->retrieve(), "Data Wrong");
         }
