@@ -40,6 +40,8 @@ namespace HUGnet;
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
 require_once CODE_BASE.'tables/ErrorTable.php';
+/** This is the dummy table container */
+require_once TEST_CONFIG_BASE.'stubs/DummyNetwork.php';
 
 /**
  * Test class for HUGnetDB.
@@ -143,6 +145,220 @@ class SystemTest extends \PHPUnit_Framework_TestCase
             $this->setExpectedException($expect, $msg);
         }
         System::exception($msg, $type, $condition);
+    }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataGet()
+    {
+        return array(
+            array(
+                array(
+                    "hello" => "there",
+                    "asdf" => array(1,2),
+                ),
+                "hello",
+                "there",
+            ),
+            array(
+                array(
+                    "hello" => "there",
+                    "asdf" => array(1, 2),
+                ),
+                "asdf",
+                array(1, 2),
+            ),
+            array(
+                array(
+                    "hello" => "there",
+                    "asdf" => array(1,2),
+                ),
+                "badIdea",
+                null,
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config The configuration to use
+    * @param string $field  The field to get
+    * @param mixed  $expect The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataGet
+    */
+    public function testGet(
+        $config, $field, $expect
+    ) {
+        $obj = \HUGnet\System::factory($config);
+        $this->assertSame($expect, $obj->get($field));
+        unset($obj);
+    }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataConfig()
+    {
+        $default = array(
+            "verbose" => 0,
+        );
+        return array(
+            array(
+                array(
+                    "hello" => "there",
+                    "asdf" => array(1,2),
+                ),
+                array_merge(
+                    $default,
+                    array(
+                        "hello" => "there",
+                        "asdf" => array(1,2),
+                    )
+                ),
+            ),
+            array(
+                array(
+                ),
+                $default,
+            ),
+            array(
+                "ThisIsNotAnArray",
+                $default,
+            ),
+            array(
+                null,
+                $default,
+            ),
+            array(
+                new \stdClass(),
+                $default,
+            ),
+            array(
+                3.141592654,
+                $default,
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array $config The configuration to use
+    * @param mixed $expect The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataConfig
+    */
+    public function testConfig(
+        $config, $expect
+    ) {
+        $obj = \HUGnet\System::factory();
+        $this->assertEquals($expect, $obj->config($config));
+        unset($obj);
+    }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataNetwork()
+    {
+        return array(
+            array(
+                array(
+                    "hello" => "there",
+                    "asdf" => array(1,2),
+                ),
+                null,
+                "HUGnet\\network\Application"
+            ),
+            array(
+                array(
+                    "hello" => "there",
+                    "asdf" => array(1,2),
+                ),
+                new \HUGnet\network\DummyNetwork("Application"),
+                "HUGnet\\network\DummyNetwork"
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array $config      The configuration to use
+    * @param mixed $application The network application to use
+    * @param mixed $expect      The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataNetwork
+    */
+    public function testNetwork(
+        $config, $application, $expect
+    ) {
+        $obj = \HUGnet\System::factory($config);
+        $net = $obj->network($application);
+        $this->assertSame($expect, get_class($net), "wrong class");
+        $this->assertSame($net, $obj->network(), "Subsequent returns not identical");
+        unset($obj);
+    }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataDevice()
+    {
+        return array(
+            array(
+                array(
+                    "hello" => "there",
+                    "asdf"  => array(1,2),
+                ),
+                array(
+                    "id"        => 5,
+                    "DeviceID"  => "000005",
+                    "HWPartNum" => "0039-28-01-A",
+                    "FWPartNum" => "0039-38-01-C",
+                    "FWVersion" => "1.2.3",
+                ),
+                array(
+                    "id"        => 5,
+                    "DeviceID"  => "000005",
+                    "HWPartNum" => "0039-28-01-A",
+                    "FWPartNum" => "0039-38-01-C",
+                    "FWVersion" => "1.2.3",
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array $config The configuration to use
+    * @param mixed $device The network application to use
+    * @param mixed $expect The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataDevice
+    */
+    public function testDevice(
+        $config, $device, $expect
+    ) {
+        $obj = \HUGnet\System::factory($config);
+        $dev = $obj->device($device);
+        $this->assertSame("HUGnet\Device", get_class($dev), "wrong class");
+        foreach ($expect as $key => $value) {
+            $this->assertEquals($value, $dev->get($key), "$key not $value");
+        }
+        unset($obj);
     }
 
 }

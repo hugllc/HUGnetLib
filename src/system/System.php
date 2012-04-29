@@ -88,7 +88,7 @@ class System
     */
     private function __construct($config = array())
     {
-        $this->config($config);
+        $this->config((array)$config);
     }
     /**
     * This function creates the system.
@@ -110,14 +110,15 @@ class System
     * @return array The configuration
     * @todo remove ConfigContainer reference when ConfigContainer goes away
     */
-    public function config($config = array())
+    public function config($config = null)
     {
-        $this->_config = array_merge($this->_configDefault, (array)$config);
-        // This is so that the rest of the system works when we call it through
-        // This class.  This should be removed when ConfigContainer is retired.
-        include_once dirname(__FILE__).'/../containers/ConfigContainer.php';
-        \ConfigContainer::singleton()->forceConfig($this->_config);
-
+        if (is_array($config)) {
+            $this->_config = array_merge($this->_configDefault, (array)$config);
+            // This is so that the rest of the system works when we call it through
+            // This class.  This should be removed when ConfigContainer is retired.
+            include_once dirname(__FILE__).'/../containers/ConfigContainer.php';
+            \ConfigContainer::singleton()->forceConfig($this->_config);
+        }
         // Return the configuration
         return $this->_config;
     }
@@ -145,12 +146,12 @@ class System
                 include_once $net."Application.php";
                 include_once $net."Transport.php";
                 include_once $net."Network.php";
-                $network = &network\Network::factory($this->_config["network"]);
+                $network = &network\Network::factory($this->get("network"));
                 $transport = &network\Transport::factory(
-                    $network, $this->_config["network"]
+                    $network, $this->get("network")
                 );
                 $this->_network = &network\Application::factory(
-                    $transport, $this, $this->_config["network"]
+                    $transport, $this, $this->get("network")
                 );
             }
         }
@@ -168,6 +169,20 @@ class System
         if (is_object($this->_network)) {
             $this->_network->main();
         }
+    }
+    /**
+    * Gets a value
+    *
+    * @param string $field the field to get
+    *
+    * @return null
+    */
+    public function get($field)
+    {
+        if (isset($this->_config[$field])) {
+            return $this->_config[$field];
+        }
+        return null;
     }
     /**
     * This returns a device object.
