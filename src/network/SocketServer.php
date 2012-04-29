@@ -86,6 +86,7 @@ final class SocketServer
         "location" => null,
         "port"     => null,
         "quiet"    => false,
+        "perms"    => null,
     );
     /**
     * Sets our configuration
@@ -182,6 +183,11 @@ final class SocketServer
         );
         @socket_listen($this->_socket);
         @socket_set_nonblock($this->_socket);
+        if ($this->_config["type"] === AF_UNIX) {
+            if (!is_null($this->_config["perms"])) {
+                chmod($this->_config["location"], $this->_config["perms"]);
+            }
+        }
 
     }
     /**

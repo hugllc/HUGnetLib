@@ -166,6 +166,7 @@ class SocketIntegrationTest extends \PHPUnit_Framework_TestCase
                     "type" => AF_UNIX,
                     "location" => $file,
                     "bus" => true,
+                    "perms" => 0644,
                 ),
                 array(
                     "default" => array(
