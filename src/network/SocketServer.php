@@ -106,6 +106,9 @@ final class SocketServer
             // Remove the old one...
             unlink($this->_config["location"]);
         }
+        if (is_string($this->_config["perms"])) {
+            $this->_config["perms"] = octdec($this->_config["perms"]);
+        }
         $this->_setup();
         \HUGnet\System::exception(
             "Failed to create socket with\n ".print_r($config, true),
@@ -183,9 +186,15 @@ final class SocketServer
         );
         @socket_listen($this->_socket);
         @socket_set_nonblock($this->_socket);
-        if ($this->_config["type"] === AF_UNIX) {
+
+        if (($this->_config["type"] == AF_UNIX)
+            && $bound && file_exists($this->_config["location"])
+        ) {
             if (!is_null($this->_config["perms"])) {
-                chmod($this->_config["location"], $this->_config["perms"]);
+                @chmod(
+                    $this->_config["location"],
+                    $this->_config["perms"]
+                );
             }
         }
 
