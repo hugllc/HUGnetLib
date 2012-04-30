@@ -70,6 +70,7 @@ class E00393700 extends \HUGnet\devices\Driver
         "averageTable" => "E00393700AverageTable",
         "loadable" => true,
         "outputSize" => 4,
+        "packetTimeout" => 2,
     );
     /**
     * This function creates the system.

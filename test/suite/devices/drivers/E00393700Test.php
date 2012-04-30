@@ -99,7 +99,7 @@ class E00393700Test extends DriverTestBase
             ),
             array(
                 "packetTimeout",
-                5,
+                2,
             ),
             array(
                 "virtualSensors",
