@@ -512,6 +512,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                     'bootloader' => false,
                     'outputSize' => 3,
                     'testParam' => '12345',
+                    'ConfigInterval' => 43200,
                 ),
             ),
             array(
@@ -527,6 +528,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                     'bootloader' => false,
                     'outputSize' => 3,
                     'testParam' => '54321',
+                    'ConfigInterval' => 43200,
                 ),
             ),
         );

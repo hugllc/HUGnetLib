@@ -84,6 +84,10 @@ class Config
             return false;
         }
         $did = hexdec(substr($string, 0, 10));
+        $cid = $device->get("id");
+        if (($cid !== 0) && ($did !== $cid)) {
+            return false;
+        }
         $device->set("id", $did);
         $device->set("DeviceID", $did);
         $device->set("HWPartNum", substr($string, self::HW_START, 10));
@@ -93,7 +97,7 @@ class Config
             "DeviceGroup", trim(strtoupper(substr($string, self::GROUP, 6)))
         );
         $device->set("RawSetup", $string);
-        return substr($string, self::CONFIGEND);
+        return (string)substr($string, self::CONFIGEND);
     }
     /**
     * Checks to see if the string is valid

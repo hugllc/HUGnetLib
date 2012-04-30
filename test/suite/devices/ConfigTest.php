@@ -93,107 +93,117 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array( // #0
-                array(),
-                "00000000E80039CF01410039246743000302FFFFFF50",
                 array(
                     "Device" => array(
-                        "set" => array(
-                            array("id", 0xE8),
-                            array("DeviceID", 0xE8),
-                            array("HWPartNum", "0039CF0141"),
-                            array("FWPartNum", "0039246743"),
-                            array("FWVersion", "000302"),
-                            array("DeviceGroup", "FFFFFF"),
-                            array(
-                                "RawSetup",
-                                "00000000E80039CF01410039246743000302FFFFFF50"
-                            ),
+                        "get" => array(
+                            "id" => 0xE8,
                         ),
+                    ),
+                ),
+                "00000000E80039CF01410039246743000302FFFFFF50",
+                array(
+                    array("id", 0xE8),
+                    array("DeviceID", 0xE8),
+                    array("HWPartNum", "0039CF0141"),
+                    array("FWPartNum", "0039246743"),
+                    array("FWVersion", "000302"),
+                    array("DeviceGroup", "FFFFFF"),
+                    array(
+                        "RawSetup",
+                        "00000000E80039CF01410039246743000302FFFFFF50"
                     ),
                 ),
                 "",
             ),
             array( // #1
-                array(),
-                "00000000E80039CF01410039246743000102FFFFFF50",
                 array(
                     "Device" => array(
-                        "set" => array(
-                            array("id", 0xE8),
-                            array("DeviceID", 0xE8),
-                            array("HWPartNum", "0039CF0141"),
-                            array("FWPartNum", "0039246743"),
-                            array("FWVersion", "000102"),
-                            array("DeviceGroup", "FFFFFF"),
-                            array(
-                                "RawSetup",
-                                "00000000E80039CF01410039246743000102FFFFFF50"
-                            ),
+                        "get" => array(
+                            "id" => 0xE8,
                         ),
+                    ),
+                ),
+                "00000000E80039CF01410039246743000102FFFFFF50",
+                array(
+                    array("id", 0xE8),
+                    array("DeviceID", 0xE8),
+                    array("HWPartNum", "0039CF0141"),
+                    array("FWPartNum", "0039246743"),
+                    array("FWVersion", "000102"),
+                    array("DeviceGroup", "FFFFFF"),
+                    array(
+                        "RawSetup",
+                        "00000000E80039CF01410039246743000102FFFFFF50"
                     ),
                 ),
                 "",
             ),
             array( // #2
-                array(),
-                "00000000E80039CE01410039246743000005FFFFFF1E",
                 array(
                     "Device" => array(
-                        "set" => array(
-                            array("id", 0xE8),
-                            array("DeviceID", 0xE8),
-                            array("HWPartNum", "0039CE0141"),
-                            array("FWPartNum", "0039246743"),
-                            array("FWVersion", "000005"),
-                            array("DeviceGroup", "FFFFFF"),
-                            array(
-                                "RawSetup",
-                                "00000000E80039CE01410039246743000005FFFFFF1E"
-                            ),
+                        "get" => array(
+                            "id" => 0xE8,
                         ),
+                    ),
+                ),
+                "00000000E80039CE01410039246743000005FFFFFF1E",
+                array(
+                    array("id", 0xE8),
+                    array("DeviceID", 0xE8),
+                    array("HWPartNum", "0039CE0141"),
+                    array("FWPartNum", "0039246743"),
+                    array("FWVersion", "000005"),
+                    array("DeviceGroup", "FFFFFF"),
+                    array(
+                        "RawSetup",
+                        "00000000E80039CE01410039246743000005FFFFFF1E"
                     ),
                 ),
                 "",
             ),
             array( // #3
-                array(),
-                "00000000E80039CD01410039456743000005FFFFFF530123456789",
                 array(
                     "Device" => array(
-                        "set" => array(
-                            array("id", 0xE8),
-                            array("DeviceID", 0xE8),
-                            array("HWPartNum", "0039CD0141"),
-                            array("FWPartNum", "0039456743"),
-                            array("FWVersion", "000005"),
-                            array("DeviceGroup", "FFFFFF"),
-                            array(
-                                "RawSetup",
-                                "00000000E80039CD01410039456743000005FFFFFF"
-                                ."530123456789"
-                            ),
+                        "get" => array(
+                            "id" => 0xE8,
                         ),
+                    ),
+                ),
+                "00000000E80039CD01410039456743000005FFFFFF530123456789",
+                array(
+                    array("id", 0xE8),
+                    array("DeviceID", 0xE8),
+                    array("HWPartNum", "0039CD0141"),
+                    array("FWPartNum", "0039456743"),
+                    array("FWVersion", "000005"),
+                    array("DeviceGroup", "FFFFFF"),
+                    array(
+                        "RawSetup",
+                        "00000000E80039CD01410039456743000005FFFFFF"
+                        ."530123456789"
                     ),
                 ),
                 "0123456789",
             ),
             array(  // #4
-                array(),
-                "00000000E80039CC01410039256743000005FFFFFF2101",
                 array(
                     "Device" => array(
-                        "set" => array(
-                            array("id", 0xE8),
-                            array("DeviceID", 0xE8),
-                            array("HWPartNum", "0039CC0141"),
-                            array("FWPartNum", "0039256743"),
-                            array("FWVersion", "000005"),
-                            array("DeviceGroup", "FFFFFF"),
-                            array(
-                                "RawSetup",
-                                "00000000E80039CC01410039256743000005FFFFFF2101"
-                            ),
+                        "get" => array(
+                            "id" => 0xE8,
                         ),
+                    ),
+                ),
+                "00000000E80039CC01410039256743000005FFFFFF2101",
+                array(
+                    array("id", 0xE8),
+                    array("DeviceID", 0xE8),
+                    array("HWPartNum", "0039CC0141"),
+                    array("FWPartNum", "0039256743"),
+                    array("FWVersion", "000005"),
+                    array("DeviceGroup", "FFFFFF"),
+                    array(
+                        "RawSetup",
+                        "00000000E80039CC01410039256743000005FFFFFF2101"
                     ),
                 ),
                 "01",
@@ -203,16 +213,16 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                 ),
                 "00000000E80038CC01410039256743000005FFFFFF2101",
                 array(
-               ),
-               false,
+                ),
+                false,
             ),
             array(  // #6 Bad FWPartNum
                 array(
                 ),
                 "00000000E80039CC01410038256743000005FFFFFF2101",
                 array(
-               ),
-               false,
+                ),
+                false,
             ),
             array(  // #7 Specific example
                 array(
@@ -220,8 +230,44 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                 "00000000016E00392801410039201843000002FFFFFF50010202020202020202"
                     ."7046707070707008200820082008204F034F034F034F03",
                 array(
-               ),
-               false,
+                ),
+                false,
+            ),
+            array(  // #8 0 for id
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "id" => 0,
+                        ),
+                    ),
+                ),
+                "00000000E80039CC01410039256743000005FFFFFF2101",
+                array(
+                    array("id", 0xE8),
+                    array("DeviceID", 0xE8),
+                    array("HWPartNum", "0039CC0141"),
+                    array("FWPartNum", "0039256743"),
+                    array("FWVersion", "000005"),
+                    array("DeviceGroup", "FFFFFF"),
+                    array(
+                        "RawSetup",
+                        "00000000E80039CC01410039256743000005FFFFFF2101"
+                    ),
+                ),
+                "01",
+            ),
+            array(  // #9 Wrong ID
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "id" => 0xE9,
+                        ),
+                    ),
+                ),
+                "00000000E80039CC01410039256743000005FFFFFF2101",
+                array(
+                ),
+                false,
             ),
         );
     }
@@ -244,7 +290,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $extra = Config::decode($string, $driver);
         $this->assertEquals($expectExtra, $extra, "Return Wrong");
         $ret = $driver->retrieve();
-        $this->assertEquals($expect, $ret, "Calls Wrong");
+        $this->assertEquals($expect, (array)$ret["Device"]["set"], "Calls Wrong");
     }
     /**
     * data provider for testDeviceID

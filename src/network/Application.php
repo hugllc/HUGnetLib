@@ -144,10 +144,13 @@ final class Application
     *
     * @return bool true on success, fales of failure
     */
-    public function unsolicited($callback, $DeviceID = '000000')
+    public function unsolicited($callback, $DeviceID = 0)
     {
         $return = is_callable($callback);
         if ($return) {
+            if (!is_string($DeviceID)) {
+                $DeviceID = sprintf("%06X", (int)$DeviceID);
+            }
             $this->_unsolicited[$DeviceID][] = $callback;
         }
         return (bool)$return;
@@ -337,6 +340,9 @@ final class Application
             if (!is_null($return)) {
                 $this->_receive($qid, $return);
             }
+        }
+        if (is_object($this->_device)) {
+            $this->_device->main();
         }
     }
     /**

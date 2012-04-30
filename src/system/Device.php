@@ -163,11 +163,25 @@ class Device extends SystemTableBase
         );
     }
     /**
+    * This function creates the system.
+    *
+    * @return Reference to the network object
+    */
+    public function &action()
+    {
+        include_once dirname(__FILE__)."/../devices/Action.php";
+        return \HUGnet\devices\Action::factory(
+            $this->system(),
+            $this,
+            $this->driver()
+        );
+    }
+    /**
     * This takes the class and makes it into a setup string
     *
     * @param bool $showFixed Show the fixed portion of the data
     *
-    * @return Reference to the network object
+    * @return string The encoded string
     */
     public function encode($showFixed = true)
     {
@@ -181,13 +195,17 @@ class Device extends SystemTableBase
     *
     * @param string $string The setup string to decode
     *
-    * @return Reference to the network object
+    * @return bool True on success, false on failure
     */
     public function decode($string)
     {
         include_once dirname(__FILE__)."/../devices/Config.php";
         $extra = \HUGnet\devices\Config::decode($string, $this);
-        $this->driver()->decode($extra, $this);
+        if (is_string($extra)) {
+            $this->driver()->decode($extra, $this);
+            return true;
+        }
+        return false;
     }
     /**
     * This creates the driver

@@ -109,7 +109,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 ),
                 0xFE0000,
                 0xFEFFFF,
-                2,
+                1,
             ),
             array(
                 array(
@@ -137,7 +137,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 ),
                 0xFE0000,
                 0xFEFFFF,
-                3,
+                2,
             ),
             array(
                 array(
@@ -172,10 +172,10 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $net->resetMock($mocks);
         $device = &Device::factory($net, $sys, $config);
         $this->assertTrue(
-            hexdec($device->getID()) >= 0xFE0000, "The id is too low"
+            $device->getID() >= 0xFE0000, "The id is too low"
         );
         $this->assertTrue(
-            hexdec($device->getID()) <= 0xFEFFFF, "The id is too high"
+            $device->getID() <= 0xFEFFFF, "The id is too high"
         );
         $ret = $net->retrieve();
         $this->assertTrue(
@@ -221,7 +221,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 "to"      => "000000",
                                 "from"      => "000001",
                                 "command" => "POWERUP",
-                                "data"    => "0000000001",
+                                "data"    => "00000000010039260150",
                             )
                         ),
                         null,
@@ -262,7 +262,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 "to"      => "000000",
                                 "from"      => "000001",
                                 "command" => "POWERUP",
-                                "data"    => "0000000001",
+                                "data"    => "00000000010039260150",
                             )
                         ),
                         null,
@@ -303,7 +303,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 "to"      => "000000",
                                 "from"      => "000001",
                                 "command" => "POWERUP",
-                                "data"    => "0000000001",
+                                "data"    => "00000000010039260150",
                             )
                         ),
                         null,

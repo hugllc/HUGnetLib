@@ -76,6 +76,7 @@ abstract class Driver
         "loadable" => false,
         "bootloader" => false,
         "outputSize" => 3,
+        "ConfigInterval" => 43200,
     );
     /**
     * This is where all of the driver information is stored.
@@ -103,8 +104,8 @@ abstract class Driver
         "0039-11-08-A:0039-12-02-B:DEFAULT" => "E00391201",
         "0039-20-04-C:0039-12-02-B:DEFAULT" => "E00391201",
         "0039-20-05-C:0039-12-02-B:DEFAULT" => "E00391201",
-        "0039-20-01-C:0039-21-01-A:DEFAULT" => "E00392100",
-        "0039-20-14-C:0039-21-02-A:DEFAULT" => "E00392100",
+        "0039-20-01-C:DEFAULT:DEFAULT"      => "E00392100",
+        "0039-20-14-C:DEFAULT:DEFAULT"      => "E00392100",
         "0039-38-01-C:0039-21-01-A:DEFAULT" => "E00392100",
         "0039-38-01-C:0039-21-02-A:DEFAULT" => "E00392100",
         "DEFAULT:0039-26-00-P:DEFAULT"      => "E00392600",

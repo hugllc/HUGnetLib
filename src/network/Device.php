@@ -64,6 +64,8 @@ final class Device
     private $_device = null;
     /** This is our configuration */
     private $_system = null;
+    /** This is our configuration */
+    private $_lastContact = null;
     /** These are the packets we are sending */
     private $_defaultConfig = array(
         "HWPartNum" => "0039-26-00-P",
@@ -78,6 +80,7 @@ final class Device
     */
     private function __construct(&$application, &$system, $config)
     {
+        $this->_lastContact = time();
         $this->_config  = array_merge($this->_defaultConfig, $config);
         $this->_network = &$application;
         $this->_system  = &$system;
@@ -86,8 +89,11 @@ final class Device
             dirname(__FILE__).'/../VERSION.TXT'
         );
         $this->getID();
-        $this->_network->unsolicited(array($this, "packet"), $this->_config["id"]);
+        $this->_network->unsolicited(
+            array($this, "packet"), $this->_config["DeviceID"]
+        );
         // Send the powerup packet
+        \HUGnet\VPrint::out("Using ID: ".$this->_config["DeviceID"], 1);
         $this->_powerup();
     }
     /**
@@ -125,6 +131,7 @@ final class Device
     */
     public function packet($pkt)
     {
+        $this->_lastContact = time();
         if (($pkt->type() === "PING") || ($pkt->type() === "FINDPING")) {
             $this->_reply($pkt, $pkt->data());
         } else if (($pkt->type() === "CONFIG")) {
@@ -172,7 +179,8 @@ final class Device
     */
     private function _powerup()
     {
-        $data = "0000".$this->_config["id"];
+        $data = substr($this->_device()->encode(), 0, 20);
+
         $newPacket = &Packet::factory(
             array(
                 "To"      => "000000",
@@ -207,13 +215,41 @@ final class Device
                 $reply = $ret->reply();
             } while (!empty($reply));
             $this->_config["id"] = $did;
-            \HUGnet\VPrint::out("Using ID: ".$this->_config["id"], 1);
-            $this->_powerup();
         }
-        if (!is_string($this->_config["id"])) {
-            $this->_config["id"] = sprintf("%06X", $this->_config["id"]);
+        if (!is_int($this->_config["id"])) {
+            $this->_config["id"] = hexdec($this->_config["id"]);
         }
+        $this->_config["DeviceID"] = sprintf("%06X", $this->_config["id"]);
         return $this->_config["id"];
+    }
+    /**
+    * The main routine should be called periodically (once per loop at least)
+    *
+    * @return null
+    */
+    public function main()
+    {
+        static $lastBoredom;
+        static $lastID;
+
+        $last = time() - $this->_lastContact;
+        if (($last > 3600) && ((time() - $lastBoredom) > 3600)) {
+            $newPacket = &Packet::factory(
+                array(
+                    "To"      => "000000",
+                    "From"    => $this->_config["id"],
+                    "Command" => "BOREDOM",
+                    "Data"    => sprintf("%08X", $last),
+                )
+            );
+            $this->_network->send(
+                $newPacket, null, array("tries" => 1, "find" => false)
+            );
+            $lastBoredom = time();
+        } else if (($last > 600) && ((time() - $lastID) > 3600)) {
+            \HUGnet\VPrint::out("Using ID: ".$this->_config["id"], 1);
+            $lastID = time();
+        }
     }
 }
 ?>
