@@ -247,7 +247,7 @@ final class Device
             );
             $lastBoredom = time();
         } else if (($last > 600) && ((time() - $lastID) > 3600)) {
-            \HUGnet\VPrint::out("Using ID: ".$this->_config["id"], 1);
+            \HUGnet\VPrint::out("Using ID: ".$this->_config["DeviceID"], 1);
             $lastID = time();
         }
     }
