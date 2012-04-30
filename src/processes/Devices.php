@@ -58,6 +58,8 @@ class Devices extends \HUGnet\ui\Daemon
     const PING_TIME = 1200;
     /** This is the amount of time we wait */
     const WAIT_TIME = 30;
+    /** This multiplier for the poll time so we get closer. */
+    const POLL_MULT = 0.80;
 
     /** This is the start time of the current run */
     private $_mainStart;
@@ -95,8 +97,8 @@ class Devices extends \HUGnet\ui\Daemon
             $lastContact = time() - $this->_device->getParam("LastContact");
             $lastConfig = time() - $this->_device->getParam("LastConfig");
             $lastPoll = (time() - $this->_device->getParam("LastPoll")) / 60;
-            /* The -0.5 is so we are closer to the actual poll time */
-            $PollInterval = $this->_device->get("PollInterval") - 0.5;
+            /* This gives us some leeway so we are closer to the actual poll time */
+            $PollInterval = $this->_device->get("PollInterval") * self::POLL_MULT;
             $action = false;
             if ($lastContact > self::PING_TIME) {
                 $action = true;
