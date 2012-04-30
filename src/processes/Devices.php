@@ -59,7 +59,7 @@ class Devices extends \HUGnet\ui\Daemon
     /** This is the amount of time we wait */
     const WAIT_TIME = 30;
     /** This multiplier for the poll time so we get closer. */
-    const POLL_MULT = 0.80;
+    const POLL_MULT = 0.90;
 
     /** This is the start time of the current run */
     private $_mainStart;
