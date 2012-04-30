@@ -143,7 +143,7 @@ class Network
             $command = "FINDPING";
         }
         if (empty($data)) {
-            $data = sprintf("%08X", mt_rand(0, 0xFFFFFFFF));
+            $data = sprintf("%06X", mt_rand(0, 0xFFFFFF));
         }
         return $this->_sendPkt($command, $callback, $config, $data);
     }

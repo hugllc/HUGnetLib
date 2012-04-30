@@ -267,7 +267,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         $ret = $system->retrieve();
         if (empty($data)) {
             /* Random Number.  We can't test for it exactly. */
-            $this->assertEquals(8, strlen($ret["Network"]["send"][0][0]["Data"]));
+            $this->assertEquals(6, strlen($ret["Network"]["send"][0][0]["Data"]));
             unset($ret["Network"]["send"][0][0]["Data"]);
         }
         $this->assertEquals($expect, $ret,  "Calls Wrong");
