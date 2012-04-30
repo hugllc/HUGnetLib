@@ -54,7 +54,10 @@ require_once dirname(__FILE__)."/../ui/Daemon.php";
  */
 class Devices extends \HUGnet\ui\Daemon
 {
+    /** This is the time we lose contact for before we start pinging */
     const PING_TIME = 1200;
+    /** This is the amount of time we wait */
+    const WAIT_TIME = 30;
 
     /** This is the start time of the current run */
     private $_mainStart;
@@ -92,7 +95,8 @@ class Devices extends \HUGnet\ui\Daemon
             $lastContact = time() - $this->_device->getParam("LastContact");
             $lastConfig = time() - $this->_device->getParam("LastConfig");
             $lastPoll = (time() - $this->_device->getParam("LastPoll")) / 60;
-            $PollInterval = $this->_device->get("PollInterval");
+            /* The -0.5 is so we are closer to the actual poll time */
+            $PollInterval = $this->_device->get("PollInterval") - 0.5;
             $action = false;
             if ($lastContact > self::PING_TIME) {
                 $action = true;
@@ -119,7 +123,7 @@ class Devices extends \HUGnet\ui\Daemon
     */
     private function _wait()
     {
-        $wait = 60 - (time() - $this->_mainStart);
+        $wait = self::WAIT_TIME - (time() - $this->_mainStart);
         if ($wait > 0) {
             $this->out("Waiting $wait seconds");
             for (; $wait > 0; $wait--) {
