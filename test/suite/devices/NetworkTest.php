@@ -93,6 +93,187 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+    * Data provider for testPing
+    *
+    * @return array
+    */
+    public static function dataPing()
+    {
+        return array(
+            array( // #0 Normal ping
+                array(
+                    "Device" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => "123456",
+                            )
+                        ),
+                    ),
+                ),
+                new \HUGnet\DummyBase("Driver"),
+                null,
+                false,
+                "123456",
+                array(),
+                array(
+                    "Device" => array(
+                        "get" => array(array("id")),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'PING',
+                                    "Data" => "123456",
+                                ),
+                                null,
+                                array(
+
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                \HUGnet\network\Packet::factory(
+                    array(
+                        "From" => 21,
+                        "Reply" => "123456",
+                    )
+                ),
+            ),
+            array( // #1 Find ping
+                array(
+                    "Device" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => "123456",
+                            )
+                        ),
+                    ),
+                ),
+                new \HUGnet\DummyBase("Driver"),
+                null,
+                true,
+                "654321",
+                array(),
+                array(
+                    "Device" => array(
+                        "get" => array(array("id")),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'FINDPING',
+                                    "Data" => "654321",
+                                ),
+                                null,
+                                array(
+
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                \HUGnet\network\Packet::factory(
+                    array(
+                        "From" => 21,
+                        "Reply" => "123456",
+                    )
+                ),
+            ),
+            array( // #0 Normal ping
+                array(
+                    "Device" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => "123456",
+                            )
+                        ),
+                    ),
+                ),
+                new \HUGnet\DummyBase("Driver"),
+                null,
+                false,
+                null,
+                array(),
+                array(
+                    "Device" => array(
+                        "get" => array(array("id")),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'PING',
+                                ),
+                                null,
+                                array(
+
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                \HUGnet\network\Packet::factory(
+                    array(
+                        "From" => 21,
+                        "Reply" => "123456",
+                    )
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param array  $mocks    The data to reset the mocks with
+    * @param object $driver   The driver to use
+    * @param mixed  $callback The function to call on packet reply
+    * @param bool   $find     Whether to use FindPing or not
+    * @param string $data     The data to send in the ping
+    * @param array  $config   The configuration array
+    * @param array  $expect   The expected calls in the mock
+    * @param bool   $return   The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataPing()
+    */
+    public function testPing(
+        $mocks, $driver, $callback, $find, $data, $config, $expect, $return
+    ) {
+        $system   = new \HUGnet\DummySystem();
+        $device = new \HUGnet\DummyBase("Device");
+        $system->resetMock($mocks);
+        $devnet = &Network::factory($system, $device, $driver);
+        $ret = $devnet->ping($find, $data, $callback, $config);
+        $this->assertEquals($return, $ret,  "Return Wrong");
+        $ret = $system->retrieve();
+        if (empty($data)) {
+            /* Random Number.  We can't test for it exactly. */
+            $this->assertEquals(8, strlen($ret["Network"]["send"][0][0]["Data"]));
+            unset($ret["Network"]["send"][0][0]["Data"]);
+        }
+        $this->assertEquals($expect, $ret,  "Calls Wrong");
+
+    }
+    /**
     * Data provider for testMatcher
     *
     * @return array

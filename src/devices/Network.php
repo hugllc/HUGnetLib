@@ -124,6 +124,30 @@ class Network
         return $object;
     }
     /**
+    * Pings the device in question
+    *
+    * @param bool   $find     Whether to use FindPing or not
+    * @param string $data     The data to use in the ping
+    * @param string $callback The name of the function to call when the packet
+    *                   arrives.  If this is not callable, it will block until the
+    *                   packet arrives.
+    * @param array  $config   The network config to use for the packet
+    *
+    * @return success or failure of the packet sending
+    */
+    public function ping(
+        $find = false, $data = null, $callback = null, $config = array()
+    ) {
+        $command = "PING";
+        if ($find) {
+            $command = "FINDPING";
+        }
+        if (empty($data)) {
+            $data = sprintf("%08X", mt_rand(0, 0xFFFFFFFF));
+        }
+        return $this->_sendPkt($command, $callback, $config, $data);
+    }
+    /**
     * Polls the device in question
     *
     * @param string $callback The name of the function to call when the packet
