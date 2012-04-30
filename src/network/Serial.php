@@ -167,7 +167,7 @@ final class Serial
     */
     private function _setupPort()
     {
-        if (stristr($this->_config["location"], "com")) {
+        if (stristr($this->_config["location"], "com") !== false) {
             $this->_setupPortWindows();
         } else {
             $this->_setupPortLinux();
@@ -185,10 +185,16 @@ final class Serial
     {
         $command  = "stty -F ".$this->_config["location"];
         $command .= " ".(int)$this->_config["baud"];
-        $command .= ($this->_config["rtscts"]) ? " crtscts" : " -crtscts" ;
+        $flags  = " -parenb -parodd cs8 hupcl -cstopb cread clocal -ignbrk -brkint";
+        $flags .= " -ignpar -parmrk -inpck -istrip -inlcr -igncr -icrnl -ixon";
+        $flags .= " -ixoff -iuclc -ixany -imaxbel -iutf8 -opost -olcuc -ocrnl";
+        $flags .= " -onlcr -onocr -onlret -ofill -ofdel nl0 cr0 tab0 bs0 vt0 ";
+        $flags .= " ff0 -isig -icanon -iexten -echo -echoe -echok -echonl";
+        $flags .= " -noflsh -xcase -tostop -echoprt -echoctl -echoke";
+        $flags .= ($this->_config["rtscts"]) ? " crtscts" : " -crtscts" ;
         // 1 Stop bit, 8 databits, no parity
-        @exec(
-            $command." -cstopb cs8 -parenb clocal -ixon -ixoff 2>&1",
+        exec(
+            "$command $flags 2>&1",
             $out, $return
         );
         \HUGnet\System::exception(
