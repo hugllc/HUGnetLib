@@ -127,7 +127,7 @@ class Devices extends \HUGnet\ui\Daemon
     {
         $wait = self::WAIT_TIME - (time() - $this->_mainStart);
         if ($wait > 0) {
-            $this->out("Waiting $wait seconds");
+            $this->out("Waiting $wait seconds at ".date("Y-m-d H:i:s"));
             for (; $wait > 0; $wait--) {
                 parent::main();
                 sleep(1);
