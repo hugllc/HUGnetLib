@@ -88,6 +88,40 @@ class Util
         return null;
     }
     /**
+    * Posts data to the URL given
+    *
+    * This will automatically json_decode the result if it is in JSON format.  It
+    * will then return an associative array.
+    *
+    * I am not sure yet how to test this function.
+    *
+    * @param string $url      The URL to post the data to
+    * @param array  $postData The data to post to the URL
+    *
+    * @return mixed
+    */
+    public static function postData($url, $postdata)
+    {
+        $params = array(
+            'http' => array(
+                'method' => 'POST',
+                'content' => http_build_query($postdata)."\n",
+            )
+        );
+        $ctx = stream_context_create($params);
+        $fp = @fopen($url, 'rb', false, $ctx);
+        if (!$fp) {
+            /* Failed, so return false */
+            return false;
+        }
+        $response = @stream_get_contents($fp);
+        $return = json_decode($response, true);
+        if (is_null($return) && ($response != "null")) {
+            $return = $response;
+        }
+        return $return;
+    }
+    /**
     * Returns the CRC8 of the packet
     *
     * @param string $string The string to get the CRC of.
