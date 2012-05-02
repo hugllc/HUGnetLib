@@ -72,6 +72,8 @@ class Args
     protected $name = "";
     /** These are pretty standard config changes */
     protected $config = array();
+    /** This is the config for printing stuff out */
+    protected $vprintConfig = array();
     /** These are pretty standard config changes */
     protected $defaultConfig = array(
         "q" => array("name" => "quiet", "type" => "bool", "default" => false),
@@ -98,6 +100,8 @@ class Args
         $this->argv = $args;
         $this->argc = $count;
         $this->config = array_merge($this->defaultConfig, $config);
+        /* This makes sure we only get output if we are a CLI */
+        \HUGnet\VPrint::config($this->vprintConfig);
         $this->_defaults();
         $this->interpret();
     }
