@@ -84,6 +84,138 @@ class E00392600Test extends DriverTestBase
     {
         parent::tearDown();
     }
-
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataDecode()
+    {
+        return array(
+            array( // #0
+                array(
+                ),
+                "9DDC21A799814E81A02BF1361D496AB1C0A82498",
+                array(
+                    "Device" => array(
+                        "setParam" => array(
+                            array(
+                                "uuid",
+                                "9ddc21a7-9981-4e81-a02b-f1361d496ab1"
+                            ),
+                        ),
+                        "set" => array(
+                            array(
+                                "DeviceLocation", "192.168.36.152"
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $mocks  The value to preload into the mocks
+    * @param string $string The setup string to test
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataDecode
+    */
+    public function testDecode($mocks, $string, $expect)
+    {
+        $device  = new \HUGnet\DummyTable("Device");
+        $device->resetMock($mocks);
+        $this->o->decode($string, $device);
+        $ret = $device->retrieve();
+        $this->assertEquals($expect, $ret);
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataEncode()
+    {
+        return array(
+            array( // #0
+                array(
+                    "Device" => array(
+                        "getParam" => array(
+                            "uuid"   => "9ddc21a7-9981-4e81-a02b-f1361d496ab1",
+                        ),
+                        "get" => array(
+                            "DeviceLocation" => "192.168.36.152",
+                        ),
+                    ),
+                ),
+                true,
+                "9DDC21A799814E81A02BF1361D496AB1C0A82498",
+            ),
+            array( // #0
+                array(
+                    "Device" => array(
+                        "getParam" => array(
+                            "uuid"   => "",
+                        ),
+                        "get" => array(
+                            "DeviceLocation" => "",
+                        ),
+                    ),
+                ),
+                true,
+                "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000",
+            ),
+            array( //#1
+                array(
+                    "Device" => array(
+                        "getParam" => array(
+                            "uuid"   => "9ddc21a7-9981-4e81-a02b-f1361d496ab1",
+                        ),
+                        "get" => array(
+                            "DeviceLocation" => "192.168.36.152",
+                        ),
+                    ),
+                ),
+                false,
+                "9DDC21A799814E81A02BF1361D496AB1C0A82498",
+            ),
+            array( // #2
+                array(
+                    "Device" => array(
+                        "getParam" => array(
+                            "uuid"   => "9ddc21a7-9981-4e81-a02b-f1361d496ab1",
+                        ),
+                        "get" => array(
+                            "DeviceLocation" => "5192.5168.336.6152",
+                        ),
+                    ),
+                ),
+                true,
+                "9DDC21A799814E81A02BF1361D496AB148305008",
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $mocks     The value to preload into the mocks
+    * @param bool  $showFixed Show the fixed portion of the data
+    * @param array $expect    The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataEncode
+    */
+    public function testEncode($mocks, $showFixed, $expect)
+    {
+        $device  = new \HUGnet\DummyTable("Device");
+        $device->resetMock($mocks);
+        $ret = $this->o->encode($device, $showFixed);
+        $this->assertSame($expect, $ret);
+    }
 }
 ?>

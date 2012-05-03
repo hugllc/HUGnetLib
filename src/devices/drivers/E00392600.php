@@ -97,6 +97,59 @@ class E00392600 extends \HUGnet\devices\Driver
             $device->load(null);
         }
     }
+        /**
+    * Encodes this driver as a setup string
+    *
+    * @param object &$device   The device object
+    * @param bool   $showFixed Show the fixed portion of the data
+    *
+    * @return array
+    */
+    public function encode(&$device, $showFixed = true)
+    {
+        $string  = strtoupper(
+            str_replace("-", "", (string)$device->getParam("uuid"))
+        );
+        $string = str_pad($string, 32, "F");
+        $IP = explode(".", (string)$device->get("DeviceLocation"));
+        $string .= sprintf(
+            "%02X%02X%02X%02X",
+            (int)$IP[0] & 0xFF,
+            (int)$IP[1] & 0xFF,
+            (int)$IP[2] & 0xFF,
+            (int)$IP[3] & 0xFF
+        );
+        return $string;
+    }
+    /**
+    * Decodes the driver portion of the setup string
+    *
+    * @param string $string  The string to decode
+    * @param object &$device The device object
+    *
+    * @return array
+    */
+    public function decode($string, &$device)
+    {
+        $uuid = strtolower(substr((string)$string, 0, 32));
+        $device->setParam(
+            "uuid",
+            substr($uuid, 0, 8)."-".substr($uuid, 8, 4)."-".substr($uuid, 12, 4)
+            ."-".substr($uuid, 16, 4)."-".substr($uuid, 20)
+        );
+        $IP = str_split(substr((string)$string, 32), 2);
+        $device->set(
+            "DeviceLocation",
+            sprintf(
+                "%d.%d.%d.%d",
+                hexdec($IP[0]) & 0xFF,
+                hexdec($IP[1]) & 0xFF,
+                hexdec($IP[2]) & 0xFF,
+                hexdec($IP[3]) & 0xFF
+            )
+        );
+    }
+
 }
 
 
