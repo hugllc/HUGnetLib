@@ -167,7 +167,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "verbose" => 0,
                     "debug" => true,
                     "test"  => true,
-                    "file" => "/here/there",
+                    "file" => "",
                     "program" => "test",
                 ),
                 "",

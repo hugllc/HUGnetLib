@@ -67,7 +67,6 @@ class Daemon extends CLI
         parent::__construct($config);
         $this->_checkEnabled();
         \HUGnet\System::loopcheck();
-        $this->_checkUUID();
         if (function_exists("pcntl_signal")) {
             pcntl_signal(SIGINT, array($this, "quit"));
         }
@@ -77,7 +76,7 @@ class Daemon extends CLI
     *
     * @return null
     */
-    private function _checkUUID()
+    public function checkUUID()
     {
         $uuid = $this->system()->get("uuid");
         preg_match(
@@ -87,10 +86,9 @@ class Daemon extends CLI
         );
         $uuid2 = $m[0];
         if (empty($uuid2) || (strlen($uuid) != 36)) {
-            $this->out("$uuid is not a valid UUID.");
-            exit(1);
+            return false;
         }
-        $this->out("Using UUID $uuid");
+        return true;
     }
     /**
     * Checks for a valid UUID

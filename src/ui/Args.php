@@ -232,6 +232,8 @@ class Args
                 return parse_ini_file($file, true);
             }
         }
+        /* No file found */
+        $this->arguments["f"] = "";
         return array();
     }
     /**
