@@ -65,6 +65,7 @@ class Daemon extends CLI
     protected function __construct(&$config)
     {
         parent::__construct($config);
+        $this->_checkEnabled();
         \HUGnet\System::loopcheck();
         $this->_checkUUID();
         if (function_exists("pcntl_signal")) {
@@ -72,7 +73,7 @@ class Daemon extends CLI
         }
     }
     /**
-    * Disconnects from the database
+    * Checks for a valid UUID
     *
     * @return null
     */
@@ -86,14 +87,27 @@ class Daemon extends CLI
         );
         $uuid2 = $m[0];
         if (empty($uuid2) || (strlen($uuid) != 36)) {
-            $this->out(
-                "$uuid is not a valid UUID."
-            );
+            $this->out("$uuid is not a valid UUID.");
             exit(1);
         }
         $this->out("Using UUID $uuid");
     }
-
+    /**
+    * Checks for a valid UUID
+    *
+    * @return null
+    */
+    private function _checkEnabled()
+    {
+        $program = $this->system()->get("program");
+        $config = $this->system()->get($program);
+        if (is_array($config)) {
+            if (isset($config["enable"]) && ($config["enable"] == false)) {
+                $this->out("$program is disabled in ".$this->system()->get("file"));
+                exit(1);
+            }
+        }
+    }
     /**
     * Runs periodically
     *

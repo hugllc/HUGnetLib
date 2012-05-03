@@ -58,8 +58,6 @@ class Devices extends \HUGnet\ui\Daemon
     const PING_TIME = 1200;
     /** This is the amount of time we wait */
     const WAIT_TIME = 30;
-    /** This multiplier for the poll time so we get closer. */
-    const POLL_MULT = 0.90;
 
     /** This is the start time of the current run */
     private $_mainStart;
@@ -97,12 +95,15 @@ class Devices extends \HUGnet\ui\Daemon
         $this->_ids = $this->_device->ids();
         foreach ((array)$this->_ids as $key => $devID) {
             parent::main();
+            if (!$this->loop()) {
+                break;
+            }
             $this->_device->load($key);
             $lastContact = time() - $this->_device->getParam("LastContact");
             $lastConfig = time() - $this->_device->getParam("LastConfig");
             $lastPoll = (time() - $this->_device->getParam("LastPoll")) / 60;
             /* This gives us some leeway so we are closer to the actual poll time */
-            $PollInterval = $this->_device->get("PollInterval") * self::POLL_MULT;
+            $PollInterval = $this->_device->get("PollInterval") - self::WAIT_TIME;
             $action = false;
             if ($lastContact > self::PING_TIME) {
                 $action = true;
@@ -131,9 +132,9 @@ class Devices extends \HUGnet\ui\Daemon
     private function _wait()
     {
         $this->_wait = self::WAIT_TIME - (time() - $this->_mainStart);
-        if ($this->_wait > 0) {
+        if (($this->_wait > 0) && $this->loop()) {
             $this->out("Waiting ".$this->_wait." seconds at ".date("Y-m-d H:i:s"));
-            for (; $this->_wait > 0; $this->_wait--) {
+            for (; ($this->_wait > 0) && $this->loop(); $this->_wait--) {
                 parent::main();
                 sleep(1);
             }
