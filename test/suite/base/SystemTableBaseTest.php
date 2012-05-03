@@ -576,9 +576,34 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 new DummyTable("Table"),
-                "id",
-                2,
+                array(
+                    "id" => 2,
+                    "beer" => "none",
+                ),
                 array("A", "B", "C"),
+                array(
+                    "selectIDs" => array(
+                        array("1 AND `id` = ? AND `beer` = ?", array(2, "none")),
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "selectIDs" => array(
+                            "a" => "A", "b" => "B", "c" => "C"
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                array(
+                ),
+                array("a" => "A", "b" => "B", "c" => "C"),
+                array(
+                    "selectIDs" => array(
+                        array("1", array()),
+                    ),
+                ),
             ),
         );
     }
@@ -587,22 +612,25 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
     *
     * @param array  $config The configuration to use
     * @param mixed  $class  This is either the name of a class or an object
-    * @param string $where  The field to get
     * @param array  $data   The value to set
     * @param mixed  $expect The value we expect back
+    * @param array  $calls  The expected calls to Table
     *
     * @return null
     *
     * @dataProvider dataIds
     */
     public function testIds(
-        $config, $class, $where, $data, $expect
+        $config, $class, $data, $expect, $calls
     ) {
         $sys = new DummySystem("System");
-        $sys->resetMock($config);
         $obj = SystemTableBaseTestStub::factory($sys, null, $class);
-        $ret = $obj->Ids($field, $value);
+        $sys->resetMock($config);
+        $ret = $obj->Ids($data);
         $this->assertSame($expect, $ret);
+        $ret = $sys->retrieve();
+        $this->assertEquals($calls, $ret["Table"]);
+
         unset($obj);
     }
     /**

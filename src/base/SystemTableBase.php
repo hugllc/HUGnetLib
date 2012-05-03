@@ -263,14 +263,19 @@ abstract class SystemTableBase
     /**
     * Lists the ids of the table values
     *
-    * @param string $where The where clause
-    * @param array  $data  The data to use with the where clause
+    * @param array $data The data to use with the where clause
     *
     * @return null
     */
-    public function ids($where = "1", $data = array())
+    public function ids($data = array())
     {
-        return $this->table()->selectIDs($where, $data);
+        $where = "1";
+        $whereData = array();
+        foreach ((array)$data as $key => $value) {
+            $where .= " AND `$key` = ?";
+            $whereData[] = $value;
+        }
+        return $this->table()->selectIDs($where, $whereData);
     }
     /**
     * This function should be overloaded to make changes to the table based on
