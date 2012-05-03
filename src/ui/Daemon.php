@@ -66,10 +66,13 @@ class Daemon extends CLI
     {
         parent::__construct($config);
         \HUGnet\System::loopcheck();
+        if (function_exists("pcntl_signal")) {
+            pcntl_signal(SIGINT, array($this, "quit"));
+        }
     }
 
     /**
-    * Disconnects from the database
+    * Runs periodically
     *
     * @return null
     */
@@ -84,8 +87,11 @@ class Daemon extends CLI
     */
     public function quit()
     {
-        $this->out(get_class($this)." got exit signal", 1);
-        $this->_loop = false;
+        if ($this->_loop) {
+            $this->out("Got exit signal");
+            $this->out("Closing things out.  Please be patient.");
+            $this->_loop = false;
+        }
     }
     /**
     * Disconnects from the database
