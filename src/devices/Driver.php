@@ -365,7 +365,17 @@ abstract class Driver
         }
         return $string;
     }
-
+    /**
+    * Checks a record to see if it needs fixing
+    *
+    * @param object &$device The device object
+    *
+    * @return array
+    */
+    public function checkRecord(&$device)
+    {
+        /* By default do nothing */
+    }
 }
 
 

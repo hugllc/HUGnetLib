@@ -128,7 +128,7 @@ abstract class SystemTableBase
     *
     * @return reference to the system object
     */
-    protected function &system()
+    public function &system()
     {
         return $this->_system;
     }
@@ -148,6 +148,15 @@ abstract class SystemTableBase
         $object = new $class($system, $table);
         $object->load($data);
         return $object;
+    }
+    /**
+    * Deletes this record
+    *
+    * @return null
+    */
+    public function delete()
+    {
+        return $this->table()->deleteRow();
     }
     /**
     * Loads the data into the table class

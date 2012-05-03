@@ -63,6 +63,10 @@ class Devices extends \HUGnet\ui\Daemon
 
     /** This is the start time of the current run */
     private $_mainStart;
+    /** How long we should wait */
+    private $_wait;
+    /** The ids we are going through */
+    private $_ids;
     /** This is the start time of the current run */
     private $_unsolicited;
     /** This is the start time of the current run */
@@ -90,8 +94,8 @@ class Devices extends \HUGnet\ui\Daemon
     public function main()
     {
         $this->_mainStart = time();
-        $ids = $this->_device->ids();
-        foreach ((array)$ids as $key => $devID) {
+        $this->_ids = $this->_device->ids();
+        foreach ((array)$this->_ids as $key => $devID) {
             parent::main();
             $this->_device->load($key);
             $lastContact = time() - $this->_device->getParam("LastContact");
@@ -110,7 +114,8 @@ class Devices extends \HUGnet\ui\Daemon
                 $action = true;
                 $this->_poll();
             }
-            if ($action) {
+            $did = $this->_device->get("id");
+            if ($action && !empty($did)) {
                 if (!$this->_device->store()) {
                     $this->out("Ouch!  Save failed!");
                 }
@@ -125,10 +130,10 @@ class Devices extends \HUGnet\ui\Daemon
     */
     private function _wait()
     {
-        $wait = self::WAIT_TIME - (time() - $this->_mainStart);
-        if ($wait > 0) {
-            $this->out("Waiting $wait seconds at ".date("Y-m-d H:i:s"));
-            for (; $wait > 0; $wait--) {
+        $this->_wait = self::WAIT_TIME - (time() - $this->_mainStart);
+        if ($this->_wait > 0) {
+            $this->out("Waiting ".$this->_wait." seconds at ".date("Y-m-d H:i:s"));
+            for (; $this->_wait > 0; $this->_wait--) {
                 parent::main();
                 sleep(1);
             }
@@ -150,6 +155,7 @@ class Devices extends \HUGnet\ui\Daemon
         $this->_unsolicited->setParam("LastConfig", 0);
         $this->_unsolicited->setParam("LastContact", time());
         $this->_unsolicited->store();
+        $this->_wait = 0;
     }
     /**
     * Deals with incoming packets
@@ -170,9 +176,11 @@ class Devices extends \HUGnet\ui\Daemon
                 .date("Y-m-d H:i:s", $this->_device->getParam("LastContact"))
             );
         } else {
+            $fails = $this->_device->getParam("ContactFail");
             $this->out(
-                "Failed.  Failure #".$this->_device->getParam("ContactFail")
+                "Failed.  Failure #".$fails
             );
+            $this->_device->action()->checkRecord();
         }
     }
     /**

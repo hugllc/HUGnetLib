@@ -195,7 +195,15 @@ class Action
         $this->_device->setParam("PollFail", $fail+1);
         return false;
     }
-
+    /**
+    * Checks the record to see if something needs to be done about it.
+    *
+    * @return null
+    */
+    public function checkRecord()
+    {
+        $this->_driver->checkRecord($this->_device);
+    }
 }
 
 
