@@ -121,6 +121,8 @@ class HTML
         }
         // Ratchet up the verbosity one level so more stuff prints
         $this->_config["html"] = true;
+        // Set up our IP address
+        $this->_config["IPAddr"] = $_SERVER["SERVER_ADDR"];
         // Set up printing
         $config = $this->_config;
         $config["debug"] = true;

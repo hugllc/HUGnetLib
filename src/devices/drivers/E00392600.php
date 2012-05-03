@@ -108,7 +108,7 @@ class E00392600 extends \HUGnet\devices\Driver
     public function encode(&$device, $showFixed = true)
     {
         $string  = strtoupper(
-            str_replace("-", "", (string)$device->getParam("uuid"))
+            str_replace("-", "", (string)$device->system()->get("uuid"))
         );
         $string = str_pad($string, 32, "F");
         $IP = explode(".", (string)$device->get("DeviceLocation"));

@@ -112,6 +112,8 @@ class CLI
         } else if (is_array($config)) {
             $this->_config = $config;
         }
+        // Set up our IP address
+        $this->_config["IPAddr"] = $this->_getIP();
         // Ratchet up the verbosity one level so more stuff prints
         $this->_config["verbose"]++;
         $this->_config["html"] = false;
@@ -154,6 +156,32 @@ class CLI
     public function out($string, $level=0)
     {
         \HUGnet\VPrint::out($string, $level);
+    }
+    /**
+    * Gets the ip address
+    *
+    * This gets the IP address.  Right now it only works for IPV4 addresses.
+    *
+    * This will only work in posix environments where ifconfig exists
+    *
+    * @return string IP address
+    */
+    private function _getIP()
+    {
+        $line = trim(`/sbin/ifconfig`);
+        preg_match_all(
+            "/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/",
+            $line,
+            $match
+        );
+        $cnt = 0;
+        // This removes localhost, netmask and broadcast addresses
+        do {
+            $ret = trim((string)$match[0][$cnt++]);
+            $local = preg_match("/127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/", $ret);
+            $netmask = preg_match("/255/", $ret);
+        } while (($local + $netmask) > 0);
+        return $ret;
     }
 }
 ?>

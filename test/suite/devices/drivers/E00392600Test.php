@@ -144,11 +144,14 @@ class E00392600Test extends DriverTestBase
             array( // #0
                 array(
                     "Device" => array(
-                        "getParam" => array(
-                            "uuid"   => "9ddc21a7-9981-4e81-a02b-f1361d496ab1",
-                        ),
+                        "system" => new \HUGnet\DummySystem("System"),
                         "get" => array(
                             "DeviceLocation" => "192.168.36.152",
+                        ),
+                    ),
+                    "System" => array(
+                        "get" => array(
+                            "uuid"   => "9ddc21a7-9981-4e81-a02b-f1361d496ab1",
                         ),
                     ),
                 ),
@@ -158,11 +161,14 @@ class E00392600Test extends DriverTestBase
             array( // #0
                 array(
                     "Device" => array(
-                        "getParam" => array(
-                            "uuid"   => "",
-                        ),
+                        "system" => new \HUGnet\DummySystem("System"),
                         "get" => array(
                             "DeviceLocation" => "",
+                        ),
+                    ),
+                    "System" => array(
+                        "get" => array(
+                            "uuid"   => "",
                         ),
                     ),
                 ),
@@ -172,11 +178,14 @@ class E00392600Test extends DriverTestBase
             array( //#1
                 array(
                     "Device" => array(
-                        "getParam" => array(
-                            "uuid"   => "9ddc21a7-9981-4e81-a02b-f1361d496ab1",
-                        ),
+                        "system" => new \HUGnet\DummySystem("System"),
                         "get" => array(
                             "DeviceLocation" => "192.168.36.152",
+                        ),
+                    ),
+                    "System" => array(
+                        "get" => array(
+                            "uuid"   => "9ddc21a7-9981-4e81-a02b-f1361d496ab1",
                         ),
                     ),
                 ),
@@ -186,11 +195,14 @@ class E00392600Test extends DriverTestBase
             array( // #2
                 array(
                     "Device" => array(
-                        "getParam" => array(
-                            "uuid"   => "9ddc21a7-9981-4e81-a02b-f1361d496ab1",
-                        ),
+                        "system" => new \HUGnet\DummySystem("System"),
                         "get" => array(
                             "DeviceLocation" => "5192.5168.336.6152",
+                        ),
+                    ),
+                    "System" => array(
+                        "get" => array(
+                            "uuid"   => "9ddc21a7-9981-4e81-a02b-f1361d496ab1",
                         ),
                     ),
                 ),

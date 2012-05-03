@@ -148,10 +148,9 @@ final class Device
         if (!is_object($this->_device)) {
             include_once dirname(__FILE__)."/../system/Device.php";
             $this->_device = \HUGnet\Device::factory($this->_system, $this->_config);
-            /** This is a bandaid.  Fix id */
-            foreach ((array)$this->_config["params"] as $key => $value) {
-                $this->_device->setParam($key, $value);
-            }
+            $this->_device->set("DeviceName", $this->_system->get("uuid"));
+            $this->_device->set("DeviceLocation", $this->_system->get("IPAddr"));
+            $this->_device->store();
         }
         return $this->_device;
     }
