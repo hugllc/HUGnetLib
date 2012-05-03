@@ -115,6 +115,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "debug" => false,
                     "test" => false,
                     "file" => '',
+                    "program" => "test",
                 ),
                 "",
             ),
@@ -141,6 +142,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "debug" => false,
                     "test" => false,
                     "file" => '',
+                    "program" => "test",
                 ),
                 "",
             ),
@@ -166,6 +168,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "debug" => true,
                     "test"  => true,
                     "file" => "/here/there",
+                    "program" => "test",
                 ),
                 "",
             ),
@@ -211,6 +214,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "quiet" => false,
                     "debug" => false,
                     "test" => false,
+                    "program" => "test",
                 ),
                 "Using config at ".TEST_CONFIG_BASE."files/config.ini",
             ),
@@ -255,11 +259,13 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "quiet" => false,
                     "debug" => false,
                     "test" => false,
+                    "program" => "test",
                 ),
                 "Found config at ./config.ini",
             ),
             array(  // #5 // Simple example
                 array(
+                    "programname",
                 ),
                 0,
                 array(
@@ -286,6 +292,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "debug" => false,
                     "test" => false,
                     "file" => '',
+                    "program" => "programname",
                 ),
                 "",
             ),
@@ -322,10 +329,11 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
             $this->assertSame($value, $args->$key, "Argument $key wrong");
         }
         ob_start();
-        $this->assertEquals($expect, $args->config());
+        $config = $args->config();
         $ret = ob_get_contents();
         ob_end_clean();
-        $this->assertSame($output, trim($ret));
+        $this->assertEquals($expect, $config, "Config wrong");
+        $this->assertSame($output, trim($ret), "Return wrong");
     }
 
 }

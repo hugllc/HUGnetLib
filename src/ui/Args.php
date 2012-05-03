@@ -80,7 +80,9 @@ class Args
         "v" => array("name" => "verbose", "type" => "int", "default" => 0),
         "d" => array("name" => "debug", "type" => "bool", "default" => false),
         "t" => array("name" => "test", "type" => "bool", "default" => false),
-        "f" => array("name" => "file", "type" => "string", "args" => true),
+        "f" => array(
+            "name" => "file", "type" => "string", "args" => true, "default" => ""
+        ),
         "n" => array("type" => "bool"),
     );
     /** These are the locations we are going to try to find a config, in order */
@@ -211,6 +213,9 @@ class Args
                 $return[$conf["name"]] = $this->_value($key);
             }
         }
+        if (!empty($this->name)) {
+            $return["program"] = $this->name;
+        }
         return $return;
     }
     /**
@@ -254,7 +259,7 @@ class Args
     */
     protected function interpret()
     {
-        $this->name = trim($this->argv[0]);
+        $this->name = trim(basename($this->argv[0]));
         for ($i = 1; $i < $this->argc; $i++) {
             $arg = $this->_fixArg($this->argv[$i]);
             if (isset($this->config[$arg]["args"])

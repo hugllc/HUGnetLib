@@ -212,9 +212,10 @@ class HTMLArgsTest extends \PHPUnit_Framework_TestCase
             $this->assertSame($value, $args->$key, "Argument $key wrong");
         }
         ob_start();
-        $this->assertEquals($expect, $args->config());
+        $config = $args->config();
         $ret = ob_get_contents();
         ob_end_clean();
+        $this->assertEquals($expect, $config);
         $this->assertSame($output, trim($ret));
     }
 
