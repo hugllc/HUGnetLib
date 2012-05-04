@@ -409,7 +409,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                 array(
                     "DataIndex" => 0,
                     "timeConstant" => 0,
-                    0 => 0,
+                    "String" => "String",
                 ),
             ),
             array(
@@ -417,15 +417,8 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                 array(
                     "DataIndex" => 1,
                     "timeConstant" => 5,
-                    0 => 0x10,
-                    1 => 0x20,
-                    2 => 0x30,
-                    3 => 0x40,
-                    4 => 0x50,
-                    5 => 0x60,
-                    6 => 0x70,
-                    7 => 0x80,
-                    8 => 0x90,
+                    "String" => "100000200000300000400000500000600000"
+                    ."700000800000900000",
                 ),
             ),
         );
@@ -510,7 +503,6 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                     'averageTable' => 'E00392800AverageTable',
                     'loadable' => false,
                     'bootloader' => false,
-                    'outputSize' => 3,
                     'testParam' => '12345',
                     'ConfigInterval' => 43200,
                 ),
@@ -526,7 +518,6 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                     'averageTable' => 'ABADAverageTable',
                     'loadable' => false,
                     'bootloader' => false,
-                    'outputSize' => 3,
                     'testParam' => '54321',
                     'ConfigInterval' => 43200,
                 ),

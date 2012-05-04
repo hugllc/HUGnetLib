@@ -187,6 +187,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         ),
                         "defMin" => 0,
                         "defMax" => 150,
+                        "inputSize" => 3,
                         'id' => 0xFD,
                         'asdf' => 3,
                         'params' => array(1,2,3,4),
@@ -672,7 +673,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 new DummyTable("Table"),
-                83055,
+                "6F4401ABCDEF",
                 300,
                 12345,
                 array(
@@ -707,6 +708,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                     "unitType" => "Temperature",
                     "dataType" => \HUGnet\units\Driver::TYPE_RAW,
                 ),
+                "ABCDEF",
             ),
             array(
                 array(
@@ -719,7 +721,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 new DummyTable("Table"),
-                430,
+                "AE0100123456",
                 300,
                 0x12345,
                 array(
@@ -754,6 +756,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                     "unitType" => "Temperature",
                     "dataType" => \HUGnet\units\Driver::TYPE_RAW,
                 ),
+                "123456",
             ),
             array(
                 array(
@@ -766,7 +769,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 new DummyTable("Table"),
-                100,
+                "640000",
                 300,
                 50,
                 array(
@@ -802,6 +805,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                     "dataType" => \HUGnet\units\Driver::TYPE_DIFF,
                     "raw" => 100,
                 ),
+                "",
             ),
         );
     }
@@ -809,26 +813,28 @@ class SensorTest extends \PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param object $config The configuration to use
-    * @param object $class  The table class to use
-    * @param int    $A      Output of the A to D converter
-    * @param float  $deltaT The time delta in seconds between this record
-    * @param array  $prev   The previous reading
-    * @param array  $data   The data from the other sensors that were crunched
-    * @param array  $expect The expected data
+    * @param object $config    The configuration to use
+    * @param object $class     The table class to use
+    * @param string $string    String returned by the device
+    * @param float  $deltaT    The time delta in seconds between this record
+    * @param array  $prev      The previous reading
+    * @param array  $data      The data from the other sensors that were crunched
+    * @param array  $expect    The expected data
+    * @param array  $strExpect The expected string afterwards
     *
     * @return null
     *
     * @dataProvider dataDecodeData
     */
     public function testDecodeData(
-        $config, $class, $A, $deltaT, $prev, $data, $expect
+        $config, $class, $string, $deltaT, $prev, $data, $expect, $strExpect
     ) {
         $sys = new DummySystem("System");
         $sys->resetMock($config);
         $obj = Sensor::factory($sys, null, $class);
-        $ret = $obj->decodeData($A, $deltaT, $prev, $data);
-        $this->assertEquals($expect, $ret);
+        $ret = $obj->decodeData($string, $deltaT, $prev, $data);
+        $this->assertEquals($expect, $ret, "Return wrong");
+        $this->assertSame($strExpect, $string, "String wrong");
     }
     /**
     * data provider for testConvertUnits

@@ -387,7 +387,7 @@ class Device extends SystemTableBase
         $sensors = $this->get("totalSensors");
         for ($i = 0; $i < $sensors; $i++) {
             $ret[$i] = $this->sensor($i)->decodeData(
-                $data[$i], $deltaT, $prev[$i], $ret
+                $data["String"], $deltaT, $prev[$i], $ret
             );
         }
         return $ret;

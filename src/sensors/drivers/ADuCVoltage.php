@@ -76,6 +76,7 @@ class ADuCVoltage extends \HUGnet\sensors\Driver
         "extraValues" => array(5, 5, 5),
         "extraDefault" => array(100, 1, 1.2),
         "maxDecimals" => 8,
+        "inputSize" => 4,
     );
     /**
     * This function creates the system.

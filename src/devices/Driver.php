@@ -75,7 +75,6 @@ abstract class Driver
         "averageTable" => "EDEFAULTAverageTable",
         "loadable" => false,
         "bootloader" => false,
-        "outputSize" => 3,
         "ConfigInterval" => 43200,
     );
     /**
@@ -251,27 +250,6 @@ abstract class Driver
         return "EDEFAULT";
     }
     /**
-    * Takes in a raw string from a sensor and makes an int out it
-    *
-    * The sensor data is stored little-endian, so it just takes that and adds
-    * the bytes together.
-    *
-    * @param string $string The string to convert
-    *
-    * @return int
-    */
-    protected function sensorStringToInt($string)
-    {
-        $bytes = str_split($string, 2);
-        $shift = 0;
-        $return = 0;
-        foreach ($bytes as $b) {
-            $return += hexdec($b) << $shift;
-            $shift += 8;
-        }
-        return $return;
-    }
-    /**
     * Decodes the sensor string
     *
     * @param string $string The string of sensor data
@@ -280,13 +258,11 @@ abstract class Driver
     */
     public function decodeSensorString($string)
     {
-        $data = str_split(substr($string, 6), ($this->get("outputSize") * 2));
-        $ret = array();
-        foreach ($data as $key => $str) {
-            $ret[$key] = $this->sensorStringToInt($str);
-        }
-        $ret["DataIndex"] = hexdec(substr($string, 0, 2));
-        $ret["timeConstant"] = hexdec(substr($string, 4, 2));
+        $ret = array(
+            "DataIndex" => hexdec(substr($string, 0, 2)),
+            "timeConstant" => hexdec(substr($string, 4, 2)),
+            "String" => substr($string, 6),
+        );
         return $ret;
     }
     /**

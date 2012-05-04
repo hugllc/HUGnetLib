@@ -80,6 +80,7 @@ class ADuCPressure extends \HUGnet\sensors\Driver
         "extraValues" => array(5, 5, 7, 7, 10, 10, 10),
         "extraDefault" => array(0, 5, 0, 100, 1.2, 100, 1),
         "maxDecimals" => 4,
+        "inputSize" => 4,
     );
     /**
     * This function creates the system.

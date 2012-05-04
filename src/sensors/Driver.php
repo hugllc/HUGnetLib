@@ -91,6 +91,7 @@ abstract class Driver
         ),
         "defMin" => 0,
         "defMax" => 150,
+        "inputSize" => 3,
     );
     /**
     * This is where all of the driver information is stored.
@@ -334,6 +335,30 @@ abstract class Driver
     abstract public function getReading(
         $A, &$sensor, $deltaT = 0, &$data = array(), $prev = null
     );
+    /**
+    * Takes in a raw string from a sensor and makes an int out it
+    *
+    * The sensor data is stored little-endian, so it just takes that and adds
+    * the bytes together.
+    *
+    * @param string &$string The string to convert
+    *
+    * @return int
+    */
+    public function strToInt(&$string)
+    {
+        $size = $this->get("inputSize", 1);
+        $work = substr($string, 0, ($size * 2));
+        $string = (string)substr($string, ($size * 2));
+        $bytes = str_split($work, 2);
+        $shift = 0;
+        $return = 0;
+        foreach ($bytes as $b) {
+            $return += hexdec($b) << $shift;
+            $shift += 8;
+        }
+        return $return;
+    }
 }
 
 

@@ -211,6 +211,7 @@ class DriverTest extends drivers\DriverTestBase
             ),
             'defMin' => 0,
             'defMax' => 150,
+            'inputSize' => 3,
         );
         $this->assertEquals($expect, $this->o->toArray(1));
     }
@@ -498,6 +499,39 @@ class DriverTest extends drivers\DriverTestBase
         $obj = DriverTestClass::factory();
         $ret = $obj->encode($sensor);
         $this->assertSame($expect, $ret);
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataStrToInt()
+    {
+        return array(
+            array( // #0
+                "563412123456",
+                0x123456,
+                "123456",
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $string    The string to use
+    * @param int    $retExpect The expected return
+    * @param string $expect    The expected string after the function call
+    *
+    * @return null
+    *
+    * @dataProvider dataStrToInt
+    */
+    public function testStrToInt($string, $retExpect, $expect)
+    {
+        $obj = DriverTestClass::factory();
+        $ret = $obj->strToInt($string);
+        $this->assertSame($retExpect, $ret, "Return is wrong");
+        $this->assertSame($expect, $string, "String is wrong");
     }
 }
 /**

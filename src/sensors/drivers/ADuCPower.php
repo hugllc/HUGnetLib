@@ -99,6 +99,7 @@ class ADuCPower extends \HUGnet\sensors\Driver
         "extraValues" => array(10, 10, 10, 10, 10, 10),
         "extraDefault" => array(1.2, 0.5, 100, 1, 1, 10),
         "maxDecimals" => 6,
+        "inputSize" => 4,
     );
     /**
     * This function creates the system.

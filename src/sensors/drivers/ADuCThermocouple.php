@@ -79,6 +79,7 @@ class ADuCThermocouple extends \HUGnet\sensors\Driver
         "extraValues" => array(5, 5, 5, array("k" => "k")),
         "extraDefault" => array(1, 10, 1200, "k"),
         "maxDecimals" => 4,
+        "inputSize" => 4,
     );
     /** These are the coeffients of the thermocouple equasion */
     private $_coeffients = array(

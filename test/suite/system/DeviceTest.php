@@ -488,7 +488,6 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         'averageTable' => 'EDEFAULTAverageTable',
                         'loadable' => false,
                         'bootloader' => false,
-                        'outputSize' => 3,
                         'ConfigInterval' => 43200,
                         'id' => 2,
                         'asdf' => 3,
@@ -526,7 +525,6 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         'averageTable' => 'EDEFAULTAverageTable',
                         'loadable' => false,
                         'bootloader' => false,
-                        'outputSize' => 3,
                         'ConfigInterval' => 43200,
                         'id' => 2,
                         'asdf' => 3,
@@ -565,7 +563,6 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         'averageTable' => 'EDEFAULTAverageTable',
                         'loadable' => true,
                         'bootloader' => false,
-                        'outputSize' => 3,
                         'ConfigInterval' => 43200,
                         'id' => 2,
                         'asdf' => 3,
@@ -594,7 +591,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $sys->resetMock($config);
         $obj = Device::factory($sys, null, $class);
         $json = $obj->json();
-        $this->assertSame($expect, $json);
+        $this->assertEquals(json_decode($expect, true), json_decode($json, true));
         unset($obj);
     }
     /**

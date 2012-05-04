@@ -72,6 +72,7 @@ class ADuCVishayRTD extends \HUGnet\sensors\Driver
         "extraValues" => array(5),
         "extraDefault" => array(2210),
         "maxDecimals" => 4,
+        "inputSize" => 4,
     );
     /** @var array The lookup table */
     private $_valueTable = array(
