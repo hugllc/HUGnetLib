@@ -89,8 +89,7 @@ class Daemon extends CLI
         $uuid2 = $m[0];
         if (empty($uuid2) || (strlen($uuid) != 36)) {
             if (empty($msg)) {
-                $msg  = "A valid UUID must be supplied in the ";
-                $msg .= $this->system()->get("file")." file.\n";
+                $msg  = "A valid UUID must be supplied in the INI file.\n";
                 $msg .= "'$uuid' is not valid.";
             }
             $this->help();

@@ -220,6 +220,19 @@ class Args
         return $return;
     }
     /**
+    * Adds locations to check for INI files
+    *
+    * @param string $location The location to look for an INI file
+    *
+    * @return null
+    */
+    public function addLocation($location)
+    {
+        if (strlen($location) > 0) {
+            $this->configLocations[] = (string)$location;
+        }
+    }
+    /**
     * Creates the config to go with the command line
     *
     * @return Configuration array

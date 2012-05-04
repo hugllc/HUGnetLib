@@ -106,6 +106,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "t" => false,
                     "n" => true,
                 ),
+                "",
                 array(
                 ),
                 null,
@@ -133,6 +134,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "n" => true,
                     "test" => false,
                 ),
+                "",
                 array(
                 ),
                 null,
@@ -159,6 +161,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "q" => true,
                     "t"  => true,
                 ),
+                "",
                 array(
                 ),
                 null,
@@ -181,6 +184,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                 array(
                     "f" => TEST_CONFIG_BASE."files/config.ini",
                 ),
+                "",
                 array(
                 ),
                 null,
@@ -226,6 +230,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                 ),
+                "",
                 array(
                 ),
                 TEST_CONFIG_BASE."files/config.ini",
@@ -279,6 +284,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "t" => false,
                     "n" => true,
                 ),
+                "",
                 array(
                     "i" => "000ABC",
                     "v" => 3,
@@ -296,6 +302,52 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                 ),
                 "",
             ),
+            array(  // #6 File test with addLocation.
+                array(
+                    "test"
+                ),
+                4,
+                array(),
+                array(
+                ),
+                TEST_CONFIG_BASE."files/config.ini",
+                array(
+                ),
+                null,
+                array(
+                    "hugnet_database" => "MyDatabase",
+                    "script_gatewaykey" => "2",
+                    "poll_enable" => "1",
+                    "config_enable" => "",
+                    "control_enable" => "",
+                    "check_enable" => "1",
+                    "check_send_daily" => "1",
+                    "analysis_enable" => "0",
+                    "admin_email" => "you@yourdomain.com",
+                    "verbose" => 0,
+                    "servers" => array(
+                        "default" => array(
+                            "driver" => "mysql",
+                            "host" => "10.2.5.23",
+                            "user" => "user",
+                            "password" => "password",
+                        ),
+                    ),
+                    "network" => array(
+                        "default" => array(
+                            "driver" => "Socket",
+                            "location" => "10.2.3.5",
+                            "port" => 2001,
+                        ),
+                    ),
+                    "file" => TEST_CONFIG_BASE."files/config.ini",
+                    "quiet" => false,
+                    "debug" => false,
+                    "test" => false,
+                    "program" => "test",
+                ),
+                "Found config at ".TEST_CONFIG_BASE."files/config.ini",
+            ),
         );
     }
     /**
@@ -305,6 +357,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
     * @param int    $argc      The number of arguments
     * @param array  $config    The config array to feed it
     * @param array  $set       Values to set
+    * @param string $location  Extra file location to add
     * @param array  $arguments The arguments we expect to be set
     * @param string $file      The file to copy to this directory.  Null for no file
     * @param array  $expect    The config array we are expecting
@@ -315,7 +368,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
     * @dataProvider dataArgs()
     */
     public function testArgs(
-        $argv, $argc, $config, $set, $arguments, $file, $expect, $output
+        $argv, $argc, $config, $set, $location, $arguments, $file, $expect, $output
     ) {
         if (!is_null($file)) {
             copy($file, "./".basename($file));
@@ -325,6 +378,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
         foreach ((array)$set as $name => $value) {
             $args->set($name, $value);
         }
+        $args->addLocation($location);
         foreach ($arguments as $key => $value) {
             $this->assertSame($value, $args->$key, "Argument $key wrong");
         }
