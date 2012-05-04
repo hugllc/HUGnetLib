@@ -74,9 +74,11 @@ class Daemon extends CLI
     /**
     * Checks for a valid UUID
     *
+    * @param string $msg The message to print out if there is no valid UUID
+    *
     * @return null
     */
-    public function checkUUID()
+    public function requireUUID($msg = "")
     {
         $uuid = $this->system()->get("uuid");
         preg_match(
@@ -86,9 +88,35 @@ class Daemon extends CLI
         );
         $uuid2 = $m[0];
         if (empty($uuid2) || (strlen($uuid) != 36)) {
-            return false;
+            if (empty($msg)) {
+                $msg  = "A valid UUID must be supplied in the ";
+                $msg .= $this->system()->get("file")." file.\n";
+                $msg .= "'$uuid' is not valid.";
+            }
+            $this->help();
+            $this->out();
+            $this->out((string)$msg);
+            exit(1);
         }
-        return true;
+    }
+    /**
+    * Checks for a valid INI file
+    *
+    * @param string $msg The message to print out if there is no valid ini file
+    *
+    * @return null
+    */
+    public function requireINI($msg = "")
+    {
+        if (strlen($this->system()->get("file")) == 0) {
+            if (empty($msg)) {
+                $msg  = "No valid INI file found";
+            }
+            $this->help();
+            $this->out();
+            $this->out((string)$msg);
+            exit(1);
+        }
     }
     /**
     * Checks for a valid UUID

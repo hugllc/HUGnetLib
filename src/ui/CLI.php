@@ -58,6 +58,8 @@ class CLI
     private $_config = array();
     /** The config we are using */
     private $_system = null;
+    /** This is the help text to sling out */
+    protected $help = "";
     /**
     * Sets our configuration
     *
@@ -153,9 +155,32 @@ class CLI
     *
     * @return none
     */
-    public function out($string, $level=0)
+    public function out($string = "", $level=0)
     {
         \HUGnet\VPrint::out($string, $level);
+    }
+    /**
+    * Sets or prints out the help text
+    *
+    * If no string is given it prints out the help text
+    *
+    * @param string $help  The help text to use
+    * @param bool   $force Force the printout and exit
+    *
+    * @return null
+    */
+    public function help($help = null, $force = false)
+    {
+        if (is_string($help)) {
+            $this->help = $help;
+        }
+        if (!is_string($help) || $force) {
+            $this->out($this->help);
+            if ($force) {
+                $this->out();
+                exit(0);
+            }
+        }
     }
     /**
     * Gets the ip address

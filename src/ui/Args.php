@@ -84,6 +84,7 @@ class Args
             "name" => "file", "type" => "string", "args" => true, "default" => ""
         ),
         "n" => array("type" => "bool"),
+        "h" => array("type" => "bool", "default" => false),
     );
     /** These are the locations we are going to try to find a config, in order */
     protected $configLocations = array(
