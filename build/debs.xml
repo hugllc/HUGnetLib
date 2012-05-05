@@ -35,8 +35,10 @@
         <copy todir="${deb.staging}/usr/share/php/HUGnetLib">
             <fileset dir="${deb.source}"/>
         </copy>
-        <chmod file="${deb.staging}/DEBIAN/postinst" perm="ugo+rx"/>
-        <chmod file="${deb.staging}/DEBIAN/prerm" perm="ugo+rx"/>
+        <chmod file="${deb.staging}/DEBIAN/postinst" perm="0755"/>
+        <chmod file="${deb.staging}/DEBIAN/prerm" perm="0755"/>
+        <chmod file="${deb.staging}/usr/**" perm="0755" type="dir"/>
+        <chmod file="${deb.staging}/usr/**" perm="0644" type="file"/>
         <replaceregexp file="${deb.staging}/DEBIAN/control"
                     match="%VERSION%"
                     replace="${deb.version}"
@@ -44,8 +46,8 @@
     </target>
     <target name="deb" description="build the deb">
         <mkdir dir="${deb.builddir}"/>
-        <exec executable="dpkg" failonerror="true">
-            <arg line="-b ${deb.staging}
+        <exec executable="fakeroot" failonerror="true">
+            <arg line="dpkg-deb --build ${deb.staging}
                        ${deb.outputfile}"/>
         </exec>
     </target>
@@ -70,6 +72,6 @@
     <target name="postclean" description="build the deb">
         <delete dir="${deb.staging}"/>
     </target>
-    <target name="build" depends="clean,setup,deb,sign,postclean"/>
+    <target name="build" depends="clean,setup,deb,postclean"/>
 
 </project>
