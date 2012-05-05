@@ -114,6 +114,11 @@ class CLI
         } else if (is_array($config)) {
             $this->_config = $config;
         }
+        if (strlen($this->_config["file"])) {
+            $this->out("Using config at ".$this->_config["file"]);
+        } else {
+            $this->out("No config file found.  I hope that is right...");
+        }
         // Set up our IP address
         $this->_config["IPAddr"] = $this->_getIP();
         // Ratchet up the verbosity one level so more stuff prints

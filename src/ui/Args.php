@@ -72,8 +72,6 @@ class Args
     protected $name = "";
     /** These are pretty standard config changes */
     protected $config = array();
-    /** This is the config for printing stuff out */
-    protected $vprintConfig = array();
     /** These are pretty standard config changes */
     protected $defaultConfig = array(
         "q" => array("name" => "quiet", "type" => "bool", "default" => false),
@@ -103,8 +101,6 @@ class Args
         $this->argv = $args;
         $this->argc = $count;
         $this->config = array_merge($this->defaultConfig, $config);
-        /* This makes sure we only get output if we are a CLI */
-        \HUGnet\VPrint::config($this->vprintConfig);
         $this->_defaults();
         $this->interpret();
     }
@@ -203,7 +199,6 @@ class Args
     public function config($config = array())
     {
         if (file_exists($this->f)) {
-            \HUGnet\VPrint::out("Using config at ".$this->f);
             $return = parse_ini_file($this->f, true);
         } else if (!$this->n) {
             $return = $this->_findConfig();
@@ -241,7 +236,6 @@ class Args
     {
         foreach ($this->configLocations as $file) {
             if (file_exists($file)) {
-                \HUGnet\VPrint::out("Found config at $file");
                 $this->arguments["f"] = $file;
                 return parse_ini_file($file, true);
             }

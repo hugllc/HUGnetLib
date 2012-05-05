@@ -118,7 +118,6 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "file" => '',
                     "program" => "test",
                 ),
-                "",
             ),
             array(  // #1 // Another Simple example
                 array(
@@ -146,7 +145,6 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "file" => '',
                     "program" => "test",
                 ),
-                "",
             ),
             array(  // #2 Stringing multiple switches together.
                 array(
@@ -173,7 +171,6 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "file" => "",
                     "program" => "test",
                 ),
-                "",
             ),
             array(  // #3 File test.
                 array(
@@ -220,7 +217,6 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "test" => false,
                     "program" => "test",
                 ),
-                "Using config at ".TEST_CONFIG_BASE."files/config.ini",
             ),
             array(  // #4 another file test
                 array(
@@ -266,7 +262,6 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "test" => false,
                     "program" => "test",
                 ),
-                "Found config at ./config.ini",
             ),
             array(  // #5 // Simple example
                 array(
@@ -300,11 +295,10 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "file" => '',
                     "program" => "programname",
                 ),
-                "",
             ),
             array(  // #6 File test with addLocation.
                 array(
-                    "test"
+                    "test", "-v"
                 ),
                 4,
                 array(),
@@ -324,7 +318,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "check_send_daily" => "1",
                     "analysis_enable" => "0",
                     "admin_email" => "you@yourdomain.com",
-                    "verbose" => 0,
+                    "verbose" => 1,
                     "servers" => array(
                         "default" => array(
                             "driver" => "mysql",
@@ -346,7 +340,6 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "test" => false,
                     "program" => "test",
                 ),
-                "Found config at ".TEST_CONFIG_BASE."files/config.ini",
             ),
         );
     }
@@ -361,14 +354,13 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
     * @param array  $arguments The arguments we expect to be set
     * @param string $file      The file to copy to this directory.  Null for no file
     * @param array  $expect    The config array we are expecting
-    * @param string $output    The expected printout
     *
     * @return null
     *
     * @dataProvider dataArgs()
     */
     public function testArgs(
-        $argv, $argc, $config, $set, $location, $arguments, $file, $expect, $output
+        $argv, $argc, $config, $set, $location, $arguments, $file, $expect
     ) {
         if (!is_null($file)) {
             copy($file, "./".basename($file));
@@ -382,12 +374,8 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
         foreach ($arguments as $key => $value) {
             $this->assertSame($value, $args->$key, "Argument $key wrong");
         }
-        ob_start();
         $config = $args->config();
-        $ret = ob_get_contents();
-        ob_end_clean();
         $this->assertEquals($expect, $config, "Config wrong");
-        $this->assertSame($output, trim($ret), "Return wrong");
     }
 
 }

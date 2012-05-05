@@ -133,6 +133,7 @@ class VPrintTest extends \PHPUnit_Framework_TestCase
     {
         VPrint::config($config);
         ob_start();
+        ob_clean();
         foreach ($string as $key => $str) {
             VPrint::out($str, $verbose[$key]);
         }
