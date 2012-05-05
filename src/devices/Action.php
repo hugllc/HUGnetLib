@@ -173,16 +173,15 @@ class Action
     {
         $pkt = $this->_device->network()->poll();
         if (strlen($pkt->reply()) > 0) {
-
-            //$dev = new DeviceContainer($device->get("RawSetup"));
             $data = $this->_device->decodeData(
                 $pkt->Reply(),
                 $pkt->Command(),
                 0,
-                (array)$prev[$dev]
+                (array)$this->_device->getParam("LastPollData")
             );
             $data["id"]   = $this->_device->get("id");
             $data["Date"] = time();
+            $this->_device->setParam("LastPollData", $data);
             $this->_device->setUnits($data);
             $d = $this->_device->historyFactory($data);
             $d->insertRow();
