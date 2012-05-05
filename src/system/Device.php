@@ -383,6 +383,7 @@ class Device extends SystemTableBase
             "deltaT" => $deltaT,
             "DataIndex" => $data["DataIndex"],
             "timeConstant" => $data["timeConstant"],
+            "rawData" => $string,
         );
         $sensors = $this->get("totalSensors");
         for ($i = 0; $i < $sensors; $i++) {

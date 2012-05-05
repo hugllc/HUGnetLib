@@ -865,6 +865,8 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     "deltaT" => 300,
                     "DataIndex" => 1,
                     "timeConstant" => 1,
+                    "rawData" => "010001100D00200C00300B00400A0050090060080"
+                        ."0700700800600900500",
                     array(
                         "value" => 39.7557,
                         "units" => "&#176;C",

@@ -771,7 +771,13 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                 new DummyTable("Table"),
                 "640000",
                 300,
-                50,
+                array(
+                    "value" => 12.5,
+                    "units" => "&#176;C",
+                    "unitType" => "Temperature",
+                    "dataType" => \HUGnet\units\Driver::TYPE_DIFF,
+                    "raw" => 50,
+                ),
                 array(
                     array(
                         "value" => 25.2134,
