@@ -84,7 +84,8 @@ class EDEFAULT extends \HUGnet\devices\Driver
     {
         $lastContact = $device->getParam("LastContact");
         $fails       = $device->getParam("ContactFail");
-        if (($fails > 20) && ((time() - $lastContact) > 3600)) {
+        $pn          = $device->get("HWPartNum");
+        if (($fails > 20) && ((time() - $lastContact) > 3600) && ($pn == "")) {
             \HUGnet\VPrint::out(
                 "Old unknown device ".sprintf("%06X", $device->get("id"))
                 ." deleted from the database",
