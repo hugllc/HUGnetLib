@@ -97,7 +97,7 @@ class E00392600 extends \HUGnet\devices\Driver
             $device->load(null);
         }
     }
-        /**
+    /**
     * Encodes this driver as a setup string
     *
     * @param object &$device   The device object

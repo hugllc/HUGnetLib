@@ -82,7 +82,6 @@ class Devices extends \HUGnet\ui\Daemon
         /* Get our Device */
         $this->_device = $this->system()->device();
         $this->_unsolicited = $this->system()->device();
-
     }
     /**
     * This is our main routine
@@ -97,6 +96,10 @@ class Devices extends \HUGnet\ui\Daemon
             parent::main();
             if (!$this->loop()) {
                 break;
+            }
+            if ($key == $this->system()->network()->device()->getID()) {
+                /* I don't need info on me */
+                continue;
             }
             $this->_device->load($key);
             $lastContact = time() - $this->_device->getParam("LastContact");

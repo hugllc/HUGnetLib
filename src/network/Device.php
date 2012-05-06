@@ -150,6 +150,8 @@ final class Device
             $this->_device = \HUGnet\Device::factory($this->_system, $this->_config);
             $this->_device->set("DeviceName", $this->_system->get("uuid"));
             $this->_device->set("DeviceLocation", $this->_system->get("IPAddr"));
+            $this->_device->set("RawSetup", $this->_device->encode());
+            $this->_device->set("GatewayKey", $this->_system->get("GatewayKey"));
             $this->_device->store();
         }
         return $this->_device;

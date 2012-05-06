@@ -73,6 +73,27 @@ class EDEFAULT extends \HUGnet\devices\Driver
     {
         return parent::intFactory();
     }
+    /**
+    * Checks a record to see if it needs fixing
+    *
+    * @param object &$device The device object
+    *
+    * @return array
+    */
+    public function checkRecord(&$device)
+    {
+        $lastContact = $device->getParam("LastContact");
+        $fails       = $device->getParam("ContactFail");
+        if (($fails > 20) && ((time() - $lastContact) > 3600)) {
+            \HUGnet\VPrint::out(
+                "Old unknown device ".sprintf("%06X", $device->get("id"))
+                ." deleted from the database",
+                1
+            );
+            $device->delete();
+            $device->load(null);
+        }
+    }
 
 }
 
