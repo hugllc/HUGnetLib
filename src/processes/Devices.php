@@ -104,9 +104,10 @@ class Devices extends \HUGnet\ui\Daemon
             $this->_device->load($key);
             $lastContact = time() - $this->_device->getParam("LastContact");
             $lastConfig = time() - $this->_device->getParam("LastConfig");
-            $lastPoll = (time() - $this->_device->getParam("LastPoll")) / 60;
+            $lastPoll = (time() - $this->_device->getParam("LastPoll"));
             /* This gives us some leeway so we are closer to the actual poll time */
-            $PollInterval = $this->_device->get("PollInterval") - self::WAIT_TIME;
+            $PollInterval = $this->_device->get("PollInterval");
+            $PollInterval = ($PollInterval * 60) - self::WAIT_TIME;
             $action = false;
             if ($lastContact > self::PING_TIME) {
                 $action = true;
