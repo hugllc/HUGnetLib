@@ -96,7 +96,7 @@ class E00392600Test extends DriverTestBase
                 array(
                     "Device" => array(
                         "get" => array(
-                            "FWPartNum" => "0039-26-06-P",
+                            "HWPartNum" => "0039-26-06-P",
                         ),
                     ),
                 ),
@@ -115,7 +115,7 @@ class E00392600Test extends DriverTestBase
                                 "DeviceJob", "Devices"
                             ),
                         ),
-                        "get" => array(array("FWPartNum")),
+                        "get" => array(array("HWPartNum")),
                     ),
                 ),
             ),
@@ -123,7 +123,7 @@ class E00392600Test extends DriverTestBase
                 array(
                     "Device" => array(
                         "get" => array(
-                            "FWPartNum" => "0039-26-04-P",
+                            "HWPartNum" => "0039-26-04-P",
                         ),
                     ),
                 ),
@@ -142,7 +142,7 @@ class E00392600Test extends DriverTestBase
                                 "DeviceJob", "Router"
                             ),
                         ),
-                        "get" => array(array("FWPartNum")),
+                        "get" => array(array("HWPartNum")),
                     ),
                 ),
             ),
@@ -150,7 +150,7 @@ class E00392600Test extends DriverTestBase
                 array(
                     "Device" => array(
                         "get" => array(
-                            "FWPartNum" => "0039-26-00-P",
+                            "HWPartNum" => "0039-26-00-P",
                         ),
                     ),
                 ),
@@ -169,7 +169,7 @@ class E00392600Test extends DriverTestBase
                                 "DeviceJob", "Unknown"
                             ),
                         ),
-                        "get" => array(array("FWPartNum")),
+                        "get" => array(array("HWPartNum")),
                     ),
                 ),
             ),
