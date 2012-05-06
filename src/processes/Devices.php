@@ -91,7 +91,7 @@ class Devices extends \HUGnet\ui\Daemon
     public function main()
     {
         $this->_mainStart = time();
-        $this->_ids = $this->_device->ids();
+        $this->_ids = $this->_device->ids(array("Active" => 1));
         foreach ((array)$this->_ids as $key => $devID) {
             parent::main();
             if (!$this->loop()) {
@@ -141,6 +141,8 @@ class Devices extends \HUGnet\ui\Daemon
                 parent::main();
                 sleep(1);
             }
+        } else {
+            $this->out("Too busy to wait at ".date("Y-m-d H:i:s"));
         }
     }
 
