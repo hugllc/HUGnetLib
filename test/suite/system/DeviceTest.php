@@ -356,6 +356,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "000000000500391201430039200343010203FFFFFFFF"
                         ."01000000000000000000"
                     ),
+                    array("Driver", "EDEFAULT"),
                     array("TimeConstant", 1),
                 ),
             ),

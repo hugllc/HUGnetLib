@@ -220,7 +220,11 @@ class Device extends SystemTableBase
     protected function &driver($driver = null)
     {
         if (empty($driver)) {
-            $driver = strtoupper((string)$this->table()->get("Driver"));
+            $driver = \HUGnet\devices\Driver::getDriver(
+                $this->table()->get("HWPartNum"),
+                $this->table()->get("FWPartNum"),
+                $this->table()->get("FWVersion")
+            );
         }
         if (!is_object($this->_driverCache[$driver])) {
             include_once dirname(__FILE__)."/../devices/Driver.php";

@@ -66,6 +66,7 @@ class E00392600 extends \HUGnet\devices\Driver
         "physicalSensors" => 0,
         "virtualSensors" => 0,
         "totalSensors" => 0,
+        "ConfigInterval" => 600,
     );
     /**
     * This function creates the system.
@@ -132,8 +133,8 @@ class E00392600 extends \HUGnet\devices\Driver
     public function decode($string, &$device)
     {
         $uuid = strtolower(substr((string)$string, 0, 32));
-        $device->setParam(
-            "uuid",
+        $device->set(
+            "DeviceName",
             substr($uuid, 0, 8)."-".substr($uuid, 8, 4)."-".substr($uuid, 12, 4)
             ."-".substr($uuid, 16, 4)."-".substr($uuid, 20)
         );

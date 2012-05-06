@@ -112,6 +112,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                         "RawSetup",
                         "00000000E80039CF01410039246743000302FFFFFF50"
                     ),
+                    array("Driver", "EDEFAULT"),
                 ),
                 "",
             ),
@@ -135,6 +136,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                         "RawSetup",
                         "00000000E80039CF01410039246743000102FFFFFF50"
                     ),
+                    array("Driver", "EDEFAULT"),
                 ),
                 "",
             ),
@@ -158,6 +160,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                         "RawSetup",
                         "00000000E80039CE01410039246743000005FFFFFF1E"
                     ),
+                    array("Driver", "EDEFAULT"),
                 ),
                 "",
             ),
@@ -182,6 +185,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                         "00000000E80039CD01410039456743000005FFFFFF"
                         ."530123456789"
                     ),
+                    array("Driver", "EDEFAULT"),
                 ),
                 "0123456789",
             ),
@@ -205,6 +209,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                         "RawSetup",
                         "00000000E80039CC01410039256743000005FFFFFF2101"
                     ),
+                    array("Driver", "EDEFAULT"),
                 ),
                 "01",
             ),
@@ -253,6 +258,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                         "RawSetup",
                         "00000000E80039CC01410039256743000005FFFFFF2101"
                     ),
+                    array("Driver", "EDEFAULT"),
                 ),
                 "01",
             ),

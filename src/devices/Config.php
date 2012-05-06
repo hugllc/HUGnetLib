@@ -97,6 +97,14 @@ class Config
             "DeviceGroup", trim(strtoupper(substr($string, self::GROUP, 6)))
         );
         $device->set("RawSetup", $string);
+        $device->set(
+            "Driver",
+            \HUGnet\devices\Driver::getDriver(
+                $device->get("HWPartNum"),
+                $device->get("FWPartNum"),
+                $device->get("FWVersion")
+            )
+        );
         return (string)substr($string, self::CONFIGEND);
     }
     /**

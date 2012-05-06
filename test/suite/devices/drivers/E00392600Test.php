@@ -98,13 +98,11 @@ class E00392600Test extends DriverTestBase
                 "9DDC21A799814E81A02BF1361D496AB1C0A82498",
                 array(
                     "Device" => array(
-                        "setParam" => array(
+                        "set" => array(
                             array(
-                                "uuid",
+                                "DeviceName",
                                 "9ddc21a7-9981-4e81-a02b-f1361d496ab1"
                             ),
-                        ),
-                        "set" => array(
                             array(
                                 "DeviceLocation", "192.168.36.152"
                             ),
