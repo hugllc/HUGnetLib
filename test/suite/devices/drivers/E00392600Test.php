@@ -92,8 +92,13 @@ class E00392600Test extends DriverTestBase
     public static function dataDecode()
     {
         return array(
-            array( // #0
+            array( // #0 Devices
                 array(
+                    "Device" => array(
+                        "get" => array(
+                            "FWPartNum" => "0039-26-06-P",
+                        ),
+                    ),
                 ),
                 "9DDC21A799814E81A02BF1361D496AB1C0A82498",
                 array(
@@ -106,7 +111,65 @@ class E00392600Test extends DriverTestBase
                             array(
                                 "DeviceLocation", "192.168.36.152"
                             ),
+                            array(
+                                "DeviceJob", "Devices"
+                            ),
                         ),
+                        "get" => array(array("FWPartNum")),
+                    ),
+                ),
+            ),
+            array( // #1 Router
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "FWPartNum" => "0039-26-04-P",
+                        ),
+                    ),
+                ),
+                "9DDC21A799814E81A02BF1361D496AB1C0A82498",
+                array(
+                    "Device" => array(
+                        "set" => array(
+                            array(
+                                "DeviceName",
+                                "9ddc21a7-9981-4e81-a02b-f1361d496ab1"
+                            ),
+                            array(
+                                "DeviceLocation", "192.168.36.152"
+                            ),
+                            array(
+                                "DeviceJob", "Router"
+                            ),
+                        ),
+                        "get" => array(array("FWPartNum")),
+                    ),
+                ),
+            ),
+            array( // #2 Unknown
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "FWPartNum" => "0039-26-00-P",
+                        ),
+                    ),
+                ),
+                "9DDC21A799814E81A02BF1361D496AB1C0A82498",
+                array(
+                    "Device" => array(
+                        "set" => array(
+                            array(
+                                "DeviceName",
+                                "9ddc21a7-9981-4e81-a02b-f1361d496ab1"
+                            ),
+                            array(
+                                "DeviceLocation", "192.168.36.152"
+                            ),
+                            array(
+                                "DeviceJob", "Unknown"
+                            ),
+                        ),
+                        "get" => array(array("FWPartNum")),
                     ),
                 ),
             ),

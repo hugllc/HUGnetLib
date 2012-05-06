@@ -88,6 +88,7 @@ class E00392600 extends \HUGnet\devices\Driver
     {
         $lastContact = $device->getParam("LastContact");
         $fails       = $device->getParam("ContactFail");
+
         if (($fails > 20) && ((time() - $lastContact) > 3600)) {
             \HUGnet\VPrint::out(
                 "Old script device ".sprintf("%06X", $device->get("id"))
@@ -149,6 +150,18 @@ class E00392600 extends \HUGnet\devices\Driver
                 hexdec($IP[3]) & 0xFF
             )
         );
+
+        switch ($device->get("FWPartNum")) {
+            case "0039-26-04-P":
+                $device->set("DeviceJob", "Router");
+                break;
+            case "0039-26-06-P":
+                $device->set("DeviceJob", "Devices");
+                break;
+            default:
+                $device->set("DeviceJob", "Unknown");
+                break;
+        }
     }
 
 }
