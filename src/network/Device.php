@@ -156,7 +156,11 @@ final class Device
         $config["FWVersion"] = $this->_device->get("FWVersion");
         $this->_device->load($config);
         if ($this->_device->get("id") == 0) {
-            $this->_device->set("id", $this->_config["id"]);
+            if (empty($this->_config["id"])) {
+                $this->_device->set("DeviceID", $this->getID());
+            } else {
+                $this->_device->set("DeviceID", $this->_config["id"]);
+            }
         } else {
             $this->_config["id"] = $this->_device->get("id");
         }
