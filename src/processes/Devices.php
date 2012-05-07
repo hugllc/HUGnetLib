@@ -56,6 +56,8 @@ class Devices extends \HUGnet\ui\Daemon
 {
     /** This is the time we lose contact for before we start pinging */
     const PING_TIME = 1200;
+    /** This is the time we lose contact for before we start pinging */
+    const FAIL_THRESHOLD = 20;
     /** This is the amount of time we wait */
     const WAIT_TIME = 30;
 
@@ -102,20 +104,14 @@ class Devices extends \HUGnet\ui\Daemon
                 continue;
             }
             $this->_device->load($key);
-            $lastContact = time() - $this->_device->getParam("LastContact");
-            $lastConfig = time() - $this->_device->getParam("LastConfig");
-            $lastPoll = (time() - $this->_device->getParam("LastPoll"));
-            /* This gives us some leeway so we are closer to the actual poll time */
-            $PollInterval = $this->_device->get("PollInterval");
-            $PollInterval = ($PollInterval * 60) - self::WAIT_TIME;
             $action = false;
-            if ($lastContact > self::PING_TIME) {
+            if ($this->_doPing()) {
                 $action = true;
                 $this->_ping();
-            } else if ($lastConfig > $this->_device->get("ConfigInterval")) {
+            } else if ($this->_doConfig()) {
                 $action = true;
                 $this->_config();
-            } else if (($PollInterval > 0) && ($lastPoll > $PollInterval)) {
+            } else if ($this->_doPoll()) {
                 $action = true;
                 $this->_poll();
             }
@@ -127,6 +123,53 @@ class Devices extends \HUGnet\ui\Daemon
             }
         }
         $this->_wait();
+    }
+    /**
+    * If true, we should ping this device
+    *
+    * This routine pings continuosly until it reaches self::FAIL_THRESHOLD, at
+    * which poing it only pings once every self::PING_TIME seconds.  This is so
+    * that pinging devices doesn't swamp the bus.
+    *
+    * @return bool
+    */
+    private function _doPing()
+    {
+        if ($this->_device->getParam("ContactFail") > self::FAIL_THRESHOLD) {
+            $lastContact = time() - $this->_device->getParam("LastContactTry");
+        } else {
+            $lastContact = time() - $this->_device->getParam("LastContact");
+        }
+        $ret = $lastContact > self::PING_TIME;
+        if ($ret) {
+            $this->_device->setParam("LastContactTry", time());
+        }
+        return $ret;
+    }
+    /**
+    * If true, we should poll this device
+    *
+    * @return bool
+    */
+    private function _doPoll()
+    {
+        /* PollInterval is in minutes, we need it in seconds */
+        $PollInterval = $this->_device->get("PollInterval") * 60;
+        if ($PollInterval <= 0) {
+            return false;
+        }
+        $lastPoll = (time() - $this->_device->getParam("LastPoll"));
+        return $lastPoll > ($PollInterval - 30);
+    }
+    /**
+    * If true, we should get the config of this device
+    *
+    * @return bool
+    */
+    private function _doConfig()
+    {
+        $lastConfig = time() - $this->_device->getParam("LastConfig");
+        return $lastConfig > $this->_device->get("ConfigInterval");
     }
     /**
     * This is our wait
@@ -210,7 +253,7 @@ class Devices extends \HUGnet\ui\Daemon
                 ." Interval: "
                 .round(
                     (($this->_device->getParam("LastConfig") - $lastConfig)/60), 2
-                )
+                )."/".$this->_device->get("ConfigInterval")
             );
         } else {
             $this->out(
