@@ -258,6 +258,8 @@ final class Application
                 if (is_object($reply)) {
                     $return->Reply($reply->Data());
                 }
+                /* Remove this queue */
+                unset($this->_queue[$qid]);
             } else {
                 $this->_queue[$qid]["token"] = $token;
                 $this->_queue[$qid]["packet"] = &$packet;
