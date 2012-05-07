@@ -67,6 +67,8 @@ class Devices extends \HUGnet\ui\Daemon
     private $_wait;
     /** The ids we are going through */
     private $_ids;
+    /** This is my ID */
+    private $_myID;
     /** This is the start time of the current run */
     private $_unsolicited;
     /** This is the start time of the current run */
@@ -93,14 +95,15 @@ class Devices extends \HUGnet\ui\Daemon
     public function main()
     {
         $this->_mainStart = time();
+        $this->_myID = $this->system()->network()->device()->getID();
         $this->_ids = $this->_device->ids(array("Active" => 1));
         foreach ((array)$this->_ids as $key => $devID) {
             parent::main();
             if (!$this->loop()) {
                 break;
             }
-            if ($key == $this->system()->network()->device()->getID()) {
-                /* I don't need info on me */
+            if (($key == $this->_myID) || ($key == 0)) {
+                /* I don't need info on me, or an empty device */
                 continue;
             }
             $this->_device->load($key);
@@ -115,8 +118,7 @@ class Devices extends \HUGnet\ui\Daemon
                 $action = true;
                 $this->_poll();
             }
-            $did = $this->_device->get("id");
-            if ($action && !empty($did)) {
+            if ($action) {
                 if (!$this->_device->store()) {
                     $this->out("Ouch!  Save failed!");
                 }
@@ -155,11 +157,12 @@ class Devices extends \HUGnet\ui\Daemon
     {
         /* PollInterval is in minutes, we need it in seconds */
         $PollInterval = $this->_device->get("PollInterval") * 60;
+        /* Don't run if the poll interval is 0 */
         if ($PollInterval <= 0) {
             return false;
         }
         $lastPoll = (time() - $this->_device->getParam("LastPoll"));
-        return $lastPoll > ($PollInterval - 30);
+        return $lastPoll > ($PollInterval - (self::WAIT_TIME * 2));
     }
     /**
     * If true, we should get the config of this device
@@ -185,7 +188,7 @@ class Devices extends \HUGnet\ui\Daemon
                 parent::main();
                 sleep(1);
             }
-        } else {
+        } else if ($this->loop()) {
             $this->out("Too busy to wait at ".date("Y-m-d H:i:s"));
         }
     }
@@ -253,7 +256,7 @@ class Devices extends \HUGnet\ui\Daemon
                 ." Interval: "
                 .round(
                     (($this->_device->getParam("LastConfig") - $lastConfig)/60), 2
-                )."/".$this->_device->get("ConfigInterval")
+                )."/".($this->_device->get("ConfigInterval") / 60)
             );
         } else {
             $this->out(
@@ -273,10 +276,13 @@ class Devices extends \HUGnet\ui\Daemon
             "Polling ".$this->_device->get("DeviceID")." Last Poll: ".
             date("Y-m-d H:i:s", $lastPoll)
         );
+        $time = microtime(true);
         $ret = $this->_device->action()->poll();
+        $time = microtime(true) - $time;
+        $time = round($time, 2);
         if ($ret) {
             $this->out(
-                "Success.  LastPoll set to: "
+                "Success in $time s.  LastPoll set to: "
                 .date("Y-m-d H:i:s", $this->_device->getParam("LastPoll"))
                 ." Interval: "
                 .round(

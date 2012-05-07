@@ -88,12 +88,11 @@ final class Device
         $this->_config["FWVersion"] = @file_get_contents(
             dirname(__FILE__).'/../VERSION.TXT'
         );
+        $this->_setupDevice();
         $this->getID();
         $this->_network->unsolicited(
             array($this, "packet"), $this->_config["DeviceID"]
         );
-        // Send the powerup packet
-        \HUGnet\VPrint::out("Using ID: ".$this->_config["DeviceID"], 1);
         $this->_powerup();
     }
     /**
@@ -135,7 +134,7 @@ final class Device
         if (($pkt->type() === "PING") || ($pkt->type() === "FINDPING")) {
             $this->_reply($pkt, $pkt->data());
         } else if (($pkt->type() === "CONFIG")) {
-            $this->_reply($pkt, $this->_device()->encode());
+            $this->_reply($pkt, $this->_device->encode());
         }
     }
     /**
@@ -143,18 +142,26 @@ final class Device
     *
     * @return null
     */
-    private function _device()
+    private function _setupDevice()
     {
-        if (!is_object($this->_device)) {
-            include_once dirname(__FILE__)."/../system/Device.php";
-            $this->_device = \HUGnet\Device::factory($this->_system, $this->_config);
-            $this->_device->set("DeviceName", $this->_system->get("uuid"));
-            $this->_device->set("DeviceLocation", $this->_system->get("IPAddr"));
-            $this->_device->set("RawSetup", $this->_device->encode());
-            $this->_device->set("GatewayKey", $this->_system->get("GatewayKey"));
-            $this->_device->store();
+        include_once dirname(__FILE__)."/../system/Device.php";
+        $this->_device = \HUGnet\Device::factory($this->_system);
+        $config = (array)$this->_config;
+        unset($config["id"]);
+        unset($config["DeviceID"]);
+        $config["DeviceName"] = $this->_system->get("uuid");
+        $config["DeviceLocation"] = $this->_system->get("IPAddr");
+        $config["GatewayKey"] = $this->_system->get("GatewayKey");
+        $this->_device->set("FWVersion", $config["FWVersion"]);
+        $config["FWVersion"] = $this->_device->get("FWVersion");
+        $this->_device->load($config);
+        if ($this->_device->get("id") == 0) {
+            $this->_device->set("id", $this->_config["id"]);
+        } else {
+            $this->_config["id"] = $this->_device->get("id");
         }
-        return $this->_device;
+        $this->_device->set("RawSetup", $this->_device->encode());
+        $this->_device->store();
     }
     /**
     * Replies to a packet
@@ -184,7 +191,7 @@ final class Device
     */
     private function _powerup()
     {
-        $data = substr($this->_device()->encode(), 0, 20);
+        $data = substr($this->_device->encode(), 0, 20);
 
         $newPacket = &Packet::factory(
             array(
@@ -251,7 +258,13 @@ final class Device
                 $newPacket, null, array("tries" => 1, "find" => false)
             );
             $lastBoredom = time();
-        } else if (($last > 600) && ((time() - $lastID) > 3600)) {
+        } else if ((time() - $lastID) > 300) {
+            $dev = $this->_device->encode();
+            $this->_device->load($this->_config["id"]);
+            $this->_device->decode($dev);
+            $this->_device->setParam("LastContact", time());
+            $this->_device->setParam("LastConfig", time());
+            $this->_device->store();
             \HUGnet\VPrint::out("Using ID: ".$this->_config["DeviceID"], 1);
             $lastID = time();
         }

@@ -138,6 +138,7 @@ class Action
         );
         if (is_string($pkt->reply())) {
             $this->_device->setParam("LastContact", time());
+            $this->_device->setParam("ContactFail", 0);
             return true;
         }
         $fail = $this->_device->getParam("ContactFail");
@@ -157,6 +158,7 @@ class Action
                 $this->_device->setParam("LastContact", time());
                 $this->_device->setParam("LastConfig", time());
                 $this->_device->setParam("ConfigFail", 0);
+                $this->_device->setParam("ContactFail", 0);
                 return true;
             }
         }
@@ -188,6 +190,7 @@ class Action
             $this->_device->setParam("LastPoll", time());
             $this->_device->setParam("LastContact", time());
             $this->_device->setParam("PollFail", 0);
+            $this->_device->setParam("ContactFail", 0);
             return true;
         }
         $fail = $this->_device->getParam("PollFail");
