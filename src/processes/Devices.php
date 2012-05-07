@@ -155,6 +155,9 @@ class Devices extends \HUGnet\ui\Daemon
     */
     private function _doPoll()
     {
+        if (!$this->_doContact()) {
+            return false;
+        }
         /* PollInterval is in minutes, we need it in seconds */
         $PollInterval = $this->_device->get("PollInterval") * 60;
         /* Don't run if the poll interval is 0 */
@@ -171,8 +174,21 @@ class Devices extends \HUGnet\ui\Daemon
     */
     private function _doConfig()
     {
+        if (!$this->_doContact()) {
+            return false;
+        }
         $lastConfig = time() - $this->_device->getParam("LastConfig");
         return $lastConfig > $this->_device->get("ConfigInterval");
+    }
+    /**
+    * If true, we should try to contact this device
+    *
+    * @return bool
+    */
+    private function _doContact()
+    {
+        $lastContact = time() - $this->_device->getParam("LastContact");
+        return $lastContact < self::PING_TIME;
     }
     /**
     * This is our wait
