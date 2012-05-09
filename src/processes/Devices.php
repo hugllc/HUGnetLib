@@ -247,7 +247,7 @@ class Devices extends \HUGnet\ui\Daemon
         } else {
             $fails = $this->_device->getParam("ContactFail");
             $this->out(
-                "Failed.  Failure #".$fails
+                "---> Failed.  Failure #".$fails
             );
             $this->_device->action()->checkRecord();
         }
@@ -276,7 +276,7 @@ class Devices extends \HUGnet\ui\Daemon
             );
         } else {
             $this->out(
-                "Failed.  Failure #".$this->_device->getParam("ConfigFail")
+                "---> Failed.  Failure #".$this->_device->getParam("ConfigFail")
             );
         }
     }
@@ -307,7 +307,7 @@ class Devices extends \HUGnet\ui\Daemon
             );
         } else {
             $this->out(
-                "Failed.  Failure #".$this->_device->getParam("PollFail")
+                "---> Failed.  Failure #".$this->_device->getParam("PollFail")
             );
         }
     }
