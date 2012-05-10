@@ -674,6 +674,20 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, $obj->json());
         unset($obj);
     }
+    /**
+    * This tests the action function
+    *
+    * @return null
+    *
+    */
+    public function testAction()
+    {
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = SystemTableBaseTestStub::factory($sys, null);
+        $this->assertSame($obj, $obj->action());
+        unset($obj);
+    }
 
 }
 /**

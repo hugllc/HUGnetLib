@@ -289,6 +289,15 @@ abstract class SystemTableBase
     protected function fixTable()
     {
     }
+    /**
+    * This function creates the action item.  The default is just to return this.
+    *
+    * @return Reference to the action object
+    */
+    public function &action()
+    {
+        return $this;
+    }
 }
 
 

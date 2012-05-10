@@ -197,6 +197,19 @@ class System
         $obj = Device::factory($this, $data);
         return $obj;
     }
+    /**
+    * This returns a dataCollector object.
+    *
+    * @param array $data The data to send to the device object
+    *
+    * @return Reference to a device object
+    */
+    public function &dataCollector($data = array())
+    {
+        include_once dirname(__FILE__)."/DataCollector.php";
+        $obj = DataCollector::factory($this, $data);
+        return $obj;
+    }
 
     /**
     * Throws an exception

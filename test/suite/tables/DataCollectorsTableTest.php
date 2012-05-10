@@ -191,6 +191,7 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
                         'group' => 'default',
                         'id' => '484',
                         'GatewayKey' => '1',
+                        'uuid' => '48aa1c44-85be-4179-beab-8bbad51c1824',
                         'name' => 'Test2',
                         'ip' => '192.168.192.125',
                         'LastContact' => 123456789,
@@ -201,6 +202,7 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
                         'group' => 'default',
                         'id' => '404',
                         'GatewayKey' => '1',
+                        'uuid' => '46ba8126-57a1-4038-b5e4-2e2585f9f5a5',
                         'name' => 'Test1',
                         'ip' => '192.168.192.5',
                         'LastContact' => 12345678,
@@ -238,7 +240,7 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
             do {
                 $data[] = $this->o->toArray();
             } while ($this->o->nextInto());
-            $this->assertSame($expect, $data, "Data Wrong");
+            $this->assertEquals($expect, $data, "Data Wrong");
         }
     }
     /**
@@ -253,6 +255,7 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
                 array(
                     "id" => 156,
                     "GatewayKey" => 23,
+                    'uuid' => 'fef93952-dc8a-4d0d-b8e8-f585e6d46b45',
                     "name" => "hello",
                     "ip" => "192.168.54.2",
                     "SetupString" => "there",
@@ -262,6 +265,7 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
                     0 => array(
                         'id' => '404',
                         'GatewayKey' => '1',
+                        'uuid' => '46ba8126-57a1-4038-b5e4-2e2585f9f5a5',
                         'name' => 'Test1',
                         'ip' => '192.168.192.5',
                         'LastContact' => '12345678',
@@ -271,6 +275,7 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
                     1 => array(
                         'id' => '484',
                         'GatewayKey' => '1',
+                        'uuid' => '48aa1c44-85be-4179-beab-8bbad51c1824',
                         'name' => 'Test2',
                         'ip' => '192.168.192.125',
                         'LastContact' => '123456789',
@@ -280,6 +285,7 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
                     2 => array(
                         'id' => '848',
                         'GatewayKey' => '2',
+                        'uuid' => 'e11d53ce-2458-48d8-9d81-8f8def0162c5',
                         'name' => 'Test3',
                         'ip' => '192.168.192.82',
                         'LastContact' => '123456789',
@@ -289,6 +295,7 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
                     3 => array(
                         'id' => '156',
                         'GatewayKey' => '23',
+                        'uuid' => 'fef93952-dc8a-4d0d-b8e8-f585e6d46b45',
                         'name' => 'hello',
                         'ip' => '192.168.54.2',
                         'SetupString' => "there",

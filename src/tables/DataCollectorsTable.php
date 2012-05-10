@@ -58,7 +58,7 @@ class DataCollectorsTable extends HUGnetDBTable
     /** @var string This is the table we should use */
     public $sqlTable = "datacollectors";
     /** @var string This is the primary key of the table.  Leave blank if none  */
-    public $sqlId = "";
+    public $sqlId = "uuid";
     /**
     * @var array This is the definition of the columns
     *
@@ -93,6 +93,11 @@ class DataCollectorsTable extends HUGnetDBTable
         "GatewayKey" => array(
             "Name" => "GatewayKey",
             "Type" => "int",
+            "Null" => false,
+        ),
+        "uuid" => array(
+            "Name" => "uuid",
+            "Type" => "varchar(36)",
             "Null" => false,
         ),
         "name" => array(
@@ -141,6 +146,11 @@ class DataCollectorsTable extends HUGnetDBTable
             "Unique" => true,
             "Columns" => array("GatewayKey", "ip"),
         ),
+        "uuid" => array(
+            "Name" => "uuid",
+            "Unique" => true,
+            "Columns" => array("uuid"),
+        ),
     );
 
     /** @var array This is the default values for the data */
@@ -187,6 +197,22 @@ class DataCollectorsTable extends HUGnetDBTable
         $this->SetupString = $dev->toSetupString();
         $config = &ConfigContainer::singleton();
         $this->Config = $config->toString(false);
+    }
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param DeviceContainer &$dev The device container to use
+    *
+    * @return null
+    */
+    public function fromDevice(&$dev)
+    {
+        $this->id = $dev->get("id");
+        $this->uuid = $dev->get("DeviceName");
+        $this->GatewayKey = $dev->get("GatewayKey");
+        $this->ip = $dev->get("DeviceLocation");
+        $this->SetupString = $dev->encode();
+        $this->Config = $dev->system()->config();
     }
     /**
     * Sets all of the endpoint attributes from an array
