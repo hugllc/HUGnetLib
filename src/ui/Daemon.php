@@ -129,6 +129,9 @@ class Daemon extends CLI
         if (is_array($config)) {
             if (isset($config["enable"]) && ($config["enable"] == false)) {
                 $this->out("$program is disabled in ".$this->system()->get("file"));
+                if (isset($config["wait"])) {
+                    sleep($config["wait"]);
+                }
                 exit(1);
             }
         }
