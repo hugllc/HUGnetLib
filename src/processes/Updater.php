@@ -35,6 +35,8 @@
 namespace HUGnet\processes;
 /** This is our base class */
 require_once dirname(__FILE__)."/../ui/Daemon.php";
+/** This is our base class */
+require_once dirname(__FILE__)."/../updater/Periodic.php";
 
 /**
  * This code routes packets to their correct destinations.
@@ -57,8 +59,6 @@ class Updater extends \HUGnet\ui\Daemon
     /** This is the amount of time we wait */
     const WAIT_TIME = 30;
 
-    /** This is the start time of the current run */
-    private $_mainStart;
     /** How long we should wait */
     private $_wait;
     /**
@@ -77,7 +77,10 @@ class Updater extends \HUGnet\ui\Daemon
     */
     public function main()
     {
-        $this->_mainStart = time();
+        $plugins = &\HUGnet\updater\Periodic::plugins($this);
+        foreach ($plugins as $key => $obj) {
+            $obj->execute();
+        }
         $this->_wait();
     }
     /**
@@ -87,15 +90,13 @@ class Updater extends \HUGnet\ui\Daemon
     */
     private function _wait()
     {
-        $this->_wait = self::WAIT_TIME - (time() - $this->_mainStart);
+        $this->_wait = self::WAIT_TIME;
         if (($this->_wait > 0) && $this->loop()) {
             $this->out("Waiting ".$this->_wait." seconds at ".date("Y-m-d H:i:s"));
             for (; ($this->_wait > 0) && $this->loop(); $this->_wait--) {
                 parent::main();
                 sleep(1);
             }
-        } else if ($this->loop()) {
-            $this->out("Too busy to wait at ".date("Y-m-d H:i:s"));
         }
     }
 

@@ -7,6 +7,7 @@
  * <pre>
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2012 Hunt Utilities Group, LLC
+ * Copyright (C) 2009 Scott Price
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,70 +26,76 @@
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage System
+ * @subpackage Devices
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
+ * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
 /** This is the HUGnet namespace */
-namespace HUGnet;
+namespace HUGnet\updater\periodic;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
-/** This is our base class */
-require_once dirname(__FILE__)."/../base/SystemTableBase.php";
 
 /**
- * Base system class.
+ * Networking for devices.
  *
- * This class is the new API into HUGnetLib.  It controls the config and gives out
- * objects for everything else.  This is the only file that should be
+ * This class will do all of the networking for devices.  It will poll, get configs,
+ * update software, and anything else related to talking to devices.
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage System
+ * @subpackage Devices
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
+ * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class DataCollector extends SystemTableBase
+class Checkin extends \HUGnet\updater\Periodic
 {
+    /** This is the period */
+    protected $period = 600;
     /**
     * This function creates the system.
     *
-    * @param mixed  $system (object)The system object to use
-    * @param mixed  $data   (int)The id of the item, (array) data info array
-    * @param string $table  The table to use
+    * @param object &$gui the user interface object
     *
     * @return null
     */
-    public static function &factory(
-        $system, $data=null, $table="DataCollectorsTable"
-    ) {
-        $object = &parent::factory($system, $data, $table);
-        return $object;
+    public static function &factory(&$gui)
+    {
+        return parent::intFactory($gui);
     }
     /**
-    * Gets the config and saves it
+    * This function creates the system.
     *
-    * @return string The left over string
+    * @return null
     */
-    public function checkin()
+    public function &execute()
     {
         $master = $this->system()->get("master");
-        return \HUGnet\Util::postData(
-            $master["url"],
-            array(
-                "uuid"          => urlencode($this->system()->get("uuid")),
-                "action"        => "checkin",
-                "task"          => "datacollector",
-                "datacollector" => $this->toArray(true),
-            )
-        );
+        if ($this->ready() && is_array($master)) {
+            $this->ui()->out("Checking in with the master server...");
+            $device = $this->system()->device(
+                $this->system()->network()->device()->getID()
+            );
+            $datacollector = $this->system()->datacollector($device);
+            if (function_exists("posix_uname")) {
+                $uname = posix_uname();
+                $datacollector->set("name", trim($uname['nodename']));
+            }
+            $ret = $datacollector->checkin();
+            if ($ret === "success") {
+                $this->success();
+            } else {
+                $this->failure();
+            }
+        }
     }
 }
 

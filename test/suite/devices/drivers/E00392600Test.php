@@ -100,7 +100,7 @@ class E00392600Test extends DriverTestBase
                         ),
                     ),
                 ),
-                "9DDC21A799814E81A02BF1361D496AB1C0A82498",
+                "9DDC21A799814E81A02BF1361D496AB1C0A824980001",
                 array(
                     "Device" => array(
                         "set" => array(
@@ -110,6 +110,9 @@ class E00392600Test extends DriverTestBase
                             ),
                             array(
                                 "DeviceLocation", "192.168.36.152"
+                            ),
+                            array(
+                                "GatewayKey", 1
                             ),
                             array(
                                 "DeviceJob", "Devices"
@@ -127,7 +130,7 @@ class E00392600Test extends DriverTestBase
                         ),
                     ),
                 ),
-                "9DDC21A799814E81A02BF1361D496AB1C0A82498",
+                "9DDC21A799814E81A02BF1361D496AB1C0A824980002",
                 array(
                     "Device" => array(
                         "set" => array(
@@ -137,6 +140,9 @@ class E00392600Test extends DriverTestBase
                             ),
                             array(
                                 "DeviceLocation", "192.168.36.152"
+                            ),
+                            array(
+                                "GatewayKey", 2
                             ),
                             array(
                                 "DeviceJob", "Router"
@@ -154,7 +160,7 @@ class E00392600Test extends DriverTestBase
                         ),
                     ),
                 ),
-                "9DDC21A799814E81A02BF1361D496AB1C0A82498",
+                "9DDC21A799814E81A02BF1361D496AB1C0A82498FFFF",
                 array(
                     "Device" => array(
                         "set" => array(
@@ -164,6 +170,9 @@ class E00392600Test extends DriverTestBase
                             ),
                             array(
                                 "DeviceLocation", "192.168.36.152"
+                            ),
+                            array(
+                                "GatewayKey", 0xFFFF
                             ),
                             array(
                                 "DeviceJob", "Unknown"
@@ -181,7 +190,7 @@ class E00392600Test extends DriverTestBase
                         ),
                     ),
                 ),
-                "9DDC21A799814E81A02BF1361D496AB1C0A82498",
+                "9DDC21A799814E81A02BF1361D496AB1C0A824981234",
                 array(
                     "Device" => array(
                         "set" => array(
@@ -191,6 +200,9 @@ class E00392600Test extends DriverTestBase
                             ),
                             array(
                                 "DeviceLocation", "192.168.36.152"
+                            ),
+                            array(
+                                "GatewayKey", 0x1234
                             ),
                             array(
                                 "DeviceJob", "Updater"
@@ -235,6 +247,7 @@ class E00392600Test extends DriverTestBase
                         "system" => new \HUGnet\DummySystem("System"),
                         "get" => array(
                             "DeviceLocation" => "192.168.36.152",
+                            "GatewayKey" => 0x25,
                         ),
                     ),
                     "System" => array(
@@ -244,14 +257,15 @@ class E00392600Test extends DriverTestBase
                     ),
                 ),
                 true,
-                "9DDC21A799814E81A02BF1361D496AB1C0A82498",
+                "9DDC21A799814E81A02BF1361D496AB1C0A824980025",
             ),
-            array( // #0
+            array( // #1
                 array(
                     "Device" => array(
                         "system" => new \HUGnet\DummySystem("System"),
                         "get" => array(
                             "DeviceLocation" => "",
+                            "GatewayKey" => 0,
                         ),
                     ),
                     "System" => array(
@@ -261,14 +275,15 @@ class E00392600Test extends DriverTestBase
                     ),
                 ),
                 true,
-                "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000",
+                "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000",
             ),
-            array( //#1
+            array( //#2
                 array(
                     "Device" => array(
                         "system" => new \HUGnet\DummySystem("System"),
                         "get" => array(
                             "DeviceLocation" => "192.168.36.152",
+                            "GatewayKey" => 0x1002
                         ),
                     ),
                     "System" => array(
@@ -278,14 +293,15 @@ class E00392600Test extends DriverTestBase
                     ),
                 ),
                 false,
-                "9DDC21A799814E81A02BF1361D496AB1C0A82498",
+                "9DDC21A799814E81A02BF1361D496AB1C0A824981002",
             ),
-            array( // #2
+            array( // #3
                 array(
                     "Device" => array(
                         "system" => new \HUGnet\DummySystem("System"),
                         "get" => array(
                             "DeviceLocation" => "5192.5168.336.6152",
+                            "GatewayKey" => 0x1234,
                         ),
                     ),
                     "System" => array(
@@ -295,7 +311,7 @@ class E00392600Test extends DriverTestBase
                     ),
                 ),
                 true,
-                "9DDC21A799814E81A02BF1361D496AB148305008",
+                "9DDC21A799814E81A02BF1361D496AB1483050081234",
             ),
         );
     }

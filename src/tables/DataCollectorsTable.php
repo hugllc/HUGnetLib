@@ -58,7 +58,7 @@ class DataCollectorsTable extends HUGnetDBTable
     /** @var string This is the table we should use */
     public $sqlTable = "datacollectors";
     /** @var string This is the primary key of the table.  Leave blank if none  */
-    public $sqlId = "uuid";
+    public $sqlId = "";
     /**
     * @var array This is the definition of the columns
     *
@@ -85,19 +85,14 @@ class DataCollectorsTable extends HUGnetDBTable
     * fields.  The index of the base array should be the same as the "Name" field.
     */
     public $sqlColumns = array(
-        "id" => array(
-            "Name" => "id",
-            "Type" => "INTEGER",
+        "uuid" => array(
+            "Name" => "uuid",
+            "Type" => "varchar(36)",
             "Null" => false,
         ),
         "GatewayKey" => array(
             "Name" => "GatewayKey",
             "Type" => "int",
-            "Null" => false,
-        ),
-        "uuid" => array(
-            "Name" => "uuid",
-            "Type" => "varchar(36)",
             "Null" => false,
         ),
         "name" => array(
@@ -188,56 +183,13 @@ class DataCollectorsTable extends HUGnetDBTable
     *
     * @return null
     */
-    public function fromDeviceContainer(DeviceContainer &$dev)
-    {
-        $this->id = $dev->id;
-        $this->name = $dev->DeviceName;
-        $this->GatewayKey = $dev->GatewayKey;
-        $this->ip = $dev->DeviceLocation;
-        $this->SetupString = $dev->toSetupString();
-        $config = &ConfigContainer::singleton();
-        $this->Config = $config->toString(false);
-    }
-    /**
-    * Sets all of the endpoint attributes from an array
-    *
-    * @param DeviceContainer &$dev The device container to use
-    *
-    * @return null
-    */
     public function fromDevice(&$dev)
     {
-        $this->id = $dev->get("id");
         $this->uuid = $dev->get("DeviceName");
         $this->GatewayKey = $dev->get("GatewayKey");
         $this->ip = $dev->get("DeviceLocation");
         $this->SetupString = $dev->encode();
-        $this->Config = $dev->system()->config();
-    }
-    /**
-    * Sets all of the endpoint attributes from an array
-    *
-    * @param DeviceContainer &$dev The device container to use
-    *
-    * @return null
-    */
-    public function getMine(DeviceContainer &$dev)
-    {
-        $this->selectOneInto(
-            "`GatewayKey` = ? AND `ip` = ?",
-            array($dev->GatewayKey, $dev->DeviceLocation)
-        );
-        return (int)$this->id;
-    }
-    /**
-    * Sets all of the endpoint attributes from an array
-    *
-    * @return null
-    */
-    public function registerMe()
-    {
-        $this->LastContact = time();
-        return $this->insertRow(true);
+        $this->Config = json_encode($dev->system()->config());
     }
     /**
     * Creates the object from a string or array
@@ -248,8 +200,8 @@ class DataCollectorsTable extends HUGnetDBTable
     */
     public function fromAny(&$data)
     {
-        if (is_object($data) && is_a($data, "DeviceContainer")) {
-            $this->fromDeviceContainer($data);
+        if (is_object($data) && is_a($data, "HUGnet\Device")) {
+            $this->fromDevice($data);
         } else {
             parent::fromAny($data);
         }
@@ -271,6 +223,5 @@ class DataCollectorsTable extends HUGnetDBTable
     {
         $this->data["LastContact"] = self::unixDate($value);
     }
-
 }
 ?>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dataset>
     <table name="datacollectors">
-        <column>id</column>
         <column>GatewayKey</column>
         <column>uuid</column>
         <column>name</column>
@@ -10,7 +9,6 @@
         <column>SetupString</column>
         <column>Config</column>
         <row>
-            <value>404</value>
             <value>1</value>
             <value>46ba8126-57a1-4038-b5e4-2e2585f9f5a5</value>
             <value>Test1</value>
@@ -20,7 +18,6 @@
             <value>b</value>
         </row>
         <row>
-            <value>484</value>
             <value>1</value>
             <value>48aa1c44-85be-4179-beab-8bbad51c1824</value>
             <value>Test2</value>
@@ -30,7 +27,6 @@
             <value>d</value>
         </row>
         <row>
-            <value>848</value>
             <value>2</value>
             <value>e11d53ce-2458-48d8-9d81-8f8def0162c5</value>
             <value>Test3</value>

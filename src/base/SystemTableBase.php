@@ -184,7 +184,7 @@ abstract class SystemTableBase
             }
             $ret = $this->table()->selectOneInto($where, $whereData);
         }
-        if (!$ret && (is_array($data) || is_string($data))) {
+        if (!$ret && (is_array($data) || is_string($data) || is_object($data))) {
             $this->table()->fromAny($data);
             $this->fixTable();
             $ret = true;
@@ -217,7 +217,18 @@ abstract class SystemTableBase
     */
     public function json()
     {
-        return json_encode($this->table()->toArray(true));
+        return json_encode($this->toArray(true));
+    }
+    /**
+    * Returns the table as an array
+    *
+    * @param bool $default Whether or not to include the default values
+    *
+    * @return array
+    */
+    public function toArray($default = false)
+    {
+        return $this->table()->toArray($default);
     }
     /**
     * Stores data into the database
@@ -230,10 +241,10 @@ abstract class SystemTableBase
     {
         $sid = $this->table()->get($this->table()->sqlId);
         $this->fixTable();
-        if (!empty($sid)) {
-            $ret = $this->table()->updateRow();
+        if (empty($sid) || $replace) {
+             $ret = $this->table()->insertRow($replace);
         } else {
-            $ret = $this->table()->insertRow($replace);
+            $ret = $this->table()->updateRow();
         }
         return (bool)$ret;
     }

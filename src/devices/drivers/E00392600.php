@@ -109,7 +109,7 @@ class E00392600 extends \HUGnet\devices\Driver
     */
     public function encode(&$device, $showFixed = true)
     {
-        $string  = strtoupper(
+        $string = strtoupper(
             str_replace("-", "", (string)$device->system()->get("uuid"))
         );
         $string = str_pad($string, 32, "F");
@@ -121,6 +121,7 @@ class E00392600 extends \HUGnet\devices\Driver
             (int)$IP[2] & 0xFF,
             (int)$IP[3] & 0xFF
         );
+        $string .= sprintf("%04X", $device->get("GatewayKey"));
         return $string;
     }
     /**
@@ -139,7 +140,7 @@ class E00392600 extends \HUGnet\devices\Driver
             substr($uuid, 0, 8)."-".substr($uuid, 8, 4)."-".substr($uuid, 12, 4)
             ."-".substr($uuid, 16, 4)."-".substr($uuid, 20)
         );
-        $IP = str_split(substr((string)$string, 32), 2);
+        $IP = str_split(substr((string)$string, 32, 8), 2);
         $device->set(
             "DeviceLocation",
             sprintf(
@@ -150,6 +151,7 @@ class E00392600 extends \HUGnet\devices\Driver
                 hexdec($IP[3]) & 0xFF
             )
         );
+        $device->set("GatewayKey", hexdec(substr((string)$string, 40, 4)));
 
         switch ($device->get("HWPartNum")) {
             case "0039-26-02-P":

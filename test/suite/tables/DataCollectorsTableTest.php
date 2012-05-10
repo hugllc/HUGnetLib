@@ -37,9 +37,17 @@
 /** This is a required class */
 require_once CODE_BASE.'tables/DataCollectorsTable.php';
 /** This is a required class */
-require_once CODE_BASE.'containers/DeviceContainer.php';
+require_once CODE_BASE.'system/Device.php';
+/** This is a required class */
+require_once CODE_BASE.'system/System.php';
+/** This is a required class */
+require_once CODE_BASE.'system/Error.php';
+/** This is a required class */
+require_once CODE_BASE.'util/Util.php';
 /** This is a required class */
 require_once TEST_BASE."tables/HUGnetDBTableTestBase.php";
+/** This is the dummy table container */
+require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
 
 /**
  * Test class for filter.
@@ -189,7 +197,6 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
                 array(
                     0 => array(
                         'group' => 'default',
-                        'id' => '484',
                         'GatewayKey' => '1',
                         'uuid' => '48aa1c44-85be-4179-beab-8bbad51c1824',
                         'name' => 'Test2',
@@ -200,7 +207,6 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
                     ),
                     1 => array(
                         'group' => 'default',
-                        'id' => '404',
                         'GatewayKey' => '1',
                         'uuid' => '46ba8126-57a1-4038-b5e4-2e2585f9f5a5',
                         'name' => 'Test1',
@@ -244,134 +250,6 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
         }
     }
     /**
-    * Data provider for testRegisterMe
-    *
-    * @return array
-    */
-    public static function dataRegisterMe()
-    {
-        return array(
-            array(
-                array(
-                    "id" => 156,
-                    "GatewayKey" => 23,
-                    'uuid' => 'fef93952-dc8a-4d0d-b8e8-f585e6d46b45',
-                    "name" => "hello",
-                    "ip" => "192.168.54.2",
-                    "SetupString" => "there",
-                    "Config" => "Hello",
-                ),
-                array(
-                    0 => array(
-                        'id' => '404',
-                        'GatewayKey' => '1',
-                        'uuid' => '46ba8126-57a1-4038-b5e4-2e2585f9f5a5',
-                        'name' => 'Test1',
-                        'ip' => '192.168.192.5',
-                        'LastContact' => '12345678',
-                        'SetupString' => "a",
-                        'Config' => "b",
-                    ),
-                    1 => array(
-                        'id' => '484',
-                        'GatewayKey' => '1',
-                        'uuid' => '48aa1c44-85be-4179-beab-8bbad51c1824',
-                        'name' => 'Test2',
-                        'ip' => '192.168.192.125',
-                        'LastContact' => '123456789',
-                        'SetupString' => "c",
-                        'Config' => "d",
-                    ),
-                    2 => array(
-                        'id' => '848',
-                        'GatewayKey' => '2',
-                        'uuid' => 'e11d53ce-2458-48d8-9d81-8f8def0162c5',
-                        'name' => 'Test3',
-                        'ip' => '192.168.192.82',
-                        'LastContact' => '123456789',
-                        'SetupString' => "e",
-                        'Config' => "f",
-                    ),
-                    3 => array(
-                        'id' => '156',
-                        'GatewayKey' => '23',
-                        'uuid' => 'fef93952-dc8a-4d0d-b8e8-f585e6d46b45',
-                        'name' => 'hello',
-                        'ip' => '192.168.54.2',
-                        'SetupString' => "there",
-                        'Config' => "Hello",
-                    ),
-                ),
-                true,
-            ),
-        );
-    }
-    /**
-    * Tests the insert of a DeviceID
-    *
-    * @param mixed $data   The data to use
-    * @param array $expect The expected table row
-    * @param bool  $ret    The expected return
-    *
-    * @dataProvider dataRegisterMe
-    *
-    * @return null
-    */
-    public function testRegisterMe($data, $expect, $ret)
-    {
-        $time = time();
-        $this->o->clearData();
-        $this->o->fromAny($data);
-        $return = $this->o->registerMe();
-        $stmt = $this->pdo->query("SELECT * FROM `datacollectors`");
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($rows as $k => $v) {
-            if ($v["id"] == $data["id"]) {
-                $this->assertGreaterThanOrEqual(
-                    $time, $v["LastContact"], "LastContact not set properly"
-                );
-                unset ($rows[$k]["LastContact"]);
-            }
-        }
-        $this->assertSame($expect, $rows);
-        $this->assertSame($ret, $return);
-    }
-    /**
-    * Data provider for testRegisterMe
-    *
-    * @return array
-    */
-    public static function dataGetMine()
-    {
-        return array(
-            array(
-                array(
-                    "id" => 0x156,
-                    "DeviceID" => "000156",
-                    "GatewayKey" => 1,
-                    "DeviceLocation" => "192.168.192.5",
-                ),
-                404,
-            ),
-        );
-    }
-    /**
-    * Tests the insert of a DeviceID
-    *
-    * @param mixed $data   The data to use
-    * @param array $expect The expected table row
-    *
-    * @dataProvider dataGetMine
-    *
-    * @return null
-    */
-    public function testGetMine($data, $expect)
-    {
-        $dev = new DeviceContainer($data);
-        $ret = $this->o->getMine($dev);
-        $this->assertSame($expect, $ret);
-    }
-    /**
     * data provider for testForceTable
     *
     * @return array
@@ -380,27 +258,31 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
     {
         return array(
             array(
-                new DeviceContainer(
-                    array(
-                        "id" => 12,
-                        "HWPartNum" => "0039-21-02-A",
-                        "FWPartNum" => "0039-20-01-A",
-                        "FWVersion" => "0.1.2",
-                        "GatewayKey" => 5,
-                        "DeviceName" => "This is a Name",
-                    )
+                array(
+                    "System" => array(
+                        "config" => array(1, 2, 3, 4, 5),
+                        "get" => array(
+                            "uuid" => "fa7d187c-9b3f-4c3e-983d-d1311dd6d3cf",
+                        ),
+                    ),
                 ),
                 array(
-                    "id" => 12,
+                    "GatewayKey" => 5,
+                    "DeviceName" => "fa7d187c-9b3f-4c3e-983d-d1311dd6d3cf",
+                    "DeviceLocation" => "1.2.3.4",
+                    "id" => 0xC,
+                    "HWPartNum" => "0039-26-02-P",
+                    "FWPartNum" => "0039-26-00-P",
+                    "FWVersion" => "0.1.2",
+                ),
+                array(
                     'GatewayKey' => 5,
-                    'name' => 'This is a Name',
+                    "ip" => '1.2.3.4',
+                    "uuid" => "fa7d187c-9b3f-4c3e-983d-d1311dd6d3cf",
                     'LastContact' => 0,
-                    'SetupString' => '000000000C00392102410039200141000102FFFFFF00',
-                    'Config' => "YTo1OntzOjE1OiJodWduZXRfZGF0YWJhc2UiO3M6NjoiSFVHT"
-                        ."mV0IjtzOjE0OiJzY3JpcHRfZ2F0ZXdheSI7aTo0O3M6MTA6InBsdWdpb"
-                        ."kRhdGEiO2E6MTp7aTo1O3M6MToiaCI7fXM6MTE6ImFkbWluX2VtYWlsI"
-                        ."jtzOjE1OiJtZUBteWRvbWFpbi5jb20iO3M6OToidXNlU29ja2V0IjtzO"
-                        ."jU6ImR1bW15Ijt9",
+                    'SetupString' => '000000000C00392602500039260050000102'
+                        .'FFFFFFFFFA7D187C9B3F4C3E983DD1311DD6D3CF010203040005',
+                    'Config' => json_encode(array(1, 2, 3, 4, 5)),
                 ),
             ),
         );
@@ -416,10 +298,14 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
     *
     * @dataProvider dataFromAny
     */
-    public function testFromAny($dev, $expect)
+    public function testFromAny($mock, $dev, $expect)
     {
-        $this->o->fromAny($dev);
-        $this->assertSame($expect, $this->o->toArray(false));
+        $sys = new \HUGnet\DummySystem("System");
+        $sys->resetMock($mock);
+        $device = \HUGnet\Device::factory($sys, $dev);
+
+        $this->o->fromAny($device);
+        $this->assertEquals($expect, $this->o->toArray(false));
     }
 }
 
