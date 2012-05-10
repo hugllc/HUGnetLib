@@ -3,6 +3,7 @@
     <table name="datacollectors">
         <column>id</column>
         <column>GatewayKey</column>
+        <column>uuid</column>
         <column>name</column>
         <column>ip</column>
         <column>LastContact</column>
@@ -11,6 +12,7 @@
         <row>
             <value>404</value>
             <value>1</value>
+            <value>46ba8126-57a1-4038-b5e4-2e2585f9f5a5</value>
             <value>Test1</value>
             <value>192.168.192.5</value>
             <value>12345678</value>
@@ -20,6 +22,7 @@
         <row>
             <value>484</value>
             <value>1</value>
+            <value>48aa1c44-85be-4179-beab-8bbad51c1824</value>
             <value>Test2</value>
             <value>192.168.192.125</value>
             <value>123456789</value>
@@ -29,6 +32,7 @@
         <row>
             <value>848</value>
             <value>2</value>
+            <value>e11d53ce-2458-48d8-9d81-8f8def0162c5</value>
             <value>Test3</value>
             <value>192.168.192.82</value>
             <value>123456789</value>
