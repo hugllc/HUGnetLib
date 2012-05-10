@@ -211,22 +211,6 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
                 "periodic",
                 null,
                 array (
-                    'testPeriodic' => array (
-                        'Name' => 'testPeriodic',
-                        'Type' => 'periodic',
-                        'Class' => 'TestPeriodicPlugin',
-                        'Flags' => array (
-                            0 => 'testPeriodic',
-                        ),
-                    ),
-                    'testPeriodic2' => array (
-                        'Name' => 'testPeriodic2',
-                        'Type' => 'periodic',
-                        'Class' => 'TestPeriodicPlugin2',
-                        'Flags' => array (
-                            0 => 'testPeriodic2',
-                        ),
-                    ),
                 ),
                 array(
                 ),
@@ -374,22 +358,6 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
                 null,
                 false,
                 array (
-                    'testPeriodic' => array (
-                        'Name' => 'testPeriodic',
-                        'Type' => 'periodic',
-                        'Class' => 'TestPeriodicPlugin',
-                        'Flags' => array (
-                            0 => 'testPeriodic',
-                        ),
-                    ),
-                    'testPeriodic2' => array (
-                        'Name' => 'testPeriodic2',
-                        'Type' => 'periodic',
-                        'Class' => 'TestPeriodicPlugin2',
-                        'Flags' => array (
-                            0 => 'testPeriodic2',
-                        ),
-                    ),
                 ),
             ),
             array( // #1
