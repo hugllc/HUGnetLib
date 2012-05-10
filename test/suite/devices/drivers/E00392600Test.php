@@ -173,6 +173,33 @@ class E00392600Test extends DriverTestBase
                     ),
                 ),
             ),
+            array( // #3 Updater
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "HWPartNum" => "0039-26-02-P",
+                        ),
+                    ),
+                ),
+                "9DDC21A799814E81A02BF1361D496AB1C0A82498",
+                array(
+                    "Device" => array(
+                        "set" => array(
+                            array(
+                                "DeviceName",
+                                "9ddc21a7-9981-4e81-a02b-f1361d496ab1"
+                            ),
+                            array(
+                                "DeviceLocation", "192.168.36.152"
+                            ),
+                            array(
+                                "DeviceJob", "Updater"
+                            ),
+                        ),
+                        "get" => array(array("HWPartNum")),
+                    ),
+                ),
+            ),
         );
     }
     /**

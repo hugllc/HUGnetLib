@@ -152,6 +152,9 @@ class E00392600 extends \HUGnet\devices\Driver
         );
 
         switch ($device->get("HWPartNum")) {
+            case "0039-26-02-P":
+                $device->set("DeviceJob", "Updater");
+                break;
             case "0039-26-04-P":
                 $device->set("DeviceJob", "Router");
                 break;
