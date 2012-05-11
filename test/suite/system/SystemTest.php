@@ -274,9 +274,23 @@ class SystemTest extends \PHPUnit_Framework_TestCase
                 array(
                     "hello" => "there",
                     "asdf" => array(1,2),
+                    "network" => array(
+                        "default" => array(
+                            "driver" => "SocketNull",
+                        ),
+                    ),
                 ),
                 null,
-                "HUGnet\\network\Application"
+                "HUGnet\\network\\Application"
+            ),
+            array(
+                array(
+                    "hello" => "there",
+                    "asdf" => array(1,2),
+                    "network" => array(),
+                ),
+                null,
+                "HUGnet\\network\\Dummy"
             ),
             array(
                 array(
@@ -284,7 +298,7 @@ class SystemTest extends \PHPUnit_Framework_TestCase
                     "asdf" => array(1,2),
                 ),
                 new \HUGnet\network\DummyNetwork("Application"),
-                "HUGnet\\network\DummyNetwork"
+                "HUGnet\\network\\DummyNetwork"
             ),
         );
     }
@@ -355,6 +369,54 @@ class SystemTest extends \PHPUnit_Framework_TestCase
         $obj = \HUGnet\System::factory($config);
         $dev = $obj->device($device);
         $this->assertSame("HUGnet\Device", get_class($dev), "wrong class");
+        foreach ($expect as $key => $value) {
+            $this->assertEquals($value, $dev->get($key), "$key not $value");
+        }
+        unset($obj);
+    }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataDataCollector()
+    {
+        return array(
+            array(
+                array(
+                    "hello" => "there",
+                    "asdf"  => array(1,2),
+                ),
+                array(
+                    "uuid"   => "310354f4-0092-4b46-a198-92dadd42efb1",
+                    "name"   => "What is in a name",
+                    "Config" => "This is a config",
+                ),
+                array(
+                    "uuid"   => "310354f4-0092-4b46-a198-92dadd42efb1",
+                    "name"   => "What is in a name",
+                    "Config" => "This is a config",
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array $config The configuration to use
+    * @param mixed $device The network application to use
+    * @param mixed $expect The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataDataCollector
+    */
+    public function testDataCollector(
+        $config, $device, $expect
+    ) {
+        $obj = \HUGnet\System::factory($config);
+        $dev = $obj->datacollector($device);
+        $this->assertSame("HUGnet\DataCollector", get_class($dev), "wrong class");
         foreach ($expect as $key => $value) {
             $this->assertEquals($value, $dev->get($key), "$key not $value");
         }

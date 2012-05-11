@@ -142,17 +142,24 @@ class System
             if (is_object($application)) {
                 $this->_network = &$application;
             } else {
+                $config = $this->get("network");
                 $net = dirname(__FILE__)."/../network/";
-                include_once $net."Application.php";
-                include_once $net."Transport.php";
-                include_once $net."Network.php";
-                $network = &network\Network::factory($this->get("network"));
-                $transport = &network\Transport::factory(
-                    $network, $this->get("network")
-                );
-                $this->_network = &network\Application::factory(
-                    $transport, $this, $this->get("network")
-                );
+                if (is_array($config) && count($config) > 0) {
+                    include_once $net."Application.php";
+                    include_once $net."Transport.php";
+                    include_once $net."Network.php";
+                    $network = &network\Network::factory($config);
+                    $transport = &network\Transport::factory(
+                        $network, $config
+                    );
+                    $this->_network = &network\Application::factory(
+                        $transport, $this, $config
+                    );
+                } else {
+                    include_once $net."Dummy.php";
+                    /* No network config, so give them a dummy */
+                    $this->_network = &network\Dummy::factory($this);
+                }
             }
         }
         return $this->_network;
