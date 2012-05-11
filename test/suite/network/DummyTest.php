@@ -115,10 +115,8 @@ class DummyTest extends \PHPUnit_Framework_TestCase
         $system = new \HUGnet\DummySystem();
         $system->resetMock($mock);
         $application = &Dummy::factory($system);
-        $application->main();
         $dev = $application->device($config);
-        $application->main();
-        $this->assertEquals("HUGnet\\network\\Device", get_class($dev));
+        $this->assertEquals("HUGnet\\network\\Dummy", get_class($dev));
         //$this->assertEquals($expect, $transport->retrieve(), "Calls wrong");
     }
 
@@ -174,7 +172,6 @@ class DummyTest extends \PHPUnit_Framework_TestCase
         $system = new \HUGnet\DummySystem();
         $system->resetMock($mock);
         $application = &Dummy::factory($system);
-        $application->main();
         $ret = $application->send($send, $callback, $config);
         $this->assertEquals($expect, $ret);
     }
@@ -210,6 +207,29 @@ class DummyTest extends \PHPUnit_Framework_TestCase
         $system = new \HUGnet\DummySystem();
         $application = &Dummy::factory($system);
         $this->assertFalse($application->monitor(null));
+    }
+    /**
+    * Tests to make sure that the from address is okay
+    *
+    * @return null
+    */
+    public function testGetID()
+    {
+        $system = new \HUGnet\DummySystem();
+        $application = &Dummy::factory($system);
+        $this->assertSame(0, $application->getID());
+    }
+    /**
+    * Tests to make sure that the from address is okay
+    *
+    * @return null
+    */
+    public function testMain()
+    {
+        $system = new \HUGnet\DummySystem();
+        $application = &Dummy::factory($system);
+        $application->main();
+        /* No asserts.  Main just has to exist */
     }
 
 }

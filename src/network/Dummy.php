@@ -89,11 +89,7 @@ final class Dummy
     */
     public function &device($config = array())
     {
-        if (!is_object($this->_device)) {
-            include_once dirname(__FILE__)."/Device.php";
-            $this->_device = &Device::factory($this, $this->_system, (array)$config);
-        }
-        return $this->_device;
+        return $this;
     }
 
     /**
@@ -171,9 +167,19 @@ final class Dummy
     */
     public function main()
     {
-        if (is_object($this->_device)) {
-            $this->_device->main();
-        }
+        /* Do nothing */
+    }
+    /**
+    * Finds a good ID to use
+    *
+    * This function is from device.  We have it here so that we can return $this
+    * for device.  That simplifies this dummy networking quite a lot.
+    *
+    * @return null
+    */
+    public function getID()
+    {
+        return 0;
     }
 }
 ?>
