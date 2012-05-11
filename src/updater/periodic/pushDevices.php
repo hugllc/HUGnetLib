@@ -56,10 +56,10 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class Checkin extends \HUGnet\updater\Periodic
+class pushDevices extends \HUGnet\updater\Periodic
 {
     /** This is the period */
-    protected $period = 600;
+    protected $period = 60;
     /**
     * This function creates the system.
     *
@@ -79,20 +79,39 @@ class Checkin extends \HUGnet\updater\Periodic
     public function &execute()
     {
         if ($this->ready() && $this->hasMaster()) {
-            $this->ui()->out("Checking in with the master server...");
-            $device = $this->system()->device(
-                $this->system()->network()->device()->getID()
-            );
-            $datacollector = $this->system()->datacollector($device);
-            if (function_exists("posix_uname")) {
-                $uname = posix_uname();
-                $datacollector->set("name", trim($uname['nodename']));
+            $device = $this->system()->device();
+            $now    = time();
+            $ids    = $device->ids();
+            foreach ($ids as $key => $devID) {
+                $this->system()->main();
+                if (!$this->ui()->loop()) {
+                    break;
+                }
+                $device->load($key);
+                /* Let's just push the regular devices */
+                if ($key >= 0xFE0000) {
+                    continue;
+                }
+                $lastContact = $device->getParam("LastContact");
+                /* Only push it if we have changed it since the last push */
+                if ($lastContact < $device->getParam("LastMasterPush")) {
+                    continue;
+                }
+                $this->ui()->out(
+                    "Pushing ".sprintf("%06X", $devID)." to master server..."
+                );
+                $device->setParam("LastMasterPush", $now);
+                $ret = $device->action()->post();
+                if ($ret === "success") {
+                    $this->ui()->out("Success.");
+                    $device->store();
+                } else {
+                    $this->ui()->out("Failure.");
+                    /* Don't store it if we fail */
+                }
             }
-            $ret = $datacollector->action()->checkin();
-            if ($ret === "success") {
-                $this->success();
-            } else {
-                $this->failure();
+            if ($this->ui()->loop()) {
+                $this->last = $now;
             }
         }
     }

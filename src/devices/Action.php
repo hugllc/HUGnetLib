@@ -206,6 +206,37 @@ class Action
     {
         $this->_driver->checkRecord($this->_device);
     }
+    /**
+    * Gets the config and saves it
+    *
+    * @return string The left over string
+    */
+    public function post($url = null)
+    {
+        if (!is_string($url) || (strlen($url) == 0)) {
+            $master = $this->_device->system()->get("master");
+            $url = $master["url"];
+        }
+        $device  = $this->_device->toArray(true);
+        $sens = $this->_device->get("totalSensors");
+        $sensors = array();
+        for ($i = 0; $i < $sens; $i++) {
+            $sensors[$i] = $this->_device->sensor($i)->toArray(false);
+        }
+        return \HUGnet\Util::postData(
+            $url,
+            array(
+                "uuid"    => urlencode($this->_device->system()->get("uuid")),
+                "id"      => $device["id"],
+                "action"  => "post",
+                "task"    => "device",
+                "device"  => $device,
+                "sensors" => $sensors,
+            )
+        );
+    }
+
+
 }
 
 

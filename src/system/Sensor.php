@@ -136,18 +136,20 @@ class Sensor extends SystemTableBase
     /**
     * Returns the table as an array
     *
+    * @param bool $default Whether to include the default params or not
+    *
     * @return array
     */
-    public function toArray()
+    public function toArray($default = true)
     {
-        $driver = $this->driver()->toArray($this->table()->get("sensor"));
-        foreach (array_keys($driver) as $key) {
-            $this->_getExtra($driver[$key]);
+        $return = $this->table()->toArray($default);
+        if ($default) {
+            $driver = $this->driver()->toArray($this->table()->get("sensor"));
+            foreach (array_keys($driver) as $key) {
+                $this->_getExtra($driver[$key]);
+            }
+            $return = array_merge($driver, $return);
         }
-        $return = array_merge(
-            $driver,
-            $this->table()->toArray(true)
-        );
         $params = json_decode($return["params"], true);
         if (empty($return["type"])) {
             $return["type"] = implode(
@@ -155,8 +157,10 @@ class Sensor extends SystemTableBase
             );
         }
         $return["params"] = (array)$params;
-        $return["otherTypes"] = \HUGnet\sensors\Driver::getTypes($return["id"]);
-        $return["validUnits"] = $this->units()->getValid();
+        if ($default) {
+            $return["otherTypes"] = \HUGnet\sensors\Driver::getTypes($return["id"]);
+            $return["validUnits"] = $this->units()->getValid();
+        }
         return (array)$return;
     }
     /**

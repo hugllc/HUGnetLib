@@ -77,7 +77,7 @@ abstract class Periodic
     * as the driver class name.
     */
     private static $_drivers = array(
-        "Checkin",
+        "Checkin", "pushDevices"
     );
     /**
     * This is where the plugin objects are stored
@@ -202,6 +202,16 @@ abstract class Periodic
         $this->ui()->out(
             "Failure. Will try again in 1 minute"
         );
+    }
+    /**
+    * This says if we are ready to run
+    *
+    * @return bool
+    */
+    protected function hasMaster()
+    {
+        $master = $this->system()->get("master");
+        return is_array($master) && (count($master) > 0);
     }
 }
 
