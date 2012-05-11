@@ -204,8 +204,6 @@ class Devices extends \HUGnet\ui\Daemon
                 parent::main();
                 sleep(1);
             }
-        } else if ($this->loop()) {
-            $this->out("Too busy to wait at ".date("Y-m-d H:i:s"));
         }
     }
 
