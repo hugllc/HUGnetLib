@@ -113,7 +113,7 @@ class VPrint
     */
     public static function debug()
     {
-        print self::$_debugOut;
+        return self::$_debugOut;
     }
 
 }

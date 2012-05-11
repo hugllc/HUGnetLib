@@ -140,10 +140,7 @@ class VPrintTest extends \PHPUnit_Framework_TestCase
         $ret = ob_get_contents();
         ob_end_clean();
         $this->assertSame($expect, $ret);
-        ob_start();
-        VPrint::debug();
-        $ret = ob_get_contents();
-        ob_end_clean();
+        $ret = VPrint::debug();
         $this->assertSame($debug, $ret);
     }
 
