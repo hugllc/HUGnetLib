@@ -1,0 +1,9 @@
+#!/bin/sh
+
+lighty-enable-mod fastcgi && /etc/init.d/lighttpd force-reload
+if [ -e "/var/www/index.html" ]; then
+    mv -f /var/www/index.html /var/www/index.html.old
+fi
+
+
+exit $?

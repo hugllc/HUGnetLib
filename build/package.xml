@@ -4,7 +4,7 @@
 <project name="package" default="build" basedir=".">
     <property name="pkg.source" value="${basedir}/src"/>
     <property name="pkg.release" value="" />
-    <property name="pkg.versionfile" value="${basedir}/src/VERSION.TXT" />
+    <property name="pkg.versionfile" value="${basedir}/src/php/VERSION.TXT" />
     <exec executable="grep" failonerror="true"
         outputproperty="pkg.version" errorproperty="pkg.versionerror">
         <arg line='-o -e "[0-9]\{1,\}\.[0-9]\{1,\}\.[0-9]\{1,\}" ${pkg.versionfile}'
