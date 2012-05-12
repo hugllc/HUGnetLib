@@ -291,6 +291,7 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
     /**
     * test the forceTable routine
     *
+    * @param array $mock   The mocks to load
     * @param array $dev    The device to use
     * @param mixed $expect The expected return
     *

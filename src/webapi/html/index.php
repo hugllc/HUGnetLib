@@ -2,6 +2,7 @@
 /**
  * Main index
  *
+ * PHP Version 5
  * <pre>
  * HUGnetAPI is a web interface for the HUGnet devices.
  * Copyright (C) 2012 Hunt Utilities Group, LLC
@@ -21,17 +22,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * </pre>
  *
- * @category   API
- * @package    HUGnetAPI
- * @subpackage HTML
+ * @category   Webapi
+ * @package    HUGnetLib
+ * @subpackage Webapi
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007 Hunt Utilities Group, LLC
+ * @copyright  2012 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$
+ * @version    GIT: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
-define("_HUGNETAPI", true);
 require_once 'HUGnetLib/hugnet.inc.php';
 require_once HUGNET_INCLUDE_PATH."/ui/JSON.php";
 
@@ -48,10 +48,8 @@ $args = \HUGnet\ui\HTMLArgs::factory(
 $args->addLocation("/usr/share/HUGnet/config.ini");
 
 $json = \HUGnet\ui\JSON::factory($args);
-
-header('Cache-Control: no-cache, must-revalidate');
-header('Expires: Sat, 4 Apr 1998 05:00:00 GMT');
-header('Content-type: application/json');
-
+$json->header();
 $task = $json->args()->task;
-include_once "HUGnetAPI/".$task.".php";
+if (file_exists(HUGNET_INCLUDE_PATH."/webapi/".$task.".php")) {
+    include_once HUGNET_INCLUDE_PATH."/webapi/".$task.".php";
+}

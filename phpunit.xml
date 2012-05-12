@@ -30,6 +30,7 @@
       <exclude>
         <directory suffix=".php">src/contrib</directory>
         <directory suffix=".php">src/php/interfaces</directory>
+        <directory suffix=".php">src/php/webapi</directory>
         <file>src/hugnet.inc.php</file>
       </exclude>
     </whitelist>

@@ -209,6 +209,8 @@ class Action
     /**
     * Gets the config and saves it
     *
+    * @param string $url The url to post to
+    *
     * @return string The left over string
     */
     public function post($url = null)

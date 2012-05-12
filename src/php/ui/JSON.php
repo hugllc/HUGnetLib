@@ -151,6 +151,18 @@ class JSON
         \HUGnet\System::loopcheck();
         $this->system()->main();
     }
+
+    /**
+    * Disconnects from the database
+    *
+    * @return null
+    */
+    public function header()
+    {
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Expires: Sat, 4 Apr 1998 20:00:00 GMT');
+        header('Content-type: application/json');
+    }
     /**
     * Connects to the arguments array
     *

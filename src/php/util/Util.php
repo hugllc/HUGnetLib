@@ -96,7 +96,7 @@ class Util
     * I am not sure yet how to test this function.
     *
     * @param string $url      The URL to post the data to
-    * @param array  $postData The data to post to the URL
+    * @param array  $postdata The data to post to the URL
     *
     * @return mixed
     */

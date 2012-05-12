@@ -2,6 +2,7 @@
 /**
  * Setup Home
  *
+ * PHP Version 5
  * <pre>
  * CoreUI is a user interface for the HUGnet cores.
  * Copyright (C) 2007 Hunt Utilities Group, LLC
@@ -21,22 +22,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * </pre>
  *
- * @category   UI
- * @package    CoreUI
- * @subpackage Setup
+ * @category   Library
+ * @package    HUGnetLib
+ * @subpackage Webapi
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$
- * @link       https://dev.hugllc.com/index.php/Project:HUGnetLab
+ * @version    GIT: 0.9.7
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
 
-if (!defined("_HUGNETLAB")) header("Location: ../index.php");
+/** This keeps this file from being included unless HUGnetSystem.php is included */
+defined('_HUGNET') or die('HUGnetSystem not found');
+/** This keeps this file from being included unless HUGnetSystem.php is included */
 require_once HUGNET_INCLUDE_PATH."/containers/DeviceContainer.php";
 
 $devs = explode(",", $html->args()->id);
-$ret = array();
+$ret  = array();
 
 foreach ($devs as $dev) {
     $did = hexdec($dev);

@@ -29,7 +29,6 @@
  * @subpackage SuiteBase
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
- * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
@@ -102,9 +101,9 @@ class DummyTest extends \PHPUnit_Framework_TestCase
     /**
     * Tests the iteration and preload functions
     *
-    * @param array  $mock        The string to give to the class
-    * @param array  $config      The configuration to send the class
-    * @param array  $expect      The info to expect returned
+    * @param array $mock   The string to give to the class
+    * @param array $config The configuration to send the class
+    * @param array $expect The info to expect returned
     *
     * @return null
     *
@@ -157,11 +156,10 @@ class DummyTest extends \PHPUnit_Framework_TestCase
     /**
     * Tests the iteration and preload functions
     *
-    * @param array  $mock      The string to give to the class
-    * @param array  $config    The configuration to send the class
-    * @param string $callback  The function to call
-    * @param array  $send      Array of "function" => Packets to send out
-    * @param array  $expect    The info to expect returned
+    * @param array  $config   The configuration to send the class
+    * @param string $callback The function to call
+    * @param array  $send     Array of "function" => Packets to send out
+    * @param array  $expect   The info to expect returned
     *
     * @return null
     *

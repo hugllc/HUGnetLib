@@ -5,7 +5,7 @@
     <property name="deb.phpsetup" value="${basedir}/deb/hugnetlib"/>
     <property name="deb.webapisetup" value="${basedir}/deb/hugnetlib-webapi"/>
     <property name="deb.phpsrc" value="${basedir}/src/php"/>
-    <property name="deb.webapisrc" value="${basedir}/src/webapi"/>
+    <property name="deb.webapisrc" value="${basedir}/src/webapi/html"/>
     <property name="deb.phpstaging" value="${basedir}/build/debphp"/>
     <property name="deb.webapistaging" value="${basedir}/build/debwebapi"/>
     <property name="deb.release" value="" />
@@ -40,6 +40,7 @@
         <copy todir="${deb.phpstaging}/usr/share/php/HUGnetLib">
             <fileset dir="${deb.phpsrc}"/>
         </copy>
+        <delete dir="${deb.phpstaging}/usr/share/php/HUGnetLib/webapi"/>
         <chmod file="${deb.phpstaging}/DEBIAN/postinst" perm="0755"/>
         <chmod file="${deb.phpstaging}/DEBIAN/prerm" perm="0755"/>
         <chmod file="${deb.phpstaging}/usr/**" perm="0755" type="dir"/>
@@ -66,6 +67,10 @@
         <mkdir dir="${deb.webapistaging}/var/www/HUGnetLib"/>
         <copy todir="${deb.webapistaging}/var/www/HUGnetLib">
             <fileset dir="${deb.webapisrc}"/>
+        </copy>
+        <mkdir dir="${deb.phpstaging}/usr/share/php/HUGnetLib/webapi"/>
+        <copy todir="${deb.phpstaging}/usr/share/php/HUGnetLib/webapi">
+            <fileset dir="${deb.phpsrc}/api"/>
         </copy>
         <chmod file="${deb.webapistaging}/DEBIAN/postinst" perm="0755"/>
         <chmod file="${deb.webapistaging}/DEBIAN/prerm" perm="0755"/>

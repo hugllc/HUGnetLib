@@ -56,7 +56,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class getFirmware extends \HUGnet\updater\Periodic
+class GetFirmware extends \HUGnet\updater\Periodic
 {
     /** This is the period */
     protected $period = 3600;

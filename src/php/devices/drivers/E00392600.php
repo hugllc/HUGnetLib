@@ -154,18 +154,18 @@ class E00392600 extends \HUGnet\devices\Driver
         $device->set("GatewayKey", hexdec(substr((string)$string, 40, 4)));
 
         switch ($device->get("HWPartNum")) {
-            case "0039-26-02-P":
-                $device->set("DeviceJob", "Updater");
-                break;
-            case "0039-26-04-P":
-                $device->set("DeviceJob", "Router");
-                break;
-            case "0039-26-06-P":
-                $device->set("DeviceJob", "Devices");
-                break;
-            default:
-                $device->set("DeviceJob", "Unknown");
-                break;
+        case "0039-26-02-P":
+            $device->set("DeviceJob", "Updater");
+            break;
+        case "0039-26-04-P":
+            $device->set("DeviceJob", "Router");
+            break;
+        case "0039-26-06-P":
+            $device->set("DeviceJob", "Devices");
+            break;
+        default:
+            $device->set("DeviceJob", "Unknown");
+            break;
         }
     }
 
