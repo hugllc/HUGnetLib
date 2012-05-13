@@ -36,39 +36,36 @@
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 
-$did    = hexdec($html->args()->id);
-$action = strtolower($html->args()->action);
-$dev    = &$html->system()->device();
-
+$did    = hexdec($json->args()->id);
+$action = strtolower($json->args()->action);
+$dev    = &$json->system()->device();
+$ret    = "";
 
 if ($action === "post") {
-    $dev->load($did);
-    /* If this is a new device save get it */
-    if ($dev->get("DeviceID") === "000000") {
-        $dev->set("id", 0);
-        $dev->store(true);
-    }
-    /* Save any device information given to us */
-    $device = &$_POST["device"];
-    if (is_array($device) && (count($device) > 0)) {
-        $dev->setParam("LastModified", date("Y-m-d H:i:s"));
-        $dev->change($device);
-    }
+    $worked = true;
+    $dev->load($_POST["device"]);
+    $worked &= $dev->store(true);
     /* Save any sensor information given to us */
     $sensors = &$_POST["sensors"];
+    $sensor = $dev->sensor(0);
     if (is_array($sensors) && (count($sensors) > 0)) {
         $totalSensors = $dev->get("totalSensors");
         for ($i = 0; $i < $totalSensors; $i++) {
             if (is_array($sensors[$i])) {
-                $dev->sensor($i)->change($sensors[$i]);
+                $sensor->load($sensors[$i]);
+                $worked &= $sensor->store(true);
             }
         }
     }
-    $ret = $dev->json();
+    if ($worked) {
+        $ret = "success";
+    } else {
+        $ret = -1;
+    }
 } else if ($action === "config") {
     $dev->load($did);
     if ($dev->action()->config()) {
-        $dev->store(true);
+        $dev->store();
         $sensors = $dev->get("physicalSensors");
         for ($i = 0; $i < $sensors; $i++) {
             $pkt = $dev->network()->sensorConfig($i);
@@ -80,22 +77,17 @@ if ($action === "post") {
             }
         }
     }
-    $ret = $dev->json();
+    $ret = $dev->toArray(true);
 } else if ($action === "get") {
     $dev->load($did);
-    $ret = $dev->json();
-} else {
+    $ret = $dev->toArray(true);
+} else if ($action === "ids") {
     $ids = $dev->ids();
     $ret = array();
     foreach ((array)$ids as $value) {
         $ret[] = $value;
     }
-    $ret = json_encode($ret);
-}
-if ($html->args()->d > 0) {
-    var_dump(json_decode($ret, true));
 }
 
-print $ret;
-
+print json_encode($ret);
 ?>

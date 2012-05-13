@@ -116,11 +116,29 @@
         <delete file="${basedir}/php.core"/>
     </target>
 
-    <target name="build" depends="clean,setup,pdepend,phpmd,phpcpd,phpcs,docblox,phploc,phpunit,phpcb,cleanafter"/>
-    <target name="deb" depends="deb.build"/>
+    <target name="buildJavaScript" description="Build the javascript">
+        <delete>
+            <fileset dir="${basedir}/src" defaultexcludes="no">
+                <include name="**/*~" />
+            </fileset>
+        </delete>
+        <delete file="${basedir}/src/webapi/html/hugnet.js"/>
+        <echo>Building src/webapi/html/hugnet.js</echo>
+        <concat destfile="${basedir}/src/webapi/html/hugnet.js">
+            <fileset dir="${basedir}/src/webapi/javascript" includes="*.js"/>
+        </concat>
+        <gzip src="${basedir}/src/webapi/html/hugnet.js"
+            destfile="${basedir}/src/webapi/html/hugnet.js.gz"
+            />
+    </target>
+
+
+    <target name="build" depends="buildJavaScript"/>
+    <target name="test" depends="clean,setup,pdepend,phpmd,phpcpd,phpcs,docblox,phploc,phpunit,phpcb,cleanafter"/>
+    <target name="deb" depends="build,deb.build"/>
     <target name="post" depends="deb.post"/>
     <target name="testpost" depends="deb.testpost"/>
-    <target name="package" depends="package.build,deb.build"/>
+    <target name="package" depends="build,package.build,deb.build"/>
     <target name="distclean" depends="clean,deb.clean,package.clean">
         <delete dir="${basedir}/build/rel"/>
     </target>

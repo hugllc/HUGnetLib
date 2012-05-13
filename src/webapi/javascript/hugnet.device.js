@@ -1,5 +1,5 @@
 /**
- * Javascript for devices
+ * hugnet.device.js
  *
  * <pre>
  * HUGnetLab is a user interface for the HUGnet
@@ -29,18 +29,16 @@
  * @version    Release: 0.0.1
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLab
  */
-
 var HUGnetDevice = function(id, target, url, template) {
     this.id       = id;
     this.defTemp  = '<td>{{actions}}</td><td>{{DeviceName}}</td><td>{{DeviceID}}</td><td>{{id}}</td><td>{{HWPartNum}}</td><td>{{FWPartNum}} {{FWVersion}}</td>';
     this.target   = (typeof target   !== 'undefined') ? target   : '#dev' + this.id;
     this.template = (typeof template !== 'undefined') ? template : this.defTemp;
     this.devData  = {};
-    this.url      = (typeof url !== 'undefined') ? url : "/hugnetapi.php";
+    this.url      = (typeof url !== 'undefined') ? url : "/HUGnetLib/index.php";
 
     this.get();
 }
-
 HUGnetDevice.prototype = {
     /**
      * This function just returns the data

@@ -7,3 +7,5 @@ old/
 *.kate*
 build/
 rel/
+src/webapi/html/hugnet.js
+*.gz
