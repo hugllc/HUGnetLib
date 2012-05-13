@@ -29,6 +29,7 @@
  * @version    Release: 0.0.1
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLab
  */
+/*
 var HUGnetDevice = function(id, target, url, template) {
     this.id       = id;
     this.defTemp  = '<td>{{actions}}</td><td>{{DeviceName}}</td><td>{{DeviceID}}</td><td>{{id}}</td><td>{{HWPartNum}}</td><td>{{FWPartNum}} {{FWVersion}}</td>';
@@ -40,11 +41,44 @@ var HUGnetDevice = function(id, target, url, template) {
     this.get();
 }
 HUGnetDevice.prototype = {
+    */
+var HUGnetDevice = Backbone.Model.extend({
+    defaults: {
+        id: 0,
+        DeviceID: '000000',
+        DeviceName: 'Hello',
+        HWPartNum: '',
+        FWPartNum: '',
+        FWVersion: '',
+        RawSetup: '',
+        Active: 0,
+        GatewayKey: 0,
+        ControllerKey: 0,
+        ControllerIndex: 0,
+        DeviceLocation: '',
+        DeviceJob: '',
+        Driver: '',
+        PollInterval: 0,
+        ActiveSensors: 0,
+        DeviceGroup: 'FFFFFF',
+        sensors: {},
+        params: {},
+        actions: '',
+        template: '#deviceRow',
+        target: '',
+        url: '/HUGnetLib/index.php',
+    },
     /**
-     * This function just returns the data
+     * This function initializes the object
      */
-    data: function() {
-        return this.devData;
+    initialize: function()
+    {
+        this.bind(
+            "change",
+            this.update,
+            this
+        );
+        this.fetch();
     },
     /**
      * Updates the particular elements
@@ -59,21 +93,52 @@ HUGnetDevice.prototype = {
      *
      * @return null
      */
-    get: function()
+    fetch: function()
     {
-        if (this.id !== 0) {
+        var id = this.get('id');
+        if (id !== 0) {
             var self = this;
             $.ajax({
                 type: 'GET',
-                url: this.url,
+                url: this.get('url'),
                 dataType: 'json',
                 success: function (data)
                 {
-                    self.devData = data;
-                    self.update();
+                    self.set(data);
                 },
-                data: {
-                    "task": "device", "action": "get", "id": this.id.toString(16)
+                data:
+                {
+                    "task": "device", "action": "get", "id": id.toString(16)
+                },
+            });
+        }
+    },
+    /**
+     * Gets infomration about a device.  This is retrieved from the database only.
+     *
+     * @param id The id of the device to get
+     *
+     * @return null
+     */
+    save: function()
+    {
+        var id = this.get('id');
+        if (id !== 0) {
+            var self = this;
+            $.ajax({
+                type: 'POST',
+                url: this.get('url'),
+                dataType: 'json',
+                success: function (data)
+                {
+                    self.set(data);
+                },
+                data:
+                {
+                    "task": "device",
+                    "action": "post",
+                    "id": id.toString(16),
+                    "device": self.toJSON(),
                 },
             });
         }
@@ -89,19 +154,19 @@ HUGnetDevice.prototype = {
      */
     config: function ()
     {
-        if (this.id !== 0) {
+        var id = this.get('id');
+        if (id !== 0) {
             var self = this;
             $.ajax({
                 type: 'GET',
-                url: this.url,
+                url: this.get('url'),
                 dataType: 'json',
                 success: function (data)
                 {
-                    self.devData = data;
-                    self.update();
+                    self.set(data);
                 },
                 data: {
-                    "task": "device", "action": "config", "id": this.id.toString(16)
+                    "task": "device", "action": "config", "id": id.toString(16)
                 },
             });
         }
@@ -115,8 +180,16 @@ HUGnetDevice.prototype = {
      *
      * @return null
      */
-    render: function()
+    render: function(template)
     {
-        $(this.target).html(Mustache.render(this.template, this.devData));
+        var temp = (typeof template !== 'undefined') ? template : this.get('template');
+        var self = this;
+        this.set({actions: '<button onClick="self.config();">Refresh</button>'});
+        $(this.get('target')).html(
+            Mustache.render(
+                $(temp).html(),
+                this.toJSON()
+            )
+        );
     }
-}
+});
