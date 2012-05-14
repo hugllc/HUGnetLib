@@ -26,23 +26,10 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.0.1
+ * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLab
  */
-/*
-var HUGnetDevice = function(id, target, url, template) {
-    this.id       = id;
-    this.defTemp  = '<td>{{actions}}</td><td>{{DeviceName}}</td><td>{{DeviceID}}</td><td>{{id}}</td><td>{{HWPartNum}}</td><td>{{FWPartNum}} {{FWVersion}}</td>';
-    this.target   = (typeof target   !== 'undefined') ? target   : '#dev' + this.id;
-    this.template = (typeof template !== 'undefined') ? template : this.defTemp;
-    this.devData  = {};
-    this.url      = (typeof url !== 'undefined') ? url : "/HUGnetLib/index.php";
-
-    this.get();
-}
-HUGnetDevice.prototype = {
-    */
-var HUGnetDevice = Backbone.Model.extend({
+Device = Backbone.Model.extend({
     defaults: {
         id: 0,
         DeviceID: '000000',
@@ -67,6 +54,7 @@ var HUGnetDevice = Backbone.Model.extend({
         template: '#deviceRow',
         target: '',
         url: '/HUGnetLib/index.php',
+        view: null,
     },
     /**
      * This function initializes the object
@@ -84,7 +72,7 @@ var HUGnetDevice = Backbone.Model.extend({
      * Updates the particular elements
      */
     update: function() {
-        this.render();
+        this.get('view').render();
     },
     /**
      * Gets infomration about a device.  This is retrieved from the database only.
@@ -170,6 +158,22 @@ var HUGnetDevice = Backbone.Model.extend({
                 },
             });
         }
+    }
+});
+
+
+Devices = Backbone.Collection.extend({
+    url: '/HUGnetLib/index.php',
+    model: Device,
+    /**
+     * This function initializes the object
+     */
+    initialize: function (models, options)
+    {
+        this.view = options.view;
+        //this.bind("add", options.view.render);
+        //this.bind("change", options.view.render);
+        this.ids();
     },
     /**
      * Gets infomration about a device.  This is retrieved directly from the device
@@ -180,15 +184,49 @@ var HUGnetDevice = Backbone.Model.extend({
      *
      * @return null
      */
-    render: function(template)
+    ids: function ()
     {
-        var temp = (typeof template !== 'undefined') ? template : this.get('template');
+        this.reset();
         var self = this;
-        this.set({actions: '<button onClick="self.config();">Refresh</button>'});
-        $(this.get('target')).html(
+        $.ajax({
+            type: 'GET',
+            url: this.url,
+            dataType: 'json',
+            success: function (data)
+            {
+                for (key in data) {
+                    self.add( { id: parseInt(data[key]), view: self.view } );
+                }
+            },
+            data: {
+                "task": "device", "action": "ids"
+            },
+        });
+    }
+});
+
+DeviceList = Backbone.View.extend({
+    template: '#DeviceListTemplate',
+    el: $("#DeviceList"),
+    initialize: function (options) {
+        this.devices = new Devices( null, { view: this });
+        this.render();
+    },
+    /**
+     * Gets infomration about a device.  This is retrieved directly from the device
+     *
+     * This function is for use of the device list
+     *
+     * @param id The id of the device to get
+     *
+     * @return null
+     */
+    render: function ()
+    {
+        $('#DeviceList').html(
             Mustache.render(
-                $(temp).html(),
-                this.toJSON()
+                $(this.template).html(),
+                { devices: this.devices.toJSON() }
             )
         );
     }
