@@ -26,10 +26,21 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.9.7
- * @link       https://dev.hugllc.com/index.php/Project:HUGnetLab
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 $(function() {
+/**
+ * This is the model that stores the devices.
+ *
+ * @category   JavaScript
+ * @package    HUGnetLab
+ * @subpackage Devices
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2012 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.9.7
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ */
 Device = Backbone.Model.extend({
     defaults: {
         id: 0,
@@ -173,9 +184,6 @@ Devices = Backbone.Collection.extend({
 DevicePropertiesView = Backbone.View.extend({
     template: '#DevicePropertiesTemplate',
     tagName: 'div',
-    events: {
-        'click .cancel': 'remove',
-    },
     initialize: function (options)
     {
     },
@@ -222,6 +230,7 @@ DeviceEntryView = Backbone.View.extend({
         var view = new DevicePropertiesView({ model: this.model });
         view.$el.addClass("device");
         view.$el.addClass("popup");
+        view.$el.width(600);
         this.parent.popup(view);
     },
     /**
@@ -261,6 +270,7 @@ DevicesView = Backbone.View.extend({
     },
     nopopup: function (e)
     {
+        this.pop.remove();
         delete this.pop;
     },
     /**
@@ -299,6 +309,10 @@ DevicesView = Backbone.View.extend({
             view.$el.css("top", pos.top);
             this.$el.append(view.render().el);
             var width = view.$el.width();
+            if (width > $(window).width()) {
+                width = $(window).width() * 0.8;
+                view.$el.width(width);
+            }
             view.$el.css("left", pos.left + ((pwidth - width) / 2));
         }
     },
