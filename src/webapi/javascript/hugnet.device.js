@@ -29,11 +29,12 @@
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLab
  */
+$(function() {
 Device = Backbone.Model.extend({
     defaults: {
         id: 0,
         DeviceID: '000000',
-        DeviceName: 'Hello',
+        DeviceName: '',
         HWPartNum: '',
         FWPartNum: '',
         FWVersion: '',
@@ -51,28 +52,24 @@ Device = Backbone.Model.extend({
         sensors: {},
         params: {},
         actions: '',
-        template: '#deviceRow',
+        ViewButtonID: '',
+        RefreshButtonID: '',
         target: '',
         url: '/HUGnetLib/index.php',
-        view: null,
     },
+    view: null,
     /**
      * This function initializes the object
      */
-    initialize: function()
+    initialize: function(attributes)
     {
-        this.bind(
-            "change",
-            this.update,
-            this
-        );
-        this.fetch();
+        this.update();
+
     },
     /**
      * Updates the particular elements
      */
     update: function() {
-        this.get('view').render();
     },
     /**
      * Gets infomration about a device.  This is retrieved from the database only.
@@ -96,7 +93,9 @@ Device = Backbone.Model.extend({
                 },
                 data:
                 {
-                    "task": "device", "action": "get", "id": id.toString(16)
+                    "task": "device",
+                    "action": "get",
+                    "id": id.toString(16)
                 },
             });
         }
@@ -154,63 +153,76 @@ Device = Backbone.Model.extend({
                     self.set(data);
                 },
                 data: {
-                    "task": "device", "action": "config", "id": id.toString(16)
+                    "task": "device",
+                    "action": "config",
+                    "id": id.toString(16)
                 },
             });
         }
     }
 });
 
-
 Devices = Backbone.Collection.extend({
-    url: '/HUGnetLib/index.php',
     model: Device,
-    /**
-     * This function initializes the object
-     */
-    initialize: function (models, options)
+    comparator: function (device)
     {
-        this.view = options.view;
-        //this.bind("add", options.view.render);
-        //this.bind("change", options.view.render);
-        this.ids();
+        return device.get("id");
+    }
+});
+
+DevicePropertiesView = Backbone.View.extend({
+    template: '#DevicePropertiesTemplate',
+    tagName: 'div',
+    events: {
+        'click .cancel': 'remove',
+    },
+    initialize: function (options)
+    {
     },
     /**
      * Gets infomration about a device.  This is retrieved directly from the device
      *
      * This function is for use of the device list
      *
-     * @param id The id of the device to get
-     *
      * @return null
      */
-    ids: function ()
+    render: function ()
     {
-        this.reset();
-        var self = this;
-        $.ajax({
-            type: 'GET',
-            url: this.url,
-            dataType: 'json',
-            success: function (data)
-            {
-                for (key in data) {
-                    self.add( { id: parseInt(data[key]), view: self.view } );
-                }
-            },
-            data: {
-                "task": "device", "action": "ids"
-            },
-        });
-    }
+        this.$el.html(
+            Mustache.render(
+                $(this.template).html(),
+                this.model.toJSON()
+            )
+        );
+        return this;
+    },
 });
 
-DeviceList = Backbone.View.extend({
-    template: '#DeviceListTemplate',
-    el: $("#DeviceList"),
-    initialize: function (options) {
-        this.devices = new Devices( null, { view: this });
-        this.render();
+DeviceEntryView = Backbone.View.extend({
+    model: Device,
+    tagName: 'tr',
+    template: '#DeviceEntryTemplate',
+    parent: null,
+    events: {
+        'click .refresh': 'refresh',
+        'click .properties': 'properties',
+    },
+    initialize: function (options)
+    {
+        this.model.bind('change', this.render, this);
+        this.parent = options.parent;
+    },
+    refresh: function (e)
+    {
+        this.$el.addClass("working");
+        this.model.config();
+    },
+    properties: function (e)
+    {
+        var view = new DevicePropertiesView({ model: this.model });
+        view.$el.addClass("device");
+        view.$el.addClass("popup");
+        this.parent.popup(view);
     },
     /**
      * Gets infomration about a device.  This is retrieved directly from the device
@@ -223,11 +235,106 @@ DeviceList = Backbone.View.extend({
      */
     render: function ()
     {
-        $('#DeviceList').html(
+        this.$el.removeClass("working");
+        this.$el.html(
             Mustache.render(
                 $(this.template).html(),
-                { devices: this.devices.toJSON() }
+                this.model.toJSON()
             )
         );
-    }
+        this.$el.trigger('update');
+        return this;
+    },
+});
+
+DevicesView = Backbone.View.extend({
+    url: '/HUGnetLib/index.php',
+    template: "#DeviceListTemplate",
+    events: {
+        'click .cancel': 'nopopup',
+    },
+    initialize: function (options)
+    {
+        this.model = new Devices();
+        this.populate();
+        this.render();
+    },
+    nopopup: function (e)
+    {
+        delete this.pop;
+    },
+    /**
+     * Gets infomration about a device.  This is retrieved directly from the device
+     *
+     * This function is for use of the device list
+     *
+     * @return null
+     */
+    render: function ()
+    {
+        this.$el.html(
+            Mustache.render(
+                $(this.template).html(),
+                this.model.toJSON()
+            )
+        );
+        //this.model.each(this.renderEntry);
+        this.$el.trigger('update');
+        return this;
+    },
+    insert: function (model, self)
+    {
+        if (self == undefined) {
+            self = this;
+        }
+        var view = new DeviceEntryView({ model: model, parent: this });
+        this.$("#DeviceList").append(view.render().el);
+    },
+    popup: function (view)
+    {
+        if (this.pop == undefined) {
+            this.pop = view;
+            var pwidth = this.$el.width();
+            var pos = this.$el.position();
+            view.$el.css("top", pos.top);
+            this.$el.append(view.render().el);
+            var width = view.$el.width();
+            view.$el.css("left", pos.left + ((pwidth - width) / 2));
+        }
+    },
+    /**
+     * Gets infomration about a device.  This is retrieved directly from the device
+     *
+     * This function is for use of the device list
+     *
+     * @param id The id of the device to get
+     *
+     * @return null
+     */
+    populate: function ()
+    {
+        var self = this;
+        $.ajax({
+            type: 'GET',
+            url: this.url,
+            dataType: 'json',
+            success: function (data)
+            {
+                self.model.add(data);
+                self.model.each(
+                    function (model)
+                    {
+                        self.insert(model, self);
+                    }
+                );
+            },
+            data: {
+                "task": "device", "action": "getall"
+            },
+        });
+    },
+});
+
+
+
 });

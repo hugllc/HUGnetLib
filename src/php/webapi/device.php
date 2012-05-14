@@ -81,6 +81,13 @@ if ($action === "post") {
 } else if ($action === "get") {
     $dev->load($did);
     $ret = $dev->toArray(true);
+} else if ($action === "getall") {
+    $ids = $dev->ids();
+    $ret = array();
+    foreach ((array)$ids as $value) {
+        $dev->load((int)$value);
+        $ret[] = $dev->toArray(true);
+    }
 } else if ($action === "ids") {
     $ids = $dev->ids();
     $ret = array();
