@@ -38,13 +38,19 @@ defined('_HUGNET') or die('HUGnetSystem not found');
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 require_once HUGNET_INCLUDE_PATH."/containers/DeviceContainer.php";
 
-$devs = explode(",", $html->args()->id);
+$devs = explode(",", $json->args()->id);
 $ret  = array();
 
+$savedate = date("Y-m-d H:i:s");
+$filename = "/tmp/LeNR".date("Ymd");
+$new = false;
+if (!file_exists($filename)) $new = true;
+$fileheader = "Date";
+$filedata = $savedate;
 foreach ($devs as $dev) {
     $did = hexdec($dev);
 
-    $device = &$html->system()->device($did);
+    $device = &$json->system()->device($did);
     $pkt = $device->network()->poll();
     if (strlen($pkt->reply()) > 0) {
         $device->setParam("LastPoll", date("Y-m-d H:i:s"));
@@ -59,16 +65,34 @@ foreach ($devs as $dev) {
             (array)$prev[$dev]
         );
         $device->setUnits($data);
+        $data["id"] = $did;
+        $data["Date"] = $savedate;
         $d = $device->historyFactory($data);
+        $d->insertRow(true);
         $out = $d->toArray();
-        $ret["Date"]      = date("Y-m-d H:i:s");
+        $ret["Date"]      = $savedate;
         $ret["DataIndex"] = $data["DataIndex"];
 
         for ($i = 0; $i < 9; $i++) {
             $ret["Data"][$did.".".$i] = $out["Data".$i];
+            $loc = $device->sensor($i)->get("location");
+            if (strlen($loc) == 0) {
+                $fileheader .= ",Device $dev Sensor $i";
+            } else {
+                $fileheader .= ",".$loc;
+            }
+            $filedata   .= ",".$out["Data".$i];
         }
     }
 }
+$fd = fopen($filename, "a");
+if ($new) {
+        fwrite($fd, $fileheader."\r\n");
+}
+fwrite($fd, $filedata."\r\n");
+fclose($fd);
+chmod($filename, 0666);
+
 print json_encode($ret);
 
 ?>
