@@ -42,22 +42,33 @@ $dev    = &$json->system()->device();
 $ret    = "";
 
 if ($action === "post") {
+    $dev->load($did);
+    if ($dev->get("DeviceID") === "000000") {
+        $dev->insert(true);
+    }
     $worked = true;
-    $dev->load($_POST["device"]);
-    $worked &= $dev->store(true);
-    /* Save any sensor information given to us */
-    /*
-    $sensors = &$_POST["sensors"];
-    $sensor = $dev->sensor(0);
-    if (is_array($sensors) && (count($sensors) > 0)) {
+    $device = $_POST["device"];
+    unset($device["sensors"]);
+    unset($device["params"]);
+    $worked = $dev->change($device);
+    if ($worked) {
+        $ret = "success";
+    } else {
+        $ret = -1;
+    }
+} else if ($action === "postsensor") {
+    $dev->load($did);
+    $worked = true;
+    $sensors = &$_POST["sensor"];
+    if (is_array($sensors)) {
         $totalSensors = $dev->get("totalSensors");
         for ($i = 0; $i < $totalSensors; $i++) {
             if (is_array($sensors[$i])) {
-                $sensor->load($sensors[$i]);
-                $worked &= $sensor->store(true);
+                $sensor = $dev->sensor($i);
+                $worked &= $sensor->change($sensors[$i]);
             }
         }
-    }*/
+    }
     if ($worked) {
         $ret = "success";
     } else {
@@ -65,6 +76,7 @@ if ($action === "post") {
     }
 } else if ($action === "config") {
     $dev->load($did);
+    $worked = true;
     if ($dev->action()->config()) {
         $dev->store();
         $sensors = $dev->get("physicalSensors");
@@ -74,20 +86,27 @@ if ($action === "post") {
                 $dev->sensor($i)->decode($pkt->reply());
                 $dev->sensor($i)->change(array());
             } else {
+                $worked = false;
                 break;
             }
         }
+    } else {
+        $worked = false;
     }
-    $ret = $dev->toArray(true);
+    if ($worked) {
+        $ret = $dev->fullArray();
+    } else {
+        $ret = -1;
+    }
 } else if ($action === "get") {
     $dev->load($did);
-    $ret = $dev->toArray(true);
+    $ret = $dev->fullArray();
 } else if ($action === "getall") {
     $ids = $dev->ids();
     $ret = array();
     foreach ((array)$ids as $value) {
         $dev->load((int)$value);
-        $ret[] = $dev->toArray(true);
+        $ret[] = $dev->fullArray();
     }
 } else if ($action === "ids") {
     $ids = $dev->ids();
@@ -96,6 +115,6 @@ if ($action === "post") {
         $ret[] = $value;
     }
 }
-
+//var_dump($ret);
 print json_encode($ret);
 ?>

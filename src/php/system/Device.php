@@ -117,20 +117,29 @@ class Device extends SystemTableBase
     */
     public function json()
     {
+        return json_encode($this->fullArray());
+    }
+    /**
+    * Returns the table as an array
+    *
+    * @return array
+    */
+    public function fullArray()
+    {
         $return = array_merge(
             $this->driver()->toArray(),
             $this->table()->toArray(true)
         );
+        unset($return["sensors"]);
+        $params = json_decode($return["params"], true);
+        $return["params"] = (array)$params;
         $return["sensors"] = array();
         for ($i = 0; $i < $return["totalSensors"]; $i++) {
-            $return["sensors"][$i] = json_decode($this->sensor($i)->json(), true);
+            $return["sensors"][$i] = $this->sensor($i)->toArray();
+            $return["sensors"][$i]["params"] = json_decode(
+                (string)$return["sensors"][$i]["params"], true
+            );
         }
-        $params = json_decode($return["params"], true);
-        if (!is_array($params)) {
-            $params = unserialize(base64_decode($return["params"]));
-            $params = $params["DriverInfo"];
-        }
-        $return["params"] = $params;
         if ($return["loadable"]) {
             $this->firmware()->set("HWPartNum", $return["HWPartNum"]);
             $this->firmware()->set("FWPartNum", $return["FWPartNum"]);
@@ -145,7 +154,7 @@ class Device extends SystemTableBase
             }
             // @codeCoverageIgnoreEnd
         }
-        return json_encode($return);
+        return $return;
     }
 
     /**

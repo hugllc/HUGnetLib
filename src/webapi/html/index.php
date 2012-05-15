@@ -42,6 +42,7 @@ $args = \HUGnet\ui\HTMLArgs::factory(
         "task" => array("name" => "task", "type" => "string", "default" => ""),
         "action" => array("name" => "action", "type" => "string"),
         "id" => array("name" => "DeviceID", "type" => "string"),
+        "sid" => array("name" => "SensorID", "type" => "int"),
         "uuid" => array("name" => "uuid", "type" => "string"),
     )
 );

@@ -2,7 +2,7 @@
  * hugnet.device.js
  *
  * <pre>
- * HUGnetLab is a user interface for the HUGnet
+ * HUGnetLib is a user interface for the HUGnet
  * Copyright (C) 2012 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
@@ -21,7 +21,7 @@
  * </pre>
  *
  * @category   JavaScript
- * @package    HUGnetLab
+ * @package    HUGnetLib
  * @subpackage Devices
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
@@ -33,7 +33,7 @@ $(function() {
  * This is the model that stores the devices.
  *
  * @category   JavaScript
- * @package    HUGnetLab
+ * @package    HUGnetLib
  * @subpackage Devices
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
@@ -95,15 +95,11 @@ Device = Backbone.Model.extend({
     {
         var id = this.get('id');
         if (id !== 0) {
-            var self = this;
-            $.ajax({
+            var myself = this;
+            ret = $.ajax({
                 type: 'GET',
                 url: this.get('url'),
                 dataType: 'json',
-                success: function (data)
-                {
-                    self.set(data);
-                },
                 data:
                 {
                     "task": "device",
@@ -111,6 +107,12 @@ Device = Backbone.Model.extend({
                     "id": id.toString(16)
                 },
             });
+            ret.done(
+                function (data)
+                {
+                    myself.set(data);
+                }
+            );
         }
     },
     /**
@@ -122,20 +124,13 @@ Device = Backbone.Model.extend({
      */
     save: function()
     {
-        console.log("save");
         var id = this.get('id');
         if (id !== 0) {
             var self = this;
-            $.ajax({
+            var ret = $.ajax({
                 type: 'POST',
                 url: this.get('url'),
                 dataType: 'json',
-                success: function (data)
-                {
-                    if (data == "success") {
-                        self.fetch();
-                    }
-                },
                 data:
                 {
                     "task": "device",
@@ -144,7 +139,63 @@ Device = Backbone.Model.extend({
                     "device": self.toJSON(),
                 },
             });
+            ret.done(
+                function (data)
+                {
+                    if (data == "success") {
+                        self.fetch();
+                    } else {
+                        self.trigger('savefail');
+                    }
+                }
+            );
+            ret.fail(
+                function ()
+                {
+                    self.trigger('savefail');
+                }
+            );
         }
+    },
+    /**
+     * Gets infomration about a device.  This is retrieved from the database only.
+     *
+     * @param id The id of the device to get
+     *
+     * @return null
+     */
+    saveSensor: function(sdata)
+    {
+        var id = this.get('id');
+        if ((id !== 0) && (sdata !== undefined)) {
+            var self = this;
+            var ret = $.ajax({
+                type: 'POST',
+                url: this.get('url'),
+                dataType: 'json',
+                data: "task=device&action=postsensor&id="+id.toString(16)+"&"+sdata,
+            });
+            ret.done(
+                function (data)
+                {
+                    if (data == "success") {
+                        self.fetch();
+                    } else {
+                        self.trigger('savefail');
+                    }
+                }
+            );
+            ret.fail(
+                function ()
+                {
+                    self.trigger('savefail');
+                }
+            );
+        }
+    },
+    fail: function(msg)
+    {
+        alert(msg);
     },
     /**
      * Gets infomration about a device.  This is retrieved directly from the device
@@ -160,7 +211,7 @@ Device = Backbone.Model.extend({
         var id = this.get('id');
         if (id !== 0) {
             var self = this;
-            $.ajax({
+            ret = $.ajax({
                 type: 'GET',
                 url: this.get('url'),
                 dataType: 'json',
@@ -174,6 +225,22 @@ Device = Backbone.Model.extend({
                     "id": id.toString(16)
                 },
             });
+            ret.done(
+                function (data)
+                {
+                    if (typeof data === "object") {
+                        self.set(data);
+                    } else {
+                        self.trigger('configfail');
+                    }
+                }
+            );
+            ret.fail(
+                function ()
+                {
+                    self.trigger('configfail');
+                }
+            );
         }
     }
 });
@@ -182,7 +249,7 @@ Device = Backbone.Model.extend({
  * This is the model that stores the devices.
  *
  * @category   JavaScript
- * @package    HUGnetLab
+ * @package    HUGnetLib
  * @subpackage Devices
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
@@ -209,11 +276,16 @@ Devices = Backbone.Collection.extend({
     fetch: function ()
     {
         var self = this;
-        $.ajax({
+        var ret = $.ajax({
             type: 'GET',
             url: this.url,
             dataType: 'json',
-            success: function (data)
+            data: {
+                "task": "device", "action": "getall"
+            },
+        });
+        ret.done(
+            function (data)
             {
                 self.add(data, {silent: true} );
                 self.each(
@@ -222,11 +294,8 @@ Devices = Backbone.Collection.extend({
                         self.trigger("add", model);
                     }
                 );
-            },
-            data: {
-                "task": "device", "action": "getall"
-            },
-        });
+            }
+        );
     },
 });
 
@@ -234,7 +303,7 @@ Devices = Backbone.Collection.extend({
  * This is the model that stores the devices.
  *
  * @category   JavaScript
- * @package    HUGnetLab
+ * @package    HUGnetLib
  * @subpackage Devices
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
@@ -247,10 +316,13 @@ DevicePropertiesView = Backbone.View.extend({
     tagName: 'div',
     events: {
         'click .SaveDevice': 'save',
+        'submit #sensorForm': 'saveSensor',
+        'change #sensorForm select': 'saveSensor',
     },
     initialize: function (options)
     {
         this.model.bind('change', this.render, this);
+        this.model.bind('savefail', this.saveFail, this);
     },
     save: function (e)
     {
@@ -261,6 +333,16 @@ DevicePropertiesView = Backbone.View.extend({
             DeviceJob: this.$(".DeviceJob").val(),
         });
         this.model.save();
+    },
+    saveSensor: function (e)
+    {
+        this.$el.addClass("saving");
+        this.model.saveSensor($("#sensorForm").serialize());
+    },
+    saveFail: function ()
+    {
+        this.$el.removeClass("saving");
+        alert("Save Failed");
     },
     /**
      * Gets infomration about a device.  This is retrieved directly from the device
@@ -273,7 +355,7 @@ DevicePropertiesView = Backbone.View.extend({
     {
         this.$el.removeClass("saving");
         this.$el.html(
-            Mustache.render(
+            _.template(
                 $(this.template).html(),
                 this.model.toJSON()
             )
@@ -286,7 +368,7 @@ DevicePropertiesView = Backbone.View.extend({
  * This is the model that stores the devices.
  *
  * @category   JavaScript
- * @package    HUGnetLab
+ * @package    HUGnetLib
  * @subpackage Devices
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
@@ -307,6 +389,7 @@ DeviceEntryView = Backbone.View.extend({
     {
         this.model.bind('change', this.render, this);
         this.model.bind('remove', this.remove, this);
+        this.model.bind('configfail', this.refreshFail, this);
         this.parent = options.parent;
     },
     refresh: function (e)
@@ -314,12 +397,17 @@ DeviceEntryView = Backbone.View.extend({
         this.$el.addClass("working");
         this.model.config();
     },
+    refreshFail: function ()
+    {
+        this.$el.removeClass("working");
+        alert("Failed to get the configuration for the device");
+    },
     properties: function (e)
     {
         var view = new DevicePropertiesView({ model: this.model });
         view.$el.addClass("device");
         view.$el.addClass("popup");
-        view.$el.width(600);
+        view.$el.width("100%");
         this.parent.popup(view);
     },
     /**
@@ -335,7 +423,7 @@ DeviceEntryView = Backbone.View.extend({
     {
         this.$el.removeClass("working");
         this.$el.html(
-            Mustache.render(
+            _.template(
                 $(this.template).html(),
                 this.model.toJSON()
             )
@@ -349,7 +437,7 @@ DeviceEntryView = Backbone.View.extend({
  * This is the model that stores the devices.
  *
  * @category   JavaScript
- * @package    HUGnetLab
+ * @package    HUGnetLib
  * @subpackage Devices
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
@@ -384,7 +472,7 @@ DevicesView = Backbone.View.extend({
     render: function ()
     {
         this.$el.html(
-            Mustache.render(
+            _.template(
                 $(this.template).html(),
                 this.model.toJSON()
             )
