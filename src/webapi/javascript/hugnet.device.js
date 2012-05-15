@@ -174,11 +174,43 @@ Device = Backbone.Model.extend({
 });
 
 Devices = Backbone.Collection.extend({
+    url: '/HUGnetLib/index.php',
     model: Device,
     comparator: function (device)
     {
         return device.get("id");
-    }
+    },
+    /**
+     * Gets infomration about a device.  This is retrieved directly from the device
+     *
+     * This function is for use of the device list
+     *
+     * @param id The id of the device to get
+     *
+     * @return null
+     */
+    fetch: function ()
+    {
+        var self = this;
+        $.ajax({
+            type: 'GET',
+            url: this.url,
+            dataType: 'json',
+            success: function (data)
+            {
+                self.add(data, {silent: true} );
+                self.each(
+                    function (model)
+                    {
+                        self.trigger("add", model);
+                    }
+                );
+            },
+            data: {
+                "task": "device", "action": "getall"
+            },
+        });
+    },
 });
 
 DevicePropertiesView = Backbone.View.extend({
@@ -257,7 +289,6 @@ DeviceEntryView = Backbone.View.extend({
 });
 
 DevicesView = Backbone.View.extend({
-    url: '/HUGnetLib/index.php',
     template: "#DeviceListTemplate",
     events: {
         'click .cancel': 'nopopup',
@@ -265,7 +296,8 @@ DevicesView = Backbone.View.extend({
     initialize: function (options)
     {
         this.model = new Devices();
-        this.populate();
+        this.model.bind('add', this.insert, this);
+        this.model.fetch();
         this.render();
     },
     nopopup: function (e)
@@ -292,11 +324,8 @@ DevicesView = Backbone.View.extend({
         this.$el.trigger('update');
         return this;
     },
-    insert: function (model, self)
+    insert: function (model)
     {
-        if (self == undefined) {
-            self = this;
-        }
         var view = new DeviceEntryView({ model: model, parent: this });
         this.$("#DeviceList").append(view.render().el);
     },
@@ -315,37 +344,6 @@ DevicesView = Backbone.View.extend({
             }
             view.$el.css("left", pos.left + ((pwidth - width) / 2));
         }
-    },
-    /**
-     * Gets infomration about a device.  This is retrieved directly from the device
-     *
-     * This function is for use of the device list
-     *
-     * @param id The id of the device to get
-     *
-     * @return null
-     */
-    populate: function ()
-    {
-        var self = this;
-        $.ajax({
-            type: 'GET',
-            url: this.url,
-            dataType: 'json',
-            success: function (data)
-            {
-                self.model.add(data);
-                self.model.each(
-                    function (model)
-                    {
-                        self.insert(model, self);
-                    }
-                );
-            },
-            data: {
-                "task": "device", "action": "getall"
-            },
-        });
     },
 });
 
