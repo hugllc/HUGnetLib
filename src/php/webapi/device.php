@@ -46,6 +46,7 @@ if ($action === "post") {
     $dev->load($_POST["device"]);
     $worked &= $dev->store(true);
     /* Save any sensor information given to us */
+    /*
     $sensors = &$_POST["sensors"];
     $sensor = $dev->sensor(0);
     if (is_array($sensors) && (count($sensors) > 0)) {
@@ -56,7 +57,7 @@ if ($action === "post") {
                 $worked &= $sensor->store(true);
             }
         }
-    }
+    }*/
     if ($worked) {
         $ret = "success";
     } else {

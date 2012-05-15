@@ -42,31 +42,34 @@ $(function() {
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 Device = Backbone.Model.extend({
-    defaults: {
-        id: 0,
-        DeviceID: '000000',
-        DeviceName: '',
-        HWPartNum: '',
-        FWPartNum: '',
-        FWVersion: '',
-        RawSetup: '',
-        Active: 0,
-        GatewayKey: 0,
-        ControllerKey: 0,
-        ControllerIndex: 0,
-        DeviceLocation: '',
-        DeviceJob: '',
-        Driver: '',
-        PollInterval: 0,
-        ActiveSensors: 0,
-        DeviceGroup: 'FFFFFF',
-        sensors: {},
-        params: {},
-        actions: '',
-        ViewButtonID: '',
-        RefreshButtonID: '',
-        target: '',
-        url: '/HUGnetLib/index.php',
+    defaults: function ()
+    {
+        return {
+            id: 0,
+            DeviceID: '000000',
+            DeviceName: '',
+            HWPartNum: '',
+            FWPartNum: '',
+            FWVersion: '',
+            RawSetup: '',
+            Active: 0,
+            GatewayKey: 0,
+            ControllerKey: 0,
+            ControllerIndex: 0,
+            DeviceLocation: '',
+            DeviceJob: '',
+            Driver: '',
+            PollInterval: 0,
+            ActiveSensors: 0,
+            DeviceGroup: 'FFFFFF',
+            sensors: {},
+            params: {},
+            actions: '',
+            ViewButtonID: '',
+            RefreshButtonID: '',
+            target: '',
+            url: '/HUGnetLib/index.php',
+        };
     },
     view: null,
     /**
@@ -74,13 +77,12 @@ Device = Backbone.Model.extend({
      */
     initialize: function(attributes)
     {
-        this.update();
-
     },
     /**
-     * Updates the particular elements
+     * This function initializes the object
      */
-    update: function() {
+    fix: function(attributes)
+    {
     },
     /**
      * Gets infomration about a device.  This is retrieved from the database only.
@@ -120,6 +122,7 @@ Device = Backbone.Model.extend({
      */
     save: function()
     {
+        console.log("save");
         var id = this.get('id');
         if (id !== 0) {
             var self = this;
@@ -129,7 +132,9 @@ Device = Backbone.Model.extend({
                 dataType: 'json',
                 success: function (data)
                 {
-                    self.set(data);
+                    if (data == "success") {
+                        self.fetch();
+                    }
                 },
                 data:
                 {
@@ -173,6 +178,18 @@ Device = Backbone.Model.extend({
     }
 });
 
+/**
+ * This is the model that stores the devices.
+ *
+ * @category   JavaScript
+ * @package    HUGnetLab
+ * @subpackage Devices
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2012 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.9.7
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ */
 Devices = Backbone.Collection.extend({
     url: '/HUGnetLib/index.php',
     model: Device,
@@ -213,11 +230,37 @@ Devices = Backbone.Collection.extend({
     },
 });
 
+/**
+ * This is the model that stores the devices.
+ *
+ * @category   JavaScript
+ * @package    HUGnetLab
+ * @subpackage Devices
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2012 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.9.7
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ */
 DevicePropertiesView = Backbone.View.extend({
     template: '#DevicePropertiesTemplate',
     tagName: 'div',
+    events: {
+        'click .SaveDevice': 'save',
+    },
     initialize: function (options)
     {
+        this.model.bind('change', this.render, this);
+    },
+    save: function (e)
+    {
+        this.$el.addClass("saving");
+        this.model.set({
+            DeviceName: this.$(".DeviceName").val(),
+            DeviceLocation: this.$(".DeviceLocation").val(),
+            DeviceJob: this.$(".DeviceJob").val(),
+        });
+        this.model.save();
     },
     /**
      * Gets infomration about a device.  This is retrieved directly from the device
@@ -228,6 +271,7 @@ DevicePropertiesView = Backbone.View.extend({
      */
     render: function ()
     {
+        this.$el.removeClass("saving");
         this.$el.html(
             Mustache.render(
                 $(this.template).html(),
@@ -238,6 +282,18 @@ DevicePropertiesView = Backbone.View.extend({
     },
 });
 
+/**
+ * This is the model that stores the devices.
+ *
+ * @category   JavaScript
+ * @package    HUGnetLab
+ * @subpackage Devices
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2012 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.9.7
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ */
 DeviceEntryView = Backbone.View.extend({
     model: Device,
     tagName: 'tr',
@@ -250,6 +306,7 @@ DeviceEntryView = Backbone.View.extend({
     initialize: function (options)
     {
         this.model.bind('change', this.render, this);
+        this.model.bind('remove', this.remove, this);
         this.parent = options.parent;
     },
     refresh: function (e)
@@ -288,6 +345,18 @@ DeviceEntryView = Backbone.View.extend({
     },
 });
 
+/**
+ * This is the model that stores the devices.
+ *
+ * @category   JavaScript
+ * @package    HUGnetLab
+ * @subpackage Devices
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2012 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.9.7
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ */
 DevicesView = Backbone.View.extend({
     template: "#DeviceListTemplate",
     events: {
