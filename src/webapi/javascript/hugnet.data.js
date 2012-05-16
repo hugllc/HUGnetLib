@@ -46,19 +46,9 @@ $(function() {
         defaults: function ()
         {
             return {
-                id: null,
-                device: null,
                 Date: null,
                 DataIndex: null,
-                poll: false,
-                url: '/HUGnetLib/index.php',
             };
-        },
-        initialize: function (attrib)
-        {
-            if (this.get("poll")) {
-                this.poll();
-            }
         },
         /**
         * Gets infomration about a device.  This is retrieved from the database only.
@@ -80,53 +70,6 @@ $(function() {
         save: function()
         {
         },
-        /**
-        * Gets infomration about a device.  This is retrieved directly from the device
-        *
-        * This function is for use of the device list
-        *
-        * @param id The id of the device to get
-        *
-        * @return null
-        */
-        poll: function ()
-        {
-            var devices = this.get('device');
-            var id = '';
-            var sep = '';
-            var i;
-            for (i in devices) {
-                id += sep + devices[i].toString(16);
-                sep = ',';
-            }
-            var self = this;
-            var ret = $.ajax({
-                type: 'GET',
-                url: this.get('url'),
-                dataType: 'json',
-                data: {
-                    "task": "poll",
-                    "id": id
-                },
-            });
-            ret.done(
-                function (data)
-                {
-                    if (typeof data === "object") {
-                        self.set(data);
-                        self.trigger('pollsuccess');
-                    } else {
-                        self.trigger('pollfail');
-                    }
-                }
-            );
-            ret.fail(
-                function ()
-                {
-                    self.trigger('pollfail');
-                }
-            );
-        }
     });
 
     /**
@@ -157,44 +100,13 @@ $(function() {
         {
             return data.get("Date");
         },
-        _getPoll: function ()
-        {
-            var data = new DataPoint({
-                id: this.length,
-                device: this.device,
-                poll: true,
-            });
-            data.bind(
-                "pollsuccess",
-                function ()
-                {
-                    this._pollAgain();
-                    if (this.DataIndex !== data.get('DataIndex')) {
-                        this.DataIndex = data.get('DataIndex');
-                        this.trigger("add", data);
-                    } else {
-                        this.remove(data);
-                    }
-                },
-                this
-            );
-            data.bind(
-                "pollfailure",
-                function ()
-                {
-                    this.remove(data);
-                },
-                this
-            );
-            this.add(data, {silent: true});
-        },
         _pollAgain: function ()
         {
             var self = this;
             if (this.doPoll) {
                 setTimeout(
                     function () {
-                        self._getPoll();
+                        self.poll();
                     },
                     (this.pause * 1000)
                 );
@@ -213,6 +125,47 @@ $(function() {
         {
 
         },
+        /**
+        * Gets infomration about a device.  This is retrieved directly from the device
+        *
+        * This function is for use of the device list
+        *
+        * @param id The id of the device to get
+        *
+        * @return null
+        */
+        poll: function ()
+        {
+            var id = '';
+            var sep = '';
+            var i;
+            for (i in this.device) {
+                id += sep + this.device[i].toString(16);
+                sep = ',';
+            }
+            var self = this;
+            $.ajax({
+                type: 'GET',
+                url: this.url,
+                dataType: 'json',
+                data: {
+                    "task": "poll",
+                    "id": id
+                },
+            }).done(
+                function (data)
+                {
+                    self._pollAgain();
+                    if (typeof data === "object") {
+                        if (self.DataIndex !== data['DataIndex']) {
+                            self.DataIndex = data['DataIndex'];
+                            var point = new DataPoint(data);
+                            self.add(point);
+                        }
+                    }
+                }
+            );
+        },
         stopPoll: function ()
         {
             this.doPoll = false;
@@ -220,7 +173,7 @@ $(function() {
         startPoll: function ()
         {
             this.doPoll = true;
-            this._getPoll();
+            this.poll();
         },
         clear: function ()
         {
@@ -300,8 +253,10 @@ $(function() {
     window.DataPointsView = Backbone.View.extend({
         template: "#DataPointListTemplate",
         hTemplate: "#DataPointHeaderTemplate",
+        rowClass: [ 'row0', 'row1' ],
         tagName: 'div',
         pause: 1,
+        rows: 0,
         parent: undefined,
         id: undefined,
         data: {},
@@ -336,6 +291,7 @@ $(function() {
         {
             this.$('.stopPoll').show();
             this.$('.startPoll').hide();
+            this.$('.exit').hide();
             this.model.pause = this.pause;
             this.model.startPoll();
         },
@@ -343,6 +299,7 @@ $(function() {
         {
             this.$('.stopPoll').hide();
             this.$('.startPoll').show();
+            this.$('.exit').show();
             this.model.stopPoll();
         },
         exit: function()
@@ -354,6 +311,7 @@ $(function() {
         reset: function()
         {
             this.model.clear();
+            this.rows = 0;
         },
         /**
         * Gets infomration about a device.  This is retrieved directly from the device
@@ -385,7 +343,10 @@ $(function() {
             var view = new DataPointEntryView({
                 model: model, fields: this.fields, classes: this.classes
             });
-            this.$("#DataPointList").prepend(view.render().el);
+            this.$('tbody').prepend(view.render().el);
+            /* this puts on our row class */
+            view.$el.addClass(this.rowClass[this.rows % this.rowClass.length]);
+            this.rows++;
         },
         renderEntry: function (view)
         {

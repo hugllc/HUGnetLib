@@ -289,6 +289,7 @@ $(function() {
                 function (data)
                 {
                     self.add(data, {silent: true} );
+                    /* We want an add trigger for each one */
                     self.each(
                         function (model)
                         {
