@@ -156,7 +156,7 @@ $(function() {
                 function (data)
                 {
                     self._pollAgain();
-                    if (typeof data === "object") {
+                    if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
                         if (self.DataIndex !== data['DataIndex']) {
                             self.DataIndex = data['DataIndex'];
                             var point = new DataPoint(data);
