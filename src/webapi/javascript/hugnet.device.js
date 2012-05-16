@@ -76,7 +76,7 @@ $(function() {
         /**
         * This function initializes the object
         */
-        initialize: function(attributes)
+        initialize: function(attrib)
         {
         },
         /**
@@ -456,7 +456,6 @@ $(function() {
             this.model = new Devices();
             this.model.bind('add', this.insert, this);
             this.model.fetch();
-            this.render();
         },
         nopopup: function (e)
         {
@@ -479,13 +478,16 @@ $(function() {
                 )
             );
             //this.model.each(this.renderEntry);
+            this.$('.tablesorter').tablesorter();
             this.$el.trigger('update');
             return this;
         },
         insert: function (model)
         {
             var view = new DeviceEntryView({ model: model, parent: this });
-            this.$("#DeviceList").append(view.render().el);
+            this.$('tbody').append(view.render().el);
+            this.$el.trigger('update');
+            this.$('.tablesorter').trigger('update');
         },
         popup: function (view)
         {

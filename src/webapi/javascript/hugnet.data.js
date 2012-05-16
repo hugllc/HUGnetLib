@@ -54,7 +54,7 @@ $(function() {
                 url: '/HUGnetLib/index.php',
             };
         },
-        initialize: function (attributes)
+        initialize: function (attrib)
         {
             if (this.get("poll")) {
                 this.poll();
@@ -245,12 +245,15 @@ $(function() {
     var DataPointEntryView = Backbone.View.extend({
         model: DataPoint,
         tagName: 'tr',
-        template: '#DataPointEntryTemplate',
-        dTemplate: '#DataPointTemplate',
+        template: '#DataPointTemplate',
+        fields: {},
+        classes: {},
         events: {
         },
         initialize: function (options)
         {
+            this.fields = options.fields;
+            this.classes = options.classes;
             this.model.bind('pollsuccess', this.render, this);
             this.model.bind('remove', this.remove, this);
         },
@@ -265,12 +268,18 @@ $(function() {
         */
         render: function ()
         {
-            this.$el.html(
-                _.template(
+            var header = "";
+            var i;
+            var data = this.model.get("Data");
+            data["Date"] = this.model.get("Date");
+            data["DataIndex"] = this.model.get("DataIndex");
+            for (i in this.fields) {
+                header += _.template(
                     $(this.template).html(),
-                    this.model.toJSON()
-                )
-            );
+                    { data: data[this.fields[i]], fieldClass: this.classes[i] }
+                );
+            }
+            this.$el.html(header);
             this.$el.trigger('update');
             return this;
         },
@@ -291,37 +300,56 @@ $(function() {
     window.DataPointsView = Backbone.View.extend({
         template: "#DataPointListTemplate",
         hTemplate: "#DataPointHeaderTemplate",
+        tagName: 'div',
         pause: 1,
+        parent: undefined,
+        id: undefined,
+        data: {},
+        device: {},
         header: {},
-        device: undefined,
+        fields: {},
+        classes: {},
         events: {
             'click .startPoll': 'startPoll',
             'click .stopPoll': 'stopPoll',
-            'click .reset': 'reset',
+            'click .exit': 'exit',
         },
         initialize: function (options)
         {
-            if (options.header !== undefined) {
-                this.header = options.header;
+            this.data = options.data;
+            var i;
+            for (i in this.data) {
+                this.device[this.data[i].device] = this.data[i].device;
+                this.header[i] = this.data[i].name;
+                this.fields[i] = this.data[i].field;
+                this.classes[i] = this.data[i].class;
             }
-            if (options.data !== undefined) {
-                this.data = options.data;
-            }
-            this.device = options.device;
             this.model = new DataPoints(null, { device: this.device });
             this.model.bind('add', this.insert, this);
-            this.render();
-            this.pauseInput = $("#pauseID");
+            if (options.pause !== undefined) {
+                this.pause = options.pause - 0;
+            }
+            this.parent = options.parent;
+            this.id = options.id;
         },
         startPoll: function()
         {
-            this.pause = (this.pauseInput.val() - 0);
+            this.$('.stopPoll').show();
+            this.$('.startPoll').hide();
             this.model.pause = this.pause;
             this.model.startPoll();
         },
         stopPoll: function()
         {
+            this.$('.stopPoll').hide();
+            this.$('.startPoll').show();
             this.model.stopPoll();
+        },
+        exit: function()
+        {
+            this.reset();
+            this.trigger('remove');
+            this.remove();
         },
         reset: function()
         {
@@ -344,18 +372,25 @@ $(function() {
             this.$el.html(
                 _.template(
                     $(this.template).html(),
-                    { header: header, pause: this.pause, pauseID: "pauseID" }
+                    { header: header, pause: this.pause, id: this.id }
                 )
             );
-            //this.model.each(this.renderEntry);
+            this.$('.stopPoll').hide();
+            this.model.each(this.renderEntry);
             this.$el.trigger('update');
             return this;
         },
         insert: function (model)
         {
-            var view = new DataPointEntryView({ model: model, parent: this });
+            var view = new DataPointEntryView({
+                model: model, fields: this.fields, classes: this.classes
+            });
             this.$("#DataPointList").prepend(view.render().el);
         },
+        renderEntry: function (view)
+        {
+            view.render();
+        }
     });
 
 }());
