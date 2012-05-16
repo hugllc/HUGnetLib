@@ -315,6 +315,7 @@ $(function() {
     */
     var DevicePropertiesView = Backbone.View.extend({
         template: '#DevicePropertiesTemplate',
+        tTemplate: '#DevicePropertiesTitleTemplate',
         tagName: 'div',
         events: {
             'click .SaveDevice': 'save',
@@ -328,6 +329,7 @@ $(function() {
         },
         save: function (e)
         {
+            this.setTitle( " [ Saving...] " );
             this.$el.addClass("saving");
             this.model.set({
                 DeviceName: this.$(".DeviceName").val(),
@@ -338,13 +340,17 @@ $(function() {
         },
         saveSensor: function (e)
         {
-            this.$el.addClass("saving");
+            this.setTitle( " [ Saving Sensors... ] " );
             this.model.saveSensor($("#sensorForm").serialize());
         },
         saveFail: function ()
         {
-            this.$el.removeClass("saving");
+            this.setTitle();
             alert("Save Failed");
+        },
+        setTitle: function (extra)
+        {
+            this.$el.dialog( "option", "title", this.title() + extra );
         },
         /**
         * Gets infomration about a device.  This is retrieved directly from the device
@@ -355,14 +361,30 @@ $(function() {
         */
         render: function ()
         {
-            this.$el.removeClass("saving");
             this.$el.html(
                 _.template(
                     $(this.template).html(),
                     this.model.toJSON()
                 )
             );
+            this.setTitle();
             return this;
+        },
+        /**
+        * Gets infomration about a device.  This is retrieved directly from the device
+        *
+        * This function is for use of the device list
+        *
+        * @param id The id of the device to get
+        *
+        * @return null
+        */
+        title: function ()
+        {
+            return _.template(
+                $(this.tTemplate).html(),
+                this.model.toJSON()
+            );
         },
     });
 
@@ -407,9 +429,6 @@ $(function() {
         properties: function (e)
         {
             var view = new DevicePropertiesView({ model: this.model });
-            view.$el.addClass("device");
-            view.$el.addClass("popup");
-            view.$el.width("100%");
             this.parent.popup(view);
         },
         /**
@@ -450,18 +469,12 @@ $(function() {
     window.DevicesView = Backbone.View.extend({
         template: "#DeviceListTemplate",
         events: {
-            'click .cancel': 'nopopup',
         },
         initialize: function (options)
         {
             this.model = new Devices();
             this.model.bind('add', this.insert, this);
             this.model.fetch();
-        },
-        nopopup: function (e)
-        {
-            this.pop.remove();
-            delete this.pop;
         },
         /**
         * Gets infomration about a device.  This is retrieved directly from the device
@@ -492,19 +505,23 @@ $(function() {
         },
         popup: function (view)
         {
-            if (this.pop == undefined) {
-                this.pop = view;
-                var pwidth = this.$el.width();
-                var pos = this.$el.position();
-                view.$el.css("top", pos.top);
-                this.$el.append(view.render().el);
-                var width = view.$el.width();
-                if (width > $(window).width()) {
-                    width = $(window).width() * 0.8;
-                    view.$el.width(width);
-                }
-                view.$el.css("left", pos.left + ((pwidth - width) / 2));
-            }
+            this.$el.append(view.render().el);
+            view.$el.dialog({
+                modal: true,
+                draggable: false,
+                width: 700,
+                resizable: false,
+                title: view.title(),
+                dialogClass: "window",
+            });
+            view.model.bind(
+                'change',
+                function ()
+                {
+                    this.$el.dialog( "option", "title", this.title() );
+                },
+                view
+            );
         },
     });
 
