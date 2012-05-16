@@ -468,6 +468,7 @@ $(function() {
     */
     window.DevicesView = Backbone.View.extend({
         template: "#DeviceListTemplate",
+        rows: 0,
         events: {
         },
         initialize: function (options)
@@ -492,7 +493,7 @@ $(function() {
                 )
             );
             //this.model.each(this.renderEntry);
-            this.$('.tablesorter').tablesorter();
+            this.$('.tablesorter').tablesorter({ widgets: ['zebra'] });
             this.$el.trigger('update');
             return this;
         },

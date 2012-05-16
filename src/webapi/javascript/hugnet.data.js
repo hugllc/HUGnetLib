@@ -263,7 +263,7 @@ $(function() {
     window.DataPointsView = Backbone.View.extend({
         template: "#DataPointListTemplate",
         hTemplate: "#DataPointHeaderTemplate",
-        rowClass: [ 'row0', 'row1' ],
+        rowClass: [ 'odd', 'even' ],
         tagName: 'div',
         pause: 1,
         rows: 0,
