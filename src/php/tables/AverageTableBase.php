@@ -103,18 +103,24 @@ abstract class AverageTableBase extends HistoryTableBase
     */
     protected $fixedColumns = array(
         "id" => array(
-            "Name" => "id",
-            "Type" => "int",
+            "Name"    => "id",
+            "Type"    => "int",
             "Default" => 0,
         ),
         "Date" => array(
-            "Name" => "Date",
-            "Type" => "bigint",
+            "Name"    => "Date",
+            "Type"    => "bigint",
             "Default" => 0,
         ),
+        "TestID" => array(
+            "Name"    => "TestID",
+            "Type"    => "int",
+            "Default" => null,
+            "Null"    => true,
+        ),
         "Type" => array(
-            "Name" => "Type",
-            "Type" => "varchar(16)",
+            "Name"    => "Type",
+            "Type"    => "varchar(16)",
             "Default" => "15MIN",
         ),
     );

@@ -101,6 +101,12 @@ abstract class HistoryTableBase extends HUGnetDBTable
             "Type" => "bigint",
             "Default" => 0,
         ),
+        "TestID" => array(
+            "Name"    => "TestID",
+            "Type"    => "int",
+            "Default" => null,
+            "Null"    => true,
+        ),
         "deltaT" => array(
             "Name" => "deltaT",
             "Type" => "float",

@@ -156,6 +156,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 array(
                     "id"  => 41,
                     "Date"   => "2003-02-28 01:59:00",
+                    "TestID" => 1,
                     "Type"  => AverageTableBase::AVERAGE_15MIN,
                     "Data0"  => 0,
                     "Data1"  => 1,
@@ -179,6 +180,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                     "raw" => array(),
                     "id"  => 41,
                     "Date"   => 1046397540,
+                    "TestID" => 1,
                     "Type"  => AverageTableBase::AVERAGE_15MIN,
                     "Data0"  => 0,
                     "Data1"  => 1,
@@ -208,7 +210,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
     public function testConstructor($preload, $cols, $expect)
     {
         $obj = new AverageTableBaseTestStub($preload, $cols);
-        $this->assertSame($expect, $obj->toArray());
+        $this->assertEquals($expect, $obj->toArray());
     }
     /**
     * data provider for testDeviceID
@@ -283,6 +285,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                     ),
                     "id"  => 0,
                     "Date"   => 0,
+                    "TestID" => null,
                     "Type"  => AverageTableBase::AVERAGE_15MIN,
                     "Data0"  => 1,
                     "Data1"  => 2,
@@ -366,6 +369,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                     ),
                     "id"  => 21,
                     "Date"   => 1234,
+                    "TestID" => null,
                     "Type"  => AverageTableBase::AVERAGE_15MIN,
                     "Data0"  => 1,
                     "Data1"  => 2,
@@ -456,6 +460,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                     "group" => "default",
                     "id"  => 0,
                     "Date"   => 0,
+                    "TestID" => null,
                     "Type"  => AverageTableBase::AVERAGE_15MIN,
                     "Data0"  => 1,
                     "Data1"  => 2,
@@ -499,6 +504,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                     "group" => "default",
                     "id"  => 41,
                     "Date"   => 1046397540,
+                    "TestID" => null,
                     "Type"  => AverageTableBase::AVERAGE_15MIN,
                     "Data0"  => 0,
                     "Data1"  => 1,
@@ -589,6 +595,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "raw" => array(),
                         "id"  => 2,
                         "Date"   => 1292648600,
+                        "TestID" => null,
                         "Type"  => AverageTableBase::AVERAGE_15MIN,
                         "Data0"  => "1.0",
                         "Data1"  => "2.0",
@@ -611,6 +618,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "raw" => array(),
                         "id"  => 2,
                         "Date"   => 1292648500,
+                        "TestID" => null,
                         "Type"  => AverageTableBase::AVERAGE_15MIN,
                         "Data0"  => "1.0",
                         "Data1"  => "2.0",
@@ -699,6 +707,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                     "raw" => array(),
                     "id"  => 41,
                     "Date"   => 1046397540,
+                    "TestID" => null,
                     "Type"  => AverageTableBase::AVERAGE_15MIN,
                     "Data0"  => 0,
                     "Data1"  => 1,
@@ -745,6 +754,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                     "raw" => array(),
                     "id"  => 41,
                     "Date"   => 1046397540,
+                    "TestID" => null,
                     "Type"  => AverageTableBase::AVERAGE_15MIN,
                     "Data0"  => 0,
                     "Data1"  => 1,
