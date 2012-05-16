@@ -224,12 +224,22 @@ $(function() {
             var header = "";
             var i;
             var data = this.model.get("Data");
+            if (data === undefined) {
+                this.model.remove();
+                this.remove();
+                return null;
+            }
             data["Date"] = this.model.get("Date");
             data["DataIndex"] = this.model.get("DataIndex");
+            var point;
             for (i in this.fields) {
+                point = data[this.fields[i]]
+                if (point === undefined) {
+                    point = null;
+                }
                 header += _.template(
                     $(this.template).html(),
-                    { data: data[this.fields[i]], fieldClass: this.classes[i] }
+                    { data: point, fieldClass: this.classes[i] }
                 );
             }
             this.$el.html(header);
@@ -343,10 +353,12 @@ $(function() {
             var view = new DataPointEntryView({
                 model: model, fields: this.fields, classes: this.classes
             });
-            this.$('tbody').prepend(view.render().el);
-            /* this puts on our row class */
-            view.$el.addClass(this.rowClass[this.rows % this.rowClass.length]);
-            this.rows++;
+            if  (view.render() !== null) {
+                this.$('tbody').prepend(view.el);
+                /* this puts on our row class */
+                view.$el.addClass(this.rowClass[this.rows % this.rowClass.length]);
+                this.rows++;
+            }
         },
         renderEntry: function (view)
         {
