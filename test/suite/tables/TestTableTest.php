@@ -142,11 +142,16 @@ class TestTableTest extends HUGnetDBTableTestBase
     public static function dataSet()
     {
         return array(
-            array("Date", "2010-04-25 13:42:23", 1272202943),
-            array("Date", "2010-04-25", 1272153600),
-            array("Date", "Sun, 25 April 2010, 1:42:23pm", 1272202943),
-            array("Date", 1234567890, 1234567890),
-            array("Date", "This is not a date", 0),
+            array("created", "2010-04-25 13:42:23", 1272202943),
+            array("created", "2010-04-25", 1272153600),
+            array("created", "Sun, 25 April 2010, 1:42:23pm", 1272202943),
+            array("created", 1234567890, 1234567890),
+            array("created", "This is not a date", 0),
+            array("modified", "2010-04-25 13:42:23", 1272202943),
+            array("modified", "2010-04-25", 1272153600),
+            array("modified", "Sun, 25 April 2010, 1:42:23pm", 1272202943),
+            array("modified", 1234567890, 1234567890),
+            array("modified", "This is not a date", 0),
         );
     }
 

@@ -3,7 +3,8 @@
     <table name="tests">
         <column>id</column>
         <column>name</column>
-        <column>Date</column>
+        <column>created</column>
+        <column>modified</column>
         <column>fields</column>
         <column>notes</column>
     </table>

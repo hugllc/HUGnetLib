@@ -96,8 +96,13 @@ class TestTable extends HUGnetDBTable
             "Type" => "varchar(128)",
             "Default" => 'No Name',
         ),
-        "Date" => array(
-            "Name" => "Date",
+        "created" => array(
+            "Name" => "created",
+            "Type" => "BIGINT",
+            "Default" => 0,
+        ),
+        "modified" => array(
+            "Name" => "modified",
             "Type" => "BIGINT",
             "Default" => 0,
         ),
@@ -129,7 +134,7 @@ class TestTable extends HUGnetDBTable
     public $sqlIndexes = array(
         "namedate" => array(
             "Name" => "namedate",
-            "Columns" => array("name", "Date"),
+            "Columns" => array("name", "created"),
         ),
     );
 
@@ -142,12 +147,20 @@ class TestTable extends HUGnetDBTable
     *
     * @param mixed $data This is an array or string to create the object from
     */
-    function __construct($data="")
+    public function __construct($data="")
     {
         parent::__construct($data);
         $this->create();
     }
-
+    /**
+    * Gives us the ID of the last record inserted
+    */
+    public function newRow()
+    {
+        $this->set("id", $this->dbDriver()->getNextID());
+        $this->set("created", $this->now());
+        return $this->insertRow();
+    }
     /******************************************************************
      ******************************************************************
      ********  The following are input modification functions  ********
@@ -160,9 +173,20 @@ class TestTable extends HUGnetDBTable
     *
     * @return null
     */
-    protected function setDate($value)
+    protected function setModified($value)
     {
-        $this->data["Date"] = self::unixDate($value);
+        $this->data["modified"] = self::unixDate($value);
+    }
+    /**
+    * function to set LastHistory
+    *
+    * @param string $value The value to set
+    *
+    * @return null
+    */
+    protected function setCreated($value)
+    {
+        $this->data["created"] = self::unixDate($value);
     }
 
 }
