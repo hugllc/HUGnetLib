@@ -43,6 +43,7 @@ $action = strtolower($json->args()->action);
 $test   = new TestTable();
 $ret    = "";
 $since  = (int)$_REQUEST["since"];
+$limit  = ((int)$_REQUEST["limit"]) ? (int)$_REQUEST["limit"] : 100;
 
 if ($action === "post") {
     $test->getRow($tid);
@@ -80,6 +81,8 @@ if ($action === "post") {
         $hist[$device->get("id")] = $device->historyFactory(array());
     }
     foreach ($hist as $dev => $table) {
+        $table->sqlLimit = $limit;
+        //$table->sqlOrderBy = "Date desc";
         $history = array_merge(
             $history,
             (array)$table->select(

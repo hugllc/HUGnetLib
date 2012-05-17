@@ -107,7 +107,9 @@ $(function() {
             this.id = options.id;
             this.refresh = options.refresh;
             this.mode = options.mode;
-            this.fetch();
+            if (this.mode != 'run') {
+                this.fetch();
+            }
         },
         addExtra: function (model, collection, options)
         {
@@ -153,6 +155,7 @@ $(function() {
                     "action": "history",
                     "id": this.id,
                     "since": this.LastHistory,
+                    "limit": 100,
                 },
             }).done(
                 function (data)
