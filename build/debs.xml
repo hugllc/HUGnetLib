@@ -34,11 +34,11 @@
 
         <mkdir dir="${deb.phpstaging}"/>
         <copy todir="${deb.phpstaging}">
-            <fileset dir="${deb.phpsetup}"/>
+            <fileset dir="${deb.phpsetup}" excludes="**/*~"/>
         </copy>
         <mkdir dir="${deb.phpstaging}/usr/share/php/HUGnetLib"/>
         <copy todir="${deb.phpstaging}/usr/share/php/HUGnetLib">
-            <fileset dir="${deb.phpsrc}"/>
+            <fileset dir="${deb.phpsrc}" excludes="**/*~"/>
         </copy>
         <delete dir="${deb.phpstaging}/usr/share/php/HUGnetLib/webapi"/>
         <chmod file="${deb.phpstaging}/DEBIAN/postinst" perm="0755"/>
@@ -62,19 +62,19 @@
 
         <mkdir dir="${deb.webapistaging}"/>
         <copy todir="${deb.webapistaging}">
-            <fileset dir="${deb.webapisetup}"/>
+            <fileset dir="${deb.webapisetup}" excludes="**/*~"/>
         </copy>
         <mkdir dir="${deb.webapistaging}/var/www/HUGnetLib"/>
         <copy todir="${deb.webapistaging}/var/www/HUGnetLib">
-            <fileset dir="${deb.webapisrc}"/>
+            <fileset dir="${deb.webapisrc}" excludes="**/*~"/>
         </copy>
         <mkdir dir="${deb.webapistaging}/usr/share/php/HUGnetLib/webapi"/>
         <copy todir="${deb.webapistaging}/usr/share/php/HUGnetLib/webapi">
-            <fileset dir="${deb.phpsrc}/webapi"/>
+            <fileset dir="${deb.phpsrc}/webapi" excludes="**/*~"/>
         </copy>
         <chmod file="${deb.webapistaging}/DEBIAN/postinst" perm="0755"/>
         <chmod file="${deb.webapistaging}/DEBIAN/prerm" perm="0755"/>
-        <replaceregexp file="${deb.webapistaging}/DEBIAN/control"
+        <replaceregexp file="${deb.webapistaging}/DEBIAN/control" byline="yes"
                     match="%VERSION%"
                     replace="${deb.version}"
         />
@@ -94,13 +94,21 @@
     </target>
     <target name="post" description="post the deb" depends="build">
         <exec executable="rsync" failonerror="true" dir="${deb.builddir}">
-            <arg line="-av ${deb.outputfile}
+            <arg line="-av ${deb.phpoutputfile}
+                        ${deb.postloc}main/"/>
+        </exec>
+        <exec executable="rsync" failonerror="true" dir="${deb.builddir}">
+            <arg line="-av ${deb.webapioutputfile}
                         ${deb.postloc}main/"/>
         </exec>
     </target>
     <target name="testpost" description="post the deb" depends="build">
         <exec executable="rsync" failonerror="true" dir="${deb.builddir}">
-            <arg line="-av ${deb.outputfile}
+            <arg line="-av ${deb.phpoutputfile}
+                        ${deb.postloc}testing/"/>
+        </exec>
+        <exec executable="rsync" failonerror="true" dir="${deb.builddir}">
+            <arg line="-av ${deb.webapioutputfile}
                         ${deb.postloc}testing/"/>
         </exec>
     </target>

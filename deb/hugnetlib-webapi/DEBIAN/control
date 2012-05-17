@@ -4,9 +4,9 @@ Priority: optional
 Maintainer: Scott Price <prices@hugllc.com>
 Homepage: http://dev.huglc.com/
 Version: %VERSION%
-Package: hugnetapi
+Package: hugnetlib-webapi
 Architecture: all
-Depends: php5 (>= 5.3.2), php5-sqlite, hugnetlib (>> 0.9.6), php5-mysql, apache2 | lighttpd
+Depends: php5 (>= 5.3.2), php5-sqlite, hugnetlib (= %VERSION% ), php5-mysql, apache2
 Recommends: apache2
 Description: This is the HUGnet API for accessing a HUGnet system.
  This creates an interface that web pages and scripts alike can manipulate the
