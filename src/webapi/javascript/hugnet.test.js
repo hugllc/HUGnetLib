@@ -473,7 +473,7 @@ $(function() {
             this.$el.trigger('update');
             return this;
         },
-        insert: function (model)
+        insert: function (model, collection, options)
         {
             var view = new TestEntryView({ model: model, parent: this });
             this.$('tbody').append(view.render().el);

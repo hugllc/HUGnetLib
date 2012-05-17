@@ -50,6 +50,10 @@ $(function() {
                 DataIndex: null,
             };
         },
+        initialize: function ()
+        {
+            this.set("UnixDate", this.get("Date"));
+        },
         /**
         * Gets infomration about a device.  This is retrieved from the database only.
         *
@@ -90,14 +94,27 @@ $(function() {
         device: undefined,
         id: undefined,
         DataIndex: null,
+        LastHistory: 0,
+        mode: null,
+        refresh: null,
         pause: 1,
         doPoll: false,
         initialize: function (models, options)
         {
+            this.bind('add', this.addExtra, this);
             this.device = options.device;
             this.pause = options.pause;
             this.id = options.id;
+            this.refresh = options.refresh;
+            this.mode = options.mode;
             this.fetch();
+        },
+        addExtra: function (model, collection, options)
+        {
+            var last = model.get("UnixDate");
+            if (last > this.LastHistory) {
+                this.LastHistory = last;
+            }
         },
         comparator: function (data)
         {
@@ -135,18 +152,21 @@ $(function() {
                     "task": "test",
                     "action": "history",
                     "id": this.id,
+                    "since": this.LastHistory,
                 },
             }).done(
                 function (data)
                 {
-                    if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
-                        self.add(data, { silent: true });
-                        self.each(
-                            function (model)
-                            {
-                                self.trigger("add", model);
-                            }
+                    if ((self.refresh > 0) && (self.mode === 'view')) {
+                        setTimeout(
+                            function () {
+                                self.fetch();
+                            },
+                            (self.refresh * 1000)
                         );
+                    }
+                    if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
+                        self.add(data);
                     }
                 }
             );
@@ -233,6 +253,33 @@ $(function() {
             this.classes = options.classes;
             this.model.bind('pollsuccess', this.render, this);
             this.model.bind('remove', this.remove, this);
+            Date.prototype.formatHUGnet = function()
+            {
+                var m = this.getMonth();
+                var d = this.getDate();
+                var Y = this.getFullYear();
+                var H = this.getHours();
+                var i = this.getMinutes();
+                var s = this.getSeconds();
+
+                if (H < 10) {
+                    H = "0" + H;
+                }
+                if (i < 10) {
+                    i = "0" + i;
+                }
+                if (s < 10) {
+                    s = "0" + s;
+                }
+                if (m < 10) {
+                    m = "0" + m;
+                }
+                if (d < 10) {
+                    d = "0" + d;
+                }
+
+                return Y + "-" + m + " " + d + " " + H + ":" + i + ":" + s;
+            }
         },
         /**
         * Gets infomration about a device.  This is retrieved directly from the device
@@ -253,7 +300,13 @@ $(function() {
                 this.remove();
                 return null;
             }
-            data["Date"] = this.model.get("Date");
+            data["UnixDate"] = this.model.get("Date");
+
+            var d = new Date();
+            d.setTime(data["UnixDate"] * 1000);
+
+            data["Date"] = d.formatHUGnet();
+
             data["DataIndex"] = this.model.get("DataIndex");
             var point;
             for (i in this.fields) {
@@ -291,6 +344,7 @@ $(function() {
         tagName: 'div',
         pause: 1,
         rows: 0,
+        autorefresh: 5,
         mode: 'run',
         parent: undefined,
         id: undefined,
@@ -323,7 +377,8 @@ $(function() {
                 this.fields[i] = this.getField(device, this.data[i].field);
                 this.classes[i] = this.data[i].class;
             }
-            this.model = new DataPoints(null, { device: this.device, id: this.id });
+            this.model = new DataPoints(
+                null, { device: this.device, id: this.id, mode: this.mode, refresh: this.autorefresh });
             this.model.bind('add', this.insert, this);
             if (options.pause !== undefined) {
                 this.pause = options.pause - 0;
@@ -368,6 +423,7 @@ $(function() {
         exit: function()
         {
             this.reset();
+            this.model.mode = 'shutdown';
             this.trigger('remove', this.parent);
             this.remove();
         },
@@ -401,7 +457,7 @@ $(function() {
             this.$el.trigger('update');
             return this;
         },
-        insert: function (model)
+        insert: function (model, collection, options)
         {
             var view = new DataPointEntryView({
                 model: model, fields: this.fields, classes: this.classes

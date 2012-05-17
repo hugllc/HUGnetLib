@@ -40,8 +40,9 @@ require_once "HUGnetLib/tables/TestTable.php";
 
 $tid    = hexdec($json->args()->id);
 $action = strtolower($json->args()->action);
-$test    = new TestTable();
+$test   = new TestTable();
 $ret    = "";
+$since  = (int)$_REQUEST["since"];
 
 if ($action === "post") {
     $test->getRow($tid);
@@ -82,7 +83,8 @@ if ($action === "post") {
         $history = array_merge(
             $history,
             (array)$table->select(
-                "id = ? AND TestID = ?", array($dev, $tid)
+                "`id` = ? AND `TestID` = ? AND `Date` > ? AND `Date` < ?",
+                array($dev, $tid, $since, time() - 10)
             )
         );
     }
@@ -91,7 +93,7 @@ if ($action === "post") {
         $cols = $row->datacols;
         $date = $row->get("Date");
         $did  = $row->get("id");
-        $out[$date]["Date"] = date("Y-m-d H:i:s", $date);
+        $out[$date]["Date"] = $date;
         $out[$date]["TestID"] = $tid;
         $out[$date]["DataIndex"] = $row->get("DataIndex");
         for ($i = 0; $i < $cols; $i++) {

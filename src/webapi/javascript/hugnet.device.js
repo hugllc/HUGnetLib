@@ -288,14 +288,7 @@ $(function() {
             ret.done(
                 function (data)
                 {
-                    self.add(data, {silent: true} );
-                    /* We want an add trigger for each one */
-                    self.each(
-                        function (model)
-                        {
-                            self.trigger("add", model);
-                        }
-                    );
+                    self.add(data);
                 }
             );
         },
@@ -497,7 +490,7 @@ $(function() {
             this.$el.trigger('update');
             return this;
         },
-        insert: function (model)
+        insert: function (model, collection, options)
         {
             var view = new DeviceEntryView({ model: model, parent: this });
             this.$('tbody').append(view.render().el);

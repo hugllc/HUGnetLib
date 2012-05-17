@@ -43,7 +43,7 @@ $TestID = (int)$_REQUEST["TestID"] ? (int)$_REQUEST["TestID"] : null;
 $devs = explode(",", $json->args()->id);
 $ret  = array();
 
-$savedate = date("Y-m-d H:i:s");
+$savedate = time();
 $filename = "/tmp/LeNR.".$TestID.".".date("Ymd");
 $new = false;
 if (!file_exists($filename)) $new = true;
@@ -56,7 +56,7 @@ foreach ($devs as $dev) {
     $pkt = $device->network()->poll();
     if (strlen($pkt->reply()) > 0) {
         $device->setParam("LastPoll", $savedate);
-        $device->setParam("LastContact", date("Y-m-d H:i:s"));
+        $device->setParam("LastContact", $savedate);
         $device->store();
 
         //$dev = new DeviceContainer($device->get("RawSetup"));
