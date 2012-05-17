@@ -124,11 +124,24 @@
         </delete>
         <delete file="${basedir}/src/webapi/html/hugnet.js"/>
         <echo>Building src/webapi/html/hugnet.js</echo>
+        <concat destfile="${basedir}/src/webapi/html/contrib.js">
+            <fileset file="${basedir}/src/webapi/javascript/contrib/jquery.min.js"/>
+            <fileset file="${basedir}/src/webapi/javascript/contrib/jquery.cookie.js"/>
+            <fileset file="${basedir}/src/webapi/javascript/contrib/jquery.metadata.js"/>
+            <fileset file="${basedir}/src/webapi/javascript/contrib/jquery.tablesorter.js"/>
+            <fileset file="${basedir}/src/webapi/javascript/contrib/jquery-ui-1.8.20.custom.min.js"/>
+            <fileset file="${basedir}/src/webapi/javascript/contrib/json2.js"/>
+            <fileset file="${basedir}/src/webapi/javascript/contrib/underscore-min.js"/>
+            <fileset file="${basedir}/src/webapi/javascript/contrib/backbone.js"/>
+        </concat>
         <concat destfile="${basedir}/src/webapi/html/hugnet.js">
             <fileset dir="${basedir}/src/webapi/javascript" includes="*.js"/>
         </concat>
         <gzip src="${basedir}/src/webapi/html/hugnet.js"
             destfile="${basedir}/src/webapi/html/hugnet.js.gz"
+            />
+        <gzip src="${basedir}/src/webapi/html/contrib.js"
+            destfile="${basedir}/src/webapi/html/contrib.js.gz"
             />
     </target>
 

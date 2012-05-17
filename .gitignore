@@ -8,4 +8,5 @@ old/
 build/
 rel/
 src/webapi/html/hugnet.js
+src/webapi/html/contrib.js
 *.gz
