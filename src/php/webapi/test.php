@@ -66,9 +66,42 @@ if ($action === "post") {
     $ret["fields"] = json_decode($ret["fields"], true);
 } else if ($action === "history") {
     $test->getRow($tid);
+    $ret = array();
     $fields = json_decode($test->get("fields"), true);
-
-
+    $device = &$json->system()->device();
+    $history = array();
+    $hist = array();
+    foreach ((array)$fields as $key => $field) {
+        if (hexdec($field["device"]) === 0) {
+            continue;
+        }
+        $device->load(hexdec($field["device"]));
+        $hist[$device->get("id")] = $device->historyFactory(array());
+    }
+    foreach ($hist as $dev => $table) {
+        $history = array_merge(
+            $history,
+            (array)$table->select(
+                "id = ? AND TestID = ?", array($dev, $tid)
+            )
+        );
+    }
+    $out = array();
+    foreach ($history as $row) {
+        $cols = $row->datacols;
+        $date = $row->get("Date");
+        $did  = $row->get("id");
+        $out[$date]["Date"] = date("Y-m-d H:i:s", $date);
+        $out[$date]["TestID"] = $tid;
+        $out[$date]["DataIndex"] = $row->get("DataIndex");
+        for ($i = 0; $i < $cols; $i++) {
+            $out[$date]["Data"][$did.".".$i] = $row->get("Data".$i);
+        }
+    }
+    $ret = array();
+    foreach ($out as $value) {
+        $ret[] = $value;
+    }
 } else if ($action === "getall") {
     $run = $test->selectInto("1");
     $ret = array();

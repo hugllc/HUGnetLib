@@ -97,6 +97,7 @@ $(function() {
             this.device = options.device;
             this.pause = options.pause;
             this.id = options.id;
+            this.fetch();
         },
         comparator: function (data)
         {
@@ -125,6 +126,7 @@ $(function() {
         */
         fetch: function ()
         {
+            var self = this;
             $.ajax({
                 type: 'GET',
                 url: this.url,
@@ -137,11 +139,14 @@ $(function() {
             }).done(
                 function (data)
                 {
-                    console.log(data);
-                    self._pollAgain();
                     if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
-                        var point = new DataPoint(data);
-                        self.add(point);
+                        self.add(data, { silent: true });
+                        self.each(
+                            function (model)
+                            {
+                                self.trigger("add", model);
+                            }
+                        );
                     }
                 }
             );
@@ -165,7 +170,6 @@ $(function() {
                 sep = ',';
             }
             var self = this;
-            console.log(this.id);
             $.ajax({
                 type: 'GET',
                 url: this.url,
@@ -178,7 +182,6 @@ $(function() {
             }).done(
                 function (data)
                 {
-                    console.log(data);
                     self._pollAgain();
                     if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
                         var point = new DataPoint(data);
@@ -307,6 +310,10 @@ $(function() {
             this.setMode(options.mode);
             var device;
             var i;
+            this.header = {};
+            this.fields = {};
+            this.device = {};
+            this.classes = {};
             for (i in this.data) {
                 device = parseInt(this.data[i].device, 16);
                 if (device > 0) {

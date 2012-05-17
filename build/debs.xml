@@ -68,9 +68,9 @@
         <copy todir="${deb.webapistaging}/var/www/HUGnetLib">
             <fileset dir="${deb.webapisrc}"/>
         </copy>
-        <mkdir dir="${deb.phpstaging}/usr/share/php/HUGnetLib/webapi"/>
-        <copy todir="${deb.phpstaging}/usr/share/php/HUGnetLib/webapi">
-            <fileset dir="${deb.phpsrc}/api"/>
+        <mkdir dir="${deb.webapistaging}/usr/share/php/HUGnetLib/webapi"/>
+        <copy todir="${deb.webapistaging}/usr/share/php/HUGnetLib/webapi">
+            <fileset dir="${deb.phpsrc}/webapi"/>
         </copy>
         <chmod file="${deb.webapistaging}/DEBIAN/postinst" perm="0755"/>
         <chmod file="${deb.webapistaging}/DEBIAN/prerm" perm="0755"/>
@@ -108,6 +108,6 @@
         <delete dir="${deb.phpstaging}"/>
         <delete dir="${deb.webapistaging}"/>
     </target>
-    <target name="build" depends="clean,phpsetup,webapisetup,phpdeb,webapideb,postclean"/>
+    <target name="build" depends="clean,phpsetup,webapisetup,phpdeb,webapideb"/>
 
 </project>

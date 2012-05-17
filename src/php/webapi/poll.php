@@ -44,7 +44,7 @@ $devs = explode(",", $json->args()->id);
 $ret  = array();
 
 $savedate = date("Y-m-d H:i:s");
-$filename = "/tmp/LeNR".date("Ymd");
+$filename = "/tmp/LeNR.".$TestID.".".date("Ymd");
 $new = false;
 if (!file_exists($filename)) $new = true;
 $fileheader = "Date";
