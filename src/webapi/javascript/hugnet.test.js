@@ -94,6 +94,8 @@ $(function() {
                 ret.done(
                     function (data)
                     {
+                        console.log("fetch");
+                        console.log(data);
                         myself.set(data);
                     }
                 );
@@ -111,6 +113,8 @@ $(function() {
             var id = this.get('id');
             if (id !== null) {
                 var self = this;
+                console.log("Save");
+                console.log(self.toJSON());
                 var ret = $.ajax({
                     type: 'POST',
                     url: this.get('url'),
@@ -257,6 +261,7 @@ $(function() {
         tagName: 'div',
         events: {
             'click .save': 'save',
+            'change .fieldcount': 'save',
         },
         initialize: function (options)
         {
@@ -266,7 +271,25 @@ $(function() {
         save: function (e)
         {
             this.setTitle( " [ Saving...] " );
-            this.model.set(this.$('form').serializeArray());
+            var i, output = {};
+            var data = this.$('form').serializeArray();
+            for (i in data) {
+                output[data[i].name] = data[i].value;
+            }
+            output['fields'] = {};
+            for (i = 0; i < output['fieldcount']; i++) {
+                output['fields'][i] = {};
+                output['fields'][i]['name'] = output['fields'+i+'name'];
+                delete output['fields'+i+'name'];
+                output['fields'][i]['device'] = output['fields'+i+'device'];
+                delete output['fields'+i+'device'];
+                output['fields'][i]['field'] = output['fields'+i+'field'];
+                delete output['fields'+i+'field'];
+            }
+            console.log(output);
+            this.model.set(output);
+            console.log("Model");
+            console.log(this.model.toJSON());
             this.model.save();
         },
         saveFail: function (msg)
@@ -287,10 +310,20 @@ $(function() {
         */
         render: function ()
         {
+            var data = this.model.toJSON();
+            var i;
+            if (typeof data.fields !== 'object') {
+                data.fields = {};
+            }
+            for (i = 0; i < data.fieldcount; i++) {
+                if (data.fields[i] === undefined) {
+                    data.fields[i] = { device: 0, field: 0, name: "unnamed" };
+                }
+            }
             this.$el.html(
                 _.template(
                     $(this.template).html(),
-                    this.model.toJSON()
+                    data
                 )
             );
             this.setTitle();
@@ -333,6 +366,8 @@ $(function() {
         parent: null,
         events: {
             'click .properties': 'properties',
+            'click .run': 'run',
+            'click .view': 'view',
         },
         initialize: function (options)
         {
@@ -344,6 +379,14 @@ $(function() {
         {
             var view = new TestPropertiesView({ model: this.model });
             this.parent.popup(view);
+        },
+        run: function (e)
+        {
+            this.parent.trigger("run", this.model);
+        },
+        view: function (e)
+        {
+            this.parent.trigger("view", this.model);
         },
         /**
         * Gets infomration about a device.  This is retrieved directly from the device
@@ -358,9 +401,9 @@ $(function() {
         {
             var data = this.model.toJSON();
             var created = new Date(data["created"] * 1000);
-            data["created"] = created.toLocaleString();
+            data["created"] = this.formatDate(created);
             var modified = new Date(data["modified"] * 1000);
-            data["modified"] = modified.toLocaleString();
+            data["modified"] = this.formatDate(modified);
             this.$el.html(
                 _.template(
                     $(this.template).html(),
@@ -370,6 +413,10 @@ $(function() {
             this.$el.trigger('update');
             return this;
         },
+        formatDate: function (date)
+        {
+            return date.toLocaleDateString()+" "+date.toLocaleTimeString();
+        }
     });
 
     /**
@@ -439,7 +486,7 @@ $(function() {
             view.$el.dialog({
                 modal: true,
                 draggable: false,
-                width: 300,
+                width: 500,
                 resizable: false,
                 title: view.title(),
                 dialogClass: "window",

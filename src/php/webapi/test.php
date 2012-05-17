@@ -44,8 +44,10 @@ $test    = new TestTable();
 $ret    = "";
 
 if ($action === "post") {
-    $test->getRow($did);
-    $worked = $test->fromArray($_POST["test"]);
+    $test->getRow($tid);
+    $post = $_POST["test"];
+    $post["modified"] = time();
+    $worked = $test->fromArray($post);
     $worked = $test->updateRow();
     if ($worked) {
         $ret = "success";
@@ -61,12 +63,22 @@ if ($action === "post") {
 } else if ($action === "get") {
     $test->getRow($tid);
     $ret = $test->toArray(true);
+    $ret["fields"] = json_decode($ret["fields"], true);
+} else if ($action === "history") {
+    $test->getRow($tid);
+    $fields = json_decode($test->get("fields"), true);
+
+
 } else if ($action === "getall") {
-    $test->selectInto("1");
+    $run = $test->selectInto("1");
     $ret = array();
-    do {
-        $ret[] = $test->toArray(true);
-    } while ($test->nextInto());
+    $index = 0;
+    while ($run) {
+        $ret[$index] = $test->toArray(true);
+        $ret[$index]["fields"] = json_decode($ret[$index]["fields"], true);
+        $run = $test->nextInto();
+        $index++;
+    }
 }
 print json_encode($ret);
 ?>

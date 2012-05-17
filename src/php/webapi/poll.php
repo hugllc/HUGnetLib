@@ -38,6 +38,8 @@ defined('_HUGNET') or die('HUGnetSystem not found');
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 require_once HUGNET_INCLUDE_PATH."/containers/DeviceContainer.php";
 
+$TestID = (int)$_REQUEST["TestID"] ? (int)$_REQUEST["TestID"] : null;
+
 $devs = explode(",", $json->args()->id);
 $ret  = array();
 
@@ -53,7 +55,7 @@ foreach ($devs as $dev) {
     $device = &$json->system()->device($did);
     $pkt = $device->network()->poll();
     if (strlen($pkt->reply()) > 0) {
-        $device->setParam("LastPoll", date("Y-m-d H:i:s"));
+        $device->setParam("LastPoll", $savedate);
         $device->setParam("LastContact", date("Y-m-d H:i:s"));
         $device->store();
 
@@ -67,11 +69,13 @@ foreach ($devs as $dev) {
         $device->setUnits($data);
         $data["id"] = $did;
         $data["Date"] = $savedate;
+        $data["TestID"] = $TestID;
         $d = $device->historyFactory($data);
         $d->insertRow(true);
         $out = $d->toArray();
         $ret["Date"]      = $savedate;
         $ret["DataIndex"] = $data["DataIndex"];
+        $ret["TestID"]    = $TestID;
 
         for ($i = 0; $i < 9; $i++) {
             $ret["Data"][$did.".".$i] = $out["Data".$i];

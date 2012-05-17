@@ -106,6 +106,11 @@ class TestTable extends HUGnetDBTable
             "Type" => "BIGINT",
             "Default" => 0,
         ),
+        "fieldcount" => array(
+            "Name" => "fieldcount",
+            "Type" => "int",
+            "Default" => 1,
+        ),
         "fields" => array(
             "Name" => "fields",
             "Type" => "text",
@@ -158,7 +163,9 @@ class TestTable extends HUGnetDBTable
     public function newRow()
     {
         $this->set("id", $this->dbDriver()->getNextID());
-        $this->set("created", $this->now());
+        $date = $this->now();
+        $this->set("created", $date);
+        $this->set("modified", $date);
         return $this->insertRow();
     }
     /******************************************************************
@@ -187,6 +194,21 @@ class TestTable extends HUGnetDBTable
     protected function setCreated($value)
     {
         $this->data["created"] = self::unixDate($value);
+    }
+    /**
+    * function to set LastHistory
+    *
+    * @param string $value The value to set
+    *
+    * @return null
+    */
+    protected function setFields($value)
+    {
+        if (is_array($value)) {
+            $this->data["fields"] = json_encode($value);
+        } else if (is_string($value)) {
+            $this->data["fields"] = $value;
+        }
     }
 
 }

@@ -88,6 +88,7 @@ $(function() {
         url: '/HUGnetLib/index.php',
         model: DataPoint,
         device: undefined,
+        id: undefined,
         DataIndex: null,
         pause: 1,
         doPoll: false,
@@ -95,6 +96,7 @@ $(function() {
         {
             this.device = options.device;
             this.pause = options.pause;
+            this.id = options.id;
         },
         comparator: function (data)
         {
@@ -123,7 +125,26 @@ $(function() {
         */
         fetch: function ()
         {
-
+            $.ajax({
+                type: 'GET',
+                url: this.url,
+                dataType: 'json',
+                data: {
+                    "task": "test",
+                    "action": "history",
+                    "id": this.id,
+                },
+            }).done(
+                function (data)
+                {
+                    console.log(data);
+                    self._pollAgain();
+                    if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
+                        var point = new DataPoint(data);
+                        self.add(point);
+                    }
+                }
+            );
         },
         /**
         * Gets infomration about a device.  This is retrieved directly from the device
@@ -144,24 +165,24 @@ $(function() {
                 sep = ',';
             }
             var self = this;
+            console.log(this.id);
             $.ajax({
                 type: 'GET',
                 url: this.url,
                 dataType: 'json',
                 data: {
                     "task": "poll",
-                    "id": id
+                    "id": id,
+                    "TestID": this.id,
                 },
             }).done(
                 function (data)
                 {
+                    console.log(data);
                     self._pollAgain();
                     if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
-                        if (self.DataIndex !== data['DataIndex']) {
-                            self.DataIndex = data['DataIndex'];
-                            var point = new DataPoint(data);
-                            self.add(point);
-                        }
+                        var point = new DataPoint(data);
+                        self.add(point);
                     }
                 }
             );
@@ -261,12 +282,13 @@ $(function() {
     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
     */
     window.DataPointsView = Backbone.View.extend({
-        template: "#DataPointListTemplate",
+        template: { run: "#DataPointListRunTemplate", view: "#DataPointListViewTemplate" },
         hTemplate: "#DataPointHeaderTemplate",
         rowClass: [ 'odd', 'even' ],
         tagName: 'div',
         pause: 1,
         rows: 0,
+        mode: 'run',
         parent: undefined,
         id: undefined,
         data: {},
@@ -282,14 +304,19 @@ $(function() {
         initialize: function (options)
         {
             this.data = options.data;
+            this.setMode(options.mode);
+            var device;
             var i;
             for (i in this.data) {
-                this.device[this.data[i].device] = this.data[i].device;
+                device = parseInt(this.data[i].device, 16);
+                if (device > 0) {
+                    this.device[device] = device;
+                }
                 this.header[i] = this.data[i].name;
-                this.fields[i] = this.data[i].field;
+                this.fields[i] = this.getField(device, this.data[i].field);
                 this.classes[i] = this.data[i].class;
             }
-            this.model = new DataPoints(null, { device: this.device });
+            this.model = new DataPoints(null, { device: this.device, id: this.id });
             this.model.bind('add', this.insert, this);
             if (options.pause !== undefined) {
                 this.pause = options.pause - 0;
@@ -297,25 +324,44 @@ $(function() {
             this.parent = options.parent;
             this.id = options.id;
         },
+        setMode: function (mode)
+        {
+            if (mode == "view") {
+                this.mode = "view";
+            } else {
+                this.mode = "run";
+            }
+        },
+        getField: function (device, field)
+        {
+            if (parseInt(field) == field) {
+                return device + "." + field;
+            }
+            return field;
+        },
         startPoll: function()
         {
-            this.$('.stopPoll').show();
-            this.$('.startPoll').hide();
-            this.$('.exit').hide();
-            this.model.pause = this.pause;
-            this.model.startPoll();
+            if (this.mode === 'run') {
+                this.$('.stopPoll').show();
+                this.$('.startPoll').hide();
+                this.$('.exit').hide();
+                this.model.pause = this.pause;
+                this.model.startPoll();
+            }
         },
         stopPoll: function()
         {
-            this.$('.stopPoll').hide();
-            this.$('.startPoll').show();
-            this.$('.exit').show();
-            this.model.stopPoll();
+            if (this.mode === 'run') {
+                this.$('.stopPoll').hide();
+                this.$('.startPoll').show();
+                this.$('.exit').show();
+                this.model.stopPoll();
+            }
         },
         exit: function()
         {
             this.reset();
-            this.trigger('remove');
+            this.trigger('remove', this.parent);
             this.remove();
         },
         reset: function()
@@ -339,8 +385,8 @@ $(function() {
             }
             this.$el.html(
                 _.template(
-                    $(this.template).html(),
-                    { header: header, pause: this.pause, id: this.id }
+                    $(this.template[this.mode]).html(),
+                    { header: header, pause: this.pause, id: this.id, mode: this.mode }
                 )
             );
             this.$('.stopPoll').hide();
