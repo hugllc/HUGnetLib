@@ -42,7 +42,7 @@ $(function() {
     * @version    Release: 0.9.7
     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
     */
-    var DataPoint = Backbone.Model.extend({
+    var Data = Backbone.Model.extend({
         idAttribute: 'Date',
         defaults: function ()
         {
@@ -55,26 +55,6 @@ $(function() {
         initialize: function ()
         {
             this.set("UnixDate", this.get("Date"));
-        },
-        /**
-        * Gets infomration about a device.  This is retrieved from the database only.
-        *
-        * @param id The id of the device to get
-        *
-        * @return null
-        */
-        fetch: function()
-        {
-        },
-        /**
-        * Gets infomration about a device.  This is retrieved from the database only.
-        *
-        * @param id The id of the device to get
-        *
-        * @return null
-        */
-        save: function()
-        {
         },
     });
 
@@ -90,14 +70,11 @@ $(function() {
     * @version    Release: 0.9.7
     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
     */
-    var DataPoints = Backbone.Collection.extend({
+    var DataCollection = Backbone.Collection.extend({
         url: '/HUGnetLib/index.php',
-        model: DataPoint,
-        device: undefined,
+        model: Data,
         id: undefined,
-        DataIndex: null,
         LastHistory: 0,
-        mode: null,
         refresh: null,
         pause: 1,
         limit: 50,
@@ -107,13 +84,9 @@ $(function() {
         {
             this.reset(null, { silent: true });
             this.bind('add', this.addExtra, this);
-            this.device = options.device;
             this.pause = options.pause;
             this.id = options.id;
             this.mode = options.mode;
-            if (this.mode != 'run') {
-                this.fetch();
-            }
         },
         setRefresh: function (refresh)
         {
@@ -141,6 +114,7 @@ $(function() {
         */
         _pollAgain: function ()
         {
+            /*
             var self = this;
             if (this.doPoll) {
                 setTimeout(
@@ -150,6 +124,7 @@ $(function() {
                     (this.pause * 1000)
                 );
             }
+            */
         },
         /**
         * Gets infomration about a device.  This is retrieved directly from the device
@@ -178,6 +153,7 @@ $(function() {
             }).done(
                 function (data)
                 {
+                    /*
                     if ((self.refresh > 0) && (self.mode === 'view')) {
                         setTimeout(
                             function () {
@@ -185,7 +161,7 @@ $(function() {
                             },
                             (self.refresh * 1000)
                         );
-                    }
+                    }*/
                     if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
                         var i;
                         for (i in data) {
@@ -256,8 +232,8 @@ $(function() {
     * @version    Release: 0.9.7
     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
     */
-    var DataPointEntryView = Backbone.View.extend({
-        model: DataPoint,
+    var Row = Backbone.View.extend({
+        model: Data,
         tagName: 'tr',
         template: '#DataPointTemplate',
         fields: {},
@@ -268,8 +244,154 @@ $(function() {
         {
             this.fields = options.fields;
             this.classes = options.classes;
-            this.model.bind('pollsuccess', this.render, this);
+            this.model.bind('update', this.render, this);
             this.model.bind('remove', this.remove, this);
+        },
+        /**
+        * Gets infomration about a device.  This is retrieved directly from the device
+        *
+        * This function is for use of the device list
+        *
+        * @param id The id of the device to get
+        *
+        * @return null
+        */
+        render: function ()
+        {
+            var out = "";
+            var i;
+            var data = this.model.toJSON();
+            var d = new Date();
+            d.setTime(data["UnixDate"] * 1000);
+            data["Date"] = d.formatHUGnet();
+            for (i in this.fields) {
+                out += _.template(
+                    $(this.template).html(),
+                    { data: data[this.fields[i]], fieldClass: this.classes[i] }
+                );
+            }
+            this.$el.html(out);
+            return this;
+        },
+    });
+    /**
+    * This is the model that stores the devices.
+    *
+    * @category   JavaScript
+    * @package    HUGnetLib
+    * @subpackage DataPoints
+    * @author     Scott Price <prices@hugllc.com>
+    * @copyright  2012 Hunt Utilities Group, LLC
+    * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+    * @version    Release: 0.9.7
+    * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+    */
+    var Header = Backbone.View.extend({
+        tagName: 'tr',
+        template: '#DataPointHeaderTemplate',
+        fields: {},
+        classes: {},
+        header: {},
+        events: {
+        },
+        initialize: function (options)
+        {
+            this.classes = options.classes;
+            this.header = options.header;
+        },
+        /**
+        * Gets infomration about a device.  This is retrieved directly from the device
+        *
+        * This function is for use of the device list
+        *
+        * @param id The id of the device to get
+        *
+        * @return null
+        */
+        render: function ()
+        {
+            var header = "";
+            var i;
+            for (i in this.header) {
+                header += _.template(
+                    $(this.template).html(),
+                    { header: this.header[i], classes: this.classes[i] }
+                );
+            }
+            this.$el.html(header);
+            return this;
+        },
+    });
+    /**
+    * This is the model that stores the devices.
+    *
+    * @category   JavaScript
+    * @package    HUGnetLib
+    * @subpackage DataPoints
+    * @author     Scott Price <prices@hugllc.com>
+    * @copyright  2012 Hunt Utilities Group, LLC
+    * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+    * @version    Release: 0.9.7
+    * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+    */
+    var Table = Backbone.View.extend({
+        model: DataCollection,
+        tagName: 'table',
+        template: '#DataPointTableTemplate',
+        rowClass: [ 'odd', 'even' ],
+        fields: {},
+        classes: {},
+        events: {
+        },
+        initialize: function (options)
+        {
+            this.model.bind('add', this.insert, this);
+            this.model.fetch();
+            this.fields = options.fields;
+            this.classes = options.classes;
+            this.header = new Header({
+                header: options.header,
+                classes: options.classes,
+            });
+            this._setup();
+            this._dateFormats();
+        },
+        /**
+        * Gets infomration about a device.  This is retrieved directly from the device
+        *
+        * This function is for use of the device list
+        *
+        * @param id The id of the device to get
+        *
+        * @return null
+        */
+        render: function ()
+        {
+            this.$head.html(this.header.render().el);
+            return this;
+        },
+        /**
+        * Gets infomration about a device.  This is retrieved directly from the device
+        *
+        * This function is for use of the device list
+        *
+        * @param id The id of the device to get
+        *
+        * @return null
+        */
+        _setup: function ()
+        {
+            this.$el.html(
+                '<thead></thead><tbody></tbody><tfoot></tfoot>'
+            );
+            this.$head = this.$("thead");
+            this.$body = this.$("tbody");
+            this.$foot = this.$("tfoot");
+            this.$el.trigger('update');
+            return this;
+        },
+        _dateFormats: function ()
+        {
             Date.prototype.formatHUGnet = function()
             {
                 var m = this.getMonth();
@@ -298,34 +420,23 @@ $(function() {
                 return Y + "-" + m + " " + d + " " + H + ":" + i + ":" + s;
             }
         },
-        /**
-        * Gets infomration about a device.  This is retrieved directly from the device
-        *
-        * This function is for use of the device list
-        *
-        * @param id The id of the device to get
-        *
-        * @return null
-        */
-        render: function ()
+        insert: function (model, collection, options)
         {
-            var header = "";
-            var i;
-            var data = this.model.toJSON();
-            var d = new Date();
-            d.setTime(data["UnixDate"] * 1000);
-            data["Date"] = d.formatHUGnet();
-            for (i in this.fields) {
-                header += _.template(
-                    $(this.template).html(),
-                    { data: data[this.fields[i]], fieldClass: this.classes[i] }
-                );
-            }
-            this.$el.html(header);
-            this.$el.trigger('update');
-            return this;
+            var view = new Row({
+                model: model, fields: this.fields, classes: this.classes
+            });
+            this.$body.prepend(view.render().el);
+            this.zebra();
         },
+        zebra: function ()
+        {
+            this.$("tr").removeClass("odd").removeClass("even");
+            this.$("tr:odd").addClass("odd");
+            this.$("tr:even").addClass("even");
+        }
     });
+
+
 
     /**
     * This is the model that stores the devices.
@@ -341,7 +452,6 @@ $(function() {
     */
     window.DataPointsView = Backbone.View.extend({
         template: { run: "#DataPointListRunTemplate", view: "#DataPointListViewTemplate" },
-        hTemplate: "#DataPointHeaderTemplate",
         rowClass: [ 'odd', 'even' ],
         tagName: 'div',
         pause: 1,
@@ -351,6 +461,7 @@ $(function() {
         type: 'test',
         parent: undefined,
         id: undefined,
+        table: undefined,
         data: {},
         device: {},
         header: {},
@@ -380,7 +491,11 @@ $(function() {
                 this.fields[i] = this.getField(i, this.data[i].field);
                 this.classes[i] = this.data[i].class;
             }
-            this.model = new DataPoints(
+            this.pause = (options.pause !== undefined) ? options.pause - 0 : this.pause;
+            this.type = (options.type !== undefined) ? options.type : this.type;
+            this.parent = options.parent;
+            this.id = options.id;
+            this.model = new DataCollection(
                 null,
                 {
                     device: this.device,
@@ -389,11 +504,12 @@ $(function() {
                     type: this.type,
                 }
             );
-            this.model.bind('add', this.insert, this);
-            this.pause = (options.pause !== undefined) ? options.pause - 0 : this.pause;
-            this.type = (options.type !== undefined) ? options.type : this.type;
-            this.parent = options.parent;
-            this.id = options.id;
+            this.table = new Table({
+                model: this.model,
+                header: this.header,
+                fields: this.fields,
+                classes: this.classes,
+            });
         },
         setRefresh: function ()
         {
@@ -460,33 +576,10 @@ $(function() {
         */
         render: function ()
         {
-            var header = "";
-            var i;
-            for (i in this.header) {
-                header += _.template($(this.hTemplate).html(), { header: this.header[i] });
-            }
             this.$el.html(
-                _.template(
-                    $(this.template[this.mode]).html(),
-                    { header: header, pause: this.pause, id: this.id, mode: this.mode }
-                )
+                this.table.render().el
             );
-            this.$('.stopPoll').hide();
-            this.model.each(this.renderEntry);
-            this.$el.trigger('update');
             return this;
-        },
-        insert: function (model, collection, options)
-        {
-            var view = new DataPointEntryView({
-                model: model, fields: this.fields, classes: this.classes
-            });
-            if  (view.render() !== null) {
-                this.$('tbody').prepend(view.el);
-                /* this puts on our row class */
-                view.$el.addClass(this.rowClass[this.rows % this.rowClass.length]);
-                this.rows++;
-            }
         },
         renderEntry: function (view)
         {
