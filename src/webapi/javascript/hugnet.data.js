@@ -359,7 +359,6 @@ $(function() {
         events: {
             'click .startPoll': 'startPoll',
             'click .stopPoll': 'stopPoll',
-            'click .exit': 'exit',
             'click .autorefresh': 'setRefresh',
         },
         initialize: function (options)
@@ -443,8 +442,8 @@ $(function() {
         exit: function()
         {
             this.reset();
+            this.stopPoll();
             this.model.mode = 'shutdown';
-            this.trigger('remove', this.parent);
             this.remove();
         },
         reset: function()
