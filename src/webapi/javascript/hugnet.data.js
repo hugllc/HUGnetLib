@@ -98,6 +98,7 @@ $(function() {
         mode: null,
         refresh: null,
         pause: 1,
+        limit: 10,
         doPoll: false,
         initialize: function (models, options)
         {
@@ -116,6 +117,10 @@ $(function() {
             var last = model.get("UnixDate");
             if (last > this.LastHistory) {
                 this.LastHistory = last;
+            }
+            while (this.length > this.limit) {
+                /* Remove the oldest record */
+                this.shift();
             }
         },
         comparator: function (data)
@@ -155,7 +160,7 @@ $(function() {
                     "action": "history",
                     "id": this.id,
                     "since": this.LastHistory,
-                    "limit": 100,
+                    "limit": this.limit,
                 },
             }).done(
                 function (data)
