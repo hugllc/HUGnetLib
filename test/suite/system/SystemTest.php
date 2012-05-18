@@ -422,6 +422,52 @@ class SystemTest extends \PHPUnit_Framework_TestCase
         }
         unset($obj);
     }
+    /**
+    * Data provider for testTest
+    *
+    * @return array
+    */
+    public static function dataTest()
+    {
+        return array(
+            array(
+                array(
+                    "hello" => "there",
+                    "asdf"  => array(1,2),
+                ),
+                array(
+                    "id"   => 5,
+                    "name" => "000005",
+                ),
+                array(
+                    "id"   => 5,
+                    "name" => "000005",
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array $config The configuration to use
+    * @param mixed $device The network application to use
+    * @param mixed $expect The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataTest
+    */
+    public function testTest(
+        $config, $device, $expect
+    ) {
+        $obj = \HUGnet\System::factory($config);
+        $dev = $obj->test($device);
+        $this->assertSame("HUGnet\Test", get_class($dev), "wrong class");
+        foreach ($expect as $key => $value) {
+            $this->assertEquals($value, $dev->get($key), "$key not $value");
+        }
+        unset($obj);
+    }
 
 }
 
