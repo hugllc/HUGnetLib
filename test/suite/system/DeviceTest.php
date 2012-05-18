@@ -461,7 +461,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         );
         $obj->change(array());
         for ($i = 0; $i < 13; $i++) {
-            $sensors[$i] = json_decode($obj->json(), true);
+            $sensors[$i] = $obj->toArray(true);
         }
         return array(
             array(
@@ -488,81 +488,6 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         'historyTable' => 'EDEFAULTHistoryTable',
                         'averageTable' => 'EDEFAULTAverageTable',
                         'loadable' => false,
-                        'bootloader' => false,
-                        'ConfigInterval' => 43200,
-                        'id' => 2,
-                        'asdf' => 3,
-                        'params' => array(1,2,3,4),
-                        'sensors' => $sensors,
-                    )
-                ),
-            ),
-            array(
-                array(
-                    "Table" => array(
-                        "get" => array(
-                            "Driver" => "EDEFAULT",
-                            "id" => 2,
-                        ),
-                        "toArray" => array(
-                            "id" => 2,
-                            "asdf" => 3,
-                            "params" => base64_encode(
-                                serialize(
-                                    array("DriverInfo" => array(1,2,3,4))
-                                )
-                            ),
-                        ),
-                    ),
-                ),
-                new DummyTable("Table"),
-                json_encode(
-                    array(
-                        'packetTimeout' => 5,
-                        'totalSensors' => 13,
-                        'physicalSensors' => 9,
-                        'virtualSensors' => 4,
-                        'historyTable' => 'EDEFAULTHistoryTable',
-                        'averageTable' => 'EDEFAULTAverageTable',
-                        'loadable' => false,
-                        'bootloader' => false,
-                        'ConfigInterval' => 43200,
-                        'id' => 2,
-                        'asdf' => 3,
-                        'params' => array(1,2,3,4),
-                        'sensors' => $sensors,
-                    )
-                ),
-            ),
-            array(
-                array(
-                    "Table" => array(
-                        "get" => array(
-                            "Driver" => "EDEFAULT",
-                            "id" => 2,
-                        ),
-                        "toArray" => array(
-                            "id" => 2,
-                            "asdf" => 3,
-                            "params" => base64_encode(
-                                serialize(
-                                    array("DriverInfo" => array(1,2,3,4))
-                                )
-                            ),
-                            "loadable" => true,
-                        ),
-                    ),
-                ),
-                new DummyTable("Table"),
-                json_encode(
-                    array(
-                        'packetTimeout' => 5,
-                        'totalSensors' => 13,
-                        'physicalSensors' => 9,
-                        'virtualSensors' => 4,
-                        'historyTable' => 'EDEFAULTHistoryTable',
-                        'averageTable' => 'EDEFAULTAverageTable',
-                        'loadable' => true,
                         'bootloader' => false,
                         'ConfigInterval' => 43200,
                         'id' => 2,

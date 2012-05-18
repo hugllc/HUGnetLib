@@ -65,6 +65,30 @@ class ETESTHistoryTable extends HistoryTableBase
     /** @var This is the dataset */
     public $datacols = 20;
 
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param array &$array This is an array of this class's attributes
+    *
+    * @return null
+    */
+    public function fromDataArray(&$array)
+    {
+        $this->set("id", $array["id"]);
+        $this->set("TestID", $array["id"]);
+        $this->set("Date", $array["Date"]);
+        foreach ((array)$array[0] as $key => $field) {
+            if ($key > $this->datacols) {
+                break;
+            }
+            $dev = sprintf("%06X", hexdec($field["device"]));
+            if (is_object($array[$dev])) {
+                $val = $array[$dev]->get("Data".(int)$field["field"]);
+                $this->set("Data$key", $val);
+            }
+        }
+    }
+
     /******************************************************************
      ******************************************************************
      ********  The following are input modification functions  ********

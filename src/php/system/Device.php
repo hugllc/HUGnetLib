@@ -117,7 +117,8 @@ class Device extends SystemTableBase
     */
     public function json()
     {
-        return json_encode($this->fullArray());
+        $ret = $this->fullArray();
+        return json_encode($ret);
     }
     /**
     * Returns the table as an array
@@ -136,9 +137,6 @@ class Device extends SystemTableBase
         $return["sensors"] = array();
         for ($i = 0; $i < $return["totalSensors"]; $i++) {
             $return["sensors"][$i] = $this->sensor($i)->toArray();
-            $return["sensors"][$i]["params"] = json_decode(
-                (string)$return["sensors"][$i]["params"], true
-            );
         }
         if ($return["loadable"]) {
             $this->firmware()->set("HWPartNum", $return["HWPartNum"]);

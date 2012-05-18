@@ -67,45 +67,17 @@ if ($action === "post") {
     $ret = $test->toArray(true);
     $ret["fields"] = json_decode($ret["fields"], true);
 } else if ($action === "history") {
-    $test->getRow($tid);
+    $table = &$json->system()->test($tid)->historyFactory(array());
+    $table->sqlLimit = $lmit;
+    $table->sqlOrderBy = "Date desc";
+    $run = $table->selectInto(
+        "`id` = ? AND `Date` > ?",
+        array($tid, $since)
+    );
     $ret = array();
-    $fields = json_decode($test->get("fields"), true);
-    $device = &$json->system()->device();
-    $history = array();
-    $hist = array();
-    foreach ((array)$fields as $key => $field) {
-        if (hexdec($field["device"]) === 0) {
-            continue;
-        }
-        $device->load(hexdec($field["device"]));
-        $hist[$device->get("id")] = $device->historyFactory(array());
-    }
-    foreach ($hist as $dev => $table) {
-        $table->sqlLimit = $limit;
-        //$table->sqlOrderBy = "Date desc";
-        $history = array_merge(
-            $history,
-            (array)$table->select(
-                "`id` = ? AND `TestID` = ? AND `Date` > ? AND `Date` < ?",
-                array($dev, $tid, $since, time() - 10)
-            )
-        );
-    }
-    $out = array();
-    foreach ($history as $row) {
-        $cols = $row->datacols;
-        $date = $row->get("Date");
-        $did  = $row->get("id");
-        $out[$date]["Date"] = $date;
-        $out[$date]["TestID"] = $tid;
-        $out[$date]["DataIndex"] = $row->get("DataIndex");
-        for ($i = 0; $i < $cols; $i++) {
-            $out[$date]["Data"][$did.".".$i] = $row->get("Data".$i);
-        }
-    }
-    $ret = array();
-    foreach ($out as $value) {
-        $ret[] = $value;
+    while ($run) {
+        $ret[] = $table->toArray();
+        $run   = $table->nextInto();
     }
 } else if ($action === "getall") {
     $run = $test->selectInto("1");

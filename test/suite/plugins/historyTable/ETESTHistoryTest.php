@@ -39,6 +39,8 @@
 require_once CODE_BASE.'plugins/historyTable/ETESTHistoryTable.php';
 /** This is a required class */
 require_once TEST_BASE.'plugins/historyTable/HistoryTablePluginTestBase.php';
+/** This is the dummy table container */
+require_once TEST_CONFIG_BASE.'stubs/DummyBase.php';
 
 /**
  * Test class for filter.
@@ -123,6 +125,132 @@ class ETESTHistoryTableTest extends HistoryTablePluginTestBase
     public function testDatacols()
     {
         $this->assertSame(20, $this->o->datacols);
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataFromDataArray()
+    {
+        return array(
+            array(
+                array(
+                    "0000AC" => array(
+                        "get" => array(
+                            "Data0" => 0,
+                            "Data1" => 1,
+                            "Data2" => 2,
+                            "Data3" => 3,
+                            "Data4" => 4,
+                            "Data5" => 5,
+                        ),
+                    ),
+                    "123456" => array(
+                        "get" => array(
+                            "Data0" => 10,
+                            "Data1" => 11,
+                            "Data2" => 12,
+                            "Data3" => 13,
+                            "Data4" => 14,
+                            "Data5" => 15,
+                        ),
+                    ),
+                ),
+                array(
+                    "Date" => 123456789,
+                    "id" => 5,
+                    "TestID" => 5,
+                    "0000AC" => new \HUGnet\DummyBase("0000AC"),
+                    "123456" => new \HUGnet\DummyBase("123456"),
+                    0 => array(
+                        array(
+                            "name" => "Date", "device" => "0", "field" => "Date"
+                        ),
+                        array(
+                            "name" => "Sensor 0",
+                            "device" => "AC",
+                            "field" => "0"
+                        ),
+                        array(
+                            "name" => "Sensor 1",
+                            "device" => "AC",
+                            "field" => "1"
+                        ),
+                        array(
+                            "name" => "Sensor 2",
+                            "device" => "AC",
+                            "field" => "3"
+                        ),
+                        array(
+                            "name" => "Sensor 3",
+                            "device" => "123456",
+                            "field" => 2
+                        ),
+                        array(
+                            "name" => "Sensor 4",
+                            "device" => "AC",
+                            "field" => "5"
+                        ),
+                        array(
+                            "name" => "Sensor 5",
+                            "device" => "123456",
+                            "field" => 1
+                        ),
+                        array(
+                            "name" => "Date", "device" => "0", "field" => "Date"
+                        ),
+                    ),
+                ),
+                array(
+                    "group" => "default",
+                    "converted" => false,
+                    "id"  => 5,
+                    "Date"   => 123456789,
+                    "TestID" => 5,
+                    "deltaT"  => 0,
+                    "raw" => array(),
+                    "Data0"  => null,
+                    "Data1"  => 0,
+                    "Data2"  => 1,
+                    "Data3"  => 3,
+                    "Data4"  => 12,
+                    "Data5"  => 5,
+                    "Data6"  => 11,
+                    "Data7"  => null,
+                    "Data8"  => null,
+                    "Data9"  => null,
+                    "Data10"  => null,
+                    "Data11"  => null,
+                    "Data12"  => null,
+                    "Data13"  => null,
+                    "Data14"  => null,
+                    "Data15"  => null,
+                    "Data16"  => null,
+                    "Data17"  => null,
+                    "Data18"  => null,
+                    "Data19"  => null,
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $preload The value to preload
+    * @param array $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataFromDataArray
+    */
+    public function testFromDataArray($mocks, $preload, $expect)
+    {
+        $this->o->device = new \HUGnet\DummyBase("Device");
+        $this->o->device->resetMock($mocks);
+        $this->o->fromDataArray($preload);
+        $this->assertEquals($expect, $this->o->toArray());
     }
 
 }

@@ -40,63 +40,47 @@ require_once HUGNET_INCLUDE_PATH."/containers/DeviceContainer.php";
 
 $TestID = (int)$_REQUEST["TestID"] ? (int)$_REQUEST["TestID"] : null;
 
-$devs = explode(",", $json->args()->id);
+$did = hexdec($json->args()->id);
 $ret  = array();
 
-$savedate = time();
-$filename = "/tmp/LeNR.".$TestID.".".date("Ymd");
-$new = false;
-if (!file_exists($filename)) $new = true;
-$fileheader = "Date";
-$filedata = $savedate;
-foreach ($devs as $dev) {
-    $did = hexdec($dev);
 
-    $device = &$json->system()->device($did);
-    $pkt = $device->network()->poll();
-    if (strlen($pkt->reply()) > 0) {
-        $device->setParam("LastPoll", $savedate);
-        $device->setParam("LastContact", $savedate);
-        $device->store();
-
-        //$dev = new DeviceContainer($device->get("RawSetup"));
-        $data = $device->decodeData(
-            $pkt->Reply(),
-            $pkt->Command(),
-            0,
-            (array)$prev[$dev]
-        );
-        $device->setUnits($data);
-        $data["id"] = $did;
-        $data["Date"] = $savedate;
-        $data["TestID"] = $TestID;
-        $d = $device->historyFactory($data);
-        $d->insertRow(true);
-        $out = $d->toArray();
-        $ret["Date"]      = $savedate;
-        $ret["DataIndex"] = $data["DataIndex"];
-        $ret["TestID"]    = $TestID;
-
-        for ($i = 0; $i < 9; $i++) {
-            $ret["Data"][$did.".".$i] = $out["Data".$i];
-            $loc = $device->sensor($i)->get("location");
-            if (strlen($loc) == 0) {
-                $fileheader .= ",Device $dev Sensor $i";
-            } else {
-                $fileheader .= ",".$loc;
+if (is_null($TestID)) {
+    $hist = $json->system()->device($did)->action()->poll();
+} else {
+    $hist = $json->system()->test($TestID)->action()->poll();
+}
+if (is_object($hist)) {
+    if (!is_null($TestID)) {
+        $filename = "/tmp/LeNR.".$TestID.".".date("Ymd");
+        $new = !file_exists($filename);
+        $fd = fopen($filename, "a");
+        $fields = $json->system()->test($TestID)->getField();
+        if ($new) {
+            $sep = "";
+            foreach ((array)$fields as $key => $value) {
+                fwrite($fd, $sep.$value["name"]);
+                $sep = ",";
             }
-            $filedata   .= ",".$out["Data".$i];
+            fwrite($fd, "\r\n");
         }
+        $sep = "";
+        foreach((array)$fields as $key => $value) {
+            if (is_numeric($value["field"])) {
+                $data = $hist->get("Data".$key);
+            } else {
+                $data = $hist->get($value["field"]);
+            }
+            fwrite($fd, $sep.$data);
+            $sep = ",";
+        }
+        fwrite($fd, "\r\n");
+        fclose($fd);
+        chmod($filename, 0666);
     }
+    $ret = $hist->toArray();
+} else {
+    $ret = -1;
 }
-$fd = fopen($filename, "a");
-if ($new) {
-        fwrite($fd, $fileheader."\r\n");
-}
-fwrite($fd, $filedata."\r\n");
-fclose($fd);
-chmod($filename, 0666);
-
 print json_encode($ret);
 
 ?>

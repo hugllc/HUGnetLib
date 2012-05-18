@@ -43,9 +43,11 @@ $(function() {
     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
     */
     var DataPoint = Backbone.Model.extend({
+        idAttribute: 'Date',
         defaults: function ()
         {
             return {
+                id: null,
                 Date: null,
                 DataIndex: null,
             };
@@ -102,6 +104,7 @@ $(function() {
         doPoll: false,
         initialize: function (models, options)
         {
+            this.reset(null, { silent: true });
             this.bind('add', this.addExtra, this);
             this.device = options.device;
             this.pause = options.pause;
@@ -190,13 +193,6 @@ $(function() {
         */
         poll: function ()
         {
-            var id = '';
-            var sep = '';
-            var i;
-            for (i in this.device) {
-                id += sep + this.device[i].toString(16);
-                sep = ',';
-            }
             var self = this;
             $.ajax({
                 type: 'GET',
@@ -204,7 +200,6 @@ $(function() {
                 dataType: 'json',
                 data: {
                     "task": "poll",
-                    "id": id,
                     "TestID": this.id,
                 },
             }).done(
@@ -212,8 +207,7 @@ $(function() {
                 {
                     self._pollAgain();
                     if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
-                        var point = new DataPoint(data);
-                        self.add(point);
+                        self.add(data);
                     }
                 }
             );
@@ -302,29 +296,14 @@ $(function() {
         {
             var header = "";
             var i;
-            var data = this.model.get("Data");
-            if (data === undefined) {
-                this.model.remove();
-                this.remove();
-                return null;
-            }
-            data["UnixDate"] = this.model.get("Date");
-
+            var data = this.model.toJSON();
             var d = new Date();
             d.setTime(data["UnixDate"] * 1000);
-
             data["Date"] = d.formatHUGnet();
-
-            data["DataIndex"] = this.model.get("DataIndex");
-            var point;
             for (i in this.fields) {
-                point = data[this.fields[i]]
-                if (point === undefined) {
-                    point = null;
-                }
                 header += _.template(
                     $(this.template).html(),
-                    { data: point, fieldClass: this.classes[i] }
+                    { data: data[this.fields[i]], fieldClass: this.classes[i] }
                 );
             }
             this.$el.html(header);
@@ -382,7 +361,7 @@ $(function() {
                     this.device[device] = device;
                 }
                 this.header[i] = this.data[i].name;
-                this.fields[i] = this.getField(device, this.data[i].field);
+                this.fields[i] = this.getField(i, this.data[i].field);
                 this.classes[i] = this.data[i].class;
             }
             this.model = new DataPoints(
@@ -402,10 +381,10 @@ $(function() {
                 this.mode = "run";
             }
         },
-        getField: function (device, field)
+        getField: function (index, field)
         {
             if (parseInt(field) == field) {
-                return device + "." + field;
+                return "Data" + index;
             }
             return field;
         },

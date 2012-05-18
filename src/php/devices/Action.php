@@ -167,12 +167,18 @@ class Action
         return false;
     }
     /**
-    * Gets the config and saves it
+    * Polls the device and saves the poll
     *
-    * @return string The left over string
+    * @param int $TestID The test ID of this poll
+    * @param int $time   The time to use for the poll
+    *
+    * @return false on failure, the history object on success
     */
-    public function poll()
+    public function poll($TestID = null, $time = null)
     {
+        if (empty($time)) {
+            $time = time();
+        }
         $pkt = $this->_device->network()->poll();
         if (strlen($pkt->reply()) > 0) {
             $data = $this->_device->decodeData(
@@ -181,17 +187,18 @@ class Action
                 0,
                 (array)$this->_device->getParam("LastPollData")
             );
-            $data["id"]   = $this->_device->get("id");
-            $data["Date"] = time();
+            $data["id"]     = $this->_device->get("id");
+            $data["Date"]   = $time;
+            $data["TestID"] = $TestID;
             $this->_device->setParam("LastPollData", $data);
             $this->_device->setUnits($data);
             $d = $this->_device->historyFactory($data);
             $d->insertRow();
-            $this->_device->setParam("LastPoll", time());
-            $this->_device->setParam("LastContact", time());
+            $this->_device->setParam("LastPoll", $time);
+            $this->_device->setParam("LastContact", $time);
             $this->_device->setParam("PollFail", 0);
             $this->_device->setParam("ContactFail", 0);
-            return true;
+            return $d;
         }
         $fail = $this->_device->getParam("PollFail");
         $this->_device->setParam("PollFail", $fail+1);
