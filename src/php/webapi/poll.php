@@ -38,19 +38,19 @@ defined('_HUGNET') or die('HUGnetSystem not found');
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 require_once HUGNET_INCLUDE_PATH."/containers/DeviceContainer.php";
 
-$TestID = (int)$_REQUEST["TestID"] ? (int)$_REQUEST["TestID"] : null;
-
+$TestID = $json->args()->TestID;
 $did = hexdec($json->args()->id);
 $ret  = array();
 
-
-if (is_null($TestID)) {
-    $hist = $json->system()->device($did)->action()->poll();
-} else {
-    $hist = $json->system()->test($TestID)->action()->poll();
+if ($did !== 0) {
+    if ($TestID) {
+        $hist = $json->system()->test($did)->action()->poll();
+    } else {
+        $hist = $json->system()->device($did)->action()->poll();
+    }
 }
 if (is_object($hist)) {
-    if (!is_null($TestID)) {
+    if ($TestID) {
         $filename = "/tmp/LeNR.".$TestID.".".date("Ymd");
         $new = !file_exists($filename);
         $fd = fopen($filename, "a");

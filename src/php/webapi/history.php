@@ -1,11 +1,11 @@
 <?php
 /**
- * Main index
+ * Setup Home
  *
  * PHP Version 5
  * <pre>
- * HUGnetAPI is a web interface for the HUGnet devices.
- * Copyright (C) 2012 Hunt Utilities Group, LLC
+ * CoreUI is a user interface for the HUGnet cores.
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,7 +22,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * </pre>
  *
- * @category   Webapi
+ * @category   Library
  * @package    HUGnetLib
  * @subpackage Webapi
  * @author     Scott Price <prices@hugllc.com>
@@ -32,26 +32,35 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
-require_once 'HUGnetLib/hugnet.inc.php';
-require_once HUGNET_INCLUDE_PATH."/ui/JSON.php";
 
-$args = \HUGnet\ui\HTMLArgs::factory(
-    $_REQUEST,
-    count($_REQUEST),
-    array(
-        "task" => array("name" => "task", "type" => "string", "default" => ""),
-        "action" => array("name" => "action", "type" => "string"),
-        "id" => array("name" => "DeviceID", "type" => "string"),
-        "sid" => array("name" => "SensorID", "type" => "int"),
-        "uuid" => array("name" => "uuid", "type" => "string"),
-        "TestID" => array("name" => "TestID", "type" => "bool", "default" => false),
-    )
-);
-$args->addLocation("/usr/share/HUGnet/config.ini");
+/** This keeps this file from being included unless HUGnetSystem.php is included */
+defined('_HUGNET') or die('HUGnetSystem not found');
 
-$json = \HUGnet\ui\JSON::factory($args);
-$json->header();
-$task = $json->args()->task;
-if (file_exists(HUGNET_INCLUDE_PATH."/webapi/".$task.".php")) {
-    include_once HUGNET_INCLUDE_PATH."/webapi/".$task.".php";
+require_once "HUGnetLib/tables/TestTable.php";
+
+$did    = hexdec($json->args()->id);
+$action = strtolower($json->args()->action);
+$TestID = $json->args()->TestID;
+
+$since  = (int)$_REQUEST["since"];
+$limit  = ((int)$_REQUEST["limit"]) ? (int)$_REQUEST["limit"] : 100;
+
+if ($TestID) {
+    $table = &$json->system()->test($did)->historyFactory(array());
+} else {
+    $table = &$json->system()->device($did)->historyFactory(array());
 }
+
+$table->sqlLimit = $lmit;
+$table->sqlOrderBy = "Date asc";
+$run = $table->selectInto(
+    "`id` = ? AND `Date` > ?",
+    array($did, $since)
+);
+$ret = array();
+while ($run) {
+    $ret[] = $table->toArray();
+    $run   = $table->nextInto();
+}
+print json_encode($ret);
+?>

@@ -100,7 +100,8 @@ $(function() {
         mode: null,
         refresh: null,
         pause: 1,
-        limit: 10,
+        limit: 50,
+        type: "test",
         doPoll: false,
         initialize: function (models, options)
         {
@@ -109,9 +110,15 @@ $(function() {
             this.device = options.device;
             this.pause = options.pause;
             this.id = options.id;
-            this.refresh = options.refresh;
             this.mode = options.mode;
             if (this.mode != 'run') {
+                this.fetch();
+            }
+        },
+        setRefresh: function (refresh)
+        {
+            this.refresh = refresh;
+            if (refresh > 0) {
                 this.fetch();
             }
         },
@@ -126,10 +133,12 @@ $(function() {
                 this.shift();
             }
         },
+        /*
         comparator: function (data)
         {
             return data.get("Date");
         },
+        */
         _pollAgain: function ()
         {
             var self = this;
@@ -159,11 +168,11 @@ $(function() {
                 url: this.url,
                 dataType: 'json',
                 data: {
-                    "task": "test",
-                    "action": "history",
+                    "task": "history",
                     "id": this.id,
                     "since": this.LastHistory,
                     "limit": this.limit,
+                    "TestID": (this.type == "test") ? 1 : 0,
                 },
             }).done(
                 function (data)
@@ -177,7 +186,10 @@ $(function() {
                         );
                     }
                     if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
-                        self.add(data);
+                        var i;
+                        for (i in data) {
+                            self.add(data[i]);
+                        }
                     }
                 }
             );
@@ -200,7 +212,8 @@ $(function() {
                 dataType: 'json',
                 data: {
                     "task": "poll",
-                    "TestID": this.id,
+                    "id": this.id,
+                    "TestID": (this.type == "test") ? 1 : 0,
                 },
             }).done(
                 function (data)
@@ -331,8 +344,9 @@ $(function() {
         tagName: 'div',
         pause: 1,
         rows: 0,
-        autorefresh: 5,
+        autorefresh: 0,
         mode: 'run',
+        type: 'test',
         parent: undefined,
         id: undefined,
         data: {},
@@ -344,6 +358,7 @@ $(function() {
             'click .startPoll': 'startPoll',
             'click .stopPoll': 'stopPoll',
             'click .exit': 'exit',
+            'click .autorefresh': 'setRefresh',
         },
         initialize: function (options)
         {
@@ -365,13 +380,29 @@ $(function() {
                 this.classes[i] = this.data[i].class;
             }
             this.model = new DataPoints(
-                null, { device: this.device, id: this.id, mode: this.mode, refresh: this.autorefresh });
+                null,
+                {
+                    device: this.device,
+                    id: this.id,
+                    mode: this.mode,
+                    type: this.type,
+                }
+            );
             this.model.bind('add', this.insert, this);
-            if (options.pause !== undefined) {
-                this.pause = options.pause - 0;
-            }
+            this.pause = (options.pause !== undefined) ? options.pause - 0 : this.pause;
+            this.type = (options.type !== undefined) ? options.type : this.type;
             this.parent = options.parent;
             this.id = options.id;
+        },
+        setRefresh: function ()
+        {
+            if (this.$('.autorefresh').prop("checked")) {
+                this.autorefresh = this.$('.autorefresh').val() - 0;
+            } else {
+                this.autorefresh = 0;
+            }
+            console.log(this.autorefresh);
+            this.model.setRefresh(this.autorefresh);
         },
         setMode: function (mode)
         {
