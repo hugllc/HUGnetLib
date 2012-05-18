@@ -51,10 +51,10 @@ if ($did !== 0) {
 }
 if (is_object($hist)) {
     if ($TestID) {
-        $filename = "/tmp/LeNR.".$TestID.".".date("Ymd");
+        $filename = "/tmp/LeNR.".$did.".".date("Ymd");
         $new = !file_exists($filename);
         $fd = fopen($filename, "a");
-        $fields = $json->system()->test($TestID)->getField();
+        $fields = $json->system()->test($did)->getField();
         if ($new) {
             $sep = "";
             foreach ((array)$fields as $key => $value) {
