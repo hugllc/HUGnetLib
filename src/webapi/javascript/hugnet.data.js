@@ -167,6 +167,7 @@ $(function() {
                 type: 'GET',
                 url: this.url,
                 dataType: 'json',
+                cache: false,
                 data: {
                     "task": "history",
                     "id": this.id,
@@ -210,6 +211,7 @@ $(function() {
                 type: 'GET',
                 url: this.url,
                 dataType: 'json',
+                cache: false,
                 data: {
                     "task": "poll",
                     "id": this.id,

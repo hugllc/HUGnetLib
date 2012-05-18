@@ -72,7 +72,6 @@ $(function() {
                 url: '/HUGnetLib/index.php',
             };
         },
-        view: null,
         /**
         * This function initializes the object
         */
@@ -100,6 +99,7 @@ $(function() {
                 var ret = $.ajax({
                     type: 'GET',
                     url: this.get('url'),
+                    cache: false,
                     dataType: 'json',
                     data:
                     {
@@ -132,6 +132,7 @@ $(function() {
                     type: 'POST',
                     url: this.get('url'),
                     dataType: 'json',
+                    cache: false,
                     data:
                     {
                         "task": "device",
@@ -173,6 +174,7 @@ $(function() {
                 var ret = $.ajax({
                     type: 'POST',
                     url: this.get('url'),
+                    cache: false,
                     dataType: 'json',
                     data: "task=device&action=postsensor&id="+id.toString(16)+"&"+sdata,
                 });
@@ -216,10 +218,7 @@ $(function() {
                     type: 'GET',
                     url: this.get('url'),
                     dataType: 'json',
-                    success: function (data)
-                    {
-                        self.set(data);
-                    },
+                    cache: false,
                     data: {
                         "task": "device",
                         "action": "config",
@@ -281,6 +280,7 @@ $(function() {
                 type: 'GET',
                 url: this.url,
                 dataType: 'json',
+                cache: false,
                 data: {
                     "task": "device", "action": "getall"
                 },

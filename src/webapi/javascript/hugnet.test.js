@@ -84,6 +84,7 @@ $(function() {
                     type: 'GET',
                     url: this.get('url'),
                     dataType: 'json',
+                    cache: false,
                     data:
                     {
                         "task": "test",
@@ -119,6 +120,7 @@ $(function() {
                     type: 'POST',
                     url: this.get('url'),
                     dataType: 'json',
+                    cache: false,
                     data:
                     {
                         "task": "test",
@@ -184,6 +186,7 @@ $(function() {
                 type: 'GET',
                 url: this.url,
                 dataType: 'json',
+                cache: false,
                 data: {
                     "task": "test", "action": "getall"
                 },
@@ -220,6 +223,7 @@ $(function() {
                 type: 'GET',
                 url: this.url,
                 dataType: 'json',
+                cache: false,
                 data: {
                     "task": "test", "action": "new"
                 },
