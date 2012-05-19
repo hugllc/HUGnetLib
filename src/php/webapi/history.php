@@ -59,7 +59,7 @@ $run = $table->selectInto(
 );
 $ret = array();
 while ($run) {
-    $ret[] = $table->toArray();
+    $ret[] = $table->toArray(false);
     $run   = $table->nextInto();
 }
 print json_encode($ret);

@@ -49,7 +49,32 @@ $(function() {
             return {
                 id: null,
                 Date: null,
+                UnixDate: null,
                 DataIndex: null,
+                deltaT: 0,
+                converted: false,
+                TestID: null,
+                Type: 'history',
+                Data0: null,
+                Data1: null,
+                Data2: null,
+                Data3: null,
+                Data4: null,
+                Data5: null,
+                Data6: null,
+                Data7: null,
+                Data8: null,
+                Data9: null,
+                Data10: null,
+                Data11: null,
+                Data12: null,
+                Data13: null,
+                Data14: null,
+                Data15: null,
+                Data16: null,
+                Data17: null,
+                Data18: null,
+                Data19: null,
             };
         },
         initialize: function ()
@@ -153,15 +178,6 @@ $(function() {
             }).done(
                 function (data)
                 {
-                    /*
-                    if ((self.refresh > 0) && (self.mode === 'view')) {
-                        setTimeout(
-                            function () {
-                                self.fetch();
-                            },
-                            (self.refresh * 1000)
-                        );
-                    }*/
                     if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
                         var i;
                         for (i in data) {
