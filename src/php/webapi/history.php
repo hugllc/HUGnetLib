@@ -51,7 +51,7 @@ if ($TestID) {
     $table = &$json->system()->device($did)->historyFactory(array());
 }
 
-$table->sqlLimit = $lmit;
+$table->sqlLimit = $limit;
 $table->sqlOrderBy = "Date asc";
 $run = $table->selectInto(
     "`id` = ? AND `Date` > ?",
