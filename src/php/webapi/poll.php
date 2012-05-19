@@ -77,7 +77,7 @@ if (is_object($hist)) {
         fclose($fd);
         chmod($filename, 0666);
     }
-    $ret = $hist->toArray();
+    $ret = $hist->toArray(false);
 } else {
     $ret = -1;
 }
