@@ -123,7 +123,7 @@
             </fileset>
         </delete>
         <delete file="${basedir}/src/webapi/html/hugnet.js"/>
-        <echo>Building src/webapi/html/hugnet.js</echo>
+        <echo>Building src/webapi/html/contrib.js</echo>
         <concat destfile="${basedir}/src/webapi/html/contrib.js">
             <fileset file="${basedir}/src/webapi/javascript/contrib/jquery.min.js"/>
             <fileset file="${basedir}/src/webapi/javascript/contrib/jquery.cookie.js"/>
@@ -134,8 +134,14 @@
             <fileset file="${basedir}/src/webapi/javascript/contrib/underscore-min.js"/>
             <fileset file="${basedir}/src/webapi/javascript/contrib/backbone.js"/>
         </concat>
+        <echo>Building src/webapi/html/hugnet.js</echo>
         <concat destfile="${basedir}/src/webapi/html/hugnet.js">
+            <fileset file="${basedir}/src/webapi/javascript/extra/header.js"/>
+            <fileset dir="${basedir}/src/webapi/javascript/models" includes="*.js"/>
+            <fileset dir="${basedir}/src/webapi/javascript/views" includes="*.js"/>
+            <fileset dir="${basedir}/src/webapi/javascript/controllers" includes="*.js"/>
             <fileset dir="${basedir}/src/webapi/javascript" includes="*.js"/>
+            <fileset file="${basedir}/src/webapi/javascript/extra/footer.js"/>
         </concat>
         <gzip src="${basedir}/src/webapi/html/hugnet.js"
             destfile="${basedir}/src/webapi/html/hugnet.js.gz"
