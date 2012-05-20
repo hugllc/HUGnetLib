@@ -44,14 +44,21 @@ var TestPropertiesView = Backbone.View.extend({
     template: '#TestPropertiesTemplate',
     tTemplate: '#TestPropertiesTitleTemplate',
     tagName: 'div',
+    _close: false,
     events: {
-        'click .save': 'save',
+        'click .save': 'saveclose',
         'change .fieldcount': 'save',
     },
     initialize: function (options)
     {
         this.model.bind('change', this.render, this);
         this.model.bind('savefail', this.saveFail, this);
+        this.model.bind('saved', this.saveSuccess, this);
+    },
+    saveclose: function (e)
+    {
+        this._close = true;
+        this.save(e);
     },
     save: function (e)
     {
@@ -71,16 +78,20 @@ var TestPropertiesView = Backbone.View.extend({
             output['fields'][i]['field'] = output['fields'+i+'field'];
             delete output['fields'+i+'field'];
         }
-        console.log(output);
         this.model.set(output);
-        console.log("Model");
-        console.log(this.model.toJSON());
         this.model.save();
     },
     saveFail: function (msg)
     {
+        this._close = false;
         this.setTitle();
         alert("Save Failed: " + msg);
+    },
+    saveSuccess: function ()
+    {
+        if (this._close) {
+            this.remove();
+        }
     },
     setTitle: function (extra)
     {
@@ -97,14 +108,6 @@ var TestPropertiesView = Backbone.View.extend({
     {
         var data = this.model.toJSON();
         var i;
-        if (typeof data.fields !== 'object') {
-            data.fields = {};
-        }
-        for (i = 0; i < data.fieldcount; i++) {
-            if (data.fields[i] === undefined) {
-                data.fields[i] = { device: 0, field: 0, name: "unnamed" };
-            }
-        }
         this.$el.html(
             _.template(
                 $(this.template).html(),

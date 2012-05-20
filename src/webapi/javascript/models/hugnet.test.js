@@ -41,29 +41,19 @@
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 var Test = Backbone.Model.extend({
-    defaults: function ()
-    {
-        return {
-            id: null,
-            name: 'No Name',
-            created: 0,
-            modified: 0,
-            fields: {},
-            notes: '',
-            url: '/HUGnetLib/index.php',
-        };
+    defaults: {
+        id: null,
+        name: 'No Name',
+        created: 0,
+        modified: 0,
+        fields: {},
+        notes: '',
+        url: '/HUGnetLib/index.php',
     },
-    view: null,
     /**
     * This function initializes the object
     */
     initialize: function(attrib)
-    {
-    },
-    /**
-    * This function initializes the object
-    */
-    fix: function(attributes)
     {
     },
     /**
@@ -93,9 +83,11 @@ var Test = Backbone.Model.extend({
             ret.done(
                 function (data)
                 {
-                    console.log("fetch");
-                    console.log(data);
-                    myself.set(data);
+                    if (data && (data !== null) && _.isObject(data)) {
+                        console.log("fetch");
+                        console.log(data);
+                        myself.set(data);
+                    }
                 }
             );
         }
@@ -112,8 +104,6 @@ var Test = Backbone.Model.extend({
         var id = this.get('id');
         if (id !== null) {
             var self = this;
-            console.log("Save");
-            console.log(self.toJSON());
             var ret = $.ajax({
                 type: 'POST',
                 url: this.get('url'),
@@ -132,6 +122,7 @@ var Test = Backbone.Model.extend({
                 {
                     if (data == "success") {
                         self.fetch();
+                        self.trigger('saved', this);
                     } else {
                         self.trigger('savefail', 'Save failed on server');
                     }
@@ -192,15 +183,10 @@ window.Tests = Backbone.Collection.extend({
         ret.done(
             function (data)
             {
-                if ((data !== null) && (data !== undefined) && (typeof data === "object")) {
-                    self.add(data, {silent: true} );
-                    /* We want an add trigger for each one */
-                    self.each(
-                        function (model)
-                        {
-                            self.trigger("add", model);
-                        }
-                    );
+                if (data && (data !== null) && _.isObject(data)) {
+                    console.log("fetchall");
+                    console.log(data);
+                    self.add(data);
                 }
             }
         );
@@ -229,7 +215,7 @@ window.Tests = Backbone.Collection.extend({
         ret.done(
             function (data)
             {
-                if ((data !== null) && (data !== undefined) && (typeof data === "object")) {
+                if (data && (data !== null) && _.isObject(data)) {
                     self.add(data);
                 } else {
                     self.trigger('savefail', 'Save failed on server');
