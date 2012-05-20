@@ -99,11 +99,7 @@ var TestField = Backbone.Model.extend({
 */
 window.TestFields = Backbone.Collection.extend({
     url: '/HUGnetLib/index.php',
-    model: Test,
-    comparator: function (device)
-    {
-        return device.get("id");
-    },
+    model: TestField,
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
     *

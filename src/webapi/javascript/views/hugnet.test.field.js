@@ -22,7 +22,7 @@
  *
  * @category   JavaScript
  * @package    HUGnetLib
- * @subpackage Tests
+ * @subpackage TestFields
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
@@ -33,38 +33,23 @@
 *
 * @category   JavaScript
 * @package    HUGnetLib
-* @subpackage Tests
+* @subpackage TestFields
 * @author     Scott Price <prices@hugllc.com>
 * @copyright  2012 Hunt Utilities Group, LLC
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-var TestPropertiesView = Backbone.View.extend({
-    template: '#TestPropertiesTemplate',
-    tTemplate: '#TestPropertiesTitleTemplate',
+var TestFieldPropertiesView = Backbone.View.extend({
+    template: '#TestFieldPropertiesTemplate',
+    tTemplate: '#TestFieldPropertiesTitleTemplate',
     tagName: 'div',
-    _close: false,
     events: {
-        'click .save': 'saveclose',
-        'change .fieldcount': 'save',
+        'click .save': 'save',
     },
     initialize: function (options)
     {
         this.model.bind('change', this.render, this);
-        this.model.bind('savefail', this.saveFail, this);
-        this.model.bind('saved', this.saveSuccess, this);
-
-        this.fieldsmodel = new TestFields();
-        var fields = this.model.get('fields');
-        var i;
-        for (i = 0; i < fields.length; i++) {
-            fields[i].id = i;
-        }
-        this.fieldsmodel.reset(fields);
-        this.fields = new TestFieldsView({
-            model: this.fieldsmodel
-        });
     },
     saveclose: function (e)
     {
@@ -79,22 +64,8 @@ var TestPropertiesView = Backbone.View.extend({
         for (i in data) {
             output[data[i].name] = data[i].value;
         }
-        output['fields'] = this.fieldsmodel.toJSON();
         this.model.set(output);
-        this.model.save();
-    },
-    saveFail: function (msg)
-    {
-        this._close = false;
-        this.setTitle();
-        alert("Save Failed: " + msg);
-    },
-    saveSuccess: function ()
-    {
-        alert("Test Saved");
-        if (this._close) {
-            this.remove();
-        }
+        this.remove();
     },
     setTitle: function (extra)
     {
@@ -110,7 +81,6 @@ var TestPropertiesView = Backbone.View.extend({
     render: function ()
     {
         var data = this.model.toJSON();
-        data.fields = '<div id="TestFieldsDiv"></div>';
         var i;
         this.$el.html(
             _.template(
@@ -118,7 +88,6 @@ var TestPropertiesView = Backbone.View.extend({
                 data
             )
         );
-        this.$("#TestFieldsDiv").html(this.fields.render().el);
         this.setTitle();
         return this;
     },
@@ -145,22 +114,20 @@ var TestPropertiesView = Backbone.View.extend({
 *
 * @category   JavaScript
 * @package    HUGnetLib
-* @subpackage Tests
+* @subpackage TestFields
 * @author     Scott Price <prices@hugllc.com>
 * @copyright  2012 Hunt Utilities Group, LLC
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-var TestEntryView = Backbone.View.extend({
-    model: Test,
+var TestFieldEntryView = Backbone.View.extend({
+    model: TestField,
     tagName: 'tr',
-    template: '#TestEntryTemplate',
+    template: '#TestFieldEntryTemplate',
     parent: null,
     events: {
         'click .properties': 'properties',
-        'click .run': 'run',
-        'click .view': 'view',
     },
     initialize: function (options)
     {
@@ -170,16 +137,8 @@ var TestEntryView = Backbone.View.extend({
     },
     properties: function (e)
     {
-        var view = new TestPropertiesView({ model: this.model });
+        var view = new TestFieldPropertiesView({ model: this.model });
         this.parent.popup(view);
-    },
-    run: function (e)
-    {
-        this.parent.trigger("run", this.model);
-    },
-    view: function (e)
-    {
-        this.parent.trigger("view", this.model);
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -192,24 +151,14 @@ var TestEntryView = Backbone.View.extend({
     */
     render: function ()
     {
-        var data = this.model.toJSON();
-        var created = new Date(data["created"] * 1000);
-        data["created"] = this.formatDate(created);
-        var modified = new Date(data["modified"] * 1000);
-        data["modified"] = this.formatDate(modified);
         this.$el.html(
             _.template(
                 $(this.template).html(),
-                data
+                this.model.toJSON()
             )
         );
-        this.$el.trigger('update');
         return this;
     },
-    formatDate: function (date)
-    {
-        return date.toLocaleDateString()+" "+date.toLocaleTimeString();
-    }
 });
 
 /**
@@ -217,34 +166,22 @@ var TestEntryView = Backbone.View.extend({
 *
 * @category   JavaScript
 * @package    HUGnetLib
-* @subpackage Tests
+* @subpackage TestFields
 * @author     Scott Price <prices@hugllc.com>
 * @copyright  2012 Hunt Utilities Group, LLC
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-window.TestsView = Backbone.View.extend({
-    model: Tests,
-    template: "#TestListTemplate",
+window.TestFieldsView = Backbone.View.extend({
+    model: TestFields,
+    template: "#TestFieldListTemplate",
     rows: 0,
     events: {
-        'click .new': 'new',
     },
     initialize: function (options)
     {
-        this.model = new Tests();
-        this.model.bind('add', this.insert, this);
-        this.model.bind('savefail', this.saveFail, this);
-        this.model.fetch();
-    },
-    new: function ()
-    {
-        this.model.new();
-    },
-    saveFail: function (msg)
-    {
-        alert("Save Failed: " + msg);
+        //this.model.bind('add', this.insert, this);
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -261,17 +198,17 @@ window.TestsView = Backbone.View.extend({
                 this.model.toJSON()
             )
         );
-        //this.model.each(this.renderEntry);
-        this.$('.tablesorter').tablesorter({ widgets: ['zebra'] });
-        this.$el.trigger('update');
+        /* insert all of the models */
+        this.model.each(this.insert, this);
+        this.$("tr").removeClass("odd").removeClass("even");
+        this.$("tr:odd").addClass("odd");
+        this.$("tr:even").addClass("even");
         return this;
     },
-    insert: function (model, collection, options)
+    insert: function (model, key)
     {
-        var view = new TestEntryView({ model: model, parent: this });
+        var view = new TestFieldEntryView({ model: model, parent: this });
         this.$('tbody').append(view.render().el);
-        this.$el.trigger('update');
-        this.$('.tablesorter').trigger('update');
     },
     popup: function (view)
     {
@@ -279,11 +216,11 @@ window.TestsView = Backbone.View.extend({
         view.$el.dialog({
             modal: true,
             draggable: false,
-            width: 500,
+            width: 300,
             resizable: false,
             title: view.title(),
             dialogClass: "window",
-            zIndex: 500,
+            zIndex: 1000,
         });
         view.model.bind(
             'change',

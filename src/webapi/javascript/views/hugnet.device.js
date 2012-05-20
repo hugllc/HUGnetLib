@@ -241,6 +241,7 @@ window.DevicesView = Backbone.View.extend({
             resizable: false,
             title: view.title(),
             dialogClass: "window",
+            zIndex: 500,
         });
         view.model.bind(
             'change',

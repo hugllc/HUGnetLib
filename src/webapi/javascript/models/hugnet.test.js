@@ -83,8 +83,6 @@ var Test = Backbone.Model.extend({
                 function (data)
                 {
                     if (data && (data !== null) && _.isObject(data)) {
-                        console.log("fetch");
-                        console.log(data);
                         myself.set(data);
                     }
                 }
@@ -180,8 +178,6 @@ window.Tests = Backbone.Collection.extend({
             function (data)
             {
                 if (data && (data !== null) && _.isObject(data)) {
-                    console.log("fetchall");
-                    console.log(data);
                     self.add(data);
                 }
             }
