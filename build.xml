@@ -123,6 +123,7 @@
             </fileset>
         </delete>
         <delete file="${basedir}/src/webapi/html/hugnet.js"/>
+        <delete file="${basedir}/src/webapi/html/hugnet.min.js"/>
         <echo>Building src/webapi/html/contrib.js</echo>
         <concat destfile="${basedir}/src/webapi/html/contrib.js">
             <fileset file="${basedir}/src/webapi/javascript/contrib/jquery.min.js"/>
@@ -145,17 +146,8 @@
         </concat>
         <exec executable="uglifyjs">
             <arg line="-o ${basedir}/src/webapi/html/hugnet.min.js
-                       ${basedir}/src/webapi/html/hugnet.min.js" />
+                       ${basedir}/src/webapi/html/hugnet.js" />
         </exec>
-        <gzip src="${basedir}/src/webapi/html/hugnet.js"
-            destfile="${basedir}/src/webapi/html/hugnet.js.gz"
-            />
-        <gzip src="${basedir}/src/webapi/html/contrib.js"
-            destfile="${basedir}/src/webapi/html/contrib.js.gz"
-            />
-        <gzip src="${basedir}/src/webapi/html/hugnet.min.js"
-            destfile="${basedir}/src/webapi/html/hugnet.min.js.gz"
-            />
     </target>
 
 

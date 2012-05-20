@@ -68,7 +68,7 @@ var Test = Backbone.Model.extend({
         var id = this.get('id');
         if (id !== 0) {
             var myself = this;
-            var ret = $.ajax({
+            $.ajax({
                 type: 'GET',
                 url: this.get('url'),
                 dataType: 'json',
@@ -79,8 +79,7 @@ var Test = Backbone.Model.extend({
                     "action": "get",
                     "id": id
                 },
-            });
-            ret.done(
+            }).done(
                 function (data)
                 {
                     if (data && (data !== null) && _.isObject(data)) {
@@ -104,7 +103,7 @@ var Test = Backbone.Model.extend({
         var id = this.get('id');
         if (id !== null) {
             var self = this;
-            var ret = $.ajax({
+            $.ajax({
                 type: 'POST',
                 url: this.get('url'),
                 dataType: 'json',
@@ -116,8 +115,7 @@ var Test = Backbone.Model.extend({
                     "id": id,
                     "test": self.toJSON(),
                 },
-            });
-            ret.done(
+            }).done(
                 function (data)
                 {
                     if (data == "success") {
@@ -127,8 +125,7 @@ var Test = Backbone.Model.extend({
                         self.trigger('savefail', 'Save failed on server');
                     }
                 }
-            );
-            ret.fail(
+            ).fail(
                 function ()
                 {
                     self.trigger('savefail', 'Could not contact server');
@@ -171,7 +168,7 @@ window.Tests = Backbone.Collection.extend({
     fetch: function ()
     {
         var self = this;
-        var ret = $.ajax({
+        $.ajax({
             type: 'GET',
             url: this.url,
             dataType: 'json',
@@ -179,8 +176,7 @@ window.Tests = Backbone.Collection.extend({
             data: {
                 "task": "test", "action": "getall"
             },
-        });
-        ret.done(
+        }).done(
             function (data)
             {
                 if (data && (data !== null) && _.isObject(data)) {
@@ -203,7 +199,7 @@ window.Tests = Backbone.Collection.extend({
     new: function ()
     {
         var self = this;
-        var ret = $.ajax({
+        $.ajax({
             type: 'GET',
             url: this.url,
             dataType: 'json',
@@ -211,8 +207,7 @@ window.Tests = Backbone.Collection.extend({
             data: {
                 "task": "test", "action": "new"
             },
-        });
-        ret.done(
+        }).done(
             function (data)
             {
                 if (data && (data !== null) && _.isObject(data)) {
@@ -221,8 +216,7 @@ window.Tests = Backbone.Collection.extend({
                     self.trigger('savefail', 'Save failed on server');
                 }
             }
-        );
-        ret.fail(
+        ).fail(
             function ()
             {
                 self.trigger('savefail', 'Could not contact server');
