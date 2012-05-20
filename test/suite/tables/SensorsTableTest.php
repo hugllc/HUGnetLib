@@ -263,6 +263,9 @@ class SensorsTableTest extends HUGnetDBTableTestBase
                     "storageUnits" => "&deg;C",
                     "unitType" => "Temperature",
                     "driver" => "asdf",
+                    "min" => 5,
+                    "max" => 15,
+                    "extra" => array(),
                 ),
                 array(
                     "group" => 'default',
@@ -275,7 +278,7 @@ class SensorsTableTest extends HUGnetDBTableTestBase
                     "units" => '&deg;C',
                     "decimals" => 4,
                     "driver" => "asdf",
-                    "params" => '{"storageUnits":"&deg;C","unitType":"Temperature"}',
+                    "params" => json_encode(array("min" => 5, "max" => 15, "extra" => array())),
                 ),
             ),
             array(
@@ -327,7 +330,7 @@ class SensorsTableTest extends HUGnetDBTableTestBase
                     "units" => '&deg;C',
                     "decimals" => 4,
                     "driver"  => "SDEFAULT",
-                    "params" => '{"storageUnits":"&deg;C","unitType":"Temperature"}',
+                    "params" => '[]',
                 ),
             ),
         );

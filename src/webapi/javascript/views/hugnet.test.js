@@ -51,9 +51,9 @@ var TestPropertiesView = Backbone.View.extend({
     },
     initialize: function (options)
     {
-        this.model.bind('change', this.render, this);
-        this.model.bind('savefail', this.saveFail, this);
-        this.model.bind('saved', this.saveSuccess, this);
+        this.model.on('change', this.render, this);
+        this.model.on('savefail', this.saveFail, this);
+        this.model.on('saved', this.saveSuccess, this);
 
         this.fieldsmodel = new TestFields();
         var fields = this.model.get('fields');
@@ -91,10 +91,13 @@ var TestPropertiesView = Backbone.View.extend({
     },
     saveSuccess: function ()
     {
-        alert("Test Saved");
+        this.model.off('change', this.render, this);
+        this.model.off('savefail', this.saveFail, this);
+        this.model.off('saved', this.saveSuccess, this);
         if (this._close) {
             this.remove();
         }
+        alert("Test Saved");
     },
     setTitle: function (extra)
     {

@@ -59,15 +59,10 @@ if ($action === "post") {
 } else if ($action === "postsensor") {
     $dev->load($did);
     $worked = true;
-    $sensors = &$_POST["sensor"];
-    if (is_array($sensors)) {
-        $totalSensors = $dev->get("totalSensors");
-        for ($i = 0; $i < $totalSensors; $i++) {
-            if (is_array($sensors[$i])) {
-                $sensor = $dev->sensor($i);
-                $worked &= $sensor->change($sensors[$i]);
-            }
-        }
+    $data = &$_POST["sensor"];
+    if (is_array($data) && isset($data['sensor'])) {
+        $sensor = $dev->sensor((int)$data["sensor"]);
+        $worked &= $sensor->change($data);
     }
     if ($worked) {
         $ret = "success";

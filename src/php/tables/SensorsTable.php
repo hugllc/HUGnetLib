@@ -161,6 +161,12 @@ class SensorsTable extends HUGnetDBTable
     protected $default = array(
         "group" => "default",    // Server group to use
     );
+    /** @var array These are reserved names that shouldn't be set */
+    private $_set = array(
+        "min",
+        "max",
+        "extra",
+    );
     /**
     * This is the constructor
     *
@@ -184,9 +190,11 @@ class SensorsTable extends HUGnetDBTable
         if (array_key_exists($name, $this->default)) {
             $ret = parent::set($name, $value);
         } else {
-            $array = (array)json_decode(parent::get("params"), true);
-            $array[$name] = $value;
-            parent::set("params", $array);
+            if (in_array($name, $this->_set)) {
+                $array = (array)json_decode(parent::get("params"), true);
+                $array[$name] = $value;
+                parent::set("params", $array);
+            }
         }
         return $ret;
     }
@@ -235,7 +243,13 @@ class SensorsTable extends HUGnetDBTable
             foreach ($this->getProperties() as $key) {
                 unset($array[$key]);
             }
-            $this->set("params", $array);
+            $set = array();
+            foreach ($this->_set as $key) {
+                if (isset($array[$key])) {
+                    $set[$key] = $array[$key];
+                }
+            }
+            $this->set("params", $set);
         }
     }
     /**

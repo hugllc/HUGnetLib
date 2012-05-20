@@ -143,53 +143,17 @@ var Device = Backbone.Model.extend({
                 function (data)
                 {
                     if (data == "success") {
+                        self.trigger('saved');
                         self.fetch();
                     } else {
-                        self.trigger('savefail');
+                        self.trigger('savefail', "saved failed on server");
                     }
                 }
             );
             ret.fail(
                 function ()
                 {
-                    self.trigger('savefail');
-                }
-            );
-        }
-    },
-    /**
-    * Gets infomration about a device.  This is retrieved from the database only.
-    *
-    * @param id The id of the device to get
-    *
-    * @return null
-    */
-    saveSensor: function(sdata)
-    {
-        var id = this.get('id');
-        if ((id !== 0) && (sdata !== undefined)) {
-            var self = this;
-            var ret = $.ajax({
-                type: 'POST',
-                url: this.get('url'),
-                cache: false,
-                dataType: 'json',
-                data: "task=device&action=postsensor&id="+id.toString(16)+"&"+sdata,
-            });
-            ret.done(
-                function (data)
-                {
-                    if (data == "success") {
-                        self.fetch();
-                    } else {
-                        self.trigger('savefail');
-                    }
-                }
-            );
-            ret.fail(
-                function ()
-                {
-                    self.trigger('savefail');
+                    self.trigger('savefail', "failed to contact server");
                 }
             );
         }

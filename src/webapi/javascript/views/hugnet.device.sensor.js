@@ -22,7 +22,7 @@
  *
  * @category   JavaScript
  * @package    HUGnetLib
- * @subpackage Devices
+ * @subpackage DeviceSensors
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
@@ -33,61 +33,50 @@
 *
 * @category   JavaScript
 * @package    HUGnetLib
-* @subpackage Devices
+* @subpackage DeviceSensors
 * @author     Scott Price <prices@hugllc.com>
 * @copyright  2012 Hunt Utilities Group, LLC
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-var DevicePropertiesView = Backbone.View.extend({
-    template: '#DevicePropertiesTemplate',
-    tTemplate: '#DevicePropertiesTitleTemplate',
+var DeviceSensorPropertiesView = Backbone.View.extend({
+    template: '#DeviceSensorPropertiesTemplate',
+    tTemplate: '#DeviceSensorPropertiesTitleTemplate',
     tagName: 'div',
     events: {
-        'click .SaveDevice': 'save',
-        'submit #sensorForm': 'saveSensor',
-        'change #sensorForm select': 'saveSensor',
+        'click .save': 'save',
     },
     initialize: function (options)
     {
         this.model.on('change', this.render, this);
-        this.model.on('savefail', this.saveFail, this);
         this.model.on('saved', this.saveSuccess, this);
-
-        this.sensorsmodel = new DeviceSensors();
-        var sensors = this.model.get('sensors');
-        this.sensorsmodel.reset(sensors);
-        this.sensors = new DeviceSensorsView({
-            model: this.sensorsmodel
-        });
+        this.model.on('savefail', this.saveFail, this);
+    },
+    saveSuccess: function (e)
+    {
+        this.model.off('change', this.render, this);
+        this.model.off('saved', this.saveSuccess, this);
+        this.model.off('savefail', this.saveFail, this);
+        this.remove();
+        alert("Sensor Saved");
+    },
+    saveFail: function (msg)
+    {
+        this.setTitle();
+        alert("Sensor Faled: " + msg);
     },
     save: function (e)
     {
         this.setTitle( " [ Saving...] " );
-        this.model.set({
-            DeviceName: this.$(".DeviceName").val(),
-            DeviceLocation: this.$(".DeviceLocation").val(),
-            DeviceJob: this.$(".DeviceJob").val(),
-        });
+        var i, output = {};
+        var data = this.$('form').serializeArray();
+        for (i in data) {
+            output[data[i].name] = data[i].value;
+        }
+        console.log(output);
+        this.model.set(output);
         this.model.save();
-    },
-    saveSensor: function (e)
-    {
-        this.model.saveSensor($("#sensorForm").serialize());
-    },
-    saveFail: function ()
-    {
-        this.setTitle();
-        alert("Save Failed");
-    },
-    saveSuccess: function ()
-    {
-        this.model.off('change', this.render, this);
-        this.model.off('savefail', this.saveFail, this);
-        this.model.off('saved', this.saveSuccess, this);
-        this.remove();
-        alert("Save Succeeded");
     },
     setTitle: function (extra)
     {
@@ -103,14 +92,13 @@ var DevicePropertiesView = Backbone.View.extend({
     render: function ()
     {
         var data = this.model.toJSON();
-        data.sensors = '<div id="DeviceSensorsDiv"></div>';
+        var i;
         this.$el.html(
             _.template(
                 $(this.template).html(),
                 data
             )
         );
-        this.$("#DeviceSensorsDiv").html(this.sensors.render().el);
         this.setTitle();
         return this;
     },
@@ -137,42 +125,30 @@ var DevicePropertiesView = Backbone.View.extend({
 *
 * @category   JavaScript
 * @package    HUGnetLib
-* @subpackage Devices
+* @subpackage DeviceSensors
 * @author     Scott Price <prices@hugllc.com>
 * @copyright  2012 Hunt Utilities Group, LLC
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-var DeviceEntryView = Backbone.View.extend({
-    model: Device,
+var DeviceSensorEntryView = Backbone.View.extend({
+    model: DeviceSensor,
     tagName: 'tr',
-    template: '#DeviceEntryTemplate',
+    template: '#DeviceSensorEntryTemplate',
     parent: null,
     events: {
-        'click .refresh': 'refresh',
         'click .properties': 'properties',
     },
     initialize: function (options)
     {
         this.model.bind('change', this.render, this);
         this.model.bind('remove', this.remove, this);
-        this.model.bind('configfail', this.refreshFail, this);
         this.parent = options.parent;
-    },
-    refresh: function (e)
-    {
-        this.$el.addClass("working");
-        this.model.config();
-    },
-    refreshFail: function ()
-    {
-        this.$el.removeClass("working");
-        alert("Failed to get the configuration for the device");
     },
     properties: function (e)
     {
-        var view = new DevicePropertiesView({ model: this.model });
+        var view = new DeviceSensorPropertiesView({ model: this.model });
         this.parent.popup(view);
     },
     /**
@@ -186,14 +162,12 @@ var DeviceEntryView = Backbone.View.extend({
     */
     render: function ()
     {
-        this.$el.removeClass("working");
         this.$el.html(
             _.template(
                 $(this.template).html(),
                 this.model.toJSON()
             )
         );
-        this.$el.trigger('update');
         return this;
     },
 });
@@ -203,23 +177,22 @@ var DeviceEntryView = Backbone.View.extend({
 *
 * @category   JavaScript
 * @package    HUGnetLib
-* @subpackage Devices
+* @subpackage DeviceSensors
 * @author     Scott Price <prices@hugllc.com>
 * @copyright  2012 Hunt Utilities Group, LLC
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-window.DevicesView = Backbone.View.extend({
-    template: "#DeviceListTemplate",
+window.DeviceSensorsView = Backbone.View.extend({
+    model: DeviceSensors,
+    template: "#DeviceSensorListTemplate",
     rows: 0,
     events: {
     },
     initialize: function (options)
     {
-        this.model = new Devices();
-        this.model.bind('add', this.insert, this);
-        this.model.fetch();
+        //this.model.bind('add', this.insert, this);
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -236,17 +209,17 @@ window.DevicesView = Backbone.View.extend({
                 this.model.toJSON()
             )
         );
-        //this.model.each(this.renderEntry);
-        this.$('.tablesorter').tablesorter({ widgets: ['zebra'] });
-        this.$el.trigger('update');
+        /* insert all of the models */
+        this.model.each(this.insert, this);
+        this.$("tr").removeClass("odd").removeClass("even");
+        this.$("tr:odd").addClass("odd");
+        this.$("tr:even").addClass("even");
         return this;
     },
-    insert: function (model, collection, options)
+    insert: function (model, key)
     {
-        var view = new DeviceEntryView({ model: model, parent: this });
+        var view = new DeviceSensorEntryView({ model: model, parent: this });
         this.$('tbody').append(view.render().el);
-        this.$el.trigger('update');
-        this.$('.tablesorter').trigger('update');
     },
     popup: function (view)
     {
@@ -254,11 +227,11 @@ window.DevicesView = Backbone.View.extend({
         view.$el.dialog({
             modal: true,
             draggable: false,
-            width: 700,
+            width: 300,
             resizable: false,
             title: view.title(),
             dialogClass: "window",
-            zIndex: 500,
+            zIndex: 1000,
         });
         view.model.bind(
             'change',

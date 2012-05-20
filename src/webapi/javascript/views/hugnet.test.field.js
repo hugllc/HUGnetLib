@@ -49,7 +49,7 @@ var TestFieldPropertiesView = Backbone.View.extend({
     },
     initialize: function (options)
     {
-        this.model.bind('change', this.render, this);
+        this.model.on('change', this.render, this);
     },
     saveclose: function (e)
     {
@@ -65,6 +65,7 @@ var TestFieldPropertiesView = Backbone.View.extend({
             output[data[i].name] = data[i].value;
         }
         this.model.set(output);
+        this.model.off('change', this.render, this);
         this.remove();
     },
     setTitle: function (extra)
