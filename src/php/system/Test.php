@@ -169,6 +169,36 @@ class Test extends SystemTableBase
         }
         return $this->table()->set("fields", json_encode($params));
     }
+    /**
+    * Returns the table as an array
+    *
+    * @param bool $default Whether or not to include the default values
+    *
+    * @return array
+    */
+    public function toArray($default = false)
+    {
+        $ret = $this->table()->toArray($default);
+        $ret["fields"] = json_decode($ret["fields"], true);
+        if ($ret["fieldcount"] < 1) {
+            $ret["fieldcount"] = 1;
+        }
+        $missing = $ret["fieldcount"] - count($ret["fields"]);
+        for ($i = 0; $i < $missing; $i++) {
+            $ret["fields"][] = array(
+                "name" => "No Name", "device" => 0, "field" => 0
+            );
+        }
+        return $ret;
+    }
+    /**
+    * Gives us the ID of the last record inserted
+    */
+    public function create()
+    {
+        $this->table()->clearData();
+        return $this->table()->newRow();
+    }
 }
 
 

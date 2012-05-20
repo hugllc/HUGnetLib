@@ -40,54 +40,37 @@ require_once "HUGnetLib/tables/TestTable.php";
 
 $tid    = hexdec($json->args()->id);
 $action = strtolower($json->args()->action);
-$test   = new TestTable();
+$test   = &$json->system()->test();
 $ret    = "";
 $since  = (int)$_REQUEST["since"];
 $limit  = ((int)$_REQUEST["limit"]) ? (int)$_REQUEST["limit"] : 100;
 
 if ($action === "post") {
-    $test->getRow($tid);
+    $test->load($tid);
     $post = $_POST["test"];
     $post["modified"] = time();
-    $worked = $test->fromArray($post);
-    $worked = $test->updateRow();
+    $worked = $test->change($post);
+    //$worked = $test->updateRow();
     if ($worked) {
         $ret = "success";
     } else {
         $ret = -1;
     }
 } else if ($action === "new") {
-    if ($test->newRow()) {
+    if ($test->create()) {
         $ret = $test->toArray();
     } else {
         $ret = -1;
     }
 } else if ($action === "get") {
-    $test->getRow($tid);
+    $test->load($tid);
     $ret = $test->toArray(true);
-    $ret["fields"] = json_decode($ret["fields"], true);
-} else if ($action === "history") {
-    $table = &$json->system()->test($tid)->historyFactory(array());
-    $table->sqlLimit = $lmit;
-    $table->sqlOrderBy = "Date desc";
-    $run = $table->selectInto(
-        "`id` = ? AND `Date` > ?",
-        array($tid, $since)
-    );
-    $ret = array();
-    while ($run) {
-        $ret[] = $table->toArray();
-        $run   = $table->nextInto();
-    }
 } else if ($action === "getall") {
-    $run = $test->selectInto("1");
+    $ids = $test->ids();
     $ret = array();
-    $index = 0;
-    while ($run) {
-        $ret[$index] = $test->toArray(true);
-        $ret[$index]["fields"] = json_decode($ret[$index]["fields"], true);
-        $run = $test->nextInto();
-        $index++;
+    foreach ((array)$ids as $value) {
+        $test->load((int)$value);
+        $ret[] = $test->toArray(false);
     }
 }
 print json_encode($ret);
