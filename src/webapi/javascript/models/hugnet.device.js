@@ -219,7 +219,7 @@ var Device = Backbone.Model.extend({
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-window.Devices = Backbone.Collection.extend({
+HUGnet.Devices = Backbone.Collection.extend({
     url: '/HUGnetLib/index.php',
     model: Device,
     comparator: function (device)

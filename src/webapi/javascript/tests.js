@@ -40,10 +40,16 @@
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-HUGnet.Tests = Backbone.View.extend({
+HUGnet.TestSuite = Backbone.View.extend({
     tabs: undefined,
-    initialize: function ()
+    data: {},
+    initialize: function (options)
     {
+        console.log(options);
+        this.tests = new HUGnet.TestsView({
+            model: options.tests,
+        });
+
         this.render();
     },
     render: function ()
@@ -57,11 +63,8 @@ HUGnet.Tests = Backbone.View.extend({
                 expires: 10
             }
         });
-        var tests = new HUGnet.TestsView({
-            parent: "#tests-tabs-tests",
-        });
         this.tabs.tabs("add", '#tests-tabs-tests', 'Test Definitions');
-        $('#tests-tabs-tests').html(tests.render().el);
+        $('#tests-tabs-tests').html(this.tests.render().el);
 
         /* Further tabs will have a close button */
         this.tabs.tabs("option", "tabTemplate", '<li style="white-space: nowrap;"><a href="#{href}">#{label}</a> <span name="#{href}" class="ui-icon ui-icon-close">Remove Tab</span></li>');
@@ -81,8 +84,7 @@ HUGnet.Tests = Backbone.View.extend({
             }
         });
 
-        var data = {};
-        tests.bind(
+        this.tests.bind(
             "run",
             function (test)
             {
@@ -90,7 +92,7 @@ HUGnet.Tests = Backbone.View.extend({
             },
             this
         );
-        tests.bind(
+        this.tests.bind(
             "view",
             function (test)
             {
@@ -113,7 +115,12 @@ HUGnet.Tests = Backbone.View.extend({
             id: test.get("id"),
             data: test.get("fields"),
         });
-        this.tabs.tabs("add", tag, 'Test "' + test.get("name") + '"');
+        var title = 'Run Test "' + test.get("name") + '"';
+        if (mode === 'view') {
+            title = 'View Test "' + test.get("name") + '"'
+        }
+
+        this.tabs.tabs("add", tag, title);
         $(tag).html(this.data[tag].render().el);
     }
 });

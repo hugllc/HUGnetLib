@@ -145,7 +145,6 @@ var DevicePropertiesView = Backbone.View.extend({
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 var DeviceEntryView = Backbone.View.extend({
-    model: Device,
     tagName: 'tr',
     template: '#DeviceEntryTemplate',
     parent: null,
@@ -212,14 +211,13 @@ var DeviceEntryView = Backbone.View.extend({
 */
 HUGnet.DevicesView = Backbone.View.extend({
     template: "#DeviceListTemplate",
-    rows: 0,
+    tagName: "table",
     events: {
     },
     initialize: function (options)
     {
-        this.model = new Devices();
+        this.model.each(this.insert, this);
         this.model.bind('add', this.insert, this);
-        this.model.fetch();
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -237,7 +235,7 @@ HUGnet.DevicesView = Backbone.View.extend({
             )
         );
         //this.model.each(this.renderEntry);
-        this.$('.tablesorter').tablesorter({ widgets: ['zebra'] });
+        this.$el.tablesorter({ widgets: ['zebra'] });
         this.$el.trigger('update');
         return this;
     },

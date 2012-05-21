@@ -147,7 +147,7 @@ var Test = Backbone.Model.extend({
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-window.Tests = Backbone.Collection.extend({
+HUGnet.Tests = Backbone.Collection.extend({
     url: '/HUGnetLib/index.php',
     model: Test,
     comparator: function (device)

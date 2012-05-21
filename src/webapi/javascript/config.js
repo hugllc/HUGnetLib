@@ -41,10 +41,13 @@
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 HUGnet.Config = Backbone.View.extend({
-    data: {},
     tabs: undefined,
-    initialize: function ()
+    initialize: function (options)
     {
+        this.devices = new HUGnet.DevicesView({
+            model: options.devices,
+        });
+
         this.render();
     },
     render: function ()
@@ -58,11 +61,8 @@ HUGnet.Config = Backbone.View.extend({
                 expires: 10
             }
         });
-        var device = new HUGnet.DevicesView({
-            parent: "#config-tabs-devices",
-        });
         this.tabs.tabs("add", '#config-tabs-devices', 'Device Information');
-        $('#config-tabs-devices').html(device.render().el);
+        $('#config-tabs-devices').html(this.devices.render().el);
 
     },
 });

@@ -228,7 +228,6 @@ var TestEntryView = Backbone.View.extend({
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 HUGnet.TestsView = Backbone.View.extend({
-    model: Tests,
     template: "#TestListTemplate",
     rows: 0,
     events: {
@@ -236,10 +235,9 @@ HUGnet.TestsView = Backbone.View.extend({
     },
     initialize: function (options)
     {
-        this.model = new Tests();
+        this.model.each(this.insert, this);
         this.model.bind('add', this.insert, this);
         this.model.bind('savefail', this.saveFail, this);
-        this.model.fetch();
     },
     new: function ()
     {
