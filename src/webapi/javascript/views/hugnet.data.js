@@ -96,7 +96,7 @@ HUGnet.DataPointsView = Backbone.View.extend({
                 type: this.type,
             }
         );
-        this.table = new Table({
+        this.table = new HUGnet.DataTable({
             model: this.model,
             header: this.header,
             fields: this.fields,
