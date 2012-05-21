@@ -174,7 +174,7 @@ var TestFieldEntryView = Backbone.View.extend({
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-window.TestFieldsView = Backbone.View.extend({
+HUGnet.TestFieldsView = Backbone.View.extend({
     model: TestFields,
     template: "#TestFieldListTemplate",
     rows: 0,

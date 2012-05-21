@@ -62,7 +62,7 @@ var TestPropertiesView = Backbone.View.extend({
             fields[i].id = i;
         }
         this.fieldsmodel.reset(fields);
-        this.fields = new TestFieldsView({
+        this.fields = new HUGnet.TestFieldsView({
             model: this.fieldsmodel
         });
     },
@@ -227,7 +227,7 @@ var TestEntryView = Backbone.View.extend({
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-window.TestsView = Backbone.View.extend({
+HUGnet.TestsView = Backbone.View.extend({
     model: Tests,
     template: "#TestListTemplate",
     rows: 0,

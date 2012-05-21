@@ -144,7 +144,7 @@ $(function() {
     * @version    Release: 0.9.7
     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
     */
-    window.Table = Backbone.View.extend({
+    HUGnet.DataTable = Backbone.View.extend({
         model: Histories,
         tagName: 'table',
         template: '#DataPointTableTemplate',

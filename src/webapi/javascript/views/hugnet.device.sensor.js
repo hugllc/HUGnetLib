@@ -184,7 +184,7 @@ var DeviceSensorEntryView = Backbone.View.extend({
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-window.DeviceSensorsView = Backbone.View.extend({
+HUGnet.DeviceSensorsView = Backbone.View.extend({
     model: DeviceSensors,
     template: "#DeviceSensorListTemplate",
     rows: 0,

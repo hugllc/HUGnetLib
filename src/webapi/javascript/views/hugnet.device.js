@@ -58,7 +58,7 @@ var DevicePropertiesView = Backbone.View.extend({
         this.sensorsmodel = new DeviceSensors();
         var sensors = this.model.get('sensors');
         this.sensorsmodel.reset(sensors);
-        this.sensors = new DeviceSensorsView({
+        this.sensors = new HUGnet.DeviceSensorsView({
             model: this.sensorsmodel
         });
     },
@@ -210,7 +210,7 @@ var DeviceEntryView = Backbone.View.extend({
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-window.DevicesView = Backbone.View.extend({
+HUGnet.DevicesView = Backbone.View.extend({
     template: "#DeviceListTemplate",
     rows: 0,
     events: {
