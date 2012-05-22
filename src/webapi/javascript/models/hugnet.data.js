@@ -93,7 +93,7 @@ var History = Backbone.Model.extend({
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-window.Histories = Backbone.Collection.extend({
+HUGnet.Histories = Backbone.Collection.extend({
     url: '/HUGnetLib/index.php',
     model: History,
     id: undefined,
@@ -109,10 +109,20 @@ window.Histories = Backbone.Collection.extend({
         this.bind('add', this.addExtra, this);
         this.id = options.id;
         this.mode = options.mode;
+        this.limit = (options.limit !== undefined) ? parseInt(options.limit) : this.limit;
     },
     comparator: function (model)
     {
         return model.get("UnixDate");
+    },
+    setLimit: function (limit)
+    {
+        if (this.limit > 0) {
+            this.limit = limit;
+            this.LastHistory = 0;
+            this.reset();
+            this.fetch();
+        }
     },
     addExtra: function (model, collection, options)
     {
@@ -124,20 +134,6 @@ window.Histories = Backbone.Collection.extend({
             /* Remove the oldest record */
             this.shift();
         }
-    },
-    _pollAgain: function ()
-    {
-        /*
-        var self = this;
-        if (this.doPoll) {
-            setTimeout(
-                function () {
-                    self.poll();
-                },
-                (this.pause * 1000)
-            );
-        }
-        */
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -159,7 +155,7 @@ window.Histories = Backbone.Collection.extend({
             data: {
                 "task": "history",
                 "id": this.id,
-                "since": this.LastHistory,
+                "since": this.LastHistory / 1000,
                 "limit": this.limit,
                 "TestID": (this.type == "test") ? 1 : 0,
             },
@@ -167,8 +163,16 @@ window.Histories = Backbone.Collection.extend({
             function (data)
             {
                 if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
+                    self.trigger('fetchdone');
                     self.add(data);
+                } else {
+                    self.trigger('fetchfail');
                 }
+            }
+        ).fail(
+            function (data)
+            {
+                self.trigger('fetchfail');
             }
         );
     },
@@ -198,8 +202,16 @@ window.Histories = Backbone.Collection.extend({
             function (data)
             {
                 if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
+                    self.trigger('polldone');
                     self.add(data);
+                } else {
+                    self.trigger('pollfail');
                 }
+            }
+        ).fail(
+            function (data)
+            {
+                self.trigger('fetchfail');
             }
         );
     },
@@ -207,5 +219,6 @@ window.Histories = Backbone.Collection.extend({
     {
         /* This erases everything and triggers 'remove' events to the views go away */
         this.remove(this.models);
+        this.LastHistory = 0;
     },
 });

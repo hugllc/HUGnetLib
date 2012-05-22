@@ -126,7 +126,7 @@
         <delete file="${basedir}/src/webapi/html/hugnet.min.js"/>
         <echo>Building src/webapi/html/contrib.js</echo>
         <concat destfile="${basedir}/src/webapi/html/contrib.js">
-            <fileset file="${basedir}/src/webapi/javascript/contrib/jquery.min.js"/>
+            <fileset file="${basedir}/src/webapi/javascript/contrib/jquery-1.7.1.js"/>
             <fileset file="${basedir}/src/webapi/javascript/contrib/jquery.cookie.js"/>
             <fileset file="${basedir}/src/webapi/javascript/contrib/jquery.metadata.js"/>
             <fileset file="${basedir}/src/webapi/javascript/contrib/jquery.tablesorter.js"/>
@@ -135,6 +135,13 @@
             <fileset file="${basedir}/src/webapi/javascript/contrib/underscore-min.js"/>
             <fileset file="${basedir}/src/webapi/javascript/contrib/backbone.js"/>
             <fileset file="${basedir}/src/webapi/javascript/contrib/jquery.flot.js"/>
+            <fileset file="${basedir}/src/webapi/javascript/contrib/jquery.jqplot.js"/>
+            <fileset file="${basedir}/src/webapi/javascript/contrib/jqplot.canvasAxisLabelRenderer.js"/>
+            <fileset file="${basedir}/src/webapi/javascript/contrib/jqplot.dateAxisRenderer.js"/>
+            <!--
+            <fileset file="${basedir}/src/webapi/javascript/contrib/jquery.flot.selection.js"/>
+            <fileset file="${basedir}/src/webapi/javascript/contrib/jquery.flot.navigation.js"/>
+            -->
         </concat>
         <echo>Building src/webapi/html/hugnet.js</echo>
         <concat destfile="${basedir}/src/webapi/html/hugnet.js">

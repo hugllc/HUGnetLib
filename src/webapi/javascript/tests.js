@@ -68,7 +68,7 @@ HUGnet.TestSuite = Backbone.View.extend({
         /* Further tabs will have a close button */
         this.tabs.tabs("option", "tabTemplate", '<li style="white-space: nowrap;"><a href="#{href}">#{label}</a> <span name="#{href}" class="ui-icon ui-icon-close">Remove Tab</span></li>');
         /* close icon: removing the tab on click */
-        $( "#tabs span.ui-icon-close" ).live( "click", function(event, ui) {
+        $( "#tests-tabs span.ui-icon-close" ).live( "click", function(event, ui) {
             var index = $( "li", self.tabs ).index( $( this ).parent() );
             var id = $( this ).attr("name");
             self.data[id].exit();
@@ -113,8 +113,7 @@ HUGnet.TestSuite = Backbone.View.extend({
             this.data[tag] = new HUGnet.DataPollView({
                 parent: tag,
                 mode: mode,
-                id: test.get("id"),
-                data: test.get("fields"),
+                model: test,
                 TestID: 1,
             });
             title = 'Run Test "' + test.get("name") + '"';
@@ -122,8 +121,7 @@ HUGnet.TestSuite = Backbone.View.extend({
             this.data[tag] = new HUGnet.DataView({
                 parent: tag,
                 mode: mode,
-                id: test.get("id"),
-                data: test.get("fields"),
+                model: test,
                 TestID: 1,
             });
             title = 'View Test "' + test.get("name") + '"'

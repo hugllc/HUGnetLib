@@ -145,10 +145,9 @@ $(function() {
     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
     */
     HUGnet.DataTable = Backbone.View.extend({
-        model: Histories,
+        model: HUGnet.Histories,
         tagName: 'table',
         template: '#DataPointTableTemplate',
-        rowClass: [ 'odd', 'even' ],
         fields: {},
         classes: {},
         events: {
@@ -156,7 +155,7 @@ $(function() {
         initialize: function (options)
         {
             this.model.bind('add', this.insert, this);
-            this.model.fetch();
+//            this.model.fetch();
             this.fields = options.fields;
             this.classes = options.classes;
             this.header = new Header({
@@ -192,11 +191,12 @@ $(function() {
         _setup: function ()
         {
             this.$el.html(
-                '<thead></thead><tbody></tbody><tfoot></tfoot>'
+                '<caption></caption><thead></thead><tbody></tbody><tfoot></tfoot>'
             );
             this.$head = this.$("thead");
             this.$body = this.$("tbody");
             this.$foot = this.$("tfoot");
+            this.$caption = this.$("caption");
             this.$el.trigger('update');
             return this;
         },
