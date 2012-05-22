@@ -101,7 +101,6 @@ HUGnet.DataView = Backbone.View.extend({
         } else {
             this.autorefresh = 0;
         }
-        console.log(this.autorefresh);
         this.model.setRefresh(this.autorefresh);
     },
     getField: function (index, field)
@@ -215,7 +214,6 @@ HUGnet.DataPollView = HUGnet.DataView.extend({
         } else {
             this.autorefresh = 0;
         }
-        console.log(this.autorefresh);
         this.model.setRefresh(this.autorefresh);
     },
     setMode: function (mode)
@@ -240,7 +238,6 @@ HUGnet.DataPollView = HUGnet.DataView.extend({
             this.$('.startPoll').hide();
             this.$('.exit').hide();
             this.model.pause = this.pause;
-            this.model.startPoll();
         }
     },
     stopPoll: function()
@@ -249,7 +246,6 @@ HUGnet.DataPollView = HUGnet.DataView.extend({
             this.$('.stopPoll').hide();
             this.$('.startPoll').show();
             this.$('.exit').show();
-            this.model.stopPoll();
         }
     },
     exit: function()

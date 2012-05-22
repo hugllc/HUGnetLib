@@ -45,7 +45,6 @@ HUGnet.TestSuite = Backbone.View.extend({
     data: {},
     initialize: function (options)
     {
-        console.log(options);
         this.tests = new HUGnet.TestsView({
             model: options.tests,
         });

@@ -74,7 +74,6 @@ var DeviceSensorPropertiesView = Backbone.View.extend({
         for (i in data) {
             output[data[i].name] = data[i].value;
         }
-        console.log(output);
         this.model.set(output);
         this.model.save();
     },
