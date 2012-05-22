@@ -134,13 +134,14 @@
             <fileset file="${basedir}/src/webapi/javascript/contrib/json2.js"/>
             <fileset file="${basedir}/src/webapi/javascript/contrib/underscore-min.js"/>
             <fileset file="${basedir}/src/webapi/javascript/contrib/backbone.js"/>
+            <fileset file="${basedir}/src/webapi/javascript/contrib/jquery.flot.js"/>
         </concat>
         <echo>Building src/webapi/html/hugnet.js</echo>
         <concat destfile="${basedir}/src/webapi/html/hugnet.js">
             <fileset file="${basedir}/src/webapi/javascript/extra/header.js"/>
             <fileset dir="${basedir}/src/webapi/javascript/models" includes="*.js"/>
             <fileset dir="${basedir}/src/webapi/javascript/views" includes="*.js"/>
-            <fileset dir="${basedir}/src/webapi/javascript/controllers" includes="*.js"/>
+            <!--<fileset dir="${basedir}/src/webapi/javascript/controllers" includes="*.js"/>-->
             <fileset dir="${basedir}/src/webapi/javascript" includes="*.js"/>
             <fileset file="${basedir}/src/webapi/javascript/extra/footer.js"/>
         </concat>
