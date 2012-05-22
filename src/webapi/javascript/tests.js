@@ -88,7 +88,7 @@ HUGnet.TestSuite = Backbone.View.extend({
             "run",
             function (test)
             {
-                this.testTab(test, 'run');
+                this.testTab(test, 'poll');
             },
             this
         );
@@ -109,14 +109,24 @@ HUGnet.TestSuite = Backbone.View.extend({
             alert('Tab for "' + test.get("name") + '" is already open');
             return;
         }
-        this.data[tag] = new HUGnet.DataPointsView({
-            parent: tag,
-            mode: mode,
-            id: test.get("id"),
-            data: test.get("fields"),
-        });
-        var title = 'Run Test "' + test.get("name") + '"';
-        if (mode === 'view') {
+        var title = "";
+        if (mode === 'poll') {
+            this.data[tag] = new HUGnet.DataPollView({
+                parent: tag,
+                mode: mode,
+                id: test.get("id"),
+                data: test.get("fields"),
+                TestID: 1,
+            });
+            title = 'Run Test "' + test.get("name") + '"';
+        } else {
+            this.data[tag] = new HUGnet.DataView({
+                parent: tag,
+                mode: mode,
+                id: test.get("id"),
+                data: test.get("fields"),
+                TestID: 1,
+            });
             title = 'View Test "' + test.get("name") + '"'
         }
 

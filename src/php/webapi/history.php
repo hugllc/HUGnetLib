@@ -52,7 +52,7 @@ if ($TestID) {
 }
 
 $table->sqlLimit = $limit;
-$table->sqlOrderBy = "Date asc";
+$table->sqlOrderBy = "Date desc";
 $run = $table->selectInto(
     "`id` = ? AND `Date` > ?",
     array($did, $since)

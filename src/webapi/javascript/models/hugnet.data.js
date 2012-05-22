@@ -77,7 +77,7 @@ var History = Backbone.Model.extend({
     },
     initialize: function ()
     {
-        this.set("UnixDate", this.get("Date"));
+        this.set("UnixDate", this.get("Date") * 1000);
     },
 });
 
@@ -107,16 +107,12 @@ window.Histories = Backbone.Collection.extend({
     {
         this.reset(null, { silent: true });
         this.bind('add', this.addExtra, this);
-        this.pause = options.pause;
         this.id = options.id;
         this.mode = options.mode;
     },
-    setRefresh: function (refresh)
+    comparator: function (model)
     {
-        this.refresh = refresh;
-        if (refresh > 0) {
-            this.fetch();
-        }
+        return model.get("UnixDate");
     },
     addExtra: function (model, collection, options)
     {
@@ -129,12 +125,6 @@ window.Histories = Backbone.Collection.extend({
             this.shift();
         }
     },
-    /*
-    comparator: function (data)
-    {
-        return data.get("Date");
-    },
-    */
     _pollAgain: function ()
     {
         /*
@@ -177,10 +167,7 @@ window.Histories = Backbone.Collection.extend({
             function (data)
             {
                 if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
-                    var i;
-                    for (i in data) {
-                        self.add(data[i]);
-                    }
+                    self.add(data);
                 }
             }
         );
@@ -210,21 +197,11 @@ window.Histories = Backbone.Collection.extend({
         }).done(
             function (data)
             {
-                self._pollAgain();
                 if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
                     self.add(data);
                 }
             }
         );
-    },
-    stopPoll: function ()
-    {
-        this.doPoll = false;
-    },
-    startPoll: function ()
-    {
-        this.doPoll = true;
-        this.poll();
     },
     clear: function ()
     {

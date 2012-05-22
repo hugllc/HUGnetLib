@@ -42,16 +42,121 @@
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-HUGnet.DataPointsView = Backbone.View.extend({
-    template: { run: "#DataPointListRunTemplate", view: "#DataPointListViewTemplate" },
-    rowClass: [ 'odd', 'even' ],
+HUGnet.DataView = Backbone.View.extend({
+    template: '#DataViewTemplate',
     tagName: 'div',
     pause: 1,
     rows: 0,
-    autorefresh: 0,
-    mode: 'run',
-    type: 'test',
-    parent: undefined,
+    id: undefined,
+    table: undefined,
+    data: {},
+    device: {},
+    header: {},
+    fields: {},
+    classes: {},
+    events: {
+        'click .autorefresh': 'setRefresh',
+    },
+    initialize: function (options)
+    {
+        this.data = options.data;
+        var device;
+        var i;
+        this.header = {};
+        this.fields = {};
+        this.device = {};
+        this.classes = {};
+        for (i in this.data) {
+            device = parseInt(this.data[i].device, 16);
+            if (device > 0) {
+                this.device[device] = device;
+            }
+            this.header[i] = this.data[i].name;
+            this.fields[i] = this.getField(i, this.data[i].field);
+            this.classes[i] = this.data[i].class;
+        }
+        this.pause = (options.pause !== undefined) ? options.pause - 0 : this.pause;
+        this.type = (options.type !== undefined) ? options.type : this.type;
+        this.id = options.id;
+        this.model = new Histories(
+            null,
+            {
+                device: this.device,
+                id: this.id,
+                mode: this.mode,
+                type: this.type,
+            }
+        );
+        this.table = new HUGnet.DataTable({
+            model: this.model,
+            header: this.header,
+            fields: this.fields,
+            classes: this.classes,
+        });
+    },
+    setRefresh: function ()
+    {
+        if (this.$('.autorefresh').prop("checked")) {
+            this.autorefresh = this.$('.autorefresh').val() - 0;
+        } else {
+            this.autorefresh = 0;
+        }
+        console.log(this.autorefresh);
+        this.model.setRefresh(this.autorefresh);
+    },
+    getField: function (index, field)
+    {
+        if (parseInt(field) == field) {
+            return "Data" + index;
+        }
+        return field;
+    },
+    exit: function()
+    {
+        this.reset();
+        this.remove();
+    },
+    reset: function()
+    {
+        this.model.clear();
+        this.rows = 0;
+    },
+    /**
+    * Gets infomration about a device.  This is retrieved directly from the device
+    *
+    * This function is for use of the device list
+    *
+    * @return null
+    */
+    render: function ()
+    {
+        this.$el.html(
+            this.table.render().el
+        );
+        return this;
+    },
+    renderEntry: function (view)
+    {
+        view.render();
+    }
+});
+/**
+* This is the model that stores the devices.
+*
+* @category   JavaScript
+* @package    HUGnetLib
+* @subpackage DataPoints
+* @author     Scott Price <prices@hugllc.com>
+* @copyright  2012 Hunt Utilities Group, LLC
+* @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+* @version    Release: 0.9.7
+* @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+*/
+HUGnet.DataPollView = HUGnet.DataView.extend({
+    template: '#DataPollTemplate',
+    tagName: 'div',
+    pause: 1,
+    rows: 0,
     id: undefined,
     table: undefined,
     data: {},

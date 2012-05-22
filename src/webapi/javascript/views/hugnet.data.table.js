@@ -72,7 +72,7 @@ $(function() {
             var i;
             var data = this.model.toJSON();
             var d = new Date();
-            d.setTime(data["UnixDate"] * 1000);
+            d.setTime(data["UnixDate"]);
             data["Date"] = d.formatHUGnet();
             for (i in this.fields) {
                 out += _.template(
