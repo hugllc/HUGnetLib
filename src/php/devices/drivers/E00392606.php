@@ -69,6 +69,7 @@ class E00392606 extends E00392600
         "virtualSensors" => 0,
         "totalSensors" => 0,
         "ConfigInterval" => 600,
+        "type" => "script",
     );
     /**
     * This function creates the system.

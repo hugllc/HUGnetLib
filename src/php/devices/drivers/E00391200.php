@@ -68,6 +68,7 @@ class E00391200 extends \HUGnet\devices\Driver
         "virtualSensors" => 4,
         "historyTable" => "E00391200HistoryTable",
         "averageTable" => "E00391200AverageTable",
+        "type" => "endpoint",
     );
     /**
     * This function creates the system.

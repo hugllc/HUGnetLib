@@ -70,6 +70,7 @@ class E00393802 extends \HUGnet\devices\Driver
         "averageTable" => "EDEFAULTAverageTable",
         "loadable" => true,
         "bootloader" => true,
+        "type" => "bootloader",
     );
     /**
     * This function creates the system.

@@ -67,6 +67,7 @@ class E00392600 extends \HUGnet\devices\Driver
         "virtualSensors" => 0,
         "totalSensors" => 0,
         "ConfigInterval" => 600,
+        "type" => "script",
     );
     /**
     * This function creates the system.

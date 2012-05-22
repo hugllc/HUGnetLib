@@ -238,6 +238,40 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+    * data provider for testType
+    *
+    * @return array
+    */
+    final public static function dataValues()
+    {
+        return array(
+            array(
+                "type", array(
+                    'unknown', 'script', 'bootloader', 'endpoint', 'controller',
+                    'virtual'
+                ),
+            ),
+        );
+    }
+    /**
+    * Check the variable type
+    *
+    * @param string $field  The field to check
+    * @param array  $values The type it should be
+    *
+    * @return null
+    *
+    * @dataProvider dataValues
+    */
+    final public function testValues($field, $values)
+    {
+        $name = $this->o->get($field, 1);
+        $this->assertTrue(
+            in_array($name, (array)$values),
+            "$field must be one of ".implode(",", (array)$values)
+        );
+    }
+    /**
     * Check the number of sensors
     *
     * @return null
