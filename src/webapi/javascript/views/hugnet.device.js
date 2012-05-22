@@ -102,7 +102,20 @@ var DevicePropertiesView = Backbone.View.extend({
     */
     render: function ()
     {
+        var viewHelpers = {
+            formatDate: function (date, alt)
+            {
+                alt = (alt !== undefined) ? alt : "Never";
+                if ((date == undefined) || (date == 0)) {
+                    return alt;
+                }
+                var d = new Date(date * 1000);
+                return d.toString();
+            }
+        };
+
         var data = this.model.toJSON();
+        _.extend(data, viewHelpers);
         data.sensors = '<div id="DeviceSensorsDiv"></div>';
         this.$el.html(
             _.template(
