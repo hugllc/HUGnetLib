@@ -200,6 +200,7 @@ HUGnet.DataFlot = Backbone.View.extend({
         this.model.bind('add', this.insert, this);
         this.model.bind('remove', this.remove, this);
         this.model.bind('reset', this.clear, this);
+        this.model.bind('sync', this.render, this);
         this.points.fromHistory(this.model);
         this._setup();
     },
@@ -302,7 +303,6 @@ HUGnet.DataFlot = Backbone.View.extend({
     insert: function (model, collection, options)
     {
         this.points.insert(model);
-        this.render();
     },
     remove: function (model, collection, options)
     {

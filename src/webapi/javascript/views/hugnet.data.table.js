@@ -157,7 +157,7 @@ $(function() {
         {
             this.model.bind('add', this.insert, this);
             this.model.bind('remove', this.remove, this);
-            this.model.bind('fetchdone', this.render, this);
+            this.model.bind('sync', this.render, this);
 //            this.model.fetch();
             this.fields = options.fields;
             this.classes = options.classes;
@@ -184,7 +184,7 @@ $(function() {
                 this.views,
                 function (view)
                 {
-                    this.$body.append(view.render().el);
+                    this.$body.prepend(view.render().el);
                 },
                 this
             );
@@ -239,7 +239,7 @@ $(function() {
                     d = "0" + d;
                 }
 
-                return Y + "-" + m + " " + d + " " + H + ":" + i + ":" + s;
+                return Y + "-" + m + "-" + d + " " + H + ":" + i + ":" + s;
             }
         },
         insert: function (model, collection, options)
@@ -250,8 +250,10 @@ $(function() {
         },
         remove: function (model, collection, options)
         {
-            this.views[model.id].remove();
-            delete this.views[model.id];
+            if (this.views[model.id]) {
+                this.views[model.id].remove();
+                delete this.views[model.id];
+            }
         },
         zebra: function ()
         {

@@ -101,7 +101,8 @@ HUGnet.Histories = Backbone.Collection.extend({
     refresh: null,
     pause: 1,
     limit: 50,
-    getLimit: 100,
+    getLimit: 1000,
+    count: 0,
     type: "test",
     since: 0,
     until: 0,
@@ -110,6 +111,7 @@ HUGnet.Histories = Backbone.Collection.extend({
     {
         this.reset(null, { silent: true });
         this.bind('add', this.addExtra, this);
+        this.bind('sync', this.trim, this);
         this.id = options.id;
         this.mode = options.mode;
         this.limit = (options.limit !== undefined) ? parseInt(options.limit) : this.limit;
@@ -118,24 +120,22 @@ HUGnet.Histories = Backbone.Collection.extend({
     {
         return model.get("UnixDate");
     },
+    percdone: function ()
+    {
+        var d = (this.until - this.since);
+        if (d == 0) {
+            return 1;
+        }
+        return (this.LastHistory - this.since) / d;
+    },
     getPeriod: function (since, until)
     {
+        this.reset();
         this.limit = 0;
         this.since = since;
         this.LastHistory = this.since;
         this.until = until;
-        console.log(this.since);
-        console.log(this.until);
-//        this.fetch();
-    },
-    setLimit: function (limit)
-    {
-        if (this.limit > 0) {
-            this.limit = limit;
-            this.LastHistory = 0;
-            this.reset();
-            this.fetch();
-        }
+        this.fetch();
     },
     addExtra: function (model, collection, options)
     {
@@ -143,11 +143,14 @@ HUGnet.Histories = Backbone.Collection.extend({
         if (last > this.LastHistory) {
             this.LastHistory = last;
         }
-//        var m;
-//        while (this.length > this.limit) {
-            /* Remove the oldest record */
-//            console.log(this.min());
-//        }
+    },
+    trim: function (model, collection, options)
+    {
+        if (this.limit > 0) {
+            while (this.length > this.limit) {
+                this.shift();
+            }
+        }
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -161,6 +164,10 @@ HUGnet.Histories = Backbone.Collection.extend({
     fetch: function ()
     {
         var self = this;
+        var limit = this.getLimit;
+        if ((limit > this.limit) && (this.limit != 0)) {
+            limit = this.limit;
+        }
         $.ajax({
             type: 'GET',
             url: this.url,
@@ -171,7 +178,7 @@ HUGnet.Histories = Backbone.Collection.extend({
                 "id": this.id,
                 "since": this.LastHistory / 1000,
                 "until": this.until / 1000,
-                "limit": this.getLimit,
+                "limit": limit,
                 "TestID": (this.type == "test") ? 1 : 0,
             },
         }).done(
@@ -179,7 +186,13 @@ HUGnet.Histories = Backbone.Collection.extend({
             {
                 if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
                     self.add(data);
-                    self.trigger('fetchdone');
+                    if ((data.length < self.getLimit) || (self.limit == limit)) {
+                        self.trigger('fetchdone');
+                        self.trigger('sync');
+                    } else {
+                        self.trigger('fetchagain', self.percdone());
+                        self.fetch();
+                    }
                 } else {
                     self.trigger('fetchfail');
                 }
@@ -219,6 +232,7 @@ HUGnet.Histories = Backbone.Collection.extend({
                 if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
                     self.add(data);
                     self.trigger('polldone');
+                    self.trigger('sync');
                 } else {
                     self.trigger('pollfail');
                 }

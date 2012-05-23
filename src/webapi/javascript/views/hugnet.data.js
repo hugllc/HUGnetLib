@@ -98,13 +98,22 @@ HUGnet.DataView = Backbone.View.extend({
                 limit: this.limit,
             }
         );
+        this.history.on(
+            'sync',
+            function ()
+            {
+                this.$("#data-records").text(this.history.length);
+            },
+            this
+        );
         this.history.fetch();
+        /*
         this.table = new HUGnet.DataTable({
             model: this.history,
             header: this.header,
             fields: this.fields,
             classes: this.classes,
-        });
+        });*/
         this.setupPlot();
     },
     setupPlot: function ()
@@ -131,6 +140,16 @@ HUGnet.DataView = Backbone.View.extend({
         this.since = Date.parse(this.$('#since').val());
         this.until = Date.parse(this.$('#until').val());
         this.history.getPeriod(this.since, this.until);
+        var progress = new HUGnet.Progress({
+            modal: false,
+            draggable: true,
+            width: 300,
+            title: "Building Data Array",
+            dialogClass: "window",
+            zIndex: 500,
+        });
+        this.history.on('fetchagain', progress.update, progress);
+        this.history.on('sync', progress.remove, progress);
     },
     getField: function (index, field)
     {
@@ -193,7 +212,7 @@ HUGnet.DataView = Backbone.View.extend({
         this.$('#since').datetimepicker();
         this.$('#until').datetimepicker();
         this.$el.append(this.plot.el);
-        this.$el.append(this.table.render().el);
+        //this.$el.append(this.table.render().el);
         return this;
     },
     renderEntry: function (view)
