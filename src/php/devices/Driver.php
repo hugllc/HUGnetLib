@@ -77,6 +77,7 @@ abstract class Driver
         "bootloader" => false,
         "ConfigInterval" => 43200,
         "type" => "unknown",
+        "actionClass" => "Action",
     );
     /**
     * This is where all of the driver information is stored.

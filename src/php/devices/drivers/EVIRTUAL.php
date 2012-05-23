@@ -69,6 +69,7 @@ class EVIRTUAL extends \HUGnet\devices\Driver
         "historyTable" => "EVIRTUALHistoryTable",
         "averageTable" => "EVIRTUALAverageTable",
         "type" => "virtual",
+        "actionClass" => "ActionVirtual",
     );
     /**
     * This function creates the system.

@@ -176,12 +176,25 @@ class Device extends SystemTableBase
     */
     public function &action()
     {
-        include_once dirname(__FILE__)."/../devices/Action.php";
+        $class = $this->driver()->get("actionClass");
+        $file = dirname(__FILE__)."/../devices/".$class.".php";
+        if (file_exists($file)) {
+            include_once $file;
+        }
+        $class = "\\HUGnet\\devices\\".$class;
+        if (class_exists($class)) {
+            return $class::factory(
+                $this->system(),
+                $this,
+                $this->driver()
+            );
+        }
         return \HUGnet\devices\Action::factory(
             $this->system(),
             $this,
             $this->driver()
         );
+
     }
     /**
     * This takes the class and makes it into a setup string

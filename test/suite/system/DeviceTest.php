@@ -239,6 +239,52 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
+    public static function dataAction()
+    {
+        return array(
+            array(
+                new DummySystem(),
+                array(
+                    "id" => 5,
+                    "name" => 3,
+                    "value" => 1,
+                ),
+                "DummyTable",
+                array(
+                    "System" => array(
+                        "network" => new \HUGnet\network\DummyNetwork("Network"),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array $config The configuration to use
+    * @param mixed $device The device to set
+    * @param mixed $class  This is either the name of a class or an object
+    * @param array $mocks  The mocks to use
+    *
+    * @return null
+    *
+    * @dataProvider dataAction
+    */
+    public function testAction(
+        $config, $device, $class, $mocks
+    ) {
+        $config->resetMock($mocks);
+        $obj = Device::factory($config, $device, $class);
+        $this->assertEquals(
+            "HUGnet\devices\Action", get_class($obj->action()), "Wrong Class"
+        );
+        unset($obj);
+    }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
     public static function dataEncode()
     {
         return array(
@@ -495,6 +541,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         'params' => array(1,2,3,4),
                         'sensors' => $sensors,
                         'type' => 'unknown',
+                        'actionClass' => 'Action',
                     )
                 ),
             ),
