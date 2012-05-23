@@ -38,8 +38,7 @@ namespace HUGnet\sensors;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our units class */
-require_once dirname(__FILE__)."/../units/Driver.php";
-
+require_once dirname(__FILE__)."/Driver.php";
 /**
  * Base driver class for devices.
  *
@@ -54,11 +53,11 @@ require_once dirname(__FILE__)."/../units/Driver.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
- * @since      0.9.7
+ * @since      0.9.8
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-abstract class Driver
+abstract class DriverAVR
 {
     /**
     * This is where the data for the driver is stored.  This array must be

@@ -37,6 +37,8 @@
 namespace HUGnet\sensors\drivers;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
+/** This is my base class */
+require_once dirname(__FILE__)."/../DriverAVR.php";
 
 /**
  * Default sensor driver
@@ -53,7 +55,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class AVRBC2322640 extends \HUGnet\sensors\Driver
+class AVRBC2322640 extends \HUGnet\sensors\DriverAVR
 {
     /**
     * This is where the data for the driver is stored.  This array must be

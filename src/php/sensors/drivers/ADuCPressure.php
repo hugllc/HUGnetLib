@@ -37,6 +37,8 @@
 namespace HUGnet\sensors\drivers;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
+/** This is my base class */
+require_once dirname(__FILE__)."/../DriverADuC.php";
 
 /**
  * Driver for reading voltage based pressure sensors
@@ -53,7 +55,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class ADuCPressure extends \HUGnet\sensors\Driver
+class ADuCPressure extends \HUGnet\sensors\DriverADuC
 {
     /**
     * This is where the data for the driver is stored.  This array must be
