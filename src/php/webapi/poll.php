@@ -68,7 +68,11 @@ if (is_object($hist)) {
             if (is_numeric($value["field"])) {
                 $data = $hist->get("Data".$key);
             } else {
-                $data = $hist->get($value["field"]);
+                if ($value["field"] == 'Date') {
+                    $data = date("Y-m-d H:i:s", $hist->get($value["field"]));
+                } else {
+                    $data = $hist->get($value["field"]);
+                }
             }
             fwrite($fd, $sep.$data);
             $sep = ",";
