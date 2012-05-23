@@ -146,6 +146,7 @@
         <echo>Building src/webapi/html/hugnet.js</echo>
         <concat destfile="${basedir}/src/webapi/html/hugnet.js">
             <fileset file="${basedir}/src/webapi/javascript/extra/header.js"/>
+            <fileset file="${basedir}/src/webapi/javascript/extra/viewhelpers.js"/>
             <fileset dir="${basedir}/src/webapi/javascript/models" includes="*.js"/>
             <fileset dir="${basedir}/src/webapi/javascript/views" includes="*.js"/>
             <!--<fileset dir="${basedir}/src/webapi/javascript/controllers" includes="*.js"/>-->

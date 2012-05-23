@@ -91,6 +91,7 @@ var DeviceSensorPropertiesView = Backbone.View.extend({
     render: function ()
     {
         var data = this.model.toJSON();
+        _.extend(data, HUGnet.viewHelpers);
         var i;
         this.$el.html(
             _.template(
