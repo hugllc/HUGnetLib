@@ -56,9 +56,11 @@ HUGnet.DataView = Backbone.View.extend({
     header: {},
     fields: {},
     classes: {},
+    since: 0,
+    until: 0,
     events: {
         'click #autorefresh': 'setRefresh',
-        'change #datarows': 'setLimit',
+        'submit': 'submit',
     },
     initialize: function (options)
     {
@@ -124,13 +126,11 @@ HUGnet.DataView = Backbone.View.extend({
             this.autorefresh = 0;
         }
     },
-    setLimit: function ()
+    submit: function ()
     {
-        var value = parseInt(this.$('#datarows').val());
-        if (value != "NaN") {
-            this.limit = value;
-            this.history.setLimit(value);
-        }
+        this.since = Date.parse(this.$('#since').val());
+        this.until = Date.parse(this.$('#until').val());
+        this.history.getPeriod(this.since, this.until);
     },
     getField: function (index, field)
     {
@@ -182,12 +182,16 @@ HUGnet.DataView = Backbone.View.extend({
     {
         var data = this.model.toJSON();
         data.limit = this.limit;
+        data.since = this.since;
+        data.until = this.until;
         this.$el.html(
             _.template(
                 $(this.template).html(),
                 data
             )
         );
+        this.$('#since').datetimepicker();
+        this.$('#until').datetimepicker();
         this.$el.append(this.plot.el);
         this.$el.append(this.table.render().el);
         return this;

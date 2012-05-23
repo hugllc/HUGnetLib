@@ -102,6 +102,8 @@ HUGnet.Histories = Backbone.Collection.extend({
     pause: 1,
     limit: 50,
     type: "test",
+    since: 0,
+    until: 0,
     doPoll: false,
     initialize: function (models, options)
     {
@@ -114,6 +116,13 @@ HUGnet.Histories = Backbone.Collection.extend({
     comparator: function (model)
     {
         return model.get("UnixDate");
+    },
+    getPeriod: function (since, until)
+    {
+        this.since = since;
+        this.until = until;
+        console.log(this.since);
+        console.log(this.until);
     },
     setLimit: function (limit)
     {

@@ -131,6 +131,7 @@
             <fileset file="${basedir}/src/webapi/javascript/contrib/jquery.metadata.js"/>
             <fileset file="${basedir}/src/webapi/javascript/contrib/jquery.tablesorter.js"/>
             <fileset file="${basedir}/src/webapi/javascript/contrib/jquery-ui-1.8.20.custom.min.js"/>
+            <fileset file="${basedir}/src/webapi/javascript/contrib/jquery-ui-timepicker-addon.js"/>
             <fileset file="${basedir}/src/webapi/javascript/contrib/json2.js"/>
             <fileset file="${basedir}/src/webapi/javascript/contrib/underscore-min.js"/>
             <fileset file="${basedir}/src/webapi/javascript/contrib/backbone.js"/>
