@@ -101,6 +101,7 @@ HUGnet.Histories = Backbone.Collection.extend({
     refresh: null,
     pause: 1,
     limit: 50,
+    getLimit: 100,
     type: "test",
     since: 0,
     until: 0,
@@ -119,10 +120,13 @@ HUGnet.Histories = Backbone.Collection.extend({
     },
     getPeriod: function (since, until)
     {
+        this.limit = 0;
         this.since = since;
+        this.LastHistory = this.since;
         this.until = until;
         console.log(this.since);
         console.log(this.until);
+//        this.fetch();
     },
     setLimit: function (limit)
     {
@@ -139,10 +143,11 @@ HUGnet.Histories = Backbone.Collection.extend({
         if (last > this.LastHistory) {
             this.LastHistory = last;
         }
-        while (this.length > this.limit) {
+//        var m;
+//        while (this.length > this.limit) {
             /* Remove the oldest record */
-            this.shift();
-        }
+//            console.log(this.min());
+//        }
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -165,15 +170,16 @@ HUGnet.Histories = Backbone.Collection.extend({
                 "task": "history",
                 "id": this.id,
                 "since": this.LastHistory / 1000,
-                "limit": this.limit,
+                "until": this.until / 1000,
+                "limit": this.getLimit,
                 "TestID": (this.type == "test") ? 1 : 0,
             },
         }).done(
             function (data)
             {
                 if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
-                    self.trigger('fetchdone');
                     self.add(data);
+                    self.trigger('fetchdone');
                 } else {
                     self.trigger('fetchfail');
                 }
@@ -211,8 +217,8 @@ HUGnet.Histories = Backbone.Collection.extend({
             function (data)
             {
                 if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
-                    self.trigger('polldone');
                     self.add(data);
+                    self.trigger('polldone');
                 } else {
                     self.trigger('pollfail');
                 }

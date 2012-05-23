@@ -150,11 +150,14 @@ $(function() {
         template: '#DataPointTableTemplate',
         fields: {},
         classes: {},
+        views: {},
         events: {
         },
         initialize: function (options)
         {
             this.model.bind('add', this.insert, this);
+            this.model.bind('remove', this.remove, this);
+            this.model.bind('fetchdone', this.render, this);
 //            this.model.fetch();
             this.fields = options.fields;
             this.classes = options.classes;
@@ -177,6 +180,15 @@ $(function() {
         render: function ()
         {
             this.$head.html(this.header.render().el);
+            _.each(
+                this.views,
+                function (view)
+                {
+                    this.$body.append(view.render().el);
+                },
+                this
+            );
+            this.zebra();
             return this;
         },
         /**
@@ -232,11 +244,14 @@ $(function() {
         },
         insert: function (model, collection, options)
         {
-            var view = new Row({
+            this.views[model.id] = new Row({
                 model: model, fields: this.fields, classes: this.classes
             });
-            this.$body.prepend(view.render().el);
-            this.zebra();
+        },
+        remove: function (model, collection, options)
+        {
+            this.views[model.id].remove();
+            delete this.views[model.id];
         },
         zebra: function ()
         {
