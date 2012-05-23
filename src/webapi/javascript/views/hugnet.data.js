@@ -107,13 +107,12 @@ HUGnet.DataView = Backbone.View.extend({
             this
         );
         this.history.fetch();
-        /*
         this.table = new HUGnet.DataTable({
             model: this.history,
             header: this.header,
             fields: this.fields,
             classes: this.classes,
-        });*/
+        });
         this.setupPlot();
     },
     setupPlot: function ()
@@ -212,7 +211,7 @@ HUGnet.DataView = Backbone.View.extend({
         this.$('#since').datetimepicker();
         this.$('#until').datetimepicker();
         this.$el.append(this.plot.el);
-        //this.$el.append(this.table.render().el);
+        this.$el.append(this.table.render().el);
         return this;
     },
     renderEntry: function (view)

@@ -104,6 +104,7 @@ $(function() {
         header: {},
         events: {
         },
+        rows: 0,
         initialize: function (options)
         {
             this.classes = options.classes;
@@ -157,8 +158,7 @@ $(function() {
         {
             this.model.bind('add', this.insert, this);
             this.model.bind('remove', this.remove, this);
-            this.model.bind('sync', this.render, this);
-//            this.model.fetch();
+            this.model.bind('sync', this.zebra, this);
             this.fields = options.fields;
             this.classes = options.classes;
             this.header = new Header({
@@ -188,7 +188,7 @@ $(function() {
                 },
                 this
             );
-            this.zebra();
+            //this.zebra();
             return this;
         },
         /**
@@ -216,7 +216,7 @@ $(function() {
         {
             Date.prototype.formatHUGnet = function()
             {
-                var m = this.getMonth();
+                var m = this.getMonth() + 1;
                 var d = this.getDate();
                 var Y = this.getFullYear();
                 var H = this.getHours();
@@ -247,6 +247,8 @@ $(function() {
             this.views[model.id] = new Row({
                 model: model, fields: this.fields, classes: this.classes
             });
+            this.$el.prepend(this.views[model.id].render().el);
+            this.views[model.id].$el.addClass("even");
         },
         remove: function (model, collection, options)
         {
@@ -254,12 +256,11 @@ $(function() {
                 this.views[model.id].remove();
                 delete this.views[model.id];
             }
+
         },
         zebra: function ()
         {
-            this.$("tr").removeClass("odd").removeClass("even");
-            this.$("tr:odd").addClass("odd");
-            this.$("tr:even").addClass("even");
+            this.$("tr:nth-child(odd)").removeClass('even').addClass("odd");
         }
     });
 
