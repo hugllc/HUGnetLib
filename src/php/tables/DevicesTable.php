@@ -58,13 +58,21 @@ require_once dirname(__FILE__)."/../containers/DeviceSensorsContainer.php";
 class DevicesTable extends HUGnetDBTable
 {
     /** This is the maximum our SN can be */
-    const MAX_TEMP_SN = 0xFDFFFF;
-    /** This is the minimum our SN can be */
-    const MIN_TEMP_SN = 0xFD0000;
-    /** This is the maximum our SN can be */
     const MAX_GROUP_SN = 0xFFFFFF;
     /** This is the minimum our SN can be */
     const MIN_GROUP_SN = 0xFF0000;
+    /** This is the maximum our SN can be */
+    const MAX_SCRIPT_SN = 0xFEFFFF;
+    /** This is the minimum our SN can be */
+    const MIN_SCRIPT_SN = 0xFE0000;
+    /** This is the maximum our SN can be */
+    const MAX_TEMP_SN = 0xFDFFFF;
+    /** This is the minimum our SN can be */
+    const MIN_TEMP_SN = 0xFD0000;
+    /** This is the minimum our SN can be */
+    const MAX_VIRTUAL_SN = 0xFCFFFF;
+    /** This is the minimum our SN can be */
+    const MIN_VIRTUAL_SN = 0xFC0000;
 
     /** @var string This is the table we should use */
     public $sqlTable = "devices";
@@ -252,16 +260,24 @@ class DevicesTable extends HUGnetDBTable
     */
     static public function insertVirtual($data)
     {
-        $data["HWPartNum"] = "0039-24-02-P";
-        $data["GatewayKey"] = -1;
+        if (!isset($data["HWPartNum"])) {
+            $data["HWPartNum"] = "0039-24-02-P";
+        }
+        if (!isset($data["GatewayKey"])) {
+            $data["GatewayKey"] = -1;
+        }
+        if (!isset($data["id"])) {
+            $data["id"] = self::MIN_VIRTUAL_SN;
+        }
+        $data["FWPartNum"] = "0039-24-00-P";
         $dev = new DevicesTable($data);
-        $dev->DeviceID = dechex($dev->id);
-        while ($dev->exists() && ($dev->id < self::MIN_TEMP_SN)) {
-            $dev->id++;
-            $dev->DeviceID = dechex($dev->id);
+        $dev->set('DeviceID', dechex($dev->get('id')));
+        while ($dev->exists() && ($dev->id <= self::MAX_VIRTUAL_SN)) {
+            $dev->set('id', $dev->get('id') + 1);
+            $dev->set('DeviceID', dechex($dev->get('id')));
         }
         $ret = false;
-        if ($dev->id < self::MIN_TEMP_SN) {
+        if ($dev->id <= self::MAX_VIRTUAL_SN) {
             $ret = $dev->insertRow();
             if ($ret) {
                 $ret = $dev->id;
