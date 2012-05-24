@@ -44,8 +44,10 @@ var DeviceSensorPropertiesView = Backbone.View.extend({
     template: '#DeviceSensorPropertiesTemplate',
     tTemplate: '#DeviceSensorPropertiesTitleTemplate',
     tagName: 'div',
+    _close: false,
     events: {
-        'click .save': 'save',
+        'click .save': 'saveclose',
+        'change select.type': 'save',
     },
     initialize: function (options)
     {
@@ -55,16 +57,23 @@ var DeviceSensorPropertiesView = Backbone.View.extend({
     },
     saveSuccess: function (e)
     {
-        this.model.off('change', this.render, this);
-        this.model.off('saved', this.saveSuccess, this);
-        this.model.off('savefail', this.saveFail, this);
-        this.remove();
-        alert("Sensor Saved");
+        if (this._close) {
+            this.model.off('change', this.render, this);
+            this.model.off('saved', this.saveSuccess, this);
+            this.model.off('savefail', this.saveFail, this);
+            this.remove();
+            alert("Sensor Saved");
+        }
     },
     saveFail: function (msg)
     {
         this.setTitle();
         alert("Sensor Faled: " + msg);
+    },
+    saveclose: function (e)
+    {
+        this._close = true;
+        this.save(e);
     },
     save: function (e)
     {

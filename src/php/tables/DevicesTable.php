@@ -254,12 +254,15 @@ class DevicesTable extends HUGnetDBTable
     /**
     * Inserts a device ID into the database if it isn't there already
     *
-    * @param mixed $data The string or data to use to insert this row
+    * @param mixed $data The array to use to insert this row
     *
     * @return null
     */
-    static public function insertVirtual($data)
+    public function insertVirtual($data = null)
     {
+        if (!is_array($data)) {
+            $data = array();
+        }
         if (!isset($data["HWPartNum"])) {
             $data["HWPartNum"] = "0039-24-02-P";
         }
@@ -270,17 +273,18 @@ class DevicesTable extends HUGnetDBTable
             $data["id"] = self::MIN_VIRTUAL_SN;
         }
         $data["FWPartNum"] = "0039-24-00-P";
-        $dev = new DevicesTable($data);
-        $dev->set('DeviceID', dechex($dev->get('id')));
-        while ($dev->exists() && ($dev->id <= self::MAX_VIRTUAL_SN)) {
-            $dev->set('id', $dev->get('id') + 1);
-            $dev->set('DeviceID', dechex($dev->get('id')));
+        $this->clearData();
+        $this->fromArray($data);
+        $this->set('DeviceID', dechex($this->get('id')));
+        while ($this->exists() && ($this->id <= self::MAX_VIRTUAL_SN)) {
+            $this->set('id', $this->get('id') + 1);
+            $this->set('DeviceID', dechex($this->get('id')));
         }
         $ret = false;
-        if ($dev->id <= self::MAX_VIRTUAL_SN) {
-            $ret = $dev->insertRow();
+        if ($this->id <= self::MAX_VIRTUAL_SN) {
+            $ret = $this->insertRow();
             if ($ret) {
-                $ret = $dev->id;
+                $ret = $this->id;
             }
         }
         return $ret;

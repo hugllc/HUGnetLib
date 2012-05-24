@@ -73,6 +73,37 @@ var DeviceSensor = Backbone.Model.extend({
     */
     fetch: function()
     {
+        var dev = this.get('dev');
+        var self = this;
+        $.ajax({
+            type: 'GET',
+            url: this.get('url'),
+            cache: false,
+            dataType: 'json',
+            data:
+            {
+                "task": "sensor",
+                "action": "get",
+                "id": parseInt(dev).toString(16),
+                "sid": this.get("sensor"),
+            },
+        }).done(
+            function (data)
+            {
+                if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
+                    self.set(data);
+                    self.trigger('fetchdone');
+                    self.trigger('sync');
+                } else {
+                    self.trigger('fetchfail');
+                }
+            }
+        ).fail(
+            function (data)
+            {
+                self.trigger('fetchfail');
+            }
+        );
     },
     /**
     * Gets infomration about a device.  This is retrieved from the database only.
@@ -93,9 +124,10 @@ var DeviceSensor = Backbone.Model.extend({
             cache: false,
             dataType: 'json',
             data: {
-                "task": "device",
-                "action": "postsensor",
+                "task": "sensor",
+                "action": "post",
                 "id": parseInt(dev).toString(16),
+                "sid": this.get("sensor"),
                 "sensor": data,
             },
         }).done(

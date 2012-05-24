@@ -36,54 +36,31 @@
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 
-require_once "HUGnetLib/tables/TestTable.php";
-
-$tid    = hexdec($json->args()->id);
+$did    = hexdec($json->args()->id);
+$sid    = $json->args()->sid;
 $action = strtolower($json->args()->action);
-$test   = &$json->system()->device();
+$dev    = &$json->system()->device($did);
+$sen    = &$dev->sensor($sid);
 $ret    = "";
-$since  = (int)$_REQUEST["since"];
-$limit  = ((int)$_REQUEST["limit"]) ? (int)$_REQUEST["limit"] : 100;
 
 if ($action === "post") {
-    $test->load($tid);
-    $post = $_POST["test"];
-    $worked = $test->change($post);
-    //$worked = $test->updateRow();
+    $worked = true;
+    $data = &$_POST["sensor"];
+    if (is_array($data) && isset($data['sensor'])) {
+        $worked &= $sen->change($data);
+    }
     if ($worked) {
-        $test->setParam("LastModified", time());
-        $test->store();
         $ret = "success";
     } else {
         $ret = -1;
     }
-} else if ($action === "new") {
-    $did = $test->newVirtual(
-        array(
-            "HWPartNum" => "0039-24-03-P",
-        )
-    );
-    if ($did !== false) {
-        $test->setParam("Created", time());
-        $test->setParam("LastModified", time());
-        $test->store();
-        $ret = $test->fullArray();
-    } else {
-        $ret = -1;
-    }
 } else if ($action === "get") {
-    $test->load($tid);
-    if ($test->get('type') === 'test') {
-        $ret = $test->fullArray(true);
-    }
+    $ret = $sen->toArray();
 } else if ($action === "getall") {
-    $ids = $test->ids();
     $ret = array();
-    foreach ((array)$ids as $value) {
-        $test->load((int)$value);
-        if ($test->get('type') === 'test') {
-            $ret[] = $test->fullArray(false);
-        }
+    $sensors = $dev->get("totalSensors");
+    for ($i = 0; $i < $sensors; $i++) {
+        $ret[] = $dev->sensor($i)->toArray();
     }
 }
 print json_encode($ret);

@@ -148,12 +148,12 @@ class CloneVirtual extends \HUGnet\sensors\DriverVirtual
     */
     public function get($name)
     {
-        if (isset($this->params[$name])) {
-            return parent::get($name);
+        $value = parent::get($name);
+        if (isset($this->params[$name]) || is_null($value)) {
+            return $value;
         } else {
             return $this->_clone()->get($name);
         }
-        return null;
     }
 
 }

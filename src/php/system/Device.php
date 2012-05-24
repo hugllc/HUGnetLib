@@ -347,6 +347,17 @@ class Device extends SystemTableBase
         }
         return $this->_firmware;
     }
+    /**
+    * This function gives us access to the table class
+    *
+    * @param mixed $data The array to use to insert this row
+    *
+    * @return reference to the table class object
+    */
+    public function newVirtual($data = array())
+    {
+        return $this->table()->insertVirtual($data);
+    }
 
     /**
     * Loads the data into the table class
