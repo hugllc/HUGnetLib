@@ -92,7 +92,7 @@
     </target>
     <target name="style" description="Generate readable output using PHP_CodeSniffer">
         <exec executable="phpcs">
-            <arg line=" --ignore=contrib/,scripts2/
+            <arg line=" --ignore=contrib/,scripts2/,src/webapi/
                         --standard=PEAR
                         ${source} ${testSource}" />
         </exec>

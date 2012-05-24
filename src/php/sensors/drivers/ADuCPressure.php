@@ -98,28 +98,27 @@ class ADuCPressure extends \HUGnet\sensors\DriverADuC
     /**
     * Changes a raw reading into a output value
     *
-    * @param int   $A       Output of the A to D converter
-    * @param array &$sensor The sensor information
-    * @param float $deltaT  The time delta in seconds between this record
-    * @param array &$data   The data from the other sensors that were crunched
-    * @param mixed $prev    The previous value for this sensor
+    * @param int   $A      Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
+    * @param array &$data  The data from the other sensors that were crunched
+    * @param mixed $prev   The previous value for this sensor
     *
     * @return mixed The value in whatever the units are in the sensor
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function getReading(
-        $A, &$sensor, $deltaT = 0, &$data = array(), $prev = null
+        $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
         bcscale(10);
         $Am   = pow(2, 23);
-        $Vmin  = $this->getExtra(0, $sensor);
-        $Vmax  = $this->getExtra(1, $sensor);
-        $Pmin  = $this->getExtra(2, $sensor);
-        $Pmax  = $this->getExtra(3, $sensor);
-        $Vref  = $this->getExtra(4, $sensor);
-        $Rin   = $this->getExtra(5, $sensor);
-        $Rbias = $this->getExtra(6, $sensor);
+        $Vmin  = $this->getExtra(0);
+        $Vmax  = $this->getExtra(1);
+        $Pmin  = $this->getExtra(2);
+        $Pmax  = $this->getExtra(3);
+        $Vref  = $this->getExtra(4);
+        $Rin   = $this->getExtra(5);
+        $Rbias = $this->getExtra(6);
 
         $A = \HUGnet\Util::getTwosCompliment($A, 32);
         $A = \HUGnet\Util::inputBiasCompensation($A, $Rin, $Rbias);

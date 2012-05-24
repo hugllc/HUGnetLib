@@ -340,18 +340,12 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             array("type"),
                             array("id"),
                             array("type"),
-                            array("sensor"),
                             array("id"),
                             array("type"),
-                            array("sensor"),
                             array("units"),
-                            array("sensor"),
                             array("extra"),
-                            array("sensor"),
                             array("min"),
                             array("max"),
-                            array("sensor"),
-                            array("sensor"),
                         ),
                         'set' => array(
                             array("driver", "SDEFAULT"),
@@ -422,18 +416,12 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             array("type"),
                             array("id"),
                             array("type"),
-                            array("sensor"),
                             array("id"),
                             array("type"),
-                            array("sensor"),
                             array("units"),
-                            array("sensor"),
                             array("extra"),
-                            array("sensor"),
                             array("min"),
                             array("max"),
-                            array("sensor"),
-                            array("sensor"),
                         ),
                         'set' => array(
                             array("driver", "SDEFAULT"),
@@ -520,18 +508,12 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             array("type"),
                             array("id"),
                             array("type"),
-                            array("sensor"),
                             array("id"),
                             array("type"),
-                            array("sensor"),
                             array("units"),
-                            array("sensor"),
                             array("extra"),
-                            array("sensor"),
                             array("min"),
                             array("max"),
-                            array("sensor"),
-                            array("sensor"),
                         ),
                         'set' => array(
                             array("driver", "SDEFAULT"),
@@ -574,18 +556,12 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             array("type"),
                             array("id"),
                             array("type"),
-                            array("sensor"),
                             array("id"),
                             array("type"),
-                            array("sensor"),
                             array("units"),
-                            array("sensor"),
                             array("extra"),
-                            array("sensor"),
                             array("min"),
                             array("max"),
-                            array("sensor"),
-                            array("sensor"),
                         ),
                         'set' => array(
                             array("driver", "SDEFAULT"),
@@ -1203,18 +1179,17 @@ class TestSensorDriver1 extends \HUGnet\sensors\Driver
     /**
     * Changes a raw reading into a output value
     *
-    * @param int   $A       Output of the A to D converter
-    * @param array &$sensor The sensor information
-    * @param float $deltaT  The time delta in seconds between this record
-    * @param array &$data   The data from the other sensors that were crunched
-    * @param mixed $prev    The previous value for this sensor
+    * @param int   $A      Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
+    * @param array &$data  The data from the other sensors that were crunched
+    * @param mixed $prev   The previous value for this sensor
     *
     * @return mixed The value in whatever the units are in the sensor
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function getReading(
-        $A, &$sensor, $deltaT = 0, &$data = array(), $prev = null
+        $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
         return $A * 2;
     }
@@ -1269,18 +1244,17 @@ class TestSensorDriver2 extends \HUGnet\sensors\Driver
     /**
     * Changes a raw reading into a output value
     *
-    * @param int   $A       Output of the A to D converter
-    * @param array &$sensor The sensor information
-    * @param float $deltaT  The time delta in seconds between this record
-    * @param array &$data   The data from the other sensors that were crunched
-    * @param mixed $prev    The previous value for this sensor
+    * @param int   $A      Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
+    * @param array &$data  The data from the other sensors that were crunched
+    * @param mixed $prev   The previous value for this sensor
     *
     * @return mixed The value in whatever the units are in the sensor
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function getReading(
-        $A, &$sensor, $deltaT = 0, &$data = array(), $prev = null
+        $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
         return $A / 2;
     }

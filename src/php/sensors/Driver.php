@@ -61,6 +61,10 @@ require_once dirname(__FILE__)."/../units/Driver.php";
 abstract class Driver
 {
     /**
+    * This is where we store the sensor.
+    */
+    private static $_sensor = null;
+    /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
@@ -130,6 +134,7 @@ abstract class Driver
     */
     public function __destruct()
     {
+        unset($this->_sensor);
     }
     /**
     * This is the destructor
@@ -161,7 +166,7 @@ abstract class Driver
     *
     * @return null
     */
-    public static function &factory($driver, $sensor)
+    public static function &factory($driver, &$sensor)
     {
         $class = '\\HUGnet\\sensors\\drivers\\'.$driver;
         $file = dirname(__FILE__)."/drivers/".$driver.".php";
@@ -177,36 +182,32 @@ abstract class Driver
     /**
     * Checks to see if a piece of data exists
     *
-    * @param string $name   The name of the property to check
-    * @param int    $sensor The sensor number
+    * @param string $name The name of the property to check
     *
     * @return true if the property exists, false otherwise
     */
-    public function present($name, $sensor = null)
+    public function present($name)
     {
-        return !is_null(static::getParam($name, $sensor));
+        return !is_null(static::getParam($name, $this->sensor()));
     }
     /**
     * Gets an item
     *
-    * @param string $name   The name of the property to get
-    * @param int    $sensor The sensor number
+    * @param string $name The name of the property to get
     *
     * @return null
     */
-    public function get($name, $sensor)
+    public function get($name)
     {
-        return static::getParam($name, $sensor);
+        return static::getParam($name);
     }
     /**
     * Returns all of the parameters and defaults in an array
     *
-    * @param int $sensor The sensor number
-    *
     * @return array of data from the sensor
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    public function toArray($sensor)
+    public function toArray()
     {
         $array = array_merge(self::$_default, (array)static::$params);
         return $array;
@@ -236,13 +237,12 @@ abstract class Driver
     /**
     * Returns the driver that should be used for a particular device
     *
-    * @param string $name   The name of the property to check
-    * @param int    $sensor The sensor number
+    * @param string $name The name of the property to check
     *
     * @return string The driver to use
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    public static function getParam($name, $sensor)
+    public static function getParam($name)
     {
         if (isset(static::$params[$name])) {
             return static::$params[$name];
@@ -290,20 +290,15 @@ abstract class Driver
     /**
     * Gets the extra values
     *
-    * @param int   $index   The extra index to use
-    * @param array &$sensor The sensor information array
-    * @param int   $sid     Alternative sensor ID to use
+    * @param int $index The extra index to use
     *
     * @return The extra value (or default if empty)
     */
-    public function getExtra($index, &$sensor, $sid = null)
+    public function getExtra($index)
     {
-        if (!is_int($sid)) {
-            $sid = $sensor->get("sensor");
-        }
-        $extra = (array)$sensor->get("extra");
+        $extra = (array)$this->sensor()->get("extra");
         if (!isset($extra[$index])) {
-            $extra = $this->get("extraDefault", $sid);
+            $extra = $this->get("extraDefault");
         }
         return $extra[$index];
     }
@@ -311,25 +306,22 @@ abstract class Driver
     /**
     * Decodes the driver portion of the setup string
     *
-    * @param string $string  The string to decode
-    * @param object &$sensor The sensor object
+    * @param string $string The string to decode
     *
     * @return array
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    public function decode($string, &$sensor)
+    public function decode($string)
     {
         /* Do nothing by default */
     }
     /**
     * Encodes this driver as a setup string
     *
-    * @param object &$sensor The device object
-    *
     * @return array
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    public function encode(&$sensor)
+    public function encode()
     {
         $string  = "";
         return $string;
@@ -338,18 +330,17 @@ abstract class Driver
     /**
     * Changes a raw reading into a output value
     *
-    * @param int   $A       Output of the A to D converter
-    * @param array &$sensor The sensor information
-    * @param float $deltaT  The time delta in seconds between this record
-    * @param array &$data   The data from the other sensors that were crunched
-    * @param mixed $prev    The previous value for this sensor
+    * @param int   $A      Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
+    * @param array &$data  The data from the other sensors that were crunched
+    * @param mixed $prev   The previous value for this sensor
     *
     * @return mixed The value in whatever the units are in the sensor
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     abstract public function getReading(
-        $A, &$sensor, $deltaT = 0, &$data = array(), $prev = null
+        $A, $deltaT = 0, &$data = array(), $prev = null
     );
     /**
     * Takes in a raw string from a sensor and makes an int out it

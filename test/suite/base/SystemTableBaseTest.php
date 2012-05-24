@@ -505,6 +505,99 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
+    public static function dataID()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "Driver" => "EDEFAULT",
+                            "id" => 2,
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                "id",
+                2,
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config The configuration to use
+    * @param mixed  $class  This is either the name of a class or an object
+    * @param string $field  The field to get
+    * @param mixed  $expect The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataID
+    */
+    public function testID(
+        $config, $class, $field, $expect
+    ) {
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $class->sqlId = $field;
+        $obj = SystemTableBaseTestStub::factory($sys, null, $class);
+        $this->assertSame($expect, $obj->id());
+        unset($obj);
+    }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataDelete()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "deleteRow" => false,
+                    ),
+                ),
+                new DummyTable("Table"),
+                false,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "deleteRow" => true,
+                    ),
+                ),
+                new DummyTable("Table"),
+                true,
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array $config The configuration to use
+    * @param mixed $class  This is either the name of a class or an object
+    * @param mixed $expect The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataDelete
+    */
+    public function testDelete(
+        $config, $class, $expect
+    ) {
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = SystemTableBaseTestStub::factory($sys, null, $class);
+        $this->assertSame($expect, $obj->delete(), "Return Wrong");
+        unset($obj);
+    }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
     public static function dataSet()
     {
         return array(

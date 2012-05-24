@@ -159,6 +159,8 @@ class TestTable extends HUGnetDBTable
     }
     /**
     * Gives us the ID of the last record inserted
+    *
+    * @return bool
     */
     public function newRow()
     {

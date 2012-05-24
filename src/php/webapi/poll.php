@@ -64,7 +64,7 @@ if (is_object($hist)) {
             fwrite($fd, "\r\n");
         }
         $sep = "";
-        foreach((array)$fields as $key => $value) {
+        foreach ((array)$fields as $key => $value) {
             if (is_numeric($value["field"])) {
                 $data = $hist->get("Data".$key);
             } else {

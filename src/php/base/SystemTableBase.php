@@ -289,6 +289,15 @@ abstract class SystemTableBase
         return $this->table()->selectIDs($where, $whereData);
     }
     /**
+    * Lists the ids of the table values
+    *
+    * @return int The ID of this device
+    */
+    public function id()
+    {
+        return $this->table()->get($this->table()->sqlId);
+    }
+    /**
     * This function should be overloaded to make changes to the table based on
     * changes to incoming data.
     *

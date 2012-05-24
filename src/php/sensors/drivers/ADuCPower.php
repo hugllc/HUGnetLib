@@ -118,38 +118,37 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
     /**
     * Changes a raw reading into a output value
     *
-    * @param int   $A       Output of the A to D converter
-    * @param array &$sensor The sensor information
-    * @param float $deltaT  The time delta in seconds between this record
-    * @param array &$data   The data from the other sensors that were crunched
-    * @param mixed $prev    The previous value for this sensor
+    * @param int   $A      Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
+    * @param array &$data  The data from the other sensors that were crunched
+    * @param mixed $prev   The previous value for this sensor
     *
     * @return mixed The value in whatever the units are in the sensor
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function getReading(
-        $A, &$sensor, $deltaT = 0, &$data = array(), $prev = null
+        $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
         bcscale(10);
         $Am   = pow(2, 23);
         $A = \HUGnet\Util::getTwosCompliment($A, 32);
-        $sid = $sensor->get("sensor");
+        $sid = $this->sensor()->id();
         $maxDecimals = $this->get("maxDecimals", $sid);
         if (($sid == 2) || ($sid == 4)) {
             /* Voltage */
-            $Vref  = $this->getExtra(0, $sensor, $sid - 1);
-            $Rin   = $this->getExtra(2, $sensor, $sid - 1);
-            $Rbias = $this->getExtra(3, $sensor, $sid - 1);
+            $Vref  = $this->getExtra(0, $sid - 1);
+            $Rin   = $this->getExtra(2, $sid - 1);
+            $Rbias = $this->getExtra(3, $sid - 1);
             $A = \HUGnet\Util::inputBiasCompensation($A, $Rin, $Rbias);
             $Va = ($A / $Am) * $Vref;
             return round($Va, $maxDecimals);
         } else if (($sid == 1) || ($sid == 3)) {
             /* Current */
-            $Vref  = $this->getExtra(0, $sensor, $sid);
-            $R     = $this->getExtra(1, $sensor, $sid);
-            $Rin   = $this->getExtra(4, $sensor, $sid);
-            $Rbias = $this->getExtra(5, $sensor, $sid);
+            $Vref  = $this->getExtra(0);
+            $R     = $this->getExtra(1);
+            $Rin   = $this->getExtra(4);
+            $Rbias = $this->getExtra(5);
             if ($R == 0) {
                 return null;
             }
@@ -178,14 +177,12 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
     /**
     * Returns all of the parameters and defaults in an array
     *
-    * @param int $sensor The sensor number
-    *
     * @return array of data from the sensor
     */
-    public function toArray($sensor)
+    public function toArray()
     {
-        $sensor = (int)$sensor;
-        $array = parent::toArray($sensor);
+        $sensor = (int)$this->sensor()->id();
+        $array = parent::toArray();
         $array["unitType"] = $array["unitType"][$sensor];
         $array["storageUnit"] = $array["storageUnit"][$sensor];
         if (($sensor != 1) && ($sensor != 3)) {
@@ -194,6 +191,21 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
             $array["extraText"] = array();
         }
         return $array;
+    }
+    /**
+    * Gets an item
+    *
+    * @param string $name The name of the property to get
+    * @param int    $sid  The sensor ID to use
+    *
+    * @return null
+    */
+    public function get($name, $sid = null)
+    {
+        if (is_null($sid)) {
+            $sid = $this->sensor()->id();
+        }
+        return static::getParam($name, $sid);
     }
     /**
     * Returns the driver that should be used for a particular device
@@ -218,6 +230,25 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
             }
         }
         return $param;
+    }
+    /**
+    * Gets the extra values
+    *
+    * @param int $index The extra index to use
+    * @param int $sid   Alternative sensor ID to use
+    *
+    * @return The extra value (or default if empty)
+    */
+    public function getExtra($index, $sid = null)
+    {
+        if (!is_int($sid)) {
+            $sid = $this->sensor()->id();
+        }
+        $extra = (array)$this->sensor()->get("extra");
+        if (!isset($extra[$index])) {
+            $extra = $this->get("extraDefault", $sid);
+        }
+        return $extra[$index];
     }
 
 }

@@ -193,6 +193,8 @@ class Test extends SystemTableBase
     }
     /**
     * Gives us the ID of the last record inserted
+    *
+    * @return bool
     */
     public function create()
     {

@@ -278,7 +278,9 @@ class SensorsTableTest extends HUGnetDBTableTestBase
                     "units" => '&deg;C',
                     "decimals" => 4,
                     "driver" => "asdf",
-                    "params" => json_encode(array("min" => 5, "max" => 15, "extra" => array())),
+                    "params" => json_encode(
+                        array("min" => 5, "max" => 15, "extra" => array())
+                    ),
                 ),
             ),
             array(

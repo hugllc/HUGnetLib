@@ -238,6 +238,7 @@ class ETESTHistoryTableTest extends HistoryTablePluginTestBase
     /**
     * test the set routine when an extra class exists
     *
+    * @param array $mocks   The mocks to use
     * @param array $preload The value to preload
     * @param array $expect  The expected return
     *

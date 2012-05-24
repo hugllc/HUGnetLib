@@ -148,6 +148,14 @@ class ADuCPowerTest extends DriverTestBase
     */
     public function testExtraSizeStuff($field, $sensor, $size)
     {
+        $sen = new \HUGnet\DummyBase("Sensor");
+        $sen->resetMock(
+            array(
+                "Sensor" => array(
+                    "id" => $sensor,
+                ),
+            )
+        );
         $name = (array)$this->o->get($field, $sensor);
         $this->assertSame($size, count($name), "$field must have $size entries");
     }
@@ -164,7 +172,15 @@ class ADuCPowerTest extends DriverTestBase
     */
     public function testExtraSizeStuffArray($field, $sensor, $size)
     {
-        $name = (array)$this->o->toArray($sensor);
+        $sen = new \HUGnet\DummyBase("Sensor");
+        $sen->resetMock(
+            array(
+                "Sensor" => array(
+                    "id" => $sensor,
+                ),
+            )
+        );
+        $name = (array)$this->o->toArray();
         $this->assertSame(
             $size, count($name[$field]), "$field must have $size entries"
         );
@@ -229,6 +245,14 @@ class ADuCPowerTest extends DriverTestBase
     */
     public function testArrayFieldTypeArray($field, $sensor, $type)
     {
+        $sen = new \HUGnet\DummyBase("Sensor");
+        $sen->resetMock(
+            array(
+                "Sensor" => array(
+                    "id" => $sensor,
+                ),
+            )
+        );
         $name = $this->o->get($field, $sensor);
         $array = $this->o->toArray($sensor);
         $this->assertSame(
@@ -300,8 +324,10 @@ class ADuCPowerTest extends DriverTestBase
             array(
                 array(
                     "Sensor" => array(
+                        "id" => 2,
                         "get" => array(
                             "sensor" => 2,
+                            "extra" => array(),
                         ),
                     ),
                 ),
@@ -314,6 +340,7 @@ class ADuCPowerTest extends DriverTestBase
             array(
                 array(
                     "Sensor" => array(
+                        "id" => 1,
                         "get" => array(
                             "sensor" => 1,
                         ),
@@ -328,6 +355,7 @@ class ADuCPowerTest extends DriverTestBase
             array(
                 array(
                     "Sensor" => array(
+                        "id" => 5,
                         "get" => array(
                             "sensor" => 5,
                         ),
@@ -349,6 +377,7 @@ class ADuCPowerTest extends DriverTestBase
             array(
                 array(
                     "Sensor" => array(
+                        "id" => 6,
                         "get" => array(
                             "sensor" => 6,
                         ),
@@ -371,8 +400,10 @@ class ADuCPowerTest extends DriverTestBase
             array(
                 array(
                     "Sensor" => array(
+                        "id" => 4,
                         "get" => array(
                             "sensor" => 4,
+                            "extra" => array(),
                         ),
                     ),
                 ),
@@ -385,6 +416,7 @@ class ADuCPowerTest extends DriverTestBase
             array(
                 array(
                     "Sensor" => array(
+                        "id" => 3,
                         "get" => array(
                             "sensor" => 3,
                         ),
@@ -399,6 +431,7 @@ class ADuCPowerTest extends DriverTestBase
             array(
                 array(
                     "Sensor" => array(
+                        "id" => 1,
                         "get" => array(
                             "sensor" => 1,
                         ),
@@ -413,6 +446,7 @@ class ADuCPowerTest extends DriverTestBase
             array(
                 array(
                     "Sensor" => array(
+                        "id" => 7,
                         "get" => array(
                             "sensor" => 7,
                         ),
@@ -434,6 +468,7 @@ class ADuCPowerTest extends DriverTestBase
             array(
                 array(
                     "Sensor" => array(
+                        "id" => 8,
                         "get" => array(
                             "sensor" => 8,
                         ),
@@ -456,6 +491,7 @@ class ADuCPowerTest extends DriverTestBase
             array(
                 array(
                     "Sensor" => array(
+                        "id" => 8,
                         "get" => array(
                             "sensor" => 8,
                         ),
@@ -471,6 +507,7 @@ class ADuCPowerTest extends DriverTestBase
             array(
                 array(
                     "Sensor" => array(
+                        "id" => 6,
                         "get" => array(
                             "sensor" => 6,
                         ),
@@ -487,6 +524,7 @@ class ADuCPowerTest extends DriverTestBase
             array(
                 array(
                     "Sensor" => array(
+                        "id" => 1,
                         "get" => array(
                             "sensor" => 1,
                             "extra" => array(1.2, 0, 100, 1, 1, 10),
@@ -502,6 +540,7 @@ class ADuCPowerTest extends DriverTestBase
             array(
                 array(
                     "Sensor" => array(
+                        "id" => 3,
                         "get" => array(
                             "sensor" => 3,
                             "extra" => array(1.2, 0, 100, 1, 1, 10),
@@ -518,6 +557,7 @@ class ADuCPowerTest extends DriverTestBase
             array(
                 array(
                     "Sensor" => array(
+                        "id" => 0,
                         "get" => array(
                             "sensor" => 0,
                         ),

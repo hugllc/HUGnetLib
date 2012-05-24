@@ -92,21 +92,20 @@ class AVRBC2322640 extends \HUGnet\sensors\DriverAVR
     /**
     * Changes a raw reading into a output value
     *
-    * @param int   $A       Output of the A to D converter
-    * @param array &$sensor The sensor information
-    * @param float $deltaT  The time delta in seconds between this record
-    * @param array &$data   The data from the other sensors that were crunched
-    * @param mixed $prev    The previous value for this sensor
+    * @param int   $A      Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
+    * @param array &$data  The data from the other sensors that were crunched
+    * @param mixed $prev   The previous value for this sensor
     *
     * @return mixed The value in whatever the units are in the sensor
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function getReading(
-        $A, &$sensor, $deltaT = 0, &$data = array(), $prev = null
+        $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
-        $Bias      = $this->getExtra(0, $sensor);
-        $baseTherm = $this->getExtra(1, $sensor);
+        $Bias      = $this->getExtra(0);
+        $baseTherm = $this->getExtra(1);
         $Am = 1023;
         $s = 64;
         $Tf = 65535;

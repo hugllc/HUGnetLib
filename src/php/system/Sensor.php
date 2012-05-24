@@ -90,6 +90,15 @@ class Sensor extends SystemTableBase
         return $object;
     }
     /**
+    * Lists the ids of the table values
+    *
+    * @return The ID of this sensor
+    */
+    public function id()
+    {
+        return $this->table()->get("sensor");
+    }
+    /**
     * Gets a value
     *
     * @param string $field the field to get
@@ -110,7 +119,7 @@ class Sensor extends SystemTableBase
     */
     private function _get($field, $driver)
     {
-        $ret = $driver->get($field, $this->table()->get("sensor"));
+        $ret = $driver->get($field);
         if (is_null($ret)) {
             $ret = parent::get($field);
         } else if (is_string($ret)) {
@@ -129,7 +138,7 @@ class Sensor extends SystemTableBase
     {
         if (is_string($value) && (strtolower(substr($value, 0, 8)) === "getextra")) {
             $value = $this->driver()->getExtra(
-                (int)substr($value, 8), $this
+                (int)substr($value, 8)
             );
         }
     }
@@ -227,12 +236,12 @@ class Sensor extends SystemTableBase
         $ret = array();
         if ($this->get("storageType") == \HUGnet\units\Driver::TYPE_DIFF) {
             $ret["value"] = $this->driver()->getReading(
-                ($A - $prev["raw"]), $this, $deltaT, $data, $prev
+                ($A - $prev["raw"]), $deltaT, $data, $prev
             );
             $ret["raw"] = $A;
         } else {
             $ret["value"] = $this->driver()->getReading(
-                $A, $this, $deltaT, $data, $prev
+                $A, $deltaT, $data, $prev
             );
         }
         $ret["units"] = $this->get("storageUnit");
