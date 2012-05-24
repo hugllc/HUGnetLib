@@ -613,7 +613,7 @@ class DevicesTableTest extends HUGnetDBTableTestBase
             $dev->fromAny($d);
             $dev->insertRow();
         }
-        $return = DevicesTable::insertVirtual($data);
+        $return = $this->o->insertVirtual($data);
         $stmt = $this->pdo->query("SELECT * FROM `devices`");
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $this->assertSame($expect, $rows);

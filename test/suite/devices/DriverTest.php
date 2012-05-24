@@ -506,6 +506,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                     'testParam' => '12345',
                     'ConfigInterval' => 43200,
                     'type' => 'unknown',
+                    'actionClass' => 'Action',
                 ),
             ),
             array(
@@ -522,6 +523,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                     'testParam' => '54321',
                     'ConfigInterval' => 43200,
                     'type' => 'unknown',
+                    'actionClass' => 'Action',
                 ),
             ),
         );
