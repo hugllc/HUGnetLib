@@ -62,7 +62,6 @@ var DeviceSensorPropertiesView = Backbone.View.extend({
             this.model.off('saved', this.saveSuccess, this);
             this.model.off('savefail', this.saveFail, this);
             this.remove();
-            alert("Sensor Saved");
         }
     },
     saveFail: function (msg)

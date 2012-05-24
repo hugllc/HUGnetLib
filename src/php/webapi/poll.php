@@ -42,13 +42,9 @@ $TestID = $json->args()->TestID;
 $did = hexdec($json->args()->id);
 $ret  = array();
 
-if ($did !== 0) {
-    if ($TestID) {
-        $hist = $json->system()->test($did)->action()->poll();
-    } else {
-        $hist = $json->system()->device($did)->action()->poll();
-    }
-}
+$device = $json->system()->device($did);
+$hist = $device->action()->poll();
+$device->store();
 if (is_object($hist)) {
     if ($TestID) {
         $filename = "/tmp/LeNR.".$did.".".date("Ymd");

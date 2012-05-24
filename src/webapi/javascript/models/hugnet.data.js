@@ -175,7 +175,7 @@ HUGnet.Histories = Backbone.Collection.extend({
             cache: false,
             data: {
                 "task": "history",
-                "id": this.id,
+                "id": this.id.toString(16),
                 "since": this.LastHistory / 1000,
                 "until": this.until / 1000,
                 "limit": limit,
@@ -223,7 +223,7 @@ HUGnet.Histories = Backbone.Collection.extend({
             cache: false,
             data: {
                 "task": "poll",
-                "id": this.id,
+                "id": this.id.toString(16),
                 "TestID": (this.type == "test") ? 1 : 0,
             },
         }).done(

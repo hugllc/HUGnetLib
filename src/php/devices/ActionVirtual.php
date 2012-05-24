@@ -59,18 +59,8 @@ require_once dirname(__FILE__)."/Action.php";
  */
 class ActionVirtual extends Action
 {
-    /**
-    * This is the system object
-    */
-    private $_system = null;
-    /**
-    * This is the driver object
-    */
-    private $_driver = null;
-    /**
-    * This is the table object
-    */
-    private $_device = null;
+    /** This is a cache of history records */
+    private $_histCache = array();
     /**
     * This function creates the system.
     *
@@ -84,6 +74,26 @@ class ActionVirtual extends Action
     {
         $object = new ActionVirtual($network, $device, $driver);
         return $object;
+    }
+    /**
+    * Gets all of the device ids that are needed
+    *
+    * @return array of device keys
+    */
+    private function _getIDs()
+    {
+        $sensors = $this->device->get("totalSensors");
+        for ($i = 0; $i < $sensors; $i++) {
+            $sen = $this->device->sensor($i);
+            if ($sen->get("driver") === "CloneVirtual") {
+                $extra = $sen->get("extra");
+                $dev = hexdec($extra[0]);
+                if (!empty($dev)) {
+                    $ret[$dev] = sprintf("%06X", $dev);
+                }
+            }
+        }
+        return $ret;
     }
     /**
     * Pings the device and sets the LastContact if it is successful
@@ -109,6 +119,43 @@ class ActionVirtual extends Action
     /**
     * Polls the device and saves the poll
     *
+    * @param object &$sensor The sensor to use
+    * @param int    $time    The time to use
+    *
+    * @return false on failure, the history object on success
+    */
+    private function _getPoint(&$sensor, $time)
+    {
+        $extra = $sensor->get("extra");
+        $dev = hexdec($extra[0]);
+        $sen = $extra[1];
+        if (empty($dev)) {
+            return null;
+        }
+        if (!is_object($this->_histCache[$dev])) {
+            $device = &$this->system->device($dev);
+            $this->_histCache[$dev] = &$device->action()->poll(
+                $this->device->get('id'), $time
+            );
+            $device->store();
+        }
+        if (is_object($this->_histCache[$dev])) {
+            return $this->_histCache[$dev]->get("Data".$sen);
+        }
+        return null;
+    }
+    /**
+    * Polls the device and saves the poll
+    *
+    * @return false on failure, the history object on success
+    */
+    private function _clearHistCache()
+    {
+        $this->_histCache = array();
+    }
+    /**
+    * Polls the device and saves the poll
+    *
     * @param int $TestID The test ID of this poll
     * @param int $time   The time to use for the poll
     *
@@ -116,22 +163,44 @@ class ActionVirtual extends Action
     */
     public function poll($TestID = null, $time = null)
     {
-        $devs = $this->_getIDs();
-
-        $time = time();
-        $id = $this->get("id");
-        $hist = array(
-            0 => $this->getField(),
-            "Date" => $time,
-            "TestID" => $id,
-            "id" => $id
-        );
-        foreach ($devs as $dev => $devID) {
-            $hist[$devID] = &$this->system()->device($dev)->action()->poll(
-                $id, $time
-            );
+        $this->_clearHistCache();
+        if (is_null($time)) {
+            $time = time();
         }
-        $history = &$this->historyFactory($hist);
+        $id = $this->device->get("id");
+        $prev = (array)$this->device->getParam("LastPollData");
+        $hist = array(
+            "id" => $id,
+            "Date" => $time,
+            "TestID" => $TestID,
+            "deltaT" => $time - $prev["Date"],
+        );
+        $sensors = $this->device->get("totalSensors");
+        for ($i = 0; $i < $sensors; $i++) {
+            $sen = $this->device->sensor($i);
+            if ($sen->get("driver") === "CloneVirtual") {
+                $hist[$i] = array(
+                    "value" => $this->_getPoint($sen, $time),
+                    "units" => $sen->get("storageUnit"),
+                    "unitType" => $sen->get("unitType"),
+                    "dataType" => $sen->get("storageType"),
+                );
+            } else {
+                $string = "";
+                $hist[$i] = $sen->decodeData(
+                    $string,
+                    $hist["deltaT"],
+                    $prev[$i],
+                    $hist
+                );
+            }
+        }
+        $this->device->setParam("LastPollData", $hist);
+        $this->device->setParam("LastPoll", $time);
+        $this->device->setParam("LastContact", $time);
+        $this->device->setParam("PollFail", 0);
+        $this->device->setParam("ContactFail", 0);
+        $history = &$this->device->historyFactory($hist);
         $history->insertRow();
         return $history;
     }

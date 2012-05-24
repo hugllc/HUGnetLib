@@ -61,15 +61,15 @@ class Action
     /**
     * This is the system object
     */
-    private $_system = null;
+    protected $system = null;
     /**
     * This is the driver object
     */
-    private $_driver = null;
+    protected $driver = null;
     /**
     * This is the table object
     */
-    private $_device = null;
+    protected $device = null;
     /**
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
@@ -97,18 +97,18 @@ class Action
             "InvalidArgument",
             !is_object($device)
         );
-        $this->_system = &$system;
-        $this->_driver  = &$driver;
-        $this->_device  = &$device;
+        $this->system = &$system;
+        $this->driver  = &$driver;
+        $this->device  = &$device;
     }
     /**
     * This is the destructor
     */
     public function __destruct()
     {
-        unset($this->_system);
-        unset($this->_driver);
-        unset($this->_device);
+        unset($this->system);
+        unset($this->driver);
+        unset($this->device);
     }
     /**
     * This function creates the system.
@@ -133,16 +133,16 @@ class Action
     */
     public function ping($find = false)
     {
-        $pkt = $this->_device->network()->ping(
+        $pkt = $this->device->network()->ping(
             $find, null, null, array("tries" => 1, "find" => false)
         );
         if (is_string($pkt->reply())) {
-            $this->_device->setParam("LastContact", time());
-            $this->_device->setParam("ContactFail", 0);
+            $this->device->setParam("LastContact", time());
+            $this->device->setParam("ContactFail", 0);
             return true;
         }
-        $fail = $this->_device->getParam("ContactFail");
-        $this->_device->setParam("ContactFail", $fail+1);
+        $fail = $this->device->getParam("ContactFail");
+        $this->device->setParam("ContactFail", $fail+1);
         return false;
     }
     /**
@@ -152,18 +152,18 @@ class Action
     */
     public function config()
     {
-        $pkt = $this->_device->network()->config();
+        $pkt = $this->device->network()->config();
         if (strlen($pkt->reply())) {
-            if ($this->_device->decode($pkt->reply())) {
-                $this->_device->setParam("LastContact", time());
-                $this->_device->setParam("LastConfig", time());
-                $this->_device->setParam("ConfigFail", 0);
-                $this->_device->setParam("ContactFail", 0);
+            if ($this->device->decode($pkt->reply())) {
+                $this->device->setParam("LastContact", time());
+                $this->device->setParam("LastConfig", time());
+                $this->device->setParam("ConfigFail", 0);
+                $this->device->setParam("ContactFail", 0);
                 return true;
             }
         }
-        $fail = $this->_device->getParam("ConfigFail");
-        $this->_device->setParam("ConfigFail", $fail+1);
+        $fail = $this->device->getParam("ConfigFail");
+        $this->device->setParam("ConfigFail", $fail+1);
         return false;
     }
     /**
@@ -177,31 +177,34 @@ class Action
     public function poll($TestID = null, $time = null)
     {
         if (empty($time)) {
+            var_dump($time);
             $time = time();
         }
-        $pkt = $this->_device->network()->poll();
+        $pkt = $this->device->network()->poll();
         if (strlen($pkt->reply()) > 0) {
-            $data = $this->_device->decodeData(
+            $prev = (array)$this->device->getParam("LastPollData");
+            $data = $this->device->decodeData(
                 $pkt->Reply(),
                 $pkt->Command(),
                 0,
-                (array)$this->_device->getParam("LastPollData")
+                $prev
             );
-            $data["id"]     = $this->_device->get("id");
+            $data["id"]     = $this->device->get("id");
             $data["Date"]   = $time;
             $data["TestID"] = $TestID;
-            $this->_device->setParam("LastPollData", $data);
-            $this->_device->setUnits($data);
-            $d = $this->_device->historyFactory($data);
+            $data["deltaT"] = $time - $prev["Date"];
+            $this->device->setParam("LastPollData", $data);
+            $this->device->setUnits($data);
+            $d = $this->device->historyFactory($data);
             $d->insertRow();
-            $this->_device->setParam("LastPoll", $time);
-            $this->_device->setParam("LastContact", $time);
-            $this->_device->setParam("PollFail", 0);
-            $this->_device->setParam("ContactFail", 0);
+            $this->device->setParam("LastPoll", $time);
+            $this->device->setParam("LastContact", $time);
+            $this->device->setParam("PollFail", 0);
+            $this->device->setParam("ContactFail", 0);
             return $d;
         }
-        $fail = $this->_device->getParam("PollFail");
-        $this->_device->setParam("PollFail", $fail+1);
+        $fail = $this->device->getParam("PollFail");
+        $this->device->setParam("PollFail", $fail+1);
         return false;
     }
     /**
@@ -211,7 +214,7 @@ class Action
     */
     public function checkRecord()
     {
-        $this->_driver->checkRecord($this->_device);
+        $this->driver->checkRecord($this->device);
     }
     /**
     * Gets the config and saves it
@@ -223,19 +226,19 @@ class Action
     public function post($url = null)
     {
         if (!is_string($url) || (strlen($url) == 0)) {
-            $master = $this->_device->system()->get("master");
+            $master = $this->device->system()->get("master");
             $url = $master["url"];
         }
-        $device  = $this->_device->toArray(true);
-        $sens = $this->_device->get("totalSensors");
+        $device  = $this->device->toArray(true);
+        $sens = $this->device->get("totalSensors");
         $sensors = array();
         for ($i = 0; $i < $sens; $i++) {
-            $sensors[$i] = $this->_device->sensor($i)->toArray(false);
+            $sensors[$i] = $this->device->sensor($i)->toArray(false);
         }
         return \HUGnet\Util::postData(
             $url,
             array(
-                "uuid"    => urlencode($this->_device->system()->get("uuid")),
+                "uuid"    => urlencode($this->device->system()->get("uuid")),
                 "id"      => $device["id"],
                 "action"  => "post",
                 "task"    => "device",

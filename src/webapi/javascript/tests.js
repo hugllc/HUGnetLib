@@ -105,7 +105,7 @@ HUGnet.TestSuite = Backbone.View.extend({
         var self = this;
         var tag = "#tabs-test" + test.get("id");
         if (this.data[tag] !== undefined) {
-            alert('Tab for "' + test.get("name") + '" is already open');
+            alert('Tab for "' + test.get("DeviceName") + '" is already open');
             return;
         }
         var title = "";
@@ -116,7 +116,7 @@ HUGnet.TestSuite = Backbone.View.extend({
                 model: test,
                 TestID: 1,
             });
-            title = 'Run Test "' + test.get("name") + '"';
+            title = 'Run Test "' + test.get("DeviceName") + '"';
         } else {
             this.data[tag] = new HUGnet.DataView({
                 parent: tag,
@@ -124,7 +124,7 @@ HUGnet.TestSuite = Backbone.View.extend({
                 model: test,
                 TestID: 1,
             });
-            title = 'View Test "' + test.get("name") + '"'
+            title = 'View Test "' + test.get("DeviceName") + '"'
         }
 
         this.tabs.tabs("add", tag, title);

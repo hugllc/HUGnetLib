@@ -240,7 +240,6 @@ HUGnet.DataPollView = HUGnet.DataView.extend({
     },
     initialize: function (options)
     {
-        this.$('.stopPoll').hide();
         this.setup(options);
     },
     startPoll: function()
@@ -254,6 +253,7 @@ HUGnet.DataPollView = HUGnet.DataView.extend({
     },
     stopPoll: function()
     {
+        console.log("stopping");
         this.history.off("pollfail", this._poll, this);
         this.history.off("polldone", this._poll, this);
         this.$('.stopPoll').hide();

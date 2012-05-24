@@ -45,11 +45,7 @@ $TestID = $json->args()->TestID;
 $since  = (int)$_REQUEST["since"];
 $limit  = ((int)$_REQUEST["limit"]) ? (int)$_REQUEST["limit"] : 100;
 
-if ($TestID) {
-    $table = &$json->system()->test($did)->historyFactory(array());
-} else {
-    $table = &$json->system()->device($did)->historyFactory(array());
-}
+$table = &$json->system()->device($did)->historyFactory(array());
 
 $table->sqlLimit = $limit;
 $table->sqlOrderBy = "Date asc";
