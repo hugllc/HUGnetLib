@@ -51,12 +51,16 @@ require_once dirname(__FILE__)."/../DriverVirtual.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
- * @since      0.9.7
+ * @since      0.9.8
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class CloneVirtual extends \HUGnet\sensors\DriverVirtual
 {
+    /**
+     * This is the sensor we are cloning
+     */
+    private $_clone = null;
     /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
@@ -100,8 +104,30 @@ class CloneVirtual extends \HUGnet\sensors\DriverVirtual
     public function getReading(
         $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
-        return null;
+        return $this->_clone()->getReading($A, $deltaT, $data, $prev);
 
+    }
+    /**
+     * This is the routine that gets the sensor that we are cloning
+     *
+     * @return object The object for the sensor we are cloning
+     */
+    private function _clone()
+    {
+        if (!is_object($this->_clone)) {
+            $did = hexdec($this->getExtra(0));
+            $sen = $this->getExtra(1);
+            if ($did == 0) {
+                $this->_clone = &parent::factory("SDEFAULT", $this->sensor());
+            } else {
+                $sensor = &$this->sensor()->system()->device($did)->sensor($sen);
+                $this->_clone = &parent::factory(
+                    $sensor->get("driver"),
+                    $sensor
+                );
+            }
+        }
+        return $this->_clone;
     }
     /**
     * Returns all of the parameters and defaults in an array
@@ -111,19 +137,23 @@ class CloneVirtual extends \HUGnet\sensors\DriverVirtual
     */
     public function toArray()
     {
-        return parent::toArray();
+        return array_merge($this->_clone()->toArray(), $this->params);
     }
     /**
-    * Returns the driver that should be used for a particular device
+    * Gets an item
     *
-    * @param string $name The name of the property to check
+    * @param string $name The name of the property to get
     *
-    * @return string The driver to use
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    * @return null
     */
-    public static function getParam($name)
+    public function get($name)
     {
-        return parent::getParam($name);
+        if (isset($this->params[$name])) {
+            return parent::get($name);
+        } else {
+            return $this->_clone()->get($name);
+        }
+        return null;
     }
 
 }

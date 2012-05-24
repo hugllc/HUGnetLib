@@ -39,6 +39,12 @@ namespace HUGnet\sensors\drivers;
 require_once dirname(__FILE__)."/DriverTestBase.php";
 /** This is a required class */
 require_once CODE_BASE.'sensors/drivers/CloneVirtual.php';
+/** This is a required class */
+require_once CODE_BASE.'system/Sensor.php';
+/** This is a required class */
+require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
+/** This is a required class */
+require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
 
 /**
  * Test class for HUGnetDB.
@@ -70,7 +76,13 @@ class CloneVirtualTest extends DriverTestBase
     {
         parent::setUp();
         $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock(array());
+        $sensor->resetMock(
+            array(
+                "Sensor" => array(
+                    "system" => new \HUGnet\DummySystem("System"),
+                ),
+            )
+        );
         $this->o = &CloneVirtual::factory($sensor);
     }
 
@@ -99,6 +111,7 @@ class CloneVirtualTest extends DriverTestBase
             array(
                 array(
                     "Sensor" => array(
+                        "system" => new \HUGnet\DummySystem("System"),
                         "get" => array(
                             "extra" => array(),
                         ),
@@ -108,9 +121,151 @@ class CloneVirtualTest extends DriverTestBase
                 1,
                 array(),
                 array(),
-                null,
+                256210,
             ),
         );
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataGet()
+    {
+        return array(
+            array(
+                array(
+                    "Sensor" => array(
+                        "system" => new \HUGnet\DummySystem("System"),
+                        "get" => array(
+                            "extra" => array("0000AC", 3),
+                        ),
+                    ),
+                    "System" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "sensor" => new \HUGnet\DummyBase("Sensor2"),
+                    ),
+                    "Sensor2" => array(
+                        "get" => array(
+                            "driver" => "AVRBC2322640",
+                        ),
+                    ),
+                ),
+                "storageUnit",
+                '&#176;C',
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "system" => new \HUGnet\DummySystem("System"),
+                        "get" => array(
+                            "extra" => array("0000AC", 3),
+                        ),
+                    ),
+                    "System" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "sensor" => new \HUGnet\DummyBase("Sensor2"),
+                    ),
+                    "Sensor2" => array(
+                        "get" => array(
+                            "driver" => "AVRBC2322640_0",
+                        ),
+                    ),
+                ),
+                "unitType",
+                'Temperature',
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $mocks  The mocks to set
+    * @param string $name   The name of the variable to test.
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataGet
+    */
+    public function testGet($mocks, $name, $expect)
+    {
+        $sens = new \HUGnet\DummyTable("Sensor");
+        $sens->resetMock($mocks);
+        $this->assertSame($expect, $this->o->get($name));
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function data2Array()
+    {
+        return array(
+            array(
+                array(
+                    "Sensor" => array(
+                        "system" => new \HUGnet\DummySystem("System"),
+                        "get" => array(
+                            "extra" => array("0000AC", 3),
+                        ),
+                    ),
+                    "System" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "sensor" => new \HUGnet\DummyBase("Sensor2"),
+                    ),
+                    "Sensor2" => array(
+                        "get" => array(
+                            "driver" => "AVRBC2322640",
+                        ),
+                    ),
+                ),
+                array(
+                    'longName'     => 'Clone Virtual Sensor',
+                    'shortName'    => 'CloneVirtual',
+                    'unitType'     => 'Temperature',
+                    'bound'        => false,
+                    'virtual'      => true,
+                    'total'        => false,
+                    'extraText'    => array('Device ID', 'Sensor'),
+                    'extraDefault' => array('', ''),
+                    'extraValues'  => array(8, 3),
+                    'storageUnit'  => '&#176;C',
+                    'storageType'  => 'raw',
+                    'maxDecimals'  => 2,
+                    'dataTypes'    => array(
+                        'raw'    => 'raw',
+                        'diff'   => 'diff',
+                        'ignore' => 'ignore',
+                    ),
+                    'defMin'       => 0,
+                    'defMax'       => 150,
+                    'inputSize'    => 3,
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $mocks  The mocks to set
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider data2Array
+    */
+    public function test2Array($mocks, $expect)
+    {
+        $sens = new \HUGnet\DummyTable("Sensor");
+        $sens->resetMock($mocks);
+        $this->assertSame($expect, $this->o->toArray());
     }
 
 }
