@@ -126,6 +126,7 @@ abstract class Driver
         "DEFAULT:0039-37-01-A:DEFAULT"      => "E00393700",
         "DEFAULT:VIRTUAL:DEFAULT"           => "EVIRTUAL",
         "DEFAULT:0039-24-02-P:DEFAULT"      => "EVIRTUAL",
+        "DEFAULT:0039-24-03-P:DEFAULT"      => "ETEST",
     );
     /**
     * This function sets up the driver object, and the database object.  The
