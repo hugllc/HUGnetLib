@@ -1151,7 +1151,7 @@ class TestSensorDriver1 extends \HUGnet\sensors\Driver
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
-    protected static $params = array(
+    protected $params = array(
         "longName" => "Silly Sensor Driver 1",
         "shortName" => "SSD1",
         "unitType" => "Temperature",
@@ -1216,7 +1216,7 @@ class TestSensorDriver2 extends \HUGnet\sensors\Driver
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
-    protected static $params = array(
+    protected $params = array(
         "longName" => "Silly Sensor Driver 2",
         "shortName" => "SSD2",
         "unitType" => "Temperature",

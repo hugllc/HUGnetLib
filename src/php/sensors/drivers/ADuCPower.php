@@ -62,7 +62,7 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
-    protected static $params = array(
+    protected $params = array(
         "longName" => "ADuC Power Meter",
         "shortName" => "ADuCPower",
         "unitType" => array(
@@ -202,26 +202,14 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
     */
     public function get($name, $sid = null)
     {
+        $sid = (int)$sid;
         if (is_null($sid)) {
             $sid = $this->sensor()->id();
         }
-        return static::getParam($name, $sid);
-    }
-    /**
-    * Returns the driver that should be used for a particular device
-    *
-    * @param string $name   The name of the property to check
-    * @param int    $sensor The sensor number
-    *
-    * @return string The driver to use
-    */
-    public static function getParam($name, $sensor)
-    {
-        $sensor = (int)$sensor;
-        $param = parent::getParam($name, $sensor);
+        $param = parent::get($name);
         if (($name == "unitType") || ($name == "storageUnit")) {
-            $param = $param[$sensor];
-        } else if (($sensor != 1) && ($sensor != 3)) {
+            $param = $param[$sid];
+        } else if (($sid != 1) && ($sid != 3)) {
             if (($name == "extraDefault")
                 || ($name == "extraText")
                 || ($name == "extraValues")

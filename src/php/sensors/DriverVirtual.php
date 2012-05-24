@@ -63,7 +63,7 @@ abstract class DriverVirtual extends Driver
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
-    protected static $params = array(
+    protected $params = array(
     );
 }
 

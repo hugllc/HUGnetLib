@@ -61,7 +61,7 @@ class AVRBC2322640 extends \HUGnet\sensors\DriverAVR
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
-    protected static $params = array(
+    protected $params = array(
         "longName" => "BC Components Thermistor #2322640",
         "shortName" => "AVRBC2322640",
         "unitType" => "Temperature",

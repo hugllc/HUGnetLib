@@ -171,20 +171,6 @@ class DriverADuCTest extends drivers\DriverTestBase
         $this->assertSame($expect, $this->o->get($name, 1));
     }
     /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $name   The name of the variable to test.
-    * @param array  $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataGet
-    */
-    public function testGetParam($name, $expect)
-    {
-        $this->assertSame($expect, DriverADuCTestClass::getParam($name, 1));
-    }
-    /**
     * data provider for testDeviceID
     *
     * @return array
@@ -262,7 +248,7 @@ class DriverADuCTestClass extends DriverADuC
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
-    protected static $params = array(
+    protected $params = array(
         "unitType" => "asdf", /* This is for test value only */
         "testParam" => "12345", /* This is for test value only */
         "extraDefault" => array(2,3,5,7,11),

@@ -61,7 +61,7 @@ class ADuCVoltage extends \HUGnet\sensors\DriverADuC
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
-    protected static $params = array(
+    protected $params = array(
         "longName" => "ADuC Voltage Sensor",
         "shortName" => "ADuCVoltage",
         "unitType" => "Voltage",

@@ -61,7 +61,7 @@ class EmptyVirtual extends \HUGnet\sensors\DriverVirtual
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
-    protected static $params = array(
+    protected $params = array(
         "longName" => "Empty Virtual Sensor",
         "shortName" => "EmptyVirtual",
         "unitType" => "None",

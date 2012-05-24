@@ -63,12 +63,12 @@ abstract class DriverAVR extends Driver
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
-    protected static $params = array(
+    protected $params = array(
     );
     /**
     * This is where all of the defaults are stored.
     */
-    private static $_default = array(
+    private $_default = array(
         "longName" => "Unknown Sensor",
         "shortName" => "Unknown",
         "unitType" => "unknown",

@@ -63,17 +63,17 @@ abstract class Driver
     /**
     * This is where we store the sensor.
     */
-    private static $_sensor = null;
+    private $_sensor = null;
     /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
-    protected static $params = array(
+    protected $params = array(
     );
     /**
     * This is where all of the defaults are stored.
     */
-    private static $_default = array(
+    private $_default = array(
         "longName" => "Unknown Sensor",
         "shortName" => "Unknown",
         "unitType" => "unknown",
@@ -189,7 +189,7 @@ abstract class Driver
     */
     public function present($name)
     {
-        return !is_null(static::getParam($name, $this->sensor()));
+        return !is_null($this->get($name, $this->sensor()));
     }
     /**
     * Gets an item
@@ -200,7 +200,12 @@ abstract class Driver
     */
     public function get($name)
     {
-        return static::getParam($name);
+        if (isset($this->params[$name])) {
+            return $this->params[$name];
+        } else if (isset($this->_default[$name])) {
+            return $this->_default[$name];
+        }
+        return null;
     }
     /**
     * Returns all of the parameters and defaults in an array
@@ -210,7 +215,7 @@ abstract class Driver
     */
     public function toArray()
     {
-        $array = array_merge(self::$_default, (array)static::$params);
+        $array = array_merge($this->_default, (array)$this->params);
         return $array;
     }
     /**
@@ -234,23 +239,6 @@ abstract class Driver
             }
         }
         return "SDEFAULT";
-    }
-    /**
-    * Returns the driver that should be used for a particular device
-    *
-    * @param string $name The name of the property to check
-    *
-    * @return string The driver to use
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-    */
-    public static function getParam($name)
-    {
-        if (isset(static::$params[$name])) {
-            return static::$params[$name];
-        } else if (isset(self::$_default[$name])) {
-            return self::$_default[$name];
-        }
-        return null;
     }
     /**
     * Returns an array of types that this sensor could be
