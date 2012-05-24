@@ -72,7 +72,9 @@ class DriverTest extends drivers\DriverTestBase
     */
     protected function setUp()
     {
-        $this->o = &DriverTestClass::factory();
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($extra);
+        $this->o = &DriverTestClass::factory($sensor);
     }
 
     /**
@@ -245,7 +247,9 @@ class DriverTest extends drivers\DriverTestBase
     */
     public function testFactory($name, $expect)
     {
-        $o = &Driver::factory($name);
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($extra);
+        $o = &Driver::factory($name, $sensor);
         $this->assertSame($expect, get_class($o));
     }
     /**
@@ -457,7 +461,8 @@ class DriverTest extends drivers\DriverTestBase
     {
         $device  = new \HUGnet\DummyTable("Device");
         $device->resetMock($mocks);
-        $obj = DriverTestClass::factory();
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $obj = DriverTestClass::factory($sensor);
         $obj->decode($string, $device);
         $ret = $device->retrieve();
         $this->assertEquals($expect, $ret);
@@ -496,7 +501,8 @@ class DriverTest extends drivers\DriverTestBase
     {
         $sensor  = new \HUGnet\DummyTable("Sensor");
         $sensor->resetMock($mocks);
-        $obj = DriverTestClass::factory();
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $obj = DriverTestClass::factory($sensor);
         $ret = $obj->encode($sensor);
         $this->assertSame($expect, $ret);
     }
@@ -528,7 +534,9 @@ class DriverTest extends drivers\DriverTestBase
     */
     public function testStrToInt($string, $retExpect, $expect)
     {
-        $obj = DriverTestClass::factory();
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock(array());
+        $obj = DriverTestClass::factory($sensor);
         $ret = $obj->strToInt($string);
         $this->assertSame($retExpect, $ret, "Return is wrong");
         $this->assertSame($expect, $string, "String is wrong");
@@ -566,11 +574,13 @@ class DriverTestClass extends Driver
     /**
     * This function creates the system.
     *
+    * @param object &$sensor The sensor object
+    *
     * @return null
     */
-    public static function &factory()
+    public static function &factory(&$sensor)
     {
-        return parent::intFactory();
+        return parent::intFactory($sensor);
     }
     /**
     * Gets the extra values

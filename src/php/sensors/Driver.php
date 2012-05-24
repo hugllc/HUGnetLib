@@ -117,10 +117,13 @@ abstract class Driver
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
     *
+    * @param object &$sensor The sensor in question
+    *
     * @return null
     */
-    private function __construct()
+    private function __construct(&$sensor)
     {
+        $this->_sensor = &$sensor;
     }
     /**
     * This is the destructor
@@ -129,24 +132,36 @@ abstract class Driver
     {
     }
     /**
+    * This is the destructor
+    *
+    * @return object
+    */
+    public function sensor()
+    {
+        return $this->_sensor;
+    }
+    /**
     * This function creates the system.
+    *
+    * @param object &$sensor The sensor object
     *
     * @return null
     */
-    protected static function &intFactory()
+    protected static function &intFactory(&$sensor)
     {
         $class = get_called_class();
-        $object = new $class();
+        $object = new $class($sensor);
         return $object;
     }
     /**
     * This function creates the system.
     *
-    * @param string $driver The driver to load
+    * @param string $driver  The driver to load
+    * @param object &$sensor The sensor object
     *
     * @return null
     */
-    public static function &factory($driver)
+    public static function &factory($driver, $sensor)
     {
         $class = '\\HUGnet\\sensors\\drivers\\'.$driver;
         $file = dirname(__FILE__)."/drivers/".$driver.".php";
@@ -154,10 +169,10 @@ abstract class Driver
             include_once $file;
         }
         if (class_exists($class)) {
-            return $class::factory();
+            return $class::factory($sensor);
         }
         include_once dirname(__FILE__)."/drivers/SDEFAULT.php";
-        return \HUGnet\sensors\drivers\SDEFAULT::factory();
+        return \HUGnet\sensors\drivers\SDEFAULT::factory($sensor);
     }
     /**
     * Checks to see if a piece of data exists

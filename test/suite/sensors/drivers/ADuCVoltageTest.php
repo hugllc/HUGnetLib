@@ -69,7 +69,9 @@ class ADuCVoltageTest extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->o = &ADuCVoltage::factory();
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock(array());
+        $this->o = &ADuCVoltage::factory($sensor);
     }
 
     /**

@@ -69,7 +69,9 @@ class ADuCPowerTest extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->o = &ADuCPower::factory();
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock(array());
+        $this->o = &ADuCPower::factory($sensor);
     }
 
     /**

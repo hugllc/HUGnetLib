@@ -72,7 +72,9 @@ class DriverAVRTest extends drivers\DriverTestBase
     */
     protected function setUp()
     {
-        $this->o = &DriverAVRTestClass::factory();
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock(array());
+        $this->o = &DriverAVRTestClass::factory($sensor);
     }
 
     /**
@@ -245,162 +247,10 @@ class DriverAVRTest extends drivers\DriverTestBase
     */
     public function testFactory($name, $expect)
     {
-        $o = &DriverAVR::factory($name);
-        $this->assertSame($expect, get_class($o));
-    }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataGetDriver()
-    {
-        return array(
-            array(
-                1,
-                "test",
-                "SDEFAULT",
-            ),
-            array(
-                4,
-                "test",
-                "ADuCVishayRTD",
-            ),
-            array(
-                0x41,
-                "",
-                "ADuCVoltage",
-            ),
-            array(
-                0x41,
-                "DEFAULT",
-                "ADuCVoltage",
-            ),
-            array(
-                0x41,
-                "ADuCPressure",
-                "ADuCPressure",
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param mixed  $sid    The hardware part number
-    * @param string $type   The firmware part number
-    * @param array  $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataGetDriver
-    */
-    public function testGetDriver($sid, $type, $expect)
-    {
-        $this->assertSame(
-            $expect, DriverAVR::getDriver($sid, $type, $FWVersion)
-        );
-    }
-    /**
-    * data provider for testGetExtra
-    *
-    * @return array
-    */
-    public static function dataGetExtra()
-    {
-        return array(
-            array(
-                array(
-                    "Sensor" => array(
-                        "get" => array("sensor" => 1, "extra" => array(6,5,4)),
-                    ),
-                ),
-                1,
-                5
-            ),
-            array(
-                array(
-                    "Sensor" => array(
-                        "get" => array("sensor" => 1, "extra" => array(6,5,4)),
-                    ),
-                ),
-                3,
-                7
-            ),
-            array(
-                array(
-                    "Sensor" => array(
-                        "get" => array("sensor" => 1, "extra" => array(6,5,4)),
-                    ),
-                ),
-                100,
-                null
-            ),
-            array(
-                array(),
-                100,
-                null
-            ),
-        );
-    }
-
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param mixed  $extra  The extra array
-    * @param int    $index  The index to use for the extra array
-    * @param string $expect The expected data
-    *
-    * @return null
-    *
-    * @dataProvider dataGetExtra
-    */
-    public function testGetExtra($extra, $index, $expect)
-    {
         $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock($extra);
-        $this->assertSame($expect, $this->o->getExtra($index, $sensor));
-    }
-    /**
-    * data provider for testGetTypes
-    *
-    * @return array
-    */
-    public static function dataGetTypes()
-    {
-        return array(
-            array(
-                0x41,
-                array(
-                    "DEFAULT" => "ADuCVoltage",
-                    "ADuCPressure" => "ADuCPressure",
-                ),
-            ),
-            array(
-                0x01,
-                array(),
-            ),
-            array(
-                0x42,
-                array(
-                    "DEFAULT" => "ADuCThermocouple"
-                ),
-            ),
-        );
-    }
-
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param int    $sid    The sensor ID to check
-    * @param string $expect The expected data
-    *
-    * @return null
-    *
-    * @dataProvider dataGetTypes
-    */
-    public function testGetTypes($sid,$expect)
-    {
-        $this->assertSame($expect, Driver::getTypes($sid));
+        $sensor->resetMock(array());
+        $o = &DriverAVR::factory($name, $sensor);
+        $this->assertSame($expect, get_class($o));
     }
     /**
      * Data provider for testGetReading
@@ -421,117 +271,6 @@ class DriverAVRTest extends drivers\DriverTestBase
                 null,
             ),
         );
-    }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataDecode()
-    {
-        return array(
-            array(
-                array(
-                    "Device" => array(
-                        "sensor" => new \HUGnet\DummyBase("Sensor"),
-                    )
-                ),
-                "010203040506",
-                array(
-                ),
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array  $mocks  The value to preload into the mocks
-    * @param string $string The setup string to test
-    * @param array  $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataDecode
-    */
-    public function testDecode($mocks, $string, $expect)
-    {
-        $device  = new \HUGnet\DummyTable("Device");
-        $device->resetMock($mocks);
-        $obj = DriverAVRTestClass::factory();
-        $obj->decode($string, $device);
-        $ret = $device->retrieve();
-        $this->assertEquals($expect, $ret);
-    }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataEncode()
-    {
-        return array(
-            array( // #0
-                array(
-                    "Device" => array(
-                        "get" => array(
-                            "id" => 7,
-                        ),
-                    ),
-                ),
-                "",
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array $mocks  The value to preload into the mocks
-    * @param array $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataEncode
-    */
-    public function testEncode($mocks, $expect)
-    {
-        $sensor  = new \HUGnet\DummyTable("Sensor");
-        $sensor->resetMock($mocks);
-        $obj = DriverAVRTestClass::factory();
-        $ret = $obj->encode($sensor);
-        $this->assertSame($expect, $ret);
-    }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataStrToInt()
-    {
-        return array(
-            array( // #0
-                "563412123456",
-                0x123456,
-                "123456",
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $string    The string to use
-    * @param int    $retExpect The expected return
-    * @param string $expect    The expected string after the function call
-    *
-    * @return null
-    *
-    * @dataProvider dataStrToInt
-    */
-    public function testStrToInt($string, $retExpect, $expect)
-    {
-        $obj = DriverAVRTestClass::factory();
-        $ret = $obj->strToInt($string);
-        $this->assertSame($retExpect, $ret, "Return is wrong");
-        $this->assertSame($expect, $string, "String is wrong");
     }
 }
 /**
@@ -566,11 +305,13 @@ class DriverAVRTestClass extends DriverAVR
     /**
     * This function creates the system.
     *
+    * @param object &$sensor The sensor object
+    *
     * @return null
     */
-    public static function &factory()
+    public static function &factory(&$sensor)
     {
-        return parent::intFactory();
+        return parent::intFactory($sensor);
     }
     /**
     * Gets the extra values

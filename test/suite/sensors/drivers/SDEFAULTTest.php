@@ -69,7 +69,9 @@ class SDEFAULTTest extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->o = &SDEFAULT::factory();
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock(array());
+        $this->o = &SDEFAULT::factory($sensor);
     }
 
     /**

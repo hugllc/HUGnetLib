@@ -107,11 +107,13 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
     /**
     * This function creates the system.
     *
+    * @param object &$sensor The sensor object
+    *
     * @return null
     */
-    public static function &factory()
+    public static function &factory(&$sensor)
     {
-        return parent::intFactory();
+        return parent::intFactory($sensor);
     }
     /**
     * Changes a raw reading into a output value

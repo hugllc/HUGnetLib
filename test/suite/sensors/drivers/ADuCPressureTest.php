@@ -69,7 +69,9 @@ class ADuCPressureTest extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->o = &ADuCPressure::factory();
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock(array());
+        $this->o = &ADuCPressure::factory($sensor);
     }
 
     /**

@@ -190,7 +190,7 @@ class Sensor extends SystemTableBase
             $this->table()->set("driver", $driver);
         }
         if (!is_object($this->_driverCache[$driver])) {
-            $this->_driverCache[$driver] = &sensors\Driver::factory($driver);
+            $this->_driverCache[$driver] = &sensors\Driver::factory($driver, $this);
         }
         return $this->_driverCache[$driver];
     }
