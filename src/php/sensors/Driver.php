@@ -116,6 +116,7 @@ abstract class Driver
         "43:DEFAULT"      => "ADuCVoltage",
         "FA:DEFAULT"      => "SDEFAULT",
         "FE:DEFAULT"      => "EmptyVirtual",
+        "FE:CloneVirtual" => "CloneVirtual",
     );
     /**
     * This function sets up the driver object, and the database object.  The

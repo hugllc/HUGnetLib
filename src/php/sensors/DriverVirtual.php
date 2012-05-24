@@ -65,34 +65,6 @@ abstract class DriverVirtual extends Driver
     */
     protected static $params = array(
     );
-    /**
-    * This is where all of the defaults are stored.
-    */
-    private static $_default = array(
-        "longName" => "Unknown Sensor",
-        "shortName" => "Unknown",
-        "unitType" => "unknown",
-        "bound" => false,                // This says if this sensor is changeable
-        "virtual" => false,              // This says if we are a virtual sensor
-        "total"   => false,              // Whether to total instead of average
-        "extraText" => array(),
-        "extraDefault" => array(),
-        // Integer is the size of the field needed to edit
-        // Array   is the values that the extra can take
-        // Null    nothing
-        "extraValues" => array(),
-        "storageUnit" => "unknown",
-        "storageType" => \HUGnet\units\Driver::TYPE_RAW, // Storage dataType
-        "maxDecimals" => 2,
-        "dataTypes" => array(
-            \HUGnet\units\Driver::TYPE_RAW => \HUGnet\units\Driver::TYPE_RAW,
-            \HUGnet\units\Driver::TYPE_DIFF => \HUGnet\units\Driver::TYPE_DIFF,
-            \HUGnet\units\Driver::TYPE_IGNORE => \HUGnet\units\Driver::TYPE_IGNORE,
-        ),
-        "defMin" => 0,
-        "defMax" => 150,
-        "inputSize" => 3,
-    );
 }
 
 
