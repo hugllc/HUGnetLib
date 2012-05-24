@@ -52,19 +52,8 @@ if ($action === "post") {
     unset($device["params"]);
     $worked = $dev->change($device);
     if ($worked) {
-        $ret = "success";
-    } else {
-        $ret = -1;
-    }
-} else if ($action === "postsensor") {
-    $dev->load($did);
-    $worked = true;
-    $data = &$_POST["sensor"];
-    if (is_array($data) && isset($data['sensor'])) {
-        $sensor = $dev->sensor((int)$data["sensor"]);
-        $worked &= $sensor->change($data);
-    }
-    if ($worked) {
+        $dev->setParam("LastModified", time());
+        $dev->store();
         $ret = "success";
     } else {
         $ret = -1;
@@ -89,6 +78,8 @@ if ($action === "post") {
         $worked = false;
     }
     if ($worked) {
+        $dev->setParam("LastModified", time());
+        $dev->store();
         $ret = $dev->fullArray();
     } else {
         $ret = -1;

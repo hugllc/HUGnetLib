@@ -72,46 +72,6 @@ class ActionVirtual extends Action
     */
     private $_device = null;
     /**
-    * This function sets up the driver object, and the database object.  The
-    * database object is taken from the driver object.
-    *
-    * @param object &$system The network application object
-    * @param object &$device The device device object
-    * @param object &$driver The device driver object
-    *
-    * @return null
-    */
-    private function __construct(&$system, &$device, &$driver)
-    {
-        \HUGnet\System::exception(
-            get_class($this)." needs to be passed a system object",
-            "InvalidArgument",
-            !is_object($system)
-        );
-        \HUGnet\System::exception(
-            get_class($this)." needs to be passed a driver object",
-            "InvalidArgument",
-            !is_object($driver)
-        );
-        \HUGnet\System::exception(
-            get_class($this)." needs to be passed a device object",
-            "InvalidArgument",
-            !is_object($device)
-        );
-        $this->_system = &$system;
-        $this->_driver  = &$driver;
-        $this->_device  = &$device;
-    }
-    /**
-    * This is the destructor
-    */
-    public function __destruct()
-    {
-        unset($this->_system);
-        unset($this->_driver);
-        unset($this->_device);
-    }
-    /**
     * This function creates the system.
     *
     * @param mixed  &$network (object)The system object to use
@@ -143,7 +103,8 @@ class ActionVirtual extends Action
     */
     public function config()
     {
-        return false;
+        $this->checkRecord();
+        return true;
     }
     /**
     * Polls the device and saves the poll

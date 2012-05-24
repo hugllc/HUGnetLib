@@ -80,7 +80,7 @@ class Action
     *
     * @return null
     */
-    private function __construct(&$system, &$device, &$driver)
+    protected function __construct(&$system, &$device, &$driver)
     {
         \HUGnet\System::exception(
             get_class($this)." needs to be passed a system object",

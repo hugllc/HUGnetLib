@@ -190,8 +190,10 @@ var Device = Backbone.Model.extend({
             ret.done(
                 function (data)
                 {
-                    if (typeof data === "object") {
+                    if (_.isObject(data)) {
                         self.set(data);
+                        self.trigger('configdone');
+                        self.trigger('sync');
                     } else {
                         self.trigger('configfail');
                     }
