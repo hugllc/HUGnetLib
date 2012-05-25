@@ -45,7 +45,7 @@
 HUGnet.DataView = Backbone.View.extend({
     template: '#DataViewTemplate',
     tagName: 'div',
-    pause: 5,
+    pause: 10,
     rows: 0,
     id: undefined,
     table: undefined,
