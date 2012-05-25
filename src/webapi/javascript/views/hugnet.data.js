@@ -45,7 +45,7 @@
 HUGnet.DataView = Backbone.View.extend({
     template: '#DataViewTemplate',
     tagName: 'div',
-    pause: 1,
+    pause: 5,
     rows: 0,
     id: undefined,
     table: undefined,
@@ -58,6 +58,7 @@ HUGnet.DataView = Backbone.View.extend({
     classes: {},
     since: 0,
     until: 0,
+    polling: false,
     events: {
         'click #autorefresh': 'setRefresh',
         'submit': 'submit',
@@ -139,19 +140,22 @@ HUGnet.DataView = Backbone.View.extend({
     },
     submit: function ()
     {
-        this.since = Date.parse(this.$('#since').val());
-        this.until = Date.parse(this.$('#until').val());
-        this.history.getPeriod(this.since, this.until);
-        var progress = new HUGnet.Progress({
-            modal: false,
-            draggable: true,
-            width: 300,
-            title: "Building Data Array",
-            dialogClass: "window",
-            zIndex: 500,
-        });
-        this.history.on('fetchagain', progress.update, progress);
-        this.history.on('sync', progress.remove, progress);
+        this.stopPoll();
+        if (!this.polling) {
+            this.since = Date.parse(this.$('#since').val());
+            this.until = Date.parse(this.$('#until').val());
+            this.history.getPeriod(this.since, this.until);
+            var progress = new HUGnet.Progress({
+                modal: false,
+                draggable: true,
+                width: 300,
+                title: "Building Data Array",
+                dialogClass: "window",
+                zIndex: 500,
+            });
+            this.history.on('fetchagain', progress.update, progress);
+            this.history.on('sync', progress.remove, progress);
+        }
     },
     getField: function (index, field)
     {
@@ -173,21 +177,39 @@ HUGnet.DataView = Backbone.View.extend({
     },
     startPoll: function()
     {
-        this.history.on("fetchfail", this._poll, this);
-        this.history.on("fetchdone", this._poll, this);
-        this.history.fetch();
+        if (!this.polling) {
+            this.polling = true;
+            this.$('input[type="submit"]').prop('disabled', true);
+            this.history.on("fetchfail", this._poll, this);
+            this.history.on("fetchdone", this._poll, this);
+            this.history.latest();
+        }
     },
     stopPoll: function()
     {
-        this.history.off("fetchfail", this._poll, this);
-        this.history.off("fetchdone", this._poll, this);
+        if (this.polling) {
+            this.history.off("fetchfail", this._poll, this);
+            this.history.off("fetchdone", this._poll, this);
+            this.history.on("fetchfail", this._finishFetch, this);
+            this.history.on("fetchdone", this._finishFetch, this);
+            this.$('#autorefresh').prop("disabled", true);
+            this.$('#autorefresh').prop("checked", false)
+        }
+    },
+    _finishFetch: function ()
+    {
+        this.$('input[type="submit"]').prop('disabled', false);
+        this.$('#autorefresh').prop("disabled", false);
+        this.history.off("fetchfail", this._finishFetch, this);
+        this.history.off("fetchdone", this._finishFetch, this);
+        this.polling = false;
     },
     _poll: function ()
     {
         var self = this;
         setTimeout(
             function () {
-                self.history.fetch();
+                self.history.latest();
             },
             (this.pause * 1000)
         );

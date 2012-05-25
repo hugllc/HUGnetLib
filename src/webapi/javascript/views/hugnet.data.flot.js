@@ -197,11 +197,12 @@ HUGnet.DataFlot = Backbone.View.extend({
         this.fields = options.fields;
         this.classes = options.classes;
         this.points = new HUGnet.FlotPoints(null, options);
+        /*
         this.model.bind('add', this.insert, this);
         this.model.bind('remove', this.remove, this);
         this.model.bind('reset', this.clear, this);
+        */
         this.model.bind('sync', this.render, this);
-        this.points.fromHistory(this.model);
         this._setup();
     },
     /**
@@ -215,6 +216,8 @@ HUGnet.DataFlot = Backbone.View.extend({
     */
     render: function ()
     {
+        this.points.clear();
+        this.points.fromHistory(this.model);
         //$.plot(this.$graph, this.points.toJSON(), this.options);
         var data = [];
 

@@ -116,6 +116,11 @@ HUGnet.Histories = Backbone.Collection.extend({
         this.mode = options.mode;
         this.limit = (options.limit !== undefined) ? parseInt(options.limit) : this.limit;
     },
+    latest: function ()
+    {
+        this.until = 0;
+        this.fetch();
+    },
     comparator: function (model)
     {
         return model.get("UnixDate");
@@ -176,8 +181,8 @@ HUGnet.Histories = Backbone.Collection.extend({
             data: {
                 "task": "history",
                 "id": this.id.toString(16),
-                "since": this.LastHistory / 1000,
-                "until": this.until / 1000,
+                "since": parseInt(this.LastHistory / 1000),
+                "until": parseInt(this.until / 1000),
                 "limit": limit,
                 "TestID": (this.type == "test") ? 1 : 0,
             },

@@ -43,16 +43,21 @@ $action = strtolower($json->args()->action);
 $TestID = $json->args()->TestID;
 
 $since  = (int)$_REQUEST["since"];
+$until  = (int)$_REQUEST["until"];
 $limit  = ((int)$_REQUEST["limit"]) ? (int)$_REQUEST["limit"] : 100;
 
 $table = &$json->system()->device($did)->historyFactory(array());
 
 $table->sqlLimit = $limit;
 $table->sqlOrderBy = "Date asc";
-$run = $table->selectInto(
-    "`id` = ? AND `Date` > ?",
-    array($did, $since)
-);
+$where = "`id` = ? AND `Date` > ?";
+$data = array($did, $since);
+if (!empty($until)) {
+    $where .=  'AND `Date` < ?';
+    $data[] = $until;
+}
+$run = $table->selectInto($where, $data);
+
 $ret = array();
 while ($run) {
     $ret[] = $table->toArray(false);

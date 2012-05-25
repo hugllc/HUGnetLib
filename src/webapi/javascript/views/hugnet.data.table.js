@@ -151,14 +151,19 @@ $(function() {
         template: '#DataPointTableTemplate',
         fields: {},
         classes: {},
-        views: {},
+        views: new Array(),
+        maxRows: 100,
+        rows: 0,
         events: {
         },
         initialize: function (options)
         {
+            /*
             this.model.bind('add', this.insert, this);
             this.model.bind('remove', this.remove, this);
             this.model.bind('sync', this.zebra, this);
+            */
+            this.model.bind('sync', this.render, this);
             this.fields = options.fields;
             this.classes = options.classes;
             this.header = new Header({
@@ -179,16 +184,24 @@ $(function() {
         */
         render: function ()
         {
+            this.rows = 0;
+            this.$el.html(
+                '<caption></caption><thead></thead><tbody></tbody><tfoot></tfoot>'
+            );
+            this.$head = this.$("thead");
+            this.$body = this.$("tbody");
+            this.$foot = this.$("tfoot");
+            this.$caption = this.$("caption");
             this.$head.html(this.header.render().el);
             _.each(
-                this.views,
-                function (view)
+                this.model.last(this.maxRows),
+                function (model)
                 {
-                    this.$body.prepend(view.render().el);
+                    this.insert(model);
                 },
                 this
             );
-            //this.zebra();
+            this.zebra();
             return this;
         },
         /**
@@ -244,11 +257,10 @@ $(function() {
         },
         insert: function (model, collection, options)
         {
-            this.views[model.id] = new Row({
+            var view = new Row({
                 model: model, fields: this.fields, classes: this.classes
             });
-            this.$el.prepend(this.views[model.id].render().el);
-            this.views[model.id].$el.addClass("even");
+            this.$el.prepend(view.render().el);
         },
         remove: function (model, collection, options)
         {
@@ -260,7 +272,8 @@ $(function() {
         },
         zebra: function ()
         {
-            this.$("tr:nth-child(odd)").removeClass('even').addClass("odd");
+            this.$("tr:odd").removeClass('even').addClass("odd");
+            this.$("tr:even").removeClass('odd').addClass("even");
         }
     });
 
