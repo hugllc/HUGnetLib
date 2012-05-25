@@ -40,40 +40,38 @@
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-var History = Backbone.Model.extend({
+HUGnet.History = Backbone.Model.extend({
     idAttribute: 'Date',
-    defaults: function ()
+    defaults:
     {
-        return {
-            id: null,
-            Date: null,
-            UnixDate: null,
-            DataIndex: null,
-            deltaT: 0,
-            converted: false,
-            TestID: null,
-            Type: 'history',
-            Data0: null,
-            Data1: null,
-            Data2: null,
-            Data3: null,
-            Data4: null,
-            Data5: null,
-            Data6: null,
-            Data7: null,
-            Data8: null,
-            Data9: null,
-            Data10: null,
-            Data11: null,
-            Data12: null,
-            Data13: null,
-            Data14: null,
-            Data15: null,
-            Data16: null,
-            Data17: null,
-            Data18: null,
-            Data19: null,
-        };
+        id: null,
+        Date: null,
+        UnixDate: null,
+        DataIndex: null,
+        deltaT: 0,
+        converted: false,
+        TestID: null,
+        Type: 'history',
+        Data0: null,
+        Data1: null,
+        Data2: null,
+        Data3: null,
+        Data4: null,
+        Data5: null,
+        Data6: null,
+        Data7: null,
+        Data8: null,
+        Data9: null,
+        Data10: null,
+        Data11: null,
+        Data12: null,
+        Data13: null,
+        Data14: null,
+        Data15: null,
+        Data16: null,
+        Data17: null,
+        Data18: null,
+        Data19: null,
     },
     initialize: function ()
     {
@@ -95,7 +93,7 @@ var History = Backbone.Model.extend({
 */
 HUGnet.Histories = Backbone.Collection.extend({
     url: '/HUGnetLib/index.php',
-    model: History,
+    model: HUGnet.History,
     id: undefined,
     LastHistory: 0,
     refresh: null,
@@ -109,12 +107,14 @@ HUGnet.Histories = Backbone.Collection.extend({
     doPoll: false,
     initialize: function (models, options)
     {
-        this.reset(null, { silent: true });
+        this.reset(models, { silent: true });
         this.bind('add', this.addExtra, this);
         this.bind('sync', this.trim, this);
-        this.id = options.id;
-        this.mode = options.mode;
-        this.limit = (options.limit !== undefined) ? parseInt(options.limit) : this.limit;
+        if (_.isObject(options)) {
+            this.id = options.id;
+            this.mode = options.mode;
+            this.limit = (options.limit !== undefined) ? parseInt(options.limit) : this.limit;
+        }
     },
     latest: function ()
     {
