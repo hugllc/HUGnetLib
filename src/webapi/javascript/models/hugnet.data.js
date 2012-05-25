@@ -184,7 +184,7 @@ HUGnet.Histories = Backbone.Collection.extend({
                 "since": parseInt(this.LastHistory / 1000),
                 "until": parseInt(this.until / 1000),
                 "limit": limit,
-                "TestID": (this.type == "test") ? 1 : 0,
+                "order": (this.limit == 0) ? 0 : 1,
             },
         }).done(
             function (data)
