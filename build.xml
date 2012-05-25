@@ -183,7 +183,7 @@
 
 
     <target name="build" depends="buildJavaScript"/>
-    <target name="test" depends="clean,setup,build,jshint,jasmine,pdepend,phpmd,phpcpd,phpcs,docblox,phploc,phpunit,phpcb,cleanafter"/>
+    <target name="test" depends="clean,setup,build,jshint,jsdoc,jasmine,pdepend,phpmd,phpcpd,phpcs,docblox,phploc,phpunit,phpcb,cleanafter"/>
     <target name="deb" depends="build,deb.build"/>
     <target name="post" depends="deb.post"/>
     <target name="testpost" depends="deb.testpost"/>
