@@ -8,17 +8,12 @@ GIT=`which git`
 all:
 
 setup:
-	-sudo pear channel-discover pear.pdepend.org
-	-sudo pear channel-discover pear.phpmd.org
-	-sudo pear channel-discover pear.phpunit.de
-	-sudo pear channel-discover components.ez.no
-	-sudo pear channel-discover pear.symfony-project.com
-
-	-sudo pear install pdepend/PHP_Depend
-	-sudo pear install phpmd/PHP_PMD
-	-sudo pear install phpunit/phpcpd
-	-sudo pear install phpunit/phploc
-	-sudo pear install PHPDocumentor
-	-sudo pear install PHP_CodeSniffer
-	-sudo pear install --alldeps phpunit/PHP_CodeBrowser
-	-sudo pear install --alldeps phpunit/PHPUnit
+	sudo apt-get install php-pear npm nodejs
+	sudo pear update
+	sudo pear config-set auto_discover 1
+	sudo pear install pear.phpqatools.org/phpqatools pear.netpirates.net/phpDox
+	sudo npm install jasmine-node
+	sudo npm install jsdom
+	sudo npm install jquery
+	sudo npm install backbone
+	sudo npm install underscore

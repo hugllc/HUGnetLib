@@ -31,6 +31,11 @@
 /* The HUGnet namespace */
 var HUGnet = {};
 
+/* This is for jasmine-node */
+if (typeof exports !== 'undefined') {
+    exports.HUGnet = HUGnet;
+}
+
 /* Wrap everything in an anonymous function */
 $(function() {
     "use strict";

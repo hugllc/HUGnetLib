@@ -161,7 +161,7 @@ var DeviceSensor = Backbone.Model.extend({
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-window.DeviceSensors = Backbone.Collection.extend({
+HUGnet.DeviceSensors = Backbone.Collection.extend({
     url: '/HUGnetLib/index.php',
     model: DeviceSensor,
     /**

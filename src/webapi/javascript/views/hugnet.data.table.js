@@ -43,7 +43,7 @@ $(function() {
     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
     */
     var Row = Backbone.View.extend({
-        model: History,
+        model: HUGnet.History,
         tagName: 'tr',
         template: '#DataPointTemplate',
         fields: {},

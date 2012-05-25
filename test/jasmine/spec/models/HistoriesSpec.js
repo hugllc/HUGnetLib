@@ -33,6 +33,16 @@ describe("HUGnet.Histories", function() {
             ]);
             expect(histories.pluck("Date")).toEqual([1, 2, 3, 4, 5]);
         });
+        it("it should not add the same record more than once", function() {
+            histories.add([
+                { id: 3, Date: 1, Data0: 1, Data1: 1 },
+                { id: 3, Date: 1, Data0: 2, Data1: 1 },
+                { id: 3, Date: 1, Data0: 3, Data1: 1 },
+                { id: 3, Date: 1, Data0: 4, Data1: 1 },
+                { id: 3, Date: 2, Data0: 5, Data1: 1 },
+            ]);
+            expect(histories.pluck("Date")).toEqual([1, 2]);
+        });
 
     });
 /*

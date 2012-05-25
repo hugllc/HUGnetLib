@@ -1,4 +1,5 @@
 *~
+node_modules/
 Documentation/
 :*
 HUGNET_LOCAL_DATABASE
