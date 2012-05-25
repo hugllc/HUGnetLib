@@ -67,7 +67,7 @@ var Device = Backbone.Model.extend({
             ViewButtonID: '',
             RefreshButtonID: '',
             target: '',
-            url: '/HUGnetLib/index.php',
+            url: '/HUGnetLib/index.php'
         };
     },
     /**
@@ -104,7 +104,7 @@ var Device = Backbone.Model.extend({
                     "task": "device",
                     "action": "get",
                     "id": id.toString(16)
-                },
+                }
             });
             ret.done(
                 function (data)
@@ -136,13 +136,13 @@ var Device = Backbone.Model.extend({
                     "task": "device",
                     "action": "post",
                     "id": id.toString(16),
-                    "device": self.toJSON(),
-                },
+                    "device": self.toJSON()
+                }
             });
             ret.done(
                 function (data)
                 {
-                    if (data == "success") {
+                    if (data === "success") {
                         self.trigger('saved');
                         self.fetch();
                     } else {
@@ -157,10 +157,6 @@ var Device = Backbone.Model.extend({
                 }
             );
         }
-    },
-    fail: function(msg)
-    {
-        alert(msg);
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -185,7 +181,7 @@ var Device = Backbone.Model.extend({
                     "task": "device",
                     "action": "config",
                     "id": id.toString(16)
-                },
+                }
             });
             ret.done(
                 function (data)
@@ -247,7 +243,7 @@ HUGnet.Devices = Backbone.Collection.extend({
             cache: false,
             data: {
                 "task": "device", "action": "getall"
-            },
+            }
         });
         ret.done(
             function (data)
@@ -255,5 +251,5 @@ HUGnet.Devices = Backbone.Collection.extend({
                 self.add(data);
             }
         );
-    },
+    }
 });

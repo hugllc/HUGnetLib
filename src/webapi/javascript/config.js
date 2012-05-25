@@ -45,7 +45,7 @@ HUGnet.Config = Backbone.View.extend({
     initialize: function (options)
     {
         this.devices = new HUGnet.DevicesView({
-            model: options.devices,
+            model: options.devices
         });
 
         this.render();
@@ -64,6 +64,6 @@ HUGnet.Config = Backbone.View.extend({
         this.tabs.tabs("add", '#config-tabs-devices', 'Device Information');
         $('#config-tabs-devices').html(this.devices.render().el);
 
-    },
+    }
 });
 

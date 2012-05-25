@@ -48,14 +48,14 @@ var FlotPoint = Backbone.Model.extend({
         data: [],
         label: null,
         yaxis: 1,
-        datefield: 'UnixDate',
+        datefield: 'UnixDate'
     },
     insert: function (history, offset)
     {
         var data = this.get('data');
         var field = this.get('fieldname');
         var date = this.get('datefield');
-        data.push([ parseInt(history.get(date) - offset), parseFloat(history.get(field)) ]);
+        data.push([ parseInt(history.get(date) - offset, 10), parseFloat(history.get(field)) ]);
         this.set('data', data);
     },
     remove: function (history, offset)
@@ -64,7 +64,7 @@ var FlotPoint = Backbone.Model.extend({
         var date = history.get(this.get('datefield')) - offset;
         var i;
         for (i = 0; i < data.length; i++) {
-            if (data[i][0] == date) {
+            if (data[i][0] === date) {
                 data.splice(i, 1);
                 break;
             }
@@ -91,7 +91,9 @@ HUGnet.FlotPoints = Backbone.Collection.extend({
     timeOffset: 0,
     initialize: function (models, options)
     {
-        if (options.timeOffset) this.timeOffset = options.timeOffset;
+        if (options.timeOffset) {
+            this.timeOffset = options.timeOffset;
+        }
         this.reset();
         _.each(
             options.fields,
@@ -99,10 +101,10 @@ HUGnet.FlotPoints = Backbone.Collection.extend({
             {
                 if ((value !== 'Date') && (value !== 'UnixDate')) {
                     this.add({
-                        id: parseInt(key),
+                        id: parseInt(key, 10),
                         label: options.header[key],
                         yaxis: 1,
-                        color: parseInt(key),
+                        color: parseInt(key, 10),
                         fieldname: value,
                         datefield: this.datefield
                     });
@@ -189,12 +191,12 @@ HUGnet.DataFlot = Backbone.View.extend({
             position: 'nw', container: '#flot-legend', noColumns: 2
         },
         selection: { mode: 'x' },
-        grid: { backgroundColor: '#EEE', hoverable: true, clickable: true },
+        grid: { backgroundColor: '#EEE', hoverable: true, clickable: true }
         //zoom: { interactive: true },
         //pan: { interactive: true }
     },
     events: {
-       'click #flot-choice input': 'render',
+       'click #flot-choice input': 'render'
     },
     initialize: function (options)
     {
@@ -233,7 +235,7 @@ HUGnet.DataFlot = Backbone.View.extend({
                 data.push(datasets[key]);
             }
         });
-        if (data.length == 0) {
+        if (data.length === 0) {
             data = datasets;
         }
         if (data.length > 0) {
@@ -296,11 +298,11 @@ HUGnet.DataFlot = Backbone.View.extend({
     hover: function (event, pos, item)
     {
         if (item) {
-            if (this.previousPoint != item.datapoint) {
+            if (this.previousPoint !== item.datapoint) {
                 this.previousPoint = item.datapoint;
                 this.$tooltip.remove();
                 var x = item.datapoint[0].toFixed(2);
-                var test = item.datapoint[1].toFixed(2);
+                var text = item.datapoint[1].toFixed(2);
                 this.renderTooltip(item.pageX, item.pageY, text);
             }
         } else {
@@ -321,5 +323,5 @@ HUGnet.DataFlot = Backbone.View.extend({
     {
         this.points.clear();
         this.render();
-    },
+    }
 });

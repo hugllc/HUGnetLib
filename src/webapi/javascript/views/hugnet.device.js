@@ -47,7 +47,7 @@ var DevicePropertiesView = Backbone.View.extend({
     events: {
         'click .SaveDevice': 'save',
         'submit #sensorForm': 'saveSensor',
-        'change #sensorForm select': 'saveSensor',
+        'change #sensorForm select': 'saveSensor'
     },
     initialize: function (options)
     {
@@ -55,7 +55,7 @@ var DevicePropertiesView = Backbone.View.extend({
         this.model.on('savefail', this.saveFail, this);
         this.model.on('saved', this.saveSuccess, this);
 
-        this.sensorsmodel = new DeviceSensors();
+        this.sensorsmodel = new HUGnet.DeviceSensors();
         var sensors = this.model.get('sensors');
         this.sensorsmodel.reset(sensors);
         this.sensors = new HUGnet.DeviceSensorsView({
@@ -76,7 +76,7 @@ var DevicePropertiesView = Backbone.View.extend({
         this.model.set({
             DeviceName: this.$(".DeviceName").val(),
             DeviceLocation: this.$(".DeviceLocation").val(),
-            DeviceJob: this.$(".DeviceJob").val(),
+            DeviceJob: this.$(".DeviceJob").val()
         });
         this.model.save();
     },
@@ -87,7 +87,7 @@ var DevicePropertiesView = Backbone.View.extend({
     saveFail: function ()
     {
         this.setTitle();
-        alert("Save Failed");
+        //alert("Save Failed");
     },
     saveSuccess: function ()
     {
@@ -95,7 +95,7 @@ var DevicePropertiesView = Backbone.View.extend({
         this.model.off('savefail', this.saveFail, this);
         this.model.off('saved', this.saveSuccess, this);
         this.remove();
-        alert("Save Succeeded");
+        //alert("Save Succeeded");
     },
     setTitle: function (extra)
     {
@@ -139,7 +139,7 @@ var DevicePropertiesView = Backbone.View.extend({
             $(this.tTemplate).html(),
             this.model.toJSON()
         );
-    },
+    }
 });
 
 /**
@@ -160,7 +160,7 @@ var DeviceEntryView = Backbone.View.extend({
     parent: null,
     events: {
         'click .refresh': 'refresh',
-        'click .properties': 'properties',
+        'click .properties': 'properties'
     },
     initialize: function (options)
     {
@@ -177,7 +177,7 @@ var DeviceEntryView = Backbone.View.extend({
     refreshFail: function ()
     {
         this.$el.removeClass("working");
-        alert("Failed to get the configuration for the device");
+        //alert("Failed to get the configuration for the device");
     },
     properties: function (e)
     {
@@ -204,7 +204,7 @@ var DeviceEntryView = Backbone.View.extend({
         );
         this.$el.trigger('update');
         return this;
-    },
+    }
 });
 
 /**
@@ -266,7 +266,7 @@ HUGnet.DevicesView = Backbone.View.extend({
             resizable: false,
             title: view.title(),
             dialogClass: "window",
-            zIndex: 500,
+            zIndex: 500
         });
         view.model.bind(
             'change',
@@ -276,5 +276,5 @@ HUGnet.DevicesView = Backbone.View.extend({
             },
             view
         );
-    },
+    }
 });

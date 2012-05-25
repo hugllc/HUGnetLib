@@ -62,6 +62,6 @@ HUGnet.Progress = Backbone.View.extend({
         this.$el.html('<div id="progressbar"></div>');
         this.$bar = this.$('div#progressbar');
         this.$bar.progressbar({ value: 0 });
-    },
+    }
 });
 

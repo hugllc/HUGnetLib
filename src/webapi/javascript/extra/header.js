@@ -37,5 +37,5 @@ if (typeof exports !== 'undefined') {
 }
 
 /* Wrap everything in an anonymous function */
-$(function() {
+(function() {
     "use strict";

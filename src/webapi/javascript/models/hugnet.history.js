@@ -71,12 +71,12 @@ HUGnet.History = Backbone.Model.extend({
         Data16: null,
         Data17: null,
         Data18: null,
-        Data19: null,
+        Data19: null
     },
     initialize: function ()
     {
         this.set("UnixDate", this.get("Date") * 1000);
-    },
+    }
 });
 
 /**
@@ -113,7 +113,7 @@ HUGnet.Histories = Backbone.Collection.extend({
         if (_.isObject(options)) {
             this.id = options.id;
             this.mode = options.mode;
-            this.limit = (options.limit !== undefined) ? parseInt(options.limit) : this.limit;
+            this.limit = (options.limit !== undefined) ? parseInt(options.limit, 10) : this.limit;
         }
     },
     latest: function ()
@@ -128,7 +128,7 @@ HUGnet.Histories = Backbone.Collection.extend({
     percdone: function ()
     {
         var d = (this.until - this.since);
-        if (d == 0) {
+        if (d === 0) {
             return 1;
         }
         return (this.LastHistory - this.since) / d;
@@ -170,7 +170,7 @@ HUGnet.Histories = Backbone.Collection.extend({
     {
         var self = this;
         var limit = this.getLimit;
-        if ((limit > this.limit) && (this.limit != 0)) {
+        if ((limit > this.limit) && (this.limit !== 0)) {
             limit = this.limit;
         }
         $.ajax({
@@ -181,17 +181,17 @@ HUGnet.Histories = Backbone.Collection.extend({
             data: {
                 "task": "history",
                 "id": this.id.toString(16),
-                "since": parseInt(this.LastHistory / 1000),
-                "until": parseInt(this.until / 1000),
+                "since": Math.round(this.LastHistory / 1000),
+                "until": Math.round(this.until / 1000),
                 "limit": limit,
-                "order": (this.limit == 0) ? 0 : 1,
-            },
+                "order": (this.limit === 0) ? 0 : 1
+            }
         }).done(
             function (data)
             {
                 if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
                     self.add(data);
-                    if ((data.length < self.getLimit) || (self.limit == limit)) {
+                    if ((data.length < self.getLimit) || (self.limit === limit)) {
                         self.trigger('fetchdone');
                         self.trigger('sync');
                     } else {
@@ -229,8 +229,8 @@ HUGnet.Histories = Backbone.Collection.extend({
             data: {
                 "task": "poll",
                 "id": this.id.toString(16),
-                "TestID": (this.type == "test") ? 1 : 0,
-            },
+                "TestID": (this.type === "test") ? 1 : 0
+            }
         }).done(
             function (data)
             {
@@ -254,5 +254,5 @@ HUGnet.Histories = Backbone.Collection.extend({
         /* This erases everything and triggers 'remove' events to the views go away */
         this.remove(this.models);
         this.LastHistory = 0;
-    },
+    }
 });

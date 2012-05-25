@@ -47,7 +47,7 @@ var DeviceSensorPropertiesView = Backbone.View.extend({
     _close: false,
     events: {
         'click .save': 'saveclose',
-        'change select.type': 'save',
+        'change select.type': 'save'
     },
     initialize: function (options)
     {
@@ -67,7 +67,7 @@ var DeviceSensorPropertiesView = Backbone.View.extend({
     saveFail: function (msg)
     {
         this.setTitle();
-        alert("Sensor Faled: " + msg);
+        //alert("Sensor Faled: " + msg);
     },
     saveclose: function (e)
     {
@@ -86,7 +86,7 @@ var DeviceSensorPropertiesView = Backbone.View.extend({
         console.log(extra);
         output.extra = {};
         for (i in extra) {
-            output['extra'][i] = output['extra['+i+']'];
+            output.extra[i] = output['extra['+i+']'];
             delete output['extra['+i+']'];
         }
         console.log(output);
@@ -133,7 +133,7 @@ var DeviceSensorPropertiesView = Backbone.View.extend({
             $(this.tTemplate).html(),
             this.model.toJSON()
         );
-    },
+    }
 });
 
 /**
@@ -149,12 +149,12 @@ var DeviceSensorPropertiesView = Backbone.View.extend({
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 var DeviceSensorEntryView = Backbone.View.extend({
-    model: DeviceSensor,
+    model: HUGnet.DeviceSensor,
     tagName: 'tr',
     template: '#DeviceSensorEntryTemplate',
     parent: null,
     events: {
-        'click .properties': 'properties',
+        'click .properties': 'properties'
     },
     initialize: function (options)
     {
@@ -185,7 +185,7 @@ var DeviceSensorEntryView = Backbone.View.extend({
             )
         );
         return this;
-    },
+    }
 });
 
 /**
@@ -247,7 +247,7 @@ HUGnet.DeviceSensorsView = Backbone.View.extend({
             resizable: false,
             title: view.title(),
             dialogClass: "window",
-            zIndex: 1000,
+            zIndex: 1000
         });
         view.model.bind(
             'change',
@@ -257,5 +257,5 @@ HUGnet.DeviceSensorsView = Backbone.View.extend({
             },
             view
         );
-    },
+    }
 });

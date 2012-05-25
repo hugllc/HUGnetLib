@@ -61,7 +61,7 @@ HUGnet.DataView = Backbone.View.extend({
     polling: false,
     events: {
         'click #autorefresh': 'setRefresh',
-        'submit': 'submit',
+        'submit': 'submit'
     },
     initialize: function (options)
     {
@@ -89,8 +89,8 @@ HUGnet.DataView = Backbone.View.extend({
                 index++;
             }
         }
-        this.pause = (options.pause !== undefined) ? parseInt(options.pause) : this.pause;
-        this.limit = (options.limit !== undefined) ? parseInt(options.limit) : this.limit;
+        this.pause = (options.pause !== undefined) ? parseInt(options.pause, 10) : this.pause;
+        this.limit = (options.limit !== undefined) ? parseInt(options.limit, 10) : this.limit;
         this.type = (options.type !== undefined) ? options.type : this.type;
         this.history = new HUGnet.Histories(
             null,
@@ -99,7 +99,7 @@ HUGnet.DataView = Backbone.View.extend({
                 id: this.model.get('id'),
                 mode: this.mode,
                 type: this.type,
-                limit: this.limit,
+                limit: this.limit
             }
         );
         this.history.on(
@@ -115,7 +115,7 @@ HUGnet.DataView = Backbone.View.extend({
             model: this.history,
             header: this.header,
             fields: this.fields,
-            classes: this.classes,
+            classes: this.classes
         });
         this.setupPlot();
     },
@@ -127,7 +127,7 @@ HUGnet.DataView = Backbone.View.extend({
             header: this.header,
             fields: this.fields,
             classes: this.classes,
-            timeOffset: d.getTimezoneOffset() * 60000,
+            timeOffset: d.getTimezoneOffset() * 60000
         });
     },
     setRefresh: function ()
@@ -155,7 +155,7 @@ HUGnet.DataView = Backbone.View.extend({
                 width: 300,
                 title: "Building Data Array",
                 dialogClass: "window",
-                zIndex: 500,
+                zIndex: 500
             });
             this.history.on('fetchagain', progress.update, progress);
             this.history.on('sync', progress.remove, progress);
@@ -164,7 +164,7 @@ HUGnet.DataView = Backbone.View.extend({
     },
     getField: function (index, field)
     {
-        if (parseInt(field) == field) {
+        if (parseInt(field, 10) === field) {
             return "Data" + index;
         }
         return field;
@@ -201,7 +201,7 @@ HUGnet.DataView = Backbone.View.extend({
             this.history.on("fetchfail", this._finishFetch, this);
             this.history.on("fetchdone", this._finishFetch, this);
             this.$('#autorefresh').prop("disabled", true);
-            this.$('#autorefresh').prop("checked", false)
+            this.$('#autorefresh').prop("checked", false);
         }
     },
     _finishFetch: function ()
@@ -270,7 +270,7 @@ HUGnet.DataPollView = HUGnet.DataView.extend({
     pause: 1,
     events: {
         'click .startPoll': 'startPoll',
-        'click .stopPoll': 'stopPoll',
+        'click .stopPoll': 'stopPoll'
     },
     initialize: function (options)
     {
@@ -303,5 +303,5 @@ HUGnet.DataPollView = HUGnet.DataView.extend({
             },
             (this.pause * 1000)
         );
-    },
+    }
 });

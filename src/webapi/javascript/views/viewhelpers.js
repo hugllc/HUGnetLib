@@ -32,7 +32,7 @@ HUGnet.viewHelpers = {
     formatDate: function (date, alt)
     {
         alt = (alt !== undefined) ? alt : "Never";
-        if ((date == undefined) || (date == 0)) {
+        if ((date === undefined) || (date === 0)) {
             return alt;
         }
         var d = new Date(date * 1000);
@@ -43,7 +43,7 @@ HUGnet.viewHelpers = {
         var html = "";
         for (; start <= end; start += inc) {
             html += '<option value="'+start+'" ';
-            if (start == selected) {
+            if (start === selected) {
                 html += 'selected="selected"';
             }
             html += '>'+start+'</option>';

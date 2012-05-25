@@ -46,7 +46,7 @@ HUGnet.TestSuite = Backbone.View.extend({
     initialize: function (options)
     {
         this.tests = new HUGnet.TestsView({
-            model: options.tests,
+            model: options.tests
         });
 
         this.render();
@@ -98,14 +98,14 @@ HUGnet.TestSuite = Backbone.View.extend({
                 this.testTab(test, 'view');
             },
             this
-        )
+        );
     },
     testTab: function (test, mode)
     {
         var self = this;
         var tag = "#tabs-test" + test.get("id");
         if (this.data[tag] !== undefined) {
-            alert('Tab for "' + test.get("DeviceName") + '" is already open');
+            //alert('Tab for "' + test.get("DeviceName") + '" is already open');
             return;
         }
         var title = "";
@@ -114,7 +114,7 @@ HUGnet.TestSuite = Backbone.View.extend({
                 parent: tag,
                 mode: mode,
                 model: test,
-                TestID: 1,
+                TestID: 1
             });
             title = 'Run Test "' + test.get("DeviceName") + '"';
         } else {
@@ -122,9 +122,9 @@ HUGnet.TestSuite = Backbone.View.extend({
                 parent: tag,
                 mode: mode,
                 model: test,
-                TestID: 1,
+                TestID: 1
             });
-            title = 'View Test "' + test.get("DeviceName") + '"'
+            title = 'View Test "' + test.get("DeviceName") + '"';
         }
 
         this.tabs.tabs("add", tag, title);

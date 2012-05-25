@@ -41,13 +41,13 @@
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 var TestEntryView = Backbone.View.extend({
-    model: Device,
+    model: HUGnet.Device,
     tagName: 'tr',
     template: '#TestEntryTemplate',
     parent: null,
     events: {
         'click .run': 'run',
-        'click .view': 'view',
+        'click .view': 'view'
     },
     initialize: function (options)
     {
@@ -84,7 +84,7 @@ var TestEntryView = Backbone.View.extend({
         );
         this.$el.trigger('update');
         return this;
-    },
+    }
 });
 
 /**
@@ -103,7 +103,7 @@ HUGnet.TestsView = Backbone.View.extend({
     template: "#TestListTemplate",
     rows: 0,
     events: {
-        'click .new': 'new',
+        'click .new': 'create'
     },
     initialize: function (options)
     {
@@ -111,13 +111,13 @@ HUGnet.TestsView = Backbone.View.extend({
         this.model.bind('add', this.insert, this);
         this.model.bind('savefail', this.saveFail, this);
     },
-    new: function ()
+    create: function ()
     {
-        this.model.new();
+        this.model.create();
     },
     saveFail: function (msg)
     {
-        alert("Save Failed: " + msg);
+        //alert("Save Failed: " + msg);
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -148,5 +148,5 @@ HUGnet.TestsView = Backbone.View.extend({
             this.$el.trigger('update');
             this.$('.tablesorter').trigger('update');
         }
-    },
+    }
 });

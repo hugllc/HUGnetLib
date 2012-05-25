@@ -16,4 +16,4 @@ setup:
 	npm install jsdom
 	npm install jquery
 	npm install backbone
-	npm install underscore
+	sudo npm install jshint -g

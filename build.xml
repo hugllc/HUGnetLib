@@ -30,8 +30,17 @@
     </target>
 
     <target name="jasmine" depends="build" description="Run unit tests using jasmine and generates junit.xml and clover.xml">
-        <exec executable="node" failonerror="false" dir="test/jasmine">
+        <delete dir="${basedir}/build/jasmine" failonerror="false"/>
+        <exec executable="node" failonerror="false" dir="${basedir}/test/jasmine">
             <arg line="SpecRunner.js" />
+        </exec>
+    </target>
+    <target name="jshint" depends="build" description="code check">
+        <mkdir dir="${basedir}/build/javascript"/>
+        <delete file="${basedir}/build/javascript/jshint.xml" failonerror="false"/>
+        <exec executable="jshint" failonerror="false" dir="${basedir}/src/webapi/html"
+            output="${basedir}/build/javascript/jshint.xml">
+            <arg line="--jslint-reporter --config ${basedir}/test/jshint.json hugnet.js" />
         </exec>
     </target>
     <target name="phpunit" description="Run unit tests using PHPUnit and generates junit.xml and clover.xml">
@@ -167,7 +176,7 @@
 
 
     <target name="build" depends="buildJavaScript"/>
-    <target name="test" depends="clean,setup,pdepend,phpmd,phpcpd,phpcs,docblox,phploc,phpunit,phpcb,cleanafter"/>
+    <target name="test" depends="clean,setup,build,jshint,jasmine,pdepend,phpmd,phpcpd,phpcs,docblox,phploc,phpunit,phpcb,cleanafter"/>
     <target name="deb" depends="build,deb.build"/>
     <target name="post" depends="deb.post"/>
     <target name="testpost" depends="deb.testpost"/>

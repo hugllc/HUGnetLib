@@ -54,7 +54,7 @@ var DeviceSensor = Backbone.Model.extend({
             decimals: 0,
             driver: 'SDEFAULT',
             params: {},
-            url: '/HUGnetLib/index.php',
+            url: '/HUGnetLib/index.php'
         };
     },
     idAttribute: 'sensor',
@@ -84,9 +84,9 @@ var DeviceSensor = Backbone.Model.extend({
             {
                 "task": "sensor",
                 "action": "get",
-                "id": parseInt(dev).toString(16),
-                "sid": this.get("sensor"),
-            },
+                "id": parseInt(dev, 10).toString(16),
+                "sid": this.get("sensor")
+            }
         }).done(
             function (data)
             {
@@ -126,14 +126,14 @@ var DeviceSensor = Backbone.Model.extend({
             data: {
                 "task": "sensor",
                 "action": "post",
-                "id": parseInt(dev).toString(16),
+                "id": parseInt(dev, 10).toString(16),
                 "sid": this.get("sensor"),
-                "sensor": data,
-            },
+                "sensor": data
+            }
         }).done(
             function (data)
             {
-                if (data == "success") {
+                if (data === "success") {
                     self.trigger('saved');
                     self.fetch();
                 } else {
@@ -146,7 +146,7 @@ var DeviceSensor = Backbone.Model.extend({
                 self.trigger('savefail', "failed to contact server");
             }
         );
-    },
+    }
 });
 
 /**
@@ -175,5 +175,5 @@ HUGnet.DeviceSensors = Backbone.Collection.extend({
     */
     fetch: function ()
     {
-    },
+    }
 });
