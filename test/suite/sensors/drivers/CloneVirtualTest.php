@@ -254,8 +254,8 @@ class CloneVirtualTest extends DriverTestBase
     /**
     * test the set routine when an extra class exists
     *
-    * @param array  $mocks  The mocks to set
-    * @param array  $expect The expected return
+    * @param array $mocks  The mocks to set
+    * @param array $expect The expected return
     *
     * @return null
     *
