@@ -15,11 +15,39 @@ for(var key in jasmine) {
 //What we're testing
 global.HUGnet = require("../../src/webapi/html/hugnet.js").HUGnet;
 
+var isVerbose = false;
+var showColors = true;
+var teamcity = process.env.TEAMCITY_PROJECT_NAME || false;
+var useRequireJs = false;
+var extentions = "js";
+var match = '.';
+var matchall = false;
+var autotest = false;
+var specFolder = __dirname + '/spec';
+var regExpSpec = null;
+
+jasmine.loadHelpersInFolder(
+    specFolder,
+    new RegExp("helpers?\\.(" + extentions + ")$", 'i')
+);
+
+var junitreport = {
+  report: true,
+  savePath : __dirname + "/../../build/jasmine/",
+  useDotNotation: true,
+  consolidate: true
+}
+
 jasmine.executeSpecsInFolder(
-    __dirname + '/spec', function(runner, log)
+    specFolder,
+    function(runner, log)
     {
         process.exit(runner.results().failedCount ? 1 : 0);
     },
-    true,
-    true
+    isVerbose,
+    showColors,
+    teamcity,
+    useRequireJs,
+    regExpSpec,
+    junitreport
 );

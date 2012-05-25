@@ -12,8 +12,8 @@ setup:
 	sudo pear update
 	sudo pear config-set auto_discover 1
 	sudo pear install pear.phpqatools.org/phpqatools pear.netpirates.net/phpDox
-	sudo npm install jasmine-node
-	sudo npm install jsdom
-	sudo npm install jquery
-	sudo npm install backbone
-	sudo npm install underscore
+	npm install jasmine-node
+	npm install jsdom
+	npm install jquery
+	npm install backbone
+	npm install underscore
