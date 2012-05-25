@@ -121,11 +121,13 @@ HUGnet.DataView = Backbone.View.extend({
     },
     setupPlot: function ()
     {
+        var d = new Date();
         this.plot = new HUGnet.DataFlot({
             model: this.history,
             header: this.header,
             fields: this.fields,
             classes: this.classes,
+            timeOffset: d.getTimezoneOffset() * 60000,
         });
     },
     setRefresh: function ()
@@ -142,6 +144,8 @@ HUGnet.DataView = Backbone.View.extend({
     {
         this.stopPoll();
         if (!this.polling) {
+            this.$('#autorefresh').prop("disabled", true);
+            this.$('input[type="submit"]').prop('disabled', true);
             this.since = Date.parse(this.$('#since').val());
             this.until = Date.parse(this.$('#until').val());
             this.history.getPeriod(this.since, this.until);
@@ -155,6 +159,7 @@ HUGnet.DataView = Backbone.View.extend({
             });
             this.history.on('fetchagain', progress.update, progress);
             this.history.on('sync', progress.remove, progress);
+            this.history.on('sync', this._finishFetch, this);
         }
     },
     getField: function (index, field)
@@ -202,6 +207,7 @@ HUGnet.DataView = Backbone.View.extend({
         this.$('#autorefresh').prop("disabled", false);
         this.history.off("fetchfail", this._finishFetch, this);
         this.history.off("fetchdone", this._finishFetch, this);
+        this.history.off('sync', this._finishFetch, this);
         this.polling = false;
     },
     _poll: function ()

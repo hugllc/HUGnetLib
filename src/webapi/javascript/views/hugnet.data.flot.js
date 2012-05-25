@@ -50,18 +50,18 @@ var FlotPoint = Backbone.Model.extend({
         yaxis: 1,
         datefield: 'UnixDate',
     },
-    insert: function (history)
+    insert: function (history, offset)
     {
         var data = this.get('data');
         var field = this.get('fieldname');
         var date = this.get('datefield');
-        data.push([ parseInt(history.get(date)), parseFloat(history.get(field)) ]);
+        data.push([ parseInt(history.get(date) - offset), parseFloat(history.get(field)) ]);
         this.set('data', data);
     },
-    remove: function (history)
+    remove: function (history, offset)
     {
         var data = this.get('data');
-        var date = history.get(this.get('datefield'));
+        var date = history.get(this.get('datefield')) - offset;
         var i;
         for (i = 0; i < data.length; i++) {
             if (data[i][0] == date) {
@@ -88,8 +88,10 @@ var FlotPoint = Backbone.Model.extend({
 HUGnet.FlotPoints = Backbone.Collection.extend({
     model: FlotPoint,
     datefield: 'UnixDate',
+    timeOffset: 0,
     initialize: function (models, options)
     {
+        if (options.timeOffset) this.timeOffset = options.timeOffset;
         this.reset();
         _.each(
             options.fields,
@@ -125,7 +127,7 @@ HUGnet.FlotPoints = Backbone.Collection.extend({
         histories.each(
             function (model, collection, options)
             {
-                this.insert(model);
+                this.insert(model, this.timeOffset);
             },
             this
         );
@@ -135,8 +137,9 @@ HUGnet.FlotPoints = Backbone.Collection.extend({
         this.each(
             function (model, collection, options)
             {
-                model.insert(history);
-            }
+                model.insert(history, this.timeOffset);
+            },
+            this
         );
     },
     remove: function (history)
@@ -144,8 +147,9 @@ HUGnet.FlotPoints = Backbone.Collection.extend({
         this.each(
             function (model, collection, options)
             {
-                model.remove(history);
-            }
+                model.remove(history, this.timeOffset);
+            },
+            this
         );
     },
     clear: function ()
@@ -154,7 +158,8 @@ HUGnet.FlotPoints = Backbone.Collection.extend({
             function (model, collection, options)
             {
                 model.set('data', []);
-            }
+            },
+            this
         );
     }
 });
