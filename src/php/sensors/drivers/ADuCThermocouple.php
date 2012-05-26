@@ -135,8 +135,8 @@ class ADuCThermocouple extends \HUGnet\sensors\DriverADuC
         $Vref  = $this->getExtra(2);
         $type  = $this->getExtra(3);
 
-        $A = \HUGnet\Util::getTwosCompliment($A, 32);
-        $A = \HUGnet\Util::inputBiasCompensation($A, $Rin, $Rbias);
+        $A = $this->getTwosCompliment($A, 32);
+        $A = $this->inputBiasCompensation($A, $Rin, $Rbias);
         $Va = ($A / $Am) * $Vref;
         $T = $this->_getThermocouple($Va, $data[0]["value"], $type);
         if (is_null($T)) {

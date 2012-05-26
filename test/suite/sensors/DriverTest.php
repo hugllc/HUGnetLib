@@ -525,6 +525,86 @@ class DriverTest extends drivers\DriverTestBase
         $this->assertSame($retExpect, $ret, "Return is wrong");
         $this->assertSame($expect, $string, "String is wrong");
     }
+
+    /**
+    * data provider for testNumeric
+    *
+    * @return array
+    */
+    public static function dataLinearBounded()
+    {
+        return array(
+            array(
+                10,
+                0,
+                20,
+                0,
+                100,
+                50.0,
+            ),
+            array(
+                5.4321,
+                0,
+                10,
+                0,
+                100,
+                54.321,
+            ),
+            array(
+                30,
+                0,
+                20,
+                0,
+                100,
+                null,
+            ),
+            array(
+                5,
+                10,
+                20,
+                0,
+                100,
+                null,
+            ),
+            array(
+                5,
+                10,
+                10,
+                0,
+                100,
+                null,
+            ),
+            array(
+                null,
+                10,
+                10,
+                0,
+                100,
+                null,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param int   $value  The integer to feed to the function
+    * @param float $Imin   The Input minimum
+    * @param float $Imax   The Input maximum
+    * @param float $Omin   The Output minimum
+    * @param float $Omax   The Output maximum
+    * @param int   $expect The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataLinearBounded
+    */
+    public function testLinearBounded($value, $Imin, $Imax, $Omin, $Omax, $expect)
+    {
+        bcscale(10);
+        $val = $this->o->linearBounded($value, $Imin, $Imax, $Omin, $Omax);
+        $this->assertEquals($expect, $val, 0.0001);
+    }
 }
 /**
  * Base driver class for devices.
@@ -593,6 +673,21 @@ class DriverTestClass extends Driver
         $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
         return null;
+    }
+    /**
+    * This makes a line of two ordered pairs, then puts $A on that line
+    *
+    * @param float $value The incoming value
+    * @param float $Imin  The input minimum
+    * @param float $Imax  The input maximum
+    * @param float $Omin  The output minimum
+    * @param float $Omax  The output maximum
+    *
+    * @return output rounded to 4 places
+    */
+    public function linearBounded($value, $Imin, $Imax, $Omin, $Omax)
+    {
+        return parent::linearBounded($value, $Imin, $Imax, $Omin, $Omax);
     }
 }
 ?>

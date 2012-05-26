@@ -123,7 +123,7 @@ class ADuCVishayRTD extends \HUGnet\sensors\DriverADuC
         $Am    = pow(2, 23);
         $Rbias = $this->getExtra(0);
 
-        $A = \HUGnet\Util::getTwosCompliment($A, 32);
+        $A = $this->getTwosCompliment($A, 32);
         $A = abs($A);
         if ($A == $Am) {
             return null;

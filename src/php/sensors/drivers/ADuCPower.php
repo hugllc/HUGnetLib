@@ -132,7 +132,7 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
     ) {
         bcscale(10);
         $Am   = pow(2, 23);
-        $A = \HUGnet\Util::getTwosCompliment($A, 32);
+        $A = $this->getTwosCompliment($A, 32);
         $sid = $this->sensor()->id();
         $maxDecimals = $this->get("maxDecimals", $sid);
         if (($sid == 2) || ($sid == 4)) {
@@ -140,7 +140,7 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
             $Vref  = $this->getExtra(0, $sid - 1);
             $Rin   = $this->getExtra(2, $sid - 1);
             $Rbias = $this->getExtra(3, $sid - 1);
-            $A = \HUGnet\Util::inputBiasCompensation($A, $Rin, $Rbias);
+            $A = $this->inputBiasCompensation($A, $Rin, $Rbias);
             $Va = ($A / $Am) * $Vref;
             return round($Va, $maxDecimals);
         } else if (($sid == 1) || ($sid == 3)) {
@@ -152,7 +152,7 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
             if ($R == 0) {
                 return null;
             }
-            $A = \HUGnet\Util::inputBiasCompensation($A, $Rin, $Rbias);
+            $A = $this->inputBiasCompensation($A, $Rin, $Rbias);
             $Va = ($A / $Am) * $Vref;
             $I = $Va / $R;
             return round($I, $maxDecimals);

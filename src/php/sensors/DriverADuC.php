@@ -66,33 +66,45 @@ abstract class DriverADuC extends Driver
     protected $params = array(
     );
     /**
-    * This is where all of the defaults are stored.
+    * Changes an n-bit twos compliment number into a signed number PHP can use
+    *
+    * @param int   $value The incoming number
+    * @param float $bits  The number of bits the incoming number is
+    *
+    * @return int A signed integer for PHP to use
     */
-    private $_default = array(
-        "longName" => "Unknown Sensor",
-        "shortName" => "Unknown",
-        "unitType" => "unknown",
-        "bound" => false,                // This says if this sensor is changeable
-        "virtual" => false,              // This says if we are a virtual sensor
-        "total"   => false,              // Whether to total instead of average
-        "extraText" => array(),
-        "extraDefault" => array(),
-        // Integer is the size of the field needed to edit
-        // Array   is the values that the extra can take
-        // Null    nothing
-        "extraValues" => array(),
-        "storageUnit" => "unknown",
-        "storageType" => \HUGnet\units\Driver::TYPE_RAW, // Storage dataType
-        "maxDecimals" => 2,
-        "dataTypes" => array(
-            \HUGnet\units\Driver::TYPE_RAW => \HUGnet\units\Driver::TYPE_RAW,
-            \HUGnet\units\Driver::TYPE_DIFF => \HUGnet\units\Driver::TYPE_DIFF,
-            \HUGnet\units\Driver::TYPE_IGNORE => \HUGnet\units\Driver::TYPE_IGNORE,
-        ),
-        "defMin" => 0,
-        "defMax" => 150,
-        "inputSize" => 3,
-    );
+    protected function getTwosCompliment($value, $bits = 24)
+    {
+        /* Clear off any excess */
+        $value = (int)($value & (pow(2, $bits) - 1));
+        /* Calculate the top bit */
+        $topBit = pow(2, ($bits - 1));
+        /* Check to see if the top bit is set */
+        if (($value & $topBit) == $topBit) {
+            /* This is a negative number */
+            $value = -(pow(2, $bits) - $value);
+        }
+        return $value;
+    }
+    /**
+    * Compensates for an input and bias resistance.
+    *
+    * The bias and input resistance values can be in Ohms, kOhms or even MOhms.  It
+    * doesn't matter as long as they are both the same units.
+    *
+    * @param float $value The incoming number
+    * @param float $Rin   The input resistor.
+    * @param float $Rbias The bias resistor.
+    *
+    * @return float The compensated value
+    */
+    protected function inputBiasCompensation($value, $Rin, $Rbias)
+    {
+        if ($Rbias == 0) {
+            return null;
+        }
+        return (float)bcdiv(bcmul($value, bcadd($Rin, $Rbias)), $Rbias);
+    }
 }
 
 
