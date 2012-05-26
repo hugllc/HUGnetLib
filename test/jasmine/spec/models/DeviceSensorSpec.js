@@ -1,20 +1,20 @@
-describe("src/webapi/javascript/models/HUGnet.History", function() {
+describe("src/webapi/javascript/models/HUGnet.DeviceSensor", function() {
 
     describe("when it is initialized", function() {
-        var history;
+        var sensor;
 
         beforeEach(function() {
-            history = new HUGnet.History({
-                id: 1,
-                Date: 123456789,
+            sensor = new HUGnet.DeviceSensor({
+                id: 0,
+                dev: 0x12,
             });
         });
 
-        it("UnixDate should be set to (1000 * Date)", function() {
-            expect(history.get('UnixDate')).toEqual(history.get('Date') * 1000);
+        it("driver should default to SDEFAULT", function() {
+            expect(sensor.get('driver')).toEqual('SDEFAULT');
         });
-        it("Type should default to history", function() {
-            expect(history.get('Type')).toEqual('history');
+        it("type should default to Unknown", function() {
+            expect(sensor.get('type')).toEqual('Unknown');
         });
 
     });

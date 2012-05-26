@@ -1,47 +1,47 @@
-describe("src/webapi/javascript/models/HUGnet.Histories", function() {
+describe("src/webapi/javascript/models/HUGnet.DeviceSensors", function() {
 
     describe("When it is initialized", function() {
-        var histories;
+        var sensors;
 
         beforeEach(function() {
-            histories = new HUGnet.Histories();
+            sensors = new HUGnet.DeviceSensors();
         });
         afterEach(function() {
         });
 
         it("it should be empty", function() {
-            expect(histories.length).toEqual(0);
+            expect(sensors.length).toEqual(0);
         });
 
     });
     describe("When adding and deleting records", function() {
-        var histories;
+        var sensors;
 
         beforeEach(function() {
-            histories = new HUGnet.Histories();
+            sensors = new HUGnet.DeviceSensors();
         });
         afterEach(function() {
         });
 
-        it("it should keep them in order by date", function() {
-            histories.add([
-                { id: 3, Date: 1, Data0: 0, Data1: 1 },
-                { id: 3, Date: 5, Data0: 0, Data1: 1 },
-                { id: 3, Date: 2, Data0: 0, Data1: 1 },
-                { id: 3, Date: 4, Data0: 0, Data1: 1 },
-                { id: 3, Date: 3, Data0: 0, Data1: 1 },
+        it("it should keep them in order by sensor", function() {
+            sensors.add([
+                { sensor: 1, driver: "a", dev: 0, type: 1 },
+                { sensor: 5, driver: "b", dev: 0, type: 1 },
+                { sensor: 2, driver: "c", dev: 0, type: 1 },
+                { sensor: 4, driver: "d", dev: 0, type: 1 },
+                { sensor: 3, driver: "e", dev: 0, type: 1 },
             ]);
-            expect(histories.pluck("Date")).toEqual([1, 2, 3, 4, 5]);
+            expect(sensors.pluck("sensor")).toEqual([1, 2, 3, 4, 5]);
         });
         it("it should not add the same record more than once", function() {
-            histories.add([
-                { id: 3, Date: 1, Data0: 1, Data1: 1 },
-                { id: 3, Date: 1, Data0: 2, Data1: 1 },
-                { id: 3, Date: 1, Data0: 3, Data1: 1 },
-                { id: 3, Date: 1, Data0: 4, Data1: 1 },
-                { id: 3, Date: 2, Data0: 5, Data1: 1 },
+            sensors.add([
+                { sensor: 1, driver: 1, dev: 1, type: 1 },
+                { sensor: 1, driver: 1, dev: 2, type: 1 },
+                { sensor: 1, driver: 1, dev: 3, type: 1 },
+                { sensor: 1, driver: 1, dev: 4, type: 1 },
+                { sensor: 2, driver: 2, dev: 5, type: 1 },
             ]);
-            expect(histories.pluck("Date")).toEqual([1, 2]);
+            expect(sensors.pluck("sensor")).toEqual([1, 2]);
         });
 
     });

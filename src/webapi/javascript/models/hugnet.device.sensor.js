@@ -40,22 +40,20 @@
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-var DeviceSensor = Backbone.Model.extend({
-    defaults: function ()
+HUGnet.DeviceSensor = Backbone.Model.extend({
+    defaults:
     {
-        return {
-            dev: null,
-            sensor: null,
-            id: null,
-            type: "Unknown",
-            location: 'No Name',
-            dataType: 'raw',
-            units: 'Unknown',
-            decimals: 0,
-            driver: 'SDEFAULT',
-            params: {},
-            url: '/HUGnetLib/index.php'
-        };
+        dev: null,
+        sensor: null,
+        id: null,
+        type: "Unknown",
+        location: 'No Name',
+        dataType: 'raw',
+        units: 'Unknown',
+        decimals: 0,
+        driver: 'SDEFAULT',
+        params: {},
+        url: '/HUGnetLib/index.php'
     },
     idAttribute: 'sensor',
     /**
@@ -163,7 +161,11 @@ var DeviceSensor = Backbone.Model.extend({
 */
 HUGnet.DeviceSensors = Backbone.Collection.extend({
     url: '/HUGnetLib/index.php',
-    model: DeviceSensor,
+    model: HUGnet.DeviceSensor,
+    comparator: function (model)
+    {
+        return model.get("sensor");
+    },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
     *

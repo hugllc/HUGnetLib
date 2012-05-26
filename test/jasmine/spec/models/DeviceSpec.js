@@ -1,20 +1,25 @@
-describe("src/webapi/javascript/models/HUGnet.History", function() {
+describe("src/webapi/javascript/models/HUGnet.Device", function() {
 
     describe("when it is initialized", function() {
-        var history;
+        var device;
 
         beforeEach(function() {
-            history = new HUGnet.History({
-                id: 1,
-                Date: 123456789,
+            var device = new HUGnet.Device({
             });
         });
 
-        it("UnixDate should be set to (1000 * Date)", function() {
-            expect(history.get('UnixDate')).toEqual(history.get('Date') * 1000);
+        it("DeviceID should be set to the id", function() {
+            var dev = new HUGnet.Device({
+                id: 0x123456
+            });
+            expect(dev.get('DeviceID')).toEqual('123456');
         });
-        it("Type should default to history", function() {
-            expect(history.get('Type')).toEqual('history');
+        it("but only if DeviceID is not already set", function() {
+            var dev = new HUGnet.Device({
+                id: 0x123456,
+                DeviceID: '654321'
+            });
+            expect(dev.get('DeviceID')).toEqual('654321');
         });
 
     });

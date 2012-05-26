@@ -40,41 +40,43 @@
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-var Device = Backbone.Model.extend({
-    defaults: function ()
+HUGnet.Device = Backbone.Model.extend({
+    idAttribute: 'id',
+    defaults:
     {
-        return {
-            id: 0,
-            DeviceID: '000000',
-            DeviceName: '',
-            HWPartNum: '',
-            FWPartNum: '',
-            FWVersion: '',
-            RawSetup: '',
-            Active: 0,
-            GatewayKey: 0,
-            ControllerKey: 0,
-            ControllerIndex: 0,
-            DeviceLocation: '',
-            DeviceJob: '',
-            Driver: '',
-            PollInterval: 0,
-            ActiveSensors: 0,
-            DeviceGroup: 'FFFFFF',
-            sensors: {},
-            params: {},
-            actions: '',
-            ViewButtonID: '',
-            RefreshButtonID: '',
-            target: '',
-            url: '/HUGnetLib/index.php'
-        };
+        id: 0,
+        DeviceID: '000000',
+        DeviceName: '',
+        HWPartNum: '',
+        FWPartNum: '',
+        FWVersion: '',
+        RawSetup: '',
+        Active: 0,
+        GatewayKey: 0,
+        ControllerKey: 0,
+        ControllerIndex: 0,
+        DeviceLocation: '',
+        DeviceJob: '',
+        Driver: '',
+        PollInterval: 0,
+        ActiveSensors: 0,
+        DeviceGroup: 'FFFFFF',
+        sensors: {},
+        params: {},
+        actions: '',
+        ViewButtonID: '',
+        RefreshButtonID: '',
+        target: '',
+        url: '/HUGnetLib/index.php'
     },
     /**
     * This function initializes the object
     */
     initialize: function(attrib)
     {
+        if (this.get("DeviceID") === '000000') {
+            this.set("DeviceID", this.get("id").toString(16));
+        }
     },
     /**
     * This function initializes the object
@@ -219,10 +221,10 @@ var Device = Backbone.Model.extend({
 */
 HUGnet.Devices = Backbone.Collection.extend({
     url: '/HUGnetLib/index.php',
-    model: Device,
-    comparator: function (device)
+    model: HUGnet.Device,
+    comparator: function (model)
     {
-        return device.get("id");
+        return model.get("id");
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
