@@ -41,10 +41,13 @@ HUGnet.viewHelpers = {
     selectInt: function (start, end, inc, selected)
     {
         var html = "";
-        for (; start <= end; start += inc) {
-            html += '<option value="'+start+'" ';
+        if (inc === 0) {
+            return html;
+        }
+        for (; ((start <= end) && (inc > 0)) || ((start >= end) && (inc < 0)); start += inc) {
+            html += '<option value="'+start+'"';
             if (start === selected) {
-                html += 'selected="selected"';
+                html += ' selected="selected"';
             }
             html += '>'+start+'</option>';
         }
