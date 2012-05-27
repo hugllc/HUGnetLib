@@ -330,7 +330,8 @@ class DriverADuCTest extends drivers\DriverTestBase
         bcscale(10);
         $val = $this->o->inputBiasCompensation($value, $Rin, $Rbias);
         $this->assertEquals($expect, $val, 0.0001);
-    }}
+    }
+}
 /**
  * Base driver class for devices.
  *

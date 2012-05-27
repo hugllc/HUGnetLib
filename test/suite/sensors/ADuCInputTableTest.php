@@ -146,7 +146,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
     *
     * @param array  $mock    The mocks to preload
     * @param string $preload The string to give to the class
-    * @param string $oaram   The driver number
+    * @param string $param   The driver number
     * @param string $set     The values to set the register to
     * @param array  $expect  The info to expect returned
     *

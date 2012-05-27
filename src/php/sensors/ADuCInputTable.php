@@ -181,7 +181,6 @@ class ADuCInputTable
     *
     * @param object $sensor The sensor object we are working with
     * @param mixed  $config This could be a string or array or null
-    *
     */
     private function __construct($sensor, $config = null)
     {
@@ -200,6 +199,7 @@ class ADuCInputTable
     * @param object $sensor The sensor object we are working with
     * @param mixed  $config This could be a string or array or null
     *
+    * @return object The new object
     */
     public static function &factory($sensor, $config = null)
     {
@@ -281,10 +281,10 @@ class ADuCInputTable
     /**
     * This builds teh ADCFLT Register
     *
-    * @param string $num The driver number
-    * @param string $set The values to set the register to
+    * @param string $param The parameter to set
+    * @param string $set   The values to set the register to
     *
-    * @return 16 bit integer that is the FLT setup
+    * @return 16 bit integer in a hex string
     */
     private function _params($param, $set = null)
     {
