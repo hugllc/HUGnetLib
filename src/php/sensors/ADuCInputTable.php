@@ -58,39 +58,6 @@ defined('_HUGNET') or die('HUGnetSystem not found');
 class ADuCInputTable
 {
     /**
-    * This is where we setup the sensor object
-    */
-    private $_pos = array(
-        "ADC0CON" => array(
-            "ADC0EN"      => 15,
-            "ADC0DIAG"    => 13,
-            "HIGHEXTREF0" => 12,
-            "AMP_CM"      => 11,
-            "ADC0CODE"    => 10,
-            "ADC0CH"      => 6,
-            "ADC0REF"     => 4,
-            "ADC0PGA"     => 0,
-        ),
-        "ADC1CON" => array(
-            "ADC1EN"      => 15,
-            "ADC1DIAG"    => 13,
-            "HIGHEXTREF1" => 12,
-            "ADC1CODE"    => 11,
-            "ADC1CH"      => 7,
-            "ADC1REF"     => 4,
-            "BUF_BYPASS"  => 2,
-            "ADC1PGA"     => 0,
-        ),
-        "ADCFLT" => array(
-            "CHOPEN" => 15,
-            "RAVG2"  => 14,
-            "AF"     => 8,
-            "NOTCH2" => 7,
-            "SF"     => 0,
-        ),
-    );
-
-    /**
     * This is where we store our sensor object
     */
     private $_sensor;
@@ -99,82 +66,155 @@ class ADuCInputTable
     */
     private $_registers = array(
         "ADC0CON" => array(
-            "ADC0EN"      => 1,
-            "ADC0DIAG"    => 0x0,
-            "HIGHEXTREF0" => 0,
-            "AMP_CM"      => 0,
-            "ADC0CODE"    => 0,
-            "ADC0CH"      => 0x3,
-            "ADC0REF"     => 0x0,
-            "ADC0PGA"     => 0x0,
+            "ADC0EN"    => array(
+                'value' => 1,
+                'bit'   => 15,
+                'mask'  => 0x1,
+                'bits'  => 1,
+            ),
+            "ADC0DIAG"  => array(
+                'value' => 0x0,
+                'bit'   => 13,
+                'mask'  => 0x3,
+                'bits'  => 2,
+            ),
+            "HIGHEXTREF0" => array(
+                'value' => 0,
+                'bit'   => 12,
+                'mask'  => 0x1,
+                'bits'  => 1,
+            ),
+            "AMP_CM"    => array(
+                'value' => 0,
+                'bit'   => 11,
+                'mask'  => 0x1,
+                'bits'  => 1,
+            ),
+            "ADC0CODE"  => array(
+                'value' => 0,
+                'bit'   => 10,
+                'mask'  => 0x1,
+                'bits'  => 1,
+            ),
+            "ADC0CH"    => array(
+                'value' => 0x3,
+                'bit'   => 6,
+                'mask'  => 0xF,
+                'bits'  => 4,
+            ),
+            "ADC0REF"   => array(
+                'value' => 0x0,
+                'bit'   => 4,
+                'mask'  => 0x3,
+                'bits'  => 2,
+            ),
+            "ADC0PGA"   => array(
+                'value' => 0x0,
+                'bit'   => 0,
+                'mask'  => 0xF,
+                'bits'  => 4,
+            ),
         ),
         "ADC1CON" => array(
-            "ADC1EN"      => 1,
-            "ADC1DIAG"    => 0x0,
-            "HIGHEXTREF1" => 0,
-            "ADC1CODE"    => 0,
-            "ADC1CH"      => 0xC,
-            "ADC1REF"     => 0x0,
-            "BUF_BYPASS"  => 0x0,
-            "ADC1PGA"     => 0x0,
+            "ADC1EN"      => array(
+                'value' => 1,
+                'bit'   => 15,
+                'mask'  => 0x1,
+                'bits'  => 1,
+            ),
+            "ADC1DIAG"    => array(
+                'value' => 0x0,
+                'bit'   => 13,
+                'mask'  => 0x2,
+                'bits'  => 2,
+            ),
+            "HIGHEXTREF1" => array(
+                'value' => 0,
+                'bit'   => 12,
+                'mask'  => 0x1,
+                'bits'  => 1,
+            ),
+            "ADC1CODE"    => array(
+                'value' => 0,
+                'bit'   => 11,
+                'mask'  => 0x1,
+                'bits'  => 1,
+            ),
+            "ADC1CH"      => array(
+                'value' => 0xC,
+                'bit'   => 7,
+                'mask'  => 0xF,
+                'bits'  => 4,
+            ),
+            "ADC1REF"     => array(
+                'value' => 0x0,
+                'bit'   => 4,
+                'mask'  => 0x7,
+                'bits'  => 3,
+            ),
+            "BUF_BYPASS"  => array(
+                'value' => 0x0,
+                'bit'   => 2,
+                'mask'  => 0x3,
+                'bits'  => 2,
+            ),
+            "ADC1PGA"     => array(
+                'value' => 0x0,
+                'bit'   => 0,
+                'mask'  => 0x3,
+                'bits'  => 2,
+            ),
         ),
         "ADCFLT" => array(
-            "CHOPEN" => 1,
-            "RAVG2"  => 0,
-            "SF"     => 0x9,
-            "NOTCH2" => 0,
-            "AF"     => 0x0,
+            "CHOPEN" => array(
+                'value' => 1,
+                'bit'   => 15,
+                'mask'  => 0x1,
+                'bits'  => 1,
+            ),
+            "RAVG2"  => array(
+                'value' => 0,
+                'bit'   => 14,
+                'mask'  => 0x1,
+                'bits'  => 1,
+            ),
+            "AF"     => array(
+                'value' => 0x0,
+                'bit'   => 8,
+                'mask'  => 0x3F,
+                'bits'  => 6,
+            ),
+            "NOTCH2" => array(
+                'value' => 0,
+                'bit'   => 7,
+                'mask'  => 0x1,
+                'bits'  => 1,
+            ),
+            "SF"     => array(
+                'value' => 0x9,
+                'bit'   => 0,
+                'mask'  => 0x7F,
+                'bits'  => 7,
+            ),
 
         ),
     );
     /**
     * This is where we setup the sensor object
     */
-    private $_mask = array(
-        "ADC0CON" => array(
-            "ADC0EN"      => 0x1,
-            "ADC0DIAG"    => 0x3,
-            "HIGHEXTREF0" => 0x1,
-            "AMP_CM"      => 0x1,
-            "ADC0CODE"    => 0x1,
-            "ADC0CH"      => 0xF,
-            "ADC0REF"     => 0x3,
-            "ADC0PGA"     => 0xF,
-        ),
-        "ADC1CON" => array(
-            "ADC1EN"      => 0x1,
-            "ADC1DIAG"    => 0x3,
-            "HIGHEXTREF1" => 0x1,
-            "ADC1CODE"    => 0x1,
-            "ADC1CH"      => 0xF,
-            "ADC1REF"     => 0x7,
-            "BUF_BYPASS"  => 0x3,
-            "ADC1PGA"     => 0x3,
-        ),
-        "ADCFLT" => array(
-            "CHOPEN" => 0x1,
-            "RAVG2"  => 0x1,
-            "SF"     => 0x7F,
-            "NOTCH2" => 0x1,
-            "AF"     => 0x3F,
-        ),
-    );
-    /**
-    * This is where we setup the sensor object
-    */
-    private $_print = array(
-        "ADC0CON" => "%04X",
-        "ADC1CON" => "%04X",
-        "ADCFLT"  => "%04X",
-    );
-    /**
-    * This is where we setup the sensor object
-    */
     private $_params = array(
-        "driver0"  => 0xFF,
-        "driver1"  => 0xFF,
-        "priority" => 0xFF,
-        "process"  => 0,
+        "driver0"  => array(
+            "value" => 0xFF,
+        ),
+        "driver1"  => array(
+            "value" => 0xFF,
+        ),
+        "priority" => array(
+            "value" => 0xFF,
+        ),
+        "process"  => array(
+            "value" => 0,
+        ),
     );
     /**
     * This is the constructor
@@ -209,30 +249,33 @@ class ADuCInputTable
     /**
     * This builds teh ADCFLT Register
     *
-    * @param string $reg The register to get
-    * @param string $set The values to set the register to
+    * @param string $register The register to get
+    * @param string $set      The values to set the register to
     *
     * @return 16 bit integer that is the FLT setup
     */
-    public function register($reg, $set = null)
+    public function register($register, $set = null)
     {
+        $reg = &$this->_registers[$register];
         if (is_string($set) || is_int($set)) {
             if (is_string($set)) {
                 $set = hexdec($set);
             }
-            foreach ($this->_registers[$reg] as $field => $value) {
-                $mask = $this->_mask[$reg][$field] << $this->_pos[$reg][$field];
-                $val = ($set & $mask) >> $this->_pos[$reg][$field];
-                $this->_registers[$reg][$field] = $val;
+            foreach ($reg as $field => $vals) {
+                $mask = $vals["mask"] << $vals["bit"];
+                $val = ($set & $mask) >> $vals["bit"];
+                $reg[$field]["value"] = $val;
             }
         }
-        $ret = 0;
-        foreach ($this->_registers[$reg] as $field => $value) {
-            $val = $value & $this->_mask[$reg][$field];
-            $val <<= $this->_pos[$reg][$field];
+        $ret  = 0;
+        $bits = 0;
+        foreach ($reg as $field => $vals) {
+            $val = $vals["value"] & $vals["mask"];
+            $val <<= $vals["bit"];
             $ret |= $val;
+            $bits += $vals["bits"];
         }
-        return sprintf($this->_print[$reg], $ret);
+        return sprintf("%0".round($bits / 4)."X", $ret);
     }
     /**
     * This builds teh ADCFLT Register
@@ -293,9 +336,9 @@ class ADuCInputTable
                 $set = hexdec($set);
             }
             if (is_int($set)) {
-                $this->_params[$param] = $set;
+                $this->_params[$param]["value"] = $set;
             }
-            return sprintf("%02X", $this->_params[$param]);
+            return sprintf("%02X", $this->_params[$param]["value"]);
         }
         return "";
     }
@@ -306,13 +349,15 @@ class ADuCInputTable
     */
     public function freq()
     {
-        $flt = &$this->_registers["ADCFLT"];
-        if ($flt["CHOPEN"]) {
-            $ret = 512000 / ((($flt["SF"] +1) * 64 * (3 + $flt["AF"])) + 3);
-        } else if ($flt["AF"] > 0) {
-            $ret = 512000 / (($flt["SF"] +1) * 64 * (3 + $flt["AF"]));
-        } else if ($flt["AF"] === 0) {
-            $ret = 512000 / (($flt["SF"] + 1) * 64);
+        $ret = 0;
+        $sinc = $this->_registers["ADCFLT"]["SF"]["value"];
+        $Filt = $this->_registers["ADCFLT"]["AF"]["Value"];
+        if ($this->_registers["ADCFLT"]["CHOPEN"]) {
+            $ret = 512000 / ((($sinc +1) * 64 * (3 + $flt)) + 3);
+        } else if ($flt > 0) {
+            $ret = 512000 / (($sinc +1) * 64 * (3 + $flt));
+        } else if ($flt === 0) {
+            $ret = 512000 / (($sinc + 1) * 64);
         }
         return round($ret, 4);
     }
