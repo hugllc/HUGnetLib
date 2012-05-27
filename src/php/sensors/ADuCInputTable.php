@@ -55,7 +55,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class ADuCInputHelper
+class ADuCInputTable
 {
     /**
     * This is where we setup the sensor object
@@ -168,6 +168,15 @@ class ADuCInputHelper
         "ADCFLT"  => "%04X",
     );
     /**
+    * This is where we setup the sensor object
+    */
+    private $_params = array(
+        "driver0"  => 0xFF,
+        "driver1"  => 0xFF,
+        "priority" => 0xFF,
+        "process"  => 0,
+    );
+    /**
     * This is the constructor
     *
     * @param object $sensor The sensor object we are working with
@@ -194,25 +203,118 @@ class ADuCInputHelper
     */
     public static function &factory($sensor, $config = null)
     {
-        $object = new ADuCInputHelper($sensor, $config);
+        $object = new ADuCInputTable($sensor, $config);
         return $object;
     }
     /**
     * This builds teh ADCFLT Register
     *
     * @param string $reg The register to get
+    * @param string $set The values to set the register to
     *
     * @return 16 bit integer that is the FLT setup
     */
-    private function _build($reg)
+    public function register($reg, $set = null)
     {
+        if (is_string($set) || is_int($set)) {
+            if (is_string($set)) {
+                $set = hexdec($set);
+            }
+            foreach ($this->_registers[$reg] as $field => $value) {
+                $mask = $this->_mask[$reg][$field] << $this->_pos[$reg][$field];
+                $val = ($set & $mask) >> $this->_pos[$reg][$field];
+                $this->_registers[$reg][$field] = $val;
+            }
+        }
         $ret = 0;
         foreach ($this->_registers[$reg] as $field => $value) {
             $val = $value & $this->_mask[$reg][$field];
             $val <<= $this->_pos[$reg][$field];
             $ret |= $val;
         }
-        return $ret;
+        return sprintf($this->_print[$reg], $ret);
+    }
+    /**
+    * This builds teh ADCFLT Register
+    *
+    * @param string $set The values to set the register to
+    *
+    * @return 16 bit integer that is the FLT setup
+    */
+    public function driver0($set = null)
+    {
+        return $this->_params("driver0", $set);
+    }
+    /**
+    * This builds teh ADCFLT Register
+    *
+    * @param string $set The values to set the register to
+    *
+    * @return 16 bit integer that is the FLT setup
+    */
+    public function driver1($set = null)
+    {
+        return $this->_params("driver1", $set);
+    }
+    /**
+    * This builds teh ADCFLT Register
+    *
+    * @param string $set The values to set the register to
+    *
+    * @return 16 bit integer that is the FLT setup
+    */
+    public function priority($set = null)
+    {
+        return $this->_params("priority", $set);
+    }
+    /**
+    * This builds teh ADCFLT Register
+    *
+    * @param string $set The values to set the register to
+    *
+    * @return 16 bit integer that is the FLT setup
+    */
+    public function immediateProcessRoutine($set = null)
+    {
+        return $this->_params("process", $set);
+    }
+    /**
+    * This builds teh ADCFLT Register
+    *
+    * @param string $num The driver number
+    * @param string $set The values to set the register to
+    *
+    * @return 16 bit integer that is the FLT setup
+    */
+    private function _params($param, $set = null)
+    {
+        if (isset($this->_params[$param])) {
+            if (is_string($set)) {
+                $set = hexdec($set);
+            }
+            if (is_int($set)) {
+                $this->_params[$param] = $set;
+            }
+            return sprintf("%02X", $this->_params[$param]);
+        }
+        return "";
+    }
+    /**
+    * This takes the class and makes it into a setup string
+    *
+    * @return string The encoded string
+    */
+    public function freq()
+    {
+        $flt = &$this->_registers["ADCFLT"];
+        if ($flt["CHOPEN"]) {
+            $ret = 512000 / ((($flt["SF"] +1) * 64 * (3 + $flt["AF"])) + 3);
+        } else if ($flt["AF"] > 0) {
+            $ret = 512000 / (($flt["SF"] +1) * 64 * (3 + $flt["AF"]));
+        } else if ($flt["AF"] === 0) {
+            $ret = 512000 / (($flt["SF"] + 1) * 64);
+        }
+        return round($ret, 4);
     }
     /**
     * This takes the class and makes it into a setup string
@@ -221,11 +323,7 @@ class ADuCInputHelper
     */
     public function encode()
     {
-        return sprintf("%04X%04X%04X",
-            $this->_build("ADCFLT"),
-            $this->_build("ADC0CON"),
-            $this->_build("ADC1CON")
-        );
+        return "";
     }
     /**
     * This builds the class from a setup string
