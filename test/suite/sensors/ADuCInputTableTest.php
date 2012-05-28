@@ -135,9 +135,25 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 array(
                 ),
                 null,
+                "priority",
+                0x105,
+                "05",
+            ),
+            array(
+                array(
+                ),
+                null,
                 "immediateProcessRoutine",
                 4,
                 "04",
+            ),
+            array(
+                array(
+                ),
+                null,
+                "immediateProcessRoutine",
+                0xFE,
+                "00",
             ),
         );
     }
