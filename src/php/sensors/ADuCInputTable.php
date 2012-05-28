@@ -71,48 +71,95 @@ class ADuCInputTable
                 'bit'   => 15,
                 'mask'  => 0x1,
                 'bits'  => 1,
+                'valid' => array(0 => "No", 1 => "Yes"),
+                'desc'  => "ADC0 Enable",
             ),
             "ADC0DIAG"  => array(
                 'value' => 0x0,
                 'bit'   => 13,
                 'mask'  => 0x3,
                 'bits'  => 2,
+                'valid' => array(
+                    0 => "Off",
+                    1 => "50mA on Positive Input",
+                    2 => "50mA on Negative Input",
+                    3 => "50mA on Both",
+                ),
+                'desc'  => "ADC0 Diagnostic Current",
             ),
             "HIGHEXTREF0" => array(
                 'value' => 0,
                 'bit'   => 12,
                 'mask'  => 0x1,
                 'bits'  => 1,
+                'valid' => array(0 => "Ref", 1 => "Ref/2"),
+                'desc'  => "ADC0 High Reference",
             ),
             "AMP_CM"    => array(
                 'value' => 0,
                 'bit'   => 11,
                 'mask'  => 0x1,
                 'bits'  => 1,
+                'valid' => array(0 => "Common Mode Input", 1 => "AVDD/2"),
+                'desc'  => "ADC0 PGA Common Mode Voltage",
             ),
             "ADC0CODE"  => array(
                 'value' => 0,
                 'bit'   => 10,
                 'mask'  => 0x1,
                 'bits'  => 1,
+                'valid' => array(0 => "Two's Compliment", 1 => "Unipolar"),
+                'desc'  => "ADC0 Output Coding",
             ),
             "ADC0CH"    => array(
                 'value' => 0x3,
                 'bit'   => 6,
                 'mask'  => 0xF,
                 'bits'  => 4,
+                'valid' => array(
+                    0 => "ADC0/ADC1 Differential",
+                    1 => "ADC0/ADC5 Single Ended",
+                    2 => "ADC1/ADC5 Single Ended",
+                    3 => "VREF+/VREF-",
+                    5 => "ADC2/ADC3 Differential",
+                    6 => "ADC2/ADC5 Single Ended",
+                    7 => "ADC3/ADC5 Single Ended",
+                    8 => "Internal Short to ADC1",
+                    9 => "Internal Short to ADC1",
+                ),
+                'desc'  => "ADC0 Channel",
             ),
             "ADC0REF"   => array(
                 'value' => 0x0,
                 'bit'   => 4,
                 'mask'  => 0x3,
                 'bits'  => 2,
+                'valid' => array(
+                    0 => "Internal",
+                    1 => "External VREF+/VREF-",
+                    2 => "External AUX",
+                    3 => "AVDD/AGND (div/2 selected)",
+                ),
+                'desc'  => "ADC0 Reference",
             ),
             "ADC0PGA"   => array(
                 'value' => 0x0,
                 'bit'   => 0,
                 'mask'  => 0xF,
                 'bits'  => 4,
+                'valid' => array(
+                    0 => "1",
+                    1 => "2",
+                    2 => "4",
+                    3 => "8",
+                    4 => "16",
+                    5 => "32",
+                    6 => "64",
+                    7 => "128",
+                    8 => "256",
+                    9 => "512",
+                ),
+                'desc'  => "ADC0 Gain",
             ),
         ),
         "ADC1CON" => array(
@@ -121,48 +168,101 @@ class ADuCInputTable
                 'bit'   => 15,
                 'mask'  => 0x1,
                 'bits'  => 1,
+                'valid' => array(0 => "No", 1 => "Yes"),
+                'desc'  => "ADC1 Enable",
             ),
             "ADC1DIAG"    => array(
                 'value' => 0x0,
                 'bit'   => 13,
                 'mask'  => 0x2,
                 'bits'  => 2,
+                'valid' => array(
+                    0 => "Off",
+                    1 => "50mA on Positive Input",
+                    2 => "50mA on Negative Input",
+                    3 => "50mA on Both",
+                ),
+                'desc'  => "ADC1 Diagnostic Current",
             ),
             "HIGHEXTREF1" => array(
                 'value' => 0,
                 'bit'   => 12,
                 'mask'  => 0x1,
                 'bits'  => 1,
+                'valid' => array(0 => "Ref", 1 => "Ref/2"),
+                'desc'  => "ADC1 High Reference",
             ),
             "ADC1CODE"    => array(
                 'value' => 0,
                 'bit'   => 11,
                 'mask'  => 0x1,
                 'bits'  => 1,
+                'valid' => array(0 => "Two's Compliment", 1 => "Unipolar"),
+                'desc'  => "ADC1 Output Coding",
             ),
             "ADC1CH"      => array(
                 'value' => 0xC,
                 'bit'   => 7,
                 'mask'  => 0xF,
                 'bits'  => 4,
+                'valid' => array(
+                    0  => "ADC2/ADC3 Differential",
+                    1  => "ADC4/ADC5 Differential",
+                    2  => "ADC6/ADC7 Differential",
+                    3  => "ADC8/ADC9 Differential",
+                    4  => "ADC2/ADC5 Single Ended",
+                    5  => "ADC3/ADC5 Single Ended",
+                    6  => "ADC4/ADC5 Single Ended",
+                    7  => "ADC6/ADC5 Single Ended",
+                    8  => "ADC7/ADC5 Single Ended",
+                    9  => "ADC8/ADC5 Single Ended",
+                    10 => "ADC9/ADC5 Single Ended",
+                    11 => "Internal Temp",
+                    12 => "VREF+/VREF-",
+                    13 => "DAC_OUT/AGND",
+                    15 => "Internal Short to ADC3",
+                ),
+                'desc'  => "ADC1 Channel",
             ),
             "ADC1REF"     => array(
                 'value' => 0x0,
                 'bit'   => 4,
                 'mask'  => 0x7,
                 'bits'  => 3,
+                'valid' => array(
+                    0 => "Internal",
+                    1 => "External VREF+/VREF-",
+                    2 => "External AUX",
+                    3 => "AVDD/AGND (div/2 selected)",
+                    4 => "AVCC/ADC3",
+                ),
+                'desc'  => "ADC1 Reference",
             ),
             "BUF_BYPASS"  => array(
                 'value' => 0x0,
                 'bit'   => 2,
                 'mask'  => 0x3,
                 'bits'  => 2,
+                'valid' => array(
+                    0 => "Full buffer on",
+                    1 => "Negative buffer bypass",
+                    2 => "Positive buffer bypass",
+                    3 => "Full buffer bypass",
+                ),
+                'desc'  => "ADC1 Buffer Bypass",
             ),
             "ADC1PGA"     => array(
                 'value' => 0x0,
                 'bit'   => 0,
                 'mask'  => 0x3,
                 'bits'  => 2,
+                'valid' => array(
+                    0 => "1",
+                    1 => "2",
+                    2 => "4",
+                    3 => "8",
+                ),
+                'desc'  => "ADC1 Gain",
             ),
         ),
         "ADCFLT" => array(
@@ -171,30 +271,42 @@ class ADuCInputTable
                 'bit'   => 15,
                 'mask'  => 0x1,
                 'bits'  => 1,
+                'valid' => array(0 => "No", 1 => "Yes"),
+                'desc'  => "Chop Enable",
             ),
             "RAVG2"  => array(
                 'value' => 0,
                 'bit'   => 14,
                 'mask'  => 0x1,
                 'bits'  => 1,
+                'valid' => array(0 => "No", 1 => "Yes"),
+                'desc'  => "Running Average By 2",
             ),
             "AF"     => array(
                 'value' => 0x0,
                 'bit'   => 8,
                 'mask'  => 0x3F,
                 'bits'  => 6,
+                'valid' => "_avgFilterValidate",
+                'size'  => 3,
+                'desc'  => "Averaging Filter Value",
             ),
             "NOTCH2" => array(
                 'value' => 0,
                 'bit'   => 7,
                 'mask'  => 0x1,
                 'bits'  => 1,
+                'valid' => array(0 => "No", 1 => "Yes"),
+                'desc'  => "Sinc Notch Filter Enable",
             ),
             "SF"     => array(
                 'value' => 0x9,
                 'bit'   => 0,
                 'mask'  => 0x7F,
                 'bits'  => 7,
+                'valid' => "_sinc3Validate",
+                'size'  => 3,
+                'desc'  => "Sinc3 Filter Value",
             ),
 
         ),
@@ -205,15 +317,40 @@ class ADuCInputTable
     private $_params = array(
         "driver0"  => array(
             "value" => 0xFF,
+            'mask'  => 0xFF,
+            "valid" => array(
+                0x04 => "ADuC RTD",
+                0x41 => "ADuC Voltage",
+            ),
+            "desc" => "First Driver",
         ),
         "driver1"  => array(
             "value" => 0xFF,
+            'mask'  => 0xFF,
+            "valid" => array(
+                0x04 => "ADuC RTD",
+                0x41 => "ADuC Voltage",
+                0xFF => "None",
+            ),
+            "desc" => "Second Driver",
         ),
         "priority" => array(
             "value" => 0xFF,
+            'mask'  => 0xFF,
+            "desc"  => "Priority",
+            'size'  => 3,
         ),
         "process"  => array(
             "value" => 0,
+            'mask'  => 0xFF,
+            "valid" => array(
+                0x00 => "None",
+                0x01 => "Multiply by 128",
+                0x02 => "Divide by 128",
+                0x03 => "Square Data",
+                0x04 => "Calculate Power and Impedance",
+            ),
+            "desc"  => "Immediate Processing Routine",
         ),
     );
     /**
@@ -280,6 +417,45 @@ class ADuCInputTable
     /**
     * This builds teh ADCFLT Register
     *
+    * @param mixed $value The value to check
+    *
+    * @return 16 bit integer in a hex string
+    */
+    private function _avgFilterValidate($value)
+    {
+        $sinc = $this->_registers["ADCFLT"]["SF"]["value"];
+        if ($value === 0) {
+            return true;
+        } else if (($value < 64) && ($sinc < 32)) {
+            return true;
+        } else if (($value < 8) && ($sinc < 64)) {
+            return true;
+        }
+
+        return false;
+    }
+    /**
+    * This builds teh ADCFLT Register
+    *
+    * @param mixed $value The value to check
+    *
+    * @return 16 bit integer in a hex string
+    */
+    private function _sinc3Validate($value)
+    {
+        $avg = $this->_registers["ADCFLT"]["AF"]["value"];
+        if ($value < 31) {
+            return true;
+        } else if (($value < 64) && ($avg < 8)) {
+            return true;
+        } else if (($value < 127) && ($avg === 0)) {
+            return true;
+        }
+        return false;
+    }
+    /**
+    * This builds teh ADCFLT Register
+    *
     * @param string $set The values to set the register to
     *
     * @return 16 bit integer that is the FLT setup
@@ -336,7 +512,11 @@ class ADuCInputTable
                 $set = hexdec($set);
             }
             if (is_int($set)) {
-                $this->_params[$param]["value"] = $set;
+                $par = &$this->_params[$param];
+                $set &= $par["mask"];
+                if (!is_array($par["valid"]) || isset($par["valid"][$set])) {
+                    $par["value"] = $set;
+                }
             }
             return sprintf("%02X", $this->_params[$param]["value"]);
         }
@@ -368,7 +548,15 @@ class ADuCInputTable
     */
     public function encode()
     {
-        return "";
+        $ret  = "";
+        $ret .= $this->priority();
+        $ret .= $this->immediateProcessRoutine();
+        $ret .= $this->register("ADC0CON");
+        $ret .= $this->register("ADC1CON");
+        $ret .= $this->register("ADCFLT");
+        $ret .= $this->driver0();
+        $ret .= $this->driver1();
+        return $ret;
     }
     /**
     * This builds the class from a setup string
@@ -379,6 +567,16 @@ class ADuCInputTable
     */
     public function decode($string)
     {
+        if (strlen($string) === 20) {
+            $this->priority(substr($string, 0, 2));
+            $this->immediateProcessRoutine(substr($string, 2, 2));
+            $this->register("ADC0CON", substr($string, 4, 4));
+            $this->register("ADC1CON", substr($string, 8, 4));
+            $this->register("ADCFLT", substr($string, 12, 4));
+            $this->driver0(substr($string, 16, 2));
+            $this->driver1(substr($string, 18, 2));
+            return true;
+        }
         return false;
     }
 

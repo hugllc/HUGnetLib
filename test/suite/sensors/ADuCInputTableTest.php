@@ -136,8 +136,8 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 ),
                 null,
                 "immediateProcessRoutine",
-                12,
-                "0C",
+                4,
+                "04",
             ),
         );
     }
@@ -297,7 +297,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 array(
                 ),
                 null,
-                "",
+                "FF0080C086008009FFFF",
             ),
         );
     }
@@ -318,6 +318,50 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
         $sensor->resetMock($mock);
         $obj = ADuCInputTable::factory($sensor, $preload);
         $ret = $obj->encode();
+        $this->assertSame($expect, $ret);
+    }
+    /**
+    * Data provider for testRemove
+    *
+    * @return array
+    */
+    public static function dataDecode()
+    {
+        return array(
+            array(
+                array(
+                ),
+                null,
+                "FF0080C086008009FFFF",
+                true,
+            ),
+            array(
+                array(
+                ),
+                null,
+                "",
+                false,
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param array  $mock    The mocks to preload
+    * @param string $preload The string to give to the class
+    * @param string $string  The string to give to decode
+    * @param array  $expect  The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataDecode
+    */
+    public function testDecode($mock, $preload, $string, $expect)
+    {
+        $sensor = new \HUGnet\DummyTable("Sensor");
+        $sensor->resetMock($mock);
+        $obj = ADuCInputTable::factory($sensor, $preload);
+        $ret = $obj->decode($string);
         $this->assertSame($expect, $ret);
     }
 
