@@ -507,20 +507,17 @@ class ADuCInputTable
     */
     private function _params($param, $set = null)
     {
-        if (isset($this->_params[$param])) {
-            if (is_string($set)) {
-                $set = hexdec($set);
-            }
-            if (is_int($set)) {
-                $par = &$this->_params[$param];
-                $set &= $par["mask"];
-                if (!is_array($par["valid"]) || isset($par["valid"][$set])) {
-                    $par["value"] = $set;
-                }
-            }
-            return sprintf("%02X", $this->_params[$param]["value"]);
+        if (is_string($set)) {
+            $set = hexdec($set);
         }
-        return "";
+        if (is_int($set)) {
+            $par = &$this->_params[$param];
+            $set &= $par["mask"];
+            if (!is_array($par["valid"]) || isset($par["valid"][$set])) {
+                $par["value"] = $set;
+            }
+        }
+        return sprintf("%02X", $this->_params[$param]["value"]);
     }
     /**
     * This takes the class and makes it into a setup string
