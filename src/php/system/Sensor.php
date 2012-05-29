@@ -247,7 +247,7 @@ class Sensor extends SystemTableBase
         $ret["units"] = $this->get("storageUnit");
         $ret["unitType"] = $this->get("unitType");
         $ret["dataType"] = $this->get("storageType");
-        return $ret;
+        return array($ret);
     }
     /**
     * This function should be overloaded to make changes to the table based on
