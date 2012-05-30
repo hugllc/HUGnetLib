@@ -59,13 +59,13 @@ require_once dirname(__FILE__)."/DevicesHistoryTable.php";
 class RawHistoryOldTable extends HUGnetDBTable
 {
     /** @var string This is the table we should use */
-    public $sqlTable = "history_raw";
+    public $sqlTable = "rawHistoryOld";
     /** @var string This is the primary key of the table.  Leave blank if none  */
     public $sqlId = null;
     /** @var string This is the date field for the table.  Leave blank if none  */
     public $dateField = "Date";
     /** @var string The orderby clause for this table */
-    public $sqlOrderBy = "Date asc";
+    public $sqlOrderBy = "Date desc";
     /**
     * @var array This is the definition of the columns
     *
@@ -92,7 +92,38 @@ class RawHistoryOldTable extends HUGnetDBTable
     * fields.  The index of the base array should be the same as the "Name" field.
     */
     public $sqlColumns = array(
+        "id" => array(
+            "Name" => "id",
+            "Type" => "int",
+        ),
+        "Date" => array(
+            "Name" => "Date",
+            "Type" => "bigint",
+            "Default" => '0',
+        ),
+        "packet" => array(
+            "Name" => "packet",
+            "Type" => "longblob",
+            "Default" => "",
+        ),
+        "devicesHistoryDate" => array(
+            "Name" => "devicesHistoryDate",
+            "Type" => "int",
+            "Default" => 0,
+        ),
+        "command" => array(
+            "Name" => "command",
+            "Type" => "char(2)",
+            "Default" => "",
+        ),
+        "dataIndex" => array(
+            "Name" => "dataIndex",
+            "Type" => "tinyint",
+            "Default" => 0,
+        ),
     );
+    //ALTER TABLE `rawHistory` CHANGE `deviceHistoryID` `deviceHistoryDate`
+    //BIGINT NOT NULL
     /**
     * @var array This is the definition of the indexes
     *
@@ -108,22 +139,27 @@ class RawHistoryOldTable extends HUGnetDBTable
     *   ),
     */
     public $sqlIndexes = array(
-        "IDIndex" => array(
-            "Name" => "IDIndex",
+        "DateIDIndex" => array(
+            "Name" => "DateIDIndex",
             "Unique" => true,
-            "Columns" => array("DeviceKey"),
+            "Columns" => array("Date", "id", "dataIndex", "command"),
+        ),
+        "idDate"  => array(
+            "Name" => "idDate",
+            "Unique" => false,
+            "Columns" => array("Date", "id"),
         ),
     );
 
 
     /** @var array This is the default values for the data */
     protected $default = array(
-        "group" => "old",    // Server group to use
+        "group" => "default",    // Server group to use
     );
     /** @var This is the packet */
-    protected $packet = null;
-    /** @var This is the device container*/
-    protected $device = null;
+    public $packet = null;
+    /** @var This is the device history container*/
+    public $devHist = null;
 
     /**
     * This is the constructor
@@ -133,56 +169,164 @@ class RawHistoryOldTable extends HUGnetDBTable
     function __construct($data="")
     {
         parent::__construct($data);
-        $this->sqlColumns = $this->dbdriver()->columns();
-        $this->setupColsDefault();
-        $this->device = new DeviceContainer();
-        $this->packet = new PacketContainer();
+        $this->create();
     }
     /**
-    * Returns a new raw history record
+    * This is the destructor
+    */
+    function __destruct()
+    {
+        unset($this->packet);
+        unset($this->devHist);
+        parent::__destruct();
+    }
+    /**
+    * Inserts a record into the database if it isn't there already
     *
-    * @param string $group The group to use for the new data
+    * @param mixed $data The string or data to use to insert this row
     *
     * @return null
     */
-    public function &toRaw($group = "default")
+    static public function insertRecord($data)
     {
-        $this->device->clearData();
-        $this->device->fromSetupString($this->RawSetup);
-        if ($this->device->isEmpty() || ($this->device->id > 0x500)) {
-            return false;
+        $hist = new RawHistoryOldTable($data);
+        return $hist->insertRow();
+    }
+    /**
+    * Returns an array with only the values the database cares about
+    *
+    * @param bool $default Return items set to their default?
+    *
+    * @return null
+    *
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function toDB($default = true)
+    {
+        foreach ((array)$this->sqlColumns as $col) {
+            $key = $col["Name"];
+            if (is_object($this->$key)) {
+                $array[$col["Name"]] = $this->$key->toZip();
+            } else {
+                $array[$col["Name"]] = $this->$key;
+            }
         }
-        $time = $this->unixDate($this->Date, "UTC");
-        $this->packet->fromArray(
-            array(
-                "To" =>  $this->device->DeviceID,
-                "Command" => $this->sendCommand,
-                "Time" => $time - $this->ReplyTime,
-                "Date" => $time - $this->ReplyTime,
-                "Reply" => new PacketContainer(
-                    array(
-                        "From" => $this->device->DeviceID,
-                        "Command" => PacketContainer::COMMAND_REPLY,
-                        "Data" => $this->RawData,
-                        "Length" => strlen($this->RawData)/2,
-                        "Time" => $time,
-                        "Date" => $time,
-                    )
-                ),
-            )
+        return (array)$array;
+    }
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param array $array This is an array of this class's attributes
+    *
+    * @return null
+    */
+    public function fromArray($array)
+    {
+        parent::fromArray($array);
+        $this->_setupClasses();
+        if (empty($this->devicesHistoryDate) && isset($array["device"])) {
+            if (is_object($array["device"])) {
+                $dev = &$array["device"];
+            } else {
+                $dev = new DeviceContainer($array["device"]);
+            }
+            $this->devHist = new DevicesHistoryTable($dev);
+            $this->devHist->SaveDate = $this->packet->Date;
+            $this->devHist->insertRow();
+            $this->devicesHistoryDate = $this->devHist->SaveDate;
+        }
+    }
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @return null
+    */
+    private function _setupClasses()
+    {
+        if (!is_object($this->packet)) {
+            // Do the sensors
+            unset($this->data["packet"]);
+            $this->packet = new PacketContainer($this->packet);
+
+        }
+    }
+    /**
+    * Returns a device object
+    *
+    * @return null
+    */
+    public function &getDevice()
+    {
+        $dev = &DevicesHistoryTable::deviceFactory(
+            $this->id, $this->devicesHistoryDate, array("group" => $this->group)
         );
-        $new = new RawHistoryTable(
-            array(
-                "group" => $group,
-                "id" => $this->device->id,
-                "Date" => $time,
-                "packet" => $this->packet,
-                "device" => $this->device,
-                "command" => $this->sendCommand,
-                "dataIndex" => $this->device->dataIndex($this->RawData),
-            )
-        );
-        return $new;
+        return $dev;
+
+    }
+    /**
+    * Returns a history table object
+    *
+    * @param int   $lastTime This is the time of the last packet.
+    * @param array &$prev    The previous records data
+    *
+    * @return null
+    */
+    public function &toHistoryTable($lastTime, &$prev = null)
+    {
+        $this->_getPrev($lastTime, $prev);
+        return $this->toHistory($lastTime, $prev);
+    }
+    /**
+    * Returns a history table object
+    *
+    * @param int   $lastTime This is the time of the last packet.
+    * @param array &$prev    The previous records data
+    *
+    * @return null
+    */
+    protected function &toHistory($lastTime, &$prev = null)
+    {
+        $dev = &$this->getDevice();
+        if (!empty($this->packet->Reply->Data)) {
+            $data = $dev->decodeData(
+                $this->packet->Reply->Data,
+                $this->packet->Command,
+                (int)($this->Date - $lastTime),
+                $prev
+            );
+            $data["id"] = $this->id;
+            $data["Date"] = $this->Date;
+            $data["group"] = $this->group;
+        }
+        return $dev->historyFactory($data);
+    }
+
+    /**
+    * This gets the previos record if needed
+    *
+    * @param int   &$lastTime This is the time of the last packet.
+    * @param array &$prev     The previous records data
+    *
+    * @return null
+    */
+    private function _getPrev(&$lastTime, &$prev)
+    {
+        if (!is_array($prev) || empty($prev)) {
+            $raw = new RawHistoryOldTable(
+                $this->toArray()
+            );
+            $raw->sqlOrderBy = "Date DESC";
+            $raw->sqlLimit = 1;
+            $raw->selectInto(
+                "`id` = ? AND `Date` < ?",
+                array($this->id, $this->Date)
+            );
+            $hist = $raw->toHistory(0);
+            $prev = $hist->raw;
+            if (empty($lastTime)) {
+                $lastTime = $hist->Date;
+            }
+        }
     }
     /******************************************************************
      ******************************************************************
@@ -198,7 +342,7 @@ class RawHistoryOldTable extends HUGnetDBTable
     */
     protected function setDate($value)
     {
-        $this->data["Date"] = self::sqlDate($value, "UTC");
+        $this->data["Date"] = self::unixDate($value);
     }
     /**
     * function to set id
@@ -207,9 +351,9 @@ class RawHistoryOldTable extends HUGnetDBTable
     *
     * @return null
     */
-    protected function setDeviceKey($value)
+    protected function setId($value)
     {
-        $this->data["DeviceKey"] = (int)$value;
+        $this->data["id"] = (int)$value;
     }
 
 }

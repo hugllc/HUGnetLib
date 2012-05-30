@@ -34,6 +34,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
+
 /** This is a required class */
 require_once CODE_BASE.'tables/RawHistoryOldTable.php';
 /** This is a required class */
@@ -56,40 +57,6 @@ require_once TEST_BASE."tables/HUGnetDBTableTestBase.php";
 class RawHistoryOldTableTest extends HUGnetDBTableTestBase
 {
 
-    static $config = array(
-        "servers" => array(
-            array(
-                "driver" => "sqlite",
-                "file" => ":memory:",
-                "group" => "default",
-            ),
-            array(
-                "driver" => "sqlite",
-                "file" => ":memory:",
-                "group" => "old",
-            ),
-            array(
-                "driver" => "sqlite",
-                "file" => ":memory:",
-                "group" => "other",
-            ),
-        ),
-    );
-    static $createQuery = "CREATE TABLE `history_raw` (
-        `HistoryRawKey` int(11) NOT NULL,
-        `DeviceKey` int(11) NOT NULL DEFAULT '0',
-        `Date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-        `RawData` varchar(255) NOT NULL DEFAULT '',
-        `ActiveSensors` tinyint(4) NOT NULL DEFAULT '0',
-        `Driver` varchar(32) NOT NULL DEFAULT 'eDEFAULT',
-        `RawSetup` varchar(128) NOT NULL,
-        `RawCalibration` varchar(255) NOT NULL,
-        `Status` varchar(16) NOT NULL DEFAULT 'GOOD',
-        `ReplyTime` float NOT NULL DEFAULT '0',
-        `sendCommand` char(2) NOT NULL DEFAULT '',
-        `UTCOffset` tinyint(4) NOT NULL DEFAULT '0'
-        )";
-
     /**
     * Sets up the fixture, for example, open a network connection.
     * This method is called before a test is executed.
@@ -100,11 +67,13 @@ class RawHistoryOldTableTest extends HUGnetDBTableTestBase
     */
     protected function setUp()
     {
+        $config = array(
+        );
         $this->config = &ConfigContainer::singleton();
-        $this->config->forceConfig(self::$config);
-        $this->pdo = &$this->config->servers->getPDO("old");
-        $this->pdo->query(self::$createQuery);
+        $this->config->forceConfig($config);
+        $this->pdo = &$this->config->servers->getPDO();
         $this->o = new RawHistoryOldTable();
+        $this->o->create();
         parent::Setup();
     }
 
@@ -118,6 +87,7 @@ class RawHistoryOldTableTest extends HUGnetDBTableTestBase
     */
     protected function tearDown()
     {
+        $this->o->__destruct();
         $this->o = null;
         $this->config = null;
     }
@@ -141,12 +111,8 @@ class RawHistoryOldTableTest extends HUGnetDBTableTestBase
     */
     public static function dataColumns()
     {
-        $config = ConfigContainer::singleton();
-        $config->forceConfig(self::$config);
-        $pdo = &$config->servers->getPDO("old");
-        $pdo->query(self::$createQuery);
-        $o = new RawHistoryOldTable();
-        return HUGnetDBTableTestBase::splitObject($o, "sqlColumns");
+        $obj = new RawHistoryOldTable();
+        return HUGnetDBTableTestBase::splitObject($obj, "sqlColumns");
     }
     /**
     * data provider for testDeviceID
@@ -155,12 +121,8 @@ class RawHistoryOldTableTest extends HUGnetDBTableTestBase
     */
     public static function dataIndexes()
     {
-        $config = ConfigContainer::singleton();
-        $config->forceConfig(self::$config);
-        $pdo = &$config->servers->getPDO("old");
-        $pdo->query(self::$createQuery);
-        $o = new RawHistoryOldTable();
-        return HUGnetDBTableTestBase::splitObject($o, "sqlIndexes");
+        $obj = new RawHistoryOldTable();
+        return HUGnetDBTableTestBase::splitObject($obj, "sqlIndexes");
     }
     /**
     * data provider for testDeviceID
@@ -169,33 +131,123 @@ class RawHistoryOldTableTest extends HUGnetDBTableTestBase
     */
     public static function dataVars()
     {
-        $config = ConfigContainer::singleton();
-        $config->forceConfig(self::$config);
-        $pdo = &$config->servers->getPDO("old");
-        $pdo->query(self::$createQuery);
         return array(
             array(new RawHistoryOldTable()),
         );
     }
+
     /**
-    * test the set routine when an extra class exists
+    * data provider for testDeviceID
     *
-    * @param array $obj The object to work with
-    *
-    * @return null
-    *
-    * @dataProvider dataVars
+    * @return array
     */
-    public function testGroupVar($obj)
+    public static function dataFromArray()
     {
-        $default = $this->readAttribute($obj, "default");
-        $this->assertSame(
-            "old",
-            $default["group"],
-            '$obj->default["group"] must be set to "old"'
+        return array(
+            array(
+                array(
+                    "id" => 100,
+                    "packet" => array(
+                        "To" => "000012",
+                        "From" => "000283",
+                        "Date" => 1048472484,
+                        "Command" => "55",
+                        "Data" => "01020304",
+                    ),
+                    "device" => new DeviceContainer(),
+                    "command" => "55",
+                    "dataIndex" => 123,
+                ),
+                array(
+                    "group" => "default",
+                    "id" => 100,
+                    "Date" => 0,
+                    "packet" => array(
+                        "To" => "000012",
+                        "From" => "000283",
+                        "Date" => 1048472484,
+                        "Command" => "55",
+                        "Length" => 4,
+                        "Time" => 0.0,
+                        "Data" => array(1,2,3,4),
+                        "RawData" => "01020304",
+                        "Type" => "SENSORREAD",
+                        "Reply" => null,
+                        "Checksum" => "C6",
+                        "CalcChecksum" => "C6",
+                    ),
+                    "devicesHistoryDate" => 1048472484,
+                    "command" => "55",
+                    "dataIndex" => 123,
+                ),
+            ),
+            array(
+                array(
+                    "id" => 100,
+                    "packet" => array(
+                        "To" => "000012",
+                        "From" => "000283",
+                        "Date" => 1048472484,
+                        "Command" => "55",
+                        "Data" => "01020304",
+                    ),
+                    "device" => array(),
+                    "command" => "55",
+                    "dataIndex" => 123,
+                ),
+                array(
+                    "group" => "default",
+                    "id" => 100,
+                    "Date" => 0,
+                    "packet" => array(
+                        "To" => "000012",
+                        "From" => "000283",
+                        "Date" => 1048472484,
+                        "Command" => "55",
+                        "Length" => 4,
+                        "Time" => 0.0,
+                        "Data" => array(1,2,3,4),
+                        "RawData" => "01020304",
+                        "Type" => "SENSORREAD",
+                        "Reply" => null,
+                        "Checksum" => "C6",
+                        "CalcChecksum" => "C6",
+                    ),
+                    "devicesHistoryDate" => 1048472484,
+                    "command" => "55",
+                    "dataIndex" => 123,
+                ),
+            ),
         );
     }
 
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $preload The value to preload
+    * @param array $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataFromArray
+    */
+    public function testFromArray($preload, $expect)
+    {
+        //$date = time();
+        $this->o->fromArray($preload);
+        $data = $this->readAttribute($this->o, "data");
+        $this->assertSame("PacketContainer", get_class($this->o->packet));
+        $row = $this->o->toArray();
+        /*
+        $this->assertThat(
+            $row["devicesHistoryDate"],
+            $this->greaterThanOrEqual($date),
+            "Date is wrong on key $key"
+        );
+        unset($row["devicesHistoryDate"]);
+        */
+        $this->assertSame($expect, $row);
+    }
     /**
     * data provider for testSet
     *
@@ -204,10 +256,12 @@ class RawHistoryOldTableTest extends HUGnetDBTableTestBase
     public static function dataSet()
     {
         return array(
-            array("Date", 1272202943, "2010-04-25 08:42:23"),
-            array("Date", "2010-04-25", "2010-04-25 00:00:00"),
-            array("Date", "This is not a date", "1970-01-01 00:00:00"),
-            array("DeviceKey", 71, 71),
+            array("Date", "2010-04-25 13:42:23", 1272202943),
+            array("Date", "2010-04-25", 1272153600),
+            array("Date", "Sun, 25 April 2010, 1:42:23pm", 1272202943),
+            array("Date", 1234567890, 1234567890),
+            array("Date", "This is not a date", 0),
+            array("id", 71, 71),
         );
     }
 
@@ -229,343 +283,536 @@ class RawHistoryOldTableTest extends HUGnetDBTableTestBase
         $this->assertSame($expect, $data[$var]);
     }
     /**
-    * Data provider for testToRaw
+    * Data provider for testInsertRow
     *
     * @return array
     */
-    public static function dataToRaw()
+    public static function dataInsertRecord()
     {
+        $packet = new PacketContainer(
+            array(
+                "Date" => "2003-01-23 23:35:12",
+            )
+        );
+        $device = new DeviceContainer();
+
         return array(
-            array(  // #0 Nothing given
+            array(
                 array(
+                        "id"        => "123",
+                        "Date"      => "1977-01-01 08:09:00",
+                        "packet"    => $packet->toString(),
+                        "device"    => $device->toArray(),
+                        "command"   => "55",
+                        "dataIndex" => "232",
                 ),
                 array(
-                ),
-                "default",
-                false,
-            ),
-            array(  // #1 Normal record
-                array(
-                    "id" => 56,
-                    "SaveDate" => 1280251875,
-                    "SetupString" => "00000000380039120041003911034200000140000000",
-                    "SensorString" => "YToxOTp7czoxNDoiUmF3Q2FsaWJyYXRpb24iO3M6MD"
-                        ."oiIjtzOjc6IlNlbnNvcnMiO2k6MTM7czoxMzoiQWN0aXZlU2Vuc29yc"
-                        ."yI7aTo5O3M6MTU6IlBoeXNpY2FsU2Vuc29ycyI7aTo5O3M6MTQ6IlZp"
-                        ."cnR1YWxTZW5zb3JzIjtpOjQ7czoxMjoiZm9yY2VTZW5zb3JzIjtiOjA"
-                        ."7aTowO2E6MTY6e3M6MjoiaWQiO2k6MDtzOjQ6InR5cGUiO3M6MTQ6Ik"
-                        ."JDVGhlcm0yMzIyNjQwIjtzOjg6ImxvY2F0aW9uIjtzOjA6IiI7czo4O"
-                        ."iJkYXRhVHlwZSI7czozOiJyYXciO3M6NToiZXh0cmEiO2E6MDp7fXM6N"
-                        ."ToidW5pdHMiO3M6NzoiJiMxNzY7RiI7czo1OiJib3VuZCI7YjowO3M6"
-                        ."MTQ6InJhd0NhbGlicmF0aW9uIjtzOjA6IiI7czoxMjoidGltZUNvbnN"
-                        ."0YW50IjtpOjE7czoyOiJBbSI7aToxMDIzO3M6MjoiVGYiO2k6NjU1Mz"
-                        ."Y7czoxOiJEIjtpOjY1NTM2O3M6MToicyI7aTo2NDtzOjM6IlZjYyI7aT"
-                        ."o1O3M6NjoiZmlsdGVyIjthOjA6e31zOjg6ImRlY2ltYWxzIjtpOjI7f"
-                        ."Wk6MTthOjE2OntzOjI6ImlkIjtpOjA7czo0OiJ0eXBlIjtzOjE0OiJCQ"
-                        ."1RoZXJtMjMyMjY0MCI7czo4OiJsb2NhdGlvbiI7czowOiIiO3M6ODoi"
-                        ."ZGF0YVR5cGUiO3M6MzoicmF3IjtzOjU6ImV4dHJhIjthOjA6e31zOjU6"
-                        ."InVuaXRzIjtzOjc6IiYjMTc2O0YiO3M6NToiYm91bmQiO2I6MDtzOjE0"
-                        ."OiJyYXdDYWxpYnJhdGlvbiI7czowOiIiO3M6MTI6InRpbWVDb25zdGFu"
-                        ."dCI7aToxO3M6MjoiQW0iO2k6MTAyMztzOjI6IlRmIjtpOjY1NTM2O3M"
-                        ."6MToiRCI7aTo2NTUzNjtzOjE6InMiO2k6NjQ7czozOiJWY2MiO2k6NT"
-                        ."tzOjY6ImZpbHRlciI7YTowOnt9czo4OiJkZWNpbWFscyI7aToyO31pO"
-                        ."jI7YToxNjp7czoyOiJpZCI7aTowO3M6NDoidHlwZSI7czoxNDoiQkNU"
-                        ."aGVybTIzMjI2NDAiO3M6ODoibG9jYXRpb24iO3M6MDoiIjtzOjg6ImR"
-                        ."hdGFUeXBlIjtzOjM6InJhdyI7czo1OiJleHRyYSI7YTowOnt9czo1Oi"
-                        ."J1bml0cyI7czo3OiImIzE3NjtGIjtzOjU6ImJvdW5kIjtiOjA7czoxN"
-                        ."DoicmF3Q2FsaWJyYXRpb24iO3M6MDoiIjtzOjEyOiJ0aW1lQ29uc3Rh"
-                        ."bnQiO2k6MTtzOjI6IkFtIjtpOjEwMjM7czoyOiJUZiI7aTo2NTUzNjtz"
-                        ."OjE6IkQiO2k6NjU1MzY7czoxOiJzIjtpOjY0O3M6MzoiVmNjIjtpOjU7"
-                        ."czo2OiJmaWx0ZXIiO2E6MDp7fXM6ODoiZGVjaW1hbHMiO2k6Mjt9aTo"
-                        ."zO2E6MTY6e3M6MjoiaWQiO2k6MDtzOjQ6InR5cGUiO3M6MTQ6IkJDV"
-                        ."Ghlcm0yMzIyNjQwIjtzOjg6ImxvY2F0aW9uIjtzOjA6IiI7czo4OiJ"
-                        ."kYXRhVHlwZSI7czozOiJyYXciO3M6NToiZXh0cmEiO2E6MDp7fXM6NT"
-                        ."oidW5pdHMiO3M6NzoiJiMxNzY7RiI7czo1OiJib3VuZCI7YjowO3M6M"
-                        ."TQ6InJhd0NhbGlicmF0aW9uIjtzOjA6IiI7czoxMjoidGltZUNvbnN0"
-                        ."YW50IjtpOjE7czoyOiJBbSI7aToxMDIzO3M6MjoiVGYiO2k6NjU1MzY"
-                        ."7czoxOiJEIjtpOjY1NTM2O3M6MToicyI7aTo2NDtzOjM6IlZjYyI7a"
-                        ."To1O3M6NjoiZmlsdGVyIjthOjA6e31zOjg6ImRlY2ltYWxzIjtpOjI"
-                        ."7fWk6NDthOjE2OntzOjI6ImlkIjtpOjA7czo0OiJ0eXBlIjtzOjE0Oi"
-                        ."JCQ1RoZXJtMjMyMjY0MCI7czo4OiJsb2NhdGlvbiI7czowOiIiO3M6O"
-                        ."DoiZGF0YVR5cGUiO3M6MzoicmF3IjtzOjU6ImV4dHJhIjthOjA6e31"
-                        ."zOjU6InVuaXRzIjtzOjc6IiYjMTc2O0YiO3M6NToiYm91bmQiO2I6M"
-                        ."DtzOjE0OiJyYXdDYWxpYnJhdGlvbiI7czowOiIiO3M6MTI6InRpbWV"
-                        ."Db25zdGFudCI7aToxO3M6MjoiQW0iO2k6MTAyMztzOjI6IlRmIjtpO"
-                        ."jY1NTM2O3M6MToiRCI7aTo2NTUzNjtzOjE6InMiO2k6NjQ7czozOiJ"
-                        ."WY2MiO2k6NTtzOjY6ImZpbHRlciI7YTowOnt9czo4OiJkZWNpbWFsc"
-                        ."yI7aToyO31pOjU7YToxNjp7czoyOiJpZCI7aTowO3M6NDoidHlwZSI"
-                        ."7czoxNDoiQkNUaGVybTIzMjI2NDAiO3M6ODoibG9jYXRpb24iO3M6M"
-                        ."DoiIjtzOjg6ImRhdGFUeXBlIjtzOjM6InJhdyI7czo1OiJleHRyYSI"
-                        ."7YTowOnt9czo1OiJ1bml0cyI7czo3OiImIzE3NjtGIjtzOjU6ImJvd"
-                        ."W5kIjtiOjA7czoxNDoicmF3Q2FsaWJyYXRpb24iO3M6MDoiIjtzOjE"
-                        ."yOiJ0aW1lQ29uc3RhbnQiO2k6MTtzOjI6IkFtIjtpOjEwMjM7czoyO"
-                        ."iJUZiI7aTo2NTUzNjtzOjE6IkQiO2k6NjU1MzY7czoxOiJzIjtpOjY"
-                        ."0O3M6MzoiVmNjIjtpOjU7czo2OiJmaWx0ZXIiO2E6MDp7fXM6ODoiZ"
-                        ."GVjaW1hbHMiO2k6Mjt9aTo2O2E6MTY6e3M6MjoiaWQiO2k6MDtzOjQ6"
-                        ."InR5cGUiO3M6MTQ6IkJDVGhlcm0yMzIyNjQwIjtzOjg6ImxvY2F0aW"
-                        ."9uIjtzOjA6IiI7czo4OiJkYXRhVHlwZSI7czozOiJyYXciO3M6NToi"
-                        ."ZXh0cmEiO2E6MDp7fXM6NToidW5pdHMiO3M6NzoiJiMxNzY7RiI7cz"
-                        ."o1OiJib3VuZCI7YjowO3M6MTQ6InJhd0NhbGlicmF0aW9uIjtzOjA6"
-                        ."IiI7czoxMjoidGltZUNvbnN0YW50IjtpOjE7czoyOiJBbSI7aToxMD"
-                        ."IzO3M6MjoiVGYiO2k6NjU1MzY7czoxOiJEIjtpOjY1NTM2O3M6MTo"
-                        ."icyI7aTo2NDtzOjM6IlZjYyI7aTo1O3M6NjoiZmlsdGVyIjthOjA6e"
-                        ."31zOjg6ImRlY2ltYWxzIjtpOjI7fWk6NzthOjE2OntzOjI6ImlkIj"
-                        ."tpOjA7czo0OiJ0eXBlIjtzOjE0OiJCQ1RoZXJtMjMyMjY0MCI7czo"
-                        ."4OiJsb2NhdGlvbiI7czowOiIiO3M6ODoiZGF0YVR5cGUiO3M6Mzoic"
-                        ."mF3IjtzOjU6ImV4dHJhIjthOjA6e31zOjU6InVuaXRzIjtzOjc6IiY"
-                        ."jMTc2O0YiO3M6NToiYm91bmQiO2I6MDtzOjE0OiJyYXdDYWxpYnJhd"
-                        ."GlvbiI7czowOiIiO3M6MTI6InRpbWVDb25zdGFudCI7aToxO3M6Mj"
-                        ."oiQW0iO2k6MTAyMztzOjI6IlRmIjtpOjY1NTM2O3M6MToiRCI7aTo"
-                        ."2NTUzNjtzOjE6InMiO2k6NjQ7czozOiJWY2MiO2k6NTtzOjY6ImZp"
-                        ."bHRlciI7YTowOnt9czo4OiJkZWNpbWFscyI7aToyO31pOjg7YToxN"
-                        ."jp7czoyOiJpZCI7aTowO3M6NDoidHlwZSI7czoxNDoiQkNUaGVyb"
-                        ."TIzMjI2NDAiO3M6ODoibG9jYXRpb24iO3M6MDoiIjtzOjg6ImRhdG"
-                        ."FUeXBlIjtzOjM6InJhdyI7czo1OiJleHRyYSI7YTowOnt9czo1OiJ"
-                        ."1bml0cyI7czo3OiImIzE3NjtGIjtzOjU6ImJvdW5kIjtiOjA7czox"
-                        ."NDoicmF3Q2FsaWJyYXRpb24iO3M6MDoiIjtzOjEyOiJ0aW1lQ29uc"
-                        ."3RhbnQiO2k6MTtzOjI6IkFtIjtpOjEwMjM7czoyOiJUZiI7aTo2NTU"
-                        ."zNjtzOjE6IkQiO2k6NjU1MzY7czoxOiJzIjtpOjY0O3M6MzoiVmNj"
-                        ."IjtpOjU7czo2OiJmaWx0ZXIiO2E6MDp7fXM6ODoiZGVjaW1hbHMiO"
-                        ."2k6Mjt9aTo5O2E6Mzp7czoyOiJpZCI7aToyNTQ7czo0OiJ0eXBlIj"
-                        ."tzOjExOiJQbGFjZWhvbGRlciI7czo4OiJsb2NhdGlvbiI7Tjt9aTo"
-                        ."xMDthOjM6e3M6MjoiaWQiO2k6MjU0O3M6NDoidHlwZSI7czoxMToi"
-                        ."UGxhY2Vob2xkZXIiO3M6ODoibG9jYXRpb24iO047fWk6MTE7YTozO"
-                        ."ntzOjI6ImlkIjtpOjI1NDtzOjQ6InR5cGUiO3M6MTE6IlBsYWNlaG"
-                        ."9sZGVyIjtzOjg6ImxvY2F0aW9uIjtOO31pOjEyO2E6Mzp7czoyOiJ"
-                        ."pZCI7aToyNTQ7czo0OiJ0eXBlIjtzOjExOiJQbGFjZWhvbGRlciI7c"
-                        ."zo4OiJsb2NhdGlvbiI7Tjt9fQ==",
-                ),
-                array(
-                    'HistoryRawKey' => 10020,
-                    'DeviceKey' => 24,
-                    'Date' => '2003-11-06 18:30:10',
-                    'RawData' => '5a004021690eb59c0ee743075f1f07531c07e01c079f1d'
-                        .'07a32607fe2f070070',
-                    'ActiveSensors' => 9,
-                    'Driver' => 'e00391200',
-                    'RawSetup' => '0000000038003912004100391103420000014000000000'
-                        .'00000000000000',
-                    'RawCalibration' => '',
-                    'Status' => 'GOOD',
-                    'ReplyTime' => 0,
-                    'sendCommand' => 55,
-                    'UTCOffset' => 0
-                ),
-                "other",
-                array(
-                    'id' => 56,
-                    'Date' => 1068143410,
-                    'packet' => array(
-                        'To' => '000038',
-                        'From' => '000000',
-                        'Date' => 1068143410,
-                        'Command' => '55',
-                        'Length' => 0,
-                        'Time' => 1068143410,
-                        'Data' => array(),
-                        'RawData' => '',
-                        'Type' => 'SENSORREAD',
-                        'Reply' => array(
-                            'To' => '000000',
-                            'From' => '000038',
-                            'Date' => 1068143410,
-                            'Command' => '01',
-                            'Length' => 32,
-                            'Time' => 1068143410,
-                            'Data' => array(
-                                0 => 90,
-                                1 => 0,
-                                2 => 64,
-                                3 => 33,
-                                4 => 105,
-                                5 => 14,
-                                6 => 181,
-                                7 => 156,
-                                8 => 14,
-                                9 => 231,
-                                10 => 67,
-                                11 => 7,
-                                12 => 95,
-                                13 => 31,
-                                14 => 7,
-                                15 => 83,
-                                16 => 28,
-                                17 => 7,
-                                18 => 224,
-                                19 => 28,
-                                20 => 7,
-                                21 => 159,
-                                22 => 29,
-                                23 => 7,
-                                24 => 163,
-                                25 => 38,
-                                26 => 7,
-                                27 => 254,
-                                28 => 47,
-                                29 => 7,
-                                30 => 0,
-                                31 => 112,
-                            ),
-                            'RawData' => '5a004021690eb59c0ee743075f1f07531c07e01'
-                                .'c079f1d07a32607fe2f070070',
-                            'Type' => 'REPLY',
-                            'Reply' => null,
-                            'Checksum' => '94',
-                            'CalcChecksum' => '94',
-                        ),
-                        'Checksum' => '6D',
-                        'CalcChecksum' => '6D',
+                    array(
+                        "id"        => "123",
+                        "Date"      => "220954140",
+                        "packet"    => $packet->toZip(),
+                        "devicesHistoryDate" => "1043364912",
+                        "command"   => "55",
+                        "dataIndex" => "232",
                     ),
-                    'devicesHistoryDate' => 1068143410,
-                    'command' => 55,
-                    'dataIndex' => 0x5A,
                 ),
-            ),
-            array(  // #2 id too high
-                array(
-                    "id" => 56,
-                    "SaveDate" => 1280251875,
-                    "SetupString" => "00000000380039120041003911034200000140000000",
-                    "SensorString" => "YToxOTp7czoxNDoiUmF3Q2FsaWJyYXRpb24iO3M6MD"
-                        ."oiIjtzOjc6IlNlbnNvcnMiO2k6MTM7czoxMzoiQWN0aXZlU2Vuc29yc"
-                        ."yI7aTo5O3M6MTU6IlBoeXNpY2FsU2Vuc29ycyI7aTo5O3M6MTQ6IlZp"
-                        ."cnR1YWxTZW5zb3JzIjtpOjQ7czoxMjoiZm9yY2VTZW5zb3JzIjtiOjA"
-                        ."7aTowO2E6MTY6e3M6MjoiaWQiO2k6MDtzOjQ6InR5cGUiO3M6MTQ6Ik"
-                        ."JDVGhlcm0yMzIyNjQwIjtzOjg6ImxvY2F0aW9uIjtzOjA6IiI7czo4O"
-                        ."iJkYXRhVHlwZSI7czozOiJyYXciO3M6NToiZXh0cmEiO2E6MDp7fXM6N"
-                        ."ToidW5pdHMiO3M6NzoiJiMxNzY7RiI7czo1OiJib3VuZCI7YjowO3M6"
-                        ."MTQ6InJhd0NhbGlicmF0aW9uIjtzOjA6IiI7czoxMjoidGltZUNvbnN"
-                        ."0YW50IjtpOjE7czoyOiJBbSI7aToxMDIzO3M6MjoiVGYiO2k6NjU1Mz"
-                        ."Y7czoxOiJEIjtpOjY1NTM2O3M6MToicyI7aTo2NDtzOjM6IlZjYyI7aT"
-                        ."o1O3M6NjoiZmlsdGVyIjthOjA6e31zOjg6ImRlY2ltYWxzIjtpOjI7f"
-                        ."Wk6MTthOjE2OntzOjI6ImlkIjtpOjA7czo0OiJ0eXBlIjtzOjE0OiJCQ"
-                        ."1RoZXJtMjMyMjY0MCI7czo4OiJsb2NhdGlvbiI7czowOiIiO3M6ODoi"
-                        ."ZGF0YVR5cGUiO3M6MzoicmF3IjtzOjU6ImV4dHJhIjthOjA6e31zOjU6"
-                        ."InVuaXRzIjtzOjc6IiYjMTc2O0YiO3M6NToiYm91bmQiO2I6MDtzOjE0"
-                        ."OiJyYXdDYWxpYnJhdGlvbiI7czowOiIiO3M6MTI6InRpbWVDb25zdGFu"
-                        ."dCI7aToxO3M6MjoiQW0iO2k6MTAyMztzOjI6IlRmIjtpOjY1NTM2O3M"
-                        ."6MToiRCI7aTo2NTUzNjtzOjE6InMiO2k6NjQ7czozOiJWY2MiO2k6NT"
-                        ."tzOjY6ImZpbHRlciI7YTowOnt9czo4OiJkZWNpbWFscyI7aToyO31pO"
-                        ."jI7YToxNjp7czoyOiJpZCI7aTowO3M6NDoidHlwZSI7czoxNDoiQkNU"
-                        ."aGVybTIzMjI2NDAiO3M6ODoibG9jYXRpb24iO3M6MDoiIjtzOjg6ImR"
-                        ."hdGFUeXBlIjtzOjM6InJhdyI7czo1OiJleHRyYSI7YTowOnt9czo1Oi"
-                        ."J1bml0cyI7czo3OiImIzE3NjtGIjtzOjU6ImJvdW5kIjtiOjA7czoxN"
-                        ."DoicmF3Q2FsaWJyYXRpb24iO3M6MDoiIjtzOjEyOiJ0aW1lQ29uc3Rh"
-                        ."bnQiO2k6MTtzOjI6IkFtIjtpOjEwMjM7czoyOiJUZiI7aTo2NTUzNjtz"
-                        ."OjE6IkQiO2k6NjU1MzY7czoxOiJzIjtpOjY0O3M6MzoiVmNjIjtpOjU7"
-                        ."czo2OiJmaWx0ZXIiO2E6MDp7fXM6ODoiZGVjaW1hbHMiO2k6Mjt9aTo"
-                        ."zO2E6MTY6e3M6MjoiaWQiO2k6MDtzOjQ6InR5cGUiO3M6MTQ6IkJDV"
-                        ."Ghlcm0yMzIyNjQwIjtzOjg6ImxvY2F0aW9uIjtzOjA6IiI7czo4OiJ"
-                        ."kYXRhVHlwZSI7czozOiJyYXciO3M6NToiZXh0cmEiO2E6MDp7fXM6NT"
-                        ."oidW5pdHMiO3M6NzoiJiMxNzY7RiI7czo1OiJib3VuZCI7YjowO3M6M"
-                        ."TQ6InJhd0NhbGlicmF0aW9uIjtzOjA6IiI7czoxMjoidGltZUNvbnN0"
-                        ."YW50IjtpOjE7czoyOiJBbSI7aToxMDIzO3M6MjoiVGYiO2k6NjU1MzY"
-                        ."7czoxOiJEIjtpOjY1NTM2O3M6MToicyI7aTo2NDtzOjM6IlZjYyI7a"
-                        ."To1O3M6NjoiZmlsdGVyIjthOjA6e31zOjg6ImRlY2ltYWxzIjtpOjI"
-                        ."7fWk6NDthOjE2OntzOjI6ImlkIjtpOjA7czo0OiJ0eXBlIjtzOjE0Oi"
-                        ."JCQ1RoZXJtMjMyMjY0MCI7czo4OiJsb2NhdGlvbiI7czowOiIiO3M6O"
-                        ."DoiZGF0YVR5cGUiO3M6MzoicmF3IjtzOjU6ImV4dHJhIjthOjA6e31"
-                        ."zOjU6InVuaXRzIjtzOjc6IiYjMTc2O0YiO3M6NToiYm91bmQiO2I6M"
-                        ."DtzOjE0OiJyYXdDYWxpYnJhdGlvbiI7czowOiIiO3M6MTI6InRpbWV"
-                        ."Db25zdGFudCI7aToxO3M6MjoiQW0iO2k6MTAyMztzOjI6IlRmIjtpO"
-                        ."jY1NTM2O3M6MToiRCI7aTo2NTUzNjtzOjE6InMiO2k6NjQ7czozOiJ"
-                        ."WY2MiO2k6NTtzOjY6ImZpbHRlciI7YTowOnt9czo4OiJkZWNpbWFsc"
-                        ."yI7aToyO31pOjU7YToxNjp7czoyOiJpZCI7aTowO3M6NDoidHlwZSI"
-                        ."7czoxNDoiQkNUaGVybTIzMjI2NDAiO3M6ODoibG9jYXRpb24iO3M6M"
-                        ."DoiIjtzOjg6ImRhdGFUeXBlIjtzOjM6InJhdyI7czo1OiJleHRyYSI"
-                        ."7YTowOnt9czo1OiJ1bml0cyI7czo3OiImIzE3NjtGIjtzOjU6ImJvd"
-                        ."W5kIjtiOjA7czoxNDoicmF3Q2FsaWJyYXRpb24iO3M6MDoiIjtzOjE"
-                        ."yOiJ0aW1lQ29uc3RhbnQiO2k6MTtzOjI6IkFtIjtpOjEwMjM7czoyO"
-                        ."iJUZiI7aTo2NTUzNjtzOjE6IkQiO2k6NjU1MzY7czoxOiJzIjtpOjY"
-                        ."0O3M6MzoiVmNjIjtpOjU7czo2OiJmaWx0ZXIiO2E6MDp7fXM6ODoiZ"
-                        ."GVjaW1hbHMiO2k6Mjt9aTo2O2E6MTY6e3M6MjoiaWQiO2k6MDtzOjQ6"
-                        ."InR5cGUiO3M6MTQ6IkJDVGhlcm0yMzIyNjQwIjtzOjg6ImxvY2F0aW"
-                        ."9uIjtzOjA6IiI7czo4OiJkYXRhVHlwZSI7czozOiJyYXciO3M6NToi"
-                        ."ZXh0cmEiO2E6MDp7fXM6NToidW5pdHMiO3M6NzoiJiMxNzY7RiI7cz"
-                        ."o1OiJib3VuZCI7YjowO3M6MTQ6InJhd0NhbGlicmF0aW9uIjtzOjA6"
-                        ."IiI7czoxMjoidGltZUNvbnN0YW50IjtpOjE7czoyOiJBbSI7aToxMD"
-                        ."IzO3M6MjoiVGYiO2k6NjU1MzY7czoxOiJEIjtpOjY1NTM2O3M6MTo"
-                        ."icyI7aTo2NDtzOjM6IlZjYyI7aTo1O3M6NjoiZmlsdGVyIjthOjA6e"
-                        ."31zOjg6ImRlY2ltYWxzIjtpOjI7fWk6NzthOjE2OntzOjI6ImlkIj"
-                        ."tpOjA7czo0OiJ0eXBlIjtzOjE0OiJCQ1RoZXJtMjMyMjY0MCI7czo"
-                        ."4OiJsb2NhdGlvbiI7czowOiIiO3M6ODoiZGF0YVR5cGUiO3M6Mzoic"
-                        ."mF3IjtzOjU6ImV4dHJhIjthOjA6e31zOjU6InVuaXRzIjtzOjc6IiY"
-                        ."jMTc2O0YiO3M6NToiYm91bmQiO2I6MDtzOjE0OiJyYXdDYWxpYnJhd"
-                        ."GlvbiI7czowOiIiO3M6MTI6InRpbWVDb25zdGFudCI7aToxO3M6Mj"
-                        ."oiQW0iO2k6MTAyMztzOjI6IlRmIjtpOjY1NTM2O3M6MToiRCI7aTo"
-                        ."2NTUzNjtzOjE6InMiO2k6NjQ7czozOiJWY2MiO2k6NTtzOjY6ImZp"
-                        ."bHRlciI7YTowOnt9czo4OiJkZWNpbWFscyI7aToyO31pOjg7YToxN"
-                        ."jp7czoyOiJpZCI7aTowO3M6NDoidHlwZSI7czoxNDoiQkNUaGVyb"
-                        ."TIzMjI2NDAiO3M6ODoibG9jYXRpb24iO3M6MDoiIjtzOjg6ImRhdG"
-                        ."FUeXBlIjtzOjM6InJhdyI7czo1OiJleHRyYSI7YTowOnt9czo1OiJ"
-                        ."1bml0cyI7czo3OiImIzE3NjtGIjtzOjU6ImJvdW5kIjtiOjA7czox"
-                        ."NDoicmF3Q2FsaWJyYXRpb24iO3M6MDoiIjtzOjEyOiJ0aW1lQ29uc"
-                        ."3RhbnQiO2k6MTtzOjI6IkFtIjtpOjEwMjM7czoyOiJUZiI7aTo2NTU"
-                        ."zNjtzOjE6IkQiO2k6NjU1MzY7czoxOiJzIjtpOjY0O3M6MzoiVmNj"
-                        ."IjtpOjU7czo2OiJmaWx0ZXIiO2E6MDp7fXM6ODoiZGVjaW1hbHMiO"
-                        ."2k6Mjt9aTo5O2E6Mzp7czoyOiJpZCI7aToyNTQ7czo0OiJ0eXBlIj"
-                        ."tzOjExOiJQbGFjZWhvbGRlciI7czo4OiJsb2NhdGlvbiI7Tjt9aTo"
-                        ."xMDthOjM6e3M6MjoiaWQiO2k6MjU0O3M6NDoidHlwZSI7czoxMToi"
-                        ."UGxhY2Vob2xkZXIiO3M6ODoibG9jYXRpb24iO047fWk6MTE7YTozO"
-                        ."ntzOjI6ImlkIjtpOjI1NDtzOjQ6InR5cGUiO3M6MTE6IlBsYWNlaG"
-                        ."9sZGVyIjtzOjg6ImxvY2F0aW9uIjtOO31pOjEyO2E6Mzp7czoyOiJ"
-                        ."pZCI7aToyNTQ7czo0OiJ0eXBlIjtzOjExOiJQbGFjZWhvbGRlciI7c"
-                        ."zo4OiJsb2NhdGlvbiI7Tjt9fQ==",
-                ),
-                array(
-                    'HistoryRawKey' => 10020,
-                    'DeviceKey' => 24,
-                    'Date' => '2003-11-06 18:30:10',
-                    'RawData' => '5a004021690eb59c0ee743075f1f07531c07e01c079f1d'
-                        .'07a32607fe2f070070',
-                    'ActiveSensors' => 9,
-                    'Driver' => 'e00391200',
-                    'RawSetup' => 'FF00000038003912004100391103420000014000000000'
-                        .'00000000000000',
-                    'RawCalibration' => '',
-                    'Status' => 'GOOD',
-                    'ReplyTime' => 0,
-                    'sendCommand' => 55,
-                    'UTCOffset' => 0
-                ),
-                "other",
-                false,
             ),
         );
     }
     /**
     * Tests for verbosity
     *
-    * @param array $dev     Entry into the devices history table
     * @param array $preload The array to preload into the class
-    * @param array $group   The database group to use
     * @param array $expect  The expected return
     *
-    * @dataProvider dataToRaw
+    * @dataProvider dataInsertRecord
     *
     * @return null
     */
-    public function testToRaw($dev, $preload, $group, $expect)
+    public function testInsertRecord($preload, $expect)
     {
-        $devHist = new DevicesHistoryTable($dev);
-        $devHist->insertRow();
+        $date = time();
+        RawHistoryOldTable::insertRecord($preload);
+        $stmt = $this->pdo->query("SELECT * FROM `rawHistoryOld`");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        /*
+        foreach (array_keys($rows) as $key) {
+            $this->assertThat(
+                $rows[$key]["devicesHistoryDate"],
+                $this->greaterThanOrEqual($date),
+                "Date is wrong on key $key"
+            );
+            unset($rows[$key]["devicesHistoryDate"]);
+        }
+        */
+        $this->assertSame($expect, $rows);
+
+    }
+    /**
+    * Data provider for testGetDevice
+    *
+    * @return array
+    */
+    public static function dataGetDevice()
+    {
+        return array(
+            array(
+                array(
+                    "id" => 18,
+                    "Date" => 1048472484,
+                    "packet" => array(
+                        "To" => "000012",
+                        "From" => "000283",
+                        "Date" => 1048472484,
+                        "Command" => "55",
+                        "Data" => "",
+                        "Reply" => array(
+                            "To" => "000283",
+                            "From" => "000012",
+                            "Date" => 1048472485,
+                            "Command" => "01",
+                            "Data" => "01020304050607080910",
+                        ),
+                    ),
+                    "device" => array(
+                        "id" => 18,
+                        "DeviceID" => "000012",
+                        "HWPartNum" => "0039-21-02-A",
+                        "FWPartNum" => "0039-20-14-C",
+                        "FWVerson" => "0.1.2",
+                    ),
+                    "command" => "55",
+                    "dataIndex" => 123,
+                ),
+                array(
+                    'DriverInfo' => array(
+                        'TimeConstant' => 1,
+                        'PhysicalSensors' => 6,
+                        "VirtualSensors"   => 4,
+                    ),
+                    'id' => 18,
+                    'DeviceID' => '000012',
+                    'HWPartNum' => '0039-21-02-A',
+                    'FWPartNum' => '0039-20-14-C',
+                    'FWVersion' => '0.0.0',
+                    'RawSetup' => '000000001200392102410039201443000000FFFFFF00',
+                    'Driver' => 'e00392100',
+                    'ActiveSensors' => 10,
+                    'sensors' => array(
+                        'Sensors' => 10,
+                        'ActiveSensors' => 6,
+                        "PhysicalSensors" => 6,
+                        "VirtualSensors" => 4,
+                        0 => array(
+                            'id' => 64,
+                            'type' => 'Controller',
+                            'location' => 'HUGnet 1 Voltage',
+                            'extra' => array(
+                                0 => 180,
+                                1 => 27,
+                            ),
+                            "bound" => true,
+                        ),
+                        1 => array(
+                            'id' => 80,
+                            'type' => 'Controller',
+                            'location' => 'HUGnet 1 Current',
+                            'extra' => array(
+                                0 => 0.5,
+                                1 => 7,
+                            ),
+                            "bound" => true,
+                        ),
+                        2 => array(
+                            'id' => 2,
+                            'type' => 'BCTherm2322640',
+                            'location' => 'HUGnet 1 FET Temperature',
+                            'extra' => array(
+                                0 => 100,
+                                1 => 10,
+                            ),
+                            "bound" => true,
+                        ),
+                        3 => array(
+                            'id' => 64,
+                            'type' => 'Controller',
+                            'location' => 'HUGnet 2 Voltage',
+                            'extra' => array(
+                                0 => 180,
+                                1 => 27,
+                            ),
+                            "bound" => true,
+                        ),
+                        4 => array(
+                            'id' => 80,
+                            'type' => 'Controller',
+                            'location' => 'HUGnet 2 Current',
+                            'extra' => array(
+                                0 => 0.5,
+                                1 => 7,
+                            ),
+                            "bound" => true,
+                        ),
+                        5 => array(
+                            'id' => 2,
+                            'type' => 'BCTherm2322640',
+                            'location' => 'HUGnet 2 FET Temperature',
+                            'extra' => array(
+                                0 => 100,
+                                1 => 10,
+                            ),
+                            "bound" => true,
+                        ),
+                        6 => array(
+                            "id" => 0xFE,
+                            "type" => "Placeholder",
+                            "location" => null,
+                        ),
+                        7 => array(
+                            "id" => 0xFE,
+                            "type" => "Placeholder",
+                            "location" => null,
+                        ),
+                        8 => array(
+                            "id" => 0xFE,
+                            "type" => "Placeholder",
+                            "location" => null,
+                        ),
+                        9 => array(
+                            "id" => 0xFE,
+                            "type" => "Placeholder",
+                            "location" => null,
+                        ),
+                    ),
+                    'params' => array(
+                        'DriverInfo' => array(
+                            'BoredomThreshold' => 0,
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param array $preload The array to preload into the class
+    * @param array $expect  The expected return
+    *
+    * @dataProvider dataGetDevice
+    *
+    * @return null
+    */
+    public function testGetDevice($preload, $expect)
+    {
         $this->o->clearData();
         $this->o->fromAny($preload);
-        $raw = $this->o->toRaw($group);
-        /*
-        $devHist->selectInto("1");
-        do {
-            var_export($devHist->toArray());
-        } while ($devHist->nextInto());
-        */
-        if (!is_object($raw)) {
-            $this->assertSame($expect, $raw);
-        } else {
-            //$pdo = &$this->config->servers->getPDO();
-            //$stmt = $pdo->query("Select * from devicesHistory");
-            //var_export($stmt->fetchAll(PDO::FETCH_ASSOC));
-            $this->assertEquals($expect, $raw->toArray(false));
+        $array = $this->o->getDevice()->toArray(false);
+        $this->assertSame($expect, $array);
+    }
+    /**
+    * Data provider for testToHistory
+    *
+    * @return array
+    */
+    public static function dataToHistoryTable()
+    {
+        return array(
+            array(  // #0
+                array(),
+                array(
+                    "id" => 18,
+                    "Date" => 1048472484,
+                    "packet" => array(
+                        "To" => "000012",
+                        "From" => "000283",
+                        "Date" => 1048472484,
+                        "Command" => "55",
+                        "Data" => "",
+                        "Reply" => array(
+                            "To" => "000283",
+                            "From" => "000012",
+                            "Date" => 1048472485,
+                            "Command" => "01",
+                            "Data" => "631902BA100200B947124902008F0FA103",
+                        ),
+                    ),
+                    "device" => array(
+                        "id" => 18,
+                        "DeviceID" => "000012",
+                        "HWPartNum" => "0039-21-02-A",
+                        "FWPartNum" => "0039-20-14-C",
+                        "FWVerson" => "0.1.2",
+                    ),
+                    "command" => "55",
+                    "dataIndex" => 123,
+                ),
+                1048472184,
+                array(),
+                array(
+                    "id" => 18,
+                    "Date" => 1048472484,
+                    'deltaT' => 300,
+                    'Data0' => 10.749,
+                    'Data1' => 11.7,
+                    'Data2' => 33.3514,
+                    'Data3' => 10.951,
+                    'Data4' => 20.3,
+                    'Data5' => 35.2126,
+                ),
+            ),
+            array(  // #1
+                array(),
+                array(
+                    "id" => 18,
+                    "Date" => 1048472484,
+                    "packet" => array(
+                        "To" => "000012",
+                        "From" => "000283",
+                        "Date" => 1048472484,
+                        "Command" => "55",
+                        "Data" => "",
+                    ),
+                    "device" => array(
+                        "id" => 18,
+                        "DeviceID" => "000012",
+                        "HWPartNum" => "0039-21-02-A",
+                        "FWPartNum" => "0039-20-14-C",
+                        "FWVerson" => "0.1.2",
+                    ),
+                    "command" => "55",
+                    "dataIndex" => 123,
+                ),
+                1048472184,
+                array(),
+                array(
+                ),
+            ),
+            array(  // #2
+                array(),
+                array(
+                    "id" => 18,
+                    "Date" => 1048472484,
+                    "packet" => array(
+                        "To" => "000012",
+                        "From" => "000283",
+                        "Date" => 1048472484,
+                        "Command" => "55",
+                        "Data" => "",
+                        "Reply" => array(
+                            "To" => "000283",
+                            "From" => "000012",
+                            "Date" => 1048472485,
+                            "Command" => "01",
+                            "Data" => "C80001A013006813003213006913003A140083130102"
+                                ."025D029200BF00EC",
+                        ),
+                    ),
+                    "device" => array(
+                        "id" => 18,
+                        "DeviceID" => "000012",
+                        "HWPartNum" => "0039-12-01-A",
+                        "FWPartNum" => "0039-20-03-C",
+                        "FWVerson" => "0.1.2",
+                        "sensors" => array(
+                            "Sensors" => 5,
+                            0 => array(),
+                            1 => array(),
+                            2 => array(
+                                "id" => 0x70,
+                                "type" => "maximumAnemometer",
+                            ),
+                            3 => array(
+                                "id" => 0x70,
+                                "type" => "maximumRainGauge",
+                            ),
+                            4 => array(),
+                        ),
+                    ),
+                    "command" => "55",
+                    "dataIndex" => 123,
+                ),
+                1048472184,
+                array(null, null, 4825, 4912, null),
+                array(
+                    "id" => 18,
+                    "raw" => array(
+                        2 => 4914,
+                        3 => 4969,
+                    ),
+                    "Date" => 1048472484,
+                    'deltaT' => 300,
+                    'Data0' => 93.1399,
+                    'Data1' => 93.5384,
+                    'Data2' => 0.4033,
+                    'Data3' => 0.57,
+                    'Data4' => 92.0645,
+                    'Data7' => -25.4877,
+                ),
+            ),
+            array(  // #3
+                array(
+                    array(
+                        "id" => 18,
+                        "Date" => 1048472184,
+                        "packet" => array(
+                            "To" => "000012",
+                            "From" => "000283",
+                            "Date" => 1048472184,
+                            "Command" => "55",
+                            "Data" => "",
+                            "Reply" => array(
+                                "To" => "000283",
+                                "From" => "000012",
+                                "Date" => 1048472185,
+                                "Command" => "01",
+                                "Data" => "C80001A013006813003213006913003A1400831"
+                                ."30102025D029200BF00EC",
+                            ),
+                        ),
+                        "device" => array(
+                            "id" => 18,
+                            "DeviceID" => "000012",
+                            "HWPartNum" => "0039-12-01-A",
+                            "FWPartNum" => "0039-20-03-C",
+                            "FWVerson" => "0.1.2",
+                            "sensors" => array(
+                                "Sensors" => 5,
+                                0 => array(),
+                                1 => array(),
+                                2 => array(
+                                    "id" => 0x70, "type" => "genericRevolver"
+                                ),
+                                3 => array(
+                                    "id" => 0x70, "type" => "genericRevolver"
+                                ),
+                                4 => array(),
+                            ),
+                        ),
+                        "command" => "55",
+                        "dataIndex" => 123,
+                    ),
+                    array(
+                        "id" => 18,
+                        "Date" => 1048472084,
+                        "packet" => array(
+                            "To" => "000012",
+                            "From" => "000283",
+                            "Date" => 1048472084,
+                            "Command" => "55",
+                            "Data" => "",
+                            "Reply" => array(
+                                "To" => "000283",
+                                "From" => "000012",
+                                "Date" => 1048472085,
+                                "Command" => "01",
+                                "Data" => "C80001A013006813001612006912003A14008313"
+                                    ."0102025D029200BF00EC",
+                            ),
+                        ),
+                        "device" => array(
+                            "id" => 18,
+                            "DeviceID" => "000012",
+                            "HWPartNum" => "0039-12-01-A",
+                            "FWPartNum" => "0039-20-03-C",
+                            "FWVerson" => "0.1.2",
+                            "sensors" => array(
+                                "Sensors" => 5,
+                                0 => array(),
+                                1 => array(),
+                                2 => array(
+                                    "id" => 0x70, "type" => "genericRevolver"
+                                ),
+                                3 => array(
+                                    "id" => 0x70, "type" => "genericRevolver"
+                                ),
+                                4 => array(),
+                            ),
+                        ),
+                        "command" => "55",
+                        "dataIndex" => 123,
+                    ),
+                ),
+                array(
+                    "id" => 18,
+                    "Date" => 1048472484,
+                    "packet" => array(
+                        "To" => "000012",
+                        "From" => "000283",
+                        "Date" => 1048472484,
+                        "Command" => "55",
+                        "Data" => "",
+                        "Reply" => array(
+                            "To" => "000283",
+                            "From" => "000012",
+                            "Date" => 1048472485,
+                            "Command" => "01",
+                            "Data" => "C80001A013006813001614006914003A14008313"
+                                    ."0102025D029200BF00EC",
+                        ),
+                    ),
+                    "device" => array(
+                        "id" => 18,
+                        "DeviceID" => "000012",
+                        "HWPartNum" => "0039-12-01-A",
+                        "FWPartNum" => "0039-20-03-C",
+                        "FWVerson" => "0.1.2",
+                        "sensors" => array(
+                            "Sensors" => 5,
+                            0 => array(),
+                            1 => array(),
+                            2 => array("id" => 0x70, "type" => "genericRevolver"),
+                            3 => array("id" => 0x70, "type" => "genericRevolver"),
+                            4 => array(),
+                        ),
+                    ),
+                    "command" => "55",
+                    "dataIndex" => 123,
+                ),
+                0,
+                array(),
+                array(
+                    "id" => 18,
+                    "raw" => array(
+                        2 => 5142,
+                        3 => 5225,
+                    ),
+                    "Date" => 1048472484,
+                    'deltaT' => 300,
+                    'Data0' => 93.1399,
+                    'Data1' => 93.5384,
+                    'Data2' => 45.6,
+                    'Data3' => 51.2,
+                    'Data4' => 92.0645,
+                    'Data7' => -25.4877,
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param array $database The database stuff to load
+    * @param array $preload  The array to preload into the class
+    * @param array $time     The time of the last packet
+    * @param array $prev     The previous record
+    * @param array $expect   The expected return
+    *
+    * @dataProvider dataToHistoryTable
+    *
+    * @return null
+    */
+    public function testToHistoryTable($database, $preload, $time, $prev, $expect)
+    {
+        foreach ($database as $p) {
+            $this->o->clearData();
+            $this->o->fromAny($p);
+            $this->o->insertRow();
         }
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $array = $this->o->toHistoryTable($time, $prev)->toArray(false);
+        $this->assertEquals($expect, $array, "", 0.1);
     }
 
 }
