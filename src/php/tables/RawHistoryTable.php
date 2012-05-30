@@ -103,7 +103,7 @@ class RawHistoryTable extends HUGnetDBTable
         ),
         "packet" => array(
             "Name" => "packet",
-            "Type" => "longblob",
+            "Type" => "text",
             "Default" => "",
         ),
         "devicesHistoryDate" => array(
@@ -205,8 +205,8 @@ class RawHistoryTable extends HUGnetDBTable
     {
         foreach ((array)$this->sqlColumns as $col) {
             $key = $col["Name"];
-            if (is_object($this->$key)) {
-                $array[$col["Name"]] = $this->$key->toZip();
+            if (is_array($this->$key)) {
+                $array[$col["Name"]] = json_encode($this->$key);
             } else {
                 $array[$col["Name"]] = $this->$key;
             }
@@ -223,6 +223,7 @@ class RawHistoryTable extends HUGnetDBTable
     public function fromArray($array)
     {
         parent::fromArray($array);
+        /*
         $this->_setupClasses();
         if (empty($this->devicesHistoryDate) && isset($array["device"])) {
             if (is_object($array["device"])) {
@@ -235,20 +236,7 @@ class RawHistoryTable extends HUGnetDBTable
             $this->devHist->insertRow();
             $this->devicesHistoryDate = $this->devHist->SaveDate;
         }
-    }
-    /**
-    * Sets all of the endpoint attributes from an array
-    *
-    * @return null
-    */
-    private function _setupClasses()
-    {
-        if (!is_object($this->packet)) {
-            // Do the sensors
-            unset($this->data["packet"]);
-            $this->packet = new PacketContainer($this->packet);
-
-        }
+        */
     }
     /**
     * Returns a device object
@@ -257,11 +245,12 @@ class RawHistoryTable extends HUGnetDBTable
     */
     public function &getDevice()
     {
+        /*
         $dev = &DevicesHistoryTable::deviceFactory(
             $this->id, $this->devicesHistoryDate, array("group" => $this->group)
         );
         return $dev;
-
+        */
     }
     /**
     * Returns a history table object
