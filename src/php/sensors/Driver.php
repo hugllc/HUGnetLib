@@ -341,7 +341,7 @@ abstract class Driver
     *
     * @return int
     */
-    public function strToInt(&$string)
+    protected function strToInt(&$string)
     {
         $size = $this->get("inputSize", 1);
         $work = substr($string, 0, ($size * 2));
@@ -354,6 +354,39 @@ abstract class Driver
             $shift += 8;
         }
         return $return;
+    }
+    /**
+    * Gets the direction from a direction sensor made out of a POT.
+    *
+    * @param string &$string The data string
+    * @param float  $deltaT  The time delta in seconds between this record
+    * @param array  &$prev   The previous reading
+    * @param array  &$data   The data from the other sensors that were crunched
+    *
+    * @return float The direction in degrees
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    */
+    public function decodeData(
+        &$string, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
+        $A = $this->strToInt($string);
+        $ret = array();
+        if ($this->get("storageType") == \HUGnet\units\Driver::TYPE_DIFF) {
+            $ret["value"] = $this->getReading(
+                ($A - $prev["raw"]), $deltaT, $data, $prev
+            );
+            $ret["raw"] = $A;
+        } else {
+            $ret["value"] = $this->getReading(
+                $A, $deltaT, $data, $prev
+            );
+        }
+        /* These go to sensor() because they might contain extra values */
+        $ret["units"] = $this->sensor()->get("storageUnit");
+        $ret["unitType"] = $this->sensor()->get("unitType");
+        $ret["dataType"] = $this->sensor()->get("storageType");
+        return array($ret);
     }
     /**
     * This makes a line of two ordered pairs, then puts $A on that line

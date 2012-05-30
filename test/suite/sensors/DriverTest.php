@@ -675,6 +675,20 @@ class DriverTestClass extends Driver
         return null;
     }
     /**
+    * Takes in a raw string from a sensor and makes an int out it
+    *
+    * The sensor data is stored little-endian, so it just takes that and adds
+    * the bytes together.
+    *
+    * @param string &$string The string to convert
+    *
+    * @return int
+    */
+    public function strToInt(&$string)
+    {
+        return parent::strToInt($string);
+    }
+    /**
     * This makes a line of two ordered pairs, then puts $A on that line
     *
     * @param float $value The incoming value

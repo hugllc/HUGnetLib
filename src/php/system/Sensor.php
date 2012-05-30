@@ -232,22 +232,7 @@ class Sensor extends SystemTableBase
     public function decodeData(
         &$string, $deltaT = 0, &$prev = null, &$data = array()
     ) {
-        $A = $this->driver()->strToInt($string);
-        $ret = array();
-        if ($this->get("storageType") == \HUGnet\units\Driver::TYPE_DIFF) {
-            $ret["value"] = $this->driver()->getReading(
-                ($A - $prev["raw"]), $deltaT, $data, $prev
-            );
-            $ret["raw"] = $A;
-        } else {
-            $ret["value"] = $this->driver()->getReading(
-                $A, $deltaT, $data, $prev
-            );
-        }
-        $ret["units"] = $this->get("storageUnit");
-        $ret["unitType"] = $this->get("unitType");
-        $ret["dataType"] = $this->get("storageType");
-        return array($ret);
+        return $this->driver()->decodeData($string, $deltaT, $prev, $data);
     }
     /**
     * This function should be overloaded to make changes to the table based on
