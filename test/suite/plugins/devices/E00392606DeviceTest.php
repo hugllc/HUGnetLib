@@ -165,6 +165,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     "PollInterval" => "0",
                     "ActiveSensors" => "0",
                     "DeviceGroup" => "FFFFFF",
+                    "channels" => "",
                     "sensors" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO3M6"
                         ."NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MDtz"
                         ."OjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0dWFsU2Vu"
@@ -198,6 +199,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
+                        "channels" => "",
                         "sensors" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO3"
                         ."M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MDtz"
                         ."OjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0dWFsU2Vu"
@@ -231,6 +233,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     "PollInterval" => "0",
                     "ActiveSensors" => "0",
                     "DeviceGroup" => "FFFFFF",
+                    "channels" => "",
                     "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiI"
                         ."iO3M6NzoiU2Vuc29ycyI7aTowO30=",
                     "params" => "YTowOnt9",
@@ -262,6 +265,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
+                        "channels" => "",
                         "sensors" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO3"
                         ."M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MDtz"
                         ."OjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0dWFsU2Vu"
@@ -286,6 +290,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         'PollInterval' => '0',
                         'ActiveSensors' => '0',
                         'DeviceGroup' => 'FFFFFF',
+                        "channels" => "",
                         'sensors' => '',
                         'params' => '',
                     )
@@ -318,6 +323,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     "PollInterval" => "0",
                     "ActiveSensors" => "0",
                     "DeviceGroup" => "FFFFFF",
+                    "channels" => "",
                     "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiI"
                         ."iO3M6NzoiU2Vuc29ycyI7aTowO30=",
                     "params" => "YTowOnt9",
@@ -350,6 +356,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
+                        "channels" => "",
                         "sensors" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO3"
                         ."M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MDtz"
                         ."OjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0dWFsU2Vu"
@@ -383,6 +390,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     "PollInterval" => "0",
                     "ActiveSensors" => "0",
                     "DeviceGroup" => "FFFFFF",
+                    "channels" => "",
                     "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiI"
                         ."iO3M6NzoiU2Vuc29ycyI7aTowO30=",
                     "params" => "YTowOnt9",
@@ -415,6 +423,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
+                        "channels" => "",
                         "sensors" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO3"
                         ."M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MDtz"
                         ."OjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0dWFsU2Vu"
@@ -458,6 +467,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     "PollInterval" => "0",
                     "ActiveSensors" => "0",
                     "DeviceGroup" => "FFFFFF",
+                    "channels" => "",
                     "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiI"
                         ."iO3M6NzoiU2Vuc29ycyI7aTowO30=",
                     "params" => "YTowOnt9",
@@ -490,6 +500,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
+                        "channels" => "",
                         "sensors" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO3"
                         ."M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MDtz"
                         ."OjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0dWFsU2Vu"
@@ -514,6 +525,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
+                        "channels" => "",
                         "sensors" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO3"
                         ."M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MDtz"
                         ."OjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0dWFsU2Vu"
@@ -538,6 +550,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
+                        "channels" => "",
                         "sensors" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO3"
                         ."M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MDtz"
                         ."OjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0dWFsU2Vu"
@@ -571,6 +584,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     "PollInterval" => "0",
                     "ActiveSensors" => "0",
                     "DeviceGroup" => "FFFFFF",
+                    "channels" => "",
                     "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiI"
                     ."iO3M6NzoiU2Vuc29ycyI7aTowO30=",
                     "params" => "YTowOnt9",
@@ -603,6 +617,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
+                        "channels" => "",
                         "sensors" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO3"
                         ."M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MDtz"
                         ."OjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0dWFsU2Vu"
@@ -685,6 +700,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
+                        "channels" => "",
                         "sensors" => "",
                         "params" => "",
                     ),
@@ -759,6 +775,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
+                        "channels" => "",
                         "sensors" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO3"
                         ."M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MDtz"
                         ."OjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0dWFsU2Vu"
@@ -783,6 +800,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
+                        "channels" => "",
                         "sensors" => "",
                         "params" => "",
                     ),
@@ -804,6 +822,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
+                        "channels" => "",
                         "sensors" => "",
                         "params" => "",
                     ),
@@ -838,6 +857,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
+                        "channels" => "",
                         "sensors" => "",
                         "params" => "",
                     ),
@@ -912,6 +932,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
+                        "channels" => "",
                         "sensors" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO3"
                         ."M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MDtz"
                         ."OjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0dWFsU2Vu"
@@ -936,6 +957,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
+                        "channels" => "",
                         "sensors" => "",
                         "params" => "",
                     ),
@@ -957,6 +979,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
+                        "channels" => "",
                         "sensors" => "",
                         "params" => "",
                     ),
@@ -1041,6 +1064,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     "PollInterval" => "0",
                     "ActiveSensors" => "0",
                     "DeviceGroup" => "FFFFFF",
+                    "channels" => "",
                     "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiI"
                     ."iO3M6NzoiU2Vuc29ycyI7aTowO30=",
                     "params" => array(
@@ -1074,6 +1098,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
+                        "channels" => "",
                         "sensors" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO3"
                         ."M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MDtz"
                         ."OjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0dWFsU2Vu"
@@ -1122,6 +1147,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     "PollInterval" => "0",
                     "ActiveSensors" => "0",
                     "DeviceGroup" => "FFFFFF",
+                    "channels" => "",
                     "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiI"
                     ."iO3M6NzoiU2Vuc29ycyI7aTowO30=",
                     "params" => array(
@@ -1155,6 +1181,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
+                        "channels" => "",
                         "sensors" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO3"
                         ."M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MDtz"
                         ."OjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0dWFsU2Vu"
@@ -1203,6 +1230,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     "PollInterval" => "0",
                     "ActiveSensors" => "0",
                     "DeviceGroup" => "FFFFFF",
+                    "channels" => "",
                     "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiI"
                     ."iO3M6NzoiU2Vuc29ycyI7aTowO30=",
                     "params" => array(
@@ -1236,6 +1264,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
+                        "channels" => "",
                         "sensors" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO3"
                         ."M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MDtz"
                         ."OjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0dWFsU2Vu"
@@ -1283,6 +1312,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     "PollInterval" => "0",
                     "ActiveSensors" => "0",
                     "DeviceGroup" => "FFFFFF",
+                    "channels" => "",
                     "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiI"
                     ."iO3M6NzoiU2Vuc29ycyI7aTowO30=",
                     "params" => "YTowOnt9",
@@ -1315,6 +1345,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
+                        "channels" => "",
                         "sensors" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO3"
                         ."M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MDtz"
                         ."OjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0dWFsU2Vu"
@@ -1339,6 +1370,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         'PollInterval' => '5',
                         'ActiveSensors' => '0',
                         'DeviceGroup' => 'FFFFFF',
+                        "channels" => "",
                         'sensors' => 'YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO'
                             .'3M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2'
                             .'k6MDtzOjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ'
@@ -1387,6 +1419,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     "PollInterval" => "0",
                     "ActiveSensors" => "0",
                     "DeviceGroup" => "FFFFFF",
+                    "channels" => "",
                     "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiI"
                     ."iO3M6NzoiU2Vuc29ycyI7aTowO30=",
                     "params" => "YTowOnt9",
@@ -1419,6 +1452,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
+                        "channels" => "",
                         "sensors" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO3"
                         ."M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MDtz"
                         ."OjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0dWFsU2Vu"
@@ -1443,6 +1477,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         'PollInterval' => '5',
                         'ActiveSensors' => '0',
                         'DeviceGroup' => 'FFFFFF',
+                        "channels" => "",
                         'sensors' => 'YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO'
                             .'3M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2'
                             .'k6MDtzOjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ'
@@ -1498,6 +1533,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     "PollInterval" => "0",
                     "ActiveSensors" => "0",
                     "DeviceGroup" => "FFFFFF",
+                    "channels" => "",
                     "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiI"
                     ."iO3M6NzoiU2Vuc29ycyI7aTowO30=",
                     "params" => "YTowOnt9",
@@ -1530,6 +1566,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
+                        "channels" => "",
                         "sensors" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO3"
                         ."M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MDtz"
                         ."OjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0dWFsU2Vu"
@@ -1554,6 +1591,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         'PollInterval' => '5',
                         'ActiveSensors' => '0',
                         'DeviceGroup' => 'FFFFFF',
+                        "channels" => "",
                         'sensors' => 'YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO'
                             .'3M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2'
                             .'k6MDtzOjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ'
@@ -1609,6 +1647,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     "PollInterval" => "0",
                     "ActiveSensors" => "0",
                     "DeviceGroup" => "FFFFFF",
+                    "channels" => "",
                     "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiI"
                     ."iO3M6NzoiU2Vuc29ycyI7aTowO30=",
                     "params" => "YTowOnt9",
@@ -1641,6 +1680,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
+                        "channels" => "",
                         "sensors" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO3"
                         ."M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MDtz"
                         ."OjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0dWFsU2Vu"
@@ -1665,6 +1705,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         'PollInterval' => '5',
                         'ActiveSensors' => '0',
                         'DeviceGroup' => 'FFFFFF',
+                        "channels" => "",
                         'sensors' => 'YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO'
                             .'3M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2'
                             .'k6MDtzOjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ'
@@ -1746,6 +1787,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
+                        "channels" => "",
                         "sensors" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO3"
                         ."M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MDtz"
                         ."OjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0dWFsU2Vu"
@@ -1770,6 +1812,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         'PollInterval' => '5',
                         'ActiveSensors' => '0',
                         'DeviceGroup' => 'FFFFFF',
+                        "channels" => "",
                         'sensors' => 'YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO'
                             .'3M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2'
                             .'k6MDtzOjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ'
@@ -1795,6 +1838,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
+                        "channels" => "",
                         "sensors" => "",
                         "params" => '',
                     ),

@@ -404,6 +404,7 @@ class E00392600DeviceTest extends DevicePluginTestBase
                         'PollInterval' => '0',
                         'ActiveSensors' => '0',
                         'DeviceGroup' => 'FFFFFF',
+                        "channels" => "",
                         'sensors' => '',
                         'params' => '',
                     )

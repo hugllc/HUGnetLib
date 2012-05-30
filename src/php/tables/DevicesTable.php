@@ -189,6 +189,11 @@ class DevicesTable extends HUGnetDBTable
             "Type" => "varchar(6)",
             "Default" => 'FFFFFF',
         ),
+        "channels" => array(
+            "Name" => "channels",
+            "Type" => "longtext",
+            "Default" => '',
+        ),
         "sensors" => array(
             "Name" => "sensors",
             "Type" => "longtext",
