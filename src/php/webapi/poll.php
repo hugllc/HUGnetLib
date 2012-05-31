@@ -50,28 +50,26 @@ if (is_object($hist)) {
         $filename = "/tmp/LeNR.".$did.".".date("Ymd");
         $new = !file_exists($filename);
         $fd = fopen($filename, "a");
-        $fields = $json->system()->test($did)->getField();
+        $sensors = $device->get("totalSensors");
         if ($new) {
-            $sep = "";
-            foreach ((array)$fields as $key => $value) {
-                fwrite($fd, $sep.$value["name"]);
-                $sep = ",";
+            $sep = ",";
+            fwrite($fd, "Date");
+            for ($i = 0; $i < $sensors; $i++) {
+                if ($device->sensor($i)->get("dataType") !== 'ignore') {
+                    fwrite($fd, $sep.$device->sensor($i)->get("location"));
+                    $sep = ",";
+                }
             }
             fwrite($fd, "\r\n");
         }
-        $sep = "";
-        foreach ((array)$fields as $key => $value) {
-            if (is_numeric($value["field"])) {
-                $data = $hist->get("Data".$key);
-            } else {
-                if ($value["field"] == 'Date') {
-                    $data = date("Y-m-d H:i:s", $hist->get($value["field"]));
-                } else {
-                    $data = $hist->get($value["field"]);
-                }
+        $sep = ",";
+        fwrite($fd, date("Y-m-d H:i:s", $hist->get("Date")));
+        for ($i = 0; $i < $sensors; $i++) {
+            if ($device->sensor($i)->get("dataType") !== 'ignore') {
+                $data = $hist->get("Data".$i);
+                fwrite($fd, $sep.$data);
+                $sep = ",";
             }
-            fwrite($fd, $sep.$data);
-            $sep = ",";
         }
         fwrite($fd, "\r\n");
         fclose($fd);
