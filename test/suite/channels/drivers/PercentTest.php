@@ -177,7 +177,8 @@ class PercentTest extends DriverTestBase
                 0.1, "%", "decimal", \HUGnet\channels\Driver::TYPE_DIFF, true, 10.0
             ),
             array(
-                42.13, "decimal", "%", \HUGnet\channels\Driver::TYPE_DIFF, true, 0.4213
+                42.13, "decimal", "%", \HUGnet\channels\Driver::TYPE_DIFF,
+                true, 0.4213
             ),
             array(
                 42.13, "%", "%", \HUGnet\channels\Driver::TYPE_DIFF, true, 42.13

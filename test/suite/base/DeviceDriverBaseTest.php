@@ -246,7 +246,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     public static function dataReadData()
     {
         return array(
-        /*
+            /*
             array(
                 "37",
                 "000000002500391101410039201343000009FFFFFF50",
@@ -312,7 +312,8 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                     'command' => '55',
                     'dataIndex' => '1',
                 ),
-            ),*/
+            ),
+            */
             array( // The data index is the same
                 "37",
                 "000000002500391101410039201343000009FFFFFF50",
@@ -341,7 +342,8 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                 1,
                 array(
                 ),
-            ),/*
+            ),
+            /*
             array(
                 0x000025,
                 "000000002500391101410039201343000009FFFFFF50",
@@ -407,7 +409,8 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                     'command' => '55',
                     'dataIndex' => '1',
                 ),
-            ),*/
+            ),
+            */
             array(
                 0x000025,
                 "000000000100392601500039260150010203FFFFFF10",

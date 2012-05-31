@@ -298,7 +298,8 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                         "id"        => "123",
                         "Date"      => "220954140",
                         "packet" => '{"To":"123456","Command":"55",'
-                            .'"Data":"","Reply":"1234567890","Date":"2003-01-23 23:35:12"}',
+                            .'"Data":"","Reply":"1234567890",'
+                            .'"Date":"2003-01-23 23:35:12"}',
                         "devicesHistoryDate"    => "0",
                         "command"   => "55",
                         "dataIndex" => "232",
