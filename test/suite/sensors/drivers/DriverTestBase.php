@@ -395,6 +395,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 "ThisIsABadName",
+                array(),
                 null,
             ),
         );
@@ -403,15 +404,52 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     * test the set routine when an extra class exists
     *
     * @param string $name   The name of the variable to test.
+    * @param array  $mock   The mocks to set up
     * @param array  $expect The expected return
     *
     * @return null
     *
     * @dataProvider dataGet
     */
-    public function testGet($name, $expect)
+    public function testGet($name, $mock, $expect)
     {
-        $this->assertSame($expect, $this->o->get($name, 1));
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($mock);
+        $obj = &ADuCPower::factory($sensor);
+        $this->assertSame($expect, $obj->get($name));
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataExtra()
+    {
+        return array(
+            array(
+                200,
+                array(),
+                null,
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $extra  The name of the variable to test.
+    * @param array  $mock   The mocks to set up
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataExtra
+    */
+    public function testGetExtra($extra, $mock, $expect)
+    {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($mock);
+        $obj = &ADuCPower::factory($sensor);
+        $this->assertSame($expect, $obj->getExtra($extra));
     }
     /**
      * Data provider for testGetReading

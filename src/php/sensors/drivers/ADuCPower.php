@@ -202,10 +202,10 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
     */
     public function get($name, $sid = null)
     {
-        $sid = (int)$sid;
-        if (is_null($sid)) {
+        if (!is_int($sid)) {
             $sid = $this->sensor()->id();
         }
+        $sid = (int)$sid;
         $param = parent::get($name);
         if (($name == "unitType") || ($name == "storageUnit")) {
             $param = $param[$sid];
@@ -230,7 +230,7 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
     public function getExtra($index, $sid = null)
     {
         if (!is_int($sid)) {
-            $sid = $this->sensor()->id();
+            $sid = (int)$this->sensor()->id();
         }
         $extra = (array)$this->sensor()->get("extra");
         if (!isset($extra[$index])) {

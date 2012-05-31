@@ -571,6 +571,58 @@ class ADuCPowerTest extends DriverTestBase
             ),
         );
     }
-
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataGet()
+    {
+        return array(
+            array(
+                "ThisIsABadName",
+                array(
+                ),
+                null,
+            ),
+            array(
+                "storageUnit",
+                array(
+                    "Sensor" => array(
+                        "id" => 5,
+                    ),
+                ),
+                'W',
+            ),
+        );
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataExtra()
+    {
+        return array(
+            array(
+                0,
+                array(
+                    "Sensor" => array(
+                        "id" => 5,
+                    ),
+                ),
+                null,
+            ),
+            array(
+                0,
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                    ),
+                ),
+                1.2,
+            ),
+        );
+    }
 }
 ?>
