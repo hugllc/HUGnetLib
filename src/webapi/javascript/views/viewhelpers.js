@@ -46,7 +46,7 @@ HUGnet.viewHelpers = {
         }
         for (; ((start <= end) && (inc > 0)) || ((start >= end) && (inc < 0)); start += inc) {
             html += '<option value="'+start+'"';
-            if (start === selected) {
+            if (start === (selected - 0)) {
                 html += ' selected="selected"';
             }
             html += '>'+start+'</option>';

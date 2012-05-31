@@ -164,7 +164,7 @@ HUGnet.DeviceSensors = Backbone.Collection.extend({
     model: HUGnet.DeviceSensor,
     comparator: function (model)
     {
-        return model.get("sensor");
+        return parseInt(model.get("sensor"), 10);
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
