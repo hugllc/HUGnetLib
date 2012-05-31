@@ -380,7 +380,7 @@ class E00392606Device extends E00392600Device
         $locks[1] = &$this->checkLocalDevLock($dev->DeviceID, false);
         // This resets the local lock if it is different from the remote ones.
         if (($locks[1]->id !== $remote) && !is_null($remote)) {
-            $this->setLocalDevLock(&$dev, $remote, $time, true);
+            $this->setLocalDevLock($dev, $remote, $time, true);
             $locks[1] = &$this->checkLocalDevLock($dev->DeviceID, false);
         }
         return $locks;
