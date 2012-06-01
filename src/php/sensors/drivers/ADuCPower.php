@@ -238,6 +238,24 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
         }
         return $extra[$index];
     }
+    /**
+    * This builds the class from a setup string
+    *
+    * @return Array of channel information
+    */
+    public function channels()
+    {
+        $ret = array();
+        foreach (array(1,2,5,6) as $i) {
+            $ret[] = array(
+                "decimals" => $this->get("maxDecimals", $i),
+                "units" => $this->get("storageUnit", $i),
+                "unitType" => $this->get("unitType", $i),
+                "dataType" => $this->get("storageType", $i),
+            );
+        }
+        return $ret;
+    }
 
 }
 

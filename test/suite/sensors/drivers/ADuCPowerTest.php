@@ -312,6 +312,62 @@ class ADuCPowerTest extends DriverTestBase
         );
     }
     /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataChannels()
+    {
+        return array(
+            array(
+                "\HUGnet\sensors\drivers\ADuCPower",
+                array(
+                    array(
+                        "decimals" => 6,
+                        "units" => 'A',
+                        "unitType" => 'Current',
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "decimals" => 6,
+                        "units" => 'V',
+                        "unitType" => 'Voltage',
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "decimals" => 6,
+                        "units" => 'W',
+                        "unitType" => 'Power',
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "decimals" => 6,
+                        "units" => 'Ohms',
+                        "unitType" => 'Impedance',
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $name   The name of the variable to test.
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataChannels
+    */
+    public function testChannels($name, $expect)
+    {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($extra);
+        $obj = &$name::factory($sensor);
+        $this->assertSame($expect, $obj->channels());
+    }
+    /**
      * Data provider for testGetReading
      *
      * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
