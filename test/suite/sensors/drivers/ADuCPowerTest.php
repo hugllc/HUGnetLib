@@ -380,6 +380,186 @@ class ADuCPowerTest extends DriverTestBase
             array(
                 array(
                     "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(),
+                        ),
+                    ),
+                ),
+                "40420F0040420F00",
+                1,
+                array(),
+                array(),
+                array(
+                    array(
+                        "value" => 0.314713,
+                        "decimals" => 6,
+                        "units" => "A",
+                        "unitType" => "Current",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 14.448166,
+                        "decimals" => 6,
+                        "units" => "V",
+                        "unitType" => "Voltage",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 4.547026,
+                        "decimals" => 6,
+                        "units" => "W",
+                        "unitType" => "Power",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 45.909022,
+                        "decimals" => 6,
+                        "units" => "Ohms",
+                        "unitType" => "Impedance",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(),
+                        ),
+                    ),
+                ),
+                "FFFFFFFF00000000",
+                1,
+                array(),
+                array(),
+                array(
+                    array(
+                        "value" => 0.0,
+                        "decimals" => 6,
+                        "units" => "A",
+                        "unitType" => "Current",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 0.0,
+                        "decimals" => 6,
+                        "units" => "V",
+                        "unitType" => "Voltage",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 0.0,
+                        "decimals" => 6,
+                        "units" => "W",
+                        "unitType" => "Power",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => null,
+                        "decimals" => 6,
+                        "units" => "Ohms",
+                        "unitType" => "Impedance",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(),
+                        ),
+                    ),
+                ),
+                "40420F00",
+                1,
+                array(),
+                array(),
+                array(
+                    array(
+                        "value" => 0.314713,
+                        "decimals" => 6,
+                        "units" => "A",
+                        "unitType" => "Current",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => null,
+                        "decimals" => 6,
+                        "units" => "V",
+                        "unitType" => "Voltage",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => null,
+                        "decimals" => 6,
+                        "units" => "W",
+                        "unitType" => "Power",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => null,
+                        "decimals" => 6,
+                        "units" => "Ohms",
+                        "unitType" => "Impedance",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(),
+                        ),
+                    ),
+                ),
+                "",
+                1,
+                array(),
+                array(),
+                array(
+                    array(
+                        "value" => null,
+                        "decimals" => 6,
+                        "units" => "A",
+                        "unitType" => "Current",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => null,
+                        "decimals" => 6,
+                        "units" => "V",
+                        "unitType" => "Voltage",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => null,
+                        "decimals" => 6,
+                        "units" => "W",
+                        "unitType" => "Power",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => null,
+                        "decimals" => 6,
+                        "units" => "Ohms",
+                        "unitType" => "Impedance",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    "Sensor" => array(
                         "id" => 2,
                         "get" => array(
                             "sensor" => 2,
@@ -387,245 +567,37 @@ class ADuCPowerTest extends DriverTestBase
                         ),
                     ),
                 ),
-                1000000,
+                "40420F0040420F00",
                 1,
                 array(),
                 array(),
-                14.448166,
-            ),
-            array(
-                array(
-                    "Sensor" => array(
-                        "id" => 1,
-                        "get" => array(
-                            "sensor" => 1,
-                        ),
-                    ),
-                ),
-                1000000,
-                1,
-                array(),
-                array(),
-                0.314713,
-            ),
-            array(
-                array(
-                    "Sensor" => array(
-                        "id" => 5,
-                        "get" => array(
-                            "sensor" => 5,
-                        ),
-                    ),
-                ),
-                1000000,
-                1,
-                array(
-                    2 => array(
-                        "value" => 10,
-                    ),
-                    1 => array(
-                        "value" => 5,
-                    ),
-                ),
-                array(),
-                50,
-            ),
-            array(
-                array(
-                    "Sensor" => array(
-                        "id" => 6,
-                        "get" => array(
-                            "sensor" => 6,
-                        ),
-                    ),
-                ),
-                1000000,
-                1,
-                array(
-                    2 => array(
-                        "value" => 10,
-                    ),
-                    1 => array(
-                        "value" => 5,
-                    ),
-                ),
-                array(),
-                2,
-            ),
-            /* Second sensor location */
-            array(
-                array(
-                    "Sensor" => array(
-                        "id" => 4,
-                        "get" => array(
-                            "sensor" => 4,
-                            "extra" => array(),
-                        ),
-                    ),
-                ),
-                1000000,
-                1,
-                array(),
-                array(),
-                14.448166,
-            ),
-            array(
-                array(
-                    "Sensor" => array(
-                        "id" => 3,
-                        "get" => array(
-                            "sensor" => 3,
-                        ),
-                    ),
-                ),
-                1000000,
-                1,
-                array(),
-                array(),
-                0.314713,
-            ),
-            array(
-                array(
-                    "Sensor" => array(
-                        "id" => 1,
-                        "get" => array(
-                            "sensor" => 1,
-                        ),
-                    ),
-                ),
-                1000000,
-                1,
-                array(),
-                array(),
-                0.314713,
-            ),
-            array(
-                array(
-                    "Sensor" => array(
-                        "id" => 7,
-                        "get" => array(
-                            "sensor" => 7,
-                        ),
-                    ),
-                ),
-                1000000,
-                1,
-                array(
-                    4 => array(
-                        "value" => 10,
-                    ),
-                    3 => array(
-                        "value" => 5,
-                    ),
-                ),
-                array(),
-                50,
-            ),
-            array(
-                array(
-                    "Sensor" => array(
-                        "id" => 8,
-                        "get" => array(
-                            "sensor" => 8,
-                        ),
-                    ),
-                ),
-                1000000,
-                1,
-                array(
-                    4 => array(
-                        "value" => 10,
-                    ),
-                    3 => array(
-                        "value" => 5,
-                    ),
-                ),
-                array(),
-                2,
-            ),
-            /* Current is 0 for impedance calculation */
-            array(
-                array(
-                    "Sensor" => array(
-                        "id" => 8,
-                        "get" => array(
-                            "sensor" => 8,
-                        ),
-                    ),
-                ),
-                1000000,
-                1,
                 array(
                 ),
-                array(),
-                null,
-            ),
-            array(
-                array(
-                    "Sensor" => array(
-                        "id" => 6,
-                        "get" => array(
-                            "sensor" => 6,
-                        ),
-                    ),
-                ),
-                1000000,
-                1,
-                array(
-                ),
-                array(),
-                null,
-            ),
-            /* Resistance is 0 for current calculation */
-            array(
-                array(
-                    "Sensor" => array(
-                        "id" => 1,
-                        "get" => array(
-                            "sensor" => 1,
-                            "extra" => array(1.2, 0, 100, 1, 1, 10),
-                        ),
-                    ),
-                ),
-                1000000,
-                1,
-                array(),
-                array(),
-                null,
-            ),
-            array(
-                array(
-                    "Sensor" => array(
-                        "id" => 3,
-                        "get" => array(
-                            "sensor" => 3,
-                            "extra" => array(1.2, 0, 100, 1, 1, 10),
-                        ),
-                    ),
-                ),
-                1000000,
-                1,
-                array(),
-                array(),
-                null,
-            ),
-            /* Sensor out of bounds */
-            array(
-                array(
-                    "Sensor" => array(
-                        "id" => 0,
-                        "get" => array(
-                            "sensor" => 0,
-                        ),
-                    ),
-                ),
-                1000000,
-                1,
-                array(),
-                array(),
-                null,
             ),
         );
+    }
+    /**
+    * Generic function for testing sensor routines
+    *
+    * This is called by using parent::sensorTest()
+    *
+    * @param array $sensor The sensor data array
+    * @param mixed $A      Data for the sensor to work on
+    * @param float $deltaT The time differenct
+    * @param array $data   The data array being built
+    * @param array $prev   The previous record
+    * @param mixed $expect The return data to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataGetReading()
+    */
+    public function testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+    {
+        $sen = new \HUGnet\DummyBase("Sensor");
+        $sen->resetMock($sensor);
+        $ret = $this->o->decodeData($A, $deltaT, $data, $prev);
+        $this->assertEquals($expect, $ret, 0.00001);
     }
     /**
     * data provider for testDeviceID

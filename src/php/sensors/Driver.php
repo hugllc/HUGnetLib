@@ -344,6 +344,9 @@ abstract class Driver
     protected function strToInt(&$string)
     {
         $size = $this->get("inputSize", 1);
+        if ($size > strlen($string)) {
+            return null;
+        }
         $work = substr($string, 0, ($size * 2));
         $string = (string)substr($string, ($size * 2));
         $bytes = str_split($work, 2);
@@ -371,22 +374,18 @@ abstract class Driver
         &$string, $deltaT = 0, &$prev = null, &$data = array()
     ) {
         $A = $this->strToInt($string);
-        $ret = array();
+        $ret = $this->channels();
         if ($this->get("storageType") == \HUGnet\units\Driver::TYPE_DIFF) {
-            $ret["value"] = $this->getReading(
+            $ret[0]["value"] = $this->getReading(
                 ($A - $prev["raw"]), $deltaT, $data, $prev
             );
-            $ret["raw"] = $A;
+            $ret[0]["raw"] = $A;
         } else {
-            $ret["value"] = $this->getReading(
+            $ret[0]["value"] = $this->getReading(
                 $A, $deltaT, $data, $prev
             );
         }
-        /* These go to sensor() because they might contain extra values */
-        $ret["units"] = $this->sensor()->get("storageUnit");
-        $ret["unitType"] = $this->sensor()->get("unitType");
-        $ret["dataType"] = $this->sensor()->get("storageType");
-        return array($ret);
+        return $ret;
     }
     /**
     * This makes a line of two ordered pairs, then puts $A on that line
@@ -427,10 +426,10 @@ abstract class Driver
     {
         return array(
             array(
-                "decimals" => $this->get("maxDecimals"),
-                "units" => $this->get("storageUnit"),
-                "unitType" => $this->get("unitType"),
-                "dataType" => $this->get("storageType"),
+                "decimals" => $this->sensor()->get("maxDecimals"),
+                "units" => $this->sensor()->get("storageUnit"),
+                "unitType" => $this->sensor()->get("unitType"),
+                "dataType" => $this->sensor()->get("storageType"),
             ),
         );
     }

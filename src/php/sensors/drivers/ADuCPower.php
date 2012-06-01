@@ -130,49 +130,110 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
     public function getReading(
         $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
-        bcscale(10);
+    }
+    /**
+    * Changes a raw reading into a output value
+    *
+    * @param int   $A      Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
+    * @param array &$data  The data from the other sensors that were crunched
+    * @param mixed $prev   The previous value for this sensor
+    *
+    * @return mixed The value in whatever the units are in the sensor
+    *
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function getVoltage(
+        $A, $deltaT = 0, &$data = array(), $prev = null
+    ) {
+        if (is_null($A)) {
+            return null;
+        }
         $Am   = pow(2, 23);
         $A = $this->getTwosCompliment($A, 32);
-        $sid = $this->sensor()->id();
-        $maxDecimals = $this->get("maxDecimals", $sid);
-        if (($sid == 2) || ($sid == 4)) {
-            /* Voltage */
-            $Vref  = $this->getExtra(0, $sid - 1);
-            $Rin   = $this->getExtra(2, $sid - 1);
-            $Rbias = $this->getExtra(3, $sid - 1);
-            $A = $this->inputBiasCompensation($A, $Rin, $Rbias);
-            $Va = ($A / $Am) * $Vref;
-            return round($Va, $maxDecimals);
-        } else if (($sid == 1) || ($sid == 3)) {
-            /* Current */
-            $Vref  = $this->getExtra(0);
-            $R     = $this->getExtra(1);
-            $Rin   = $this->getExtra(4);
-            $Rbias = $this->getExtra(5);
-            if ($R == 0) {
-                return null;
-            }
-            $A = $this->inputBiasCompensation($A, $Rin, $Rbias);
-            $Va = ($A / $Am) * $Vref;
-            $I = $Va / $R;
-            return round($I, $maxDecimals);
-        } else if (($sid == 5) || ($sid == 7)) {
-            /* Power */
-            $I = $data[$sid - 4]["value"];
-            $V = $data[$sid - 3]["value"];
-            $P = $I * $V;
-            return round($P, $maxDecimals);
-        } else if (($sid == 6) || ($sid == 8)) {
-            /* Impedance */
-            $I = $data[$sid - 5]["value"];
-            $V = $data[$sid - 4]["value"];
-            if ($I == 0) {
-                return null;
-            }
-            $R = $V / $I;
-            return round($R, $maxDecimals);
+        $Vref  = $this->getExtra(0);
+        $Rin   = $this->getExtra(2);
+        $Rbias = $this->getExtra(3);
+        $A = $this->inputBiasCompensation($A, $Rin, $Rbias);
+        $Va = ($A / $Am) * $Vref;
+        return round($Va, $this->get("maxDecimals"));
+    }
+    /**
+    * Changes a raw reading into a output value
+    *
+    * @param int   $A      Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
+    * @param array &$data  The data from the other sensors that were crunched
+    * @param mixed $prev   The previous value for this sensor
+    *
+    * @return mixed The value in whatever the units are in the sensor
+    *
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function getCurrent(
+        $A, $deltaT = 0, &$data = array(), $prev = null
+    ) {
+        if (is_null($A)) {
+            return null;
         }
-        return null;
+        $Am   = pow(2, 23);
+        $A = $this->getTwosCompliment($A, 32);
+        $Vref  = $this->getExtra(0);
+        $R     = $this->getExtra(1);
+        $Rin   = $this->getExtra(4);
+        $Rbias = $this->getExtra(5);
+        if ($R == 0) {
+            return null;
+        }
+        $A = $this->inputBiasCompensation($A, $Rin, $Rbias);
+        $Va = ($A / $Am) * $Vref;
+        $I = $Va / $R;
+        return round($I, $this->get("maxDecimals"));
+    }
+    /**
+    * Changes a raw reading into a output value
+    *
+    * @param float $deltaT The time delta in seconds between this record
+    * @param array &$data  The data from the other sensors that were crunched
+    * @param mixed $prev   The previous value for this sensor
+    *
+    * @return mixed The value in whatever the units are in the sensor
+    *
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function getPower(
+        $deltaT = 0, &$data = array(), $prev = null
+    ) {
+        $I = $data[0]["value"];
+        $V = $data[1]["value"];
+        if (is_null($I) || is_null($V)) {
+            return null;
+        }
+        $P = $I * $V;
+        return round($P, $this->get("maxDecimals"));
+    }
+    /**
+    * Changes a raw reading into a output value
+    *
+    * @param float $deltaT The time delta in seconds between this record
+    * @param array &$data  The data from the other sensors that were crunched
+    * @param mixed $prev   The previous value for this sensor
+    *
+    * @return mixed The value in whatever the units are in the sensor
+    *
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function getImpedance(
+        $deltaT = 0, &$data = array(), $prev = null
+    ) {
+        /* Impedance */
+        $I = $data[0]["value"];
+        $V = $data[1]["value"];
+        if (($I == 0) || is_null($V)) {
+            return null;
+        }
+        $R = $V / $I;
+        return round($R, $this->get("maxDecimals"));
     }
     /**
     * Returns all of the parameters and defaults in an array
@@ -218,6 +279,42 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
             }
         }
         return $param;
+    }
+    /**
+    * Gets the direction from a direction sensor made out of a POT.
+    *
+    * @param string &$string The data string
+    * @param float  $deltaT  The time delta in seconds between this record
+    * @param array  &$prev   The previous reading
+    * @param array  &$data   The data from the other sensors that were crunched
+    *
+    * @return float The direction in degrees
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    */
+    public function decodeData(
+        &$string, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
+        $sid = (int)$this->sensor()->id();
+        if (($sid !== 1) && ($sid !== 3)) {
+            return array();
+        }
+        $ret = $this->channels();
+        $A = $this->strToInt($string);
+        $ret[0]["value"] = $this->getCurrent(
+            $A, $deltaT, $ret, $prev
+        );
+        $A = $this->strToInt($string);
+        $ret[1]["value"] = $this->getVoltage(
+            $A, $deltaT, $ret, $prev
+        );
+        $ret[2]["value"] = $this->getPower(
+            $deltaT, $ret, $prev
+        );
+        $ret[3]["value"] = $this->getImpedance(
+            $deltaT, $ret, $prev
+        );
+        return $ret;
     }
     /**
     * Gets the extra values
