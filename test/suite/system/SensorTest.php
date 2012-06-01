@@ -1132,7 +1132,66 @@ class SensorTest extends \PHPUnit_Framework_TestCase
         );
         unset($obj);
     }
-}
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataChannels()
+    {
+        return array(
+            array(
+                new DummySystem(),
+                null,
+                "DummyTable",
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "sensor" => 4,
+                            "HWPartNum"    => "0039-12-01-C",
+                            "FWPartNum"    => "0039-20-03-C",
+                            "FWVersion"    => "1.2.3",
+                            "DeviceGroup"  => "FFFFFF",
+                            "TimeConstant" => "01",
+                        ),
+                    ),
+                ),
+                array(
+                    array(
+                        "decimals" => 2,
+                        "units"    => 'unknown',
+                        "unitType" => 'unknown',
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "sensor"   => 4,
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config The configuration to use
+    * @param mixed  $device The device to set
+    * @param mixed  $class  This is either the name of a class or an object
+    * @param array  $mocks  The mocks to use
+    * @param string $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataChannels
+    */
+    public function testChannels(
+        $config, $device, $class, $mocks, $expect
+    ) {
+        $config->resetMock($mocks);
+        $obj = Sensor::factory($config, $device, $class);
+        $this->assertEquals(
+            $expect, $obj->Channels(), "Return Wrong"
+        );
+        unset($obj);
+    }}
 
 namespace HUGnet\sensors\drivers;
 

@@ -325,6 +325,20 @@ class Sensor extends SystemTableBase
         }
         $this->fixTable();
     }
+    /**
+    * This builds the class from a setup string
+    *
+    * @return Array of channel information
+    */
+    public function channels()
+    {
+        $channels = (array)$this->driver()->channels();
+        $sid = $this->id();
+        foreach (array_keys($channels) as $key) {
+            $channels[$key]["sensor"] = $sid;
+        }
+        return $channels;
+    }
 
 }
 

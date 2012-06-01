@@ -605,6 +605,44 @@ class DriverTest extends drivers\DriverTestBase
         $val = $this->o->linearBounded($value, $Imin, $Imax, $Omin, $Omax);
         $this->assertEquals($expect, $val, 0.0001);
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataChannels()
+    {
+        return array(
+            array(
+                "\HUGnet\sensors\DriverTestClass",
+                array(
+                    array(
+                        "decimals" => 2,
+                        "units" => 'unknown',
+                        "unitType" => 'asdf',
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $name   The name of the variable to test.
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataChannels
+    */
+    public function testChannels($name, $expect)
+    {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($extra);
+        $obj = &$name::factory($sensor);
+        $this->assertSame($expect, $obj->channels());
+    }
 }
 /**
  * Base driver class for devices.

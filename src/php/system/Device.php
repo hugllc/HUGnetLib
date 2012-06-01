@@ -289,6 +289,22 @@ class Device extends SystemTableBase
         return $obj;
     }
     /**
+    * This creates the sensor drivers
+    *
+    * @param int $sid The sensor id to get.  They are labaled 0 to sensors
+    *
+    * @return null
+    */
+    public function &channel($sid)
+    {
+        $sensors = $this->get("totalSensors");
+        $channels = array();
+        for ($i = 0; $i < $sensors; $i++) {
+            $channels = array_merge($channels, $this->sensor($i)->channels());
+        }
+        return $channels;
+    }
+    /**
     * Gets one of the parameters
     *
     * @param string $field The field to get

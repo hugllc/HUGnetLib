@@ -418,6 +418,22 @@ abstract class Driver
         $Out = bcadd(bcmul($mult, $value), $Yint);
         return $Out;
     }
+    /**
+    * This builds the class from a setup string
+    *
+    * @return Array of channel information
+    */
+    public function channels()
+    {
+        return array(
+            array(
+                "decimals" => $this->get("maxDecimals"),
+                "units" => $this->get("storageUnit"),
+                "unitType" => $this->get("unitType"),
+                "dataType" => $this->get("storageType"),
+            ),
+        );
+    }
 }
 
 
