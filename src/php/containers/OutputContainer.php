@@ -262,12 +262,14 @@ class OutputContainer extends HUGnetContainer
         // Apply the call backs
         foreach (array_keys((array)$this->callbacks[$type]) as $field) {
             if (array_key_exists($field, $this->headerOut)) {
-                $data[$field] = call_user_func(
+                $data[$field] = call_user_func_array(
                     $this->callbacks[$type][$field],
-                    $field,
-                    $data[$field],
-                    &$this->container,
-                    &$this
+                    array(
+                        $field,
+                        $data[$field],
+                        &$this->container,
+                        &$this
+                    )
                 );
             }
         }
