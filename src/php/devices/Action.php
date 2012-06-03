@@ -179,7 +179,6 @@ class Action
     public function poll($TestID = null, $time = null)
     {
         if (empty($time)) {
-            var_dump($time);
             $time = time();
         }
         $pkt = $this->device->network()->poll();
