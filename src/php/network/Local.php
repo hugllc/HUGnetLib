@@ -106,7 +106,7 @@ final class Local
     */
     public function write($string)
     {
-        $this->_buffer .= $string;
+        $this->_buffer .= (string)$string;
         return strlen($string) / 2;
     }
     /**

@@ -62,6 +62,8 @@ final class Network
     private $_write = array();
     /** Read buffer */
     private $_read = array();
+    /** Read buffer */
+    private $_local = "Local";
     /** Route Buffer */
     private $_routes = array();
     /** This is where we store our config */
@@ -165,7 +167,7 @@ final class Network
     {
         $ifaces = &$this->_ifaces();
         if ((count($ifaces) > 1) && $this->_config["forward"]) {
-            $fto = array_diff($ifaces, array($from));
+            $fto = array_diff($ifaces, array($from, $this->_local));
             \HUGnet\VPrint::out(
                 "Forwarding to ".implode(", ", $fto)
                 ." of (".implode(", ", $ifaces).")",
@@ -224,9 +226,11 @@ final class Network
             || !is_array($this->_config["ifaces"])
         ) {
             $this->_config["ifaces"] = array();
-            if ($this->_config["noLocal"] !== true) {
-                $this->_config["local"] = array(
-                    "driver" => "Local", "name" => "Local"
+            if ($this->_config["noLocal"] != true) {
+                $this->_local = "Local".md5(mt_rand(0x1000000, 0xFFFFFFFFFF));
+                $this->_config[$this->_local] = array(
+                    "driver" => "Local",
+                    "name" => $this->_local,
                 );
             }
             foreach (array_keys($this->_config) as $key) {
