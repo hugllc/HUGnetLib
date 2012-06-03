@@ -94,6 +94,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                 ),
                 array(
+                    "noLocal" => true,
                 ),
                 1,
                 array(
@@ -236,6 +237,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(
+                    "noLocal" => true,
                     "default" => array(
                         "driver" => "DummySocket"
                     ),
@@ -625,6 +627,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(
+                    "noLocal" => true,
                     "default" => new \HUGnet\network\physical\DummySocket(
                         "defaultSocket"
                     ),
@@ -733,6 +736,35 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 "",
                 "RuntimeException",
+            ),
+            array(  // #8 Only local
+                array(
+                ),
+                array(
+                ),
+                1,
+                array(
+                    Packet::factory(
+                        array(
+                            "To" => 0x123456,
+                            "From" => 0x000020,
+                            "Command" => 0x55,
+                        )
+                    ),
+                ),
+                array(
+                ),
+                array(
+                    Packet::factory(
+                        array(
+                            "To" => 0x123456,
+                            "From" => 0x000020,
+                            "Command" => 0x55,
+                            "Data" => "",
+                        )
+                    ),
+                ),
+                null,
             ),
         );
     }

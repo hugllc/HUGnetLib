@@ -224,6 +224,11 @@ final class Network
             || !is_array($this->_config["ifaces"])
         ) {
             $this->_config["ifaces"] = array();
+            if ($this->_config["noLocal"] !== true) {
+                $this->_config["local"] = array(
+                    "driver" => "Local", "name" => "Local"
+                );
+            }
             foreach (array_keys($this->_config) as $key) {
                 if (is_object($this->_config[$key])
                     && (strtolower($key) !== "device")
