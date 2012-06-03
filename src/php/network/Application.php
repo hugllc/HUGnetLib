@@ -88,10 +88,7 @@ final class Application
         $this->_system = &$system;
         $this->_transport =& $transport;
         if (empty($this->_config["from"])) {
-            $this->_config["from"] = mt_rand(0xFD0000, 0xFDFFFF);
-        }
-        if (is_string($this->_config["from"])) {
-            $this->_config["from"] = hexdec($this->_config["from"]);
+            $this->_config["from"] = sprintf("%06X", mt_rand(0xFD0000, 0xFDFFFF));
         }
 
     }
@@ -199,42 +196,6 @@ final class Application
         }
     }
     /**
-    * Calls the callbacks with this packet
-    *
-    * @param string $qid     The token attached to that packet
-    * @param mixed  &$packet The packet to send out
-    * @param array  $config  The configuration to use
-    *
-    * @return null
-    */
-    private function _send($qid, &$packet, $config)
-    {
-        $token = false;
-        if (!is_null($packet) && is_object($packet)) {
-            if (($packet->to() === sprintf("%06X", $this->_from()))) {
-                if (isset($this->_unsolicited[$packet->to()])
-                    && isset($this->_unsolicited[$packet->to()][0])
-                ) {
-                    $callback = $this->_unsolicited[$packet->to()][0];
-                    if (is_callable($callback)) {
-                        $this->_queue[$qid]["packet"] = $packet;
-                        $token = call_user_func($callback, $packet);
-                        $this->_receive($qid, $token);
-                    }
-                }
-            } else {
-                $token = $this->_transport->send(
-                    $packet,
-                    $this->_queue[$qid]["config"]
-                );
-                if (!is_bool($token) && (is_string($token) || is_numeric($token))) {
-                    $this->_monitor($packet);
-                }
-            }
-        }
-        return $token;
-    }
-    /**
     * Sets callbacks for incoming packets
     *
     * The function should take 1 argument.  That will be the packet.
@@ -263,7 +224,7 @@ final class Application
         } else {
             $this->_queue[$qid]["queue"] = array($packet);
         }
-        return $this->_queue($qid);
+        return $this->_send($qid);
     }
     /**
     * Sets callbacks for incoming packets
@@ -272,7 +233,7 @@ final class Application
     *
     * @return bool true on success, false of failure
     */
-    private function _queue($qid)
+    private function _send($qid)
     {
         $return = false;
         $packet = array_shift($this->_queue[$qid]["queue"]);
@@ -285,12 +246,12 @@ final class Application
         if ($packet->type() !== "POWERUP") {
             $packet->from($this->_from());
         }
-        $token = $this->_send(
-            $qid,
+        $token = $this->_transport->send(
             $packet,
             $this->_queue[$qid]["config"]
         );
         if (!is_bool($token) && (is_string($token) || is_numeric($token))) {
+            $this->_monitor($packet);
             if ($this->_config["block"] || $this->_queue[$qid]["config"]["block"]) {
                 $return = &$packet;
                 $reply = $this->_wait($token);
@@ -304,10 +265,6 @@ final class Application
                 $this->_queue[$qid]["packet"] = &$packet;
                 $return = true;
             }
-        } if (is_object($token)) {
-            /* This was a packet to me */
-            $return = &$packet;
-            $return->Reply($token->Data());
         }
         return $return;
     }
@@ -328,7 +285,7 @@ final class Application
             }
             if (call_user_func($callback, $this->_queue[$qid]["packet"])) {
                 // Send the next one out
-                $this->_queue($qid);
+                $this->_send($qid);
             } else {
                 unset($this->_queue[$qid]);
             }

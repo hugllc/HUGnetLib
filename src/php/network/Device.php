@@ -131,13 +131,11 @@ final class Device
     public function packet($pkt)
     {
         $this->_lastContact = time();
-        $return = null;
         if (($pkt->type() === "PING") || ($pkt->type() === "FINDPING")) {
-            $return = $this->_reply($pkt, $pkt->data());
+            $this->_reply($pkt, $pkt->data());
         } else if (($pkt->type() === "CONFIG")) {
-            $return = $this->_reply($pkt, $this->_device->encode());
+            $this->_reply($pkt, $this->_device->encode());
         }
-        return $return;
     }
     /**
     * Gets the device associated with this
@@ -186,12 +184,9 @@ final class Device
                 "Data"    => $data,
             )
         );
-        if ($pkt->from() !== $pkt->to()) {
-            $this->_network->send(
-                $newPacket, null, array("tries" => 1, "find" => false)
-            );
-        }
-        return $newPacket;
+        $this->_network->send(
+            $newPacket, null, array("tries" => 1, "find" => false)
+        );
     }
     /**
     * Replies to a packet
