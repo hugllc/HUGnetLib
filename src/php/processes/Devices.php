@@ -102,8 +102,8 @@ class Devices extends \HUGnet\ui\Daemon
             if (!$this->loop()) {
                 break;
             }
-            if (($key == $this->_myID) || ($key == 0)) {
-                /* I don't need info on me, or an empty device */
+            if ($key == 0) {
+                /* I don't need info an empty device */
                 continue;
             }
             $this->_device->load($key);
