@@ -169,6 +169,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                         "config" => array("find" => false, "retries" => 1),
                     ),
                 ),
+                null,
                 array(
                     "Transport" => array(
                         "send" => array(
@@ -389,6 +390,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                null,
                 array(
                     "Transport" => array(
                         "send" => array(
@@ -482,6 +484,229 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                 ),
                 null,
             ),
+            array( // #2 Normal operation with a device
+                array(
+                    "Transport" => array(
+                        "receive" => array(
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            false,
+                            false,
+                            false,
+                            false,
+                        ),
+                        "packet1" => true,
+                        "packet2" => false,
+                        "send" => array(
+                            "one",
+                            "two",
+                            "three",
+                            "four",
+                            "five",
+                            "six",
+                        ),
+                    ),
+                ),
+                array(
+                    "timeout" => 0.5,
+                ),
+                10,
+                array(),
+                array(),
+                array(),
+                array(
+                    array(
+                        "name" => "packet1",
+                        "packet" => array(
+                            Packet::factory(
+                                array(
+                                    "To" => "000001",
+                                    "From" => "000012",
+                                    "Command" => "5C",
+                                )
+                            ),
+                            Packet::factory(
+                                array(
+                                    "To" => "000001",
+                                    "From" => "000012",
+                                    "Command" => "4C",
+                                )
+                            ),
+                        ),
+                    ),
+                    array(
+                        "name" => "packet2",
+                        "packet" => array(
+                            array(
+                                "To" => "000002",
+                                "From" => "000012",
+                                "Command" => "5C",
+                            ),
+                            array(
+                                "To" => "000002",
+                                "From" => "000012",
+                                "Command" => "4C",
+                            ),
+                        ),
+                    ),
+                    array(
+                        "name" => "packet3",
+                        "packet" => array(
+                            array(
+                                "To" => "000012",
+                                "From" => "000012",
+                                "Command" => "03",
+                                "Data"    => "01020304",
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    "id" => "000012",
+                    "DeviceID" => "000012",
+                ),
+                array(
+                    "Transport" => array(
+                        "send" => array(
+                            array(
+                                Packet::factory(
+                                    array(
+                                        "To"      => "000000",
+                                        "From"    => "000012",
+                                        "Command" => "5E",
+                                        "Data"    => "00000000120039260050",
+                                    )
+                                ),
+                                array(
+                                    "tries" => 1,
+                                    "find"  => false,
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                Packet::factory(
+                                    array(
+                                        "To"      => "000001",
+                                        "From"    => "000012",
+                                        "Command" => "5C",
+                                    )
+                                ),
+                                array(),
+                            ),
+                            array(
+                                Packet::factory(
+                                    array(
+                                        "To"      => "000001",
+                                        "From"    => "000012",
+                                        "Command" => "4C",
+                                    )
+                                ),
+                                array(),
+                            ),
+                            array(
+                                Packet::factory(
+                                    array(
+                                        "To"      => "000002",
+                                        "From"    => "000012",
+                                        "Command" => "5C",
+                                    )
+                                ),
+                                array(),
+                            ),
+                        ),
+                        "unsolicited" => array(
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                        ),
+                        "receive" => array(
+                            array("one"),
+                            array("one"),
+                            array("one"),
+                            array("one"),
+                            array("one"),
+                            array("one"),
+                            array("one"),
+                            array("two"),
+                            array("three"),
+                            array("four"),
+                        ),
+                        "packet1" => array(
+                            array(
+                                Packet::factory(
+                                    array(
+                                        "To"      => "000001",
+                                        "From"    => "000012",
+                                        "Command" => "5C",
+                                    )
+                                ),
+                            ),
+                            array(
+                                Packet::factory(
+                                    array(
+                                        "To"      => "000001",
+                                        "From"    => "000012",
+                                        "Command" => "4C",
+                                    )
+                                ),
+                            ),
+                        ),
+                        "packet2" => array(
+                            array(
+                                Packet::factory(
+                                    array(
+                                        "To"      => "000002",
+                                        "From"    => "000012",
+                                        "Command" => "5C",
+                                    )
+                                ),
+                            ),
+                        ),
+                        "packet3" => array(
+                            array(
+                                Packet::factory(
+                                    array(
+                                        "To"      => "000012",
+                                        "From"    => "000012",
+                                        "Command" => "03",
+                                        "Data"    => "01020304",
+                                        "Reply"   => "01020304",
+                                    )
+                                ),
+                            ),
+                        ),
+
+                    ),
+                    "System" => array(
+                        "get" => array(
+                            array("uuid"),
+                            array("IPAddr"),
+                            array("GatewayKey"),
+                            array("uuid"),
+                            array("uuid"),
+                            array("uuid"),
+                        ),
+                    ),
+                ),
+                null,
+            ),
         );
     }
     /**
@@ -494,6 +719,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     * @param array  $unsolicited Array of strings to get unsolicited packets
     * @param array  $match       The match callbacks to put in
     * @param array  $send        Array of "function" => Packets to send out
+    * @param array  $device      The device configuration
     * @param array  $expect      The info to expect returned
     * @param string $exception   The exception to expect.  Null for none
     *
@@ -502,7 +728,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     * @dataProvider dataApplication()
     */
     public function testApplication(
-        $mock, $config, $loops, $monitor, $unsolicited, $match, $send,
+        $mock, $config, $loops, $monitor, $unsolicited, $match, $send, $device,
         $expect, $exception
     ) {
         if (!is_null($exception)) {
@@ -512,6 +738,9 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $system = new \HUGnet\DummySystem();
         $transport->resetMock($mock);
         $application = &Application::factory($transport, $system, $config);
+        if (is_array($device)) {
+            $application->device($device);
+        }
         foreach ((array)$monitor as $mon) {
             $application->monitor(array($transport, $mon));
         }
@@ -574,6 +803,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                         "Data"    => "010203",
                     )
                 ),
+                null,
                 Packet::factory(
                     array(
                         "From"    => "000200",
@@ -614,7 +844,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                 ),
                 null,
             ),
-            array(  // #0 // No sockets
+            array(  // #1 Normal Operation
                 array(
                     "Transport" => array(
                         "receive" => array(
@@ -647,6 +877,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                         "Data"    => "010203",
                     )
                 ),
+                null,
                 Packet::factory(
                     array(
                         "From"    => "000200",
@@ -686,6 +917,146 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                 ),
                 null,
             ),
+            array(  // #2 Normal Operation
+                array(
+                    "Transport" => array(
+                        "receive" => array(
+                            null,
+                            "thisIsAToken" => Packet::factory(
+                                array(
+                                    "From"    => "000100",
+                                    "To"      => "000200",
+                                    "Command" => "23",
+                                    "Data"    => "01",
+                                )
+                            ),
+                        ),
+                        "send" => array(
+                            "thisIsAToken",
+                        ),
+                    ),
+                ),
+                array(
+                    "block" => true,
+                    "timeout" =>  1,
+                    "from" => "000200",
+                ),
+                "get_class", // This will take a single arguemnt of an object
+                Packet::factory(
+                    array(
+                        "From"    => "000200",
+                        "To"      => "000100",
+                        "Command" => "23",
+                        "Data"    => "010203",
+                    )
+                ),
+                null,
+                Packet::factory(
+                    array(
+                        "From"    => "000200",
+                        "To"      => "000100",
+                        "Command" => "23",
+                        "Data"    => "010203",
+                        "Reply"   => "01",
+                    )
+                ),
+                array(
+                    "Transport" => array(
+                        "send" => array(
+                            array(
+                                Packet::factory(
+                                    array(
+                                        "From"    => "000200",
+                                        "To"      => "000100",
+                                        "Command" => "23",
+                                        "Data"    => "010203",
+                                        "Reply"   => "01",
+                                    )
+                                ),
+                                array(
+                                ),
+                            ),
+                        ),
+                        "receive" => array(
+                            array(
+                                "thisIsAToken",
+                            ),
+                            array(
+                                "thisIsAToken",
+                            ),
+                        ),
+                        "unsolicited" => array(array()),
+                    ),
+                ),
+                null,
+            ),
+            array(  // #1 Normal Operation
+                array(
+                    "Transport" => array(
+                    ),
+                ),
+                array(
+                    "block" => true,
+                    "timeout" =>  1,
+                ),
+                "get_class", // This will take a single arguemnt of an object
+                Packet::factory(
+                    array(
+                        "From"    => "000200",
+                        "To"      => "000200",
+                        "Command" => "03",
+                        "Data"    => "010203",
+                    )
+                ),
+                array(
+                    "id" => 0x200,
+                ),
+                Packet::factory(
+                    array(
+                        "From"    => "000200",
+                        "To"      => "000200",
+                        "Command" => "03",
+                        "Data"    => "010203",
+                        "Reply"   => "010203",
+                    )
+                ),
+                array(
+                    "Transport" => array(
+                        "send" => array(
+                            array(
+                                Packet::factory(
+                                    array(
+                                        "From"    => "000200",
+                                        "To"      => "000000",
+                                        "Command" => "5E",
+                                        "Data"    => "00000002000039260050",
+                                    )
+                                ),
+                                array(
+                                    "tries" => 1,
+                                    "find"  => false,
+                                    "block" => true,
+                                ),
+                            ),
+                        ),
+                        "receive" => array(
+                            array(
+                                "",
+                            ),
+                        ),
+                    ),
+                    "System" => array(
+                        "get" => array(
+                            array("uuid"),
+                            array("IPAddr"),
+                            array("GatewayKey"),
+                            array("uuid"),
+                            array("uuid"),
+                        ),
+                    ),
+                ),
+                null,
+            ),
         );
     }
     /**
@@ -695,6 +1066,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     * @param array  $config    The configuration to send the class
     * @param string $callback  The function to call
     * @param array  $send      Array of "function" => Packets to send out
+    * @param array  $device    The device configuration
     * @param array  $expect    The info to expect returned
     * @param mixed  $calls     The expected mock calls
     * @param string $exception The exception to expect.  Null for none
@@ -704,7 +1076,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     * @dataProvider dataBlocking()
     */
     public function testBlocking(
-        $mock, $config, $callback, $send, $expect, $calls, $exception
+        $mock, $config, $callback, $send, $device, $expect, $calls, $exception
     ) {
         if (!is_null($exception)) {
             $this->setExpectedException($exception);
@@ -713,6 +1085,9 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $system = new \HUGnet\DummySystem();
         $transport->resetMock($mock);
         $application = &Application::factory($transport, $system, $config);
+        if (is_array($device)) {
+            $application->device($device);
+        }
         $ret = $application->send($send, $callback);
         $this->assertEquals($expect, $ret, "The return was wrong");
         $this->assertEquals($calls, $transport->retrieve(), "Calls wrong");
