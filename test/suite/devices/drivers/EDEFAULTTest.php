@@ -69,7 +69,9 @@ class EDEFAULTTest extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->o = &EDEFAULT::factory();
+        $device  = new \HUGnet\DummyTable("Device");
+        $device->resetMock(array());
+        $this->o = &EDEFAULT::factory($device);
     }
 
     /**

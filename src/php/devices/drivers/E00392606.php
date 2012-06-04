@@ -74,11 +74,13 @@ class E00392606 extends E00392600
     /**
     * This function creates the system.
     *
+    * @param object &$device The device record we are attached to
+    *
     * @return null
     */
-    public static function &factory()
+    public static function &factory(&$device)
     {
-        return parent::intFactory();
+        return parent::intFactory($device);
     }
 
 }

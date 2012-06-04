@@ -69,7 +69,9 @@ class ETESTTest extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->o = &ETEST::factory();
+        $device  = new \HUGnet\DummyTable("Device");
+        $device->resetMock(array());
+        $this->o = &ETEST::factory($device);
     }
 
     /**

@@ -248,7 +248,7 @@ class Device extends SystemTableBase
         }
         if (!is_object($this->_driverCache[$driver])) {
             include_once dirname(__FILE__)."/../devices/Driver.php";
-            $this->_driverCache[$driver] = &devices\Driver::factory($driver);
+            $this->_driverCache[$driver] = &devices\Driver::factory($driver, $this);
         }
         return $this->_driverCache[$driver];
     }

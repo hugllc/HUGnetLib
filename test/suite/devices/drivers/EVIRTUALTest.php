@@ -69,7 +69,9 @@ class EVIRTUALTest extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->o = &EVIRTUAL::factory();
+        $device  = new \HUGnet\DummyTable("Device");
+        $device->resetMock(array());
+        $this->o = &EVIRTUAL::factory($device);
     }
 
     /**

@@ -93,18 +93,22 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
+                array(),
                 "ThisIsABadName",
                 false,
             ),
             array(
+                array(),
                 "packetTimeout",
                 true,
             ),
             array(
+                array(),
                 "testParam",
                 true,
             ),
             array(
+                array(),
                 "virtualSensors",
                 true,
             ),
@@ -113,6 +117,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
+    * @param array  $mocks  The value to preload into the mocks
     * @param string $name   The name of the variable to test.
     * @param array  $expect The expected return
     *
@@ -120,9 +125,11 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     *
     * @dataProvider dataPresent
     */
-    public function testPresent($name, $expect)
+    public function testPresent($mocks, $name, $expect)
     {
-        $o = &DriverTestClass::factory();
+        $device  = new \HUGnet\DummyTable("Device");
+        $device->resetMock($mocks);
+        $o = &DriverTestClass::factory($device);
         $this->assertSame($expect, $o->present($name));
     }
     /**
@@ -134,18 +141,22 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
+                array(),
                 "ThisIsABadName",
                 null,
             ),
             array(
+                array(),
                 "packetTimeout",
                 6,
             ),
             array(
+                array(),
                 "testParam",
                 "12345",
             ),
             array(
+                array(),
                 "virtualSensors",
                 4,
             ),
@@ -154,6 +165,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
+    * @param array  $mocks  The value to preload into the mocks
     * @param string $name   The name of the variable to test.
     * @param array  $expect The expected return
     *
@@ -161,9 +173,11 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     *
     * @dataProvider dataGet
     */
-    public function testGet($name, $expect)
+    public function testGet($mocks, $name, $expect)
     {
-        $o = &DriverTestClass::factory();
+        $device  = new \HUGnet\DummyTable("Device");
+        $device->resetMock($mocks);
+        $o = &DriverTestClass::factory($device);
         $this->assertSame($expect, $o->get($name));
     }
     /**
@@ -175,14 +189,17 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
+                array(),
                 "asdf",
                 "HUGnet\devices\drivers\EDEFAULT",
             ),
             array(
+                array(),
                 "EDEFAULT",
                 "HUGnet\devices\drivers\EDEFAULT",
             ),
             array(
+                array(),
                 "EVIRTUAL",
                 "HUGnet\devices\drivers\EVIRTUAL",
             ),
@@ -191,6 +208,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
+    * @param array  $mocks  The value to preload into the mocks
     * @param string $name   The name of the variable to test.
     * @param array  $expect The expected return
     *
@@ -198,9 +216,11 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     *
     * @dataProvider dataFactory
     */
-    public function testFactory($name, $expect)
+    public function testFactory($mocks, $name, $expect)
     {
-        $o = &Driver::factory($name);
+        $device  = new \HUGnet\DummyTable("Device");
+        $device->resetMock($mocks);
+        $o = &Driver::factory($name, $device);
         $this->assertSame($expect, get_class($o));
     }
     /**
@@ -405,6 +425,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
+                array(),
                 "ThisIsString",
                 array(
                     "DataIndex" => 0,
@@ -413,6 +434,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                 ),
             ),
             array(
+                array(),
                 "012805100000200000300000400000500000600000700000800000900000",
                 array(
                     "DataIndex" => 1,
@@ -426,6 +448,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
+    * @param array  $mocks  The value to preload into the mocks
     * @param string $string The string to decode
     * @param array  $expect The expected return
     *
@@ -433,9 +456,11 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     *
     * @dataProvider dataDecodeSensorString
     */
-    public function testDecodeSensorString($string, $expect)
+    public function testDecodeSensorString($mocks, $string, $expect)
     {
-        $obj = &DriverTestClass::factory();
+        $device  = new \HUGnet\DummyTable("Device");
+        $device->resetMock($mocks);
+        $obj = &DriverTestClass::factory($device);
         $this->assertEquals($expect, $obj->decodeSensorString($string));
     }
     /**
@@ -447,21 +472,25 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
+                array(),
                 "\HUGnet\devices\DriverTestClass",
                 true,
                 "E00392800HistoryTable"
             ),
             array(
+                array(),
                 "\HUGnet\devices\DriverTestClass",
                 false,
                 "E00392800AverageTable"
             ),
             array(
+                array(),
                 "\HUGnet\devices\DriverTestClass2",
                 true,
                 "EDEFAULTHistoryTable"
             ),
             array(
+                array(),
                 "\HUGnet\devices\DriverTestClass2",
                 false,
                 "EDEFAULTAverageTable"
@@ -471,6 +500,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
+    * @param array  $mocks   The value to preload into the mocks
     * @param string $class   The class to use
     * @param bool   $history Whether or not to get a history table
     * @param array  $expect  The expected return
@@ -479,9 +509,11 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     *
     * @dataProvider dataHistoryTable
     */
-    public function testHistoryTable($class, $history, $expect)
+    public function testHistoryTable($mocks, $class, $history, $expect)
     {
-        $obj = &$class::factory();
+        $device  = new \HUGnet\DummyTable("Device");
+        $device->resetMock($mocks);
+        $obj = &$class::factory($device);
         $this->assertEquals($expect, $obj->historyTable($history));
     }
     /**
@@ -493,6 +525,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
+                array(),
                 "\HUGnet\devices\DriverTestClass",
                 array(
                     'packetTimeout' => 6,
@@ -510,6 +543,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                 ),
             ),
             array(
+                array(),
                 "\HUGnet\devices\DriverTestClass2",
                 array(
                     'packetTimeout' => 9,
@@ -531,6 +565,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
+    * @param array  $mocks  The value to preload into the mocks
     * @param string $class  The class to use
     * @param array  $expect The expected return
     *
@@ -538,9 +573,11 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     *
     * @dataProvider dataToArray
     */
-    public function testToArray($class, $expect)
+    public function testToArray($mocks, $class, $expect)
     {
-        $obj = &$class::factory();
+        $device  = new \HUGnet\DummyTable("Device");
+        $device->resetMock($mocks);
+        $obj = &$class::factory($device);
         $this->assertEquals($expect, $obj->toArray());
     }
     /**
@@ -638,7 +675,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     {
         $device  = new \HUGnet\DummyTable("Device");
         $device->resetMock($mocks);
-        $obj = DriverTestClass::factory();
+        $obj = DriverTestClass::factory($device);
         $obj->decode($string, $device);
         $ret = $device->retrieve();
         $this->assertEquals($expect, $ret);
@@ -802,7 +839,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     {
         $device  = new \HUGnet\DummyTable("Device");
         $device->resetMock($mocks);
-        $obj = DriverTestClass::factory();
+        $obj = DriverTestClass::factory($device);
         $ret = $obj->encode($device, $showFixed);
         $this->assertSame($expect, $ret);
     }
@@ -838,11 +875,13 @@ class DriverTestClass extends Driver
     /**
     * This function creates the system.
     *
+    * @param object &$device The device record we are attached to
+    *
     * @return null
     */
-    public static function &factory()
+    public static function &factory(&$device)
     {
-        return parent::intFactory();
+        return parent::intFactory($device);
     }
 }
 /**
@@ -876,11 +915,13 @@ class DriverTestClass2 extends Driver
     /**
     * This function creates the system.
     *
+    * @param object &$device The device record we are attached to
+    *
     * @return null
     */
-    public static function &factory()
+    public static function &factory(&$device)
     {
-        return parent::intFactory();
+        return parent::intFactory($device);
     }
 }
 ?>

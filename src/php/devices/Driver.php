@@ -64,6 +64,10 @@ abstract class Driver
     protected $params = array(
     );
     /**
+    * This is the device we are attached to
+    */
+    private $_device = null;
+    /**
     * This is where all of the defaults are stored.
     */
     private $_default = array(
@@ -132,11 +136,18 @@ abstract class Driver
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
     *
+    * @param object &$device The device record we are attached to
+    *
     * @return null
     */
-    private function __construct()
+    private function __construct(&$device)
     {
-        /* This class shouldn't be instanciated. */
+        \HUGnet\System::exception(
+            get_class($this)." needs to be passed a system object",
+            "InvalidArgument",
+            !is_object($device)
+        );
+        $this->_device = &$device;
     }
     /**
     * This is the destructor
@@ -147,31 +158,34 @@ abstract class Driver
     /**
     * This function creates the system.
     *
+    * @param object &$device The device record we are attached to
+    *
     * @return null
     */
-    protected static function &intFactory()
+    protected static function &intFactory(&$device)
     {
         $class = get_called_class();
-        $object = new $class();
+        $object = new $class($device);
         return $object;
     }
     /**
     * This function creates the system.
     *
-    * @param string $driver The driver to load
+    * @param string $driver  The driver to load
+    * @param object &$device The device record we are attached to
     *
     * @return null
     */
-    public static function &factory($driver)
+    public static function &factory($driver, &$device)
     {
         $class = \HUGnet\Util::findClass(
             $driver, "devices/drivers", true, "\\HUGnet\\devices\\drivers"
         );
         if (class_exists($class)) {
-            return $class::factory();
+            return $class::factory($device);
         }
         include_once dirname(__FILE__)."/drivers/EDEFAULT.php";
-        return \HUGnet\devices\drivers\EDEFAULT::factory();
+        return \HUGnet\devices\drivers\EDEFAULT::factory($device);
     }
     /**
     * Checks to see if a piece of data exists
@@ -354,6 +368,15 @@ abstract class Driver
     public function checkRecord(&$device)
     {
         /* By default do nothing */
+    }
+    /**
+    * Returns the device object
+    *
+    * @return object
+    */
+    protected function device()
+    {
+        return $this->_device;
     }
 }
 

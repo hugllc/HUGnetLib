@@ -69,7 +69,9 @@ class E00392600Test extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->o = &E00392600::factory();
+        $device  = new \HUGnet\DummyTable("Device");
+        $device->resetMock(array());
+        $this->o = &E00392600::factory($device);
     }
 
     /**

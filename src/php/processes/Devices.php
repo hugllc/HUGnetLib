@@ -59,7 +59,7 @@ class Devices extends \HUGnet\ui\Daemon
     /** This is the time we lose contact for before we start pinging */
     const FAIL_THRESHOLD = 20;
     /** This is the amount of time we wait */
-    const WAIT_TIME = 30;
+    const WAIT_TIME = 60;
 
     /** This is the start time of the current run */
     private $_mainStart;
@@ -160,6 +160,9 @@ class Devices extends \HUGnet\ui\Daemon
         }
         /* PollInterval is in minutes, we need it in seconds */
         $PollInterval = $this->_device->get("PollInterval");
+        if ($PollInterval < $this->_wait) {
+            $this->_wait = $PollInterval;
+        }
         /* Don't run if the poll interval is 0 */
         if ($PollInterval <= 0) {
             return false;
@@ -178,7 +181,11 @@ class Devices extends \HUGnet\ui\Daemon
             return false;
         }
         $lastConfig = time() - $this->_device->getParam("LastConfig");
-        return $lastConfig > $this->_device->get("ConfigInterval");
+        $ConfigInterval = $this->_device->get("ConfigInterval");
+        if ($ConfigInterval < $this->_wait) {
+            $this->_wait = $ConfigInterval;
+        }
+        return $lastConfig > $ConfigInterval;
     }
     /**
     * If true, we should try to contact this device
@@ -197,7 +204,7 @@ class Devices extends \HUGnet\ui\Daemon
     */
     private function _wait()
     {
-        $this->_wait = self::WAIT_TIME - (time() - $this->_mainStart);
+        $this->_wait -= (time() - $this->_mainStart);
         if (($this->_wait > 0) && $this->loop()) {
             $this->out("Waiting ".$this->_wait." seconds at ".date("Y-m-d H:i:s"));
             for (; ($this->_wait > 0) && $this->loop(); $this->_wait--) {
@@ -205,6 +212,7 @@ class Devices extends \HUGnet\ui\Daemon
                 sleep(1);
             }
         }
+        $this->_wait = self::WAIT_TIME;
     }
 
     /**
