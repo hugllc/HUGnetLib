@@ -218,20 +218,6 @@ class System
         return $obj;
     }
     /**
-    * This returns a device object.
-    *
-    * @param array $data The data to send to the device object
-    *
-    * @return Reference to a device object
-    */
-    public function &test($data = array())
-    {
-        include_once dirname(__FILE__)."/Test.php";
-        $obj = Test::factory($this, $data);
-        return $obj;
-    }
-
-    /**
     * Throws an exception
     *
     * @param string $msg       The message

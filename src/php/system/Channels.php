@@ -78,34 +78,52 @@ class Channels
     /**
     * This sets up the basic parts of the object for us when we create it
     *
-    * @param object $system The system oject
-    * @param array  $config The configuration array
+    * @param object &$system The system oject
+    * @param object &$device The device object
     *
     * @return null
     */
-    private function __construct($system, $config = array())
+    private function __construct(&$system, &$device)
     {
         System::exception(
             get_class($this)." needs to be passed a system object",
             "InvalidArgument",
             !is_object($system)
         );
-        if (is_array($config)) {
-            $this->_channels = $config;
+        System::exception(
+            get_class($this)." needs to be passed a device object",
+            "InvalidArgument",
+            !is_object($device)
+        );
+        $this->_system = &$system;
+        $this->_device = &$device;
+        $sensors = $this->_device->get("totalSensors");
+        for ($i = 0; $i < $sensors; $i++) {
+            $this->_channels = array_merge(
+                $this->_channels, $this->_device->sensor($i)->channels()
+            );
         }
-        $this->_sysetm = $system;
+        $channels = json_decode($this->_device->get("channels"), true);
+        foreach (array_keys($this->_channels) as $chan) {
+            if (is_array($channels[$chan])) {
+                $this->_channels[$chan] = array_merge(
+                    $this->_channels[$chan],
+                    $channels[$chan]
+                );
+            }
+        }
     }
     /**
     * This function creates the system.
     *
-    * @param object $system The system oject
-    * @param array  $config The configuration array
+    * @param object &$system The system oject
+    * @param object &$device The device object
     *
     * @return null
     */
-    public static function &factory($system, $config = array())
+    public static function &factory(&$system, &$device)
     {
-        $obj = new Channels($system, $config);
+        $obj = new Channels($system, $device);
         return $obj;
     }
     /**

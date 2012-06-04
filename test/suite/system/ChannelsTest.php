@@ -94,7 +94,21 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException("InvalidArgumentException");
         // This throws an exception because $test is not a object
-        Channels::factory($test);
+        Channels::factory($test, $test2);
+    }
+    /**
+    * This tests the exception when a system object is not passed
+    *
+    * @return null
+    */
+    public function testCreateThrowException2()
+    {
+        $test = new DummyTable();
+        // This just resets the mock
+        $test->resetMock();
+        $this->setExpectedException("InvalidArgumentException");
+        // This throws an exception because $test is not a object
+        Channels::factory($test, $test2);
     }
     /**
     * Data provider for testCreate
@@ -106,9 +120,14 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 new DummySystem(),
-                2,
-                new DummyTable(),
+                new DummyTable("Device"),
                 array(
+                    "Device" => array(
+                        "get" => array(
+                            array("totalSensors"),
+                            array("channels"),
+                        ),
+                    ),
                 ),
             ),
         );
@@ -118,19 +137,18 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
     *
     * @param array $config      The configuration to use
     * @param mixed $gateway     The gateway to set
-    * @param mixed $class       This is either the name of a class or an object
     * @param array $expectTable The table to expect
     *
     * @return null
     *
     * @dataProvider dataCreate
     */
-    public function testCreate($config, $gateway, $class, $expectTable)
+    public function testCreate($config, $gateway, $expectTable)
     {
         $table = new DummyTable();
         // This just resets the mock
         $table->resetMock();
-        $obj = Channels::factory($config, $gateway, $class);
+        $obj = Channels::factory($config, $gateway);
         // Make sure we have the right object
         $this->assertTrue((get_class($obj) === "HUGnet\Channels"), "Class wrong");
         if (is_object($table)) {
@@ -174,8 +192,9 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
         $config, $config, $record, $expect
     ) {
         $sys = new DummySystem("System");
+        $dev = new DummyTable("Device");
         $sys->resetMock($config);
-        $obj = Channels::factory($sys, $config);
+        $obj = Channels::factory($sys, $dev);
         $ret = $obj->convert($record);
         $this->assertEquals($expect, $ret);
         unset($obj);

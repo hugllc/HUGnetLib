@@ -295,14 +295,10 @@ class Device extends SystemTableBase
     *
     * @return null
     */
-    public function &channel($sid)
+    public function &channels()
     {
-        $sensors = $this->get("totalSensors");
-        $channels = array();
-        for ($i = 0; $i < $sensors; $i++) {
-            $channels = array_merge($channels, $this->sensor($i)->channels());
-        }
-        return $channels;
+        include_once dirname(__FILE__)."/Channels.php";
+        return Channels::factory($this->system(), $this);
     }
     /**
     * Gets one of the parameters

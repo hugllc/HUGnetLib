@@ -1064,6 +1064,55 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         unset($obj);
     }
     /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataChannels()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "sensors"  => array(array("id" => 0x15)),
+                            "channels" => "",
+                        ),
+                    ),
+                ),
+                "DummyTable",
+                "\HUGnet\Channels",
+                0x15,
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config       The configuration to use
+    * @param mixed  $class        This is either the name of a class or an object
+    * @param string $driverExpect The driver we expect to be loaded
+    * @param int    $expect       The expected sensor id
+    *
+    * @return null
+    *
+    * @dataProvider dataChannels
+    */
+    public function testChannels(
+        $config, $class, $driverExpect, $expect
+    ) {
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = Device::factory($sys, null, $class);
+        $sen = $obj->channels();
+        $this->assertTrue(
+            is_a($sen, $driverExpect),
+            "Return is not a ".$driverExpect
+        );
+        unset($obj);
+    }
+    /**
     * Data provider for testHistoryFactory
     *
     * @return array
