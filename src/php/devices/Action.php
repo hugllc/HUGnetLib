@@ -229,7 +229,7 @@ class Action
     */
     public function checkRecord()
     {
-        $this->driver->checkRecord($this->device);
+        $this->driver->checkRecord();
     }
     /**
     * Gets the config and saves it

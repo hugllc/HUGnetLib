@@ -207,7 +207,7 @@ class Device extends SystemTableBase
     {
         include_once dirname(__FILE__)."/../devices/Config.php";
         $string  = \HUGnet\devices\Config::encode($this, $showFixed);
-        $string .= $this->driver()->encode($this, $showFixed);
+        $string .= $this->driver()->encode($showFixed);
         return $string;
     }
     /**
@@ -222,7 +222,7 @@ class Device extends SystemTableBase
         include_once dirname(__FILE__)."/../devices/Config.php";
         $extra = \HUGnet\devices\Config::decode($string, $this);
         if (is_string($extra)) {
-            $this->driver()->decode($extra, $this);
+            $this->driver()->decode($extra);
             return true;
         }
         return false;

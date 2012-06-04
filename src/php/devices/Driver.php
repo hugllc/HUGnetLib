@@ -154,6 +154,7 @@ abstract class Driver
     */
     public function __destruct()
     {
+        unset($this->_device);
     }
     /**
     * This function creates the system.
@@ -315,20 +316,19 @@ abstract class Driver
     /**
     * Decodes the driver portion of the setup string
     *
-    * @param string $string  The string to decode
-    * @param object &$device The device object
+    * @param string $string The string to decode
     *
     * @return array
     */
-    public function decode($string, &$device)
+    public function decode($string)
     {
-        $device->set("TimeConstant", hexdec(substr($string, 0, 2)));
+        $this->device()->set("TimeConstant", hexdec(substr($string, 0, 2)));
         $sensors = $this->get("physicalSensors");
         for ($i = 0; $i < $sensors; $i++) {
             $sid = substr($string, 2 + (2 * $i), 2);
             // Only do this if we have enough string
             if (strlen($sid) === 2) {
-                $device->sensor($i)->change(
+                $this->device()->sensor($i)->change(
                     array(
                         "id" => hexdec($sid),
                     )
@@ -339,20 +339,19 @@ abstract class Driver
     /**
     * Encodes this driver as a setup string
     *
-    * @param object &$device   The device object
-    * @param bool   $showFixed Show the fixed portion of the data
+    * @param bool $showFixed Show the fixed portion of the data
     *
     * @return array
     */
-    public function encode(&$device, $showFixed = true)
+    public function encode($showFixed = true)
     {
         $string  = "";
-        $string .= sprintf("%02X", ($device->get("TimeConstant") & 0xFF));
+        $string .= sprintf("%02X", ($this->device()->get("TimeConstant") & 0xFF));
         if ($showFixed) {
             $sensors = $this->get("physicalSensors");
             for ($i = 0; $i < $sensors; $i++) {
                 $string .= sprintf(
-                    "%02X", ($device->sensor($i)->get("id") & 0xFF)
+                    "%02X", ($this->device()->sensor($i)->get("id") & 0xFF)
                 );
             }
         }
@@ -361,11 +360,9 @@ abstract class Driver
     /**
     * Checks a record to see if it needs fixing
     *
-    * @param object &$device The device object
-    *
     * @return array
     */
-    public function checkRecord(&$device)
+    public function checkRecord()
     {
         /* By default do nothing */
     }

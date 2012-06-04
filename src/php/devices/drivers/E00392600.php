@@ -83,40 +83,37 @@ class E00392600 extends \HUGnet\devices\Driver
     /**
     * Checks a record to see if it needs fixing
     *
-    * @param object &$device The device object
-    *
     * @return array
     */
-    public function checkRecord(&$device)
+    public function checkRecord()
     {
-        $lastContact = $device->getParam("LastContact");
-        $fails       = $device->getParam("ContactFail");
+        $lastContact = $this->device()->getParam("LastContact");
+        $fails       = $this->device()->getParam("ContactFail");
 
         if (($fails > 20) && ((time() - $lastContact) > 3600)) {
             \HUGnet\VPrint::out(
-                "Old script device ".sprintf("%06X", $device->get("id"))
+                "Old script device ".sprintf("%06X", $this->device()->get("id"))
                 ." deleted from the database",
                 1
             );
-            $device->delete();
-            $device->load(null);
+            $this->device()->delete();
+            $this->device()->load(null);
         }
     }
     /**
     * Encodes this driver as a setup string
     *
-    * @param object &$device   The device object
-    * @param bool   $showFixed Show the fixed portion of the data
+    * @param bool $showFixed Show the fixed portion of the data
     *
     * @return array
     */
-    public function encode(&$device, $showFixed = true)
+    public function encode($showFixed = true)
     {
         $string = strtoupper(
-            str_replace("-", "", (string)$device->system()->get("uuid"))
+            str_replace("-", "", (string)$this->device()->system()->get("uuid"))
         );
         $string = str_pad($string, 32, "F");
-        $IP = explode(".", (string)$device->get("DeviceLocation"));
+        $IP = explode(".", (string)$this->device()->get("DeviceLocation"));
         $string .= sprintf(
             "%02X%02X%02X%02X",
             (int)$IP[0] & 0xFF,
@@ -124,27 +121,26 @@ class E00392600 extends \HUGnet\devices\Driver
             (int)$IP[2] & 0xFF,
             (int)$IP[3] & 0xFF
         );
-        $string .= sprintf("%04X", $device->get("GatewayKey"));
+        $string .= sprintf("%04X", $this->device()->get("GatewayKey"));
         return $string;
     }
     /**
     * Decodes the driver portion of the setup string
     *
-    * @param string $string  The string to decode
-    * @param object &$device The device object
+    * @param string $string The string to decode
     *
     * @return array
     */
-    public function decode($string, &$device)
+    public function decode($string)
     {
         $uuid = strtolower(substr((string)$string, 0, 32));
-        $device->set(
+        $this->device()->set(
             "DeviceName",
             substr($uuid, 0, 8)."-".substr($uuid, 8, 4)."-".substr($uuid, 12, 4)
             ."-".substr($uuid, 16, 4)."-".substr($uuid, 20)
         );
         $IP = str_split(substr((string)$string, 32, 8), 2);
-        $device->set(
+        $this->device()->set(
             "DeviceLocation",
             sprintf(
                 "%d.%d.%d.%d",
@@ -154,20 +150,20 @@ class E00392600 extends \HUGnet\devices\Driver
                 hexdec($IP[3]) & 0xFF
             )
         );
-        $device->set("GatewayKey", hexdec(substr((string)$string, 40, 4)));
+        $this->device()->set("GatewayKey", hexdec(substr((string)$string, 40, 4)));
 
-        switch ($device->get("HWPartNum")) {
+        switch ($this->device()->get("HWPartNum")) {
         case "0039-26-02-P":
-            $device->set("DeviceJob", "Updater");
+            $this->device()->set("DeviceJob", "Updater");
             break;
         case "0039-26-04-P":
-            $device->set("DeviceJob", "Router");
+            $this->device()->set("DeviceJob", "Router");
             break;
         case "0039-26-06-P":
-            $device->set("DeviceJob", "Devices");
+            $this->device()->set("DeviceJob", "Devices");
             break;
         default:
-            $device->set("DeviceJob", "Unknown");
+            $this->device()->set("DeviceJob", "Unknown");
             break;
         }
     }

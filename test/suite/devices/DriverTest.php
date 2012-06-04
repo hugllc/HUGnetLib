@@ -840,7 +840,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
         $device  = new \HUGnet\DummyTable("Device");
         $device->resetMock($mocks);
         $obj = DriverTestClass::factory($device);
-        $ret = $obj->encode($device, $showFixed);
+        $ret = $obj->encode($showFixed);
         $this->assertSame($expect, $ret);
     }
 }
