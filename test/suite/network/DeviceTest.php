@@ -284,7 +284,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "id" => "000001",
-                    "HWPartNum" => "0039-26-01-P",
+                    "HWPartNum" => "0039-26-02-P",
                 ),
                 array(
                 ),
@@ -303,7 +303,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 "to"      => "000000",
                                 "from"      => "000001",
                                 "command" => "POWERUP",
-                                "data"    => "00000000010039260150",
+                                "data"    => "00000000010039260250",
                             )
                         ),
                         null,
@@ -314,7 +314,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             array(
                                 "to"      => "000002",
                                 "command" => "01",
-                                "data"    => "000000000100392601500039260050"
+                                "data"    => "000000000100392602500039260050"
                                 .$version."FFFFFFFF"
                                 ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000",
                             )

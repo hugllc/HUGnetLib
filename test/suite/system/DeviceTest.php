@@ -845,6 +845,8 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     array(
                         "value" => 39.7557,
                         "units" => "&#176;C",
+                        'maxDecimals' => 2,
+                        'storageUnit' => '&#176;C',
                         "unitType" => "Temperature",
                         "dataType" => \HUGnet\units\Driver::TYPE_RAW,
                         "decimals" => 2,
@@ -852,6 +854,8 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     array(
                         "value" => 41.7126,
                         "units" => "&#176;C",
+                        'maxDecimals' => 2,
+                        'storageUnit' => '&#176;C',
                         "unitType" => "Temperature",
                         "dataType" => \HUGnet\units\Driver::TYPE_RAW,
                         "decimals" => 2,
@@ -859,6 +863,8 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     array(
                         "value" => 43.843,
                         "units" => "&#176;C",
+                        'maxDecimals' => 2,
+                        'storageUnit' => '&#176;C',
                         "unitType" => "Temperature",
                         "dataType" => \HUGnet\units\Driver::TYPE_RAW,
                         "decimals" => 2,
@@ -866,6 +872,8 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     array(
                         "value" => 46.1798,
                         "units" => "&#176;C",
+                        'maxDecimals' => 2,
+                        'storageUnit' => '&#176;C',
                         "unitType" => "Temperature",
                         "dataType" => \HUGnet\units\Driver::TYPE_RAW,
                         "decimals" => 2,
@@ -873,6 +881,8 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     array(
                         "value" => 48.766,
                         "units" => "&#176;C",
+                        'maxDecimals' => 2,
+                        'storageUnit' => '&#176;C',
                         "unitType" => "Temperature",
                         "dataType" => \HUGnet\units\Driver::TYPE_RAW,
                         "decimals" => 2,
@@ -880,6 +890,8 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     array(
                         "value" => 51.659,
                         "units" => "&#176;C",
+                        'maxDecimals' => 2,
+                        'storageUnit' => '&#176;C',
                         "unitType" => "Temperature",
                         "dataType" => \HUGnet\units\Driver::TYPE_RAW,
                         "decimals" => 2,
@@ -887,6 +899,8 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     array(
                         "value" => 54.9381,
                         "units" => "&#176;C",
+                        'maxDecimals' => 2,
+                        'storageUnit' => '&#176;C',
                         "unitType" => "Temperature",
                         "dataType" => \HUGnet\units\Driver::TYPE_RAW,
                         "decimals" => 2,
@@ -894,6 +908,8 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     array(
                         "value" => 58.7168,
                         "units" => "&#176;C",
+                        'maxDecimals' => 2,
+                        'storageUnit' => '&#176;C',
                         "unitType" => "Temperature",
                         "dataType" => \HUGnet\units\Driver::TYPE_RAW,
                         "decimals" => 2,
@@ -901,6 +917,8 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     array(
                         "value" => 63.1652,
                         "units" => "&#176;C",
+                        'maxDecimals' => 2,
+                        'storageUnit' => '&#176;C',
                         "unitType" => "Temperature",
                         "dataType" => \HUGnet\units\Driver::TYPE_RAW,
                         "decimals" => 2,
@@ -908,6 +926,8 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     array(
                         "value" => null,
                         "units" => "&#176;C",
+                        'maxDecimals' => 2,
+                        'storageUnit' => '&#176;C',
                         "unitType" => "Temperature",
                         "dataType" => \HUGnet\units\Driver::TYPE_RAW,
                         "decimals" => 2,
@@ -915,6 +935,8 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     array(
                         "value" => null,
                         "units" => "&#176;C",
+                        'maxDecimals' => 2,
+                        'storageUnit' => '&#176;C',
                         "unitType" => "Temperature",
                         "dataType" => \HUGnet\units\Driver::TYPE_RAW,
                         "decimals" => 2,
@@ -922,6 +944,8 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     array(
                         "value" => null,
                         "units" => "&#176;C",
+                        'maxDecimals' => 2,
+                        'storageUnit' => '&#176;C',
                         "unitType" => "Temperature",
                         "dataType" => \HUGnet\units\Driver::TYPE_RAW,
                         "decimals" => 2,
@@ -929,6 +953,8 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     array(
                         "value" => null,
                         "units" => "&#176;C",
+                        'maxDecimals' => 2,
+                        'storageUnit' => '&#176;C',
                         "unitType" => "Temperature",
                         "dataType" => \HUGnet\units\Driver::TYPE_RAW,
                         "decimals" => 2,

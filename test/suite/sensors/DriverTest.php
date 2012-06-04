@@ -614,11 +614,23 @@ class DriverTest extends drivers\DriverTestBase
     {
         return array(
             array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "storageUnit" => "unknown",
+                            "maxDecimals" => 2,
+                            "unitType" => "asdf",
+                            "storageType" => \HUGnet\units\Driver::TYPE_RAW,
+                        ),
+                    ),
+                ),
                 "\HUGnet\sensors\DriverTestClass",
                 array(
                     array(
                         "decimals" => 2,
                         "units" => 'unknown',
+                        "maxDecimals" => 2,
+                        "storageUnit" => 'unknown',
                         "unitType" => 'asdf',
                         "dataType" => \HUGnet\units\Driver::TYPE_RAW,
                     ),
@@ -629,6 +641,7 @@ class DriverTest extends drivers\DriverTestBase
     /**
     * test the set routine when an extra class exists
     *
+    * @param array  $mocks  The mocks to use
     * @param string $name   The name of the variable to test.
     * @param array  $expect The expected return
     *
@@ -636,10 +649,10 @@ class DriverTest extends drivers\DriverTestBase
     *
     * @dataProvider dataChannels
     */
-    public function testChannels($name, $expect)
+    public function testChannels($mocks, $name, $expect)
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock($extra);
+        $sensor->resetMock($mocks);
         $obj = &$name::factory($sensor);
         $this->assertSame($expect, $obj->channels());
     }

@@ -428,6 +428,8 @@ abstract class Driver
             array(
                 "decimals" => $this->sensor()->get("maxDecimals"),
                 "units" => $this->sensor()->get("storageUnit"),
+                "maxDecimals" => $this->sensor()->get("maxDecimals"),
+                "storageUnit" => $this->sensor()->get("storageUnit"),
                 "unitType" => $this->sensor()->get("unitType"),
                 "dataType" => $this->sensor()->get("storageType"),
             ),
