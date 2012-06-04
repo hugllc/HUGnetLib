@@ -159,7 +159,7 @@ class Devices extends \HUGnet\ui\Daemon
             return false;
         }
         /* PollInterval is in minutes, we need it in seconds */
-        $PollInterval = $this->_device->get("PollInterval") * 60;
+        $PollInterval = $this->_device->get("PollInterval");
         /* Don't run if the poll interval is 0 */
         if ($PollInterval <= 0) {
             return false;
@@ -269,8 +269,8 @@ class Devices extends \HUGnet\ui\Daemon
                 .date("Y-m-d H:i:s", $this->_device->getParam("LastConfig"))
                 ." Interval: "
                 .round(
-                    (($this->_device->getParam("LastConfig") - $lastConfig)/60), 2
-                )."/".($this->_device->get("ConfigInterval") / 60)
+                    (($this->_device->getParam("LastConfig") - $lastConfig)), 2
+                )."/".($this->_device->get("ConfigInterval"))
             );
         } else {
             $this->out(
@@ -300,7 +300,7 @@ class Devices extends \HUGnet\ui\Daemon
                 .date("Y-m-d H:i:s", $this->_device->getParam("LastPoll"))
                 ." Interval: "
                 .round(
-                    (($this->_device->getParam("LastPoll") - $lastPoll)/60), 2
+                    (($this->_device->getParam("LastPoll") - $lastPoll)), 2
                 )."/".$this->_device->get("PollInterval")
             );
         } else {
