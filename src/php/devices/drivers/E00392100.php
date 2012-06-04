@@ -72,6 +72,7 @@ class E00392100 extends \HUGnet\devices\Driver
         "averageTable" => "E00392100AverageTable",
         'ConfigInterval' => 600,
         "type" => "controller",
+        "job"  => "control",
     );
     /**
     * This function creates the system.

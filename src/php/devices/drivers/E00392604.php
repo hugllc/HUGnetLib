@@ -38,6 +38,8 @@
 namespace HUGnet\devices\drivers;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
+/** This is our base class */
+require_once dirname(__FILE__)."/E00392600.php";
 
 /**
  * Networking for devices.
@@ -56,22 +58,19 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class E00393700 extends \HUGnet\devices\Driver
+class E00392604 extends E00392600
 {
     /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
     protected $params = array(
-        "totalSensors" => 13,
-        "physicalSensors" => 9,
-        "virtualSensors" => 4,
-        "historyTable" => "E00393700HistoryTable",
-        "averageTable" => "E00393700AverageTable",
-        "loadable" => true,
-        "packetTimeout" => 2,
-        "type" => "endpoint",
-        "job"  => "sense",
+        "physicalSensors" => 0,
+        "virtualSensors" => 0,
+        "totalSensors" => 0,
+        "ConfigInterval" => 600,
+        "type" => "script",
+        "job"  => "gather",
     );
     /**
     * This function creates the system.

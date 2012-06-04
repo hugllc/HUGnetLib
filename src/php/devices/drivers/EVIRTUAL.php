@@ -69,6 +69,7 @@ class EVIRTUAL extends \HUGnet\devices\Driver
         "historyTable" => "EVIRTUALHistoryTable",
         "averageTable" => "EVIRTUALAverageTable",
         "type" => "virtual",
+        "job"  => "calculate",
         "actionClass" => "ActionVirtual",
     );
     /**

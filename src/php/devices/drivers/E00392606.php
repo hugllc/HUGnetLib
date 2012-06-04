@@ -70,6 +70,7 @@ class E00392606 extends E00392600
         "totalSensors" => 0,
         "ConfigInterval" => 600,
         "type" => "script",
+        "job"  => "route",
     );
     /**
     * This function creates the system.

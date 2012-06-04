@@ -541,6 +541,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         'params' => array(1,2,3,4),
                         'sensors' => $sensors,
                         'type' => 'unknown',
+                        'job'  => 'unknown',
                         'actionClass' => 'Action',
                     )
                 ),

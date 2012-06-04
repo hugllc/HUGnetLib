@@ -38,6 +38,8 @@
 namespace HUGnet\devices\drivers;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
+/** This is our base class */
+require_once dirname(__FILE__)."/E00392600.php";
 
 /**
  * Networking for devices.
@@ -56,22 +58,19 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class E00393700 extends \HUGnet\devices\Driver
+class E00392602 extends E00392600
 {
     /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
     protected $params = array(
-        "totalSensors" => 13,
-        "physicalSensors" => 9,
-        "virtualSensors" => 4,
-        "historyTable" => "E00393700HistoryTable",
-        "averageTable" => "E00393700AverageTable",
-        "loadable" => true,
-        "packetTimeout" => 2,
-        "type" => "endpoint",
-        "job"  => "sense",
+        "physicalSensors" => 0,
+        "virtualSensors" => 0,
+        "totalSensors" => 0,
+        "ConfigInterval" => 600,
+        "type" => "script",
+        "job"  => "update",
     );
     /**
     * This function creates the system.
@@ -83,6 +82,73 @@ class E00393700 extends \HUGnet\devices\Driver
     public static function &factory(&$device)
     {
         return parent::intFactory($device);
+    }
+    /**
+    * Encodes this driver as a setup string
+    *
+    * @param bool $showFixed Show the fixed portion of the data
+    *
+    * @return array
+    */
+    public function encode($showFixed = true)
+    {
+        $string = strtoupper(
+            str_replace("-", "", (string)$this->device()->system()->get("uuid"))
+        );
+        $string = str_pad($string, 32, "F");
+        $IP = explode(".", (string)$this->device()->get("DeviceLocation"));
+        $string .= sprintf(
+            "%02X%02X%02X%02X",
+            (int)$IP[0] & 0xFF,
+            (int)$IP[1] & 0xFF,
+            (int)$IP[2] & 0xFF,
+            (int)$IP[3] & 0xFF
+        );
+        $string .= sprintf("%04X", $this->device()->get("GatewayKey"));
+        return $string;
+    }
+    /**
+    * Decodes the driver portion of the setup string
+    *
+    * @param string $string The string to decode
+    *
+    * @return array
+    */
+    public function decode($string)
+    {
+        $uuid = strtolower(substr((string)$string, 0, 32));
+        $this->device()->set(
+            "DeviceName",
+            substr($uuid, 0, 8)."-".substr($uuid, 8, 4)."-".substr($uuid, 12, 4)
+            ."-".substr($uuid, 16, 4)."-".substr($uuid, 20)
+        );
+        $IP = str_split(substr((string)$string, 32, 8), 2);
+        $this->device()->set(
+            "DeviceLocation",
+            sprintf(
+                "%d.%d.%d.%d",
+                hexdec($IP[0]) & 0xFF,
+                hexdec($IP[1]) & 0xFF,
+                hexdec($IP[2]) & 0xFF,
+                hexdec($IP[3]) & 0xFF
+            )
+        );
+        $this->device()->set("GatewayKey", hexdec(substr((string)$string, 40, 4)));
+
+        switch ($this->device()->get("HWPartNum")) {
+        case "0039-26-02-P":
+            $this->device()->set("DeviceJob", "Updater");
+            break;
+        case "0039-26-04-P":
+            $this->device()->set("DeviceJob", "Router");
+            break;
+        case "0039-26-06-P":
+            $this->device()->set("DeviceJob", "Devices");
+            break;
+        default:
+            $this->device()->set("DeviceJob", "Unknown");
+            break;
+        }
     }
 
 }

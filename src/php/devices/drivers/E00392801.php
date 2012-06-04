@@ -69,6 +69,7 @@ class E00392801 extends \HUGnet\devices\Driver
         "historyTable" => "E00392800HistoryTable",
         "averageTable" => "E00392800AverageTable",
         "type" => "endpoint",
+        "job"  => "sense",
     );
     /**
     * This function creates the system.

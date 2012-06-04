@@ -168,7 +168,11 @@ class Devices extends \HUGnet\ui\Daemon
             return false;
         }
         $lastPoll = (time() - $this->_device->getParam("LastPoll"));
-        return $lastPoll > ($PollInterval - (self::WAIT_TIME * 2));
+        $slip = $PollInterval * 0.1;
+        if ($slip > (self::WAIT_TIME * 2)) {
+            $slip = self::WAIT_TIME * 2;
+        }
+        return $lastPoll > ($PollInterval - $slip);
     }
     /**
     * If true, we should get the config of this device

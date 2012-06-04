@@ -81,6 +81,7 @@ abstract class Driver
         "bootloader" => false,
         "ConfigInterval" => 43200,
         "type" => "unknown",
+        "job"  => "unknown",
         "actionClass" => "Action",
     );
     /**

@@ -70,6 +70,7 @@ class ETEST extends EVIRTUAL
         "historyTable" => "ETESTHistoryTable",
         "averageTable" => "ETESTAverageTable",
         "type" => "test",
+        "job"  => "sense",
         "actionClass" => "ActionVirtual",
     );
     /**
