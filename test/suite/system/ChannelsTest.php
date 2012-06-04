@@ -178,18 +178,16 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
     /**
     * This tests the object creation
     *
-    * @param array  $config The configuration to use
-    * @param mixed  $config This is a configuration array
-    * @param string $field  The field to set
-    * @param mixed  $value  The value to set the field to
-    * @param mixed  $expect The value we expect back
+    * @param array $config The configuration to use
+    * @param mixed $record The record to convert
+    * @param mixed $expect The value we expect back
     *
     * @return null
     *
     * @dataProvider dataConvert
     */
     public function testConvert(
-        $config, $config, $record, $expect
+        $config, $record, $expect
     ) {
         $sys = new DummySystem("System");
         $dev = new DummyTable("Device");

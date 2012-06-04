@@ -1194,7 +1194,8 @@ class SensorTest extends \PHPUnit_Framework_TestCase
             $expect, $obj->Channels(), "Return Wrong"
         );
         unset($obj);
-    }}
+    }
+}
 
 namespace HUGnet\sensors\drivers;
 

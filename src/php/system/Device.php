@@ -291,8 +291,6 @@ class Device extends SystemTableBase
     /**
     * This creates the sensor drivers
     *
-    * @param int $sid The sensor id to get.  They are labaled 0 to sensors
-    *
     * @return null
     */
     public function &channels()
