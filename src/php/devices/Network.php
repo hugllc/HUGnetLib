@@ -106,6 +106,7 @@ class Network
     */
     public function __destruct()
     {
+        unset($this->_system);
         unset($this->_driver);
         unset($this->_device);
     }

@@ -106,21 +106,12 @@ class Devices extends \HUGnet\ui\Daemon
                 continue;
             }
             $this->_device->load($key);
-            $action = false;
             if ($this->_doPing()) {
-                $action = true;
                 $this->_ping();
             } else if ($this->_doConfig()) {
-                $action = true;
                 $this->_config();
             } else if ($this->_doPoll()) {
-                $action = true;
                 $this->_poll();
-            }
-            if ($action) {
-                if (!$this->_device->store()) {
-                    $this->out("Ouch!  Save failed!");
-                }
             }
         }
         $this->_wait();
@@ -270,6 +261,7 @@ class Devices extends \HUGnet\ui\Daemon
             );
             $this->_device->action()->checkRecord();
         }
+        $this->_device->store();
     }
     /**
     * Deals with incoming packets
@@ -298,6 +290,7 @@ class Devices extends \HUGnet\ui\Daemon
                 "---> Failed.  Failure #".$this->_device->getParam("ConfigFail")
             );
         }
+        $this->_device->store();
     }
     /**
     * Deals with incoming packets
@@ -329,6 +322,7 @@ class Devices extends \HUGnet\ui\Daemon
                 "---> Failed.  Failure #".$this->_device->getParam("PollFail")
             );
         }
+        $this->_device->store();
     }
     /**
     * Deals with incoming packets
