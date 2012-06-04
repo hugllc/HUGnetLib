@@ -167,6 +167,21 @@ class Daemon extends CLI
     {
         return $this->_loop;
     }
+    /**
+    * Creates the object
+    *
+    * @param array $config The configuration to use
+    *
+    * @return null
+    */
+    public function &device($config = array())
+    {
+        $ret = $this->system()->network()->device($config);
+        $this->out(
+            "Using ".sprintf("%06X", $this->system()->network()->device()->getID())
+        );
+        return $ret;
+    }
 
 
 }

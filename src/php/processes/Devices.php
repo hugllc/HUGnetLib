@@ -95,7 +95,6 @@ class Devices extends \HUGnet\ui\Daemon
     public function main()
     {
         $this->_mainStart = time();
-        $this->_myID = $this->system()->network()->device()->getID();
         $this->_ids = $this->_device->ids(array("Active" => 1));
         foreach ((array)$this->_ids as $key => $devID) {
             parent::main();
@@ -159,9 +158,12 @@ class Devices extends \HUGnet\ui\Daemon
             return false;
         }
         /* PollInterval is in minutes, we need it in seconds */
-        $PollInterval = $this->_device->get("PollInterval");
-        if ($PollInterval < $this->_wait) {
-            $this->_wait = $PollInterval;
+        $PollInterval = (int)$this->_device->get("PollInterval");
+        if ($PollInterval === 0) {
+            return false;
+        }
+        if ($PollInterval < ($this->_wait * 2)) {
+            $this->_wait = $PollInterval / 2;
         }
         /* Don't run if the poll interval is 0 */
         if ($PollInterval <= 0) {
@@ -185,7 +187,10 @@ class Devices extends \HUGnet\ui\Daemon
             return false;
         }
         $lastConfig = time() - $this->_device->getParam("LastConfig");
-        $ConfigInterval = $this->_device->get("ConfigInterval");
+        $ConfigInterval = (int)$this->_device->get("ConfigInterval");
+        if ($ConfigInterval === 0) {
+            return false;
+        }
         if ($ConfigInterval < $this->_wait) {
             $this->_wait = $ConfigInterval;
         }
@@ -210,7 +215,11 @@ class Devices extends \HUGnet\ui\Daemon
     {
         $this->_wait -= (time() - $this->_mainStart);
         if (($this->_wait > 0) && $this->loop()) {
-            $this->out("Waiting ".$this->_wait." seconds at ".date("Y-m-d H:i:s"));
+            if ($this->_wait > 10) {
+                $this->out(
+                    "Waiting ".$this->_wait." seconds at ".date("Y-m-d H:i:s")
+                );
+            }
             for (; ($this->_wait > 0) && $this->loop(); $this->_wait--) {
                 parent::main();
                 sleep(1);
@@ -320,6 +329,36 @@ class Devices extends \HUGnet\ui\Daemon
                 "---> Failed.  Failure #".$this->_device->getParam("PollFail")
             );
         }
+    }
+    /**
+    * Deals with incoming packets
+    *
+    * @param object $pkt The packet to send out
+    *
+    * @return null
+    */
+    public function packet($pkt)
+    {
+        if ($pkt->type() === "RECONFIG") {
+
+        }
+    }
+    /**
+    * Creates the object
+    *
+    * @param array $config The configuration to use
+    *
+    * @return null
+    */
+    public function &device($config = array())
+    {
+        $ret = &parent::device($config);
+        $this->_myID = $this->system()->network()->device()->getID();
+        $this->system()->network()->unsolicited(
+            array($this, "packet"),
+            $this->_myID
+        );
+        return $ret;
     }
 }
 ?>
