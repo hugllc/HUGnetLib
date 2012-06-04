@@ -104,7 +104,9 @@ class ActionVirtual extends Action
     */
     public function ping($find = false)
     {
-        return false;
+        $this->device->setParam("LastContact", time());
+        $this->device->setParam("ContactFail", 0);
+        return true;
     }
     /**
     * Gets the config and saves it
@@ -114,6 +116,10 @@ class ActionVirtual extends Action
     public function config()
     {
         $this->checkRecord();
+        $this->device->setParam("LastContact", time());
+        $this->device->setParam("LastConfig", time());
+        $this->device->setParam("ConfigFail", 0);
+        $this->device->setParam("ContactFail", 0);
         return true;
     }
     /**
