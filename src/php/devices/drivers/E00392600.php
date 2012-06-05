@@ -100,6 +100,28 @@ class E00392600 extends \HUGnet\devices\Driver
             $this->device()->load(null);
         }
     }
+    /**
+    * Checks a record to see if it needs fixing
+    *
+    * @return array
+    */
+    public function setDeviceJob()
+    {
+        switch ($this->device()->get("HWPartNum")) {
+        case "0039-26-02-P":
+            $this->device()->set("DeviceJob", "Updater");
+            break;
+        case "0039-26-04-P":
+            $this->device()->set("DeviceJob", "Router");
+            break;
+        case "0039-26-06-P":
+            $this->device()->set("DeviceJob", "Devices");
+            break;
+        default:
+            $this->device()->set("DeviceJob", "Unknown");
+            break;
+        }
+    }
 
 }
 

@@ -116,13 +116,15 @@ class E00392602 extends E00392600
     */
     public function decode($string)
     {
-        $uuid = strtolower(substr((string)$string, 0, 32));
+        $index = 0;
+        $uuid = strtolower(substr((string)$string, $index, 32));
         $this->device()->set(
             "DeviceName",
             substr($uuid, 0, 8)."-".substr($uuid, 8, 4)."-".substr($uuid, 12, 4)
             ."-".substr($uuid, 16, 4)."-".substr($uuid, 20)
         );
-        $IP = str_split(substr((string)$string, 32, 8), 2);
+        $index += 32;
+        $IP = str_split(substr((string)$string, $index, 8), 2);
         $this->device()->set(
             "DeviceLocation",
             sprintf(
@@ -133,22 +135,11 @@ class E00392602 extends E00392600
                 hexdec($IP[3]) & 0xFF
             )
         );
-        $this->device()->set("GatewayKey", hexdec(substr((string)$string, 40, 4)));
-
-        switch ($this->device()->get("HWPartNum")) {
-        case "0039-26-02-P":
-            $this->device()->set("DeviceJob", "Updater");
-            break;
-        case "0039-26-04-P":
-            $this->device()->set("DeviceJob", "Router");
-            break;
-        case "0039-26-06-P":
-            $this->device()->set("DeviceJob", "Devices");
-            break;
-        default:
-            $this->device()->set("DeviceJob", "Unknown");
-            break;
-        }
+        $index += 8;
+        $this->device()->set(
+            "GatewayKey", hexdec(substr((string)$string, $index, 4))
+        );
+        $this->setDeviceJob();
     }
 
 }

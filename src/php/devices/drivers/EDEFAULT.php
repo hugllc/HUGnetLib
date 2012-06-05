@@ -82,19 +82,19 @@ class EDEFAULT extends \HUGnet\devices\Driver
     *
     * @return array
     */
-    public function checkRecord(&$device)
+    public function checkRecord()
     {
-        $lastContact = $device->getParam("LastContact");
-        $fails       = $device->getParam("ContactFail");
-        $pn          = $device->get("HWPartNum");
+        $lastContact = $this->device()->getParam("LastContact");
+        $fails       = $this->device()->getParam("ContactFail");
+        $pn          = $this->device()->get("HWPartNum");
         if (($fails > 20) && ((time() - $lastContact) > 3600) && ($pn == "")) {
             \HUGnet\VPrint::out(
-                "Old unknown device ".sprintf("%06X", $device->get("id"))
+                "Old unknown device ".sprintf("%06X", $this->device()->get("id"))
                 ." deleted from the database",
                 1
             );
-            $device->delete();
-            $device->load(null);
+            $this->device()->delete();
+            $this->device()->load(null);
         }
     }
 
