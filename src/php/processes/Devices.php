@@ -118,7 +118,7 @@ class Devices extends \HUGnet\ui\Daemon
             }
         } else {
             $this->_wait = 600;
-            $this->out("Devices script is disabled in the configuration.");
+            $this->out("Devices script is disabled.");
         }
         $this->_wait();
     }
@@ -339,9 +339,44 @@ class Devices extends \HUGnet\ui\Daemon
     */
     public function packet($pkt)
     {
-        if ($pkt->type() === "RECONFIG") {
-
+        if ($pkt->type() === "SETCONFIG") {
+            $this->out("Being reconfigured by ".$pkt->from());
+            $dev = $this->system()->device($this->_myID);
+            $this->_wait = 0;
+            $data = $pkt->data();
+            $index = hexdec(substr($data, 0, 2));
+            for ($i = 2; $i < strlen($data); $i+=2) {
+                switch ($index) {
+                case 0:
+                    $value = hexdec(substr($data, $i, 2));
+                    $this->out("Setting active to ".$value);
+                    $dev->set("Active", $value);
+                    break;
+                }
+                $index++;
+            }
+            $out = sprintf("%02X", (int)$dev->store());
+            $this->_reply($pkt, $out);
         }
+    }
+    /**
+    * Replies to a packet
+    *
+    * @param object $pkt  The packet to send out
+    * @param string $data The data to reply with
+    *
+    * @return null
+    */
+    private function _reply($pkt, $data)
+    {
+        $newPacket = array(
+            "To"      => $pkt->from(),
+            "Command" => "REPLY",
+            "Data"    => $data,
+        );
+        $this->system()->network()->send(
+            $newPacket, null, array("tries" => 1, "find" => false)
+        );
     }
     /**
     * Creates the object

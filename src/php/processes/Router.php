@@ -120,7 +120,6 @@ class Router extends \HUGnet\ui\Daemon
     public function packet($pkt)
     {
         if ($pkt->type() === "RECONFIG") {
-
         }
     }
     /**
