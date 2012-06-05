@@ -109,20 +109,23 @@ class E00392600 extends \HUGnet\devices\Driver
     */
     public function encode($showFixed = true)
     {
+        $return = "";
         $string = strtoupper(
             str_replace("-", "", (string)$this->device()->system()->get("uuid"))
         );
-        $string = str_pad($string, 32, "F");
+        $return .= str_pad($string, 32, "F");
+
         $IP = explode(".", (string)$this->device()->get("DeviceLocation"));
-        $string .= sprintf(
+        $return .= sprintf(
             "%02X%02X%02X%02X",
             (int)$IP[0] & 0xFF,
             (int)$IP[1] & 0xFF,
             (int)$IP[2] & 0xFF,
             (int)$IP[3] & 0xFF
         );
-        $string .= sprintf("%04X", $this->device()->get("GatewayKey"));
-        return $string;
+        $return .= sprintf("%04X", $this->device()->get("GatewayKey"));
+        $return .= sprintf("%02X", $this->device()->get("Active"));
+        return $return;
     }
     /**
     * Decodes the driver portion of the setup string
@@ -156,6 +159,11 @@ class E00392600 extends \HUGnet\devices\Driver
         $this->device()->set(
             "GatewayKey", hexdec(substr((string)$string, $index, 4))
         );
+        $index += 4;
+        $this->device()->set(
+            "Active", hexdec(substr((string)$string, $index, 2))
+        );
+        $index += 2;
         switch ($this->device()->get("HWPartNum")) {
         case "0039-26-02-P":
             $this->device()->set("DeviceJob", "Updater");
