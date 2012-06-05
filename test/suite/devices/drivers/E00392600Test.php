@@ -112,10 +112,12 @@ class E00392600Test extends DriverTestBase
                             ),
                             array("DeviceLocation", "192.168.36.152"),
                             array("GatewayKey", 1),
-                            array("Active", 0),
                             array("DeviceJob", "Devices"),
                         ),
                         "get" => array(array("HWPartNum")),
+                        "setParam" => array(
+                            array("Enable", 0),
+                        ),
                     ),
                 ),
             ),
@@ -137,10 +139,12 @@ class E00392600Test extends DriverTestBase
                             ),
                             array("DeviceLocation", "192.168.36.152"),
                             array("GatewayKey", 2),
-                            array("Active", 0),
                             array("DeviceJob", "Router"),
                         ),
                         "get" => array(array("HWPartNum")),
+                        "setParam" => array(
+                            array("Enable", 0),
+                        ),
                     ),
                 ),
             ),
@@ -162,10 +166,12 @@ class E00392600Test extends DriverTestBase
                             ),
                             array("DeviceLocation", "192.168.36.152"),
                             array("GatewayKey", 0xFFFF),
-                            array("Active", 2),
                             array("DeviceJob", "Unknown"),
                         ),
                         "get" => array(array("HWPartNum")),
+                        "setParam" => array(
+                            array("Enable", 2),
+                        ),
                     ),
                 ),
             ),
@@ -187,10 +193,12 @@ class E00392600Test extends DriverTestBase
                             ),
                             array("DeviceLocation", "192.168.36.152"),
                             array("GatewayKey", 0x1234),
-                            array("Active", 1),
                             array("DeviceJob", "Updater"),
                         ),
                         "get" => array(array("HWPartNum")),
+                        "setParam" => array(
+                            array("Enable", 1),
+                        ),
                     ),
                 ),
             ),
@@ -231,6 +239,9 @@ class E00392600Test extends DriverTestBase
                             "DeviceLocation" => "192.168.36.152",
                             "GatewayKey" => 0x25,
                         ),
+                        "getParam" => array(
+                            "Enable" => 1,
+                        ),
                     ),
                     "System" => array(
                         "get" => array(
@@ -248,6 +259,9 @@ class E00392600Test extends DriverTestBase
                         "get" => array(
                             "DeviceLocation" => "",
                             "GatewayKey" => 0,
+                        ),
+                        "getParam" => array(
+                            "Enable" => 1,
                         ),
                     ),
                     "System" => array(
@@ -267,6 +281,9 @@ class E00392600Test extends DriverTestBase
                             "DeviceLocation" => "192.168.36.152",
                             "GatewayKey" => 0x1002
                         ),
+                        "getParam" => array(
+                            "Enable" => 1,
+                        ),
                     ),
                     "System" => array(
                         "get" => array(
@@ -285,6 +302,9 @@ class E00392600Test extends DriverTestBase
                             "DeviceLocation" => "5192.5168.336.6152",
                             "GatewayKey" => 0x1234,
                         ),
+                        "getParam" => array(
+                            "Enable" => 5,
+                        ),
                     ),
                     "System" => array(
                         "get" => array(
@@ -293,7 +313,7 @@ class E00392600Test extends DriverTestBase
                     ),
                 ),
                 true,
-                "9DDC21A799814E81A02BF1361D496AB148305008123401",
+                "9DDC21A799814E81A02BF1361D496AB148305008123405",
             ),
         );
     }

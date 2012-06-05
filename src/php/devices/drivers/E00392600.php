@@ -125,7 +125,7 @@ class E00392600 extends \HUGnet\devices\Driver
             (int)$IP[3] & 0xFF
         );
         $return .= sprintf("%04X", $this->device()->get("GatewayKey"));
-        $return .= sprintf("%02X", $this->device()->get("Active"));
+        $return .= sprintf("%02X", $this->device()->getParam("Enable"));
         return $return;
     }
     /**
@@ -161,8 +161,8 @@ class E00392600 extends \HUGnet\devices\Driver
             "GatewayKey", hexdec(substr((string)$string, $index, 4))
         );
         $index += 4;
-        $this->device()->set(
-            "Active", hexdec(substr((string)$string, $index, 2))
+        $this->device()->setParam(
+            "Enable", hexdec(substr((string)$string, $index, 2))
         );
         $index += 2;
         switch ($this->device()->get("HWPartNum")) {

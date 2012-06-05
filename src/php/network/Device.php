@@ -134,6 +134,7 @@ final class Device
         if (($pkt->type() === "PING") || ($pkt->type() === "FINDPING")) {
             $this->_reply($pkt, $pkt->data());
         } else if (($pkt->type() === "CONFIG")) {
+            $this->_device->load($this->getID());
             $this->_reply($pkt, $this->_device->encode());
         }
     }
@@ -164,13 +165,11 @@ final class Device
             $this->_device->store(true);
         } else {
             $this->_config["id"] = $this->_device->get("id");
-            $this->_config["FWVersion"] = trim(
-                @file_get_contents(dirname(__FILE__)."/../VERSION.TXT")
-            );
         }
         $this->_device->set("DeviceLocation", $this->_system->get("IPAddr"));
+        $this->_device->set("FWVersion", $this->_config["FWVersion"]);
         $this->_device->set("RawSetup", $this->_device->encode());
-        $this->_device->change($this->_config);
+        $ret = $this->_device->change($this->_config);
     }
     /**
     * Replies to a packet
@@ -201,7 +200,6 @@ final class Device
     private function _powerup()
     {
         $data = substr($this->_device->encode(), 0, 20);
-
         $newPacket = &Packet::factory(
             array(
                 "To"      => "000000",

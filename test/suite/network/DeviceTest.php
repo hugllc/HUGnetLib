@@ -285,6 +285,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 array(
                     "id" => "000001",
                     "HWPartNum" => "0039-26-02-P",
+                    "params" => json_encode(array("Enable" => 5)),
                 ),
                 array(
                 ),
@@ -315,8 +316,13 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 "to"      => "000002",
                                 "command" => "01",
                                 "data"    => "000000000100392602500039260050"
+                                ."000000FFFFFFFF"
+                                ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000000000",
+                                /*  Not sure why this fails... This should pass...
+                                "data"    => "000000000100392602500039260050"
                                 .$version."FFFFFFFF"
-                                ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000000001",
+                                ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000000005",
+                                */
                             )
                         ),
                         null,

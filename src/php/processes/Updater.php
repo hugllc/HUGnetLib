@@ -94,7 +94,9 @@ class Updater extends \HUGnet\ui\Daemon
             }
         } else {
             $this->_wait = 600;
-            $this->out("Updater script ".$this->_myID." is disabled.");
+            $this->out(
+                "Updater script ".sprintf("%06X", $this->_myID)." is disabled."
+            );
         }
         $this->_wait();
     }

@@ -54,6 +54,12 @@ require_once dirname(__FILE__)."/../ui/Daemon.php";
  */
 class Devices extends \HUGnet\ui\Daemon
 {
+    /** This is where the active bit is */
+    const ACTIVEMASK = 0x01;
+    /** This is where the poll bit is */
+    const POLLMASK = 0x02;
+    /** This is where the config bit is */
+    const CONFIGMASK = 0x04;
     /** This is the time we lose contact for before we start pinging */
     const PING_TIME = 1200;
     /** This is the time we lose contact for before we start pinging */
@@ -96,7 +102,8 @@ class Devices extends \HUGnet\ui\Daemon
     {
         $this->_mainStart = time();
         $this->_device->load($this->_myID);
-        if ($this->_device->get("Active") != 0) {
+        $this->_enable = $this->_device->getParam("Enable");
+        if (($this->_enable & self::ACTIVEMASK) != 0) {
             $this->_ids = $this->_device->ids(array("Active" => 1));
             foreach ((array)$this->_ids as $key => $devID) {
                 parent::main();
@@ -118,7 +125,9 @@ class Devices extends \HUGnet\ui\Daemon
             }
         } else {
             $this->_wait = 600;
-            $this->out("Devices script ".$this->_myID." is disabled.");
+            $this->out(
+                "Devices script ".sprintf("%06X", $this->_myID)." is disabled."
+            );
         }
         $this->_wait();
     }
@@ -151,7 +160,7 @@ class Devices extends \HUGnet\ui\Daemon
     */
     private function _doPoll()
     {
-        if (!$this->_doContact()) {
+        if ((($this->_enable & self::POLLMASK) == 0) || !$this->_doContact()) {
             return false;
         }
         /* PollInterval is in minutes, we need it in seconds */
@@ -180,7 +189,7 @@ class Devices extends \HUGnet\ui\Daemon
     */
     private function _doConfig()
     {
-        if (!$this->_doContact()) {
+        if ((($this->_enable & self::CONFIGMASK) == 0) || !$this->_doContact()) {
             return false;
         }
         $lastConfig = time() - $this->_device->getParam("LastConfig");
@@ -349,8 +358,16 @@ class Devices extends \HUGnet\ui\Daemon
                 switch ($index) {
                 case 0:
                     $value = hexdec(substr($data, $i, 2));
-                    $this->out("Setting active to ".$value);
-                    $dev->set("Active", $value);
+                    $this->out(
+                        "Setting Enable to ".(($value & self::ACTIVEMASK) ? 1 : 0)
+                    );
+                    $this->out(
+                        "Setting Polling to ".(($value & self::POLLMASK) ? 1 : 0)
+                    );
+                    $this->out(
+                        "Setting Config to ".(($value & self::CONFIGMASK) ? 1 : 0)
+                    );
+                    $dev->setParam("Enable", $value);
                     break;
                 }
                 $index++;
@@ -389,6 +406,15 @@ class Devices extends \HUGnet\ui\Daemon
     {
         $ret = &parent::device($config);
         $this->_myID = $this->system()->network()->device()->getID();
+        $dev = $this->system()->device($this->_myID);
+        $enable = $dev->getParam("Enable");
+        if (is_null($enable)) {
+            $dev->setParam(
+                "Enable",
+                self::ACTIVEMASK | self::POLLMASK | self::CONFIGMASK
+            );
+            $dev->store();
+        }
         $this->system()->network()->unsolicited(
             array($this, "packet"),
             $this->_myID
