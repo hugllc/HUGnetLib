@@ -83,65 +83,6 @@ class E00392602 extends E00392600
     {
         return parent::intFactory($device);
     }
-    /**
-    * Encodes this driver as a setup string
-    *
-    * @param bool $showFixed Show the fixed portion of the data
-    *
-    * @return array
-    */
-    public function encode($showFixed = true)
-    {
-        $string = strtoupper(
-            str_replace("-", "", (string)$this->device()->system()->get("uuid"))
-        );
-        $string = str_pad($string, 32, "F");
-        $IP = explode(".", (string)$this->device()->get("DeviceLocation"));
-        $string .= sprintf(
-            "%02X%02X%02X%02X",
-            (int)$IP[0] & 0xFF,
-            (int)$IP[1] & 0xFF,
-            (int)$IP[2] & 0xFF,
-            (int)$IP[3] & 0xFF
-        );
-        $string .= sprintf("%04X", $this->device()->get("GatewayKey"));
-        return $string;
-    }
-    /**
-    * Decodes the driver portion of the setup string
-    *
-    * @param string $string The string to decode
-    *
-    * @return array
-    */
-    public function decode($string)
-    {
-        $index = 0;
-        $uuid = strtolower(substr((string)$string, $index, 32));
-        $this->device()->set(
-            "DeviceName",
-            substr($uuid, 0, 8)."-".substr($uuid, 8, 4)."-".substr($uuid, 12, 4)
-            ."-".substr($uuid, 16, 4)."-".substr($uuid, 20)
-        );
-        $index += 32;
-        $IP = str_split(substr((string)$string, $index, 8), 2);
-        $this->device()->set(
-            "DeviceLocation",
-            sprintf(
-                "%d.%d.%d.%d",
-                hexdec($IP[0]) & 0xFF,
-                hexdec($IP[1]) & 0xFF,
-                hexdec($IP[2]) & 0xFF,
-                hexdec($IP[3]) & 0xFF
-            )
-        );
-        $index += 8;
-        $this->device()->set(
-            "GatewayKey", hexdec(substr((string)$string, $index, 4))
-        );
-        $this->setDeviceJob();
-    }
-
 }
 
 

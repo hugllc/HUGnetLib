@@ -154,12 +154,15 @@ final class Device
             "FWPartNum" => $this->_config["FWPartNum"],
         );
         $this->_device->load($config);
+        unset($this->_config["DeviceName"]);
         if ($this->_device->get("id") == 0) {
             if (empty($this->_config["id"])) {
                 $this->_device->set("DeviceID", $this->getID());
             } else {
                 $this->_device->set("DeviceID", $this->_config["id"]);
             }
+            $this->_device->set("Active", 1);
+            $this->_device->store(true);
         } else {
             $this->_config["id"] = $this->_device->get("id");
             $this->_config["FWVersion"] = trim(
