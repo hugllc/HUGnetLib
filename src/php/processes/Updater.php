@@ -94,7 +94,7 @@ class Updater extends \HUGnet\ui\Daemon
             }
         } else {
             $this->_wait = 600;
-            $this->out("Devices script is disabled in the configuration.");
+            $this->out("Updater script ".$this->_myID." is disabled.");
         }
         $this->_wait();
     }

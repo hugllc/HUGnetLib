@@ -92,7 +92,7 @@ class Router extends \HUGnet\ui\Daemon
             $this->_wait = self::WAIT_TIME;
         } else {
             $this->_wait = 600;
-            $this->out("Router script is disabled in the configuration.");
+            $this->out("Router script ".$this->_myID." is disabled.");
         }
         $this->_wait();
     }

@@ -118,7 +118,7 @@ class Devices extends \HUGnet\ui\Daemon
             }
         } else {
             $this->_wait = 600;
-            $this->out("Devices script is disabled.");
+            $this->out("Devices script ".$this->_myID." is disabled.");
         }
         $this->_wait();
     }
@@ -339,7 +339,6 @@ class Devices extends \HUGnet\ui\Daemon
     */
     public function packet($pkt)
     {
-        $this->out($pkt->to());
         if ($pkt->type() === "SETCONFIG") {
             $this->out("Being reconfigured by ".$pkt->from());
             $dev = $this->system()->device($this->_myID);
