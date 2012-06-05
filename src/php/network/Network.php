@@ -227,7 +227,7 @@ final class Network
         ) {
             $this->_config["ifaces"] = array();
             if ($this->_config["noLocal"] != true) {
-                $this->_local = "Local".md5(mt_rand(0x1000000, 0xFFFFFFFF));
+                $this->_local = "Local".md5(mt_rand(0x10, 0xFFFF));
                 $this->_config[$this->_local] = array(
                     "driver" => "Local",
                     "name" => $this->_local,

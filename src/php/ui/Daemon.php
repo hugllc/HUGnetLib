@@ -199,7 +199,7 @@ class Daemon extends CLI
         $active = $this->config("enable");
         if (!is_null($active) && ((int)$active === 0)) {
             $config["Active"] = 0;
-        } else {
+        } else if (!is_null($active)) {
             $config["Active"] = 1;
         }
         $ret = $this->system()->network()->device($config);
