@@ -316,7 +316,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 "command" => "01",
                                 "data"    => "000000000100392602500039260050"
                                 .$version."FFFFFFFF"
-                                ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000",
+                                ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000000001",
                             )
                         ),
                         null,

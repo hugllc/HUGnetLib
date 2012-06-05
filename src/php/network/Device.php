@@ -148,7 +148,6 @@ final class Device
         $this->_device = \HUGnet\Device::factory($this->_system);
         $config = array(
             "DeviceName" => $this->_system->get("uuid"),
-            //"DeviceLocation" => $this->_system->get("IPAddr"),
             "GatewayKey" => $this->_system->get("GatewayKey"),
             "HWPartNum" => $this->_config["HWPartNum"],
             "FWPartNum" => $this->_config["FWPartNum"],
@@ -169,6 +168,7 @@ final class Device
                 @file_get_contents(dirname(__FILE__)."/../VERSION.TXT")
             );
         }
+        $this->_device->set("DeviceLocation", $this->_system->get("IPAddr"));
         $this->_device->set("RawSetup", $this->_device->encode());
         $this->_device->change($this->_config);
     }

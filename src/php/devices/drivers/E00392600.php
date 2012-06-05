@@ -68,6 +68,7 @@ class E00392600 extends \HUGnet\devices\Driver
         "totalSensors" => 0,
         "ConfigInterval" => 600,
         "type" => "script",
+        "packetTimeout" => 2,
     );
     /**
     * This function creates the system.

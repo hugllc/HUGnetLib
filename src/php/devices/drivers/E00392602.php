@@ -71,6 +71,7 @@ class E00392602 extends E00392600
         "ConfigInterval" => 600,
         "type" => "script",
         "job"  => "update",
+        "packetTimeout" => 2,
     );
     /**
     * This function creates the system.

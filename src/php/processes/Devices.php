@@ -339,6 +339,7 @@ class Devices extends \HUGnet\ui\Daemon
     */
     public function packet($pkt)
     {
+        $this->out($pkt->to());
         if ($pkt->type() === "SETCONFIG") {
             $this->out("Being reconfigured by ".$pkt->from());
             $dev = $this->system()->device($this->_myID);
