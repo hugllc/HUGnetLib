@@ -188,11 +188,9 @@ final class Application
             /* Monitor is first because unsolicited might print a reply packet */
             /* If this happens they come out backwards if unsolicited is first */
             $this->_monitor($packet);
-            if ($packet->type() !== "REPLY") {
-                foreach ((array)$this->_unsolicited[$packet->To()] as $callback) {
-                    if (is_callable($callback)) {
-                        call_user_func($callback, $packet);
-                    }
+            foreach ((array)$this->_unsolicited[$packet->To()] as $callback) {
+                if (is_callable($callback)) {
+                    call_user_func($callback, $packet);
                 }
             }
         }
