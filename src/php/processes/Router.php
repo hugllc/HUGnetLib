@@ -54,7 +54,7 @@ require_once dirname(__FILE__)."/../updater/Periodic.php";
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Updater extends \HUGnet\ui\Daemon
+class Router extends \HUGnet\ui\Daemon
 {
     /** This is the amount of time we wait */
     const WAIT_TIME = 30;
@@ -62,7 +62,7 @@ class Updater extends \HUGnet\ui\Daemon
     /** This is the start time of the current run */
     private $_mainStart;
     /** How long we should wait */
-    private $_wait;
+    private $_wait = 30;
     /** This is my ID */
     private $_myID;
     /** This is the start time of the current run */
@@ -88,13 +88,11 @@ class Updater extends \HUGnet\ui\Daemon
         $this->_mainStart = time();
         $this->_device->load($this->_myID);
         if ($this->_device->get("Active") != 0) {
-            $plugins = &\HUGnet\updater\Periodic::plugins($this);
-            foreach ($plugins as $key => $obj) {
-                $obj->execute();
-            }
+            parent::main();
+            $this->_wait = self::WAIT_TIME;
         } else {
             $this->_wait = 600;
-            $this->out("Devices script is disabled in the configuration.");
+            $this->out("Router script is disabled in the configuration.");
         }
         $this->_wait();
     }
@@ -107,10 +105,8 @@ class Updater extends \HUGnet\ui\Daemon
     {
         $this->_wait = self::WAIT_TIME - (time() - $this->_mainStart);
         if (($this->_wait > 0) && $this->loop()) {
-            $this->out("Waiting ".$this->_wait." seconds at ".date("Y-m-d H:i:s"));
             for (; ($this->_wait > 0) && $this->loop(); $this->_wait--) {
                 parent::main();
-                sleep(1);
             }
         }
     }
@@ -128,6 +124,28 @@ class Updater extends \HUGnet\ui\Daemon
         }
     }
     /**
+    * Deals with incoming packets
+    *
+    * @param object $pkt The packet to send out
+    *
+    * @return null
+    */
+    public function monitor($pkt)
+    {
+        if (is_object($pkt)) {
+            print date("Y-m-d H:i:s");
+            print " From: ".$pkt->From();
+            print " -> To: ".$pkt->To();
+            print "  Command: ".$pkt->Command();
+            print "  Type: ".$pkt->Type();
+            print "\r\n";
+            $data = $pkt->Data();
+            if (!empty($data)) {
+                print "Data: ".$data."\r\n";
+            }
+        }
+    }
+    /**
     * Creates the object
     *
     * @param array $config The configuration to use
@@ -138,6 +156,8 @@ class Updater extends \HUGnet\ui\Daemon
     {
         $ret = &parent::device($config);
         $this->_myID = $this->system()->network()->device()->getID();
+        /* Print packets out on the screen */
+        $this->system()->network()->monitor(array($this, "monitor"));
         $this->system()->network()->unsolicited(
             array($this, "packet"),
             $this->_myID

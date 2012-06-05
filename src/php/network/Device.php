@@ -146,14 +146,13 @@ final class Device
     {
         include_once dirname(__FILE__)."/../system/Device.php";
         $this->_device = \HUGnet\Device::factory($this->_system);
-        $config = (array)$this->_config;
-        unset($config["id"]);
-        unset($config["DeviceID"]);
-        $config["DeviceName"] = $this->_system->get("uuid");
-        $config["DeviceLocation"] = $this->_system->get("IPAddr");
-        $config["GatewayKey"] = $this->_system->get("GatewayKey");
-        $this->_device->set("FWVersion", $config["FWVersion"]);
-        $config["FWVersion"] = $this->_device->get("FWVersion");
+        $config = array(
+            "DeviceName" => $this->_system->get("uuid"),
+            //"DeviceLocation" => $this->_system->get("IPAddr"),
+            "GatewayKey" => $this->_system->get("GatewayKey"),
+            "HWPartNum" => $this->_config["HWPartNum"],
+            "FWPartNum" => $this->_config["FWPartNum"],
+        );
         $this->_device->load($config);
         if ($this->_device->get("id") == 0) {
             if (empty($this->_config["id"])) {
@@ -163,9 +162,12 @@ final class Device
             }
         } else {
             $this->_config["id"] = $this->_device->get("id");
+            $this->_config["FWVersion"] = trim(
+                @file_get_contents(dirname(__FILE__)."/../VERSION.TXT")
+            );
         }
         $this->_device->set("RawSetup", $this->_device->encode());
-        $this->_device->store();
+        $this->_device->change($this->_config);
     }
     /**
     * Replies to a packet

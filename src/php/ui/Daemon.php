@@ -65,11 +65,28 @@ class Daemon extends CLI
     protected function __construct(&$config)
     {
         parent::__construct($config);
-        $this->_checkEnabled();
         \HUGnet\System::loopcheck();
         if (function_exists("pcntl_signal")) {
             pcntl_signal(SIGINT, array($this, "quit"));
         }
+    }
+    /**
+    * Gets the configuration for this process
+    *
+    * @param string $field The field to get.  NULL gets everything
+    *
+    * @return null
+    */
+    protected function config($field = null)
+    {
+        $program = $this->system()->get("program");
+        $config = $this->system()->get($program);
+        if (is_null($field)) {
+            return (array)$config;
+        } else if (isset($config[$field])) {
+            return $config[$field];
+        }
+        return null;
     }
     /**
     * Checks for a valid UUID
@@ -176,6 +193,15 @@ class Daemon extends CLI
     */
     public function &device($config = array())
     {
+        if (!is_array($config)) {
+            $config = array();
+        }
+        $active = $this->config("enable");
+        if (!is_null($active) && ((int)$active === 0)) {
+            $config["Active"] = 0;
+        } else {
+            $config["Active"] = 1;
+        }
         $ret = $this->system()->network()->device($config);
         $this->out(
             "Using ".sprintf("%06X", $this->system()->network()->device()->getID())

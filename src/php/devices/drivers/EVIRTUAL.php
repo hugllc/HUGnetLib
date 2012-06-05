@@ -86,17 +86,15 @@ class EVIRTUAL extends \HUGnet\devices\Driver
     /**
     * Checks a record to see if it needs fixing
     *
-    * @param object &$device The device object
-    *
     * @return array
     */
-    public function checkRecord(&$device)
+    public function checkRecord()
     {
         $Ver   = trim(@file_get_contents(dirname(__FILE__)."/../../VERSION.TXT"));
-        $myVer = $device->get("FWVersion");
+        $myVer = $this->device()->get("FWVersion");
         if ($Ver !== $myVer) {
-            $device->set("FWVersion", $Ver);
-            $device->store;
+            $this->device()->set("FWVersion", $Ver);
+            $this->device()->store;
         }
     }
 

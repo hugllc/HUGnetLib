@@ -95,24 +95,30 @@ class Devices extends \HUGnet\ui\Daemon
     public function main()
     {
         $this->_mainStart = time();
-        $this->_ids = $this->_device->ids(array("Active" => 1));
-        foreach ((array)$this->_ids as $key => $devID) {
-            parent::main();
-            if (!$this->loop()) {
-                break;
+        $this->_device->load($this->_myID);
+        if ($this->_device->get("Active") != 0) {
+            $this->_ids = $this->_device->ids(array("Active" => 1));
+            foreach ((array)$this->_ids as $key => $devID) {
+                parent::main();
+                if (!$this->loop()) {
+                    break;
+                }
+                if ($key == 0) {
+                    /* I don't need info an empty device */
+                    continue;
+                }
+                $this->_device->load($key);
+                if ($this->_doPing()) {
+                    $this->_ping();
+                } else if ($this->_doConfig()) {
+                    $this->_config();
+                } else if ($this->_doPoll()) {
+                    $this->_poll();
+                }
             }
-            if ($key == 0) {
-                /* I don't need info an empty device */
-                continue;
-            }
-            $this->_device->load($key);
-            if ($this->_doPing()) {
-                $this->_ping();
-            } else if ($this->_doConfig()) {
-                $this->_config();
-            } else if ($this->_doPoll()) {
-                $this->_poll();
-            }
+        } else {
+            $this->_wait = 600;
+            $this->out("Devices script is disabled in the configuration.");
         }
         $this->_wait();
     }
