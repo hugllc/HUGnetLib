@@ -52,7 +52,7 @@ require_once dirname(__FILE__)."/../ui/Daemon.php";
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Devices extends \HUGnet\ui\Daemon
+class Gather extends \HUGnet\ui\Daemon
 {
     /** This is where the active bit is */
     const ACTIVEMASK = 0x01;
@@ -126,7 +126,7 @@ class Devices extends \HUGnet\ui\Daemon
         } else {
             $this->_wait = 600;
             $this->out(
-                "Devices script ".sprintf("%06X", $this->_myID)." is disabled."
+                "Gather script ".sprintf("%06X", $this->_myID)." is disabled."
             );
         }
         $this->_wait();

@@ -54,7 +54,7 @@ require_once dirname(__FILE__)."/../updater/Periodic.php";
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Updater extends \HUGnet\ui\Daemon
+class Update extends \HUGnet\ui\Daemon
 {
     /** This is the amount of time we wait */
     const WAIT_TIME = 30;
@@ -95,7 +95,7 @@ class Updater extends \HUGnet\ui\Daemon
         } else {
             $this->_wait = 600;
             $this->out(
-                "Updater script ".sprintf("%06X", $this->_myID)." is disabled."
+                "Update script ".sprintf("%06X", $this->_myID)." is disabled."
             );
         }
         $this->_wait();
