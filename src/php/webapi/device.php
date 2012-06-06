@@ -44,7 +44,7 @@ $ret    = "";
 if ($action === "post") {
     $dev->load($did);
     if ($dev->get("DeviceID") === "000000") {
-        $dev->insert(true);
+        $dev->store(true);
     }
     $worked = true;
     $device = $_POST["device"];

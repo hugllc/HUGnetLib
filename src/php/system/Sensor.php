@@ -339,6 +339,32 @@ class Sensor extends SystemTableBase
         }
         return $channels;
     }
+    /**
+    * Gets the config and saves it
+    *
+    * @param string $url The url to post to
+    *
+    * @return string The left over string
+    */
+    public function post($url = null)
+    {
+        if (!is_string($url) || (strlen($url) == 0)) {
+            $master = $this->device->system()->get("master");
+            $url = $master["url"];
+        }
+        $sensor = $this->toArray(true);
+        return \HUGnet\Util::postData(
+            $url,
+            array(
+                "uuid"    => urlencode($this->system()->get("uuid")),
+                "id"      => $sensor["dev"],
+                "sid"     => $sensor["sensor"],
+                "action"  => "post",
+                "task"    => "sensor",
+                "sensor"  => $sensor,
+            )
+        );
+    }
 
 }
 

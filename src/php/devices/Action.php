@@ -246,11 +246,11 @@ class Action
         }
         $device  = $this->device->toArray(true);
         $sens = $this->device->get("totalSensors");
-        $sensors = array();
         for ($i = 0; $i < $sens; $i++) {
-            $sensors[$i] = $this->device->sensor($i)->toArray(false);
+            $ret = $this->device->sensor($i)->action()->post($url);
+            var_dump($ret);
         }
-        return \HUGnet\Util::postData(
+        $ret = \HUGnet\Util::postData(
             $url,
             array(
                 "uuid"    => urlencode($this->device->system()->get("uuid")),
@@ -258,9 +258,10 @@ class Action
                 "action"  => "post",
                 "task"    => "device",
                 "device"  => $device,
-                "sensors" => $sensors,
             )
         );
+        var_dump($ret);
+        return $ret;
     }
 
 

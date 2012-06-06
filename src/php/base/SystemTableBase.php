@@ -242,7 +242,7 @@ abstract class SystemTableBase
         $sid = $this->table()->get($this->table()->sqlId);
         $this->fixTable();
         if (empty($sid) || $replace) {
-             $ret = $this->table()->insertRow($replace);
+            $ret = $this->table()->insertRow($replace);
         } else {
             $ret = $this->table()->updateRow();
         }
