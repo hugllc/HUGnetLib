@@ -43,14 +43,16 @@ $ret    = "";
 
 if ($action === "post") {
     $dev->load($did);
-    if ($dev->get("DeviceID") === "000000") {
-        $dev->store(true);
-    }
     $worked = true;
     $device = $_POST["device"];
     unset($device["sensors"]);
     unset($device["params"]);
-    $worked = $dev->change($device);
+    if ($dev->get("DeviceID") === "000000") {
+        $dev->load($device);
+        $dev->store(true);
+    } else {
+        $worked = $dev->change($device);
+    }
     if ($worked) {
         $dev->setParam("LastModified", time());
         $dev->store();
