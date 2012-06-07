@@ -245,11 +245,6 @@ class Action
             $url = $master["url"];
         }
         $device  = $this->device->toArray(true);
-        $sens = $this->device->get("totalSensors");
-        $sensors = array();
-        for ($i = 0; $i < $sens; $i++) {
-            $this->device->sensor($i)->action()->post($url);
-        }
         return \HUGnet\Util::postData(
             $url,
             array(

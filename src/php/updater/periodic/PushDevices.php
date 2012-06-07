@@ -102,8 +102,16 @@ class PushDevices extends \HUGnet\updater\Periodic
                 );
                 $device->setParam("LastMasterPush", $now);
                 $ret = $device->action()->post();
+                $sens = $device->get("totalSensors");
+                $sensors = array();
+                for ($i = 0; $i < $sens; $i++) {
+                    $this->ui()->out("Pushing sensor ".$i);
+                    $device->sensor($i)->action()->post($url);
+                }
                 if ($ret === "success") {
-                    $this->ui()->out("Success.");
+                    $this->ui()->out(
+                        "Successfully pushed ".sprintf("%06X", $devID)."."
+                    );
                     $device->store();
                 } else {
                     $this->ui()->out("Failure.");

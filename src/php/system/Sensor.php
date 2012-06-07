@@ -349,7 +349,7 @@ class Sensor extends SystemTableBase
     public function post($url = null)
     {
         if (!is_string($url) || (strlen($url) == 0)) {
-            $master = $this->device->system()->get("master");
+            $master = $this->system()->get("master");
             $url = $master["url"];
         }
         $sensor = $this->toArray(true);
