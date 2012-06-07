@@ -101,7 +101,7 @@ var TestEntryView = Backbone.View.extend({
 */
 HUGnet.TestsView = Backbone.View.extend({
     template: "#TestListTemplate",
-    rows: 0,
+    url: '/HUGnetLib/index.php',
     events: {
         'click .new': 'create'
     },
@@ -113,7 +113,33 @@ HUGnet.TestsView = Backbone.View.extend({
     },
     create: function ()
     {
-        this.model.create();
+        var self = this;
+        var ret = $.ajax({
+            type: 'POST',
+            url: this.url,
+            dataType: 'json',
+            cache: false,
+            data:
+            {
+                "task": "test",
+                "action": "new",
+            }
+        }).done(
+            function (data)
+            {
+                if (_.isObject(data)) {
+                    self.trigger('saved');
+                    self.model.add(data);
+                } else {
+                    self.trigger('newfail');
+                }
+            }
+        ).fail(
+            function ()
+            {
+                self.trigger('newfail');
+            }
+        );
     },
     saveFail: function (msg)
     {
