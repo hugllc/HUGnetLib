@@ -47,7 +47,7 @@ if ($action === "checkin") {
         $dataCol->load(array("uuid", $data["uuid"]));
         if ($dataCol->get("GatewayKey") == 0) {
             $dataCol->load($data);
-            $dataCol->store();
+            $dataCol->store(true);
         }
         $data["LastContact"] = time();
         if ($dataCol->change($data)) {
