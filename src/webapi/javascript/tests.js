@@ -108,24 +108,12 @@ HUGnet.TestSuite = Backbone.View.extend({
             //alert('Tab for "' + test.get("DeviceName") + '" is already open');
             return;
         }
-        var title = "";
-        if (mode === 'poll') {
-            this.data[tag] = new HUGnet.DataPollView({
-                parent: tag,
-                mode: mode,
-                model: test,
-                TestID: 1
-            });
-            title = 'Run Test "' + test.get("DeviceName") + '"';
-        } else {
-            this.data[tag] = new HUGnet.DataView({
-                parent: tag,
-                mode: mode,
-                model: test,
-                TestID: 1
-            });
-            title = 'View Test "' + test.get("DeviceName") + '"';
-        }
+        this.data[tag] = new HUGnet.DataView({
+            parent: tag,
+            model: test,
+            TestID: 1
+        });
+        var title = 'View Test "' + test.get("DeviceName") + '"';
 
         this.tabs.tabs("add", tag, title);
         $(tag).html(this.data[tag].render().el);
