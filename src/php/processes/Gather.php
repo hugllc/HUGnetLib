@@ -104,8 +104,8 @@ class Gather extends \HUGnet\ui\Daemon
     {
         $this->_mainStart = time();
         $this->_device->load($this->_myID);
-        $this->_runtime = $this->system()->runtime();
-        if ($this->_runtime["gather"]) {
+        $this->_runtime();
+        if ($this->_runtime["gather"] !== false) {
             $this->_ids = $this->_device->ids(array("Active" => 1));
             foreach ((array)$this->_ids as $key => $devID) {
                 parent::main();
@@ -162,7 +162,7 @@ class Gather extends \HUGnet\ui\Daemon
     */
     private function _doPoll()
     {
-        if (!$this->_runtime["gatherpoll"] || !$this->_doContact()) {
+        if (($this->_runtime["gatherpoll"] === false) || !$this->_doContact()) {
             return false;
         }
         /* PollInterval is in minutes, we need it in seconds */
@@ -191,7 +191,7 @@ class Gather extends \HUGnet\ui\Daemon
     */
     private function _doConfig()
     {
-        if (!$this->_runtime["gatherconfig"] || !$this->_doContact()) {
+        if (($this->_runtime["gatherconfig"] === false) || !$this->_doContact()) {
             return false;
         }
         $lastConfig = time() - $this->_device->getParam("LastConfig");
@@ -397,6 +397,23 @@ class Gather extends \HUGnet\ui\Daemon
             $newPacket, null, array("tries" => 1, "find" => false)
         );
     }
+
+    /**
+    * Sets the runtime config
+    *
+    * @return null
+    */
+    private function _runtime()
+    {
+        $this->_runtime = $this->system()->runtime();
+        if (!is_bool($this->_runtime["gather"])) {
+            $this->_runtime["gather"] = true;
+            $this->_runtime["gatherpoll"] = true;
+            $this->_runtime["gatherconfig"] = true;
+            $this->system()->runtime($this->_runtime);
+        }
+    }
+
     /**
     * Creates the object
     *
@@ -409,13 +426,6 @@ class Gather extends \HUGnet\ui\Daemon
         $ret = &parent::device($config);
         $this->_myID = $this->system()->network()->device()->getID();
         $dev = $this->system()->device($this->_myID);
-        $conf = $this->system()->runtime();
-        if (!is_bool($conf["gather"])) {
-            $conf["gather"] = true;
-            $conf["gatherpoll"] = true;
-            $conf["gatherconfig"] = true;
-            $this->system()->runtime($conf);
-        }
         $this->system()->network()->unsolicited(
             array($this, "packet"),
             $this->_myID

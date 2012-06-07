@@ -88,8 +88,8 @@ class Route extends \HUGnet\ui\Daemon
     public function main()
     {
         $this->_mainStart = time();
-        $this->_runtime = $this->system()->runtime();
-        if ($this->_runtime["route"]) {
+        $this->_runtime();
+        if ($this->_runtime["route"] !== false) {
             parent::main();
             $this->_wait = self::WAIT_TIME;
         } else {
@@ -149,6 +149,19 @@ class Route extends \HUGnet\ui\Daemon
         }
     }
     /**
+    * Sets the runtime config
+    *
+    * @return null
+    */
+    private function _runtime()
+    {
+        $this->_runtime = $this->system()->runtime();
+        if (!is_bool($this->_runtime["route"])) {
+            $this->_runtime["route"] = true;
+            $this->system()->runtime($this->_runtime);
+        }
+    }
+    /**
     * Creates the object
     *
     * @param array $config The configuration to use
@@ -159,11 +172,6 @@ class Route extends \HUGnet\ui\Daemon
     {
         $ret = &parent::device($config);
         $this->_myID = $this->system()->network()->device()->getID();
-        $conf = $this->system()->runtime();
-        if (!is_bool($conf["route"])) {
-            $conf["route"] = true;
-            $this->system()->runtime($conf);
-        }
         /* Print packets out on the screen */
         $this->system()->network()->monitor(array($this, "monitor"));
         $this->system()->network()->unsolicited(
