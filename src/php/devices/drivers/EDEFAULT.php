@@ -78,8 +78,6 @@ class EDEFAULT extends \HUGnet\devices\Driver
     /**
     * Checks a record to see if it needs fixing
     *
-    * @param object &$device The device object
-    *
     * @return array
     */
     public function checkRecord()
