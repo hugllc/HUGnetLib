@@ -60,16 +60,18 @@ var FlotPoint = Backbone.Model.extend({
     },
     remove: function (history, offset)
     {
-        var data = this.get('data');
-        var date = history.get(this.get('datefield')) - offset;
-        var i;
-        for (i = 0; i < data.length; i++) {
-            if (data[i][0] === date) {
-                data.splice(i, 1);
-                break;
+        if (_.isObject(history)) {
+            var data = this.get('data');
+            var date = history.get(this.get('datefield')) - offset;
+            var i;
+            for (i = 0; i < data.length; i++) {
+                if (data[i][0] === date) {
+                    data.splice(i, 1);
+                    break;
+                }
             }
+            this.set('data', data);
         }
-        this.set('data', data);
     }
 });
 

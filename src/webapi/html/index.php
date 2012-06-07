@@ -43,7 +43,7 @@ $args = \HUGnet\ui\HTMLArgs::factory(
         "action" => array("name" => "action", "type" => "string"),
         "id" => array("name" => "DeviceID", "type" => "string"),
         "sid" => array("name" => "SensorID", "type" => "int"),
-        "uuid" => array("name" => "uuid", "type" => "string"),
+        "clientuuid" => array("name" => "clientuuid", "type" => "string"),
         "TestID" => array("name" => "TestID", "type" => "bool", "default" => false),
     )
 );

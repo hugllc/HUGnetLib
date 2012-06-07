@@ -76,7 +76,8 @@ var DevicePropertiesView = Backbone.View.extend({
         this.model.set({
             DeviceName: this.$(".DeviceName").val(),
             DeviceLocation: this.$(".DeviceLocation").val(),
-            DeviceJob: this.$(".DeviceJob").val()
+            DeviceJob: this.$(".DeviceJob").val(),
+            PollInterval: this.$(".PollInterval").val()
         });
         this.model.save();
     },

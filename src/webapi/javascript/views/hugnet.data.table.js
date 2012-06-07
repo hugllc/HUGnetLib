@@ -262,9 +262,11 @@ HUGnet.DataTable = Backbone.View.extend({
     },
     remove: function (model, collection, options)
     {
-        if (this.views[model.id]) {
-            this.views[model.id].remove();
-            delete this.views[model.id];
+        if (_.isObject(model)) {
+            if (this.views[model.id]) {
+                this.views[model.id].remove();
+                delete this.views[model.id];
+            }
         }
 
     },

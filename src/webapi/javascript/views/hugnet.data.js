@@ -173,7 +173,7 @@ HUGnet.DataView = Backbone.View.extend({
     {
         this.history.reset();
         this.table.remove();
-        this.graph.remove();
+        this.plot.remove();
         this.reset();
         this.stopPoll();
         this.remove();

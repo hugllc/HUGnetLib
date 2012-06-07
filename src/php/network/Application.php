@@ -211,7 +211,7 @@ final class Application
         $qid = uniqid();
         $this->_queue[$qid]["callback"] = $callback;
         $this->_queue[$qid]["config"] = (array)$config;
-        if (!is_callable($callback)) {
+        if (!is_callable($callback) && !is_bool($config["block"])) {
             $this->_queue[$qid]["config"]["block"] = true;
         }
         if (is_array($packet)) {

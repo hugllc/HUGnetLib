@@ -76,6 +76,39 @@ if ($action === "post") {
     if ($test->get('type') === 'test') {
         $ret = $test->fullArray(true);
     }
+} else if ($action === "run") {
+    $config = $json->system()->runtime();
+    if ($config["gather"]) {
+        $config["gather"] = false;
+        $config["gatherpoll"] = false;
+        $config["gatherconfig"] = false;
+    } else {
+        $config["gather"] = true;
+        $config["gatherpoll"] = true;
+        $config["gatherconfig"] = false;
+    }
+    $newcfg = $json->system()->runtime($config);
+    $json->system()->network()->send(
+        array("To" => '000000', "Command" => "5B"),
+        null,
+        array(
+            "tries" => 1,
+            "find" => false,
+            "block" => false,
+        )
+    );
+    if ($newcfg["gather"]) {
+        $ret = 1;
+    } else {
+        $ret = 0;
+    }
+} else if ($action === "status") {
+    $config = $json->system()->runtime();
+    if ($config["gather"]) {
+        $ret = 1;
+    } else {
+        $ret = 0;
+    }
 } else if ($action === "getall") {
     $ids = $test->ids();
     $ret = array();

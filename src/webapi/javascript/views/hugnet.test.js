@@ -46,7 +46,6 @@ var TestEntryView = Backbone.View.extend({
     template: '#TestEntryTemplate',
     parent: null,
     events: {
-        'click .run': 'run',
         'click .view': 'view'
     },
     initialize: function (options)
@@ -103,13 +102,16 @@ HUGnet.TestsView = Backbone.View.extend({
     template: "#TestListTemplate",
     url: '/HUGnetLib/index.php',
     events: {
-        'click .new': 'create'
+        'click .new': 'create',
+        'click .run': 'run',
+        'click .stop': 'run'
     },
     initialize: function (options)
     {
         this.model.each(this.insert, this);
         this.model.bind('add', this.insert, this);
         this.model.bind('savefail', this.saveFail, this);
+        this.run('status');
     },
     create: function ()
     {
@@ -128,7 +130,7 @@ HUGnet.TestsView = Backbone.View.extend({
             function (data)
             {
                 if (_.isObject(data)) {
-                    self.trigger('saved');
+                    self.trigger('created');
                     self.model.add(data);
                 } else {
                     self.trigger('newfail');
@@ -138,6 +140,45 @@ HUGnet.TestsView = Backbone.View.extend({
             function ()
             {
                 self.trigger('newfail');
+            }
+        );
+    },
+    running: function ()
+    {
+        this.$('.run').hide();
+        this.$('.stop').show();
+    },
+    paused: function ()
+    {
+        this.$('.run').show();
+        this.$('.stop').hide();
+    },
+    run: function (action)
+    {
+        var self = this;
+        if (action !== "status") {
+            action = "run";
+        }
+        var ret = $.ajax({
+            type: 'POST',
+            url: this.url,
+            dataType: 'json',
+            cache: false,
+            data:
+            {
+                "task": "test",
+                "action": action,
+            }
+        }).done(
+            function (data)
+            {
+                if (data == 1) {
+                    self.running();
+                    self.trigger('testrunning');
+                } else {
+                    self.paused();
+                    self.trigger('testpaused');
+                }
             }
         );
     },

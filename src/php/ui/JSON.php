@@ -118,6 +118,7 @@ class JSON
         }
         // Ratchet up the verbosity one level so more stuff prints
         $this->_config["html"] = true;
+
         // Set up printing
         $config = $this->_config;
         $config["debug"] = true;
