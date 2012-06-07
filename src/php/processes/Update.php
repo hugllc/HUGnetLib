@@ -86,17 +86,9 @@ class Update extends \HUGnet\ui\Daemon
     public function main()
     {
         $this->_mainStart = time();
-        $this->_device->load($this->_myID);
-        if ($this->_device->get("Active") != 0) {
-            $plugins = &\HUGnet\updater\Periodic::plugins($this);
-            foreach ($plugins as $key => $obj) {
-                $obj->execute();
-            }
-        } else {
-            $this->_wait = 600;
-            $this->out(
-                "Update script ".sprintf("%06X", $this->_myID)." is disabled."
-            );
+        $plugins = &\HUGnet\updater\Periodic::plugins($this);
+        foreach ($plugins as $key => $obj) {
+            $obj->execute();
         }
         $this->_wait();
     }
@@ -140,6 +132,11 @@ class Update extends \HUGnet\ui\Daemon
     {
         $ret = &parent::device($config);
         $this->_myID = $this->system()->network()->device()->getID();
+        $conf = $this->system()->runtime();
+        if (!is_bool($conf["update"])) {
+            $conf["update"] = true;
+            $this->system()->runtime($conf);
+        }
         $this->system()->network()->unsolicited(
             array($this, "packet"),
             $this->_myID

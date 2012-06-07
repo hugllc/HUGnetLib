@@ -267,6 +267,65 @@ class SystemTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
+    public static function dataRuntime()
+    {
+        return array(
+            array(
+                array(
+                    "hello" => "there",
+                    "asdf" => array(1,2),
+                ),
+                array(
+                    "hello" => "there",
+                    "asdf" => array(1,2),
+                )
+            ),
+            array(
+                array(
+                ),
+                array(
+                ),
+            ),
+            array(
+                "ThisIsNotAnArray",
+                array(),
+            ),
+            array(
+                null,
+                array(),
+            ),
+            array(
+                new \stdClass(),
+                array(),
+            ),
+            array(
+                3.141592654,
+                array(),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array $config The configuration to use
+    * @param mixed $expect The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataRuntime
+    */
+    public function testRuntime(
+        $config, $expect
+    ) {
+        $obj = \HUGnet\System::factory();
+        $this->assertEquals($expect, $obj->runtime($config));
+        unset($obj);
+    }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
     public static function dataNetwork()
     {
         return array(

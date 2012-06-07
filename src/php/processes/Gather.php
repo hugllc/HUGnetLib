@@ -79,6 +79,8 @@ class Gather extends \HUGnet\ui\Daemon
     private $_unsolicited;
     /** This is the start time of the current run */
     private $_device;
+    /** This is the runtime configuration */
+    private $_runtime;
     /**
     * Sets our configuration
     *
@@ -102,8 +104,8 @@ class Gather extends \HUGnet\ui\Daemon
     {
         $this->_mainStart = time();
         $this->_device->load($this->_myID);
-        $this->_enable = $this->_device->getParam("Enable");
-        if (($this->_enable & self::ACTIVEMASK) != 0) {
+        $this->_runtime = $this->system()->runtime();
+        if ($this->_runtime["gather"]) {
             $this->_ids = $this->_device->ids(array("Active" => 1));
             foreach ((array)$this->_ids as $key => $devID) {
                 parent::main();
@@ -124,7 +126,7 @@ class Gather extends \HUGnet\ui\Daemon
                 }
             }
         } else {
-            $this->_wait = 600;
+            $this->_wait = 30;
             $this->out(
                 "Gather script ".sprintf("%06X", $this->_myID)." is disabled."
             );
@@ -160,7 +162,7 @@ class Gather extends \HUGnet\ui\Daemon
     */
     private function _doPoll()
     {
-        if ((($this->_enable & self::POLLMASK) == 0) || !$this->_doContact()) {
+        if (!$this->_runtime["gatherpoll"] || !$this->_doContact()) {
             return false;
         }
         /* PollInterval is in minutes, we need it in seconds */
@@ -189,7 +191,7 @@ class Gather extends \HUGnet\ui\Daemon
     */
     private function _doConfig()
     {
-        if ((($this->_enable & self::CONFIGMASK) == 0) || !$this->_doContact()) {
+        if (!$this->_runtime["gatherconfig"] || !$this->_doContact()) {
             return false;
         }
         $lastConfig = time() - $this->_device->getParam("LastConfig");
@@ -407,13 +409,12 @@ class Gather extends \HUGnet\ui\Daemon
         $ret = &parent::device($config);
         $this->_myID = $this->system()->network()->device()->getID();
         $dev = $this->system()->device($this->_myID);
-        $enable = $dev->getParam("Enable");
-        if (is_null($enable)) {
-            $dev->setParam(
-                "Enable",
-                self::ACTIVEMASK | self::POLLMASK | self::CONFIGMASK
-            );
-            $dev->store();
+        $conf = $this->system()->runtime();
+        if (!is_bool($conf["gather"])) {
+            $conf["gather"] = true;
+            $conf["gatherpoll"] = true;
+            $conf["gatherconfig"] = true;
+            $this->system()->runtime($conf);
         }
         $this->system()->network()->unsolicited(
             array($this, "packet"),

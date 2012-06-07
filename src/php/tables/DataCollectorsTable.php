@@ -58,7 +58,7 @@ class DataCollectorsTable extends HUGnetDBTable
     /** @var string This is the table we should use */
     public $sqlTable = "datacollectors";
     /** @var string This is the primary key of the table.  Leave blank if none  */
-    public $sqlId = "";
+    public $sqlId = "uuid";
     /**
     * @var array This is the definition of the columns
     *
@@ -117,6 +117,11 @@ class DataCollectorsTable extends HUGnetDBTable
         ),
         "Config" => array(
             "Name" => "Config",
+            "Type" => "longtext",
+            "Default" => "",
+        ),
+        "Runtime" => array(
+            "Name" => "Runtime",
             "Type" => "longtext",
             "Default" => "",
         ),

@@ -80,14 +80,21 @@ class Checkin extends \HUGnet\updater\Periodic
     {
         if ($this->ready() && $this->hasMaster()) {
             $this->ui()->out("Checking in with the master server...");
-            $device = $this->system()->device(
-                $this->system()->network()->device()->getID()
-            );
-            $datacollector = $this->system()->datacollector($device);
+            $datacollector = $this->system()->datacollector();
+            $datacollector->load(array("uuid" => $this->system()->get("uuid")));
+            $setup = $datacollector->get("SetupString");
+            if (empty($setup)) {
+                $device = $this->system()->device(
+                    $this->system()->network()->device()->getID()
+                );
+                $datacollector->load($device);
+                $datacollector->store(true);
+            }
             if (function_exists("posix_uname")) {
                 $uname = posix_uname();
                 $datacollector->set("name", trim($uname['nodename']));
             }
+            $datacollector->store();
             $ret = $datacollector->action()->checkin();
             if ($ret === "success") {
                 $this->success();

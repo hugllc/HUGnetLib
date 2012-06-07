@@ -8,6 +8,7 @@
         <column>LastContact</column>
         <column>SetupString</column>
         <column>Config</column>
+        <column>Runtime</column>
         <row>
             <value>1</value>
             <value>46ba8126-57a1-4038-b5e4-2e2585f9f5a5</value>
@@ -16,6 +17,7 @@
             <value>12345678</value>
             <value>a</value>
             <value>b</value>
+            <value>c</value>
         </row>
         <row>
             <value>1</value>
@@ -25,6 +27,7 @@
             <value>123456789</value>
             <value>c</value>
             <value>d</value>
+            <value>e</value>
         </row>
         <row>
             <value>2</value>
@@ -34,6 +37,7 @@
             <value>123456789</value>
             <value>e</value>
             <value>f</value>
+            <value>g</value>
         </row>
     </table>
 </dataset>

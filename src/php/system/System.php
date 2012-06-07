@@ -123,6 +123,22 @@ class System
         return $this->_config;
     }
     /**
+    * This gets the runtime configuration
+    *
+    * @param array $config The configuration array
+    *
+    * @return array The configuration
+    */
+    public function runtime($config = null)
+    {
+        $dev =  $this->dataCollector(array("uuid" => $this->get("uuid")));
+        if (is_array($config)) {
+            $dev->set("Runtime", json_encode($config));
+            $dev->store();
+        }
+        return (array)json_decode($dev->get("Runtime"), true);
+    }
+    /**
     * This is the destructor
     */
     public function __destruct()

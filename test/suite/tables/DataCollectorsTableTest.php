@@ -204,6 +204,7 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
                         'LastContact' => 123456789,
                         'SetupString' => "c",
                         'Config' => 'd',
+                        'Runtime' => 'e',
                     ),
                     1 => array(
                         'group' => 'default',
@@ -214,6 +215,7 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
                         'LastContact' => 12345678,
                         'SetupString' => "a",
                         'Config' => 'b',
+                        'Runtime' => 'c',
                     ),
                 ),
             ),
@@ -281,7 +283,7 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
                     "uuid" => "fa7d187c-9b3f-4c3e-983d-d1311dd6d3cf",
                     'LastContact' => 0,
                     'SetupString' => '000000000C00392602500039260050000102'
-                        .'FFFFFFFFFA7D187C9B3F4C3E983DD1311DD6D3CF010203040005',
+                        .'FFFFFFFFFA7D187C9B3F4C3E983DD1311DD6D3CF01020304000500',
                     'Config' => json_encode(array(1, 2, 3, 4, 5)),
                 ),
             ),
