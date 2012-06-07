@@ -138,6 +138,7 @@ class Device extends SystemTableBase
         for ($i = 0; $i < $return["totalSensors"]; $i++) {
             $return["sensors"][$i] = $this->sensor($i)->toArray();
         }
+        $return["channels"] = $this->channels()->toArray(true);
         if ($return["loadable"]) {
             $this->firmware()->set("HWPartNum", $return["HWPartNum"]);
             $this->firmware()->set("FWPartNum", $return["FWPartNum"]);

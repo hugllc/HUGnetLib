@@ -96,7 +96,7 @@ HUGnet.Device = Backbone.Model.extend({
         var id = this.get('id');
         if (id !== 0) {
             var myself = this;
-            var ret = $.ajax({
+            $.ajax({
                 type: 'GET',
                 url: this.get('url'),
                 cache: false,
@@ -107,11 +107,11 @@ HUGnet.Device = Backbone.Model.extend({
                     "action": "get",
                     "id": id.toString(16)
                 }
-            });
-            ret.done(
+            }).done(
                 function (data)
                 {
                     myself.set(data);
+                    console.log(data);
                 }
             );
         }
@@ -128,7 +128,7 @@ HUGnet.Device = Backbone.Model.extend({
         var id = this.get('id');
         if (id !== 0) {
             var self = this;
-            var ret = $.ajax({
+            $.ajax({
                 type: 'POST',
                 url: this.get('url'),
                 dataType: 'json',
@@ -140,8 +140,7 @@ HUGnet.Device = Backbone.Model.extend({
                     "id": id.toString(16),
                     "device": self.toJSON()
                 }
-            });
-            ret.done(
+            }).done(
                 function (data)
                 {
                     if (data === "success") {
@@ -151,8 +150,7 @@ HUGnet.Device = Backbone.Model.extend({
                         self.trigger('savefail', "saved failed on server");
                     }
                 }
-            );
-            ret.fail(
+            ).fail(
                 function ()
                 {
                     self.trigger('savefail', "failed to contact server");

@@ -516,6 +516,10 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "Driver" => "EDEFAULT",
                             "id" => 2,
+                            "channels" => json_encode(
+                                array(
+                                )
+                            ),
                         ),
                         "toArray" => array(
                             "id" => 2,
@@ -543,6 +547,190 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         'type' => 'unknown',
                         'job'  => 'unknown',
                         'actionClass' => 'Action',
+                        "channels" => array(
+                            0 => array(
+                                'decimals' => 2,
+                                'units' => '&#176;C',
+                                'maxDecimals' => 2,
+                                'storageUnit' => '&#176;C',
+                                'unitType' => 'Temperature',
+                                'dataType' => 'raw',
+                                'sensor' => null,
+                                'validUnits' => array(
+                                    '&#176;F' => '&#176;F',
+                                    '&#176;C' => '&#176;C',
+                                    'K' => 'K'
+                                ),
+                            ),
+                            1 => array(
+                                'decimals' => 2,
+                                'units' => '&#176;C',
+                                'maxDecimals' => 2,
+                                'storageUnit' => '&#176;C',
+                                'unitType' => 'Temperature',
+                                'dataType' => 'raw',
+                                'sensor' => null,
+                                'validUnits' => array(
+                                    '&#176;F' => '&#176;F',
+                                    '&#176;C' => '&#176;C',
+                                    'K' => 'K'
+                                ),
+                            ),
+                            2 => array(
+                                'decimals' => 2,
+                                'units' => '&#176;C',
+                                'maxDecimals' => 2,
+                                'storageUnit' => '&#176;C',
+                                'unitType' => 'Temperature',
+                                'dataType' => 'raw',
+                                'sensor' => null,
+                                'validUnits' => array(
+                                    '&#176;F' => '&#176;F',
+                                    '&#176;C' => '&#176;C',
+                                    'K' => 'K'
+                                ),
+                            ),
+                            3 => array(
+                                'decimals' => 2,
+                                'units' => '&#176;C',
+                                'maxDecimals' => 2,
+                                'storageUnit' => '&#176;C',
+                                'unitType' => 'Temperature',
+                                'dataType' => 'raw',
+                                'sensor' => null,
+                                'validUnits' => array(
+                                    '&#176;F' => '&#176;F',
+                                    '&#176;C' => '&#176;C',
+                                    'K' => 'K'
+                                ),
+                            ),
+                            4 => array(
+                                'decimals' => 2,
+                                'units' => '&#176;C',
+                                'maxDecimals' => 2,
+                                'storageUnit' => '&#176;C',
+                                'unitType' => 'Temperature',
+                                'dataType' => 'raw',
+                                'sensor' => null,
+                                'validUnits' => array(
+                                    '&#176;F' => '&#176;F',
+                                    '&#176;C' => '&#176;C',
+                                    'K' => 'K'
+                                ),
+                            ),
+                            5 => array(
+                                'decimals' => 2,
+                                'units' => '&#176;C',
+                                'maxDecimals' => 2,
+                                'storageUnit' => '&#176;C',
+                                'unitType' => 'Temperature',
+                                'dataType' => 'raw',
+                                'sensor' => null,
+                                'validUnits' => array(
+                                    '&#176;F' => '&#176;F',
+                                    '&#176;C' => '&#176;C',
+                                    'K' => 'K'
+                                ),
+                            ),
+                            6 => array(
+                                'decimals' => 2,
+                                'units' => '&#176;C',
+                                'maxDecimals' => 2,
+                                'storageUnit' => '&#176;C',
+                                'unitType' => 'Temperature',
+                                'dataType' => 'raw',
+                                'sensor' => null,
+                                'validUnits' => array(
+                                    '&#176;F' => '&#176;F',
+                                    '&#176;C' => '&#176;C',
+                                    'K' => 'K'
+                                ),
+                            ),
+                            7 => array(
+                                'decimals' => 2,
+                                'units' => '&#176;C',
+                                'maxDecimals' => 2,
+                                'storageUnit' => '&#176;C',
+                                'unitType' => 'Temperature',
+                                'dataType' => 'raw',
+                                'sensor' => null,
+                                'validUnits' => array(
+                                    '&#176;F' => '&#176;F',
+                                    '&#176;C' => '&#176;C',
+                                    'K' => 'K'
+                                ),
+                            ),
+                            8 => array(
+                                'decimals' => 2,
+                                'units' => '&#176;C',
+                                'maxDecimals' => 2,
+                                'storageUnit' => '&#176;C',
+                                'unitType' => 'Temperature',
+                                'dataType' => 'raw',
+                                'sensor' => null,
+                                'validUnits' => array(
+                                    '&#176;F' => '&#176;F',
+                                    '&#176;C' => '&#176;C',
+                                    'K' => 'K'
+                                ),
+                            ),
+                            9 => array(
+                                'decimals' => 2,
+                                'units' => '&#176;C',
+                                'maxDecimals' => 2,
+                                'storageUnit' => '&#176;C',
+                                'unitType' => 'Temperature',
+                                'dataType' => 'raw',
+                                'sensor' => null,
+                                'validUnits' => array(
+                                    '&#176;F' => '&#176;F',
+                                    '&#176;C' => '&#176;C',
+                                    'K' => 'K'
+                                ),
+                            ),
+                            10 => array(
+                                'decimals' => 2,
+                                'units' => '&#176;C',
+                                'maxDecimals' => 2,
+                                'storageUnit' => '&#176;C',
+                                'unitType' => 'Temperature',
+                                'dataType' => 'raw',
+                                'sensor' => null,
+                                'validUnits' => array(
+                                    '&#176;F' => '&#176;F',
+                                    '&#176;C' => '&#176;C',
+                                    'K' => 'K'
+                                ),
+                            ),
+                            11 => array(
+                                'decimals' => 2,
+                                'units' => '&#176;C',
+                                'maxDecimals' => 2,
+                                'storageUnit' => '&#176;C',
+                                'unitType' => 'Temperature',
+                                'dataType' => 'raw',
+                                'sensor' => null,
+                                'validUnits' => array(
+                                    '&#176;F' => '&#176;F',
+                                    '&#176;C' => '&#176;C',
+                                    'K' => 'K'
+                                ),
+                            ),
+                            12 => array(
+                                'decimals' => 2,
+                                'units' => '&#176;C',
+                                'maxDecimals' => 2,
+                                'storageUnit' => '&#176;C',
+                                'unitType' => 'Temperature',
+                                'dataType' => 'raw',
+                                'sensor' => null,
+                                'validUnits' => array(
+                                    '&#176;F' => '&#176;F',
+                                    '&#176;C' => '&#176;C',
+                                    'K' => 'K'
+                                ),
+                            ),
+                        ),
                     )
                 ),
             ),

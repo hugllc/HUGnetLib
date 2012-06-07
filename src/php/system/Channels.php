@@ -146,6 +146,40 @@ class Channels
     {
         return $this->_system;
     }
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param bool $default Return items set to their default?
+    *
+    * @return null
+    */
+    public function toArray($default = true)
+    {
+        $ret = (array)$this->_channels;
+        if ($default) {
+            foreach (array_keys($ret) as $key) {
+                $ret[$key]["validUnits"] = $this->units($key)->getValid();
+            }
+        }
+        return $ret;
+
+    }
+    /**
+    * This creates the units driver
+    *
+    * @param int $index The index of the units to return
+    *
+    * @return object
+    */
+    protected function &units($index)
+    {
+        include_once dirname(__FILE__)."/../units/Driver.php";
+        $units = \HUGnet\units\Driver::factory(
+            $this->_channels[$index]["unitType"],
+            $this->_channels[$index]["storageUnit"]
+        );
+        return $units;
+    }
 
 }
 
