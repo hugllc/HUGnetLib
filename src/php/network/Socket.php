@@ -85,7 +85,7 @@ final class Socket
     * This our configuration resides here
     */
     private $_defaultConfig = array(
-        "quiet"    => false,
+        "quiet"    => true,
         "type"     => AF_INET,
         "port"     => null,
         "location" => "",
@@ -161,6 +161,11 @@ final class Socket
             "Runtime",
             !$bound && !$this->_config["quiet"]
         );
+        if ((socket_last_error() > 0) && $this->_config["quiet"]) {
+            socket_clear_error();
+            sleep(5);  // Wait 5 seconds to try again
+            return false;
+        }
         socket_set_nonblock($this->_socket);
     }
     /**
@@ -177,6 +182,11 @@ final class Socket
             $return = \HUGnet\Util::hexify(
                 @socket_read($this->_socket, self::MAX_BYTES)
             );
+            if (socket_last_error($this->_socket) > 0) {
+                socket_clear_error($this->_socket);
+                $this->_disconnect();
+                $this->_connect();
+            }
             \HUGnet\VPrint::out(
                 $this->_config["name"]."(".$this->_config["driver"].") -> ".$return,
                 6
