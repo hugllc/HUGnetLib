@@ -562,6 +562,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                     'K' => 'K'
                                 ),
                                 'channel' => 0,
+                                'label' => '',
                             ),
                             1 => array(
                                 'decimals' => 2,
@@ -577,6 +578,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                     'K' => 'K'
                                 ),
                                 'channel' => 1,
+                                'label' => '',
                             ),
                             2 => array(
                                 'decimals' => 2,
@@ -592,6 +594,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                     'K' => 'K'
                                 ),
                                 'channel' => 2,
+                                'label' => '',
                             ),
                             3 => array(
                                 'decimals' => 2,
@@ -607,6 +610,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                     'K' => 'K'
                                 ),
                                 'channel' => 3,
+                                'label' => '',
                             ),
                             4 => array(
                                 'decimals' => 2,
@@ -622,6 +626,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                     'K' => 'K'
                                 ),
                                 'channel' => 4,
+                                'label' => '',
                             ),
                             5 => array(
                                 'decimals' => 2,
@@ -637,6 +642,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                     'K' => 'K'
                                 ),
                                 'channel' => 5,
+                                'label' => '',
                             ),
                             6 => array(
                                 'decimals' => 2,
@@ -652,6 +658,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                     'K' => 'K'
                                 ),
                                 'channel' => 6,
+                                'label' => '',
                             ),
                             7 => array(
                                 'decimals' => 2,
@@ -667,6 +674,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                     'K' => 'K'
                                 ),
                                 'channel' => 7,
+                                'label' => '',
                             ),
                             8 => array(
                                 'decimals' => 2,
@@ -682,6 +690,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                     'K' => 'K'
                                 ),
                                 'channel' => 8,
+                                'label' => '',
                             ),
                             9 => array(
                                 'decimals' => 2,
@@ -697,6 +706,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                     'K' => 'K'
                                 ),
                                 'channel' => 9,
+                                'label' => '',
                             ),
                             10 => array(
                                 'decimals' => 2,
@@ -712,6 +722,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                     'K' => 'K'
                                 ),
                                 'channel' => 10,
+                                'label' => '',
                             ),
                             11 => array(
                                 'decimals' => 2,
@@ -727,6 +738,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                     'K' => 'K'
                                 ),
                                 'channel' => 11,
+                                'label' => '',
                             ),
                             12 => array(
                                 'decimals' => 2,
@@ -742,6 +754,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                     'K' => 'K'
                                 ),
                                 'channel' => 12,
+                                'label' => '',
                             ),
                         ),
                     )

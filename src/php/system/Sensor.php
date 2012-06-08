@@ -335,6 +335,7 @@ class Sensor extends SystemTableBase
         $channels = (array)$this->driver()->channels();
         $sid = $this->id();
         foreach (array_keys($channels) as $key) {
+            $channels[$key]['label'] = $this->get("location");
             $channels[$key]["sensor"] = $sid;
         }
         return $channels;

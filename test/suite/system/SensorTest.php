@@ -1163,6 +1163,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             "FWVersion"    => "1.2.3",
                             "DeviceGroup"  => "FFFFFF",
                             "TimeConstant" => "01",
+                            "location" => "Test",
                         ),
                     ),
                 ),
@@ -1175,6 +1176,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         'storageUnit' => 'unknown',
                         "dataType" => \HUGnet\units\Driver::TYPE_RAW,
                         "sensor"   => 4,
+                        "label" => "Test"
                     ),
                 ),
             ),
