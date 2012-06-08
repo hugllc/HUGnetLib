@@ -80,7 +80,6 @@ HUGnet.DataView = Backbone.View.extend({
         this.fields[0] = 'Date';
         this.classes[0] = '';
         var channels = this.model.get('channels');
-        console.log(channels);
         var index = 1;
         for (i in channels) {
             if ((channels[i].storageType !== 'ignore') && (channels[i].dataType !== 'ignore')) {

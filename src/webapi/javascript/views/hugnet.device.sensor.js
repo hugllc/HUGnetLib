@@ -83,13 +83,11 @@ var DeviceSensorPropertiesView = Backbone.View.extend({
             output[data[i].name] = data[i].value;
         }
         var extra = this.model.get('extraDefault');
-        console.log(extra);
         output.extra = {};
         for (i in extra) {
             output.extra[i] = output['extra['+i+']'];
             delete output['extra['+i+']'];
         }
-        console.log(output);
         this.model.set(output);
         this.model.save();
     },

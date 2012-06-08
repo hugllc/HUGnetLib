@@ -46,6 +46,7 @@ var DevicePropertiesView = Backbone.View.extend({
     tagName: 'div',
     events: {
         'click .SaveDevice': 'save',
+        'click .sensorList': 'sensorList',
         'submit #sensorForm': 'saveSensor',
         'change #sensorForm select': 'saveSensor'
     },
@@ -82,6 +83,14 @@ var DevicePropertiesView = Backbone.View.extend({
                 this.model.set('channels', this.channelsmodel.toJSON());
             },
             this
+        );
+    },
+    sensorList: function ()
+    {
+        var view = new HUGnet.DeviceSensorsView({ model: this.sensorsmodel });
+        this.popup(
+            view,
+            "Sensors for device " + this.model.get('id').toString(16).toUpperCase()
         );
     },
     save: function (e)
@@ -154,6 +163,19 @@ var DevicePropertiesView = Backbone.View.extend({
             $(this.tTemplate).html(),
             this.model.toJSON()
         );
+    },
+    popup: function (view, title)
+    {
+        this.$el.append(view.render().el);
+        view.$el.dialog({
+            modal: true,
+            draggable: false,
+            width: 700,
+            resizable: false,
+            title: title,
+            dialogClass: "window",
+            zIndex: 800
+        });
     }
 });
 
