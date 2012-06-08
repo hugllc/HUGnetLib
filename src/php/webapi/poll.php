@@ -46,35 +46,6 @@ $device = $json->system()->device($did);
 $hist = $device->action()->poll();
 $device->store();
 if (is_object($hist)) {
-    if ($TestID) {
-        $filename = "/tmp/LeNR.".$did.".".date("Ymd");
-        $new = !file_exists($filename);
-        $fd = fopen($filename, "a");
-        $sensors = $device->get("totalSensors");
-        if ($new) {
-            $sep = ",";
-            fwrite($fd, "Date");
-            for ($i = 0; $i < $sensors; $i++) {
-                if ($device->sensor($i)->get("dataType") !== 'ignore') {
-                    fwrite($fd, $sep.$device->sensor($i)->get("location"));
-                    $sep = ",";
-                }
-            }
-            fwrite($fd, "\r\n");
-        }
-        $sep = ",";
-        fwrite($fd, date("Y-m-d H:i:s", $hist->get("Date")));
-        for ($i = 0; $i < $sensors; $i++) {
-            if ($device->sensor($i)->get("dataType") !== 'ignore') {
-                $data = $hist->get("Data".$i);
-                fwrite($fd, $sep.$data);
-                $sep = ",";
-            }
-        }
-        fwrite($fd, "\r\n");
-        fclose($fd);
-        chmod($filename, 0666);
-    }
     $ret = $hist->toArray(false);
 } else {
     $ret = -1;

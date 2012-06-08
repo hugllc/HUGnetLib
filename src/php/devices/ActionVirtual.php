@@ -208,7 +208,48 @@ class ActionVirtual extends Action
         $this->device->setParam("ContactFail", 0);
         $history = &$this->device->historyFactory($hist);
         $history->insertRow();
+        $this->_writeFile($history);
         return $history;
+    }
+    /**
+    * Polls the device and saves the poll
+    *
+    * @param object $hist   The history object to use
+    *
+    * @return false on failure, the history object on success
+    */
+    private function _writeFile($hist)
+    {
+        if (is_object($hist)) {
+            $filename = "/tmp/LeNR.".$this->device->get("DeviceID").".".date("Ymd");
+            $new = !file_exists($filename);
+            $fd = fopen($filename, "a");
+            $channels = $this->device->channels();
+            $chan = $channels->toArray();
+            if ($new) {
+                $sep = ",";
+                fwrite($fd, "Date");
+                for ($i = 0; $i < count($chan); $i++) {
+                    if ($chan[$i]["dataType"] !== 'ignore') {
+                        fwrite($fd, $sep.$chan[$i]['label']);
+                        $sep = ",";
+                    }
+                }
+                fwrite($fd, "\r\n");
+            }
+            $sep = ",";
+            fwrite($fd, date("Y-m-d H:i:s", $hist->get("Date")));
+            for ($i = 0; $i < count($chan); $i++) {
+                if ($chan[$i]["dataType"] !== 'ignore') {
+                    $data = $hist->get("Data".$i);
+                    fwrite($fd, $sep.$data);
+                    $sep = ",";
+                }
+            }
+            fwrite($fd, "\r\n");
+            fclose($fd);
+            chmod($filename, 0666);
+        }
     }
 }
 
