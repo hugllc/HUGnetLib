@@ -46,8 +46,10 @@ $since  = (int)$_REQUEST["since"];
 $until  = (int)$_REQUEST["until"];
 $limit  = ((int)$_REQUEST["limit"]) ? (int)$_REQUEST["limit"] : 100;
 $order  = ((int)$_REQUEST["order"]) ? 'desc' : 'asc';
+$format = $_REQUEST["format"];
 
-$table = &$json->system()->device($did)->historyFactory(array());
+$device = &$json->system()->device($did);
+$table = &$device->historyFactory(array());
 
 $table->sqlLimit = $limit;
 $table->sqlOrderBy = "Date ".$order;
@@ -68,5 +70,38 @@ while ($run) {
     $ret[] = $table->toArray(false);
     $run   = $table->nextInto();
 }
-print json_encode($ret);
+if (strtoupper($format) === "CSV") {
+    $channels = $device->channels();
+    $chan = $channels->toArray();
+    $out = "";
+    $sep = ",";
+    $out .= "Date";
+    for ($i = 0; $i < count($chan); $i++) {
+        if ($chan[$i]["dataType"] !== 'ignore') {
+            $out .= $sep.$chan[$i]['label'];
+            $sep = ",";
+        }
+    }
+    $out .= "\r\n";
+    $sep  = ",";
+    foreach ($ret as $key => $hist) {
+        $out .= date("Y-m-d H:i:s", $hist["Date"]);
+        for ($i = 0; $i < count($chan); $i++) {
+            if ($chan[$i]["dataType"] !== 'ignore') {
+                $data = $hist["Data".$i];
+                $out .= $sep.$data;
+                $sep = ",";
+            }
+        }
+        $out .= "\r\n";
+    }
+    header('Content-type: text/csv');
+    header(
+        'Content-disposition: attachment;'
+        .'filename=HUGnetLab.'.$device->get("DeviceID").'.csv'
+    );
+    print $out;
+} else {
+    print json_encode($ret);
+}
 ?>
