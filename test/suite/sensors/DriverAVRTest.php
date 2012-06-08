@@ -302,14 +302,13 @@ class DriverAVRTestClass extends DriverAVR
     /**
     * Gets the extra values
     *
-    * @param int   $index The extra index to use
-    * @param array $extra The extra array
+    * @param int $index The extra index to use
     *
     * @return The extra value (or default if empty)
     */
-    public function getExtra($index, $extra)
+    public function getExtra($index)
     {
-        return parent::getExtra($index, $extra);
+        return parent::getExtra($index);
     }
     /**
     * Changes a raw reading into a output value

@@ -112,6 +112,15 @@ class EmptyVirtualTest extends DriverTestBase
             ),
         );
     }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @return null
+    */
+    public function testChannels()
+    {
+        $this->assertSame(array(), $this->o->channels());
+    }
 
 }
 ?>

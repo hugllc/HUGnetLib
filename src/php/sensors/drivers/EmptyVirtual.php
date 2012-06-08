@@ -109,6 +109,16 @@ class EmptyVirtual extends \HUGnet\sensors\DriverVirtual
         return null;
 
     }
+    /**
+    * This builds the class from a setup string
+    *
+    * @return Array of channel information
+    */
+    public function channels()
+    {
+        return array(
+        );
+    }
 
 }
 

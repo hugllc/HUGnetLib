@@ -292,12 +292,14 @@ class Device extends SystemTableBase
     /**
     * This creates the sensor drivers
     *
+    * @param mixed $chans Channel information
+    *
     * @return null
     */
-    public function &channels()
+    public function &channels($chans = null)
     {
         include_once dirname(__FILE__)."/Channels.php";
-        return Channels::factory($this->system(), $this);
+        return Channels::factory($this->system(), $this, $chans);
     }
     /**
     * Gets one of the parameters

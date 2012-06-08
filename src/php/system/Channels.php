@@ -78,12 +78,13 @@ class Channels
     /**
     * This sets up the basic parts of the object for us when we create it
     *
-    * @param object &$system The system oject
-    * @param object &$device The device object
+    * @param object &$system  The system oject
+    * @param object &$device  The device object
+    * @param mixed  $channels The channels.  If not provided retrieved from device
     *
     * @return null
     */
-    private function __construct(&$system, &$device)
+    private function __construct(&$system, &$device, $channels)
     {
         System::exception(
             get_class($this)." needs to be passed a system object",
@@ -103,7 +104,12 @@ class Channels
                 $this->_channels, $this->_device->sensor($i)->channels()
             );
         }
-        $channels = json_decode($this->_device->get("channels"), true);
+        if (!is_string($channels) && !is_array($channels)) {
+            $channels = $this->_device->get("channels");
+        }
+        if (is_string($channels)) {
+            $channels = json_decode($channels, true);
+        }
         foreach (array_keys($this->_channels) as $chan) {
             if (is_array($channels[$chan])) {
                 $this->_channels[$chan] = array_merge(
@@ -118,12 +124,13 @@ class Channels
     *
     * @param object &$system The system oject
     * @param object &$device The device object
+    * @param mixed  $channels The channels.  If not provided retrieved from device
     *
     * @return null
     */
-    public static function &factory(&$system, &$device)
+    public static function &factory(&$system, &$device, $channels = null)
     {
-        $obj = new Channels($system, $device);
+        $obj = new Channels($system, $device, $channels);
         return $obj;
     }
     /**
@@ -158,10 +165,30 @@ class Channels
         $ret = (array)$this->_channels;
         if ($default) {
             foreach (array_keys($ret) as $key) {
+                $ret[$key]["channel"] = $key;
                 $ret[$key]["validUnits"] = $this->units($key)->getValid();
             }
         }
         return $ret;
+
+    }
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param bool $default Return items set to their default?
+    *
+    * @return null
+    */
+    public function store()
+    {
+        $ret = array();
+        foreach (array_keys($this->_channels) as $key) {
+            $ret[$key] = array();
+            foreach (array("label", "units", "decimals") as $field) {
+                $ret[$key][$field] = $this->_channels[$key][$field];
+            }
+        }
+        return $this->_device->set("channels", json_encode($ret));
 
     }
     /**

@@ -415,8 +415,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($mock);
-        $obj = &ADuCPower::factory($sensor);
-        $this->assertSame($expect, $obj->get($name));
+        $this->assertSame($expect, $this->o->get($name));
     }
     /**
     * data provider for testDeviceID
@@ -448,8 +447,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($mock);
-        $obj = &ADuCPower::factory($sensor);
-        $this->assertSame($expect, $obj->getExtra($extra));
+        $this->assertSame($expect, $this->o->getExtra($extra));
     }
     /**
      * Data provider for testGetReading

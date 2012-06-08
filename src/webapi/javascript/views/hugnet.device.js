@@ -69,6 +69,20 @@ var DevicePropertiesView = Backbone.View.extend({
             },
             this
         );
+        this.channelsmodel = new HUGnet.DeviceChannels();
+        var channels = this.model.get('channels');
+        this.channelsmodel.reset(channels);
+        this.channels = new HUGnet.DeviceChannelsView({
+            model: this.channelsmodel
+        });
+        this.channelsmodel.on(
+            'change',
+            function (model, collection, view)
+            {
+                this.model.set('channels', this.channelsmodel.toJSON());
+            },
+            this
+        );
     },
     save: function (e)
     {
@@ -114,14 +128,14 @@ var DevicePropertiesView = Backbone.View.extend({
 
         var data = this.model.toJSON();
         _.extend(data, HUGnet.viewHelpers);
-        data.sensors = '<div id="DeviceSensorsDiv"></div>';
+        data.channels = '<div id="DeviceChannelsDiv"></div>';
         this.$el.html(
             _.template(
                 $(this.template).html(),
                 data
             )
         );
-        this.$("#DeviceSensorsDiv").html(this.sensors.render().el);
+        this.$("#DeviceChannelsDiv").html(this.channels.render().el);
         this.setTitle();
         return this;
     },

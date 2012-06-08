@@ -45,12 +45,16 @@ if ($action === "post") {
     $dev->load($did);
     $worked = true;
     $device = $_POST["device"];
+    $channels = $device["channels"];
     unset($device["sensors"]);
+    unset($device["channels"]);
     if ($dev->get("DeviceID") === "000000") {
         $dev->load($device);
+        $dev->channels($channels)->store();
         $worked = $dev->store(true);
     } else {
         //unset($device["params"]);
+        $dev->channels($channels)->store();
         $worked = $dev->change($device);
     }
     if ($worked) {
