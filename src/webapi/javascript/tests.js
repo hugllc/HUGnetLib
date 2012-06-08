@@ -84,23 +84,15 @@ HUGnet.TestSuite = Backbone.View.extend({
         });
 
         this.tests.bind(
-            "run",
-            function (test)
-            {
-                this.testTab(test, 'poll');
-            },
-            this
-        );
-        this.tests.bind(
             "view",
             function (test)
             {
-                this.testTab(test, 'view');
+                this.testTab(test);
             },
             this
         );
     },
-    testTab: function (test, mode)
+    testTab: function (test)
     {
         var self = this;
         var tag = "#tabs-test" + test.get("id");

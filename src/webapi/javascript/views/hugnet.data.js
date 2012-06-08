@@ -79,11 +79,12 @@ HUGnet.DataView = Backbone.View.extend({
         this.header[0] = 'Date';
         this.fields[0] = 'Date';
         this.classes[0] = '';
-        var sensors = this.model.get('sensors');
+        var channels = this.model.get('channels');
+        console.log(channels);
         var index = 1;
-        for (i in sensors) {
-            if ((sensors[i].storageType !== 'ignore') && (sensors[i].dataType !== 'ignore')) {
-                this.header[index] = sensors[i].location + ' ('+sensors[i].units+')';
+        for (i in channels) {
+            if ((channels[i].storageType !== 'ignore') && (channels[i].dataType !== 'ignore')) {
+                this.header[index] = channels[i].label + ' ('+channels[i].units+')';
                 this.fields[index] = 'Data' + i;
                 this.classes[index] = '';
                 index++;
