@@ -78,8 +78,7 @@ class Checkin extends \HUGnet\updater\Periodic
     */
     public function &execute()
     {
-        if ($this->ready() && $this->hasMaster()) {
-            $this->ui()->out("Checking in with the master server...");
+        if ($this->ready()) {
             $datacollector = $this->system()->datacollector();
             $datacollector->load(array("uuid" => $this->system()->get("uuid")));
             $setup = $datacollector->get("SetupString");
@@ -95,11 +94,16 @@ class Checkin extends \HUGnet\updater\Periodic
                 $datacollector->set("name", trim($uname['nodename']));
             }
             $datacollector->store();
-            $ret = $datacollector->action()->checkin();
-            if ($ret === "success") {
-                $this->success();
+            if ($this->hasMaster()) {
+                $this->ui()->out("Checking in with the master server...");
+                $ret = $datacollector->action()->checkin();
+                if ($ret === "success") {
+                    $this->success();
+                } else {
+                    $this->failure();
+                }
             } else {
-                $this->failure();
+                $this->success();
             }
         }
     }
