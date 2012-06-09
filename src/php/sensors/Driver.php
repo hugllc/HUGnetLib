@@ -106,17 +106,19 @@ abstract class Driver
     * as the driver class name.
     */
     private static $_drivers = array(
-        "00:DEFAULT"      => "AVRBC2322640_0",
-        "02:DEFAULT"      => "AVRBC2322640",
-        "04:DEFAULT"      => "ADuCVishayRTD",
-        "11:DEFAULT"      => "ADuCPower",
-        "41:DEFAULT"      => "ADuCVoltage",
-        "41:ADuCPressure" => "ADuCPressure",
-        "42:DEFAULT"      => "ADuCThermocouple",
-        "43:DEFAULT"      => "ADuCVoltage",
-        "FA:DEFAULT"      => "SDEFAULT",
-        "FE:DEFAULT"      => "EmptyVirtual",
-        "FE:CloneVirtual" => "CloneVirtual",
+        "00:DEFAULT"       => "AVRBC2322640_0",
+        "02:DEFAULT"       => "AVRBC2322640",
+        "04:DEFAULT"       => "ADuCVishayRTD",
+        "11:DEFAULT"       => "ADuCPower",
+        "41:DEFAULT"       => "ADuCVoltage",
+        "41:ADuCPressure"  => "ADuCPressure",
+        "42:DEFAULT"       => "ADuCThermocouple",
+        "43:DEFAULT"       => "ADuCVoltage",
+        "FA:DEFAULT"       => "SDEFAULT",
+        "FE:DEFAULT"       => "EmptyVirtual",
+        "FE:AlarmVirtual"  => "AlarmVirtual",
+        "FE:BinaryVirtual" => "BinaryVirtual",
+        "FE:CloneVirtual"  => "CloneVirtual",
     );
     /**
     * This function sets up the driver object, and the database object.  The
