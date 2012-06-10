@@ -139,26 +139,48 @@ class DriverTest extends drivers\DriverTestBase
     {
         return array(
             array(
+                array(),
                 "ThisIsABadName",
                 null,
             ),
             array(
+                array(),
                 "storageType",
                 \HUGnet\units\Driver::TYPE_RAW,
             ),
             array(
+                array(),
                 "testParam",
                 "12345",
             ),
             array(
+                array(),
                 "unitType",
                 'asdf',
+            ),
+            array(
+                array(
+                ),
+                "maxDecimals",
+                7,
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(0, 0, 0, 3),
+                        ),
+                    ),
+                ),
+                "maxDecimals",
+                3,
             ),
         );
     }
     /**
     * test the set routine when an extra class exists
     *
+    * @param array  $mock   The mocks to use
     * @param string $name   The name of the variable to test.
     * @param array  $expect The expected return
     *
@@ -166,8 +188,10 @@ class DriverTest extends drivers\DriverTestBase
     *
     * @dataProvider dataGet
     */
-    public function testGet($name, $expect)
+    public function testGet($mock, $name, $expect)
     {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($mock);
         $this->assertSame($expect, $this->o->get($name, 1));
     }
     /**
@@ -189,7 +213,7 @@ class DriverTest extends drivers\DriverTestBase
             'extraValues' => Array (5, 5, 5, 5, 5),
             'storageUnit' => 'unknown',
             'storageType' => 'raw',
-            'maxDecimals' => 2,
+            'maxDecimals' => 7,
             'testParam' => '12345',
             "dataTypes" => array(
                 \HUGnet\units\Driver::TYPE_RAW => \HUGnet\units\Driver::TYPE_RAW,
@@ -685,6 +709,7 @@ class DriverTestClass extends Driver
         "extraDefault" => array(2,3,5,7,11),
         "extraText" => array("a","b","c","d","e"),
         "extraValues" => array(5, 5, 5, 5, 5),
+        "maxDecimals" => "getExtra3",
     );
     /**
     * This function creates the system.

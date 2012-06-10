@@ -244,8 +244,6 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
     {
         $sensor = (int)$this->sensor()->id();
         $array = parent::toArray();
-        $array["unitType"] = $array["unitType"][$sensor];
-        $array["storageUnit"] = $array["storageUnit"][$sensor];
         if (($sensor != 1) && ($sensor != 3)) {
             $array["extraDefault"] = array();
             $array["extraValues"] = array();

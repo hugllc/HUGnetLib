@@ -202,12 +202,17 @@ abstract class Driver
     */
     public function get($name)
     {
+        $ret = null;
         if (isset($this->params[$name])) {
-            return $this->params[$name];
+            $ret = $this->params[$name];
         } else if (isset($this->_default[$name])) {
-            return $this->_default[$name];
+            $ret = $this->_default[$name];
         }
-        return null;
+        if (is_string($ret) && (substr($ret, 0, 8) === "getExtra")) {
+            $key = (int)substr($ret, 8);
+            $ret = $this->getExtra($key);
+        }
+        return $ret;
     }
     /**
     * Returns all of the parameters and defaults in an array
@@ -217,8 +222,12 @@ abstract class Driver
     */
     public function toArray()
     {
-        $array = array_merge($this->_default, (array)$this->params);
-        return $array;
+        $return = array();
+        $keys = array_merge(array_keys($this->_default), array_keys($this->params));
+        foreach ($keys as $key) {
+            $return[$key] = $this->get($key);
+        }
+        return $return;
     }
     /**
     * Returns the driver that should be used for a particular device
