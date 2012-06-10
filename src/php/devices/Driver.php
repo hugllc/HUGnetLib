@@ -376,6 +376,42 @@ abstract class Driver
     {
         return $this->_device;
     }
+    /**
+    * This creates the sensor drivers
+    *
+    * @param int $sid The sensor id to get.  They are labaled 0 to sensors
+    *
+    * @return null
+    */
+    public function &sensor($sid)
+    {
+        include_once dirname(__FILE__)."/../system/Sensor.php";
+        $data = array(
+            "sensor" => $sid,
+            "dev" => $this->device()->id(),
+        );
+        $obj = \HUGnet\Sensor::factory($this->device()->system(), $data);
+        if (is_null($obj->get("id"))) {
+            $tSensors = $this->device()->get("sensors");
+            if (is_string($tSensors) && !empty($tSensors)) {
+                $tSensors = unserialize(base64_decode($tSensors));
+                $obj->load((array)$tSensors[$sid]);
+            } else if (is_array($tSensors)) {
+                $obj->load((array)$tSensors[$sid]);
+            } else {
+                if ($sid < $this->get("physicalSensors")) {
+                    $data["id"] = self::getSensorID(
+                        $sid, $this->device()->get("RawSetup")
+                    );
+                } else {
+                    $data["id"] = 0xFE; // Virtual Sensor
+                }
+                $obj->load($data);
+            }
+            $obj->store();
+        }
+        return $obj;
+    }
 }
 
 

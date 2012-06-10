@@ -262,32 +262,7 @@ class Device extends SystemTableBase
     */
     public function &sensor($sid)
     {
-        include_once dirname(__FILE__)."/Sensor.php";
-        $data = array(
-            "sensor" => $sid,
-            "dev" => $this->table()->get("id"),
-        );
-        $obj = Sensor::factory($this->system(), $data);
-        if (is_null($obj->get("id"))) {
-            $tSensors = $this->table()->get("sensors");
-            if (is_string($tSensors) && !empty($tSensors)) {
-                $tSensors = unserialize(base64_decode($tSensors));
-                $obj->load((array)$tSensors[$sid]);
-            } else if (is_array($tSensors)) {
-                $obj->load((array)$tSensors[$sid]);
-            } else {
-                if ($sid < $this->driver()->get("physicalSensors")) {
-                    $data["id"] = devices\Driver::getSensorID(
-                        $sid, $this->table()->get("RawSetup")
-                    );
-                } else {
-                    $data["id"] = 0xFE; // Virtual Sensor
-                }
-                $obj->load($data);
-            }
-            $obj->store();
-        }
-        return $obj;
+        return $this->driver()->sensor($sid);
     }
     /**
     * This creates the sensor drivers
