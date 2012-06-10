@@ -258,6 +258,210 @@ class DriverAVRTest extends drivers\DriverTestBase
             ),
         );
     }
+    /**
+    * Data provider for testGetDividerVoltage
+    *
+    * @return array
+    */
+    public static function dataGetDividerVoltage()
+    {
+        return array(
+            array(1, 1, 0, 5, array(), 1, 0.0),
+            array(1, 1, 1, 5, array(), 1, 0.0002),
+            array(1000, 1, 1, 5, array(), 1, 0.1527),
+            array(null, 1, 1, 5, array(), 1, null),
+        );
+    }
+    /**
+    * test
+    *
+    * @param int   $A       The incoming value
+    * @param float $R1      The resistor to the voltage
+    * @param float $R2      The resistor to ground
+    * @param float $Vref    The reference voltage
+    * @param array $preload The values to preload into the object
+    * @param int   $Tc      The time constant
+    * @param mixed $expect  The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataGetDividerVoltage
+    */
+    public function testGetDividerVoltage(
+        $A, $R1, $R2, $Vref, $preload, $Tc, $expect
+    ) {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($preload);
+        $ret = $this->o->getDividerVoltage($A, $R1, $R2, $Vref, $Tc);
+        $this->assertSame($expect, $ret);
+    }
+
+
+    /**
+    * Data provider for testfetBoard
+    *
+    * @return array
+    */
+    public static function dataIndirect()
+    {
+        return array(
+            array(
+                1000,
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(1, 1, 5)),
+                        ),
+                    ),
+                1,
+                0.1527
+            ),
+            array(
+                1000,
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra"=>array(-10, 5, 5)
+                        ),
+                    ),
+                ),
+                1,
+                null
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param float $val     The incoming value
+    * @param int   $preload The values to preload into the object
+    * @param int   $Tc      The time constant
+    * @param mixed $expect  The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataIndirect
+    */
+    public function testIndirect($val, $preload, $Tc, $expect)
+    {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($preload);
+        $ret = $this->o->indirect($val, $Tc);
+        $this->assertSame($expect, $ret);
+    }
+
+    /**
+    * Data provider for GetVoltage
+    *
+    * @return array
+    */
+    public static function dataGetVoltage()
+    {
+        return array(
+            array(null, array(), 1, 1, null),
+            array(1, array("Vcc" => 1), null, 1, 0.0),
+            array(1, array(), 1, 1, 0.0),
+            array(4000, array(), 10, 1, 0.6109),
+        );
+    }
+    /**
+    * test
+    *
+    * @param int   $A       The AtoD reading
+    * @param int   $preload The values to preload into the object
+    * @param float $Vref    The voltage reference
+    * @param int   $Tc      The time constant
+    * @param mixed $expect  The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataGetVoltage
+    */
+    public function testGetVoltage($A, $preload, $Vref, $Tc, $expect)
+    {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($preload);
+        $ret = $this->o->getVoltage($A, $Vref, $Tc);
+        $this->assertSame($expect, $ret);
+    }
+
+    /**
+    * Data provider for testchsMss
+    *
+    * @return array
+    */
+    public static function dataDirect()
+    {
+        return array(
+            array(
+                10000,
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra"=>array(5)
+                        ),
+                    ),
+                ),
+                1,
+                .7637
+            ),
+            array(
+                65535,
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra"=>array(5)
+                        ),
+                    ),
+                ),
+                1,
+                null
+            ),
+            array(
+                -10000,
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra"=>array(5)
+                        ),
+                    ),
+                ),
+                1,
+                null
+            ),
+            array(
+                null,
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra"=>array(5)
+                         ),
+                    ),
+               ),
+                1,
+                null
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param float $val     The incoming value
+    * @param array $preload The value to preload into the object
+    * @param int   $Tc      The time constant
+    * @param mixed $expect  The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataDirect
+    */
+    public function testDirect($val, $preload, $Tc, $expect)
+    {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($preload);
+        $ret = $this->o->direct($val, $Tc);
+        $this->assertSame($expect, $ret);
+    }
 }
 /**
  * Base driver class for devices.
@@ -326,6 +530,62 @@ class DriverAVRTestClass extends DriverAVR
         $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
         return null;
+    }
+    /**
+    * This returns the voltage on the upper side of a voltage divider if the
+    * AtoD input is in the middle of the divider
+    *
+    * @param int   $A    The incoming value
+    * @param float $R1   The resistor to the voltage
+    * @param float $R2   The resistor to ground
+    * @param float $Vref The voltage reveference
+    * @param int   $Tc   The time constant
+    *
+    * @return float Voltage rounded to 4 places
+    */
+    public function getDividerVoltage($A, $R1, $R2, $Vref, $Tc)
+    {
+        return parent::getDividerVoltage($A, $R1, $R2, $Vref, $Tc);
+    }
+    /**
+    * This returns the voltage that the port is seeing
+    *
+    * @param int   $A    The AtoD reading
+    * @param float $Vref The voltage reference
+    * @param int   $Tc   The time constant
+    *
+    * @return The units for a particular sensor type
+    */
+    public function getVoltage($A, $Vref, $Tc)
+    {
+        return parent::getVoltage($A, $Vref, $Tc);
+    }
+
+
+    /**
+    * Volgate for the FET board voltage dividers
+    *
+    * @param float $val The incoming value
+    * @param int   $Tc  The time constant
+    *
+    * @return float Voltage rounded to 4 places
+    */
+    public function indirect($val, $Tc)
+    {
+        return parent::indirect($val, $Tc);
+    }
+
+    /**
+    * This sensor returns us 10mV / % humidity
+    *
+    * @param float $A  The incoming value
+    * @param int   $Tc The time constant
+    *
+    * @return float Relative Humidity rounded to 4 places
+    */
+    public function direct($A, $Tc)
+    {
+        return parent::direct($A, $Tc);
     }
 }
 ?>
