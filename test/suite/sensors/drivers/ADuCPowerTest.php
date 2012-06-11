@@ -385,7 +385,7 @@ class ADuCPowerTest extends DriverTestBase
     public static function dataGetReading()
     {
         return array(
-            array(
+            array( // #0
                 array(
                     "Sensor" => array(
                         "id" => 1,
@@ -438,7 +438,7 @@ class ADuCPowerTest extends DriverTestBase
                     ),
                 ),
             ),
-            array(
+            array( // #1
                 array(
                     "Sensor" => array(
                         "id" => 1,
@@ -491,7 +491,7 @@ class ADuCPowerTest extends DriverTestBase
                     ),
                 ),
             ),
-            array(
+            array( // #2
                 array(
                     "Sensor" => array(
                         "id" => 1,
@@ -544,7 +544,7 @@ class ADuCPowerTest extends DriverTestBase
                     ),
                 ),
             ),
-            array(
+            array( // #3
                 array(
                     "Sensor" => array(
                         "id" => 1,
@@ -597,7 +597,7 @@ class ADuCPowerTest extends DriverTestBase
                     ),
                 ),
             ),
-            array(
+            array( // #4
                 array(
                     "Sensor" => array(
                         "id" => 2,
@@ -612,6 +612,59 @@ class ADuCPowerTest extends DriverTestBase
                 array(),
                 array(),
                 array(
+                ),
+            ),
+            array( // #5
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(1.2, 0, 100, 1, 1, 10),
+                        ),
+                    ),
+                ),
+                "40420F0040420F00",
+                1,
+                array(),
+                array(),
+                array(
+                    array(
+                        "value" => null,
+                        "decimals" => 6,
+                        "units" => "A",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'A',
+                        "unitType" => "Current",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 14.448166,
+                        "decimals" => 6,
+                        "units" => "V",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'V',
+                        "unitType" => "Voltage",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => null,
+                        "decimals" => 6,
+                        "units" => "W",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'W',
+                        "unitType" => "Power",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => null,
+                        "decimals" => 6,
+                        "units" => "Ohms",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'Ohms',
+                        "unitType" => "Impedance",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
                 ),
             ),
         );

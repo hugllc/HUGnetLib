@@ -734,23 +734,6 @@ class DriverTestClass extends Driver
         return parent::getExtra($index);
     }
     /**
-    * Changes a raw reading into a output value
-    *
-    * @param int   $A      Output of the A to D converter
-    * @param float $deltaT The time delta in seconds between this record
-    * @param array &$data  The data from the other sensors that were crunched
-    * @param mixed $prev   The previous value for this sensor
-    *
-    * @return mixed The value in whatever the units are in the sensor
-    *
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-    */
-    public function getReading(
-        $A, $deltaT = 0, &$data = array(), $prev = null
-    ) {
-        return null;
-    }
-    /**
     * Takes in a raw string from a sensor and makes an int out it
     *
     * The sensor data is stored little-endian, so it just takes that and adds

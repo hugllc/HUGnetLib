@@ -343,9 +343,10 @@ abstract class Driver
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    abstract public function getReading(
-        $A, $deltaT = 0, &$data = array(), $prev = null
-    );
+    public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
+    {
+        return null;
+    }
     /**
     * Takes in a raw string from a sensor and makes an int out it
     *
