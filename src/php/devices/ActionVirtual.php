@@ -214,7 +214,7 @@ class ActionVirtual extends Action
     /**
     * Polls the device and saves the poll
     *
-    * @param object $hist   The history object to use
+    * @param object $hist The history object to use
     *
     * @return false on failure, the history object on success
     */

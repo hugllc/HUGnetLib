@@ -81,7 +81,8 @@ class LinearTransformVirtual extends \HUGnet\sensors\DriverVirtual
             "Unit Type", "Data Type", "Max Decimals"
         ),
         "extraDefault" => array(
-            "", 0, 0, "none", "none", "unknown", "Generic", \HUGnet\units\Driver::TYPE_RAW, 4
+            "", 0, 0, "none", "none", "unknown", "Generic",
+            \HUGnet\units\Driver::TYPE_RAW, 4
         ),
         "storageType" => "getExtra7",
         "storageUnit" => "getExtra5",

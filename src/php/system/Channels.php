@@ -122,8 +122,8 @@ class Channels
     /**
     * This function creates the system.
     *
-    * @param object &$system The system oject
-    * @param object &$device The device object
+    * @param object &$system  The system oject
+    * @param object &$device  The device object
     * @param mixed  $channels The channels.  If not provided retrieved from device
     *
     * @return null
@@ -174,8 +174,6 @@ class Channels
     }
     /**
     * Sets all of the endpoint attributes from an array
-    *
-    * @param bool $default Return items set to their default?
     *
     * @return null
     */
