@@ -462,6 +462,121 @@ class DriverAVRTest extends drivers\DriverTestBase
         $ret = $this->o->directVoltage($val, $Tc);
         $this->assertSame($expect, $ret);
     }
+    /**
+    * Data provider for GetVoltage
+    *
+    * @return array
+    */
+    public static function dataGetCurrent()
+    {
+        return array(
+            array(500, array(), 0.5, 1, 5.0, 1, 0.0764),
+            array(0, array(), 1, 2, 5.0, 3, 0.0),
+            array(1, array(), 0, 2, 5.0, 3, 0.0),
+            array(1, array(), 2, 0, 5.0, 3, 0.0),
+            array(1, array(), 2, 3, 5.0, 0, 0.0),
+        );
+    }
+    /**
+    * test
+    *
+    * @param int   $A       The AtoD reading
+    * @param int   $preload The values to preload into the object
+    * @param float $R       The resistance of the current sensing resistor
+    * @param float $G       The gain of the circuit
+    * @param float $Vref    The voltage reference
+    * @param int   $Tc      The time constant
+    * @param mixed $expect  The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataGetCurrent
+    */
+    public function testGetCurrent($A, $preload, $R, $G, $Vref, $Tc, $expect)
+    {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($preload);
+        $ret = $this->o->getCurrent($A, $R, $G, $Vref, $Tc);
+        $this->assertSame($expect, $ret);
+    }
+
+    /**
+    * Data provider for testchsMss
+    *
+    * @return array
+    */
+    public static function dataDirectCurrent()
+    {
+        return array(
+            array(
+                500,
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            'extra' => array(1, 1)
+                        ),
+                    ),
+                ),
+                1,
+                38.2
+            ),
+            array(
+                500,
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            'extra' => array(0.5, 1)
+                        ),
+                    ),
+                ),
+                1,
+                76.4
+            ),
+            array(
+                500,
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            'extra' => array(0, 0)
+                        ),
+                    ),
+                ),
+                1,
+                0.0
+            ),
+            array(
+                null,
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            'extra' => array(.5, 2)
+                        ),
+                    ),
+                ),
+                1,
+                null,
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param float $val     The incoming value
+    * @param array $preload The value to preload into the object
+    * @param int   $Tc      The time constant
+    * @param mixed $expect  The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataDirectCurrent
+    */
+    public function testDirectCurrent($val, $preload, $Tc, $expect)
+    {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($preload);
+        $ret = $this->o->directCurrent($val, $Tc);
+        $this->assertSame($expect, $ret);
+    }
 }
 /**
  * Base driver class for devices.
@@ -586,6 +701,38 @@ class DriverAVRTestClass extends DriverAVR
     public function directVoltage($A, $Tc)
     {
         return parent::directVoltage($A, $Tc);
+    }
+    /**
+    * This takes in a raw AtoD reading and returns the current.
+    *
+    * This is further documented at: {@link
+    * https://dev.hugllc.com/index.php/Project:HUGnet_Current_Sensors Current
+    * Sensors }
+    *
+    * @param int   $A    The raw AtoD reading
+    * @param float $R    The resistance of the current sensing resistor
+    * @param float $G    The gain of the circuit
+    * @param float $Vref The voltage reference
+    * @param int   $Tc   The time constant
+    *
+    * @return float The current sensed
+    */
+    public function getCurrent($A, $R, $G, $Vref, $Tc)
+    {
+        return parent::getCurrent($A, $R, $G, $Vref, $Tc);
+    }
+
+    /**
+    *  This is specifically for the current sensor in the FET board.
+    *
+    * @param float $val The incoming value
+    * @param int   $Tc  The time constant
+    *
+    * @return float Current in amps rounded to 1 place
+    */
+    public function directCurrent($val, $Tc)
+    {
+        return parent::directCurrent($val, $Tc);
     }
 }
 ?>
