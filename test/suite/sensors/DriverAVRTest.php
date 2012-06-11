@@ -578,6 +578,102 @@ class DriverAVRTest extends drivers\DriverTestBase
         $ret = $this->o->directCurrent($val, $Tc);
         $this->assertSame($expect, $ret);
     }
+    /**
+     * Data provider for testGetResistance
+     *
+     * @return array
+     */
+    public static function dataGetResistance()
+    {
+        return array(
+            array(array(), 0, 1, 0, 0.0),
+            array(array(), 10000, 10, 1, 1.8027),
+        );
+    }
+    /**
+    * test
+    *
+    * @param array $preload The values to preload into the object
+    * @param int   $A       The a to d reading
+    * @param float $Bias    The bias resistance
+    * @param int   $Tc      The time constant
+    * @param mixed $expect  The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataGetResistance
+    */
+    public function testGetResistance($preload, $A, $Bias, $Tc, $expect)
+    {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($preload);
+        $this->assertSame($expect, $this->o->getResistance($A, $Bias, $Tc));
+    }
+    /**
+    * Data provider for testGetResistance
+    *
+    * @return array
+    */
+    public static function dataGetSweep()
+    {
+        return array(
+            array(array(), 0, 1, 1, 0.0),
+            array(array(), 10000, 10, 1, 1.5274),
+            array(array(), 65535, 10, 1, 10.0),
+        );
+    }
+    /**
+    * test
+    *
+    * @param array $preload The values to preload into the object
+    * @param int   $A       The a to d reading
+    * @param float $R       The bias resistance
+    * @param int   $Tc      The time constant
+    * @param mixed $expect  The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataGetSweep
+    */
+    public function testGetSweep($preload, $A, $R, $Tc, $expect)
+    {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($preload);
+        $this->assertSame($expect, $this->o->getSweep($A, $R, $Tc));
+    }
+    /**
+    * Data provider for testGetResistance
+    *
+    * @return array
+    */
+    public static function dataTableInterpolate()
+    {
+        return array(
+            array(array(), 1000, 1, 40.0),
+            array(array(), 2500, 1, 25.0),
+            array(array(), 1750, 1, 32.5),
+            array(array(), 999, 1, null),
+            array(array(), 4001, 1, null),
+        );
+    }
+    /**
+    * test
+    *
+    * @param array $preload The values to preload into the object
+    * @param float $R       The bias resistance
+    * @param int   $Tc      The time constant
+    * @param mixed $expect  The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataTableInterpolate
+    */
+    public function testTableInterpolate($preload, $R, $Tc, $expect)
+    {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($preload);
+        $this->assertSame($expect, $this->o->tableInterpolate($R, $Tc));
+    }
 }
 /**
  * Base driver class for devices.
@@ -607,6 +703,13 @@ class DriverAVRTestClass extends DriverAVR
         "extraDefault" => array(2,3,5,7,11),
         "extraText" => array("a","b","c","d","e"),
         "extraValues" => array(5, 5, 5, 5, 5),
+    );
+    /** @var array The table for tableInterpolate */
+    protected $valueTable = array(
+        "4000" => 10.0,
+        "3000" => 20.0,
+        "2000" => 30.0,
+        "1000" => 40.0,
     );
     /**
     * This function creates the system.
@@ -734,6 +837,57 @@ class DriverAVRTestClass extends DriverAVR
     public function directCurrent($val, $Tc)
     {
         return parent::directCurrent($val, $Tc);
+    }
+    /**
+    * Converts a raw AtoD reading into resistance
+    *
+    * This function takes in the AtoD value and returns the calculated
+    * resistance of the sensor.  It does this using a fairly complex
+    * formula.  This formula and how it was derived is detailed in
+    *
+    * @param int   $A    Integer The AtoD reading
+    * @param float $Bias Float The bias resistance in kOhms
+    * @param int   $Tc   The time constant
+    *
+    * @return The resistance corresponding to the values given in k Ohms
+    */
+    public function getResistance($A, $Bias, $Tc)
+    {
+        return parent::getResistance($A, $Bias, $Tc);
+    }
+    /**
+    * Converts a raw AtoD reading into resistance
+    *
+    * If you connect the two ends of a pot up to Vcc and ground, and connect the
+    * sweep terminal to the AtoD converter, this function returns the
+    * resistance between ground and the sweep terminal.
+    *
+    * This function takes in the AtoD value and returns the calculated
+    * resistance that the sweep is at.  It does this using a fairly complex
+    * formula.  This formula and how it was derived is detailed in
+    *
+    * @param int   $A  Integer The AtoD reading
+    * @param float $R  Float The overall resistance in kOhms
+    * @param int   $Tc The time constant
+    *
+    * @return The resistance corresponding to the values given in k Ohms
+    */
+    public function getSweep($A, $R, $Tc)
+    {
+        return parent::getSweep($A, $R, $Tc);
+    }
+    /**
+    * This function should be called with the values set for the specific
+    * thermistor that is used.
+    *
+    * @param float $R  The current resistance of the thermistor in ohms
+    * @param int   $Tc The time constant
+    *
+    * @return float The Temperature in degrees C
+    */
+    public function tableInterpolate($R, $Tc)
+    {
+        return parent::tableInterpolate($R, $Tc);
     }
 }
 ?>

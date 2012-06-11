@@ -226,6 +226,100 @@ abstract class DriverAVR extends Driver
         $A = $this->getCurrent($val, $R, $G, $Vref, $Tc);
         return round($A * 1000, 1);
     }
+    /**
+    * Converts a raw AtoD reading into resistance
+    *
+    * This function takes in the AtoD value and returns the calculated
+    * resistance of the sensor.  It does this using a fairly complex
+    * formula.  This formula and how it was derived is detailed in
+    *
+    * @param int   $A    Integer The AtoD reading
+    * @param float $Bias Float The bias resistance in kOhms
+    * @param int   $Tc   The time constant
+    *
+    * @return The resistance corresponding to the values given in k Ohms
+    */
+    protected function getResistance($A, $Bias, $Tc)
+    {
+        $Am = self::AM;
+        $s = self::S;
+        $Tf = self::TF;
+        $D = self::D;
+        $Den = ((($Am*$s*$Tc*$Tf)/$D) - $A);
+        if (($Den == 0) || !is_numeric($Den)) {
+            $Den = 1.0;
+        }
+        $R = (float)($A*$Bias)/$Den;
+        return round($R, 4);
+    }
+    /**
+    * Converts a raw AtoD reading into resistance
+    *
+    * If you connect the two ends of a pot up to Vcc and ground, and connect the
+    * sweep terminal to the AtoD converter, this function returns the
+    * resistance between ground and the sweep terminal.
+    *
+    * This function takes in the AtoD value and returns the calculated
+    * resistance that the sweep is at.  It does this using a fairly complex
+    * formula.  This formula and how it was derived is detailed in
+    *
+    * @param int   $A  Integer The AtoD reading
+    * @param float $R  Float The overall resistance in kOhms
+    * @param int   $Tc The time constant
+    *
+    * @return The resistance corresponding to the values given in k Ohms
+    */
+    protected function getSweep($A, $R, $Tc)
+    {
+        $Am = self::AM;
+        $s = self::S;
+        $Tf = self::TF;
+        $D = self::D;
+        $Den = (($Am*$s*$Tc*$Tf)/$D);
+        if (($Den == 0) || !is_numeric($Den)) {
+            $Den = 1.0;
+        }
+        $Rs = (float)(($A*$R)/$Den);
+        if ($Rs > $R) {
+            return round($R, 4);
+        }
+        if ($Rs < 0) {
+            return 0.0;
+        }
+        return round($Rs, 4);
+    }
+    /**
+    * This function should be called with the values set for the specific
+    * thermistor that is used.
+    *
+    * @param float $R  The current resistance of the thermistor in ohms
+    * @param int   $Tc The time constant
+    *
+    * @return float The Temperature in degrees C
+    */
+    protected function tableInterpolate($R, $Tc)
+    {
+        $max = max(array_keys($this->valueTable));
+        $min = min(array_keys($this->valueTable));
+        if (($R < $min) || ($R > $max)) {
+            return null;
+        }
+        $table = &$this->valueTable;
+        foreach (array_keys($table) as $ohm) {
+            $last = $ohm;
+            if ((float)$ohm <= (float)$R) {
+                break;
+            }
+            $next = $ohm;
+        }
+        $T = $table[$last];
+        if ((($last - $next) == 0) || ((float)$ohm == (float)$R)) {
+            return $T;
+        }
+        $fract = ($R - $last) / ($last - $next);
+        $diff = $fract * ($table[$last] - $table[$next]);
+        return (float)($T + $diff);
+    }
 }
 
 
