@@ -108,6 +108,7 @@ abstract class Driver
     private static $_drivers = array(
         "00:DEFAULT"                 => "AVRBC2322640_0",
         "02:DEFAULT"                 => "AVRBC2322640",
+        "02:AVRB57560G0103F000"      => "AVRB57560G0103F000",
         "02:ControllerTemp"          => "ControllerTemp",
         "04:DEFAULT"                 => "ADuCVishayRTD",
         "11:DEFAULT"                 => "ADuCPower",
