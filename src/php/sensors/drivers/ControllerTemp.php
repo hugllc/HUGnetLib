@@ -53,7 +53,7 @@ require_once dirname(__FILE__)."/../../units/Driver.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
- * @since      0.9.7
+ * @since      0.9.9
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
