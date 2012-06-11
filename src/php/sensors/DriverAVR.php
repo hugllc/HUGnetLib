@@ -144,7 +144,7 @@ abstract class DriverAVR extends Driver
     *
     * @return float Voltage rounded to 4 places
     */
-    protected function indirect($val, $Tc)
+    protected function indirectVoltage($val, $Tc)
     {
         $R1   = $this->getExtra(0);
         $R2   = $this->getExtra(1);
@@ -164,7 +164,7 @@ abstract class DriverAVR extends Driver
     *
     * @return float Relative Humidity rounded to 4 places
     */
-    protected function direct($A, $Tc)
+    protected function directVoltage($A, $Tc)
     {
         $Vref = $this->getExtra(0);
         $V    = $this->getVoltage($A, $Vref, $Tc);

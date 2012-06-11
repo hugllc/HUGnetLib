@@ -71,13 +71,14 @@ class ControllerVoltage extends \HUGnet\sensors\DriverAVR
         "storageType" => \HUGnet\units\Driver::TYPE_RAW,
         "extraText" => array(
             "R1 to Source (kOhms)",
-            "R2 to Ground (kOhms)"
+            "R2 to Ground (kOhms)",
+            "Vcc"
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
-        "extraValues" => array(5, 5),
-        "extraDefault" => array(180, 27),
+        "extraValues" => array(5, 5, 5),
+        "extraDefault" => array(180, 27, 5.0),
         "inputSize" => 2,
         "maxDecimals" => 4,
         "dataTypes" => array(
@@ -160,11 +161,8 @@ class ControllerVoltage extends \HUGnet\sensors\DriverAVR
             $Ah = $this->strToInt($string);
             $Al = $this->strToInt($string);
         }
-        $R1   = $this->getExtra(0);
-        $R2   = $this->getExtra(1);
-        $Vref = 5.0;
-        $Vh    = $this->getDividerVoltage($Ah, $R1, $R2, $Vref, 1);
-        $Vl    = $this->getDividerVoltage($Al, $R1, $R2, $Vref, 1);
+        $Vh    = $this->indirectVoltage($Ah, 1);
+        $Vl    = $this->indirectVoltage($Al, 1);
         $ret = $this->channels();
         if (!is_null($Vh) && !is_null($Vl)) {
             $ret[0]["value"] = $Vh - $Vl;

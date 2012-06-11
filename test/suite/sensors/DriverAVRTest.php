@@ -302,7 +302,7 @@ class DriverAVRTest extends drivers\DriverTestBase
     *
     * @return array
     */
-    public static function dataIndirect()
+    public static function dataIndirectVoltage()
     {
         return array(
             array(
@@ -340,13 +340,13 @@ class DriverAVRTest extends drivers\DriverTestBase
     *
     * @return null
     *
-    * @dataProvider dataIndirect
+    * @dataProvider dataIndirectVoltage
     */
-    public function testIndirect($val, $preload, $Tc, $expect)
+    public function testIndirectVoltage($val, $preload, $Tc, $expect)
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($preload);
-        $ret = $this->o->indirect($val, $Tc);
+        $ret = $this->o->indirectVoltage($val, $Tc);
         $this->assertSame($expect, $ret);
     }
 
@@ -390,7 +390,7 @@ class DriverAVRTest extends drivers\DriverTestBase
     *
     * @return array
     */
-    public static function dataDirect()
+    public static function dataDirectVoltage()
     {
         return array(
             array(
@@ -453,13 +453,13 @@ class DriverAVRTest extends drivers\DriverTestBase
     *
     * @return null
     *
-    * @dataProvider dataDirect
+    * @dataProvider dataDirectVoltage
     */
-    public function testDirect($val, $preload, $Tc, $expect)
+    public function testDirectVoltage($val, $preload, $Tc, $expect)
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($preload);
-        $ret = $this->o->direct($val, $Tc);
+        $ret = $this->o->directVoltage($val, $Tc);
         $this->assertSame($expect, $ret);
     }
 }
@@ -570,9 +570,9 @@ class DriverAVRTestClass extends DriverAVR
     *
     * @return float Voltage rounded to 4 places
     */
-    public function indirect($val, $Tc)
+    public function indirectVoltage($val, $Tc)
     {
-        return parent::indirect($val, $Tc);
+        return parent::indirectVoltage($val, $Tc);
     }
 
     /**
@@ -583,9 +583,9 @@ class DriverAVRTestClass extends DriverAVR
     *
     * @return float Relative Humidity rounded to 4 places
     */
-    public function direct($A, $Tc)
+    public function directVoltage($A, $Tc)
     {
-        return parent::direct($A, $Tc);
+        return parent::directVoltage($A, $Tc);
     }
 }
 ?>
