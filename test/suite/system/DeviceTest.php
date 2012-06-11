@@ -1058,7 +1058,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     "rawData" => "010001100D00200C00300B00400A0050090060080"
                         ."0700700800600900500",
                     array(
-                        "value" => 39.7557,
+                        "value" => 39.7559,
                         "units" => "&#176;C",
                         'maxDecimals' => 2,
                         'storageUnit' => '&#176;C',
@@ -1067,7 +1067,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "decimals" => 2,
                     ),
                     array(
-                        "value" => 41.7126,
+                        "value" => 41.7127,
                         "units" => "&#176;C",
                         'maxDecimals' => 2,
                         'storageUnit' => '&#176;C',
@@ -1085,7 +1085,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "decimals" => 2,
                     ),
                     array(
-                        "value" => 46.1798,
+                        "value" => 46.1795,
                         "units" => "&#176;C",
                         'maxDecimals' => 2,
                         'storageUnit' => '&#176;C',
@@ -1094,7 +1094,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "decimals" => 2,
                     ),
                     array(
-                        "value" => 48.766,
+                        "value" => 48.7664,
                         "units" => "&#176;C",
                         'maxDecimals' => 2,
                         'storageUnit' => '&#176;C',
@@ -1103,7 +1103,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "decimals" => 2,
                     ),
                     array(
-                        "value" => 51.659,
+                        "value" => 51.6594,
                         "units" => "&#176;C",
                         'maxDecimals' => 2,
                         'storageUnit' => '&#176;C',
@@ -1112,7 +1112,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "decimals" => 2,
                     ),
                     array(
-                        "value" => 54.9381,
+                        "value" => 54.9383,
                         "units" => "&#176;C",
                         'maxDecimals' => 2,
                         'storageUnit' => '&#176;C',
@@ -1121,7 +1121,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "decimals" => 2,
                     ),
                     array(
-                        "value" => 58.7168,
+                        "value" => 58.717,
                         "units" => "&#176;C",
                         'maxDecimals' => 2,
                         'storageUnit' => '&#176;C',
@@ -1130,7 +1130,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "decimals" => 2,
                     ),
                     array(
-                        "value" => 63.1652,
+                        "value" => 63.1656,
                         "units" => "&#176;C",
                         'maxDecimals' => 2,
                         'storageUnit' => '&#176;C',
@@ -1226,7 +1226,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "decimals" => 1,
                     ),
                     array(
-                        "value" => 29.772,
+                        "value" => 29.7721,
                         "units" => "&#176;C",
                         'maxDecimals' => 2,
                         'storageUnit' => '&#176;C',
@@ -1253,7 +1253,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "decimals" => 1,
                     ),
                     array(
-                        "value" => 29.4445,
+                        "value" => 29.4444,
                         "units" => "&#176;C",
                         'maxDecimals' => 2,
                         'storageUnit' => '&#176;C',
