@@ -649,11 +649,11 @@ class DriverAVRTest extends drivers\DriverTestBase
     public static function dataTableInterpolate()
     {
         return array(
-            array(array(), 1000, 1, 40.0),
-            array(array(), 2500, 1, 25.0),
-            array(array(), 1750, 1, 32.5),
-            array(array(), 999, 1, null),
-            array(array(), 4001, 1, null),
+            array(array(), 1000, 40.0),
+            array(array(), 2500, 25.0),
+            array(array(), 1750, 32.5),
+            array(array(), 999, null),
+            array(array(), 4001, null),
         );
     }
     /**
@@ -661,18 +661,17 @@ class DriverAVRTest extends drivers\DriverTestBase
     *
     * @param array $preload The values to preload into the object
     * @param float $R       The bias resistance
-    * @param int   $Tc      The time constant
     * @param mixed $expect  The expected return value
     *
     * @return null
     *
     * @dataProvider dataTableInterpolate
     */
-    public function testTableInterpolate($preload, $R, $Tc, $expect)
+    public function testTableInterpolate($preload, $R, $expect)
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($preload);
-        $this->assertSame($expect, $this->o->tableInterpolate($R, $Tc));
+        $this->assertSame($expect, $this->o->tableInterpolate($R));
     }
 }
 /**
@@ -881,13 +880,12 @@ class DriverAVRTestClass extends DriverAVR
     * thermistor that is used.
     *
     * @param float $R  The current resistance of the thermistor in ohms
-    * @param int   $Tc The time constant
     *
     * @return float The Temperature in degrees C
     */
-    public function tableInterpolate($R, $Tc)
+    public function tableInterpolate($R)
     {
-        return parent::tableInterpolate($R, $Tc);
+        return parent::tableInterpolate($R);
     }
 }
 ?>

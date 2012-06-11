@@ -293,11 +293,10 @@ abstract class DriverAVR extends Driver
     * thermistor that is used.
     *
     * @param float $R  The current resistance of the thermistor in ohms
-    * @param int   $Tc The time constant
     *
     * @return float The Temperature in degrees C
     */
-    protected function tableInterpolate($R, $Tc)
+    protected function tableInterpolate($R)
     {
         $max = max(array_keys($this->valueTable));
         $min = min(array_keys($this->valueTable));
