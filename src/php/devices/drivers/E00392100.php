@@ -107,6 +107,67 @@ class E00392100 extends \HUGnet\devices\Driver
             ),
         );
     }
+    /**
+    * Decodes the sensor string
+    *
+    * @param string $string The string of sensor data
+    *
+    * @return null
+    */
+    public function decodeSensorString($string)
+    {
+        $ret = array(
+            "DataIndex" => hexdec(substr($string, 0, 2)),
+            "timeConstant" => 1,
+            "String" => substr($string, 2),
+        );
+        return $ret;
+    }
+    /**
+    * This creates the sensor drivers
+    *
+    * @param int $sid The sensor id to get.  They are labaled 0 to sensors
+    *
+    * @return null
+    */
+    public function &sensor($sid)
+    {
+        $sid = (int)$sid;
+        include_once dirname(__FILE__)."/../../system/Sensor.php";
+        $data = array(
+            "sensor" => $sid,
+            "dev" => $this->device()->id(),
+        );
+        if (($sid == 0) || ($sid === 3)) {
+            $type = array(
+                "id" => 0x40,
+                "type" => "ControllerVoltage",
+            );
+        } else if (($sid == 1) || ($sid === 4)) {
+            $type = array(
+                "id" => 0x50,
+                "type" => "ControllerCurrent",
+            );
+        } else if (($sid == 2) || ($sid === 5)) {
+            $type = array(
+                "id" => 0x02,
+                "type" => "ControllerTemp",
+            );
+        } else {
+            $type = array(
+                "id" => 0xFE,
+            );
+        }
+        $obj = \HUGnet\Sensor::factory($this->device()->system(), $data);
+        if (is_null($obj->get("id"))
+            || ((int)$obj->get("id") !== $type["id"])
+            || ((int)$obj->get("type") !== $type["type"])
+        ) {
+            $obj->load(array_merge((array)$data, (array)$type));
+            $obj->store();
+        }
+        return $obj;
+    }
 
 
 }

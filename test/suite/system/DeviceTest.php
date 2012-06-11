@@ -1043,6 +1043,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                null,
                 new DummyTable("SDTable"),
                 "010001100D00200C00300B00400A00500900600800700700800600900500",
                 0x55,
@@ -1175,6 +1176,105 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
+            array(
+                array(
+                    "SDTable" => array(
+                        "get" => array(
+                            "id" => 0xAC,
+                            "DeviceID" => "0000AC",
+                            "HWPartNum" => "0039-21-01-A",
+                            "FWPartNum" => "0039-20-01-C",
+                            "FWVersion" => "0.1.2",
+                        ),
+                    ),
+                ),
+                array(
+                    "id" => 0xAC,
+                    "DeviceID" => "0000AC",
+                    "HWPartNum" => "0039-21-01-A",
+                    "FWPartNum" => "0039-20-01-C",
+                    "FWVersion" => "0.1.2",
+                ),
+                new DummyTable("SDTable"),
+                "400B033F1300004A48994800007F134403",
+                0x55,
+                300,
+                array(
+                    null, 10, null, null
+                ),
+                array(
+                    "deltaT" => 300,
+                    "DataIndex" => 64,
+                    "timeConstant" => 1,
+                    "rawData" => "400B033F1300004A48994800007F134403",
+                    array(
+                        "value" => 10.8351,
+                        "units" => "V",
+                        'maxDecimals' => 4,
+                        'storageUnit' => 'V',
+                        "unitType" => "Voltage",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "decimals" => 4,
+                    ),
+                    array(
+                        "value" => 17.0,
+                        "units" => "mA",
+                        'maxDecimals' => 1,
+                        'storageUnit' => 'mA',
+                        "unitType" => "Current",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "decimals" => 1,
+                    ),
+                    array(
+                        "value" => 29.772,
+                        "units" => "&#176;C",
+                        'maxDecimals' => 2,
+                        'storageUnit' => '&#176;C',
+                        "unitType" => "Temperature",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "decimals" => 2,
+                    ),
+                    array(
+                        "value" => 10.8814,
+                        "units" => "V",
+                        'maxDecimals' => 4,
+                        'storageUnit' => 'V',
+                        "unitType" => "Voltage",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "decimals" => 4,
+                    ),
+                    array(
+                        "value" => 18.2,
+                        "units" => "mA",
+                        'maxDecimals' => 1,
+                        'storageUnit' => 'mA',
+                        "unitType" => "Current",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "decimals" => 1,
+                    ),
+                    array(
+                        "value" => 29.4445,
+                        "units" => "&#176;C",
+                        'maxDecimals' => 2,
+                        'storageUnit' => '&#176;C',
+                        "unitType" => "Temperature",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "decimals" => 2,
+                    ),
+                    array(
+                        "value" => null,
+                    ),
+                    array(
+                        "value" => null,
+                    ),
+                    array(
+                        "value" => null,
+                    ),
+                    array(
+                        "value" => null,
+                    ),
+                ),
+            ),
         );
     }
 
@@ -1182,6 +1282,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     * test the set routine when an extra class exists
     *
     * @param array  $config  The configuration to use
+    * @param array  $preload The data to preload into the device
     * @param mixed  $class   This is either the name of a class or an object
     * @param string $data    The data to use
     * @param int    $command The command that was used
@@ -1194,11 +1295,11 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     * @dataProvider dataDecodeData
     */
     public function testDecodeData(
-        $config, $class, $data, $command, $deltaT, $prev, $expect
+        $config, $preload, $class, $data, $command, $deltaT, $prev, $expect
     ) {
         $sys = new DummySystem("System");
         $sys->resetMock($config);
-        $obj = Device::factory($sys, null, $class);
+        $obj = Device::factory($sys, $preload, $class);
         $data = $obj->decodeData($data, $command, $deltaT, $prev);
         $this->assertEquals($expect, $data);
     }

@@ -358,6 +358,7 @@ class DriverAVRTest extends drivers\DriverTestBase
     public static function dataGetVoltage()
     {
         return array(
+            array(4000, array(), 1, 0, 0.0),
             array(null, array(), 1, 1, null),
             array(1, array("Vcc" => 1), null, 1, 0.0),
             array(1, array(), 1, 1, 0.0),

@@ -113,5 +113,200 @@ class E00392100Test extends DriverTestBase
             ),
         );
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataDecodeSensorString()
+    {
+        return array(
+            array(
+                array(),
+                "ThisIsString",
+                array(
+                    "DataIndex" => 0,
+                    "timeConstant" => 1,
+                    "String" => "isIsString",
+                ),
+            ),
+            array(
+                array(),
+                "400B033F1300004A48994800007F134403",
+                array(
+                    "DataIndex" => 64,
+                    "timeConstant" => 1,
+                    "String" => "0B033F1300004A48994800007F134403"
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $mocks  The value to preload into the mocks
+    * @param string $string The string to decode
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataDecodeSensorString
+    */
+    public function testDecodeSensorString($mocks, $string, $expect)
+    {
+        $device  = new \HUGnet\DummyTable("Device");
+        $device->resetMock($mocks);
+        $this->assertEquals($expect, $this->o->decodeSensorString($string));
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataSensor()
+    {
+        return array(
+            array(
+                array(
+                    "Device" => array(
+                        "system" => new \HUGnet\DummyBase("System")
+                    ),
+                ),
+                0,
+                array(
+                    "id" => 0x40,
+                    "type" => "ControllerVoltage",
+                ),
+            ),
+            array(
+                array(
+                    "Device" => array(
+                        "system" => new \HUGnet\DummyBase("System")
+                    ),
+                ),
+                1,
+                array(
+                    "id" => 0x50,
+                    "type" => "ControllerCurrent",
+                ),
+            ),
+            array(
+                array(
+                    "Device" => array(
+                        "system" => new \HUGnet\DummyBase("System")
+                    ),
+                ),
+                2,
+                array(
+                    "id" => 0x02,
+                    "type" => "ControllerTemp",
+                ),
+            ),
+            array(
+                array(
+                    "Device" => array(
+                        "system" => new \HUGnet\DummyBase("System")
+                    ),
+                ),
+                3,
+                array(
+                    "id" => 0x40,
+                    "type" => "ControllerVoltage",
+                ),
+            ),
+            array(
+                array(
+                    "Device" => array(
+                        "system" => new \HUGnet\DummyBase("System")
+                    ),
+                ),
+                4,
+                array(
+                    "id" => 0x50,
+                    "type" => "ControllerCurrent",
+                ),
+            ),
+            array(
+                array(
+                    "Device" => array(
+                        "system" => new \HUGnet\DummyBase("System")
+                    ),
+                ),
+                5,
+                array(
+                    "id" => 0x02,
+                    "type" => "ControllerTemp",
+                ),
+            ),
+            array(
+                array(
+                    "Device" => array(
+                        "system" => new \HUGnet\DummyBase("System")
+                    ),
+                ),
+                6,
+                array(
+                    "id" => 0xFE,
+                    "type" => "",
+                ),
+            ),
+            array(
+                array(
+                    "Device" => array(
+                        "system" => new \HUGnet\DummyBase("System")
+                    ),
+                ),
+                7,
+                array(
+                    "id" => 0xFE,
+                    "type" => "",
+                ),
+            ),
+            array(
+                array(
+                    "Device" => array(
+                        "system" => new \HUGnet\DummyBase("System")
+                    ),
+                ),
+                8,
+                array(
+                    "id" => 0xFE,
+                    "type" => "",
+                ),
+            ),
+            array(
+                array(
+                    "Device" => array(
+                        "system" => new \HUGnet\DummyBase("System")
+                    ),
+                ),
+                9,
+                array(
+                    "id" => 0xFE,
+                    "type" => "",
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $mocks  The value to preload into the mocks
+    * @param int    $sid    The sensor id to get
+    * @param string $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataSensor
+    */
+    public function testSensor($mocks, $sid, $expect)
+    {
+        $device  = new \HUGnet\DummyTable("Device");
+        $device->resetMock($mocks);
+        $sensor = $this->o->sensor($sid);
+        foreach ((array)$expect as $key => $value) {
+            $this->assertEquals($value, $sensor->get($key), "$key is wrong");
+        }
+    }
 }
 ?>
