@@ -358,7 +358,7 @@ abstract class Driver
     */
     protected function strToInt(&$string)
     {
-        $size = $this->get("inputSize", 1);
+        $size = $this->get("inputSize");
         if ($size > strlen($string)) {
             return null;
         }
