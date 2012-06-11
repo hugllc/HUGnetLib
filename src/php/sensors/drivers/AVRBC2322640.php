@@ -106,16 +106,7 @@ class AVRBC2322640 extends \HUGnet\sensors\DriverAVR
     ) {
         $Bias      = $this->getExtra(0);
         $baseTherm = $this->getExtra(1);
-        $Am = 1023;
-        $s = 64;
-        $Tf = 65535;
-        $D = 65535;
-        $Tc = $data["timeConstant"];
-        $Den = ((($Am*$s*$Tc*$Tf)/$D) - $A);
-        if (($Den == 0) || !is_numeric($Den)) {
-            $Den = 1.0;
-        }
-        $ohms = (float)($A*$Bias)/$Den;
+        $ohms      = $this->getResistance($A, $Bias, $data["timeConstant"]);
         $T         = $this->_BcTherm2322640Interpolate(
             $ohms,
             $baseTherm,
