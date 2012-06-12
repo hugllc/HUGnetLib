@@ -2665,7 +2665,7 @@ S12300A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
 S9030000FC",
                         "DataHash" => "",
                         "HWPartNum" => "0039-21-01-A",
-                        "FWPartNum" => "0039-20-01-C",
+                        "FWPartNum" => "0039-38-01-C",
                         "Version" => "1.2.3",
                         "RelStatus" => \FirmwareTable::RELEASE,
 
@@ -2746,13 +2746,13 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'WRITE_E2',
-                                    "Data" => "000A0039201343"
+                                    "Data" => "0000FFFFFFFFFFFFFFFFFFFF0039201343"
                                     ."000008FFFFFF500102020202101002026F6F6F6F6F7"
                                     ."0707001000000000000000200000000000000102700"
                                     ."1027000000102700102700000010270010270000001"
                                     ."0270010270000001027001027000000102700102700"
                                     ."0000202700102700000020270010270000002027001"
-                                    ."0270000002027001027000000202700",
+                                    ."02700000020",
                                 ),
                                 null,
                                 array(
@@ -2812,25 +2812,25 @@ S9030000FC",
                             \HUGnet\network\Packet::factory(
                                 array(
                                     "From" => 21,
-                                    "Reply" => "0039201343"
+                                    "Reply" => "FFFFFFFFFFFFFFFFFFFF0039201343"
                                     ."000008FFFFFF500102020202101002026F6F6F6F6F7"
                                     ."0707001000000000000000200000000000000102700"
                                     ."1027000000102700102700000010270010270000001"
                                     ."0270010270000001027001027000000102700102700"
                                     ."0000202700102700000020270010270000002027001"
-                                    ."0270000002027001027000000202700",
+                                    ."02700000020",
                                 )
                             ),
                             \HUGnet\network\Packet::factory(
                                 array(
                                     "From" => 21,
-                                    "Reply" => "1027000000"
+                                    "Reply" => "270010270000002027001027000000"
                                     ."2027001027000000202700102700000020270010270"
                                     ."000002027001027000000FFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
-                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+                                    ."FFFFFFFFFFF",
                                 )
                             ),
                             \HUGnet\network\Packet::factory(
@@ -2863,7 +2863,7 @@ S12300A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
 S9030000FC",
                         "DataHash" => "",
                         "HWPartNum" => "0039-21-01-A",
-                        "FWPartNum" => "0039-20-01-C",
+                        "FWPartNum" => "0039-38-01-C",
                         "Version" => "1.2.3",
                         "RelStatus" => \FirmwareTable::RELEASE,
 
@@ -2946,13 +2946,13 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'WRITE_E2',
-                                    "Data" => "000A0039201343"
+                                    "Data" => "0000FFFFFFFFFFFFFFFFFFFF0039201343"
                                     ."000008FFFFFF500102020202101002026F6F6F6F6F7"
                                     ."0707001000000000000000200000000000000102700"
                                     ."1027000000102700102700000010270010270000001"
                                     ."0270010270000001027001027000000102700102700"
                                     ."0000202700102700000020270010270000002027001"
-                                    ."0270000002027001027000000202700",
+                                    ."02700000020",
                                 ),
                                 null,
                                 array(
@@ -2964,13 +2964,13 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'WRITE_E2',
-                                    "Data" => "008A1027000000"
+                                    "Data" => "0080270010270000002027001027000000"
                                     ."2027001027000000202700102700000020270010270"
                                     ."000002027001027000000FFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
-                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+                                    ."FFFFFFFFFFF",
                                 ),
                                 null,
                                 array(
@@ -3040,25 +3040,25 @@ S9030000FC",
                             \HUGnet\network\Packet::factory(
                                 array(
                                     "From" => 21,
-                                    "Reply" => "0039201343"
+                                    "Reply" => "FFFFFFFFFFFFFFFFFFFF0039201343"
                                     ."000008FFFFFF500102020202101002026F6F6F6F6F7"
                                     ."0707001000000000000000200000000000000102700"
                                     ."1027000000102700102700000010270010270000001"
                                     ."0270010270000001027001027000000102700102700"
                                     ."0000202700102700000020270010270000002027001"
-                                    ."0270000002027001027000000202700",
+                                    ."02700000020",
                                 )
                             ),
                             \HUGnet\network\Packet::factory(
                                 array(
                                     "From" => 21,
-                                    "Reply" => "1027000000"
+                                    "Reply" => "270010270000002027001027000000"
                                     ."2027001027000000202700102700000020270010270"
                                     ."000002027001027000000FFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
-                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+                                    ."FFFFFFFFFFF",
                                 )
                             ),
                             \HUGnet\network\Packet::factory(
@@ -3097,7 +3097,7 @@ S12300A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
 S9030000FC",
                         "DataHash" => "",
                         "HWPartNum" => "0039-21-01-A",
-                        "FWPartNum" => "0039-20-01-C",
+                        "FWPartNum" => "0039-38-01-C",
                         "Version" => "1.2.3",
                         "RelStatus" => \FirmwareTable::RELEASE,
 
@@ -3181,13 +3181,13 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'WRITE_E2',
-                                    "Data" => "000A0039201343"
+                                    "Data" => "0000FFFFFFFFFFFFFFFFFFFF0039201343"
                                     ."000008FFFFFF500102020202101002026F6F6F6F6F7"
                                     ."0707001000000000000000200000000000000102700"
                                     ."1027000000102700102700000010270010270000001"
                                     ."0270010270000001027001027000000102700102700"
                                     ."0000202700102700000020270010270000002027001"
-                                    ."0270000002027001027000000202700",
+                                    ."02700000020",
                                 ),
                                 null,
                                 array(
@@ -3199,13 +3199,13 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'WRITE_E2',
-                                    "Data" => "008A1027000000"
+                                    "Data" => "0080270010270000002027001027000000"
                                     ."2027001027000000202700102700000020270010270"
                                     ."000002027001027000000FFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
-                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+                                    ."FFFFFFFFFFF",
                                 ),
                                 null,
                                 array(
@@ -3285,25 +3285,25 @@ S9030000FC",
                             \HUGnet\network\Packet::factory(
                                 array(
                                     "From" => 21,
-                                    "Reply" => "0039201343"
+                                    "Reply" => "FFFFFFFFFFFFFFFFFFFF0039201343"
                                     ."000008FFFFFF500102020202101002026F6F6F6F6F7"
                                     ."0707001000000000000000200000000000000102700"
                                     ."1027000000102700102700000010270010270000001"
                                     ."0270010270000001027001027000000102700102700"
                                     ."0000202700102700000020270010270000002027001"
-                                    ."0270000002027001027000000202700",
+                                    ."02700000020",
                                 )
                             ),
                             \HUGnet\network\Packet::factory(
                                 array(
                                     "From" => 21,
-                                    "Reply" => "1027000000"
+                                    "Reply" => "270010270000002027001027000000"
                                     ."2027001027000000202700102700000020270010270"
                                     ."000002027001027000000FFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
-                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+                                    ."FFFFFFFFFFF",
                                 )
                             ),
                             \HUGnet\network\Packet::factory(
@@ -3342,7 +3342,7 @@ S12300A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
 S9030000FC",
                         "DataHash" => "",
                         "HWPartNum" => "0039-21-01-A",
-                        "FWPartNum" => "0039-20-01-C",
+                        "FWPartNum" => "0039-38-01-C",
                         "Version" => "1.2.3",
                         "RelStatus" => \FirmwareTable::RELEASE,
 
@@ -3426,13 +3426,13 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'WRITE_E2',
-                                    "Data" => "000A0039201343"
+                                    "Data" => "0000FFFFFFFFFFFFFFFFFFFF0039201343"
                                     ."000008FFFFFF500102020202101002026F6F6F6F6F7"
                                     ."0707001000000000000000200000000000000102700"
                                     ."1027000000102700102700000010270010270000001"
                                     ."0270010270000001027001027000000102700102700"
                                     ."0000202700102700000020270010270000002027001"
-                                    ."0270000002027001027000000202700",
+                                    ."02700000020",
                                 ),
                                 null,
                                 array(
@@ -3444,13 +3444,13 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'WRITE_E2',
-                                    "Data" => "008A1027000000"
+                                    "Data" => "0080270010270000002027001027000000"
                                     ."2027001027000000202700102700000020270010270"
                                     ."000002027001027000000FFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
-                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+                                    ."FFFFFFFFFFF",
                                 ),
                                 null,
                                 array(
@@ -3739,7 +3739,7 @@ S9030000FC",
                         "Data" => "",
                         "DataHash" => "",
                         "HWPartNum" => "0039-21-01-A",
-                        "FWPartNum" => "0039-20-01-C",
+                        "FWPartNum" => "0039-38-01-C",
                         "Version" => "1.2.3",
                         "RelStatus" => \FirmwareTable::RELEASE,
 
@@ -3841,7 +3841,7 @@ S9030000FC",
                 ),
                 true,
             ),
-            array( // #9 Everything works!
+            array( // #9 Firmware code good, data good, good crc, no run.
                 array(
                     "Device" => array(
                         "get" => 21,
@@ -3888,25 +3888,25 @@ S9030000FC",
                             \HUGnet\network\Packet::factory(
                                 array(
                                     "From" => 21,
-                                    "Reply" => "FFFFFFFFFFFFFFFFFFFF0039201343"
+                                    "Reply" => "0039201343"
                                     ."000008FFFFFF500102020202101002026F6F6F6F6F7"
                                     ."0707001000000000000000200000000000000102700"
                                     ."1027000000102700102700000010270010270000001"
                                     ."0270010270000001027001027000000102700102700"
                                     ."0000202700102700000020270010270000002027001"
-                                    ."02700000020",
+                                    ."0270000002027001027000000202700",
                                 )
                             ),
                             \HUGnet\network\Packet::factory(
                                 array(
                                     "From" => 21,
-                                    "Reply" => "270010270000002027001027000000"
+                                    "Reply" => "1027000000"
                                     ."2027001027000000202700102700000020270010270"
                                     ."000002027001027000000FFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
-                                    ."FFFFFFFFFFF",
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
                                 )
                             ),
                             \HUGnet\network\Packet::factory(
@@ -3918,7 +3918,7 @@ S9030000FC",
                             \HUGnet\network\Packet::factory(
                                 array(
                                     "From" => 21,
-                                    "Reply" => "",
+                                    "Reply" => null,
                                 )
                             ),
                         ),
@@ -3945,7 +3945,7 @@ S12300A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
 S9030000FC",
                         "DataHash" => "",
                         "HWPartNum" => "0039-21-01-A",
-                        "FWPartNum" => "0039-38-01-C",
+                        "FWPartNum" => "0039-20-01-C",
                         "Version" => "1.2.3",
                         "RelStatus" => \FirmwareTable::RELEASE,
 
@@ -4029,13 +4029,13 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'WRITE_E2',
-                                    "Data" => "0000FFFFFFFFFFFFFFFFFFFF0039201343"
+                                    "Data" => "000A0039201343"
                                     ."000008FFFFFF500102020202101002026F6F6F6F6F7"
                                     ."0707001000000000000000200000000000000102700"
                                     ."1027000000102700102700000010270010270000001"
                                     ."0270010270000001027001027000000102700102700"
                                     ."0000202700102700000020270010270000002027001"
-                                    ."02700000020",
+                                    ."0270000002027001027000000202700",
                                 ),
                                 null,
                                 array(
@@ -4047,13 +4047,13 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'WRITE_E2',
-                                    "Data" => "0080270010270000002027001027000000"
+                                    "Data" => "008A1027000000"
                                     ."2027001027000000202700102700000020270010270"
                                     ."000002027001027000000FFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
-                                    ."FFFFFFFFFFF",
+                                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
                                 ),
                                 null,
                                 array(
@@ -4084,7 +4084,7 @@ S9030000FC",
                         ),
                     ),
                 ),
-                true,
+                false,
             ),
         );
     }
