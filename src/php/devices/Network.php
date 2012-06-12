@@ -431,7 +431,14 @@ class Network
     */
     public function loadFirmware(\FirmwareTable &$firmware, $loadData = true)
     {
-
+        $part = $firmware->get("HWPartNum");
+        if (empty($part)) {
+            return false;
+        }
+        /* This verifies that we are in the right place */
+        if (substr($this->_device->get("HWPartNum"), 0, strlen($part)) !== $part) {
+            return false;
+        }
         \HUGnet\VPrint::out("Running the bootloader...", 1);
         if (!$this->runBootloader()) {
             return false;

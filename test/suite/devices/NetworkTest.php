@@ -2383,7 +2383,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array( // #0 Not running boot loader
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "HWPartNum" => "0039-21-01-A",
+                        ),
                     ),
                     "Network" => array(
                         "send" => array(
@@ -2396,11 +2399,40 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-                new \FirmwareTable(),
+                new \FirmwareTable(
+                    array(
+                        "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
+                        ."FFFFFF500102020202101002026F46
+S12300206F6F6F6F707070010000000000000002000000000000001027001027000000102F
+S12300402700102700000010270010270000001027001027000000102700102700000010E4
+S1230060270010270000002027001027000000202700102700000020270010270000002084
+S1230080270010270000002027001027000000202700102700000020270010270000002064
+S12300A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
+S9030000FC",
+                        "CodeHash" => "",
+                        "Data" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
+                        ."FFFFFF500102020202101002026F46
+S12300206F6F6F6F707070010000000000000002000000000000001027001027000000102F
+S12300402700102700000010270010270000001027001027000000102700102700000010E4
+S1230060270010270000002027001027000000202700102700000020270010270000002084
+S1230080270010270000002027001027000000202700102700000020270010270000002064
+S12300A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
+S9030000FC",
+                        "DataHash" => "",
+                        "HWPartNum" => "0039-21-01-A",
+                        "FWPartNum" => "0039-20-01-C",
+                        "Version" => "1.2.3",
+                        "RelStatus" => \FirmwareTable::RELEASE,
+
+                    )
+                ),
                 true,
                 array(
                     "Device" => array(
-                        "get" => array(array("id")),
+                        "get" => array(
+                            array("HWPartNum"),
+                            array("id")
+                        ),
                     ),
                     "Network" => array(
                         "send" => Array(
@@ -2422,7 +2454,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array( // #1 No reply to config
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "HWPartNum" => "0039-21-01-A",
+                        ),
                     ),
                     "Network" => array(
                         "send" => array(
@@ -2435,11 +2470,41 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-                new \FirmwareTable(),
+                new \FirmwareTable(
+                    array(
+                        "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
+                        ."FFFFFF500102020202101002026F46
+S12300206F6F6F6F707070010000000000000002000000000000001027001027000000102F
+S12300402700102700000010270010270000001027001027000000102700102700000010E4
+S1230060270010270000002027001027000000202700102700000020270010270000002084
+S1230080270010270000002027001027000000202700102700000020270010270000002064
+S12300A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
+S9030000FC",
+                        "CodeHash" => "",
+                        "Data" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
+                        ."FFFFFF500102020202101002026F46
+S12300206F6F6F6F707070010000000000000002000000000000001027001027000000102F
+S12300402700102700000010270010270000001027001027000000102700102700000010E4
+S1230060270010270000002027001027000000202700102700000020270010270000002084
+S1230080270010270000002027001027000000202700102700000020270010270000002064
+S12300A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
+S9030000FC",
+                        "DataHash" => "",
+                        "HWPartNum" => "0039-21-01-A",
+                        "FWPartNum" => "0039-20-01-C",
+                        "Version" => "1.2.3",
+                        "RelStatus" => \FirmwareTable::RELEASE,
+
+                    )
+                ),
                 true,
                 array(
                     "Device" => array(
-                        "get" => array(array("id"), array("id")),
+                        "get" => array(
+                            array("HWPartNum"),
+                            array("id"),
+                            array("id")
+                        ),
                     ),
                     "Network" => array(
                         "send" => Array(
@@ -2471,7 +2536,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array( // #2 No data in Firmware
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "HWPartNum" => "0039-21-01-A",
+                        ),
                     ),
                     "Network" => array(
                         "send" => array(
@@ -2534,6 +2602,7 @@ S9030000FC",
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("HWPartNum"),
                             array("id"),
                             array("id"),
                             array("id"),
@@ -2588,7 +2657,10 @@ S9030000FC",
             array( // #3 Firmware code good, data bad.
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "HWPartNum" => "0039-21-01-A",
+                        ),
                     ),
                     "Network" => array(
                         "send" => array(
@@ -2675,6 +2747,7 @@ S9030000FC",
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("HWPartNum"),
                             array("id"),
                             array("id"),
                             array("id"),
@@ -2768,7 +2841,10 @@ S9030000FC",
             array( // #4 Firmware code good, data good, crc bad.
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "HWPartNum" => "0039-21-01-A",
+                        ),
                     ),
                     "Network" => array(
                         "send" => array(
@@ -2873,6 +2949,7 @@ S9030000FC",
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("HWPartNum"),
                             array("id"),
                             array("id"),
                             array("id"),
@@ -2996,7 +3073,10 @@ S9030000FC",
             array( // #5 Firmware code good, data good, good crc, no run.
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "HWPartNum" => "0039-21-01-A",
+                        ),
                     ),
                     "Network" => array(
                         "send" => array(
@@ -3107,6 +3187,7 @@ S9030000FC",
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("HWPartNum"),
                             array("id"),
                             array("id"),
                             array("id"),
@@ -3241,7 +3322,10 @@ S9030000FC",
             array( // #6 Everything works!
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "HWPartNum" => "0039-21-01-A",
+                        ),
                     ),
                     "Network" => array(
                         "send" => array(
@@ -3352,6 +3436,7 @@ S9030000FC",
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("HWPartNum"),
                             array("id"),
                             array("id"),
                             array("id"),
@@ -3486,7 +3571,10 @@ S9030000FC",
             array( // #7 Everything works, no Data section
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "HWPartNum" => "0039-21-01-A",
+                        ),
                     ),
                     "Network" => array(
                         "send" => array(
@@ -3566,6 +3654,7 @@ S9030000FC",
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("HWPartNum"),
                             array("id"),
                             array("id"),
                             array("id"),
@@ -3661,7 +3750,10 @@ S9030000FC",
             array( // #8 Everything works, no Data section
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "HWPartNum" => "0039-21-01-A",
+                        ),
                     ),
                     "Network" => array(
                         "send" => array(
@@ -3749,6 +3841,7 @@ S9030000FC",
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("HWPartNum"),
                             array("id"),
                             array("id"),
                             array("id"),
@@ -3844,7 +3937,10 @@ S9030000FC",
             array( // #9 Firmware code good, data good, good crc, no run.
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "HWPartNum" => "0039-21-01-A",
+                        ),
                     ),
                     "Network" => array(
                         "send" => array(
@@ -3944,7 +4040,7 @@ S1230080270010270000002027001027000000202700102700000020270010270000002064
 S12300A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
 S9030000FC",
                         "DataHash" => "",
-                        "HWPartNum" => "0039-21-01-A",
+                        "HWPartNum" => "0039-21",
                         "FWPartNum" => "0039-20-01-C",
                         "Version" => "1.2.3",
                         "RelStatus" => \FirmwareTable::RELEASE,
@@ -3955,6 +4051,7 @@ S9030000FC",
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("HWPartNum"),
                             array("id"),
                             array("id"),
                             array("id"),
@@ -4083,6 +4180,32 @@ S9030000FC",
                             ),
                         ),
                     ),
+                ),
+                false,
+            ),
+            array( // #0 Not running boot loader
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "id" => 21,
+                            "HWPartNum" => "0039-21-01-A",
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => array(
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => null,
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                new \FirmwareTable(
+                ),
+                true,
+                array(
                 ),
                 false,
             ),
