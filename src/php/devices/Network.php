@@ -433,10 +433,12 @@ class Network
     {
         $part = $firmware->get("HWPartNum");
         if (empty($part)) {
+            \HUGnet\VPrint::out("Empty Firmware...", 1);
             return false;
         }
         /* This verifies that we are in the right place */
         if (substr($this->_device->get("HWPartNum"), 0, strlen($part)) !== $part) {
+            \HUGnet\VPrint::out("Wrong Firmware...", 1);
             return false;
         }
         \HUGnet\VPrint::out("Running the bootloader...", 1);
