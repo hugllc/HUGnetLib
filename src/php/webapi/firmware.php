@@ -43,10 +43,10 @@ $firmware = new FirmwareTable();
 
 \HUGnet\VPrint::config(
     array(
-        "session" => "firmware"
+        "session" => "firmware",
+        "verbose" => 1,
     )
 );
-session_start();
 
 if ($action === "updatecheck") {
     $path  = "http://www.int.hugllc.com/HUGnet/firmware";
@@ -76,9 +76,12 @@ if ($action === "updatecheck") {
     $dev = $json->system()->device($did);
     $firmware->set("FWPartNum", $dev->get("FWPartNum"));
     $firmware->set("RelStatus", \FirmwareTable::DEV);
-    $firmware->getLatest();
-    if ($dev->network()->loadFirmware($firmware)) {
-        $ret = "success";
+    if ($firmware->getLatest()) {
+        if ($dev->network()->loadFirmware($firmware)) {
+            $ret = "success";
+        } else {
+            $ret = -1;
+        }
     } else {
         $ret = -1;
     }

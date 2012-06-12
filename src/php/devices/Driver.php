@@ -92,9 +92,9 @@ abstract class Driver
     * as the driver class name.
     */
     private static $_drivers = array(
-        "0039-20-06-C:0039-21-01-A:DEFAULT" => "E00393802",
-        "0039-20-15-C:0039-21-02-A:DEFAULT" => "E00393802",
-        "0039-20-16-C:0039-21-02-A:DEFAULT" => "E00393802",
+        "0039-20-06-C:DEFAULT:DEFAULT"      => "E00393802",
+        "0039-20-15-C:DEFAULT:DEFAULT"      => "E00393802",
+        "0039-20-16-C:DEFAULT:DEFAULT"      => "E00393802",
         "0039-38-02-C:DEFAULT:DEFAULT"      => "E00393802",
         "DEFAULT:0039-12-00-A:DEFAULT"      => "E00391200",
         "DEFAULT:0039-12-01-A:DEFAULT"      => "E00391200",

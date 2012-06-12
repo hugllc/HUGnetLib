@@ -451,9 +451,15 @@ class Network
         /* Data is not required */
         if ((strlen($firmware->getData()) > 0) && $loadData) {
             \HUGnet\VPrint::out("Writing the data...", 1);
-            $data = $this->writeE2Buffer(
-                $firmware->getData(), 0
-            );
+            $part = $firmware->get("FWPartNum");
+            $data = $firmware->getData();
+            $start = 0;
+            if (substr($part, 0, 7) === "0039-20") {
+                /* This is a band-aid for the older firmware */
+                $data = substr($data, 20);
+                $start = 10;
+            }
+            $data = $this->writeE2Buffer($data, $start);
             if (!$data) {
                 return false;
             }
