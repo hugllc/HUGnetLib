@@ -37,29 +37,53 @@
 defined('_HUGNET') or die('HUGnetSystem not found');
 require_once "HUGnetLib/tables/FirmwareTable.php";
 
-$did      = (int)$html->args()->id;
+$did      = hexdec($json->args()->id);
+$action = strtolower($json->args()->action);
 $firmware = new FirmwareTable();
 
-/*\HUGnet\VPrint::debug(); */
+\HUGnet\VPrint::config(
+    array(
+        "session" => "firmware"
+    )
+);
+session_start();
 
+if ($action === "updatecheck") {
+    $path  = "http://www.int.hugllc.com/HUGnet/firmware";
 
-$path  = "http://www.int.hugllc.com/HUGnet/firmware";
-
-$files = file($path."/manifest");
-foreach ((array)$files as $file) {
-    if (!$firmware->checkFile($file)) {
-        // Load the firmware
-        $firmware->fromFile($file, $path);
-        // Insert it.
-        $firmware->insertRow(true);
+    $files = file($path."/manifest");
+    foreach ((array)$files as $file) {
+        if (!$firmware->checkFile($file)) {
+            // Load the firmware
+            $firmware->fromFile($file, $path);
+            // Insert it.
+            $firmware->insertRow(true);
+        }
     }
+    $array = $firmware->selectIDs("1", array());
+    $ret = array();
+    foreach ((array)$array as $key => $value) {
+        $ret[] = $value;
+    }
+} else if ($action === "status") {
+    if (is_string($_SESSION["firmware"])) {
+        $stuff = explode(PHP_EOL, $_SESSION["firmware"]);
+        $ret = array_pop($stuff);
+    } else {
+        $ret = -1;
+    }
+} else if ($action === "load") {
+    $dev = $json->system()->device($did);
+    $firmware->set("FWPartNum", $dev->get("FWPartNum"));
+    $firmware->set("RelStatus", \FirmwareTable::DEV);
+    $firmware->getLatest();
+    if ($dev->network()->loadFirmware($firmware)) {
+        $ret = "success";
+    } else {
+        $ret = -1;
+    }
+    unset($_SESSION["firmware"]);
 }
-$array = $firmware->selectIDs("1", array());
-$ret = array();
-foreach ((array)$array as $key => $value) {
-    $ret[] = $value;
-}
-
 print json_encode($ret);
 
 ?>

@@ -61,6 +61,8 @@ class VPrint
     private static $_debug = false;
     /** This is the string to output for debug mode  */
     private static $_debugOut = "";
+    /** This is the string to output for debug mode  */
+    private static $_session = null;
     /**
     * This function gives us access to the table class
     *
@@ -73,6 +75,7 @@ class VPrint
         self::$_verbose = $config["verbose"];
         self::$_debug = $config["debug"];
         self::$_html = isset($config["html"]) ? $config["html"] : PHP_SAPI != "cli";
+        self::$_session = is_string($config["session"]) ? $config["session"] : null;
     }
     /**
     * This function prints out string if level >= verbosity
@@ -88,8 +91,11 @@ class VPrint
             if (self::$_html && self::$_debug) {
                 // Save everything for later
                 self::$_debugOut .= (string)$string.self::_eol();
-            } else {
+            } else if (!is_string(self::$_session)) {
                 print (string)$string.self::_eol();
+            }
+            if (is_string(self::$_session)) {
+                $_SESSION[self::$_session] .= $string.PHP_EOL;
             }
         }
     }
