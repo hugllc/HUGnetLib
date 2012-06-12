@@ -368,7 +368,7 @@ class Network
         $data, $address = 0, $chunkSize = 128, $empty = "FF"
     ) {
         return $this->_writeMemBuffer(
-            $data, "WRITE_FLASH", $chunkSize, "flash", $address, $empty
+            $data, "WRITE_FLASH", $chunkSize, "program", $address, $empty
         );
     }
     /**
@@ -385,7 +385,7 @@ class Network
         $data, $address = 0, $chunkSize = 128, $empty = "FF"
     ) {
         return $this->_writeMemBuffer(
-            $data, "WRITE_E2", $chunkSize, "EEPROM", $address, $empty
+            $data, "WRITE_E2", $chunkSize, "config", $address, $empty
         );
     }
     /**
@@ -400,14 +400,14 @@ class Network
     */
     public function loadConfig($callback = null, $config = array())
     {
-        \HUGnet\VPrint::out("Writing the basic config...", 1);
         $ret = $this->writeE2(0, $this->_device->encode(false), $callback, $config);
         if (!$ret) {
+            \HUGnet\VPrint::out("config fail", 1);
             return false;
         }
+        \HUGnet\VPrint::out("config success", 1);
         $sensors = $this->_device->get("physicalSensors");
         for ($i = 0; $i < $sensors; $i++) {
-            \HUGnet\VPrint::out("Writing sensor $i config...", 1);
             $ret = $this->setSensorConfig(
                 $i,
                 $this->_device->sensor($i)->encode(),
@@ -415,8 +415,10 @@ class Network
                 $config
             );
             if (!$ret) {
+                \HUGnet\VPrint::out("sensor $i fail", 1);
                 return false;
             }
+            \HUGnet\VPrint::out("sensor $i success", 1);
         }
         return true;
 
@@ -433,24 +435,27 @@ class Network
     {
         $part = $firmware->get("HWPartNum");
         if (empty($part)) {
-            \HUGnet\VPrint::out("Empty Firmware...", 1);
+            \HUGnet\VPrint::out("check 1/2 fail", 1);
             return false;
         }
+        \HUGnet\VPrint::out("check 1/2 success", 1);
         /* This verifies that we are in the right place */
         if (substr($this->_device->get("HWPartNum"), 0, strlen($part)) !== $part) {
-            \HUGnet\VPrint::out("Wrong Firmware...", 1);
+            \HUGnet\VPrint::out("check 2/2 fail", 1);
             return false;
         }
-        \HUGnet\VPrint::out("Running the bootloader...", 1);
+        \HUGnet\VPrint::out("check 2/2 success", 1);
         if (!$this->runBootloader()) {
+            \HUGnet\VPrint::out("bootloader 1/1 fail", 1);
             return false;
         }
-        \HUGnet\VPrint::out("Getting the bootloader configuration...", 1);
+        \HUGnet\VPrint::out("bootloader 1/1 success", 1);
         $bootConfig = $this->config();
         if (!is_object($bootConfig) || is_null($bootConfig->Reply())) {
+            \HUGnet\VPrint::out("setup 1/1 fail", 1);
             return false;
         }
-        \HUGnet\VPrint::out("Writing the code...", 1);
+        \HUGnet\VPrint::out("config 1/1 success", 1);
         $code = $this->writeFlashBuffer(
             $firmware->getCode()
         );
@@ -459,7 +464,6 @@ class Network
         }
         /* Data is not required */
         if ((strlen($firmware->getData()) > 0) && $loadData) {
-            \HUGnet\VPrint::out("Writing the data...", 1);
             $part = $firmware->get("FWPartNum");
             $data = $firmware->getData();
             $start = 0;
@@ -473,16 +477,18 @@ class Network
                 return false;
             }
         }
-        \HUGnet\VPrint::out("Setting the CRC...", 1);
         $crc = $this->setCRC();
         if ($crc === false) {
+            \HUGnet\VPrint::out("crc 1/1 fail", 1);
             return false;
         }
+        \HUGnet\VPrint::out("crc 1/1 success", 1);
 
-        \HUGnet\VPrint::out("Running the application...", 1);
         if (!$this->runApplication()) {
+            \HUGnet\VPrint::out("run 1/1 fail", 1);
             return false;
         }
+        \HUGnet\VPrint::out("run 1/1 success", 1);
         return true;
     }
     /**
@@ -583,15 +589,13 @@ class Network
                 );
                 if ($ret === false) {
                     \HUGnet\VPrint::out(
-                        "Writing ".$memName." Page ".($page + 1)." of $pages in "
-                        ."device ".sprintf("%06X", $devID)." Failed",
+                        "$memName ".($page + 1)."/$pages failed",
                         1
                     );
                     return false;
                 }
                 \HUGnet\VPrint::out(
-                    "Writing ".$memName." Page ".($page + 1)." of $pages in "
-                    ."device ".sprintf("%06X", $devID)." Succeeded",
+                        "$memName ".($page + 1)."/$pages success",
                     1
                 );
             }

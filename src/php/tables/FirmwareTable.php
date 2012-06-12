@@ -469,7 +469,8 @@ class FirmwareTable extends HUGnetDBTable
     */
     protected function setFilename($value)
     {
-        if (substr($value, 0, 3) == "MD5") {
+        $value = trim($value);
+        if ((substr($value, 0, 3) == "MD5") || (stristr($value, " ") !== false)) {
             preg_match(
                 "/([0-9]{6,8}\-){1}[0-9]{8}[A-Z]{1}\-[0-9]{1,2}\."
                 ."[0-9]{1,2}\.[0-9]{1,2}.gz/",

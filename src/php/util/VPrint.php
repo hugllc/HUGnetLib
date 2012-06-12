@@ -75,7 +75,7 @@ class VPrint
         self::$_verbose = $config["verbose"];
         self::$_debug = $config["debug"];
         self::$_html = isset($config["html"]) ? $config["html"] : PHP_SAPI != "cli";
-        self::$_sess = is_string($config["session"]) ? $config["session"] : null;
+        self::$_sess = $config["session"];
     }
     /**
     * This function prints out string if level >= verbosity
@@ -88,14 +88,15 @@ class VPrint
     public static function out($string, $level=0)
     {
         if ($level <= self::$_verbose) {
-            if (self::$_html && self::$_debug) {
+            if (is_string(self::$_sess)) {
+                $_SESSION[self::$_sess] .= $string.PHP_EOL;
+            } else if (is_resource(self::$_sess)) {
+                fwrite(self::$_sess, $string.PHP_EOL);
+            } else if (self::$_html && self::$_debug) {
                 // Save everything for later
                 self::$_debugOut .= (string)$string.self::_eol();
             } else if (!is_string(self::$_sess)) {
                 print (string)$string.self::_eol();
-            }
-            if (is_string(self::$_sess)) {
-                $_SESSION[self::$_sess] .= $string.PHP_EOL;
             }
         }
     }

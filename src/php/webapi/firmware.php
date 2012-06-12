@@ -41,21 +41,17 @@ $did      = hexdec($json->args()->id);
 $action = strtolower($json->args()->action);
 $firmware = new FirmwareTable();
 
-\HUGnet\VPrint::config(
-    array(
-        "session" => "firmware",
-        "verbose" => 1,
-    )
-);
+$file = sys_get_temp_dir()."/HUGnetFirmware".$did;
 
 if ($action === "updatecheck") {
-    $path  = "http://www.int.hugllc.com/HUGnet/firmware";
+    $path  = "/home/prices/devel/HUGnet/HOS/packages";
 
     $files = file($path."/manifest");
     foreach ((array)$files as $file) {
         if (!$firmware->checkFile($file)) {
             // Load the firmware
             $firmware->fromFile($file, $path);
+//            var_dump($firmware->toArray());
             // Insert it.
             $firmware->insertRow(true);
         }
@@ -66,15 +62,23 @@ if ($action === "updatecheck") {
         $ret[] = $value;
     }
 } else if ($action === "status") {
-    if (is_string($_SESSION["firmware"])) {
-        $stuff = explode(PHP_EOL, $_SESSION["firmware"]);
-        $ret = array_pop($stuff);
+    if (file_exists($file)) {
+        $stuff = file($file);
+        $ret = trim(array_pop($stuff));
     } else {
-        $ret = -1;
+        $ret = "idle";
     }
 } else if ($action === "load") {
+    $fd = fopen($file, "w");
+    \HUGnet\VPrint::config(
+        array(
+            "session" => $fd,
+            "verbose" => 1,
+        )
+    );
     $dev = $json->system()->device($did);
     $firmware->set("FWPartNum", $dev->get("FWPartNum"));
+    $firmware->set("HWPartNum", $dev->get("HWPartNum"));
     $firmware->set("RelStatus", \FirmwareTable::DEV);
     if ($firmware->getLatest()) {
         if ($dev->network()->loadFirmware($firmware)) {
@@ -85,8 +89,11 @@ if ($action === "updatecheck") {
     } else {
         $ret = -1;
     }
-    unset($_SESSION["firmware"]);
+    fclose($fd);
+    unlink($file);
 }
+
+
 print json_encode($ret);
 
 ?>
