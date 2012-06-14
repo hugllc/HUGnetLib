@@ -102,6 +102,7 @@ class Util
     */
     public static function postData($url, $postdata)
     {
+        global $ctx;
         $params = array(
             'http' => array(
                 'method' => 'POST',
@@ -109,16 +110,14 @@ class Util
             )
         );
         $ctx = stream_context_create($params);
-        $fp = @fopen($url, 'rb', false, $ctx);
-        if (!$fp) {
-            /* Failed, so return false */
-            return false;
-        }
-        $response = @stream_get_contents($fp);
+        $response = file_get_contents($url, false, $ctx);
         $return = json_decode($response, true);
         if (is_null($return) && ($response != "null")) {
             $return = $response;
         }
+        unset($response);
+        unset($params);
+        unset($ctx);
         return $return;
     }
     /**

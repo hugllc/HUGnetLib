@@ -154,5 +154,29 @@ class UtilTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, Util::crc8($preload));
     }
 
+    /**
+    * Tests for a memory leak in postData
+    *
+    * @return null
+    *
+    */
+    public function testPostDataMemLeak()
+    {
+        $mem = memory_get_usage();
+        for($i = 0; $i < 100; $i++) {
+            \HUGnet\Util::postData(
+                "http://127.0.0.1",
+                array(
+                    "uuid"    => urlencode(1234),
+                    "id"      => 0x1234,
+                    "action"  => "post",
+                    "task"    => "device",
+                    "device"  => array(1,2,3,4),
+                )
+            );
+        }
+        $this->assertLessThan($mem + 4096, memory_get_usage());
+    }
+
 }
 ?>

@@ -61,6 +61,19 @@ class PushDevices extends \HUGnet\updater\Periodic
     /** This is the period */
     protected $period = 60;
     /**
+    * This function sets up the driver object, and the database object.  The
+    * database object is taken from the driver object.
+    *
+    * @param object &$gui The user interface to use
+    *
+    * @return null
+    */
+    protected function __construct(&$gui)
+    {
+        parent::__construct($gui);
+        $this->_device = $this->system()->device();
+    }
+    /**
     * This function creates the system.
     *
     * @param object &$gui the user interface object
@@ -79,46 +92,52 @@ class PushDevices extends \HUGnet\updater\Periodic
     public function &execute()
     {
         if ($this->ready() && $this->hasMaster()) {
-            $device = $this->system()->device();
-            $now    = time();
-            $ids    = $device->ids();
+            $now = time();
+            $ids = $this->_device->ids();
+            $mem = memory_get_usage();
             foreach ($ids as $key => $devID) {
                 $this->system()->main();
                 if (!$this->ui()->loop()) {
-                    return;
+                    break;
                 }
-                $device->load($key);
+
+                $this->_device->load($key);
                 /* Let's just push the regular devices */
                 if ($key >= 0xFE0000) {
                     continue;
                 }
-                $lastContact = $device->getParam("LastContact");
+                $lastContact = $this->_device->getParam("LastContact");
                 /* Only push it if we have changed it since the last push */
-                if ($lastContact < $device->getParam("LastMasterPush")) {
+                if ($lastContact < $this->_device->getParam("LastMasterPush")) {
                     continue;
                 }
                 $this->ui()->out(
                     "Pushing ".sprintf("%06X", $devID)." to master server..."
                 );
-                $device->setParam("LastMasterPush", $now);
-                $ret = $device->action()->post();
-                $sens = $device->get("totalSensors");
+                $this->_device->setParam("LastMasterPush", $now);
+                $ret = $this->_device->action()->post($url);
+                $sens = $this->_device->get("totalSensors");
                 $sensors = array();
                 for ($i = 0; $i < $sens; $i++) {
-                    $this->ui()->out("Pushing sensor ".$i);
-                    $device->sensor($i)->action()->post($url);
+                    //$this->ui()->out("Pushing sensor ".$i);
+                    $this->_device->sensor($i)->action()->post($url);
+                    $this->system()->main();
+                    if (!$this->ui()->loop()) {
+                        break;
+                    }
                 }
                 if ($ret === "success") {
                     $this->ui()->out(
                         "Successfully pushed ".sprintf("%06X", $devID)."."
                     );
-                    $device->store();
+                    $this->_device->store();
                 } else {
                     $this->ui()->out("Failure.");
                     /* Don't store it if we fail */
                 }
             }
             $this->last = $now;
+            print "Memory: ".((memory_get_usage()) / 1024.0 / 1024.0)."M".PHP_EOL;
         }
     }
 }
