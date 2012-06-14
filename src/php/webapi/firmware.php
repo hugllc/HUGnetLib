@@ -44,7 +44,7 @@ $firmware = new FirmwareTable();
 $file = sys_get_temp_dir()."/HUGnetFirmware".$did;
 
 if ($action === "updatecheck") {
-    $path  = "/home/prices/devel/HUGnet/HOS/packages";
+    $path  = "http://www.int.hugllc.com/HUGnet/firmware";
 
     $files = file($path."/manifest");
     foreach ((array)$files as $file) {
@@ -80,14 +80,16 @@ if ($action === "updatecheck") {
     $firmware->set("FWPartNum", $dev->get("FWPartNum"));
     $firmware->set("HWPartNum", $dev->get("HWPartNum"));
     $firmware->set("RelStatus", \FirmwareTable::DEV);
+    $ret = -1;
     if ($firmware->getLatest()) {
         if ($dev->network()->loadFirmware($firmware)) {
-            $ret = "success";
-        } else {
-            $ret = -1;
+            $part = $firmware->get("FWPartNum");
+            if (substr($part, 0, 7) === "0039-20") {
+                $ret = "success";
+            } else if ($dev->network()->loadConfig()) {
+                $ret = "success";
+            }
         }
-    } else {
-        $ret = -1;
     }
     fclose($fd);
     unlink($file);
