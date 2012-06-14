@@ -320,6 +320,11 @@ class ADuCPowerTest extends DriverTestBase
     {
         return array(
             array(
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                    ),
+                ),
                 "\HUGnet\sensors\drivers\ADuCPower",
                 array(
                     array(
@@ -356,11 +361,94 @@ class ADuCPowerTest extends DriverTestBase
                     ),
                 ),
             ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "id" => 3,
+                    ),
+                ),
+                "\HUGnet\sensors\drivers\ADuCPower",
+                array(
+                    array(
+                        "decimals" => 6,
+                        "units" => 'A',
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'A',
+                        "unitType" => 'Current',
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "decimals" => 6,
+                        "units" => 'V',
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'V',
+                        "unitType" => 'Voltage',
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "decimals" => 6,
+                        "units" => 'W',
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'W',
+                        "unitType" => 'Power',
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "decimals" => 6,
+                        "units" => 'Ohms',
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'Ohms',
+                        "unitType" => 'Impedance',
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "id" => 0,
+                    ),
+                ),
+                "\HUGnet\sensors\drivers\ADuCPower",
+                array(
+                ),
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "id" => 2,
+                    ),
+                ),
+                "\HUGnet\sensors\drivers\ADuCPower",
+                array(
+                ),
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "id" => 4,
+                    ),
+                ),
+                "\HUGnet\sensors\drivers\ADuCPower",
+                array(
+                ),
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "id" => 5,
+                    ),
+                ),
+                "\HUGnet\sensors\drivers\ADuCPower",
+                array(
+                ),
+            ),
         );
     }
     /**
     * test the set routine when an extra class exists
     *
+    * @param array  $mocks  The mocks to set
     * @param string $name   The name of the variable to test.
     * @param array  $expect The expected return
     *
@@ -368,10 +456,10 @@ class ADuCPowerTest extends DriverTestBase
     *
     * @dataProvider dataChannels
     */
-    public function testChannels($name, $expect)
+    public function testChannels($mocks, $name, $expect)
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock($extra);
+        $sensor->resetMock($mocks);
         $obj = &$name::factory($sensor);
         $this->assertSame($expect, $obj->channels());
     }
