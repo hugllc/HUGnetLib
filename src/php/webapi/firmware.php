@@ -61,38 +61,6 @@ if ($action === "updatecheck") {
     foreach ((array)$array as $key => $value) {
         $ret[] = $value;
     }
-} else if ($action === "status") {
-    if (file_exists($file)) {
-        $stuff = file($file);
-        $ret = trim(array_pop($stuff));
-    } else {
-        $ret = "idle";
-    }
-} else if ($action === "load") {
-    $fd = fopen($file, "w");
-    \HUGnet\VPrint::config(
-        array(
-            "session" => $fd,
-            "verbose" => 1,
-        )
-    );
-    $dev = $json->system()->device($did);
-    $firmware->set("FWPartNum", $dev->get("FWPartNum"));
-    $firmware->set("HWPartNum", $dev->get("HWPartNum"));
-    $firmware->set("RelStatus", \FirmwareTable::DEV);
-    $ret = -1;
-    if ($firmware->getLatest()) {
-        if ($dev->network()->loadFirmware($firmware)) {
-            $part = $firmware->get("FWPartNum");
-            if (substr($part, 0, 7) === "0039-20") {
-                $ret = "success";
-            } else if ($dev->network()->loadConfig()) {
-                $ret = "success";
-            }
-        }
-    }
-    fclose($fd);
-    unlink($file);
 }
 
 

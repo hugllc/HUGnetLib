@@ -41,6 +41,9 @@ $action = strtolower($json->args()->action);
 $dev    = &$json->system()->device();
 $ret    = "";
 
+$file = sys_get_temp_dir()."/HUGnetLibDevice".$did;
+
+
 if ($action === "post") {
     $dev->load($did);
     $worked = true;
@@ -65,22 +68,38 @@ if ($action === "post") {
         $ret = -1;
     }
 } else if ($action === "config") {
+    $fd = fopen($file, "w");
+    \HUGnet\VPrint::config(
+        array(
+            "session" => $fd,
+            "verbose" => 1,
+        )
+    );
     $dev->load($did);
-    $worked = true;
+    $worked  = true;
+    $sensors = $dev->get("physicalSensors");
+    $steps   = $sensors + 2;
+    $step    = 1;
+    \HUGnet\VPrint::out("config $step/$steps success", 1);
     if ($dev->action()->config()) {
+        $step++;
+        \HUGnet\VPrint::out("sensor $step/$steps success", 1);
         $dev->store();
-        $sensors = $dev->get("physicalSensors");
         for ($i = 0; $i < $sensors; $i++) {
+            $step++;
             $pkt = $dev->network()->sensorConfig($i);
             if (strlen($pkt->reply()) > 0) {
+                \HUGnet\VPrint::out("sensor $step/$steps success", 1);
                 $dev->sensor($i)->decode($pkt->reply());
                 $dev->sensor($i)->change(array());
             } else {
+                \HUGnet\VPrint::out("sensor $step/$steps failure", 1);
                 $worked = false;
                 break;
             }
         }
     } else {
+        \HUGnet\VPrint::out("sensor $step/$steps failure", 1);
         $worked = false;
     }
     if ($worked) {
@@ -90,6 +109,8 @@ if ($action === "post") {
     } else {
         $ret = -1;
     }
+    fclose($fd);
+    unlink($file);
 } else if ($action === "get") {
     $dev->load($did);
     $ret = $dev->fullArray();
@@ -106,6 +127,49 @@ if ($action === "post") {
     foreach ((array)$ids as $value) {
         $ret[] = $value;
     }
+} else if ($action === "status") {
+    if (file_exists($file)) {
+        $stuff = file($file);
+        $ret = trim(array_pop($stuff));
+    } else {
+        $ret = "idle";
+    }
+} else if ($action === "loadfirmware") {
+    $firmware = new FirmwareTable();
+    $fd = fopen($file, "w");
+    \HUGnet\VPrint::config(
+        array(
+            "session" => $fd,
+            "verbose" => 1,
+        )
+    );
+    $dev = $json->system()->device($did);
+    $firmware->set("FWPartNum", $dev->get("FWPartNum"));
+    $firmware->set("HWPartNum", $dev->get("HWPartNum"));
+    $firmware->set("RelStatus", \FirmwareTable::DEV);
+    $ret = -1;
+    if ($firmware->getLatest()) {
+        if ($dev->network()->loadFirmware($firmware)) {
+            $ret = $dev->fullArray();
+        }
+    }
+    fclose($fd);
+    unlink($file);
+} else if ($action === "loadconfig") {
+    $fd = fopen($file, "w");
+    \HUGnet\VPrint::config(
+        array(
+            "session" => $fd,
+            "verbose" => 1,
+        )
+    );
+    $dev = $json->system()->device($did);
+    $ret = -1;
+    if ($dev->network()->loadConfig()) {
+        $ret = $dev->fullArray();
+    }
+    fclose($fd);
+    unlink($file);
 }
 //var_dump($ret);
 print json_encode($ret);

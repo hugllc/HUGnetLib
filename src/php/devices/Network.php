@@ -400,6 +400,11 @@ class Network
     */
     public function loadConfig($callback = null, $config = array())
     {
+        $part = $this->_device->get("FWPartNum");
+        if (substr($part, 0, 7) === "0039-20") {
+            /* This device doesn't have loadable sensors */
+            return true;
+        }
         $ret = $this->writeE2(0, $this->_device->encode(false), $callback, $config);
         if (!$ret) {
             \HUGnet\VPrint::out("config fail", 1);
@@ -489,7 +494,7 @@ class Network
             return false;
         }
         \HUGnet\VPrint::out("run 1/1 success", 1);
-        return true;
+        return $this->loadConfig();
     }
     /**
     * Polls the device in question

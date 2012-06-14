@@ -2386,6 +2386,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "HWPartNum" => "0039-21-01-A",
+                            "FWPartNum" => "0039-20-01-C",
                         ),
                     ),
                     "Network" => array(
@@ -2457,6 +2458,7 @@ S9030000FC",
                         "get" => array(
                             "id" => 21,
                             "HWPartNum" => "0039-21-01-A",
+                            "FWPartNum" => "0039-20-01-C",
                         ),
                     ),
                     "Network" => array(
@@ -2539,6 +2541,7 @@ S9030000FC",
                         "get" => array(
                             "id" => 21,
                             "HWPartNum" => "0039-21-01-A",
+                            "FWPartNum" => "0039-20-01-C",
                         ),
                     ),
                     "Network" => array(
@@ -2660,6 +2663,7 @@ S9030000FC",
                         "get" => array(
                             "id" => 21,
                             "HWPartNum" => "0039-21-01-A",
+                            "FWPartNum" => "0039-20-01-C",
                         ),
                     ),
                     "Network" => array(
@@ -2844,6 +2848,7 @@ S9030000FC",
                         "get" => array(
                             "id" => 21,
                             "HWPartNum" => "0039-21-01-A",
+                            "FWPartNum" => "0039-20-01-C",
                         ),
                     ),
                     "Network" => array(
@@ -3076,6 +3081,7 @@ S9030000FC",
                         "get" => array(
                             "id" => 21,
                             "HWPartNum" => "0039-21-01-A",
+                            "FWPartNum" => "0039-20-01-C",
                         ),
                     ),
                     "Network" => array(
@@ -3325,6 +3331,7 @@ S9030000FC",
                         "get" => array(
                             "id" => 21,
                             "HWPartNum" => "0039-21-01-A",
+                            "FWPartNum" => "0039-20-01-C",
                         ),
                     ),
                     "Network" => array(
@@ -3447,6 +3454,7 @@ S9030000FC",
                             array("id"),
                             array("id"),
                             array("id"),
+                            array("FWPartNum"),
                         ),
                     ),
                     "Network" => array(
@@ -3574,6 +3582,7 @@ S9030000FC",
                         "get" => array(
                             "id" => 21,
                             "HWPartNum" => "0039-21-01-A",
+                            "FWPartNum" => "0039-20-01-C",
                         ),
                     ),
                     "Network" => array(
@@ -3662,6 +3671,7 @@ S9030000FC",
                             array("id"),
                             array("id"),
                             array("id"),
+                            array("FWPartNum"),
                         ),
                     ),
                     "Network" => array(
@@ -3753,6 +3763,7 @@ S9030000FC",
                         "get" => array(
                             "id" => 21,
                             "HWPartNum" => "0039-21-01-A",
+                            "FWPartNum" => "0039-20-01-C",
                         ),
                     ),
                     "Network" => array(
@@ -3849,6 +3860,7 @@ S9030000FC",
                             array("id"),
                             array("id"),
                             array("id"),
+                            array("FWPartNum"),
                         ),
                     ),
                     "Network" => array(
@@ -3940,6 +3952,7 @@ S9030000FC",
                         "get" => array(
                             "id" => 21,
                             "HWPartNum" => "0039-21-01-A",
+                            "FWPartNum" => "0039-20-01-C",
                         ),
                     ),
                     "Network" => array(
@@ -4189,6 +4202,7 @@ S9030000FC",
                         "get" => array(
                             "id" => 21,
                             "HWPartNum" => "0039-21-01-A",
+                            "FWPartNum" => "0039-20-01-C",
                         ),
                     ),
                     "Network" => array(
