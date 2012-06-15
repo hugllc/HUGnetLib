@@ -230,6 +230,81 @@ class CloneVirtualTest extends DriverTestBase
                     ),
                 ),
             ),
+            array( // #1
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 1,
+                            "extra" => array(1008, 3),
+                        ),
+                        "system" => new \HUGnet\DummySystem("System"),
+                    ),
+                    "System" => array(
+                        "device" => array(
+                            0x1008 => new \HUGnet\DummyTable("Device1008"),
+                        ),
+                    ),
+                    "Device1008" => array(
+                        "sensor" => new \HUGnet\DummyTable("Sensor1")
+                    ),
+                    "Sensor1" => array(
+                        "id" => 3,
+                        "get" => array(
+                            "driver" => "ADuCPower",
+                            "sensor" => 3,
+                        ),
+                        "channelStart" => 4,
+                    ),
+                ),
+                array(
+                    "Data4" => 0.314713,
+                    "Data5" => 14.448166,
+                    "Data6" => 4.547026,
+                    "Data7" => 45.909022,
+                ),
+                1,
+                array(),
+                array(),
+                array(
+                    array(
+                        "value" => 0.314713,
+                        "decimals" => 6,
+                        "units" => "A",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'A',
+                        "unitType" => "Current",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 14.448166,
+                        "decimals" => 6,
+                        "units" => "V",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'V',
+                        "unitType" => "Voltage",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 4.547026,
+                        "decimals" => 6,
+                        "units" => "W",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'W',
+                        "unitType" => "Power",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 45.909022,
+                        "decimals" => 6,
+                        "units" => "Ohms",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'Ohms',
+                        "unitType" => "Impedance",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                ),
+            ),
 
         );
     }

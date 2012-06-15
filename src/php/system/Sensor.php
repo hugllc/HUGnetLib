@@ -349,7 +349,8 @@ class Sensor extends SystemTableBase
     {
         $chan   = 0;
         $sensor = $this->id();
-        $device = &$this->system()->device($this->get("dev"));
+        $did = $this->table()->get("dev");
+        $device = &$this->system()->device((int)$did);
         for ($i = 0; $i < $sensor; $i++) {
             $chan += count($device->sensor($i)->channels());
         }
