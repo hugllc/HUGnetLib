@@ -203,6 +203,7 @@ var DeviceEntryView = Backbone.View.extend({
     initialize: function (options)
     {
         this.model.bind('change', this.render, this);
+        this.model.bind('sync', this.render, this);
         this.model.bind('remove', this.remove, this);
         this.model.bind('configfail', this.refreshFail, this);
         this.parent = options.parent;
@@ -216,12 +217,26 @@ var DeviceEntryView = Backbone.View.extend({
             this.refresh(e);
         } else if (action === 'properties') {
             this.properties(e);
+        } else if (action === 'loadfirmware') {
+            this.loadfirmware(e);
+        } else if (action === 'loadconfig') {
+            this.loadconfig(e);
         }
     },
     refresh: function (e)
     {
         this.$el.addClass("working");
         this.model.config();
+    },
+    loadconfig: function (e)
+    {
+        this.$el.addClass("working");
+        this.model.loadconfig();
+    },
+    loadfirmware: function (e)
+    {
+        this.$el.addClass("working");
+        this.model.loadfirmware();
     },
     refreshFail: function ()
     {

@@ -171,7 +171,7 @@ HUGnet.Device = Backbone.Model.extend({
         var id = this.get('id');
         if (id !== 0) {
             var self = this;
-            var ret = $.ajax({
+            $.ajax({
                 type: 'GET',
                 url: this.get('url'),
                 dataType: 'json',
@@ -181,11 +181,11 @@ HUGnet.Device = Backbone.Model.extend({
                     "action": "config",
                     "id": id.toString(16)
                 }
-            });
-            ret.done(
+            }).done(
                 function (data)
                 {
                     if (_.isObject(data)) {
+                        self.unset('update');
                         self.set(data);
                         self.trigger('configdone');
                         self.trigger('sync');
@@ -193,8 +193,93 @@ HUGnet.Device = Backbone.Model.extend({
                         self.trigger('configfail');
                     }
                 }
+            ).fail(
+                function (data)
+                {
+                    self.trigger('configfail');
+                }
             );
-            ret.fail(
+        }
+    },
+    /**
+    * Gets infomration about a device.  This is retrieved directly from the device
+    *
+    * This function is for use of the device list
+    *
+    * @param id The id of the device to get
+    *
+    * @return null
+    */
+    loadconfig: function ()
+    {
+        var id = this.get('id');
+        if (id !== 0) {
+            var self = this;
+            $.ajax({
+                type: 'GET',
+                url: this.get('url'),
+                dataType: 'json',
+                cache: false,
+                data: {
+                    "task": "device",
+                    "action": "loadconfig",
+                    "id": id.toString(16)
+                }
+            }).done(
+                function (data)
+                {
+                    if (_.isObject(data)) {
+                        self.unset('update');
+                        self.set(data);
+                        self.config();
+                    } else {
+                        self.trigger('configfail');
+                    }
+                }
+            ).fail(
+                function (data)
+                {
+                    self.trigger('configfail');
+                }
+            );
+        }
+    },
+    /**
+    * Gets infomration about a device.  This is retrieved directly from the device
+    *
+    * This function is for use of the device list
+    *
+    * @param id The id of the device to get
+    *
+    * @return null
+    */
+    loadfirmware: function ()
+    {
+        var id = this.get('id');
+        if (id !== 0) {
+            var self = this;
+            $.ajax({
+                type: 'GET',
+                url: this.get('url'),
+                dataType: 'json',
+                cache: false,
+                data: {
+                    "task": "device",
+                    "action": "loadfirmware",
+                    "id": id.toString(16)
+                }
+            }).done(
+                function (data)
+                {
+                    if (_.isObject(data)) {
+                        self.unset('update');
+                        self.set(data);
+                        self.config();
+                    } else {
+                        self.trigger('configfail');
+                    }
+                }
+            ).fail(
                 function ()
                 {
                     self.trigger('configfail');

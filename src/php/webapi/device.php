@@ -83,6 +83,7 @@ if ($action === "post") {
     \HUGnet\VPrint::out("config $step/$steps success", 1);
     if ($dev->action()->config()) {
         $step++;
+        $sensors = $dev->get("physicalSensors");
         \HUGnet\VPrint::out("sensor $step/$steps success", 1);
         $dev->store();
         for ($i = 0; $i < $sensors; $i++) {
@@ -144,13 +145,19 @@ if ($action === "post") {
         )
     );
     $dev = $json->system()->device($did);
-    $firmware->set("FWPartNum", $dev->get("FWPartNum"));
+    if (!$dev->get("bootloader")) {
+        $firmware->set("FWPartNum", $dev->get("FWPartNum"));
+    } else {
+        $firmware->set("FWPartNum", "0039-38-01-C");
+    }
     $firmware->set("HWPartNum", $dev->get("HWPartNum"));
     $firmware->set("RelStatus", \FirmwareTable::DEV);
     $ret = -1;
     if ($firmware->getLatest()) {
         if ($dev->network()->loadFirmware($firmware)) {
-            $ret = $dev->fullArray();
+            if ($dev->action()->config()) {
+                $ret = $dev->fullArray();
+            }
         }
     }
     fclose($fd);
