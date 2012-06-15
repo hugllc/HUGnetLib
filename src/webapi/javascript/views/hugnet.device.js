@@ -196,6 +196,7 @@ var DeviceEntryView = Backbone.View.extend({
     template: '#DeviceEntryTemplate',
     parent: null,
     events: {
+        'change .action': 'action',
         'click .refresh': 'refresh',
         'click .properties': 'properties'
     },
@@ -205,6 +206,17 @@ var DeviceEntryView = Backbone.View.extend({
         this.model.bind('remove', this.remove, this);
         this.model.bind('configfail', this.refreshFail, this);
         this.parent = options.parent;
+    },
+    action: function (e)
+    {
+        var action = this.$('.action').val();
+        this.$('.action').val('option:first');
+        //this.$('.action')[0].selectedIndex = 0;
+        if (action === 'refresh') {
+            this.refresh(e);
+        } else if (action === 'properties') {
+            this.properties(e);
+        }
     },
     refresh: function (e)
     {
