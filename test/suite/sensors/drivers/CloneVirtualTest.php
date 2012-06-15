@@ -358,7 +358,7 @@ class CloneVirtualTest extends DriverTestBase
                     ),
                 ),
                 array(
-                    'longName'     => 'Clone Virtual Sensor',
+                    'longName'     => 'BC Components Thermistor #2322640',
                     'shortName'    => 'CloneVirtual',
                     'unitType'     => 'Temperature',
                     'bound'        => false,

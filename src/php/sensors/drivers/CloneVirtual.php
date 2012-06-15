@@ -66,7 +66,6 @@ class CloneVirtual extends \HUGnet\sensors\DriverVirtual
     * put into all derivative classes, even if it is empty.
     */
     protected $params = array(
-        "longName" => "Clone Virtual Sensor",
         "shortName" => "CloneVirtual",
         "virtual" => true,              // This says if we are a virtual sensor
         "extraText" => array(
