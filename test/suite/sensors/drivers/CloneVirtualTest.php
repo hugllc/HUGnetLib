@@ -108,22 +108,153 @@ class CloneVirtualTest extends DriverTestBase
     public static function dataGetReading()
     {
         return array(
-            array(
+            array( // #0
                 array(
                     "Sensor" => array(
-                        "system" => new \HUGnet\DummySystem("System"),
+                        "id" => 1,
                         "get" => array(
-                            "extra" => array(),
+                            "sensor" => 1,
+                            "extra" => array(1008, 1),
+                        ),
+                        "system" => new \HUGnet\DummySystem("System"),
+                    ),
+                    "System" => array(
+                        "device" => array(
+                            0x1008 => new \HUGnet\DummyTable("Device1008"),
+                        ),
+                    ),
+                    "Device1008" => array(
+                        "sensor" => new \HUGnet\DummyTable("Sensor1")
+                    ),
+                    "Sensor1" => array(
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(1008, 1),
+                            "storageUnit" => "A",
+                            "maxDecimals" => 6,
+                            "unitType" => "Current",
+                            "storageType" => \HUGnet\units\Driver::TYPE_RAW,
+                        ),
+                        "channels" => array(
                         ),
                     ),
                 ),
-                256210,
+                null,
                 1,
                 array(),
                 array(),
-                256210,
+                array(
+                    array(
+                        "value" => null,
+                        "decimals" => 6,
+                        "units" => "A",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'A',
+                        "unitType" => "Current",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                ),
             ),
+            array( // #1
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 1,
+                            "extra" => array(1008, 1),
+                        ),
+                        "system" => new \HUGnet\DummySystem("System"),
+                    ),
+                    "System" => array(
+                        "device" => array(
+                            0x1008 => new \HUGnet\DummyTable("Device1008"),
+                        ),
+                    ),
+                    "Device1008" => array(
+                        "sensor" => new \HUGnet\DummyTable("Sensor1")
+                    ),
+                    "Sensor1" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "driver" => "ADuCPower",
+                            "sensor" => 1,
+                        ),
+                        "channelStart" => 4,
+                    ),
+                ),
+                array(
+                    "Data4" => 0.314713,
+                    "Data5" => 14.448166,
+                    "Data6" => 4.547026,
+                    "Data7" => 45.909022,
+                ),
+                1,
+                array(),
+                array(),
+                array(
+                    array(
+                        "value" => 0.314713,
+                        "decimals" => 6,
+                        "units" => "A",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'A',
+                        "unitType" => "Current",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 14.448166,
+                        "decimals" => 6,
+                        "units" => "V",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'V',
+                        "unitType" => "Voltage",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 4.547026,
+                        "decimals" => 6,
+                        "units" => "W",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'W',
+                        "unitType" => "Power",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                    array(
+                        "value" => 45.909022,
+                        "decimals" => 6,
+                        "units" => "Ohms",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'Ohms',
+                        "unitType" => "Impedance",
+                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                    ),
+                ),
+            ),
+
         );
+    }
+    /**
+    * Generic function for testing sensor routines
+    *
+    * This is called by using parent::sensorTest()
+    *
+    * @param array $sensor The sensor data array
+    * @param mixed $A      Data for the sensor to work on
+    * @param float $deltaT The time differenct
+    * @param array $data   The data array being built
+    * @param array $prev   The previous record
+    * @param mixed $expect The return data to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataGetReading()
+    */
+    public function testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+    {
+        $sen = new \HUGnet\DummyBase("Sensor");
+        $sen->resetMock($sensor);
+        $ret = $this->o->decodeData($A, $deltaT, $data, $prev);
+        $this->assertEquals($expect, $ret, 0.00001);
     }
     /**
     * data provider for testDeviceID

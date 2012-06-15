@@ -341,6 +341,21 @@ class Sensor extends SystemTableBase
         return $channels;
     }
     /**
+    * This builds the class from a setup string
+    *
+    * @return Array of channel information
+    */
+    public function channelStart()
+    {
+        $chan   = 0;
+        $sensor = $this->id();
+        $device = &$this->system()->device($this->get("dev"));
+        for ($i = 0; $i < $sensor; $i++) {
+            $chan += count($device->sensor($i)->channels());
+        }
+        return $chan;
+    }
+    /**
     * Gets the config and saves it
     *
     * @param string $url The url to post to

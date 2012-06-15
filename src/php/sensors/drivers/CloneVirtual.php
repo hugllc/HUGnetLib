@@ -90,24 +90,6 @@ class CloneVirtual extends \HUGnet\sensors\DriverVirtual
         return parent::intFactory($sensor);
     }
     /**
-    * Changes a raw reading into a output value
-    *
-    * @param int   $A      Output of the A to D converter
-    * @param float $deltaT The time delta in seconds between this record
-    * @param array &$data  The data from the other sensors that were crunched
-    * @param mixed $prev   The previous value for this sensor
-    *
-    * @return mixed The value in whatever the units are in the sensor
-    *
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-    */
-    public function getReading(
-        $A, $deltaT = 0, &$data = array(), $prev = null
-    ) {
-        return $this->_clone()->getReading($A, $deltaT, $data, $prev);
-
-    }
-    /**
      * This is the routine that gets the sensor that we are cloning
      *
      * @return object The object for the sensor we are cloning
@@ -155,7 +137,44 @@ class CloneVirtual extends \HUGnet\sensors\DriverVirtual
             return $this->_clone()->get($name);
         }
     }
-
+    /**
+    * This builds the class from a setup string
+    *
+    * @return Array of channel information
+    */
+    public function channels()
+    {
+        return $this->_clone()->channels();
+    }
+    /**
+    * Gets the direction from a direction sensor made out of a POT.
+    *
+    * @param string &$hist  The history object or array
+    * @param float  $deltaT The time delta in seconds between this record
+    * @param array  &$prev  The previous reading
+    * @param array  &$data  The data from the other sensors that were crunched
+    *
+    * @return float The direction in degrees
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    */
+    public function decodeData(
+        &$hist, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
+        $ret = $this->channels();
+        $oid = $this->_clone()->sensor()->channelStart();
+        foreach ((array)$ret as $key => $value) {
+            $sen = $oid + $key;
+            if (is_object($hist)) {
+                $ret[$key]["value"] = $hist->get("Data".$sen);
+            } else if (is_array($hist)) {
+                $ret[$key]["value"] = $hist["Data".$sen];
+            } else {
+                $ret[$key]["value"] = null;
+            }
+        }
+        return $ret;
+    }
 }
 
 

@@ -145,10 +145,7 @@ class ActionVirtual extends Action
             );
             $device->store();
         }
-        if (is_object($this->_histCache[$dev])) {
-            return $this->_histCache[$dev]->get("Data".$sen);
-        }
-        return null;
+        return $this->_histCache[$dev];
     }
     /**
     * Polls the device and saves the poll
@@ -184,22 +181,16 @@ class ActionVirtual extends Action
         $sensors = $this->device->get("totalSensors");
         for ($i = 0; $i < $sensors; $i++) {
             $sen = $this->device->sensor($i);
-            if ($sen->get("driver") === "CloneVirtual") {
-                $hist[$i] = array(
-                    "value" => $this->_getPoint($sen, $time),
-                    "units" => $sen->get("storageUnit"),
-                    "unitType" => $sen->get("unitType"),
-                    "dataType" => $sen->get("storageType"),
-                );
-            } else {
-                $string = "";
-                $hist[$i] = $sen->decodeData(
-                    $string,
+            $string = "";
+            $hist = array_merge(
+                $hist,
+                $sen->decodeData(
+                    $this->_getPoint($sen, $time),
                     $hist["deltaT"],
                     $prev[$i],
                     $hist
-                );
-            }
+                )
+            );
         }
         $this->device->setParam("LastPollData", $hist);
         $this->device->setParam("LastPoll", $time);

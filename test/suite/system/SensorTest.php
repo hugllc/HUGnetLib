@@ -1205,6 +1205,82 @@ class SensorTest extends \PHPUnit_Framework_TestCase
         );
         unset($obj);
     }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataChannelStart()
+    {
+        return array(
+            array( // #0
+                new DummySystem("System"),
+                null,
+                "DummyTable",
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "sensor" => 4,
+                            "dev" => 1234,
+                            "HWPartNum"    => "0039-12-01-C",
+                            "FWPartNum"    => "0039-20-03-C",
+                            "FWVersion"    => "1.2.3",
+                            "DeviceGroup"  => "FFFFFF",
+                            "TimeConstant" => "01",
+                            "location" => "Test",
+                        ),
+                    ),
+                    "System" => array(
+                        "device" => array(
+                            1234 => new \HUGnet\DummyTable("Device1234"),
+                        ),
+                    ),
+                    "Device1234" => array(
+                        "sensor" => array(
+                            "0" => new \HUGnet\DummyTable("Sensor0"),
+                            "1" => new \HUGnet\DummyTable("Sensor1"),
+                            "2" => new \HUGnet\DummyTable("Sensor2"),
+                            "3" => new \HUGnet\DummyTable("Sensor3"),
+                            "4" => new \HUGnet\DummyTable("Sensor4"),
+                            "5" => new \HUGnet\DummyTable("Sensor5"),
+                        ),
+                    ),
+                    "Sensor0" => array("channels" => array(0)),
+                    "Sensor1" => array("channels" => array(0, 1)),
+                    "Sensor2" => array("channels" => array(0, 2, 3)),
+                    "Sensor3" => array("channels" => array(0)),
+                    "Sensor4" => array("channels" => array(0)),
+                    "Sensor5" => array("channels" => array(0)),
+                ),
+                7,
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config The configuration to use
+    * @param mixed  $device The device to set
+    * @param mixed  $class  This is either the name of a class or an object
+    * @param array  $mocks  The mocks to use
+    * @param string $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataChannelStart
+    */
+    public function testChannelStart(
+        $config, $device, $class, $mocks, $expect
+    ) {
+        $config->resetMock($mocks);
+        $obj = Sensor::factory($config, $device, $class);
+        $this->assertEquals(
+            $expect, $obj->ChannelStart(), "Return Wrong"
+        );
+        unset($obj);
+    }
+
 }
 
 namespace HUGnet\sensors\drivers;
