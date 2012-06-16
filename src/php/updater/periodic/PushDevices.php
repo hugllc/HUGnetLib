@@ -60,6 +60,8 @@ class PushDevices extends \HUGnet\updater\Periodic
 {
     /** This is the period */
     protected $period = 60;
+    /** This is the object we use */
+    private $_device;
     /**
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.

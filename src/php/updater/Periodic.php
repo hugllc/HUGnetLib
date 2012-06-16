@@ -137,18 +137,15 @@ abstract class Periodic
     */
     public static function &plugins(&$gui)
     {
-        static $plugins;
-        if (!is_array($plugins)) {
-            $plugins = array();
-            foreach (self::$_drivers as $driver) {
-                $class = \HUGnet\Util::findClass(
-                    $driver, "updater/periodic", true, "\\HUGnet\\updater\\periodic"
-                );
-                if (class_exists($class)) {
-                    $plugins[$class] = &$class::factory(&$gui);
-                }
-
+        $plugins = array();
+        foreach (self::$_drivers as $driver) {
+            $class = \HUGnet\Util::findClass(
+                $driver, "updater/periodic", true, "\\HUGnet\\updater\\periodic"
+            );
+            if (class_exists($class)) {
+                $plugins[$class] = &$class::factory(&$gui);
             }
+
         }
         return (array)$plugins;
     }

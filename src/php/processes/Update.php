@@ -67,6 +67,8 @@ class Update extends \HUGnet\ui\Daemon
     private $_myID;
     /** This is the start time of the current run */
     private $_device;
+    /** This is the start time of the current run */
+    private $_plugins = array();
     /**
     * Sets our configuration
     *
@@ -77,6 +79,16 @@ class Update extends \HUGnet\ui\Daemon
         parent::__construct($config);
         /* Get our Device */
         $this->_device = $this->system()->device();
+        $this->_plugins = &\HUGnet\updater\Periodic::plugins($this);
+    }
+    /**
+    * This is the destructor
+    */
+    public function __destruct()
+    {
+        foreach (array_keys((array)$this->_plugins) as $key) {
+            unset($this->_plugins[$key]);
+        }
     }
     /**
     * This is our main routine
@@ -86,10 +98,11 @@ class Update extends \HUGnet\ui\Daemon
     public function main()
     {
         $this->_mainStart = time();
-        $plugins = &\HUGnet\updater\Periodic::plugins($this);
-        foreach ($plugins as $key => $obj) {
+        foreach ($this->_plugins as $key => $obj) {
             $obj->execute();
         }
+        $mem = round((memory_get_usage()) / 1024.0 / 1024.0, 3);
+        $this->out("Memory: ".$mem." M");
         $this->_wait();
     }
     /**

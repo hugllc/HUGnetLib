@@ -60,6 +60,21 @@ class GetFirmware extends \HUGnet\updater\Periodic
 {
     /** This is the period */
     protected $period = 3600;
+    /** This is the object we use */
+    private $_firmware;
+    /**
+    * This function sets up the driver object, and the database object.  The
+    * database object is taken from the driver object.
+    *
+    * @param object &$gui The user interface to use
+    *
+    * @return null
+    */
+    protected function __construct(&$gui)
+    {
+        parent::__construct($gui);
+        $this->_firmware = new \FirmwareTable();
+    }
     /**
     * This function creates the system.
     *
@@ -81,7 +96,6 @@ class GetFirmware extends \HUGnet\updater\Periodic
         $fwPath = $this->system()->get("firmware");
         if ($this->ready() && is_array($fwPath) && (strlen($fwPath["url"]) > 0)) {
             include_once dirname(__FILE__)."/../../tables/FirmwareTable.php";
-            $firmware = new \FirmwareTable();
             // State we are looking for firmware
             $this->ui()->out("Checking for new firmware at ".trim($fwPath["url"]));
             $files = file($fwPath["url"]."/manifest");
@@ -89,13 +103,13 @@ class GetFirmware extends \HUGnet\updater\Periodic
                 if (!$this->ui()->loop()) {
                     return;
                 }
-                if (!$firmware->checkFile($file)) {
+                if (!$this->_firmware->checkFile($file)) {
                     // State we found some new firmware
                     $this->ui()->out("Found ".trim($file));
                     // Load the firmware
-                    $firmware->fromFile($file, $fwPath["url"]);
+                    $this->_firmware->fromFile($file, $fwPath["url"]);
                     // Insert it.
-                    $firmware->insertRow(true);
+                    $this->_firmware->insertRow(true);
                 }
             }
             $this->success();

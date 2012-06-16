@@ -60,6 +60,21 @@ class Checkin extends \HUGnet\updater\Periodic
 {
     /** This is the period */
     protected $period = 600;
+    /** This is the object we use */
+    private $_datacollector;
+    /**
+    * This function sets up the driver object, and the database object.  The
+    * database object is taken from the driver object.
+    *
+    * @param object &$gui The user interface to use
+    *
+    * @return null
+    */
+    protected function __construct(&$gui)
+    {
+        parent::__construct($gui);
+        $this->_datacollector = $this->system()->datacollector();
+    }
     /**
     * This function creates the system.
     *
@@ -79,24 +94,24 @@ class Checkin extends \HUGnet\updater\Periodic
     public function &execute()
     {
         if ($this->ready()) {
-            $datacollector = $this->system()->datacollector();
-            $datacollector->load(array("uuid" => $this->system()->get("uuid")));
-            $setup = $datacollector->get("SetupString");
+            $this->ui()->out("Updating the data collector record...");
+            $this->_datacollector->load(array("uuid" => $this->system()->get("uuid")));
+            $setup = $this->_datacollector->get("SetupString");
             if (empty($setup)) {
                 $device = $this->system()->device(
                     $this->system()->network()->device()->getID()
                 );
-                $datacollector->load($device);
-                $datacollector->store(true);
+                $this->_datacollector->load($device);
+                $this->_datacollector->store(true);
             }
             if (function_exists("posix_uname")) {
                 $uname = posix_uname();
-                $datacollector->set("name", trim($uname['nodename']));
+                $this->_datacollector->set("name", trim($uname['nodename']));
             }
-            $datacollector->store();
+            $this->_datacollector->store();
             if ($this->hasMaster()) {
                 $this->ui()->out("Checking in with the master server...");
-                $ret = $datacollector->action()->checkin();
+                $ret = $this->_datacollector->action()->checkin();
                 if ($ret === "success") {
                     $this->success();
                 } else {
