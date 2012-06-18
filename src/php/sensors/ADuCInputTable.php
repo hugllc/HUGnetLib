@@ -62,256 +62,6 @@ class ADuCInputTable
     */
     private $_sensor;
     /**
-    * This is where we store our sensor object
-    */
-    private $_registers = array(
-        "ADC0CON" => array(
-            "ADC0EN"    => array(
-                'value' => 1,
-                'bit'   => 15,
-                'mask'  => 0x1,
-                'bits'  => 1,
-                'valid' => array(0 => "No", 1 => "Yes"),
-                'desc'  => "ADC0 Enable",
-            ),
-            "ADC0DIAG"  => array(
-                'value' => 0x0,
-                'bit'   => 13,
-                'mask'  => 0x3,
-                'bits'  => 2,
-                'valid' => array(
-                    0 => "Off",
-                    1 => "50mA on Positive Input",
-                    2 => "50mA on Negative Input",
-                    3 => "50mA on Both",
-                ),
-                'desc'  => "ADC0 Diagnostic Current",
-            ),
-            "HIGHEXTREF0" => array(
-                'value' => 0,
-                'bit'   => 12,
-                'mask'  => 0x1,
-                'bits'  => 1,
-                'valid' => array(0 => "Ref", 1 => "Ref/2"),
-                'desc'  => "ADC0 High Reference",
-            ),
-            "AMP_CM"    => array(
-                'value' => 0,
-                'bit'   => 11,
-                'mask'  => 0x1,
-                'bits'  => 1,
-                'valid' => array(0 => "Common Mode Input", 1 => "AVDD/2"),
-                'desc'  => "ADC0 PGA Common Mode Voltage",
-            ),
-            "ADC0CODE"  => array(
-                'value' => 0,
-                'bit'   => 10,
-                'mask'  => 0x1,
-                'bits'  => 1,
-                'valid' => array(0 => "Two's Compliment", 1 => "Unipolar"),
-                'desc'  => "ADC0 Output Coding",
-            ),
-            "ADC0CH"    => array(
-                'value' => 0x3,
-                'bit'   => 6,
-                'mask'  => 0xF,
-                'bits'  => 4,
-                'valid' => array(
-                    0 => "ADC0/ADC1 Differential",
-                    1 => "ADC0/ADC5 Single Ended",
-                    2 => "ADC1/ADC5 Single Ended",
-                    3 => "VREF+/VREF-",
-                    5 => "ADC2/ADC3 Differential",
-                    6 => "ADC2/ADC5 Single Ended",
-                    7 => "ADC3/ADC5 Single Ended",
-                    8 => "Internal Short to ADC1",
-                    9 => "Internal Short to ADC1",
-                ),
-                'desc'  => "ADC0 Channel",
-            ),
-            "ADC0REF"   => array(
-                'value' => 0x0,
-                'bit'   => 4,
-                'mask'  => 0x3,
-                'bits'  => 2,
-                'valid' => array(
-                    0 => "Internal",
-                    1 => "External VREF+/VREF-",
-                    2 => "External AUX",
-                    3 => "AVDD/AGND (div/2 selected)",
-                ),
-                'desc'  => "ADC0 Reference",
-            ),
-            "ADC0PGA"   => array(
-                'value' => 0x0,
-                'bit'   => 0,
-                'mask'  => 0xF,
-                'bits'  => 4,
-                'valid' => array(
-                    0 => "1",
-                    1 => "2",
-                    2 => "4",
-                    3 => "8",
-                    4 => "16",
-                    5 => "32",
-                    6 => "64",
-                    7 => "128",
-                    8 => "256",
-                    9 => "512",
-                ),
-                'desc'  => "ADC0 Gain",
-            ),
-        ),
-        "ADC1CON" => array(
-            "ADC1EN"      => array(
-                'value' => 1,
-                'bit'   => 15,
-                'mask'  => 0x1,
-                'bits'  => 1,
-                'valid' => array(0 => "No", 1 => "Yes"),
-                'desc'  => "ADC1 Enable",
-            ),
-            "ADC1DIAG"    => array(
-                'value' => 0x0,
-                'bit'   => 13,
-                'mask'  => 0x2,
-                'bits'  => 2,
-                'valid' => array(
-                    0 => "Off",
-                    1 => "50mA on Positive Input",
-                    2 => "50mA on Negative Input",
-                    3 => "50mA on Both",
-                ),
-                'desc'  => "ADC1 Diagnostic Current",
-            ),
-            "HIGHEXTREF1" => array(
-                'value' => 0,
-                'bit'   => 12,
-                'mask'  => 0x1,
-                'bits'  => 1,
-                'valid' => array(0 => "Ref", 1 => "Ref/2"),
-                'desc'  => "ADC1 High Reference",
-            ),
-            "ADC1CODE"    => array(
-                'value' => 0,
-                'bit'   => 11,
-                'mask'  => 0x1,
-                'bits'  => 1,
-                'valid' => array(0 => "Two's Compliment", 1 => "Unipolar"),
-                'desc'  => "ADC1 Output Coding",
-            ),
-            "ADC1CH"      => array(
-                'value' => 0xC,
-                'bit'   => 7,
-                'mask'  => 0xF,
-                'bits'  => 4,
-                'valid' => array(
-                    0  => "ADC2/ADC3 Differential",
-                    1  => "ADC4/ADC5 Differential",
-                    2  => "ADC6/ADC7 Differential",
-                    3  => "ADC8/ADC9 Differential",
-                    4  => "ADC2/ADC5 Single Ended",
-                    5  => "ADC3/ADC5 Single Ended",
-                    6  => "ADC4/ADC5 Single Ended",
-                    7  => "ADC6/ADC5 Single Ended",
-                    8  => "ADC7/ADC5 Single Ended",
-                    9  => "ADC8/ADC5 Single Ended",
-                    10 => "ADC9/ADC5 Single Ended",
-                    11 => "Internal Temp",
-                    12 => "VREF+/VREF-",
-                    13 => "DAC_OUT/AGND",
-                    15 => "Internal Short to ADC3",
-                ),
-                'desc'  => "ADC1 Channel",
-            ),
-            "ADC1REF"     => array(
-                'value' => 0x0,
-                'bit'   => 4,
-                'mask'  => 0x7,
-                'bits'  => 3,
-                'valid' => array(
-                    0 => "Internal",
-                    1 => "External VREF+/VREF-",
-                    2 => "External AUX",
-                    3 => "AVDD/AGND (div/2 selected)",
-                    4 => "AVCC/ADC3",
-                ),
-                'desc'  => "ADC1 Reference",
-            ),
-            "BUF_BYPASS"  => array(
-                'value' => 0x0,
-                'bit'   => 2,
-                'mask'  => 0x3,
-                'bits'  => 2,
-                'valid' => array(
-                    0 => "Full buffer on",
-                    1 => "Negative buffer bypass",
-                    2 => "Positive buffer bypass",
-                    3 => "Full buffer bypass",
-                ),
-                'desc'  => "ADC1 Buffer Bypass",
-            ),
-            "ADC1PGA"     => array(
-                'value' => 0x0,
-                'bit'   => 0,
-                'mask'  => 0x3,
-                'bits'  => 2,
-                'valid' => array(
-                    0 => "1",
-                    1 => "2",
-                    2 => "4",
-                    3 => "8",
-                ),
-                'desc'  => "ADC1 Gain",
-            ),
-        ),
-        "ADCFLT" => array(
-            "CHOPEN" => array(
-                'value' => 1,
-                'bit'   => 15,
-                'mask'  => 0x1,
-                'bits'  => 1,
-                'valid' => array(0 => "No", 1 => "Yes"),
-                'desc'  => "Chop Enable",
-            ),
-            "RAVG2"  => array(
-                'value' => 0,
-                'bit'   => 14,
-                'mask'  => 0x1,
-                'bits'  => 1,
-                'valid' => array(0 => "No", 1 => "Yes"),
-                'desc'  => "Running Average By 2",
-            ),
-            "AF"     => array(
-                'value' => 0x0,
-                'bit'   => 8,
-                'mask'  => 0x3F,
-                'bits'  => 6,
-                'valid' => "_avgFilterValidate",
-                'size'  => 3,
-                'desc'  => "Averaging Filter Value",
-            ),
-            "NOTCH2" => array(
-                'value' => 0,
-                'bit'   => 7,
-                'mask'  => 0x1,
-                'bits'  => 1,
-                'valid' => array(0 => "No", 1 => "Yes"),
-                'desc'  => "Sinc Notch Filter Enable",
-            ),
-            "SF"     => array(
-                'value' => 0x9,
-                'bit'   => 0,
-                'mask'  => 0x7F,
-                'bits'  => 7,
-                'valid' => "_sinc3Validate",
-                'size'  => 3,
-                'desc'  => "Sinc3 Filter Value",
-            ),
-
-        ),
-    );
-    /**
     * This is where we setup the sensor object
     */
     private $_params = array(
@@ -352,6 +102,267 @@ class ADuCInputTable
             ),
             "desc"  => "Immediate Processing Routine",
         ),
+        "ADC0EN"    => array(
+            'value' => 1,
+            'bit'   => 15,
+            'mask'  => 0x1,
+            'bits'  => 1,
+            'valid' => array(0 => "No", 1 => "Yes"),
+            'desc'  => "ADC0 Enable",
+            'register' => "ADC0CON",
+        ),
+        "ADC0DIAG"  => array(
+            'value' => 0x0,
+            'bit'   => 13,
+            'mask'  => 0x3,
+            'bits'  => 2,
+            'valid' => array(
+                0 => "Off",
+                1 => "50mA on Positive Input",
+                2 => "50mA on Negative Input",
+                3 => "50mA on Both",
+            ),
+            'desc'  => "ADC0 Diagnostic Current",
+            'register' => "ADC0CON",
+        ),
+        "HIGHEXTREF0" => array(
+            'value' => 0,
+            'bit'   => 12,
+            'mask'  => 0x1,
+            'bits'  => 1,
+            'valid' => array(0 => "Ref", 1 => "Ref/2"),
+            'desc'  => "ADC0 High Reference",
+            'register' => "ADC0CON",
+        ),
+        "AMP_CM"    => array(
+            'value' => 0,
+            'bit'   => 11,
+            'mask'  => 0x1,
+            'bits'  => 1,
+            'valid' => array(0 => "Common Mode Input", 1 => "AVDD/2"),
+            'desc'  => "ADC0 PGA Common Mode Voltage",
+            'register' => "ADC0CON",
+        ),
+        "ADC0CODE"  => array(
+            'value' => 0,
+            'bit'   => 10,
+            'mask'  => 0x1,
+            'bits'  => 1,
+            'valid' => array(0 => "Two's Compliment", 1 => "Unipolar"),
+            'desc'  => "ADC0 Output Coding",
+            'register' => "ADC0CON",
+        ),
+        "ADC0CH"    => array(
+            'value' => 0x3,
+            'bit'   => 6,
+            'mask'  => 0xF,
+            'bits'  => 4,
+            'valid' => array(
+                0 => "ADC0/ADC1 Differential",
+                1 => "ADC0/ADC5 Single Ended",
+                2 => "ADC1/ADC5 Single Ended",
+                3 => "VREF+/VREF-",
+                5 => "ADC2/ADC3 Differential",
+                6 => "ADC2/ADC5 Single Ended",
+                7 => "ADC3/ADC5 Single Ended",
+                8 => "Internal Short to ADC1",
+                9 => "Internal Short to ADC1",
+            ),
+            'desc'  => "ADC0 Channel",
+            'register' => "ADC0CON",
+        ),
+        "ADC0REF"   => array(
+            'value' => 0x0,
+            'bit'   => 4,
+            'mask'  => 0x3,
+            'bits'  => 2,
+            'valid' => array(
+                0 => "Internal",
+                1 => "External VREF+/VREF-",
+                2 => "External AUX",
+                3 => "AVDD/AGND (div/2 selected)",
+            ),
+            'desc'  => "ADC0 Reference",
+            'register' => "ADC0CON",
+        ),
+        "ADC0PGA"   => array(
+            'value' => 0x0,
+            'bit'   => 0,
+            'mask'  => 0xF,
+            'bits'  => 4,
+            'valid' => array(
+                0 => "1",
+                1 => "2",
+                2 => "4",
+                3 => "8",
+                4 => "16",
+                5 => "32",
+                6 => "64",
+                7 => "128",
+                8 => "256",
+                9 => "512",
+            ),
+            'desc'  => "ADC0 Gain",
+            'register' => "ADC0CON",
+        ),
+        "ADC1EN"      => array(
+            'value' => 1,
+            'bit'   => 15,
+            'mask'  => 0x1,
+            'bits'  => 1,
+            'valid' => array(0 => "No", 1 => "Yes"),
+            'desc'  => "ADC1 Enable",
+            'register' => "ADC1CON",
+        ),
+        "ADC1DIAG"    => array(
+            'value' => 0x0,
+            'bit'   => 13,
+            'mask'  => 0x2,
+            'bits'  => 2,
+            'valid' => array(
+                0 => "Off",
+                1 => "50mA on Positive Input",
+                2 => "50mA on Negative Input",
+                3 => "50mA on Both",
+            ),
+            'desc'  => "ADC1 Diagnostic Current",
+            'register' => "ADC1CON",
+        ),
+        "HIGHEXTREF1" => array(
+            'value' => 0,
+            'bit'   => 12,
+            'mask'  => 0x1,
+            'bits'  => 1,
+            'valid' => array(0 => "Ref", 1 => "Ref/2"),
+            'desc'  => "ADC1 High Reference",
+            'register' => "ADC1CON",
+        ),
+        "ADC1CODE"    => array(
+            'value' => 0,
+            'bit'   => 11,
+            'mask'  => 0x1,
+            'bits'  => 1,
+            'valid' => array(0 => "Two's Compliment", 1 => "Unipolar"),
+            'desc'  => "ADC1 Output Coding",
+            'register' => "ADC1CON",
+        ),
+        "ADC1CH"      => array(
+            'value' => 0xC,
+            'bit'   => 7,
+            'mask'  => 0xF,
+            'bits'  => 4,
+            'valid' => array(
+                0  => "ADC2/ADC3 Differential",
+                1  => "ADC4/ADC5 Differential",
+                2  => "ADC6/ADC7 Differential",
+                3  => "ADC8/ADC9 Differential",
+                4  => "ADC2/ADC5 Single Ended",
+                5  => "ADC3/ADC5 Single Ended",
+                6  => "ADC4/ADC5 Single Ended",
+                7  => "ADC6/ADC5 Single Ended",
+                8  => "ADC7/ADC5 Single Ended",
+                9  => "ADC8/ADC5 Single Ended",
+                10 => "ADC9/ADC5 Single Ended",
+                11 => "Internal Temp",
+                12 => "VREF+/VREF-",
+                13 => "DAC_OUT/AGND",
+                15 => "Internal Short to ADC3",
+            ),
+            'desc'  => "ADC1 Channel",
+            'register' => "ADC1CON",
+        ),
+        "ADC1REF"     => array(
+            'value' => 0x0,
+            'bit'   => 4,
+            'mask'  => 0x7,
+            'bits'  => 3,
+            'valid' => array(
+                0 => "Internal",
+                1 => "External VREF+/VREF-",
+                2 => "External AUX",
+                3 => "AVDD/AGND (div/2 selected)",
+                4 => "AVCC/ADC3",
+            ),
+            'desc'  => "ADC1 Reference",
+            'register' => "ADC1CON",
+        ),
+        "BUF_BYPASS"  => array(
+            'value' => 0x0,
+            'bit'   => 2,
+            'mask'  => 0x3,
+            'bits'  => 2,
+            'valid' => array(
+                0 => "Full buffer on",
+                1 => "Negative buffer bypass",
+                2 => "Positive buffer bypass",
+                3 => "Full buffer bypass",
+            ),
+            'desc'  => "ADC1 Buffer Bypass",
+            'register' => "ADC1CON",
+        ),
+        "ADC1PGA"     => array(
+            'value' => 0x0,
+            'bit'   => 0,
+            'mask'  => 0x3,
+            'bits'  => 2,
+            'valid' => array(
+                0 => "1",
+                1 => "2",
+                2 => "4",
+                3 => "8",
+            ),
+            'desc'  => "ADC1 Gain",
+            'register' => "ADC1CON",
+        ),
+        "CHOPEN" => array(
+            'value' => 1,
+            'bit'   => 15,
+            'mask'  => 0x1,
+            'bits'  => 1,
+            'valid' => array(0 => "No", 1 => "Yes"),
+            'desc'  => "Chop Enable",
+            'register' => "ADCFLT",
+        ),
+        "RAVG2"  => array(
+            'value' => 0,
+            'bit'   => 14,
+            'mask'  => 0x1,
+            'bits'  => 1,
+            'valid' => array(0 => "No", 1 => "Yes"),
+            'desc'  => "Running Average By 2",
+            'register' => "ADCFLT",
+        ),
+        "AF"     => array(
+            'value' => 0x0,
+            'bit'   => 8,
+            'mask'  => 0x3F,
+            'bits'  => 6,
+            'valid' => "_avgFilterValidate",
+            'size'  => 3,
+            'desc'  => "Averaging Filter Value",
+            'register' => "ADCFLT",
+        ),
+        "NOTCH2" => array(
+            'value' => 0,
+            'bit'   => 7,
+            'mask'  => 0x1,
+            'bits'  => 1,
+            'valid' => array(0 => "No", 1 => "Yes"),
+            'desc'  => "Sinc Notch Filter Enable",
+            'register' => "ADCFLT",
+        ),
+        "SF"     => array(
+            'value' => 0x9,
+            'bit'   => 0,
+            'mask'  => 0x7F,
+            'bits'  => 7,
+            'valid' => "_sinc3Validate",
+            'size'  => 3,
+            'desc'  => "Sinc3 Filter Value",
+            'register' => "ADCFLT",
+        ),
+
+
     );
     /**
     * This is the constructor
@@ -362,6 +373,11 @@ class ADuCInputTable
     private function __construct($sensor, $config = null)
     {
         $this->_sensor = &$sensor;
+        if (is_string($config)) {
+            $this->decode($config);
+        } else if (is_array($config)) {
+            $this->fromArray($config);
+        }
     }
     /**
     * This is the destructor
@@ -393,24 +409,27 @@ class ADuCInputTable
     */
     public function register($register, $set = null)
     {
-        $reg = &$this->_registers[$register];
         if (is_string($set) || is_int($set)) {
             if (is_string($set)) {
                 $set = hexdec($set);
             }
-            foreach ($reg as $field => $vals) {
-                $mask = $vals["mask"] << $vals["bit"];
-                $val = ($set & $mask) >> $vals["bit"];
-                $reg[$field]["value"] = $val;
+            foreach ($this->_params as $field => $vals) {
+                if ($vals["register"] === $register) {
+                    $mask = $vals["mask"] << $vals["bit"];
+                    $val = ($set & $mask) >> $vals["bit"];
+                    $this->_params[$field]["value"] = $val;
+                }
             }
         }
         $ret  = 0;
         $bits = 0;
-        foreach ($reg as $field => $vals) {
-            $val = $vals["value"] & $vals["mask"];
-            $val <<= $vals["bit"];
-            $ret |= $val;
-            $bits += $vals["bits"];
+        foreach ($this->_params as $field => $vals) {
+            if ($vals["register"] === $register) {
+                $val = $vals["value"] & $vals["mask"];
+                $val <<= $vals["bit"];
+                $ret |= $val;
+                $bits += $vals["bits"];
+            }
         }
         return sprintf("%0".round($bits / 4)."X", $ret);
     }
@@ -423,16 +442,19 @@ class ADuCInputTable
     */
     private function _avgFilterValidate($value)
     {
-        $sinc = $this->_registers["ADCFLT"]["SF"]["value"];
+        $sinc = $this->_params["SF"]["value"];
         if ($value === 0) {
-            return true;
-        } else if (($value < 64) && ($sinc < 32)) {
-            return true;
-        } else if (($value < 8) && ($sinc < 64)) {
-            return true;
+            // Do nothing here
+        } else if ($value < 8) {
+            if ($sinc > 63) {
+                $this->_params["SF"]["value"] = 63;
+            }
+        } else if ($value < 64) {
+            if ($sinc > 31) {
+                $this->_params["SF"]["value"] = 31;
+            }
         }
-
-        return false;
+        return true;
     }
     /**
     * This builds teh ADCFLT Register
@@ -443,15 +465,19 @@ class ADuCInputTable
     */
     private function _sinc3Validate($value)
     {
-        $avg = $this->_registers["ADCFLT"]["AF"]["value"];
-        if ($value < 31) {
-            return true;
-        } else if (($value < 64) && ($avg < 8)) {
-            return true;
-        } else if (($value < 127) && ($avg === 0)) {
-            return true;
+        $avg = $this->_params["AF"]["value"];
+        if ($value < 32) {
+            // Do nothing here
+        } else if ($value < 64) {
+            if  ($avg > 7) {
+                $this->_params["AF"]["value"] = 7;
+            }
+        } else if ($value < 128) {
+            if ($avg !== 0) {
+                $this->_params["AF"]["value"] = 0;
+            }
         }
-        return false;
+        return true;
     }
     /**
     * This builds teh ADCFLT Register
@@ -462,7 +488,7 @@ class ADuCInputTable
     */
     public function driver0($set = null)
     {
-        return $this->_params("driver0", $set);
+        return sprintf("%02X", $this->_params("driver0", $set));
     }
     /**
     * This builds teh ADCFLT Register
@@ -473,7 +499,7 @@ class ADuCInputTable
     */
     public function driver1($set = null)
     {
-        return $this->_params("driver1", $set);
+        return sprintf("%02X", $this->_params("driver1", $set));
     }
     /**
     * This builds teh ADCFLT Register
@@ -484,7 +510,7 @@ class ADuCInputTable
     */
     public function priority($set = null)
     {
-        return $this->_params("priority", $set);
+        return sprintf("%02X", $this->_params("priority", $set));
     }
     /**
     * This builds teh ADCFLT Register
@@ -495,7 +521,7 @@ class ADuCInputTable
     */
     public function immediateProcessRoutine($set = null)
     {
-        return $this->_params("process", $set);
+        return sprintf("%02X", $this->_params("process", $set));
     }
     /**
     * This builds teh ADCFLT Register
@@ -513,11 +539,19 @@ class ADuCInputTable
         if (is_int($set)) {
             $par = &$this->_params[$param];
             $set &= $par["mask"];
-            if (!is_array($par["valid"]) || isset($par["valid"][$set])) {
+            if (is_string($par["valid"]) && method_exists($this, $par["valid"])) {
+                $fct = $par["valid"];
+                $check = $this->$fct($set);
+            } else if (is_array($par["valid"]) && !isset($par["valid"][$set])) {
+                $check = false;
+            } else {
+                $check = true;
+            }
+            if ($check) {
                 $par["value"] = $set;
             }
         }
-        return sprintf("%02X", $this->_params[$param]["value"]);
+        return $this->_params[$param]["value"];
     }
     /**
     * This takes the class and makes it into a setup string
@@ -527,9 +561,9 @@ class ADuCInputTable
     public function freq()
     {
         $ret = 0;
-        $sinc = $this->_registers["ADCFLT"]["SF"]["value"];
-        $Filt = $this->_registers["ADCFLT"]["AF"]["Value"];
-        if ($this->_registers["ADCFLT"]["CHOPEN"]) {
+        $sinc = $this->_params("SF");
+        $flt  = $this->_params("AF");
+        if ($this->_params("CHOPEN")) {
             $ret = 512000 / ((($sinc +1) * 64 * (3 + $flt)) + 3);
         } else if ($flt > 0) {
             $ret = 512000 / (($sinc +1) * 64 * (3 + $flt));
@@ -575,6 +609,36 @@ class ADuCInputTable
             return true;
         }
         return false;
+    }
+    /**
+    * Returns the table as an array
+    *
+    * @param bool $default Whether or not to include the default values
+    *
+    * @return array
+    */
+    public function toArray($default = false)
+    {
+        $return = array();
+        foreach ($this->_params as $field => $vals) {
+            $return[$field] = $this->_params($field);
+        }
+        return $return;
+    }
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param array $array This is an array of this class's attributes
+    *
+    * @return null
+    */
+    public function fromArray($array)
+    {
+        foreach ($this->_params as $field => $vals) {
+            if (isset($array[$field])) {
+                $this->_params($field, $array[$field]);
+            }
+        }
     }
 
 }

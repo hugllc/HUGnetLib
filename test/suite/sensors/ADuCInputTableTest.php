@@ -273,12 +273,35 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
     public static function dataFreq()
     {
         return array(
-            array(
+            array( // #0 Chop Enabled
                 array(
                 ),
                 array(
+                    "SF" => 9,
+                    "AF" => 0,
+                    "CHOPEN" => 1,
                 ),
                 266.2507,
+            ),
+            array(  // #1 Chop Disabled
+                array(
+                ),
+                array(
+                    "SF" => 9,
+                    "AF" => 0,
+                    "CHOPEN" => 0,
+                ),
+                800.0,
+            ),
+            array(  // #1 Chop Disabled
+                array(
+                ),
+                array(
+                    "SF" => 9,
+                    "AF" => 7,
+                    "CHOPEN" => 0,
+                ),
+                80.0,
             ),
         );
     }
@@ -309,11 +332,159 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
     public static function dataEncode()
     {
         return array(
-            array(
+            array( // #0 Array in
                 array(
                 ),
-                null,
+                array(
+                ),
+                array(
+                    'driver0' => 0x04,
+                    'driver1' => 0x41,
+                    'priority' => 3,
+                    'process' => 4,
+                    'ADC0EN' => 1,
+                    'ADC0DIAG' => 0,
+                    'HIGHEXTREF0' => 0,
+                    'AMP_CM' => 0,
+                    'ADC0CODE' => 0,
+                    'ADC0CH' => 3,
+                    'ADC0REF' => 0,
+                    'ADC0PGA' => 0,
+                    'ADC1EN' => 1,
+                    'ADC1DIAG' => 0,
+                    'HIGHEXTREF1' => 0,
+                    'ADC1CODE' => 0,
+                    'ADC1CH' => 12,
+                    'ADC1REF' => 0,
+                    'BUF_BYPASS' => 0,
+                    'ADC1PGA' => 0,
+                    'CHOPEN' => 1,
+                    'RAVG2' => 0,
+                    'AF' => 0,
+                    'NOTCH2' => 0,
+                    'SF' => 9,
+                ),
+                "030480C0860080090441",
+            ),
+            array( // #1 Array in
+                array(
+                ),
+                array(
+                    'driver0' => 0x04,
+                    'driver1' => 0x41,
+                    'priority' => 3,
+                    'process' => 4,
+                    'ADC0EN' => 1,
+                    'ADC0DIAG' => 0,
+                    'HIGHEXTREF0' => 0,
+                    'AMP_CM' => 0,
+                    'ADC0CODE' => 0,
+                    'ADC0CH' => 3,
+                    'ADC0REF' => 0,
+                    'ADC0PGA' => 0,
+                    'ADC1EN' => 1,
+                    'ADC1DIAG' => 0,
+                    'HIGHEXTREF1' => 0,
+                    'ADC1CODE' => 0,
+                    'ADC1CH' => 12,
+                    'ADC1REF' => 0,
+                    'BUF_BYPASS' => 0,
+                    'ADC1PGA' => 0,
+                    'CHOPEN' => 1,
+                    'RAVG2' => 0,
+                    'AF' => 0,
+                    'NOTCH2' => 0,
+                    'SF' => 9,
+                ),
+                array(
+                ),
+                "030480C0860080090441",
+            ),
+            array( // #2 Empty array
+                array(
+                ),
+                array(
+                ),
+                array(
+                ),
                 "FF0080C086008009FFFF",
+            ),
+            array( // #3 SF 31, AF 63  --  Valid
+                array(
+                ),
+                array(
+                    "SF" => 31,
+                ),
+                array(
+                    "AF" => 63,
+                ),
+                "FF0080C08600BF1FFFFF",
+            ),
+            array( // #4 SF 63, AF 7  --  Valid
+                array(
+                ),
+                array(
+                    "SF" => 63,
+                ),
+                array(
+                    "AF" => 7,
+                ),
+                "FF0080C08600873FFFFF",
+            ),
+            array( // #5 SF 127, AF 0  --  Valid
+                array(
+                ),
+                array(
+                    "SF" => 127,
+                ),
+                array(
+                    "AF" => 0,
+                ),
+                "FF0080C08600807FFFFF",
+            ),
+            array( // #6 AF 5, SF 127  --  Not valid: Becomes AF 0, SF 127
+                array(
+                ),
+                array(
+                    "AF" => 5,
+                ),
+                array(
+                    "SF" => 127,
+                ),
+                "FF0080C08600807FFFFF",
+            ),
+            array( // #7 AF 10, SF 63  --  Not valid: Becomes AF 7, SF 63
+                array(
+                ),
+                array(
+                    "AF" => 10,
+                ),
+                array(
+                    "SF" => 63,
+                ),
+                "FF0080C08600873FFFFF",
+            ),
+            array( // #8 SF 63, AF 8  --  Not valid: Becomes AF 8, SF 31
+                array(
+                ),
+                array(
+                    "SF" => 63,
+                ),
+                array(
+                    "AF" => 8,
+                ),
+                "FF0080C08600881FFFFF",
+            ),
+            array( // #8 SF 127, AF 7  --  Not valid: Becomes AF 7, SF 63
+                array(
+                ),
+                array(
+                    "SF" => 127,
+                ),
+                array(
+                    "AF" => 7,
+                ),
+                "FF0080C08600873FFFFF",
             ),
         );
     }
@@ -322,17 +493,19 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
     *
     * @param array  $mock    The mocks to preload
     * @param string $preload The string to give to the class
+    * @param array  $array   The array to load into the class
     * @param array  $expect  The info to expect returned
     *
     * @return null
     *
     * @dataProvider dataEncode
     */
-    public function testEncode($mock, $preload, $expect)
+    public function testEncode($mock, $preload, $array, $expect)
     {
         $sensor = new \HUGnet\DummyTable("Sensor");
         $sensor->resetMock($mock);
         $obj = ADuCInputTable::factory($sensor, $preload);
+        $obj->fromArray($array);
         $ret = $obj->encode();
         $this->assertSame($expect, $ret);
     }
@@ -344,19 +517,107 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
     public static function dataDecode()
     {
         return array(
-            array(
+            array( // #0 Feed a string in normally
                 array(
                 ),
                 null,
-                "FF0080C086008009FFFF",
+                "010280C0860080090404",
                 true,
+                array(
+                    'driver0' => 4,
+                    'driver1' => 4,
+                    'priority' => 1,
+                    'process' => 2,
+                    'ADC0EN' => 1,
+                    'ADC0DIAG' => 0,
+                    'HIGHEXTREF0' => 0,
+                    'AMP_CM' => 0,
+                    'ADC0CODE' => 0,
+                    'ADC0CH' => 3,
+                    'ADC0REF' => 0,
+                    'ADC0PGA' => 0,
+                    'ADC1EN' => 1,
+                    'ADC1DIAG' => 0,
+                    'HIGHEXTREF1' => 0,
+                    'ADC1CODE' => 0,
+                    'ADC1CH' => 12,
+                    'ADC1REF' => 0,
+                    'BUF_BYPASS' => 0,
+                    'ADC1PGA' => 0,
+                    'CHOPEN' => 1,
+                    'RAVG2' => 0,
+                    'AF' => 0,
+                    'NOTCH2' => 0,
+                    'SF' => 9,
+                ),
             ),
-            array(
+            array( // #1 Feed the string in through the constructor
+                array(
+                ),
+                "010280C0860080090404",
+                "",
+                false,
+                array(
+                    'driver0' => 4,
+                    'driver1' => 4,
+                    'priority' => 1,
+                    'process' => 2,
+                    'ADC0EN' => 1,
+                    'ADC0DIAG' => 0,
+                    'HIGHEXTREF0' => 0,
+                    'AMP_CM' => 0,
+                    'ADC0CODE' => 0,
+                    'ADC0CH' => 3,
+                    'ADC0REF' => 0,
+                    'ADC0PGA' => 0,
+                    'ADC1EN' => 1,
+                    'ADC1DIAG' => 0,
+                    'HIGHEXTREF1' => 0,
+                    'ADC1CODE' => 0,
+                    'ADC1CH' => 12,
+                    'ADC1REF' => 0,
+                    'BUF_BYPASS' => 0,
+                    'ADC1PGA' => 0,
+                    'CHOPEN' => 1,
+                    'RAVG2' => 0,
+                    'AF' => 0,
+                    'NOTCH2' => 0,
+                    'SF' => 9,
+                ),
+            ),
+            array( // #2 Empty string
                 array(
                 ),
                 null,
                 "",
                 false,
+                array(
+                    'driver0' => 255,
+                    'driver1' => 255,
+                    'priority' => 255,
+                    'process' => 0,
+                    'ADC0EN' => 1,
+                    'ADC0DIAG' => 0,
+                    'HIGHEXTREF0' => 0,
+                    'AMP_CM' => 0,
+                    'ADC0CODE' => 0,
+                    'ADC0CH' => 3,
+                    'ADC0REF' => 0,
+                    'ADC0PGA' => 0,
+                    'ADC1EN' => 1,
+                    'ADC1DIAG' => 0,
+                    'HIGHEXTREF1' => 0,
+                    'ADC1CODE' => 0,
+                    'ADC1CH' => 12,
+                    'ADC1REF' => 0,
+                    'BUF_BYPASS' => 0,
+                    'ADC1PGA' => 0,
+                    'CHOPEN' => 1,
+                    'RAVG2' => 0,
+                    'AF' => 0,
+                    'NOTCH2' => 0,
+                    'SF' => 9,
+                ),
             ),
         );
     }
@@ -367,19 +628,20 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
     * @param string $preload The string to give to the class
     * @param string $string  The string to give to decode
     * @param array  $expect  The info to expect returned
+    * @param array  $array   The array that should be built
     *
     * @return null
     *
     * @dataProvider dataDecode
     */
-    public function testDecode($mock, $preload, $string, $expect)
+    public function testDecode($mock, $preload, $string, $expect, $array)
     {
         $sensor = new \HUGnet\DummyTable("Sensor");
         $sensor->resetMock($mock);
         $obj = ADuCInputTable::factory($sensor, $preload);
         $ret = $obj->decode($string);
         $this->assertSame($expect, $ret);
+        $this->assertSame($array, $obj->toArray());
     }
-
 }
 ?>
