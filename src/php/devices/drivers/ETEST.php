@@ -72,6 +72,7 @@ class ETEST extends EVIRTUAL
         "type" => "test",
         "job"  => "sense",
         "actionClass" => "ActionVirtual",
+        "arch" => "virtual",
     );
     /**
     * This function creates the system.

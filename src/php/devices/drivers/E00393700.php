@@ -72,6 +72,7 @@ class E00393700 extends \HUGnet\devices\Driver
         "packetTimeout" => 2,
         "type" => "endpoint",
         "job"  => "sense",
+        "arch" => "ADuC",
     );
     /**
     * This function creates the system.

@@ -70,6 +70,7 @@ class E00391201 extends \HUGnet\devices\Driver
         "averageTable" => "E00391201AverageTable",
         "type" => "endpoint",
         "job"  => "control",
+        "arch" => "AVR",
     );
     /**
     * This function creates the system.

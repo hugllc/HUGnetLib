@@ -547,6 +547,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         'type' => 'unknown',
                         'job'  => 'unknown',
                         'actionClass' => 'Action',
+                        'arch' => 'unknown',
                         "channels" => array(
                             0 => array(
                                 'decimals' => 2,

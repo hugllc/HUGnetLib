@@ -71,6 +71,7 @@ class EVIRTUAL extends \HUGnet\devices\Driver
         "type" => "virtual",
         "job"  => "calculate",
         "actionClass" => "ActionVirtual",
+        "arch" => "virtual",
     );
     /**
     * This function creates the system.

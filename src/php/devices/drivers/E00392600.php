@@ -69,6 +69,7 @@ class E00392600 extends \HUGnet\devices\Driver
         "ConfigInterval" => 600,
         "type" => "script",
         "packetTimeout" => 2,
+        "arch" => "PC",
     );
     /**
     * This function creates the system.

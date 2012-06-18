@@ -83,6 +83,7 @@ abstract class Driver
         "type" => "unknown",
         "job"  => "unknown",
         "actionClass" => "Action",
+        "arch" => "unknown",
     );
     /**
     * This is where all of the driver information is stored.

@@ -72,6 +72,7 @@ class E00393802 extends \HUGnet\devices\Driver
         "bootloader" => true,
         "type" => "bootloader",
         "job"  => "load",
+        "arch" => "bootloader",
     );
     /**
     * This function creates the system.

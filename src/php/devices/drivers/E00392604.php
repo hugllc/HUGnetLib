@@ -72,6 +72,7 @@ class E00392604 extends E00392600
         "type" => "script",
         "job"  => "gather",
         "packetTimeout" => 2,
+        "arch" => "PC",
     );
     /**
     * This function creates the system.
