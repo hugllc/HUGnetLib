@@ -60,7 +60,7 @@ class InputTableTable extends HUGnetDBTable
     /** @var string This is the table we should use */
     public $sqlTable = "inputTable";
     /** @var string This is the primary key of the table.  Leave blank if none  */
-    public $sqlId = "";
+    public $sqlId = "id";
     /**
     * @var array This is the definition of the columns
     *
@@ -87,47 +87,24 @@ class InputTableTable extends HUGnetDBTable
     * fields.  The index of the base array should be the same as the "Name" field.
     */
     public $sqlColumns = array(
-        "dev" => array(
-            "Name" => "dev",
-            "Type" => "INTEGER",
-        ),
-        "sensor" => array(
-            "Name" => "sensor",
-            "Type" => "INTEGER",
-        ),
         "id" => array(
             "Name" => "id",
             "Type" => "INTEGER",
         ),
-        "type" => array(
-            "Name" => "type",
-            "Type" => "varchar(128)",
+        "name" => array(
+            "Name" => "name",
+            "Type" => "varchar(64)",
+            "Default" => "unnamed",
+        ),
+        "arch" => array(
+            "Name" => "arch",
+            "Type" => "varchar(16)",
             "Default" => '',
         ),
-        "location" => array(
-            "Name" => "location",
-            "Type" => "varchar(128)",
+        "desc" => array(
+            "Name" => "desc",
+            "Type" => "text",
             "Default" => '',
-        ),
-        "dataType" => array(
-            "Name" => "dataType",
-            "Type" => "varchar(32)",
-            "Default" => \HUGnet\units\Driver::TYPE_RAW,
-        ),
-        "units" => array(
-            "Name" => "units",
-            "Type" => "varchar(32)",
-            "Default" => '',
-        ),
-        "decimals" => array(
-            "Name" => "decimals",
-            "Type" => "smallint",
-            "Default" => '2',
-        ),
-        "driver" => array(
-            "Name" => "driver",
-            "Type" => "varchar(32)",
-            "Default" => 'SDEFAULT',
         ),
         "params" => array(
             "Name" => "params",
@@ -150,22 +127,16 @@ class InputTableTable extends HUGnetDBTable
     *   ),
     */
     public $sqlIndexes = array(
-        "DevSensor" => array(
-            "Name" => "DevSensor",
+        "id" => array(
+            "Name" => "id",
             "Unique" => true,
-            "Columns" => array("dev", "sensor"),
+            "Columns" => array("id"),
         ),
     );
 
     /** @var array This is the default values for the data */
     protected $default = array(
         "group" => "default",    // Server group to use
-    );
-    /** @var array These are reserved names that shouldn't be set */
-    private $_set = array(
-        "min",
-        "max",
-        "extra",
     );
     /**
     * This is the constructor
@@ -190,11 +161,9 @@ class InputTableTable extends HUGnetDBTable
         if (array_key_exists($name, $this->default)) {
             $ret = parent::set($name, $value);
         } else {
-            if (in_array($name, $this->_set)) {
-                $array = (array)json_decode(parent::get("params"), true);
-                $array[$name] = $value;
-                parent::set("params", $array);
-            }
+            $array = (array)json_decode(parent::get("params"), true);
+            $array[$name] = $value;
+            parent::set("params", $array);
         }
         return $ret;
     }
@@ -224,7 +193,7 @@ class InputTableTable extends HUGnetDBTable
     {
 
         $ret = (bool) $this->dbDriver()->countWhere(
-            "dev = ? AND sensor = ?", array($this->dev, $this->sensor), "dev"
+            "id = ?", array($this->get("id")), "id"
         );
         $this->dbDriver()->reset();
         return $ret;
@@ -244,7 +213,7 @@ class InputTableTable extends HUGnetDBTable
                 unset($array[$key]);
             }
             $set = array();
-            foreach ($this->_set as $key) {
+            foreach (array_keys((array)$array) as $key) {
                 if (isset($array[$key])) {
                     $set[$key] = $array[$key];
                 }
@@ -287,22 +256,5 @@ class InputTableTable extends HUGnetDBTable
             $this->data["params"] = $value;
         }
     }
-    /**
-    * function to set LastHistory
-    *
-    * @param string $value The value to set
-    *
-    * @return null
-    */
-    protected function setDataType($value)
-    {
-        if (($value == \HUGnet\units\Driver::TYPE_RAW)
-            || ($value == \HUGnet\units\Driver::TYPE_DIFF)
-            || ($value == \HUGnet\units\Driver::TYPE_IGNORE)
-        ) {
-            $this->data["dataType"] = $value;
-        }
-    }
-
 }
 ?>
