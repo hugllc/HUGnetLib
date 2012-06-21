@@ -178,6 +178,10 @@ class Action
     */
     public function poll($TestID = null, $time = null)
     {
+        $HWPart = $this->device->get("HWPartNum");
+        if (empty($HWPart)) {
+            return false;
+        }
         if (empty($time)) {
             $time = time();
         }
