@@ -108,6 +108,9 @@ HUGnet.TestsView = Backbone.View.extend({
     },
     initialize: function (options)
     {
+        if (options) {
+            if (options.url) this.url = options.url;
+        }
         this.model.each(this.insert, this);
         this.model.bind('add', this.insert, this);
         this.model.bind('savefail', this.saveFail, this);
@@ -117,7 +120,7 @@ HUGnet.TestsView = Backbone.View.extend({
     {
         var self = this;
         var ret = $.ajax({
-            type: 'POST',
+            type: 'GET',
             url: this.url,
             dataType: 'json',
             cache: false,
@@ -160,7 +163,7 @@ HUGnet.TestsView = Backbone.View.extend({
             action = "run";
         }
         var ret = $.ajax({
-            type: 'POST',
+            type: 'GET',
             url: this.url,
             dataType: 'json',
             cache: false,

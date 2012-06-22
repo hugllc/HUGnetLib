@@ -67,7 +67,6 @@ HUGnet.Device = Backbone.Model.extend({
         ViewButtonID: '',
         RefreshButtonID: '',
         target: '',
-        url: '/HUGnetLib/index.php'
     },
     /**
     * This function initializes the object
@@ -98,7 +97,7 @@ HUGnet.Device = Backbone.Model.extend({
             var myself = this;
             $.ajax({
                 type: 'GET',
-                url: this.get('url'),
+                url: this.url(),
                 cache: false,
                 dataType: 'json',
                 data:
@@ -129,7 +128,7 @@ HUGnet.Device = Backbone.Model.extend({
             var self = this;
             $.ajax({
                 type: 'POST',
-                url: this.get('url'),
+                url: this.url(),
                 dataType: 'json',
                 cache: false,
                 data:
@@ -173,7 +172,7 @@ HUGnet.Device = Backbone.Model.extend({
             var self = this;
             $.ajax({
                 type: 'GET',
-                url: this.get('url'),
+                url: this.url(),
                 dataType: 'json',
                 cache: false,
                 data: {
@@ -217,7 +216,7 @@ HUGnet.Device = Backbone.Model.extend({
             var self = this;
             $.ajax({
                 type: 'GET',
-                url: this.get('url'),
+                url: this.url(),
                 dataType: 'json',
                 cache: false,
                 data: {
@@ -260,7 +259,7 @@ HUGnet.Device = Backbone.Model.extend({
             var self = this;
             $.ajax({
                 type: 'GET',
-                url: this.get('url'),
+                url: this.url(),
                 dataType: 'json',
                 cache: false,
                 data: {
@@ -304,6 +303,12 @@ HUGnet.Device = Backbone.Model.extend({
 HUGnet.Devices = Backbone.Collection.extend({
     url: '/HUGnetLib/index.php',
     model: HUGnet.Device,
+    initialize: function (options)
+    {
+        if (options) {
+            if (options.url) this.url = options.url;
+        }
+    },
     comparator: function (model)
     {
         return model.get("id");

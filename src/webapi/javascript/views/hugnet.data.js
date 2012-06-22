@@ -65,10 +65,7 @@ HUGnet.DataView = Backbone.View.extend({
     },
     initialize: function (options)
     {
-        this.setup(options);
-    },
-    setup: function (options)
-    {
+        this.url = options.url;
         this.data = options.data;
         var device;
         var i;
@@ -99,7 +96,8 @@ HUGnet.DataView = Backbone.View.extend({
                 id: this.model.get('id'),
                 mode: this.mode,
                 type: this.type,
-                limit: this.limit
+                limit: this.limit,
+                url: this.url
             }
         );
         this.history.on(

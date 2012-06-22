@@ -53,7 +53,6 @@ HUGnet.DeviceSensor = Backbone.Model.extend({
         decimals: 0,
         driver: 'SDEFAULT',
         params: {},
-        url: '/HUGnetLib/index.php'
     },
     idAttribute: 'sensor',
     /**
@@ -75,7 +74,7 @@ HUGnet.DeviceSensor = Backbone.Model.extend({
         var self = this;
         $.ajax({
             type: 'GET',
-            url: this.get('url'),
+            url: this.url(),
             cache: false,
             dataType: 'json',
             data:
@@ -118,7 +117,7 @@ HUGnet.DeviceSensor = Backbone.Model.extend({
         delete data.url;
         $.ajax({
             type: 'POST',
-            url: this.get('url'),
+            url: this.url(),
             cache: false,
             dataType: 'json',
             data: {

@@ -43,12 +43,14 @@
 HUGnet.TestSuite = Backbone.View.extend({
     tabs: undefined,
     data: {},
+    url: '/HUGnetLib/index.php',
     initialize: function (options)
     {
+        if (options.url) this.url = options.url;
         this.tests = new HUGnet.TestsView({
-            model: options.tests
+            model: options.tests,
+            url: this.url
         });
-
         this.render();
     },
     render: function ()
@@ -103,7 +105,8 @@ HUGnet.TestSuite = Backbone.View.extend({
         this.data[tag] = new HUGnet.DataView({
             parent: tag,
             model: test,
-            TestID: 1
+            TestID: 1,
+            url: this.url
         });
         var title = 'View Test "' + test.get("DeviceName") + '"';
 

@@ -42,10 +42,13 @@
 */
 HUGnet.Config = Backbone.View.extend({
     tabs: undefined,
+    url: "/HUGnetLib/index.php",
     initialize: function (options)
     {
+        if (options.url) this.url = options.url;
         this.devices = new HUGnet.DevicesView({
-            model: options.devices
+            model: options.devices,
+            url: this.url
         });
 
         this.render();
