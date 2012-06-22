@@ -139,7 +139,6 @@ class PushDevices extends \HUGnet\updater\Periodic
                 }
             }
             $this->last = $now;
-            print "Memory: ".((memory_get_usage()) / 1024.0 / 1024.0)."M".PHP_EOL;
         }
     }
 }
