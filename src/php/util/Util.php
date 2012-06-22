@@ -110,7 +110,7 @@ class Util
             )
         );
         $ctx = stream_context_create($params);
-        $response = file_get_contents($url, false, $ctx);
+        $response = @file_get_contents($url, false, $ctx);
         $return = json_decode($response, true);
         if (is_null($return) && ($response != "null")) {
             $return = $response;
