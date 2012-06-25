@@ -127,6 +127,7 @@ abstract class Driver
         "FE:DewPointVirtual"         => "DewPointVirtual",
         "FE:LinearTransformVirtual"  => "LinearTransformVirtual",
         "FE:WindChillVirtual"        => "WindChillVirtual",
+        "FF:DEFAULT"                 => "EmptySensor",
     );
     /**
     * This function sets up the driver object, and the database object.  The
