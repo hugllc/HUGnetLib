@@ -131,6 +131,8 @@ class Gather extends \HUGnet\ui\Daemon
                 "Gather script ".sprintf("%06X", $this->_myID)." is disabled."
             );
         }
+        $mem = round((memory_get_usage()) / 1024.0 / 1024.0, 3);
+        $this->out("Memory: ".$mem." M");
         $this->_wait();
     }
     /**

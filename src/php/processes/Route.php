@@ -57,12 +57,12 @@ require_once dirname(__FILE__)."/../updater/Periodic.php";
 class Route extends \HUGnet\ui\Daemon
 {
     /** This is the amount of time we wait */
-    const WAIT_TIME = 30;
+    const WAIT_TIME = 120;
 
     /** This is the start time of the current run */
     private $_mainStart;
     /** How long we should wait */
-    private $_wait = 30;
+    private $_wait = 60;
     /** This is my ID */
     private $_myID;
     /** This is the device we are using */
@@ -98,6 +98,8 @@ class Route extends \HUGnet\ui\Daemon
                 "Route script ".sprintf("%06X", $this->_myID)." is disabled."
             );
         }
+        $mem = round((memory_get_usage()) / 1024.0 / 1024.0, 3);
+        $this->out("Memory: ".$mem." M");
         $this->_wait();
     }
     /**
@@ -107,7 +109,7 @@ class Route extends \HUGnet\ui\Daemon
     */
     private function _wait()
     {
-        $this->_wait = self::WAIT_TIME - (time() - $this->_mainStart);
+        //$this->_wait = self::WAIT_TIME - (time() - $this->_mainStart);
         if (($this->_wait > 0) && $this->loop()) {
             for (; ($this->_wait > 0) && $this->loop(); $this->_wait--) {
                 parent::main();
