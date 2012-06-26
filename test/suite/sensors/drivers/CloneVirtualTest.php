@@ -129,11 +129,8 @@ class CloneVirtualTest extends DriverTestBase
                     "Sensor1" => array(
                         "get" => array(
                             "sensor" => 2,
+                            "driver" => "ADuCVoltage",
                             "extra" => array(1008, 1),
-                            "storageUnit" => "A",
-                            "maxDecimals" => 6,
-                            "unitType" => "Current",
-                            "storageType" => \HUGnet\units\Driver::TYPE_RAW,
                         ),
                         "channels" => array(
                         ),
@@ -146,11 +143,11 @@ class CloneVirtualTest extends DriverTestBase
                 array(
                     array(
                         "value" => null,
-                        "decimals" => 6,
-                        "units" => "A",
-                        'maxDecimals' => 6,
-                        'storageUnit' => 'A',
-                        "unitType" => "Current",
+                        "decimals" => 8,
+                        "units" => "V",
+                        'maxDecimals' => 8,
+                        'storageUnit' => 'V',
+                        "unitType" => "Voltage",
                         "dataType" => \HUGnet\units\Driver::TYPE_RAW,
                     ),
                 ),

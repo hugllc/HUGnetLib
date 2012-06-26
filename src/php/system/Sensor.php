@@ -122,25 +122,8 @@ class Sensor extends SystemTableBase
         $ret = $driver->get($field);
         if (is_null($ret)) {
             $ret = parent::get($field);
-        } else if (is_string($ret)) {
-            $this->_getExtra($ret);
         }
         return $ret;
-    }
-    /**
-    * Sets the value of a getExtra parameter if it finds one.
-    *
-    * @param string &$value Set the value to check
-    *
-    * @return null
-    */
-    private function _getExtra(&$value)
-    {
-        if (is_string($value) && (strtolower(substr($value, 0, 8)) === "getextra")) {
-            $value = $this->driver()->getExtra(
-                (int)substr($value, 8)
-            );
-        }
     }
     /**
     * Returns the table as an array
@@ -153,10 +136,7 @@ class Sensor extends SystemTableBase
     {
         $return = $this->table()->toArray($default);
         if ($default) {
-            $driver = $this->driver()->toArray($this->table()->get("sensor"));
-            foreach (array_keys($driver) as $key) {
-                $this->_getExtra($driver[$key]);
-            }
+            $driver = $this->driver()->toArray();
             $return = array_merge($driver, $return);
         }
         $params = json_decode($return["params"], true);

@@ -651,9 +651,9 @@ class DriverTest extends drivers\DriverTestBase
                 "\HUGnet\sensors\DriverTestClass",
                 array(
                     array(
-                        "decimals" => 2,
+                        "decimals" => 7,
                         "units" => 'unknown',
-                        "maxDecimals" => 2,
+                        "maxDecimals" => 7,
                         "storageUnit" => 'unknown',
                         "unitType" => 'asdf',
                         "dataType" => \HUGnet\units\Driver::TYPE_RAW,

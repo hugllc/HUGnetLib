@@ -118,6 +118,7 @@ abstract class Driver
         "42:DEFAULT"                 => "ADuCThermocouple",
         "43:DEFAULT"                 => "ADuCVoltage",
         "50:ControllerCurrent"       => "ControllerCurrent",
+        "F9:DEFAULT"                 => "ADuCInputTable",
         "FA:DEFAULT"                 => "SDEFAULT",
         "FE:DEFAULT"                 => "EmptyVirtual",
         "FE:AlarmVirtual"            => "AlarmVirtual",
@@ -217,7 +218,7 @@ abstract class Driver
         } else if (isset($this->_default[$name])) {
             $ret = $this->_default[$name];
         }
-        if (is_string($ret) && (substr($ret, 0, 8) === "getExtra")) {
+        if (is_string($ret) && (strtolower(substr($ret, 0, 8)) === "getextra")) {
             $key = (int)substr($ret, 8);
             $ret = $this->getExtra($key);
         }
@@ -447,12 +448,12 @@ abstract class Driver
     {
         return array(
             array(
-                "decimals" => $this->sensor()->get("maxDecimals"),
-                "units" => $this->sensor()->get("storageUnit"),
-                "maxDecimals" => $this->sensor()->get("maxDecimals"),
-                "storageUnit" => $this->sensor()->get("storageUnit"),
-                "unitType" => $this->sensor()->get("unitType"),
-                "dataType" => $this->sensor()->get("storageType"),
+                "decimals" => $this->get("maxDecimals"),
+                "units" => $this->get("storageUnit"),
+                "maxDecimals" => $this->get("maxDecimals"),
+                "storageUnit" => $this->get("storageUnit"),
+                "unitType" => $this->get("unitType"),
+                "dataType" => $this->get("storageType"),
             ),
         );
     }
