@@ -200,6 +200,8 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             "&#176;C" => "&#176;C",
                             "K" => "K"
                         ),
+                        'validIds' => array(
+                        ),
                     )
                 ),
             ),

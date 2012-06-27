@@ -100,10 +100,10 @@ abstract class DriverADuC extends Driver
     */
     protected function inputBiasCompensation($value, $Rin, $Rbias)
     {
-        if ($Rbias == 0) {
+        if ((float)$Rbias == 0) {
             return null;
         }
-        return (float)bcdiv(bcmul($value, bcadd($Rin, $Rbias)), $Rbias);
+        return (float)bcdiv(bcmul($value, bcadd($Rin, $Rbias)), (float)$Rbias);
     }
 }
 

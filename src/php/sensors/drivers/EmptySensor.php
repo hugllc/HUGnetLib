@@ -91,23 +91,23 @@ class EmptySensor extends \HUGnet\sensors\Driver
         return parent::intFactory($sensor);
     }
     /**
-    * Changes a raw reading into a output value
+    * Gets the direction from a direction sensor made out of a POT.
     *
-    * @param int   $A      Output of the A to D converter
-    * @param float $deltaT The time delta in seconds between this record
-    * @param array &$data  The data from the other sensors that were crunched
-    * @param mixed $prev   The previous value for this sensor
+    * @param string &$string The data string
+    * @param float  $deltaT  The time delta in seconds between this record
+    * @param array  &$prev   The previous reading
+    * @param array  &$data   The data from the other sensors that were crunched
     *
-    * @return mixed The value in whatever the units are in the sensor
+    * @return float The direction in degrees
     *
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.ShortVariable)
     */
-    public function getReading(
-        $A, $deltaT = 0, &$data = array(), $prev = null
+    public function decodeData(
+        &$string, $deltaT = 0, &$prev = null, &$data = array()
     ) {
-        return null;
-
+        return array();
     }
+
     /**
     * This builds the class from a setup string
     *

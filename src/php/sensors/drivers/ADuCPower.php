@@ -326,17 +326,40 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
     {
         $sid = (int)$this->sensor()->id();
         if (($sid === 3) || ($sid === 1)) {
-            $ret = array();
-            foreach (array(1,2,5,6) as $i) {
-                $ret[] = array(
-                    "decimals" => $this->get("maxDecimals", $i),
-                    "units" => $this->get("storageUnit", $i),
-                    "maxDecimals" => $this->get("maxDecimals", $i),
-                    "storageUnit" => $this->get("storageUnit", $i),
-                    "unitType" => $this->get("unitType", $i),
-                    "dataType" => $this->get("storageType", $i),
-                );
-            }
+            $ret = array(
+                array(
+                    "decimals" => 6,
+                    "units" => "A",
+                    "maxDecimals" => 6,
+                    "storageUnit" => "A",
+                    "unitType" => "Current",
+                    "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                ),
+                array(
+                    "decimals" => 6,
+                    "units" => "V",
+                    "maxDecimals" => 6,
+                    "storageUnit" => "V",
+                    "unitType" => "Voltage",
+                    "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                ),
+                array(
+                    "decimals" => 6,
+                    "units" => "W",
+                    "maxDecimals" => 6,
+                    "storageUnit" => "W",
+                    "unitType" => "Power",
+                    "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                ),
+                array(
+                    "decimals" => 6,
+                    "units" => "Ohms",
+                    "maxDecimals" => 6,
+                    "storageUnit" => "Ohms",
+                    "unitType" => "Impedance",
+                    "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                )
+            );
         } else {
             $ret = array();
         }

@@ -315,6 +315,47 @@ class DriverTest extends drivers\DriverTestBase
         );
     }
     /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataGetDrivers()
+    {
+        return array(
+            array(
+                1,
+                array(
+                    'FE' => 'Virtual',
+                    'FF' => 'Empty Slot'
+                ),
+            ),
+            array(
+                "AVR",
+                array(
+                    '02' => 'Generic Analog',
+                    'FE' => 'Virtual',
+                    'FF' => 'Empty Slot'
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $arch   The architecture
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataGetDrivers
+    */
+    public function testGetDrivers($arch, $expect)
+    {
+        $this->assertSame(
+            $expect, Driver::getDrivers($arch)
+        );
+    }
+    /**
     * data provider for testGetExtra
     *
     * @return array

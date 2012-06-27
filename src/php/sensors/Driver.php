@@ -131,6 +131,25 @@ abstract class Driver
         "FF:DEFAULT"                 => "EmptySensor",
     );
     /**
+    * This is where the correlation between the drivers and the arch is stored.
+    *
+    * If a driver is not registered here, it will not be in the list of drivers
+    * that can be chosen.
+    *
+    */
+    private static $_arch = array(
+        "AVR" => array(
+            "02" => "Generic Analog",
+        ),
+        "ADuC" => array(
+            "F9" => "Input Table Entry",
+        ),
+        "all" => array(
+            "FE" => "Virtual",
+            "FF" => "Empty Slot",
+        ),
+    );
+    /**
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
     *
@@ -456,6 +475,17 @@ abstract class Driver
                 "dataType" => $this->get("storageType"),
             ),
         );
+    }
+    /**
+    * Returns the driver that should be used for a particular device
+    *
+    * @param string $arch The name of the architecture to get drivers for
+    *
+    * @return array The array of drivers that will work
+    */
+    public static function getDrivers($arch)
+    {
+        return array_merge((array)self::$_arch[$arch], self::$_arch["all"]);
     }
 }
 
