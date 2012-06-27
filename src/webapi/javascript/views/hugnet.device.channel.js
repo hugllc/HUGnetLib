@@ -147,7 +147,7 @@ HUGnet.DeviceChannelsView = Backbone.View.extend({
         this.$el.append(view.render().el);
         view.$el.dialog({
             modal: true,
-            draggable: false,
+            draggable: true,
             width: 300,
             resizable: false,
             title: view.title(),

@@ -169,7 +169,7 @@ var DevicePropertiesView = Backbone.View.extend({
         this.$el.append(view.render().el);
         view.$el.dialog({
             modal: true,
-            draggable: false,
+            draggable: true,
             width: 700,
             resizable: false,
             title: title,
@@ -325,7 +325,7 @@ HUGnet.DevicesView = Backbone.View.extend({
         this.$el.append(view.render().el);
         view.$el.dialog({
             modal: true,
-            draggable: false,
+            draggable: true,
             width: 700,
             resizable: false,
             title: view.title(),
