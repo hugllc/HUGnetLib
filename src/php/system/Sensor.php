@@ -66,6 +66,11 @@ class Sensor extends SystemTableBase
     */
     private $_driverCache = array();
     /**
+    * This is the device we rode in on
+    */
+    private $_device;
+
+    /**
     * This is the destructor
     */
     public function __destruct()
@@ -73,6 +78,7 @@ class Sensor extends SystemTableBase
         foreach (array_keys((array)$this->_driverCache) as $key) {
             unset($this->_driverCache[$key]);
         }
+        unset($this->_device);
         parent::__destruct();
     }
     /**
@@ -84,9 +90,16 @@ class Sensor extends SystemTableBase
     *
     * @return null
     */
-    public static function &factory($system, $data=null, $table="SensorsTable")
-    {
-        $object = &parent::factory($system, $data, $table);
+    public static function &factory(
+        &$system, &$device, $data=null, $table="SensorsTable"
+    ) {
+        System::exception(
+            "\HUGnet\Sensor needs to be passed a device object",
+            "InvalidArgument",
+            !is_object($device)
+        );
+        $object = parent::factory($system, $data, $table);
+        $object->_device = &$device;
         return $object;
     }
     /**
@@ -331,11 +344,19 @@ class Sensor extends SystemTableBase
     {
         $chan   = 0;
         $sensor = $this->id();
-        $device = &$this->system()->device((int)$this->table()->get("dev"));
         for ($i = 0; $i < $sensor; $i++) {
-            $chan += count($device->sensor($i)->channels());
+            $chan += count($this->device()->sensor($i)->channels());
         }
         return $chan;
+    }
+    /**
+    * This builds the class from a setup string
+    *
+    * @return Array of channel information
+    */
+    public function device()
+    {
+        return $this->_device;
     }
     /**
     * Gets the config and saves it

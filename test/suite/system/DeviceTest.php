@@ -502,6 +502,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $sensors = array();
         $obj = Sensor::factory(
             new DummySystem("TestStuff"),
+            new DummySystem("Device"),
             array(
             )
         );

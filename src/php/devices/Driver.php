@@ -373,7 +373,7 @@ abstract class Driver
     *
     * @return object
     */
-    protected function device()
+    protected function &device()
     {
         return $this->_device;
     }
@@ -391,7 +391,9 @@ abstract class Driver
             "sensor" => $sid,
             "dev" => $this->device()->id(),
         );
-        $obj = \HUGnet\Sensor::factory($this->device()->system(), $data);
+        $obj = \HUGnet\Sensor::factory(
+            $this->device()->system(), $this->device(), $data
+        );
         if (is_null($obj->get("id"))) {
             $tSensors = $this->device()->get("sensors");
             if (is_string($tSensors) && !empty($tSensors)) {
