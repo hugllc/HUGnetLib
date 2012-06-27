@@ -162,8 +162,7 @@ class Sensor extends SystemTableBase
         if ($default) {
             $return["otherTypes"] = \HUGnet\sensors\Driver::getTypes($return["id"]);
             $return["validUnits"] = $this->units()->getValid();
-            $return["validIds"] = array();
-            //$return["validIds"] = \HUGnet\sensors\Driver::getDrivers("ADuC");
+            $return["validIds"] = $this->driver()->getDrivers();
         }
         return (array)$return;
     }

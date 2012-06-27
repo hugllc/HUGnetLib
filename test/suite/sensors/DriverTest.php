@@ -323,18 +323,36 @@ class DriverTest extends drivers\DriverTestBase
     {
         return array(
             array(
-                1,
                 array(
-                    'FE' => 'Virtual',
-                    'FF' => 'Empty Slot'
+                    "Sensor" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "get" => array(
+                            "arch" => "1",
+                        ),
+                    ),
+                ),
+                array(
+                    254 => 'Virtual',
+                    255 => 'Empty Slot'
                 ),
             ),
             array(
-                "AVR",
                 array(
-                    '02' => 'Generic Analog',
-                    'FE' => 'Virtual',
-                    'FF' => 'Empty Slot'
+                    "Sensor" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "get" => array(
+                            "arch" => "AVR",
+                        ),
+                    ),
+                ),
+                array(
+                    2 => 'Generic Analog',
+                    254 => 'Virtual',
+                    255 => 'Empty Slot'
                 ),
             ),
         );
@@ -342,17 +360,19 @@ class DriverTest extends drivers\DriverTestBase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $arch   The architecture
-    * @param array  $expect The expected return
+    * @param array $mocks  The architecture
+    * @param array $expect The expected return
     *
     * @return null
     *
     * @dataProvider dataGetDrivers
     */
-    public function testGetDrivers($arch, $expect)
+    public function testGetDrivers($mocks, $expect)
     {
+        $dev = new \HUGnet\DummyBase("Sensor");
+        $dev->resetMock($mocks);
         $this->assertSame(
-            $expect, Driver::getDrivers($arch)
+            $expect, $this->o->getDrivers()
         );
     }
     /**

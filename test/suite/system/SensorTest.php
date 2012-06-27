@@ -202,6 +202,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             "K" => "K"
                         ),
                         'validIds' => array(
+                            254 => "Virtual", 255 => "Empty Slot"
                         ),
                     )
                 ),

@@ -137,16 +137,16 @@ abstract class Driver
     * that can be chosen.
     *
     */
-    private static $_arch = array(
+    private $_arch = array(
         "AVR" => array(
-            "02" => "Generic Analog",
+            0x02 => "Generic Analog",
         ),
         "ADuC" => array(
-            "F9" => "Input Table Entry",
+            0xF9 => "Input Table Entry",
         ),
         "all" => array(
-            "FE" => "Virtual",
-            "FF" => "Empty Slot",
+            0xFE => "Virtual",
+            0xFF => "Empty Slot",
         ),
     );
     /**
@@ -479,13 +479,12 @@ abstract class Driver
     /**
     * Returns the driver that should be used for a particular device
     *
-    * @param string $arch The name of the architecture to get drivers for
-    *
     * @return array The array of drivers that will work
     */
-    public static function getDrivers($arch)
+    public function getDrivers()
     {
-        return array_merge((array)self::$_arch[$arch], self::$_arch["all"]);
+        return (array)$this->_arch[$this->sensor()->device()->get("arch")]
+            + (array)$this->_arch["all"];
     }
 }
 

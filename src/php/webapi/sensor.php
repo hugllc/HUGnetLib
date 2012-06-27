@@ -45,7 +45,7 @@ $ret    = "";
 
 if ($action === "post") {
     $worked = true;
-    $data = &$_POST["sensor"];
+    $data = &$_REQUEST["sensor"];
     if (is_array($data) && isset($data['sensor'])) {
         $worked &= $sen->change($data);
     }

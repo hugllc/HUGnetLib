@@ -47,7 +47,8 @@ var DeviceSensorPropertiesView = Backbone.View.extend({
     _close: false,
     events: {
         'click .save': 'saveclose',
-        'change select.type': 'save'
+        'change select.type': 'save',
+        'change select.id': 'save'
     },
     initialize: function (options)
     {
@@ -88,11 +89,15 @@ var DeviceSensorPropertiesView = Backbone.View.extend({
             output.extra[i] = output['extra['+i+']'];
             delete output['extra['+i+']'];
         }
+        console.log(output);
         this.model.set(output);
         this.model.save();
     },
     setTitle: function (extra)
     {
+        if (extra == "undefined") {
+            extra = "";
+        }
         this.$el.dialog( "option", "title", this.title() + extra );
     },
     /**
