@@ -66,7 +66,7 @@ class ADuCInputTable
     */
     private $_params = array(
         "driver0"  => array(
-            "value" => 0xFF,
+            "value" => 0x41,
             'mask'  => 0xFF,
             "valid" => array(
                 0x04 => "ADuC RTD",
