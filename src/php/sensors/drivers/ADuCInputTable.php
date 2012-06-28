@@ -70,6 +70,10 @@ class ADuCInputTable extends \HUGnet\sensors\Driver
     */
     private $_table;
     /**
+    * This is where we store the InputTable
+    */
+    private $_tableClass = "InputTableTable";
+    /**
     * This is where we store our entry in the input table
     */
     private $_entry;
@@ -111,9 +115,15 @@ class ADuCInputTable extends \HUGnet\sensors\Driver
     *
     * @return null
     */
-    public static function &factory(&$sensor)
+    public static function &factory(&$sensor, $class = "InputTableTable")
     {
-        return parent::intFactory($sensor);
+        $obj = parent::intFactory($sensor);
+        if (is_object($class)) {
+            $obj->_table = $class;
+        } else if (is_string($class)) {
+            $obj->_tableClass = $class;
+        }
+        return $obj;
     }
     /**
     * Returns the driver object
@@ -143,11 +153,16 @@ class ADuCInputTable extends \HUGnet\sensors\Driver
     *
     * @return object The driver requested
     */
-    private function &_table()
+    private function &_table($class = "InputTableTable")
     {
         if (!is_object($this->_table)) {
-            include_once dirname(__FILE__)."/../../tables/InputTableTable.php";
-            $this->_table = new \InputTableTable();
+            include_once dirname(__FILE__)."/../../tables/$class.php";
+            $class = "\\".$class;
+            if (!class_exists($class)) {
+                include_once dirname(__FILE__)."/../../tables/InputTableTable.php";
+                $class = "\\InputTableTable";
+            }
+            $this->_table = new $class();
         }
         return $this->_table;
     }
@@ -160,7 +175,8 @@ class ADuCInputTable extends \HUGnet\sensors\Driver
     {
         if (!is_object($this->_entry)) {
             include_once dirname(__FILE__)."/../ADuCInputTable.php";
-            $this->_table()->getRow($this->getExtra(0));
+            $extra = $this->sensor()->get("extra");
+            $this->_table()->getRow((int)$extra[0]);
             $this->_entry = \HUGnet\sensors\ADuCInputTable::factory(
                 $this, $this->_table()->toArray()
             );
@@ -168,25 +184,36 @@ class ADuCInputTable extends \HUGnet\sensors\Driver
         return $this->_entry;
     }
     /**
+    * Returns the driver object
+    *
+    * @return object The driver requested
+    */
+    private function _getTableEntries()
+    {
+        $values = $this->_table()->select("arch = ?", array("ADuC"));
+        $return = array();
+        foreach ((array)$values as $val) {
+            $return[$val->get("id")] = $val->get("name");
+        }
+        return $return;
+    }
+    /**
     * Gets an item
     *
     * @param string $name The name of the property to get
-    * @param int    $sid  The sensor ID to use
     *
     * @return null
     */
-    public function get($name, $sid = null)
+    public function get($name)
     {
-        if (!is_int($sid)) {
-            $sid = $this->sensor()->id();
-        }
-        $sid = (int)$sid;
         $param = parent::get($name);
-        if (is_object($this->_entry)) {
+//        if (is_object($this->_entry)) {
             switch ($name) {
-            case "extraDefault":
-            case "extraText":
             case "extraValues":
+                $param = (array)$param;
+                $param[0] = $this->_getTableEntries();
+            case "extraText":
+            case "extraDefault":
                 $param = array_merge(
                     (array)$param,
                     (array)$this->_driver(0)->get($name),
@@ -194,7 +221,7 @@ class ADuCInputTable extends \HUGnet\sensors\Driver
                 );
                 break;
             }
-        }
+//        }
         return $param;
     }
     /**

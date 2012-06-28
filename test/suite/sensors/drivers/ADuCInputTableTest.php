@@ -39,6 +39,8 @@ namespace HUGnet\sensors\drivers;
 require_once dirname(__FILE__)."/DriverTestBase.php";
 /** This is a required class */
 require_once CODE_BASE.'sensors/drivers/ADuCInputTable.php';
+/** This is a required class */
+require_once CODE_BASE.'tables/InputTableTable.php';
 
 /**
  * Test class for HUGnetDB.
@@ -70,8 +72,9 @@ class ADuCInputTableTest extends DriverTestBase
     {
         parent::setUp();
         $sensor = new \HUGnet\DummyBase("Sensor");
+        $table = new \HUGnet\DummyBase("Table");
         $sensor->resetMock(array());
-        $this->o = &ADuCInputTable::factory($sensor);
+        $this->o = &ADuCInputTable::factory($sensor, $table);
     }
 
     /**
@@ -299,6 +302,28 @@ class ADuCInputTableTest extends DriverTestBase
                 ),
                 6,
             ),
+            array(
+                "extraValues",
+                array(
+                    "Sensor" => array(
+                        "id" => 5,
+                    ),
+                    "Table" => array(
+                        "select" => array(
+                            "1" => new \InputTableTable(
+                                array("id" => 1, "name" => "Hello")
+                            ),
+                            "2" => new \InputTableTable(
+                                array("id" => 2, "name" => "Again")
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    array(1 => "Hello", 2 => "Again"),
+                    5, 5, 5
+                ),
+            ),
         );
     }
     /**
@@ -338,7 +363,10 @@ class ADuCInputTableTest extends DriverTestBase
                 array(
                     "Sensor" => array(
                         "get" => array(array("extra")),
-                        "id" => array(array()),
+                    ),
+                    "Table" => array(
+                        "getRow" => array(array(0)),
+                        "toArray" => array(array()),
                     ),
                 ),
             ),
