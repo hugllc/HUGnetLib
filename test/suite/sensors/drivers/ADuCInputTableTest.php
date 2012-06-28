@@ -184,16 +184,60 @@ class ADuCInputTableTest extends DriverTestBase
                 array(
                     "Sensor" => array(
                         "id" => 1,
+                        "extra" => array(
+                            1,
+                        ),
+                    ),
+                    "Table" => array(
+                        "toArray" => array(
+                            "driver0" => 0x04,
+                            "driver1" => 0x41,
+                        ),
                     ),
                 ),
                 "\HUGnet\sensors\drivers\ADuCInputTable",
                 array(
                     0 => Array (
+                        'decimals' => 4,
+                        'units' => '&#176;C',
+                        'maxDecimals' => 4,
+                        'storageUnit' => '&#176;C',
+                        'unitType' => 'Temperature',
+                        'dataType' => 'raw',
+                    ),
+                    1 => Array (
                         'decimals' => 8,
                         'units' => 'V',
                         'maxDecimals' => 8,
                         'storageUnit' => 'V',
                         'unitType' => 'Voltage',
+                        'dataType' => 'raw',
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "extra" => array(
+                            1,
+                        ),
+                    ),
+                    "Table" => array(
+                        "toArray" => array(
+                            "driver0" => 0x04,
+                            "driver1" => 0xFF,
+                        ),
+                    ),
+                ),
+                "\HUGnet\sensors\drivers\ADuCInputTable",
+                array(
+                    0 => Array (
+                        'decimals' => 4,
+                        'units' => '&#176;C',
+                        'maxDecimals' => 4,
+                        'storageUnit' => '&#176;C',
+                        'unitType' => 'Temperature',
                         'dataType' => 'raw',
                     ),
                 ),
@@ -215,8 +259,7 @@ class ADuCInputTableTest extends DriverTestBase
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($mocks);
-        $obj = &$name::factory($sensor);
-        $this->assertSame($expect, $obj->channels());
+        $this->assertSame($expect, $this->o->channels());
     }
     /**
      * Data provider for testGetReading
