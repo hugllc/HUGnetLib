@@ -303,7 +303,7 @@ class InputTableTableTest extends HUGnetDBTableTestBase
                     "name" => "asdf",
                     "desc" => "HERE",
                     "arch" => "Temperature",
-                    "params" => "[]",
+                    "params" => json_encode(array(1,2,3,4)),
                 ),
             ),
         );

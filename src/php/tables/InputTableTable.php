@@ -212,7 +212,7 @@ class InputTableTable extends HUGnetDBTable
             foreach ($this->getProperties() as $key) {
                 unset($array[$key]);
             }
-            $set = array();
+            $set = json_decode($this->get("params"), true);
             foreach (array_keys((array)$array) as $key) {
                 if (isset($array[$key])) {
                     $set[$key] = $array[$key];
