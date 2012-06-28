@@ -70,6 +70,7 @@ class E00392100 extends \HUGnet\devices\Driver
         "virtualSensors" => 4,
         "historyTable" => "E00392100HistoryTable",
         "averageTable" => "E00392100AverageTable",
+        "loadable" => true,
         'ConfigInterval' => 600,
         "type" => "controller",
         "job"  => "control",
