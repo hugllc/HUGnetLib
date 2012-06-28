@@ -320,5 +320,86 @@ class ADuCInputTableTest extends DriverTestBase
             ),
         );
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataDecode()
+    {
+        return array(
+            array(
+                array(
+                    "Device" => array(
+                        "sensor" => new \HUGnet\DummyBase("Sensor"),
+                    )
+                ),
+                "010203040506",
+                array(
+                    "Sensor" => array(
+                        "get" => array(array("extra")),
+                        "id" => array(array()),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $mocks  The value to preload into the mocks
+    * @param string $string The setup string to test
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataDecode
+    */
+    public function testDecode($mocks, $string, $expect)
+    {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($mocks);
+        $this->o->decode($string);
+        $ret = $sensor->retrieve();
+        $this->assertEquals($expect, $ret);
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataEncode()
+    {
+        return array(
+            array( // #0
+                array(
+                    "Sensor" => array(
+                        "id" => 0xF9,
+                        "get" => array(
+                            "id" => 0xF9,
+                        ),
+                    ),
+                ),
+                "FF0080C08600800941FF",
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $mocks  The value to preload into the mocks
+    * @param array $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataEncode
+    */
+    public function testEncode($mocks, $expect)
+    {
+        $sensor  = new \HUGnet\DummyTable("Sensor");
+        $sensor->resetMock($mocks);
+        $ret = $this->o->encode();
+        $this->assertSame($expect, $ret);
+    }
 }
 ?>

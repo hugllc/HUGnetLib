@@ -231,6 +231,29 @@ class ADuCInputTable extends \HUGnet\sensors\Driver
         );
         return $ret;
     }
+    /**
+    * Decodes the driver portion of the setup string
+    *
+    * @param string $string The string to decode
+    *
+    * @return array
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function decode($string)
+    {
+        $this->_entry()->decode($string);
+    }
+    /**
+    * Encodes this driver as a setup string
+    *
+    * @return array
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function encode()
+    {
+        $string  = $this->_entry()->encode();
+        return $string;
+    }
 
 }
 

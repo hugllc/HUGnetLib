@@ -66,6 +66,44 @@ abstract class DriverADuC extends Driver
     protected $params = array(
     );
     /**
+    * This is where the data for the driver is stored.  This array must be
+    * put into all derivative classes, even if it is empty.
+    */
+    private $_offset = 0;
+    /**
+    * This function creates the system.
+    *
+    * @param object &$sensor The sensor object
+    * @param int    $offset  The offset for getExtra
+    *
+    * @return null
+    */
+    protected static function &intFactory(&$sensor, $offset = 0)
+    {
+        $object = &parent::intFactory($sensor);
+        if (is_int($offset)) {
+            $object->_offset = $offset;
+        }
+        return $object;
+    }
+    /**
+    * Gets the extra values
+    *
+    * @param int $index The extra index to use
+    *
+    * @return The extra value (or default if empty)
+    */
+    public function getExtra($index)
+    {
+        $extra = (array)$this->sensor()->get("extra");
+        $return = $extra[$index + $this->_offset];
+        if (is_null($return)) {
+            $extra = $this->get("extraDefault");
+            $return = $extra[$index];
+        }
+        return $return;
+    }
+    /**
     * Changes an n-bit twos compliment number into a signed number PHP can use
     *
     * @param int   $value The incoming number
