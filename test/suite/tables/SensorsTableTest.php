@@ -319,7 +319,7 @@ class SensorsTableTest extends HUGnetDBTableTestBase
                     "decimals" => 4,
                     "storageUnits" => "&deg;C",
                     "unitType" => "Temperature",
-                    "params" => array(1,2,3,4),
+                    "params" => array(1,2,3,4, "extra" => array(1,2,3,4)),
                 ),
                 array(
                     "group" => 'default',
@@ -332,7 +332,7 @@ class SensorsTableTest extends HUGnetDBTableTestBase
                     "units" => '&deg;C',
                     "decimals" => 4,
                     "driver"  => "SDEFAULT",
-                    "params" => '[]',
+                    "params" => '{"extra":[1,2,3,4]}',
                 ),
             ),
         );

@@ -243,10 +243,13 @@ class SensorsTable extends HUGnetDBTable
             foreach ($this->getProperties() as $key) {
                 unset($array[$key]);
             }
-            $set = $this->get("params");
+            $old = json_decode($this->get("params"), true);
+            $set = array();
             foreach ($this->_set as $key) {
                 if (isset($array[$key])) {
                     $set[$key] = $array[$key];
+                } else if (isset($old[$key])) {
+                    $set[$key] = $old[$key];
                 }
             }
             $this->set("params", $set);

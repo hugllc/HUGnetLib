@@ -349,7 +349,6 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             array("id"),
                             array("type"),
                             array("units"),
-                            array("extra"),
                             array("min"),
                             array("max"),
                         ),
@@ -358,7 +357,6 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             array("driver", "SDEFAULT"),
                             array("driver", "SDEFAULT"),
                             array("units", "unknown"),
-                            array("extra", array()),
                             array("min", 0),
                             array("max", 150),
                         ),
@@ -425,7 +423,6 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             array("id"),
                             array("type"),
                             array("units"),
-                            array("extra"),
                             array("min"),
                             array("max"),
                         ),
@@ -434,7 +431,6 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             array("driver", "SDEFAULT"),
                             array("driver", "SDEFAULT"),
                             array("units", "unknown"),
-                            array("extra", array()),
                             array("min", 0),
                             array("max", 150),
                         ),
@@ -518,7 +514,6 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             array("id"),
                             array("type"),
                             array("units"),
-                            array("extra"),
                             array("min"),
                             array("max"),
                         ),
@@ -527,7 +522,6 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             array("driver", "SDEFAULT"),
                             array("driver", "SDEFAULT"),
                             array('units', 'unknown'),
-                            array("extra", array()),
                             array('min', 0),
                             array('max', 150),
                         ),
@@ -566,7 +560,6 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             array("id"),
                             array("type"),
                             array("units"),
-                            array("extra"),
                             array("min"),
                             array("max"),
                         ),
@@ -576,9 +569,6 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             array("driver", "SDEFAULT"),
                             array(
                                 'units', 'unknown'
-                            ),
-                            array(
-                                'extra', array()
                             ),
                             array(
                                 'min', 0
@@ -1072,7 +1062,6 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                     array("driver", "SDEFAULT"),
                     array("driver", "SDEFAULT"),
                     array("units", "unknown"),
-                    array("extra", array()),
                     array("min", 0),
                     array("max", 150),
                 ),
@@ -1100,7 +1089,6 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                     array("driver", "SDEFAULT"),
                     array("driver", "SDEFAULT"),
                     array("units", "unknown"),
-                    array("extra", array()),
                     array("min", 0),
                     array("max", 150),
                 ),
