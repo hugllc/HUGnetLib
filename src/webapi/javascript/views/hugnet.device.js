@@ -52,10 +52,6 @@ var DevicePropertiesView = Backbone.View.extend({
     },
     initialize: function (options)
     {
-        this.model.on('change', this.render, this);
-        this.model.on('savefail', this.saveFail, this);
-        this.model.on('saved', this.saveSuccess, this);
-
         this.sensorsmodel = new HUGnet.DeviceSensors();
         var sensors = this.model.get('sensors');
         this.sensorsmodel.reset(sensors);
@@ -67,6 +63,7 @@ var DevicePropertiesView = Backbone.View.extend({
             function (model, collection, view)
             {
                 this.model.set('sensors', this.sensorsmodel.toJSON());
+                this.model.fetch();
             },
             this
         );
@@ -84,6 +81,19 @@ var DevicePropertiesView = Backbone.View.extend({
             },
             this
         );
+        this.model.on(
+            'change',
+            function (model, collection, view)
+            {
+                var channels = this.model.get('channels');
+                this.channelsmodel.reset(channels);
+                this.render();
+            },
+            this
+        );
+        this.model.on('savefail', this.saveFail, this);
+        this.model.on('saved', this.saveSuccess, this);
+
     },
     sensorList: function ()
     {

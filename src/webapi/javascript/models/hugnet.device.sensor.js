@@ -50,6 +50,7 @@ HUGnet.DeviceSensor = Backbone.Model.extend({
         location: 'No Name',
         dataType: 'raw',
         units: 'Unknown',
+        extra: {},
         decimals: 0,
         driver: 'SDEFAULT',
         params: {},
