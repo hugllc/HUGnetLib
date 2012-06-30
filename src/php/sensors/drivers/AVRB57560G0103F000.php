@@ -66,7 +66,7 @@ class AVRB57560G0103F000 extends \HUGnet\sensors\DriverAVR
         "shortName" => "B57560G0103F000",
         "unitType" => "Temperature",
         "storageUnit" => '&#176;C',
-        "storageType" => \HUGnet\units\Driver::TYPE_RAW,  // This is the dataType as stored
+        "storageType" => \HUGnet\units\Driver::TYPE_RAW,
         "extraText" => array("Bias Resistor (kOhms)"),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take

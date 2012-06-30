@@ -51,7 +51,6 @@ if ($action === "updatecheck") {
         if (!$firmware->checkFile($file)) {
             // Load the firmware
             $firmware->fromFile($file, $path);
-//            var_dump($firmware->toArray());
             // Insert it.
             $firmware->insertRow(true);
         }

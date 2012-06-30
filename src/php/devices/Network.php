@@ -600,7 +600,7 @@ class Network
                     return false;
                 }
                 \HUGnet\VPrint::out(
-                        "$memName ".($page + 1)."/$pages success",
+                    "$memName ".($page + 1)."/$pages success",
                     1
                 );
             }
