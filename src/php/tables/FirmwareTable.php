@@ -340,19 +340,23 @@ class FirmwareTable extends HUGnetDBTable
     public function fromFile($file, $path = ".")
     {
         $this->filename = $file;
-        // If the md5 is set and bad, fail
-        if (!empty($this->md5) && ($this->md5 != md5_file($path."/".$this->filename))
-        ) {
-            return false;
-        }
-        $stuff = implode("", gzfile($path."/".$this->filename));
+        $stuff = file_get_contents($path."/".$this->filename);
         if (empty($stuff)) {
             return false;
         }
+        // If the md5 is set and bad, fail
+        if (!empty($this->md5) && ($this->md5 != md5($stuff))
+        ) {
+            return false;
+        }
+        file_put_contents(sys_get_temp_dir()."/".$this->filename, $stuff);
+        $stuff = implode("", gzfile(sys_get_temp_dir()."/".$this->filename));
+        @unlink(sys_get_temp_dir()."/".$this->filename);
         $md5 = $this->md5;
         $this->fromString($stuff);
         $this->md5 = $md5;
         $this->filename = $file;
+        unset($stuff);
         return true;
     }
     /**

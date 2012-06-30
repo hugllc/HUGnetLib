@@ -38,6 +38,8 @@
 namespace HUGnet\updater\periodic;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
+/** This is the table where the firmware is stored */
+require_once dirname(__FILE__)."/../../tables/FirmwareTable.php";
 
 /**
  * Networking for devices.
@@ -62,6 +64,8 @@ class GetFirmware extends \HUGnet\updater\Periodic
     protected $period = 3600;
     /** This is the object we use */
     private $_firmware;
+    /** This is the object we use */
+    private $_fwPath = array();
     /**
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
@@ -74,6 +78,7 @@ class GetFirmware extends \HUGnet\updater\Periodic
     {
         parent::__construct($gui);
         $this->_firmware = new \FirmwareTable();
+        $this->_fwPath = (array)$this->system()->get("firmware");
     }
     /**
     * This function creates the system.
@@ -93,12 +98,12 @@ class GetFirmware extends \HUGnet\updater\Periodic
     */
     public function &execute()
     {
-        $fwPath = $this->system()->get("firmware");
-        if ($this->ready() && is_array($fwPath) && (strlen($fwPath["url"]) > 0)) {
-            include_once dirname(__FILE__)."/../../tables/FirmwareTable.php";
+        if ($this->ready() && (strlen($this->_fwPath["url"]) > 0)) {
             // State we are looking for firmware
-            $this->ui()->out("Checking for new firmware at ".trim($fwPath["url"]));
-            $files = file($fwPath["url"]."/manifest");
+            $this->ui()->out(
+                "Checking for new firmware at ".trim($this->_fwPath["url"])
+            );
+            $files = file($this->_fwPath["url"]."/manifest");
             foreach ((array)$files as $file) {
                 if (!$this->ui()->loop()) {
                     return;
@@ -107,7 +112,7 @@ class GetFirmware extends \HUGnet\updater\Periodic
                     // State we found some new firmware
                     $this->ui()->out("Found ".trim($file));
                     // Load the firmware
-                    $this->_firmware->fromFile($file, $fwPath["url"]);
+                    $this->_firmware->fromFile($file, $this->_fwPath["url"]);
                     // Insert it.
                     $this->_firmware->insertRow(true);
                 }

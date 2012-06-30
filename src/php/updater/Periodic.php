@@ -77,7 +77,7 @@ abstract class Periodic
     * as the driver class name.
     */
     private static $_drivers = array(
-        "Checkin", "PushDevices", //"GetFirmware"
+        "Checkin", "PushDevices", "GetFirmware"
     );
     /**
     * This is where the plugin objects are stored
