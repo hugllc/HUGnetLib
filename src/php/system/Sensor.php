@@ -244,13 +244,10 @@ class Sensor extends SystemTableBase
         if (!$this->units()->valid($table->get("units"))) {
             $table->set("units", $this->_get("storageUnit", $driver));
         }
-        /* This doesn't work well...
         $extra = (array)$table->get("extra");
-        $extraDefault = (array)$this->_get("extraDefault", $driver);
-        if (count($extra) != count($extraDefault)) {
+        if (!is_array($extra)) {
             $table->set("extra", array());
         }
-        */
         $min = $table->get("min");
         $max = $table->get("max");
         if (!is_numeric($min) || ($min == $max)) {

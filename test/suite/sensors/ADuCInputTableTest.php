@@ -97,7 +97,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 null,
                 "driver0",
                 null,
-                "41",
+                "FF",
             ),
             array(
                 array(
@@ -407,7 +407,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                 ),
-                "FF0080C08600800941FF",
+                "FF0080C086008009FFFF",
             ),
             array( // #3 SF 31, AF 63  --  Valid
                 array(
@@ -418,7 +418,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 array(
                     "AF" => 63,
                 ),
-                "FF0080C08600BF1F41FF",
+                "FF0080C08600BF1FFFFF",
             ),
             array( // #4 SF 63, AF 7  --  Valid
                 array(
@@ -429,7 +429,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 array(
                     "AF" => 7,
                 ),
-                "FF0080C08600873F41FF",
+                "FF0080C08600873FFFFF",
             ),
             array( // #5 SF 127, AF 0  --  Valid
                 array(
@@ -440,7 +440,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 array(
                     "AF" => 0,
                 ),
-                "FF0080C08600807F41FF",
+                "FF0080C08600807FFFFF",
             ),
             array( // #6 AF 5, SF 127  --  Not valid: Becomes AF 0, SF 127
                 array(
@@ -451,7 +451,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 array(
                     "SF" => 127,
                 ),
-                "FF0080C08600807F41FF",
+                "FF0080C08600807FFFFF",
             ),
             array( // #7 AF 10, SF 63  --  Not valid: Becomes AF 7, SF 63
                 array(
@@ -462,7 +462,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 array(
                     "SF" => 63,
                 ),
-                "FF0080C08600873F41FF",
+                "FF0080C08600873FFFFF",
             ),
             array( // #8 SF 63, AF 8  --  Not valid: Becomes AF 8, SF 31
                 array(
@@ -473,7 +473,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 array(
                     "AF" => 8,
                 ),
-                "FF0080C08600881F41FF",
+                "FF0080C08600881FFFFF",
             ),
             array( // #8 SF 127, AF 7  --  Not valid: Becomes AF 7, SF 63
                 array(
@@ -484,7 +484,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 array(
                     "AF" => 7,
                 ),
-                "FF0080C08600873F41FF",
+                "FF0080C08600873FFFFF",
             ),
         );
     }
@@ -592,7 +592,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 "",
                 false,
                 array(
-                    'driver0' => 0x41,
+                    'driver0' => 0xFF,
                     'driver1' => 0xFF,
                     'priority' => 0xFF,
                     'process' => 0,

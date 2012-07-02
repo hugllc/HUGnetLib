@@ -280,6 +280,11 @@ class ADuCInputTableTest extends DriverTestBase
                             "extra" => array("41:DEFAULT", "41:DEFAULT"),
                         ),
                     ),
+                    "Table" => array(
+                        "toArray" => array(
+                            "driver0" => 0x41,
+                        ),
+                    ),
                 ),
                 "40420F0040420F00",
                 1,
@@ -352,6 +357,9 @@ class ADuCInputTableTest extends DriverTestBase
                         "id" => 5,
                     ),
                     "Table" => array(
+                        "toArray" => array(
+                            "driver0" => 0x41,
+                        ),
                         "select" => array(
                             "1" => new \InputTableTable(
                                 array("id" => 1, "name" => "Hello")
@@ -448,6 +456,11 @@ class ADuCInputTableTest extends DriverTestBase
                         "id" => 0xF9,
                         "get" => array(
                             "id" => 0xF9,
+                        ),
+                    ),
+                    "Table" => array(
+                        "toArray" => array(
+                            "driver0" => 0x41,
                         ),
                     ),
                 ),
