@@ -112,6 +112,7 @@ class ADuCInputTable extends \HUGnet\sensors\Driver
     * This function creates the system.
     *
     * @param object &$sensor The sensor object
+    * @param string $class   The class to use
     *
     * @return null
     */
@@ -150,6 +151,8 @@ class ADuCInputTable extends \HUGnet\sensors\Driver
     }
     /**
     * Returns the driver object
+    *
+    * @param string $class The class to use
     *
     * @return object The driver requested
     */
@@ -207,21 +210,19 @@ class ADuCInputTable extends \HUGnet\sensors\Driver
     public function get($name)
     {
         $param = parent::get($name);
-//        if (is_object($this->_entry)) {
-            switch ($name) {
-            case "extraValues":
-                $param = (array)$param;
-                $param[0] = $this->_getTableEntries();
-            case "extraText":
-            case "extraDefault":
-                $param = array_merge(
-                    (array)$param,
-                    (array)$this->_driver(0)->get($name),
-                    (array)$this->_driver(1)->get($name)
-                );
-                break;
-            }
-//        }
+        switch ($name) {
+        case "extraValues":
+            $param = (array)$param;
+            $param[0] = $this->_getTableEntries();
+        case "extraText":
+        case "extraDefault":
+            $param = array_merge(
+                (array)$param,
+                (array)$this->_driver(0)->get($name),
+                (array)$this->_driver(1)->get($name)
+            );
+            break;
+        }
         return $param;
     }
     /**

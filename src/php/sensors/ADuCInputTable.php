@@ -469,7 +469,7 @@ class ADuCInputTable
         if ($value < 32) {
             // Do nothing here
         } else if ($value < 64) {
-            if  ($avg > 7) {
+            if ($avg > 7) {
                 $this->_params["AF"]["value"] = 7;
             }
         } else if ($value < 128) {

@@ -95,7 +95,9 @@ class Checkin extends \HUGnet\updater\Periodic
     {
         if ($this->ready()) {
             $this->ui()->out("Updating the data collector record...");
-            $this->_datacollector->load(array("uuid" => $this->system()->get("uuid")));
+            $this->_datacollector->load(
+                array("uuid" => $this->system()->get("uuid"))
+            );
             $setup = $this->_datacollector->get("SetupString");
             if (empty($setup)) {
                 $device = $this->system()->device(
