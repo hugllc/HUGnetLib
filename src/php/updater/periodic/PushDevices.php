@@ -122,7 +122,9 @@ class PushDevices extends \HUGnet\updater\Periodic
                 $sensors = array();
                 for ($i = 0; $i < $sens; $i++) {
                     //$this->ui()->out("Pushing sensor ".$i);
-                    $this->_device->sensor($i)->action()->post($url);
+                    $sen = &$this->_device->sensor($i);
+                    $sen->action()->post($url);
+                    unset($sen);
                     $this->system()->main();
                     if (!$this->ui()->loop()) {
                         break;

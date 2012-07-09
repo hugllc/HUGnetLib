@@ -107,6 +107,9 @@ class ADuCInputTable extends \HUGnet\sensors\Driver
         foreach (array_keys((array)$this->_driver) as $key) {
             unset($this->_driver[$key]);
         }
+        unset($this->_table);
+        unset($this->_entry);
+        parent::__destruct();
     }
     /**
     * This function creates the system.
