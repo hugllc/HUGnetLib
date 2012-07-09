@@ -464,7 +464,7 @@ class ADuCInputTableTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "FF0080C08600800941FF",
+                "FF00C0800086098041FF",
             ),
         );
     }

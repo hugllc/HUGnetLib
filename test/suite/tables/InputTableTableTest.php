@@ -353,6 +353,55 @@ class InputTableTableTest extends HUGnetDBTableTestBase
                     "unitType" => "Temperature",
                 ),
             ),
+            array(
+                array(
+                    "group" => "default",
+                    "id" => 1,
+                    "name" => "RTD",
+                    "desc" => "This is for the RTD.",
+                    "arch" => "ADuC",
+                    "params" => '{"driver0":4,"driver1":255,"priority":1'
+                        .',"process":0,"ADC0EN":0,"ADC0DIAG":0,"HIGHEXTREF0":0'
+                        .',"AMP_CM":0,"ADC0CODE":0,"ADC0CH":3,"ADC0REF":0'
+                        .',"ADC0PGA":0,"ADC1EN":1,"ADC1DIAG":0,"HIGHEXTREF1":0'
+                        .',"ADC1CODE":0,"ADC1CH":6,"ADC1REF":0,"BUF_BYPASS":0'
+                        .',"ADC1PGA":0,"CHOPEN":1,"RAVG2":0,"AF":0,"NOTCH2":0'
+                        .',"SF":9}',
+                ),
+                true,
+                array(
+                    'group' => 'default',
+                    "id" => 1,
+                    'name' => 'RTD',
+                    'desc' => 'This is for the RTD.',
+                    'arch' => 'ADuC',
+                    'driver0' => 4,
+                    'driver1' => 255,
+                    'priority' => 1,
+                    'process' => 0,
+                    'ADC0EN' => 0,
+                    'ADC0DIAG' => 0,
+                    'HIGHEXTREF0' => 0,
+                    'AMP_CM' => 0,
+                    'ADC0CODE' => 0,
+                    'ADC0CH' => 3,
+                    'ADC0REF' => 0,
+                    'ADC0PGA' => 0,
+                    'ADC1EN' => 1,
+                    'ADC1DIAG' => 0,
+                    'HIGHEXTREF1' => 0,
+                    'ADC1CODE' => 0,
+                    'ADC1CH' => 6,
+                    'ADC1REF' => 0,
+                    'BUF_BYPASS' => 0,
+                    'ADC1PGA' => 0,
+                    'CHOPEN' => 1,
+                    'RAVG2' => 0,
+                    'AF' => 0,
+                    'NOTCH2' => 0,
+                    'SF' => 9
+                ),
+            ),
         );
     }
     /**

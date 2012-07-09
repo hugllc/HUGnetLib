@@ -582,9 +582,12 @@ class ADuCInputTable
         $ret  = "";
         $ret .= $this->priority();
         $ret .= $this->immediateProcessRoutine();
-        $ret .= $this->register("ADC0CON");
-        $ret .= $this->register("ADC1CON");
-        $ret .= $this->register("ADCFLT");
+        /* This is because encoding is little endian */
+        foreach (array("ADC0CON", "ADC1CON", "ADCFLT") as $reg) {
+            $value = $this->register($reg);
+            $ret .= substr($value, 2, 2);
+            $ret .= substr($value, 0, 2);
+        }
         $ret .= $this->driver0();
         $ret .= $this->driver1();
         return $ret;
@@ -601,9 +604,9 @@ class ADuCInputTable
         if (strlen($string) === 20) {
             $this->priority(substr($string, 0, 2));
             $this->immediateProcessRoutine(substr($string, 2, 2));
-            $this->register("ADC0CON", substr($string, 4, 4));
-            $this->register("ADC1CON", substr($string, 8, 4));
-            $this->register("ADCFLT", substr($string, 12, 4));
+            $this->register("ADC0CON", substr($string, 6, 2).substr($string, 4, 2));
+            $this->register("ADC1CON", substr($string, 10, 2).substr($string, 8, 2));
+            $this->register("ADCFLT", substr($string, 14, 2).substr($string, 12, 2));
             $this->driver0(substr($string, 16, 2));
             $this->driver1(substr($string, 18, 2));
             return true;
