@@ -71,7 +71,7 @@ class ADuCVoltageTest extends DriverTestBase
         parent::setUp();
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
-        $this->o = &ADuCVoltage::factory($sensor);
+        $this->o = &ADuCVoltage::factory($sensor, 0);
     }
 
     /**

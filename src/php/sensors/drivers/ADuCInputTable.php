@@ -141,7 +141,8 @@ class ADuCInputTable extends \HUGnet\sensors\Driver
         if (!is_object($this->_driver[$num])) {
             if ($num == 0) {
                 $driver = $this->_entry()->driver0();
-            } else {
+                $offset = count($this->params["extraDefault"]);
+            } else if ($num == 1) {
                 $driver = $this->_entry()->driver1();
             }
             $driver = explode(":", (string)$driver);

@@ -71,7 +71,7 @@ class ADuCVishayRTDTest extends DriverTestBase
         parent::setUp();
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
-        $this->o = &ADuCVishayRTD::factory($sensor);
+        $this->o = &ADuCVishayRTD::factory($sensor, 0);
     }
 
     /**
