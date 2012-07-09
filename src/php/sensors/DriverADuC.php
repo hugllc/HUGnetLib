@@ -73,6 +73,28 @@ abstract class DriverADuC extends Driver
     /**
     * This function creates the system.
     *
+    * @param string $driver  The driver to load
+    * @param object &$sensor The sensor object
+    * @param int    $offset  The offset to use
+    *
+    * @return null
+    */
+    public static function &factory($driver, &$sensor, $offset = 0)
+    {
+        $class = '\\HUGnet\\sensors\\drivers\\'.$driver;
+        $file = dirname(__FILE__)."/drivers/".$driver.".php";
+        if (file_exists($file)) {
+            include_once $file;
+        }
+        if (class_exists($class)) {
+            return $class::factory($sensor, $offset);
+        }
+        include_once dirname(__FILE__)."/drivers/SDEFAULT.php";
+        return \HUGnet\sensors\drivers\SDEFAULT::factory($sensor);
+    }
+    /**
+    * This function creates the system.
+    *
     * @param object &$sensor The sensor object
     * @param int    $offset  The offset for getExtra
     *

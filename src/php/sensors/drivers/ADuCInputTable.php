@@ -139,16 +139,20 @@ class ADuCInputTable extends \HUGnet\sensors\Driver
     private function &_driver($num)
     {
         if (!is_object($this->_driver[$num])) {
+            $offset = count($this->params["extraDefault"]);
             if ($num == 0) {
                 $driver = $this->_entry()->driver0();
-                $offset = count($this->params["extraDefault"]);
             } else if ($num == 1) {
                 $driver = $this->_entry()->driver1();
+                $offset += count($this->_driver(0)->get("extraDefault"));
+            } else {
+                return null;
             }
             $driver = explode(":", (string)$driver);
-            $this->_driver[$num] = &\HUGnet\sensors\Driver::factory(
+            $this->_driver[$num] = &\HUGnet\sensors\DriverADuC::factory(
                 \HUGnet\sensors\Driver::getDriver(hexdec($driver[0]), $driver[1]),
-                $this->sensor()
+                $this->sensor(),
+                $offset
             );
         }
         return $this->_driver[$num];

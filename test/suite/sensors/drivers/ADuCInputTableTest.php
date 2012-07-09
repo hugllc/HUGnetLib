@@ -298,7 +298,7 @@ class ADuCInputTableTest extends DriverTestBase
                         'storageUnit' => 'V',
                         'unitType' => 'Voltage',
                         'dataType' => 'raw',
-                        'value' => 0.0,
+                        'value' => 0.14305115,
                     ),
                 ),
             ),
