@@ -50,13 +50,20 @@ HUGnet.Config = Backbone.View.extend({
             model: options.devices,
             url: this.url
         });
-
+        var tables = new HUGnet.InputTables();
+        tables.fetch();
+        this.inputTables = new HUGnet.InputTablesView({
+            model: tables,
+            url: this.url
+        });
         this.render();
     },
     render: function ()
     {
-        this.$el.html('<div id="config-tabs"><ul></ul></div>');
         var self = this;
+        this.$el.html(
+            '<div id="config-tabs"><ul></ul></div>'
+        );
         this.tabs = $('#config-tabs').tabs({
             tabTemplate: '<li><a href="#{href}">#{label}</a></li>',
             cookie: {
@@ -66,7 +73,8 @@ HUGnet.Config = Backbone.View.extend({
         });
         this.tabs.tabs("add", '#config-tabs-devices', 'Device Information');
         $('#config-tabs-devices').html(this.devices.render().el);
-
+        this.tabs.tabs("add", '#config-tabs-inputTable', 'Input Tables');
+        $('#config-tabs-inputTable').html(this.inputTables.render().el);
     }
 });
 
