@@ -90,6 +90,8 @@ class InputTableTable extends HUGnetDBTable
         "id" => array(
             "Name" => "id",
             "Type" => "INTEGER",
+            "AutoIncrement" => true,
+            "Primary" => true,
         ),
         "name" => array(
             "Name" => "name",
@@ -127,10 +129,9 @@ class InputTableTable extends HUGnetDBTable
     *   ),
     */
     public $sqlIndexes = array(
-        "id" => array(
-            "Name" => "id",
-            "Unique" => true,
-            "Columns" => array("id"),
+        "name" => array(
+            "Name" => "name",
+            "Columns" => array("name"),
         ),
     );
 

@@ -55,12 +55,18 @@ var InputTablePropertiesView = Backbone.View.extend({
     save: function (e)
     {
         this.setTitle( " [ Saving...] " );
-        this.model.set({
-            InputTableName: this.$(".InputTableName").val(),
-            InputTableLocation: this.$(".InputTableLocation").val(),
-            InputTableJob: this.$(".InputTableJob").val(),
-            PollInterval: this.$(".PollInterval").val()
-        });
+        var i, output = {};
+        var data = this.$('form').serializeArray();
+        for (i in data) {
+            output[data[i].name] = data[i].value;
+        }
+        output.params = this.model.get('params');
+        for (i in output.params) {
+            output[i] = output['params['+i+']'];
+            output.params[i]['value'] = output['params['+i+']'];
+            delete output['params['+i+']'];
+        }
+        this.model.set(output);
         this.model.save();
     },
     saveFail: function ()
@@ -117,19 +123,6 @@ var InputTablePropertiesView = Backbone.View.extend({
             this.model.toJSON()
         );
     },
-    popup: function (view, title)
-    {
-        this.$el.append(view.render().el);
-        view.$el.dialog({
-            modal: true,
-            draggable: true,
-            width: 700,
-            resizable: false,
-            title: title,
-            dialogClass: "window",
-            zIndex: 800
-        });
-    }
 });
 
 /**
@@ -238,11 +231,16 @@ var InputTableEntryView = Backbone.View.extend({
 */
 HUGnet.InputTablesView = Backbone.View.extend({
     template: "#InputTableListTemplate",
+    url: '/HUGnetLib/index.php',
     tagName: "table",
     events: {
+        'click .new': 'create'
     },
     initialize: function (options)
     {
+        if (options) {
+            if (options.url) this.url = options.url;
+        }
         this.model.each(this.insert, this);
         this.model.bind('add', this.insert, this);
     },
@@ -272,6 +270,36 @@ HUGnet.InputTablesView = Backbone.View.extend({
         this.$('tbody').append(view.render().el);
         this.$el.trigger('update');
         this.$('.tablesorter').trigger('update');
+    },
+    create: function ()
+    {
+        var self = this;
+        var ret = $.ajax({
+            type: 'GET',
+            url: this.url,
+            dataType: 'json',
+            cache: false,
+            data:
+            {
+                "task": "inputTable",
+                "action": "new",
+            }
+        }).done(
+            function (data)
+            {
+                if (_.isObject(data)) {
+                    self.trigger('created');
+                    self.model.add(data);
+                } else {
+                    self.trigger('newfail');
+                }
+            }
+        ).fail(
+            function ()
+            {
+                self.trigger('newfail');
+            }
+        );
     },
     popup: function (view)
     {

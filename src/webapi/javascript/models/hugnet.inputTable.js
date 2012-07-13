@@ -102,7 +102,7 @@ HUGnet.InputTable = Backbone.Model.extend({
                     "task": "inputTable",
                     "action": "post",
                     "id": id.toString(16),
-                    "device": self.toJSON()
+                    "inputTable": self.toJSON()
                 }
             }).done(
                 function (data)

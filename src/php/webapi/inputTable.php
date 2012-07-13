@@ -36,15 +36,46 @@
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 require_once "HUGnetLib/tables/InputTableTable.php";
+require_once "HUGnetLib/sensors/ADuCInputTable.php";
 
-$did      = hexdec($json->args()->id);
+$did      = (int)$json->args()->id;
 $action = strtolower($json->args()->action);
 $arch = substr((string)$_REQUEST["arch"], 0, 6);
 $input = new InputTableTable();
+$table = \HUGnet\sensors\ADuCInputTable::factory(array());
 
-if ($action === "get") {
+//\HUGnet\VPrint::config(array("verbose" => 10));
+
+if ($action === "post") {
+    $worked = true;
+    $data = &$_REQUEST["inputTable"];
+    if (is_array($data) && isset($data['id'])) {
+        $input->fromArray($data);
+        $worked &= $input->updateRow();
+    }
+    if ($worked) {
+        $ret = "success";
+    } else {
+        $ret = -1;
+    }
+} else if ($action === "new") {
+    $input->set("id", null);
+    $input->set("name", "New Table");
+    $worked = $input->insertRow();
+    if ($worked) {
+        $input->sqlOrderBy = "id desc";
+        $input->selectOneInto("name = ?", array("New Table"));
+        $ret = $input->toArray();
+        $table->fromArray($ret);
+        $ret["params"] = $table->fullArray();
+    } else {
+        $ret = -1;
+    }
+} else if ($action === "get") {
     $input->getRow($did);
     $ret = $input->toArray();
+    $table->fromArray($ret);
+    $ret["params"] = $table->fullArray();
 } else if ($action == "ids") {
     $where = "";
     $whereData = array();
@@ -64,7 +95,10 @@ if ($action === "get") {
     $ret = array();
     foreach ((array)$ids as $value) {
         $input->getRow((int)$value);
-        $ret[] = $input->toArray();
+        $vals = $input->toArray();
+        $table->fromArray($vals);
+        $vals["params"] = $table->fullArray();
+        $ret[] = $vals;
     }
 }
 

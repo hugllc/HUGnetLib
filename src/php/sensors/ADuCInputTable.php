@@ -629,6 +629,22 @@ class ADuCInputTable
         return $return;
     }
     /**
+    * Returns the table as an array
+    *
+    * @param bool $default Whether or not to include the default values
+    *
+    * @return array
+    */
+    public function fullArray($default = false)
+    {
+        $return = array();
+        foreach ($this->_params as $field => $vals) {
+            $return[$field] = $vals;
+            $return[$field]["value"] = $this->_params($field);
+        }
+        return $return;
+    }
+    /**
     * Sets all of the endpoint attributes from an array
     *
     * @param array $array This is an array of this class's attributes
