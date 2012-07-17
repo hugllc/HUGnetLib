@@ -71,6 +71,8 @@ class ADuCInputTable
             "valid" => array(
                 0x04 => "ADuC RTD",
                 0x41 => "ADuC Voltage",
+                0x42 => "ADuC Thermocouple",
+                0x11 => "ADuC DC Power",
             ),
             "desc" => "First Driver",
         ),
@@ -80,6 +82,7 @@ class ADuCInputTable
             "valid" => array(
                 0x04 => "ADuC RTD",
                 0x41 => "ADuC Voltage",
+                0x42 => "ADuC Thermocouple",
                 0xFF => "None",
             ),
             "desc" => "Second Driver",
@@ -488,6 +491,9 @@ class ADuCInputTable
     */
     public function driver0($set = null)
     {
+        if (is_string($set)) {
+            $set = (int)$set;
+        }
         return sprintf("%02X", $this->_params("driver0", $set));
     }
     /**
@@ -499,6 +505,9 @@ class ADuCInputTable
     */
     public function driver1($set = null)
     {
+        if (is_string($set)) {
+            $set = (int)$set;
+        }
         return sprintf("%02X", $this->_params("driver1", $set));
     }
     /**
@@ -534,7 +543,7 @@ class ADuCInputTable
     private function _params($param, $set = null)
     {
         if (is_string($set)) {
-            $set = hexdec($set);
+            $set = (int)$set;
         }
         if (is_int($set)) {
             $par = &$this->_params[$param];
