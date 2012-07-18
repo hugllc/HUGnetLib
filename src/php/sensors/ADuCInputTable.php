@@ -161,6 +161,18 @@ class ADuCInputTable
             'mask'  => 0xF,
             'bits'  => 4,
             'valid' => array(
+                0 => "Input 4/3 Differential",
+                1 => "Input 4 Single Ended",
+                2 => "Input 3 Single Ended",
+                3 => "VREF+/VREF-",
+                5 => "Input 2/1 Differential",
+                6 => "Input 2 Single Ended",
+                7 => "Input 1 Single Ended",
+                8 => "Internal Short to ADC1",
+                9 => "Internal Short to ADC1",
+            ),
+            /*
+            'valid' => array(
                 0 => "ADC0/ADC1 Differential",
                 1 => "ADC0/ADC5 Single Ended",
                 2 => "ADC1/ADC5 Single Ended",
@@ -171,6 +183,7 @@ class ADuCInputTable
                 8 => "Internal Short to ADC1",
                 9 => "Internal Short to ADC1",
             ),
+            */
             'desc'  => "ADC0 Channel",
             'register' => "ADC0CON",
         ),
@@ -255,6 +268,24 @@ class ADuCInputTable
             'mask'  => 0xF,
             'bits'  => 4,
             'valid' => array(
+                0  => "Input 2/1 Differential",
+                1  => "ADC4/ADC5 Differential",
+                2  => "Input 5/6 Differential",
+                3  => "Input 7/8 Differential",
+                4  => "Input 2 Single Ended",
+                5  => "Input 1 Single Ended",
+                6  => "ADC4/ADC5 Single Ended (RTD)",
+                7  => "Input 5 Single Ended",
+                8  => "Input 6 Single Ended",
+                9  => "Input 7 Single Ended",
+                10 => "Input 8 Single Ended",
+                11 => "Internal Temp",
+                12 => "VREF+/VREF-",
+                13 => "DAC_OUT/AGND",
+                15 => "Internal Short to ADC3",
+            ),
+            /*
+            'valid' => array(
                 0  => "ADC2/ADC3 Differential",
                 1  => "ADC4/ADC5 Differential",
                 2  => "ADC6/ADC7 Differential",
@@ -271,6 +302,7 @@ class ADuCInputTable
                 13 => "DAC_OUT/AGND",
                 15 => "Internal Short to ADC3",
             ),
+            */
             'desc'  => "ADC1 Channel",
             'register' => "ADC1CON",
         ),
