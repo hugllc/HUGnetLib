@@ -700,6 +700,33 @@ class ADuCInputTable
             }
         }
     }
+    /**
+    * Gets the total gain.
+    *
+    * @param int $channel The channel to get the gain for
+    *
+    * @return null
+    */
+    public function gain($channel = 0)
+    {
+        $gain = 1;
+        switch((int)$this->_params("process")) {
+            case 1:
+                $gain *= 128;
+                break;
+            case 2:
+                $gain /= 128;
+                break;
+            default:
+                /* Do nothing */
+        }
+        if ($channel == 1) {
+            $gain *= pow(2, $this->_params("ADC1PGA"));
+        } else {
+            $gain *= pow(2, $this->_params("ADC0PGA"));
+        }
+        return $gain;
+    }
 
 }
 

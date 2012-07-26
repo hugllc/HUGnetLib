@@ -716,5 +716,259 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, $ret);
         $this->assertSame($array, $obj->toArray());
     }
+    /**
+    * Data provider for testRemove
+    *
+    * @return array
+    */
+    public static function dataGain()
+    {
+        return array(
+            array( // #0  ipr= *128, gain = 8, channel 0
+                array(
+                ),
+                array(
+                    "process" => 1,
+                    "ADC0PGA" => 3,
+                ),
+                0,
+                1024,
+            ),
+            array( // #1  ipr= *128, gain = 8, channel 1
+                array(
+                ),
+                array(
+                    "process" => 1,
+                    "ADC1PGA" => 3,
+                ),
+                1,
+                1024,
+            ),
+            array( // #1  ipr= *128, gain = 1, channel 0
+                array(
+                ),
+                array(
+                    "process" => 1,
+                    "ADC1PGA" => 3,
+                ),
+                0,
+                128,
+            ),
+            array( // #2  ipr= /128, gain = 128, channel 0
+                array(
+                ),
+                array(
+                    "process" => 2,
+                    "ADC0PGA" => 7,
+                ),
+                0,
+                1,
+            ),
+            array( // #3  ipr=empty, gain = 128, channel 0
+                array(
+                ),
+                array(
+                    "process" => 0,
+                    "ADC0PGA" => 7,
+                ),
+                0,
+                128,
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param array  $mock    The mocks to preload
+    * @param string $preload The string to give to the class
+    * @param int    $channel The channel to use
+    * @param array  $expect  The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataGain
+    */
+    public function testGain($mock, $preload, $channel, $expect)
+    {
+        $sensor = new \HUGnet\DummyTable("Sensor");
+        $sensor->resetMock($mock);
+        $obj = ADuCInputTable::factory($sensor, $preload);
+        $ret = $obj->gain($channel);
+        $this->assertEquals($expect, $ret, 0.0001);
+    }
+    /**
+    * Data provider for testRemove
+    *
+    * @return array
+    */
+    public static function dataParamTests()
+    {
+        $sensor = new \HUGnet\DummyTable("Sensor");
+        $sensor->resetMock(array());
+        $obj = ADuCInputTable::factory($sensor, $preload);
+        $params = (array)$obj->fullArray();
+        $return = array();
+        foreach($params as $key => $value) {
+            $return[] = array(
+                $key, $value
+            );
+        }
+        return $return;
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param string $name  The name of the param
+    * @param array  $param The param array
+    *
+    * @return null
+    *
+    * @dataProvider dataParamTests
+    */
+    public function testParamValue($name, $param)
+    {
+        $this->assertInternalType(
+            "int", $param["value"], "Default value for $name must be an int"
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param string $name  The name of the param
+    * @param array  $param The param array
+    *
+    * @return null
+    *
+    * @dataProvider dataParamTests
+    */
+    public function testParamMask($name, $param)
+    {
+        $this->assertInternalType(
+            "int", $param["mask"], "Mask value for $name must be an int"
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param string $name  The name of the param
+    * @param array  $param The param array
+    *
+    * @return null
+    *
+    * @dataProvider dataParamTests
+    */
+    public function testParamDesc($name, $param)
+    {
+        $min = 5;
+        $max = 30;
+        $this->assertInternalType(
+            "string", $param["desc"], "Description for $name must be a string"
+        );
+        $this->assertGreaterThan(
+            $min, strlen($param["desc"]),
+            "Description for $name must be more than $min characters"
+        );
+        $this->assertLessThan(
+            $max, strlen($param["desc"]),
+            "Description for $name must be less than $max characters"
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param string $name  The name of the param
+    * @param array  $param The param array
+    *
+    * @return null
+    *
+    * @dataProvider dataParamTests
+    */
+    public function testParamValid($name, $param)
+    {
+        if (is_array($param["valid"])) {
+            $this->assertGreaterThan(
+                0, count($param["valid"]), "There must be at least 1 valid value"
+            );
+        } else if (is_null($param["valid"])) {
+            $this->assertNotNull(
+                $param["mask"], "If valid is null, mask can't be"
+            );
+        } else if (is_string($param["valid"])) {
+            $sensor = new \HUGnet\DummyTable("Sensor");
+            $sensor->resetMock(array());
+            $obj = ADuCInputTable::factory($sensor, $preload);
+            $this->assertTrue(
+                method_exists($obj, $param["valid"]),
+                $param["valid"]." is not a valid method of class ADuCInputTable"
+            );
+        } else {
+            $this->fail(
+                "Valid must be null (with mask set), an array, or a function name"
+            );
+        }
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param string $name  The name of the param
+    * @param array  $param The param array
+    *
+    * @return null
+    *
+    * @dataProvider dataParamTests
+    */
+    public function testParamBits($name, $param)
+    {
+        if (isset($param["bit"]) || isset($param["bits"])) {
+            $min = 5;
+            $max = 30;
+            $this->assertInternalType(
+                "int", $param["bit"], "Bit for $name must be an int"
+            );
+            $this->assertInternalType(
+                "int", $param["bits"], "Bits for $name must be a int"
+            );
+        }
+    }
+    /**
+    * Data provider for testRemove
+    *
+    * @return array
+    */
+    public static function dataFullArray()
+    {
+        return array(
+            array(
+                array(
+                ),
+                array(
+                    "process" => 1,
+                    "ADC0PGA" => 3,
+                ),
+                "array",
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param array  $mock    The mocks to preload
+    * @param string $preload The string to give to the class
+    * @param array  $expect  The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataFullArray
+    */
+    public function testFullArray($mock, $preload, $expect)
+    {
+        $sensor = new \HUGnet\DummyTable("Sensor");
+        $sensor->resetMock($mock);
+        $obj = ADuCInputTable::factory($sensor, $preload);
+        $this->assertInternalType(
+            "array", $obj->fullArray(),
+            "fullArray must return an array"
+        );
+    }
 }
 ?>
