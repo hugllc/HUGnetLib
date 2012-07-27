@@ -314,7 +314,7 @@ class DriverADuCTest extends drivers\DriverTestBase
                 1,
                 array(),
                 array(),
-                null,
+                256210,
             ),
         );
     }
@@ -502,6 +502,76 @@ class DriverADuCTest extends drivers\DriverTestBase
         $val = $obj->gain($channel);
         $this->assertSame($expect, $val);
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataDecodeData()
+    {
+        return array(
+            array(
+                array(
+                    "Device" => array(
+                        "sensor" => new \HUGnet\DummyBase("Sensor"),
+                    ),
+                    "Entry" => array(
+                        "gain" => array(
+                            "0" => 2,
+                        ),
+                    ),
+                ),
+                new \HUGnet\DummyBase("Entry"),
+                1,
+                0,
+                300,
+                array(
+                ),
+                array(
+                ),
+                "15000000",
+                array(
+                    array(
+                        'decimals' => 2,
+                        'units' => 'unknown',
+                        'maxDecimals' => 2,
+                        'storageUnit' => 'unknown',
+                        'unitType' => 'asdf',
+                        'dataType' => 'raw',
+                        'value' => 10.5,
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $mocks    The value to preload into the mocks
+    * @param object $entry    The entry to send
+    * @param int    $offset   The integer to feed to the function
+    * @param int    $initchan The channel to initialize the object to
+    * @param float  $deltaT   The time delta in seconds between this record
+    * @param array  $prev    The previous reading
+    * @param array  $data    The data from the other sensors that were crunched
+    * @param string $string   The setup string to test
+    * @param array  $expect   The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataDecodeData
+    */
+    public function testDecodeData(
+        $mocks, $entry, $offset, $initchan, $deltaT, $prev, $data, $string, $expect
+    ) {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($mocks);
+        $obj = &DriverADuC::factory(
+            "DriverADuCTestClass", $sensor, $offset, $entry, $initchan
+        );
+        $ret = $obj->decodeData($string);
+        $this->assertEquals($expect, $ret);
+    }
 }
 
 /** This is the HUGnet namespace */
@@ -573,7 +643,7 @@ class DriverADuCTestClass extends \HUGnet\sensors\DriverADuC
     public function getReading(
         $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
-        return null;
+        return $A;
     }
     /**
     * Changes an n-bit twos compliment number into a signed number PHP can use
