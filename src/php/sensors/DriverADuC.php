@@ -71,26 +71,42 @@ abstract class DriverADuC extends Driver
     */
     private $_offset = 0;
     /**
+    * This is where our table entry is stored
+    */
+    private $_entry = null;
+    /**
+    * This is where our channel
+    */
+    private $_channel = 0;
+    /**
     * This function creates the system.
     *
     * @param string $driver  The driver to load
     * @param object &$sensor The sensor object
     * @param int    $offset  The offset to use
+    * @param object $entry   The table entry
+    * @param int    $channel The channel in that entry
     *
     * @return null
     */
-    public static function &factory($driver, &$sensor, $offset = 0)
-    {
+    public static function &factory(
+        $driver, &$sensor, $offset = 0, $entry = null, $channel = 0
+    ) {
         $class = '\\HUGnet\\sensors\\drivers\\'.$driver;
         $file = dirname(__FILE__)."/drivers/".$driver.".php";
         if (file_exists($file)) {
             include_once $file;
         }
         if (class_exists($class)) {
-            return $class::factory($sensor, $offset);
+            $obj = $class::factory($sensor, $offset);
         }
-        include_once dirname(__FILE__)."/drivers/SDEFAULT.php";
-        return \HUGnet\sensors\drivers\SDEFAULT::factory($sensor);
+        if (!is_object($obj)) {
+            include_once dirname(__FILE__)."/drivers/SDEFAULT.php";
+            $obj = \HUGnet\sensors\drivers\SDEFAULT::factory($sensor);
+        }
+        $obj->_entry = $entry;
+        $obj->_channel = (int)$channel;
+        return $obj;
     }
     /**
     * This function creates the system.
@@ -164,6 +180,34 @@ abstract class DriverADuC extends Driver
             return null;
         }
         return (float)bcdiv(bcmul($value, bcadd($Rin, $Rbias)), (float)$Rbias);
+    }
+    /**
+    * Returns the driver object
+    *
+    * @return object The driver requested
+    */
+    private function &_entry()
+    {
+        if (!is_object($this->_entry)) {
+            $this->_entry = \HUGnet\sensors\ADuCInputTable::factory(
+                $this, array()
+            );
+        }
+        return $this->_entry;
+    }
+    /**
+    * Gets the total gain.
+    *
+    * @param int $channel The channel to get the gain for
+    *
+    * @return null
+    */
+    protected function gain($channel = null)
+    {
+        if (is_null($channel)) {
+            $channel = $this->_channel;
+        }
+        return $this->_entry()->gain($channel);
     }
 }
 

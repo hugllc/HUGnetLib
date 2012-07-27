@@ -38,6 +38,8 @@ namespace HUGnet\sensors;
 /** This is a required class */
 require_once CODE_BASE.'sensors/DriverADuC.php';
 /** This is a required class */
+require_once CODE_BASE.'sensors/ADuCInputTable.php';
+/** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
@@ -74,7 +76,7 @@ class DriverADuCTest extends drivers\DriverTestBase
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
-        $this->o = &DriverADuCTestClass::factory($sensor);
+        $this->o = &\HUGnet\sensors\drivers\DriverADuCTestClass::factory($sensor);
     }
 
     /**
@@ -247,7 +249,9 @@ class DriverADuCTest extends drivers\DriverTestBase
         unset($this->o);
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($mock);
-        $this->o = &DriverADuCTestClass::factory($sensor, $offset);
+        $this->o = &\HUGnet\sensors\drivers\DriverADuCTestClass::factory(
+            $sensor, $offset
+        );
         $this->assertSame($expect, $this->o->getExtra($index));
     }
     /**
@@ -260,10 +264,16 @@ class DriverADuCTest extends drivers\DriverTestBase
         return array(
             array(
                 "asdf",
+                0,
+                null,
+                0,
                 "HUGnet\sensors\drivers\SDEFAULT",
             ),
             array(
                 "SDEFAULT",
+                0,
+                null,
+                0,
                 "HUGnet\sensors\drivers\SDEFAULT",
             ),
         );
@@ -271,18 +281,21 @@ class DriverADuCTest extends drivers\DriverTestBase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $name   The name of the variable to test.
-    * @param array  $expect The expected return
+    * @param string $name    The name of the variable to test.
+    * @param int    $offset  The offset to use
+    * @param object $entry   The table entry
+    * @param int    $channel The channel in that entry
+    * @param array  $expect  The expected return
     *
     * @return null
     *
     * @dataProvider dataFactory
     */
-    public function testFactory($name, $expect)
+    public function testFactory($name, $offset, $entry, $channel, $expect)
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
-        $o = &DriverADuC::factory($name, $sensor);
+        $o = &DriverADuC::factory($name, $sensor, $offset, $entry, $channel);
         $this->assertSame($expect, get_class($o));
     }
     /**
@@ -411,7 +424,88 @@ class DriverADuCTest extends drivers\DriverTestBase
         $val = $this->o->inputBiasCompensation($value, $Rin, $Rbias);
         $this->assertEquals($expect, $val, 0.0001);
     }
+    /**
+    * data provider for testNumeric
+    *
+    * @return array
+    */
+    public static function dataGain()
+    {
+        return array(
+            array(
+                array(
+                    "Entry" => array(
+                        "gain" => 5
+                    ),
+                ),
+                new \HUGnet\DummyBase("Entry"),
+                1,
+                0,
+                0,
+                5,
+            ),
+            array(
+                array(
+                    "Entry" => array(
+                        "gain" => array(
+                            "0" => 5,
+                            "1" => 3,
+                        ),
+                    ),
+                ),
+                new \HUGnet\DummyBase("Entry"),
+                1,
+                1,
+                null,
+                3,
+            ),
+            array(
+                array(
+                    "Entry" => array(
+                        "gain" => array(
+                            "0" => 5,
+                            "1" => 3,
+                        ),
+                    ),
+                ),
+                null,
+                1,
+                1,
+                null,
+                1,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $mocks    The mocks to feed this
+    * @param object $entry    The entry to send
+    * @param int    $offset   The integer to feed to the function
+    * @param int    $initchan The channel to initialize the object to
+    * @param int    $channel  The channel to set
+    * @param int    $expect   The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataGain
+    */
+    public function testGain($mocks, $entry, $offset, $initchan, $channel, $expect)
+    {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($mocks);
+        $obj = &DriverADuC::factory(
+            "DriverADuCTestClass", $sensor, $offset, $entry, $initchan
+        );
+
+        $val = $obj->gain($channel);
+        $this->assertSame($expect, $val);
+    }
 }
+
+/** This is the HUGnet namespace */
+namespace HUGnet\sensors\drivers;
 /**
  * Base driver class for devices.
  *
@@ -428,7 +522,7 @@ class DriverADuCTest extends drivers\DriverTestBase
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class DriverADuCTestClass extends DriverADuC
+class DriverADuCTestClass extends \HUGnet\sensors\DriverADuC
 {
     /**
     * This is where the data for the driver is stored.  This array must be
@@ -508,6 +602,17 @@ class DriverADuCTestClass extends DriverADuC
     public function inputBiasCompensation($value, $Rin, $Rbias)
     {
         return parent::inputBiasCompensation($value, $Rin, $Rbias);
+    }
+    /**
+    * Gets the total gain.
+    *
+    * @param int $channel The channel to get the gain for
+    *
+    * @return null
+    */
+    public function gain($channel = null)
+    {
+        return parent::gain($channel);
     }
 }
 ?>
