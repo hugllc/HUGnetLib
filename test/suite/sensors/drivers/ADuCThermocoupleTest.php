@@ -104,7 +104,7 @@ class ADuCThermocoupleTest extends DriverTestBase
                         ),
                     ),
                 ),
-                0xFFFFFFFFFF - 23920, // (-3.76411915 mV)
+                -23921, // (-3.76411915 mV)
                 1,
                 array(0 => array("value" => 10)),
                 array(),
@@ -146,7 +146,7 @@ class ADuCThermocoupleTest extends DriverTestBase
                         ),
                     ),
                 ),
-                0xFFFFFFFFFF - 47120, // (-7.41478443 mV)
+                -47121, // (-7.41478443 mV)
                 1,
                 array(0 => array("value" => 10)),
                 array(),

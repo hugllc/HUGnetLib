@@ -121,7 +121,6 @@ class ADuCPressure extends \HUGnet\sensors\DriverADuC
         $Rin   = $this->getExtra(5);
         $Rbias = $this->getExtra(6);
 
-        $A = $this->getTwosCompliment($A, 32);
         $A = $this->inputBiasCompensation($A, $Rin, $Rbias);
 
         $Va = ($A / $Am) * $Vref;

@@ -225,6 +225,7 @@ abstract class DriverADuC extends Driver
         &$string, $deltaT = 0, &$prev = null, &$data = array()
     ) {
         $A = $this->strToInt($string);
+        $A = $this->getTwosCompliment($A, 32);
         $A = $A / $this->gain();
         $ret = $this->channels();
         if ($this->get("storageType") == \HUGnet\units\Driver::TYPE_DIFF) {
