@@ -117,6 +117,7 @@ abstract class Driver
         "41:ADuCPressure"            => "ADuCPressure",
         "42:DEFAULT"                 => "ADuCThermocouple",
         "43:DEFAULT"                 => "ADuCVoltage",
+        "44:DEFAULT"                 => "ADuCPressure",
         "50:ControllerCurrent"       => "ControllerCurrent",
         "F9:DEFAULT"                 => "ADuCInputTable",
         "FA:DEFAULT"                 => "SDEFAULT",
