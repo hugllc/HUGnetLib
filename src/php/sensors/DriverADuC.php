@@ -69,7 +69,7 @@ abstract class DriverADuC extends Driver
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
-    private $_offset = 0;
+    protected $offset = 0;
     /**
     * This is where our table entry is stored
     */
@@ -120,7 +120,7 @@ abstract class DriverADuC extends Driver
     {
         $object = &parent::intFactory($sensor);
         if (is_int($offset)) {
-            $object->_offset = $offset;
+            $object->offset = $offset;
         }
         return $object;
     }
@@ -134,7 +134,7 @@ abstract class DriverADuC extends Driver
     public function getExtra($index)
     {
         $extra = (array)$this->sensor()->get("extra");
-        $return = $extra[$index + $this->_offset];
+        $return = $extra[$index + $this->offset];
         if (is_null($return)) {
             $extra = $this->get("extraDefault");
             $return = $extra[$index];
