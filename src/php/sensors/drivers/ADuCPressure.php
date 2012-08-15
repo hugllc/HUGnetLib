@@ -74,12 +74,12 @@ class ADuCPressure extends \HUGnet\sensors\DriverADuC
             "Read @ Max Voltage (psi)",
             "Voltage Ref (V)",
             "R input (Ohms)",
-            "R bias  (Ohms)"
+            "R to ground (Ohms)"
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
-        "extraValues" => array(5, 5, 7, 7, 10, 10, 10),
+        "extraValues" => array(20, 20, 20, 20, 20, 20, 20),
         "extraDefault" => array(0, 5, 0, 100, 1.2, 100, 1),
         "maxDecimals" => 4,
         "inputSize" => 4,
