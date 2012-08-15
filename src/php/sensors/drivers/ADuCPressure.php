@@ -124,7 +124,7 @@ class ADuCPressure extends \HUGnet\sensors\DriverADuC
         $A = $this->inputBiasCompensation($A, $Rin, $Rbias);
 
         $Va = ($A / $Am) * $Vref;
-        $P = $this->linearBounded($Va, $Vmin, $Vmax, $Pmin, $Pmax);
+        $P = $this->linearUnbounded($Va, $Vmin, $Vmax, $Pmin, $Pmax);
         return round($P, $this->get("maxDecimals", 1));
 
     }
