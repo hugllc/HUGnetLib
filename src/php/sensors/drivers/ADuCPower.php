@@ -313,10 +313,12 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
             $sid = (int)$this->sensor()->id();
         }
         $extra = (array)$this->sensor()->get("extra");
-        if (!isset($extra[$index])) {
-            $extra = $this->get("extraDefault", $sid);
+        $return = $extra[$index + $this->_offset];
+        if (is_null($return)) {
+            $extra = $this->get("extraDefault");
+            $return = $extra[$index];
         }
-        return $extra[$index];
+        return $return;
     }
     /**
     * This builds the class from a setup string
