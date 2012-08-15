@@ -136,6 +136,7 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
         }
         $Am   = pow(2, 23);
         $A = $this->getTwosCompliment($A, 32);
+        $A = $A / $this->gain();
         $Vref  = $this->getExtra(0);
         $Rin   = $this->getExtra(2);
         $Rbias = $this->getExtra(3);
@@ -163,6 +164,7 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
         }
         $Am   = pow(2, 23);
         $A = $this->getTwosCompliment($A, 32);
+        $A = $A / $this->gain();
         $Vref  = $this->getExtra(0);
         $R     = $this->getExtra(1);
         $Rin   = $this->getExtra(4);
@@ -315,7 +317,7 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
         $extra = (array)$this->sensor()->get("extra");
         $return = $extra[$index + $this->_offset];
         if (is_null($return)) {
-            $extra = $this->get("extraDefault");
+            $extra = $this->get("extraDefault", $sid);
             $return = $extra[$index];
         }
         return $return;
