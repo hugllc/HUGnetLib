@@ -219,7 +219,7 @@ class ActionVirtual extends Action
             } else {
                 $prefix = "/tmp";
             }
-            $prefix .= "/LeNR";
+            $prefix .= "/LeNR.";
             $filename = $prefix.$this->device->get("DeviceID").".".date("Ymd");
             $new = !file_exists($filename);
             $fd = fopen($filename, "a");
