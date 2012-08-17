@@ -212,7 +212,15 @@ class ActionVirtual extends Action
     private function _writeFile($hist)
     {
         if (is_object($hist)) {
-            $filename = "/tmp/LeNR.".$this->device->get("DeviceID").".".date("Ymd");
+            if (file_exists("/home/tmp")) {
+                $prefix = "/home/tmp";
+            } else if (file_exists("/var/tmp")) {
+                $prefix = "/var/tmp";
+            } else {
+                $prefix = "/tmp";
+            }
+            $prefix .= "/LeNR";
+            $filename = $prefix.$this->device->get("DeviceID").".".date("Ymd");
             $new = !file_exists($filename);
             $fd = fopen($filename, "a");
             $channels = $this->device->channels();
