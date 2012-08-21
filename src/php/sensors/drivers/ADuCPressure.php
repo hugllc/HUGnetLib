@@ -68,10 +68,10 @@ class ADuCPressure extends \HUGnet\sensors\DriverADuC
         "storageUnit" => 'psi',
         "storageType" => \HUGnet\units\Driver::TYPE_RAW, // Storage dataType
         "extraText" => array(
-            "Min Voltage (V)",
-            "Max Voltage (V)",
-            "Read @ Min Voltage (psi)",
-            "Read @ Max Voltage (psi)",
+            "Voltage @ point A (V)",
+            "Voltage @ point B (V)",
+            "Read @ A Voltage (psi)",
+            "Read @ B Voltage (psi)",
             "Voltage Ref (V)",
             "R input (Ohms)",
             "R to ground (Ohms)"
@@ -124,7 +124,7 @@ class ADuCPressure extends \HUGnet\sensors\DriverADuC
         $A = $this->inputBiasCompensation($A, $Rin, $Rbias);
 
         $Va = ($A / $Am) * $Vref;
-        $P = $this->linearBounded($Va, $Vmin, $Vmax, $Pmin, $Pmax);
+        $P = $this->linearUnbounded($Va, $Vmin, $Vmax, $Pmin, $Pmax);
         return round($P, $this->get("maxDecimals", 1));
 
     }

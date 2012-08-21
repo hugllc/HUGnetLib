@@ -442,16 +442,31 @@ abstract class Driver
     */
     protected function linearBounded($value, $Imin, $Imax, $Omin, $Omax)
     {
-        if (is_null($value)) {
-            return null;
-        }
-        if ($Imax == $Imin) {
-            return null;
-        }
         if ($value > $Imax) {
             return null;
         }
         if ($value < $Imin) {
+            return null;
+        }
+        return $this->linearUnbounded($value, $Imin, $Imax, $Omin, $Omax);
+    }
+    /**
+    * This makes a line of two ordered pairs, then puts $A on that line
+    *
+    * @param float $value The incoming value
+    * @param float $Imin  The input minimum
+    * @param float $Imax  The input maximum
+    * @param float $Omin  The output minimum
+    * @param float $Omax  The output maximum
+    *
+    * @return output rounded to 4 places
+    */
+    protected function linearUnbounded($value, $Imin, $Imax, $Omin, $Omax)
+    {
+        if (is_null($value)) {
+            return null;
+        }
+        if ($Imax == $Imin) {
             return null;
         }
         $mult = bcdiv(bcsub($Omax, $Omin), bcsub($Imax, $Imin));
