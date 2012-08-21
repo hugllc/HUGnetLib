@@ -213,7 +213,6 @@ class Action
             $data["TestID"] = $TestID;
             $data["deltaT"] = $time - $prev["Date"];
             $this->device->setParam("LastPollData", $data);
-            $this->device->setUnits($data);
             $d = $this->device->historyFactory($data);
             $d->insertRow();
             $this->device->setParam("LastPoll", $time);
