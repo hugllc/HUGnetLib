@@ -243,46 +243,40 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
     */
     public function channels()
     {
-        $sid = (int)$this->sensor()->id();
-        if (($sid === 3) || ($sid === 1)) {
-            $ret = array(
-                array(
-                    "decimals" => 6,
-                    "units" => "A",
-                    "maxDecimals" => 6,
-                    "storageUnit" => "A",
-                    "unitType" => "Current",
-                    "dataType" => \HUGnet\units\Driver::TYPE_RAW,
-                ),
-                array(
-                    "decimals" => 6,
-                    "units" => "V",
-                    "maxDecimals" => 6,
-                    "storageUnit" => "V",
-                    "unitType" => "Voltage",
-                    "dataType" => \HUGnet\units\Driver::TYPE_RAW,
-                ),
-                array(
-                    "decimals" => 6,
-                    "units" => "W",
-                    "maxDecimals" => 6,
-                    "storageUnit" => "W",
-                    "unitType" => "Power",
-                    "dataType" => \HUGnet\units\Driver::TYPE_RAW,
-                ),
-                array(
-                    "decimals" => 6,
-                    "units" => "Ohms",
-                    "maxDecimals" => 6,
-                    "storageUnit" => "Ohms",
-                    "unitType" => "Impedance",
-                    "dataType" => \HUGnet\units\Driver::TYPE_RAW,
-                )
-            );
-        } else {
-            $ret = array();
-        }
-        return $ret;
+        return array(
+            array(
+                "decimals" => 6,
+                "units" => "A",
+                "maxDecimals" => 6,
+                "storageUnit" => "A",
+                "unitType" => "Current",
+                "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+            ),
+            array(
+                "decimals" => 6,
+                "units" => "V",
+                "maxDecimals" => 6,
+                "storageUnit" => "V",
+                "unitType" => "Voltage",
+                "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+            ),
+            array(
+                "decimals" => 6,
+                "units" => "W",
+                "maxDecimals" => 6,
+                "storageUnit" => "W",
+                "unitType" => "Power",
+                "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+            ),
+            array(
+                "decimals" => 6,
+                "units" => "Ohms",
+                "maxDecimals" => 6,
+                "storageUnit" => "Ohms",
+                "unitType" => "Impedance",
+                "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+            )
+        );
     }
 
 }

@@ -335,46 +335,6 @@ class ADuCPowerTest extends DriverTestBase
                     ),
                 ),
             ),
-            array(
-                array(
-                    "Sensor" => array(
-                        "id" => 0,
-                    ),
-                ),
-                "\HUGnet\sensors\drivers\ADuCPower",
-                array(
-                ),
-            ),
-            array(
-                array(
-                    "Sensor" => array(
-                        "id" => 2,
-                    ),
-                ),
-                "\HUGnet\sensors\drivers\ADuCPower",
-                array(
-                ),
-            ),
-            array(
-                array(
-                    "Sensor" => array(
-                        "id" => 4,
-                    ),
-                ),
-                "\HUGnet\sensors\drivers\ADuCPower",
-                array(
-                ),
-            ),
-            array(
-                array(
-                    "Sensor" => array(
-                        "id" => 5,
-                    ),
-                ),
-                "\HUGnet\sensors\drivers\ADuCPower",
-                array(
-                ),
-            ),
         );
     }
     /**
