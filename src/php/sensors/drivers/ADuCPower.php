@@ -65,28 +65,6 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
     protected $params = array(
         "longName" => "ADuC Power Meter",
         "shortName" => "ADuCPower",
-        "unitType" => array(
-            0 => "Unknown",
-            1 => "Current",
-            2 => "Voltage",
-            3 => "Current",
-            4 => "Voltage",
-            5 => "Power",
-            6 => "Impedance",
-            7 => "Power",
-            8 => "Impedance",
-        ),
-        "storageUnit" => array(
-            0 => 'Unknown',
-            1 => 'A',
-            2 => 'V',
-            3 => 'A',
-            4 => 'V',
-            5 => 'W',
-            6 => 'Ohms',
-            7 => 'W',
-            8 => 'Ohms',
-        ),
         "storageType" => \HUGnet\units\Driver::TYPE_RAW, // Storage dataType
         "extraText" => array(
             "Voltage Ref (V)",
@@ -223,49 +201,6 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
         return round($R, $this->get("maxDecimals"));
     }
     /**
-    * Returns all of the parameters and defaults in an array
-    *
-    * @return array of data from the sensor
-    */
-    public function toArray()
-    {
-        $sensor = (int)$this->sensor()->id();
-        $array = parent::toArray();
-        if (($sensor != 1) && ($sensor != 3)) {
-            $array["extraDefault"] = array();
-            $array["extraValues"] = array();
-            $array["extraText"] = array();
-        }
-        return $array;
-    }
-    /**
-    * Gets an item
-    *
-    * @param string $name The name of the property to get
-    * @param int    $sid  The sensor ID to use
-    *
-    * @return null
-    */
-    public function get($name, $sid = null)
-    {
-        if (!is_int($sid)) {
-            $sid = $this->sensor()->id();
-        }
-        $sid = (int)$sid;
-        $param = parent::get($name);
-        if (($name == "unitType") || ($name == "storageUnit")) {
-            $param = $param[$sid];
-        } else if (($sid != 1) && ($sid != 3)) {
-            if (($name == "extraDefault")
-                || ($name == "extraText")
-                || ($name == "extraValues")
-            ) {
-                $param = array();
-            }
-        }
-        return $param;
-    }
-    /**
     * Gets the direction from a direction sensor made out of a POT.
     *
     * @param string &$string The data string
@@ -300,27 +235,6 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
             $deltaT, $ret, $prev
         );
         return $ret;
-    }
-    /**
-    * Gets the extra values
-    *
-    * @param int $index The extra index to use
-    * @param int $sid   Alternative sensor ID to use
-    *
-    * @return The extra value (or default if empty)
-    */
-    public function getExtra($index, $sid = null)
-    {
-        if (!is_int($sid)) {
-            $sid = (int)$this->sensor()->id();
-        }
-        $extra = (array)$this->sensor()->get("extra");
-        $return = $extra[$index + $this->offset];
-        if (is_null($return)) {
-            $extra = $this->get("extraDefault", $sid);
-            $return = $extra[$index];
-        }
-        return $return;
     }
     /**
     * This builds the class from a setup string

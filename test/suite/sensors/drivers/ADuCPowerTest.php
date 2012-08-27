@@ -122,74 +122,6 @@ class ADuCPowerTest extends DriverTestBase
     *
     * @return array
     */
-    public static function dataExtraSizeStuff()
-    {
-        $ret = array();
-        foreach (array("extraDefault", "extraText", "extraValues") as $field) {
-            $ret[] = array($field, 1, 6);
-            $ret[] = array($field, 2, 0);
-            $ret[] = array($field, 3, 6);
-            for ($i = 4; $i < 9; $i++) {
-                $ret[] = array($field, $i, 0);
-            }
-        }
-        return $ret;
-    }
-    /**
-    * Check the variable type
-    *
-    * @param string $field  The field to check
-    * @param int    $sensor The sensor number
-    * @param int    $size   The size the array should be
-    *
-    * @return null
-    *
-    * @dataProvider dataExtraSizeStuff
-    */
-    public function testExtraSizeStuff($field, $sensor, $size)
-    {
-        $sen = new \HUGnet\DummyBase("Sensor");
-        $sen->resetMock(
-            array(
-                "Sensor" => array(
-                    "id" => $sensor,
-                ),
-            )
-        );
-        $name = (array)$this->o->get($field, $sensor);
-        $this->assertSame($size, count($name), "$field must have $size entries");
-    }
-    /**
-    * Check the variable type
-    *
-    * @param string $field  The field to check
-    * @param int    $sensor The sensor number
-    * @param int    $size   The size the array should be
-    *
-    * @return null
-    *
-    * @dataProvider dataExtraSizeStuff
-    */
-    public function testExtraSizeStuffArray($field, $sensor, $size)
-    {
-        $sen = new \HUGnet\DummyBase("Sensor");
-        $sen->resetMock(
-            array(
-                "Sensor" => array(
-                    "id" => $sensor,
-                ),
-            )
-        );
-        $name = (array)$this->o->toArray();
-        $this->assertSame(
-            $size, count($name[$field]), "$field must have $size entries"
-        );
-    }
-    /**
-    * data provider for testType
-    *
-    * @return array
-    */
     public static function dataArrayFieldTypeNull()
     {
         $ret = array(
@@ -801,7 +733,7 @@ class ADuCPowerTest extends DriverTestBase
                         "id" => 5,
                     ),
                 ),
-                'W',
+                'unknown',
             ),
         );
     }
@@ -820,7 +752,7 @@ class ADuCPowerTest extends DriverTestBase
                         "id" => 5,
                     ),
                 ),
-                null,
+                1.2,
             ),
             array(
                 0,
