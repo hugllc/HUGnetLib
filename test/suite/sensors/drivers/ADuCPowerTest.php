@@ -580,23 +580,6 @@ class ADuCPowerTest extends DriverTestBase
             array( // #4
                 array(
                     "Sensor" => array(
-                        "id" => 2,
-                        "get" => array(
-                            "sensor" => 2,
-                            "extra" => array(),
-                        ),
-                    ),
-                ),
-                "40420F0040420F00",
-                1,
-                array(),
-                array(),
-                array(
-                ),
-            ),
-            array( // #5
-                array(
-                    "Sensor" => array(
                         "id" => 1,
                         "get" => array(
                             "sensor" => 2,

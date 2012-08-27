@@ -215,10 +215,6 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
     public function decodeData(
         &$string, $deltaT = 0, &$prev = null, &$data = array()
     ) {
-        $sid = (int)$this->sensor()->id();
-        if (($sid !== 1) && ($sid !== 3)) {
-            return array();
-        }
         $ret = $this->channels();
         $A = $this->strToInt($string);
         $ret[0]["value"] = $this->getCurrent(
