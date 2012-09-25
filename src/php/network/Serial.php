@@ -166,12 +166,21 @@ final class Serial
     */
     private function _checkPort(&$port)
     {
-        if (substr($port, strlen($port) - 3) === "USB") {
+        for ($j = 0; $j < 20; $j++) {
             for ($i = 0; $i < 20; $i++) {
                 if (file_exists($port.$i)) {
                     $port = $port.$i;
                     break;
                 }
+            }
+            if (!$this->_config["quiet"]) {
+                break;
+            }
+            if (substr($port, strlen($port) - 3) === "USB") {
+                \HUGnet\VPrint::out(
+                    "Serial port disappeared.  Trying again in 30 seconds.", 1
+                );
+                sleep(30);
             }
         }
         \HUGnet\System::exception(
@@ -179,6 +188,7 @@ final class Serial
             "Runtime",
             !file_exists($port) && !$this->_config["quiet"]
         );
+        \HUGnet\VPrint::out("Using port $port", 1);
     }
     /**
     * Sets up the connection to the socket
