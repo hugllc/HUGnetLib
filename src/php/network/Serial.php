@@ -259,6 +259,10 @@ final class Serial
                 $this->_config["name"]."(".$this->_config["driver"].") -> ".$return,
                 6
             );
+            if (!is_resource($this->_port) || feof($this->_port)) {
+                $this->_disconnect();
+                $this->_connect();
+            }
         }
         return $return;
     }
