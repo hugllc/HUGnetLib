@@ -143,13 +143,10 @@ final class Serial
         if (is_resource($this->_port)) {
             return true;
         }
-        \HUGnet\System::exception(
-            "Serial port doesn't exist:  ".$this->_config["location"],
-            "Runtime",
-            !file_exists($this->_config["location"]) && !$this->_config["quiet"]
-        );
-        $this->_setupPort();
-        $this->_port = @fopen($this->_config["location"], "rn+b");
+        $port = $this->_config["location"];
+        $this->_checkPort($port);
+        $this->_setupPort($port);
+        $this->_port = @fopen($port, "rn+b");
         \HUGnet\System::exception(
             "Failed to open port:  ".$this->_config["location"],
             "Runtime",
@@ -162,15 +159,43 @@ final class Serial
     *
     * This is not really testable
     *
+    * @param string &$port The port to use
+    *
     * @return null
     * @codeCoverageIgnore
     */
-    private function _setupPort()
+    private function _checkPort(&$port)
+    {
+        if (substr($port, strlen($port) - 3) === "USB") {
+            for ($i = 0; $i < 20; $i++) {
+                if (file_exists($port.$i)) {
+                    $port = $port.$i;
+                    break;
+                }
+            }
+        }
+        \HUGnet\System::exception(
+            "Serial port doesn't exist:  ".$this->_config["location"],
+            "Runtime",
+            !file_exists($port) && !$this->_config["quiet"]
+        );
+    }
+    /**
+    * Sets up the connection to the socket
+    *
+    * This is not really testable
+    *
+    * @param string $port The port to use
+    *
+    * @return null
+    * @codeCoverageIgnore
+    */
+    private function _setupPort($port)
     {
         if (stristr($this->_config["location"], "com") !== false) {
-            $this->_setupPortWindows();
+            $this->_setupPortWindows($port);
         } else {
-            $this->_setupPortLinux();
+            $this->_setupPortLinux($port);
         }
     }
     /**
@@ -178,12 +203,14 @@ final class Serial
     *
     * This is not really testable
     *
+    * @param string $port The port to use
+    *
     * @return null
     * @codeCoverageIgnore
     */
-    private function _setupPortLinux()
+    private function _setupPortLinux($port)
     {
-        $command  = "stty -F ".$this->_config["location"];
+        $command  = "stty -F ".$port;
         $command .= " ".(int)$this->_config["baud"];
         $flags  = " -parenb -parodd cs8 hupcl -cstopb cread clocal -ignbrk -brkint";
         $flags .= " -ignpar -parmrk -inpck -istrip -inlcr -igncr -icrnl -ixon";
@@ -216,12 +243,14 @@ final class Serial
     *
     * This is not really testable
     *
+    * @param string $port The port to use
+    *
     * @return null
     * @codeCoverageIgnore
     */
-    private function _setupPortWindows()
+    private function _setupPortWindows($port)
     {
-        $command  = "mode ".$this->_config["location"];
+        $command  = "mode ".$port;
         $command .= " BAUD=".(int)$this->_config["baud"];
         if ($this->_config["rtscts"]) {
             $command = " RTS=hs OCTS=on";
