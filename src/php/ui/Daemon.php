@@ -56,6 +56,10 @@ class Daemon extends CLI
 {
     /** This says if we should loop or not */
     private $_loop = true;
+    /** This says the last time we checked for memory */
+    private $_memCheck = 0;
+    /** This is the max memory we can use in megabytes */
+    protected $maxMemory = 50;
 
     /**
     * Sets our configuration
@@ -154,12 +158,30 @@ class Daemon extends CLI
         }
     }
     /**
+    * Checks for a valid UUID
+    *
+    * @return null
+    */
+    private function _checkMemory()
+    {
+        if (time() > $this->_memCheck) {
+            $mem = round((memory_get_usage()) / 1024.0 / 1024.0, 3);
+            $this->out("Memory: ".$mem." M");
+            if ($mem > $this->maxMemory) {
+                $this->out("Too much memory being used, exiting");
+                $this->quit();
+            }
+            $this->_memCheck = time() + 30;
+        }
+    }
+    /**
     * Runs periodically
     *
     * @return null
     */
     public function main()
     {
+        $this->_checkMemory();
         parent::main();
     }
     /**

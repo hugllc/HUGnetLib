@@ -98,8 +98,6 @@ class Route extends \HUGnet\ui\Daemon
                 "Route script ".sprintf("%06X", $this->_myID)." is disabled."
             );
         }
-        $mem = round((memory_get_usage()) / 1024.0 / 1024.0, 3);
-        $this->out("Memory: ".$mem." M");
         $this->_wait();
     }
     /**
@@ -109,7 +107,7 @@ class Route extends \HUGnet\ui\Daemon
     */
     private function _wait()
     {
-        //$this->_wait = self::WAIT_TIME - (time() - $this->_mainStart);
+        parent::main(); // This should be called at least once per iteration
         if (($this->_wait > 0) && $this->loop()) {
             for (; ($this->_wait > 0) && $this->loop(); $this->_wait--) {
                 parent::main();

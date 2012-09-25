@@ -101,8 +101,6 @@ class Update extends \HUGnet\ui\Daemon
         foreach ($this->_plugins as $key => $obj) {
             $obj->execute();
         }
-        $mem = round((memory_get_usage()) / 1024.0 / 1024.0, 3);
-        $this->out("Memory: ".$mem." M");
         $this->_wait();
     }
     /**
@@ -112,6 +110,7 @@ class Update extends \HUGnet\ui\Daemon
     */
     private function _wait()
     {
+        parent::main(); // This should be called at least once per iteration
         $this->_wait = self::WAIT_TIME - (time() - $this->_mainStart);
         if (($this->_wait > 0) && $this->loop()) {
             $this->out("Waiting ".$this->_wait." seconds at ".date("Y-m-d H:i:s"));

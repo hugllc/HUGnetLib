@@ -131,8 +131,7 @@ class Gather extends \HUGnet\ui\Daemon
                 "Gather script ".sprintf("%06X", $this->_myID)." is disabled."
             );
         }
-        $mem = round((memory_get_usage()) / 1024.0 / 1024.0, 3);
-        $this->out("Memory: ".$mem." M");
+        parent::main();
         $this->_wait();
     }
     /**
@@ -223,6 +222,7 @@ class Gather extends \HUGnet\ui\Daemon
     */
     private function _wait()
     {
+        parent::main(); // This should be called at least once per iteration
         $this->_wait -= (time() - $this->_mainStart);
         if (($this->_wait > 0) && $this->loop()) {
             if ($this->_wait > 10) {
