@@ -170,11 +170,14 @@ class E00392600 extends \HUGnet\devices\Driver
         case "0039-26-02-P":
             $this->device()->set("DeviceJob", "Updater");
             break;
+        case "0039-26-03-P":
+            $this->device()->set("DeviceJob", "Analysis");
+            break;
         case "0039-26-04-P":
             $this->device()->set("DeviceJob", "Router");
             break;
         case "0039-26-06-P":
-            $this->device()->set("DeviceJob", "Devices");
+            $this->device()->set("DeviceJob", "Gatherer");
             break;
         default:
             $this->device()->set("DeviceJob", "Unknown");
