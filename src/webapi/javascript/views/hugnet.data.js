@@ -234,6 +234,7 @@ HUGnet.DataView = Backbone.View.extend({
         data.limit = this.limit;
         data.since = this.since;
         data.until = this.until;
+        data.csvurl = this.url+"?task=history&format=CSV&id="+data.id.toString(16)+"&since="+data.since+"&until="+data.until+"&limit="+data.limit+"&order="+((data.limit === 0) ? 0 : 1);
         this.$el.html(
             _.template(
                 $(this.template).html(),
