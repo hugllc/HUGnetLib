@@ -112,7 +112,7 @@ class E00392600Test extends DriverTestBase
                             ),
                             array("DeviceLocation", "192.168.36.152"),
                             array("GatewayKey", 1),
-                            array("DeviceJob", "Devices"),
+                            array("DeviceJob", "Gatherer"),
                         ),
                         "get" => array(array("HWPartNum")),
                         "setParam" => array(

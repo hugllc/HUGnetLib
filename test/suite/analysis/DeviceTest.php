@@ -90,27 +90,33 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     public static function dataReady()
     {
         return array(
-            array(0, 600, true),
+            array(
+                0,
+                600,
+                new \HUGnet\DummyBase("Device"),
+                true
+            ),
         );
     }
     /**
     * test the set routine when an extra class exists
     *
-    * @param int   $last   Set the last value
-    * @param int   $period The number of seconds between runs
-    * @param array $expect The expected return
+    * @param int    $last   Set the last value
+    * @param int    $period The number of seconds between runs
+    * @param object $device The device to use
+    * @param array  $expect The expected return
     *
     * @return null
     *
     * @dataProvider dataReady
     */
-    public function testReady($last, $period, $expect)
+    public function testReady($last, $period, $device, $expect)
     {
         $sys = new \HUGnet\DummySystem("System");
         $obj = DriverTestClass::factory($sys);
         $obj->setLast($last);
         $obj->setPeriod($period);
-        $this->assertSame($expect, $obj->ready());
+        $this->assertSame($expect, $obj->ready($device));
     }
 }
 /**
@@ -179,13 +185,15 @@ class DriverTestClass extends Device
         $this->period = $period;
     }
     /**
-    * This says if we are ready to run
+    * This function does the stuff in the class.
     *
-    * @return bool
+    * @param object &$device The device to check
+    *
+    * @return bool True if ready to return, false otherwise
     */
-    public function ready()
+    public function ready(&$device)
     {
-        return parent::ready();
+        return parent::ready(&$device);
     }
 }
 ?>
