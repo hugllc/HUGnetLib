@@ -77,7 +77,7 @@ abstract class Device
     * as the driver class name.
     */
     private static $_drivers = array(
-        "Checkin",
+        "Average15min",
     );
     /**
     * This is where the plugin objects are stored
@@ -147,16 +147,17 @@ abstract class Device
             if (class_exists($class)) {
                 $plugins[$class] = &$class::factory(&$gui);
             }
-
         }
         return (array)$plugins;
     }
     /**
-    * This says if we are ready to run
+    * This function does the stuff in the class.
     *
-    * @return bool
+    * @param object &$device The device to check
+    *
+    * @return bool True if ready to return, false otherwise
     */
-    protected function ready()
+    public function ready(&$device)
     {
         return true;
     }

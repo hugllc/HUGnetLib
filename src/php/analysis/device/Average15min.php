@@ -35,7 +35,7 @@
  *
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\analysis\periodic;
+namespace HUGnet\analysis\device;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 
@@ -56,7 +56,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class Average extends \HUGnet\analysis\Device
+class Average15min extends \HUGnet\analysis\Device
 {
     /** This is the period */
     protected $period = 600;
@@ -94,9 +94,74 @@ class Average extends \HUGnet\analysis\Device
     */
     public function &execute(&$device)
     {
-        if ($this->ready()) {
-            print "HERE";
+        $hist = &$device->historyFactory($data, true);
+        // We don't want more than 100 records at a time;
+        if (empty($this->conf["maxRecords"])) {
+            $hist->sqlLimit = 100;
+        } else {
+            $hist->sqlLimit = $this->conf["maxRecords"];
         }
+        $hist->sqlOrderBy = "Date asc";
+
+        $avg = &$device->historyFactory($data, false);
+
+        $last = &$device->params->DriverInfo["LastAverage15MIN"];
+        $lastTry = &$device->params->DriverInfo["LastAverage15MINTry"];
+        $local = &$device->params->DriverInfo["LastAverage15MINCnt"];
+        $lastHistory = &$device->params->DriverInfo["LastHistory"];
+
+        $ret = $hist->getPeriod((int)$last, $lastHistory, $device->id, "id");
+
+        $bad = 0;
+        $local = 0;
+
+        if ($ret) {
+            // Go through the records
+            while ($avg->calcAverage($hist, AverageTableBase::AVERAGE_15MIN)) {
+                if ($avg->insertRow(true)) {
+                    $now = $avg->Date;
+                    $local++;
+                    $lastTry = time();
+                } else {
+                    $bad++;
+                }
+            }
+        }
+        if ($bad > 0) {
+            // State we did some uploading
+            $this->ui->out(
+                $device->DeviceID." - ".
+                "Failed to insert $bad 15MIN average records",
+                1
+            );
+        }
+        if ($local > 0) {
+            // State we did some uploading
+            $this->ui->out(
+                $device->DeviceID." - ".
+                "Inserted $local 15MIN average records ".
+                date("Y-m-d H:i:s", $last)." - ".date("Y-m-d H:i:s", $now),
+                1
+            );
+        }
+        if (!empty($now)) {
+            $last = (int)$now;
+        }
+        return true;
+    }
+    /**
+    * This function does the stuff in the class.
+    *
+    * @param object &$device The device to check
+    *
+    * @return bool True if ready to return, false otherwise
+    */
+    public function ready(&$device)
+    {
+        // Run when enabled, and at most every 15 minutes.
+        return $this->enable
+            && (((time() - $device->params->DriverInfo["LastAverage15MINTry"]) > 900)
+            || ($device->params->DriverInfo["LastAverage15MINCnt"] > 1));
     }
 }
 
