@@ -69,7 +69,9 @@ class Util
         $class, $dir="tables", $quiet=false, $namespace = "\HUGnet"
     ) {
         /** This is our table class */
-        @include_once dirname(__FILE__)."/../".$dir."/".$class.".php";
+        if (file_exists(dirname(__FILE__)."/../".$dir."/".$class.".php")) {
+            include_once dirname(__FILE__)."/../".$dir."/".$class.".php";
+        }
         $baseclass = $class;
         if (!class_exists($class)) {
             $class = "\\".$class;

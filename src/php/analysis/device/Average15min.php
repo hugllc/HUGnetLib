@@ -94,6 +94,7 @@ class Average15min extends \HUGnet\analysis\Device
     */
     public function &execute(&$device)
     {
+        $this->ui()->out("15MIN average plugin starting ", 3);
         $hist = &$device->historyFactory($data, true);
         // We don't want more than 100 records at a time;
         if (empty($this->conf["maxRecords"])) {
@@ -129,7 +130,7 @@ class Average15min extends \HUGnet\analysis\Device
         }
         if ($bad > 0) {
             // State we did some uploading
-            $this->ui->out(
+            $this->ui()->out(
                 $device->DeviceID." - ".
                 "Failed to insert $bad 15MIN average records",
                 1
@@ -137,7 +138,7 @@ class Average15min extends \HUGnet\analysis\Device
         }
         if ($local > 0) {
             // State we did some uploading
-            $this->ui->out(
+            $this->ui()->out(
                 $device->DeviceID." - ".
                 "Inserted $local 15MIN average records ".
                 date("Y-m-d H:i:s", $last)." - ".date("Y-m-d H:i:s", $now),
@@ -147,6 +148,7 @@ class Average15min extends \HUGnet\analysis\Device
         if (!empty($now)) {
             $last = (int)$now;
         }
+        $this->ui()->out("15MIN average plugin ending ", 3);
         return true;
     }
     /**

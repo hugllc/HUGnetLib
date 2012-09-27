@@ -116,8 +116,8 @@ class Analysis extends \HUGnet\ui\Daemon
                 if (!$this->loop()) {
                     break;
                 }
-                if ($key == 0) {
-                    /* I don't need info an empty device */
+                if (($key == 0) || ($key > 0xFD0000)) {
+                    /* I don't need info an empty device, or script */
                     continue;
                 }
                 $this->_dev->load($key);
