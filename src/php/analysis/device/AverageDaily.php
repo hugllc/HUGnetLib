@@ -169,12 +169,9 @@ class AverageDaily extends \HUGnet\analysis\Device
     */
     public function ready(&$device)
     {
-        $last15Min = $device->getParam("LastAverageHOURLY")
-                    - $device->getParam("LastAverageDAILY");
         // Run when enabled, and at most every 15 minutes.
         return $this->enable
-            && (((time() - $device->getParam("LastAverageDAILYTry")) > 3600)
-            || ($last15Min > 3600));
+            && ((time() - $device->getParam("LastAverageDAILYTry")) > 3600);
     }
 }
 
