@@ -168,7 +168,7 @@ class E00392100 extends \HUGnet\devices\Driver
             || ((int)$obj->get("type") !== $type["type"])
         ) {
             $obj->load(array_merge((array)$data, (array)$type));
-            $obj->store();
+            //$obj->store();
         }
         return $obj;
     }

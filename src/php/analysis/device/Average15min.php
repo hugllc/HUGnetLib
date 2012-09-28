@@ -106,19 +106,21 @@ class Average15min extends \HUGnet\analysis\Device
 
         $avg = &$device->historyFactory($data, false);
 
-        $last = &$device->params->DriverInfo["LastAverage15MIN"];
-        $lastTry = &$device->params->DriverInfo["LastAverage15MINTry"];
-        $local = &$device->params->DriverInfo["LastAverage15MINCnt"];
-        $lastHistory = &$device->params->DriverInfo["LastHistory"];
+        $last        = $device->getParam("LastAverage15MIN");
+        $lastTry     = $device->getParam("LastAverage15MINTry");
+        $local       = $device->getParam("LastAverage15MINCnt");
+        $lastHistory = $device->getParam("LastHistory");
 
-        $ret = $hist->getPeriod((int)$last, $lastHistory, $device->id, "id");
+        $ret = $hist->getPeriod((int)$last, $lastHistory, $device->id(), "id");
 
         $bad = 0;
         $local = 0;
 
         if ($ret) {
             // Go through the records
-            while ($avg->calcAverage($hist, AverageTableBase::AVERAGE_15MIN)) {
+            while (
+                $avg->calcAverage($hist, \AverageTableBase::AVERAGE_15MIN)
+            ) {
                 if ($avg->insertRow(true)) {
                     $now = $avg->Date;
                     $local++;
@@ -148,6 +150,11 @@ class Average15min extends \HUGnet\analysis\Device
         if (!empty($now)) {
             $last = (int)$now;
         }
+        $device->setParam("LastAverage15MIN", $last);
+        $device->setParam("LastAverage15MINTry", $lastTry);
+        $device->setParam("LastAverage15MINCnt", $local);
+        $device->setParam("LastHistory", $lastHistory);
+
         $this->ui()->out("15MIN average plugin ending ", 3);
         return true;
     }

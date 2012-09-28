@@ -383,7 +383,17 @@ class Sensor extends SystemTableBase
             )
         );
     }
-
+    /**
+    * Stores data into the database
+    *
+    * @param bool $replace Replace any record that is in the way
+    *
+    * @return null
+    */
+    public function store($replace = true)
+    {
+        return parent::store($replace);
+    }
 }
 
 

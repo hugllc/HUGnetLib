@@ -85,6 +85,8 @@ class Analysis extends \HUGnet\ui\Daemon
     private $_dev;
     /** This is the runtime configuration */
     private $_runtime;
+    /** This is the max memory we can use in megabytes */
+    protected $maxMemory = 100;
     /**
     * Sets our configuration
     *
@@ -125,6 +127,7 @@ class Analysis extends \HUGnet\ui\Daemon
                 foreach ($this->_plugins as $key => $obj) {
                     $obj->execute($this->_dev);
                 }
+                $this->_dev->store();
             }
         } else {
             $this->_wait = 30;

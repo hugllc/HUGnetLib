@@ -277,7 +277,7 @@ abstract class AverageTableBase extends HistoryTableBase
     */
     protected function calc15MinAverageMult(HistoryTableBase &$data, $last, $col)
     {
-        if ($this->device->sensor($col)->total()) {
+        if ($this->device->sensor($col)->get("total")) {
             if ($data->Date > $this->endTime) {
                 $mult = ($this->endTime - $last);
                 $denom = $data->Date - $last;
@@ -353,12 +353,12 @@ abstract class AverageTableBase extends HistoryTableBase
                 $this->divisors[$col] = 1;
             }
             if (!is_null($this->$col)) {
-                if (!$this->device->sensor($i)->total()) {
+                if (!$this->device->sensor($i)->get("total")) {
                     $this->$col = $this->$col / $this->divisors[$col];
                 }
                 $this->$col = round(
                     $this->$col,
-                    $this->device->sensor($i)->maxDecimals
+                    $this->device->sensor($i)->get("maxDecimals")
                 );
 
             }
