@@ -56,7 +56,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class Average15min extends \HUGnet\analysis\Device
+class AverageDaily extends \HUGnet\analysis\Device
 {
     /** This is the period */
     protected $period = 600;
@@ -97,8 +97,8 @@ class Average15min extends \HUGnet\analysis\Device
         if (!$this->ready($device)) {
             return true;
         }
-        $this->ui()->out("15MIN average plugin starting ", 3);
-        $hist = &$device->historyFactory($data, true);
+        $this->ui()->out("DAILY average plugin starting ", 3);
+        $hist = &$device->historyFactory($data, false);
         // We don't want more than 100 records at a time;
         if (empty($this->conf["maxRecords"])) {
             $hist->sqlLimit = 100;
@@ -109,21 +109,21 @@ class Average15min extends \HUGnet\analysis\Device
 
         $avg = &$device->historyFactory($data, false);
 
-        $last        = $device->getParam("LastAverage15MIN");
-        $lastTry     = $device->getParam("LastAverage15MINTry");
-        $local       = $device->getParam("LastAverage15MINCnt");
-        $lastHistory = $device->getParam("LastHistory");
-
-        $ret = $hist->getPeriod((int)$last, $lastHistory, $device->id(), "id");
+        $last     = $device->getParam("LastAverageDAILY");
+        $lastTry  = $device->getParam("LastAverageDAILYTry");
+        $lastPrev = $device->getParam("LastAverageHOURLY");
+        $ret = $hist->getPeriod(
+            (int)$last,
+            $lastPrev,
+            $device->get("id"),
+            \AverageTableBase::AVERAGE_HOURLY
+        );
 
         $bad = 0;
         $local = 0;
-
         if ($ret) {
             // Go through the records
-            while (
-                $avg->calcAverage($hist, \AverageTableBase::AVERAGE_15MIN)
-            ) {
+            while ($avg->calcAverage($hist, \AverageTableBase::AVERAGE_DAILY)) {
                 if ($avg->insertRow(true)) {
                     $now = $avg->Date;
                     $local++;
@@ -133,11 +133,12 @@ class Average15min extends \HUGnet\analysis\Device
                 }
             }
         }
+
         if ($bad > 0) {
             // State we did some uploading
             $this->ui()->out(
                 $device->DeviceID." - ".
-                "Failed to insert $bad 15MIN average records",
+                "Failed to insert $bad DAILY average records",
                 1
             );
         }
@@ -145,19 +146,18 @@ class Average15min extends \HUGnet\analysis\Device
             // State we did some uploading
             $this->ui()->out(
                 $device->DeviceID." - ".
-                "Inserted $local 15MIN average records ".
-                date("Y-m-d H:i:s", $last)." - ".date("Y-m-d H:i:s", $now),
+                "Inserted $local DAILY average records ".
+                date("Y-m-d", $last)." - ".date("Y-m-d", $now),
                 1
             );
         }
         if (!empty($now)) {
             $last = (int)$now;
         }
-        $device->setParam("LastAverage15MIN", $last);
-        $device->setParam("LastAverage15MINTry", $lastTry);
-        $device->setParam("LastAverage15MINCnt", $local);
+        $device->setParam("LastAverageDAILY", $last);
+        $device->setParam("LastAverageDAILYTry", $lastTry);
 
-        $this->ui()->out("15MIN average plugin ending ", 3);
+        $this->ui()->out("DAILY average plugin ending ", 3);
         return true;
     }
     /**
@@ -169,10 +169,12 @@ class Average15min extends \HUGnet\analysis\Device
     */
     public function ready(&$device)
     {
+        $last15Min = $device->getParam("LastAverageHOURLY")
+                    - $device->getParam("LastAverageDAILY");
         // Run when enabled, and at most every 15 minutes.
         return $this->enable
-            && (((time() - $device->getParam("LastAverage15MINTry")) > 900)
-            || ($device->getParam("LastAverage15MINCnt") > 1));
+            && (((time() - $device->getParam("LastAverageDAILYTry")) > 3600)
+            || ($last15Min > 3600));
     }
 }
 

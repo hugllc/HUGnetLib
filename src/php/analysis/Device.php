@@ -66,6 +66,10 @@ abstract class Device
     */
     protected $last = 0;
     /**
+    * the last time we ran
+    */
+    protected $enable = true;
+    /**
     * the system object
     */
     private $_ui = null;
@@ -77,7 +81,8 @@ abstract class Device
     * as the driver class name.
     */
     private static $_drivers = array(
-        "Average15min",
+        "Average15min", "AverageHourly", "AverageDaily", "AverageWeekly",
+        "AverageMonthly", "AverageYearly",
     );
     /**
     * This is where the plugin objects are stored
