@@ -56,6 +56,8 @@ namespace HUGnet\network;
  */
 final class Transport
 {
+    /** This is the max number of unsolicited packets that can queue up */
+    const MAX_UNSOL = 100;
     /** This is our network */
     private $_network = array();
     /** These are the packets we are sending */
@@ -207,6 +209,9 @@ final class Transport
             }
             // Save this packet if no one claimed it.
             if (!isset($reply) || is_null($reply)) {
+                if (count($this->_unsolicited) > self::MAX_UNSOL) {
+                    array_shift($this->_unsolicited);
+                }
                 $this->_unsolicited[] = &$pkt;
             }
         }

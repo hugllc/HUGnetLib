@@ -54,6 +54,11 @@ namespace HUGnet\network;
  */
 final class Application
 {
+    /**
+     * This is the max number of unsolicited packets that it will deal with in
+     * one go.
+     */
+    const MAX_UNSOL = 100;
     /** This is our network */
     private $_transport;
     /** This is our system */
@@ -193,7 +198,9 @@ final class Application
                     call_user_func($callback, $packet);
                 }
             }
+            return true;
         }
+        return false;
     }
     /**
     * Sets callbacks for incoming packets
@@ -291,6 +298,7 @@ final class Application
             }
         }
         $this->_monitor($packet);
+
     }
 
     /**
@@ -370,7 +378,10 @@ final class Application
     {
         \HUGnet\System::loopcheck();
         // Continue to do the unsolicited stuff
-        $this->_unsolicited($this->_transport->unsolicited());
+        $count = 0;
+        do {
+            $ret = $this->_unsolicited($this->_transport->unsolicited());
+        } while (($count++ < self::MAX_UNSOL) && $ret);
     }
     /**
     * This is the stuff that must get done no matter how we are looping

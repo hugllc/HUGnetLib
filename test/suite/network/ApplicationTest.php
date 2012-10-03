@@ -286,6 +286,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                             array(),
                             array(),
                             array(),
+                            array(),
                         ),
                         "unsol" => array(
                             array(
