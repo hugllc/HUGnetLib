@@ -44,6 +44,8 @@ require_once TEST_BASE."tables/HUGnetDBTableTestBase.php";
 require_once TEST_CONFIG_BASE."files/mocks/AverageTableMock.php";
 /** This is a required class */
 require_once TEST_CONFIG_BASE."files/mocks/HistoryTableMock.php";
+/** This is the dummy table container */
+require_once TEST_CONFIG_BASE.'stubs/DummyBase.php';
 
 /**
  * Test class for filter.
@@ -877,14 +879,60 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 "HistoryTableMock",
                 array(
-                    "id" => 15,
-                    "sensors" => array(
-                        "Sensors" => 3,
-                        "PhysicalSensors" => 3,
-                        "forceSensors" => true,
-                        0 => array(),
-                        1 => array(),
-                        2 => array("id" => 0x02),
+                    "Device" => array(
+                        "id" => 15,
+                        "get" => array(
+                            "id" => 15,
+                        ),
+                        "sensor" => array(
+                            "0" => new \HUGnet\DummyBase("Sensor0"),
+                            "1" => new \HUGnet\DummyBase("Sensor1"),
+                            "2" => new \HUGnet\DummyBase("Sensor2"),
+                            "3" => new \HUGnet\DummyBase("Sensor"),
+                            "4" => new \HUGnet\DummyBase("Sensor"),
+                            "5" => new \HUGnet\DummyBase("Sensor"),
+                            "6" => new \HUGnet\DummyBase("Sensor"),
+                            "7" => new \HUGnet\DummyBase("Sensor"),
+                            "8" => new \HUGnet\DummyBase("Sensor"),
+                            "9" => new \HUGnet\DummyBase("Sensor"),
+                            "10" => new \HUGnet\DummyBase("Sensor"),
+                            "11" => new \HUGnet\DummyBase("Sensor"),
+                            "12" => new \HUGnet\DummyBase("Sensor"),
+                            "13" => new \HUGnet\DummyBase("Sensor"),
+                            "14" => new \HUGnet\DummyBase("Sensor"),
+                        ),
+                    ),
+                    "Sensor" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor0" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "id" => 2,
+                        "get" => array(
+                            "id" => 2,
+                            "total" => true,
+                            "maxDecimals" => 2,
+                        ),
                     ),
                 ),
                 array(
@@ -932,14 +980,60 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 "HistoryTableMock",
                 array(
-                    "id" => 18,
-                    "sensors" => array(
-                        "Sensors" => 3,
-                        "PhysicalSensors" => 3,
-                        "forceSensors" => true,
-                        0 => array(),
-                        1 => array(),
-                        2 => array("id" => 0x02),
+                    "Device" => array(
+                        "id" => 18,
+                        "get" => array(
+                            "id" => 18,
+                        ),
+                        "sensor" => array(
+                            "0" => new \HUGnet\DummyBase("Sensor0"),
+                            "1" => new \HUGnet\DummyBase("Sensor1"),
+                            "2" => new \HUGnet\DummyBase("Sensor2"),
+                            "3" => new \HUGnet\DummyBase("Sensor"),
+                            "4" => new \HUGnet\DummyBase("Sensor"),
+                            "5" => new \HUGnet\DummyBase("Sensor"),
+                            "6" => new \HUGnet\DummyBase("Sensor"),
+                            "7" => new \HUGnet\DummyBase("Sensor"),
+                            "8" => new \HUGnet\DummyBase("Sensor"),
+                            "9" => new \HUGnet\DummyBase("Sensor"),
+                            "10" => new \HUGnet\DummyBase("Sensor"),
+                            "11" => new \HUGnet\DummyBase("Sensor"),
+                            "12" => new \HUGnet\DummyBase("Sensor"),
+                            "13" => new \HUGnet\DummyBase("Sensor"),
+                            "14" => new \HUGnet\DummyBase("Sensor"),
+                        ),
+                    ),
+                    "Sensor" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor0" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "id" => 2,
+                        "get" => array(
+                            "id" => 2,
+                            "total" => true,
+                            "maxDecimals" => 2,
+                        ),
                     ),
                 ),
                 array(
@@ -987,14 +1081,60 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 "HistoryTableMock",
                 array(
-                    "id" => 21,
-                    "sensors" => array(
-                        "Sensors" => 3,
-                        "PhysicalSensors" => 3,
-                        "forceSensors" => true,
-                        0 => array(),
-                        1 => array(),
-                        2 => array("id" => 0x02),
+                    "Device" => array(
+                        "id" => 21,
+                        "get" => array(
+                            "id" => 21,
+                        ),
+                        "sensor" => array(
+                            "0" => new \HUGnet\DummyBase("Sensor0"),
+                            "1" => new \HUGnet\DummyBase("Sensor1"),
+                            "2" => new \HUGnet\DummyBase("Sensor2"),
+                            "3" => new \HUGnet\DummyBase("Sensor"),
+                            "4" => new \HUGnet\DummyBase("Sensor"),
+                            "5" => new \HUGnet\DummyBase("Sensor"),
+                            "6" => new \HUGnet\DummyBase("Sensor"),
+                            "7" => new \HUGnet\DummyBase("Sensor"),
+                            "8" => new \HUGnet\DummyBase("Sensor"),
+                            "9" => new \HUGnet\DummyBase("Sensor"),
+                            "10" => new \HUGnet\DummyBase("Sensor"),
+                            "11" => new \HUGnet\DummyBase("Sensor"),
+                            "12" => new \HUGnet\DummyBase("Sensor"),
+                            "13" => new \HUGnet\DummyBase("Sensor"),
+                            "14" => new \HUGnet\DummyBase("Sensor"),
+                        ),
+                    ),
+                    "Sensor" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor0" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "id" => 2,
+                        "get" => array(
+                            "id" => 2,
+                            "total" => true,
+                            "maxDecimals" => 2,
+                        ),
                     ),
                 ),
                 array(
@@ -1042,14 +1182,60 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 "HistoryTableMock",
                 array(
-                    "id" => 22,
-                    "sensors" => array(
-                        "Sensors" => 3,
-                        "PhysicalSensors" => 3,
-                        "forceSensors" => true,
-                        0 => array(),
-                        1 => array(),
-                        2 => array("id" => 0x02),
+                    "Device" => array(
+                        "id" => 22,
+                        "get" => array(
+                            "id" => 22,
+                        ),
+                        "sensor" => array(
+                            "0" => new \HUGnet\DummyBase("Sensor0"),
+                            "1" => new \HUGnet\DummyBase("Sensor1"),
+                            "2" => new \HUGnet\DummyBase("Sensor2"),
+                            "3" => new \HUGnet\DummyBase("Sensor"),
+                            "4" => new \HUGnet\DummyBase("Sensor"),
+                            "5" => new \HUGnet\DummyBase("Sensor"),
+                            "6" => new \HUGnet\DummyBase("Sensor"),
+                            "7" => new \HUGnet\DummyBase("Sensor"),
+                            "8" => new \HUGnet\DummyBase("Sensor"),
+                            "9" => new \HUGnet\DummyBase("Sensor"),
+                            "10" => new \HUGnet\DummyBase("Sensor"),
+                            "11" => new \HUGnet\DummyBase("Sensor"),
+                            "12" => new \HUGnet\DummyBase("Sensor"),
+                            "13" => new \HUGnet\DummyBase("Sensor"),
+                            "14" => new \HUGnet\DummyBase("Sensor"),
+                        ),
+                    ),
+                    "Sensor" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor0" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "id" => 2,
+                        "get" => array(
+                            "id" => 2,
+                            "total" => true,
+                            "maxDecimals" => 3,
+                        ),
                     ),
                 ),
                 array(
@@ -1097,14 +1283,60 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 "HistoryTableMock",
                 array(
-                    "id" => 23,
-                    "sensors" => array(
-                        "Sensors" => 3,
-                        "PhysicalSensors" => 3,
-                        "forceSensors" => true,
-                        0 => array(),
-                        1 => array(),
-                        2 => array("id" => 0x02),
+                    "Device" => array(
+                        "id" => 23,
+                        "get" => array(
+                            "id" => 23,
+                        ),
+                        "sensor" => array(
+                            "0" => new \HUGnet\DummyBase("Sensor0"),
+                            "1" => new \HUGnet\DummyBase("Sensor1"),
+                            "2" => new \HUGnet\DummyBase("Sensor2"),
+                            "3" => new \HUGnet\DummyBase("Sensor"),
+                            "4" => new \HUGnet\DummyBase("Sensor"),
+                            "5" => new \HUGnet\DummyBase("Sensor"),
+                            "6" => new \HUGnet\DummyBase("Sensor"),
+                            "7" => new \HUGnet\DummyBase("Sensor"),
+                            "8" => new \HUGnet\DummyBase("Sensor"),
+                            "9" => new \HUGnet\DummyBase("Sensor"),
+                            "10" => new \HUGnet\DummyBase("Sensor"),
+                            "11" => new \HUGnet\DummyBase("Sensor"),
+                            "12" => new \HUGnet\DummyBase("Sensor"),
+                            "13" => new \HUGnet\DummyBase("Sensor"),
+                            "14" => new \HUGnet\DummyBase("Sensor"),
+                        ),
+                    ),
+                    "Sensor" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor0" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "id" => 2,
+                        "get" => array(
+                            "id" => 2,
+                            "total" => true,
+                            "maxDecimals" => 2,
+                        ),
                     ),
                 ),
                 array(
@@ -1152,14 +1384,60 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 "HistoryTableMock",
                 array(
-                    "id" => 24,
-                    "sensors" => array(
-                        "Sensors" => 3,
-                        "PhysicalSensors" => 3,
-                        "forceSensors" => true,
-                        0 => array(),
-                        1 => array(),
-                        2 => array("id" => 0x02),
+                    "Device" => array(
+                        "id" => 24,
+                        "get" => array(
+                            "id" => 24,
+                        ),
+                        "sensor" => array(
+                            "0" => new \HUGnet\DummyBase("Sensor0"),
+                            "1" => new \HUGnet\DummyBase("Sensor1"),
+                            "2" => new \HUGnet\DummyBase("Sensor2"),
+                            "3" => new \HUGnet\DummyBase("Sensor"),
+                            "4" => new \HUGnet\DummyBase("Sensor"),
+                            "5" => new \HUGnet\DummyBase("Sensor"),
+                            "6" => new \HUGnet\DummyBase("Sensor"),
+                            "7" => new \HUGnet\DummyBase("Sensor"),
+                            "8" => new \HUGnet\DummyBase("Sensor"),
+                            "9" => new \HUGnet\DummyBase("Sensor"),
+                            "10" => new \HUGnet\DummyBase("Sensor"),
+                            "11" => new \HUGnet\DummyBase("Sensor"),
+                            "12" => new \HUGnet\DummyBase("Sensor"),
+                            "13" => new \HUGnet\DummyBase("Sensor"),
+                            "14" => new \HUGnet\DummyBase("Sensor"),
+                        ),
+                    ),
+                    "Sensor" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor0" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "id" => 2,
+                        "get" => array(
+                            "id" => 2,
+                            "total" => true,
+                            "maxDecimals" => 2,
+                        ),
                     ),
                 ),
                 array(
@@ -1213,14 +1491,60 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 "HistoryTableMock",
                 array(
-                    "id" => 23,
-                    "sensors" => array(
-                        "Sensors" => 3,
-                        "PhysicalSensors" => 3,
-                        "forceSensors" => true,
-                        0 => array(),
-                        1 => array(),
-                        2 => array("id" => 0x02),
+                    "Device" => array(
+                        "id" => 23,
+                        "get" => array(
+                            "id" => 23,
+                        ),
+                        "sensor" => array(
+                            "0" => new \HUGnet\DummyBase("Sensor0"),
+                            "1" => new \HUGnet\DummyBase("Sensor1"),
+                            "2" => new \HUGnet\DummyBase("Sensor2"),
+                            "3" => new \HUGnet\DummyBase("Sensor"),
+                            "4" => new \HUGnet\DummyBase("Sensor"),
+                            "5" => new \HUGnet\DummyBase("Sensor"),
+                            "6" => new \HUGnet\DummyBase("Sensor"),
+                            "7" => new \HUGnet\DummyBase("Sensor"),
+                            "8" => new \HUGnet\DummyBase("Sensor"),
+                            "9" => new \HUGnet\DummyBase("Sensor"),
+                            "10" => new \HUGnet\DummyBase("Sensor"),
+                            "11" => new \HUGnet\DummyBase("Sensor"),
+                            "12" => new \HUGnet\DummyBase("Sensor"),
+                            "13" => new \HUGnet\DummyBase("Sensor"),
+                            "14" => new \HUGnet\DummyBase("Sensor"),
+                        ),
+                    ),
+                    "Sensor" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor0" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "id" => 2,
+                        "get" => array(
+                            "id" => 2,
+                            "total" => true,
+                            "maxDecimals" => 2,
+                        ),
                     ),
                 ),
                 array(
@@ -1254,10 +1578,8 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
     ) {
         $this->o->clearData();
         $this->o->fromAny($preload);
-        $this->o->device = null;
-        if (!is_null($device)) {
-            $this->o->device = new DeviceContainer($device);
-        }
+        $this->o->device = new \HUGnet\DummyBase("Device");
+        $this->o->device->resetMock($device);
         $data = new $class($preloadData);
         $ret = $this->o->calc15MinAverage($data);
         $this->assertSame($expectRet, $ret, "Return Wrong");
@@ -1334,14 +1656,60 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 "HistoryTableMock",
                 AverageTableBase::AVERAGE_15MIN,
                 array(
-                    "id" => 25,
-                    "sensors" => array(
-                        "Sensors" => 3,
-                        "PhysicalSensors" => 3,
-                        "forceSensors" => true,
-                        0 => array(),
-                        1 => array(),
-                        2 => array("id" => 0x02),
+                    "Device" => array(
+                        "id" => 25,
+                        "get" => array(
+                            "id" => 25,
+                        ),
+                        "sensor" => array(
+                            "0" => new \HUGnet\DummyBase("Sensor0"),
+                            "1" => new \HUGnet\DummyBase("Sensor1"),
+                            "2" => new \HUGnet\DummyBase("Sensor2"),
+                            "3" => new \HUGnet\DummyBase("Sensor"),
+                            "4" => new \HUGnet\DummyBase("Sensor"),
+                            "5" => new \HUGnet\DummyBase("Sensor"),
+                            "6" => new \HUGnet\DummyBase("Sensor"),
+                            "7" => new \HUGnet\DummyBase("Sensor"),
+                            "8" => new \HUGnet\DummyBase("Sensor"),
+                            "9" => new \HUGnet\DummyBase("Sensor"),
+                            "10" => new \HUGnet\DummyBase("Sensor"),
+                            "11" => new \HUGnet\DummyBase("Sensor"),
+                            "12" => new \HUGnet\DummyBase("Sensor"),
+                            "13" => new \HUGnet\DummyBase("Sensor"),
+                            "14" => new \HUGnet\DummyBase("Sensor"),
+                        ),
+                    ),
+                    "Sensor" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor0" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "id" => 2,
+                        "get" => array(
+                            "id" => 2,
+                            "total" => true,
+                            "maxDecimals" => 2,
+                        ),
                     ),
                 ),
                 array(
@@ -1394,14 +1762,60 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 "AverageTableMock",
                 AverageTableBase::AVERAGE_HOURLY,
                 array(
-                    "id" => 26,
-                    "sensors" => array(
-                        "Sensors" => 3,
-                        "PhysicalSensors" => 3,
-                        "forceSensors" => true,
-                        0 => array(),
-                        1 => array(),
-                        2 => array("id" => 0x02),
+                    "Device" => array(
+                        "id" => 26,
+                        "get" => array(
+                            "id" => 26,
+                        ),
+                        "sensor" => array(
+                            "0" => new \HUGnet\DummyBase("Sensor0"),
+                            "1" => new \HUGnet\DummyBase("Sensor1"),
+                            "2" => new \HUGnet\DummyBase("Sensor2"),
+                            "3" => new \HUGnet\DummyBase("Sensor"),
+                            "4" => new \HUGnet\DummyBase("Sensor"),
+                            "5" => new \HUGnet\DummyBase("Sensor"),
+                            "6" => new \HUGnet\DummyBase("Sensor"),
+                            "7" => new \HUGnet\DummyBase("Sensor"),
+                            "8" => new \HUGnet\DummyBase("Sensor"),
+                            "9" => new \HUGnet\DummyBase("Sensor"),
+                            "10" => new \HUGnet\DummyBase("Sensor"),
+                            "11" => new \HUGnet\DummyBase("Sensor"),
+                            "12" => new \HUGnet\DummyBase("Sensor"),
+                            "13" => new \HUGnet\DummyBase("Sensor"),
+                            "14" => new \HUGnet\DummyBase("Sensor"),
+                        ),
+                    ),
+                    "Sensor" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor0" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "id" => 2,
+                        "get" => array(
+                            "id" => 2,
+                            "total" => true,
+                            "maxDecimals" => 2,
+                        ),
                     ),
                 ),
                 array(
@@ -1463,14 +1877,60 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 "AverageTableMock",
                 AverageTableBase::AVERAGE_DAILY,
                 array(
-                    "id" => 27,
-                    "sensors" => array(
-                        "Sensors" => 3,
-                        "PhysicalSensors" => 3,
-                        "forceSensors" => true,
-                        0 => array(),
-                        1 => array(),
-                        2 => array("id" => 0x02),
+                    "Device" => array(
+                        "id" => 27,
+                        "get" => array(
+                            "id" => 27,
+                        ),
+                        "sensor" => array(
+                            "0" => new \HUGnet\DummyBase("Sensor0"),
+                            "1" => new \HUGnet\DummyBase("Sensor1"),
+                            "2" => new \HUGnet\DummyBase("Sensor2"),
+                            "3" => new \HUGnet\DummyBase("Sensor"),
+                            "4" => new \HUGnet\DummyBase("Sensor"),
+                            "5" => new \HUGnet\DummyBase("Sensor"),
+                            "6" => new \HUGnet\DummyBase("Sensor"),
+                            "7" => new \HUGnet\DummyBase("Sensor"),
+                            "8" => new \HUGnet\DummyBase("Sensor"),
+                            "9" => new \HUGnet\DummyBase("Sensor"),
+                            "10" => new \HUGnet\DummyBase("Sensor"),
+                            "11" => new \HUGnet\DummyBase("Sensor"),
+                            "12" => new \HUGnet\DummyBase("Sensor"),
+                            "13" => new \HUGnet\DummyBase("Sensor"),
+                            "14" => new \HUGnet\DummyBase("Sensor"),
+                        ),
+                    ),
+                    "Sensor" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor0" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "id" => 2,
+                        "get" => array(
+                            "id" => 2,
+                            "total" => true,
+                            "maxDecimals" => 2,
+                        ),
                     ),
                 ),
                 array(
@@ -1524,14 +1984,60 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 "AverageTableMock",
                 AverageTableBase::AVERAGE_MONTHLY,
                 array(
-                    "id" => 28,
-                    "sensors" => array(
-                        "Sensors" => 3,
-                        "PhysicalSensors" => 3,
-                        "forceSensors" => true,
-                        0 => array(),
-                        1 => array(),
-                        2 => array("id" => 0x02),
+                    "Device" => array(
+                        "id" => 28,
+                        "get" => array(
+                            "id" => 28,
+                        ),
+                        "sensor" => array(
+                            "0" => new \HUGnet\DummyBase("Sensor0"),
+                            "1" => new \HUGnet\DummyBase("Sensor1"),
+                            "2" => new \HUGnet\DummyBase("Sensor2"),
+                            "3" => new \HUGnet\DummyBase("Sensor"),
+                            "4" => new \HUGnet\DummyBase("Sensor"),
+                            "5" => new \HUGnet\DummyBase("Sensor"),
+                            "6" => new \HUGnet\DummyBase("Sensor"),
+                            "7" => new \HUGnet\DummyBase("Sensor"),
+                            "8" => new \HUGnet\DummyBase("Sensor"),
+                            "9" => new \HUGnet\DummyBase("Sensor"),
+                            "10" => new \HUGnet\DummyBase("Sensor"),
+                            "11" => new \HUGnet\DummyBase("Sensor"),
+                            "12" => new \HUGnet\DummyBase("Sensor"),
+                            "13" => new \HUGnet\DummyBase("Sensor"),
+                            "14" => new \HUGnet\DummyBase("Sensor"),
+                        ),
+                    ),
+                    "Sensor" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor0" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "id" => 2,
+                        "get" => array(
+                            "id" => 2,
+                            "total" => true,
+                            "maxDecimals" => 2,
+                        ),
                     ),
                 ),
                 array(
@@ -1593,14 +2099,60 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 "AverageTableMock",
                 AverageTableBase::AVERAGE_WEEKLY,
                 array(
-                    "id" => 28,
-                    "sensors" => array(
-                        "Sensors" => 3,
-                        "PhysicalSensors" => 3,
-                        "forceSensors" => true,
-                        0 => array(),
-                        1 => array(),
-                        2 => array("id" => 0x02),
+                    "Device" => array(
+                        "id" => 28,
+                        "get" => array(
+                            "id" => 28,
+                        ),
+                        "sensor" => array(
+                            "0" => new \HUGnet\DummyBase("Sensor0"),
+                            "1" => new \HUGnet\DummyBase("Sensor1"),
+                            "2" => new \HUGnet\DummyBase("Sensor2"),
+                            "3" => new \HUGnet\DummyBase("Sensor"),
+                            "4" => new \HUGnet\DummyBase("Sensor"),
+                            "5" => new \HUGnet\DummyBase("Sensor"),
+                            "6" => new \HUGnet\DummyBase("Sensor"),
+                            "7" => new \HUGnet\DummyBase("Sensor"),
+                            "8" => new \HUGnet\DummyBase("Sensor"),
+                            "9" => new \HUGnet\DummyBase("Sensor"),
+                            "10" => new \HUGnet\DummyBase("Sensor"),
+                            "11" => new \HUGnet\DummyBase("Sensor"),
+                            "12" => new \HUGnet\DummyBase("Sensor"),
+                            "13" => new \HUGnet\DummyBase("Sensor"),
+                            "14" => new \HUGnet\DummyBase("Sensor"),
+                        ),
+                    ),
+                    "Sensor" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor0" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "id" => 2,
+                        "get" => array(
+                            "id" => 2,
+                            "total" => true,
+                            "maxDecimals" => 2,
+                        ),
                     ),
                 ),
                 array(
@@ -1654,14 +2206,60 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 "AverageTableMock",
                 AverageTableBase::AVERAGE_YEARLY,
                 array(
-                    "id" => 29,
-                    "sensors" => array(
-                        "Sensors" => 3,
-                        "PhysicalSensors" => 3,
-                        "forceSensors" => true,
-                        0 => array(),
-                        1 => array(),
-                        2 => array("id" => 0x02),
+                    "Device" => array(
+                        "id" => 29,
+                        "get" => array(
+                            "id" => 29,
+                        ),
+                        "sensor" => array(
+                            "0" => new \HUGnet\DummyBase("Sensor0"),
+                            "1" => new \HUGnet\DummyBase("Sensor1"),
+                            "2" => new \HUGnet\DummyBase("Sensor2"),
+                            "3" => new \HUGnet\DummyBase("Sensor"),
+                            "4" => new \HUGnet\DummyBase("Sensor"),
+                            "5" => new \HUGnet\DummyBase("Sensor"),
+                            "6" => new \HUGnet\DummyBase("Sensor"),
+                            "7" => new \HUGnet\DummyBase("Sensor"),
+                            "8" => new \HUGnet\DummyBase("Sensor"),
+                            "9" => new \HUGnet\DummyBase("Sensor"),
+                            "10" => new \HUGnet\DummyBase("Sensor"),
+                            "11" => new \HUGnet\DummyBase("Sensor"),
+                            "12" => new \HUGnet\DummyBase("Sensor"),
+                            "13" => new \HUGnet\DummyBase("Sensor"),
+                            "14" => new \HUGnet\DummyBase("Sensor"),
+                        ),
+                    ),
+                    "Sensor" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor0" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "id" => 2,
+                        "get" => array(
+                            "id" => 2,
+                            "total" => true,
+                            "maxDecimals" => 2,
+                        ),
                     ),
                 ),
                 array(
@@ -1715,14 +2313,60 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 "AverageTableMock",
                 AverageTableBase::AVERAGE_HOURLY,
                 array(
-                    "id" => 31,
-                    "sensors" => array(
-                        "Sensors" => 3,
-                        "PhysicalSensors" => 3,
-                        "forceSensors" => true,
-                        0 => array(),
-                        1 => array(),
-                        2 => array("id" => 0x02),
+                    "Device" => array(
+                        "id" => 31,
+                        "get" => array(
+                            "id" => 31,
+                        ),
+                        "sensor" => array(
+                            "0" => new \HUGnet\DummyBase("Sensor0"),
+                            "1" => new \HUGnet\DummyBase("Sensor1"),
+                            "2" => new \HUGnet\DummyBase("Sensor2"),
+                            "3" => new \HUGnet\DummyBase("Sensor"),
+                            "4" => new \HUGnet\DummyBase("Sensor"),
+                            "5" => new \HUGnet\DummyBase("Sensor"),
+                            "6" => new \HUGnet\DummyBase("Sensor"),
+                            "7" => new \HUGnet\DummyBase("Sensor"),
+                            "8" => new \HUGnet\DummyBase("Sensor"),
+                            "9" => new \HUGnet\DummyBase("Sensor"),
+                            "10" => new \HUGnet\DummyBase("Sensor"),
+                            "11" => new \HUGnet\DummyBase("Sensor"),
+                            "12" => new \HUGnet\DummyBase("Sensor"),
+                            "13" => new \HUGnet\DummyBase("Sensor"),
+                            "14" => new \HUGnet\DummyBase("Sensor"),
+                        ),
+                    ),
+                    "Sensor" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor0" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "id" => 2,
+                        "get" => array(
+                            "id" => 2,
+                            "total" => true,
+                            "maxDecimals" => 2,
+                        ),
                     ),
                 ),
                 array(
@@ -1775,14 +2419,60 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 "AverageTableMock",
                 "BadType",
                 array(
-                    "id" => 31,
-                    "sensors" => array(
-                        "Sensors" => 3,
-                        "PhysicalSensors" => 3,
-                        "forceSensors" => true,
-                        0 => array(),
-                        1 => array(),
-                        2 => array("id" => 0x02),
+                    "Device" => array(
+                        "id" => 31,
+                        "get" => array(
+                            "id" => 31,
+                        ),
+                        "sensor" => array(
+                            "0" => new \HUGnet\DummyBase("Sensor0"),
+                            "1" => new \HUGnet\DummyBase("Sensor1"),
+                            "2" => new \HUGnet\DummyBase("Sensor2"),
+                            "3" => new \HUGnet\DummyBase("Sensor"),
+                            "4" => new \HUGnet\DummyBase("Sensor"),
+                            "5" => new \HUGnet\DummyBase("Sensor"),
+                            "6" => new \HUGnet\DummyBase("Sensor"),
+                            "7" => new \HUGnet\DummyBase("Sensor"),
+                            "8" => new \HUGnet\DummyBase("Sensor"),
+                            "9" => new \HUGnet\DummyBase("Sensor"),
+                            "10" => new \HUGnet\DummyBase("Sensor"),
+                            "11" => new \HUGnet\DummyBase("Sensor"),
+                            "12" => new \HUGnet\DummyBase("Sensor"),
+                            "13" => new \HUGnet\DummyBase("Sensor"),
+                            "14" => new \HUGnet\DummyBase("Sensor"),
+                        ),
+                    ),
+                    "Sensor" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor0" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "id" => 2,
+                        "get" => array(
+                            "id" => 2,
+                            "total" => true,
+                            "maxDecimals" => 2,
+                        ),
                     ),
                 ),
                 array(
@@ -1840,14 +2530,60 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 "HistoryTableMock",
                 AverageTableBase::AVERAGE_15MIN,
                 array(
-                    "id" => 25,
-                    "sensors" => array(
-                        "Sensors" => 3,
-                        "PhysicalSensors" => 3,
-                        "forceSensors" => true,
-                        0 => array(),
-                        1 => array(),
-                        2 => array("id" => 0x02),
+                    "Device" => array(
+                        "id" => 25,
+                        "get" => array(
+                            "id" => 25,
+                        ),
+                        "sensor" => array(
+                            "0" => new \HUGnet\DummyBase("Sensor0"),
+                            "1" => new \HUGnet\DummyBase("Sensor1"),
+                            "2" => new \HUGnet\DummyBase("Sensor2"),
+                            "3" => new \HUGnet\DummyBase("Sensor"),
+                            "4" => new \HUGnet\DummyBase("Sensor"),
+                            "5" => new \HUGnet\DummyBase("Sensor"),
+                            "6" => new \HUGnet\DummyBase("Sensor"),
+                            "7" => new \HUGnet\DummyBase("Sensor"),
+                            "8" => new \HUGnet\DummyBase("Sensor"),
+                            "9" => new \HUGnet\DummyBase("Sensor"),
+                            "10" => new \HUGnet\DummyBase("Sensor"),
+                            "11" => new \HUGnet\DummyBase("Sensor"),
+                            "12" => new \HUGnet\DummyBase("Sensor"),
+                            "13" => new \HUGnet\DummyBase("Sensor"),
+                            "14" => new \HUGnet\DummyBase("Sensor"),
+                        ),
+                    ),
+                    "Sensor" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor0" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "id" => 2,
+                        "get" => array(
+                            "id" => 2,
+                            "total" => true,
+                            "maxDecimals" => 2,
+                        ),
                     ),
                 ),
                 array(
@@ -1882,10 +2618,8 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
     ) {
         $this->o->clearData();
         $this->o->fromAny($preload);
-        $this->o->device = null;
-        if (!is_null($device)) {
-            $this->o->device = new DeviceContainer($device);
-        }
+        $this->o->device = new \HUGnet\DummyBase("Device");
+        $this->o->device->resetMock($device);
         $data = new $class($preloadData);
         $ret = $this->o->calcAverage($data, $type);
         $this->assertSame($expectRet, $ret, "Return Wrong");
@@ -1949,7 +2683,61 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 "HistoryTableMock",
                 AverageTableBase::AVERAGE_15MIN,
                 array(
-                    "id" => 32,
+                    "Device" => array(
+                        "id" => 32,
+                        "get" => array(
+                            "id" => 32,
+                        ),
+                        "sensor" => array(
+                            "0" => new \HUGnet\DummyBase("Sensor0"),
+                            "1" => new \HUGnet\DummyBase("Sensor1"),
+                            "2" => new \HUGnet\DummyBase("Sensor2"),
+                            "3" => new \HUGnet\DummyBase("Sensor"),
+                            "4" => new \HUGnet\DummyBase("Sensor"),
+                            "5" => new \HUGnet\DummyBase("Sensor"),
+                            "6" => new \HUGnet\DummyBase("Sensor"),
+                            "7" => new \HUGnet\DummyBase("Sensor"),
+                            "8" => new \HUGnet\DummyBase("Sensor"),
+                            "9" => new \HUGnet\DummyBase("Sensor"),
+                            "10" => new \HUGnet\DummyBase("Sensor"),
+                            "11" => new \HUGnet\DummyBase("Sensor"),
+                            "12" => new \HUGnet\DummyBase("Sensor"),
+                            "13" => new \HUGnet\DummyBase("Sensor"),
+                            "14" => new \HUGnet\DummyBase("Sensor"),
+                        ),
+                    ),
+                    "Sensor" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor0" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "id" => 2,
+                        "get" => array(
+                            "id" => 2,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
                 ),
                 array(
                     array(
@@ -1968,7 +2756,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                     ),
                 ),
             ),
-            array(  // #4 basic input.  HOURLY average.  Extra 15MIN average here
+            array(  // #2 basic input.  HOURLY average.  Extra 15MIN average here
                 array(
                 ),
                 array(
@@ -2089,7 +2877,61 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 "AverageTableMock",
                 AverageTableBase::AVERAGE_DAILY,
                 array(
-                    "id" => 33,
+                    "Device" => array(
+                        "id" => 33,
+                        "get" => array(
+                            "id" => 33,
+                        ),
+                        "sensor" => array(
+                            "0" => new \HUGnet\DummyBase("Sensor0"),
+                            "1" => new \HUGnet\DummyBase("Sensor1"),
+                            "2" => new \HUGnet\DummyBase("Sensor2"),
+                            "3" => new \HUGnet\DummyBase("Sensor"),
+                            "4" => new \HUGnet\DummyBase("Sensor"),
+                            "5" => new \HUGnet\DummyBase("Sensor"),
+                            "6" => new \HUGnet\DummyBase("Sensor"),
+                            "7" => new \HUGnet\DummyBase("Sensor"),
+                            "8" => new \HUGnet\DummyBase("Sensor"),
+                            "9" => new \HUGnet\DummyBase("Sensor"),
+                            "10" => new \HUGnet\DummyBase("Sensor"),
+                            "11" => new \HUGnet\DummyBase("Sensor"),
+                            "12" => new \HUGnet\DummyBase("Sensor"),
+                            "13" => new \HUGnet\DummyBase("Sensor"),
+                            "14" => new \HUGnet\DummyBase("Sensor"),
+                        ),
+                    ),
+                    "Sensor" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor0" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "id" => 2,
+                        "get" => array(
+                            "id" => 2,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
                 ),
                 array(
                     array(
@@ -2119,7 +2961,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 true,
             ),
-            array(  // #5 basic input.  Everything present.  Skipped a record
+            array(  // #3 basic input.  Everything present.  Skipped a record
                 array(
                 ),
                 array(
@@ -2163,7 +3005,61 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 "HistoryTableMock",
                 AverageTableBase::AVERAGE_15MIN,
                 array(
-                    "id" => 32,
+                    "Device" => array(
+                        "id" => 32,
+                        "get" => array(
+                            "id" => 32,
+                        ),
+                        "sensor" => array(
+                            "0" => new \HUGnet\DummyBase("Sensor0"),
+                            "1" => new \HUGnet\DummyBase("Sensor1"),
+                            "2" => new \HUGnet\DummyBase("Sensor2"),
+                            "3" => new \HUGnet\DummyBase("Sensor"),
+                            "4" => new \HUGnet\DummyBase("Sensor"),
+                            "5" => new \HUGnet\DummyBase("Sensor"),
+                            "6" => new \HUGnet\DummyBase("Sensor"),
+                            "7" => new \HUGnet\DummyBase("Sensor"),
+                            "8" => new \HUGnet\DummyBase("Sensor"),
+                            "9" => new \HUGnet\DummyBase("Sensor"),
+                            "10" => new \HUGnet\DummyBase("Sensor"),
+                            "11" => new \HUGnet\DummyBase("Sensor"),
+                            "12" => new \HUGnet\DummyBase("Sensor"),
+                            "13" => new \HUGnet\DummyBase("Sensor"),
+                            "14" => new \HUGnet\DummyBase("Sensor"),
+                        ),
+                    ),
+                    "Sensor" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor0" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "id" => 2,
+                        "get" => array(
+                            "id" => 2,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
                 ),
                 array(
                     array(
@@ -2189,7 +3085,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                     ),
                 ),
             ),
-            array(  // #6 basic input.  Everything present.  Skipped 2 records
+            array(  // #4 basic input.  Everything present.  Skipped 2 records
                 array(
                 ),
                 array(
@@ -2233,7 +3129,61 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 "HistoryTableMock",
                 AverageTableBase::AVERAGE_15MIN,
                 array(
-                    "id" => 32,
+                    "Device" => array(
+                        "id" => 32,
+                        "get" => array(
+                            "id" => 32,
+                        ),
+                        "sensor" => array(
+                            "0" => new \HUGnet\DummyBase("Sensor0"),
+                            "1" => new \HUGnet\DummyBase("Sensor1"),
+                            "2" => new \HUGnet\DummyBase("Sensor2"),
+                            "3" => new \HUGnet\DummyBase("Sensor"),
+                            "4" => new \HUGnet\DummyBase("Sensor"),
+                            "5" => new \HUGnet\DummyBase("Sensor"),
+                            "6" => new \HUGnet\DummyBase("Sensor"),
+                            "7" => new \HUGnet\DummyBase("Sensor"),
+                            "8" => new \HUGnet\DummyBase("Sensor"),
+                            "9" => new \HUGnet\DummyBase("Sensor"),
+                            "10" => new \HUGnet\DummyBase("Sensor"),
+                            "11" => new \HUGnet\DummyBase("Sensor"),
+                            "12" => new \HUGnet\DummyBase("Sensor"),
+                            "13" => new \HUGnet\DummyBase("Sensor"),
+                            "14" => new \HUGnet\DummyBase("Sensor"),
+                        ),
+                    ),
+                    "Sensor" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor0" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "id" => 0,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "id" => 2,
+                        "get" => array(
+                            "id" => 2,
+                            "total" => false,
+                            "maxDecimals" => 2,
+                        ),
+                    ),
                 ),
                 array(
                     array(
@@ -2274,10 +3224,8 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
     ) {
         $this->o->clearData();
         $this->o->fromAny($preload);
-        $this->o->device = null;
-        if (!is_null($device)) {
-            $this->o->device = new DeviceContainer($device);
-        }
+        $this->o->device = new \HUGnet\DummyBase("Device");
+        $this->o->device->resetMock($device);
         $data = new $class($preloadData);
         $ret = array();
         while ($this->o->calcAverage($data, $type)) {

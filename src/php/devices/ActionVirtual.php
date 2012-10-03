@@ -198,7 +198,9 @@ class ActionVirtual extends Action
         $this->device->setParam("PollFail", 0);
         $this->device->setParam("ContactFail", 0);
         $history = &$this->device->historyFactory($hist);
-        $history->insertRow();
+        if ($history->insertRow()) {
+            $this->device->setParam("LastHistory", $time);
+        }
         $this->_writeFile($history);
         return $history;
     }

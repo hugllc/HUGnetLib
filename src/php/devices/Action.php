@@ -214,7 +214,9 @@ class Action
             $data["deltaT"] = $time - $prev["Date"];
             $this->device->setParam("LastPollData", $data);
             $d = $this->device->historyFactory($data);
-            $d->insertRow();
+            if ($d->insertRow()) {
+                $this->device->setParam("LastHistory", $time);
+            }
             $this->device->setParam("LastPoll", $time);
             $this->device->setParam("LastContact", $time);
             $this->device->setParam("PollFail", 0);
