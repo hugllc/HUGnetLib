@@ -85,9 +85,9 @@ final class Serial
     * This our configuration resides here
     */
     private $_defaultConfig = array(
-        "quiet" => false,
+        "quiet" => true,
         "baud" => 115200,
-        "rtscts" => true,
+        "rtscts" => false,
     );
     /**
     * Sets our configuration

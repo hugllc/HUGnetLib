@@ -97,6 +97,7 @@ class SerialTest extends \PHPUnit_Framework_TestCase
             array( // #0 File doesn't exist
                 array(
                     "location" => TEST_CONFIG_BASE."thisIsAVeryBadSerialPort",
+                    "quiet" => false,
                 ),
                 false,
                 "",
@@ -120,6 +121,7 @@ class SerialTest extends \PHPUnit_Framework_TestCase
             array( // #2 File can't be opened read/write
                 array(
                     "location" => TEST_CONFIG_BASE."files/readOnlyFile",
+                    "quiet" => false,
                 ),
                 false,
                 "",
