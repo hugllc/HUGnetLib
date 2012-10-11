@@ -277,7 +277,7 @@ class ADuCInputTableTest extends DriverTestBase
                         "id" => 1,
                         "get" => array(
                             "sensor" => 2,
-                            "extra" => array("41:DEFAULT", "41:DEFAULT"),
+                            "extra" => array("41:DEFAULT", 1, 0, 1, 0),
                         ),
                     ),
                     "Table" => array(
@@ -298,7 +298,7 @@ class ADuCInputTableTest extends DriverTestBase
                         'storageUnit' => 'V',
                         'unitType' => 'Voltage',
                         'dataType' => 'raw',
-                        'value' => 0.14305115,
+                        'value' => 14.44816589,
                     ),
                 ),
             ),
@@ -372,7 +372,7 @@ class ADuCInputTableTest extends DriverTestBase
                 ),
                 array(
                     array(1 => "Hello", 2 => "Again"),
-                    5, 5, 5
+                    10, 10, 10, 10, 5, 5, 5
                 ),
             ),
         );
@@ -408,15 +408,29 @@ class ADuCInputTableTest extends DriverTestBase
                 array(
                     "Device" => array(
                         "sensor" => new \HUGnet\DummyBase("Sensor"),
-                    )
+                    ),
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(1, 2, 3, 4, 5),
+                        ),
+                    ),
                 ),
-                "010203040506",
+                "FF00C0800086098041FF0102030405060708FFFFFFFF00000080",
                 array(
                     "Sensor" => array(
-                        "get" => array(array("extra")),
+                        "get" => array(
+                            array("extra"),
+                            array("extra")
+                        ),
+                        "set" => array(
+                            array(
+                                "extra",
+                                array(1, 0x04030201, 0x08070605, -1, -0x80000000)
+                            ),
+                        ),
                     ),
                     "Table" => array(
-                        "getRow" => array(array(0)),
+                        "getRow" => array(array(1)),
                         "toArray" => array(array()),
                     ),
                 ),
@@ -464,7 +478,7 @@ class ADuCInputTableTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "FF00C0800086098041FF",
+                "FF00C0800086098041FF01000000000000000100000000000000",
             ),
         );
     }
