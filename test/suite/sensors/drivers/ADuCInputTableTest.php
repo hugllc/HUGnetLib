@@ -277,7 +277,7 @@ class ADuCInputTableTest extends DriverTestBase
                         "id" => 1,
                         "get" => array(
                             "sensor" => 2,
-                            "extra" => array("41:DEFAULT", 1, 0, 1, 0),
+                            "extra" => array("41:DEFAULT", 1, 0),
                         ),
                     ),
                     "Table" => array(
@@ -372,7 +372,7 @@ class ADuCInputTableTest extends DriverTestBase
                 ),
                 array(
                     array(1 => "Hello", 2 => "Again"),
-                    10, 10, 10, 10, 5, 5, 5
+                    10, 10, 5, 5, 5
                 ),
             ),
         );
@@ -404,18 +404,18 @@ class ADuCInputTableTest extends DriverTestBase
     public static function dataDecode()
     {
         return array(
-            array(
+            array( // #0 Test byte order for offsets
                 array(
                     "Device" => array(
                         "sensor" => new \HUGnet\DummyBase("Sensor"),
                     ),
                     "Sensor" => array(
                         "get" => array(
-                            "extra" => array(1, 2, 3, 4, 5),
+                            "extra" => array(1, 2, 3),
                         ),
                     ),
                 ),
-                "FF00C0800086098041FF0102030405060708FFFFFFFF00000080",
+                "FF00C0800086098041FF0102030405060708",
                 array(
                     "Sensor" => array(
                         "get" => array(
@@ -425,7 +425,38 @@ class ADuCInputTableTest extends DriverTestBase
                         "set" => array(
                             array(
                                 "extra",
-                                array(1, 0x04030201, 0x08070605, -1, -0x80000000)
+                                array(1, 0x04030201, 0x08070605)
+                            ),
+                        ),
+                    ),
+                    "Table" => array(
+                        "getRow" => array(array(1)),
+                        "toArray" => array(array()),
+                    ),
+                ),
+            ),
+            array( // #1 Test negative numbers for offsets
+                array(
+                    "Device" => array(
+                        "sensor" => new \HUGnet\DummyBase("Sensor"),
+                    ),
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(1, 2, 3),
+                        ),
+                    ),
+                ),
+                "FF00C0800086098041FFFFFFFFFF00000080",
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            array("extra"),
+                            array("extra")
+                        ),
+                        "set" => array(
+                            array(
+                                "extra",
+                                array(1, -1, -0x80000000)
                             ),
                         ),
                     ),
@@ -478,7 +509,7 @@ class ADuCInputTableTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "FF00C0800086098041FF01000000000000000100000000000000",
+                "FF00C0800086098041FF0000000000000000",
             ),
         );
     }

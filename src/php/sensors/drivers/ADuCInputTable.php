@@ -89,18 +89,16 @@ class ADuCInputTable extends \HUGnet\sensors\Driver
         "storageType" => \HUGnet\units\Driver::TYPE_RAW, // Storage dataType
         "extraText" => array(
             "Table Entry",
-            "Channel 0 Scale",
-            "Channel 0 Offset",
-            "Channel 1 Scale",
-            "Channel 1 Offset",
+            "Channel 0 Reading @ 0",
+            "Channel 1 Reading @ 0",
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            array(), 10, 10, 10, 10
+            array(), 10, 10
         ),
-        "extraDefault" => array(0, 1, 0, 1, 0),
+        "extraDefault" => array(0, 0, 0),
         "maxDecimals" => 6,
     );
     /**
@@ -304,8 +302,6 @@ class ADuCInputTable extends \HUGnet\sensors\Driver
         $extra = $this->sensor()->get("extra");
         $extra[1] = $this->_decode32(substr($string, 20, 8));
         $extra[2] = $this->_decode32(substr($string, 28, 8));
-        $extra[3] = $this->_decode32(substr($string, 36, 8));
-        $extra[4] = $this->_decode32(substr($string, 44, 8));
         $this->sensor()->set("extra", $extra);
     }
     /**
@@ -335,8 +331,6 @@ class ADuCInputTable extends \HUGnet\sensors\Driver
         $string  = $this->_entry()->encode();
         $string .= $this->_encode32($this->getExtra(1));
         $string .= $this->_encode32($this->getExtra(2));
-        $string .= $this->_encode32($this->getExtra(3));
-        $string .= $this->_encode32($this->getExtra(4));
         return $string;
     }
 
