@@ -662,6 +662,51 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
+            array( // #2 String empty
+                array(
+                    "Device" => array(
+                        "sensor" => new \HUGnet\DummyBase("Sensor"),
+                    )
+                ),
+                "01FFFFFFFFFFFFFFFFFFFF",
+                array(
+                    "Device" => array(
+                        "set" => array(
+                            array("TimeConstant", 1),
+                        ),
+                    ),
+                ),
+            ),
+            array( // #3 String empty too long
+                array(
+                    "Device" => array(
+                        "sensor" => new \HUGnet\DummyBase("Sensor"),
+                    )
+                ),
+                "01FFFFFFFFFFFFFFFFFFFFFFFF",
+                array(
+                    "Device" => array(
+                        "set" => array(
+                            array("TimeConstant", 1),
+                        ),
+                    ),
+                ),
+            ),
+            array( // #4 String empty too short
+                array(
+                    "Device" => array(
+                        "sensor" => new \HUGnet\DummyBase("Sensor"),
+                    )
+                ),
+                "01FFFFFFFFFFFFFFFF",
+                array(
+                    "Device" => array(
+                        "set" => array(
+                            array("TimeConstant", 1),
+                        ),
+                    ),
+                ),
+            ),
         );
     }
     /**

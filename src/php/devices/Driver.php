@@ -328,8 +328,13 @@ abstract class Driver
     {
         $this->device()->set("TimeConstant", hexdec(substr($string, 0, 2)));
         $sensors = $this->get("physicalSensors");
+        $sensorString = substr($string, 2, $sensors * 2);
+        if ($sensorString == str_repeat("F", strlen($sensorString))) {
+            // String is empty.  Don't save it.
+            return;
+        }
         for ($i = 0; $i < $sensors; $i++) {
-            $sid = substr($string, 2 + (2 * $i), 2);
+            $sid = substr($sensorString, (2 * $i), 2);
             // Only do this if we have enough string
             if (strlen($sid) === 2) {
                 $this->device()->sensor($i)->change(
