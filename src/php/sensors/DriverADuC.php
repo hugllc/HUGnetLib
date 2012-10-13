@@ -207,7 +207,28 @@ abstract class DriverADuC extends Driver
         if (is_null($channel)) {
             $channel = $this->_channel;
         }
+        $channel = (int)$channel;
+        if (($channel == 0) && !$this->adcOn($channel)) {
+            // If channel 0 is off, get the gain from channel 1
+            $channel = 1;
+        }
         return $this->_entry()->gain($channel);
+    }
+    /**
+    * Gets the total gain.
+    *
+    * @param int $channel The channel to get the gain for
+    *
+    * @return null
+    */
+    protected function adcOn($channel)
+    {
+        if ($channel == 0) {
+            return (bool)$this->_entry()->register("ADC0EN");
+        } else if ($channel == 1) {
+            return (bool)$this->_entry()->register("ADC1EN");
+        }
+        return false;
     }
     /**
     * Gets the direction from a direction sensor made out of a POT.

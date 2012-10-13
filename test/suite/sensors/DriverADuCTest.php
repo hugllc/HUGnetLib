@@ -432,10 +432,14 @@ class DriverADuCTest extends drivers\DriverTestBase
     public static function dataGain()
     {
         return array(
-            array(
+            array(  // #0 Normal
                 array(
                     "Entry" => array(
-                        "gain" => 5
+                        "gain" => 5,
+                        "register" => array(
+                            "ADC0EN" => 1,
+                            "ADC1EN" => 1,
+                        ),
                     ),
                 ),
                 new \HUGnet\DummyBase("Entry"),
@@ -444,12 +448,16 @@ class DriverADuCTest extends drivers\DriverTestBase
                 0,
                 5,
             ),
-            array(
+            array(  // #1 No channel given
                 array(
                     "Entry" => array(
                         "gain" => array(
                             "0" => 5,
                             "1" => 3,
+                        ),
+                        "register" => array(
+                            "ADC0EN" => 1,
+                            "ADC1EN" => 1,
                         ),
                     ),
                 ),
@@ -459,12 +467,16 @@ class DriverADuCTest extends drivers\DriverTestBase
                 null,
                 3,
             ),
-            array(
+            array( // #2 No valid entry
                 array(
                     "Entry" => array(
                         "gain" => array(
                             "0" => 5,
                             "1" => 3,
+                        ),
+                        "register" => array(
+                            "ADC0EN" => 1,
+                            "ADC1EN" => 1,
                         ),
                     ),
                 ),
@@ -473,6 +485,25 @@ class DriverADuCTest extends drivers\DriverTestBase
                 1,
                 null,
                 1,
+            ),
+            array(  // #3 Asking for channel 0 when ADC0 is not enabled
+                array(
+                    "Entry" => array(
+                        "gain" => array(
+                            "0" => 5,
+                            "1" => 3,
+                        ),
+                        "register" => array(
+                            "ADC0EN" => 0,
+                            "ADC1EN" => 1,
+                        ),
+                    ),
+                ),
+                new \HUGnet\DummyBase("Entry"),
+                1,
+                1,
+                0,
+                3,
             ),
         );
     }
@@ -518,6 +549,10 @@ class DriverADuCTest extends drivers\DriverTestBase
                     "Entry" => array(
                         "gain" => array(
                             "0" => 2,
+                        ),
+                        "register" => array(
+                            "ADC0EN" => 1,
+                            "ADC1EN" => 1,
                         ),
                     ),
                 ),
