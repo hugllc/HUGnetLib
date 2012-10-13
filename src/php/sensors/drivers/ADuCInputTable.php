@@ -88,15 +88,17 @@ class ADuCInputTable extends \HUGnet\sensors\Driver
         "storageUnit" => "Unknown",
         "storageType" => \HUGnet\units\Driver::TYPE_RAW, // Storage dataType
         "extraText" => array(
-            "Table Entry"
+            "Table Entry",
+            "Channel 0 Reading @ 0",
+            "Channel 1 Reading @ 0",
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            array()
+            array(), 10, 10
         ),
-        "extraDefault" => array(0),
+        "extraDefault" => array(0, 0, 0),
         "maxDecimals" => 6,
     );
     /**
@@ -270,26 +272,65 @@ class ADuCInputTable extends \HUGnet\sensors\Driver
         return $ret;
     }
     /**
+    * Takes a little endian 32 bit ascii hex number and turns it into an int
+    *
+    * @param int $value The value to encode
+    *
+    * @return string
+    */
+    private function _decode32($value)
+    {
+        $ret = hexdec(
+            substr($value, 6, 2).substr($value, 4, 2)
+            .substr($value, 2, 2).substr($value, 0, 2)
+        );
+        if (($ret & 0x80000000) === 0x80000000) {
+            $ret = -(0x100000000 - $ret);
+        }
+        return $ret;
+    }
+    /**
     * Decodes the driver portion of the setup string
     *
     * @param string $string The string to decode
     *
-    * @return array
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    * @return null
     */
     public function decode($string)
     {
         $this->_entry()->decode($string);
+        $extra = $this->sensor()->get("extra");
+        $extra[1] = $this->_decode32(substr($string, 20, 8));
+        $extra[2] = $this->_decode32(substr($string, 28, 8));
+        $this->sensor()->set("extra", $extra);
     }
     /**
     * Encodes this driver as a setup string
     *
-    * @return array
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    * @param int $value The value to encode
+    *
+    * @return string
+    */
+    private function _encode32($value)
+    {
+        return sprintf(
+            "%02X%02X%02X%02X",
+            ($value >> 0) & 0xFF,
+            ($value >> 8) & 0xFF,
+            ($value >> 16) & 0xFF,
+            ($value >> 24) & 0xFF
+        );
+    }
+    /**
+    * Encodes this driver as a setup string
+    *
+    * @return string
     */
     public function encode()
     {
         $string  = $this->_entry()->encode();
+        $string .= $this->_encode32($this->getExtra(1));
+        $string .= $this->_encode32($this->getExtra(2));
         return $string;
     }
 
