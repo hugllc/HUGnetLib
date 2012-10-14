@@ -77,7 +77,7 @@ abstract class Periodic
     * as the driver class name.
     */
     private static $_drivers = array(
-        "Checkin", "PushDevices", "GetFirmware"
+        "Checkin", "PushDevices", "GetFirmware", "PushHistory"
     );
     /**
     * This is where the plugin objects are stored
@@ -175,6 +175,17 @@ abstract class Periodic
     public function &system()
     {
         return $this->_ui->system();
+    }
+    /**
+    * This says if we are ready to run
+    *
+    * @return bool
+    */
+    public function &device()
+    {
+        return $this->system()->device(
+            $this->system()->network()->device()->getID()
+        );
     }
     /**
     * This says if we are ready to run
