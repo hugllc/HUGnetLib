@@ -40,7 +40,6 @@ $did    = hexdec($json->args()->id);
 $action = strtolower($json->args()->action);
 $TestID = $json->args()->TestID;
 
-$device = &$json->system()->device($did);
 $class = $_POST["table"];
 
 if (class_exists($class)) {
