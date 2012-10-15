@@ -117,41 +117,42 @@ class PushHistory extends \HUGnet\updater\Periodic
                 if (!$this->ui()->loop()) {
                     break;
                 }
-                $now  = &$this->_lastPush[$class];
-                $hist = &$this->_tables[$cass];
-                $ret = $hist->getPeriod($now);
+                $hist = &$this->_tables[$class];
+                $now = 0;
+                $hist->sqlLimit = 1000;
+                $hist->verbose(10);
+                $ret = $hist->getPeriod((int)$this->_lastPush[$class], time());
                 if ($ret) {
-                    $pass  = 0;
-                    $fail  = 0;
-                    $total = 0;
+                    $records = array();
                     do {
                         $this->system()->main();
                         if (!$this->ui()->loop()) {
                             break;
                         }
-                        $ret = $this->_post(
-                            null,
-                            $hist->sqlTable,
-                            $hist->toArray(true)
-                        );
-                        if ($ret === "success") {
-                            $pass++;
-                            if ($now < $hist->get("Date")) {
-                                $now = $hist->get("Date");
-                            }
-                        } else {
-                            $fail++;
+                        $records[] = $hist->toArray(true);
+                        $date = $hist->get("Date");
+                        if ($now < $date) {
+                            $now = $date;
                         }
-                        $total++;
                     } while ($hist->nextInto());
-                    if ($pass > 0) {
+                    $ret = $this->_post(
+                        null,
+                        $class,
+                        $records
+                    );
+                    if (count($ret) > 0) {
                         $this->ui()->out(
-                            "Successfully pushed $pass/$total history records."
+                            "Successfully pushed ".count($ret)." $class records."
+                        );
+                        $this->_lastPush[$class] = $now;
+                        $this->ui()->out(
+                            "LastPush for $class set to ".date("Y-m-d H:i:s", $now)
                         );
                     }
-                    if ($fail > 0) {
+                    if (count($ret) < count($records)) {
                         $this->ui()->out(
-                            "Failed to push $fail/$total history records."
+                            "Failed to push ".(count($records) - count($ret))
+                            ." $class records."
                         );
                     }
                 }
@@ -164,11 +165,13 @@ class PushHistory extends \HUGnet\updater\Periodic
     /**
     * Gets the config and saves it
     *
-    * @param string $url The url to post to
+    * @param string $url     The url to post to
+    * @param string $class   The class to use
+    * @param array  $records The records to send
     *
     * @return string The left over string
     */
-    private function _post($url, $class, $record)
+    private function _post($url, $class, $records)
     {
         if (!is_string($url) || (strlen($url) == 0)) {
             $master = $this->system()->get("master");
@@ -182,7 +185,7 @@ class PushHistory extends \HUGnet\updater\Periodic
                 "action" => "post",
                 "task"   => "historyPost",
                 "table"  => $class,
-                "record" => $record,
+                "records" => $records,
             )
         );
     }
