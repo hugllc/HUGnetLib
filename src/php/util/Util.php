@@ -99,16 +99,18 @@ class Util
     *
     * @param string $url      The URL to post the data to
     * @param array  $postdata The data to post to the URL
+    * @param int    $timeout  The timeout in seconds
     *
     * @return mixed
     */
-    public static function postData($url, $postdata)
+    public static function postData($url, $postdata, $timeout=60)
     {
         global $ctx;
         $params = array(
             'http' => array(
                 'method' => 'POST',
                 'content' => http_build_query($postdata)."\n",
+                'timeout' => $timeout,
             )
         );
         $ctx = stream_context_create($params);
