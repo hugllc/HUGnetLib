@@ -46,6 +46,7 @@ if (class_exists($class)) {
     $table = new $class();
     $success = array();
     foreach ($_POST["records"] as $key => $rec) {
+        $table->clearData();
         $table->fromArray($rec);
         if ($table->insertRow(true)) {
             $success[] = $key;
