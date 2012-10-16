@@ -228,6 +228,38 @@ class Action
         return false;
     }
     /**
+    * Uploads firmware to the device
+    *
+    * @return string The left over string
+    */
+    public function loadFirmware()
+    {
+        $firmware = new FirmwareTable();
+        if (!$this->device->get("bootloader")) {
+            $firmware->set("FWPartNum", $this->device->get("FWPartNum"));
+        } else {
+            $firmware->set("FWPartNum", "0039-38-01-C");
+        }
+        $firmware->set("HWPartNum", $this->device->get("HWPartNum"));
+        $firmware->set("RelStatus", \FirmwareTable::DEV);
+        $ret = false;
+        if ($firmware->getLatest()) {
+            if ($this->device->network()->loadFirmware($firmware)) {
+                $ret = true;
+            }
+        }
+        return $ret;
+    }
+    /**
+    * Uploads config to the device
+    *
+    * @return string The left over string
+    */
+    public function loadConfig()
+    {
+        $pkt = $this->device->network()->loadConfig();
+    }
+    /**
     * Checks the record to see if something needs to be done about it.
     *
     * @return null
