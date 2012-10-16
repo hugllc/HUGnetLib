@@ -154,10 +154,15 @@ class PushHistory extends \HUGnet\processes\updater\Periodic
                             );
                         }
                         if (!is_array($ret) || (count($ret) < count($records))) {
+                            $count = (is_array($ret)) ? count($ret) : 0;
                             $this->ui()->out(
-                                "Failed to push ".(count($records) - count($ret))
+                                "Failed to push ".(count($records) - $count)
                                 ." $class records."
                             );
+                        }
+                        if ($ret === false) {
+                            // We didn't contact the server.  Don't try again now.
+                            break;
                         }
                     }
                 }
