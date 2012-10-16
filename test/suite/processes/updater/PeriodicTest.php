@@ -34,9 +34,9 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\analysis;
+namespace HUGnet\processes\updater;
 /** This is a required class */
-require_once CODE_BASE.'analysis/Device.php';
+require_once CODE_BASE.'processes/updater/Periodic.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
@@ -90,33 +90,29 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     public static function dataReady()
     {
         return array(
-            array(
-                0,
-                600,
-                new \HUGnet\DummyBase("Device"),
-                true
-            ),
+            array(0, 600, true),
+            array(time(), 0, false),
+            array(time(),60000, false),
         );
     }
     /**
     * test the set routine when an extra class exists
     *
-    * @param int    $last   Set the last value
-    * @param int    $period The number of seconds between runs
-    * @param object $device The device to use
-    * @param array  $expect The expected return
+    * @param int   $last   Set the last value
+    * @param int   $period The number of seconds between runs
+    * @param array $expect The expected return
     *
     * @return null
     *
     * @dataProvider dataReady
     */
-    public function testReady($last, $period, $device, $expect)
+    public function testReady($last, $period, $expect)
     {
         $sys = new \HUGnet\DummySystem("System");
         $obj = DriverTestClass::factory($sys);
         $obj->setLast($last);
         $obj->setPeriod($period);
-        $this->assertSame($expect, $obj->ready($device));
+        $this->assertSame($expect, $obj->ready());
     }
 }
 /**
@@ -135,7 +131,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class DriverTestClass extends Device
+class DriverTestClass extends Periodic
 {
     /**
     * the period in seconds
@@ -155,11 +151,9 @@ class DriverTestClass extends Device
     /**
     * This function creates the system.
     *
-    * @param object &$device The device to use
-    *
     * @return null
     */
-    public function &execute(&$device)
+    public function &execute()
     {
     }
     /**
@@ -185,15 +179,13 @@ class DriverTestClass extends Device
         $this->period = $period;
     }
     /**
-    * This function does the stuff in the class.
+    * This says if we are ready to run
     *
-    * @param object &$device The device to check
-    *
-    * @return bool True if ready to return, false otherwise
+    * @return bool
     */
-    public function ready(&$device)
+    public function ready()
     {
-        return parent::ready(&$device);
+        return parent::ready();
     }
 }
 ?>

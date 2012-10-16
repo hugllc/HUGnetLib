@@ -35,7 +35,7 @@
  *
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\analysis\device;
+namespace HUGnet\processes\analysis\device;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 
@@ -56,7 +56,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class AverageWeekly extends \HUGnet\analysis\Device
+class AverageHourly extends \HUGnet\processes\analysis\Device
 {
     /** This is the period */
     protected $period = 600;
@@ -97,7 +97,7 @@ class AverageWeekly extends \HUGnet\analysis\Device
         if (!$this->ready($device)) {
             return true;
         }
-        $this->ui()->out("WEEKLY average plugin starting ", 3);
+        $this->ui()->out("HOURLY average plugin starting ", 3);
         $hist = &$device->historyFactory($data, false);
         // We don't want more than 100 records at a time;
         if (empty($this->conf["maxRecords"])) {
@@ -109,21 +109,21 @@ class AverageWeekly extends \HUGnet\analysis\Device
 
         $avg = &$device->historyFactory($data, false);
 
-        $last     = $device->getParam("LastAverageWEEKLY");
-        $lastTry  = $device->getParam("LastAverageWEEKLYTry");
-        $lastPrev = $device->getParam("LastAverageDAILY");
+        $last     = $device->getParam("LastAverageHOURLY");
+        $lastTry  = $device->getParam("LastAverageHOURLYTry");
+        $lastPrev = $device->getParam("LastAverage15MIN");
         $ret = $hist->getPeriod(
             (int)$last,
             $lastPrev,
             $device->get("id"),
-            \AverageTableBase::AVERAGE_DAILY
+            \AverageTableBase::AVERAGE_15MIN
         );
 
         $bad = 0;
         $local = 0;
         if ($ret) {
             // Go through the records
-            while ($avg->calcAverage($hist, \AverageTableBase::AVERAGE_WEEKLY)) {
+            while ($avg->calcAverage($hist, \AverageTableBase::AVERAGE_HOURLY)) {
                 if ($avg->insertRow(true)) {
                     $now = $avg->Date;
                     $local++;
@@ -138,7 +138,7 @@ class AverageWeekly extends \HUGnet\analysis\Device
             // State we did some uploading
             $this->ui()->out(
                 $device->DeviceID." - ".
-                "Failed to insert $bad WEEKLY average records",
+                "Failed to insert $bad HOURLY average records",
                 1
             );
         }
@@ -146,18 +146,18 @@ class AverageWeekly extends \HUGnet\analysis\Device
             // State we did some uploading
             $this->ui()->out(
                 $device->DeviceID." - ".
-                "Inserted $local WEEKLY average records ".
-                date("Y-m-d", $last)." - ".date("Y-m-d", $now),
+                "Inserted $local HOURLY average records ".
+                date("Y-m-d H:i:s", $last)." - ".date("Y-m-d H:i:s", $now),
                 1
             );
         }
         if (!empty($now)) {
             $last = (int)$now;
         }
-        $device->setParam("LastAverageWEEKLY", $last);
-        $device->setParam("LastAverageWEEKLYTry", $lastTry);
+        $device->setParam("LastAverageHOURLY", $last);
+        $device->setParam("LastAverageHOURLYTry", $lastTry);
 
-        $this->ui()->out("WEEKLY average plugin ending ", 3);
+        $this->ui()->out("HOURLY average plugin ending ", 3);
         return true;
     }
     /**
@@ -169,9 +169,12 @@ class AverageWeekly extends \HUGnet\analysis\Device
     */
     public function ready(&$device)
     {
+        $last15Min = $device->getParam("LastAverage15MIN")
+                    - $device->getParam("LastAverageHOURLY");
         // Run when enabled, and at most every 15 minutes.
         return $this->enable
-            && ((time() - $device->getParam("LastAverageWEEKLYTry")) > 86400);
+            && (((time() - $device->getParam("LastAverageHOURLYTry")) > 3600)
+            || ($last15Min > 3600));
     }
 }
 

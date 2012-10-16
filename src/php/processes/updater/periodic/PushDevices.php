@@ -35,11 +35,9 @@
  *
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\updater\periodic;
+namespace HUGnet\processes\updater\periodic;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
-/** This is the table where the firmware is stored */
-require_once dirname(__FILE__)."/../../tables/FirmwareTable.php";
 
 /**
  * Networking for devices.
@@ -58,14 +56,12 @@ require_once dirname(__FILE__)."/../../tables/FirmwareTable.php";
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class GetFirmware extends \HUGnet\updater\Periodic
+class PushDevices extends \HUGnet\processes\updater\Periodic
 {
     /** This is the period */
-    protected $period = 3600;
+    protected $period = 60;
     /** This is the object we use */
-    private $_firmware;
-    /** This is the object we use */
-    private $_fwPath = array();
+    private $_device;
     /**
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
@@ -77,8 +73,7 @@ class GetFirmware extends \HUGnet\updater\Periodic
     protected function __construct(&$gui)
     {
         parent::__construct($gui);
-        $this->_firmware = new \FirmwareTable();
-        $this->_fwPath = (array)$this->system()->get("firmware");
+        $this->_device = $this->system()->device();
     }
     /**
     * This function creates the system.
@@ -98,26 +93,54 @@ class GetFirmware extends \HUGnet\updater\Periodic
     */
     public function &execute()
     {
-        if ($this->ready() && (strlen($this->_fwPath["url"]) > 0)) {
-            // State we are looking for firmware
-            $this->ui()->out(
-                "Checking for new firmware at ".trim($this->_fwPath["url"])
-            );
-            $files = file($this->_fwPath["url"]."/manifest");
-            foreach ((array)$files as $file) {
+        if ($this->ready() && $this->hasMaster()) {
+            $now = time();
+            $ids = $this->_device->ids();
+            $mem = memory_get_usage();
+            foreach ($ids as $key => $devID) {
+                $this->system()->main();
                 if (!$this->ui()->loop()) {
-                    return;
+                    break;
                 }
-                if (!$this->_firmware->checkFile($file)) {
-                    // State we found some new firmware
-                    $this->ui()->out("Found ".trim($file));
-                    // Load the firmware
-                    $this->_firmware->fromFile($file, $this->_fwPath["url"]);
-                    // Insert it.
-                    $this->_firmware->insertRow(true);
+
+                $this->_device->load($key);
+                /* Let's just push the regular devices */
+                if ($key >= 0xFE0000) {
+                    continue;
+                }
+                $lastContact = $this->_device->getParam("LastContact");
+                /* Only push it if we have changed it since the last push */
+                if ($lastContact < $this->_device->getParam("LastMasterPush")) {
+                    continue;
+                }
+                $this->ui()->out(
+                    "Pushing ".sprintf("%06X", $devID)." to master server..."
+                );
+                $this->_device->setParam("LastMasterPush", $now);
+                $ret = $this->_device->action()->post($url);
+                $sens = $this->_device->get("totalSensors");
+                $sensors = array();
+                for ($i = 0; $i < $sens; $i++) {
+                    //$this->ui()->out("Pushing sensor ".$i);
+                    $sen = &$this->_device->sensor($i);
+                    $sen->action()->post($url);
+                    unset($sen);
+                    $this->system()->main();
+                    if (!$this->ui()->loop()) {
+                        break;
+                    }
+                }
+                if ($ret === "success") {
+                    $this->ui()->out(
+                        "Successfully pushed ".sprintf("%06X", $devID)."."
+                    );
+                    $this->_device->store();
+                } else {
+                    $this->ui()->out("Failure.");
+                    /* Don't store it if we fail */
                 }
             }
-            $this->success();
+            $this->last = $now;
         }
     }
 }

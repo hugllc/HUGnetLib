@@ -35,8 +35,6 @@
 namespace HUGnet\processes;
 /** This is our base class */
 require_once dirname(__FILE__)."/../ui/Daemon.php";
-/** This is our base class */
-require_once dirname(__FILE__)."/../updater/Periodic.php";
 
 /**
  * This code routes packets to their correct destinations.

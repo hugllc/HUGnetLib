@@ -36,7 +36,7 @@ namespace HUGnet\processes;
 /** This is our base class */
 require_once dirname(__FILE__)."/../ui/Daemon.php";
 /** This is our base class */
-require_once dirname(__FILE__)."/../updater/Periodic.php";
+require_once dirname(__FILE__)."/updater/Periodic.php";
 
 /**
  * This code routes packets to their correct destinations.
@@ -79,7 +79,7 @@ class Update extends \HUGnet\ui\Daemon
         parent::__construct($config);
         /* Get our Device */
         $this->_device = $this->system()->device();
-        $this->_plugins = &\HUGnet\updater\Periodic::plugins($this);
+        $this->_plugins = &\HUGnet\processes\updater\Periodic::plugins($this);
     }
     /**
     * This is the destructor

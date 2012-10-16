@@ -35,7 +35,7 @@
  *
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\analysis\device;
+namespace HUGnet\processes\analysis\device;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 
@@ -56,7 +56,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class AverageYearly extends \HUGnet\analysis\Device
+class AverageYearly extends \HUGnet\processes\analysis\Device
 {
     /** This is the period */
     protected $period = 600;

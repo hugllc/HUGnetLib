@@ -35,7 +35,7 @@
  *
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\updater\periodic;
+namespace HUGnet\processes\analysis\device;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 
@@ -56,12 +56,12 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class PushDevices extends \HUGnet\updater\Periodic
+class AverageWeekly extends \HUGnet\processes\analysis\Device
 {
     /** This is the period */
-    protected $period = 60;
+    protected $period = 600;
     /** This is the object we use */
-    private $_device;
+    private $_datacollector;
     /**
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
@@ -73,7 +73,6 @@ class PushDevices extends \HUGnet\updater\Periodic
     protected function __construct(&$gui)
     {
         parent::__construct($gui);
-        $this->_device = $this->system()->device();
     }
     /**
     * This function creates the system.
@@ -87,61 +86,92 @@ class PushDevices extends \HUGnet\updater\Periodic
         return parent::intFactory($gui);
     }
     /**
-    * This function creates the system.
+    * This runs the job.
+    *
+    * @param object &$device The device to use
     *
     * @return null
     */
-    public function &execute()
+    public function &execute(&$device)
     {
-        if ($this->ready() && $this->hasMaster()) {
-            $now = time();
-            $ids = $this->_device->ids();
-            $mem = memory_get_usage();
-            foreach ($ids as $key => $devID) {
-                $this->system()->main();
-                if (!$this->ui()->loop()) {
-                    break;
-                }
+        if (!$this->ready($device)) {
+            return true;
+        }
+        $this->ui()->out("WEEKLY average plugin starting ", 3);
+        $hist = &$device->historyFactory($data, false);
+        // We don't want more than 100 records at a time;
+        if (empty($this->conf["maxRecords"])) {
+            $hist->sqlLimit = 100;
+        } else {
+            $hist->sqlLimit = $this->conf["maxRecords"];
+        }
+        $hist->sqlOrderBy = "Date asc";
 
-                $this->_device->load($key);
-                /* Let's just push the regular devices */
-                if ($key >= 0xFE0000) {
-                    continue;
-                }
-                $lastContact = $this->_device->getParam("LastContact");
-                /* Only push it if we have changed it since the last push */
-                if ($lastContact < $this->_device->getParam("LastMasterPush")) {
-                    continue;
-                }
-                $this->ui()->out(
-                    "Pushing ".sprintf("%06X", $devID)." to master server..."
-                );
-                $this->_device->setParam("LastMasterPush", $now);
-                $ret = $this->_device->action()->post($url);
-                $sens = $this->_device->get("totalSensors");
-                $sensors = array();
-                for ($i = 0; $i < $sens; $i++) {
-                    //$this->ui()->out("Pushing sensor ".$i);
-                    $sen = &$this->_device->sensor($i);
-                    $sen->action()->post($url);
-                    unset($sen);
-                    $this->system()->main();
-                    if (!$this->ui()->loop()) {
-                        break;
-                    }
-                }
-                if ($ret === "success") {
-                    $this->ui()->out(
-                        "Successfully pushed ".sprintf("%06X", $devID)."."
-                    );
-                    $this->_device->store();
+        $avg = &$device->historyFactory($data, false);
+
+        $last     = $device->getParam("LastAverageWEEKLY");
+        $lastTry  = $device->getParam("LastAverageWEEKLYTry");
+        $lastPrev = $device->getParam("LastAverageDAILY");
+        $ret = $hist->getPeriod(
+            (int)$last,
+            $lastPrev,
+            $device->get("id"),
+            \AverageTableBase::AVERAGE_DAILY
+        );
+
+        $bad = 0;
+        $local = 0;
+        if ($ret) {
+            // Go through the records
+            while ($avg->calcAverage($hist, \AverageTableBase::AVERAGE_WEEKLY)) {
+                if ($avg->insertRow(true)) {
+                    $now = $avg->Date;
+                    $local++;
+                    $lastTry = time();
                 } else {
-                    $this->ui()->out("Failure.");
-                    /* Don't store it if we fail */
+                    $bad++;
                 }
             }
-            $this->last = $now;
         }
+
+        if ($bad > 0) {
+            // State we did some uploading
+            $this->ui()->out(
+                $device->DeviceID." - ".
+                "Failed to insert $bad WEEKLY average records",
+                1
+            );
+        }
+        if ($local > 0) {
+            // State we did some uploading
+            $this->ui()->out(
+                $device->DeviceID." - ".
+                "Inserted $local WEEKLY average records ".
+                date("Y-m-d", $last)." - ".date("Y-m-d", $now),
+                1
+            );
+        }
+        if (!empty($now)) {
+            $last = (int)$now;
+        }
+        $device->setParam("LastAverageWEEKLY", $last);
+        $device->setParam("LastAverageWEEKLYTry", $lastTry);
+
+        $this->ui()->out("WEEKLY average plugin ending ", 3);
+        return true;
+    }
+    /**
+    * This function does the stuff in the class.
+    *
+    * @param object &$device The device to check
+    *
+    * @return bool True if ready to return, false otherwise
+    */
+    public function ready(&$device)
+    {
+        // Run when enabled, and at most every 15 minutes.
+        return $this->enable
+            && ((time() - $device->getParam("LastAverageWEEKLYTry")) > 86400);
     }
 }
 

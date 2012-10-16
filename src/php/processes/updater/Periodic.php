@@ -35,7 +35,7 @@
  *
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\updater;
+namespace HUGnet\processes\updater;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 
@@ -141,7 +141,10 @@ abstract class Periodic
         $plugins = array();
         foreach (self::$_drivers as $driver) {
             $class = \HUGnet\Util::findClass(
-                $driver, "updater/periodic", true, "\\HUGnet\\updater\\periodic"
+                $driver,
+                "processes/updater/periodic",
+                true,
+                "\\HUGnet\\processes\\updater\\periodic"
             );
             if (class_exists($class)) {
                 $plugins[$class] = &$class::factory(&$gui);

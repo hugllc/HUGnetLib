@@ -35,7 +35,7 @@
  *
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\updater\periodic;
+namespace HUGnet\processes\analysis\device;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 
@@ -56,7 +56,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class Checkin extends \HUGnet\updater\Periodic
+class Average15min extends \HUGnet\processes\analysis\Device
 {
     /** This is the period */
     protected $period = 600;
@@ -73,7 +73,6 @@ class Checkin extends \HUGnet\updater\Periodic
     protected function __construct(&$gui)
     {
         parent::__construct($gui);
-        $this->_datacollector = $this->system()->datacollector();
     }
     /**
     * This function creates the system.
@@ -87,42 +86,93 @@ class Checkin extends \HUGnet\updater\Periodic
         return parent::intFactory($gui);
     }
     /**
-    * This function creates the system.
+    * This runs the job.
+    *
+    * @param object &$device The device to use
     *
     * @return null
     */
-    public function &execute()
+    public function &execute(&$device)
     {
-        if ($this->ready()) {
-            $this->ui()->out("Updating the data collector record...");
-            $this->_datacollector->load(
-                array("uuid" => $this->system()->get("uuid"))
-            );
-            $setup = $this->_datacollector->get("SetupString");
-            if (empty($setup)) {
-                $device = $this->system()->device(
-                    $this->system()->network()->device()->getID()
-                );
-                $this->_datacollector->load($device);
-                $this->_datacollector->store(true);
-            }
-            if (function_exists("posix_uname")) {
-                $uname = posix_uname();
-                $this->_datacollector->set("name", trim($uname['nodename']));
-            }
-            $this->_datacollector->store();
-            if ($this->hasMaster()) {
-                $this->ui()->out("Checking in with the master server...");
-                $ret = $this->_datacollector->action()->checkin();
-                if ($ret === "success") {
-                    $this->success();
+        if (!$this->ready($device)) {
+            return true;
+        }
+        $this->ui()->out("15MIN average plugin starting ", 3);
+        $hist = &$device->historyFactory($data, true);
+        // We don't want more than 100 records at a time;
+        if (empty($this->conf["maxRecords"])) {
+            $hist->sqlLimit = 100;
+        } else {
+            $hist->sqlLimit = $this->conf["maxRecords"];
+        }
+        $hist->sqlOrderBy = "Date asc";
+
+        $avg = &$device->historyFactory($data, false);
+
+        $last        = $device->getParam("LastAverage15MIN");
+        $lastTry     = $device->getParam("LastAverage15MINTry");
+        $local       = $device->getParam("LastAverage15MINCnt");
+        $lastHistory = $device->getParam("LastHistory");
+
+        $ret = $hist->getPeriod((int)$last, $lastHistory, $device->id(), "id");
+
+        $bad = 0;
+        $local = 0;
+
+        if ($ret) {
+            // Go through the records
+            while (
+                $avg->calcAverage($hist, \AverageTableBase::AVERAGE_15MIN)
+            ) {
+                if ($avg->insertRow(true)) {
+                    $now = $avg->Date;
+                    $local++;
+                    $lastTry = time();
                 } else {
-                    $this->failure();
+                    $bad++;
                 }
-            } else {
-                $this->success();
             }
         }
+        if ($bad > 0) {
+            // State we did some uploading
+            $this->ui()->out(
+                $device->DeviceID." - ".
+                "Failed to insert $bad 15MIN average records",
+                1
+            );
+        }
+        if ($local > 0) {
+            // State we did some uploading
+            $this->ui()->out(
+                $device->DeviceID." - ".
+                "Inserted $local 15MIN average records ".
+                date("Y-m-d H:i:s", $last)." - ".date("Y-m-d H:i:s", $now),
+                1
+            );
+        }
+        if (!empty($now)) {
+            $last = (int)$now;
+        }
+        $device->setParam("LastAverage15MIN", $last);
+        $device->setParam("LastAverage15MINTry", $lastTry);
+        $device->setParam("LastAverage15MINCnt", $local);
+
+        $this->ui()->out("15MIN average plugin ending ", 3);
+        return true;
+    }
+    /**
+    * This function does the stuff in the class.
+    *
+    * @param object &$device The device to check
+    *
+    * @return bool True if ready to return, false otherwise
+    */
+    public function ready(&$device)
+    {
+        // Run when enabled, and at most every 15 minutes.
+        return $this->enable
+            && (((time() - $device->getParam("LastAverage15MINTry")) > 900)
+            || ($device->getParam("LastAverage15MINCnt") > 1));
     }
 }
 

@@ -35,7 +35,7 @@
  *
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\analysis;
+namespace HUGnet\processes\analysis;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 
@@ -147,7 +147,10 @@ abstract class Device
         $plugins = array();
         foreach (self::$_drivers as $driver) {
             $class = \HUGnet\Util::findClass(
-                $driver, "analysis/device", true, "\\HUGnet\\analysis\\device"
+                $driver,
+                "processes/analysis/device",
+                true,
+                "\\HUGnet\\processes\\analysis\\device"
             );
             if (class_exists($class)) {
                 $plugins[$class] = &$class::factory(&$gui);

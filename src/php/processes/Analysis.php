@@ -36,7 +36,7 @@ namespace HUGnet\processes;
 /** This is our base class */
 require_once dirname(__FILE__)."/../ui/Daemon.php";
 /** This is our base class */
-require_once dirname(__FILE__)."/../analysis/Device.php";
+require_once dirname(__FILE__)."/analysis/Device.php";
 
 /**
  * This code routes packets to their correct destinations.
@@ -98,7 +98,7 @@ class Analysis extends \HUGnet\ui\Daemon
         /* Get our Device */
         $this->_device = $this->system()->device();
         $this->_dev = $this->system()->device();
-        $this->_plugins = &\HUGnet\analysis\Device::plugins($this);
+        $this->_plugins = &\HUGnet\processes\analysis\Device::plugins($this);
 
     }
     /**
