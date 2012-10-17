@@ -277,7 +277,7 @@ class ADuCInputTableTest extends DriverTestBase
                         "id" => 1,
                         "get" => array(
                             "sensor" => 2,
-                            "extra" => array("41:DEFAULT", 1, 0),
+                            "extra" => array("41", 1, 0),
                         ),
                     ),
                     "Table" => array(
@@ -299,6 +299,40 @@ class ADuCInputTableTest extends DriverTestBase
                         'unitType' => 'Voltage',
                         'dataType' => 'raw',
                         'value' => 14.44816589,
+                    ),
+                ),
+            ),
+            array( // #0
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(
+                                "44", 1, 0,
+                                0, 5, 0, 200, 1.2, 100000, 1000
+                                ),
+                        ),
+                    ),
+                    "Table" => array(
+                        "toArray" => array(
+                            "driver0" => 0x44,
+                        ),
+                    ),
+                ),
+                "00DAF9FF",
+                1,
+                array(),
+                array(),
+                array(
+                    array(
+                        'decimals' => 4,
+                        'units' => 'psi',
+                        'maxDecimals' => 4,
+                        'storageUnit' => 'psi',
+                        'unitType' => 'Pressure',
+                        'dataType' => 'raw',
+                        'value' => -232.8721,
                     ),
                 ),
             ),
