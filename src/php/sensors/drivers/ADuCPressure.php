@@ -73,8 +73,8 @@ class ADuCPressure extends \HUGnet\sensors\DriverADuC
             "Read @ A Voltage (psi)",
             "Read @ B Voltage (psi)",
             "Voltage Ref (V)",
-            "R input (Ohms)",
-            "R to ground (Ohms)"
+            "R input (kOhms)",
+            "R to ground (kOhms)"
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
