@@ -318,11 +318,13 @@ class FirmwareTable extends HUGnetDBTable
     *
     * @return bool True on success, false on failure
     */
-    public function toFile($path = ".")
+    public function toFile($path = ".", &$filename = null)
     {
-        $filename  = str_replace("-", "", $this->HWPartNum);
-        $filename .= "-".str_replace("-", "", $this->FWPartNum);
-        $filename .= "-".$this->Version.".gz";
+        if (is_null($filename) || empty($filename)) {
+            $filename  = str_replace("-", "", $this->HWPartNum);
+            $filename .= "-".str_replace("-", "", $this->FWPartNum);
+            $filename .= "-".$this->Version.".gz";
+        }
         return (bool)file_put_contents(
             $path."/".$filename,
             gzencode((string)$this)
