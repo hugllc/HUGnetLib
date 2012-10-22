@@ -38,7 +38,7 @@ namespace HUGnet\network;
 /** This is a required class */
 require_once CODE_BASE.'network/Network.php';
 /** This is a required class */
-require_once CODE_BASE.'network/Packet.php';
+require_once CODE_BASE.'network/packets/Packet.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
@@ -108,7 +108,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(  // #1 Already set up class
                 array(
                     "defaultSocket" => array(
-                        "read" => (string)Packet::factory(
+                        "read" => (string)packets\Packet::factory(
                             array(
                                 "From" => 0x123456,
                                 "To" => 0x000020,
@@ -126,7 +126,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 1,
                 array(
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To" => 0x123456,
                             "From" => 0x000020,
@@ -138,7 +138,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     "defaultSocket" => array(
                         "write" => array(
                             array(
-                                (string)Packet::factory(
+                                (string)packets\Packet::factory(
                                     array(
                                         "To" => 0x123456,
                                         "From" => 0x000020,
@@ -151,7 +151,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "From" => 0x123456,
                             "To" => 0x000020,
@@ -176,7 +176,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 1,
                 array(
-                    (string)Packet::factory(
+                    (string)packets\Packet::factory(
                         array(
                             "To" => 0x123456,
                             "From" => 0x000020,
@@ -188,7 +188,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     "default" => array(
                         "write" => array(
                             array(
-                                (string)Packet::factory(
+                                (string)packets\Packet::factory(
                                     array(
                                         "To" => 0x123456,
                                         "From" => 0x000020,
@@ -209,7 +209,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     "default" => array(
                         "read" => array(
                             "",
-                            (string)Packet::factory(
+                            (string)packets\Packet::factory(
                                 array(
                                     "From" => 0x123456,
                                     "To" => 0x000020,
@@ -224,7 +224,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "read" => array(
                             "",
                             "",
-                            (string)Packet::factory(
+                            (string)packets\Packet::factory(
                                 array(
                                     "From" => 0x123458,
                                     "To" => 0x000020,
@@ -248,14 +248,14 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 10,
                 array(
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To" => 0x123456,
                             "From" => 0x000020,
                             "Command" => 0x55,
                         )
                     ),
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To" => 0x123458,
                             "From" => 0x000020,
@@ -265,7 +265,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     null,
                     null,
                     // This packet is sent out nondefault only
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To" => 0x123458,
                             "From" => 0x000020,
@@ -273,7 +273,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         )
                     ),
                     // This packet is sent out nondefault only
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To" => 0x123458,
                             "From" => 0x000020,
@@ -282,7 +282,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     ),
                     // This packet is sent out both because no replies to the prev
                     // packets.
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To" => 0x123458,
                             "From" => 0x000020,
@@ -294,7 +294,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     "default" => array(
                         "write" => array(
                             array(
-                                (string)Packet::factory(
+                                (string)packets\Packet::factory(
                                     array(
                                         "To" => 0x123456,
                                         "From" => 0x000020,
@@ -303,7 +303,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 )
                             ),
                             array(
-                                (string)Packet::factory(
+                                (string)packets\Packet::factory(
                                     array(
                                         "To" => 0x123458,
                                         "From" => 0x000020,
@@ -313,7 +313,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             ),
                             // This is the third of these packets
                             array(
-                                (string)Packet::factory(
+                                (string)packets\Packet::factory(
                                     array(
                                         "To" => 0x123458,
                                         "From" => 0x000020,
@@ -331,7 +331,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     "nondefault" => array(
                         "write" => array(
                             array(
-                                (string)Packet::factory(
+                                (string)packets\Packet::factory(
                                     array(
                                         "To" => 0x123456,
                                         "From" => 0x000020,
@@ -340,7 +340,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 )
                             ),
                             array(
-                                (string)Packet::factory(
+                                (string)packets\Packet::factory(
                                     array(
                                         "To" => 0x123458,
                                         "From" => 0x000020,
@@ -350,7 +350,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             ),
                             // All three packets are here
                             array(
-                                (string)Packet::factory(
+                                (string)packets\Packet::factory(
                                     array(
                                         "To" => 0x123458,
                                         "From" => 0x000020,
@@ -360,7 +360,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             ),
                             // All three packets are here
                             array(
-                                (string)Packet::factory(
+                                (string)packets\Packet::factory(
                                     array(
                                         "To" => 0x123458,
                                         "From" => 0x000020,
@@ -370,7 +370,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             ),
                             // All three packets are here
                             array(
-                                (string)Packet::factory(
+                                (string)packets\Packet::factory(
                                     array(
                                         "To" => 0x123458,
                                         "From" => 0x000020,
@@ -388,7 +388,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                     "",
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "From" => 0x123456,
                             "To" => 0x000020,
@@ -396,7 +396,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             "Data" => "0102030405060708090A0B0C0D0E0F",
                         )
                     ),
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "From" => 0x123458,
                             "To" => 0x000020,
@@ -410,7 +410,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(  // #4 forwarding test
                 array(
                     "default" => array(
-                        "read" => (string)Packet::factory(
+                        "read" => (string)packets\Packet::factory(
                             array(
                                 "From" => 0x123456,
                                 "To" => 0x000020,
@@ -420,7 +420,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                     "default2" => array(
-                        "read" => (string)Packet::factory(
+                        "read" => (string)packets\Packet::factory(
                             array(
                                 "From" => 0x123457,
                                 "To" => 0x000021,
@@ -441,7 +441,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 3,
                 array(
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To" => 0x123456,
                             "From" => 0x000020,
@@ -453,7 +453,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     "default" => array(
                         "write" => array(
                             array(
-                                (string)Packet::factory(
+                                (string)packets\Packet::factory(
                                     array(
                                         "To" => 0x123456,
                                         "From" => 0x000020,
@@ -462,7 +462,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                             array(
-                                (string)Packet::factory(
+                                (string)packets\Packet::factory(
                                     array(
                                         "From" => 0x123457,
                                         "To" => 0x000021,
@@ -477,7 +477,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     "default2" => array(
                         "write" => array(
                             array(
-                                (string)Packet::factory(
+                                (string)packets\Packet::factory(
                                     array(
                                         "To" => 0x123456,
                                         "From" => 0x000020,
@@ -486,7 +486,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                             array(
-                                (string)Packet::factory(
+                                (string)packets\Packet::factory(
                                     array(
                                         "From" => 0x123456,
                                         "To" => 0x000020,
@@ -500,7 +500,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "From" => 0x123456,
                             "To" => 0x000020,
@@ -508,7 +508,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             "Data" => "0102030405060708090A0B0C0D0E0F",
                         )
                     ),
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "From" => 0x123457,
                             "To" => 0x000021,
@@ -524,7 +524,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     "defaultSocket" => array(
                         "read" => array(
                             "5A5A5A01000020123456011101",
-                            (string)Packet::factory(
+                            (string)packets\Packet::factory(
                                 array(
                                     "From" => 0x123456,
                                     "To" => 0x000020,
@@ -543,7 +543,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 2,
                 array(
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To" => 0x123456,
                             "From" => 0x000020,
@@ -555,7 +555,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     "defaultSocket" => array(
                         "write" => array(
                             array(
-                                (string)Packet::factory(
+                                (string)packets\Packet::factory(
                                     array(
                                         "To" => 0x123456,
                                         "From" => 0x000020,
@@ -569,7 +569,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                     null,
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "From" => 0x123456,
                             "To" => 0x000020,
@@ -583,7 +583,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(  // #6 Many packets to read at once
                 array(
                     "defaultSocket" => array(
-                        "read" => (string)Packet::factory(
+                        "read" => (string)packets\Packet::factory(
                             array(
                                 "From" => 0x123456,
                                 "To" => 0x000020,
@@ -591,7 +591,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 "Data" => "0102030405060708090A0B0C0D0E0F",
                             )
                         ).
-                        (string)Packet::factory(
+                        (string)packets\Packet::factory(
                             array(
                                 "From" => 0x123457,
                                 "To" => 0x000020,
@@ -599,7 +599,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 "Data" => "0102030405060708090A0B0C0D0E0F",
                             )
                         ).
-                        (string)Packet::factory(
+                        (string)packets\Packet::factory(
                             array(
                                 "From" => 0x123458,
                                 "To" => 0x000020,
@@ -607,7 +607,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 "Data" => "0102030405060708090A0B0C0D0E0F",
                             )
                         ).
-                        (string)Packet::factory(
+                        (string)packets\Packet::factory(
                             array(
                                 "From" => 0x123459,
                                 "To" => 0x000020,
@@ -615,7 +615,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 "Data" => "0102030405060708090A0B0C0D0E0F",
                             )
                         ).
-                        (string)Packet::factory(
+                        (string)packets\Packet::factory(
                             array(
                                 "From" => 0x12345A,
                                 "To" => 0x000020,
@@ -634,7 +634,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 6,
                 array(
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To" => 0x123456,
                             "From" => 0x000020,
@@ -646,7 +646,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     "defaultSocket" => array(
                         "write" => array(
                             array(
-                                (string)Packet::factory(
+                                (string)packets\Packet::factory(
                                     array(
                                         "To" => 0x123456,
                                         "From" => 0x000020,
@@ -661,7 +661,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "From" => 0x123456,
                             "To" => 0x000020,
@@ -674,7 +674,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ."102030405060708090A0B0C0D0E0F52",
                         )
                     ),
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "From" => 0x123457,
                             "To" => 0x000020,
@@ -686,7 +686,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ."102030405060708090A0B0C0D0E0F52",
                         )
                     ),
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "From" => 0x123458,
                             "To" => 0x000020,
@@ -697,7 +697,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ."102030405060708090A0B0C0D0E0F52",
                         )
                     ),
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "From" => 0x123459,
                             "To" => 0x000020,
@@ -707,7 +707,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ."102030405060708090A0B0C0D0E0F52",
                         )
                     ),
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "From" => 0x12345A,
                             "To" => 0x000020,
@@ -744,7 +744,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 1,
                 array(
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To" => 0x123456,
                             "From" => 0x000020,
@@ -755,7 +755,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                 ),
                 array(
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To" => 0x123456,
                             "From" => 0x000020,

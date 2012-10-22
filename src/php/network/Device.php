@@ -181,7 +181,7 @@ final class Device
     */
     private function _reply($pkt, $data)
     {
-        $newPacket = &Packet::factory(
+        $newPacket = &packets\Packet::factory(
             array(
                 "To"      => $pkt->from(),
                 "Command" => "REPLY",
@@ -200,7 +200,7 @@ final class Device
     private function _powerup()
     {
         $data = substr($this->_device->encode(), 0, 20);
-        $newPacket = &Packet::factory(
+        $newPacket = &packets\Packet::factory(
             array(
                 "To"      => "000000",
                 "From"    => $this->_config["id"],
@@ -253,7 +253,7 @@ final class Device
 
         $last = time() - $this->_lastContact;
         if (($last > 3600) && ((time() - $lastBoredom) > 3600)) {
-            $newPacket = &Packet::factory(
+            $newPacket = &packets\Packet::factory(
                 array(
                     "To"      => "000000",
                     "From"    => $this->_config["id"],

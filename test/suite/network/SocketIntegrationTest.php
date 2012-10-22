@@ -38,9 +38,9 @@
 namespace HUGnet\network\physical;
 
 /** This is a required class */
-require_once CODE_BASE.'network/SocketServer.php';
+require_once CODE_BASE.'network/physical/SocketServer.php';
 /** This is a required class */
-require_once CODE_BASE.'network/Socket.php';
+require_once CODE_BASE.'network/physical/Socket.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 

@@ -34,9 +34,9 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\network;
+namespace HUGnet\network\packets;
 /** This is a required class */
-require_once CODE_BASE.'network/PacketADuC.php';
+require_once CODE_BASE.'network/packets/PacketADuC.php';
 
 /**
  * Test class for HUGnetDB.

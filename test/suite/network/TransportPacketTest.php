@@ -38,7 +38,7 @@ namespace HUGnet\network;
 /** This is a required class */
 require_once CODE_BASE.'network/TransportPacket.php';
 /** This is a required class */
-require_once CODE_BASE.'network/Packet.php';
+require_once CODE_BASE.'network/packets/Packet.php';
 
 /**
  * Test class for HUGnetDB.
@@ -91,7 +91,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                 array(
                     "timeout" => 1,
                 ),
-                Packet::factory(
+                packets\Packet::factory(
                     array(
                         "To"      => "000ABC",
                         "From"    => "000020",
@@ -110,7 +110,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                 1,
                 1,
                 array(
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"      => "000ABC",
                             "From"    => "000020",
@@ -120,7 +120,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"      => "000020",
                             "From"    => "000ABC",
@@ -147,7 +147,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                 0.5,
                 10,
                 array(
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"      => "000ABC",
                             "From"    => "000020",
@@ -156,7 +156,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                         )
                     ),
                     "",
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"      => "000ABC",
                             "From"    => "000020",
@@ -165,7 +165,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                         )
                     ),
                     "",
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"      => "000ABC",
                             "From"    => "000020",
@@ -205,7 +205,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                 array(
                     "",
                     "",
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"        => "000020",
                             "From"      => "000ABC",
@@ -213,7 +213,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                             "Data"      => "ABCDEF",
                         )
                     ),
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"        => "000020",
                             "From"      => "000ABC",
@@ -226,7 +226,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                 1,
                 5,
                 array(
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"      => "000ABC",
                             "From"    => "000020",
@@ -234,7 +234,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                             "Data"    => "01020304",
                         )
                     ),
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"      => "000ABC",
                             "From"    => "000020",
@@ -242,7 +242,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                             "Data"    => "01020304",
                         )
                     ),
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"      => "000ABC",
                             "From"    => "000020",
@@ -250,7 +250,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                             "Data"    => "ABCDEF",
                         )
                     ),
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"      => "000ABC",
                             "From"    => "000020",
@@ -264,7 +264,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                     null,
                     null,
                     true,
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"        => "000020",
                             "From"      => "000ABC",
@@ -291,7 +291,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                 array(
                     "",
                     "",
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"        => "000020",
                             "From"      => "000ABC",
@@ -305,7 +305,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                 1,
                 5,
                 array(
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"      => "000ABC",
                             "From"    => "000020",
@@ -313,7 +313,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                             "Data"    => "01020304",
                         )
                     ),
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"      => "000ABC",
                             "From"    => "000020",
@@ -321,7 +321,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                             "Data"    => "01020304",
                         )
                     ),
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"      => "000ABC",
                             "From"    => "000020",
@@ -334,7 +334,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                 array(
                     null,
                     null,
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"        => "000020",
                             "From"      => "000ABC",
@@ -352,7 +352,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                     "ident" => "ABCDEF",
                     "timeout" => 1,
                 ),
-                Packet::factory(
+                packets\Packet::factory(
                     array(
                         "To"      => "000ABC",
                         "From"    => "000020",
@@ -371,7 +371,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                 1,
                 1,
                 array(
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"      => "000ABC",
                             "From"    => "000020",
@@ -381,7 +381,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"      => "000020",
                             "From"    => "000ABC",
@@ -408,7 +408,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                 0.5,
                 10,
                 array(
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"      => "000ABC",
                             "From"    => "000020",
@@ -417,7 +417,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                         )
                     ),
                     "",
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"      => "000ABC",
                             "From"    => "000020",
@@ -426,7 +426,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                         )
                     ),
                     "",
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"      => "000ABC",
                             "From"    => "000020",

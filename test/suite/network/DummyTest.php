@@ -37,7 +37,7 @@ namespace HUGnet\network;
 /** This is a required class */
 require_once CODE_BASE.'network/Dummy.php';
 /** This is a required class */
-require_once CODE_BASE.'network/Packet.php';
+require_once CODE_BASE.'network/packets/Packet.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
@@ -137,19 +137,19 @@ class DummyTest extends \PHPUnit_Framework_TestCase
                 array(),
                 null,
                 array(),
-                Packet::factory(array()),
+                packets\Packet::factory(array()),
             ),
             array(
                 array("block" => true),
                 "trim",
                 array(),
-                Packet::factory(array()),
+                packets\Packet::factory(array()),
             ),
             array(
                 array("block" => 1),
                 "trim",
                 array(),
-                Packet::factory(array()),
+                packets\Packet::factory(array()),
             ),
         );
     }

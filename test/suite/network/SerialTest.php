@@ -38,7 +38,7 @@
 namespace HUGnet\network\physical;
 
 /** This is a required class */
-require_once CODE_BASE.'network/Serial.php';
+require_once CODE_BASE.'network/physical/Serial.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 

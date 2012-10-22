@@ -38,7 +38,7 @@ namespace HUGnet\devices;
 /** This is a required class */
 require_once CODE_BASE.'devices/Network.php';
 /** This is a required class */
-require_once CODE_BASE.'network/Packet.php';
+require_once CODE_BASE.'network/packets/Packet.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
@@ -106,7 +106,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => 21,
                     ),
                     "Network" => array(
-                        "send" => \HUGnet\network\Packet::factory(
+                        "send" => \HUGnet\network\packets\Packet::factory(
                             array(
                                 "From" => 21,
                                 "Reply" => "123456",
@@ -139,7 +139,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-                \HUGnet\network\Packet::factory(
+                \HUGnet\network\packets\Packet::factory(
                     array(
                         "From" => 21,
                         "Reply" => "123456",
@@ -152,7 +152,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => 21,
                     ),
                     "Network" => array(
-                        "send" => \HUGnet\network\Packet::factory(
+                        "send" => \HUGnet\network\packets\Packet::factory(
                             array(
                                 "From" => 21,
                                 "Reply" => "123456",
@@ -185,7 +185,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-                \HUGnet\network\Packet::factory(
+                \HUGnet\network\packets\Packet::factory(
                     array(
                         "From" => 21,
                         "Reply" => "123456",
@@ -198,7 +198,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => 21,
                     ),
                     "Network" => array(
-                        "send" => \HUGnet\network\Packet::factory(
+                        "send" => \HUGnet\network\packets\Packet::factory(
                             array(
                                 "From" => 21,
                                 "Reply" => "123456",
@@ -230,7 +230,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-                \HUGnet\network\Packet::factory(
+                \HUGnet\network\packets\Packet::factory(
                     array(
                         "From" => 21,
                         "Reply" => "123456",
@@ -287,7 +287,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => 21,
                     ),
                     "Network" => array(
-                        "send" => \HUGnet\network\Packet::factory(
+                        "send" => \HUGnet\network\packets\Packet::factory(
                             array(
                                 "From" => 21,
                                 "Reply" => "123456",
@@ -317,7 +317,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-                \HUGnet\network\Packet::factory(
+                \HUGnet\network\packets\Packet::factory(
                     array(
                         "From" => 21,
                         "Reply" => "123456",
@@ -330,7 +330,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => 21,
                     ),
                     "Network" => array(
-                        "send" => \HUGnet\network\Packet::factory(
+                        "send" => \HUGnet\network\packets\Packet::factory(
                             array(
                                 "From" => 21,
                                 "Reply" => "123456",
@@ -368,7 +368,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "poll" => array(array()),
                     ),
                 ),
-                \HUGnet\network\Packet::factory(
+                \HUGnet\network\packets\Packet::factory(
                     array(
                         "From" => 21,
                         "Reply" => "123456",
@@ -417,7 +417,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => 21,
                     ),
                     "Network" => array(
-                        "send" => \HUGnet\network\Packet::factory(
+                        "send" => \HUGnet\network\packets\Packet::factory(
                             array(
                                 "From" => 21,
                                 "Reply" => "123456",
@@ -447,7 +447,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-                \HUGnet\network\Packet::factory(
+                \HUGnet\network\packets\Packet::factory(
                     array(
                         "From" => 21,
                         "Reply" => "123456",
@@ -460,7 +460,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => 21,
                     ),
                     "Network" => array(
-                        "send" => \HUGnet\network\Packet::factory(
+                        "send" => \HUGnet\network\packets\Packet::factory(
                             array(
                                 "From" => 21,
                                 "Reply" => "123456",
@@ -498,7 +498,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "config" => array(array()),
                     ),
                 ),
-                \HUGnet\network\Packet::factory(
+                \HUGnet\network\packets\Packet::factory(
                     array(
                         "From" => 21,
                         "Reply" => "123456",
@@ -547,7 +547,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => 21,
                     ),
                     "Network" => array(
-                        "send" => \HUGnet\network\Packet::factory(
+                        "send" => \HUGnet\network\packets\Packet::factory(
                             array(
                                 "From" => 21,
                                 "Reply" => "123456",
@@ -581,7 +581,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-                \HUGnet\network\Packet::factory(
+                \HUGnet\network\packets\Packet::factory(
                     array(
                         "From" => 21,
                         "Reply" => "123456",
@@ -594,7 +594,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => 21,
                     ),
                     "Network" => array(
-                        "send" => \HUGnet\network\Packet::factory(
+                        "send" => \HUGnet\network\packets\Packet::factory(
                             array(
                                 "From" => 21,
                                 "Reply" => "123456",
@@ -639,7 +639,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "sensorConfig" => array(array(3)),
                     ),
                 ),
-                \HUGnet\network\Packet::factory(
+                \HUGnet\network\packets\Packet::factory(
                     array(
                         "From" => 21,
                         "Reply" => "123456",
@@ -690,7 +690,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => 21,
                     ),
                     "Network" => array(
-                        "send" => \HUGnet\network\Packet::factory(
+                        "send" => \HUGnet\network\packets\Packet::factory(
                             array(
                                 "From" => 21,
                                 "Reply" => "09080706",
@@ -733,7 +733,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => 21,
                     ),
                     "Network" => array(
-                        "send" => \HUGnet\network\Packet::factory(
+                        "send" => \HUGnet\network\packets\Packet::factory(
                             array(
                                 "From" => 21,
                                 "Reply" => "123456",
@@ -756,7 +756,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => 21,
                     ),
                     "Network" => array(
-                        "send" => \HUGnet\network\Packet::factory(
+                        "send" => \HUGnet\network\packets\Packet::factory(
                             array(
                                 "From" => 21,
                                 "Reply" => "123456",
@@ -779,7 +779,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => 21,
                     ),
                     "Network" => array(
-                        "send" => \HUGnet\network\Packet::factory(
+                        "send" => \HUGnet\network\packets\Packet::factory(
                             array(
                                 "From" => 21,
                                 "Reply" => "02030405",
@@ -872,7 +872,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => 21,
                     ),
                     "Network" => array(
-                        "send" => \HUGnet\network\Packet::factory(
+                        "send" => \HUGnet\network\packets\Packet::factory(
                             array(
                                 "From" => 21,
                                 "Reply" => "1234",
@@ -908,7 +908,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => 21,
                     ),
                     "Network" => array(
-                        "send" => \HUGnet\network\Packet::factory(
+                        "send" => \HUGnet\network\packets\Packet::factory(
                             array(
                                 "From" => 21,
                                 "Reply" => null,
@@ -1010,7 +1010,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => 21,
                     ),
                     "Network" => array(
-                        "send" => \HUGnet\network\Packet::factory(
+                        "send" => \HUGnet\network\packets\Packet::factory(
                             array(
                                 "From" => 21,
                                 "Reply" => "1234",
@@ -1046,7 +1046,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => 21,
                     ),
                     "Network" => array(
-                        "send" => \HUGnet\network\Packet::factory(
+                        "send" => \HUGnet\network\packets\Packet::factory(
                             array(
                                 "From" => 21,
                                 "Reply" => null,
@@ -1148,7 +1148,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => 21,
                     ),
                     "Network" => array(
-                        "send" => \HUGnet\network\Packet::factory(
+                        "send" => \HUGnet\network\packets\Packet::factory(
                             array(
                                 "From" => 21,
                                 "Reply" => "",
@@ -1184,7 +1184,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => 21,
                     ),
                     "Network" => array(
-                        "send" => \HUGnet\network\Packet::factory(
+                        "send" => \HUGnet\network\packets\Packet::factory(
                             array(
                                 "To" => 21,
                             )
@@ -1285,7 +1285,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => 21,
                     ),
                     "Network" => array(
-                        "send" => \HUGnet\network\Packet::factory(
+                        "send" => \HUGnet\network\packets\Packet::factory(
                             array(
                                 "From" => 21,
                                 "Reply" => "",
@@ -1321,7 +1321,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => 21,
                     ),
                     "Network" => array(
-                        "send" => \HUGnet\network\Packet::factory(
+                        "send" => \HUGnet\network\packets\Packet::factory(
                             array(
                                 "To" => 21,
                             )
@@ -1421,7 +1421,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => 21,
                     ),
                     "Network" => array(
-                        "send" => \HUGnet\network\Packet::factory(
+                        "send" => \HUGnet\network\packets\Packet::factory(
                             array(
                                 "From" => 21,
                                 "Reply" => "123456",
@@ -1461,7 +1461,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => 21,
                     ),
                     "Network" => array(
-                        "send" => \HUGnet\network\Packet::factory(
+                        "send" => \HUGnet\network\packets\Packet::factory(
                             array(
                                 "From" => 21,
                                 "Reply" => "ABCDEF",
@@ -1501,7 +1501,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => 21,
                     ),
                     "Network" => array(
-                        "send" => \HUGnet\network\Packet::factory(
+                        "send" => \HUGnet\network\packets\Packet::factory(
                             array(
                                 "From" => 21,
                                 "Reply" => "123456",
@@ -1561,7 +1561,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => 21,
                     ),
                     "Network" => array(
-                        "send" => \HUGnet\network\Packet::factory(
+                        "send" => \HUGnet\network\packets\Packet::factory(
                             array(
                                 "From" => 21,
                                 "Reply" => "123456",
@@ -1601,7 +1601,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => 21,
                     ),
                     "Network" => array(
-                        "send" => \HUGnet\network\Packet::factory(
+                        "send" => \HUGnet\network\packets\Packet::factory(
                             array(
                                 "From" => 21,
                                 "Reply" => "ABCDEF",
@@ -1641,7 +1641,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => 21,
                     ),
                     "Network" => array(
-                        "send" => \HUGnet\network\Packet::factory(
+                        "send" => \HUGnet\network\packets\Packet::factory(
                             array(
                                 "From" => 21,
                                 "Reply" => "123456",
@@ -1703,19 +1703,19 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     ),
                     "Network" => array(
                         "send" => array(
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "000102030405",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "060708090A0B",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "0C0D0E0FFFFF",
@@ -1784,19 +1784,19 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     ),
                     "Network" => array(
                         "send" => array(
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "000102030405",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "060708090A0B",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "0C0D0E0FFFFE",
@@ -1865,19 +1865,19 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     ),
                     "Network" => array(
                         "send" => array(
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "000102030405",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "060708090A0C",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "0C0D0E0FFFFF",
@@ -1934,19 +1934,19 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     ),
                     "Network" => array(
                         "send" => array(
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "000102030405",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "060708090A0B",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "0C0D0E0FFFFF",
@@ -1970,19 +1970,19 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     ),
                     "Network" => array(
                         "send" => array(
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "000102030405",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "060708090A0B",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "0C0D0E0FFFFF",
@@ -2045,19 +2045,19 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     ),
                     "Network" => array(
                         "send" => array(
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "000102030405",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "060708090A0B",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "0C0D0E0FFFFF",
@@ -2126,19 +2126,19 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     ),
                     "Network" => array(
                         "send" => array(
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "000102030405",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "060708090A0B",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "0C0D0E0FFFFE",
@@ -2207,19 +2207,19 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     ),
                     "Network" => array(
                         "send" => array(
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "000102030405",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "060708090A0C",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "0C0D0E0FFFFF",
@@ -2276,19 +2276,19 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     ),
                     "Network" => array(
                         "send" => array(
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "000102030405",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "060708090A0B",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "0C0D0E0FFFFF",
@@ -2312,19 +2312,19 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     ),
                     "Network" => array(
                         "send" => array(
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "000102030405",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "060708090A0B",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "0C0D0E0FFFFF",
@@ -2391,7 +2391,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     ),
                     "Network" => array(
                         "send" => array(
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => null,
@@ -2463,7 +2463,7 @@ S9030000FC",
                     ),
                     "Network" => array(
                         "send" => array(
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "",
@@ -2546,20 +2546,20 @@ S9030000FC",
                     ),
                     "Network" => array(
                         "send" => array(
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "00000000E800392801410039201343000009"
                                     ."FFFFFF50010202020202020202",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "21FFFFFFFFFFFFFFFFFF0039201343"
@@ -2668,20 +2668,20 @@ S9030000FC",
                     ),
                     "Network" => array(
                         "send" => array(
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "00000000E800392801410039201343000009"
                                     ."FFFFFF50010202020202020202",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "FFFFFFFFFFFFFFFFFFFF0039201343"
@@ -2693,7 +2693,7 @@ S9030000FC",
                                     ."02700000020",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "270010270000002027001027000000"
@@ -2705,7 +2705,7 @@ S9030000FC",
                                     ."FFFFFFFFFFF",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "21FFFFFFFFFFFFFFFFFF0039201343"
@@ -2853,20 +2853,20 @@ S9030000FC",
                     ),
                     "Network" => array(
                         "send" => array(
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "00000000E800392801410039201343000009"
                                     ."FFFFFF50010202020202020202",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "FFFFFFFFFFFFFFFFFFFF0039201343"
@@ -2878,7 +2878,7 @@ S9030000FC",
                                     ."02700000020",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "270010270000002027001027000000"
@@ -2890,7 +2890,7 @@ S9030000FC",
                                     ."FFFFFFFFFFF",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "FFFFFFFFFFFFFFFFFFFF0039201343"
@@ -2902,7 +2902,7 @@ S9030000FC",
                                     ."02700000020",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "270010270000002027001027000000"
@@ -2914,7 +2914,7 @@ S9030000FC",
                                     ."FFFFFFFFFFF",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => null,
@@ -3086,20 +3086,20 @@ S9030000FC",
                     ),
                     "Network" => array(
                         "send" => array(
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "00000000E800392801410039201343000009"
                                     ."FFFFFF50010202020202020202",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "FFFFFFFFFFFFFFFFFFFF0039201343"
@@ -3111,7 +3111,7 @@ S9030000FC",
                                     ."02700000020",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "270010270000002027001027000000"
@@ -3123,7 +3123,7 @@ S9030000FC",
                                     ."FFFFFFFFFFF",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "FFFFFFFFFFFFFFFFFFFF0039201343"
@@ -3135,7 +3135,7 @@ S9030000FC",
                                     ."02700000020",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "270010270000002027001027000000"
@@ -3147,13 +3147,13 @@ S9030000FC",
                                     ."FFFFFFFFFFF",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "1234",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => null,
@@ -3336,20 +3336,20 @@ S9030000FC",
                     ),
                     "Network" => array(
                         "send" => array(
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "00000000E800392801410039201343000009"
                                     ."FFFFFF50010202020202020202",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "FFFFFFFFFFFFFFFFFFFF0039201343"
@@ -3361,7 +3361,7 @@ S9030000FC",
                                     ."02700000020",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "270010270000002027001027000000"
@@ -3373,7 +3373,7 @@ S9030000FC",
                                     ."FFFFFFFFFFF",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "FFFFFFFFFFFFFFFFFFFF0039201343"
@@ -3385,7 +3385,7 @@ S9030000FC",
                                     ."02700000020",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "270010270000002027001027000000"
@@ -3397,13 +3397,13 @@ S9030000FC",
                                     ."FFFFFFFFFFF",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "1234",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "",
@@ -3587,20 +3587,20 @@ S9030000FC",
                     ),
                     "Network" => array(
                         "send" => array(
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "00000000E800392801410039201343000009"
                                     ."FFFFFF50010202020202020202",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "FFFFFFFFFFFFFFFFFFFF0039201343"
@@ -3612,7 +3612,7 @@ S9030000FC",
                                     ."02700000020",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "270010270000002027001027000000"
@@ -3624,13 +3624,13 @@ S9030000FC",
                                     ."FFFFFFFFFFF",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "1234",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "",
@@ -3768,20 +3768,20 @@ S9030000FC",
                     ),
                     "Network" => array(
                         "send" => array(
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "00000000E800392801410039201343000009"
                                     ."FFFFFF50010202020202020202",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "FFFFFFFFFFFFFFFFFFFF0039201343"
@@ -3793,7 +3793,7 @@ S9030000FC",
                                     ."02700000020",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "270010270000002027001027000000"
@@ -3805,13 +3805,13 @@ S9030000FC",
                                     ."FFFFFFFFFFF",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "1234",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "",
@@ -3957,20 +3957,20 @@ S9030000FC",
                     ),
                     "Network" => array(
                         "send" => array(
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "00000000E800392801410039201343000009"
                                     ."FFFFFF50010202020202020202",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "FFFFFFFFFFFFFFFFFFFF0039201343"
@@ -3982,7 +3982,7 @@ S9030000FC",
                                     ."02700000020",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "270010270000002027001027000000"
@@ -3994,7 +3994,7 @@ S9030000FC",
                                     ."FFFFFFFFFFF",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "0039201343"
@@ -4006,7 +4006,7 @@ S9030000FC",
                                     ."0270000002027001027000000202700",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "1027000000"
@@ -4018,13 +4018,13 @@ S9030000FC",
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => "1234",
                                 )
                             ),
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => null,
@@ -4207,7 +4207,7 @@ S9030000FC",
                     ),
                     "Network" => array(
                         "send" => array(
-                            \HUGnet\network\Packet::factory(
+                            \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
                                     "Reply" => null,

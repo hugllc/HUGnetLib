@@ -36,7 +36,7 @@
 /** This is the HUGnet namespace */
 namespace HUGnet\network\physical;
 /** This is a required class */
-require_once CODE_BASE.'network/SocketNull.php';
+require_once CODE_BASE.'network/physical/SocketNull.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */

@@ -38,7 +38,7 @@ namespace HUGnet\network;
 /** This is a required class */
 require_once CODE_BASE.'network/Device.php';
 /** This is a required class */
-require_once CODE_BASE.'network/Packet.php';
+require_once CODE_BASE.'network/packets/Packet.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
@@ -101,7 +101,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Network" => array(
                         "send" => array(
-                            Packet::factory(
+                            packets\Packet::factory(
                                 array("To" => 1, "From" => 2, "Command" => 3)
                             ),
                         )
@@ -117,7 +117,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Network" => array(
                         "send" => array(
-                            Packet::factory(
+                            packets\Packet::factory(
                                 array(
                                     "To" => 1,
                                     "From" => 2,
@@ -125,7 +125,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                     "Reply" => "01",
                                 )
                             ),
-                            Packet::factory(
+                            packets\Packet::factory(
                                 array(
                                     "To" => 1,
                                     "From" => 2,
@@ -206,7 +206,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                 ),
-                Packet::factory(
+                packets\Packet::factory(
                     array(
                         "to"      => "000001",
                         "from"    => "000002",
@@ -216,7 +216,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                     array(
-                        Packet::factory(
+                        packets\Packet::factory(
                             array(
                                 "to"      => "000000",
                                 "from"      => "000001",
@@ -228,7 +228,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         array("tries" => 1, "find" => false),
                     ),
                     array(
-                        Packet::factory(
+                        packets\Packet::factory(
                             array(
                                 "to"      => "000002",
                                 "command" => "01",
@@ -247,7 +247,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                 ),
-                Packet::factory(
+                packets\Packet::factory(
                     array(
                         "to"      => "000001",
                         "from"    => "000002",
@@ -257,7 +257,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                     array(
-                        Packet::factory(
+                        packets\Packet::factory(
                             array(
                                 "to"      => "000000",
                                 "from"      => "000001",
@@ -269,7 +269,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         array("tries" => 1, "find" => false),
                     ),
                     array(
-                        Packet::factory(
+                        packets\Packet::factory(
                             array(
                                 "to"      => "000002",
                                 "command" => "01",
@@ -289,7 +289,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                 ),
-                Packet::factory(
+                packets\Packet::factory(
                     array(
                         "to"      => "000001",
                         "from"    => "000002",
@@ -299,7 +299,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                     array(
-                        Packet::factory(
+                        packets\Packet::factory(
                             array(
                                 "to"      => "000000",
                                 "from"      => "000001",
@@ -311,7 +311,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         array("tries" => 1, "find" => false),
                     ),
                     array(
-                        Packet::factory(
+                        packets\Packet::factory(
                             array(
                                 "to"      => "000002",
                                 "command" => "01",

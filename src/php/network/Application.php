@@ -249,7 +249,7 @@ final class Application
             unset($this->_queue[$qid]);
             return false;
         }
-        $packet = Packet::factory($packet);
+        $packet = packets\Packet::factory($packet);
         if ($packet->type() !== "POWERUP") {
             $packet->from($this->_from());
         }

@@ -36,7 +36,7 @@
 /** This is the HUGnet namespace */
 namespace HUGnet\network;
 /** This is a required class */
-require_once CODE_BASE.'network/Packet.php';
+require_once CODE_BASE.'network/packets/Packet.php';
 
 /**
  * Test class for HUGnetDB.
@@ -215,7 +215,7 @@ class PacketTest extends \PHPUnit_Framework_TestCase
     */
     public function testFactory($string, $expect)
     {
-        $pkt = Packet::factory($string);
+        $pkt = packets\Packet::factory($string);
         foreach ((array)$expect as $key => $value) {
             $this->assertTrue(
                 method_exists($pkt, $key), $key."() doesn't exist"
@@ -263,7 +263,7 @@ class PacketTest extends \PHPUnit_Framework_TestCase
     */
     public function testString($array, $expect)
     {
-        $pkt = Packet::factory($array);
+        $pkt = packets\Packet::factory($array);
         $this->assertSame($expect, (string)$pkt);
     }
 
@@ -344,7 +344,7 @@ class PacketTest extends \PHPUnit_Framework_TestCase
     */
     public function testIsValid($preload, $expect)
     {
-        $pkt = Packet::factory($preload);
+        $pkt = packets\Packet::factory($preload);
         $this->assertSame($expect, $pkt->isValid());
     }
     /**
@@ -419,7 +419,7 @@ class PacketTest extends \PHPUnit_Framework_TestCase
     */
     public function testData($preload, $raw, $expect, $reply)
     {
-        $pkt = Packet::factory($preload);
+        $pkt = packets\Packet::factory($preload);
         $this->assertSame($expect, $pkt->Data(null, $raw));
         $this->assertSame($reply, $pkt->Reply(null, $raw));
     }
@@ -457,7 +457,7 @@ class PacketTest extends \PHPUnit_Framework_TestCase
     */
     public function testExtra($preload, $expect)
     {
-        $pkt = Packet::factory($preload);
+        $pkt = packets\Packet::factory($preload);
         $this->assertSame($expect, $pkt->extra());
     }
     /**
@@ -488,7 +488,7 @@ class PacketTest extends \PHPUnit_Framework_TestCase
     */
     public function testConfig($preload, $config, $expect)
     {
-        $pkt = Packet::factory($preload);
+        $pkt = packets\Packet::factory($preload);
         $this->assertEquals($expect, $pkt->config($config));
     }
     /**
@@ -498,7 +498,7 @@ class PacketTest extends \PHPUnit_Framework_TestCase
     */
     public function testFactoryWithObject()
     {
-        $pkt = &Packet::factory(
+        $pkt = &packets\Packet::factory(
             array(
                 "To" => "000012",
                 "From" => "123456",
@@ -506,7 +506,7 @@ class PacketTest extends \PHPUnit_Framework_TestCase
                 "Data" => array(1,2,3,4,5),
             )
         );
-        $pkt2 = &Packet::factory($pkt);
+        $pkt2 = &packets\Packet::factory($pkt);
         $this->assertSame($pkt, $pkt2);
     }
 }

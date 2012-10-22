@@ -65,7 +65,7 @@ final class Dummy
     private function __construct(&$system)
     {
         $this->_system = &$system;
-        include_once dirname(__FILE__)."/Packet.php";
+        include_once dirname(__FILE__)."/packets/Packet.php";
     }
     /**
     * Creates the object
@@ -142,7 +142,7 @@ final class Dummy
     public function send($packet, $callback = null, $config = array())
     {
         if (is_null($callback) || $config["block"]) {
-            return Packet::factory($packet);
+            return packets\Packet::factory($packet);
         }
         return false;
     }

@@ -81,7 +81,7 @@ final class Network
     private function __construct($config)
     {
         $this->_config = array_merge($this->_defaultConfig, $config);
-        include_once dirname(__FILE__)."/Packet.php";
+        include_once dirname(__FILE__)."/packets/Packet.php";
         foreach (array_keys($this->_ifaces()) as $key) {
             $this->_read[$key] = "";
             $this->_write[$key] = "";
@@ -296,7 +296,7 @@ final class Network
         foreach ($this->_ifaces() as $key) {
             \HUGnet\System::loopcheck();
             if (isset($this->_read[$key]) && (strlen($this->_read[$key]) > 0)) {
-                $pkt = Packet::factory($this->_read[$key]);
+                $pkt = packets\Packet::factory($this->_read[$key]);
                 if ($pkt->isValid() === true) {
                     // This sets the buffer to the left over characters
                     $this->_read[$key] = $pkt->extra();
@@ -350,7 +350,7 @@ final class Network
 
             \HUGnet\VPrint::out("Opening socket ".$socket, 6);
             $class = $this->_config[$socket]["driver"];
-            @include_once dirname(__FILE__)."/".$class.".php";
+            @include_once dirname(__FILE__)."/physical/".$class.".php";
             $class = __NAMESPACE__."\\physical\\".$class;
 
             if (class_exists($class)) {
@@ -361,7 +361,7 @@ final class Network
                 return;
             }
             // Last resort include SocketNull
-            include_once dirname(__FILE__)."/SocketNull.php";
+            include_once dirname(__FILE__)."/physical/SocketNull.php";
             $this->_sockets[$socket] = physical\SocketNull::factory(
                 $socket, $this->_config[$socket]
             );

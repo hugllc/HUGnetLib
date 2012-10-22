@@ -38,7 +38,7 @@ namespace HUGnet\network;
 /** This is a required class */
 require_once CODE_BASE.'network/Application.php';
 /** This is a required class */
-require_once CODE_BASE.'network/Packet.php';
+require_once CODE_BASE.'network/packets/Packet.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
@@ -96,7 +96,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Transport" => array(
                         "receive" => array(
-                            Packet::factory(
+                            packets\Packet::factory(
                                 array(
                                     "From"    => "000001",
                                     "To"      => "000002",
@@ -115,7 +115,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                             null,
                         ),
                         "unsolicited" => array(
-                            Packet::factory(
+                            packets\Packet::factory(
                                 array(
                                     "From"    => "000003",
                                     "To"      => "000000",
@@ -158,7 +158,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                     // This should not be callable
                     3 => array(
                         "name" => "oneShot",
-                        "packet" => Packet::factory(
+                        "packet" => packets\Packet::factory(
                             array(
                                 "From"    => "000002",
                                 "To"      => "000004",
@@ -173,7 +173,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                     "Transport" => array(
                         "send" => array(
                             array(
-                                Packet::factory(
+                                packets\Packet::factory(
                                     array(
                                         "From"    => "000002",
                                         "To"      => "000001",
@@ -185,7 +185,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                                 array(),
                             ),
                             array(
-                                Packet::factory(
+                                packets\Packet::factory(
                                     array(
                                         "From"    => "000002",
                                         "To"      => "000004",
@@ -201,7 +201,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                         ),
                         "mon" => array(
                             array(
-                                Packet::factory(
+                                packets\Packet::factory(
                                     array(
                                         "From"    => "000002",
                                         "To"      => "000001",
@@ -212,7 +212,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                             array(
-                                Packet::factory(
+                                packets\Packet::factory(
                                     array(
                                         "From"    => "000003",
                                         "To"      => "000000",
@@ -222,7 +222,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                             array(
-                                Packet::factory(
+                                packets\Packet::factory(
                                     array(
                                         "From"    => "000001",
                                         "To"      => "000002",
@@ -232,7 +232,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                             array(
-                                Packet::factory(
+                                packets\Packet::factory(
                                     array(
                                         "From"    => "000002",
                                         "To"      => "000004",
@@ -264,7 +264,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                         ),
                         "bad" => array(
                             array(
-                                Packet::factory(
+                                packets\Packet::factory(
                                     array(
                                         "From"    => "000002",
                                         "To"      => "000001",
@@ -290,7 +290,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                         ),
                         "unsol" => array(
                             array(
-                                Packet::factory(
+                                packets\Packet::factory(
                                     array(
                                         "From"    => "000003",
                                         "To"      => "000000",
@@ -302,7 +302,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                         ),
                         "oneShot" => array(
                             array(
-                                Packet::factory(
+                                packets\Packet::factory(
                                     array(
                                         "From"    => "000002",
                                         "To"      => "000004",
@@ -353,14 +353,14 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                     array(
                         "name" => "packet1",
                         "packet" => array(
-                            Packet::factory(
+                            packets\Packet::factory(
                                 array(
                                     "To" => "000001",
                                     "From" => "000012",
                                     "Command" => "5C",
                                 )
                             ),
-                            Packet::factory(
+                            packets\Packet::factory(
                                 array(
                                     "To" => "000001",
                                     "From" => "000012",
@@ -394,7 +394,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                     "Transport" => array(
                         "send" => array(
                             array(
-                                Packet::factory(
+                                packets\Packet::factory(
                                     array(
                                         "To"      => "000001",
                                         "From"    => "000012",
@@ -404,7 +404,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                                 array(),
                             ),
                             array(
-                                Packet::factory(
+                                packets\Packet::factory(
                                     array(
                                         "To"      => "000002",
                                         "From"    => "000012",
@@ -414,7 +414,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                                 array(),
                             ),
                             array(
-                                Packet::factory(
+                                packets\Packet::factory(
                                     array(
                                         "To"      => "000001",
                                         "From"    => "000012",
@@ -449,7 +449,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                         ),
                         "packet1" => array(
                             array(
-                                Packet::factory(
+                                packets\Packet::factory(
                                     array(
                                         "To"      => "000001",
                                         "From"    => "000012",
@@ -458,7 +458,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                             array(
-                                Packet::factory(
+                                packets\Packet::factory(
                                     array(
                                         "To"      => "000001",
                                         "From"    => "000012",
@@ -469,7 +469,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                         ),
                         "packet2" => array(
                             array(
-                                Packet::factory(
+                                packets\Packet::factory(
                                     array(
                                         "To"      => "000002",
                                         "From"    => "000012",
@@ -548,7 +548,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                     "Transport" => array(
                         "receive" => array(
                             null,
-                            "thisIsAToken" => Packet::factory(
+                            "thisIsAToken" => packets\Packet::factory(
                                 array(
                                     "From"    => "000100",
                                     "To"      => "000200",
@@ -567,7 +567,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                     "from" => "000200",
                 ),
                 null,
-                Packet::factory(
+                packets\Packet::factory(
                     array(
                         "From"    => "000200",
                         "To"      => "000100",
@@ -575,7 +575,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                         "Data"    => "010203",
                     )
                 ),
-                Packet::factory(
+                packets\Packet::factory(
                     array(
                         "From"    => "000200",
                         "To"      => "000100",
@@ -588,7 +588,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                     "Transport" => array(
                         "send" => array(
                             array(
-                                Packet::factory(
+                                packets\Packet::factory(
                                     array(
                                         "From"    => "000200",
                                         "To"      => "000100",
@@ -620,7 +620,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                     "Transport" => array(
                         "receive" => array(
                             null,
-                            "thisIsAToken" => Packet::factory(
+                            "thisIsAToken" => packets\Packet::factory(
                                 array(
                                     "From"    => "000100",
                                     "To"      => "000200",
@@ -640,7 +640,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                     "from" => "000200",
                 ),
                 "get_class", // This will take a single arguemnt of an object
-                Packet::factory(
+                packets\Packet::factory(
                     array(
                         "From"    => "000200",
                         "To"      => "000100",
@@ -648,7 +648,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                         "Data"    => "010203",
                     )
                 ),
-                Packet::factory(
+                packets\Packet::factory(
                     array(
                         "From"    => "000200",
                         "To"      => "000100",
@@ -661,7 +661,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                     "Transport" => array(
                         "send" => array(
                             array(
-                                Packet::factory(
+                                packets\Packet::factory(
                                     array(
                                         "From"    => "000200",
                                         "To"      => "000100",
@@ -733,7 +733,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
             array("block" => 1)
         );
         $ret = $application->send(
-            Packet::factory(
+            packets\Packet::factory(
                 array(
                     "to" => "123456",
                     "command" => "55",
@@ -763,7 +763,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         );
         $application->device(array("id" => "000001"));
         $ret = $application->send(
-            Packet::factory(
+            packets\Packet::factory(
                 array(
                     "to" => "123456",
                     "command" => "55",

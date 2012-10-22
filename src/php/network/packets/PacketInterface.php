@@ -34,7 +34,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
-namespace HUGnet\network;
+namespace HUGnet\network\packets;
 /**
  * Interface for device drivers
  *

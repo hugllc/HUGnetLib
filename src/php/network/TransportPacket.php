@@ -220,7 +220,7 @@ final class TransportPacket
             $this->_find  = false;
             $this->_ident = $this->_config["ident"];
             $this->_time = $this->_time();
-            return Packet::factory(
+            return packets\Packet::factory(
                 array(
                     "To"      => $this->_packet->to(),
                     "From"    => $this->_packet->from(),
@@ -261,7 +261,7 @@ final class TransportPacket
         if (is_object($pkt) && is_a($pkt, "HUGnet\\network\\Packet")) {
             return $pkt;
         } else {
-            return Packet::factory($pkt);
+            return packets\Packet::factory($pkt);
         }
     }
     /**

@@ -40,7 +40,7 @@ require_once CODE_BASE.'network/Matcher.php';
 /** This is a required class */
 require_once CODE_BASE.'network/TransportPacket.php';
 /** This is a required class */
-require_once CODE_BASE.'network/Packet.php';
+require_once CODE_BASE.'network/packets/Packet.php';
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummyBase.php';
 
@@ -97,28 +97,28 @@ class MatcherTest extends \PHPUnit_Framework_TestCase
                 ),
                 "myFunc",
                 array(
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"      => "000002",
                             "From"    => "000001",
                             "Command" => "55",
                         )
                     ),
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"      => "000003",
                             "From"    => "000001",
                             "Command" => "55",
                         )
                     ),
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"      => "000004",
                             "From"    => "000001",
                             "Command" => "55",
                         )
                     ),
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"      => "000001",
                             "From"    => "000003",
@@ -127,7 +127,7 @@ class MatcherTest extends \PHPUnit_Framework_TestCase
                         )
                     ),
                     // before packet request packet
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"      => "000001",
                             "From"    => "000005",
@@ -136,28 +136,28 @@ class MatcherTest extends \PHPUnit_Framework_TestCase
                         )
                     ),
                     // after reply packet
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"      => "000005",
                             "From"    => "000001",
                             "Command" => "55",
                         )
                     ),
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"      => "000006",
                             "From"    => "000001",
                             "Command" => "55",
                         )
                     ),
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"      => "000007",
                             "From"    => "000001",
                             "Command" => "55",
                         )
                     ),
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"      => "000001",
                             "From"    => "000002",
@@ -168,7 +168,7 @@ class MatcherTest extends \PHPUnit_Framework_TestCase
                 ),
                 .8,
                 array(
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"      => "000001",
                             "From"    => "000006",
@@ -176,7 +176,7 @@ class MatcherTest extends \PHPUnit_Framework_TestCase
                             "Data"    => "01020304",
                         )
                     ),
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"      => "000001",
                             "From"    => "000007",
@@ -184,7 +184,7 @@ class MatcherTest extends \PHPUnit_Framework_TestCase
                             "Data"    => "01020304",
                         )
                     ),
-                    Packet::factory(
+                    packets\Packet::factory(
                         array(
                             "To"      => "000008",
                             "From"    => "000001",
@@ -196,7 +196,7 @@ class MatcherTest extends \PHPUnit_Framework_TestCase
                     "Class" => array(
                         "myFunc" => array(
                             array(
-                                Packet::factory(
+                                packets\Packet::factory(
                                     array(
                                         "To"      => "000003",
                                         "From"    => "000001",
@@ -206,7 +206,7 @@ class MatcherTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                             array(
-                                Packet::factory(
+                                packets\Packet::factory(
                                     array(
                                         "To"      => "000002",
                                         "From"    => "000001",

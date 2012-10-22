@@ -34,10 +34,9 @@
  *
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\network;
+namespace HUGnet\network\packets;
 /** This is our interface */
 require_once dirname(__FILE__)."/PacketInterface.php";
-
 /**
  * This is the packet class.
  *
@@ -73,22 +72,30 @@ require_once dirname(__FILE__)."/PacketInterface.php";
  * @SuppressWarnings(PHPMD.ShortMethodName)
  * @SuppressWarnings(PHPMD.TooManyMethods)
  */
-final class PacketADuC implements PacketInterface
+final class Packet implements PacketInterface
 {
     /** This is where in the packet this is */
-    const LENGTH = 0;
+    const COMMAND = 0;
     /** This is where in the packet this is */
-    const COMMAND = 2;
+    const TO = 2;
     /** This is where in the packet this is */
-    const ADDRESS = 4;
+    const FROM = 8;
     /** This is where in the packet this is */
-    const DATA = 12;
+    const LENGTH = 14;
+    /** This is where in the packet this is */
+    const DATA = 16;
     /** This is a preamble byte */
-    const PREAMBLE = "070E";
+    const PREAMBLE = "5A";
+    /** This is a preamble byte */
+    const PREAMBLE_BYTES = 3;
+    /** This is a preamble byte */
+    const PREAMBLE_BYTES_MIN = 2;
+    /** This is who the packet is to */
+    private $_to;
+    /** This is who the packet is from */
+    private $_from;
     /** This is the packet command */
     private $_command;
-    /** This is the address of the data operation */
-    private $_address;
     /** This is the packet data */
     private $_data;
     /** This is the packet checksum  */
@@ -108,11 +115,30 @@ final class PacketADuC implements PacketInterface
     * These will be added to by the code.  That is why they are static.
     */
     private static $_commands = array(
-        "ERASEPAGE" => 0x45,
-        "WRITE" => 0x57,
-        "VERIFY" => 0x56,
-        "PROTECT" => 0x50,
-        "RUN" => 0x52,
+        "REPLY" => 0x01,
+        "PING" => 0x02,
+        "FINDPING" => 0x03,
+        "GETCRC" => 0x06,
+        "SETCRC" => 0x07,
+        "BOOT" => 0x08,
+        "BOOTLOADER" => 0x09,
+        "SETSENSORCONFIG" => 0x4B,
+        "SENSORCONFIG" => 0x4C,
+        "SETCONFIG" => 0x5B,
+        "CONFIG" => 0x5C,
+        "SENSORREAD" => 0x55,
+        "BAD COMMAND" => 0xFF,
+        "READ_E2" => 0x0A,
+        "READ_SRAM" => 0x0B,
+        "READ_FLASH" => 0x0C,
+        "WRITE_E2" => 0x1A,
+        "WRITE_SRAM" => 0x1B,
+        "WRITE_FLASH" => 0x1C,
+        "SET_RTC" => 0x50,
+        "READ_RTC" => 0x51,
+        "POWERUP" => 0x5E,
+        "RECONFIG" => 0x5D,
+        "BOREDOM" => 0x5F,
     );
 
     /**
@@ -138,10 +164,11 @@ final class PacketADuC implements PacketInterface
     */
     public function &factory($data = array())
     {
-        if (is_a($data, "\\HUGnet\\network\\PacketADuC")) {
+        if (is_a($data, "\\HUGnet\\network\\packets\\Packet")) {
             return $data;
         }
-        return new PacketADuC($data);
+        $pkt = new Packet($data);
+        return $pkt;
     }
     /**
     * Builds the packet from a string
@@ -153,9 +180,10 @@ final class PacketADuC implements PacketInterface
     private function _fromString($string)
     {
         $string = $this->_cleanPktStr(strtoupper($string));
-        $length = (hexdec(substr($string, self::LENGTH, 2)) * 2) - 10;
         $this->command(substr($string, self::COMMAND, 2));
-        $this->address(substr($string, self::ADDRESS, 8));
+        $this->to(substr($string, self::TO, 6));
+        $this->from(substr($string, self::FROM, 6));
+        $length = hexdec(substr($string, self::LENGTH, 2)) * 2;
         $this->data(substr($string, self::DATA, $length));
         $this->_setField("_checksum", substr($string, (self::DATA + $length), 2));
         $this->_whole = strlen($string) >= (self::DATA + $length + 2);
@@ -193,13 +221,15 @@ final class PacketADuC implements PacketInterface
     */
     private function _packetStr()
     {
-        // Length (2 chars)
-        $string = $this->length();
         // Command (2 chars)
-        $string .= $this->command();
-        // To (8 chars)
-        $string .= $this->address();
-        // Data ('Length - 5' chars)
+        $string  = $this->Command();
+        // To (6 chars)
+        $string .= $this->to();
+        // From (6 chars)
+        $string .= $this->from();
+        // Length (2 chars)
+        $string .= $this->length();
+        // Data ('Length' chars)
         $string .= $this->data();
         return $string;
     }
@@ -214,10 +244,9 @@ final class PacketADuC implements PacketInterface
         $chksum = 0;
         for ($i = 0; $i < strlen($string); $i+=2) {
             $val     = hexdec(substr($string, $i, 2));
-            $chksum += $val;
-            $chksum &= 0xFF;
+            $chksum ^= $val;
         }
-        return (0 - $chksum) & 0xFF;
+        return $chksum;
     }
     /**
     * Sets and/or returns the from
@@ -261,13 +290,15 @@ final class PacketADuC implements PacketInterface
     */
     private function _setArray($field, $value)
     {
-        if (is_string($value) && (strlen($value) > 0)) {
+        if (is_string($value)) {
             // This reference is necessary, otherwise I get the following error:
             // Cannot use [] for reading
             $this->$field = array();
-            $array = &$this->$field;
-            foreach (str_split($value, 2) as $val) {
-                $array[] = hexdec($val);
+            if (strlen($value) > 0) {
+                $array = &$this->$field;
+                foreach (str_split($value, 2) as $val) {
+                    $array[] = hexdec($val);
+                }
             }
         } else if (is_array($value)) {
             $this->$field = $value;
@@ -290,8 +321,8 @@ final class PacketADuC implements PacketInterface
             return "";
         }
         // This strips off the preamble.
-        while (strtoupper(substr($pkt, 0, 4)) == self::PREAMBLE) {
-            $pkt = substr($pkt, 4);
+        while (strtoupper(substr($pkt, 0, 2)) == self::PREAMBLE) {
+            $pkt = substr($pkt, 2);
         }
         return $pkt;
     }
@@ -326,11 +357,22 @@ final class PacketADuC implements PacketInterface
     *
     * @param mixed $value The value to set this to.
     *
-    * @return string (8 chars) Returns the to value
+    * @return string (6 chars) Returns the to value
     */
-    public function address($value = null)
+    public function to($value = null)
     {
-        return sprintf("%08X", $this->_setField("_to", $value));
+        return sprintf("%06X", $this->_setField("_to", $value));
+    }
+    /**
+    * Sets and/or returns the from
+    *
+    * @param mixed $value The value to set this to.
+    *
+    * @return string Returns the value it is set to
+    */
+    public function from($value = null)
+    {
+        return sprintf("%06X", $this->_setField("_from", $value));
     }
     /**
     * Sets and/or returns the from
@@ -353,7 +395,7 @@ final class PacketADuC implements PacketInterface
     */
     public function length()
     {
-        return sprintf("%02X", count($this->_data) + 5);
+        return sprintf("%02X", count($this->_data));
     }
     /**
     * Returns the packet length
@@ -370,21 +412,18 @@ final class PacketADuC implements PacketInterface
     * @param mixed $value The value to set this to.
     * @param bool  $raw   Return the raw data as an array if true
     *
-    * @return null, true or false.  null if no return yet, true if positive ack,
-    *                       false if negative ack
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    * @return string|array Returns the data in an array if $raw is true, a string
+    *                      otherwise
     */
     public function reply($value = null, $raw = false)
     {
-        if (is_string($value)) {
-            $value = hexdec($value);
+        $this->_setArray("_reply", $value);
+        if ($raw) {
+            return $this->_reply;
+        } else if (is_null($this->_reply)) {
+            return null;
         }
-        if ($value == 0x06) {
-            $this->_reply = true;
-        } else if ($value == 0x07) {
-            $this->_reply = false;
-        }
-        return $this->_reply;
+        return $this->_toStr($this->_reply);
     }
     /**
     * Returns the packet data
@@ -409,11 +448,13 @@ final class PacketADuC implements PacketInterface
     * @param bool $min Return the minimum preamble instead of the normal one
     *
     * @return string Returns the value it is set to
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function preamble($min = false)
     {
-        return self::PREAMBLE;
+        if ($min) {
+            return str_repeat(self::PREAMBLE, self::PREAMBLE_BYTES_MIN);
+        }
+        return str_repeat(self::PREAMBLE, self::PREAMBLE_BYTES);
     }
     /**
     * Return the packet type
@@ -437,10 +478,6 @@ final class PacketADuC implements PacketInterface
     */
     public function config($config = array())
     {
-        $config["block"] = true;
-        $config["baud"]  = 38400;
-        $config["tries"] = 1;
-        $config["find"] = false;
         return $config;
     }
 }
