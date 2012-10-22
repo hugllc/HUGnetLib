@@ -81,5 +81,21 @@
             <value>mega16</value>
             <value>0</value>
         </row>
+        <row>
+            <value>5</value>
+            <value>2.2.10</value>
+            <value>abc</value>
+            <value>900150983cd24fb0d6963f7d28e17f72</value>
+            <value>def</value>
+            <value>4ed9407630eb1000c0f6b63842defa7d</value>
+            <value>0039-20-01-C</value>
+            <value>0039-21</value>
+            <value>2008-04-16 3:54:21</value>
+            <value>SREC</value>
+            <value>8</value>
+            <value>v1.2.3</value>
+            <value>mega16</value>
+            <value>1</value>
+        </row>
     </table>
 </dataset>
