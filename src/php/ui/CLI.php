@@ -67,6 +67,7 @@ class CLI
     */
     protected function __construct(&$config)
     {
+        date_default_timezone_set('UTC');
         $this->setConfig($config);
     }
 
