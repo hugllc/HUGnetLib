@@ -193,7 +193,7 @@ class DriverTestClass extends Device
     */
     public function ready(&$device)
     {
-        return parent::ready(&$device);
+        return parent::ready($device);
     }
 }
 ?>
