@@ -244,16 +244,23 @@ class FirmwareTable extends HUGnetDBTable
         $ret = $this->selectInto($where, $data);
         // This makes sure we are getting a good one if there is one, instead
         // of a bad one.
-        while (($this->RelStatus == self::BAD) || !$this->checkHash()) {
-            $ret = $this->nextInto();
-            // This is so when we come to the end we exit the loop
-            if ($ret === false) {
-                $this->clearData();
-                break;
+        $highest = array("Version" => "0.0.0");
+        $found = false;
+        do {
+            if (($this->RelStatus == self::BAD) || !$this->checkHash()) {
+                continue;
             }
-        }
+            if ($this->compareVersion($this->Version, $highest["Version"]) > 0) {
+                $found = true;
+                $highest = $this->toArray();
+            }
+        } while ($ret = $this->nextInto());
         $this->dbDriver()->reset();
-        return $ret;
+        $this->clearData();
+        if ($found) {
+            $this->fromArray($highest);
+        }
+        return $found;
     }
     /**
     * Runs a function using the correct driver for the endpoint

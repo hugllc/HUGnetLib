@@ -151,8 +151,8 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
                 array(
                     "group" => "default",
                     "filename" => "",
-                    "id" => "3",
-                    "Version" => "2.2.3",
+                    "id" => "5",
+                    "Version" => "2.2.10",
                     "Code" => "abc",
                     "CodeHash" => (string)md5("abc"),
                     "Data" => "def",
@@ -179,8 +179,8 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
                 array(
                     "group" => "default",
                     "filename" => "",
-                    "id" => "3",
-                    "Version" => "2.2.3",
+                    "id" => "5",
+                    "Version" => "2.2.10",
                     "Code" => "abc",
                     "CodeHash" => (string)md5("abc"),
                     "Data" => "def",
