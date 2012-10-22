@@ -147,7 +147,7 @@ abstract class Periodic
                 "\\HUGnet\\processes\\updater\\periodic"
             );
             if (class_exists($class)) {
-                $plugins[$class] = &$class::factory(&$gui);
+                $plugins[$class] = &$class::factory($gui);
             }
 
         }

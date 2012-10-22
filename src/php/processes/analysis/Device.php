@@ -153,7 +153,7 @@ abstract class Device
                 "\\HUGnet\\processes\\analysis\\device"
             );
             if (class_exists($class)) {
-                $plugins[$class] = &$class::factory(&$gui);
+                $plugins[$class] = &$class::factory($gui);
             }
         }
         return (array)$plugins;

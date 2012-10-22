@@ -83,24 +83,24 @@ class Temperature extends \HUGnet\units\Driver
     public function convert(&$data, $to, $from, $type)
     {
         if (($to == 'K') && ($from == '&#176;F')) {
-            $this->fToC(&$data, $type);
-            $this->cToK(&$data, $type);
+            $this->fToC($data, $type);
+            $this->cToK($data, $type);
             $ret = true;
         } else if (($to == 'K') && ($from == '&#176;C')) {
-            $this->cToK(&$data, $type);
+            $this->cToK($data, $type);
             $ret = true;
         } else if (($to == '&#176;F') && ($from == 'K')) {
-            $this->kToC(&$data, $type);
-            $this->cToF(&$data, $type);
+            $this->kToC($data, $type);
+            $this->cToF($data, $type);
             $ret = true;
         } else if (($to == '&#176;F') && ($from == '&#176;C')) {
-            $this->cToF(&$data, $type);
+            $this->cToF($data, $type);
             $ret = true;
         } else if (($to == '&#176;C') && ($from == 'K')) {
-            $this->kToC(&$data, $type);
+            $this->kToC($data, $type);
             $ret = true;
         } else if (($to == '&#176;C') && ($from == '&#176;F')) {
-            $this->fToC(&$data, $type);
+            $this->fToC($data, $type);
             $ret = true;
         } else {
             return parent::convert($data, $to, $from, $type);
