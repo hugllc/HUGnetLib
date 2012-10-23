@@ -249,8 +249,8 @@ class DriverTest extends \PHPUnit_Extensions_Database_TestCase
     /**
     * Tests for verbosity
     *
-    * @param int $verbose the verbosity level to use
-    * @param int $expect  The expected return
+    * @param int $driver The driver to use
+    * @param int $expect The expected return
     *
     * @dataProvider dataFactory
     *
@@ -542,16 +542,7 @@ class DriverTest extends \PHPUnit_Extensions_Database_TestCase
                 ),
                 "CREATE UNIQUE INDEX `IndexName` ON `myTable` "
                 ."(`id`, `value`)",
-            ),/*
-            array(
-                array(
-                    "Name" => "IndexName",
-                    "Unique" => true,
-                    "Columns" => array("id", "value,15"),
-                ),
-                "CREATE UNIQUE INDEX `IndexName` ON `myTable` "
-                ."(`id`, `value` (15))",
-            ),*/
+            ),
         );
     }
     /**

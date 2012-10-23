@@ -711,14 +711,14 @@ class ADuCInputTable
     {
         $gain = 1;
         switch((int)$this->_params("process")) {
-            case 1:
-                $gain *= 128;
-                break;
-            case 2:
-                $gain /= 128;
-                break;
-            default:
-                /* Do nothing */
+        case 1:
+            $gain *= 128;
+            break;
+        case 2:
+            $gain /= 128;
+            break;
+        default:
+            /* Do nothing */
         }
         if ($channel == 1) {
             $gain *= pow(2, $this->_params("ADC1PGA"));

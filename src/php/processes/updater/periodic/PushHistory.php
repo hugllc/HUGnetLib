@@ -150,7 +150,8 @@ class PushHistory extends \HUGnet\processes\updater\Periodic
                             );
                             $this->_lastPush[$class] = $now;
                             $this->ui()->out(
-                                "LastPush for $class set to ".date("Y-m-d H:i:s", $now)
+                                "LastPush for $class set to "
+                                .date("Y-m-d H:i:s", $now)
                             );
                         }
                         if (!is_array($ret) || (count($ret) < count($records))) {

@@ -321,7 +321,8 @@ class FirmwareTable extends HUGnetDBTable
     * This function outputs this firmware into a file that can be stored on
     * a web site.
     *
-    * @param string $path Where to store the file
+    * @param string $path      Where to store the file
+    * @param string &$filename The filename to use.  Gets set to the filename used
     *
     * @return bool True on success, false on failure
     */

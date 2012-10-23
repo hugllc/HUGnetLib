@@ -85,9 +85,9 @@ class Connection  implements \ConnectionManager
     private $_driver = null;
 
     /**
-    * Disconnects from the database
+    * Creates the object
     *
-    * @param array $servers The servers to use
+    * @param object &$system The system object to use
     */
     private function __construct(&$system)
     {
@@ -121,7 +121,7 @@ class Connection  implements \ConnectionManager
     /**
     * This function creates the system.
     *
-    * @param object &$gui The user interface to use
+    * @param object &$system The system object to use
     *
     * @return null
     */
@@ -132,7 +132,7 @@ class Connection  implements \ConnectionManager
     }
 
     /**
-    * Disconnects from the database
+    * Destroys the object
     *
     */
     public function __destruct()

@@ -737,7 +737,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
             $group = "default";
         }
         $this->assertSame($expect, $ret);
-        $check = $this->readAttribute($obj, _pdo);
+        $check = $this->readAttribute($obj, "_pdo");
         if ($ret) {
             $this->assertTrue(is_object($check[$group]), "_pdo not found");
         } else {

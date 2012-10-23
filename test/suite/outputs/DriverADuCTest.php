@@ -457,8 +457,8 @@ class DriverADuCTest extends drivers\DriverTestBase
     * @param int    $offset   The integer to feed to the function
     * @param int    $initchan The channel to initialize the object to
     * @param float  $deltaT   The time delta in seconds between this record
-    * @param array  $prev    The previous reading
-    * @param array  $data    The data from the other sensors that were crunched
+    * @param array  $prev     The previous reading
+    * @param array  $data     The data from the other sensors that were crunched
     * @param string $string   The setup string to test
     * @param array  $expect   The expected return
     *
