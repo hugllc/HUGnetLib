@@ -97,9 +97,6 @@ class DriverTest extends \PHPUnit_Extensions_Database_TestCase
         $this->system = new \HUGnet\DummySystem("System");
         $this->system->resetMock($this->config);
         $this->connect = Connection::factory($this->system);
-        //$this->myConfig = &ConfigContainer::singleton();
-        //$this->myConfig->forceConfig($config);
-
         $this->pdo = &$this->connect->getPDO("default");
         $this->pdo->query("DROP TABLE IF EXISTS `myTable`");
         $this->pdo->query(

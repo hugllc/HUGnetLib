@@ -156,7 +156,7 @@ abstract class Driver implements \HUGnetDBDriverInterface
     }
 
     /**
-    * This gets a new \PDO object
+    * This gets a new PDO object
     *
     * @return null
     */
@@ -182,7 +182,16 @@ abstract class Driver implements \HUGnetDBDriverInterface
         }
         $this->pdo->setAttribute(\PDO::ATTR_STRINGIFY_FETCHES, false);
     }
-
+    /**
+    * This gets a new PDO object
+    *
+    * @return null
+    */
+    protected function disconnect()
+    {
+        unset($this->pdo);
+        $this->_connect->disconnect($this->myTable->get("group"));
+    }
     /**
     *  Adds a field to the devices table for cache information
     *

@@ -1,6 +1,6 @@
 <?php
 /**
- * Classes for dealing with devices
+ * Sensor driver for light sensors.
  *
  * PHP Version 5
  *
@@ -26,7 +26,7 @@
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage System
+ * @subpackage PluginsDatabase
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -34,66 +34,95 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
-/** This is the HUGnet namespace */
-namespace HUGnet;
+namespace HUGnet\db\drivers;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
-/** This is our base class */
-require_once dirname(__FILE__)."/../base/SystemTableBase.php";
-
 /**
- * This class controls all error messages and exceptions
+ * This class implements photo sensors.
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage System
+ * @subpackage PluginsDatabase
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
- * @since      0.9.7
  */
-class Error extends SystemTableBase
+class Sqlite extends \HUGnet\db\Driver
 {
-    /** @var notice level severity */
-    const SEVERITY_NOTICE = 1;
-    /** @var warning level severity */
-    const SEVERITY_WARNING = 2;
-    /** @var error level severity */
-    const SEVERITY_ERROR = 4;
-    /** @var critical level severity */
-    const SEVERITY_CRITICAL = 8;
-    /** @var notice level severity */
-    const EXCEPTION_OBJ_NOT_CONFIG = -99;
+
     /**
-    * Logs an error in the database
-    *
-    * @param mixed  $errno    The error number.  Could be a string or number
-    * @param string $errmsg   The error message
-    * @param string $severity The severity of the message
-    * @param string $method   Should be filled with __METHOD__
-    * @param string $class    The classs calling the error
+    * Gets columns from a SQLite server
     *
     * @return null
     */
-    public function log($errno, $errmsg, $severity, $method, $class)
+    public function columns()
     {
-        $this->table()->fromAny(
-            array(
-                "class"    => $class,
-                "method"   => $method,
-                "errno"    => $errno,
-                "error"    => $errmsg,
-                "Date"     => $this->system()->time(),
-                "Severity" => $severity,
-            )
-        );
-        return $this->table()->insertRow(true);
+        $columns = $this->query("PRAGMA table_info(".$this->table().")");
+        $cols = array();
+        if (is_array($columns)) {
+            foreach ($columns as $col) {
+                $cols[$col["name"]] = array(
+                    "Name" => $col["name"],
+                    "Type" => $col["type"],
+                    "Default" => $col["dflt_value"],
+                    "Null" => !(bool)$col["notnull"],
+                );
+            }
+        }
+        return (array)$cols;
+    }
+    /**
+    * Checks the database table, repairs and optimizes it
+    *
+    * @param bool $force Force the repair
+    *
+    * @return mixed
+    *
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function check($force = false)
+    {
+        return true;
+    }
+    /**
+    * Locks the table
+    *
+    * @return mixed
+    */
+    public function lock()
+    {
+        return true;
+    }
+    /**
+    * Unlocks the table
+    *
+    * @return mixed
+    */
+    public function unlock()
+    {
+        return true;
+    }
+    /**
+    * Get the names of all the tables in the current database
+    *
+    * @return array of table names
+    */
+    public function tables()
+    {
+        $ret = $this->query("SELECT * FROM SQLITE_MASTER");
+        $return = array();
+        foreach ((array)$ret as $t) {
+            if (strtolower(substr($t["name"], 0, 7)) === "sqlite_") {
+                continue;
+            }
+            $return[$t["name"]] = $t["name"];
+        }
+        return $return;
     }
 
 }
-
 
 ?>
