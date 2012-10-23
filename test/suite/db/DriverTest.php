@@ -63,6 +63,16 @@ class DriverTest extends \PHPUnit_Extensions_Database_TestCase
 {
     /** @var object This is our database object */
     protected $pdo;
+    /** @var array Default config */
+    protected $config;
+    /** @var object System Class  */
+    protected $system;
+    /** @var object Table Class  */
+    protected $table;
+    /** @var object Object under test  */
+    protected $o;
+    /** @var boolean This will cause some tests to be skipped  */
+    protected $skipPDOTests = true;
     /**
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
