@@ -96,8 +96,29 @@ abstract class Driver implements \HUGnetDBDriverInterface
     * @param object &$table   The table object
     * @param object &$connect The connection manager
     */
-    public function __construct(&$system, &$table, &$connect = null)
+    private function __construct(&$system, &$table, &$connect = null)
     {
+        $this->_system = &$system;
+        $this->_connect = $connect;
+        $this->myTable = &$table;
+        // Connect to the database
+        $this->connect();
+        $this->dataColumns();
+    }
+    /**
+    * Create the object
+    *
+    * @param object &$system  The system object
+    * @param object &$table   The table object
+    * @param object &$connect The connection manager
+    * @param string $driver   The driver to use.  The right one is found if this
+    *                         is left null.
+    *
+    * @return object The driver object
+    */
+    public function &factory(
+        &$system, &$table, &$connect = null, $driver=null
+    ) {
         \HUGnet\System::exception(
             get_class($this)." needs to be passed a system object",
             "InvalidArgument",
@@ -108,16 +129,23 @@ abstract class Driver implements \HUGnetDBDriverInterface
             "InvalidArgument",
             !is_object($table)
         );
-        $this->_system = &$system;
-        if (is_a($connect, ConnectionManager)) {
-            $this->_connect = $connect;
-        } else {
-            $this->_connect = &Connection::factory($system);
+        if (!is_a($connect, ConnectionManager)) {
+            $connect = &Connection::factory($system);
         }
-        $this->myTable = &$table;
-        // Connect to the database
-        $this->connect();
-        $this->dataColumns();
+        $group = $table->get("group");
+        $connect->connect();
+        if (!is_string($driver)) {
+            $driver = $connect->driver($group);
+        }
+        $driver = ucfirst($driver);
+        $class  = "\\HUGnet\\db\\drivers\\$driver";
+        @include_once(dirname(__FILE__)."/drivers/".$driver.".php");
+        if (!class_exists($class)) {
+            @include_once(dirname(__FILE__)."/drivers/Sqlite.php");
+            $class = "\\HUGnet\\db\\drivers\\Sqlite";
+        }
+        $obj = new $class($system, $table, $connect);
+        return $obj;
     }
     /**
     * Register this database object

@@ -154,6 +154,22 @@ class Connection  implements \ConnectionManager
         return is_object($this->_pdo[$group])
             && (is_a($this->_pdo[$group], "PDO"));
     }
+    /**
+    * Checks to see if we are connected to a database
+    *
+    * @param string $group The group to check
+    *
+    * @return object PDO object, null on failure
+    */
+    public function driver($group = "default")
+    {
+        $this->connect();
+        $ret = strtolower($this->_servers[$this->_server[$group]]["driver"]);
+        if (empty($ret)) {
+            $ret = "sqlite";
+        }
+        return $ret;
+    }
 
     /**
     * Connects to a database group

@@ -270,6 +270,172 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
+    * Data provider for testCreatePDO
+    *
+    * @return array
+    */
+    public static function dataDriver()
+    {
+        return array(
+            array(
+                array(
+                    "System" => array(
+                        "get" => array(
+                            "servers" => array(),
+                        ),
+                    ),
+                ),
+                null,
+                "sqlite"
+            ),
+            array(
+                array(
+                    "System" => array(
+                        "get" => array(
+                            "servers" => array(
+                                array(
+                                    "driver" => "sqlite",
+                                    "file" => ":memory:"
+                               ),
+                           ),
+                        ),
+                    ),
+                ),
+                null,
+                "sqlite",
+            ),
+            array(
+                array(
+                    "System" => array(
+                        "get" => array(
+                            "servers" => array(
+                                array(
+                                    "driver" => "badPDODriver",
+                                    "file" => ":memory:"
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                null,
+                "sqlite"
+            ),
+            array(
+                array(
+                    "System" => array(
+                        "get" => array(
+                            "servers" => array(
+                                array(
+                                    "driver" => "mysql",
+                                    "user" => "NotAGoodUserNameToUse",
+                                    "password" => "Secret Password",
+                                    "db" => "MyNewDb",
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                null,
+                "sqlite"
+            ),
+            // Non default group name with group in call unset
+            array(
+                array(
+                    "System" => array(
+                        "get" => array(
+                            "servers" => array(
+                                array(
+                                    "group" => "somegroup",
+                                    "driver" => "mysql",
+                                    "user" => "NotAGoodUserNameToUse",
+                                    "password" => "Secret Password",
+                                    "db" => "MyNewDb",
+                                ),
+                                array("driver" => "sqlite", "file" => ":memory:"),
+                            ),
+                        ),
+                    ),
+                ),
+                null,
+                "sqlite"
+            ),
+            // Non default group name with group in call
+            array(
+                array(
+                    "System" => array(
+                        "get" => array(
+                            "servers" => array(
+                                array(
+                                    "group" => "somegroup",
+                                    "driver" => "mysql",
+                                    "user" => "NotAGoodUserNameToUse",
+                                    "password" => "Secret Password",
+                                    "db" => "MyNewDb",
+                                ),
+                                array(
+                                    "group" => "somegroup",
+                                    "driver" => "sqlite",
+                                    "file" => ":memory:"
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                "somegroup",
+                "sqlite"
+            ),
+            // Non default group name with group in call
+            array(
+                array(
+                    "System" => array(
+                        "get" => array(
+                            "servers" => array(
+                                array(
+                                    "group" => "somegroup",
+                                    "driver" => "mysql",
+                                    "user" => "NotAGoodUserNameToUse",
+                                    "password" => "Secret Password",
+                                    "db" => "MyNewDb",
+                                ),
+                                array(
+                                    "driver" => "sqlite",
+                                    "file" => ":memory:"
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                "somegroup",
+                "sqlite"
+            ),
+        );
+    }
+    /**
+    * Tests to make sure this function fails if
+    * someone tries to make a cache from a memory
+    * sqlite instance.
+    *
+    * @param string $preload The configuration to use
+    * @param string $group   The group to check
+    * @param mixed  $expect  The expected value.  The expected driver
+    *
+    * @return null
+    *
+    * @dataProvider dataDriver()
+    */
+    public function testDriver($preload, $group, $expect)
+    {
+        $system = new \HUGnet\DummySystem("System");
+        $system->resetMock($preload);
+        $obj = Connection::factory($system);
+        if (is_null($group)) {
+            $driver = $obj->driver();
+        } else {
+            $driver = $obj->driver($group);
+        }
+        $this->assertSame($expect, $driver);
+    }
+    /**
     * Data provider for testGroup
     *
     * @return array
