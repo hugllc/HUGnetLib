@@ -129,7 +129,7 @@ class Mysql extends \HUGnet\db\Driver
             $this->query .= " NOT NULL";
         }
         if (!is_null($column["Default"])) {
-            $this->query .= " DEFAULT ".$this->pdo->quote($column["Default"]);
+            $this->query .= " DEFAULT ".$this->pdo()->quote($column["Default"]);
         }
     }
     /**

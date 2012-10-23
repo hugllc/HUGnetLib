@@ -154,7 +154,16 @@ abstract class Driver implements \HUGnetDBDriverInterface
     {
         $this->reset();
     }
-
+    /**
+    * This gets a new PDO object
+    *
+    * @return null
+    */
+    protected function &pdo()
+    {
+        $group = $this->myTable->get("group");
+        return $this->_connect->getPDO($group);
+    }
     /**
     * This gets a new PDO object
     *
@@ -163,24 +172,22 @@ abstract class Driver implements \HUGnetDBDriverInterface
     protected function connect()
     {
         $group = $this->myTable->get("group");
-        $this->pdo = null;
-        $this->pdo = &$this->_connect->getPDO($group);
         \HUGnet\System::exception(
             "No available database connection available in group '".$group
             ."'.  Check your database configuration.  Available php drivers: "
             .implode(", ", \PDO::getAvailableDrivers()),
             "PDOException",
-            !is_a($this->pdo, "\PDO")
+            !is_a($this->pdo(), "\PDO")
         );
         $verbose = $this->_system->get("verbose");
         if ($verbose > 5) {
-            $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+            $this->pdo()->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         } else if ($verbose > 1) {
-            $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_WARNING);
+            $this->pdo()->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_WARNING);
         } else {
-            $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_SILENT);
+            $this->pdo()->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_SILENT);
         }
-        $this->pdo->setAttribute(\PDO::ATTR_STRINGIFY_FETCHES, false);
+        $this->pdo()->setAttribute(\PDO::ATTR_STRINGIFY_FETCHES, false);
     }
     /**
     * This gets a new PDO object
@@ -189,7 +196,6 @@ abstract class Driver implements \HUGnetDBDriverInterface
     */
     protected function disconnect()
     {
-        unset($this->pdo);
         $this->_connect->disconnect($this->myTable->get("group"));
     }
     /**
@@ -275,7 +281,7 @@ abstract class Driver implements \HUGnetDBDriverInterface
             $this->query .= " NOT NULL";
         }
         if (!is_null($column["Default"])) {
-            $this->query .= " DEFAULT ".$this->pdo->quote($column["Default"]);
+            $this->query .= " DEFAULT ".$this->pdo()->quote($column["Default"]);
         }
     }
     /**
@@ -335,8 +341,8 @@ abstract class Driver implements \HUGnetDBDriverInterface
     */
     public function getAttribute($attrib)
     {
-        if (is_object($this->pdo)) {
-            $ret = $this->pdo->getAttribute($attrib);
+        if (is_object($this->pdo())) {
+            $ret = $this->pdo()->getAttribute($attrib);
         }
         return $ret;
     }
@@ -883,10 +889,10 @@ abstract class Driver implements \HUGnetDBDriverInterface
         if (empty($this->query)) {
             return false;
         }
-        $this->pdoStatement = $this->pdo->prepare($this->query);
+        $this->pdoStatement = $this->pdo()->prepare($this->query);
         if ($this->pdoStatement === false) {
             $this->errorHandler(
-                $this->pdo->errorInfo(),
+                $this->pdo()->errorInfo(),
                 __METHOD__,
                 1 //\ErrorTable::SEVERITY_WARNING
             );
@@ -1006,7 +1012,7 @@ abstract class Driver implements \HUGnetDBDriverInterface
     */
     public function query($query = "", $data = array())
     {
-        $pdo = $this->pdo->prepare($query);
+        $pdo = $this->pdo()->prepare($query);
 
         $res = false;
         if (is_object($pdo)) {
@@ -1032,7 +1038,7 @@ abstract class Driver implements \HUGnetDBDriverInterface
             }
             $pdo->closeCursor();
         } else {
-            $error = $this->pdo->errorInfo();
+            $error = $this->pdo()->errorInfo();
         }
         // Set the errors if there are any and we are not on table 'errors'
         if (is_array($error)) {

@@ -481,7 +481,7 @@ class DriverTest extends \PHPUnit_Extensions_Database_TestCase
     {
         $this->pdo->query("DROP TABLE `myTable`");
         $this->o->CreateTable($columns);
-        $this->assertAttributeSame($expect, "query", $this->o);
+        $this->assertAttributeSame($expect, "query", $this->o, "Query is wrong");
         $stmt = $this->pdo->query("PRAGMA table_info(".$this->table->sqlTable.")");
         $cols = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         // Different versions of sqlite return different notnull values.
@@ -490,7 +490,7 @@ class DriverTest extends \PHPUnit_Extensions_Database_TestCase
                 $cols[$key]["notnull"] = "1";
             }
         }
-        $this->assertSame($table, $cols);
+        $this->assertSame($table, $cols, "Columns are wrong");
     }
     /**
     * test
@@ -505,7 +505,7 @@ class DriverTest extends \PHPUnit_Extensions_Database_TestCase
     public function testCreateTableExists($columns, $expect)
     {
         $this->o->CreateTable($columns);
-        $this->assertAttributeSame($expect, "query", $this->o);
+        $this->assertAttributeSame("", "query", $this->o);
     }
 
     /**
@@ -1966,7 +1966,7 @@ class HUGnetDBDriverTestStub extends \HUGnet\db\Driver
         &$system, &$table, &$connect = null, $driver=null
     ) {
         $obj = parent::factory($system, $table, $connect, $driver);
-        $obj->qpdo =& $obj->pdo;
+        $obj->qpdo =& $obj->pdo();
         return $obj;
     }
     /**
@@ -1976,9 +1976,7 @@ class HUGnetDBDriverTestStub extends \HUGnet\db\Driver
     */
     public function columns()
     {
-        foreach ((array)$this->columns as $col) {
-            $this->columns[$col['name']] = $col['type'];
-        }
+        return $this->query("PRAGMA table_info(".$this->table().")");
     }
     /**
     * This gets a new PDO object
