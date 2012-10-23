@@ -808,7 +808,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
         $obj = ADuCInputTable::factory($sensor, $preload);
         $params = (array)$obj->fullArray();
         $return = array();
-        foreach($params as $key => $value) {
+        foreach ($params as $key => $value) {
             $return[] = array(
                 $key, $value
             );

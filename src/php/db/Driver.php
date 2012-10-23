@@ -129,7 +129,7 @@ abstract class Driver implements \HUGnetDBDriverInterface
             "InvalidArgument",
             !is_object($table)
         );
-        if (!is_a($connect, ConnectionManager)) {
+        if (!is_a($connect, "ConnectionManager")) {
             $connect = &Connection::factory($system);
         }
         $group = $table->get("group");
@@ -139,9 +139,9 @@ abstract class Driver implements \HUGnetDBDriverInterface
         }
         $driver = ucfirst($driver);
         $class  = "\\HUGnet\\db\\drivers\\$driver";
-        @include_once(dirname(__FILE__)."/drivers/".$driver.".php");
+        @include_once dirname(__FILE__)."/drivers/".$driver.".php";
         if (!class_exists($class)) {
-            @include_once(dirname(__FILE__)."/drivers/Sqlite.php");
+            @include_once dirname(__FILE__)."/drivers/Sqlite.php";
             $class = "\\HUGnet\\db\\drivers\\Sqlite";
         }
         $obj = new $class($system, $table, $connect);
@@ -967,7 +967,7 @@ abstract class Driver implements \HUGnetDBDriverInterface
     protected function errorHandler($errorInfo, $method, $severity)
     {
         if ($this->myTable->sqlTable != "errors") {
-        /*
+            /*
             $this->logError(
                 $errorInfo[0],
                 $this->myTable->get("group")." (".$this->myTable->sqlTable."): "
