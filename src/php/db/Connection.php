@@ -35,6 +35,8 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 namespace HUGnet\db;
+/** This keeps this file from being included unless HUGnetSystem.php is included */
+defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is for the base class */
 require_once dirname(__FILE__)."/../interfaces/ConnectionManager.php";
 
