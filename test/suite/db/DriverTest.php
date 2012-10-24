@@ -1605,7 +1605,7 @@ class DriverTest extends \PHPUnit_Extensions_Database_TestCase
         $index = 0;
         foreach ((array)$expect as $e) {
             $table = $this->table->retrieve();
-            $this->assertSame($e, $table["Table"]["factory"][$index++][0]);
+            $this->assertSame($e, $table["Table"]["factory"][$index++][1]);
         }
         //$this->assertSame($expect, $table["Table"]["factory"][0]);
     }

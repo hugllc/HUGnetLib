@@ -716,7 +716,7 @@ abstract class Driver implements \HUGnetDBDriverInterface
             do {
                 $res = &$this->pdoStatement->fetch(\PDO::FETCH_ASSOC);
                 if (is_array($res)) {
-                    $ret[] = &$this->myTable->factory($res);
+                    $ret[] = &$this->myTable->factory($this->_system, $res);
                 }
             } while ($res !== false);
         } else {
