@@ -147,6 +147,11 @@ abstract class Table extends \HUGnet\base\Container
     */
     protected function __construct(&$system, $data="", &$connect = null)
     {
+        \HUGnet\System::exception(
+            get_class($this)." needs to be passed a system object",
+            "InvalidArgument",
+            !is_object($system)
+        );
         $this->setupColsDefault();
         parent::__construct($system, $data);
         $this->clearData();
@@ -164,16 +169,36 @@ abstract class Table extends \HUGnet\base\Container
     *
     * @return object A reference to a table object
     */
-    public function &factory(
-        &$system, $data = array(), $class = "Generic", &$connect = null
+    static public function &factory(
+        &$system, $data = array(), $class = "Generic", &$connect = null,
+        $extra1 = null, $extra2 = null
     ) {
-        @include dirname(__FILE__)."/tables/".$class.".php";
-        $class = "HUGnet\\db\\tables\\".$class;
-        if (!class_exists($class)) {
-            //$class = "HUGnet\\db\\tables\\Generic";
-            $class = "HUGnet\\db\\tables\\HUGnetDBTableTestStub";
+        if (file_exists(dirname(__FILE__)."/tables/".$class.".php")) {
+            include_once dirname(__FILE__)."/tables/".$class.".php";
         }
-        return new $class($system, $data, $connect);
+        if (substr($class, 0, 17) != "HUGnet\\db\\tables\\") {
+            $class = "HUGnet\\db\\tables\\".$class;
+        }
+        if (!class_exists($class)) {
+            include_once dirname(__FILE__)."/tables/Generic.php";
+            $class = "HUGnet\\db\\tables\\Generic";
+        }
+        return new $class($system, $data, $connect, $extra1, $extra2);
+    }
+    /**
+    * This function creates other tables that are identical to this one, except
+    * for the data given.
+    *
+    * @param mixed  $data This is an array or string to create the object from
+    *
+    * @return object A reference to a table object
+    */
+    public function &duplicate($data)
+    {
+        $obj = clone $this;
+        $obj->clearData();
+        $obj->fromAny($data);
+        return $obj;
     }
     /**
     * This function returns a reference to the database driver.

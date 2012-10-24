@@ -129,7 +129,7 @@ abstract class Container
     *
     * @return null
     */
-    abstract public function &factory(&$system, $data = array());
+    abstract static public function &factory(&$system, $data = array());
     /**
     * Overload the set attribute
     *

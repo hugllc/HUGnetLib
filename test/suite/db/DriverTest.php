@@ -37,6 +37,8 @@ namespace HUGnet\db;
 /** This is a required class */
 require_once CODE_BASE.'db/Driver.php';
 /** This is a required class */
+require_once CODE_BASE.'db/Table.php';
+/** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
@@ -1602,10 +1604,9 @@ class DriverTest extends \PHPUnit_Extensions_Database_TestCase
         $ret = array();
         $res = $this->o->fetchAll();
         $table = $this->table->retrieve();
-        $index = 0;
-        foreach ((array)$expect as $e) {
+        foreach ((array)$expect as $key => $e) {
             $table = $this->table->retrieve();
-            $this->assertSame($e, $table["Table"]["factory"][$index++][1]);
+            $this->assertSame($e, $table["Table"]["duplicate"][$key][0]);
         }
         //$this->assertSame($expect, $table["Table"]["factory"][0]);
     }
