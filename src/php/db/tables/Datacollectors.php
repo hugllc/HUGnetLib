@@ -191,11 +191,11 @@ class DataCollectors extends \HUGnet\db\Table
     */
     public function fromDevice(&$dev)
     {
-        $this->uuid = $dev->get("DeviceName");
-        $this->GatewayKey = $dev->get("GatewayKey");
-        $this->ip = $dev->get("DeviceLocation");
-        $this->SetupString = $dev->encode();
-        $this->Config = json_encode($dev->system()->config());
+        $this->set("uuid", $dev->get("DeviceName"));
+        $this->set("GatewayKey", $dev->get("GatewayKey"));
+        $this->set("ip", $dev->get("DeviceLocation"));
+        $this->set("SetupString", $dev->encode());
+        $this->set("Config", json_encode($dev->system()->config()));
     }
     /**
     * Creates the object from a string or array
