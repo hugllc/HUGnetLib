@@ -1287,6 +1287,21 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
                 ),
                 "HUGnet\\db\\tables\\HUGnetDBTableTestStub",
             ),
+            array(
+                array(
+                    "fluff" => "more",
+                    "other" => "thing",
+                    "id" => 7,
+                    "name" => "here",
+                    "value" => 35.0,
+                ),
+                "ThisIsNotAValidTableName",
+                array(
+                    "group" => "default",
+                    "id" => 7,
+                ),
+                "HUGnet\\db\\tables\\Generic",
+            ),
         );
     }
     /**
@@ -1312,6 +1327,101 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
             $obj
         );
         $this->assertSame($eTable, get_class($obj));
+    }
+    /**
+    * data provider for testFactory
+    *
+    * @return array
+    */
+    public static function dataDuplicate()
+    {
+        return array(
+            array(
+                array(
+                ),
+                "HUGnetDBTableTestStub",
+                array(
+                    "group" => "default",
+                    "fluff" => "nStuff",
+                    "other" => "things",
+                    "id" => 5,
+                    "myDate" => "1970-01-01 00:00:00",
+                    "myOtherDate" => 0,
+                    "name" => "Name",
+                    "value" => 12.0,
+                    "myOtherDate" => 0,
+                ),
+                "HUGnet\\db\\tables\\HUGnetDBTableTestStub",
+            ),
+            array(
+                array(
+                    "fluff" => "more",
+                    "other" => "thing",
+                    "id" => 7,
+                    "name" => "here",
+                    "value" => 35.0,
+                ),
+                "HUGnetDBTableTestStub",
+                array(
+                    "group" => "default",
+                    "fluff" => "more",
+                    "other" => "thing",
+                    "id" => 7,
+                    "myDate" => "1970-01-01 00:00:00",
+                    "myOtherDate" => 0,
+                    "name" => "here",
+                    "value" => 35.0,
+                    "myOtherDate" => 0,
+                ),
+                "HUGnet\\db\\tables\\HUGnetDBTableTestStub",
+            ),
+            array(
+                array(
+                    "fluff" => "more",
+                    "other" => "thing",
+                    "id" => 7,
+                    "name" => "here",
+                    "value" => 35.0,
+                ),
+                "HUGnetDBTableTestStub",
+                array(
+                    "group" => "default",
+                    "fluff" => "more",
+                    "other" => "thing",
+                    "id" => 7,
+                    "myDate" => "1970-01-01 00:00:00",
+                    "myOtherDate" => 0,
+                    "name" => "here",
+                    "value" => 35.0,
+                ),
+                "HUGnet\\db\\tables\\HUGnetDBTableTestStub",
+            ),
+        );
+    }
+    /**
+    * tests the factory
+    *
+    * @param array  $preload What to preload the object with
+    * @param string $table   The name of the table class to use
+    * @param array  $expect  The expected return
+    * @param string $eTable  The expected table class
+    *
+    * @return null
+    *
+    * @dataProvider dataDuplicate
+    */
+    public function testDuplicate($preload, $table, $expect, $eTable)
+    {
+        $obj = \HUGnet\db\tables\HUGnetDBTableTestStub::factory(
+            $this->system, array(), $table
+        );
+        $obj2 = &$obj->duplicate($preload);
+        $this->assertAttributeSame(
+            $expect,
+            "data",
+            $obj2
+        );
+        $this->assertSame($eTable, get_class($obj2));
     }
     /**
     * data provider for testSet

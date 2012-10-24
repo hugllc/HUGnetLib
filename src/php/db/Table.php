@@ -239,15 +239,6 @@ abstract class Table extends \HUGnet\base\Container
     {
     }
     /**
-    * This serializes the object without the PDO connection
-    *
-    * @return string The serialized object
-    */
-    public function serialize()
-    {
-        return (string)serialize($this->toArray());
-    }
-    /**
     * Creates the object from a string or array
     *
     * @param mixed $data This is whatever you want to give the class
@@ -260,19 +251,6 @@ abstract class Table extends \HUGnet\base\Container
         if (isset($data["group"])) {
             $this->default["group"] = $data["group"];
         }
-    }
-    /**
-    * This unserializes the object
-    *
-    * @param array $data The data to use to unserialize this class
-    *
-    * @return null
-    */
-    public function unserialize($data)
-    {
-        $this->setupColsDefault();
-        $this->clearData();
-        $this->fromArray(unserialize($data));
     }
     /**
     * Clears out the data
@@ -596,18 +574,6 @@ abstract class Table extends \HUGnet\base\Container
             $this->dbDriver()->reset();
         }
         return $ret;
-    }
-    /**
-    * This function creates other tables that are identical to this one, except
-    * for the data given.
-    *
-    * @param int $verbose The verbose number to use
-    *
-    * @return object A reference to a table object
-    */
-    public function verbose($verbose)
-    {
-        parent::verbose($verbose);
     }
     /**
     * This routine takes any date and turns it into an SQL date
