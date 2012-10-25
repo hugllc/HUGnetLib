@@ -229,16 +229,18 @@ class Firmware extends \HUGnet\db\Table
     */
     public function getLatest()
     {
-        $data   = array($this->FWPartNum, $this->RelStatus, 0);
+        $data   = array($this->get("FWPartNum"), $this->get("RelStatus"), 0);
         $where  = " FWPartNum = ? AND RelStatus <= ?";
         $where .= " AND Active <> ?";
-        if (!empty($this->HWPartNum)) {
+        $HWPartNum = $this->get("HWPartNum");
+        if (!empty($HWPartNum)) {
             $where .= " AND HWPartNum = ?";
-            $data[] = $this->HWPartNum;
+            $data[] = $HWPartNum;
         }
-        if (!empty($this->Version)) {
+        $version = $this->get("Version");
+        if (!empty($version)) {
             $where .= " AND Version = ?";
-            $data[] = $this->Version;
+            $data[] = $version;
         }
         $ret = $this->selectInto($where, $data);
         // This makes sure we are getting a good one if there is one, instead
@@ -249,7 +251,7 @@ class Firmware extends \HUGnet\db\Table
             if (($this->RelStatus == self::BAD) || !$this->checkHash()) {
                 continue;
             }
-            if ($this->compareVersion($this->Version, $highest["Version"]) > 0) {
+            if ($this->compareVersion($highest["Version"]) < 0) {
                 $found = true;
                 $highest = $this->toArray();
             }
@@ -273,7 +275,7 @@ class Firmware extends \HUGnet\db\Table
     */
     public function compareVersion($ver1, $ver2 = null)
     {
-        $useVer2 = (empty($ver2)) ? $this->Version : $ver2;
+        $useVer2 = (empty($ver2)) ? $this->get("Version") : $ver2;
         $v1 = explode(".", $ver1);
         $v2 = explode(".", $useVer2);
         for ($i = 0; $i < 3; $i++) {
@@ -295,11 +297,13 @@ class Firmware extends \HUGnet\db\Table
     public function fromArray($array)
     {
         parent::fromArray($array);
-        if (empty($this->DataHash)) {
-            $this->DataHash = md5($this->Data);
+        $DataHash = $this->get("DataHash");
+        if (empty($DataHash)) {
+            $this->set("DataHash", md5($this->get("Data")));
         }
-        if (empty($this->CodeHash)) {
-            $this->CodeHash = md5($this->Code);
+        $CodeHash = $this->get("CodeHash");
+        if (empty($CodeHash)) {
+            $this->set("CodeHash", md5($this->get("Code")));
         }
     }
     /**
@@ -309,8 +313,8 @@ class Firmware extends \HUGnet\db\Table
     */
     public function checkHash()
     {
-        if (($this->DataHash != md5($this->Data))
-            || ($this->CodeHash != md5($this->Code))
+        if (($this->get("DataHash") != md5($this->get("Data")))
+            || ($this->get("CodeHash") != md5($this->get("Code")))
         ) {
             return false;
         }
@@ -328,9 +332,9 @@ class Firmware extends \HUGnet\db\Table
     public function toFile($path = ".", &$filename = null)
     {
         if (is_null($filename) || empty($filename)) {
-            $filename  = str_replace("-", "", $this->HWPartNum);
-            $filename .= "-".str_replace("-", "", $this->FWPartNum);
-            $filename .= "-".$this->Version.".gz";
+            $filename  = str_replace("-", "", $this->get("HWPartNum"));
+            $filename .= "-".str_replace("-", "", $this->get("FWPartNum"));
+            $filename .= "-".$this->get("Version").".gz";
         }
         return (bool)file_put_contents(
             $path."/".$filename,
@@ -348,23 +352,24 @@ class Firmware extends \HUGnet\db\Table
     */
     public function fromFile($file, $path = ".")
     {
-        $this->filename = $file;
-        $stuff = file_get_contents($path."/".$this->filename);
+        $this->set("filename", $file);
+        $stuff = file_get_contents($path."/".$this->get("filename"));
         if (empty($stuff)) {
             return false;
         }
         // If the md5 is set and bad, fail
-        if (!empty($this->md5) && ($this->md5 != md5($stuff))
+        $md5 = $this->get("md5");
+        if (!empty($md5) && ($md5 != md5($stuff))
         ) {
             return false;
         }
-        file_put_contents(sys_get_temp_dir()."/".$this->filename, $stuff);
-        $stuff = implode("", gzfile(sys_get_temp_dir()."/".$this->filename));
-        @unlink(sys_get_temp_dir()."/".$this->filename);
-        $md5 = $this->md5;
+        $filename = $this->get("filename");
+        file_put_contents(sys_get_temp_dir()."/".$filename, $stuff);
+        $stuff = implode("", gzfile(sys_get_temp_dir()."/".$filename));
+        @unlink(sys_get_temp_dir()."/".$filename);
         $this->fromString($stuff);
-        $this->md5 = $md5;
-        $this->filename = $file;
+        $this->set(md5, $md5);
+        $this->set("filename", $file);
         unset($stuff);
         return true;
     }
@@ -381,16 +386,21 @@ class Firmware extends \HUGnet\db\Table
         if (is_null($filename)) {
             return false;
         }
-        $this->filename = $filename;
-        $fname = explode("-", $this->filename);
-        $this->HWPartNum = $fname[0];
-        $this->FWPartNum = $fname[1];
-        $this->Version = $fname[2];
+        $this->set("filename", $filename);
+        $fname = explode("-", $this->get("filename"));
+        $this->set("HWPartNum", $fname[0]);
+        $this->set("FWPartNum", $fname[1]);
+        $this->set("Version", $fname[2]);
         $where = "`HWPartNum` = ? AND `FWPartNum` = ? AND `Version` = ?";
-        $data = array($this->HWPartNum, $this->FWPartNum, $this->Version);
-        if (!empty($this->md5)) {
+        $data = array(
+            $this->get("HWPartNum"),
+            $this->get("FWPartNum"),
+            $this->get("Version")
+        );
+        $md5 = $this->get("md5");
+        if (!empty($md5)) {
             $where .= " AND `md5` = ?";
-            $data[] = $this->md5;
+            $data[] = $md5;
         }
         $this->dbDriver()->selectWhere($where, $data);
         $this->dbDriver()->fetchInto();
@@ -406,7 +416,7 @@ class Firmware extends \HUGnet\db\Table
 
         return (bool) $this->dbDriver()->countWhere(
             "FWPartNum = ? AND Version = ?",
-            array($this->FWPartNum, $this->Version),
+            array($this->get("FWPartNum"), $this->get("Version")),
             "id"
         );
     }
