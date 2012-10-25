@@ -411,6 +411,7 @@ class FirmwareTest extends TableTestBase
         return array(
             array(
                 // Everything works
+                null,
                 TEST_CONFIG_BASE."files",
                 "MD5 (003921-00392001C-00.01.04.gz) = "
                 ."84b01697b6fbc32c457d3b9815585fe0",
@@ -432,9 +433,11 @@ class FirmwareTest extends TableTestBase
                     "Active" => "1",
                     "md5" => "84b01697b6fbc32c457d3b9815585fe0",
                 ),
+                true,
             ),
             array(
                 // Everything works
+                null,
                 TEST_CONFIG_BASE."files",
                 "003921-00392001C-00.01.04.gz",
                 true,
@@ -455,22 +458,54 @@ class FirmwareTest extends TableTestBase
                     "Active" => "1",
                     "md5" => null,
                 ),
+                true,
             ),
             array(
                 // Bad MD5
+                null,
                 TEST_CONFIG_BASE."files",
                 "MD5 (003928-00392001C-00.01.04.gz) = "
                 ."bd2dd61d3ef24bfab9d40c8791f3b18b",
                 false,
                 array(
                 ),
+                false,
             ),
             array(
                 // No HWPartNum Specified
+                null,
                 "/this/is/a/dir/that/should/never/exist",
                 "00392001C-1.2.3.gz",
                 false,
                 array(),
+                false,
+            ),
+            array(
+                // Stuff already set
+                array(
+                    "md5" => "bd2dd61d3ef24bfab9d40c8791f3b18b",
+                ),
+                TEST_CONFIG_BASE."files",
+                "003921-00392001C-00.01.04.gz",
+                false,
+                array(
+                    "group" => "default",
+                    "filename" => "003921-00392001C-00.01.04.gz",
+                    "id" => "37",
+                    "Version" => "0.1.4",
+                    "CodeHash" => "14c1839ee1c69da903a49165693d8ff2",
+                    "DataHash" => "ff0091534269deecbe6dfcecc652664f",
+                    "FWPartNum" => "0039-20-01-C",
+                    "HWPartNum" => "0039-21",
+                    "Date" => 1172579985,
+                    "FileType" => "SREC",
+                    "RelStatus" => 8,
+                    "Tag" => "f00392001-00-01-04",
+                    "Target" => "atmega16",
+                    "Active" => "1",
+                    "md5" => null,
+                ),
+                true,
             ),
         );
     }
@@ -478,27 +513,35 @@ class FirmwareTest extends TableTestBase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $path     The file path to use
-    * @param string $filename The filename to check for
-    * @param bool   $expect   The expected return
-    * @param array  $data     The data array to expect
+    * @param mixed  $preload   Set to null for no preload, otherwise it is an array
+    * @param string $path      The file path to use
+    * @param string $filename  The filename to check for
+    * @param bool   $expect    The expected return
+    * @param array  $data      The data array to expect
+    * @param bool   $fileExist Whether the file exists or not.
     *
     * @return null
     *
     * @dataProvider dataFromFile
     */
-    public function testFromFile($path, $filename, $expect, $data)
-    {
+    public function testFromFile(
+        $preload, $path, $filename, $expect, $data, $fileExists
+    ) {
         $this->o->clearData();
+        if (is_array($preload)) {
+            $this->o->fromArray($preload);
+        }
         $ret = @$this->o->fromFile($filename, $path);
-        $this->assertSame($expect, $ret);
+        $this->assertSame($expect, $ret, "Return Wrong");
         if ($expect) {
             $theData = $this->readAttribute($this->o, "data");
             unset($theData["Code"]);
             unset($theData["Data"]);
-            $this->assertSame($data, $theData);
+            $this->assertSame($data, $theData, "Data is not the same");
         } else {
-            $this->assertFalse(file_exists($path."/".$filename));
+            $this->assertSame(
+                $fileExists, file_exists($path."/".$filename), "File Exists"
+            );
         }
     }
     /**
