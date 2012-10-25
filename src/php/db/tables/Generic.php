@@ -125,6 +125,7 @@ class Generic extends \HUGnet\db\Table
     * @param object &$system  The system object to use
     * @param mixed  $data     This is an array or string to create the object from
     * @param object &$connect The connection manager
+    * @param string $table    The table to use
     */
     protected function __construct(
         &$system, $data="", &$connect = null, $table = "table"

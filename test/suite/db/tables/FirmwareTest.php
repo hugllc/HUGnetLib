@@ -498,12 +498,12 @@ class FirmwareTest extends TableTestBase
     /**
     * test the set routine when an extra class exists
     *
-    * @param mixed  $preload   Set to null for no preload, otherwise it is an array
-    * @param string $path      The file path to use
-    * @param string $filename  The filename to check for
-    * @param bool   $expect    The expected return
-    * @param array  $data      The data array to expect
-    * @param bool   $fileExist Whether the file exists or not.
+    * @param mixed  $preload    Set to null for no preload, otherwise it is an array
+    * @param string $path       The file path to use
+    * @param string $filename   The filename to check for
+    * @param bool   $expect     The expected return
+    * @param array  $data       The data array to expect
+    * @param bool   $fileExists Whether the file exists or not.
     *
     * @return null
     *

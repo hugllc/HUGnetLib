@@ -368,7 +368,7 @@ class Firmware extends \HUGnet\db\Table
         $stuff = implode("", gzfile(sys_get_temp_dir()."/".$filename));
         @unlink(sys_get_temp_dir()."/".$filename);
         $this->fromString($stuff);
-        $this->set(md5, $md5);
+        $this->set("md5", $md5);
         $this->set("filename", $file);
         unset($stuff);
         return true;

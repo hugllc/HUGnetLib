@@ -366,8 +366,6 @@ class RawHistoryTest extends TableTestBase
     *
     * @param array $database The database stuff to load
     * @param array $preload  The array to preload into the class
-    * @param array $time     The time of the last packet
-    * @param array $prev     The previous record
     * @param array $expect   The expected return
     *
     * @dataProvider dataToDB

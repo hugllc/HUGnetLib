@@ -166,6 +166,8 @@ abstract class Table extends \HUGnet\base\Container
     * @param mixed  $data     This is an array or string to create the object from
     * @param string $class    The class to use
     * @param object &$connect The connection manager
+    * @param mixed  $extra1   Extra parameter that is just passed on
+    * @param mixed  $extra2   Extra parameter that is just passed on
     *
     * @return object A reference to a table object
     */
@@ -189,7 +191,7 @@ abstract class Table extends \HUGnet\base\Container
     * This function creates other tables that are identical to this one, except
     * for the data given.
     *
-    * @param mixed  $data This is an array or string to create the object from
+    * @param mixed $data This is an array or string to create the object from
     *
     * @return object A reference to a table object
     */
