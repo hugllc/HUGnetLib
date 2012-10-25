@@ -77,7 +77,6 @@ class DataCollectorsTest extends TableTestBase
     */
     protected function setUp()
     {
-        $this->skipPDOTests = true;
         $this->config = array(
             "System" => array(
                 "get" => array(
@@ -101,7 +100,6 @@ class DataCollectorsTest extends TableTestBase
         $this->o = \HUGnet\db\Table::factory(
             $this->system, $data, "Datacollectors", $this->connect
         );
-        $this->o->create();
         parent::Setup();
     }
 
