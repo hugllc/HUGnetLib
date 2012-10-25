@@ -390,6 +390,7 @@ abstract class Container
         if (is_object($array) && method_exists($array, "toArray")) {
             return $array->toArray($retDefault);
         } else if (is_array($array)) {
+            $default = (array)$default;
             $ret = array();
             foreach (array_keys($array) as $key) {
                 if (($array[$key] !== $default[$key]) || $retDefault) {
