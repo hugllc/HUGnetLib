@@ -179,13 +179,16 @@ abstract class Table extends \HUGnet\base\Container
             include_once dirname(__FILE__)."/tables/".$class.".php";
         }
         if (substr($class, 0, 17) != "HUGnet\\db\\tables\\") {
-            $class = "HUGnet\\db\\tables\\".$class;
+            $nclass = "HUGnet\\db\\tables\\".$class;
         }
-        if (!class_exists($class)) {
+        if (!class_exists($nclass)) {
             include_once dirname(__FILE__)."/tables/Generic.php";
-            $class = "HUGnet\\db\\tables\\Generic";
+            // Assume that the class given is the table name.
+            return new \HUGnet\db\tables\Generic(
+                $system, $data, $connect, $class
+            );
         }
-        return new $class($system, $data, $connect, $extra1, $extra2);
+        return new $nclass($system, $data, $connect, $extra1, $extra2);
     }
     /**
     * This function creates other tables that are identical to this one, except

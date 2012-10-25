@@ -122,7 +122,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
         );
         parent::setUp();
         $data = array();
-        $this->o = \HUGnet\db\tables\HUGnetDBTableTestStub::factory(
+        $this->o = \HUGnet\db\Table::factory(
             $this->system, $data, "HUGnetDBTableTestStub", $this->connect
         );
 
@@ -187,7 +187,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
         );
         $this->system->resetMock($config);
         $data = array();
-        $obj = \HUGnet\db\tables\HUGnetDBTableTestStub::factory(
+        $obj = \HUGnet\db\Table::factory(
             $this->system, $data, "HUGnetDBTableTestStub"
         );
         // This causes it to try to connect to a bad database, and causes
@@ -245,7 +245,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     */
     public function testConstructor($preload, $expect)
     {
-        $obj = \HUGnet\db\tables\HUGnetDBTableTestStub::factory(
+        $obj = \HUGnet\db\Table::factory(
             $this->system, $preload, "HUGnetDBTableTestStub", $this->connect
         );
         $this->assertSame($expect, $obj->toArray());
@@ -290,7 +290,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     */
     public function testGetRow($preload, $key, $expect)
     {
-        $obj = \HUGnet\db\tables\HUGnetDBTableTestStub::factory(
+        $obj = \HUGnet\db\Table::factory(
             $this->system, $preload, "HUGnetDBTableTestStub", $this->connect
         );
         $obj->getRow($key);
@@ -448,7 +448,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
         $extraWhere = null,
         $extraData = null
     ) {
-        $obj = \HUGnet\db\tables\HUGnetDBTableTestStub::factory(
+        $obj = \HUGnet\db\Table::factory(
             $this->system, $preload, "HUGnetDBTableTestStub2", $this->connect
         );
         $ret = $obj->getPeriod($start, $end, $key, $sqlId, $extraWhere, $extraData);
@@ -493,7 +493,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     */
     public function testGetPeriod2($preload, $start, $end, $key, $expect)
     {
-        $obj = \HUGnet\db\tables\HUGnetDBTableTestStub::factory(
+        $obj = \HUGnet\db\Table::factory(
             $this->system, $preload, "HUGnetDBTableTestStub", $this->connect
         );
         $ret = $obj->getPeriod($start, $end, $key);
@@ -518,7 +518,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     */
     public function testRefresh($preload, $key, $expect)
     {
-        $obj = \HUGnet\db\tables\HUGnetDBTableTestStub::factory(
+        $obj = \HUGnet\db\Table::factory(
             $this->system, $preload, "HUGnetDBTableTestStub", $this->connect
         );
         $sqlId = $obj->sqlId;
@@ -578,7 +578,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     public function testCreate($preload, $key, $expect)
     {
         $this->pdo->query("DROP TABLE IF EXISTS `myTable`");
-        $obj = \HUGnet\db\tables\HUGnetDBTableTestStub::factory(
+        $obj = \HUGnet\db\Table::factory(
             $this->system, $preload, "HUGnetDBTableTestStub", $this->connect
         );
         $obj->create();
@@ -657,7 +657,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     */
     public function testSelect($preload, $where, $data, $expect)
     {
-        $obj = \HUGnet\db\tables\HUGnetDBTableTestStub::factory(
+        $obj = \HUGnet\db\Table::factory(
             $this->system, $preload, "HUGnetDBTableTestStub", $this->connect
         );
         $res = $obj->select($where, $data);
@@ -702,7 +702,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     */
     public function testCount($preload, $where, $data, $expect)
     {
-        $obj = \HUGnet\db\tables\HUGnetDBTableTestStub::factory(
+        $obj = \HUGnet\db\Table::factory(
             $this->system, $preload, "HUGnetDBTableTestStub", $this->connect
         );
         $res = $obj->count($where, $data);
@@ -722,7 +722,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     */
     public function testSelectInto($preload, $where, $data, $expect)
     {
-        $obj = \HUGnet\db\tables\HUGnetDBTableTestStub::factory(
+        $obj = \HUGnet\db\Table::factory(
             $this->system, $preload, "HUGnetDBTableTestStub", $this->connect
         );
         $ret = $obj->selectInto($where, $data);
@@ -778,7 +778,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     */
     public function testSerialize($preload, $expect)
     {
-        $obj = \HUGnet\db\tables\HUGnetDBTableTestStub::factory(
+        $obj = \HUGnet\db\Table::factory(
             $this->system, $preload, "HUGnetDBTableTestStub", $this->connect
         );
         $data = serialize($obj);
@@ -826,7 +826,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     */
     public function testSelectOneInto($preload, $where, $data, $expect)
     {
-        $obj = \HUGnet\db\tables\HUGnetDBTableTestStub::factory(
+        $obj = \HUGnet\db\Table::factory(
             $this->system, $preload, "HUGnetDBTableTestStub", $this->connect
         );
         $res = $obj->selectOneInto($where, $data);
@@ -864,7 +864,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     */
     public function testSelectIds($preload, $where, $data, $expect)
     {
-        $obj = \HUGnet\db\tables\HUGnetDBTableTestStub::factory(
+        $obj = \HUGnet\db\Table::factory(
             $this->system, $preload, "HUGnetDBTableTestStub", $this->connect
         );
         $ret = $obj->selectIDs($where, $data);
@@ -949,7 +949,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     */
     public function testUpdateRow($preload, $expect)
     {
-        $obj = \HUGnet\db\tables\HUGnetDBTableTestStub::factory(
+        $obj = \HUGnet\db\Table::factory(
             $this->system, $preload, "HUGnetDBTableTestStub", $this->connect
         );
         $obj->updateRow();
@@ -1044,7 +1044,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     */
     public function testInsertRow($preload, $replace, $expect)
     {
-        $obj = \HUGnet\db\tables\HUGnetDBTableTestStub::factory(
+        $obj = \HUGnet\db\Table::factory(
             $this->system, $preload, "HUGnetDBTableTestStub", $this->connect
         );
         $obj->insertRow($replace);
@@ -1127,7 +1127,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     */
     public function testDeleteRow($preload, $expect)
     {
-        $obj = \HUGnet\db\tables\HUGnetDBTableTestStub::factory(
+        $obj = \HUGnet\db\Table::factory(
             $this->system, $preload, "HUGnetDBTableTestStub", $this->connect
         );
         $obj->deleteRow();
@@ -1180,7 +1180,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
                 array(
                     "id" => 10,
                     "name" => "This is a name",
-                    "value" => \HUGnet\db\tables\HUGnetDBTableTestStub::factory(
+                    "value" => \HUGnet\db\Table::factory(
                         new \HUGnet\DummySystem("System"), array(),
                         "HUGnetDBTableTestStub"
                     ),
@@ -1210,7 +1210,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     */
     public function testToDB($preload, $expect, $default = true)
     {
-        $obj = \HUGnet\db\tables\HUGnetDBTableTestStub::factory(
+        $obj = \HUGnet\db\Table::factory(
             $this->system, $preload, "HUGnetDBTableTestStub"
         );
         $ret = $obj->toDB($default);
@@ -1227,7 +1227,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     public static function dataFactory()
     {
         return array(
-            array(
+            array( // #0
                 array(
                 ),
                 "HUGnetDBTableTestStub",
@@ -1244,7 +1244,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
                 ),
                 "HUGnet\\db\\tables\\HUGnetDBTableTestStub",
             ),
-            array(
+            array( // #1
                 array(
                     "fluff" => "more",
                     "other" => "thing",
@@ -1266,7 +1266,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
                 ),
                 "HUGnet\\db\\tables\\HUGnetDBTableTestStub",
             ),
-            array(
+            array( // #2
                 array(
                     "fluff" => "more",
                     "other" => "thing",
@@ -1287,7 +1287,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
                 ),
                 "HUGnet\\db\\tables\\HUGnetDBTableTestStub",
             ),
-            array(
+            array( // #3
                 array(
                     "fluff" => "more",
                     "other" => "thing",
@@ -1299,6 +1299,23 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
                 array(
                     "group" => "default",
                     "id" => 7,
+                ),
+                "HUGnet\\db\\tables\\Generic",
+            ),
+            array( // #3
+                array(
+                    "fluff" => "more",
+                    "other" => "thing",
+                    "id" => 7,
+                    "name" => "here",
+                    "value" => 35.0,
+                ),
+                "myTable",
+                array(
+                    'group' => 'default',
+                    'id' => 7,
+                    'name' => 'here',
+                    'value' => 35.0,
                 ),
                 "HUGnet\\db\\tables\\Generic",
             ),
@@ -1318,8 +1335,8 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     */
     public function testFactory($preload, $table, $expect, $eTable)
     {
-        $obj = \HUGnet\db\tables\HUGnetDBTableTestStub::factory(
-            $this->system, $preload, $table
+        $obj = \HUGnet\db\Table::factory(
+            $this->system, $preload, $table, $this->connect
         );
         $this->assertAttributeSame(
             $expect,
@@ -1412,7 +1429,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     */
     public function testDuplicate($preload, $table, $expect, $eTable)
     {
-        $obj = \HUGnet\db\tables\HUGnetDBTableTestStub::factory(
+        $obj = \HUGnet\db\Table::factory(
             $this->system, array(), $table
         );
         $obj2 = &$obj->duplicate($preload);
@@ -1627,7 +1644,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     */
     public function testToOutput2($preload, $cols, $expect)
     {
-        $obj = \HUGnet\db\tables\HUGnetDBTableTestStub::factory(
+        $obj = \HUGnet\db\Table::factory(
             $this->system, $preload, "HUGnetDBTableTestStub2"
         );
         $ret = $obj->toOutput($cols);
@@ -1842,7 +1859,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     */
     public function testToOutputHeader2($preload, $cols, $expect)
     {
-        $obj = \HUGnet\db\tables\HUGnetDBTableTestStub::factory(
+        $obj = \HUGnet\db\Table::factory(
             $this->system, $preload, "HUGnetDBTableTestStub2"
         );
         $ret = $obj->toOutputHeader($cols);
@@ -1889,7 +1906,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     */
     public function testLabels($preload, $cols, $expect)
     {
-        $obj = \HUGnet\db\tables\HUGnetDBTableTestStub::factory(
+        $obj = \HUGnet\db\Table::factory(
             $this->system, $preload, "HUGnetDBTableTestStub"
         );
         $ret = $obj->labels($cols);

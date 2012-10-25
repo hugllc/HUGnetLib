@@ -132,6 +132,7 @@ class Generic extends \HUGnet\db\Table
     ) {
         parent::__construct($system, $data, $connect);
         $this->forceTable($table);
+        $this->fromAny($data);
     }
 
 
