@@ -42,8 +42,6 @@ require_once CODE_BASE.'network/packets/Packet.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
-require_once CODE_BASE.'tables/FirmwareTable.php';
-/** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
@@ -2379,6 +2377,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     */
     public static function dataLoadFirmware()
     {
+        $system = new \HUGnet\DummySystem("System");
         return array(
             array( // #0 Not running boot loader
                 array(
@@ -2400,7 +2399,8 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-                new \FirmwareTable(
+                \HUGnet\db\Table::factory(
+                    $system,
                     array(
                         "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
                         ."FFFFFF500102020202101002026F46
@@ -2423,9 +2423,10 @@ S9030000FC",
                         "HWPartNum" => "0039-21-01-A",
                         "FWPartNum" => "0039-20-01-C",
                         "Version" => "1.2.3",
-                        "RelStatus" => \FirmwareTable::RELEASE,
+                        "RelStatus" => \HUGnet\db\tables\Firmware::RELEASE,
 
-                    )
+                    ),
+                    "Firmware"
                 ),
                 true,
                 array(
@@ -2472,7 +2473,8 @@ S9030000FC",
                         ),
                     ),
                 ),
-                new \FirmwareTable(
+                \HUGnet\db\Table::factory(
+                    $system,
                     array(
                         "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
                         ."FFFFFF500102020202101002026F46
@@ -2495,9 +2497,10 @@ S9030000FC",
                         "HWPartNum" => "0039-21-01-A",
                         "FWPartNum" => "0039-20-01-C",
                         "Version" => "1.2.3",
-                        "RelStatus" => \FirmwareTable::RELEASE,
+                        "RelStatus" => \HUGnet\db\tables\Firmware::RELEASE,
 
-                    )
+                    ),
+                    "Firmware"
                 ),
                 true,
                 array(
@@ -2574,7 +2577,7 @@ S9030000FC",
                         ),
                     ),
                 ),
-                new \FirmwareTable(
+                new \HUGnet\db\tables\Firmware(
                     array(
                         "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
                         ."FFFFFF500102020202101002026F46
@@ -2597,7 +2600,7 @@ S9030000FC",
                         "HWPartNum" => "0039-21-01-A",
                         "FWPartNum" => "0039-20-01-C",
                         "Version" => "1.2.3",
-                        "RelStatus" => \FirmwareTable::RELEASE,
+                        "RelStatus" => \HUGnet\db\tables\Firmware::RELEASE,
 
                     )
                 ),
@@ -2720,7 +2723,8 @@ S9030000FC",
                         ),
                     ),
                 ),
-                new \FirmwareTable(
+                \HUGnet\db\Table::factory(
+                    $system,
                     array(
                         "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
                         ."FFFFFF500102020202101002026F46
@@ -2743,9 +2747,10 @@ S9030000FC",
                         "HWPartNum" => "0039-21-01-A",
                         "FWPartNum" => "0039-38-01-C",
                         "Version" => "1.2.3",
-                        "RelStatus" => \FirmwareTable::RELEASE,
+                        "RelStatus" => \HUGnet\db\tables\Firmware::RELEASE,
 
-                    )
+                    ),
+                    "Firmware"
                 ),
                 true,
                 array(
@@ -2923,7 +2928,8 @@ S9030000FC",
                         ),
                     ),
                 ),
-                new \FirmwareTable(
+                \HUGnet\db\Table::factory(
+                    $system,
                     array(
                         "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
                         ."FFFFFF500102020202101002026F46
@@ -2946,9 +2952,10 @@ S9030000FC",
                         "HWPartNum" => "0039-21-01-A",
                         "FWPartNum" => "0039-38-01-C",
                         "Version" => "1.2.3",
-                        "RelStatus" => \FirmwareTable::RELEASE,
+                        "RelStatus" => \HUGnet\db\tables\Firmware::RELEASE,
 
-                    )
+                    ),
+                    "Firmware"
                 ),
                 true,
                 array(
@@ -3162,7 +3169,7 @@ S9030000FC",
                         ),
                     ),
                 ),
-                new \FirmwareTable(
+                new \HUGnet\db\tables\Firmware(
                     array(
                         "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
                         ."FFFFFF500102020202101002026F46
@@ -3185,7 +3192,7 @@ S9030000FC",
                         "HWPartNum" => "0039-21-01-A",
                         "FWPartNum" => "0039-38-01-C",
                         "Version" => "1.2.3",
-                        "RelStatus" => \FirmwareTable::RELEASE,
+                        "RelStatus" => \HUGnet\db\tables\Firmware::RELEASE,
 
                     )
                 ),
@@ -3412,7 +3419,7 @@ S9030000FC",
                         ),
                     ),
                 ),
-                new \FirmwareTable(
+                new \HUGnet\db\tables\Firmware(
                     array(
                         "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
                         ."FFFFFF500102020202101002026F46
@@ -3435,7 +3442,7 @@ S9030000FC",
                         "HWPartNum" => "0039-21-01-A",
                         "FWPartNum" => "0039-38-01-C",
                         "Version" => "1.2.3",
-                        "RelStatus" => \FirmwareTable::RELEASE,
+                        "RelStatus" => \HUGnet\db\tables\Firmware::RELEASE,
 
                     )
                 ),
@@ -3639,7 +3646,7 @@ S9030000FC",
                         ),
                     ),
                 ),
-                new \FirmwareTable(
+                new \HUGnet\db\tables\Firmware(
                     array(
                         "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
                         ."FFFFFF500102020202101002026F46
@@ -3655,7 +3662,7 @@ S9030000FC",
                         "HWPartNum" => "0039-21-01-A",
                         "FWPartNum" => "0039-20-01-C",
                         "Version" => "1.2.3",
-                        "RelStatus" => \FirmwareTable::RELEASE,
+                        "RelStatus" => \HUGnet\db\tables\Firmware::RELEASE,
 
                     )
                 ),
@@ -3820,7 +3827,7 @@ S9030000FC",
                         ),
                     ),
                 ),
-                new \FirmwareTable(
+                new \HUGnet\db\tables\Firmware(
                     array(
                         "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
                         ."FFFFFF500102020202101002026F46
@@ -3844,7 +3851,7 @@ S9030000FC",
                         "HWPartNum" => "0039-21-01-A",
                         "FWPartNum" => "0039-38-01-C",
                         "Version" => "1.2.3",
-                        "RelStatus" => \FirmwareTable::RELEASE,
+                        "RelStatus" => \HUGnet\db\tables\Firmware::RELEASE,
 
                     )
                 ),
@@ -4033,7 +4040,7 @@ S9030000FC",
                         ),
                     ),
                 ),
-                new \FirmwareTable(
+                new \HUGnet\db\tables\Firmware(
                     array(
                         "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
                         ."FFFFFF500102020202101002026F46
@@ -4056,7 +4063,7 @@ S9030000FC",
                         "HWPartNum" => "0039-21",
                         "FWPartNum" => "0039-20-01-C",
                         "Version" => "1.2.3",
-                        "RelStatus" => \FirmwareTable::RELEASE,
+                        "RelStatus" => \HUGnet\db\tables\Firmware::RELEASE,
 
                     )
                 ),
@@ -4216,7 +4223,7 @@ S9030000FC",
                         ),
                     ),
                 ),
-                new \FirmwareTable(
+                new \HUGnet\db\tables\Firmware(
                 ),
                 true,
                 array(

@@ -38,6 +38,8 @@ namespace HUGnet\base;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is for the base class */
+require_once dirname(__FILE__)."/HUGnetClass.php";
+/** This is for the base class */
 require_once dirname(__FILE__)."/../interfaces/HUGnetContainerInterface.php";
 
 /**
@@ -127,7 +129,7 @@ abstract class Container
     *
     * @return null
     */
-    abstract static public function &factory(&$system, $data = array());
+    abstract public function &factory(&$system, $data = array());
     /**
     * Overload the set attribute
     *
@@ -388,7 +390,6 @@ abstract class Container
         if (is_object($array) && method_exists($array, "toArray")) {
             return $array->toArray($retDefault);
         } else if (is_array($array)) {
-            $default = (array)$default;
             $ret = array();
             foreach (array_keys($array) as $key) {
                 if (($array[$key] !== $default[$key]) || $retDefault) {
@@ -472,6 +473,7 @@ abstract class Container
     */
     public function toString($default = true)
     {
+        var_dump($this->toArray());
         return self::toStringEncode($this->toArray($default));
     }
     /**
