@@ -39,6 +39,8 @@ namespace HUGnet\db;
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is for some constants that it contains */
 require_once dirname(__FILE__)."/../channels/Driver.php";
+/** This is for some constants that it contains */
+require_once dirname(__FILE__)."/Table.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
