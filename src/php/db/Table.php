@@ -177,6 +177,13 @@ abstract class Table extends \HUGnet\base\Container
     ) {
         if (file_exists(dirname(__FILE__)."/tables/".$class.".php")) {
             include_once dirname(__FILE__)."/tables/".$class.".php";
+        } else if (file_exists(dirname(__FILE__)."/tables/history/".$class.".php")) {
+            include_once dirname(__FILE__)."/History.php";
+            include_once dirname(__FILE__)."/tables/history/".$class.".php";
+        } else if (file_exists(dirname(__FILE__)."/tables/average/".$class.".php")) {
+            include_once dirname(__FILE__)."/History.php";
+            include_once dirname(__FILE__)."/Average.php";
+            include_once dirname(__FILE__)."/tables/average/".$class.".php";
         }
         if (substr($class, 0, 17) != "HUGnet\\db\\tables\\") {
             $nclass = "HUGnet\\db\\tables\\".$class;
