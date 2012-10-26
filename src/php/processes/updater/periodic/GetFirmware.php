@@ -38,8 +38,6 @@
 namespace HUGnet\processes\updater\periodic;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
-/** This is the table where the firmware is stored */
-require_once dirname(__FILE__)."/../../../tables/FirmwareTable.php";
 
 /**
  * Networking for devices.
@@ -77,7 +75,7 @@ class GetFirmware extends \HUGnet\processes\updater\Periodic
     protected function __construct(&$gui)
     {
         parent::__construct($gui);
-        $this->_firmware = new \FirmwareTable();
+        $this->_firmware = $this->system()->table("Firmware");
         $this->_fwPath = (array)$this->system()->get("firmware");
     }
     /**

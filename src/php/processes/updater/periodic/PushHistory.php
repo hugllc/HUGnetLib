@@ -64,7 +64,7 @@ class PushHistory extends \HUGnet\processes\updater\Periodic
     private $_device;
     /** These are the tables we are going to go through */
     private $_tableClasses = array(
-        "RawHistoryTable", "E00393700HistoryTable", "ETESTHistoryTable",
+        "RawHistory", "E00393700History", "ETESTHistory",
     );
     /** These are the tables we are going to go through */
     private $_lastPush = array();
@@ -83,7 +83,7 @@ class PushHistory extends \HUGnet\processes\updater\Periodic
         parent::__construct($gui);
         $this->_device = $this->system()->device();
         foreach ($this->_tableClasses as $class) {
-            $this->_tables[$class] = new $class();
+            $this->_tables[$class] = $this->system()->table($class);
         }
         $this->_lastPush = $this->device()->getParam("LastHistoryPush");
         if (is_string($this->_lastPush)) {
@@ -121,7 +121,6 @@ class PushHistory extends \HUGnet\processes\updater\Periodic
                     $hist = &$this->_tables[$class];
                     $now = 0;
                     $hist->sqlLimit = 100;
-                    $hist->verbose(10);
                     $ret = $hist->getPeriod((int)$this->_lastPush[$class], time());
                     if ($ret) {
                         $records = array();
