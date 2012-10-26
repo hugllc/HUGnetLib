@@ -36,7 +36,7 @@
  */
 namespace HUGnet\db\tables;
 /** This is the database testing extension */
-require_once TEST_BASE.'db/tables/history/HistoryTestBase.php';
+require_once TEST_BASE.'db/tables/TableTestBase.php';
 /** This is a required class */
 require_once CODE_BASE.'db/History.php';
 /** This is a required class */
@@ -54,8 +54,52 @@ require_once CODE_BASE.'db/Average.php';
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-abstract class AverageTestBase extends HistoryTestBase
+abstract class HistoryTestBase extends \PHPUnit_Framework_TestCase
 {
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $class The class to use
+    *
+    * @return null
+    *
+    * @dataProvider dataClassName
+    */
+    public function testSqlTableType($class)
+    {
+        $system = new \HUGnet\DummySystem("System");
+        $connect = \HUGnet\db\Connection::factory($system);
+        $obj = \HUGnet\db\Table::factory(
+            $system, $data, $class, $connect
+        );
+        $this->assertInternalType("string", $obj->sqlTable, "sqlTable not a string");
+        $this->assertFalse(
+            empty($obj->sqlTable),
+            "sqlTable is not set"
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $class The class to use
+    *
+    * @return null
+    *
+    * @dataProvider dataClassName
+    */
+    public function testDatacolsType($class)
+    {
+        $system = new \HUGnet\DummySystem("System");
+        $connect = \HUGnet\db\Connection::factory($system);
+        $obj = \HUGnet\db\Table::factory(
+            $system, $data, $class, $connect
+        );
+        $this->assertInternalType("int", $obj->datacols, "datacols not a int");
+        $this->assertFalse(
+            empty($obj->datacols),
+            "datacols is not set"
+        );
+    }
     /**
     * test the set routine when an extra class exists
     *
@@ -68,7 +112,35 @@ abstract class AverageTestBase extends HistoryTestBase
     public function testParent($class)
     {
         $class = "\\HUGnet\\db\\tables\\".$class;
-        $this->assertTrue(is_subclass_of($class, "HUGnet\\db\\Average"));
+        $this->assertTrue(is_subclass_of($class, "HUGnet\\db\\History"));
+    }
+    /**
+    * data provider for testSet
+    *
+    * @return array
+    */
+    public static function dataSet()
+    {
+        return array(
+            array("group", "test", "test"),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $var    The variable to set
+    * @param mixed  $value  The value to set
+    * @param mixed  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataSet
+    */
+    public function testSet($var, $value, $expect)
+    {
+        $this->o->set($var, $value);
+        $this->assertSame($expect, $this->o->$var);
     }
 }
 
