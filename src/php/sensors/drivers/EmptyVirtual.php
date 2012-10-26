@@ -66,7 +66,7 @@ class EmptyVirtual extends \HUGnet\sensors\DriverVirtual
         "shortName" => "EmptyVirtual",
         "unitType" => "None",
         "storageUnit" => 'none',
-        "storageType" => \HUGnet\units\Driver::TYPE_IGNORE, // Storage dataType
+        "storageType" => \HUGnet\channels\Driver::TYPE_IGNORE, // Storage dataType
         "virtual" => true,              // This says if we are a virtual sensor
         "extraText" => array(
         ),
@@ -77,7 +77,8 @@ class EmptyVirtual extends \HUGnet\sensors\DriverVirtual
         "extraDefault" => array(),
         "maxDecimals" => 0,
         "dataTypes" => array(
-            \HUGnet\units\Driver::TYPE_IGNORE => \HUGnet\units\Driver::TYPE_IGNORE,
+            \HUGnet\channels\Driver::TYPE_IGNORE
+                => \HUGnet\channels\Driver::TYPE_IGNORE,
         ),
     );
     /**

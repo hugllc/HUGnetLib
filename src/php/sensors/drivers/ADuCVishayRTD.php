@@ -66,7 +66,7 @@ class ADuCVishayRTD extends \HUGnet\sensors\DriverADuC
         "shortName" => "ADUCVishayRTD",
         "unitType" => "Temperature",
         "storageUnit" => '&#176;C',
-        "storageType" => \HUGnet\units\Driver::TYPE_RAW,  // Storage dataType
+        "storageType" => \HUGnet\channels\Driver::TYPE_RAW,  // Storage dataType
         "extraText" => array("Bias Resistor (Ohms)"),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take

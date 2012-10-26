@@ -66,7 +66,7 @@ class EmptySensor extends \HUGnet\sensors\Driver
         "shortName" => "Empty",
         "unitType" => "None",
         "storageUnit" => 'none',
-        "storageType" => \HUGnet\units\Driver::TYPE_IGNORE, // Storage dataType
+        "storageType" => \HUGnet\channels\Driver::TYPE_IGNORE, // Storage dataType
         "extraText" => array(
         ),
         // Integer is the size of the field needed to edit
@@ -76,7 +76,8 @@ class EmptySensor extends \HUGnet\sensors\Driver
         "extraDefault" => array(),
         "maxDecimals" => 0,
         "dataTypes" => array(
-            \HUGnet\units\Driver::TYPE_IGNORE => \HUGnet\units\Driver::TYPE_IGNORE,
+            \HUGnet\channels\Driver::TYPE_IGNORE
+                => \HUGnet\channels\Driver::TYPE_IGNORE,
         ),
     );
     /**

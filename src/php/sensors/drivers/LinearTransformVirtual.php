@@ -71,8 +71,10 @@ class LinearTransformVirtual extends \HUGnet\sensors\DriverVirtual
         "extraValues" => array(
             5, 10, 10, 15, 15, 10, 15,
             array(
-                \HUGnet\units\Driver::TYPE_RAW => \HUGnet\units\Driver::TYPE_RAW,
-                \HUGnet\units\Driver::TYPE_DIFF => \HUGnet\units\Driver::TYPE_DIFF
+                \HUGnet\channels\Driver::TYPE_RAW
+                    => \HUGnet\channels\Driver::TYPE_RAW,
+                \HUGnet\channels\Driver::TYPE_DIFF
+                    => \HUGnet\channels\Driver::TYPE_DIFF
             ),
             3,
         ),
@@ -82,7 +84,7 @@ class LinearTransformVirtual extends \HUGnet\sensors\DriverVirtual
         ),
         "extraDefault" => array(
             "", 0, 0, "none", "none", "unknown", "Generic",
-            \HUGnet\units\Driver::TYPE_RAW, 4
+            \HUGnet\channels\Driver::TYPE_RAW, 4
         ),
         "storageType" => "getExtra7",
         "storageUnit" => "getExtra5",
@@ -90,8 +92,10 @@ class LinearTransformVirtual extends \HUGnet\sensors\DriverVirtual
 
         "virtual" => true,              // This says if we are a virtual sensor
         "dataTypes" => array(
-            \HUGnet\units\Driver::TYPE_IGNORE => \HUGnet\units\Driver::TYPE_IGNORE,
-            \HUGnet\units\Driver::TYPE_RAW => \HUGnet\units\Driver::TYPE_RAW,
+            \HUGnet\channels\Driver::TYPE_IGNORE
+                => \HUGnet\channels\Driver::TYPE_IGNORE,
+            \HUGnet\channels\Driver::TYPE_RAW
+                => \HUGnet\channels\Driver::TYPE_RAW,
         ),
     );
     /**

@@ -40,7 +40,6 @@ namespace HUGnet;
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our base class */
 require_once dirname(__FILE__)."/../base/SystemTableBase.php";
-require_once dirname(__FILE__)."/../units/Driver.php";
 
 /**
  * Base system class.
@@ -205,8 +204,8 @@ class Sensor extends SystemTableBase
     */
     protected function &units()
     {
-        include_once dirname(__FILE__)."/../units/Driver.php";
-        $units = \HUGnet\units\Driver::factory(
+        include_once dirname(__FILE__)."/../channels/Driver.php";
+        $units = \HUGnet\channels\Driver::factory(
             $this->get("unitType"),
             $this->get("storageUnit")
         );

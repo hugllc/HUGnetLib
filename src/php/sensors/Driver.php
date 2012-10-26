@@ -38,7 +38,7 @@ namespace HUGnet\sensors;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our units class */
-require_once dirname(__FILE__)."/../units/Driver.php";
+require_once dirname(__FILE__)."/../channels/Driver.php";
 
 /**
  * Base driver class for devices.
@@ -87,12 +87,13 @@ abstract class Driver
         // Null    nothing
         "extraValues" => array(),
         "storageUnit" => "unknown",
-        "storageType" => \HUGnet\units\Driver::TYPE_RAW, // Storage dataType
+        "storageType" => \HUGnet\channels\Driver::TYPE_RAW, // Storage dataType
         "maxDecimals" => 2,
         "dataTypes" => array(
-            \HUGnet\units\Driver::TYPE_RAW => \HUGnet\units\Driver::TYPE_RAW,
-            \HUGnet\units\Driver::TYPE_DIFF => \HUGnet\units\Driver::TYPE_DIFF,
-            \HUGnet\units\Driver::TYPE_IGNORE => \HUGnet\units\Driver::TYPE_IGNORE,
+            \HUGnet\channels\Driver::TYPE_RAW => \HUGnet\channels\Driver::TYPE_RAW,
+            \HUGnet\channels\Driver::TYPE_DIFF => \HUGnet\channels\Driver::TYPE_DIFF,
+            \HUGnet\channels\Driver::TYPE_IGNORE
+                => \HUGnet\channels\Driver::TYPE_IGNORE,
         ),
         "defMin" => 0,
         "defMax" => 150,
@@ -417,7 +418,7 @@ abstract class Driver
     ) {
         $A = $this->strToInt($string);
         $ret = $this->channels();
-        if ($this->get("storageType") == \HUGnet\units\Driver::TYPE_DIFF) {
+        if ($this->get("storageType") == \HUGnet\channels\Driver::TYPE_DIFF) {
             $ret[0]["value"] = $this->getReading(
                 ($A - $prev["raw"]), $deltaT, $data, $prev
             );

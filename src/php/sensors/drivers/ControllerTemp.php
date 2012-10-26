@@ -39,8 +39,6 @@ namespace HUGnet\sensors\drivers;
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is my base class */
 require_once dirname(__FILE__)."/AVRBC2322640.php";
-/** This is the units class */
-require_once dirname(__FILE__)."/../../units/Driver.php";
 
 /**
  * Driver for reading voltage based pressure sensors
@@ -68,7 +66,7 @@ class ControllerTemp extends \HUGnet\sensors\drivers\AVRBC2322640
         "shortName" => "ContTemp",
         "unitType" => "Temperature",
         "storageUnit" => '&#176;C',
-        "storageType" => \HUGnet\units\Driver::TYPE_RAW,  // Data stored as
+        "storageType" => \HUGnet\channels\Driver::TYPE_RAW,  // Data stored as
         "extraText" => array(
             "Bias Resistor (kOhms)",
             "Value @25&#176;C (kOhms)"
@@ -81,8 +79,9 @@ class ControllerTemp extends \HUGnet\sensors\drivers\AVRBC2322640
         "inputSize" => 2,
         "maxDecimals" => 2,
         "dataTypes" => array(
-            \HUGnet\units\Driver::TYPE_IGNORE => \HUGnet\units\Driver::TYPE_IGNORE,
-            \HUGnet\units\Driver::TYPE_RAW => \HUGnet\units\Driver::TYPE_RAW,
+            \HUGnet\channels\Driver::TYPE_IGNORE
+                => \HUGnet\channels\Driver::TYPE_IGNORE,
+            \HUGnet\channels\Driver::TYPE_RAW => \HUGnet\channels\Driver::TYPE_RAW,
         ),
     );
     /**

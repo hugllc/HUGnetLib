@@ -39,8 +39,6 @@ namespace HUGnet\sensors\drivers;
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is my base class */
 require_once dirname(__FILE__)."/../DriverVirtual.php";
-/** This is the units class */
-require_once dirname(__FILE__)."/../../units/Driver.php";
 
 /**
  * Driver for reading voltage based pressure sensors
@@ -79,14 +77,16 @@ class WindChillVirtual extends \HUGnet\sensors\DriverVirtual
         "extraDefault" => array(
             0, 0
         ),
-        "storageType" => \HUGnet\units\Driver::TYPE_RAW,
+        "storageType" => \HUGnet\channels\Driver::TYPE_RAW,
         "storageUnit" => "&#176;C",
         "maxDecimals" => 4,
 
         "virtual" => true,              // This says if we are a virtual sensor
         "dataTypes" => array(
-            \HUGnet\units\Driver::TYPE_IGNORE => \HUGnet\units\Driver::TYPE_IGNORE,
-            \HUGnet\units\Driver::TYPE_RAW => \HUGnet\units\Driver::TYPE_RAW,
+            \HUGnet\channels\Driver::TYPE_IGNORE
+                => \HUGnet\channels\Driver::TYPE_IGNORE,
+            \HUGnet\channels\Driver::TYPE_RAW
+                => \HUGnet\channels\Driver::TYPE_RAW,
         ),
     );
     /**
@@ -128,16 +128,20 @@ class WindChillVirtual extends \HUGnet\sensors\DriverVirtual
             // This formula is not valid out of this range
             return null;
         }
-        $units = \HUGnet\units\Driver::factory(
+        $units = \HUGnet\channels\Driver::factory(
             "Temperature",
             "&#176;C"
         );
-        $units->convert($Ta, "&#176;F", "&#176;C", \HUGnet\units\Driver::TYPE_RAW);
+        $units->convert(
+            $Ta, "&#176;F", "&#176;C", \HUGnet\channels\Driver::TYPE_RAW
+        );
         $Vexp = pow($V, 0.16);
 
         $Twc = 35.74 + (0.6215 * $Ta) - (35.75 * $Vexp) + (0.4275 * $Ta * $Vexp);
 
-        $units->convert($Twc, "&#176;C", "&#176;F", \HUGnet\units\Driver::TYPE_RAW);
+        $units->convert(
+            $Twc, "&#176;C", "&#176;F", \HUGnet\channels\Driver::TYPE_RAW
+        );
         return round($Twc, $this->get("maxDecimals"));
     }
 

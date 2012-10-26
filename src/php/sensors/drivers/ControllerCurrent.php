@@ -39,8 +39,6 @@ namespace HUGnet\sensors\drivers;
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is my base class */
 require_once dirname(__FILE__)."/../DriverAVR.php";
-/** This is the units class */
-require_once dirname(__FILE__)."/../../units/Driver.php";
 
 /**
  * Driver for reading voltage based pressure sensors
@@ -68,7 +66,7 @@ class ControllerCurrent extends \HUGnet\sensors\DriverAVR
         "shortName" => "ContCurrent",
         "unitType" => "Current",
         "storageUnit" => 'mA',
-        "storageType" => \HUGnet\units\Driver::TYPE_RAW,
+        "storageType" => \HUGnet\channels\Driver::TYPE_RAW,
         "extraText" => array(
             "Sense Resistor (kOhms)",
             "Gain",
@@ -82,8 +80,9 @@ class ControllerCurrent extends \HUGnet\sensors\DriverAVR
         "inputSize" => 2,
         "maxDecimals" => 1,
         "dataTypes" => array(
-            \HUGnet\units\Driver::TYPE_IGNORE => \HUGnet\units\Driver::TYPE_IGNORE,
-            \HUGnet\units\Driver::TYPE_RAW => \HUGnet\units\Driver::TYPE_RAW,
+            \HUGnet\channels\Driver::TYPE_IGNORE
+                => \HUGnet\channels\Driver::TYPE_IGNORE,
+            \HUGnet\channels\Driver::TYPE_RAW => \HUGnet\channels\Driver::TYPE_RAW,
         ),
     );
     /**

@@ -68,7 +68,7 @@ class ADuCThermocouple extends \HUGnet\sensors\DriverADuC
         "shortName" => "ADuCThermo",
         "unitType" => "Temperature",
         "storageUnit" => '&#176;C',
-        "storageType" => \HUGnet\units\Driver::TYPE_RAW,  // Storage dataType
+        "storageType" => \HUGnet\channels\Driver::TYPE_RAW,  // Storage dataType
         "extraText" => array(
             "R1 to Source (kOhms)",
             "R2 to Ground (kOhms)",

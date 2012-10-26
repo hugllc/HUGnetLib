@@ -66,7 +66,7 @@ class AVRBC2322640_0 extends AVRBC2322640
         "shortName" => "AVRBC2322640",
         "unitType" => "Temperature",
         "storageUnit" => '&#176;C',
-        "storageType" => \HUGnet\units\Driver::TYPE_RAW,  // The data is stored
+        "storageType" => \HUGnet\channels\Driver::TYPE_RAW,  // The data is stored
         "extraText" => array(
             "Bias Resistor (kOhms)",
             "Value @25&#176;C (kOhms)"

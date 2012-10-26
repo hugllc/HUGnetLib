@@ -77,13 +77,14 @@ class AlarmVirtual extends \HUGnet\sensors\DriverVirtual
         "extraDefault" => array(
             1, 1, 0
         ),
-        "storageType" => \HUGnet\units\Driver::TYPE_RAW,
+        "storageType" => \HUGnet\channels\Driver::TYPE_RAW,
         "storageUnit" => "decimal",
         "maxDecimals" => 4,
         "virtual" => true,              // This says if we are a virtual sensor
         "dataTypes" => array(
-            \HUGnet\units\Driver::TYPE_IGNORE => \HUGnet\units\Driver::TYPE_IGNORE,
-            \HUGnet\units\Driver::TYPE_RAW => \HUGnet\units\Driver::TYPE_RAW,
+            \HUGnet\channels\Driver::TYPE_IGNORE
+                => \HUGnet\channels\Driver::TYPE_IGNORE,
+            \HUGnet\channels\Driver::TYPE_RAW => \HUGnet\channels\Driver::TYPE_RAW,
         ),
     );
     /**

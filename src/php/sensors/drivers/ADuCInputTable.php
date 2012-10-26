@@ -86,7 +86,7 @@ class ADuCInputTable extends \HUGnet\sensors\Driver
         "shortName" => "ADuCInputTable",
         "unitType" => "Unknown",
         "storageUnit" => "Unknown",
-        "storageType" => \HUGnet\units\Driver::TYPE_RAW, // Storage dataType
+        "storageType" => \HUGnet\channels\Driver::TYPE_RAW, // Storage dataType
         "extraText" => array(
             "Table Entry",
             "Channel 0 Reading @ 0",

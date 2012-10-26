@@ -198,8 +198,8 @@ class Channels
     */
     protected function &units($index)
     {
-        include_once dirname(__FILE__)."/../units/Driver.php";
-        $units = \HUGnet\units\Driver::factory(
+        include_once dirname(__FILE__)."/../channels/Driver.php";
+        $units = \HUGnet\channels\Driver::factory(
             $this->_channels[$index]["unitType"],
             $this->_channels[$index]["storageUnit"]
         );

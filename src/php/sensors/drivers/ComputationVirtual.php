@@ -70,8 +70,10 @@ class ComputationVirtual extends \HUGnet\sensors\DriverVirtual
         "extraValues" => array(
             20, 10, 15,
             array(
-                \HUGnet\units\Driver::TYPE_RAW => \HUGnet\units\Driver::TYPE_RAW,
-                \HUGnet\units\Driver::TYPE_DIFF => \HUGnet\units\Driver::TYPE_DIFF
+                \HUGnet\channels\Driver::TYPE_RAW
+                    => \HUGnet\channels\Driver::TYPE_RAW,
+                \HUGnet\channels\Driver::TYPE_DIFF
+                    => \HUGnet\channels\Driver::TYPE_DIFF
             ),
             3,
             array(0 => "No", 1 => "Yes"),
@@ -81,7 +83,7 @@ class ComputationVirtual extends \HUGnet\sensors\DriverVirtual
             "Treat Null as Zero"
         ),
         "extraDefault" => array(
-            "", "unknown", "Generic", \HUGnet\units\Driver::TYPE_RAW, 4, 0
+            "", "unknown", "Generic", \HUGnet\channels\Driver::TYPE_RAW, 4, 0
         ),
         "storageType" => "getExtra3",
         "storageUnit" => "getExtra1",
@@ -89,8 +91,9 @@ class ComputationVirtual extends \HUGnet\sensors\DriverVirtual
 
         "virtual" => true,              // This says if we are a virtual sensor
         "dataTypes" => array(
-            \HUGnet\units\Driver::TYPE_IGNORE => \HUGnet\units\Driver::TYPE_IGNORE,
-            \HUGnet\units\Driver::TYPE_RAW => \HUGnet\units\Driver::TYPE_RAW,
+            \HUGnet\channels\Driver::TYPE_IGNORE
+                => \HUGnet\channels\Driver::TYPE_IGNORE,
+            \HUGnet\channels\Driver::TYPE_RAW => \HUGnet\channels\Driver::TYPE_RAW,
         ),
     );
     /**

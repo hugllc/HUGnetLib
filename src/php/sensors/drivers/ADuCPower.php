@@ -65,7 +65,7 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
     protected $params = array(
         "longName" => "ADuC Power Meter",
         "shortName" => "ADuCPower",
-        "storageType" => \HUGnet\units\Driver::TYPE_RAW, // Storage dataType
+        "storageType" => \HUGnet\channnels\Driver::TYPE_RAW, // Storage dataType
         "extraText" => array(
             "Voltage Ref (V)",
             "Shunt Resistor (Ohms)",
@@ -246,7 +246,7 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
                 "maxDecimals" => 6,
                 "storageUnit" => "A",
                 "unitType" => "Current",
-                "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
             ),
             array(
                 "decimals" => 6,
@@ -254,7 +254,7 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
                 "maxDecimals" => 6,
                 "storageUnit" => "V",
                 "unitType" => "Voltage",
-                "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
             ),
             array(
                 "decimals" => 6,
@@ -262,7 +262,7 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
                 "maxDecimals" => 6,
                 "storageUnit" => "W",
                 "unitType" => "Power",
-                "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
             ),
             array(
                 "decimals" => 6,
@@ -270,7 +270,7 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
                 "maxDecimals" => 6,
                 "storageUnit" => "Ohms",
                 "unitType" => "Impedance",
-                "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
             )
         );
     }
