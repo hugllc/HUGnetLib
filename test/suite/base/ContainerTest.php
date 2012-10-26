@@ -1638,7 +1638,7 @@ class HUGnetContainerTestClass extends Container
     *
     * @return null
     */
-    public function &factory(&$system, $data = array(), $class = null)
+    public static function &factory(&$system, $data = array(), $class = null)
     {
         if (empty($class)) {
             $class = __CLASS__;
@@ -1696,7 +1696,7 @@ class HUGnetContainerTestClass2 extends Container
     *
     * @return null
     */
-    public function &factory(&$system, $data = array(), $class = null)
+    public static function &factory(&$system, $data = array(), $class = null)
     {
         if (empty($class)) {
             $class = __CLASS__;
@@ -1764,7 +1764,7 @@ class HUGnetContainerTestClass3 extends Container
     *
     * @return null
     */
-    public function &factory(&$system, $data = array(), $class = null)
+    public static function &factory(&$system, $data = array(), $class = null)
     {
         if (empty($class)) {
             $class = __CLASS__;
