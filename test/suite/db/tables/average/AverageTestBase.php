@@ -68,7 +68,10 @@ abstract class AverageTestBase extends HistoryTestBase
     public function testParent($class)
     {
         $class = "\\HUGnet\\db\\tables\\".$class;
-        $this->assertTrue(is_subclass_of($class, "HUGnet\\db\\Average"));
+        $this->assertTrue(
+            is_subclass_of($class, "HUGnet\\db\\Average"),
+            "$class is not a child of HUGnet\\db\\Average"
+        );
     }
 }
 

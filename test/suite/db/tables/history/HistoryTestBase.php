@@ -112,7 +112,10 @@ abstract class HistoryTestBase extends \PHPUnit_Framework_TestCase
     public function testParent($class)
     {
         $class = "\\HUGnet\\db\\tables\\".$class;
-        $this->assertTrue(is_subclass_of($class, "HUGnet\\db\\History"));
+        $this->assertTrue(
+            is_subclass_of($class, "HUGnet\\db\\History"),
+            "$class is not a child of HUGnet\\db\\History"
+        );
     }
     /**
     * data provider for testSet
