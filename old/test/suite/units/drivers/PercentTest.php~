@@ -34,7 +34,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\units\drivers;
+namespace HUGnet\channels\drivers;
 /** This is the base class */
 require_once dirname(__FILE__)."/DriverTestBase.php";
 /** This is a required class */
@@ -158,32 +158,32 @@ class PercentTest extends DriverTestBase
     {
         return array(
             array(
-                12.312, "decimal", "%", \HUGnet\units\Driver::TYPE_RAW,
+                12.312, "decimal", "%", \HUGnet\channels\Driver::TYPE_RAW,
                 true, .12312
             ),
             array(
-                .12312, "%", "decimal", \HUGnet\units\Driver::TYPE_RAW,
+                .12312, "%", "decimal", \HUGnet\channels\Driver::TYPE_RAW,
                 true, 12.312
             ),
             array(
-                12.312, "decimal", "%", \HUGnet\units\Driver::TYPE_DIFF,
+                12.312, "decimal", "%", \HUGnet\channels\Driver::TYPE_DIFF,
                 true, .12312
             ),
             array(
-                .12312, "%", "decimal", \HUGnet\units\Driver::TYPE_DIFF,
+                .12312, "%", "decimal", \HUGnet\channels\Driver::TYPE_DIFF,
                 true, 12.312
             ),
             array(
-                0.1, "%", "decimal", \HUGnet\units\Driver::TYPE_DIFF, true, 10.0
+                0.1, "%", "decimal", \HUGnet\channels\Driver::TYPE_DIFF, true, 10.0
             ),
             array(
-                42.13, "decimal", "%", \HUGnet\units\Driver::TYPE_DIFF, true, 0.4213
+                42.13, "decimal", "%", \HUGnet\channels\Driver::TYPE_DIFF, true, 0.4213
             ),
             array(
-                42.13, "%", "%", \HUGnet\units\Driver::TYPE_DIFF, true, 42.13
+                42.13, "%", "%", \HUGnet\channels\Driver::TYPE_DIFF, true, 42.13
             ),
             array(
-                0.42, "decimal", "decimal", \HUGnet\units\Driver::TYPE_DIFF,
+                0.42, "decimal", "decimal", \HUGnet\channels\Driver::TYPE_DIFF,
                 true, 0.42
             ),
         );

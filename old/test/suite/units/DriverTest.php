@@ -34,11 +34,17 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\units\drivers;
-/** This is the base class */
-require_once dirname(__FILE__)."/DriverTestBase.php";
+namespace HUGnet\units;
 /** This is a required class */
-require_once CODE_BASE.'units/drivers/GENERIC.php';
+require_once CODE_BASE.'units/Driver.php';
+/** This is a required class */
+require_once CODE_BASE.'system/System.php';
+/** This is a required class */
+require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
+/** This is a required class */
+require_once CODE_BASE.'util/VPrint.php';
+/** This is our base class */
+require_once dirname(__FILE__)."/drivers/DriverTestBase.php";
 
 /**
  * Test class for HUGnetDB.
@@ -54,12 +60,10 @@ require_once CODE_BASE.'units/drivers/GENERIC.php';
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class GENERICTest extends DriverTestBase
+class DriverTest extends drivers\DriverTestBase
 {
-    /** This is the class we are testing */
-    protected $class = "GENERIC";
     /** This is the units that are valid */
-    protected static $units = array("test");
+    protected static $units = array('&#176;F', '&#176;C', '&#176;R', 'K');
     /**
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
@@ -70,8 +74,7 @@ class GENERICTest extends DriverTestBase
     */
     protected function setUp()
     {
-        parent::setUp();
-        $this->o = &GENERIC::factory("test");
+        $this->o = &DriverTestClass::factory();
     }
 
     /**
@@ -84,7 +87,44 @@ class GENERICTest extends DriverTestBase
     */
     protected function tearDown()
     {
-        parent::tearDown();
+        unset($this->o);
+    }
+
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataFactory()
+    {
+        return array(
+            array(
+                "asdf",
+                "&#176;C",
+                "HUGnet\channels\drivers\GENERIC",
+            ),
+            array(
+                "GENERIC",
+                "someOldUnit",
+                "HUGnet\channels\drivers\GENERIC",
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $unitType The name of the variable to test.
+    * @param string $units    The units to use
+    * @param array  $expect   The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataFactory
+    */
+    public function testFactory($unitType, $units, $expect)
+    {
+        $o = &Driver::factory($unitType, $units);
+        $this->assertSame($expect, get_class($o));
     }
     /**
     * data provider for testGetTypes
@@ -95,27 +135,15 @@ class GENERICTest extends DriverTestBase
     {
         return array(
             array(
-                "&#176;C",
+                "\\HUGnet\\channels\\DriverTestClass",
                 array(
+                    '&#176;F' => '&#176;F',
                     '&#176;C' => '&#176;C',
+                    '&#176;R' => '&#176;R',
+                    'K' => 'K',
                 ),
             ),
         );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $units  The units to check
-    * @param string $expect The expected data
-    *
-    * @return null
-    *
-    * @dataProvider dataGetValid
-    */
-    public function testGetValid($units, $expect)
-    {
-        $obj = GENERIC::factory($units);
-        $this->assertEquals($expect, $obj->getValid());
     }
 
     /**
@@ -128,31 +156,13 @@ class GENERICTest extends DriverTestBase
         return array(
             array(
                 "K",
-                "K",
                 true,
             ),
             array(
                 "psi",
-                "K",
                 false,
             ),
         );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $units  The units to setup up for
-    * @param string $check  The units to check
-    * @param string $expect The expected data
-    *
-    * @return null
-    *
-    * @dataProvider dataValid
-    */
-    public function testValid($units, $check, $expect)
-    {
-        $obj = GENERIC::factory($units);
-        $this->assertSame($expect, $obj->valid($check));
     }
     /**
     * data provider for testGetTypes
@@ -164,31 +174,13 @@ class GENERICTest extends DriverTestBase
         return array(
             array(
                 "K",
-                "K",
                 true,
             ),
             array(
                 "psi",
-                "K",
                 false,
             ),
         );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $units  The units to setup up for
-    * @param string $check  The units to check
-    * @param string $expect The expected data
-    *
-    * @return null
-    *
-    * @dataProvider dataNumeric
-    */
-    public function testNumeric($units, $check, $expect)
-    {
-        $obj = GENERIC::factory($units);
-        $this->assertSame($expect, $obj->numeric($check));
     }
     /**
     * data provider for testGetTypes
@@ -199,11 +191,44 @@ class GENERICTest extends DriverTestBase
     {
         return array(
             array(
-                12.312, "&#176;C", "&#176;F", \HUGnet\units\Driver::TYPE_RAW,
+                12.312, "&#176;C", "&#176;F", \HUGnet\channels\Driver::TYPE_RAW,
                 false, 12.312
+            ),
+            array(
+                12.312, "&#176;C", "&#176;C", \HUGnet\channels\Driver::TYPE_RAW,
+                true, 12.312
             ),
         );
     }
-
+}
+/**
+ * Base driver class for devices.
+ *
+ * This class deals with loading the drivers and figuring out what driver needs
+ * to be loaded.
+ *
+ * @category   Libraries
+ * @package    HUGnetLib
+ * @subpackage Devices
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2012 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.9.7
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @since      0.9.7
+ */
+class DriverTestClass extends Driver
+{
+    /** @var The units that are valid for conversion */
+    protected $valid = array("&#176;F", "&#176;C", "&#176;R", "K");
+    /**
+    * This function creates the system.
+    *
+    * @return null
+    */
+    public static function &factory()
+    {
+        return parent::intFactory();
+    }
 }
 ?>

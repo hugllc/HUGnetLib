@@ -146,7 +146,7 @@ class DriverTest extends drivers\DriverTestBase
             array(
                 array(),
                 "storageType",
-                \HUGnet\units\Driver::TYPE_RAW,
+                \HUGnet\channels\Driver::TYPE_RAW,
             ),
             array(
                 array(),
@@ -216,10 +216,10 @@ class DriverTest extends drivers\DriverTestBase
             'maxDecimals' => 7,
             'testParam' => '12345',
             "dataTypes" => array(
-                \HUGnet\units\Driver::TYPE_RAW => \HUGnet\units\Driver::TYPE_RAW,
-                \HUGnet\units\Driver::TYPE_DIFF => \HUGnet\units\Driver::TYPE_DIFF,
-                \HUGnet\units\Driver::TYPE_IGNORE
-                    => \HUGnet\units\Driver::TYPE_IGNORE,
+                \HUGnet\channels\Driver::TYPE_RAW => \HUGnet\channels\Driver::TYPE_RAW,
+                \HUGnet\channels\Driver::TYPE_DIFF => \HUGnet\channels\Driver::TYPE_DIFF,
+                \HUGnet\channels\Driver::TYPE_IGNORE
+                    => \HUGnet\channels\Driver::TYPE_IGNORE,
             ),
             'defMin' => 0,
             'defMax' => 150,
@@ -705,7 +705,7 @@ class DriverTest extends drivers\DriverTestBase
                             "storageUnit" => "unknown",
                             "maxDecimals" => 2,
                             "unitType" => "asdf",
-                            "storageType" => \HUGnet\units\Driver::TYPE_RAW,
+                            "storageType" => \HUGnet\channels\Driver::TYPE_RAW,
                         ),
                     ),
                 ),
@@ -717,7 +717,7 @@ class DriverTest extends drivers\DriverTestBase
                         "maxDecimals" => 7,
                         "storageUnit" => 'unknown',
                         "unitType" => 'asdf',
-                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
                 ),
             ),

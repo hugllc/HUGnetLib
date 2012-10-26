@@ -144,7 +144,7 @@ class DriverAVRTest extends drivers\DriverTestBase
             ),
             array(
                 "storageType",
-                \HUGnet\units\Driver::TYPE_RAW,
+                \HUGnet\channels\Driver::TYPE_RAW,
             ),
             array(
                 "testParam",
@@ -192,10 +192,10 @@ class DriverAVRTest extends drivers\DriverTestBase
             'maxDecimals' => 2,
             'testParam' => '12345',
             "dataTypes" => array(
-                \HUGnet\units\Driver::TYPE_RAW => \HUGnet\units\Driver::TYPE_RAW,
-                \HUGnet\units\Driver::TYPE_DIFF => \HUGnet\units\Driver::TYPE_DIFF,
-                \HUGnet\units\Driver::TYPE_IGNORE
-                    => \HUGnet\units\Driver::TYPE_IGNORE,
+                \HUGnet\channels\Driver::TYPE_RAW => \HUGnet\channels\Driver::TYPE_RAW,
+                \HUGnet\channels\Driver::TYPE_DIFF => \HUGnet\channels\Driver::TYPE_DIFF,
+                \HUGnet\channels\Driver::TYPE_IGNORE
+                    => \HUGnet\channels\Driver::TYPE_IGNORE,
             ),
             'defMin' => 0,
             'defMax' => 150,

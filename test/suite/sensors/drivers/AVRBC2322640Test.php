@@ -252,7 +252,7 @@ class AVRBC2322640Test extends DriverTestBase
                 array(
                     "Sensor" => array(
                         "get" => array(
-                            'dataType'=> \HUGnet\units\Driver::TYPE_IGNORE,
+                            'dataType'=> \HUGnet\channels\Driver::TYPE_IGNORE,
                             'id' => 2,
                         ),
                     ),

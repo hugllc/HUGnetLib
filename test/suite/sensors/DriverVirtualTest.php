@@ -144,7 +144,7 @@ class DriverVirtualTest extends drivers\DriverTestBase
             ),
             array(
                 "storageType",
-                \HUGnet\units\Driver::TYPE_RAW,
+                \HUGnet\channels\Driver::TYPE_RAW,
             ),
             array(
                 "testParam",

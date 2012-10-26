@@ -123,11 +123,6 @@ abstract class SystemTableBase
     {
         if (!is_object($this->_table)) {
             $this->_table = $this->system()->table($this->tableClass);
-            /*
-            $class = Util::findClass($this->tableClass, "tables");
-            $system = &$this->system();
-            $this->_table = new $class($system);
-            */
         }
         return $this->_table;
     }

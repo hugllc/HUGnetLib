@@ -34,11 +34,11 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\units\drivers;
+namespace HUGnet\channels\drivers;
 /** This is the base class */
 require_once dirname(__FILE__)."/DriverTestBase.php";
 /** This is a required class */
-require_once CODE_BASE.'units/drivers/Pressure.php';
+require_once CODE_BASE.'units/drivers/HeatPerUnitArea.php';
 
 /**
  * Test class for HUGnetDB.
@@ -54,12 +54,12 @@ require_once CODE_BASE.'units/drivers/Pressure.php';
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class PressureTest extends DriverTestBase
+class HeatPerUnitAreaTest extends DriverTestBase
 {
     /** This is the class we are testing */
-    protected $class = "Pressure";
+    protected $class = "HeatPerUnitArea";
     /** This is the units that are valid */
-    protected static $units = array("Pa", "bar", "at", "atm", "Torr", "psi");
+    protected static $units = array('W/m^2', 'Btu/hr ft^2');
     /**
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
@@ -71,7 +71,7 @@ class PressureTest extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->o = &Pressure::factory();
+        $this->o = &HeatPerUnitArea::factory();
     }
 
     /**
@@ -106,12 +106,8 @@ class PressureTest extends DriverTestBase
             array(
                 "&deg;C",
                 array(
-                    'Pa' => 'Pa',
-                    'bar' => 'bar',
-                    'at' => 'at',
-                    'atm' => 'atm',
-                    'Torr' => 'Torr',
-                    'psi' => 'psi',
+                    'W/m^2' => 'W/m^2',
+                    'Btu/hr ft^2' => 'Btu/hr ft^2',
                 ),
             ),
         );
@@ -126,12 +122,12 @@ class PressureTest extends DriverTestBase
     {
         return array(
             array(
-                "%",
-                false,
+                "Btu/hr ft^2",
+                true,
             ),
             array(
                 "psi",
-                true,
+                false,
             ),
         );
     }
@@ -144,12 +140,12 @@ class PressureTest extends DriverTestBase
     {
         return array(
             array(
-                "%",
-                false,
+                "Btu/hr ft^2",
+                true,
             ),
             array(
                 "psi",
-                true,
+                false,
             ),
         );
     }
@@ -162,24 +158,36 @@ class PressureTest extends DriverTestBase
     {
         return array(
             array(
-                100, "Pa", "Torr", \HUGnet\units\Driver::TYPE_RAW,
-                true, 13332.2
+                12.312, "Btu/hr ft^2", "W/m^2", \HUGnet\channels\Driver::TYPE_RAW,
+                true, 3.902904
             ),
             array(
-                1.6258, "Pa", "atm", \HUGnet\units\Driver::TYPE_RAW,
-                true, 164732.5592
+                3.902904, "W/m^2", "Btu/hr ft^2", \HUGnet\channels\Driver::TYPE_RAW,
+                true, 12.309759216
             ),
             array(
-                92.351, "atm", "psi", \HUGnet\units\Driver::TYPE_RAW,
-                true, 6.284116146
+                10,
+                "W/m^2",
+                "W/m^2",
+                \HUGnet\channels\Driver::TYPE_RAW,
+                true,
+                10,
             ),
             array(
-                1.351, "atm", "at", \HUGnet\units\Driver::TYPE_RAW,
-                true, 1.30755184
+                1,
+                "Btu/hr ft^2",
+                "W/m^2",
+                \HUGnet\channels\Driver::TYPE_DIFF,
+                true,
+                0.317,
             ),
             array(
-                1.351, "bar", "atm", \HUGnet\units\Driver::TYPE_RAW,
-                true, 1.36890075
+                1,
+                "W/m^2",
+                "Btu/hr ft^2",
+                \HUGnet\channels\Driver::TYPE_DIFF,
+                true,
+                3.154,
             ),
         );
     }

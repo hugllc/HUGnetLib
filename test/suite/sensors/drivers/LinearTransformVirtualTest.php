@@ -104,7 +104,7 @@ class LinearTransformVirtualTest extends DriverTestBase
                                 1, 10, 5.5, 0, 60,
                                 "&#176;C",
                                 "Temperature",
-                                \HUGnet\units\Driver::TYPE_RAW,
+                                \HUGnet\channels\Driver::TYPE_RAW,
                                 "3"
                             ),
                         ),
@@ -127,7 +127,7 @@ class LinearTransformVirtualTest extends DriverTestBase
                                 1, 10, 5.5, 0, 60,
                                 "&#176;C",
                                 "Temperature",
-                                \HUGnet\units\Driver::TYPE_RAW,
+                                \HUGnet\channels\Driver::TYPE_RAW,
                                 "3"
                             ),
                         ),
@@ -150,7 +150,7 @@ class LinearTransformVirtualTest extends DriverTestBase
                                 0, 10, 5.5, 0, 60,
                                 "&#176;C",
                                 "Temperature",
-                                \HUGnet\units\Driver::TYPE_RAW,
+                                \HUGnet\channels\Driver::TYPE_RAW,
                                 "3"
                             ),
                         ),
@@ -173,7 +173,7 @@ class LinearTransformVirtualTest extends DriverTestBase
                                 1, 20, 5.5, 0, 60,
                                 "&#176;C",
                                 "Temperature",
-                                \HUGnet\units\Driver::TYPE_RAW,
+                                \HUGnet\channels\Driver::TYPE_RAW,
                                 "3"
                             ),
                         ),
@@ -196,7 +196,7 @@ class LinearTransformVirtualTest extends DriverTestBase
                                 1, 1, -5.5, 0, 60,
                                 "&#176;C",
                                 "Temperature",
-                                \HUGnet\units\Driver::TYPE_RAW,
+                                \HUGnet\channels\Driver::TYPE_RAW,
                                 "3"
                             ),
                         ),

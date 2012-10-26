@@ -40,6 +40,8 @@ namespace HUGnet;
 require_once dirname(__FILE__)."/DummyBase.php";
 /** This is our base class */
 require_once dirname(__FILE__)."/DummyNetwork.php";
+/** This is our base class */
+require_once dirname(__FILE__)."/DummyTable.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -67,6 +69,16 @@ class DummySystem extends DummyBase
     public function &network()
     {
         $ret = new \HUGnet\network\DummyNetwork("Network");
+        return $ret;
+    }
+    /**
+    * This sets the configuration array _config
+    *
+    * @return null
+    */
+    public function &table($table)
+    {
+        $ret = new \HUGnet\DummyTable($table);
         return $ret;
     }
 }

@@ -2577,7 +2577,8 @@ S9030000FC",
                         ),
                     ),
                 ),
-                new \HUGnet\db\tables\Firmware(
+                \HUGnet\db\Table::factory(
+                    $system,
                     array(
                         "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
                         ."FFFFFF500102020202101002026F46
@@ -2602,7 +2603,8 @@ S9030000FC",
                         "Version" => "1.2.3",
                         "RelStatus" => \HUGnet\db\tables\Firmware::RELEASE,
 
-                    )
+                    ),
+                    "Firmware"
                 ),
                 true,
                 array(
@@ -3169,7 +3171,8 @@ S9030000FC",
                         ),
                     ),
                 ),
-                new \HUGnet\db\tables\Firmware(
+                \HUGnet\db\Table::factory(
+                    $system,
                     array(
                         "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
                         ."FFFFFF500102020202101002026F46
@@ -3194,7 +3197,8 @@ S9030000FC",
                         "Version" => "1.2.3",
                         "RelStatus" => \HUGnet\db\tables\Firmware::RELEASE,
 
-                    )
+                    ),
+                    "Firmware"
                 ),
                 true,
                 array(
@@ -3419,7 +3423,8 @@ S9030000FC",
                         ),
                     ),
                 ),
-                new \HUGnet\db\tables\Firmware(
+                \HUGnet\db\Table::factory(
+                    $system,
                     array(
                         "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
                         ."FFFFFF500102020202101002026F46
@@ -3444,7 +3449,8 @@ S9030000FC",
                         "Version" => "1.2.3",
                         "RelStatus" => \HUGnet\db\tables\Firmware::RELEASE,
 
-                    )
+                    ),
+                    "Firmware"
                 ),
                 true,
                 array(
@@ -3646,7 +3652,8 @@ S9030000FC",
                         ),
                     ),
                 ),
-                new \HUGnet\db\tables\Firmware(
+                \HUGnet\db\Table::factory(
+                    $system,
                     array(
                         "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
                         ."FFFFFF500102020202101002026F46
@@ -3664,7 +3671,8 @@ S9030000FC",
                         "Version" => "1.2.3",
                         "RelStatus" => \HUGnet\db\tables\Firmware::RELEASE,
 
-                    )
+                    ),
+                    "Firmware"
                 ),
                 true,
                 array(
@@ -3827,7 +3835,8 @@ S9030000FC",
                         ),
                     ),
                 ),
-                new \HUGnet\db\tables\Firmware(
+                \HUGnet\db\Table::factory(
+                    $system,
                     array(
                         "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
                         ."FFFFFF500102020202101002026F46
@@ -3853,7 +3862,8 @@ S9030000FC",
                         "Version" => "1.2.3",
                         "RelStatus" => \HUGnet\db\tables\Firmware::RELEASE,
 
-                    )
+                    ),
+                    "Firmware"
                 ),
                 false,
                 array(
@@ -4040,7 +4050,8 @@ S9030000FC",
                         ),
                     ),
                 ),
-                new \HUGnet\db\tables\Firmware(
+                \HUGnet\db\Table::factory(
+                    $system,
                     array(
                         "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
                         ."FFFFFF500102020202101002026F46
@@ -4065,7 +4076,8 @@ S9030000FC",
                         "Version" => "1.2.3",
                         "RelStatus" => \HUGnet\db\tables\Firmware::RELEASE,
 
-                    )
+                    ),
+                    "Firmware"
                 ),
                 true,
                 array(
@@ -4223,7 +4235,10 @@ S9030000FC",
                         ),
                     ),
                 ),
-                new \HUGnet\db\tables\Firmware(
+                \HUGnet\db\Table::factory(
+                    $system,
+                    array(),
+                    "Firmware"
                 ),
                 true,
                 array(

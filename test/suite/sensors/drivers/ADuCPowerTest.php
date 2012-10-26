@@ -39,6 +39,8 @@ namespace HUGnet\sensors\drivers;
 require_once dirname(__FILE__)."/DriverTestBase.php";
 /** This is a required class */
 require_once CODE_BASE.'sensors/drivers/ADuCPower.php';
+/** This is a required class */
+require_once CODE_BASE.'sensors/ADuCInputTable.php';
 
 /**
  * Test class for HUGnetDB.
@@ -265,7 +267,7 @@ class ADuCPowerTest extends DriverTestBase
                         'maxDecimals' => 6,
                         'storageUnit' => 'A',
                         "unitType" => 'Current',
-                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
                     array(
                         "decimals" => 6,
@@ -273,7 +275,7 @@ class ADuCPowerTest extends DriverTestBase
                         'maxDecimals' => 6,
                         'storageUnit' => 'V',
                         "unitType" => 'Voltage',
-                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
                     array(
                         "decimals" => 6,
@@ -281,7 +283,7 @@ class ADuCPowerTest extends DriverTestBase
                         'maxDecimals' => 6,
                         'storageUnit' => 'W',
                         "unitType" => 'Power',
-                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
                     array(
                         "decimals" => 6,
@@ -289,7 +291,7 @@ class ADuCPowerTest extends DriverTestBase
                         'maxDecimals' => 6,
                         'storageUnit' => 'Ohms',
                         "unitType" => 'Impedance',
-                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
                 ),
             ),
@@ -307,7 +309,7 @@ class ADuCPowerTest extends DriverTestBase
                         'maxDecimals' => 6,
                         'storageUnit' => 'A',
                         "unitType" => 'Current',
-                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
                     array(
                         "decimals" => 6,
@@ -315,7 +317,7 @@ class ADuCPowerTest extends DriverTestBase
                         'maxDecimals' => 6,
                         'storageUnit' => 'V',
                         "unitType" => 'Voltage',
-                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
                     array(
                         "decimals" => 6,
@@ -323,7 +325,7 @@ class ADuCPowerTest extends DriverTestBase
                         'maxDecimals' => 6,
                         'storageUnit' => 'W',
                         "unitType" => 'Power',
-                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
                     array(
                         "decimals" => 6,
@@ -331,7 +333,7 @@ class ADuCPowerTest extends DriverTestBase
                         'maxDecimals' => 6,
                         'storageUnit' => 'Ohms',
                         "unitType" => 'Impedance',
-                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
                 ),
             ),
@@ -387,7 +389,7 @@ class ADuCPowerTest extends DriverTestBase
                         'maxDecimals' => 6,
                         'storageUnit' => 'A',
                         "unitType" => "Current",
-                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
                     array(
                         "value" => 14.448166,
@@ -396,7 +398,7 @@ class ADuCPowerTest extends DriverTestBase
                         'maxDecimals' => 6,
                         'storageUnit' => 'V',
                         "unitType" => "Voltage",
-                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
                     array(
                         "value" => 4.547026,
@@ -405,7 +407,7 @@ class ADuCPowerTest extends DriverTestBase
                         'maxDecimals' => 6,
                         'storageUnit' => 'W',
                         "unitType" => "Power",
-                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
                     array(
                         "value" => 45.909022,
@@ -414,7 +416,7 @@ class ADuCPowerTest extends DriverTestBase
                         'maxDecimals' => 6,
                         'storageUnit' => 'Ohms',
                         "unitType" => "Impedance",
-                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
                 ),
             ),
@@ -440,7 +442,7 @@ class ADuCPowerTest extends DriverTestBase
                         'maxDecimals' => 6,
                         'storageUnit' => 'A',
                         "unitType" => "Current",
-                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
                     array(
                         "value" => 0.0,
@@ -449,7 +451,7 @@ class ADuCPowerTest extends DriverTestBase
                         'maxDecimals' => 6,
                         'storageUnit' => 'V',
                         "unitType" => "Voltage",
-                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
                     array(
                         "value" => 0.0,
@@ -458,7 +460,7 @@ class ADuCPowerTest extends DriverTestBase
                         'maxDecimals' => 6,
                         'storageUnit' => 'W',
                         "unitType" => "Power",
-                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
                     array(
                         "value" => null,
@@ -467,7 +469,7 @@ class ADuCPowerTest extends DriverTestBase
                         'maxDecimals' => 6,
                         'storageUnit' => 'Ohms',
                         "unitType" => "Impedance",
-                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
                 ),
             ),
@@ -493,7 +495,7 @@ class ADuCPowerTest extends DriverTestBase
                         'maxDecimals' => 6,
                         'storageUnit' => 'A',
                         "unitType" => "Current",
-                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
                     array(
                         "value" => null,
@@ -502,7 +504,7 @@ class ADuCPowerTest extends DriverTestBase
                         'maxDecimals' => 6,
                         'storageUnit' => 'V',
                         "unitType" => "Voltage",
-                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
                     array(
                         "value" => null,
@@ -511,7 +513,7 @@ class ADuCPowerTest extends DriverTestBase
                         'maxDecimals' => 6,
                         'storageUnit' => 'W',
                         "unitType" => "Power",
-                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
                     array(
                         "value" => null,
@@ -520,7 +522,7 @@ class ADuCPowerTest extends DriverTestBase
                         'maxDecimals' => 6,
                         'storageUnit' => 'Ohms',
                         "unitType" => "Impedance",
-                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
                 ),
             ),
@@ -546,7 +548,7 @@ class ADuCPowerTest extends DriverTestBase
                         'maxDecimals' => 6,
                         'storageUnit' => 'A',
                         "unitType" => "Current",
-                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
                     array(
                         "value" => null,
@@ -555,7 +557,7 @@ class ADuCPowerTest extends DriverTestBase
                         'maxDecimals' => 6,
                         'storageUnit' => 'V',
                         "unitType" => "Voltage",
-                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
                     array(
                         "value" => null,
@@ -564,7 +566,7 @@ class ADuCPowerTest extends DriverTestBase
                         'maxDecimals' => 6,
                         'storageUnit' => 'W',
                         "unitType" => "Power",
-                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
                     array(
                         "value" => null,
@@ -573,7 +575,7 @@ class ADuCPowerTest extends DriverTestBase
                         'maxDecimals' => 6,
                         'storageUnit' => 'Ohms',
                         "unitType" => "Impedance",
-                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
                 ),
             ),
@@ -599,7 +601,7 @@ class ADuCPowerTest extends DriverTestBase
                         'maxDecimals' => 6,
                         'storageUnit' => 'A',
                         "unitType" => "Current",
-                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
                     array(
                         "value" => 14.448166,
@@ -608,7 +610,7 @@ class ADuCPowerTest extends DriverTestBase
                         'maxDecimals' => 6,
                         'storageUnit' => 'V',
                         "unitType" => "Voltage",
-                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
                     array(
                         "value" => null,
@@ -617,7 +619,7 @@ class ADuCPowerTest extends DriverTestBase
                         'maxDecimals' => 6,
                         'storageUnit' => 'W',
                         "unitType" => "Power",
-                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
                     array(
                         "value" => null,
@@ -626,7 +628,7 @@ class ADuCPowerTest extends DriverTestBase
                         'maxDecimals' => 6,
                         'storageUnit' => 'Ohms',
                         "unitType" => "Impedance",
-                        "dataType" => \HUGnet\units\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
                 ),
             ),

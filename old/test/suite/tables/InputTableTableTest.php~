@@ -35,7 +35,7 @@
  *
  */
 /** This is a required class */
-require_once CODE_BASE.'tables/SensorsTable.php';
+require_once CODE_BASE.'tables/InputTableTable.php';
 /** This is a required class */
 require_once TEST_BASE."tables/HUGnetDBTableTestBase.php";
 
@@ -53,7 +53,7 @@ require_once TEST_BASE."tables/HUGnetDBTableTestBase.php";
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class SensorsTableTest extends HUGnetDBTableTestBase
+class InputTableTableTest extends HUGnetDBTableTestBase
 {
 
     /**
@@ -71,7 +71,7 @@ class SensorsTableTest extends HUGnetDBTableTestBase
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
         $this->pdo = &$this->config->servers->getPDO();
-        $this->o = new SensorsTable();
+        $this->o = new InputTableTable();
         $this->o->create();
         parent::Setup();
     }
@@ -99,7 +99,7 @@ class SensorsTableTest extends HUGnetDBTableTestBase
     protected function getDataSet()
     {
         return $this->createXMLDataSet(
-            TEST_CONFIG_BASE.'files/SensorsTableTest.xml'
+            TEST_CONFIG_BASE.'files/InputTableTableTest.xml'
         );
     }
     /**
@@ -109,7 +109,7 @@ class SensorsTableTest extends HUGnetDBTableTestBase
     */
     public static function dataColumns()
     {
-        $obj = new SensorsTable();
+        $obj = new InputTableTable();
         return HUGnetDBTableTestBase::splitObject($obj, "sqlColumns");
     }
     /**
@@ -119,7 +119,7 @@ class SensorsTableTest extends HUGnetDBTableTestBase
     */
     public static function dataIndexes()
     {
-        $obj = new SensorsTable();
+        $obj = new InputTableTable();
         return HUGnetDBTableTestBase::splitObject($obj, "sqlIndexes");
     }
     /**
@@ -130,7 +130,7 @@ class SensorsTableTest extends HUGnetDBTableTestBase
     public static function dataVars()
     {
         return array(
-            array(new SensorsTable()),
+            array(new InputTableTable()),
         );
     }
 
@@ -142,12 +142,6 @@ class SensorsTableTest extends HUGnetDBTableTestBase
     public static function dataSet()
     {
         return array(
-            array(
-                "dataType",
-                \HUGnet\units\Driver::TYPE_DIFF,
-                \HUGnet\units\Driver::TYPE_DIFF
-            ),
-            array("dataType", "asdffdsas", \HUGnet\units\Driver::TYPE_RAW),
             array("params", "asdfasdfasdfasdf", "asdfasdfasdfasdf"),
             array("params", array(1,2,3,4), "[1,2,3,4]"),
             array("extra", array(1,2,3,4), array(1,2,3,4)),
@@ -182,30 +176,34 @@ class SensorsTableTest extends HUGnetDBTableTestBase
             array(
                 array(
                     array(
-                        "dev" => 156,
-                        "sensor" => 23,
                         "id" => 1,
+                        "name" => "asdf",
+                        "desc" => "HERE",
+                        "arch" => "Temperature",
                     ),
                 ),
                 array(
-                    "dev" => 156,
-                    "sensor" => 23,
                     "id" => 1,
+                    "name" => "asdf",
+                    "desc" => "HERE",
+                    "arch" => "Temperature",
                 ),
                 true
             ),
             array(
                 array(
                     array(
-                        "dev" => 158,
-                        "sensor" => 23,
-                        "id" => 1,
+                        "id" => 2,
+                        "name" => "asdf",
+                        "desc" => "HERE",
+                        "arch" => "Temperature",
                     ),
                 ),
                 array(
-                    "dev" => 156,
-                    "sensor" => 23,
                     "id" => 1,
+                    "name" => "asdf",
+                    "desc" => "HERE",
+                    "arch" => "Temperature",
                 ),
                 false
             ),
@@ -213,9 +211,10 @@ class SensorsTableTest extends HUGnetDBTableTestBase
                 array(
                 ),
                 array(
-                    "dev" => 156,
-                    "sensor" => 23,
                     "id" => 1,
+                    "name" => "asdf",
+                    "desc" => "HERE",
+                    "arch" => "Temperature",
                 ),
                 false
             ),
@@ -253,31 +252,20 @@ class SensorsTableTest extends HUGnetDBTableTestBase
         return array(
             array(
                 array(
-                    "dev" => 156,
-                    "sensor" => 23,
                     "id" => 1,
-                    "type" => "asdf",
-                    "location" => "HERE",
-                    "units" => "&deg;C",
-                    "decimals" => 4,
-                    "storageUnits" => "&deg;C",
-                    "unitType" => "Temperature",
-                    "driver" => "asdf",
+                    "name" => "asdf",
+                    "desc" => "HERE",
+                    "arch" => "Temperature",
                     "min" => 5,
                     "max" => 15,
                     "extra" => array(),
                 ),
                 array(
                     "group" => 'default',
-                    "dev" => 156,
-                    "sensor" => 23,
                     "id" => 1,
-                    "type" => "asdf",
-                    "location" => "HERE",
-                    "dataType" => \HUGnet\units\Driver::TYPE_RAW,
-                    "units" => '&deg;C',
-                    "decimals" => 4,
-                    "driver" => "asdf",
+                    "name" => "asdf",
+                    "desc" => "HERE",
+                    "arch" => "Temperature",
                     "params" => json_encode(
                         array("min" => 5, "max" => 15, "extra" => array())
                     ),
@@ -285,54 +273,37 @@ class SensorsTableTest extends HUGnetDBTableTestBase
             ),
             array(
                 array(
-                    "dev" => 156,
-                    "sensor" => 23,
                     "id" => 1,
-                    "type" => "asdf",
-                    "location" => "HERE",
-                    "units" => "&deg;C",
-                    "decimals" => 4,
+                    "name" => "asdf",
+                    "desc" => "HERE",
+                    "arch" => "Temperature",
                     "params" => '{"storageUnits":"&deg;C","unitType":"Temperature"}',
                 ),
                 array(
                     "group" => 'default',
-                    "dev" => 156,
-                    "sensor" => 23,
                     "id" => 1,
-                    "type" => "asdf",
-                    "location" => "HERE",
-                    "dataType" => \HUGnet\units\Driver::TYPE_RAW,
-                    "units" => '&deg;C',
-                    "decimals" => 4,
-                    "driver"  => "SDEFAULT",
+                    "name" => "asdf",
+                    "desc" => "HERE",
+                    "arch" => "Temperature",
                     "params" => '{"storageUnits":"&deg;C","unitType":"Temperature"}',
                 ),
             ),
             array(
                 array(
-                    "dev" => 156,
-                    "sensor" => 23,
+                    "group" => "default",
                     "id" => 1,
-                    "type" => "asdf",
-                    "location" => "HERE",
-                    "units" => "&deg;C",
-                    "decimals" => 4,
-                    "storageUnits" => "&deg;C",
-                    "unitType" => "Temperature",
-                    "params" => array(1,2,3,4, "extra" => array(1,2,3,4)),
+                    "name" => "asdf",
+                    "desc" => "HERE",
+                    "arch" => "Temperature",
+                    "params" => array(1,2,3,4),
                 ),
                 array(
-                    "group" => 'default',
-                    "dev" => 156,
-                    "sensor" => 23,
+                    "group" => "default",
                     "id" => 1,
-                    "type" => "asdf",
-                    "location" => "HERE",
-                    "dataType" => \HUGnet\units\Driver::TYPE_RAW,
-                    "units" => '&deg;C',
-                    "decimals" => 4,
-                    "driver"  => "SDEFAULT",
-                    "params" => '{"extra":[1,2,3,4]}',
+                    "name" => "asdf",
+                    "desc" => "HERE",
+                    "arch" => "Temperature",
+                    "params" => json_encode(array(1,2,3,4)),
                 ),
             ),
         );
@@ -364,31 +335,71 @@ class SensorsTableTest extends HUGnetDBTableTestBase
         return array(
             array(
                 array(
-                    "dev" => 156,
-                    "sensor" => 23,
+                    "group" => "default",
                     "id" => 1,
-                    "type" => "asdf",
-                    "location" => "HERE",
-                    "units" => "&deg;C",
-                    "decimals" => 4,
-                    "storageUnits" => "&deg;C",
-                    "unitType" => "Temperature",
+                    "name" => "asdf",
+                    "desc" => "HERE",
+                    "arch" => "Temperature",
                     "params" => '{"storageUnits":"&deg;C","unitType":"Temperature"}',
                 ),
                 true,
                 array(
-                    "group" => 'default',
-                    "dev" => 156,
-                    "sensor" => 23,
+                    'group' => 'default',
                     "id" => 1,
-                    "type" => "asdf",
-                    "location" => "HERE",
-                    "dataType" => \HUGnet\units\Driver::TYPE_RAW,
-                    "units" => '&deg;C',
-                    "decimals" => 4,
+                    "name" => "asdf",
+                    "desc" => "HERE",
+                    "arch" => "Temperature",
                     "storageUnits" => "&deg;C",
-                    "driver"  => "SDEFAULT",
                     "unitType" => "Temperature",
+                ),
+            ),
+            array(
+                array(
+                    "group" => "default",
+                    "id" => 1,
+                    "name" => "RTD",
+                    "desc" => "This is for the RTD.",
+                    "arch" => "ADuC",
+                    "params" => '{"driver0":4,"driver1":255,"priority":1'
+                        .',"process":0,"ADC0EN":0,"ADC0DIAG":0,"HIGHEXTREF0":0'
+                        .',"AMP_CM":0,"ADC0CODE":0,"ADC0CH":3,"ADC0REF":0'
+                        .',"ADC0PGA":0,"ADC1EN":1,"ADC1DIAG":0,"HIGHEXTREF1":0'
+                        .',"ADC1CODE":0,"ADC1CH":6,"ADC1REF":0,"BUF_BYPASS":0'
+                        .',"ADC1PGA":0,"CHOPEN":1,"RAVG2":0,"AF":0,"NOTCH2":0'
+                        .',"SF":9}',
+                ),
+                true,
+                array(
+                    'group' => 'default',
+                    "id" => 1,
+                    'name' => 'RTD',
+                    'desc' => 'This is for the RTD.',
+                    'arch' => 'ADuC',
+                    'driver0' => 4,
+                    'driver1' => 255,
+                    'priority' => 1,
+                    'process' => 0,
+                    'ADC0EN' => 0,
+                    'ADC0DIAG' => 0,
+                    'HIGHEXTREF0' => 0,
+                    'AMP_CM' => 0,
+                    'ADC0CODE' => 0,
+                    'ADC0CH' => 3,
+                    'ADC0REF' => 0,
+                    'ADC0PGA' => 0,
+                    'ADC1EN' => 1,
+                    'ADC1DIAG' => 0,
+                    'HIGHEXTREF1' => 0,
+                    'ADC1CODE' => 0,
+                    'ADC1CH' => 6,
+                    'ADC1REF' => 0,
+                    'BUF_BYPASS' => 0,
+                    'ADC1PGA' => 0,
+                    'CHOPEN' => 1,
+                    'RAVG2' => 0,
+                    'AF' => 0,
+                    'NOTCH2' => 0,
+                    'SF' => 9
                 ),
             ),
         );

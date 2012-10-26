@@ -39,6 +39,8 @@ namespace HUGnet\devices\drivers;
 require_once dirname(__FILE__)."/DriverTestBase.php";
 /** This is a required class */
 require_once CODE_BASE.'devices/drivers/E00392100.php';
+/** This is the dummy table container */
+require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
 
 /**
  * Test class for HUGnetDB.
@@ -169,7 +171,7 @@ class E00392100Test extends DriverTestBase
             array(
                 array(
                     "Device" => array(
-                        "system" => new \HUGnet\DummyBase("System")
+                        "system" => new \HUGnet\DummySystem("System")
                     ),
                 ),
                 0,
@@ -181,7 +183,7 @@ class E00392100Test extends DriverTestBase
             array(
                 array(
                     "Device" => array(
-                        "system" => new \HUGnet\DummyBase("System")
+                        "system" => new \HUGnet\DummySystem("System")
                     ),
                 ),
                 1,
@@ -193,7 +195,7 @@ class E00392100Test extends DriverTestBase
             array(
                 array(
                     "Device" => array(
-                        "system" => new \HUGnet\DummyBase("System")
+                        "system" => new \HUGnet\DummySystem("System")
                     ),
                 ),
                 2,
@@ -205,7 +207,7 @@ class E00392100Test extends DriverTestBase
             array(
                 array(
                     "Device" => array(
-                        "system" => new \HUGnet\DummyBase("System")
+                        "system" => new \HUGnet\DummySystem("System")
                     ),
                 ),
                 3,
@@ -217,7 +219,7 @@ class E00392100Test extends DriverTestBase
             array(
                 array(
                     "Device" => array(
-                        "system" => new \HUGnet\DummyBase("System")
+                        "system" => new \HUGnet\DummySystem("System")
                     ),
                 ),
                 4,
@@ -229,7 +231,7 @@ class E00392100Test extends DriverTestBase
             array(
                 array(
                     "Device" => array(
-                        "system" => new \HUGnet\DummyBase("System")
+                        "system" => new \HUGnet\DummySystem("System")
                     ),
                 ),
                 5,
@@ -241,7 +243,7 @@ class E00392100Test extends DriverTestBase
             array(
                 array(
                     "Device" => array(
-                        "system" => new \HUGnet\DummyBase("System")
+                        "system" => new \HUGnet\DummySystem("System")
                     ),
                 ),
                 6,
@@ -253,7 +255,7 @@ class E00392100Test extends DriverTestBase
             array(
                 array(
                     "Device" => array(
-                        "system" => new \HUGnet\DummyBase("System")
+                        "system" => new \HUGnet\DummySystem("System")
                     ),
                 ),
                 7,
@@ -265,7 +267,7 @@ class E00392100Test extends DriverTestBase
             array(
                 array(
                     "Device" => array(
-                        "system" => new \HUGnet\DummyBase("System")
+                        "system" => new \HUGnet\DummySystem("System")
                     ),
                 ),
                 8,
@@ -277,7 +279,7 @@ class E00392100Test extends DriverTestBase
             array(
                 array(
                     "Device" => array(
-                        "system" => new \HUGnet\DummyBase("System")
+                        "system" => new \HUGnet\DummySystem("System")
                     ),
                 ),
                 9,

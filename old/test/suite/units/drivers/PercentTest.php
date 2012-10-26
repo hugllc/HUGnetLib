@@ -34,11 +34,11 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\units\drivers;
+namespace HUGnet\channels\drivers;
 /** This is the base class */
 require_once dirname(__FILE__)."/DriverTestBase.php";
 /** This is a required class */
-require_once CODE_BASE.'units/drivers/Temperature.php';
+require_once CODE_BASE.'units/drivers/Percent.php';
 
 /**
  * Test class for HUGnetDB.
@@ -54,12 +54,12 @@ require_once CODE_BASE.'units/drivers/Temperature.php';
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class TemperatureTest extends DriverTestBase
+class PercentTest extends DriverTestBase
 {
     /** This is the class we are testing */
-    protected $class = "Temperature";
+    protected $class = "Percent";
     /** This is the units that are valid */
-    protected static $units = array('&#176;F', '&#176;C', 'K');
+    protected static $units = array('decimal', '%');
     /**
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
@@ -71,7 +71,7 @@ class TemperatureTest extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->o = &Temperature::factory();
+        $this->o = &Percent::factory();
     }
 
     /**
@@ -106,9 +106,8 @@ class TemperatureTest extends DriverTestBase
             array(
                 "&deg;C",
                 array(
-                    '&#176;F' => '&#176;F',
-                    '&#176;C' => '&#176;C',
-                    'K' => 'K',
+                    'decimal' => 'decimal',
+                    '%' => '%',
                 ),
             ),
         );
@@ -123,7 +122,7 @@ class TemperatureTest extends DriverTestBase
     {
         return array(
             array(
-                "&#176;C",
+                "%",
                 true,
             ),
             array(
@@ -141,7 +140,7 @@ class TemperatureTest extends DriverTestBase
     {
         return array(
             array(
-                "&#176;C",
+                "%",
                 true,
             ),
             array(
@@ -159,101 +158,33 @@ class TemperatureTest extends DriverTestBase
     {
         return array(
             array(
-                273.15, "&#176;C", "K", \HUGnet\units\Driver::TYPE_RAW,
-                true, 0.0
+                12.312, "decimal", "%", \HUGnet\channels\Driver::TYPE_RAW,
+                true, .12312
             ),
             array(
-                273.15, "&#176;F", "K", \HUGnet\units\Driver::TYPE_RAW,
-                true, 32.0
-            ),
-            array(
-                373.15, "&#176;C", "K", \HUGnet\units\Driver::TYPE_RAW,
-                true, 100.0
-            ),
-            array(
-                373.15, "&#176;F", "K", \HUGnet\units\Driver::TYPE_RAW,
-                true, 212.0
-            ),
-            array(
-                0.0, "K", "&#176;C", \HUGnet\units\Driver::TYPE_RAW,
-                true, 273.15
-            ),
-            array(
-                32, "K", "&#176;F", \HUGnet\units\Driver::TYPE_RAW,
-                true, 273.15
-            ),
-            array(
-                100.0, "K", "&#176;C", \HUGnet\units\Driver::TYPE_RAW,
-                true, 373.15
-            ),
-            array(
-                212.0, "K", "&#176;F", \HUGnet\units\Driver::TYPE_RAW,
-                true, 373.15
-            ),
-            array(
-                12.312, "&#176;C", "&#176;F", \HUGnet\units\Driver::TYPE_RAW,
-                true, -10.937777777778
-            ),
-            array(
-                12.312, "&#176;C", "&#176;F", \HUGnet\units\Driver::TYPE_DIFF,
-                true, 6.84
-            ),
-            array(
-                12.312, "K", "&#176;C", \HUGnet\units\Driver::TYPE_RAW,
-                true, 285.462
-            ),
-            array(
-                12.312, "K", "&#176;C", \HUGnet\units\Driver::TYPE_DIFF,
+                .12312, "%", "decimal", \HUGnet\channels\Driver::TYPE_RAW,
                 true, 12.312
             ),
             array(
-                -10.937777777778, "&#176;F", "&#176;C",
-                \HUGnet\units\Driver::TYPE_RAW,
+                12.312, "decimal", "%", \HUGnet\channels\Driver::TYPE_DIFF,
+                true, .12312
+            ),
+            array(
+                .12312, "%", "decimal", \HUGnet\channels\Driver::TYPE_DIFF,
                 true, 12.312
             ),
             array(
-                6.84, "&#176;F", "&#176;C", \HUGnet\units\Driver::TYPE_DIFF,
-                true, 12.312
+                0.1, "%", "decimal", \HUGnet\channels\Driver::TYPE_DIFF, true, 10.0
             ),
             array(
-                12.312, "&#176;C", "&#176;C", \HUGnet\units\Driver::TYPE_RAW,
-                true, 12.312
+                42.13, "decimal", "%", \HUGnet\channels\Driver::TYPE_DIFF, true, 0.4213
             ),
             array(
-                12.312, "&#176;C", "&#176;C", \HUGnet\units\Driver::TYPE_DIFF,
-                true, 12.312
+                42.13, "%", "%", \HUGnet\channels\Driver::TYPE_DIFF, true, 42.13
             ),
             array(
-                100,
-                "&#176;F",
-                "&#176;C",
-                \HUGnet\units\Driver::TYPE_RAW,
-                true,
-                212.0,
-            ),
-            array(
-                -40,
-                "&#176;C",
-                "&#176;C",
-                \HUGnet\units\Driver::TYPE_RAW,
-                true,
-                -40,
-            ),
-            array(
-                100,
-                "&#176;F",
-                "&#176;C",
-                \HUGnet\units\Driver::TYPE_DIFF,
-                true,
-                180.0,
-            ),
-            array(
-                18,
-                "&#176;C",
-                "&#176;F",
-                \HUGnet\units\Driver::TYPE_DIFF,
-                true,
-                10.0,
+                0.42, "decimal", "decimal", \HUGnet\channels\Driver::TYPE_DIFF,
+                true, 0.42
             ),
         );
     }

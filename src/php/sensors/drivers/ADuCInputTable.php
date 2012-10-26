@@ -39,6 +39,8 @@ namespace HUGnet\sensors\drivers;
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is my base class */
 require_once dirname(__FILE__)."/../DriverADuC.php";
+/** This is the dummy table container */
+require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
 
 
 /**

@@ -34,17 +34,11 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\channels;
+namespace HUGnet\channels\drivers;
+/** This is the base class */
+require_once dirname(__FILE__)."/DriverTestBase.php";
 /** This is a required class */
-require_once CODE_BASE.'channels/Driver.php';
-/** This is a required class */
-require_once CODE_BASE.'system/System.php';
-/** This is a required class */
-require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
-/** This is a required class */
-require_once CODE_BASE.'util/VPrint.php';
-/** This is our base class */
-require_once dirname(__FILE__)."/drivers/DriverTestBase.php";
+require_once CODE_BASE.'units/drivers/Pressure.php';
 
 /**
  * Test class for HUGnetDB.
@@ -60,10 +54,12 @@ require_once dirname(__FILE__)."/drivers/DriverTestBase.php";
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DriverTest extends drivers\DriverTestBase
+class PressureTest extends DriverTestBase
 {
+    /** This is the class we are testing */
+    protected $class = "Pressure";
     /** This is the units that are valid */
-    protected static $units = array('&#176;F', '&#176;C', '&#176;R', 'K');
+    protected static $units = array("Pa", "bar", "at", "atm", "Torr", "psi");
     /**
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
@@ -74,7 +70,8 @@ class DriverTest extends drivers\DriverTestBase
     */
     protected function setUp()
     {
-        $this->o = &DriverTestClass::factory();
+        parent::setUp();
+        $this->o = &Pressure::factory();
     }
 
     /**
@@ -87,44 +84,16 @@ class DriverTest extends drivers\DriverTestBase
     */
     protected function tearDown()
     {
-        unset($this->o);
+        parent::tearDown();
     }
-
     /**
-    * data provider for testDeviceID
+    * data provider for testGetTypes
     *
     * @return array
     */
-    public static function dataFactory()
+    public static function dataConversions()
     {
-        return array(
-            array(
-                "asdf",
-                "&#176;C",
-                "HUGnet\channels\drivers\GENERIC",
-            ),
-            array(
-                "GENERIC",
-                "someOldUnit",
-                "HUGnet\channels\drivers\GENERIC",
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $unitType The name of the variable to test.
-    * @param string $units    The units to use
-    * @param array  $expect   The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataFactory
-    */
-    public function testFactory($unitType, $units, $expect)
-    {
-        $o = &Driver::factory($unitType, $units);
-        $this->assertSame($expect, get_class($o));
+        return self::dataConversionsData();
     }
     /**
     * data provider for testGetTypes
@@ -135,12 +104,14 @@ class DriverTest extends drivers\DriverTestBase
     {
         return array(
             array(
-                "\\HUGnet\\channels\\DriverTestClass",
+                "&deg;C",
                 array(
-                    '&#176;F' => '&#176;F',
-                    '&#176;C' => '&#176;C',
-                    '&#176;R' => '&#176;R',
-                    'K' => 'K',
+                    'Pa' => 'Pa',
+                    'bar' => 'bar',
+                    'at' => 'at',
+                    'atm' => 'atm',
+                    'Torr' => 'Torr',
+                    'psi' => 'psi',
                 ),
             ),
         );
@@ -155,12 +126,12 @@ class DriverTest extends drivers\DriverTestBase
     {
         return array(
             array(
-                "K",
-                true,
+                "%",
+                false,
             ),
             array(
                 "psi",
-                false,
+                true,
             ),
         );
     }
@@ -173,12 +144,12 @@ class DriverTest extends drivers\DriverTestBase
     {
         return array(
             array(
-                "K",
-                true,
+                "%",
+                false,
             ),
             array(
                 "psi",
-                false,
+                true,
             ),
         );
     }
@@ -191,44 +162,27 @@ class DriverTest extends drivers\DriverTestBase
     {
         return array(
             array(
-                12.312, "&#176;C", "&#176;F", \HUGnet\channels\Driver::TYPE_RAW,
-                false, 12.312
+                100, "Pa", "Torr", \HUGnet\channels\Driver::TYPE_RAW,
+                true, 13332.2
             ),
             array(
-                12.312, "&#176;C", "&#176;C", \HUGnet\channels\Driver::TYPE_RAW,
-                true, 12.312
+                1.6258, "Pa", "atm", \HUGnet\channels\Driver::TYPE_RAW,
+                true, 164732.5592
+            ),
+            array(
+                92.351, "atm", "psi", \HUGnet\channels\Driver::TYPE_RAW,
+                true, 6.284116146
+            ),
+            array(
+                1.351, "atm", "at", \HUGnet\channels\Driver::TYPE_RAW,
+                true, 1.30755184
+            ),
+            array(
+                1.351, "bar", "atm", \HUGnet\channels\Driver::TYPE_RAW,
+                true, 1.36890075
             ),
         );
     }
-}
-/**
- * Base driver class for devices.
- *
- * This class deals with loading the drivers and figuring out what driver needs
- * to be loaded.
- *
- * @category   Libraries
- * @package    HUGnetLib
- * @subpackage Devices
- * @author     Scott Price <prices@hugllc.com>
- * @copyright  2012 Hunt Utilities Group, LLC
- * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.9.7
- * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
- * @since      0.9.7
- */
-class DriverTestClass extends Driver
-{
-    /** @var The units that are valid for conversion */
-    protected $valid = array("&#176;F", "&#176;C", "&#176;R", "K");
-    /**
-    * This function creates the system.
-    *
-    * @return null
-    */
-    public static function &factory()
-    {
-        return parent::intFactory();
-    }
+
 }
 ?>

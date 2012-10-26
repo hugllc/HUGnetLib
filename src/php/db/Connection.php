@@ -102,7 +102,6 @@ class Connection  implements \ConnectionManager
         if (empty($this->_servers)) {
             $this->_servers["default"] = $this->_default;
         }
-        print "HERE";
         /*
         if ($this->findClass("DBServerContainer")) {
             if (empty($servers)) {

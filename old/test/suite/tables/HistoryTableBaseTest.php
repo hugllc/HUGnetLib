@@ -952,7 +952,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                         "Sensors" => 1,
                         0 => array(
                             "id" => 0,
-                            "dataType" => \HUGnet\units\Driver::TYPE_DIFF,
+                            "dataType" => \HUGnet\channels\Driver::TYPE_DIFF,
                         ),
                     ),
                 ),
@@ -996,7 +996,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                         "Sensors" => 1,
                         0 => array(
                             "id" => 0,
-                            "dataType" => \HUGnet\units\Driver::TYPE_DIFF,
+                            "dataType" => \HUGnet\channels\Driver::TYPE_DIFF,
                         ),
                     ),
                 ),

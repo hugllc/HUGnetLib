@@ -34,7 +34,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\units\drivers;
+namespace HUGnet\channels\drivers;
 /** This is the base class */
 require_once CODE_BASE."/units/Driver.php";
 /** This is a required class */
@@ -100,7 +100,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     public function testFactory()
     {
         $this->assertSame(
-            "HUGnet\units\drivers\\".$this->class, get_class($this->o)
+            "HUGnet\channels\drivers\\".$this->class, get_class($this->o)
         );
     }
     /**
@@ -113,8 +113,8 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
         $ret = array();
         foreach (static::$units as $unit1) {
             foreach (static::$units as $unit2) {
-                $ret[] = array($unit1, $unit2, \HUGnet\units\Driver::TYPE_RAW);
-                $ret[] = array($unit1, $unit2, \HUGnet\units\Driver::TYPE_DIFF);
+                $ret[] = array($unit1, $unit2, \HUGnet\channels\Driver::TYPE_RAW);
+                $ret[] = array($unit1, $unit2, \HUGnet\channels\Driver::TYPE_DIFF);
             }
         }
         return $ret;

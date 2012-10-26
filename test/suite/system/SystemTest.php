@@ -38,8 +38,6 @@ namespace HUGnet;
 
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
-/** This is a required class */
-require_once CODE_BASE.'tables/ErrorTable.php';
 /** This is the dummy table container */
 require_once TEST_CONFIG_BASE.'stubs/DummyNetwork.php';
 

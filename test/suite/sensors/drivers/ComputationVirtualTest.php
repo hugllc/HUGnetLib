@@ -104,7 +104,7 @@ class ComputationVirtualTest extends DriverTestBase
                                 "(({1} - {2}) / 3) + 1",
                                 "&#176;C",
                                 "Temperature",
-                                \HUGnet\units\Driver::TYPE_RAW,
+                                \HUGnet\channels\Driver::TYPE_RAW,
                                 "3"
                             ),
                         ),
@@ -127,7 +127,7 @@ class ComputationVirtualTest extends DriverTestBase
                                 "({1} + {2}) + 1",
                                 "&#176;C",
                                 "Temperature",
-                                \HUGnet\units\Driver::TYPE_RAW,
+                                \HUGnet\channels\Driver::TYPE_RAW,
                                 "3"
                             ),
                         ),
@@ -150,7 +150,7 @@ class ComputationVirtualTest extends DriverTestBase
                                 "({1} / {2})",
                                 "&#176;C",
                                 "Temperature",
-                                \HUGnet\units\Driver::TYPE_RAW,
+                                \HUGnet\channels\Driver::TYPE_RAW,
                                 "3"
                             ),
                         ),
@@ -173,7 +173,7 @@ class ComputationVirtualTest extends DriverTestBase
                                 "({1} / ",
                                 "&#176;C",
                                 "Temperature",
-                                \HUGnet\units\Driver::TYPE_RAW,
+                                \HUGnet\channels\Driver::TYPE_RAW,
                                 "3"
                             ),
                         ),
@@ -196,7 +196,7 @@ class ComputationVirtualTest extends DriverTestBase
                                 "badfunction();",
                                 "&#176;C",
                                 "Temperature",
-                                \HUGnet\units\Driver::TYPE_RAW,
+                                \HUGnet\channels\Driver::TYPE_RAW,
                                 "3"
                             ),
                         ),
@@ -219,7 +219,7 @@ class ComputationVirtualTest extends DriverTestBase
                                 "sqrt({1});",
                                 "&#176;C",
                                 "Temperature",
-                                \HUGnet\units\Driver::TYPE_RAW,
+                                \HUGnet\channels\Driver::TYPE_RAW,
                                 "3"
                             ),
                         ),
@@ -242,7 +242,7 @@ class ComputationVirtualTest extends DriverTestBase
                                 "{1} + {2}",
                                 "&#176;C",
                                 "Temperature",
-                                \HUGnet\units\Driver::TYPE_RAW,
+                                \HUGnet\channels\Driver::TYPE_RAW,
                                 "3"
                             ),
                         ),
@@ -265,7 +265,7 @@ class ComputationVirtualTest extends DriverTestBase
                                 "{1} - {2}",
                                 "&#176;C",
                                 "Temperature",
-                                \HUGnet\units\Driver::TYPE_DIFF,
+                                \HUGnet\channels\Driver::TYPE_DIFF,
                                 "3"
                             ),
                         ),
@@ -288,7 +288,7 @@ class ComputationVirtualTest extends DriverTestBase
                                 "({1} - {2}) / 0",
                                 "&#176;C",
                                 "Temperature",
-                                \HUGnet\units\Driver::TYPE_DIFF,
+                                \HUGnet\channels\Driver::TYPE_DIFF,
                                 "3"
                             ),
                         ),
@@ -311,7 +311,7 @@ class ComputationVirtualTest extends DriverTestBase
                                 "{1} / {2}",
                                 "&#176;C",
                                 "Temperature",
-                                \HUGnet\units\Driver::TYPE_DIFF,
+                                \HUGnet\channels\Driver::TYPE_DIFF,
                                 "3"
                             ),
                         ),
@@ -334,7 +334,7 @@ class ComputationVirtualTest extends DriverTestBase
                                 "{1} + {2}",
                                 "&#176;C",
                                 "Temperature",
-                                \HUGnet\units\Driver::TYPE_DIFF,
+                                \HUGnet\channels\Driver::TYPE_DIFF,
                                 "3",
                                 1,
                             ),
@@ -358,7 +358,7 @@ class ComputationVirtualTest extends DriverTestBase
                                 "{1} + {2}",
                                 "&#176;C",
                                 "Temperature",
-                                \HUGnet\units\Driver::TYPE_DIFF,
+                                \HUGnet\channels\Driver::TYPE_DIFF,
                                 "3",
                                 0
                             ),
@@ -382,7 +382,7 @@ class ComputationVirtualTest extends DriverTestBase
                                 "{1} + {2}",
                                 "&#176;C",
                                 "Temperature",
-                                \HUGnet\units\Driver::TYPE_DIFF,
+                                \HUGnet\channels\Driver::TYPE_DIFF,
                                 "3"
                             ),
                         ),

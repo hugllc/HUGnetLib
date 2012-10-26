@@ -147,7 +147,7 @@ class Sensor extends SystemTableBase
     */
     public function toArray($default = true)
     {
-        $return = $this->table()->toArray($default);
+        $return = (array)$this->table()->toArray($default);
         if ($default) {
             $driver = $this->driver()->toArray();
             $return = array_merge($driver, $return);

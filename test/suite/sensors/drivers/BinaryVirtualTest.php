@@ -126,7 +126,7 @@ class BinaryVirtualTest extends DriverTestBase
                                 1, 10, 5.5, 60,
                                 "&#176;C",
                                 "Temperature",
-                                \HUGnet\units\Driver::TYPE_RAW,
+                                \HUGnet\channels\Driver::TYPE_RAW,
                                 "3"
                             ),
                         ),
@@ -149,7 +149,7 @@ class BinaryVirtualTest extends DriverTestBase
                                 0, 10, 5.5, 60,
                                 "&#176;C",
                                 "Temperature",
-                                \HUGnet\units\Driver::TYPE_RAW,
+                                \HUGnet\channels\Driver::TYPE_RAW,
                                 "3"
                             ),
                         ),
