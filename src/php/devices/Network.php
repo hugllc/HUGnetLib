@@ -436,12 +436,12 @@ class Network
     /**
     * Writes a data buffer to the Flash
     *
-    * @param \FirmwareTable &$firmware The data to write
-    * @param bool           $loadData  Load the data or not
+    * @param object &$firmware The data to write
+    * @param bool   $loadData  Load the data or not
     *
     * @return success or failure of the packet sending
     */
-    public function loadFirmware(\FirmwareTable &$firmware, $loadData = true)
+    public function loadFirmware(&$firmware, $loadData = true)
     {
         $part = $firmware->get("HWPartNum");
         if (empty($part)) {

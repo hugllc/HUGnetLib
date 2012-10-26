@@ -42,6 +42,8 @@ require_once CODE_BASE.'network/packets/Packet.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
+require_once CODE_BASE.'db/Table.php';
+/** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
@@ -49,6 +51,10 @@ require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
 require_once TEST_CONFIG_BASE.'stubs/DummyDeviceDriver.php';
 /** This is a required class */
 require_once CODE_BASE.'util/VPrint.php';
+/** This is a required class */
+require_once CODE_BASE.'db/tables/Firmware.php';
+
+
 
 /**
  * Test class for HUGnetDB.

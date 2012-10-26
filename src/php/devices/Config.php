@@ -156,7 +156,7 @@ class Config
     */
     public static function hexifyVersion($version)
     {
-        $ver = explode(".", $version);
+        $ver = explode(".", (string)$version);
         return sprintf(
             "%02X%02X%02X",
             hexdec($ver[0]),
@@ -174,7 +174,7 @@ class Config
     */
     public static function hexifyPartNum($PartNum)
     {
-        $part = explode("-", $PartNum);
+        $part = explode("-", (string)$PartNum);
         $chr  = ord($part[3]);
         return sprintf(
             "%04X%02X%02X%02X",

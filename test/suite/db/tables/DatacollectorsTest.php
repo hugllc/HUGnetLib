@@ -290,15 +290,19 @@ class DataCollectorsTest extends TableTestBase
                             "uuid" => "fa7d187c-9b3f-4c3e-983d-d1311dd6d3cf",
                         ),
                     ),
-                ),
-                array(
-                    "GatewayKey" => 5,
-                    "DeviceName" => "fa7d187c-9b3f-4c3e-983d-d1311dd6d3cf",
-                    "DeviceLocation" => "1.2.3.4",
-                    "id" => 0xC,
-                    "HWPartNum" => "0039-26-02-P",
-                    "FWPartNum" => "0039-26-00-P",
-                    "FWVersion" => "0.1.2",
+                    "Devices" => array(
+                        "get" => array(
+                            "GatewayKey" => 5,
+                            "DeviceName" => "fa7d187c-9b3f-4c3e-983d-d1311dd6d3cf",
+                            "DeviceLocation" => "1.2.3.4",
+                            "id" => 0xC,
+                            "HWPartNum" => "0039-26-02-P",
+                            "FWPartNum" => "0039-26-00-P",
+                            "FWVersion" => "0.1.2",
+                            "DeviceGroup" => "FFFFFF",
+                            "params" => "",
+                        ),
+                    ),
                 ),
                 array(
                     'GatewayKey' => 5,
@@ -316,18 +320,16 @@ class DataCollectorsTest extends TableTestBase
     * test the forceTable routine
     *
     * @param array $mock   The mocks to load
-    * @param array $dev    The device to use
     * @param mixed $expect The expected return
     *
     * @return null
     *
     * @dataProvider dataFromAny
     */
-    public function testFromAny($mock, $dev, $expect)
+    public function testFromAny($mock, $expect)
     {
         $this->system->resetMock($mock);
-        $device = \HUGnet\Device::factory($this->system, $dev);
-
+        $device = \HUGnet\Device::factory($this->system);
         $this->o->fromAny($device);
         $this->assertEquals($expect, $this->o->toArray(false));
     }

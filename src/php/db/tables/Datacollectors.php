@@ -195,7 +195,7 @@ class DataCollectors extends \HUGnet\db\Table
         $this->set("GatewayKey", $dev->get("GatewayKey"));
         $this->set("ip", $dev->get("DeviceLocation"));
         $this->set("SetupString", $dev->encode());
-        $this->set("Config", json_encode($dev->system()->config()));
+        $this->set("Config", json_encode($this->system()->config()));
     }
     /**
     * Creates the object from a string or array

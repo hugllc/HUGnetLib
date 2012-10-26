@@ -101,18 +101,6 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
         SystemTableBaseTestStub::factory($test);
     }
     /**
-    * This tests the exception when a system object is not passed
-    *
-    * @return null
-    */
-    public function testTableThrowException()
-    {
-        $this->setExpectedException("InvalidArgumentException");
-        $system = new DummySystem();
-        // This throws an exception because the table name is bad
-        SystemTableBaseTestStub::factory($system, 2, "thisIsAbadClassName");
-    }
-    /**
     * Data provider for testFactory
     *
     * @return array
@@ -123,7 +111,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
             array(
                 array(),
                 null,
-                "DummyTable",
+                "Table",
                 array(
                     "Table" => array(
                         "clearData" => array(array()),
@@ -137,7 +125,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                     "name" => 3,
                     "value" => 1,
                 ),
-                "DummyTable",
+                "Table",
                 array(
                     "Table" => array(
                         "fromAny" => array(

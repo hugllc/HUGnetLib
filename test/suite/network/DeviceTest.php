@@ -205,6 +205,15 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     "HWPartNum" => "0039-26-01-P",
                 ),
                 array(
+                    "Devices" => array(
+                        "get" => array(
+                            "id" => "000001",
+                            "HWPartNum" => "0039-26-01-P",
+                            "FWPartNum" => "",
+                            "FWVersion" => "",
+                            "params" => "",
+                        ),
+                    ),
                 ),
                 packets\Packet::factory(
                     array(
@@ -246,6 +255,15 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     "HWPartNum" => "0039-26-01-P",
                 ),
                 array(
+                    "Devices" => array(
+                        "get" => array(
+                            "id" => "000001",
+                            "HWPartNum" => "0039-26-01-P",
+                            "FWPartNum" => "",
+                            "FWVersion" => "",
+                            "params" => "",
+                        ),
+                    ),
                 ),
                 packets\Packet::factory(
                     array(
@@ -288,6 +306,17 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     "params" => json_encode(array("Enable" => 5)),
                 ),
                 array(
+                    "Devices" => array(
+                        "get" => array(
+                            "id" => "000001",
+                            "HWPartNum" => "0039-26-02-P",
+                            "FWPartNum" => "0039-26-00-P",
+                            "FWVersion" => "0.0.0",
+                            "DeviceGroup" => "FFFFFF",
+                            "GatewayKey" => 0,
+                            "params" => json_encode(array("Enable" => 5)),
+                        ),
+                    ),
                 ),
                 packets\Packet::factory(
                     array(
@@ -317,7 +346,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 "command" => "01",
                                 "data"    => "000000000100392602500039260050"
                                 ."000000FFFFFFFF"
-                                ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000000000",
+                                ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000000005",
                                 /*  Not sure why this fails... This should pass...
                                 "data"    => "000000000100392602500039260050"
                                 .$version."FFFFFFFF"
