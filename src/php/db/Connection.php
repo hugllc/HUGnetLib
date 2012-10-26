@@ -102,6 +102,7 @@ class Connection  implements \ConnectionManager
         if (empty($this->_servers)) {
             $this->_servers["default"] = $this->_default;
         }
+        print "HERE";
         /*
         if ($this->findClass("DBServerContainer")) {
             if (empty($servers)) {
@@ -170,7 +171,17 @@ class Connection  implements \ConnectionManager
         }
         return $ret;
     }
-
+    /**
+    * Tries to connect to a database servers
+    *
+    * @param string $server The server to check
+    *
+    * @return bool True on success, false on failure
+    */
+    public function config($group = "default")
+    {
+        return $this->_servers[$this->_server[$group]];
+    }
     /**
     * Connects to a database group
     *

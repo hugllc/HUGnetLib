@@ -38,8 +38,6 @@
 namespace HUGnet\devices;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
-/** This is required for polling */
-require_once dirname(__FILE__)."/../tables/RawHistoryTable.php";
 
 /**
  * Networking for devices.
@@ -194,7 +192,8 @@ class Action
                 0,
                 $prev
             );
-            \RawHistoryTable::insertRecord(
+            $raw = $this->system->table(
+                "RawHistory",
                 array(
                     "id" => $this->device->id(),
                     "Date" => $time,
@@ -208,6 +207,7 @@ class Action
                     "command"   => $pkt->command(),
                 )
             );
+            $raw->insertRow();
             $data["id"]     = $this->device->get("id");
             $data["Date"]   = $time;
             $data["TestID"] = $TestID;

@@ -72,6 +72,8 @@ class System
 {
     /** @var array The configuration that we are going to use */
     private $_config = array();
+    /** @var array The configuration that we are going to use */
+    private $_dbconnect = array();
     /** @var array This is our network configuration */
     private $_network = null;
     /** @var array The default configuration */
@@ -89,6 +91,7 @@ class System
     private function __construct($config = array())
     {
         $this->config((array)$config);
+        $this->_dbconnect = \HUGnet\db\Connection::factory($this);
     }
     /**
     * This function creates the system.
@@ -116,8 +119,8 @@ class System
             $this->_config = array_merge($this->_configDefault, (array)$config);
             // This is so that the rest of the system works when we call it through
             // This class.  This should be removed when ConfigContainer is retired.
-            include_once dirname(__FILE__).'/../containers/ConfigContainer.php';
-            \ConfigContainer::singleton()->forceConfig($this->_config);
+            //include_once dirname(__FILE__).'/../containers/ConfigContainer.php';
+            //\ConfigContainer::singleton()->forceConfig($this->_config);
         }
         // Return the configuration
         return $this->_config;
@@ -232,6 +235,35 @@ class System
         include_once dirname(__FILE__)."/DataCollector.php";
         $obj = DataCollector::factory($this, $data);
         return $obj;
+    }
+    /**
+    * This returns a dataCollector object.
+    *
+    * @param array $data The data to send to the device object
+    *
+    * @return Reference to a device object
+    */
+    public function out($string, $level = 0)
+    {
+        return \HUGnet\VPrint::out($string, $level);
+    }
+    /**
+    * This returns a dataCollector object.
+    *
+    * @param string $table The name of the table
+    * @param array  $data  The data to send to the device object
+    *
+    * @return Reference to a device object
+    */
+    public function &table($table, $data = array())
+    {
+        $data = array();
+        return \HUGnet\db\Table::factory(
+            $this,
+            $data,
+            $table,
+            $this->_dbconnect
+        );
     }
     /**
     * Throws an exception

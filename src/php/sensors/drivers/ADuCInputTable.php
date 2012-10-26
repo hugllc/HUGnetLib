@@ -168,16 +168,10 @@ class ADuCInputTable extends \HUGnet\sensors\Driver
     *
     * @return object The driver requested
     */
-    private function &_table($class = "InputTableTable")
+    private function &_table($class = "InputTable")
     {
         if (!is_object($this->_table)) {
-            include_once dirname(__FILE__)."/../../tables/$class.php";
-            $class = "\\".$class;
-            if (!class_exists($class)) {
-                include_once dirname(__FILE__)."/../../tables/InputTableTable.php";
-                $class = "\\InputTableTable";
-            }
-            $this->_table = new $class();
+            $this->_table = $this->sensor()->system()->table($class);
         }
         return $this->_table;
     }

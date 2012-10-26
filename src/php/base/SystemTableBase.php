@@ -38,6 +38,8 @@
 namespace HUGnet;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
+/** This is the base of our table class */
+require_once dirname(__FILE__)."/../db/Table.php";
 /**
  * Base system class.
  *
@@ -63,6 +65,8 @@ abstract class SystemTableBase
     private $_system = null;
     /** @var int The database table class to use */
     protected $tableClass = null;
+    /** This is our connection object */
+    private $_connect = null;
 
     /**
     * This function sets up the driver object, and the database object.  The
@@ -108,6 +112,7 @@ abstract class SystemTableBase
             // This calls the destructor on the table object
             unset($this->_table);
         }
+        unset($this->_connect);
     }
     /**
     * This function gives us access to the table class
@@ -117,9 +122,12 @@ abstract class SystemTableBase
     protected function &table()
     {
         if (!is_object($this->_table)) {
+            $this->_table = $this->system()->table($this->tableClass);
+            /*
             $class = Util::findClass($this->tableClass, "tables");
             $system = &$this->system();
             $this->_table = new $class($system);
+            */
         }
         return $this->_table;
     }

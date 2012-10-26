@@ -90,7 +90,7 @@ class Device extends SystemTableBase
     *
     * @return null
     */
-    public static function &factory($system, $data=null, $table="DevicesTable")
+    public static function &factory($system, $data=null, $table="Devices")
     {
         $object = &parent::factory($system, $data, $table);
         return $object;
@@ -431,8 +431,7 @@ class Device extends SystemTableBase
     public function &historyFactory($data, $history = true)
     {
         $class = $this->driver()->historyTable($history);
-        $obj = new $class($data);
-        //$obj->labels($this->historyHeader());
+        $obj = $this->system()->table($class, $data);
         $obj->device = &$this;
         return $obj;
     }

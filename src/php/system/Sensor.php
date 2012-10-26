@@ -92,7 +92,7 @@ class Sensor extends SystemTableBase
     * @return null
     */
     public static function &factory(
-        &$system, &$device, $data=null, $table="SensorsTable"
+        &$system, &$device, $data=null, $table="Sensors"
     ) {
         System::exception(
             "\HUGnet\Sensor needs to be passed a device object",

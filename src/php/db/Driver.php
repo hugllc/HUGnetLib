@@ -175,7 +175,8 @@ abstract class Driver implements \HUGnetDBDriverInterface
         \HUGnet\System::exception(
             "No available database connection available in group '".$group
             ."'.  Check your database configuration.  Available php drivers: "
-            .implode(", ", \PDO::getAvailableDrivers()),
+            .implode(", ", \PDO::getAvailableDrivers())." "
+            .print_r($this->_connect->config($group), true),
             "PDOException",
             !is_a($this->pdo(), "\PDO")
         );
@@ -917,18 +918,18 @@ abstract class Driver implements \HUGnetDBDriverInterface
         $this->_system->out(
             "Executing (group: ".$this->myTable->get("group")."): "
             .print_r($this->query, true),
-            1
+            7
         );
         $this->_system->out(
             "With Data: ".print_r($data, true),
-            1
+            7
         );
         $ret = $this->pdoStatement->execute($data);
 
         $this->_system->out(
             "With Result: ".print_r($ret, true)
             . "(".$this->pdoStatement->rowCount()." rows)",
-            1
+            7
         );
         if (!$ret) {
             $this->errorHandler(
@@ -978,7 +979,7 @@ abstract class Driver implements \HUGnetDBDriverInterface
         }
         $this->_system->out(
             "With Error: ".print_r($errorInfo, true),
-            1
+            8
         );
     }
     /**
@@ -1019,17 +1020,17 @@ abstract class Driver implements \HUGnetDBDriverInterface
             $this->_system->out(
                 "Executing (group: ".$this->myTable->get("group")."): "
                 .print_r($query, true),
-                1
+                8
             );
             $this->_system->out(
                 "With Data: ".print_r($data, true),
-                1
+                8
             );
             $ret = $pdo->execute($data);
             $this->_system->out(
                 "With Result: ".print_r($ret, true)
                 . "(".$pdo->rowCount()." rows)",
-                1
+                8
             );
             if ($ret) {
                 $res = $pdo->fetchAll(\PDO::FETCH_ASSOC);
