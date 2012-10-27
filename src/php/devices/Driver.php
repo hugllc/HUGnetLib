@@ -75,8 +75,8 @@ abstract class Driver
         "totalSensors" => 13,
         "physicalSensors" => 9,
         "virtualSensors" => 4,
-        "historyTable" => "EDEFAULTHistoryTable",
-        "averageTable" => "EDEFAULTAverageTable",
+        "historyTable" => "EDEFAULTHistory",
+        "averageTable" => "EDEFAULTAverage",
         "loadable" => false,
         "bootloader" => false,
         "ConfigInterval" => 43200,
@@ -297,6 +297,8 @@ abstract class Driver
     public function historyTable($history = true)
     {
         if ($history) {
+            $class = $this->get("historyTable");
+            /*
             $class = \HUGnet\Util::findClass(
                 $this->get("historyTable"), "plugins/historyTable", true
             );
@@ -305,7 +307,10 @@ abstract class Driver
                     "EDEFAULTHistoryTable", "plugins/historyTable", true
                 );
             }
+            */
         } else {
+            $class = $this->get("averageTable");
+            /*
             $class = \HUGnet\Util::findClass(
                 $this->get("averageTable"), "plugins/averageTable", true
             );
@@ -314,6 +319,7 @@ abstract class Driver
                     "EDEFAULTAverageTable", "plugins/averageTable", true
                 );
             }
+            */
         }
         return $class;
     }
