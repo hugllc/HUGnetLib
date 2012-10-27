@@ -1472,12 +1472,17 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             "id" => 2,
                         ),
                     ),
+                    "EDEFAULTHistory" => array(
+                        "get" => array(
+                            "test" => "EDEFAULTHistory",
+                        ),
+                    ),
                 ),
                 new DummyTable("Table"),
                 array(
                 ),
                 true,
-                'EDEFAULTHistoryTable',
+                'EDEFAULTHistory',
             ),
             array(
                 array(
@@ -1487,12 +1492,17 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             "id" => 2,
                         ),
                     ),
+                    "EDEFAULTAverage" => array(
+                        "get" => array(
+                            "test" => "EDEFAULTAverage",
+                        ),
+                    ),
                 ),
                 new DummyTable("Table"),
                 array(
                 ),
                 false,
-                'EDEFAULTAverageTable',
+                'EDEFAULTAverage',
             ),
         );
     }
@@ -1516,7 +1526,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $sys->resetMock($config);
         $obj = Device::factory($sys, null, $class);
         $hist = $obj->historyFactory($data, $history);
-        $this->assertSame($expect, get_class($hist));
+        $this->assertSame($expect, $hist->get("test"));
         unset($obj);
     }
 
@@ -1634,8 +1644,8 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
                     array(
-                        "value" => (float)0.0,
-                        "units" => "&#176;C",
+                        "value" => (float)32.0,
+                        "units" => "&#176;F",
                         "unitType" => "Temperature",
                         "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
