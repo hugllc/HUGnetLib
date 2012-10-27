@@ -993,7 +993,9 @@ class SensorTest extends \PHPUnit_Framework_TestCase
             array(
                 new DummySystem(),
                 null,
-                "DummyTable",
+                array(
+                    "id" => 5,
+                ),
                 array(
                     "Table" => array(
                         "get" => array(
@@ -1045,7 +1047,9 @@ class SensorTest extends \PHPUnit_Framework_TestCase
             array(
                 new DummySystem(),
                 null,
-                "DummyTable",
+                array(
+                    "id" => 5,
+                ),
                 array(
                     "Table" => array(
                         "get" => array(
@@ -1073,7 +1077,9 @@ class SensorTest extends \PHPUnit_Framework_TestCase
             array(
                 new DummySystem(),
                 null,
-                "DummyTable",
+                array(
+                    "id" => 5,
+                ),
                 array(
                     "Table" => array(
                         "get" => array(
@@ -1100,7 +1106,9 @@ class SensorTest extends \PHPUnit_Framework_TestCase
             array(
                 new DummySystem(),
                 null,
-                "DummyTable",
+                array(
+                    "id" => 5,
+                ),
                 array(
                     "Table" => array(
                         "get" => array(
@@ -1156,7 +1164,9 @@ class SensorTest extends \PHPUnit_Framework_TestCase
             array(
                 new DummySystem(),
                 null,
-                "DummyTable",
+                array(
+                    "id" => 5,
+                ),
                 array(
                     "Table" => array(
                         "get" => array(
@@ -1221,7 +1231,9 @@ class SensorTest extends \PHPUnit_Framework_TestCase
             array( // #0
                 new DummySystem("System"),
                 null,
-                "DummyTable",
+                array(
+                    "id" => 5,
+                ),
                 array(
                     "Table" => array(
                         "get" => array(

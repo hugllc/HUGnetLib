@@ -78,8 +78,12 @@ class DummySystem extends DummyBase
     */
     public function &table($table)
     {
-        if (isset(self::$ret[$class]) && isset(self::$ret[$class][$name])) {
-            return self::$ret[$class][$name];
+        $class = $this->class;
+        if (isset(self::$ret[$class])
+            && isset(self::$ret[$class]["Table"])
+            && isset(self::$ret[$class]["Table"][$table])
+        ) {
+            return self::$ret[$class]["Table"][$table];
         } else {
             $ret = new \HUGnet\DummyTable($table);
         }
