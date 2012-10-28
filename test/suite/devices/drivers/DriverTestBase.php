@@ -143,8 +143,8 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     final public static function dataStringSize()
     {
         return array(
-            array("historyTable", 80, 13),
-            array("averageTable", 80, 13),
+            array("historyTable", 80, 5),
+            array("averageTable", 80, 5),
         );
     }
     /**
