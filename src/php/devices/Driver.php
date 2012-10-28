@@ -292,34 +292,24 @@ abstract class Driver
     *
     * @param bool $history History if true, average if false
     *
+    * @todo This is a hack and should be fixed.  It shouldn't check for the
+    *       tables directly.
     * @return string
     */
     public function historyTable($history = true)
     {
         if ($history) {
             $class = $this->get("historyTable");
-            /*
-            $class = \HUGnet\Util::findClass(
-                $this->get("historyTable"), "plugins/historyTable", true
-            );
-            if (is_null($class)) {
-                $class = \HUGnet\Util::findClass(
-                    "EDEFAULTHistoryTable", "plugins/historyTable", true
-                );
+            $dbfile = dirname(__FILE__)."/../db/tables/history/$class.php";
+            if (!file_exists($dbfile)) {
+                $class = "EDEFAULTHistory";
             }
-            */
         } else {
             $class = $this->get("averageTable");
-            /*
-            $class = \HUGnet\Util::findClass(
-                $this->get("averageTable"), "plugins/averageTable", true
-            );
-            if (is_null($class)) {
-                $class = \HUGnet\Util::findClass(
-                    "EDEFAULTAverageTable", "plugins/averageTable", true
-                );
+            $dbfile = dirname(__FILE__)."/../db/tables/average/$class.php";
+            if (!file_exists($dbfile)) {
+                $class = "EDEFAULTAverage";
             }
-            */
         }
         return $class;
     }

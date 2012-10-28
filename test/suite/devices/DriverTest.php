@@ -475,25 +475,25 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                 array(),
                 "\HUGnet\devices\DriverTestClass",
                 true,
-                "E00392800HistoryTable"
+                "E00392800History"
             ),
             array(
                 array(),
                 "\HUGnet\devices\DriverTestClass",
                 false,
-                "E00392800AverageTable"
+                "E00392800Average"
             ),
             array(
                 array(),
                 "\HUGnet\devices\DriverTestClass2",
                 true,
-                "EDEFAULTHistoryTable"
+                "EDEFAULTHistory"
             ),
             array(
                 array(),
                 "\HUGnet\devices\DriverTestClass2",
                 false,
-                "EDEFAULTAverageTable"
+                "EDEFAULTAverage"
             ),
         );
     }
@@ -532,8 +532,8 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                     'totalSensors' => 13,
                     'physicalSensors' => 9,
                     'virtualSensors' => 4,
-                    'historyTable' => 'E00392800HistoryTable',
-                    'averageTable' => 'E00392800AverageTable',
+                    'historyTable' => 'E00392800History',
+                    'averageTable' => 'E00392800Average',
                     'loadable' => false,
                     'bootloader' => false,
                     'testParam' => '12345',
@@ -552,8 +552,8 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                     'totalSensors' => 13,
                     'physicalSensors' => 9,
                     'virtualSensors' => 4,
-                    'historyTable' => 'ABADHistoryTable',
-                    'averageTable' => 'ABADAverageTable',
+                    'historyTable' => 'ABADHistory',
+                    'averageTable' => 'ABADAverage',
                     'loadable' => false,
                     'bootloader' => false,
                     'testParam' => '54321',
@@ -918,8 +918,8 @@ class DriverTestClass extends Driver
     protected $params = array(
         "packetTimeout" => 6, /* This is for test value only */
         "testParam" => "12345", /* This is for test value only */
-        "historyTable" => "E00392800HistoryTable",
-        "averageTable" => "E00392800AverageTable",
+        "historyTable" => "E00392800History",
+        "averageTable" => "E00392800Average",
     );
     /**
     * This function creates the system.
@@ -958,8 +958,8 @@ class DriverTestClass2 extends Driver
     protected $params = array(
         "packetTimeout" => 9, /* This is for test value only */
         "testParam" => "54321", /* This is for test value only */
-        "historyTable" => "ABADHistoryTable",
-        "averageTable" => "ABADAverageTable",
+        "historyTable" => "ABADHistory",
+        "averageTable" => "ABADAverage",
     );
     /**
     * This function creates the system.
