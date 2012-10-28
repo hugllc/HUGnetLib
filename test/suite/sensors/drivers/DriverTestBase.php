@@ -285,9 +285,12 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     public function testDataTypesKeys()
     {
         $validTypes = array(
-            \HUGnet\channels\Driver::TYPE_RAW => '\HUGnet\channels\Driver::TYPE_RAW',
-            \HUGnet\channels\Driver::TYPE_DIFF => '\HUGnet\channels\Driver::TYPE_DIFF',
-            \HUGnet\channels\Driver::TYPE_IGNORE => '\HUGnet\channels\Driver::TYPE_IGNORE',
+            \HUGnet\channels\Driver::TYPE_RAW
+                => '\HUGnet\channels\Driver::TYPE_RAW',
+            \HUGnet\channels\Driver::TYPE_DIFF
+                => '\HUGnet\channels\Driver::TYPE_DIFF',
+            \HUGnet\channels\Driver::TYPE_IGNORE
+                => '\HUGnet\channels\Driver::TYPE_IGNORE',
         );
         $extra = (array)$this->o->get("dataTypes", 1);
         foreach ($extra as $key => $value) {

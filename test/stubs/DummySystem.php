@@ -74,6 +74,8 @@ class DummySystem extends DummyBase
     /**
     * This sets the configuration array _config
     *
+    * @param string $table The table to use
+    *
     * @return null
     */
     public function &table($table)

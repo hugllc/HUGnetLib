@@ -173,7 +173,7 @@ class Connection  implements \ConnectionManager
     /**
     * Tries to connect to a database servers
     *
-    * @param string $server The server to check
+    * @param string $group The group to get the config of
     *
     * @return bool True on success, false on failure
     */

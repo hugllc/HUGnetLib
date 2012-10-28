@@ -239,7 +239,8 @@ class System
     /**
     * This returns a dataCollector object.
     *
-    * @param array $data The data to send to the device object
+    * @param array $string The data to send to the device object
+    * @param int   $level  The debug level to print it at
     *
     * @return Reference to a device object
     */

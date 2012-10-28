@@ -216,8 +216,10 @@ class DriverTest extends drivers\DriverTestBase
             'maxDecimals' => 7,
             'testParam' => '12345',
             "dataTypes" => array(
-                \HUGnet\channels\Driver::TYPE_RAW => \HUGnet\channels\Driver::TYPE_RAW,
-                \HUGnet\channels\Driver::TYPE_DIFF => \HUGnet\channels\Driver::TYPE_DIFF,
+                \HUGnet\channels\Driver::TYPE_RAW
+                    => \HUGnet\channels\Driver::TYPE_RAW,
+                \HUGnet\channels\Driver::TYPE_DIFF
+                    => \HUGnet\channels\Driver::TYPE_DIFF,
                 \HUGnet\channels\Driver::TYPE_IGNORE
                     => \HUGnet\channels\Driver::TYPE_IGNORE,
             ),

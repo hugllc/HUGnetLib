@@ -150,7 +150,7 @@ class EVIRTUALHistoryTest extends HistoryTestBase
     {
         $this->assertSame(20, $this->o->datacols);
     }
-   /**
+    /**
     * Generic function for testing sensor routines
     *
     * This is called by using parent::sensorTest()

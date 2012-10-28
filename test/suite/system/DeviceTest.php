@@ -401,7 +401,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $obj->newVirtual($data);
         $ret = $config->retrieve();
         $this->assertEquals(
-             $expect, $ret["Devices"]["insertVirtual"], "Wrong Return"
+            $expect, $ret["Devices"]["insertVirtual"], "Wrong Return"
         );
         unset($obj);
     }
@@ -563,7 +563,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     *
     * @param array  $config The configuration to use
     * @param mixed  $device The device to set
-    * @param mixed  $class  This is either the name of a class or an object
+    * @param mixed  $return The expected return value
     * @param array  $mocks  The mocks to use
     * @param string $string The string to feed into the decode
     * @param array  $expect The expected return
