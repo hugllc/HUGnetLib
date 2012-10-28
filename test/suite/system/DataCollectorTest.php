@@ -98,7 +98,7 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
                 null,
                 "DummyTable",
                 array(
-                    "Table" => array(
+                    "DummyTable" => array(
                         "clearData" => array(array()),
                     ),
                 ),
@@ -112,7 +112,7 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
                 ),
                 "DummyTable",
                 array(
-                    "Table" => array(
+                    "DummyTable" => array(
                         "fromAny" => array(
                             array(
                                 array(

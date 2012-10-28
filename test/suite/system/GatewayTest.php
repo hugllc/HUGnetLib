@@ -96,7 +96,7 @@ class GatewayTest extends \PHPUnit_Framework_TestCase
             array(
                 new DummySystem(),
                 null,
-                "DummyTable",
+                null,
                 array(
                     "Table" => array(
                         "clearData" => array(array()),
@@ -110,7 +110,7 @@ class GatewayTest extends \PHPUnit_Framework_TestCase
                     "name" => 3,
                     "value" => 1,
                 ),
-                "DummyTable",
+                null,
                 array(
                     "Table" => array(
                         "fromAny" => array(
@@ -135,7 +135,7 @@ class GatewayTest extends \PHPUnit_Framework_TestCase
             array(
                 new DummySystem(),
                 2,
-                new DummyTable(),
+                new DummyTable("Table"),
                 array(
                     "Table" => array(
                         "getRow" => array(
