@@ -117,7 +117,7 @@ class DummyTable extends DummyBase
     public function get($name)
     {
         $class = $this->class;
-        $ret = $this->__call("get", array($name));
+        $ret = parent::get($name);
         if (is_null($ret)) {
             if (isset(DummyBase::$set[$class])
                 && isset(DummyBase::$set[$class]['set'])

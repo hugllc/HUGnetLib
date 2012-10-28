@@ -98,9 +98,7 @@ class GatewayTest extends \PHPUnit_Framework_TestCase
                 null,
                 null,
                 array(
-                    "Table" => array(
-                        "clearData" => array(array()),
-                    ),
+                    "clearData" => array(array()),
                 ),
             ),
             array(
@@ -112,22 +110,20 @@ class GatewayTest extends \PHPUnit_Framework_TestCase
                 ),
                 null,
                 array(
-                    "Table" => array(
-                        "fromAny" => array(
+                    "fromAny" => array(
+                        array(
                             array(
-                                array(
-                                    "id" => 5,
-                                    "name" => 3,
-                                    "value" => 1,
-                                ),
+                                "id" => 5,
+                                "name" => 3,
+                                "value" => 1,
                             ),
                         ),
-                        "clearData" => array(array()),
-                        "selectOneInto" => array(
-                            array(
-                                "`id` = ? AND `name` = ? AND `value` = ?",
-                                array(5, 3, 1),
-                            ),
+                    ),
+                    "clearData" => array(array()),
+                    "selectOneInto" => array(
+                        array(
+                            "`id` = ? AND `name` = ? AND `value` = ?",
+                            array(5, 3, 1),
                         ),
                     ),
                 ),
@@ -137,15 +133,13 @@ class GatewayTest extends \PHPUnit_Framework_TestCase
                 2,
                 new DummyTable("Table"),
                 array(
-                    "Table" => array(
-                        "getRow" => array(
-                            array(0 => 2),
-                        ),
-                        "set" => array(
-                            array("id", 2),
-                        ),
-                        "clearData" => array(array()),
+                    "getRow" => array(
+                        array(0 => 2),
                     ),
+                    "set" => array(
+                        array("id", 2),
+                    ),
+                    "clearData" => array(array()),
                 ),
             ),
         );
@@ -171,7 +165,9 @@ class GatewayTest extends \PHPUnit_Framework_TestCase
         // Make sure we have the right object
         $this->assertTrue((get_class($obj) === "HUGnet\Gateway"), "Class wrong");
         if (is_object($table)) {
-            $this->assertEquals($expectTable, $table->retrieve(), "Data Wrong");
+            $this->assertEquals(
+                $expectTable, $table->retrieve("Table"), "Data Wrong"
+            );
         }
     }
 }

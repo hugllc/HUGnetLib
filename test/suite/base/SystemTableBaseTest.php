@@ -113,9 +113,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                 null,
                 "Table",
                 array(
-                    "Table" => array(
-                        "clearData" => array(array()),
-                    ),
+                    "clearData" => array(array()),
                 ),
             ),
             array(
@@ -127,22 +125,20 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                 ),
                 "Table",
                 array(
-                    "Table" => array(
-                        "fromAny" => array(
+                    "fromAny" => array(
+                        array(
                             array(
-                                array(
-                                    "id" => 5,
-                                    "name" => 3,
-                                    "value" => 1,
-                                ),
+                                "id" => 5,
+                                "name" => 3,
+                                "value" => 1,
                             ),
                         ),
-                        "clearData" => array(array()),
-                        "selectOneInto" => array(
-                            array(
-                                "`id` = ? AND `name` = ? AND `value` = ?",
-                                array(5, 3, 1),
-                            ),
+                    ),
+                    "clearData" => array(array()),
+                    "selectOneInto" => array(
+                        array(
+                            "`id` = ? AND `name` = ? AND `value` = ?",
+                            array(5, 3, 1),
                         ),
                     ),
                 ),
@@ -152,15 +148,13 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                 2,
                 new DummyTable("Table"),
                 array(
-                    "Table" => array(
-                        "getRow" => array(
-                            array(0 => 2),
-                        ),
-                        "set" => array(
-                            array("id", 2),
-                        ),
-                        "clearData" => array(array()),
+                    "getRow" => array(
+                        array(0 => 2),
                     ),
+                    "set" => array(
+                        array("id", 2),
+                    ),
+                    "clearData" => array(array()),
                 ),
             ),
         );
@@ -186,7 +180,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(
             is_subclass_of($obj, "HUGnet\SystemTableBase"), "Class wrong"
         );
-        $this->assertEquals($expectTable, $sys->retrieve(), "Data Wrong");
+        $this->assertEquals($expectTable, $sys->retrieve("Table"), "Data Wrong");
     }
 
     /**

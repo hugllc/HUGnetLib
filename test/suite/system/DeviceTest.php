@@ -102,9 +102,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 null,
                 "DummyTable",
                 array(
-                    "Devices" => array(
-                        "clearData" => array(array()),
-                    ),
+                    "clearData" => array(array()),
                 ),
             ),
             array(
@@ -116,30 +114,28 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 ),
                 "DummyTable",
                 array(
-                    "Devices" => array(
-                        "fromAny" => array(
+                    "fromAny" => array(
+                        array(
                             array(
-                                array(
-                                    "id" => 5,
-                                    "name" => 3,
-                                    "value" => 1,
-                                ),
+                                "id" => 5,
+                                "name" => 3,
+                                "value" => 1,
                             ),
                         ),
-                        "get" => array(
-                            array("HWPartNum"),
-                            array("FWPartNum"),
-                            array("FWVersion"),
-                        ),
-                        "set" => array(
-                            array("Driver", "EDEFAULT"),
-                        ),
-                        "clearData" => array(array()),
-                        "selectOneInto" => array(
-                            array(
-                                "`id` = ? AND `name` = ? AND `value` = ?",
-                                array(5, 3, 1),
-                            ),
+                    ),
+                    "get" => array(
+                        array("HWPartNum"),
+                        array("FWPartNum"),
+                        array("FWVersion"),
+                    ),
+                    "set" => array(
+                        array("Driver", "EDEFAULT"),
+                    ),
+                    "clearData" => array(array()),
+                    "selectOneInto" => array(
+                        array(
+                            "`id` = ? AND `name` = ? AND `value` = ?",
+                            array(5, 3, 1),
                         ),
                     ),
                 ),
@@ -149,15 +145,13 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 2,
                 new DummyTable(),
                 array(
-                    "Devices" => array(
-                        "getRow" => array(
-                            array(0 => 2),
-                        ),
-                        "set" => array(
-                            array("id", 2),
-                        ),
-                        "clearData" => array(array()),
+                    "getRow" => array(
+                        array(0 => 2),
                     ),
+                    "set" => array(
+                        array("id", 2),
+                    ),
+                    "clearData" => array(array()),
                 ),
             ),
         );
@@ -183,7 +177,9 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         // Make sure we have the right object
         $table = $this->readAttribute($obj, "_table");
         if (is_object($table)) {
-            $this->assertEquals($expectTable, $table->retrieve(), "Data Wrong");
+            $this->assertEquals(
+                $expectTable, $table->retrieve("Devices"), "Data Wrong"
+            );
         }
         unset($obj);
     }
@@ -313,9 +309,12 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 array(
                     "System" => array(
                         "network" => new \HUGnet\network\DummyNetwork("Network"),
-                        "table" => array(
-                            "Firmware" => "test",
-                        ),
+                    ),
+                ),
+                array(
+                    "table" => array(
+                        array("Devices"),
+                        array("Firmware"),
                     ),
                 ),
             ),
@@ -328,18 +327,20 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     * @param mixed $device The device to set
     * @param mixed $class  This is either the name of a class or an object
     * @param array $mocks  The mocks to use
+    * @param array $expect THe expected calls to system
     *
     * @return null
     *
     * @dataProvider dataFirmware
     */
     public function testFirmware(
-        $config, $device, $class, $mocks
+        $config, $device, $class, $mocks, $expect
     ) {
         $config->resetMock($mocks);
         $obj = Device::factory($config, $device);
+        $obj->firmware();
         $this->assertEquals(
-            "test", $obj->firmware(), "Wrong Return"
+            $expect, $config->retrieve("System"), "Wrong Return"
         );
         unset($obj);
     }

@@ -98,9 +98,7 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
                 null,
                 "DummyTable",
                 array(
-                    "DummyTable" => array(
-                        "clearData" => array(array()),
-                    ),
+                    "clearData" => array(array()),
                 ),
             ),
             array(
@@ -112,22 +110,20 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
                 ),
                 "DummyTable",
                 array(
-                    "DummyTable" => array(
-                        "fromAny" => array(
+                    "fromAny" => array(
+                        array(
                             array(
-                                array(
-                                    "id" => 5,
-                                    "name" => 3,
-                                    "value" => 1,
-                                ),
+                                "id" => 5,
+                                "name" => 3,
+                                "value" => 1,
                             ),
                         ),
-                        "clearData" => array(array()),
-                        "selectOneInto" => array(
-                            array(
-                                "`id` = ? AND `name` = ? AND `value` = ?",
-                                array(5, 3, 1),
-                            ),
+                    ),
+                    "clearData" => array(array()),
+                    "selectOneInto" => array(
+                        array(
+                            "`id` = ? AND `name` = ? AND `value` = ?",
+                            array(5, 3, 1),
                         ),
                     ),
                 ),
@@ -137,15 +133,13 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
                 2,
                 new DummyTable(),
                 array(
-                    "Table" => array(
-                        "getRow" => array(
-                            array(0 => 2),
-                        ),
-                        "set" => array(
-                            array("id", 2),
-                        ),
-                        "clearData" => array(array()),
+                    "getRow" => array(
+                        array(0 => 2),
                     ),
+                    "set" => array(
+                        array("id", 2),
+                    ),
+                    "clearData" => array(array()),
                 ),
             ),
         );
@@ -167,13 +161,15 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
         $table = new DummyTable();
         // This just resets the mock
         $table->resetMock();
-        $obj = DataCollector::factory($config, $gateway, $class);
+        $obj = DataCollector::factory($config, $gateway);
         // Make sure we have the right object
         $this->assertTrue(
             (get_class($obj) === "HUGnet\DataCollector"), "Class wrong"
         );
         if (is_object($table)) {
-            $this->assertEquals($expectTable, $table->retrieve(), "Data Wrong");
+            $this->assertEquals(
+                $expectTable, $table->retrieve("Datacollectors"), "Data Wrong"
+            );
         }
     }
 }
