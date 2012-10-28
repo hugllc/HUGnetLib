@@ -55,7 +55,7 @@ require_once dirname(__FILE__)."/../base/SystemTableBase.php";
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class Error extends SystemTableBase
+class Error extends \HUGnet\base\SystemTableBase
 {
     /** @var notice level severity */
     const SEVERITY_NOTICE = 1;

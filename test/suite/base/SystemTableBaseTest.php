@@ -34,7 +34,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet;
+namespace HUGnet\base;
 /** This is a required class */
 require_once CODE_BASE.'base/SystemTableBase.php';
 /** This is a required class */
@@ -146,7 +146,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
             array(
                 array(),
                 2,
-                new DummyTable("Table"),
+                new \HUGnet\DummyTable("Table"),
                 array(
                     "getRow" => array(
                         array(0 => 2),
@@ -173,12 +173,12 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
     */
     public function testFactory($config, $gateway, $class, $expectTable)
     {
-        $sys = new DummySystem("System");
+        $sys = new \HUGnet\DummySystem("System");
         $sys->resetMock($config);
         $obj = SystemTableBaseTestStub::factory($sys, $gateway, $class);
         // Make sure we have the right object
         $this->assertTrue(
-            is_subclass_of($obj, "HUGnet\SystemTableBase"), "Class wrong"
+            is_subclass_of($obj, "HUGnet\base\SystemTableBase"), "Class wrong"
         );
         $this->assertEquals($expectTable, $sys->retrieve("Table"), "Data Wrong");
     }
@@ -193,7 +193,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(),
-                new DummyTable(),
+                new \HUGnet\DummyTable(),
                 array(
                     "id" => 5,
                     "name" => 3,
@@ -229,7 +229,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                         )
                     ),
                 ),
-                new DummyTable("Table"),
+                new \HUGnet\DummyTable("Table"),
                 2,
                 array(
                     "Table" => array(
@@ -261,7 +261,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
     */
     public function testLoad($config, $class, $gateway, $expectTable, $return)
     {
-        $sys = new DummySystem("System");
+        $sys = new \HUGnet\DummySystem("System");
         $sys->resetMock($config);
         $obj = SystemTableBaseTestStub::factory($sys, null, $class);
         $ret = $obj->load($gateway);
@@ -278,7 +278,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(),
-                new DummyTable(),
+                new \HUGnet\DummyTable(),
                 array(
                     "id" => 5,
                     "name" => 3,
@@ -309,7 +309,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                         )
                     ),
                 ),
-                new DummyTable("Table"),
+                new \HUGnet\DummyTable("Table"),
                 2,
                 array(
                     "Table" => array(
@@ -335,7 +335,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
     */
     public function testChange($config, $class, $gateway, $expectTable, $return)
     {
-        $sys = new DummySystem("System");
+        $sys = new \HUGnet\DummySystem("System");
         $sys->resetMock($config);
         $obj = SystemTableBaseTestStub::factory($sys, null, $class);
         $ret = $obj->change($gateway);
@@ -357,7 +357,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                         "updateRow" => true,
                     ),
                 ),
-                new DummyTable("Table"),
+                new \HUGnet\DummyTable("Table"),
                 false,
                 array(
                     "Table" => array(
@@ -375,7 +375,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                         "insertRow" => false,
                     ),
                 ),
-                new DummyTable("Table"),
+                new \HUGnet\DummyTable("Table"),
                 false,
                 array(
                     "Table" => array(
@@ -393,7 +393,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                         "insertRow" => true,
                     ),
                 ),
-                new DummyTable("Table"),
+                new \HUGnet\DummyTable("Table"),
                 true,
                 array(
                     "Table" => array(
@@ -421,7 +421,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
     */
     public function testStore($config, $class, $replace, $expectTable, $return)
     {
-        $sys = new DummySystem("System");
+        $sys = new \HUGnet\DummySystem("System");
         $sys->resetMock($config);
         $obj = SystemTableBaseTestStub::factory($sys, null, $class);
         $ret = $obj->store($replace);
@@ -445,7 +445,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-                new DummyTable("Table"),
+                new \HUGnet\DummyTable("Table"),
                 "id",
                 2,
             ),
@@ -455,7 +455,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                         "get" => 5,
                     ),
                 ),
-                new DummyTable("Table"),
+                new \HUGnet\DummyTable("Table"),
                 "packetTimeout",
                 5,
             ),
@@ -476,7 +476,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
     public function testGet(
         $config, $class, $field, $expect
     ) {
-        $sys = new DummySystem("System");
+        $sys = new \HUGnet\DummySystem("System");
         $sys->resetMock($config);
         $obj = SystemTableBaseTestStub::factory($sys, null, $class);
         $this->assertSame($expect, $obj->get($field));
@@ -499,7 +499,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-                new DummyTable("Table"),
+                new \HUGnet\DummyTable("Table"),
                 "id",
                 2,
             ),
@@ -520,7 +520,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
     public function testID(
         $config, $class, $field, $expect
     ) {
-        $sys = new DummySystem("System");
+        $sys = new \HUGnet\DummySystem("System");
         $sys->resetMock($config);
         $class->sqlId = $field;
         $obj = SystemTableBaseTestStub::factory($sys, null, $class);
@@ -541,7 +541,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                         "deleteRow" => false,
                     ),
                 ),
-                new DummyTable("Table"),
+                new \HUGnet\DummyTable("Table"),
                 false,
             ),
             array(
@@ -550,7 +550,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                         "deleteRow" => true,
                     ),
                 ),
-                new DummyTable("Table"),
+                new \HUGnet\DummyTable("Table"),
                 true,
             ),
         );
@@ -569,7 +569,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
     public function testDelete(
         $config, $class, $expect
     ) {
-        $sys = new DummySystem("System");
+        $sys = new \HUGnet\DummySystem("System");
         $sys->resetMock($config);
         $obj = SystemTableBaseTestStub::factory($sys, null, $class);
         $this->assertSame($expect, $obj->delete(), "Return Wrong");
@@ -592,7 +592,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-                new DummyTable("Table"),
+                new \HUGnet\DummyTable("Table"),
                 "id",
                 2,
                 array(array("id", 2)),
@@ -603,7 +603,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                         "get" => 5,
                     ),
                 ),
-                new DummyTable("Table"),
+                new \HUGnet\DummyTable("Table"),
                 "packetTimeout",
                 4,
                 array(array("packetTimeout", 4)),
@@ -626,7 +626,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
     public function testSet(
         $config, $class, $field, $value, $expect
     ) {
-        $sys = new DummySystem("System");
+        $sys = new \HUGnet\DummySystem("System");
         $sys->resetMock($config);
         $obj = SystemTableBaseTestStub::factory($sys, null, $class);
         $obj->set($field, $value);
@@ -650,7 +650,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-                new DummyTable("Table"),
+                new \HUGnet\DummyTable("Table"),
                 array(
                     "id" => 2,
                     "beer" => "none",
@@ -670,7 +670,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-                new DummyTable("Table"),
+                new \HUGnet\DummyTable("Table"),
                 array(
                 ),
                 array("a" => "A", "b" => "B", "c" => "C"),
@@ -698,7 +698,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
     public function testIds(
         $config, $class, $data, $expect, $calls
     ) {
-        $sys = new DummySystem("System");
+        $sys = new \HUGnet\DummySystem("System");
         $obj = SystemTableBaseTestStub::factory($sys, null, $class);
         $sys->resetMock($config);
         $ret = $obj->Ids($data);
@@ -724,7 +724,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-                new DummyTable("Table"),
+                new \HUGnet\DummyTable("Table"),
                 '["A","B","C"]',
             ),
         );
@@ -743,7 +743,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
     public function testJson(
         $config, $class, $expect
     ) {
-        $sys = new DummySystem("System");
+        $sys = new \HUGnet\DummySystem("System");
         $sys->resetMock($config);
         $obj = SystemTableBaseTestStub::factory($sys, null, $class);
         $this->assertSame($expect, $obj->json());
@@ -757,7 +757,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
     */
     public function testAction()
     {
-        $sys = new DummySystem("System");
+        $sys = new \HUGnet\DummySystem("System");
         $sys->resetMock($config);
         $obj = SystemTableBaseTestStub::factory($sys, null);
         $this->assertSame($obj, $obj->action());

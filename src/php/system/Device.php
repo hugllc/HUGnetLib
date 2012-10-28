@@ -60,7 +60,7 @@ require_once dirname(__FILE__)."/../devices/Driver.php";
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class Device extends SystemTableBase
+class Device extends \HUGnet\base\SystemTableBase
 {
     /**
     * This is the cache for the drivers.

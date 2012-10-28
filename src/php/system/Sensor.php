@@ -58,7 +58,7 @@ require_once dirname(__FILE__)."/../base/SystemTableBase.php";
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class Sensor extends SystemTableBase
+class Sensor extends \HUGnet\base\SystemTableBase
 {
     /**
     * This is the cache for the drivers.

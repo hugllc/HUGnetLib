@@ -35,7 +35,7 @@
  *
  */
 /** This is the HUGnet namespace */
-namespace HUGnet;
+namespace HUGnet\base;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is the base of our table class */
@@ -79,7 +79,7 @@ abstract class SystemTableBase
     */
     private function __construct(&$system, $table)
     {
-        System::exception(
+        \HUGnet\System::exception(
             get_class($this)." needs to be passed a system object",
             "InvalidArgument",
             !is_object($system)

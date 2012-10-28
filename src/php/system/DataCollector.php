@@ -55,7 +55,7 @@ require_once dirname(__FILE__)."/../base/SystemTableBase.php";
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class DataCollector extends SystemTableBase
+class DataCollector extends \HUGnet\base\SystemTableBase
 {
     /**
     * This function creates the system.
