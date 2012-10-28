@@ -171,121 +171,178 @@ class E00392100Test extends DriverTestBase
             array(
                 array(
                     "Device" => array(
-                        "system" => new \HUGnet\DummySystem("System")
+                        "system" => new \HUGnet\DummySystem("System"),
+                        "id" => 5,
+                        "get" => array(
+                            "id" => 5,
+                        ),
                     ),
                 ),
                 0,
                 array(
                     "id" => 0x40,
+                    "sensor" => 0,
+                    "dev" => 5,
                     "type" => "ControllerVoltage",
                 ),
             ),
             array(
                 array(
                     "Device" => array(
-                        "system" => new \HUGnet\DummySystem("System")
+                        "system" => new \HUGnet\DummySystem("System"),
+                        "id" => 5,
+                        "get" => array(
+                            "id" => 5,
+                        ),
                     ),
                 ),
                 1,
                 array(
                     "id" => 0x50,
+                    "sensor" => 1,
+                    "dev" => 5,
                     "type" => "ControllerCurrent",
                 ),
             ),
             array(
                 array(
                     "Device" => array(
-                        "system" => new \HUGnet\DummySystem("System")
+                        "system" => new \HUGnet\DummySystem("System"),
+                        "id" => 5,
+                        "get" => array(
+                            "id" => 5,
+                        ),
                     ),
                 ),
                 2,
                 array(
-                    "id" => 0x02,
+                    "id" => 2,
+                    "sensor" => 2,
+                    "dev" => 5,
                     "type" => "ControllerTemp",
                 ),
             ),
             array(
                 array(
                     "Device" => array(
-                        "system" => new \HUGnet\DummySystem("System")
+                        "system" => new \HUGnet\DummySystem("System"),
+                        "id" => 5,
+                        "get" => array(
+                            "id" => 5,
+                        ),
+
                     ),
                 ),
                 3,
                 array(
                     "id" => 0x40,
+                    "sensor" => 3,
+                    "dev" => 5,
                     "type" => "ControllerVoltage",
                 ),
             ),
             array(
                 array(
                     "Device" => array(
-                        "system" => new \HUGnet\DummySystem("System")
+                        "system" => new \HUGnet\DummySystem("System"),
+                        "id" => 5,
+                        "get" => array(
+                            "id" => 5,
+                        ),
                     ),
                 ),
                 4,
                 array(
                     "id" => 0x50,
+                    "sensor" => 4,
+                    "dev" => 5,
                     "type" => "ControllerCurrent",
                 ),
             ),
             array(
                 array(
                     "Device" => array(
-                        "system" => new \HUGnet\DummySystem("System")
+                        "system" => new \HUGnet\DummySystem("System"),
+                        "id" => 5,
+                        "get" => array(
+                            "id" => 5,
+                        ),
                     ),
                 ),
                 5,
                 array(
-                    "id" => 0x02,
+                    "id" => 2,
+                    "sensor" => 5,
+                    "dev" => 5,
                     "type" => "ControllerTemp",
                 ),
             ),
             array(
                 array(
                     "Device" => array(
-                        "system" => new \HUGnet\DummySystem("System")
+                        "system" => new \HUGnet\DummySystem("System"),
+                        "id" => 5,
+                        "get" => array(
+                            "id" => 5,
+                        ),
                     ),
                 ),
                 6,
                 array(
                     "id" => 0xFE,
-                    "type" => "",
+                    "sensor" => 6,
+                    "dev" => 5,
                 ),
             ),
             array(
                 array(
                     "Device" => array(
-                        "system" => new \HUGnet\DummySystem("System")
+                        "system" => new \HUGnet\DummySystem("System"),
+                        "id" => 5,
+                        "get" => array(
+                            "id" => 5,
+                        ),
                     ),
                 ),
                 7,
                 array(
                     "id" => 0xFE,
-                    "type" => "",
+                    "sensor" => 7,
+                    "dev" => 5,
                 ),
             ),
             array(
                 array(
                     "Device" => array(
-                        "system" => new \HUGnet\DummySystem("System")
+                        "system" => new \HUGnet\DummySystem("System"),
+                        "id" => 5,
+                        "get" => array(
+                            "id" => 5,
+                        ),
                     ),
                 ),
                 8,
                 array(
                     "id" => 0xFE,
-                    "type" => "",
+                    "sensor" => 8,
+                    "dev" => 5,
                 ),
             ),
             array(
                 array(
                     "Device" => array(
-                        "system" => new \HUGnet\DummySystem("System")
+                        "system" => new \HUGnet\DummySystem("System"),
+                        "id" => 5,
+                        "get" => array(
+                            "id" => 5,
+                        ),
                     ),
                 ),
                 9,
                 array(
                     "id" => 0xFE,
-                    "type" => "",
+                    "sensor" => 9,
+                    "dev" => 5,
                 ),
             ),
         );
@@ -306,9 +363,20 @@ class E00392100Test extends DriverTestBase
         $device  = new \HUGnet\DummyTable("Device");
         $device->resetMock($mocks);
         $sensor = $this->o->sensor($sid);
-        foreach ((array)$expect as $key => $value) {
-            $this->assertEquals($value, $sensor->get($key), "$key is wrong");
+        $ret = $device->retrieve();
+        $this->assertEquals(
+            $expect, $ret["Sensors"]["fromAny"][1][0], "Setup is wrong"
+        );
+
+        /*
+        foreach ((array)$expect as $class => $calls) {
+            foreach ($calls as $function => $args) {
+                $this->assertEquals(
+                    $args, $ret[$class][$function], "$key is wrong"
+                );
+            }
         }
+        */
     }
 }
 ?>
