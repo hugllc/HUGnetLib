@@ -107,5 +107,30 @@ class DummyTable extends DummyBase
     );
     /** @var This is our returns */
     protected $class = "Table";
+    /**
+    * Overload the get attribute
+    *
+    * @param string $name This is the attribute to get
+    *
+    * @return mixed The value of the attribute
+    */
+    public function get($name)
+    {
+        $class = $this->class;
+        $ret = $this->__call("get", array($name));
+        if (is_null($ret)) {
+            if (isset(DummyBase::$set[$class])
+                && isset(DummyBase::$set[$class]['set'])
+            ) {
+                foreach ((array)DummyBase::$set[$class]['set'] as $value) {
+                    if ($value[0] == $name) {
+                        $ret = $value[1];
+                    }
+                }
+            }
+        }
+        return $ret;
+    }
+
 }
 ?>

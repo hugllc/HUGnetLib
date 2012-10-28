@@ -183,14 +183,7 @@ class Device extends SystemTableBase
             include_once $file;
         }
         $class = "\\HUGnet\\devices\\".$class;
-        if (class_exists($class)) {
-            return $class::factory(
-                $this->system(),
-                $this,
-                $this->driver()
-            );
-        }
-        return \HUGnet\devices\Action::factory(
+        return $class::factory(
             $this->system(),
             $this,
             $this->driver()
@@ -329,9 +322,7 @@ class Device extends SystemTableBase
     public function &firmware()
     {
         if (!is_object($this->_firmware)) {
-            $class = Util::findClass("FirmwareTable", "tables");
-            $system = &$this->system();
-            $this->_firmware = new $class($system);
+            $this->_firmware = $this->system()->table("Firmware");
         }
         return $this->_firmware;
     }

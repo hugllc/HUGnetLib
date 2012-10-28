@@ -102,7 +102,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 null,
                 "DummyTable",
                 array(
-                    "Table" => array(
+                    "Devices" => array(
                         "clearData" => array(array()),
                     ),
                 ),
@@ -116,7 +116,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 ),
                 "DummyTable",
                 array(
-                    "Table" => array(
+                    "Devices" => array(
                         "fromAny" => array(
                             array(
                                 array(
@@ -149,7 +149,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 2,
                 new DummyTable(),
                 array(
-                    "Table" => array(
+                    "Devices" => array(
                         "getRow" => array(
                             array(0 => 2),
                         ),
@@ -179,7 +179,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $table = new DummyTable();
         // This just resets the mock
         $table->resetMock();
-        $obj = Device::factory($config, $device, $class);
+        $obj = Device::factory($config, $device);
         // Make sure we have the right object
         $table = $this->readAttribute($obj, "_table");
         if (is_object($table)) {
@@ -256,6 +256,20 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
+            array(
+                new DummySystem(),
+                array(
+                    "id" => 5,
+                    "name" => 3,
+                    "value" => 1,
+                ),
+                "DummyTable",
+                array(
+                    "System" => array(
+                        "network" => new \HUGnet\network\DummyNetwork("Network"),
+                    ),
+                ),
+            ),
         );
     }
     /**
@@ -274,9 +288,119 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $config, $device, $class, $mocks
     ) {
         $config->resetMock($mocks);
-        $obj = Device::factory($config, $device, $class);
+        $obj = Device::factory($config, $device);
         $this->assertEquals(
             "HUGnet\devices\Action", get_class($obj->action()), "Wrong Class"
+        );
+        unset($obj);
+    }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataFirmware()
+    {
+        return array(
+            array(
+                new DummySystem(),
+                array(
+                    "id" => 5,
+                    "name" => 3,
+                    "value" => 1,
+                ),
+                "DummyTable",
+                array(
+                    "System" => array(
+                        "network" => new \HUGnet\network\DummyNetwork("Network"),
+                        "table" => array(
+                            "Firmware" => "test",
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array $config The configuration to use
+    * @param mixed $device The device to set
+    * @param mixed $class  This is either the name of a class or an object
+    * @param array $mocks  The mocks to use
+    *
+    * @return null
+    *
+    * @dataProvider dataFirmware
+    */
+    public function testFirmware(
+        $config, $device, $class, $mocks
+    ) {
+        $config->resetMock($mocks);
+        $obj = Device::factory($config, $device);
+        $this->assertEquals(
+            "test", $obj->firmware(), "Wrong Return"
+        );
+        unset($obj);
+    }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataNewVirtual()
+    {
+        return array(
+            array(
+                new DummySystem(),
+                array(
+                    "id" => 5,
+                    "name" => 3,
+                    "value" => 1,
+                ),
+                array(
+                    "hello" => "there",
+                ),
+                array(
+                    "System" => array(
+                        "network" => new \HUGnet\network\DummyNetwork("Network"),
+                        "table" => array(
+                            "Firmware" => "test",
+                        ),
+                    ),
+                ),
+                array(
+                    array(
+                        array(
+                            "hello" => "there",
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array $config The configuration to use
+    * @param mixed $device The device to set
+    * @param mixed $data   The data to give it.
+    * @param array $mocks  The mocks to use
+    * @param array $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataNewVirtual
+    */
+    public function testNewVirtual(
+        $config, $device, $data, $mocks, $expect
+    ) {
+        $config->resetMock($mocks);
+        $obj = Device::factory($config, $device);
+        $obj->newVirtual($data);
+        $ret = $config->retrieve();
+        $this->assertEquals(
+             $expect, $ret["Devices"]["insertVirtual"], "Wrong Return"
         );
         unset($obj);
     }
@@ -297,7 +421,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 ),
                 "DummyTable",
                 array(
-                    "Table" => array(
+                    "Devices" => array(
                         "get" => array(
                             "id" => 5,
                             "HWPartNum"    => "0039-12-01-C",
@@ -320,7 +444,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 ),
                 "DummyTable",
                 array(
-                    "Table" => array(
+                    "Devices" => array(
                         "get" => array(
                             "id" => 5,
                             "HWPartNum"    => "0039-12-01-C",
@@ -354,7 +478,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $config, $device, $class, $mocks, $showFixed, $expect
     ) {
         $config->resetMock($mocks);
-        $obj = Device::factory($config, $device, $class);
+        $obj = Device::factory($config, $device);
         $this->assertEquals(
             $expect, $obj->encode($showFixed), "Return Wrong"
         );
@@ -375,9 +499,9 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     "name" => 3,
                     "value" => 1,
                 ),
-                "DummyTable",
+                true,
                 array(
-                    "Table" => array(
+                    "Devices" => array(
                         "get" => array(
                             "id" => 5,
                             "HWPartNum"    => "0039-12-01-C",
@@ -406,6 +530,31 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     array("TimeConstant", 1),
                 ),
             ),
+            array(
+                new DummySystem(),
+                array(
+                    "id" => 5,
+                    "name" => 3,
+                    "value" => 1,
+                ),
+                false,
+                array(
+                    "Devices" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "HWPartNum"    => "0039-12-01-C",
+                            "FWPartNum"    => "0039-20-03-C",
+                            "FWVersion"    => "1.2.3",
+                            "DeviceGroup"  => "FFFFFF",
+                            "TimeConstant" => 1,
+                        ),
+                    ),
+                ),
+                "",
+                array(
+                    array("Driver", "EDEFAULT"),
+                ),
+            ),
         );
     }
     /**
@@ -423,14 +572,15 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     * @dataProvider dataDecode
     */
     public function testDecode(
-        $config, $device, $class, $mocks, $string, $expect
+        $config, $device, $return, $mocks, $string, $expect
     ) {
         $config->resetMock($mocks);
-        $obj = Device::factory($config, $device, $class);
-        $obj->decode($string);
+        $obj = Device::factory($config, $device);
+        $res = $obj->decode($string);
+        $this->assertSame($return, $res, "Return Wrong");
         $ret = $config->retrieve();
         $this->assertEquals(
-            $expect, $ret["Table"]["set"], "Calls Wrong"
+            $expect, $ret["Devices"]["set"], "Calls Wrong"
         );
         unset($obj);
     }
@@ -536,8 +686,8 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         'totalSensors' => 13,
                         'physicalSensors' => 9,
                         'virtualSensors' => 4,
-                        'historyTable' => 'EDEFAULTHistoryTable',
-                        'averageTable' => 'EDEFAULTAverageTable',
+                        'historyTable' => 'EDEFAULTHistory',
+                        'averageTable' => 'EDEFAULTAverage',
                         'loadable' => false,
                         'bootloader' => false,
                         'ConfigInterval' => 43200,
@@ -1039,7 +1189,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    "SDTable" => array(
+                    "Devices" => array(
                         "get" => array(
                             "id" => 5,
                         ),
@@ -1178,105 +1328,6 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
-            array(
-                array(
-                    "SDTable" => array(
-                        "get" => array(
-                            "id" => 0xAC,
-                            "DeviceID" => "0000AC",
-                            "HWPartNum" => "0039-21-01-A",
-                            "FWPartNum" => "0039-20-01-C",
-                            "FWVersion" => "0.1.2",
-                        ),
-                    ),
-                ),
-                array(
-                    "id" => 0xAC,
-                    "DeviceID" => "0000AC",
-                    "HWPartNum" => "0039-21-01-A",
-                    "FWPartNum" => "0039-20-01-C",
-                    "FWVersion" => "0.1.2",
-                ),
-                new DummyTable("SDTable"),
-                "400B033F1300004A48994800007F134403",
-                0x55,
-                300,
-                array(
-                    null, 10, null, null
-                ),
-                array(
-                    "deltaT" => 300,
-                    "DataIndex" => 64,
-                    "timeConstant" => 1,
-                    "rawData" => "400B033F1300004A48994800007F134403",
-                    array(
-                        "value" => 10.8351,
-                        "units" => "V",
-                        'maxDecimals' => 4,
-                        'storageUnit' => 'V',
-                        "unitType" => "Voltage",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
-                        "decimals" => 4,
-                    ),
-                    array(
-                        "value" => 17.0,
-                        "units" => "mA",
-                        'maxDecimals' => 1,
-                        'storageUnit' => 'mA',
-                        "unitType" => "Current",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
-                        "decimals" => 1,
-                    ),
-                    array(
-                        "value" => 29.7721,
-                        "units" => "&#176;C",
-                        'maxDecimals' => 2,
-                        'storageUnit' => '&#176;C',
-                        "unitType" => "Temperature",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
-                        "decimals" => 2,
-                    ),
-                    array(
-                        "value" => 10.8814,
-                        "units" => "V",
-                        'maxDecimals' => 4,
-                        'storageUnit' => 'V',
-                        "unitType" => "Voltage",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
-                        "decimals" => 4,
-                    ),
-                    array(
-                        "value" => 18.2,
-                        "units" => "mA",
-                        'maxDecimals' => 1,
-                        'storageUnit' => 'mA',
-                        "unitType" => "Current",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
-                        "decimals" => 1,
-                    ),
-                    array(
-                        "value" => 29.4444,
-                        "units" => "&#176;C",
-                        'maxDecimals' => 2,
-                        'storageUnit' => '&#176;C',
-                        "unitType" => "Temperature",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
-                        "decimals" => 2,
-                    ),
-                    array(
-                        "value" => null,
-                    ),
-                    array(
-                        "value" => null,
-                    ),
-                    array(
-                        "value" => null,
-                    ),
-                    array(
-                        "value" => null,
-                    ),
-                ),
-            ),
         );
     }
 
@@ -1301,7 +1352,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     ) {
         $sys = new DummySystem("System");
         $sys->resetMock($config);
-        $obj = Device::factory($sys, $preload, $class);
+        $obj = Device::factory($sys, $preload);
         $data = $obj->decodeData($data, $command, $deltaT, $prev);
         $this->assertEquals($expect, $data);
     }
@@ -1316,21 +1367,20 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    "Table" => array(
+                    "Devices" => array(
                         "get" => array(
                             "id" => 5,
                             "sensors" => array(array("id" => 0x15)),
                         ),
                     ),
                 ),
-                "DummyTable",
                 0,
                 "\HUGnet\Sensor",
                 0x15,
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Devices" => array(
                         "get" => array(
                             "id" => 5,
                             "sensors" => base64_encode(
@@ -1343,28 +1393,26 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-                "DummyTable",
                 0,
                 "\HUGnet\Sensor",
                 0x18,
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Devices" => array(
                         "get" => array(
                             "id" => 5,
                             "sensors" => true,
                         ),
                     ),
                 ),
-                "DummyTable",
                 10,
                 "\HUGnet\Sensor",
                 0xFE,
             ),
             array(
                 array(
-                    "Table" => array(
+                    "Devices" => array(
                         "get" => array(
                             "id" => 5,
                             "sensors" => true,
@@ -1373,7 +1421,6 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-                "DummyTable",
                 1,
                 "\HUGnet\Sensor",
                 0x42,
@@ -1384,7 +1431,6 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     * This tests the object creation
     *
     * @param array  $config       The configuration to use
-    * @param mixed  $class        This is either the name of a class or an object
     * @param string $sensor       The driver to tell it to load
     * @param string $driverExpect The driver we expect to be loaded
     * @param int    $expect       The expected sensor id
@@ -1394,17 +1440,22 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     * @dataProvider dataSensor
     */
     public function testSensor(
-        $config, $class, $sensor, $driverExpect, $expect
+        $config, $sensor, $driverExpect, $expect
     ) {
         $sys = new DummySystem("System");
         $sys->resetMock($config);
-        $obj = Device::factory($sys, null, $class);
+        $obj = Device::factory($sys, null);
         $sen = $obj->sensor($sensor);
         $this->assertTrue(
             is_a($sen, $driverExpect),
             "Return is not a ".$driverExpect
         );
-        $this->assertSame($sen->get("id"), $expect, "Wrong sensor returned");
+        $ret = $sys->retrieve();
+        $this->assertSame(
+            $expect,
+            $ret["Sensors"]["fromAny"][1][0]["id"],
+            "Wrong sensor returned"
+        );
         unset($obj);
     }
     /**
@@ -1644,8 +1695,8 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),
                     array(
-                        "value" => (float)32.0,
-                        "units" => "&#176;F",
+                        "value" => (float)0,
+                        "units" => "&#176;C",
                         "unitType" => "Temperature",
                         "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                     ),

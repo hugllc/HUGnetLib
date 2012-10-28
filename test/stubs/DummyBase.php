@@ -140,8 +140,9 @@ class DummyBase
                 && isset(self::$ret[$class][$name][$args[0]])
             ) {
                 return self::$ret[$class][$name][$args[0]];
+            } else {
+                return self::$ret[$class][$name];
             }
-            return self::$ret[$class][$name];
         }
         return null;
     }
