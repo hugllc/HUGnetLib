@@ -162,7 +162,7 @@ class CloneVirtual extends \HUGnet\sensors\DriverVirtual
     ) {
         $ret = $this->channels();
         $oid = $this->_clone()->sensor()->channelStart();
-        foreach ((array)$ret as $key => $value) {
+        foreach (array_keys((array)$ret) as $key) {
             $sen = $oid + $key;
             if (is_object($hist)) {
                 $ret[$key]["value"] = $hist->get("Data".$sen);

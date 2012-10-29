@@ -57,13 +57,14 @@ require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
  * @since      0.9.7
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
+ * @SuppressWarnings(PHPMD.UnusedPrivateField)
  */
 class ADuCInputTable extends \HUGnet\sensors\Driver
 {
     /**
     * This is where we store the drivers
     */
-    private $_drivers = array(
+    private $_driver = array(
         0 => null,
         1 => null
     );
@@ -74,7 +75,7 @@ class ADuCInputTable extends \HUGnet\sensors\Driver
     /**
     * This is where we store the InputTable
     */
-    private $_tableClass = "InputTableTable";
+    private $_tableClass = "InputTable";
     /**
     * This is where we store our entry in the input table
     */

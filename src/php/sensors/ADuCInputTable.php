@@ -476,6 +476,8 @@ class ADuCInputTable
     * @param mixed $value The value to check
     *
     * @return 16 bit integer in a hex string
+    *
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
     */
     private function _avgFilterValidate($value)
     {
@@ -499,6 +501,8 @@ class ADuCInputTable
     * @param mixed $value The value to check
     *
     * @return 16 bit integer in a hex string
+    *
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
     */
     private function _sinc3Validate($value)
     {
