@@ -234,14 +234,14 @@ class Action
     */
     public function loadFirmware()
     {
-        $firmware = new FirmwareTable();
+        $firmware = $this->device->system()->table("Firmware");
         if (!$this->device->get("bootloader")) {
             $firmware->set("FWPartNum", $this->device->get("FWPartNum"));
         } else {
             $firmware->set("FWPartNum", "0039-38-01-C");
         }
         $firmware->set("HWPartNum", $this->device->get("HWPartNum"));
-        $firmware->set("RelStatus", \FirmwareTable::DEV);
+        $firmware->set("RelStatus", \HUGnet\db\tables\Firmware::DEV);
         $ret = false;
         if ($firmware->getLatest()) {
             if ($this->device->network()->loadFirmware($firmware)) {

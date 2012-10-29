@@ -137,7 +137,7 @@ if ($action === "post") {
         $ret = "idle";
     }
 } else if ($action === "loadfirmware") {
-    $firmware = new FirmwareTable();
+    $firmware = $json->system()->table("Firmware");
     $fd = fopen($file, "w");
     \HUGnet\VPrint::config(
         array(
@@ -152,7 +152,7 @@ if ($action === "post") {
         $firmware->set("FWPartNum", "0039-38-01-C");
     }
     $firmware->set("HWPartNum", $dev->get("HWPartNum"));
-    $firmware->set("RelStatus", \FirmwareTable::DEV);
+    $firmware->set("RelStatus", \HUGnet\db\tables\Firmware::DEV);
     $ret = -1;
     if ($firmware->getLatest()) {
         if ($dev->network()->loadFirmware($firmware)) {

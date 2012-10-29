@@ -142,7 +142,7 @@ class Device extends \HUGnet\base\SystemTableBase
         if ($return["loadable"]) {
             $this->firmware()->set("HWPartNum", $return["HWPartNum"]);
             $this->firmware()->set("FWPartNum", $return["FWPartNum"]);
-            $this->firmware()->set("RelStatus", \FirmwareTable::DEV);
+            $this->firmware()->set("RelStatus", \HUGnet\db\tables\Firmware::DEV);
             $this->firmware()->getLatest();
             $new = $this->firmware()->compareVersion(
                 $return["FWVersion"], $this->firmware()->Version
