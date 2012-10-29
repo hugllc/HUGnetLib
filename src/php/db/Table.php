@@ -304,13 +304,7 @@ abstract class Table extends \HUGnet\base\Container
     {
         foreach ((array)$this->sqlColumns as $col) {
             $key = $col["Name"];
-            if (is_object($this->$key)) {
-                if (method_exists($this->$key, "toString")) {
-                    $array[$col["Name"]] = $this->$key->toString();
-                }
-            } else {
-                $array[$col["Name"]] = $this->$key;
-            }
+            $array[$key] = $this->get($key);
         }
         return (array)$array;
     }
@@ -325,7 +319,7 @@ abstract class Table extends \HUGnet\base\Container
     {
         $values = explode(",", $string);
         foreach (array_keys((array)$this->sqlColumns) as $key => $col) {
-            $this->$col = trim($values[$key]);
+            $this->set($col, trim($values[$key]));
         }
     }
     /**
@@ -404,7 +398,7 @@ abstract class Table extends \HUGnet\base\Container
     public function refresh()
     {
         $sqlId = $this->sqlId;
-        return $this->getRow($this->$sqlId);
+        return $this->getRow($this->get($sqlId));
     }
     /**
     * This function updates the record currently in this table
@@ -435,7 +429,7 @@ abstract class Table extends \HUGnet\base\Container
             return false;
         }
         $sqlId = $this->sqlId;
-        if ($this->default[$this->sqlId] === $this->$sqlId) {
+        if ($this->default[$this->sqlId] === $this->get($sqlId)) {
             $cols = $this->dbDriver()->autoIncrement();
         }
         $ret = $this->dbDriver()->insert($this->toDB(), (array)$cols, $replace);
@@ -658,7 +652,7 @@ abstract class Table extends \HUGnet\base\Container
     */
     protected function outputDate($field)
     {
-        return $this->$field;
+        return $this->get($field);
     }
     /**
     * There should only be a single instance of this class
@@ -675,7 +669,7 @@ abstract class Table extends \HUGnet\base\Container
             if ($col == $this->dateField) {
                 $ret[$col] = $this->outputDate($col);
             } else {
-                $ret[$col] = $this->$col;
+                $ret[$col] = $this->get($col);
             }
         }
         return $ret;

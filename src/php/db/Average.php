@@ -224,39 +224,42 @@ abstract class Average extends History
         if ($data->isEmpty()) {
             return false;
         }
-        if (($this->Type === self::AVERAGE_15MIN)
-            && ($this->endTime >= ($data->Date - 1800))
-            && ($this->endTime <= ($data->Date - 900))
+        if (($this->get("Type") === self::AVERAGE_15MIN)
+            && ($this->endTime >= ($data->get("Date") - 1800))
+            && ($this->endTime <= ($data->get("Date") - 900))
         ) {
-            $this->Date = $this->endTime;
+            $this->set("Date", $this->endTime);
             $this->startTime += 900;
             $this->endTime += 900;
             return true;
         }
         $this->clearData();
-        $this->Type = self::AVERAGE_15MIN;
-        $this->_getTimePeriod($data->Date, self::AVERAGE_15MIN);
-        $this->Date = $this->startTime;
+        $this->set("Type", self::AVERAGE_15MIN);
+        $this->_getTimePeriod($data->get("Date"), self::AVERAGE_15MIN);
+        $this->set("Date", $this->startTime);
         $tooOld = $this->endTime + 900;// After another 900 seconds we don't use this
         $this->divisors = array();
-        $this->id = $data->id;
+        $this->set("id", $data->get("id"));
         $ret = true;
         $last = array();
-        while (($data->Date < $tooOld) && $ret) {
+        while (($data->get("Date") < $tooOld) && $ret) {
             // This is the difference in seconds between this record and the start
             for ($i = 0; $i < $this->datacols; $i++) {
                 $col = "Data".$i;
                 if (empty($last[$col])) {
-                    $last[$col] = $this->Date;
+                    $last[$col] = $this->get("Date");
                 }
                 $mult = $this->calc15MinAverageMult($data, $last[$col], $i);
-                if (!is_null($data->$col)) {
-                    $this->$col += ($mult * $data->$col);
+                $work = $data->get($col);
+                if (!is_null($work)) {
+                    $mine = $this->get($col);
+                    $mine += ($mult * $work);
                     $this->divisors[$col] += $mult;
-                    $last[$col] = $data->Date;
+                    $last[$col] = $data->get("Date");
+                    $this->set($col, $mine);
                 }
             }
-            if ($data->Date <= $this->endTime) {
+            if ($data->get("Date") <= $this->endTime) {
                 $ret = $data->nextInto();
             } else {
                 break;
@@ -282,16 +285,16 @@ abstract class Average extends History
     protected function calc15MinAverageMult(History &$data, $last, $col)
     {
         if ($this->device->sensor($col)->get("total")) {
-            if ($data->Date > $this->endTime) {
+            if ($data->get("Date") > $this->endTime) {
                 $mult = ($this->endTime - $last);
-                $denom = $data->Date - $last;
+                $denom = $data->get("Date") - $last;
                 $mult = $mult / $denom;
             } else {
                 $mult = 1;
             }
         } else {
-            if ($data->Date <= $this->endTime) {
-                $mult = $data->Date - $last;
+            if ($data->get("Date") <= $this->endTime) {
+                $mult = $data->get("Date") - $last;
             } else {
                 $mult = $this->endTime - $last;
             }
@@ -317,23 +320,26 @@ abstract class Average extends History
         }
         $this->clearData();
         if (empty($this->baseType)) {
-            $this->baseType = $data->Type;
+            $this->baseType = $data->get("Type");
         }
-        $ret = $this->_getTimePeriod($data->Date, $type);
+        $ret = $this->_getTimePeriod($data->get("Date"), $type);
         if (!$ret) {
             return false;
         }
-        $this->id = $data->id;
-        $this->Type = $type;
-        $this->Date = $this->startTime;
+        $this->set("id", $data->get("id"));
+        $this->set("Type", $type);
+        $this->set("Date", $this->startTime);
         $this->divisors = array();
         $ret = true;
-        while (($data->Date < $this->endTime) && $ret) {
-            if ($data->Type == $this->baseType) {
+        while (($data->get("Date") < $this->endTime) && $ret) {
+            if ($data->get("Type") == $this->baseType) {
                 for ($i = 0; $i < $this->datacols; $i++) {
                     $col = "Data".$i;
-                    if (!is_null($data->$col)) {
-                        $this->$col += $data->$col;
+                    $value = $data->get($col);
+                    if (!is_null($value)) {
+                        $mine = $this->get($col);
+                        $mine += $value;
+                        $this->set($col, $mine);
                         $this->divisors[$col]++;
                     }
                 }
@@ -356,13 +362,17 @@ abstract class Average extends History
             if ($this->divisors[$col] == 0) {
                 $this->divisors[$col] = 1;
             }
-            if (!is_null($this->$col)) {
+            $value = $this->get($col);
+            if (!is_null($value)) {
                 if (!$this->device->sensor($i)->get("total")) {
-                    $this->$col = $this->$col / $this->divisors[$col];
+                    $value = $value / $this->divisors[$col];
                 }
-                $this->$col = round(
-                    $this->$col,
-                    $this->device->sensor($i)->get("maxDecimals")
+                $this->set(
+                    $col,
+                    round(
+                        $value,
+                        $this->device->sensor($i)->get("maxDecimals")
+                    )
                 );
 
             }
@@ -450,14 +460,16 @@ abstract class Average extends History
     protected function outputDate($field)
     {
         $tzoffset = 0;
-        if (($this->Type == self::AVERAGE_MONTHLY)
-            || ($this->Type == self::AVERAGE_YEARLY)
+        $date = $this->get($field);
+        $type = $this->get("Type");
+        if (($type == self::AVERAGE_MONTHLY)
+            || ($type == self::AVERAGE_YEARLY)
         ) {
-            $tzoffset = (int)date("Z", $this->$field);
+            $tzoffset = (int)date("Z", $date);
             // This does not seem to be needed.
             // + ((int)date("I", $this->$field)*3600);
         }
-        return $this->$field - $tzoffset;
+        return $date - $tzoffset;
     }
 }
 ?>

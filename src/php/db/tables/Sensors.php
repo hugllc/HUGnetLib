@@ -224,7 +224,8 @@ class Sensors extends \HUGnet\db\Table
     {
 
         $ret = (bool) $this->dbDriver()->countWhere(
-            "dev = ? AND sensor = ?", array($this->dev, $this->sensor), "dev"
+            "dev = ? AND sensor = ?",
+            array($this->get("dev"), $this->get("sensor")), "dev"
         );
         $this->dbDriver()->reset();
         return $ret;

@@ -321,7 +321,8 @@ class Devices extends \HUGnet\db\Table
     {
 
         $ret = (bool) $this->dbDriver()->countWhere(
-            "DeviceID = ?", array($this->DeviceID), "DeviceID"
+            "DeviceID = ?",
+            array($this->get("DeviceID")), "DeviceID"
         );
         $this->dbDriver()->reset();
         return $ret;

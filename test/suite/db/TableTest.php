@@ -522,7 +522,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
             $this->system, $preload, "HUGnetDBTableTestStub", $this->connect
         );
         $sqlId = $obj->sqlId;
-        $obj->$sqlId = $key;
+        $obj->set($sqlId, $key);
         $obj->refresh();
         if (is_array($expect)) {
             $this->assertSame($expect, $obj->toArray());
@@ -1176,25 +1176,6 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
                     "value" => 12.0,
                 ),
             ),
-            array(
-                array(
-                    "id" => 10,
-                    "name" => "This is a name",
-                    "value" => \HUGnet\db\Table::factory(
-                        new \HUGnet\DummySystem("System"), array(),
-                        "HUGnetDBTableTestStub"
-                    ),
-                ),
-                array(
-                    "id" => 10,
-                    "name" => "This is a name",
-                    "value" => "YTo4OntzOjU6Imdyb3VwIjtzOjc6ImRlZmF1bHQiO3M6NToiZ"
-                        ."mx1ZmYiO3M6NjoiblN0dWZmIjtzOjU6Im90aGVyIjtzOjY6InRoaW5n"
-                        ."cyI7czoyOiJpZCI7aTo1O3M6NjoibXlEYXRlIjtzOjE5OiIxOTcwLTA"
-                        ."xLTAxIDAwOjAwOjAwIjtzOjExOiJteU90aGVyRGF0ZSI7aTowO3M6ND"
-                        ."oibmFtZSI7czo0OiJOYW1lIjtzOjU6InZhbHVlIjtkOjEyO30=",
-                ),
-            ),
         );
     }
     /**
@@ -1478,7 +1459,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     */
     public function testSet($var, $value, $expect)
     {
-        $this->o->$var = $value;
+        $this->o->set($var, $value);
         $data = $this->readAttribute($this->o, "data");
         $this->assertSame($expect, $data[$var]);
     }

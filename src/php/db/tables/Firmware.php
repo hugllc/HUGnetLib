@@ -404,7 +404,7 @@ class Firmware extends \HUGnet\db\Table
         }
         $this->dbDriver()->selectWhere($where, $data);
         $this->dbDriver()->fetchInto();
-        return  !is_null($this->id);
+        return  !is_null($this->get("id"));
     }
     /**
     * Checks to see if our deviceID exists in the database
@@ -517,7 +517,7 @@ class Firmware extends \HUGnet\db\Table
     */
     public function getCode($empty="FF")
     {
-        return $this->_interpSREC($this->Code, $empty);
+        return $this->_interpSREC($this->get("Code"), $empty);
     }
     /**
     * Changes an SREC source into a raw memory buffer
@@ -529,7 +529,7 @@ class Firmware extends \HUGnet\db\Table
     */
     public function getData($empty="FF")
     {
-        return $this->_interpSREC($this->Data, $empty);
+        return $this->_interpSREC($this->get("Data"), $empty);
     }
     /**
     * Changes an SREC source into a raw memory buffer

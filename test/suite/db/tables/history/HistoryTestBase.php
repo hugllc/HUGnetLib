@@ -143,7 +143,7 @@ abstract class HistoryTestBase extends \PHPUnit_Framework_TestCase
     public function testSet($var, $value, $expect)
     {
         $this->o->set($var, $value);
-        $this->assertSame($expect, $this->o->$var);
+        $this->assertSame($expect, $this->o->get($var));
     }
 }
 

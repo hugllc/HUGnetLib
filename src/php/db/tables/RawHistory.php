@@ -191,10 +191,10 @@ class RawHistory extends \HUGnet\db\Table
     {
         foreach ((array)$this->sqlColumns as $col) {
             $key = $col["Name"];
-            if (is_array($this->$key)) {
-                $array[$col["Name"]] = json_encode($this->$key);
+            if (is_array($this->get($key))) {
+                $array[$col["Name"]] = json_encode($this->get($key));
             } else {
-                $array[$col["Name"]] = $this->$key;
+                $array[$col["Name"]] = $this->get($key);
             }
         }
         return (array)$array;

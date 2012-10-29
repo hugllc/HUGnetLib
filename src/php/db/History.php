@@ -204,11 +204,15 @@ abstract class History extends \HUGnet\db\Table
     public function fromDataArray($array)
     {
         parent::fromArray($array);
+        $raw = array();
         for ($i = 0; $i < $this->datacols; $i++) {
             $key = "Data$i";
-            $this->$key = $array[$i]["value"];
-            $this->raw[$i] = $array[$i]["raw"];
+            $this->set($key, $array[$i]["value"]);
+            if (!is_null($array[$i]["raw"])) {
+                $raw[$i] = $array[$i]["raw"];
+            }
         }
+        $this->set("raw", $raw);
     }
     /**
     * Creates the object from a string or array

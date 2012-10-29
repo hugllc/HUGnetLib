@@ -114,11 +114,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array("Attrib1", 16, 16),
-            array("Attrib1", 16, 0, "Attrib1"),
             array("Attrib1", "16Test", 16),
             array("Attrib5", "Hello", null),
-            array("Attrib1", 16, 16, ""),
-            array("Attrib1", 16, 0, "Attrib1"),
         );
     }
 
@@ -137,15 +134,13 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     public function testSet(
         $attrib,
         $value,
-        $expect,
-        $lock = ""
+        $expect
     ) {
         $obj = &HUGnetContainerTestClass::factory(
             $this->system, array(), "HUGnetContainerTestClass"
         );
-        $obj->lock($lock);
-        $obj->$attrib = $value;
-        $this->assertSame($expect, $obj->$attrib);
+        $obj->set($attrib, $value);
+        $this->assertSame($expect, $obj->get($attrib));
     }
 
     /**
@@ -181,122 +176,10 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             $this->system, array(), "HUGnetContainerTestClass3"
         );
         $obj->setFixed($attrib, $value);
-        $this->assertSame($expect, $obj->$attrib);
+        $this->assertSame($expect, $obj->get($attrib));
     }
 
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataSetArray()
-    {
-        return array(
-            array("There", 16, array("Hello", "There" => 16)),
-        );
-    }
 
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $attrib This is the attribute to set
-    * @param mixed  $value  The value to set it to
-    * @param int    $expect The expected return
-    * @param mixed  $lock   The spot to lock
-    *
-    * @return null
-    *
-    * @dataProvider dataSetArray
-    */
-    public function testSetArray(
-        $attrib,
-        $value,
-        $expect,
-        $lock = ""
-    ) {
-        $obj = &HUGnetContainerTestClass::factory(
-            $this->system, array(), "HUGnetContainerTestClass"
-        );
-        $obj->lock($lock);
-        $obj->clearData();
-        $obj->Attrib4[$attrib] = $value;
-        $this->assertSame($expect, $obj->Attrib4);
-
-    }
-
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataRegister()
-    {
-        $system = new \HUGnet\DummySystem("System");
-        return array(
-            array(
-                HUGnetContainerTestClass::factory(
-                    $system, array(), "HUGnetContainerTestClass2"
-                ),
-                "test",
-                true,
-                array(
-                    "Attrib5", "Attrib6", "Attrib7", "Attrib8",
-                ),
-            ),
-            array(
-                null,
-                "test",
-                false,
-                null,
-            ),
-            array(
-                HUGnetContainerTestClass::factory(
-                    $system, array(), "HUGnetContainerTestClass2"
-                ),
-                "atest",
-                true,
-                array(
-                    "Attrib5", "Attrib6", "Attrib7", "Attrib8",
-                ),
-            ),
-        );
-    }
-
-    /**
-    * test the register function
-    *
-    * @param mixed  $obj        The class or object to use
-    * @param string $var        The variable to register the object on
-    * @param bool   $expect     The return expected
-    * @param array  $properties The properties we should expect in the subclass
-    *
-    * @return null
-    *
-    * @dataProvider dataRegister
-    */
-    public function testRegister($obj, $var, $expect, $properties)
-    {
-        $object = &HUGnetContainerTestClass::factory(
-            $this->system, array(), "HUGnetContainerTestClass"
-        );
-        $ret = $object->register($obj, $var);
-        $this->assertSame($expect, $ret);
-        if ($expect) {
-            $this->assertSame(
-                $obj,
-                $this->readAttribute($object, $var)
-            );
-            // This will tell us if the class is registered
-            $this->assertSame(
-                $properties,
-                $obj->getProperties()
-            );
-        } else {
-            $this->assertNull(
-                $this->readAttribute($object, $var)
-            );
-        }
-    }
 
 
     /**
@@ -348,114 +231,6 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataUnset()
-    {
-        return array(
-            array(
-                "Attrib1",
-                null,
-            ),
-            array(
-                "Attrib7",
-                null,
-                true
-            ),
-            array(
-                "Attrib1",
-                null,
-            ),
-            array(
-                "Attrib7",
-                null,
-            ),
-            array(
-                "Attrib1",
-                0,
-                "Attrib1",
-            ),
-            array(
-                "Attrib1",
-                0,
-                "Attrib1",
-            ),
-            array(
-                "Attrib7",
-                null,
-                "Attrib7",
-            ),
-        );
-    }
-
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $name   The attribute name to get
-    * @param int    $expect The expected return
-    * @param mixed  $lock   The attribute to lock
-    *
-    * @return null
-    *
-    * @dataProvider dataUnset
-    */
-    public function testUnset($name, $expect, $lock = "")
-    {
-        $obj = &HUGnetContainerTestClass::factory(
-            $this->system, array(), "HUGnetContainerTestClass"
-        );
-        $obj->lock($lock);
-        unset($obj->$name);
-        $this->assertSame($expect, $obj->$name);
-    }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataIsset()
-    {
-        return array(
-            array(
-                "Attrib1",
-                true,
-            ),
-            array(
-                "Attrib9",
-                false,
-            ),
-            array(
-                "Attrib1",
-                true,
-            ),
-            array(
-                "Attrib7",
-                false,
-            ),
-        );
-    }
-
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $name   The attribute name to get
-    * @param int    $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataIsset
-    */
-    public function testIsset($name, $expect)
-    {
-        $obj = &HUGnetContainerTestClass::factory(
-            $this->system, array(), "HUGnetContainerTestClass"
-        );
-        $ret = isset($obj->$name);
-        $this->assertSame($expect, $ret);
-    }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
     public static function dataClearData()
     {
         return array(
@@ -476,41 +251,6 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
                     "Attrib3" => "Data",
                     "Attrib4" => array("Hello"),
                 ),
-                array(),
-            ),
-            array(
-                array(
-                    "Attrib1" => 10,
-                    "Attrib2" => "NotDefault",
-                    "Attrib3" => "Data Where",
-                    "Attrib4" => array("Hello There"),
-                    "Attrib5" => "Full String",
-                    "Attrib6" => array("Two Element"),
-                    "Attrib7" => 1.00253,
-                    "Attrib8" => 156.9153,
-                ),
-                array(
-                    "Attrib1" => 10,
-                    "Attrib2" => "Default",
-                    "Attrib3" => "Data",
-                    "Attrib4" => array("Hello"),
-                ),
-                array("Attrib1", "Attrib6"),
-            ),
-            array(
-                array(
-                    "Attrib1" => 10,
-                    "Attrib2" => "No longer the Default",
-                    "Attrib3" => "Data Here",
-                    "Attrib4" => array("Hello There"),
-                ),
-                array(
-                    "Attrib1" => 0,
-                    "Attrib2" => "No longer the Default",
-                    "Attrib3" => "Data",
-                    "Attrib4" => array("Hello"),
-                ),
-                "Attrib2",
             ),
         );
     }
@@ -519,7 +259,6 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     *
     * @param array $preload The expected return from extra
     * @param array $expect  The expected return from extra
-    * @param mixed $lock    The stuff to lock
     *
     * @return null
     *
@@ -527,13 +266,11 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     */
     public function testClearData(
         $preload,
-        $expect,
-        $lock
+        $expect
     ) {
         $obj = &HUGnetContainerTestClass::factory(
             $this->system, $preload, "HUGnetContainerTestClass"
         );
-        $obj->lock($lock);
         $obj->clearData();
         $object = &$obj;
         $this->assertSame(
@@ -549,13 +286,10 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     public static function dataSetDefault()
     {
         return array(
-            array("Attrib1", 16, "", 0),
-            array("Attrib1", "16Test", "", 0),
-            array("Attrib5", "Hello", "", null),
-            array("Attrib1", 16, "", 0),
-            array("Attrib1", 16, "Attrib5", 0),
-            array("Attrib5", "Hello", "Attrib5", null),
-            array("Attrib1", 16, "Attrib1", 16),
+            array("Attrib1", 16, 0),
+            array("Attrib1", "16Test", 0),
+            array("Attrib5", "Hello", null),
+            array("Attrib1", 16, 0),
         );
     }
 
@@ -574,159 +308,17 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     public function testSetDefault(
         $attrib,
         $value,
-        $lock,
         $expect
     ) {
         $obj = &HUGnetContainerTestClass::factory(
             $this->system, array(), "HUGnetContainerTestClass"
         );
-        $obj->$attrib = $value;
-        $obj->lock($lock);
+        $obj->set($attrib, $value);
         $obj->setDefault($attrib);
-        $this->assertSame($expect, $obj->$attrib, "$expect != ".$obj->$attrib);
-    }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataLock()
-    {
-        return array(
-            array(
-                array("asfd", "Attrib1", "fdscdd", "Attrib4"),
-                array("Attrib1", "Attrib4"),
-            ),
-            array(
-                "Attrib1",
-                array("Attrib1"),
-            ),
-            array(
-                array("asfd", "Attrib1", "fdscdd", "Attrib4", "Attrib5", "Attrib8"),
-                array("Attrib1", "Attrib4"),
-            ),
+        $this->assertSame(
+            $expect, $obj->get($attrib), "$expect != ".$obj->get($attrib)
         );
     }
-
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array $lock   The stuff to lock
-    * @param array $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataLock
-    */
-    public function testLock(
-        $lock,
-        $expect
-    ) {
-        $obj = &HUGnetContainerTestClass::factory(
-            $this->system, array(), "HUGnetContainerTestClass"
-        );
-        $obj->lock($lock);
-        $this->assertSame($expect, $obj->locked());
-    }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataUnlock()
-    {
-        return array(
-            array(
-                array("asfd", "Attrib1", "fdscdd", "Attrib4"),
-                array("Attrib1"),
-                array("Attrib4"),
-            ),
-            array(
-                array("asfd", "Attrib1", "fdscdd", "Attrib4"),
-                "Attrib4",
-                array("Attrib1"),
-            ),
-            array(
-                array("asfd", "Attrib1", "fdscdd", "Attrib4"),
-                "Attrib8",
-                array("Attrib1", "Attrib4"),
-            ),
-        );
-    }
-
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array $lock   The stuff to lock
-    * @param array $unlock The stuff to unlock
-    * @param array $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataUnlock
-    */
-    public function testUnlock(
-        $lock,
-        $unlock,
-        $expect
-    ) {
-        $obj = &HUGnetContainerTestClass::factory(
-            $this->system, array(), "HUGnetContainerTestClass"
-        );
-        $obj->lock($lock);
-        $obj->unlock($unlock);
-        $this->assertSame($expect, $obj->locked());
-    }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataLocked()
-    {
-        return array(
-            array(
-                array("Attrib1", "Attrib4", "Attrib5"),
-                "Attrib2",
-                false,
-            ),
-            array(
-                array("Attrib1", "Attrib4", "Attrib5"),
-                "Attrib5",
-                false,
-            ),
-            array(
-                array("Attrib1", "Attrib4", "Attrib5"),
-                null,
-                array("Attrib1", "Attrib4"),
-            ),
-        );
-    }
-
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array  $lock   The stuff to lock
-    * @param string $check  The stuff to unlock
-    * @param bool   $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataLocked
-    */
-    public function testLocked(
-        $lock,
-        $check,
-        $expect
-    ) {
-        $obj = &HUGnetContainerTestClass::factory(
-            $this->system, array(), "HUGnetContainerTestClass"
-        );
-        $obj->lock($lock);
-        $ret = $obj->locked($check);
-        $this->assertSame($expect, $ret);
-    }
-
     /**
     * data provider for testDeviceID
     *
@@ -960,7 +552,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         foreach ((array)$expect as $key => $val) {
             $this->assertSame(
                 $val,
-                $obj->$key,
+                $obj->get($key),
                 "$key is wrong"
             );
         }

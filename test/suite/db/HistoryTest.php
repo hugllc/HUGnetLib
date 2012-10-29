@@ -354,21 +354,8 @@ class HistoryTest extends tables\TableTestBase
                 array(
                     "group" => "remote",
                     "raw" => array(
-                        0  => null,
-                        1  => null,
-                        2  => null,
                         3  => 1834,
                         4  => 4842,
-                        5  => null,
-                        6  => null,
-                        7  => null,
-                        8  => null,
-                        9  => null,
-                        10  => null,
-                        11  => null,
-                        12  => null,
-                        13  => null,
-                        14  => null,
                     ),
                     "converted" => false,
                     "id"  => 0,
@@ -439,21 +426,6 @@ class HistoryTest extends tables\TableTestBase
                 array(
                     "group" => "default",
                     "raw" => array(
-                        0  => null,
-                        1  => null,
-                        2  => null,
-                        3  => null,
-                        4  => null,
-                        5  => null,
-                        6  => null,
-                        7  => null,
-                        8  => null,
-                        9  => null,
-                        10  => null,
-                        11  => null,
-                        12  => null,
-                        13  => null,
-                        14  => null,
                     ),
                     "converted" => false,
                     "id"  => 21,
@@ -526,21 +498,8 @@ class HistoryTest extends tables\TableTestBase
                 array(
                     "group" => "remote",
                     "raw" => array(
-                        0  => null,
-                        1  => null,
-                        2  => null,
                         3  => 1834,
                         4  => 4842,
-                        5  => null,
-                        6  => null,
-                        7  => null,
-                        8  => null,
-                        9  => null,
-                        10  => null,
-                        11  => null,
-                        12  => null,
-                        13  => null,
-                        14  => null,
                     ),
                     "converted" => false,
                     "id"  => 0,
@@ -750,7 +709,7 @@ class HistoryTest extends tables\TableTestBase
     */
     public function testSet($var, $value, $expect)
     {
-        $this->o->$var = $value;
+        $this->o->set($var, $value);
         $data = $this->readAttribute($this->o, "data");
         $this->assertSame($expect, $data[$var]);
     }

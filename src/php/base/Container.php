@@ -58,12 +58,9 @@ require_once dirname(__FILE__)."/../interfaces/HUGnetContainerInterface.php";
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 abstract class Container
-    implements \HUGnetContainerInterface
 {
     /** @var object The extra stuff class */
     private $_extra = null;
-    /** @var object The locked values */
-    private $_lock = array();
     /** @var int The configuration */
     protected $myConfig = null;
     /** @var array This is the default values for the data */
@@ -103,25 +100,6 @@ abstract class Container
     /**
     * Registers extra vars
     *
-    * @param mixed  &$obj The class or object to use
-    * @param string $var  The variable to register the object on
-    *
-    * @return null
-    */
-    public function register(&$obj, $var)
-    {
-        if (!is_object($obj) || is_object($this->$var) || empty($var)) {
-            return false;
-        }
-        // Set up the object
-        $this->$var =& $obj;
-        // Register the class
-        $this->_extra["Classes"][$var] = get_class($obj);
-        return true;
-    }
-    /**
-    * Registers extra vars
-    *
     * @param object &$system This is the system object
     * @param mixed  $data    The data to import into the class
     *
@@ -136,46 +114,16 @@ abstract class Container
     *
     * @return mixed The value of the attribute
     */
-    public function __set($name, $value)
-    {
-        $this->set($name, $value);
-    }
-    /**
-    * Overload the set attribute
-    *
-    * @param string $name  This is the attribute to set
-    * @param mixed  $value The value to set it to
-    *
-    * @return mixed The value of the attribute
-    */
     public function set($name, $value)
     {
-        if ($this->locked($name)) {
-            $this->system()->out("'set' tried to access a locked property\n", 1);
-        } else if (array_key_exists($name, $this->default)) {
+        if (array_key_exists($name, $this->default)) {
             $fct = "set".ucfirst($name);
             if (method_exists($this, $fct)) {
                 $this->$fct($value);
             } else {
-                if (is_array($value) || is_object($value)) {
-                    $this->$name = $value;
-                    unset($this->data[$name]);
-                } else {
-                    $this->data[$name] = $value;
-                }
+                $this->data[$name] = $value;
             }
         }
-    }
-    /**
-    * Overload the get attribute
-    *
-    * @param string $name This is the attribute to get
-    *
-    * @return mixed The value of the attribute
-    */
-    public function __get($name)
-    {
-        return $this->get($name);
     }
     /**
     * Overload the get attribute
@@ -192,35 +140,6 @@ abstract class Container
             return $this->fixed[$name];
         }
         return null;
-    }
-    /**
-    * unset an attribute
-    *
-    * @param string $name This is the attribute to get
-    *
-    * @return mixed The value of the attribute
-    */
-    public function __unset($name)
-    {
-        if ($this->locked($name)) {
-            $this->system()->out("'unset' tried to access a locked property\n", 1);
-        } else if (array_key_exists($name, $this->default)) {
-            unset($this->data[$name]);
-        }
-    }
-    /**
-    * Check if something is set
-    *
-    * @param string $name This is the attribute to get
-    *
-    * @return mixed The value of the attribute
-    */
-    public function __isset($name)
-    {
-        if (array_key_exists($name, $this->default)) {
-            return (bool)isset($this->data[$name]);
-        }
-        return false;
     }
 
     /**
@@ -262,79 +181,7 @@ abstract class Container
     */
     public function setDefault($name)
     {
-        if ($this->locked($name)) {
-            $this->system()->out("'unset' tried to access a locked property\n", 1);
-        } else if (array_key_exists($name, $this->default)) {
-            $this->$name = $this->default[$name];
-        }
-    }
-    /**
-    * resets a value to its default
-    *
-    * @param mixed $names Array of names to lock
-    *
-    * @return mixed The value of the attribute
-    */
-    public function lock($names)
-    {
-        $this->_lock($names, "lock");
-    }
-
-
-    /**
-    * resets a value to its default
-    *
-    * @param mixed $names Array of names to lock
-    *
-    * @return mixed The value of the attribute
-    */
-    public function unlock($names)
-    {
-        $this->_lock($names, "unlock");
-    }
-
-    /**
-    * resets a value to its default
-    *
-    * @param mixed  $names  Array of names to lock
-    * @param string $method 'lock' or 'unlock'
-    *
-    * @return mixed The value of the attribute
-    */
-    private function _lock($names, $method = "lock")
-    {
-        if (is_string($names)) {
-            $names = array($names);
-        }
-        foreach ((array)$names as $name) {
-            if (!is_string($name)) {
-                continue;
-            }
-            if (array_key_exists((string)$name, $this->default)) {
-                if (strtolower($method) == "lock") {
-                    $this->_lock[$name] = $name;
-                } else {
-                    unset($this->_lock[$name]);
-                }
-            }
-        }
-    }
-
-    /**
-    * resets a value to its default
-    *
-    * @param string $name Array of names to lock
-    *
-    * @return mixed The value of the attribute
-    */
-    public function locked($name = null)
-    {
-        if (array_key_exists($name, $this->default)) {
-            return isset($this->_lock[$name]);
-        } else if (is_null($name)) {
-            return array_keys((array)$this->_lock);
-        }
-        return false;
+        $this->set($name, $this->default[$name]);
     }
     /**
     * Sets all of the endpoint attributes from an array
@@ -347,7 +194,7 @@ abstract class Container
     {
         foreach ($this->getProperties() as $attrib) {
             if (isset($array[$attrib])) {
-                $this->$attrib = $array[$attrib];
+                $this->set($attrib, $array[$attrib]);
             }
         }
     }
@@ -361,9 +208,9 @@ abstract class Container
     public function toArray($default = true)
     {
         foreach ($this->getProperties() as $key) {
-            if (($this->$key !== $this->default[$key]) || $default) {
+            if (($this->get($key) !== $this->default[$key]) || $default) {
                 $value = $this->toArrayIterator(
-                    $this->$key,
+                    $this->get($key),
                     $this->default[$key],
                     $default
                 );
@@ -531,7 +378,7 @@ abstract class Container
     {
         $ret = true;
         foreach (array_keys((array)$this->default) as $key) {
-            if ($this->default[$key] !== $this->$key) {
+            if ($this->default[$key] !== $this->data[$key]) {
                 $ret = false;
                 break;
             }
