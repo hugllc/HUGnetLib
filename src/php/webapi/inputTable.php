@@ -35,13 +35,12 @@
 
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
-require_once "HUGnetLib/tables/InputTableTable.php";
 require_once "HUGnetLib/sensors/ADuCInputTable.php";
 
 $did      = (int)$json->args()->id;
 $action = strtolower($json->args()->action);
 $arch = substr((string)$_REQUEST["arch"], 0, 6);
-$input = new InputTableTable();
+$input = $json->system()->table("InputTable");
 $table = \HUGnet\sensors\ADuCInputTable::factory(array());
 
 //\HUGnet\VPrint::config(array("verbose" => 10));

@@ -35,11 +35,10 @@
 
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
-require_once "HUGnetLib/tables/FirmwareTable.php";
 
 $did      = hexdec($json->args()->id);
 $action = strtolower($json->args()->action);
-$firmware = new FirmwareTable();
+$firmware = $json->system()->table("Firmware");
 
 $file = sys_get_temp_dir()."/HUGnetFirmware".$did;
 

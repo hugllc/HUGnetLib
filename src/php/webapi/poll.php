@@ -36,7 +36,6 @@
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This keeps this file from being included unless HUGnetSystem.php is included */
-require_once HUGNET_INCLUDE_PATH."/containers/DeviceContainer.php";
 
 $TestID = $json->args()->TestID;
 $did = hexdec($json->args()->id);

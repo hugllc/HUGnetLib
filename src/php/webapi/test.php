@@ -36,8 +36,6 @@
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 
-require_once "HUGnetLib/tables/TestTable.php";
-
 $tid    = hexdec($json->args()->id);
 $action = strtolower($json->args()->action);
 $test   = &$json->system()->device();
