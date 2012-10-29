@@ -106,6 +106,8 @@ class Sensor extends \HUGnet\base\SystemTableBase
     * Lists the ids of the table values
     *
     * @return The ID of this sensor
+    *
+    * @SuppressWarnings(PHPMD.ShortMethodName)
     */
     public function id()
     {
