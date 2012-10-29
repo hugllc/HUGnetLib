@@ -116,16 +116,16 @@ class AverageHourly extends \HUGnet\processes\analysis\Device
             (int)$last,
             $lastPrev,
             $device->get("id"),
-            \AverageTableBase::AVERAGE_15MIN
+            \HUGnet\db\Average::AVERAGE_15MIN
         );
 
         $bad = 0;
         $local = 0;
         if ($ret) {
             // Go through the records
-            while ($avg->calcAverage($hist, \AverageTableBase::AVERAGE_HOURLY)) {
+            while ($avg->calcAverage($hist, \HUGnet\db\Average::AVERAGE_HOURLY)) {
                 if ($avg->insertRow(true)) {
-                    $now = $avg->Date;
+                    $now = $avg->get("Date");
                     $local++;
                     $lastTry = time();
                 } else {
@@ -137,7 +137,7 @@ class AverageHourly extends \HUGnet\processes\analysis\Device
         if ($bad > 0) {
             // State we did some uploading
             $this->ui()->out(
-                $device->DeviceID." - ".
+                $device->get("DeviceID")." - ".
                 "Failed to insert $bad HOURLY average records",
                 1
             );
@@ -145,7 +145,7 @@ class AverageHourly extends \HUGnet\processes\analysis\Device
         if ($local > 0) {
             // State we did some uploading
             $this->ui()->out(
-                $device->DeviceID." - ".
+                $device->get("DeviceID")." - ".
                 "Inserted $local HOURLY average records ".
                 date("Y-m-d H:i:s", $last)." - ".date("Y-m-d H:i:s", $now),
                 1

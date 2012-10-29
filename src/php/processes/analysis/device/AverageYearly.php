@@ -116,16 +116,16 @@ class AverageYearly extends \HUGnet\processes\analysis\Device
             (int)$last,
             $lastPrev,
             $device->get("id"),
-            \AverageTableBase::AVERAGE_MONTHLY
+            \HUGnet\db\Average::AVERAGE_MONTHLY
         );
 
         $bad = 0;
         $local = 0;
         if ($ret) {
             // Go through the records
-            while ($avg->calcAverage($hist, \AverageTableBase::AVERAGE_YEARLY)) {
+            while ($avg->calcAverage($hist, \HUGnet\db\Average::AVERAGE_YEARLY)) {
                 if ($avg->insertRow(true)) {
-                    $now = $avg->Date;
+                    $now = $avg->get("Date");
                     $local++;
                     $lastTry = time();
                 } else {
@@ -137,7 +137,7 @@ class AverageYearly extends \HUGnet\processes\analysis\Device
         if ($bad > 0) {
             // State we did some uploading
             $this->ui()->out(
-                $device->DeviceID." - ".
+                $device->get("DeviceID")." - ".
                 "Failed to insert $bad YEARLY average records",
                 1
             );
@@ -145,7 +145,7 @@ class AverageYearly extends \HUGnet\processes\analysis\Device
         if ($local > 0) {
             // State we did some uploading
             $this->ui()->out(
-                $device->DeviceID." - ".
+                $device->get("DeviceID")." - ".
                 "Inserted $local YEARLY average records ".
                 date("Y-m-d", $last)." - ".date("Y-m-d", $now),
                 1

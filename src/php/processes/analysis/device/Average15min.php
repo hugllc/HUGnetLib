@@ -122,10 +122,10 @@ class Average15min extends \HUGnet\processes\analysis\Device
         if ($ret) {
             // Go through the records
             while (
-                $avg->calcAverage($hist, \AverageTableBase::AVERAGE_15MIN)
+                $avg->calcAverage($hist, \HUGnet\db\Average::AVERAGE_15MIN)
             ) {
                 if ($avg->insertRow(true)) {
-                    $now = $avg->Date;
+                    $now = $avg->get("Date");
                     $local++;
                     $lastTry = time();
                 } else {
@@ -136,7 +136,7 @@ class Average15min extends \HUGnet\processes\analysis\Device
         if ($bad > 0) {
             // State we did some uploading
             $this->ui()->out(
-                $device->DeviceID." - ".
+                $device->get("DeviceID")." - ".
                 "Failed to insert $bad 15MIN average records",
                 1
             );
@@ -144,7 +144,7 @@ class Average15min extends \HUGnet\processes\analysis\Device
         if ($local > 0) {
             // State we did some uploading
             $this->ui()->out(
-                $device->DeviceID." - ".
+                $device->get("DeviceID")." - ".
                 "Inserted $local 15MIN average records ".
                 date("Y-m-d H:i:s", $last)." - ".date("Y-m-d H:i:s", $now),
                 1
