@@ -97,7 +97,7 @@ class AverageWeekly extends \HUGnet\processes\analysis\Device
         if (!$this->ready($device)) {
             return true;
         }
-        $this->ui()->out("WEEKLY average plugin starting ", 3);
+        $this->system()->out("WEEKLY average plugin starting ", 3);
         $hist = &$device->historyFactory($data, false);
         // We don't want more than 100 records at a time;
         if (empty($this->conf["maxRecords"])) {
@@ -136,7 +136,7 @@ class AverageWeekly extends \HUGnet\processes\analysis\Device
 
         if ($bad > 0) {
             // State we did some uploading
-            $this->ui()->out(
+            $this->system()->out(
                 $device->get("DeviceID")." - ".
                 "Failed to insert $bad WEEKLY average records",
                 1
@@ -144,7 +144,7 @@ class AverageWeekly extends \HUGnet\processes\analysis\Device
         }
         if ($local > 0) {
             // State we did some uploading
-            $this->ui()->out(
+            $this->system()->out(
                 $device->get("DeviceID")." - ".
                 "Inserted $local WEEKLY average records ".
                 date("Y-m-d", $last)." - ".date("Y-m-d", $now),
@@ -157,7 +157,7 @@ class AverageWeekly extends \HUGnet\processes\analysis\Device
         $device->setParam("LastAverageWEEKLY", $last);
         $device->setParam("LastAverageWEEKLYTry", $lastTry);
 
-        $this->ui()->out("WEEKLY average plugin ending ", 3);
+        $this->system()->out("WEEKLY average plugin ending ", 3);
         return true;
     }
     /**

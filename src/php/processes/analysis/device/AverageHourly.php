@@ -97,7 +97,7 @@ class AverageHourly extends \HUGnet\processes\analysis\Device
         if (!$this->ready($device)) {
             return true;
         }
-        $this->ui()->out("HOURLY average plugin starting ", 3);
+        $this->system()->out("HOURLY average plugin starting ", 3);
         $hist = &$device->historyFactory($data, false);
         // We don't want more than 100 records at a time;
         if (empty($this->conf["maxRecords"])) {
@@ -136,7 +136,7 @@ class AverageHourly extends \HUGnet\processes\analysis\Device
 
         if ($bad > 0) {
             // State we did some uploading
-            $this->ui()->out(
+            $this->system()->out(
                 $device->get("DeviceID")." - ".
                 "Failed to insert $bad HOURLY average records",
                 1
@@ -144,7 +144,7 @@ class AverageHourly extends \HUGnet\processes\analysis\Device
         }
         if ($local > 0) {
             // State we did some uploading
-            $this->ui()->out(
+            $this->system()->out(
                 $device->get("DeviceID")." - ".
                 "Inserted $local HOURLY average records ".
                 date("Y-m-d H:i:s", $last)." - ".date("Y-m-d H:i:s", $now),
@@ -157,7 +157,7 @@ class AverageHourly extends \HUGnet\processes\analysis\Device
         $device->setParam("LastAverageHOURLY", $last);
         $device->setParam("LastAverageHOURLYTry", $lastTry);
 
-        $this->ui()->out("HOURLY average plugin ending ", 3);
+        $this->system()->out("HOURLY average plugin ending ", 3);
         return true;
     }
     /**

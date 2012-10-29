@@ -98,7 +98,7 @@ class GetFirmware extends \HUGnet\processes\updater\Periodic
     {
         if ($this->ready() && (strlen($this->_fwPath["url"]) > 0)) {
             // State we are looking for firmware
-            $this->ui()->out(
+            $this->system()->out(
                 "Checking for new firmware at ".trim($this->_fwPath["url"])
             );
             $files = file($this->_fwPath["url"]."/manifest");
@@ -108,7 +108,7 @@ class GetFirmware extends \HUGnet\processes\updater\Periodic
                 }
                 if (!$this->_firmware->checkFile($file)) {
                     // State we found some new firmware
-                    $this->ui()->out("Found ".trim($file));
+                    $this->system()->out("Found ".trim($file));
                     // Load the firmware
                     $this->_firmware->fromFile($file, $this->_fwPath["url"]);
                     // Insert it.

@@ -144,18 +144,18 @@ class PushHistory extends \HUGnet\processes\updater\Periodic
                             $records
                         );
                         if (is_array($ret) && (count($ret) > 0)) {
-                            $this->ui()->out(
+                            $this->system()->out(
                                 "Successfully pushed ".count($ret)." $class records."
                             );
                             $this->_lastPush[$class] = $now;
-                            $this->ui()->out(
+                            $this->system()->out(
                                 "LastPush for $class set to "
                                 .date("Y-m-d H:i:s", $now)
                             );
                         }
                         if (!is_array($ret) || (count($ret) < count($records))) {
                             $count = (is_array($ret)) ? count($ret) : 0;
-                            $this->ui()->out(
+                            $this->system()->out(
                                 "Failed to push ".(count($records) - $count)
                                 ." $class records."
                             );

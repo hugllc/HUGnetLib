@@ -140,7 +140,7 @@ class CLI
     {
         if (!is_object($this->_system)) {
             $this->out(get_class($this)." building sytem", 3);
-            $this->_system = \HUGnet\System::factory($this->_config);
+            $this->_system = \HUGnet\System::factory($this->_config, $this);
         }
         return $this->_system;
     }
