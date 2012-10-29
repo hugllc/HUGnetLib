@@ -51,6 +51,8 @@ require_once dirname(__FILE__)."/CLI.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ *
+ * @SuppressWarnings(PHPMD.ExitExpression)
  */
 class Daemon extends CLI
 {
@@ -105,9 +107,9 @@ class Daemon extends CLI
         preg_match(
             '/([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/',
             $uuid,
-            $m
+            $match
         );
-        $uuid2 = $m[0];
+        $uuid2 = $match[0];
         if (empty($uuid2) || (strlen($uuid) != 36)) {
             if (empty($msg)) {
                 $msg  = "A valid UUID must be supplied in the INI file.\n";

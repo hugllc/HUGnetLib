@@ -51,6 +51,8 @@ require_once dirname(__FILE__)."/../system/System.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ *
+ * @SuppressWarnings(PHPMD.ExitExpression)
  */
 class CLI
 {

@@ -96,7 +96,6 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
         if ($this->ready() && $this->hasMaster()) {
             $now = time();
             $ids = $this->_device->ids();
-            $mem = memory_get_usage();
             foreach ($ids as $key => $devID) {
                 $this->system()->main();
                 if (!$this->ui()->loop()) {
@@ -119,7 +118,6 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
                 $this->_device->setParam("LastMasterPush", $now);
                 $ret = $this->_device->action()->post($url);
                 $sens = $this->_device->get("totalSensors");
-                $sensors = array();
                 for ($i = 0; $i < $sens; $i++) {
                     //$this->ui()->out("Pushing sensor ".$i);
                     $sen = &$this->_device->sensor($i);

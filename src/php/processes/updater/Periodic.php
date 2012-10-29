@@ -81,10 +81,6 @@ abstract class Periodic
         "PushHistory"
     );
     /**
-    * This is where the plugin objects are stored
-    */
-    private static $_plugins = null;
-    /**
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
     *
