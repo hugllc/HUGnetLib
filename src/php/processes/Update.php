@@ -98,7 +98,7 @@ class Update extends \HUGnet\ui\Daemon
     public function main()
     {
         $this->_mainStart = time();
-        foreach ($this->_plugins as $key => $obj) {
+        foreach ($this->_plugins as $obj) {
             $obj->execute();
         }
         $this->_wait();

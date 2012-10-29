@@ -297,16 +297,16 @@ class Devices extends \HUGnet\db\Table
     */
     public function insertRow($replace = false)
     {
-        $id = $this->get("id");
-        if (empty($id)) {
+        $did = $this->get("id");
+        if (empty($did)) {
             $this->set("id", hexdec($this->get("DeviceID")));
         }
-        $id = $this->get("id");
+        $did = $this->get("id");
         // This is so we don't insert bad DeviceIDs.
         // Group and temporary DeviceIDs are omitted, as well as the default one
-        if ((($id >= self::MIN_GROUP_SN) && ($id <= self::MAX_GROUP_SN))
-            || (($id >= self::MIN_TEMP_SN) && ($id <= self::MAX_TEMP_SN))
-            || ($id == $this->default["id"])
+        if ((($did >= self::MIN_GROUP_SN) && ($did <= self::MAX_GROUP_SN))
+            || (($did >= self::MIN_TEMP_SN) && ($did <= self::MAX_TEMP_SN))
+            || ($did == $this->default["id"])
         ) {
             return false;
         }

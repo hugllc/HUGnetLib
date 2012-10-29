@@ -170,6 +170,7 @@ final class Device
         $this->_device->set("FWVersion", $this->_config["FWVersion"]);
         $this->_device->set("RawSetup", $this->_device->encode());
         $ret = $this->_device->change($this->_config);
+        return $ret;
     }
     /**
     * Replies to a packet

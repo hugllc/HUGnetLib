@@ -427,7 +427,7 @@ class Network
         }
         /* This reboots the board */
         \HUGnet\VPrint::out("rebooting", 1);
-        $reply = $this->_sendPkt(
+        $this->_sendPkt(
             "SETCONFIG", null, array('tries' => 1, "block" => false, "find" => false)
         );
         return true;

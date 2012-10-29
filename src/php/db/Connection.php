@@ -81,8 +81,6 @@ class Connection  implements \ConnectionManager
     private $_server = null;
     /** @var object These are the server groups we know */
     private $_groups = null;
-    /** @var object These are the server groups we know */
-    private $_driver = null;
 
     /**
     * Creates the object

@@ -213,15 +213,15 @@ class Action
             $data["TestID"] = $TestID;
             $data["deltaT"] = $time - $prev["Date"];
             $this->device->setParam("LastPollData", $data);
-            $d = $this->device->historyFactory($data);
-            if ($d->insertRow()) {
+            $hist = $this->device->historyFactory($data);
+            if ($hist->insertRow()) {
                 $this->device->setParam("LastHistory", $time);
             }
             $this->device->setParam("LastPoll", $time);
             $this->device->setParam("LastContact", $time);
             $this->device->setParam("PollFail", 0);
             $this->device->setParam("ContactFail", 0);
-            return $d;
+            return $hist;
         }
         $fail = $this->device->getParam("PollFail");
         $this->device->setParam("PollFail", $fail+1);
@@ -257,7 +257,7 @@ class Action
     */
     public function loadConfig()
     {
-        $pkt = $this->device->network()->loadConfig();
+        $this->device->network()->loadConfig();
     }
     /**
     * Checks the record to see if something needs to be done about it.

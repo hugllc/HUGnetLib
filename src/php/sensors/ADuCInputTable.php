@@ -700,7 +700,7 @@ class ADuCInputTable
     */
     public function fromArray($array)
     {
-        foreach ($this->_params as $field => $vals) {
+        foreach (array_keys($this->_params) as $field) {
             if (isset($array[$field])) {
                 $this->_params($field, $array[$field]);
             }

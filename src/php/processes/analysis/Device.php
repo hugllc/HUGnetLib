@@ -85,10 +85,6 @@ abstract class Device
         "AverageMonthly", "AverageYearly",
     );
     /**
-    * This is where the plugin objects are stored
-    */
-    private static $_plugins = null;
-    /**
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
     *
@@ -164,6 +160,8 @@ abstract class Device
     * @param object &$device The device to check
     *
     * @return bool True if ready to return, false otherwise
+    *
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function ready(&$device)
     {

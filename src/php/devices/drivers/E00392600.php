@@ -117,13 +117,13 @@ class E00392600 extends \HUGnet\devices\Driver
         );
         $return .= str_pad($string, 32, "F");
 
-        $IP = explode(".", (string)$this->device()->get("DeviceLocation"));
+        $IPA = explode(".", (string)$this->device()->get("DeviceLocation"));
         $return .= sprintf(
             "%02X%02X%02X%02X",
-            (int)$IP[0] & 0xFF,
-            (int)$IP[1] & 0xFF,
-            (int)$IP[2] & 0xFF,
-            (int)$IP[3] & 0xFF
+            (int)$IPA[0] & 0xFF,
+            (int)$IPA[1] & 0xFF,
+            (int)$IPA[2] & 0xFF,
+            (int)$IPA[3] & 0xFF
         );
         $return .= sprintf("%04X", $this->device()->get("GatewayKey"));
         $return .= sprintf("%02X", $this->device()->getParam("Enable"));
@@ -146,15 +146,15 @@ class E00392600 extends \HUGnet\devices\Driver
             ."-".substr($uuid, 16, 4)."-".substr($uuid, 20)
         );
         $index += 32;
-        $IP = str_split(substr((string)$string, $index, 8), 2);
+        $IPA = str_split(substr((string)$string, $index, 8), 2);
         $this->device()->set(
             "DeviceLocation",
             sprintf(
                 "%d.%d.%d.%d",
-                hexdec($IP[0]) & 0xFF,
-                hexdec($IP[1]) & 0xFF,
-                hexdec($IP[2]) & 0xFF,
-                hexdec($IP[3]) & 0xFF
+                hexdec($IPA[0]) & 0xFF,
+                hexdec($IPA[1]) & 0xFF,
+                hexdec($IPA[2]) & 0xFF,
+                hexdec($IPA[3]) & 0xFF
             )
         );
         $index += 8;

@@ -113,7 +113,7 @@ class Analysis extends \HUGnet\ui\Daemon
         $this->_runtime();
         if ($this->_runtime["gather"] !== false) {
             $this->_ids = $this->_device->ids(array("Active" => 1));
-            foreach ((array)$this->_ids as $key => $devID) {
+            foreach (array_keys((array)$this->_ids) as $key) {
                 parent::main();
                 if (!$this->loop()) {
                     break;
@@ -183,7 +183,7 @@ class Analysis extends \HUGnet\ui\Daemon
     {
         $ret = &parent::device($config);
         $this->_myID = $this->system()->network()->device()->getID();
-        $dev = $this->system()->device($this->_myID);
+        $this->system()->device($this->_myID);
         $this->system()->network()->unsolicited(
             array($this, "packet"),
             $this->_myID

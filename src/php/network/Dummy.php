@@ -51,6 +51,8 @@ namespace HUGnet\network;
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ *
+ * @SuppressWarnings(PHPMD.UnusedFormalParameter)
  */
 final class Dummy
 {

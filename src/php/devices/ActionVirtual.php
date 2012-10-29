@@ -134,7 +134,6 @@ class ActionVirtual extends Action
     {
         $extra = $sensor->get("extra");
         $dev = hexdec($extra[0]);
-        $sen = $extra[1];
         if (empty($dev)) {
             return null;
         }
@@ -170,10 +169,10 @@ class ActionVirtual extends Action
         if (is_null($time)) {
             $time = time();
         }
-        $id = $this->device->get("id");
+        $did = $this->device->get("id");
         $prev = (array)$this->device->getParam("LastPollData");
         $hist = array(
-            "id" => $id,
+            "id" => $did,
             "Date" => $time,
             "TestID" => $TestID,
             "deltaT" => $time - $prev["Date"],
@@ -181,7 +180,6 @@ class ActionVirtual extends Action
         $sensors = $this->device->get("totalSensors");
         for ($i = 0; $i < $sensors; $i++) {
             $sen = $this->device->sensor($i);
-            $string = "";
             $hist = array_merge(
                 $hist,
                 $sen->decodeData(
@@ -224,31 +222,31 @@ class ActionVirtual extends Action
             $prefix .= "/LeNR.";
             $filename = $prefix.$this->device->get("DeviceID").".".date("Ymd");
             $new = !file_exists($filename);
-            $fd = fopen($filename, "a");
+            $fdr = fopen($filename, "a");
             $channels = $this->device->channels();
             $chan = $channels->toArray();
             if ($new) {
                 $sep = ",";
-                fwrite($fd, "Date");
+                fwrite($fdr, "Date");
                 for ($i = 0; $i < count($chan); $i++) {
                     if ($chan[$i]["dataType"] !== 'ignore') {
-                        fwrite($fd, $sep.$chan[$i]['label']);
+                        fwrite($fdr, $sep.$chan[$i]['label']);
                         $sep = ",";
                     }
                 }
-                fwrite($fd, "\r\n");
+                fwrite($fdr, "\r\n");
             }
             $sep = ",";
-            fwrite($fd, date("Y-m-d H:i:s", $hist->get("Date")));
+            fwrite($fdr, date("Y-m-d H:i:s", $hist->get("Date")));
             for ($i = 0; $i < count($chan); $i++) {
                 if ($chan[$i]["dataType"] !== 'ignore') {
                     $data = $hist->get("Data".$i);
-                    fwrite($fd, $sep.$data);
+                    fwrite($fdr, $sep.$data);
                     $sep = ",";
                 }
             }
-            fwrite($fd, "\r\n");
-            fclose($fd);
+            fwrite($fdr, "\r\n");
+            fclose($fdr);
             chmod($filename, 0666);
         }
     }
