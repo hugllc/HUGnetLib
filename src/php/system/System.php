@@ -76,6 +76,8 @@ class System
     private $_dbconnect = array();
     /** @var array This is our network configuration */
     private $_network = null;
+    /** @var array This is our user interface */
+    private $_ui = null;
     /** @var array The default configuration */
     private $_configDefault = array(
         "verbose" => 0,
@@ -84,25 +86,28 @@ class System
     /**
     * This sets up the basic parts of the object for us when we create it
     *
-    * @param array $config The configuration array
+    * @param array  $config     The configuration array
+    * @param object &$interface The user interface to use
     *
     * @return null
     */
-    private function __construct($config = array())
+    private function __construct($config = array(), &$interface = null)
     {
         $this->config((array)$config);
         $this->_dbconnect = \HUGnet\db\Connection::factory($this);
+        $this->_ui = $interface;
     }
     /**
     * This function creates the system.
     *
-    * @param mixed $config (array)The configuration, (string) File path to open
+    * @param mixed  $config     (array)The configuration, (string) File path to open
+    * @param object &$interface The user interface to use
     *
     * @return null
     */
-    public static function &factory($config = array())
+    public static function &factory($config = array(), &$interface = null)
     {
-        $obj = new System($config);
+        $obj = new System($config, $interface);
         return $obj;
     }
     /**
@@ -246,7 +251,9 @@ class System
     */
     public function out($string, $level = 0)
     {
-        return \HUGnet\VPrint::out($string, $level);
+        if (is_object($this->_ui)) {
+            return $this->_ui->out($string, $level);
+        }
     }
     /**
     * This returns a dataCollector object.

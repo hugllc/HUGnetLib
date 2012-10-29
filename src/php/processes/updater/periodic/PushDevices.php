@@ -112,14 +112,14 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
                 if ($lastContact < $this->_device->getParam("LastMasterPush")) {
                     continue;
                 }
-                $this->ui()->out(
+                $this->system()->out(
                     "Pushing ".sprintf("%06X", $devID)." to master server..."
                 );
                 $this->_device->setParam("LastMasterPush", $now);
                 $ret = $this->_device->action()->post($url);
                 $sens = $this->_device->get("totalSensors");
                 for ($i = 0; $i < $sens; $i++) {
-                    //$this->ui()->out("Pushing sensor ".$i);
+                    //$this->system()->out("Pushing sensor ".$i);
                     $sen = &$this->_device->sensor($i);
                     $sen->action()->post($url);
                     unset($sen);
@@ -129,12 +129,12 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
                     }
                 }
                 if ($ret === "success") {
-                    $this->ui()->out(
+                    $this->system()->out(
                         "Successfully pushed ".sprintf("%06X", $devID)."."
                     );
                     $this->_device->store();
                 } else {
-                    $this->ui()->out("Failure.");
+                    $this->system()->out("Failure.");
                     /* Don't store it if we fail */
                 }
             }

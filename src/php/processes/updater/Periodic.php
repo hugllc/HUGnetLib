@@ -195,7 +195,7 @@ abstract class Periodic
     protected function success()
     {
         $this->last = time();
-        $this->ui()->out(
+        $this->system()->out(
             "Success.  Next run ".date("Y-m-d H:i:s", $this->last + $this->period)
         );
     }
@@ -207,7 +207,7 @@ abstract class Periodic
     protected function failure()
     {
         $this->last = (time() - $this->period + 60);
-        $this->ui()->out(
+        $this->system()->out(
             "Failure. Will try again in 1 minute"
         );
     }
