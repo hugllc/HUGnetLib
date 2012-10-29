@@ -125,7 +125,6 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     * @param string $attrib This is the attribute to set
     * @param mixed  $value  The value to set it to
     * @param int    $expect The expected return
-    * @param mixed  $lock   The spot to lock
     *
     * @return null
     *
@@ -298,7 +297,6 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     *
     * @param string $attrib This is the attribute to set
     * @param mixed  $value  The value to set it to
-    * @param mixed  $lock   The attribute to lock
     * @param int    $expect The expected return
     *
     * @return null
