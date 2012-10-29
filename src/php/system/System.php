@@ -116,16 +116,11 @@ class System
     * @param array $config The configuration array
     *
     * @return array The configuration
-    * @todo remove ConfigContainer reference when ConfigContainer goes away
     */
     public function config($config = null)
     {
         if (is_array($config)) {
             $this->_config = array_merge($this->_configDefault, (array)$config);
-            // This is so that the rest of the system works when we call it through
-            // This class.  This should be removed when ConfigContainer is retired.
-            //include_once dirname(__FILE__).'/../containers/ConfigContainer.php';
-            //\ConfigContainer::singleton()->forceConfig($this->_config);
         }
         // Return the configuration
         return $this->_config;

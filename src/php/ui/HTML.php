@@ -127,9 +127,6 @@ class HTML
         $config = $this->_config;
         $config["debug"] = true;
         \HUGnet\VPrint::config($config);
-        include_once dirname(__FILE__)."/../containers/ConfigContainer.php";
-        $conf = &\ConfigContainer::singleton();
-        $conf->forceConfig($this->_config);
 
         return $this->_config;
     }
