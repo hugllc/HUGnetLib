@@ -295,6 +295,8 @@ abstract class SystemTableBase
     * Lists the ids of the table values
     *
     * @return int The ID of this device
+    *
+    * @SuppressWarnings(PHPMD.ShortMethodName)
     */
     public function id()
     {

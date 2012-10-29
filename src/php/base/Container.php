@@ -59,8 +59,6 @@ require_once dirname(__FILE__)."/../interfaces/HUGnetContainerInterface.php";
  */
 abstract class Container
 {
-    /** @var object The extra stuff class */
-    private $_extra = null;
     /** @var int The configuration */
     protected $myConfig = null;
     /** @var array This is the default values for the data */
@@ -357,17 +355,6 @@ abstract class Container
     public function hash()
     {
         return md5((string)$this);
-    }
-    /**
-    * loads the configuration
-    *
-    * @param mixed $config The configuration to load
-    *
-    * @return null
-    */
-    protected function getConfig($config=array())
-    {
-
     }
     /**
     * returns true if the container is empty.  False otherwise
