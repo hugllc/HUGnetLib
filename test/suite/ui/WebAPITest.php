@@ -38,6 +38,8 @@ namespace HUGnet\ui;
 /** This is a required class */
 require_once CODE_BASE.'ui/WebAPI.php';
 /** This is a required class */
+require_once CODE_BASE.'ui/HTMLArgs.php';
+/** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
 /**
  * Test class for HUGnetDB.
@@ -90,6 +92,8 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
     */
     public static function dataSystem()
     {
+        $data = array();
+        $htmlargs = \HUGnet\ui\HTMLArgs::factory($argv, $argc, $data);
         return array(
             array(
                 new \HUGnet\DummySystem("System"),
@@ -114,6 +118,18 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                 array(
                     "verbose" => 5,
                     "html" => true,
+                )
+            ),
+            array(
+                $htmlargs,
+                null,
+                array(
+                    "verbose" => 0,
+                    "html" => true,
+                    "file" => "",
+                    "quiet" => false,
+                    "debug" => false,
+                    "test" => false,
                 )
             ),
         );
