@@ -82,6 +82,18 @@ class Update extends \HUGnet\ui\Daemon
         $this->_plugins = &\HUGnet\processes\updater\Periodic::plugins($this);
     }
     /**
+    * Creates the object
+    *
+    * @param array &$config The configuration to use
+    *
+    * @return null
+    */
+    public function &factory(&$config = array())
+    {
+        $obj = new Update($config);
+        return $obj;
+    }
+    /**
     * This is the destructor
     */
     public function __destruct()

@@ -79,6 +79,18 @@ class Route extends \HUGnet\ui\Daemon
         $this->_device = $this->system()->device();
     }
     /**
+    * Creates the object
+    *
+    * @param array &$config The configuration to use
+    *
+    * @return null
+    */
+    public function &factory(&$config = array())
+    {
+        $obj = new Route($config);
+        return $obj;
+    }
+    /**
     * This is our main routine
     *
     * @return null

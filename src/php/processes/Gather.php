@@ -96,6 +96,18 @@ class Gather extends \HUGnet\ui\Daemon
         $this->_unsolicited = $this->system()->device();
     }
     /**
+    * Creates the object
+    *
+    * @param array &$config The configuration to use
+    *
+    * @return null
+    */
+    public function &factory(&$config = array())
+    {
+        $obj = new Gather($config);
+        return $obj;
+    }
+    /**
     * This is our main routine
     *
     * @return null

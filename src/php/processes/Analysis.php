@@ -102,6 +102,18 @@ class Analysis extends \HUGnet\ui\Daemon
 
     }
     /**
+    * Creates the object
+    *
+    * @param array &$config The configuration to use
+    *
+    * @return null
+    */
+    public function &factory(&$config = array())
+    {
+        $obj = new Analysis($config);
+        return $obj;
+    }
+    /**
     * This is our main routine
     *
     * @return null
