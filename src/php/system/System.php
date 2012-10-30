@@ -260,7 +260,6 @@ class System
     */
     public function &table($table, $data = array())
     {
-        $data = array();
         return \HUGnet\db\Table::factory(
             $this,
             $data,

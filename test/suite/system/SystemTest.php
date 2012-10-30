@@ -436,6 +436,62 @@ class SystemTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
+    public static function dataTable()
+    {
+        return array(
+            array(
+                array(
+                    "hello" => "there",
+                    "asdf"  => array(1,2),
+                ),
+                "Devices",
+                array(
+                    "id"        => 5,
+                    "DeviceID"  => "000005",
+                    "HWPartNum" => "0039-28-01-A",
+                    "FWPartNum" => "0039-38-01-C",
+                    "FWVersion" => "1.2.3",
+                ),
+                "HUGnet\\db\\tables\\Devices",
+                array(
+                    "id"        => 5,
+                    "DeviceID"  => "000005",
+                    "HWPartNum" => "0039-28-01-A",
+                    "FWPartNum" => "0039-38-01-C",
+                    "FWVersion" => "1.2.3",
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config The configuration to use
+    * @param string $table  The table to get
+    * @param mixed  $data   The data to feed the table
+    * @param string $class  The class to expect
+    * @param mixed  $expect The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataTable
+    */
+    public function testTable(
+        $config, $table, $data, $class, $expect
+    ) {
+        $obj = \HUGnet\System::factory($config);
+        $dev = $obj->table($table, $data);
+        $this->assertSame($class, get_class($dev), "wrong class");
+        foreach ($expect as $key => $value) {
+            $this->assertEquals($value, $dev->get($key), "$key not $value");
+        }
+        unset($obj);
+    }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
     public static function dataDataCollector()
     {
         return array(
