@@ -80,8 +80,7 @@ class JSON
     */
     public function &factory(&$config = array())
     {
-        $class = get_called_class();
-        $obj = new $class($config);
+        $obj = new JSON($config);
         return $obj;
     }
 

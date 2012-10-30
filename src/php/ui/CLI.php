@@ -82,8 +82,7 @@ class CLI
     */
     public function &factory(&$config = array())
     {
-        $class = get_called_class();
-        $obj = new $class($config);
+        $obj = new CLI($config);
         return $obj;
     }
 

@@ -77,6 +77,18 @@ class Daemon extends CLI
         }
     }
     /**
+    * Creates the object
+    *
+    * @param array &$config The configuration to use
+    *
+    * @return null
+    */
+    public function &factory(&$config = array())
+    {
+        $obj = new Daemon($config);
+        return $obj;
+    }
+    /**
     * Gets the configuration for this process
     *
     * @param string $field The field to get.  NULL gets everything

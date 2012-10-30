@@ -83,8 +83,7 @@ class HTML
     */
     public function &factory(&$config = array(), $args = array())
     {
-        $class = get_called_class();
-        $obj = new $class($config, $args);
+        $obj = new HTML($config, $args);
         return $obj;
     }
 
