@@ -76,6 +76,7 @@ class VPrint
         self::$_debug = $config["debug"];
         self::$_html = isset($config["html"]) ? $config["html"] : PHP_SAPI != "cli";
         self::$_sess = $config["session"];
+        self::$_debugOut = "";
     }
     /**
     * This function prints out string if level >= verbosity
