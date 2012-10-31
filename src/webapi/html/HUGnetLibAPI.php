@@ -32,19 +32,12 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
-require_once 'HUGnetLib/hugnet.inc.php';
-require_once HUGNET_INCLUDE_PATH."/ui/WebAPI.php";
+require_once "HUGnetLib/ui/WebAPI.php";
+require_once "HUGnetLib/ui/WebAPIArgs.php";
 
-$args = \HUGnet\ui\HTMLArgs::factory(
+$args = \HUGnet\ui\WebAPIArgs::factory(
     $_REQUEST,
-    count($_REQUEST),
-    array(
-        "task" => array("name" => "task", "type" => "string", "default" => ""),
-        "action" => array("name" => "action", "type" => "string"),
-        "id" => array("name" => "id", "type" => "string"),
-        "clientuuid" => array("name" => "clientuuid", "type" => "string"),
-        "data" => array("name" => "data", "type" => "array", "default" => array()),
-    )
+    count($_REQUEST)
 );
 $args->addLocation("/usr/share/HUGnet/config.ini");
 
