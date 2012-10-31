@@ -133,6 +133,17 @@ class Args
     *
     * @return Args object
     */
+    public function get($name)
+    {
+        return $this->__get($name);
+    }
+    /**
+    * Creates the object
+    *
+    * @param string $name The name of the argument to retrieve
+    *
+    * @return Args object
+    */
     public function __get($name)
     {
         if (isset($this->arguments[$name])) {

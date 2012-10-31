@@ -60,26 +60,18 @@ class WebAPI extends HTML
     private $_args = array();
     /** The system object */
     private $_system = null;
-    /**
-    * Sets our configuration
-    *
-    * @param mixed &$config The configuration to use
-    */
-    protected function __construct(&$config)
-    {
-        $this->setConfig($config);
-    }
 
     /**
     * Creates the object
     *
     * @param array &$config The configuration to use
+    * @param mixed &$system The system object to use
     *
     * @return null
     */
-    public function &factory(&$config = array())
+    public function &factory(&$config = array(), &$system = null)
     {
-        $obj = new WebAPI($config);
+        $obj = new WebAPI($config, $system);
         return $obj;
     }
 
@@ -95,26 +87,111 @@ class WebAPI extends HTML
         unset($this->_system);
     }
     /**
-    * Disconnects from the database
+    * This function executes the api call.
+    *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
     *
     * @return null
     */
-    public function main()
+    public function execute($extra = array())
     {
-        \HUGnet\System::loopcheck();
-        $this->system()->main();
+        $task = (string)$this->args()->get("task");
+        $method = "_execute".ucfirst(strtolower($task));
+        if (method_exists($this, $method)) {
+            $ret = $this->{$method}($extra);
+        }
+        $this->_header();
+        $this->_body($ret);
     }
-
+    /**
+    * This function executes the api call.
+    *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    */
+    private function _executeDevice($extra = array())
+    {
+        $did = hexdec($this->args()->get("id"));
+        $dev = &$this->system()->device($did);
+        return $this->_executeGeneric($dev, $extra);
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    */
+    private function _executeDatacollector($extra = array())
+    {
+        $uuid = hexdec($this->args()->get("id"));
+        $datacol = &$this->system()->datacollector(array("uuid" => $uuid));
+        return $this->_executeGeneric($datacol, $extra);
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    */
+    private function _executeGeneric($obj, $extra = array())
+    {
+        $action = strtolower($this->args()->get("action"));
+        if ($action === "get") {
+            $ret = $obj->toArray(true);
+        } else if ($action === "put") {
+            $data = (array)$this->args()->get("data");
+            $obj->change($data);
+            // Reload it, so that we get what is in the database
+            $did = hexdec($this->args()->get("id"));
+            $obj->load($did);
+            $ret = $obj->toArray(true);
+        }
+        return $ret;
+    }
+    /**
+    * Sends the headers out
+    *
+    * This function is not testable.  Headers can't be sent in the tests.
+    *
+    * @return null
+    */
+    private function _header()
+    {
+        if (!headers_sent()) {
+            // @codeCoverageIgnoreStart
+            header('Cache-Control: no-cache, must-revalidate');
+            header('Expires: Sat, 4 Apr 1998 20:00:00 GMT');
+            $format = trim($this->args()->get("format"));
+            if (strtoupper($format) === "CSV") {
+                header('Content-type: text/csv');
+                header(
+                    'Content-disposition: attachment;'
+                    .'filename=HUGnetLab.'.$this->args()->get("id").'.csv'
+                );
+            } else {
+                header('Content-type: application/json');
+            }
+        }
+        // @codeCoverageIgnoreEnd
+    }
     /**
     * Disconnects from the database
     *
     * @return null
     */
-    public function header()
+    private function _body($data)
     {
-        header('Cache-Control: no-cache, must-revalidate');
-        header('Expires: Sat, 4 Apr 1998 20:00:00 GMT');
-        header('Content-type: application/json');
+        $format = trim($this->args()->get("format"));
+        if (strtoupper($format) === "CSV") {
+            print $data;
+        } else {
+            if (!is_null($data)) {
+                print json_encode($data);
+            }
+        }
     }
 }
 ?>

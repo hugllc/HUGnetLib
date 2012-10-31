@@ -156,6 +156,201 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
         unset($conf["IPAddr"]);
         $this->assertEquals($expect, $conf);
     }
+    /**
+    * Data provider for testRemove
+    *
+    * @return array
+    */
+    public static function dataExecute()
+    {
+        return array(
+            array(
+                array(
+                    "task" => "device",
+                    "action" => "get",
+                    "id" => "5",
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "device" => array(
+                            "5" => new \HUGnet\DummyBase("Device"),
+                        ),
+                    ),
+                    "Device" => array(
+                        "toArray" => array(
+                            "Real" => "array",
+                        ),
+                    ),
+                ),
+                array(),
+                json_encode(array("Real" => "array")),
+                array(
+                    "Device" => array(
+                        "toArray" => array(
+                            array(true),
+                        ),
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    "task" => "device",
+                    "action" => "get",
+                    "id" => 5,
+                    "format" => "CSV",
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "device" => array(
+                            "5" => new \HUGnet\DummyBase("Device"),
+                        ),
+                    ),
+                    "Device" => array(
+                        "toArray" => "Test",
+                    ),
+                ),
+                array(),
+                "Test",
+                array(
+                    "Device" => array(
+                        "toArray" => array(
+                            array(true),
+                        ),
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    "task" => "device",
+                    "action" => "put",
+                    "id" => "10",
+                    "data" => array(
+                        "a" => "b",
+                        "c" => "d",
+                    ),
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "toArray" => array(
+                            "Real" => "array",
+                        ),
+                    ),
+                ),
+                array(),
+                json_encode(array("Real" => "array")),
+                array(
+                    "Device" => array(
+                        "toArray" => array(
+                            array(true),
+                        ),
+                        "change" => array(
+                            array(
+                                array(
+                                    "a" => "b",
+                                    "c" => "d",
+                                ),
+                            ),
+                        ),
+                        "load" => array(
+                            array(16),
+                        ),
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    "task" => "dataCollector",
+                    "action" => "get",
+                    "id" => "5",
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "datacollector" => new \HUGnet\DummyBase("Datacollector"),
+                    ),
+                    "Datacollector" => array(
+                        "toArray" => array(
+                            "Real" => "array",
+                        ),
+                    ),
+                ),
+                array(),
+                json_encode(array("Real" => "array")),
+                array(
+                    "Datacollector" => array(
+                        "toArray" => array(
+                            array(true),
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param mixed $config The config to use
+    * @param array $mock   The mocks to use
+    * @param array $extra  The extra data to send to execute
+    * @param mixed $expect The system object we are expecting
+    * @param array $calls  The calls to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataExecute()
+    */
+    public function testExecute($config, $mock, $extra, $expect, $calls)
+    {
+        $system = new \HUGnet\DummySystem("System");
+        $system->resetMock($mock);
+        $args = \HUGnet\ui\HTMLArgs::factory(
+            $config,
+            count($config),
+            array(
+                "task" => array(
+                    "name" => "task", "type" => "string", "default" => ""
+                ),
+                "action" => array(
+                    "name" => "action", "type" => "string"
+                ),
+                "format" => array(
+                    "name" => "action", "type" => "string"
+                ),
+                "id" => array(
+                    "name" => "id", "type" => "string"
+                ),
+                "clientuuid" => array(
+                    "name" => "clientuuid", "type" => "string"
+                ),
+                "data" => array(
+                    "name" => "data", "type" => "array", "default" => array()
+                ),
+            )
+        );
+        $obj = WebAPI::factory($args, $system);
+        ob_start();
+        $obj->execute($extra);
+        $ret = ob_get_contents();
+        ob_end_clean();
+        $this->assertEquals($expect, $ret, "Output wrong");
+        foreach ((array)$calls as $obj => $call) {
+            $this->assertEquals($call, $system->retrieve($obj), "$obj Calls Wrong");
+        }
+    }
 
 }
 ?>

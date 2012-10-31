@@ -69,25 +69,27 @@ class HTML
     * Sets our configuration
     *
     * @param mixed &$config The configuration to use
-    * @param mixed &$args   The argument configuration
+    * @param mixed &$system The system object to use
     */
-    protected function __construct(&$config, &$args = array())
+    protected function __construct(&$config, &$system = null)
     {
         $this->setConfig($config);
-        $this->_args = $args;
+        if (is_object($system)) {
+            $this->_system = &$system;
+        }
     }
 
     /**
     * Creates the object
     *
     * @param array &$config The configuration to use
-    * @param mixed $args    The argument configuration
+    * @param mixed &$system The system object to use
     *
     * @return null
     */
-    public function &factory(&$config = array(), $args = array())
+    public function &factory(&$config = array(), &$system = null)
     {
-        $obj = new HTML($config, $args);
+        $obj = new HTML($config, $system);
         return $obj;
     }
 
