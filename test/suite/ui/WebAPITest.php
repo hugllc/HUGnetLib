@@ -38,7 +38,7 @@ namespace HUGnet\ui;
 /** This is a required class */
 require_once CODE_BASE.'ui/WebAPI.php';
 /** This is a required class */
-require_once CODE_BASE.'ui/HTMLArgs.php';
+require_once CODE_BASE.'ui/WebAPIArgs.php';
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
 /**
@@ -317,29 +317,9 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
     {
         $system = new \HUGnet\DummySystem("System");
         $system->resetMock($mock);
-        $args = \HUGnet\ui\HTMLArgs::factory(
+        $args = \HUGnet\ui\WebAPIArgs::factory(
             $config,
-            count($config),
-            array(
-                "task" => array(
-                    "name" => "task", "type" => "string", "default" => ""
-                ),
-                "action" => array(
-                    "name" => "action", "type" => "string"
-                ),
-                "format" => array(
-                    "name" => "action", "type" => "string"
-                ),
-                "id" => array(
-                    "name" => "id", "type" => "string"
-                ),
-                "clientuuid" => array(
-                    "name" => "clientuuid", "type" => "string"
-                ),
-                "data" => array(
-                    "name" => "data", "type" => "array", "default" => array()
-                ),
-            )
+            count($config)
         );
         $obj = WebAPI::factory($args, $system);
         ob_start();
