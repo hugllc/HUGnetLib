@@ -152,6 +152,7 @@ class JSONTest extends \PHPUnit_Framework_TestCase
         }
         $obj = JSON::factory($config);
         $conf = $obj->system()->config();
+        unset($conf["IPAddr"]);
         $this->assertEquals($expect, $conf);
     }
 

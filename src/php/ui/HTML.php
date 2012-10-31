@@ -61,6 +61,10 @@ class HTML
     private $_args = array();
     /** The config we are using */
     private $_system = null;
+    /** The debug information printed out by various things */
+    private $_debug = array();
+    /** The verbosity level */
+    private $_verbose = 0;
     /**
     * Sets our configuration
     *
@@ -108,18 +112,16 @@ class HTML
     protected function setConfig(&$config)
     {
         if (is_object($config)) {
-            if (is_a($config, "HUGnet\ui\Args")) {
-                $this->_config = $config->config();
-                $this->_args = $config;
-            } else {
-                // Whatever it is, use it as our system object
-                $this->_system = &$config;
-            }
+            $this->_config = $config->config();
+            $this->_args = $config;
         } else if (is_array($config)) {
             $this->_config = $config;
         }
         // Ratchet up the verbosity one level so more stuff prints
         $this->_config["html"] = true;
+        if (isset($this->_config["verbose"])) {
+            $this->_verbose = $this->_config["verbose"];
+        }
         // Set up our IP address
         $this->_config["IPAddr"] = $_SERVER["SERVER_ADDR"];
         // Set up printing
@@ -178,7 +180,9 @@ class HTML
     */
     public function out($string, $level=0)
     {
-        \HUGnet\VPrint::out($string, $level);
+        if ($this->_verbose >= $level) {
+            $this->_debug[] = $string;
+        }
     }
 }
 ?>

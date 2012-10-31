@@ -108,6 +108,7 @@ class HTMLTest extends \PHPUnit_Framework_TestCase
                 array(
                     "verbose" => 0,
                     "html" => true,
+                    "other" => "stuff",
                 ),
             ),
             array(

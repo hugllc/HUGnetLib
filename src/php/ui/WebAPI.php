@@ -34,8 +34,7 @@
 /** This is the HUGnet namespace */
 namespace HUGnet\ui;
 /** This is our system class */
-require_once dirname(__FILE__)."/../system/System.php";
-require_once dirname(__FILE__)."/HTMLArgs.php";
+require_once dirname(__FILE__)."/HTML.php";
 
 /**
  * This code routes packets to their correct destinations.
@@ -53,7 +52,7 @@ require_once dirname(__FILE__)."/HTMLArgs.php";
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class WebAPI
+class WebAPI extends HTML
 {
     /** The config we are using */
     private $_config = array();
@@ -61,10 +60,6 @@ class WebAPI
     private $_args = array();
     /** The system object */
     private $_system = null;
-    /** The debug information printed out by various things */
-    private $_debug = array();
-    /** The verbosity level */
-    private $_verbose = 0;
     /**
     * Sets our configuration
     *
@@ -102,50 +97,6 @@ class WebAPI
     /**
     * Disconnects from the database
     *
-    * @param mixed &$config Object or array configuration
-    *
-    * @return null
-    */
-    protected function setConfig(&$config)
-    {
-        if (is_object($config)) {
-            if (is_a($config, "HUGnet\ui\HTMLArgs")) {
-                $this->_config = $config->config();
-                $this->_args = $config;
-            } else {
-                // Whatever it is, use it as our system object
-                $this->_system = &$config;
-            }
-        } else if (is_array($config)) {
-            $this->_config = $config;
-        }
-        $this->_config["html"] = true;
-        if (isset($this->_config["verbose"])) {
-            $this->_verbose = $this->_config["verbose"];
-        }
-        $conf = $this->_config;
-        // Set up printing
-        $conf["debug"] = true;
-        \HUGnet\VPrint::config($conf);
-
-        return $this->_config;
-    }
-    /**
-    * Disconnects from the database
-    *
-    * @return null
-    */
-    public function &system()
-    {
-        if (!is_object($this->_system)) {
-            $this->out(get_class($this)." building sytem", 3);
-            $this->_system = \HUGnet\System::factory($this->_config, $this);
-        }
-        return $this->_system;
-    }
-    /**
-    * Disconnects from the database
-    *
     * @return null
     */
     public function main()
@@ -164,36 +115,6 @@ class WebAPI
         header('Cache-Control: no-cache, must-revalidate');
         header('Expires: Sat, 4 Apr 1998 20:00:00 GMT');
         header('Content-type: application/json');
-    }
-    /**
-    * Connects to the arguments array
-    *
-    * @return null
-    */
-    public function &args()
-    {
-        if (!is_object($this->_args)) {
-            $this->out(get_class($this)." building arguments", 3);
-            $this->_args = \HUGnet\ui\HTMLArgs::factory(
-                $_REQUEST, count($_REQUEST), $this->_args
-            );
-        }
-        return $this->_args;
-    }
-
-    /**
-    * This function prints out string
-    *
-    * @param string $string The string to print out
-    * @param int    $level  The verbosity level to print it at
-    *
-    * @return none
-    */
-    public function out($string, $level = 0)
-    {
-        if ($this->_verbose >= $level) {
-            $this->_debug[] = $string;
-        }
     }
 }
 ?>

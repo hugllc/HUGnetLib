@@ -34,8 +34,7 @@
 /** This is the HUGnet namespace */
 namespace HUGnet\ui;
 /** This is our system class */
-require_once dirname(__FILE__)."/../system/System.php";
-require_once dirname(__FILE__)."/HTMLArgs.php";
+require_once dirname(__FILE__)."/HTML.php";
 
 /**
  * This code routes packets to their correct destinations.
@@ -53,7 +52,7 @@ require_once dirname(__FILE__)."/HTMLArgs.php";
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class JSON
+class JSON extends HTML
 {
     /** The config we are using */
     private $_config = array();

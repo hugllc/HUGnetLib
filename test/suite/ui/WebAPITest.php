@@ -108,6 +108,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                 array(
                     "verbose" => 5,
                     "other" => "stuff",
+                    "html" => true,
                 ),
             ),
             array(
@@ -152,6 +153,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
         }
         $obj = WebAPI::factory($config);
         $conf = $obj->system()->config();
+        unset($conf["IPAddr"]);
         $this->assertEquals($expect, $conf);
     }
 
