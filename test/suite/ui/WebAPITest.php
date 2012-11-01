@@ -162,6 +162,15 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
     */
     public static function dataExecute()
     {
+        $config1 = \HUGnet\ui\WebAPIArgs::factory(
+            array(
+                "task" => "dataCollector",
+                "action" => "someFunction",
+                "id" => "5",
+            ),
+            3
+        );
+
         return array(
             array(
                 array(
@@ -297,6 +306,34 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
+            array(
+                $config1,
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "datacollector" => new \HUGnet\DummyBase("Datacollector"),
+                    ),
+                    "Datacollector" => array(
+                        "webAPI" => array(
+                            "Real" => "array",
+                        ),
+                    ),
+                ),
+                array(),
+                json_encode(array("Real" => "array")),
+                array(
+                    "Datacollector" => array(
+                        "webAPI" => array(
+                            array(
+                                $config1,
+                                array(),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
         );
     }
     /**
@@ -316,10 +353,14 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
     {
         $system = new \HUGnet\DummySystem("System");
         $system->resetMock($mock);
-        $args = \HUGnet\ui\WebAPIArgs::factory(
-            $config,
-            count($config)
-        );
+        if (!is_object($config)) {
+            $args = \HUGnet\ui\WebAPIArgs::factory(
+                $config,
+                count($config)
+            );
+        } else {
+            $args = $config;
+        }
         $obj = WebAPI::factory($args, $system);
         ob_start();
         $obj->execute($extra);
@@ -327,7 +368,9 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
         ob_end_clean();
         $this->assertEquals($expect, $ret, "Output wrong");
         foreach ((array)$calls as $obj => $call) {
-            $this->assertEquals($call, $system->retrieve($obj), "$obj Calls Wrong");
+            $this->assertEquals(
+                $call, $system->retrieve($obj), "$obj Calls Wrong"
+            );
         }
     }
 

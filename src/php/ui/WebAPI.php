@@ -100,7 +100,6 @@ class WebAPI extends HTML
         if (method_exists($this, $method)) {
             $ret = $this->{$method}($extra);
         }
-        $this->_header();
         $this->_body($ret);
     }
     /**
@@ -114,7 +113,7 @@ class WebAPI extends HTML
     {
         $did = hexdec($this->args()->get("id"));
         $dev = &$this->system()->device($did);
-        return $this->_executeGeneric($dev, $extra);
+        return $this->_executeSystem($dev, $extra);
     }
     /**
     * This function executes the api call.
@@ -127,7 +126,7 @@ class WebAPI extends HTML
     {
         $uuid = hexdec($this->args()->get("id"));
         $datacol = &$this->system()->datacollector(array("uuid" => $uuid));
-        return $this->_executeGeneric($datacol, $extra);
+        return $this->_executeSystem($datacol, $extra);
     }
     /**
     * This function executes the api call.
@@ -136,7 +135,7 @@ class WebAPI extends HTML
     *
     * @return null
     */
-    private function _executeGeneric($obj, $extra = array())
+    private function _executeSystem($obj, $extra = array())
     {
         $action = strtolower($this->args()->get("action"));
         if ($action === "get") {
@@ -149,8 +148,8 @@ class WebAPI extends HTML
             $obj->load($did);
             $ret = $obj->toArray(true);
         } else {
-            if (method_exists($obj, "webAPI")) {
-                $obj->webAPI($this->args(), $extra);
+            if (is_callable(array($obj, "webAPI"))) {
+                $ret = $obj->webAPI($this->args(), $extra);
             }
         }
         return $ret;
@@ -162,22 +161,42 @@ class WebAPI extends HTML
     *
     * @return null
     */
-    private function _header()
+    private function _headerNoCache()
     {
         if (!headers_sent()) {
             // @codeCoverageIgnoreStart
             header('Cache-Control: no-cache, must-revalidate');
             header('Expires: Sat, 4 Apr 1998 20:00:00 GMT');
-            $format = trim($this->args()->get("format"));
-            if (strtoupper($format) === "CSV") {
-                header('Content-type: text/csv');
-                header(
-                    'Content-disposition: attachment;'
-                    .'filename=HUGnetLab.'.$this->args()->get("id").'.csv'
-                );
-            } else {
-                header('Content-type: application/json');
-            }
+        }
+    }
+    /**
+    * Sends the headers out
+    *
+    * This function is not testable.  Headers can't be sent in the tests.
+    *
+    * @return null
+    */
+    private function _headerCSV()
+    {
+        if (!headers_sent()) {
+            header('Content-type: text/csv');
+            header(
+                'Content-disposition: attachment;'
+                .'filename=HUGnetLab.'.$this->args()->get("id").'.csv'
+            );
+        }
+    }
+    /**
+    * Sends the headers out
+    *
+    * This function is not testable.  Headers can't be sent in the tests.
+    *
+    * @return null
+    */
+    private function _headerJSON()
+    {
+        if (!headers_sent()) {
+            header('Content-type: application/json');
         }
         // @codeCoverageIgnoreEnd
     }
@@ -190,8 +209,12 @@ class WebAPI extends HTML
     {
         $format = trim($this->args()->get("format"));
         if (strtoupper($format) === "CSV") {
+            $this->_headerNoCache();
+            $this->_headerCSV();
             print $data;
         } else {
+            $this->_headerNoCache();
+            $this->_headerJSON();
             if (!is_null($data)) {
                 print json_encode($data);
             }
