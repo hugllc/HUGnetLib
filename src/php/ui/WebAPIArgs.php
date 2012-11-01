@@ -71,7 +71,6 @@ class WebAPIArgs extends HTMLArgs
     );
     /** These are pretty standard config changes */
     protected $defaultConfig = array(
-        "f" => array("name" => "file", "type" => "string", "args" => true),
         "q" => array("name" => "quiet", "type" => "bool", "default" => false),
         "v" => array("name" => "verbose", "type" => "int", "default" => 0),
         "d" => array("name" => "debug", "type" => "bool", "default" => false),

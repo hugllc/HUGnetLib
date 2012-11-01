@@ -130,52 +130,6 @@ class HTMLArgsTest extends \PHPUnit_Framework_TestCase
                     "ilong" => "asdf",
                     "jlong" => "1234",
                     "klong" => "wwww",
-                    "file"  => null,
-                ),
-                "",
-            ),
-            array(  // #1 File test.
-                array(
-                    "test", "-f", TEST_CONFIG_BASE."files/config.ini"
-                ),
-                4,
-                array(),
-                array(
-                    "f" => TEST_CONFIG_BASE."files/config.ini",
-                ),
-                array(
-                ),
-                null,
-                array(
-                    "hugnet_database" => "MyDatabase",
-                    "script_gatewaykey" => "2",
-                    "poll_enable" => "1",
-                    "config_enable" => "",
-                    "control_enable" => "",
-                    "check_enable" => "1",
-                    "check_send_daily" => "1",
-                    "analysis_enable" => "0",
-                    "admin_email" => "you@yourdomain.com",
-                    "verbose" => 0,
-                    "servers" => array(
-                        "default" => array(
-                            "driver" => "mysql",
-                            "host" => "10.2.5.23",
-                            "user" => "user",
-                            "password" => "password",
-                        ),
-                    ),
-                    "network" => array(
-                        "default" => array(
-                            "driver" => "Socket",
-                            "location" => "10.2.3.5",
-                            "port" => 2001,
-                        ),
-                    ),
-                    "file" => TEST_CONFIG_BASE."files/config.ini",
-                    "quiet" => false,
-                    "debug" => false,
-                    "test" => false,
                 ),
                 "",
             ),

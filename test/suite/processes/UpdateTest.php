@@ -38,7 +38,7 @@ namespace HUGnet\processes;
 /** This is a required class */
 require_once CODE_BASE.'processes/Update.php';
 /** This is a required class */
-require_once CODE_BASE.'ui/HTMLArgs.php';
+require_once CODE_BASE.'ui/Args.php';
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
 /** This is a required class */
@@ -95,7 +95,7 @@ class UpdateTest extends \PHPUnit_Framework_TestCase
     public static function dataSystem()
     {
         $data = array();
-        $htmlargs = \HUGnet\ui\HTMLArgs::factory($argv, $argc, $data);
+        $htmlargs = \HUGnet\ui\Args::factory($argv, $argc, $data);
         return array(
             array(
                 new \HUGnet\DummySystem("System"),
