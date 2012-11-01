@@ -407,10 +407,10 @@ class Network
         }
         $ret = $this->writeE2(0, $this->_device->encode(false), $callback, $config);
         if (!$ret) {
-            \HUGnet\VPrint::out("config fail", 1);
+            $this->_system->out("config fail", 1);
             return false;
         }
-        \HUGnet\VPrint::out("config success", 1);
+        $this->_system->out("config success", 1);
         $sensors = $this->_device->get("physicalSensors");
         for ($i = 0; $i < $sensors; $i++) {
             $ret = $this->setSensorConfig(
@@ -420,13 +420,13 @@ class Network
                 $config
             );
             if (!$ret) {
-                \HUGnet\VPrint::out("sensor $i fail", 1);
+                $this->_system->out("sensor $i fail", 1);
                 return false;
             }
-            \HUGnet\VPrint::out("sensor $i success", 1);
+            $this->_system->out("sensor $i success", 1);
         }
         /* This reboots the board */
-        \HUGnet\VPrint::out("rebooting", 1);
+        $this->_system->out("rebooting", 1);
         $this->_sendPkt(
             "SETCONFIG", null, array('tries' => 1, "block" => false, "find" => false)
         );
@@ -445,27 +445,27 @@ class Network
     {
         $part = $firmware->get("HWPartNum");
         if (empty($part)) {
-            \HUGnet\VPrint::out("check 1/2 fail", 1);
+            $this->_system->out("check 1/2 fail", 1);
             return false;
         }
-        \HUGnet\VPrint::out("check 1/2 success", 1);
+        $this->_system->out("check 1/2 success", 1);
         /* This verifies that we are in the right place */
         if (substr($this->_device->get("HWPartNum"), 0, strlen($part)) !== $part) {
-            \HUGnet\VPrint::out("check 2/2 fail", 1);
+            $this->_system->out("check 2/2 fail", 1);
             return false;
         }
-        \HUGnet\VPrint::out("check 2/2 success", 1);
+        $this->_system->out("check 2/2 success", 1);
         if (!$this->runBootloader()) {
-            \HUGnet\VPrint::out("bootloader 1/1 fail", 1);
+            $this->_system->out("bootloader 1/1 fail", 1);
             return false;
         }
-        \HUGnet\VPrint::out("bootloader 1/1 success", 1);
+        $this->_system->out("bootloader 1/1 success", 1);
         $bootConfig = $this->config();
         if (!is_object($bootConfig) || is_null($bootConfig->Reply())) {
-            \HUGnet\VPrint::out("setup 1/1 fail", 1);
+            $this->_system->out("setup 1/1 fail", 1);
             return false;
         }
-        \HUGnet\VPrint::out("config 1/1 success", 1);
+        $this->_system->out("config 1/1 success", 1);
         $code = $this->writeFlashBuffer(
             $firmware->getCode()
         );
@@ -489,16 +489,16 @@ class Network
         }
         $crc = $this->setCRC();
         if ($crc === false) {
-            \HUGnet\VPrint::out("crc 1/1 fail", 1);
+            $this->_system->out("crc 1/1 fail", 1);
             return false;
         }
-        \HUGnet\VPrint::out("crc 1/1 success", 1);
+        $this->_system->out("crc 1/1 success", 1);
 
         if (!$this->runApplication()) {
-            \HUGnet\VPrint::out("run 1/1 fail", 1);
+            $this->_system->out("run 1/1 fail", 1);
             return false;
         }
-        \HUGnet\VPrint::out("run 1/1 success", 1);
+        $this->_system->out("run 1/1 success", 1);
         return $this->loadConfig();
     }
     /**
@@ -598,13 +598,13 @@ class Network
                     array("find" => false)
                 );
                 if ($ret === false) {
-                    \HUGnet\VPrint::out(
+                    $this->_system->out(
                         "$memName ".($page + 1)."/$pages failed",
                         1
                     );
                     return false;
                 }
-                \HUGnet\VPrint::out(
+                $this->_system->out(
                     "$memName ".($page + 1)."/$pages success",
                     1
                 );

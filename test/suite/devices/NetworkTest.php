@@ -274,7 +274,9 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals(6, strlen($ret["Network"]["send"][0][0]["Data"]));
             unset($ret["Network"]["send"][0][0]["Data"]);
         }
-        $this->assertEquals($expect, $ret,  "Calls Wrong");
+        foreach ((array)$expect as $obj => $call) {
+            $this->assertEquals($call, $ret[$obj],  "$obj Calls Wrong");
+        }
 
     }
     /**
@@ -404,7 +406,9 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         $ret = $devnet->poll($callback, $config);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $system->retrieve();
-        $this->assertEquals($expect, $ret,  "Calls Wrong");
+        foreach ((array)$expect as $obj => $call) {
+            $this->assertEquals($call, $system->retrieve($obj),  "$obj Calls Wrong");
+        }
 
     }
     /**
@@ -534,7 +538,9 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         $ret = $devnet->config($callback, $config);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $system->retrieve();
-        $this->assertEquals($expect, $ret,  "Calls Wrong");
+        foreach ((array)$expect as $obj => $call) {
+            $this->assertEquals($call, $system->retrieve($obj),  "$obj Calls Wrong");
+        }
 
     }
     /**
@@ -677,7 +683,9 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         $ret = $devnet->sensorConfig($sensor, $callback, $config);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $system->retrieve();
-        $this->assertEquals($expect, $ret,  "Calls Wrong");
+        foreach ((array)$expect as $obj => $call) {
+            $this->assertEquals($call, $system->retrieve($obj),  "$obj Calls Wrong");
+        }
 
     }
     /**
@@ -859,7 +867,9 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         $ret = $devnet->setSensorConfig($sensor, $sensorConfig, $callback, $config);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $system->retrieve();
-        $this->assertEquals($expect, $ret,  "Calls Wrong");
+        foreach ((array)$expect as $obj => $call) {
+            $this->assertEquals($call, $system->retrieve($obj),  "$obj Calls Wrong");
+        }
 
     }
     /**
@@ -997,7 +1007,9 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         $ret = $devnet->getCRC($config);
         $this->assertSame($return, $ret,  "Return Wrong");
         $ret = $system->retrieve();
-        $this->assertEquals($expect, $ret,  "Calls Wrong");
+        foreach ((array)$expect as $obj => $call) {
+            $this->assertEquals($call, $system->retrieve($obj),  "$obj Calls Wrong");
+        }
 
     }
     /**
@@ -1135,7 +1147,9 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         $ret = $devnet->setCRC($config);
         $this->assertSame($return, $ret,  "Return Wrong");
         $ret = $system->retrieve();
-        $this->assertEquals($expect, $ret,  "Calls Wrong");
+        foreach ((array)$expect as $obj => $call) {
+            $this->assertEquals($call, $system->retrieve($obj),  "$obj Calls Wrong");
+        }
 
     }
     /**
@@ -1272,7 +1286,9 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         $ret = $devnet->runBootloader($config);
         $this->assertSame($return, $ret,  "Return Wrong");
         $ret = $system->retrieve();
-        $this->assertEquals($expect, $ret,  "Calls Wrong");
+        foreach ((array)$expect as $obj => $call) {
+            $this->assertEquals($call, $system->retrieve($obj),  "$obj Calls Wrong");
+        }
 
     }
     /**
@@ -1409,7 +1425,9 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         $ret = $devnet->runApplication($config);
         $this->assertSame($return, $ret,  "Return Wrong");
         $ret = $system->retrieve();
-        $this->assertEquals($expect, $ret,  "Calls Wrong");
+        foreach ((array)$expect as $obj => $call) {
+            $this->assertEquals($call, $system->retrieve($obj),  "$obj Calls Wrong");
+        }
     }
     /**
     * Data provider for testMatcher
@@ -1549,7 +1567,9 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         $ret = $devnet->writeFlash($address, $data, $callback, $config);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $system->retrieve();
-        $this->assertEquals($expect, $ret,  "Calls Wrong");
+        foreach ((array)$expect as $obj => $call) {
+            $this->assertEquals($call, $system->retrieve($obj),  "$obj Calls Wrong");
+        }
     }
     /**
     * Data provider for testMatcher
@@ -1689,7 +1709,9 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         $ret = $devnet->writeE2($address, $data, $callback, $config);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $system->retrieve();
-        $this->assertEquals($expect, $ret,  "Calls Wrong");
+        foreach ((array)$expect as $obj => $call) {
+            $this->assertEquals($call, $system->retrieve($obj),  "$obj Calls Wrong");
+        }
 
     }
     /**
@@ -2031,7 +2053,9 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         $ret = $devnet->writeFlashBuffer($data, $address, $chunkSize, $empty);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $system->retrieve();
-        $this->assertEquals($expect, $ret,  "Calls Wrong");
+        foreach ((array)$expect as $obj => $call) {
+            $this->assertEquals($call, $system->retrieve($obj),  "$obj Calls Wrong");
+        }
     }
 
     /**
@@ -2373,7 +2397,9 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         $ret = $devnet->writeE2Buffer($data, $address, $chunkSize, $empty);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $system->retrieve();
-        $this->assertEquals($expect, $ret,  "Calls Wrong");
+        foreach ((array)$expect as $obj => $call) {
+            $this->assertEquals($call, $system->retrieve($obj),  "$obj Calls Wrong");
+        }
     }
 
     /**
@@ -4275,8 +4301,9 @@ S9030000FC",
         $devnet = &Network::factory($system, $device, $driver);
         $ret = $devnet->loadFirmware($config, $loadData);
         $this->assertSame($return, $ret,  "Return Wrong");
-        $ret = $system->retrieve();
-        $this->assertEquals($expect, $ret,  "Calls Wrong");
+        foreach ((array)$expect as $obj => $call) {
+            $this->assertEquals($call, $system->retrieve($obj),  "$obj Calls Wrong");
+        }
 
     }
 
