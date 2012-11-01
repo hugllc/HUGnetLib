@@ -84,13 +84,13 @@ class Device extends \HUGnet\base\SystemTableBase
     /**
     * This function creates the system.
     *
-    * @param mixed  $system (object)The system object to use
-    * @param mixed  $data   (int)The id of the item, (array) data info array
-    * @param string $table  The table to use
+    * @param mixed  &$system (object)The system object to use
+    * @param mixed  $data    (int)The id of the item, (array) data info array
+    * @param string $table   The table to use
     *
     * @return null
     */
-    public static function &factory($system, $data=null, $table="Devices")
+    public static function &factory(&$system, $data=null, $table="Devices")
     {
         $object = &parent::factory($system, $data, $table);
         return $object;
@@ -425,6 +425,73 @@ class Device extends \HUGnet\base\SystemTableBase
         $obj = $this->system()->table($class, $data);
         $obj->device = &$this;
         return $obj;
+    }
+    /**
+    * returns a history object for this device
+    *
+    * @param object &$args The argument object
+    * @param array  $extra Extra data from the
+    *
+    * @return string
+    */
+    public function webAPI(&$args, $extra)
+    {
+        $action = strtolower($args->get("action"));
+        if ($action === "config") {
+            $worked  = true;
+            $sensors = $this->get("physicalSensors");
+            $steps   = $sensors + 2;
+            $step    = 1;
+            $this->system()->out("config $step/$steps success", 1);
+            if ($this->action()->config()) {
+                $step++;
+                $sensors = $this->get("physicalSensors");
+                $this->system()->out("sensor $step/$steps success", 1);
+                $this->store();
+                for ($i = 0; $i < $sensors; $i++) {
+                    $step++;
+                    $pkt = $this->network()->sensorConfig($i);
+                    if (strlen($pkt->reply()) > 0) {
+                        $this->system()->out("sensor $step/$steps success", 1);
+                        $sen = &$this->sensor($i);
+                        $sen->decode($pkt->reply());
+                        $sen->change(array());
+                    } else {
+                        $this->system()->out("sensor $step/$steps failure", 1);
+                        $worked = false;
+                        break;
+                    }
+                }
+            } else {
+                $this->system()->out("sensor $step/$steps failure", 1);
+                $worked = false;
+            }
+            if ($worked) {
+                $this->setParam("LastModified", time());
+                $this->store();
+                $ret = $this->fullArray();
+            } else {
+                $ret = -1;
+            }
+        } else if ($action === "loadfirmware") {
+            $firmware = $json->system()->table("Firmware");
+            $dev = $json->system()->device($did);
+            if (!$this->get("bootloader")) {
+                $firmware->set("FWPartNum", $this->get("FWPartNum"));
+            } else {
+                $firmware->set("FWPartNum", "0039-38-01-C");
+            }
+            $firmware->set("HWPartNum", $this->get("HWPartNum"));
+            $firmware->set("RelStatus", \HUGnet\db\tables\Firmware::DEV);
+            $ret = -1;
+            if ($firmware->getLatest()) {
+                if ($this->network()->loadFirmware($firmware)) {
+                    if ($this->action()->config()) {
+                        $ret = $this->fullArray();
+                    }
+                }
+            }
+        }
     }
 }
 
