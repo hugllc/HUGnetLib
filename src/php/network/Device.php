@@ -250,7 +250,6 @@ final class Device
     public function main()
     {
         static $lastBoredom;
-        static $lastID;
 
         $last = time() - $this->_lastContact;
         if (($last > 3600) && ((time() - $lastBoredom) > 3600)) {
@@ -266,17 +265,6 @@ final class Device
                 $newPacket, null, array("tries" => 1, "find" => false)
             );
             $lastBoredom = time();
-        } else if ((time() - $lastID) > 300) {
-            /*
-            $dev = $this->_device->encode();
-            $this->_device->load($this->_config["id"]);
-            $this->_device->decode($dev);
-            $this->_device->setParam("LastContact", time());
-            $this->_device->setParam("LastConfig", time());
-            $this->_device->store();
-            \HUGnet\VPrint::out("Using ID: ".$this->_config["DeviceID"], 1);
-            $lastID = time();
-            */
         }
     }
 }
