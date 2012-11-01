@@ -35,8 +35,10 @@
 namespace HUGnet\ui;
 /** This is our system class */
 require_once dirname(__FILE__)."/../system/System.php";
+/** This is our argument class */
 require_once dirname(__FILE__)."/HTMLArgs.php";
-
+/** This will go away soon */
+require_once dirname(__FILE__)."/../util/VPrint.php";
 /**
  * This code routes packets to their correct destinations.
  *
