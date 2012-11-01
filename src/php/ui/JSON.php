@@ -61,7 +61,7 @@ class JSON extends HTML
     *
     * @return null
     */
-    public function &factory(&$config = array())
+    static public function &factory(&$config = array())
     {
         $obj = new JSON($config);
         return $obj;

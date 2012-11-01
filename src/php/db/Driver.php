@@ -116,7 +116,7 @@ abstract class Driver implements \HUGnetDBDriverInterface
     *
     * @return object The driver object
     */
-    public function &factory(
+    static public function &factory(
         &$system, &$table, &$connect = null, $driver=null
     ) {
         \HUGnet\System::exception(
@@ -739,7 +739,7 @@ abstract class Driver implements \HUGnetDBDriverInterface
         if (!is_object($this->pdoStatement)) {
             return false;
         }
-        $res = &$this->pdoStatement->fetch(\PDO::FETCH_ASSOC);
+        $res = $this->pdoStatement->fetch(\PDO::FETCH_ASSOC);
         if (is_array($res)) {
             $this->myTable->fromArray($res);
             return true;

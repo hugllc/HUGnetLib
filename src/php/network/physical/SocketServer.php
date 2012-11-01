@@ -123,7 +123,7 @@ final class SocketServer
     *
     * @return null
     */
-    public function &factory($config = array())
+    static public function &factory($config = array())
     {
         $obj = new SocketServer((array)$config);
         return $obj;

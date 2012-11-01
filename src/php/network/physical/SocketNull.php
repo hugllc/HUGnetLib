@@ -75,7 +75,7 @@ final class SocketNull
     *
     * @return null
     */
-    public function &factory($config = array())
+    static public function &factory($config = array())
     {
         return new SocketNull((array)$config);
     }

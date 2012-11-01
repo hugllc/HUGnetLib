@@ -94,7 +94,7 @@ final class Network
     *
     * @return null
     */
-    public function &factory($config = array())
+    static public function &factory($config = array())
     {
         $obj = new Network((array)$config);
         return $obj;

@@ -69,7 +69,7 @@ class WebAPI extends HTML
     *
     * @return null
     */
-    public function &factory(&$config = array(), &$system = null)
+    static public function &factory(&$config = array(), &$system = null)
     {
         $obj = new WebAPI($config, $system);
         return $obj;
@@ -148,6 +148,10 @@ class WebAPI extends HTML
             $did = hexdec($this->args()->get("id"));
             $obj->load($did);
             $ret = $obj->toArray(true);
+        } else {
+            if (method_exists($obj, "webAPI")) {
+                $obj->webAPI($this->args(), $extra);
+            }
         }
         return $ret;
     }

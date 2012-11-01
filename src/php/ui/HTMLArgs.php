@@ -86,7 +86,7 @@ class HTMLArgs extends Args
     *
     * @return Args object
     */
-    public function &factory($args, $count, $config = array())
+    static public function &factory($args, $count, $config = array())
     {
         $obj = new HTMLArgs((array)$args, (int)$count, (array)$config);
         return $obj;

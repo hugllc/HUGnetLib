@@ -96,15 +96,6 @@ abstract class Container
         return $this->_system;
     }
     /**
-    * Registers extra vars
-    *
-    * @param object &$system This is the system object
-    * @param mixed  $data    The data to import into the class
-    *
-    * @return null
-    */
-    abstract static public function &factory(&$system, $data = array());
-    /**
     * Overload the set attribute
     *
     * @param string $name  This is the attribute to set
@@ -222,13 +213,13 @@ abstract class Container
     /**
     * Sets all of the endpoint attributes from an array
     *
-    * @param mixed &$array     The array to traverse
+    * @param mixed $array      The array to traverse
     * @param mixed $default    Pointer to the defaults for this item
     * @param bool  $retDefault Return items set to their default?
     *
     * @return null
     */
-    protected function toArrayIterator(&$array, $default, $retDefault = true)
+    protected function toArrayIterator($array, $default, $retDefault = true)
     {
         if (is_object($array) && method_exists($array, "toArray")) {
             return $array->toArray($retDefault);

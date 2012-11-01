@@ -83,7 +83,7 @@ class Daemon extends CLI
     *
     * @return null
     */
-    public function &factory(&$config = array())
+    static public function &factory(&$config = array())
     {
         $obj = new Daemon($config);
         return $obj;

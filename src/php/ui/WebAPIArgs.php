@@ -92,7 +92,7 @@ class WebAPIArgs extends HTMLArgs
     *
     * @return Args object
     */
-    public function &factory($args, $count, $config = array())
+    static public function &factory($args, $count, $config = array())
     {
         $obj = new WebAPIArgs((array)$args, (int)$count, (array)$config);
         return $obj;

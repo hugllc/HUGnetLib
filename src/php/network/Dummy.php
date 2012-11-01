@@ -76,7 +76,7 @@ final class Dummy
     *
     * @return null
     */
-    public function &factory(&$system)
+    static public function &factory(&$system)
     {
         $obj = new Dummy($system);
         return $obj;

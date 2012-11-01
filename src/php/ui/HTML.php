@@ -89,7 +89,7 @@ class HTML
     *
     * @return null
     */
-    public function &factory(&$config = array(), &$system = null)
+    static public function &factory(&$config = array(), &$system = null)
     {
         $obj = new HTML($config, $system);
         return $obj;

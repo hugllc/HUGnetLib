@@ -93,7 +93,7 @@ final class Transport
     *
     * @return Transport Object
     */
-    public function &factory(&$network, $config = array())
+    static public function &factory(&$network, $config = array())
     {
         $obj = new Transport($network, (array)$config);
         return $obj;

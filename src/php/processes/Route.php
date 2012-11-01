@@ -85,7 +85,7 @@ class Route extends \HUGnet\ui\Daemon
     *
     * @return null
     */
-    public function &factory(&$config = array())
+    static public function &factory(&$config = array())
     {
         $obj = new Route($config);
         return $obj;

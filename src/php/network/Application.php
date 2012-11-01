@@ -106,7 +106,7 @@ final class Application
     *
     * @return null
     */
-    public function &factory(&$transport, &$system, $config = array())
+    static public function &factory(&$transport, &$system, $config = array())
     {
         $obj = new Application($transport, $system, (array)$config);
         return $obj;

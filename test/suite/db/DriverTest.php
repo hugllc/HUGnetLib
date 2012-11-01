@@ -1964,7 +1964,7 @@ class HUGnetDBDriverTestStub extends \HUGnet\db\Driver
     *
     * @return object The driver object
     */
-    public function &factory(
+    static public function &factory(
         &$system, &$table, &$connect = null, $driver=null
     ) {
         $obj = parent::factory($system, $table, $connect, $driver);

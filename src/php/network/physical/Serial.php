@@ -107,7 +107,7 @@ final class Serial
     *
     * @return null
     */
-    public function &factory($config = array())
+    static public function &factory($config = array())
     {
         $obj = new Serial((array)$config);
         return $obj;

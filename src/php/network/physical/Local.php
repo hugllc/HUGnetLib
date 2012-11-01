@@ -75,7 +75,7 @@ final class Local
     *
     * @return null
     */
-    public function &factory($config = array())
+    static public function &factory($config = array())
     {
         return new Local((array)$config);
     }

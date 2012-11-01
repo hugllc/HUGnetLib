@@ -57,7 +57,7 @@ interface PacketInterface
     *
     * @return null
     */
-    public function &factory($data = array());
+    static public function &factory($data = array());
     /**
     * Checks for a given key
     *

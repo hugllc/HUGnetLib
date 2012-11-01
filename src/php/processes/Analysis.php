@@ -108,7 +108,7 @@ class Analysis extends \HUGnet\ui\Daemon
     *
     * @return null
     */
-    public function &factory(&$config = array())
+    static public function &factory(&$config = array())
     {
         $obj = new Analysis($config);
         return $obj;

@@ -162,7 +162,7 @@ final class Packet implements PacketInterface
     *
     * @return null
     */
-    public function &factory($data = array())
+    static public function &factory($data = array())
     {
         if (is_a($data, "\\HUGnet\\network\\packets\\Packet")) {
             return $data;

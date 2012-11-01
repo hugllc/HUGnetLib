@@ -118,7 +118,7 @@ final class TransportPacket
     *
     * @return PacketTransport object
     */
-    public function &factory($config, &$pkt)
+    static public function &factory($config, &$pkt)
     {
         $obj = new TransportPacket($config, $pkt);
         return $obj;

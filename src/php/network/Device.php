@@ -104,7 +104,7 @@ final class Device
     *
     * @return Matcher Object
     */
-    public function &factory(&$application, &$system, $config)
+    static public function &factory(&$application, &$system, $config)
     {
         return new Device($application, $system, (array)$config);
     }
