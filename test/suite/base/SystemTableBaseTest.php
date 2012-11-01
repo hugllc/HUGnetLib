@@ -113,7 +113,6 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                 null,
                 "Table",
                 array(
-                    "clearData" => array(array()),
                 ),
             ),
             array(
@@ -210,7 +209,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "clearData" => array(array(), array()),
+                        "clearData" => array(array()),
                         "selectOneInto" => array(
                             array(
                                 "`id` = ? AND `name` = ? AND `value` = ?",
@@ -239,7 +238,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                         "set" => array(
                             array("id", 2),
                         ),
-                        "clearData" => array(array(), array()),
+                        "clearData" => array(array()),
                     ),
                 ),
                 false,
@@ -265,6 +264,87 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
         $sys->resetMock($config);
         $obj = SystemTableBaseTestStub::factory($sys, null, $class);
         $ret = $obj->load($gateway);
+        $this->assertSame($return, $ret, "Return Wrong");
+        $this->assertEquals($expectTable, $class->retrieve(), "Data Wrong");
+    }
+    /**
+    * Data provider for testLoad
+    *
+    * @return array
+    */
+    public static function dataGetList()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "select" => array(
+                            array("a" => "b", "c" => "d"),
+                            array("e" => "f", "g" => "h"),
+                        ),
+                    ),
+                ),
+                new \HUGnet\DummyTable(),
+                array(
+                    "id" => 5,
+                    "name" => 3,
+                    "value" => 1,
+                ),
+                array(
+                    "Table" => array(
+                        "select" => array(
+                            array(
+                                "`id` = ? AND `name` = ? AND `value` = ?",
+                                array(5, 3, 1),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    array("a" => "b", "c" => "d"),
+                    array("e" => "f", "g" => "h"),
+                ),
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "select" => false,
+                    ),
+                ),
+                new \HUGnet\DummyTable("Table"),
+                2,
+                array(
+                    "Table" => array(
+                        "select" => array(
+                            array(
+                                "1", array()
+                            )
+                        ),
+                    ),
+                ),
+                false,
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param object $config      The configuration to use
+    * @param object $class       The table class to use
+    * @param mixed  $where       The filtering data
+    * @param array  $expectTable The table to expect
+    * @param bool   $return      The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataGetList
+    */
+    public function testGetList($config, $class, $where, $expectTable, $return)
+    {
+        $sys = new \HUGnet\DummySystem("System");
+        $sys->resetMock($config);
+        $obj = SystemTableBaseTestStub::factory($sys, null, $class);
+        $ret = $obj->getList($where);
         $this->assertSame($return, $ret, "Return Wrong");
         $this->assertEquals($expectTable, $class->retrieve(), "Data Wrong");
     }
@@ -295,7 +375,6 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "clearData" => array(array()),
                         "updateRow" => array(array()),
                     ),
                 ),
@@ -312,9 +391,6 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                 new \HUGnet\DummyTable("Table"),
                 2,
                 array(
-                    "Table" => array(
-                        "clearData" => array(array()),
-                    ),
                 ),
                 false,
             ),
@@ -363,7 +439,6 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                     "Table" => array(
                         "get" => array(array("id")),
                         "updateRow" => array(array()),
-                        "clearData" => array(array()),
                     ),
                 ),
                 true,
@@ -381,7 +456,6 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                     "Table" => array(
                         "get" => array(array("id")),
                         "insertRow" => array(array(false)),
-                        "clearData" => array(array()),
                     ),
                 ),
                 false,
@@ -399,7 +473,6 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                     "Table" => array(
                         "get" => array(array("id")),
                         "insertRow" => array(array(true)),
-                        "clearData" => array(array()),
                     ),
                 ),
                 true,

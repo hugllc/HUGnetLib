@@ -149,7 +149,9 @@ abstract class SystemTableBase
     ) {
         $class = get_called_class();
         $object = new $class($system, $table);
-        $object->load($data);
+        if (!is_null($data)) {
+            $object->load($data);
+        }
         return $object;
     }
     /**
@@ -212,6 +214,29 @@ abstract class SystemTableBase
             $ret = true;
         }
         return (bool)$ret;
+    }
+    /**
+    * Changes data that is in the table and saves it
+    *
+    * @param array $where The things the list should filter for
+    *
+    * @return null
+    */
+    public function getList($where = null)
+    {
+        $whereText = "";
+        $whereData = array();
+        if (is_array($where)) {
+            $sep       = "";
+            foreach ($where as $key => $value) {
+                $whereText .= $sep."`$key` = ?";
+                $sep = " AND ";
+                $whereData[] = $value;
+            }
+        } else {
+            $whereText = "1";
+        }
+        return $this->table()->select($whereText, $whereData);
     }
     /**
     * Returns the table as a json string
