@@ -98,7 +98,6 @@ class GatewayTest extends \PHPUnit_Framework_TestCase
                 null,
                 null,
                 array(
-                    "clearData" => array(array()),
                 ),
             ),
             array(

@@ -116,7 +116,6 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
                             ),
                         ),
                         "insertRow" => array(array(true)),
-                        "clearData" => array(array()),
                     ),
                     "System" => array(
                         "time" => array(array()),

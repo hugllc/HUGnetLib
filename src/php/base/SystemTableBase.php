@@ -218,12 +218,14 @@ abstract class SystemTableBase
     /**
     * Changes data that is in the table and saves it
     *
-    * @param array $where The things the list should filter for
+    * @param array $where   The things the list should filter for
+    * @param bool  $default Whether to add the default stuff on or not.
     *
     * @return null
     */
-    public function getList($where = null)
+    public function getList($where = null, $default = false)
     {
+        $this->table()->clearData();
         $whereText = "";
         $whereData = array();
         if (is_array($where)) {
@@ -236,7 +238,13 @@ abstract class SystemTableBase
         } else {
             $whereText = "1";
         }
-        return $this->table()->select($whereText, $whereData);
+        $ret = $this->table()->selectInto($whereText, $whereData);
+        $return = array();
+        while ($ret) {
+            $return[] = $this->toArray($default);
+            $ret = $this->table()->nextInto();
+        }
+        return $return;
     }
     /**
     * Returns the table as a json string

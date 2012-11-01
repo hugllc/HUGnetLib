@@ -131,6 +131,43 @@ class DummyTable extends DummyBase
         }
         return $ret;
     }
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param bool $default Return items set to their default?
+    *
+    * @return null
+    */
+    public function toArray($default = true)
+    {
+        $class = $this->class;
+        if (isset(DummyBase::$ret[$class])
+            && isset(DummyBase::$ret[$class]["toArray"])
+            && isset(DummyBase::$ret[$class]["toArray"]["iterations"])
+            && is_array(DummyBase::$ret[$class]["toArray"]["iterations"])
+        ) {
+            return array_shift(DummyBase::$ret[$class]["toArray"]["iterations"]);
+        } else {
+            return parent::toArray($default);
+        }
+    }
+    /**
+    * This puts the next result into the object
+    *
+    * @return bool True on success, False on failure
+    */
+    public function nextInto()
+    {
+        $class = $this->class;
+        if (isset(DummyBase::$ret[$class])
+            && isset(DummyBase::$ret[$class]["nextInto"])
+            && is_array(DummyBase::$ret[$class]["nextInto"])
+        ) {
+            return array_shift(DummyBase::$ret[$class]["nextInto"]);
+        } else {
+            return parent::nextInto($default);
+        }
 
+    }
 }
 ?>

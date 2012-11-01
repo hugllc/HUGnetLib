@@ -361,7 +361,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             array("min", 0),
                             array("max", 150),
                         ),
-                        "clearData" => array(array(), array()),
+                        "clearData" => array(array()),
                         "selectOneInto" => array(
                             array(
                                 "`id` = ? AND `name` = ? AND `value` = ?",
@@ -388,7 +388,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                                 array(2, 0),
                             ),
                         ),
-                        "clearData" => array(array(), array()),
+                        "clearData" => array(array()),
                     ),
                 ),
                 true,
@@ -442,7 +442,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                                 array(2, 0),
                             ),
                         ),
-                        "clearData" => array(array(), array()),
+                        "clearData" => array(array()),
                     ),
                 ),
                 true,

@@ -278,9 +278,16 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Table" => array(
-                        "select" => array(
-                            array("a" => "b", "c" => "d"),
-                            array("e" => "f", "g" => "h"),
+                        "selectInto" => true,
+                        "toArray" => array(
+                            "iterations" => array(
+                                array("a" => "b", "c" => "d"),
+                                array("e" => "f", "g" => "h"),
+                            ),
+                        ),
+                        "nextInto" => array(
+                            true,
+                            false,
                         ),
                     ),
                 ),
@@ -292,12 +299,13 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                     "Table" => array(
-                        "select" => array(
+                        "selectInto" => array(
                             array(
                                 "`id` = ? AND `name` = ? AND `value` = ?",
                                 array(5, 3, 1),
                             ),
                         ),
+                        "clearData" => array(array()),
                     ),
                 ),
                 array(
@@ -308,21 +316,22 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Table" => array(
-                        "select" => false,
+                        "selectInto" => false,
                     ),
                 ),
                 new \HUGnet\DummyTable("Table"),
                 2,
                 array(
                     "Table" => array(
-                        "select" => array(
+                        "selectInto" => array(
                             array(
-                                "1", array()
-                            )
+                                "1", array(),
+                            ),
                         ),
+                        "clearData" => array(array()),
                     ),
                 ),
-                false,
+                array(),
             ),
         );
     }

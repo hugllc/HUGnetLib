@@ -98,7 +98,6 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
                 null,
                 "DummyTable",
                 array(
-                    "clearData" => array(array()),
                 ),
             ),
             array(
