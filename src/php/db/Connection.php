@@ -213,11 +213,10 @@ class Connection  implements \ConnectionManager
     {
         $dsn = $this->_getDSN($server);
         $group = $this->_servers[$server]["group"];
-        /*
-        $this->_system->ui()->out(
+        $this->_system->out(
             "Trying ".$dsn,
-            HUGnetClass::VPRINT_VERBOSE
-        );*/
+            3
+        );
         try {
             $this->_pdo[$group] = new \PDO(
                 $dsn,
@@ -227,23 +226,20 @@ class Connection  implements \ConnectionManager
             );
             //$this->_server[$group]->postConnect();
         } catch (\PDOException $e) {
-            /*
-            self::vprint(
+            $this->_system->out(
                 "Error (".$e->getCode()."): ".$e->getMessage()."\n",
-                HUGnetClass::VPRINT_ERROR
+                2
             );
-            */
             // Just to be sure
             $this->disconnect($group);
             // Return failure
             return false;
         }
         $this->_server[$group] = $server;
-        /*
-        $this->_system->ui()->out(
+        $this->_system->out(
             "Connected to ".$dsn,
-            HUGnetClass::VPRINT_VERBOSE
-        );*/
+            3
+        );
         return true;
     }
     /**
