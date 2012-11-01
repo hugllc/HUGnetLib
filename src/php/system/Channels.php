@@ -37,16 +37,10 @@
 /** This is our namespace */
 namespace HUGnet;
 
-/** This define allows everything else to be included */
-if (!defined("_HUGNET")) {
-    define("_HUGNET", true);
-}
-/** This is the system error class.  Everybody needs it */
-require_once dirname(__FILE__).'/Error.php';
-/** This is the system utility class.  Everybody needs it also */
-require_once dirname(__FILE__).'/../util/Util.php';
-/** This is the system utility class.  Everybody needs it also */
-require_once dirname(__FILE__).'/../util/VPrint.php';
+/** This keeps this file from being included unless HUGnetSystem.php is included */
+defined('_HUGNET') or die('HUGnetSystem not found');
+/** This is our base class */
+require_once dirname(__FILE__)."/../base/SystemTableBase.php";
 
 
 /**

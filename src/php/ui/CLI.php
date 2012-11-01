@@ -164,7 +164,9 @@ class CLI
     */
     public function out($string = "", $level=0)
     {
-        \HUGnet\VPrint::out($string, $level);
+        if ($this->_verbose >= $level) {
+            print $string;
+        }
     }
     /**
     * Sets or prints out the help text

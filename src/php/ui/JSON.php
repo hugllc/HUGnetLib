@@ -54,22 +54,6 @@ require_once dirname(__FILE__)."/HTML.php";
  */
 class JSON extends HTML
 {
-    /** The config we are using */
-    private $_config = array();
-    /** The config we are using */
-    private $_args = array();
-    /** The config we are using */
-    private $_system = null;
-    /**
-    * Sets our configuration
-    *
-    * @param mixed &$config The configuration to use
-    */
-    protected function __construct(&$config)
-    {
-        $this->setConfig($config);
-    }
-
     /**
     * Creates the object
     *
@@ -83,60 +67,6 @@ class JSON extends HTML
         return $obj;
     }
 
-    /**
-    * Disconnects from the database
-    *
-    * @return null
-    */
-    public function __destruct()
-    {
-        $this->out(get_class($this)." destroying system", 3);
-        // Shut down the network
-        unset($this->_system);
-    }
-    /**
-    * Disconnects from the database
-    *
-    * @param mixed &$config Object or array configuration
-    *
-    * @return null
-    */
-    protected function setConfig(&$config)
-    {
-        if (is_object($config)) {
-            if (is_a($config, "HUGnet\ui\HTMLArgs")) {
-                $this->_config = $config->config();
-                $this->_args = $config;
-            } else {
-                // Whatever it is, use it as our system object
-                $this->_system = &$config;
-            }
-        } else if (is_array($config)) {
-            $this->_config = $config;
-        }
-        // Ratchet up the verbosity one level so more stuff prints
-        $this->_config["html"] = true;
-
-        // Set up printing
-        $config = $this->_config;
-        $config["debug"] = true;
-        \HUGnet\VPrint::config($config);
-
-        return $this->_config;
-    }
-    /**
-    * Disconnects from the database
-    *
-    * @return null
-    */
-    public function &system()
-    {
-        if (!is_object($this->_system)) {
-            $this->out(get_class($this)." building sytem", 3);
-            $this->_system = \HUGnet\System::factory($this->_config, $this);
-        }
-        return $this->_system;
-    }
     /**
     * Disconnects from the database
     *
@@ -158,34 +88,6 @@ class JSON extends HTML
         header('Cache-Control: no-cache, must-revalidate');
         header('Expires: Sat, 4 Apr 1998 20:00:00 GMT');
         header('Content-type: application/json');
-    }
-    /**
-    * Connects to the arguments array
-    *
-    * @return null
-    */
-    public function &args()
-    {
-        if (!is_object($this->_args)) {
-            $this->out(get_class($this)." building arguments", 3);
-            $this->_args = \HUGnet\ui\HTMLArgs::factory(
-                $_REQUEST, count($_REQUEST), $this->_args
-            );
-        }
-        return $this->_args;
-    }
-
-    /**
-    * This function prints out string
-    *
-    * @param string $string The string to print out
-    * @param int    $level  The verbosity level to print it at
-    *
-    * @return none
-    */
-    public function out($string, $level=0)
-    {
-        \HUGnet\VPrint::out($string, $level);
     }
 }
 ?>

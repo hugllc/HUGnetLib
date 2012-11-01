@@ -87,7 +87,7 @@ class EDEFAULT extends \HUGnet\devices\Driver
         $part        = $this->device()->get("HWPartNum");
         /* This is an unknown, device.  If we can't contact it soon, delete it */
         if (($fails > 3) && ((time() - $lastContact) > 600) && ($part == "")) {
-            \HUGnet\VPrint::out(
+            $this->device()->system()->out(
                 "Old unknown device ".sprintf("%06X", $this->device()->get("id"))
                 ." deleted from the database",
                 1

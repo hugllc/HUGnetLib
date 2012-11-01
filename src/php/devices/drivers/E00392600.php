@@ -93,7 +93,7 @@ class E00392600 extends \HUGnet\devices\Driver
         $fails       = $this->device()->getParam("ContactFail");
 
         if (($fails > 20) && ((time() - $lastContact) > 3600)) {
-            \HUGnet\VPrint::out(
+            $this->device()->system()->out(
                 "Old script device ".sprintf("%06X", $this->device()->get("id"))
                 ." deleted from the database",
                 1
