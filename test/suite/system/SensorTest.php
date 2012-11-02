@@ -322,6 +322,11 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             "type" => "raw",
                             "sensor" => 5,
                         ),
+                        "sanitizeWhere" => array(
+                            "id" => 5,
+                            "name" => 3,
+                            "value" => 1,
+                        ),
                     ),
                 ),
                 new DummyTable(),
@@ -368,6 +373,15 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                                 array(5, 3, 1),
                             ),
                         ),
+                        "sanitizeWhere" => array(
+                            array(
+                                array(
+                                    "id" => 5,
+                                    "name" => 3,
+                                    "value" => 1,
+                                ),
+                            ),
+                        ),
                     ),
                 ),
                 true,
@@ -376,6 +390,10 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Table" => array(
                         "selectOneInto" => true,
+                        "sanitizeWhere" => array(
+                            "dev" => 2,
+                            "sensor" => 0,
+                        ),
                     ),
                 ),
                 new DummyTable("Table"),
@@ -389,6 +407,14 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             ),
                         ),
                         "clearData" => array(array()),
+                        "sanitizeWhere" => array(
+                            array(
+                                array(
+                                    "dev" => 2,
+                                    "sensor" => 0,
+                                ),
+                            ),
+                        ),
                     ),
                 ),
                 true,
@@ -401,6 +427,10 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             "id" => 0xFA,
                             "type" => "raw",
                             "sensor" => 5,
+                        ),
+                        "sanitizeWhere" => array(
+                            "dev" => 2,
+                            "sensor" => 0,
                         ),
                     ),
                 ),
@@ -443,6 +473,14 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             ),
                         ),
                         "clearData" => array(array()),
+                        "sanitizeWhere" => array(
+                            array(
+                                array(
+                                    "dev" => 2,
+                                    "sensor" => 0,
+                                ),
+                            ),
+                        ),
                     ),
                 ),
                 true,

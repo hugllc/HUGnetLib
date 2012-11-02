@@ -116,7 +116,15 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                 ),
             ),
             array(
-                array(),
+                array(
+                    "Table" => array(
+                        "sanitizeWhere" => array(
+                            "id" => 5,
+                            "name" => 3,
+                            "value" => 1,
+                        ),
+                    ),
+                ),
                 array(
                     "id" => 5,
                     "name" => 3,
@@ -138,6 +146,15 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                         array(
                             "`id` = ? AND `name` = ? AND `value` = ?",
                             array(5, 3, 1),
+                        ),
+                    ),
+                    "sanitizeWhere" => array(
+                        array(
+                            array(
+                                "id" => 5,
+                                "name" => 3,
+                                "value" => 1,
+                            ),
                         ),
                     ),
                 ),
@@ -191,7 +208,15 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                array(),
+                array(
+                    "Table" => array(
+                        "sanitizeWhere" => array(
+                            "id" => 5,
+                            "name" => 3,
+                            "value" => 1,
+                        ),
+                    ),
+                ),
                 new \HUGnet\DummyTable(),
                 array(
                     "id" => 5,
@@ -214,6 +239,15 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                             array(
                                 "`id` = ? AND `name` = ? AND `value` = ?",
                                 array(5, 3, 1),
+                            ),
+                        ),
+                        "sanitizeWhere" => array(
+                            array(
+                                array(
+                                    "id" => 5,
+                                    "name" => 3,
+                                    "value" => 1,
+                                ),
                             ),
                         ),
                     ),

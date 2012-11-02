@@ -179,10 +179,11 @@ abstract class SystemTableBase
             $this->table()->getRow($data);
             $ret = !$this->table()->isEmpty();
         } else if (is_array($data)) {
+            $wdata = (array)$this->table()->sanitizeWhere($data);
             $where = "";
             $whereData = array();
             $sep = "";
-            foreach ($data as $key => $value) {
+            foreach ($wdata as $key => $value) {
                 $where .= "$sep`$key` = ?";
                 $sep = " AND ";
                 $whereData[] = $value;

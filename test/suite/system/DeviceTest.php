@@ -99,6 +99,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 new DummySystem(),
+                array(),
                 null,
                 "DummyTable",
                 array(
@@ -107,6 +108,15 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 new DummySystem(),
+                array(
+                    "Devices" => array(
+                        "sanitizeWhere" => array(
+                            "id" => 5,
+                            "name" => 3,
+                            "value" => 1,
+                        ),
+                    ),
+                ),
                 array(
                     "id" => 5,
                     "name" => 3,
@@ -138,10 +148,20 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             array(5, 3, 1),
                         ),
                     ),
+                    "sanitizeWhere" => array(
+                        array(
+                            array(
+                                "id" => 5,
+                                "name" => 3,
+                                "value" => 1,
+                            ),
+                        ),
+                    ),
                 ),
             ),
             array(
                 new DummySystem(),
+                array(),
                 2,
                 new DummyTable(),
                 array(
@@ -166,6 +186,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     * This tests the object creation
     *
     * @param array $config      The configuration to use
+    * @param array $mocks       The mocks to use
     * @param mixed $device      The gateway to set
     * @param mixed $class       This is either the name of a class or an object
     * @param array $expectTable The table to expect
@@ -174,11 +195,11 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     *
     * @dataProvider dataCreate
     */
-    public function testCreate($config, $device, $class, $expectTable)
+    public function testCreate($config, $mocks, $device, $class, $expectTable)
     {
         $table = new DummyTable();
         // This just resets the mock
-        $table->resetMock();
+        $table->resetMock($mocks);
         $obj = Device::factory($config, $device);
         // Make sure we have the right object
         $table = $this->readAttribute($obj, "_table");
@@ -1375,6 +1396,13 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 5,
                             "sensors" => array(array("id" => 0x15)),
+                        ),
+                    ),
+                    "Sensors" => array(
+                        "sanitizeWhere" => array(
+                            "sensor" => 5,
+                            "name" => 3,
+                            "value" => 1,
                         ),
                     ),
                 ),

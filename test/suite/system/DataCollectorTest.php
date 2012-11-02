@@ -95,6 +95,7 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 new DummySystem(),
+                array(),
                 null,
                 "DummyTable",
                 array(
@@ -102,6 +103,15 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 new DummySystem(),
+                array(
+                    "Datacollectors" => array(
+                        "sanitizeWhere" => array(
+                            "id" => 5,
+                            "name" => 3,
+                            "value" => 1,
+                        ),
+                    ),
+                ),
                 array(
                     "id" => 5,
                     "name" => 3,
@@ -125,10 +135,20 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
                             array(5, 3, 1),
                         ),
                     ),
+                    "sanitizeWhere" => array(
+                        array(
+                            array(
+                                "id" => 5,
+                                "name" => 3,
+                                "value" => 1,
+                            ),
+                        ),
+                    ),
                 ),
             ),
             array(
                 new DummySystem(),
+                array(),
                 2,
                 new DummyTable(),
                 array(
@@ -147,6 +167,7 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
     * This tests the object creation
     *
     * @param array $config      The configuration to use
+    * @param array $mocks       The mocks to use
     * @param mixed $gateway     The gateway to set
     * @param mixed $class       This is either the name of a class or an object
     * @param array $expectTable The table to expect
@@ -155,11 +176,11 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
     *
     * @dataProvider dataCreate
     */
-    public function testCreate($config, $gateway, $class, $expectTable)
+    public function testCreate($config, $mocks, $gateway, $class, $expectTable)
     {
         $table = new DummyTable();
         // This just resets the mock
-        $table->resetMock();
+        $table->resetMock($mocks);
         $obj = DataCollector::factory($config, $gateway);
         // Make sure we have the right object
         $this->assertTrue(
