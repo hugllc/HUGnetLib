@@ -300,7 +300,7 @@ class WebAPI extends HTML
                 ) {
                     $hist->clearData();
                     $hist->fromArray($row);
-                    $ret[$key] = $hist->insertRow();
+                    $ret[$key] = (int)$hist->insertRow();
                 }
             }
         } else if ($action === "last") {

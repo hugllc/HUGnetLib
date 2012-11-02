@@ -696,6 +696,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     "action" => "put",
                     "id" => "10",
                     "data" => array(
+                        "type" => "history",
                         array("id" => 42, "Date" => 3214),
                         array("id" => 16, "Date" => 1234),
                     ),
@@ -721,7 +722,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                 array(),
                 json_encode(
                     array(
-                        1 => true,
+                        1 => 1,
                     )
                 ),
                 array(
@@ -734,6 +735,59 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         ),
                         "clearData" => array(
                             array()
+                        ),
+                    ),
+                ),
+            ),
+            array(  // #13
+                array(
+                    "task" => "history",
+                    "action" => "get",
+                    "id" => "10",
+                    "data" => array(
+                        "since" => 1234,
+                        "until" => 4321,
+                        "limit" => 1,
+                        "start" => 0,
+                        "order" => "desc",
+                    ),
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "device" => new \HUGnet\DummyTable("Device"),
+                    ),
+                    "Device" => array(
+                        "historyFactory" => new \HUGnet\DummyTable("History"),
+                    ),
+                    "History" => array(
+                        "isEmpty" => false,
+                        "toArray" => array(
+                            "Real" => "array",
+                        ),
+                        "insertRow" => true,
+                        "getPeriod" => true,
+                        "nextInto" => false,
+                    ),
+                ),
+                array(),
+                json_encode(
+                    array(
+                        array("Real" => "array"),
+                    )
+                ),
+                array(
+                    "History" => array(
+                        "getPeriod" => array(
+                            array(1234, 4321, 16, 'history', '', array())
+                        ),
+                        "toArray" => array(
+                            array(true),
+                        ),
+                        "nextInto" => array(
+                            array(null)
                         ),
                     ),
                 ),
