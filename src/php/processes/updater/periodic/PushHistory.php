@@ -140,7 +140,7 @@ class PushHistory extends \HUGnet\processes\updater\Periodic
                         }
                         $ret = $this->_post(
                             null,
-                            $class,
+                            $id,
                             $records
                         );
                         if (is_array($ret) && (count($ret) > 0)) {
@@ -192,10 +192,10 @@ class PushHistory extends \HUGnet\processes\updater\Periodic
             $url,
             array(
                 "uuid"   => urlencode($this->system()->get("uuid")),
-                "action" => "post",
-                "task"   => "historyPost",
-                "table"  => $class,
-                "records" => $records,
+                "action" => "put",
+                "task"   => "history",
+                "id"  => $class,
+                "data" => $records,
             ),
             120
         );

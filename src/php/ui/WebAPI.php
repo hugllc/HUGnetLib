@@ -185,6 +185,9 @@ class WebAPI extends HTML
                 // Reload it, so that we get what is in the database
                 $obj->load($ident);
                 $ret = $obj->toArray(true);
+            } else {
+                $obj->load($data);
+                $obj->store($data);
             }
         } else if ($action === "list") {
             $data = $this->args()->get("data");

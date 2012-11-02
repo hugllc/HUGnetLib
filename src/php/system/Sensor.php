@@ -371,16 +371,15 @@ class Sensor extends \HUGnet\base\SystemTableBase
             $master = $this->system()->get("master");
             $url = $master["url"];
         }
-        $sensor = $this->toArray(true);
+        $sensor = $this->toArray(false);
         return \HUGnet\Util::postData(
             $url,
             array(
-                "uuid"    => urlencode($this->system()->get("uuid")),
-                "id"      => $sensor["dev"],
-                "sid"     => $sensor["sensor"],
-                "action"  => "post",
-                "task"    => "sensor",
-                "sensor"  => $sensor,
+                "uuid"   => urlencode($this->system()->get("uuid")),
+                "id"     => sprintf("%06X", $sensor["dev"]).".".$sensor["sensor"],
+                "action" => "put",
+                "task"   => "sensor",
+                "data"   => $sensor,
             )
         );
     }

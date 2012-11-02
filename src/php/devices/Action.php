@@ -281,15 +281,15 @@ class Action
             $master = $this->device->system()->get("master");
             $url = $master["url"];
         }
-        $device  = $this->device->toArray(true);
+        $device  = $this->device->toArray(false);
         return \HUGnet\Util::postData(
             $url,
             array(
                 "uuid"    => urlencode($this->device->system()->get("uuid")),
-                "id"      => $device["id"],
-                "action"  => "post",
+                "id"      => sprintf("%06X", $device["id"]),
+                "action"  => "put",
                 "task"    => "device",
-                "device"  => $device,
+                "data"    => $device,
             )
         );
     }

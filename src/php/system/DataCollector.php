@@ -83,10 +83,11 @@ class DataCollector extends \HUGnet\base\SystemTableBase
         return \HUGnet\Util::postData(
             $master["url"],
             array(
-                "uuid"          => urlencode($this->system()->get("uuid")),
-                "action"        => "checkin",
-                "task"          => "datacollector",
-                "datacollector" => $this->toArray(true),
+                "uuid"   => urlencode($this->system()->get("uuid")),
+                "id"     => urlencode($this->system()->get("uuid")),
+                "action" => "put",
+                "task"   => "datacollector",
+                "data"   => $this->toArray(true),
             )
         );
     }

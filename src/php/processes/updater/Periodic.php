@@ -78,7 +78,7 @@ abstract class Periodic
     */
     private static $_drivers = array(
         "Checkin", "PushDevices", "GetFirmware",
-        "PushHistory"
+        //"PushHistory"
     );
     /**
     * This function sets up the driver object, and the database object.  The

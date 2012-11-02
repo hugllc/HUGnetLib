@@ -117,22 +117,12 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
                 );
                 $this->_device->setParam("LastMasterPush", $now);
                 $ret = $this->_device->action()->post($url);
-                $sens = $this->_device->get("totalSensors");
-                for ($i = 0; $i < $sens; $i++) {
-                    //$this->system()->out("Pushing sensor ".$i);
-                    $sen = &$this->_device->sensor($i);
-                    $sen->action()->post($url);
-                    unset($sen);
-                    $this->system()->main();
-                    if (!$this->ui()->loop()) {
-                        break;
-                    }
-                }
-                if ($ret === "success") {
+                if (is_array($ret) && ($ret["id"] == $this->_device->id())) {
                     $this->system()->out(
                         "Successfully pushed ".sprintf("%06X", $devID)."."
                     );
                     $this->_device->store();
+                    $this->_pushSensors($key);
                 } else {
                     $this->system()->out("Failure.");
                     /* Don't store it if we fail */
@@ -140,6 +130,36 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
             }
             $this->last = $now;
         }
+    }
+    /**
+     * This pushes out all of the sensors for a device
+     *
+     * @param int $dev The device to use
+     *
+     * @return none
+     */
+    private function _pushSensors($dev)
+    {
+        $this->_device->load($dev);
+        $sens = $this->_device->get("totalSensors");
+        for ($i = 0; $i < $sens; $i++) {
+            $this->system()->main();
+            if (!$this->ui()->loop()) {
+                break;
+            }
+            $ret = &$this->_device->sensor($i)->action()->post($url);
+            print $ret;
+            if (is_array($ret)
+                && ($ret["dev"] == $this->_device->id())
+                && ($ret["sensor"] == $i)
+            ) {
+                $this->system()->out("Successfully Pushed sensor ".$i);
+            } else {
+                $this->system()->out("Failure to push out sensors!");
+                break;
+            }
+        }
+
     }
 }
 
