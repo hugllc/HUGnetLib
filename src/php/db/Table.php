@@ -742,6 +742,25 @@ abstract class Table extends \HUGnet\base\Container
         }
         return $this->labels;
     }
+    /**
+    * This remove everything from the array but keys that are columns
+    *
+    * @param array $array The array to sanitize
+    *
+    * @return array
+    */
+    public function sanitizeWhere($array)
+    {
+        if (!is_array($array)) {
+            return array();
+        }
+        foreach ($array as $key => $value) {
+            if (!isset($this->sqlColumns[$key])) {
+                unset($array[$key]);
+            }
+        }
+        return $array;
+    }
 
 }
 

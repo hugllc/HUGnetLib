@@ -40,7 +40,7 @@ $args = \HUGnet\ui\WebAPIArgs::factory(
     count($_REQUEST)
 );
 $args->addLocation("/usr/share/HUGnet/config.ini");
-
+error_log(print_r($args->config(), true));
 $api = \HUGnet\ui\WebAPI::factory($args);
 $api->execute((array)$_REQUEST);
 

@@ -124,7 +124,7 @@ class WebAPI extends HTML
     */
     private function _executeDatacollector($extra = array())
     {
-        $uuid = hexdec($this->args()->get("id"));
+        $uuid = strtolower($this->args()->get("id"));
         $datacol = &$this->system()->datacollector(array("uuid" => $uuid));
         return $this->_executeSystem($datacol, $extra);
     }
@@ -137,7 +137,7 @@ class WebAPI extends HTML
     */
     private function _executeSystem($obj, $extra = array())
     {
-        $action = strtolower($this->args()->get("action"));
+        $action = strtolower(trim($this->args()->get("action")));
         if ($action === "get") {
             $ret = $obj->toArray(true);
         } else if ($action === "put") {
@@ -147,6 +147,9 @@ class WebAPI extends HTML
             $did = hexdec($this->args()->get("id"));
             $obj->load($did);
             $ret = $obj->toArray(true);
+        } else if ($action === "list") {
+            $data = $this->args()->get("data");
+            $ret = $obj->getList($data, true);
         } else {
             if (is_callable(array($obj, "webAPI"))) {
                 $ret = $obj->webAPI($this->args(), $extra);

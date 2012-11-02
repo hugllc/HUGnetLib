@@ -285,6 +285,11 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                                 array("e" => "f", "g" => "h"),
                             ),
                         ),
+                        "sanitizeWhere" => array(
+                            "id" => 5,
+                            "name" => 3,
+                            "value" => 1,
+                        ),
                         "nextInto" => array(
                             true,
                             false,
@@ -306,6 +311,15 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                             ),
                         ),
                         "clearData" => array(array()),
+                        "sanitizeWhere" => array(
+                            array(
+                                array(
+                                    "id" => 5,
+                                    "name" => 3,
+                                    "value" => 1,
+                                ),
+                           ),
+                        ),
                     ),
                 ),
                 array(
@@ -329,6 +343,11 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                             ),
                         ),
                         "clearData" => array(array()),
+                        "sanitizeWhere" => array(
+                            array(
+                                2
+                           ),
+                        ),
                     ),
                 ),
                 array(),

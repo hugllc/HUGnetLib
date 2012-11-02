@@ -1933,6 +1933,70 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
         $this->o->fromAny($preload);
         $this->assertSame($expect, $this->o->outputDate($field));
     }
+    /**
+    * data provider for testCalcAverage
+    *
+    * @return array
+    */
+    public static function dataSanitizeWhere()
+    {
+        return array(
+            array(
+                array(
+                ),
+                array(
+                    "id"  => 41,
+                    "value"   => gmmktime(0, 0, 0, 1, 1, 2010),
+                    "name"  => "Date",
+                ),
+                array(
+                    "id"  => 41,
+                    "value"   => gmmktime(0, 0, 0, 1, 1, 2010),
+                    "name"  => "Date",
+                ),
+            ),
+            array(
+                array(
+                ),
+                array(
+                    "id"  => 41,
+                    "value"   => gmmktime(0, 0, 0, 1, 1, 2010),
+                    "name"  => "Date",
+                    "WebNark" => "SeaMonster",
+                ),
+                array(
+                    "id"  => 41,
+                    "value"   => gmmktime(0, 0, 0, 1, 1, 2010),
+                    "name"  => "Date",
+                ),
+            ),
+            array(
+                array(
+                ),
+                "ThisIsNotAnArray",
+                array(
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $preload The data to preload into the object
+    * @param string $array   The array to sanitize
+    * @param string $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataSanitizeWhere
+    */
+    public function testSanitizeWhere($preload, $array, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $this->assertSame($expect, $this->o->sanitizeWhere($array));
+    }
 
 }
 namespace HUGnet\db\tables;

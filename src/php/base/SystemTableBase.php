@@ -226,6 +226,7 @@ abstract class SystemTableBase
     public function getList($where = null, $default = false)
     {
         $this->table()->clearData();
+        $where = $this->table()->sanitizeWhere($where);
         $whereText = "";
         $whereData = array();
         if (is_array($where)) {
