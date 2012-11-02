@@ -65,6 +65,8 @@ abstract class SystemTableBase
     private $_system = null;
     /** @var int The database table class to use */
     protected $tableClass = null;
+    /** @var int The database table class to use */
+    private $_new = false;
     /** This is our connection object */
     private $_connect = null;
 
@@ -193,6 +195,7 @@ abstract class SystemTableBase
         if (!$ret && (is_array($data) || is_object($data))) {
             $this->table()->fromAny($data);
             $this->fixTable();
+            $this->_new = true;
             $ret = true;
         }
         return (bool)$ret;
@@ -279,8 +282,9 @@ abstract class SystemTableBase
     {
         $sid = $this->table()->get($this->table()->sqlId);
         $this->fixTable();
-        if (empty($sid) || $replace) {
+        if (empty($sid) || $replace || $this->_new) {
             $ret = $this->table()->insertRow($replace);
+            $this->_new = false;
         } else {
             $ret = $this->table()->updateRow();
         }

@@ -494,6 +494,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 new \HUGnet\DummyTable("Table"),
+                null,
                 false,
                 array(
                     "Table" => array(
@@ -511,6 +512,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 new \HUGnet\DummyTable("Table"),
+                null,
                 false,
                 array(
                     "Table" => array(
@@ -528,11 +530,37 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 new \HUGnet\DummyTable("Table"),
+                null,
                 true,
                 array(
                     "Table" => array(
                         "get" => array(array("id")),
                         "insertRow" => array(array(true)),
+                    ),
+                ),
+                true,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 5,
+                        "updateRow" => false,
+                        "insertRow" => true,
+                    ),
+                ),
+                new \HUGnet\DummyTable("Table"),
+                array(
+                    "1" => "2",
+                ),
+                false,
+                array(
+                    "Table" => array(
+                        "get" => array(array("id")),
+                        "insertRow" => array(array(false)),
+                        "clearData" => array(array()),
+                        "selectOneInto" => array(array("", array())),
+                        "fromAny" => array(array(array("1" => "2"))),
+                        "sanitizeWhere" => array(array(array("1" => "2"))),
                     ),
                 ),
                 true,
@@ -544,6 +572,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
     *
     * @param array  $config      The configuration to use
     * @param object $class       The table class to use
+    * @param array  $load        Values to load in
     * @param mixed  $replace     Whether to replace the current record or not
     * @param array  $expectTable The table to expect
     * @param bool   $return      The expected return
@@ -552,11 +581,12 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
     *
     * @dataProvider dataStore
     */
-    public function testStore($config, $class, $replace, $expectTable, $return)
-    {
+    public function testStore(
+        $config, $class, $load, $replace, $expectTable, $return
+    ) {
         $sys = new \HUGnet\DummySystem("System");
         $sys->resetMock($config);
-        $obj = SystemTableBaseTestStub::factory($sys, null, $class);
+        $obj = SystemTableBaseTestStub::factory($sys, $load, $class);
         $ret = $obj->store($replace);
         $this->assertEquals($expectTable, $class->retrieve(), "Data Wrong");
         $this->assertSame($return, $ret, "Return Wrong");
