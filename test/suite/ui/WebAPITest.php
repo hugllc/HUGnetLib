@@ -591,7 +591,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
-            array(  // #10
+            array(  // #11
                 array(
                     "task" => "inputtable",
                     "action" => "list",
@@ -643,6 +643,97 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         ),
                         "select" => array(
                             array('1', array()),
+                        ),
+                    ),
+                ),
+            ),
+            array(  // #12
+                array(
+                    "task" => "history",
+                    "action" => "last",
+                    "id" => "10",
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "device" => new \HUGnet\DummyTable("Device"),
+                    ),
+                    "Device" => array(
+                        "historyFactory" => new \HUGnet\DummyTable("History"),
+                    ),
+                    "History" => array(
+                        "isEmpty" => false,
+                        "toArray" => array(
+                            "Real" => "array",
+                        ),
+                    ),
+                ),
+                array(),
+                json_encode(
+                    array(
+                        "Real" => "array",
+                    )
+                ),
+                array(
+                    "History" => array(
+                        "isEmpty" => array(
+                            array()
+                        ),
+                        "selectOneInto" => array(
+                            array('`id` = ?', array(16)),
+                        ),
+                        "toArray" => array(
+                            array(true)
+                        ),
+                    ),
+                ),
+            ),
+            array(  // #12
+                array(
+                    "task" => "history",
+                    "action" => "put",
+                    "id" => "10",
+                    "data" => array(
+                        array("id" => 42, "Date" => 3214),
+                        array("id" => 16, "Date" => 1234),
+                    ),
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "device" => new \HUGnet\DummyTable("Device"),
+                    ),
+                    "Device" => array(
+                        "historyFactory" => new \HUGnet\DummyTable("History"),
+                    ),
+                    "History" => array(
+                        "isEmpty" => false,
+                        "toArray" => array(
+                            "Real" => "array",
+                        ),
+                        "insertRow" => true,
+                    ),
+                ),
+                array(),
+                json_encode(
+                    array(
+                        1 => true,
+                    )
+                ),
+                array(
+                    "History" => array(
+                        "insertRow" => array(
+                            array()
+                        ),
+                        "fromArray" => array(
+                            array(array("id" => 16, "Date" => 1234)),
+                        ),
+                        "clearData" => array(
+                            array()
                         ),
                     ),
                 ),

@@ -188,5 +188,14 @@ class HTML
             $this->_debug[] = $string;
         }
     }
+    /**
+    * This function prints out string
+    *
+    * @return none
+    */
+    public function debug()
+    {
+        return $this->_debug;
+    }
 }
 ?>

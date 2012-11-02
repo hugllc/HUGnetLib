@@ -250,6 +250,73 @@ class WebAPI extends HTML
         return $ret;
     }
     /**
+    * This function executes the api call.
+    *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    */
+    private function _executeHistory($extra = array())
+    {
+        $did = hexdec($this->args()->get("id"));
+        $hist = &$this->system()->device($did)->historyFactory(array(), true);
+        $ret = null;
+        $action = strtolower(trim($this->args()->get("action")));
+        if ($action === "get") {
+            $data = (array)$this->args()->get("data");
+            $extraWhere = "";
+            if (isset($data["limit"]) && is_numeric($data["limit"])) {
+                $hist->sqlLimit = (int)$data["limit"];
+            }
+            if (isset($data["start"]) && is_numeric($data["start"])) {
+                $hist->sqlStart = (int)$data["start"];
+            }
+            if (isset($data["order"])) {
+                $order = trim(strtolower($data["order"]));
+                if (($order === "asc") || ($order === "desc")) {
+                    $hist->sqlOrderBy = "Date ".$order;
+                }
+            }
+            $extraData = array();
+            $res = $hist->getPeriod(
+                (int)$data["since"],
+                (int)$data["until"],
+                $did,
+                "history",
+                $extraWhere,
+                $extraData
+            );
+            $ret = array();
+            while ($res) {
+                $ret[] = $hist->toArray(true);
+                $res = $hist->nextInto();
+            }
+        } else if ($action === "put") {
+            $data = (array)$this->args()->get("data");
+            $ret = array();
+            foreach ($data as $key => $row) {
+                if (is_array($row) && ($row["id"] == $did)
+                    && isset($row["Date"]) && is_int($row["Date"])
+                ) {
+                    $hist->clearData();
+                    $hist->fromArray($row);
+                    $ret[$key] = $hist->insertRow();
+                }
+            }
+        } else if ($action === "last") {
+            $hist->sqlLimit = 1;
+            $hist->sqlStart = 0;
+            $hist->sqlOrderBy = "Date desc";
+            $whereText = "`id` = ?";
+            $whereData = array($did);
+            $hist->selectOneInto($whereText, $whereData);
+            if (!$hist->isEmpty()) {
+                $ret = $hist->toArray(true);
+            }
+        }
+        return $ret;
+    }
+    /**
     * Sends the headers out
     *
     * This function is not testable.  Headers can't be sent in the tests.
@@ -319,6 +386,9 @@ class WebAPI extends HTML
             if (!is_null($data)) {
                 print json_encode($data);
             }
+        }
+        if ($this->system()->get("verbose") > 0) {
+            print PHP_EOL.implode(PHP_EOL, $this->debug());
         }
     }
 }
