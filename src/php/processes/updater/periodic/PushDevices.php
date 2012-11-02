@@ -148,7 +148,6 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
                 break;
             }
             $ret = &$this->_device->sensor($i)->action()->post($url);
-            print $ret;
             if (is_array($ret)
                 && ($ret["dev"] == $this->_device->id())
                 && ($ret["sensor"] == $i)
