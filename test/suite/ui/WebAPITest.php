@@ -172,7 +172,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
         );
 
         return array(
-            array(
+            array(  // #0
                 array(
                     "task" => "device",
                     "action" => "get",
@@ -183,11 +183,10 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "config" => array(
                             "verbose" => 0,
                         ),
-                        "device" => array(
-                            "5" => new \HUGnet\DummyBase("Device"),
-                        ),
+                        "device" => new \HUGnet\DummyBase("Device"),
                     ),
                     "Device" => array(
+                        "load" => true,
                         "toArray" => array(
                             "Real" => "array",
                         ),
@@ -200,10 +199,13 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "toArray" => array(
                             array(true),
                         ),
+                        "load" => array(
+                            array(5),
+                        ),
                     ),
                 ),
             ),
-            array(
+            array(  // #1
                 array(
                     "task" => "device",
                     "action" => "get",
@@ -215,11 +217,10 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "config" => array(
                             "verbose" => 0,
                         ),
-                        "device" => array(
-                            "5" => new \HUGnet\DummyBase("Device"),
-                        ),
+                        "device" => new \HUGnet\DummyBase("Device"),
                     ),
                     "Device" => array(
+                        "load" => true,
                         "toArray" => "Test",
                     ),
                 ),
@@ -230,10 +231,13 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "toArray" => array(
                             array(true),
                         ),
+                        "load" => array(
+                            array(5),
+                        ),
                     ),
                 ),
             ),
-            array(
+            array(  // #2
                 array(
                     "task" => "device",
                     "action" => "put",
@@ -251,6 +255,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "device" => new \HUGnet\DummyBase("Device"),
                     ),
                     "Device" => array(
+                        "load" => true,
                         "toArray" => array(
                             "Real" => "array",
                         ),
@@ -273,15 +278,16 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         ),
                         "load" => array(
                             array(16),
+                            array(16),
                         ),
                     ),
                 ),
             ),
-            array(
+            array(  // #3
                 array(
                     "task" => "dataCollector",
                     "action" => "get",
-                    "id" => "5",
+                    "id" => "e035bd03-c52b-4061-89ab-cf5b6ab8243f",
                 ),
                 array(
                     "System" => array(
@@ -291,6 +297,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "datacollector" => new \HUGnet\DummyBase("Datacollector"),
                     ),
                     "Datacollector" => array(
+                        "load" => true,
                         "toArray" => array(
                             "Real" => "array",
                         ),
@@ -303,10 +310,17 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "toArray" => array(
                             array(true),
                         ),
+                        "load" => array(
+                            array(
+                                array(
+                                    "uuid" => "e035bd03-c52b-4061-89ab-cf5b6ab8243f"
+                                )
+                            ),
+                        ),
                     ),
                 ),
             ),
-            array(
+            array(  // #4
                 $config1,
                 array(
                     "System" => array(
@@ -330,6 +344,83 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                                 $config1,
                                 array(),
                             ),
+                        ),
+                    ),
+                ),
+            ),
+            array(  // #5
+                array(
+                    "task" => "sensor",
+                    "action" => "get",
+                    "id" => "10.5",
+                    "data" => array(
+                        "a" => "b",
+                        "c" => "d",
+                    ),
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "sensor" => new \HUGnet\DummyBase("Sensor"),
+                    ),
+                    "Sensor" => array(
+                        "load" => true,
+                        "toArray" => array(
+                            "Real" => "array",
+                        ),
+                    ),
+                ),
+                array(),
+                json_encode(array("Real" => "array")),
+                array(
+                    "Sensor" => array(
+                        "toArray" => array(
+                            array(true),
+                        ),
+                        "load" => array(
+                            array(array("dev" => 16, "sensor" => 5)),
+                        ),
+                    ),
+                ),
+            ),
+            array(  // #6
+                array(
+                    "task" => "sensor",
+                    "action" => "list",
+                    "id" => "10",
+                    "data" => array(
+                        "a" => "b",
+                        "c" => "d",
+                    ),
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "sensor" => new \HUGnet\DummyBase("Sensor"),
+                    ),
+                    "Sensor" => array(
+                        "load" => true,
+                        "getList" => array(
+                            "Real" => "array",
+                        ),
+                    ),
+                ),
+                array(),
+                json_encode(array("Real" => "array")),
+                array(
+                    "Sensor" => array(
+                        "getList" => array(
+                            array(array("dev" => 16), true),
                         ),
                     ),
                 ),

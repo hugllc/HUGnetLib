@@ -112,8 +112,28 @@ class WebAPI extends HTML
     private function _executeDevice($extra = array())
     {
         $did = hexdec($this->args()->get("id"));
-        $dev = &$this->system()->device($did);
-        return $this->_executeSystem($dev, $extra);
+        $dev = &$this->system()->device();
+        return $this->_executeSystem($did, $dev, $extra);
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    */
+    private function _executeSensor($extra = array())
+    {
+        $ids = explode(".", $this->args()->get("id"));
+        $did = hexdec($ids[0]);
+        $sid = (int)$ids[1];
+        $ident = array("dev" => $did, "sensor" => $sid);
+        $action = strtolower(trim($this->args()->get("action")));
+        if ($action === "list") {
+            $this->args()->set("data", array("dev" => $did));
+        }
+        $sen = &$this->system()->device($did)->sensor();
+        return $this->_executeSystem($ident, $sen, $extra);
     }
     /**
     * This function executes the api call.
@@ -124,29 +144,35 @@ class WebAPI extends HTML
     */
     private function _executeDatacollector($extra = array())
     {
-        $uuid = strtolower($this->args()->get("id"));
-        $datacol = &$this->system()->datacollector(array("uuid" => $uuid));
-        return $this->_executeSystem($datacol, $extra);
+        $uuid = array("uuid" => strtolower($this->args()->get("id")));
+        $datacol = &$this->system()->datacollector();
+        return $this->_executeSystem($uuid, $datacol, $extra);
     }
     /**
     * This function executes the api call.
     *
-    * @param array $extra Extra data that should be added to the HTMLArgs data
+    * @param mixed  $ident The ID to use
+    * @param object $obj   The object to work on
+    * @param array  $extra Extra data that should be added to the HTMLArgs data
     *
     * @return null
     */
-    private function _executeSystem($obj, $extra = array())
+    private function _executeSystem($ident, $obj, $extra = array())
     {
+        $ret = null;
         $action = strtolower(trim($this->args()->get("action")));
         if ($action === "get") {
-            $ret = $obj->toArray(true);
+            if ($obj->load($ident)) {
+                $ret = $obj->toArray(true);
+            }
         } else if ($action === "put") {
             $data = (array)$this->args()->get("data");
-            $obj->change($data);
-            // Reload it, so that we get what is in the database
-            $did = hexdec($this->args()->get("id"));
-            $obj->load($did);
-            $ret = $obj->toArray(true);
+            if ($obj->load($ident)) {
+                $obj->change($data);
+                // Reload it, so that we get what is in the database
+                $obj->load($ident);
+                $ret = $obj->toArray(true);
+            }
         } else if ($action === "list") {
             $data = $this->args()->get("data");
             $ret = $obj->getList($data, true);
@@ -171,6 +197,7 @@ class WebAPI extends HTML
             header('Cache-Control: no-cache, must-revalidate');
             header('Expires: Sat, 4 Apr 1998 20:00:00 GMT');
         }
+        // @codeCoverageIgnoreEnd
     }
     /**
     * Sends the headers out
@@ -182,12 +209,14 @@ class WebAPI extends HTML
     private function _headerCSV()
     {
         if (!headers_sent()) {
+            // @codeCoverageIgnoreStart
             header('Content-type: text/csv');
             header(
                 'Content-disposition: attachment;'
                 .'filename=HUGnetLab.'.$this->args()->get("id").'.csv'
             );
         }
+        // @codeCoverageIgnoreEnd
     }
     /**
     * Sends the headers out
@@ -199,6 +228,7 @@ class WebAPI extends HTML
     private function _headerJSON()
     {
         if (!headers_sent()) {
+            // @codeCoverageIgnoreStart
             header('Content-type: application/json');
         }
         // @codeCoverageIgnoreEnd
