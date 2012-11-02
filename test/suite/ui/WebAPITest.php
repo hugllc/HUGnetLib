@@ -312,9 +312,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         ),
                         "load" => array(
                             array(
-                                array(
-                                    "uuid" => "e035bd03-c52b-4061-89ab-cf5b6ab8243f"
-                                )
+                                "e035bd03-c52b-4061-89ab-cf5b6ab8243f",
                             ),
                         ),
                     ),

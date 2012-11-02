@@ -150,8 +150,8 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                     "getRow" => array(
                         array(0 => 2),
                     ),
-                    "set" => array(
-                        array("id", 2),
+                    "isEmpty" => array(
+                        array(),
                     ),
                     "clearData" => array(array()),
                 ),
@@ -223,9 +223,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Table" => array(
-                        array(
-                            "getRow" => false,
-                        )
+                        "isEmpty" => true,
                     ),
                 ),
                 new \HUGnet\DummyTable("Table"),
@@ -235,8 +233,8 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                         "getRow" => array(
                             array(0 => 2),
                         ),
-                        "set" => array(
-                            array("id", 2),
+                        "isEmpty" => array(
+                            array(),
                         ),
                         "clearData" => array(array()),
                     ),

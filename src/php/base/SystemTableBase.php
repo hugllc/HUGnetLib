@@ -175,9 +175,9 @@ abstract class SystemTableBase
     {
         $ret = false;
         $this->table()->clearData();
-        if (is_int($data)) {
-            $this->table()->set($this->table()->sqlId, $data);
-            $ret = $this->table()->getRow($data);
+        if (is_int($data) || is_string($data)) {
+            $this->table()->getRow($data);
+            $ret = !$this->table()->isEmpty();
         } else if (is_array($data)) {
             $where = "";
             $whereData = array();
@@ -189,7 +189,7 @@ abstract class SystemTableBase
             }
             $ret = $this->table()->selectOneInto($where, $whereData);
         }
-        if (!$ret && (is_array($data) || is_string($data) || is_object($data))) {
+        if (!$ret && (is_array($data) || is_object($data))) {
             $this->table()->fromAny($data);
             $this->fixTable();
             $ret = true;

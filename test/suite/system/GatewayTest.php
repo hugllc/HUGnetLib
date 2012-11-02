@@ -135,8 +135,8 @@ class GatewayTest extends \PHPUnit_Framework_TestCase
                     "getRow" => array(
                         array(0 => 2),
                     ),
-                    "set" => array(
-                        array("id", 2),
+                    "isEmpty" => array(
+                        array(),
                     ),
                     "clearData" => array(array()),
                 ),

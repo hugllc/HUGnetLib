@@ -149,9 +149,15 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         array(0 => 2),
                     ),
                     "set" => array(
-                        array("id", 2),
+                        array("Driver", "EDEFAULT"),
                     ),
                     "clearData" => array(array()),
+                    "isEmpty" => array(array()),
+                    "get" => array(
+                        array("HWPartNum"),
+                        array("FWPartNum"),
+                        array("FWVersion"),
+                    ),
                 ),
             ),
         );
