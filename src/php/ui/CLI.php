@@ -167,7 +167,7 @@ class CLI
     public function out($string = "", $level=0)
     {
         if ($this->_verbose >= $level) {
-            print $string;
+            print $string.PHP_EOL;
         }
     }
     /**
