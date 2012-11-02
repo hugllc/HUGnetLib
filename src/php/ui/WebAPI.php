@@ -213,7 +213,7 @@ class WebAPI extends HTML
             header('Content-type: text/csv');
             header(
                 'Content-disposition: attachment;'
-                .'filename=HUGnetLab.'.$this->args()->get("id").'.csv'
+                .'filename=HUGnet.'.$this->args()->get("id").'.csv'
             );
         }
         // @codeCoverageIgnoreEnd
