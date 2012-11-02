@@ -302,6 +302,8 @@ class WebAPI extends HTML
     /**
     * Disconnects from the database
     *
+    * @param string $data The data to print out.
+    *
     * @return null
     */
     private function _body($data)
