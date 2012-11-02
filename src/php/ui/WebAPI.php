@@ -122,6 +122,19 @@ class WebAPI extends HTML
     *
     * @return null
     */
+    private function _executeInputtable($extra = array())
+    {
+        $iid = (int)$this->args()->get("id");
+        $table = &$this->system()->table("InputTable");
+        return $this->_executeTable($iid, $table, $extra);
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    */
     private function _executeSensor($extra = array())
     {
         $ids = explode(".", $this->args()->get("id"));
@@ -176,6 +189,59 @@ class WebAPI extends HTML
         } else if ($action === "list") {
             $data = $this->args()->get("data");
             $ret = $obj->getList($data, true);
+        } else {
+            if (is_callable(array($obj, "webAPI"))) {
+                $ret = $obj->webAPI($this->args(), $extra);
+            }
+        }
+        return $ret;
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param mixed  $ident The ID to use
+    * @param object $obj   The object to work on
+    * @param array  $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    */
+    private function _executeTable($ident, $obj, $extra = array())
+    {
+        $ret = null;
+        $action = strtolower(trim($this->args()->get("action")));
+        if ($action === "get") {
+            $obj->getRow($ident);
+            if (!$obj->isEmpty()) {
+                $ret = $obj->toArray(true);
+            }
+        } else if ($action === "put") {
+            $data = (array)$this->args()->get("data");
+            if ($obj->getRow($ident)) {
+                $obj->fromAny($data);
+                $obj->updateRow();
+                // Reload it, so that we get what is in the database
+                $obj->getRow($ident);
+                $ret = $obj->toArray(true);
+            }
+        } else if ($action === "list") {
+            $data = (array)$this->args()->get("data");
+            $where = $obj->sanitizeWhere($data);
+            $whereText = "";
+            $whereData = array();
+            if (is_array($where) && !empty($where)) {
+                $sep       = "";
+                foreach ($where as $key => $value) {
+                    $whereText .= $sep."`$key` = ?";
+                    $sep = " AND ";
+                    $whereData[] = $value;
+                }
+            } else {
+                $whereText = "1";
+            }
+            $ret = array();
+            foreach ((array)$obj->select($whereText, $whereData) as $row) {
+                $ret[] = $row->toArray(true);
+            }
         } else {
             if (is_callable(array($obj, "webAPI"))) {
                 $ret = $obj->webAPI($this->args(), $extra);
