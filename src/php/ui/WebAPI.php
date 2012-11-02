@@ -145,7 +145,7 @@ class WebAPI extends HTML
         if ($action === "list") {
             $this->args()->set("data", array("dev" => $did));
         }
-        $sen = &$this->system()->device($did)->sensor();
+        $sen = &$this->system()->device($did)->sensor($sid);
         return $this->_executeSystem($ident, $sen, $extra);
     }
     /**
@@ -183,12 +183,12 @@ class WebAPI extends HTML
             if ($obj->load($ident)) {
                 $obj->change($data);
                 // Reload it, so that we get what is in the database
-                $obj->load($ident);
-                $ret = $obj->toArray(true);
             } else {
                 $obj->load($data);
                 $obj->store($data);
             }
+            $obj->load($ident);
+            $ret = $obj->toArray(true);
         } else if ($action === "list") {
             $data = $this->args()->get("data");
             $ret = $obj->getList($data, true);
