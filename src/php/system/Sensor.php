@@ -178,6 +178,22 @@ class Sensor extends \HUGnet\base\SystemTableBase
         return json_encode($this->toArray(true));
     }
     /**
+    * Loads the data into the table class
+    *
+    * @param mixed $data (int)The id of the record,
+    *                    (array) or (string) data info array
+    *
+    * @return bool Whether we found this in the db or not.
+    */
+    public function load($data)
+    {
+        $ret = parent::load($data);
+        if (!$ret) {
+            $ret = $this->table()->insertRow();
+        }
+        return $ret;
+    }
+    /**
     * This creates the driver
     *
     * @param string $driver The driver to use.  Leave blank for automatic.

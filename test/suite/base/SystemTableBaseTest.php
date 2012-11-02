@@ -252,7 +252,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-                true,
+                false,
             ),
             array(
                 array(
@@ -417,7 +417,14 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                array(),
+                array(
+                    "Table" => array(
+                        array(
+                            "updateRow" => true,
+                            "insertRow" => true,
+                        )
+                    ),
+                ),
                 new \HUGnet\DummyTable(),
                 array(
                     "id" => 5,

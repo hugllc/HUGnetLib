@@ -115,6 +115,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             "name" => 3,
                             "value" => 1,
                         ),
+                        "selectOneInto" => false,
                     ),
                 ),
                 array(
@@ -132,14 +133,6 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 "value" => 1,
                             ),
                         ),
-                    ),
-                    "get" => array(
-                        array("HWPartNum"),
-                        array("FWPartNum"),
-                        array("FWVersion"),
-                    ),
-                    "set" => array(
-                        array("Driver", "EDEFAULT"),
                     ),
                     "clearData" => array(array()),
                     "selectOneInto" => array(
@@ -538,6 +531,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             "DeviceGroup"  => "FFFFFF",
                             "TimeConstant" => 1,
                         ),
+                        "selectOneInto" => true,
                     ),
                 ),
                 "000000000500391201430039200343010203FFFFFFFF01000000000000000000",
@@ -576,6 +570,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             "DeviceGroup"  => "FFFFFF",
                             "TimeConstant" => 1,
                         ),
+                        "selectOneInto" => true,
                     ),
                 ),
                 "",

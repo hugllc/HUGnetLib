@@ -171,7 +171,7 @@ abstract class SystemTableBase
     * @param mixed $data (int)The id of the record,
     *                    (array) or (string) data info array
     *
-    * @return null
+    * @return bool Whether we found this in the db or not.
     */
     public function load($data)
     {
@@ -196,7 +196,6 @@ abstract class SystemTableBase
             $this->table()->fromAny($data);
             $this->fixTable();
             $this->_new = true;
-            $ret = true;
         }
         return (bool)$ret;
     }

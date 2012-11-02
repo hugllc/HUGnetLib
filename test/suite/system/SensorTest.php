@@ -327,6 +327,8 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             "name" => 3,
                             "value" => 1,
                         ),
+                        "insertRow" => true,
+                        "updateRow" => true,
                     ),
                 ),
                 new DummyTable(),
@@ -336,51 +338,27 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                     "value" => 1,
                 ),
                 array(
-                    "Table" => array(
-                        "fromAny" => array(
+                    "fromAny" => array(
+                        array(
                             array(
-                                array(
-                                    "id" => 5,
-                                    "name" => 3,
-                                    "value" => 1,
-                                ),
+                                "id" => 5,
+                                "name" => 3,
+                                "value" => 1,
                             ),
                         ),
-                        'get' => array(
-                            array("id"),
-                            array("type"),
-                            array("id"),
-                            array("type"),
-                            array("id"),
-                            array("type"),
-                            array("units"),
-                            array("extra"),
-                            array("min"),
-                            array("max"),
-                        ),
-                        'set' => array(
-                            array("driver", "SDEFAULT"),
-                            array("driver", "SDEFAULT"),
-                            array("driver", "SDEFAULT"),
-                            array("units", "unknown"),
-                            array("min", 0),
-                            array("max", 150),
-                        ),
-                        "clearData" => array(array()),
-                        "selectOneInto" => array(
-                            array(
-                                "`id` = ? AND `name` = ? AND `value` = ?",
-                                array(5, 3, 1),
-                            ),
-                        ),
-                        "sanitizeWhere" => array(
-                            array(
-                                array(
-                                    "id" => 5,
-                                    "name" => 3,
-                                    "value" => 1,
-                                ),
-                            ),
+                    ),
+                    'set' => array(
+                        array("driver", "SDEFAULT"),
+                        array("driver", "SDEFAULT"),
+                        array("driver", "SDEFAULT"),
+                        array("units", "unknown"),
+                        array("min", 0),
+                        array("max", 150),
+                    ),
+                    "selectOneInto" => array(
+                        array(
+                            "`id` = ? AND `name` = ? AND `value` = ?",
+                            array(5, 3, 1),
                         ),
                     ),
                 ),
@@ -399,20 +377,18 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                 new DummyTable("Table"),
                 array("dev" => 2, "sensor" => 0),
                 array(
-                    "Table" => array(
-                        "selectOneInto" => array(
-                            array(
-                                "`dev` = ? AND `sensor` = ?",
-                                array(2, 0),
-                            ),
+                    "selectOneInto" => array(
+                        array(
+                            "`dev` = ? AND `sensor` = ?",
+                            array(2, 0),
                         ),
-                        "clearData" => array(array()),
-                        "sanitizeWhere" => array(
+                    ),
+                    "clearData" => array(array()),
+                    "sanitizeWhere" => array(
+                        array(
                             array(
-                                array(
-                                    "dev" => 2,
-                                    "sensor" => 0,
-                                ),
+                                "dev" => 2,
+                                "sensor" => 0,
                             ),
                         ),
                     ),
@@ -432,54 +408,25 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             "dev" => 2,
                             "sensor" => 0,
                         ),
+                        "insertRow" => true,
+                        "updateRow" => true,
                     ),
                 ),
                 new DummyTable("Table"),
                 array("dev" => 2, "sensor" => 0),
                 array(
-                    "Table" => array(
-                        "fromAny" => array(
+                    "fromAny" => array(
+                        array(
                             array(
-                                array(
-                                    "dev" => 2,
-                                    "sensor" => 0,
-                                ),
+                                "dev" => 2,
+                                "sensor" => 0,
                             ),
                         ),
-                        'get' => array(
-                            array("id"),
-                            array("type"),
-                            array("id"),
-                            array("type"),
-                            array("id"),
-                            array("type"),
-                            array("units"),
-                            array("extra"),
-                            array("min"),
-                            array("max"),
-                        ),
-                        'set' => array(
-                            array("driver", "SDEFAULT"),
-                            array("driver", "SDEFAULT"),
-                            array("driver", "SDEFAULT"),
-                            array("units", "unknown"),
-                            array("min", 0),
-                            array("max", 150),
-                        ),
-                        "selectOneInto" => array(
-                            array(
-                                "`dev` = ? AND `sensor` = ?",
-                                array(2, 0),
-                            ),
-                        ),
-                        "clearData" => array(array()),
-                        "sanitizeWhere" => array(
-                            array(
-                                array(
-                                    "dev" => 2,
-                                    "sensor" => 0,
-                                ),
-                            ),
+                    ),
+                    "selectOneInto" => array(
+                        array(
+                            "`dev` = ? AND `sensor` = ?",
+                            array(2, 0),
                         ),
                     ),
                 ),
@@ -508,7 +455,10 @@ class SensorTest extends \PHPUnit_Framework_TestCase
         $obj = Sensor::factory($sys, $dev, null, $class);
         $ret = $obj->load($data);
         $this->assertSame($return, $ret, "Return Wrong");
-        $this->assertEquals($expectTable, $class->retrieve(), "Data Wrong");
+        $ret = $class->retrieve("Table");
+        foreach ((array)$expectTable as $key => $expect) {
+            $this->assertEquals($expect, $ret[$key], "$key Data Wrong");
+        }
     }
     /**
     * Data provider for testLoad
