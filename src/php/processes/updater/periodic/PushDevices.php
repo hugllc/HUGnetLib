@@ -195,7 +195,7 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
         $hist->sqlLimit = self::MAX_HISTORY;
         $now = 0;
         $first = time();
-        $ret = $hist->getPeriod($last, time());
+        $ret = $hist->getPeriod($last, time(), $dev->id());
         if ($ret) {
             $records = array();
             while ($ret) {
