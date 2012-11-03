@@ -59,9 +59,9 @@ defined('_HUGNET') or die('HUGnetSystem not found');
 class PushDevices extends \HUGnet\processes\updater\Periodic
 {
     /** This is the maximum number of history records to get */
-    const MAX_HISTORY = 1000;
+    const MAX_HISTORY = 300;
     /** This is the period */
-    protected $period = 60;
+    protected $period = 30;
     /** This is the object we use */
     private $_device;
     /**
@@ -106,6 +106,7 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
 
                 $this->_device->load($key);
                 $this->_pushDevice($this->_device);
+                $this->_pushHistory($this->_device);
             }
             $this->last = $now;
         }
@@ -141,7 +142,6 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
             $dev->setParam("LastMasterPush", $now);
             $dev->store();
             $this->_pushSensors($dev);
-            $this->_pushHistory($dev);
         } else {
             $this->system()->out("Failure.");
             /* Don't store it if we fail */
@@ -225,8 +225,9 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
             }
             if ($good > 0) {
                 $this->system()->out(
-                    "Successfully pushed ".$good." history records between "
-                    .date("Y-m-d H:i:s", $first)." and ".date("Y-m-d H:i:s", $last)
+                    sprintf("%06X ", $dev->id())
+                    ."Successfully pushed ".$good." history records ending "
+                    .date("Y-m-d H:i:s", $last)
                 );
             }
             if ($bad > 0) {
