@@ -193,7 +193,7 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
         $hist = $dev->historyFactory(array(), true);
         $last = (int)$dev->getParam("LastMasterHistoryPush");
         $hist->sqlLimit = self::MAX_HISTORY;
-        $now = 0;
+        $last = 0;
         $first = time();
         $ret = $hist->getPeriod($last, time(), $dev->id());
         if ($ret) {
@@ -204,13 +204,6 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
                     break;
                 }
                 $records[] = $hist->toArray(false);
-                $date = $hist->get("Date");
-                if ($now < $date) {
-                    $now = $date;
-                }
-                if ($first > $date) {
-                    $first = $date;
-                }
                 $ret = $hist->nextInto();
             }
             $ret = $this->_postHistory(null, $dev->id(), $records);
@@ -219,6 +212,12 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
             if (is_array($ret)) {
                 for ($i = 0; $i < count($records); $i++) {
                     if ($ret[$i] == 1) {
+                        if ($last < $records[$i]["Date"]) {
+                            $last = $records[$i]["Date"];
+                        }
+                        if ($first > $records[$i]["Date"]) {
+                            $first = $records[$i]["Date"];
+                        }
                         $good++;
                         $bad--;
                     }
@@ -227,7 +226,7 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
             if ($good > 0) {
                 $this->system()->out(
                     "Successfully pushed ".$good." history records between "
-                    .date("Y-m-d H:i:s", $first)." and ".date("Y-m-d H:i:s", $now)
+                    .date("Y-m-d H:i:s", $first)." and ".date("Y-m-d H:i:s", $last)
                 );
             }
             if ($bad > 0) {
@@ -236,7 +235,7 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
                 );
             }
             $dev->load($dev->id());
-            $dev->setParam("LastMasterHistoryPush", $now);
+            $dev->setParam("LastMasterHistoryPush", $last);
             $dev->store();
         }
     }
