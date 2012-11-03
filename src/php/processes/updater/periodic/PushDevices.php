@@ -58,6 +58,8 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  */
 class PushDevices extends \HUGnet\processes\updater\Periodic
 {
+    /** This is the maximum number of history records to get */
+    const MAX_HISTORY = 100;
     /** This is the period */
     protected $period = 60;
     /** This is the object we use */
@@ -103,30 +105,7 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
                 }
 
                 $this->_device->load($key);
-                /* Let's just push the regular devices */
-                if ($key >= 0xFE0000) {
-                    continue;
-                }
-                $lastContact = $this->_device->getParam("LastContact");
-                /* Only push it if we have changed it since the last push */
-                if ($lastContact < $this->_device->getParam("LastMasterPush")) {
-                    continue;
-                }
-                $this->system()->out(
-                    "Pushing ".sprintf("%06X", $devID)." to master server..."
-                );
-                $this->_device->setParam("LastMasterPush", $now);
-                $ret = $this->_device->action()->post($url);
-                if (is_array($ret) && ($ret["id"] == $this->_device->id())) {
-                    $this->system()->out(
-                        "Successfully pushed ".sprintf("%06X", $devID)."."
-                    );
-                    $this->_device->store();
-                    $this->_pushSensors($key);
-                } else {
-                    $this->system()->out("Failure.");
-                    /* Don't store it if we fail */
-                }
+                $this->_pushDevice($this->_device);
             }
             $this->last = $now;
         }
@@ -134,32 +113,162 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
     /**
      * This pushes out all of the sensors for a device
      *
-     * @param int $dev The device to use
+     * @param int &$dev The device to use
+     *
+     * @return none
+     */
+    private function _pushDevice(&$dev)
+    {
+        /* Let's just push the regular devices */
+        if ($dev->id() >= 0xFE0000) {
+            return;
+        }
+        $lastContact = $dev->getParam("LastContact");
+        /* Only push it if we have changed it since the last push */
+        if ($lastContact < $dev->getParam("LastMasterPush")) {
+            return;
+        }
+        $this->system()->out(
+            "Pushing ".sprintf("%06X", $devID)." to master server..."
+        );
+        $dev->setParam("LastMasterPush", $now);
+        $ret = $dev->action()->post($url);
+        if (is_array($ret) && ($ret["id"] == $dev->id())) {
+            $this->system()->out(
+                "Successfully pushed ".sprintf("%06X", $devID)."."
+            );
+            $dev->refresh();
+            $dev->setParam("LastMasterPush", $now);
+            $dev->store();
+            $this->_pushSensors($dev);
+            $this->_pushHisotry($dev);
+        } else {
+            $this->system()->out("Failure.");
+            /* Don't store it if we fail */
+        }
+    }
+    /**
+     * This pushes out all of the sensors for a device
+     *
+     * @param int &$dev The device to use
      *
      * @return none
      */
     private function _pushSensors($dev)
     {
-        $this->_device->load($dev);
-        $sens = $this->_device->get("totalSensors");
+        $sens = $dev->get("totalSensors");
+        $good = 0;
+        $bad  = 0;
         for ($i = 0; $i < $sens; $i++) {
             $this->system()->main();
             if (!$this->ui()->loop()) {
                 break;
             }
-            $ret = &$this->_device->sensor($i)->action()->post($url);
+            $ret = &$dev->sensor($i)->action()->post($url);
             if (is_array($ret)
-                && ($ret["dev"] == $this->_device->id())
+                && ($ret["dev"] == $dev->id())
                 && ($ret["sensor"] == $i)
             ) {
-                $this->system()->out("Successfully Pushed sensor ".$i);
+                $good++;
             } else {
-                $this->system()->out("Failure to push out sensors!");
-                break;
+                $bad++;
             }
         }
-
+            if ($good > 0) {
+                $this->system()->out("Successfully pushed ".$good." sensors");
+            }
+            if ($bad > 0) {
+                $this->system()->out("Failure to push out ".$bad." sensors!");
+            }
     }
+    /**
+     * This pushes out all of the sensors for a device
+     *
+     * @param int &$dev The device to use
+     *
+     * @return none
+     */
+    private function _pushHistory($dev)
+    {
+        $hist = $dev->historyFactory(array(), true);
+        $last = $dev->getParam("LastMasterHistoryPush");
+        $hist->sqlLimit = self::MAX_HISTORY;
+        $now = 0;
+        $first = time();
+        $ret = $hist->getPeriod($last, time());
+        if ($ret) {
+            $records = array();
+            while ($ret) {
+                $this->system()->main();
+                if (!$this->ui()->loop()) {
+                    break;
+                }
+                $records[] = $hist->toArray(false);
+                $date = $hist->get("Date");
+                if ($now < $date) {
+                    $now = $date;
+                }
+                if ($first > $date) {
+                    $first = $date;
+                }
+                $ret = $hist->nextInto();
+            }
+            $ret = $this->_postHistory(null, $dev->id(), $records);
+            $good = 0;
+            $bad = count($records);
+            if (is_array($ret)) {
+                for ($i = 0; $i < count($records); $i++) {
+                    if ($ret[$i] == 1) {
+                        $good++;
+                        $bad--;
+                    }
+                }
+            }
+            if ($good > 0) {
+                $this->system()->out(
+                    "Successfully pushed ".$good." history records between "
+                    .date("Y-m-d H:i:s", $first)." and ".date("Y-m-d H:i:s", $now)
+                );
+            }
+            if ($bad > 0) {
+                $this->system()->out(
+                    "Failure to push out ".$bad." history records!"
+                );
+            }
+            $dev->refresh();
+            $dev->setParam("LastMasterHistoryPush", $now);
+            $dev->store();
+        }
+    }
+    /**
+    * Gets the config and saves it
+    *
+    * @param string $url     The url to post to
+    * @param string $id      The device id to use
+    * @param array  $records The records to send
+    *
+    * @return string The left over string
+    */
+    private function _postHistory($url, $did, $records)
+    {
+        if (!is_string($url) || (strlen($url) == 0)) {
+            $master = $this->system()->get("master");
+            $url = $master["url"];
+        }
+
+        return \HUGnet\Util::postData(
+            $url,
+            array(
+                "uuid"   => urlencode($this->system()->get("uuid")),
+                "action" => "put",
+                "task"   => "history",
+                "id"     => $did,
+                "data"   => $records,
+            ),
+            120
+        );
+    }
+
 }
 
 

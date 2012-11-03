@@ -690,7 +690,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
-            array(  // #12
+            array(  // #13
                 array(
                     "task" => "history",
                     "action" => "put",
@@ -728,7 +728,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                 array(
                     "History" => array(
                         "insertRow" => array(
-                            array()
+                            array(true)
                         ),
                         "fromArray" => array(
                             array(array("id" => 16, "Date" => 1234)),
@@ -739,7 +739,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
-            array(  // #13
+            array(  // #14
                 array(
                     "task" => "history",
                     "action" => "get",
