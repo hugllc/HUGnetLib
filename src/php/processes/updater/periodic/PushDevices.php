@@ -193,9 +193,8 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
         $hist = $dev->historyFactory(array(), true);
         $last = (int)$dev->getParam("LastMasterHistoryPush");
         $hist->sqlLimit = self::MAX_HISTORY;
-        $last = 0;
         $first = time();
-        $ret = $hist->getPeriod($last, time(), $dev->id());
+        $ret = $hist->getPeriod($last + 1, time(), $dev->id());
         if ($ret) {
             $records = array();
             while ($ret) {
@@ -226,7 +225,8 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
             if ($good > 0) {
                 $this->system()->out(
                     sprintf("%06X ", $dev->id())
-                    ."Successfully pushed ".$good." history records ending "
+                    ."Successfully pushed ".$good." history from "
+                    .date("Y-m-d H:i:s", $first)." to "
                     .date("Y-m-d H:i:s", $last)
                 );
             }
