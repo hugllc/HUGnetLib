@@ -299,7 +299,7 @@ class WebAPI extends HTML
             $ret = array();
             foreach ($data as $key => $row) {
                 if (is_array($row) && ($row["id"] == $did)
-                    && isset($row["Date"]) && is_int($row["Date"])
+                    && isset($row["Date"])
                 ) {
                     $hist->clearData();
                     $hist->fromArray($row);
