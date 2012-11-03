@@ -129,19 +129,19 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
             return;
         }
         $this->system()->out(
-            "Pushing ".sprintf("%06X", $devID)." to master server..."
+            "Pushing ".sprintf("%06X", $dev->id())." to master server..."
         );
         $dev->setParam("LastMasterPush", $now);
         $ret = $dev->action()->post($url);
         if (is_array($ret) && ($ret["id"] == $dev->id())) {
             $this->system()->out(
-                "Successfully pushed ".sprintf("%06X", $devID)."."
+                "Successfully pushed ".sprintf("%06X", $dev->id())."."
             );
-            $dev->refresh();
+            $dev->load($dev->id());
             $dev->setParam("LastMasterPush", $now);
             $dev->store();
             $this->_pushSensors($dev);
-            $this->_pushHisotry($dev);
+            $this->_pushHistory($dev);
         } else {
             $this->system()->out("Failure.");
             /* Don't store it if we fail */
@@ -154,7 +154,7 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
      *
      * @return none
      */
-    private function _pushSensors($dev)
+    private function _pushSensors(&$dev)
     {
         $sens = $dev->get("totalSensors");
         $good = 0;
@@ -174,12 +174,12 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
                 $bad++;
             }
         }
-            if ($good > 0) {
-                $this->system()->out("Successfully pushed ".$good." sensors");
-            }
-            if ($bad > 0) {
-                $this->system()->out("Failure to push out ".$bad." sensors!");
-            }
+        if ($good > 0) {
+            $this->system()->out("Successfully pushed ".$good." sensors");
+        }
+        if ($bad > 0) {
+            $this->system()->out("Failure to push out ".$bad." sensors!");
+        }
     }
     /**
      * This pushes out all of the sensors for a device
@@ -188,10 +188,10 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
      *
      * @return none
      */
-    private function _pushHistory($dev)
+    private function _pushHistory(&$dev)
     {
         $hist = $dev->historyFactory(array(), true);
-        $last = $dev->getParam("LastMasterHistoryPush");
+        $last = (int)$dev->getParam("LastMasterHistoryPush");
         $hist->sqlLimit = self::MAX_HISTORY;
         $now = 0;
         $first = time();
@@ -235,7 +235,7 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
                     "Failure to push out ".$bad." history records!"
                 );
             }
-            $dev->refresh();
+            $dev->load($dev->id());
             $dev->setParam("LastMasterHistoryPush", $now);
             $dev->store();
         }
@@ -244,7 +244,7 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
     * Gets the config and saves it
     *
     * @param string $url     The url to post to
-    * @param string $id      The device id to use
+    * @param string $did     The device id to use
     * @param array  $records The records to send
     *
     * @return string The left over string
@@ -262,7 +262,7 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
                 "uuid"   => urlencode($this->system()->get("uuid")),
                 "action" => "put",
                 "task"   => "history",
-                "id"     => $did,
+                "id"     => sprintf("%06X", $did),
                 "data"   => $records,
             ),
             120
