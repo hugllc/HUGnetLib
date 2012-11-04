@@ -104,8 +104,10 @@ class ActionVirtual extends Action
     */
     public function ping($find = false)
     {
+        $this->device->load($this->device->id());
         $this->device->setParam("LastContact", time());
         $this->device->setParam("ContactFail", 0);
+        $this->device->store();
         return true;
     }
     /**
@@ -116,10 +118,12 @@ class ActionVirtual extends Action
     public function config()
     {
         $this->checkRecord();
+        $this->device->load($this->device->id());
         $this->device->setParam("LastContact", time());
         $this->device->setParam("LastConfig", time());
         $this->device->setParam("ConfigFail", 0);
         $this->device->setParam("ContactFail", 0);
+        $this->device->store();
         return true;
     }
     /**
@@ -190,6 +194,7 @@ class ActionVirtual extends Action
                 )
             );
         }
+        $this->device->load($this->device->id());
         $this->device->setParam("LastPollData", $hist);
         $this->device->setParam("LastPoll", $time);
         $this->device->setParam("LastContact", $time);
@@ -199,6 +204,7 @@ class ActionVirtual extends Action
         if ($history->insertRow()) {
             $this->device->setParam("LastHistory", $time);
         }
+        $this->device->store();
         $this->_writeFile($history);
         return $history;
     }
