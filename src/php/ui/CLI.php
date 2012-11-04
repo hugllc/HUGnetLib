@@ -127,6 +127,7 @@ class CLI
         $this->_config["IPAddr"] = $this->_getIP();
         // Ratchet up the verbosity one level so more stuff prints
         $this->_config["verbose"]++;
+        $this->_verbose = $this->_config["verbose"];
         $this->_config["html"] = false;
         // Set up printing
         \HUGnet\VPrint::config($this->_config);
