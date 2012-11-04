@@ -136,14 +136,18 @@ class Action
         $pkt = $this->device->network()->ping(
             $find, null, null, array("tries" => 1, "find" => false)
         );
+        $this->device->load($this->device->id());
         if (is_string($pkt->reply())) {
             $this->device->setParam("LastContact", time());
             $this->device->setParam("ContactFail", 0);
-            return true;
+            $ret = true;
+        } else {
+            $fail = $this->device->getParam("ContactFail");
+            $this->device->setParam("ContactFail", $fail+1);
+            $ret = false;
         }
-        $fail = $this->device->getParam("ContactFail");
-        $this->device->setParam("ContactFail", $fail+1);
-        return false;
+        $this->device->store();
+        return $ret;
     }
     /**
     * Gets the config and saves it
@@ -153,17 +157,20 @@ class Action
     public function config()
     {
         $pkt = $this->device->network()->config();
+        $this->device->load($this->device->id());
         if (strlen($pkt->reply())) {
             if ($this->device->decode($pkt->reply())) {
                 $this->device->setParam("LastContact", time());
                 $this->device->setParam("LastConfig", time());
                 $this->device->setParam("ConfigFail", 0);
                 $this->device->setParam("ContactFail", 0);
+                $this->device->store();
                 return true;
             }
         }
         $fail = $this->device->getParam("ConfigFail");
         $this->device->setParam("ConfigFail", $fail+1);
+        $this->device->store();
         return false;
     }
     /**
@@ -212,6 +219,7 @@ class Action
             $data["Date"]   = $time;
             $data["TestID"] = $TestID;
             $data["deltaT"] = $time - $prev["Date"];
+            $this->device->load($this->device->id());
             $this->device->setParam("LastPollData", $data);
             $hist = $this->device->historyFactory($data);
             if ($hist->insertRow()) {
@@ -221,10 +229,13 @@ class Action
             $this->device->setParam("LastContact", $time);
             $this->device->setParam("PollFail", 0);
             $this->device->setParam("ContactFail", 0);
+            $this->device->store();
             return $hist;
         }
+        $this->device->load($this->device->id());
         $fail = $this->device->getParam("PollFail");
         $this->device->setParam("PollFail", $fail+1);
+        $this->device->store();
         return false;
     }
     /**

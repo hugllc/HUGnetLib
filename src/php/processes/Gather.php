@@ -292,7 +292,6 @@ class Gather extends \HUGnet\ui\Daemon
             );
             $this->_device->action()->checkRecord();
         }
-        $this->_device->store();
     }
     /**
     * Deals with incoming packets
@@ -321,7 +320,6 @@ class Gather extends \HUGnet\ui\Daemon
                 "---> Failed.  Failure #".$this->_device->getParam("ConfigFail")
             );
         }
-        $this->_device->store();
     }
     /**
     * Deals with incoming packets
@@ -353,7 +351,6 @@ class Gather extends \HUGnet\ui\Daemon
                 "---> Failed.  Failure #".$this->_device->getParam("PollFail")
             );
         }
-        $this->_device->store();
     }
     /**
     * Deals with incoming packets
