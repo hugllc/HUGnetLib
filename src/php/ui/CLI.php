@@ -95,7 +95,6 @@ class CLI
     */
     public function __destruct()
     {
-        $this->out(get_class($this)." destroying system", 3);
         // Shut down the network
         unset($this->_system);
     }
