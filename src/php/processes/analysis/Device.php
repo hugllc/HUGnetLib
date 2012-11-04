@@ -83,8 +83,6 @@ abstract class Device
     */
     private static $_drivers = array(
         "Average"
-        //, "AverageHourly", "AverageDaily", "AverageWeekly",
-        //"AverageMonthly", "AverageYearly",
     );
     /**
     * This function sets up the driver object, and the database object.  The
@@ -104,7 +102,6 @@ abstract class Device
     public function __destruct()
     {
     }
-    /**
     /**
     * This function creates the system.
     *
