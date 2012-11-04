@@ -38,6 +38,7 @@
 namespace HUGnet\processes\analysis;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
+require_once dirname(__FILE__)."../../../db/Average.php";
 
 /**
  * Base driver class for devices.
@@ -81,8 +82,9 @@ abstract class Device
     * as the driver class name.
     */
     private static $_drivers = array(
-        "Average15min", "AverageHourly", "AverageDaily", "AverageWeekly",
-        "AverageMonthly", "AverageYearly",
+        "Average"
+        //, "AverageHourly", "AverageDaily", "AverageWeekly",
+        //"AverageMonthly", "AverageYearly",
     );
     /**
     * This function sets up the driver object, and the database object.  The
@@ -103,26 +105,6 @@ abstract class Device
     {
     }
     /**
-    * This function creates the system.
-    *
-    * @param object &$gui The user interface to use
-    *
-    * @return null
-    */
-    protected static function &intFactory(&$gui)
-    {
-        $class = get_called_class();
-        $object = new $class($gui);
-        return $object;
-    }
-    /**
-    * This function creates the system.
-    *
-    * @param object &$gui The user interface to use
-    *
-    * @return null
-    */
-    abstract public static function &factory(&$gui);
     /**
     * This function creates the system.
     *
@@ -149,7 +131,7 @@ abstract class Device
                 "\\HUGnet\\processes\\analysis\\device"
             );
             if (class_exists($class)) {
-                $plugins[$class] = &$class::factory($gui);
+                $plugins[$class] = new $class($gui);
             }
         }
         return (array)$plugins;
