@@ -150,7 +150,7 @@ class DriverTestClass extends Device
     */
     public static function &factory(&$gui)
     {
-        return parent::intFactory($gui);
+        return new DriverTestClass($gui);
     }
     /**
     * This function creates the system.
