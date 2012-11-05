@@ -329,6 +329,146 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
+    public static function dataEnabled()
+    {
+        return array(
+            array( // #0 Channel 1
+                array(
+                ),
+                1,
+                array(
+                    "ADC0EN" => 1,
+                    "ADC1EN" => 0,
+                ),
+                false,
+            ),
+            array( // #1 Channel 1
+                array(
+                ),
+                1,
+                array(
+                    "ADC0EN" => 0,
+                    "ADC1EN" => 1,
+                ),
+                true,
+            ),
+            array( // #2 Channel 0
+                array(
+                ),
+                0,
+                array(
+                    "ADC0EN" => 1,
+                    "ADC1EN" => 0,
+                ),
+                true,
+            ),
+            array( // #3 Channel 0
+                array(
+                ),
+                0,
+                array(
+                    "ADC0EN" => 0,
+                    "ADC1EN" => 1,
+                ),
+                false,
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param array  $mock    The mocks to preload
+    * @param int    $channel The channel to use
+    * @param string $preload The string to give to the class
+    * @param array  $expect  The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataEnabled
+    */
+    public function testEnabled($mock, $channel, $preload, $expect)
+    {
+        $sensor = new \HUGnet\DummyTable("Sensor");
+        $sensor->resetMock($mock);
+        $obj = ADuCInputTable::factory($sensor, $preload);
+        $ret = $obj->enabled($channel);
+        $this->assertEquals($expect, $ret, 0.0001);
+    }
+    /**
+    * Data provider for testRemove
+    *
+    * @return array
+    */
+    public static function dataTwosComplimentEnabled()
+    {
+        return array(
+            array( // #0 Channel 1
+                array(
+                ),
+                1,
+                array(
+                    "ADC0CODE" => 1,
+                    "ADC1CODE" => 0,
+                ),
+                true,
+            ),
+            array( // #1 Channel 1
+                array(
+                ),
+                1,
+                array(
+                    "ADC0CODE" => 0,
+                    "ADC1CODE" => 1,
+                ),
+                false,
+            ),
+            array( // #2 Channel 0
+                array(
+                ),
+                0,
+                array(
+                    "ADC0CODE" => 1,
+                    "ADC1CODE" => 0,
+                ),
+                false,
+            ),
+            array( // #3 Channel 0
+                array(
+                ),
+                0,
+                array(
+                    "ADC0CODE" => 0,
+                    "ADC1CODE" => 1,
+                ),
+                true,
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param array  $mock    The mocks to preload
+    * @param int    $channel The channel to use
+    * @param string $preload The string to give to the class
+    * @param array  $expect  The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataTwosComplimentEnabled
+    */
+    public function testTwosComplimentEnabled($mock, $channel, $preload, $expect)
+    {
+        $sensor = new \HUGnet\DummyTable("Sensor");
+        $sensor->resetMock($mock);
+        $obj = ADuCInputTable::factory($sensor, $preload);
+        $ret = $obj->twosComplimentEnabled($channel);
+        $this->assertEquals($expect, $ret, 0.0001);
+    }
+    /**
+    * Data provider for testRemove
+    *
+    * @return array
+    */
     public static function dataEncode()
     {
         return array(

@@ -573,6 +573,34 @@ class ADuCInputTable
     /**
     * This builds teh ADCFLT Register
     *
+    * @param int $channel the channel to use
+    *
+    * @return True if the channel is enabled, false otherwise
+    */
+    public function enabled($channel)
+    {
+        if ($channel == 0) {
+            return (bool)$this->_params("ADC0EN");
+        }
+        return (bool)$this->_params("ADC1EN");
+    }
+    /**
+    * This builds teh ADCFLT Register
+    *
+    * @param int $channel the channel to use
+    *
+    * @return True if two's compliment is enabled, false otherwise
+    */
+    public function twosComplimentEnabled($channel)
+    {
+        if ($channel == 0) {
+            return !(bool)$this->_params("ADC0CODE");
+        }
+        return !(bool)$this->_params("ADC1CODE");
+    }
+    /**
+    * This builds teh ADCFLT Register
+    *
     * @param string $param The parameter to set
     * @param string $set   The values to set the register to
     *
