@@ -74,7 +74,9 @@ class DriverVirtualTest extends drivers\DriverTestBase
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
-        $this->o = &DriverVirtualTestClass::factory($sensor);
+        $this->o = DriverVirtual::factory(
+            "DriverVirtualTestClass", $sensor
+        );
     }
 
     /**
@@ -202,8 +204,8 @@ class DriverVirtualTest extends drivers\DriverTestBase
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
-        $o = &DriverVirtual::factory($name, $sensor);
-        $this->assertSame($expect, get_class($o));
+        $obj = DriverVirtual::factory($name, $sensor);
+        $this->assertSame($expect, get_class($obj));
     }
     /**
      * Data provider for testGetReading
@@ -226,6 +228,8 @@ class DriverVirtualTest extends drivers\DriverTestBase
         );
     }
 }
+/** This is the HUGnet namespace */
+namespace HUGnet\sensors\drivers;
 /**
  * Base driver class for devices.
  *
@@ -242,7 +246,7 @@ class DriverVirtualTest extends drivers\DriverTestBase
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class DriverVirtualTestClass extends DriverVirtual
+class DriverVirtualTestClass extends \HUGnet\sensors\DriverVirtual
 {
     /**
     * This is where the data for the driver is stored.  This array must be
