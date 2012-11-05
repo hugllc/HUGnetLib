@@ -373,10 +373,10 @@ class DriverADuCTest extends drivers\DriverTestBase
     /**
     * test the set routine when an extra class exists
     *
-    * @param int   $value   The integer to feed to the function
-    * @param int   $bits    The number of bits to use
-    * @param array $entry   The input table entry to use
-    * @param int   $expect  The expected data
+    * @param int   $value  The integer to feed to the function
+    * @param int   $bits   The number of bits to use
+    * @param array $entry  The input table entry to use
+    * @param int   $expect The expected data
     *
     * @return null
     *
