@@ -124,6 +124,7 @@ abstract class Driver
         "44:DEFAULT"                 => "ADuCPressure",
         "50:ControllerCurrent"       => "ControllerCurrent",
         "50:dwyer616"                => "AVRDwyer616",
+        "50:fetBoard"                => "FETBoardCurrent",
         "70:bravo3motion"            => "Bravo3Motion",
         "F9:DEFAULT"                 => "ADuCInputTable",
         "FA:DEFAULT"                 => "SDEFAULT",
