@@ -76,7 +76,9 @@ class DriverADuCTest extends drivers\DriverTestBase
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
-        $this->o = &\HUGnet\sensors\drivers\DriverADuCTestClass::factory($sensor);
+        $this->o = &\HUGnet\sensors\DriverADuC::factory(
+            "DriverADuCTestClass", $sensor
+        );
     }
 
     /**
@@ -249,8 +251,8 @@ class DriverADuCTest extends drivers\DriverTestBase
         unset($this->o);
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($mock);
-        $this->o = &\HUGnet\sensors\drivers\DriverADuCTestClass::factory(
-            $sensor, $offset
+        $this->o = \HUGnet\sensors\DriverADuC::factory(
+            "DriverADuCTestClass", $sensor, $offset
         );
         $this->assertSame($expect, $this->o->getExtra($index));
     }
@@ -385,7 +387,7 @@ class DriverADuCTest extends drivers\DriverTestBase
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
         $ent = \HUGnet\sensors\ADuCInputTable::factory($sensor, $entry);
-        $obj = &DriverADuC::factory(
+        $obj = DriverADuC::factory(
             "DriverADuCTestClass", $sensor, 0, $ent
         );
         $val = $obj->getTwosCompliment($value, $bits);

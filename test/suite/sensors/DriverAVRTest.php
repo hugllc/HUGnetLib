@@ -74,7 +74,9 @@ class DriverAVRTest extends drivers\DriverTestBase
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
-        $this->o = &DriverAVRTestClass::factory($sensor);
+        $this->o = \HUGnet\sensors\DriverAVR::factory(
+            "DriverAVRTestClass", $sensor
+        );
     }
 
     /**
@@ -676,6 +678,8 @@ class DriverAVRTest extends drivers\DriverTestBase
         $this->assertSame($expect, $this->o->tableInterpolate($R));
     }
 }
+/** This is the HUGnet namespace */
+namespace HUGnet\sensors\drivers;
 /**
  * Base driver class for devices.
  *
@@ -692,7 +696,7 @@ class DriverAVRTest extends drivers\DriverTestBase
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class DriverAVRTestClass extends DriverAVR
+class DriverAVRTestClass extends \HUGnet\sensors\DriverAVR
 {
     /**
     * This is where the data for the driver is stored.  This array must be

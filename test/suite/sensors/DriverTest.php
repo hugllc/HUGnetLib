@@ -74,7 +74,7 @@ class DriverTest extends drivers\DriverTestBase
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($extra);
-        $this->o = &DriverTestClass::factory($sensor);
+        $this->o = Driver::factory("DriverTestClass", $sensor);
     }
 
     /**
@@ -534,7 +534,7 @@ class DriverTest extends drivers\DriverTestBase
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($mocks);
-        $obj = DriverTestClass::factory($sensor);
+        $obj = Driver::factory("DriverTestClass", $sensor);
         $obj->decode($string);
         $ret = $sensor->retrieve();
         $this->assertEquals($expect, $ret);
@@ -573,7 +573,7 @@ class DriverTest extends drivers\DriverTestBase
     {
         $sensor  = new \HUGnet\DummyTable("Sensor");
         $sensor->resetMock($mocks);
-        $obj = DriverTestClass::factory($sensor);
+        $obj = Driver::factory("DriverTestClass", $sensor);
         $ret = $obj->encode();
         $this->assertSame($expect, $ret);
     }
@@ -607,7 +607,7 @@ class DriverTest extends drivers\DriverTestBase
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
-        $obj = DriverTestClass::factory($sensor);
+        $obj = Driver::factory("DriverTestClass", $sensor);
         $ret = $obj->strToInt($string);
         $this->assertSame($retExpect, $ret, "Return is wrong");
         $this->assertSame($expect, $string, "String is wrong");
@@ -711,7 +711,7 @@ class DriverTest extends drivers\DriverTestBase
                         ),
                     ),
                 ),
-                "\HUGnet\sensors\DriverTestClass",
+                "DriverTestClass",
                 array(
                     array(
                         "decimals" => 7,
@@ -740,10 +740,12 @@ class DriverTest extends drivers\DriverTestBase
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($mocks);
-        $obj = &$name::factory($sensor);
+        $obj = Driver::factory($name, $sensor);
         $this->assertSame($expect, $obj->channels());
     }
 }
+/** This is the HUGnet namespace */
+namespace HUGnet\sensors\drivers;
 /**
  * Base driver class for devices.
  *
@@ -760,7 +762,7 @@ class DriverTest extends drivers\DriverTestBase
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class DriverTestClass extends Driver
+class DriverTestClass extends \HUGnet\sensors\Driver
 {
     /**
     * This is where the data for the driver is stored.  This array must be

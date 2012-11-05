@@ -160,7 +160,7 @@ abstract class Driver
     *
     * @return null
     */
-    private function __construct(&$sensor)
+    protected function __construct(&$sensor)
     {
         $this->_sensor = &$sensor;
     }

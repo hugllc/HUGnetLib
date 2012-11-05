@@ -98,7 +98,8 @@ abstract class DriverADuC extends Driver
             include_once $file;
         }
         if (class_exists($class)) {
-            $obj = $class::factory($sensor, $offset);
+            $obj = $class::factory($sensor);
+            $obj->offset = (int)$offset;
         }
         if (!is_object($obj)) {
             include_once dirname(__FILE__)."/drivers/SDEFAULT.php";
@@ -107,22 +108,6 @@ abstract class DriverADuC extends Driver
         $obj->_entry = $entry;
         $obj->_channel = (int)$channel;
         return $obj;
-    }
-    /**
-    * This function creates the system.
-    *
-    * @param object &$sensor The sensor object
-    * @param int    $offset  The offset for getExtra
-    *
-    * @return null
-    */
-    protected static function &intFactory(&$sensor, $offset = 0)
-    {
-        $object = &parent::intFactory($sensor);
-        if (is_int($offset)) {
-            $object->offset = $offset;
-        }
-        return $object;
     }
     /**
     * Gets the extra values
