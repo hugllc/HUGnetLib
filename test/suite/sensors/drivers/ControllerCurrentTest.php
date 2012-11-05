@@ -120,7 +120,9 @@ class ControllerCurrentTest extends DriverTestBase
     public static function dataDecodeData()
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
-        $driver = ControllerCurrent::factory($sensor);
+        $driver = \HUGnet\sensors\DriverAVR::factory(
+            "ControllerCurrent", $sensor
+        );
         return array(
             array( // #0  first current
                 array(

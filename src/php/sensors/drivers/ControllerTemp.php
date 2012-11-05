@@ -84,17 +84,6 @@ class ControllerTemp extends \HUGnet\sensors\drivers\AVRBC2322640
             \HUGnet\channels\Driver::TYPE_RAW => \HUGnet\channels\Driver::TYPE_RAW,
         ),
     );
-    /**
-    * This function creates the system.
-    *
-    * @param object &$sensor The sensor object
-    *
-    * @return null
-    */
-    public static function &factory(&$sensor)
-    {
-        return parent::intFactory($sensor);
-    }
 
 }
 

@@ -82,17 +82,6 @@ class AVRBAROA4V extends \HUGnet\sensors\DriverAVR
         "maxDecimals" => 2,
     );
     /**
-    * This function creates the system.
-    *
-    * @param object &$sensor The sensor object
-    *
-    * @return null
-    */
-    public static function &factory(&$sensor)
-    {
-        return parent::intFactory($sensor);
-    }
-    /**
     * Changes a raw reading into a output value
     *
     * @param int   $A      Output of the A to D converter

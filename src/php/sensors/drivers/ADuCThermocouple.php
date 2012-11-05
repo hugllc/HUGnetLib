@@ -104,18 +104,6 @@ class ADuCThermocouple extends \HUGnet\sensors\DriverADuC
         ),
     );
     /**
-    * This function creates the system.
-    *
-    * @param object &$sensor The sensor object
-    * @param int    $offset  The offset for getExtra
-    *
-    * @return null
-    */
-    public static function &factory(&$sensor, $offset = 0)
-    {
-        return parent::intFactory($sensor, $offset);
-    }
-    /**
     * Changes a raw reading into a output value
     *
     * @param int   $A      Output of the A to D converter

@@ -120,7 +120,9 @@ class ControllerVoltageTest extends DriverTestBase
     public static function dataDecodeData()
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
-        $driver = ControllerVoltage::factory($sensor);
+        $driver = \HUGnet\sensors\DriverAVR::factory(
+            "ControllerVoltage", $sensor
+        );
         return array(
             array( // #0  first voltage
                 array(

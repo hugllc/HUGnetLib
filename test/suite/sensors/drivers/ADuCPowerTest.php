@@ -261,7 +261,7 @@ class ADuCPowerTest extends DriverTestBase
                         "id" => 1,
                     ),
                 ),
-                "\HUGnet\sensors\drivers\ADuCPower",
+                "ADuCPower",
                 array(
                     array(
                         "decimals" => 6,
@@ -303,7 +303,7 @@ class ADuCPowerTest extends DriverTestBase
                         "id" => 3,
                     ),
                 ),
-                "\HUGnet\sensors\drivers\ADuCPower",
+                "ADuCPower",
                 array(
                     array(
                         "decimals" => 6,
@@ -356,7 +356,9 @@ class ADuCPowerTest extends DriverTestBase
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($mocks);
-        $obj = &$name::factory($sensor);
+        $obj = \HUGnet\sensors\DriverADuC::factory(
+            $name, $sensor, 0
+        );
         $this->assertSame($expect, $obj->channels());
     }
     /**

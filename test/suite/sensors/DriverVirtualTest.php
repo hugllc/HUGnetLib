@@ -260,17 +260,6 @@ class DriverVirtualTestClass extends \HUGnet\sensors\DriverVirtual
         "extraValues" => array(5, 5, 5, 5, 5),
     );
     /**
-    * This function creates the system.
-    *
-    * @param object &$sensor The sensor object
-    *
-    * @return null
-    */
-    public static function &factory(&$sensor)
-    {
-        return parent::intFactory($sensor);
-    }
-    /**
     * Gets the extra values
     *
     * @param int $index The extra index to use

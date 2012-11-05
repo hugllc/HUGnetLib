@@ -373,10 +373,10 @@ class DriverADuCTest extends drivers\DriverTestBase
     /**
     * test the set routine when an extra class exists
     *
-    * @param int $value   The integer to feed to the function
-    * @param int $bits    The number of bits to use
-    * @param array $entry The input table entry to use
-    * @param int $expect  The expected data
+    * @param int   $value   The integer to feed to the function
+    * @param int   $bits    The number of bits to use
+    * @param array $entry   The input table entry to use
+    * @param int   $expect  The expected data
     *
     * @return null
     *
@@ -663,24 +663,6 @@ class DriverADuCTestClass extends \HUGnet\sensors\DriverADuC
         "extraText" => array("a","b","c","d","e"),
         "extraValues" => array(5, 5, 5, 5, 5),
     );
-    /**
-    * This function creates the system.
-    *
-    * @param object &$sensor The sensor object
-    * @param int    $offset  The offset for getExtra
-    * @param object &$entry  The input table entry
-    *
-    * @return null
-    */
-    public static function &factory(&$sensor, $offset = 0, &$entry = null)
-    {
-        $obj = parent::intFactory($sensor, $offset);
-        $obj->_entry = $entry;
-        if (is_object($entry)) {
-            var_dump($entry->toArray());
-        }
-        return $obj;
-    }
     /**
     * Gets the extra values
     *

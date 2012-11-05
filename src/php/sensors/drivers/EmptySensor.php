@@ -81,17 +81,6 @@ class EmptySensor extends \HUGnet\sensors\Driver
         ),
     );
     /**
-    * This function creates the system.
-    *
-    * @param object &$sensor The sensor object
-    *
-    * @return null
-    */
-    public static function &factory(&$sensor)
-    {
-        return parent::intFactory($sensor);
-    }
-    /**
     * Gets the direction from a direction sensor made out of a POT.
     *
     * @param string &$string The data string

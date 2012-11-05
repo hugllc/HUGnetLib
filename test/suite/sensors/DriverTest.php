@@ -777,17 +777,6 @@ class DriverTestClass extends \HUGnet\sensors\Driver
         "maxDecimals" => "getExtra3",
     );
     /**
-    * This function creates the system.
-    *
-    * @param object &$sensor The sensor object
-    *
-    * @return null
-    */
-    public static function &factory(&$sensor)
-    {
-        return parent::intFactory($sensor);
-    }
-    /**
     * Gets the extra values
     *
     * @param int $index The extra index to use

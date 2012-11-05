@@ -78,17 +78,6 @@ class CloneVirtual extends \HUGnet\sensors\DriverVirtual
         "extraDefault" => array("", ""),
     );
     /**
-    * This function creates the system.
-    *
-    * @param object &$sensor The sensor object
-    *
-    * @return null
-    */
-    public static function &factory(&$sensor)
-    {
-        return parent::intFactory($sensor);
-    }
-    /**
      * This is the routine that gets the sensor that we are cloning
      *
      * @return object The object for the sensor we are cloning
