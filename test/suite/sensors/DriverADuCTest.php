@@ -329,27 +329,41 @@ class DriverADuCTest extends drivers\DriverTestBase
             array(
                 8388608,
                 24,
+                array(),
                 -8388608,
             ),
             array(
                 0xFFFFFF,
                 24,
+                array(),
                 -1,
             ),
             array(
                 0xFFFFFFFFFFFF,
                 24,
+                array(),
                 -1,
             ),
             array(
                 0,
                 24,
+                array(),
                 0,
             ),
             array(
                 8388607,
                 24,
+                array(),
                 8388607,
+            ),
+            array(
+                0xFFFFFFFFFFFF,
+                24,
+                array(
+                    "ADC0CODE" => 1,
+                    "ADC1CODE" => 1,
+                ),
+                0xFFFFFFFFFFFF,
             ),
         );
     }
@@ -357,17 +371,24 @@ class DriverADuCTest extends drivers\DriverTestBase
     /**
     * test the set routine when an extra class exists
     *
-    * @param int $value  The integer to feed to the function
-    * @param int $bits   The number of bits to use
-    * @param int $expect The expected data
+    * @param int $value   The integer to feed to the function
+    * @param int $bits    The number of bits to use
+    * @param array $entry The input table entry to use
+    * @param int $expect  The expected data
     *
     * @return null
     *
     * @dataProvider dataGetTwosCompliment
     */
-    public function testGetTwosCompliment($value, $bits, $expect)
+    public function testGetTwosCompliment($value, $bits, $entry, $expect)
     {
-        $val = $this->o->getTwosCompliment($value, $bits);
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock(array());
+        $ent = \HUGnet\sensors\ADuCInputTable::factory($sensor, $entry);
+        $obj = &DriverADuC::factory(
+            "DriverADuCTestClass", $sensor, 0, $ent
+        );
+        $val = $obj->getTwosCompliment($value, $bits);
         $this->assertSame($expect, $val);
     }
 
@@ -446,7 +467,7 @@ class DriverADuCTest extends drivers\DriverTestBase
                 1,
                 0,
                 0,
-                5,
+                5.0,
             ),
             array(  // #1 No channel given
                 array(
@@ -465,7 +486,7 @@ class DriverADuCTest extends drivers\DriverTestBase
                 1,
                 1,
                 null,
-                3,
+                3.0,
             ),
             array( // #2 No valid entry
                 array(
@@ -484,7 +505,7 @@ class DriverADuCTest extends drivers\DriverTestBase
                 1,
                 1,
                 null,
-                1,
+                1.0,
             ),
             array(  // #3 Asking for channel 0 when ADC0 is not enabled
                 array(
@@ -503,7 +524,7 @@ class DriverADuCTest extends drivers\DriverTestBase
                 1,
                 1,
                 0,
-                3,
+                3.0,
             ),
         );
     }
@@ -550,9 +571,9 @@ class DriverADuCTest extends drivers\DriverTestBase
                         "gain" => array(
                             "0" => 2,
                         ),
-                        "register" => array(
-                            "ADC0EN" => 1,
-                            "ADC1EN" => 1,
+                        "enabled" => array(
+                            "0" => true,
+                            "1" => true,
                         ),
                     ),
                 ),
@@ -645,12 +666,18 @@ class DriverADuCTestClass extends \HUGnet\sensors\DriverADuC
     *
     * @param object &$sensor The sensor object
     * @param int    $offset  The offset for getExtra
+    * @param object &$entry  The input table entry
     *
     * @return null
     */
-    public static function &factory(&$sensor, $offset = 0)
+    public static function &factory(&$sensor, $offset = 0, &$entry = null)
     {
-        return parent::intFactory($sensor, $offset);
+        $obj = parent::intFactory($sensor, $offset);
+        $obj->_entry = $entry;
+        if (is_object($entry)) {
+            var_dump($entry->toArray());
+        }
+        return $obj;
     }
     /**
     * Gets the extra values

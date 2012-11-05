@@ -151,14 +151,16 @@ abstract class DriverADuC extends Driver
     */
     protected function getTwosCompliment($value, $bits = 24)
     {
-        /* Clear off any excess */
-        $value = (int)($value & (pow(2, $bits) - 1));
-        /* Calculate the top bit */
-        $topBit = pow(2, ($bits - 1));
-        /* Check to see if the top bit is set */
-        if (($value & $topBit) == $topBit) {
-            /* This is a negative number */
-            $value = -(pow(2, $bits) - $value);
+        if ($this->twosComplimentEnabled()) {
+            /* Clear off any excess */
+            $value = (int)($value & (pow(2, $bits) - 1));
+            /* Calculate the top bit */
+            $topBit = pow(2, ($bits - 1));
+            /* Check to see if the top bit is set */
+            if (($value & $topBit) == $topBit) {
+                /* This is a negative number */
+                $value = -(pow(2, $bits) - $value);
+            }
         }
         return $value;
     }
@@ -212,7 +214,26 @@ abstract class DriverADuC extends Driver
             // If channel 0 is off, get the gain from channel 1
             $channel = 1;
         }
-        return $this->_entry()->gain($channel);
+        return (float)$this->_entry()->gain($channel);
+    }
+    /**
+    * Gets the total gain.
+    *
+    * @param int $channel The channel to get the gain for
+    *
+    * @return null
+    */
+    protected function twosComplimentEnabled($channel = null)
+    {
+        if (is_null($channel)) {
+            $channel = $this->_channel;
+        }
+        $channel = (int)$channel;
+        if (($channel != 0) || !$this->adcOn(0)) {
+            // If channel 0 is off, get the gain from channel 1
+            return $this->_entry()->twosComplimentEnabled(1);
+        }
+        return $this->_entry()->twosComplimentEnabled(0);
     }
     /**
     * Gets the total gain.
@@ -224,9 +245,9 @@ abstract class DriverADuC extends Driver
     protected function adcOn($channel)
     {
         if ($channel == 0) {
-            return (bool)$this->_entry()->register("ADC0EN");
+            return (bool)$this->_entry()->enabled(0);
         } else if ($channel == 1) {
-            return (bool)$this->_entry()->register("ADC1EN");
+            return (bool)$this->_entry()->enabled(1);
         }
         return false;
     }
