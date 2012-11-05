@@ -41,6 +41,8 @@ require_once dirname(__FILE__)."/DriverTestBase.php";
 require_once CODE_BASE.'sensors/drivers/ADuCInputTable.php';
 /** This is a required class */
 require_once CODE_BASE.'db/Table.php';
+/** This is a required class */
+require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
 
 /**
  * Test class for HUGnetDB.

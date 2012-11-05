@@ -72,13 +72,11 @@ class WindChillVirtual extends \HUGnet\sensors\DriverVirtual
             5, 5
         ),
         "extraText" => array(
-            "Temp Input", "Wind Seed Input"
+            "Temp Input", "Wind Speed Input"
         ),
-        "extraDefault" => array(
-            0, 0
-        ),
-        "storageType" => \HUGnet\channels\Driver::TYPE_RAW,
+        "extraDefault" => array(0, 0),
         "storageUnit" => "&#176;C",
+        "storageType" => \HUGnet\channels\Driver::TYPE_RAW,
         "maxDecimals" => 4,
 
         "virtual" => true,              // This says if we are a virtual sensor
