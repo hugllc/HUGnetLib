@@ -112,6 +112,8 @@ abstract class Driver
         "02:AVRB57560G0103F000"      => "AVRB57560G0103F000",
         "02:ControllerTemp"          => "ControllerTemp",
         "04:DEFAULT"                 => "ADuCVishayRTD",
+        "10:DEFAULT"                 => "AVRChsMss",
+        "10:chsMss"                  => "AVRChsMss",
         "11:DEFAULT"                 => "ADuCPower",
         "40:ControllerVoltage"       => "ControllerVoltage",
         "40:BARO4"                   => "AVRBAROA4V",
