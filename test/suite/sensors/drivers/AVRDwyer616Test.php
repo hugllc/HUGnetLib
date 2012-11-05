@@ -39,7 +39,7 @@ namespace HUGnet\sensors\drivers;
 /** This is the base class */
 require_once dirname(__FILE__)."/DriverTestBase.php";
 /** This is a required class */
-require_once CODE_BASE.'sensors/drivers/AVRChsMss.php';
+require_once CODE_BASE.'sensors/drivers/AVRDwyer616.php';
 
 /**
  * Test class for filter.
@@ -57,10 +57,11 @@ require_once CODE_BASE.'sensors/drivers/AVRChsMss.php';
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class AVRChsMssTest extends DriverTestBase
+class AVRDwyer616Test extends DriverTestBase
 {
     /** This is the class we are testing */
-    protected $class = "AVRChsMss";
+    protected $class = "AVRDwyer616";
+
 
     /**
     * Sets up the fixture, for example, open a network connection.
@@ -76,7 +77,7 @@ class AVRChsMssTest extends DriverTestBase
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
         $this->o = \HUGnet\sensors\DriverAVR::factory(
-            "AVRChsMss", $sensor
+            "AVRDwyer616", $sensor
         );
     }
 
@@ -103,90 +104,73 @@ class AVRChsMssTest extends DriverTestBase
     public static function dataGetReading()
     {
         return array(
-            array(   // #0
+            array(
                 array(
                     "Sensor" => array(
                         "get" => array(
-                            "id" => 0x10,
-                            "type" => "ChsMss",
+                            "id" => 0x50,
+                            "type" => "Dwyer616",
                         ),
                     ),
                 ),
-                60000,
-                0,
+                13000,
+                1,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                -1.5
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x50,
+                            "type" => "Dwyer616",
+                        ),
+                    ),
+                ),
+                null,
+                1,
                 array(
                     "timeConstant" => 1,
                 ),
                 array(),
                 null
             ),
-            array(   // #0
+            array(
                 array(
                     "Sensor" => array(
                         "get" => array(
-                            "id" => 0x10,
-                            "type" => "ChsMss",
+                            "id" => 0x50,
+                            "type" => "Dwyer616",
                         ),
                     ),
                 ),
-                58000,
-                0,
+                39000,
+                1,
                 array(
                     "timeConstant" => 1,
                 ),
                 array(),
-                97.45
+                0.0
             ),
-            array(   // #1
+            array(
                 array(
                     "Sensor" => array(
                         "get" => array(
-                            "id" => 0x10,
-                            "type" => "ChsMss",
+                            "id" => 0x50,
+                            "type" => "Dwyer616",
                         ),
                     ),
                 ),
-                1150,
-                0,
+                65200,
+                1,
                 array(
                     "timeConstant" => 1,
                 ),
                 array(),
-                1.93
-            ),
-            array(   // #2
-                array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "id" => 0x10,
-                            "type" => "ChsMss",
-                        ),
-                    ),
-                ),
-                null,
-                0,
-                array(
-                    "timeConstant" => 1,
-                ),
-                array(),
-                null,
-            ),
-            array(   // #3
-                array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "id" => 0x10,
-                            "type" => "ChsMss",
-                        ),
-                    ),
-                ),
-                0,
-                0,
-                array(
-                    "timeConstant" => 1,
-                ),
-                array(),
-                0.0,
+                1.5
             ),
         );
     }
