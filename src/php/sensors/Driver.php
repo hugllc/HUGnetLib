@@ -183,19 +183,6 @@ abstract class Driver
     /**
     * This function creates the system.
     *
-    * @param object &$sensor The sensor object
-    *
-    * @return null
-    */
-    protected static function &intFactory(&$sensor)
-    {
-        $class = get_called_class();
-        $object = new $class($sensor);
-        return $object;
-    }
-    /**
-    * This function creates the system.
-    *
     * @param string $driver  The driver to load
     * @param object &$sensor The sensor object
     *
