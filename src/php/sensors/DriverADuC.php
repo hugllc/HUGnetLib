@@ -98,12 +98,12 @@ abstract class DriverADuC extends Driver
             include_once $file;
         }
         if (class_exists($class)) {
-            $obj = $class::factory($sensor);
+            $obj = new $class($sensor);
             $obj->offset = (int)$offset;
         }
         if (!is_object($obj)) {
             include_once dirname(__FILE__)."/drivers/SDEFAULT.php";
-            $obj = \HUGnet\sensors\drivers\SDEFAULT::factory($sensor);
+            $obj = new \HUGnet\sensors\drivers\SDEFAULT($sensor);
         }
         $obj->_entry = $entry;
         $obj->_channel = (int)$channel;

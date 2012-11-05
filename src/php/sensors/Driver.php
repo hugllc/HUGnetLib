@@ -209,10 +209,10 @@ abstract class Driver
             include_once $file;
         }
         if (class_exists($class)) {
-            return $class::factory($sensor);
+            return new $class($sensor);
         }
         include_once dirname(__FILE__)."/drivers/SDEFAULT.php";
-        return \HUGnet\sensors\drivers\SDEFAULT::factory($sensor);
+        return new \HUGnet\sensors\drivers\SDEFAULT($sensor);
     }
     /**
     * Checks to see if a piece of data exists
