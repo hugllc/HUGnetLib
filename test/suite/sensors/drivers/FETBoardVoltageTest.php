@@ -39,7 +39,7 @@ namespace HUGnet\sensors\drivers;
 /** This is the base class */
 require_once dirname(__FILE__)."/DriverTestBase.php";
 /** This is a required class */
-require_once CODE_BASE.'sensors/drivers/FETBoardCurrent.php';
+require_once CODE_BASE.'sensors/drivers/FETBoardVoltage.php';
 
 /**
  * Test class for filter.
@@ -57,10 +57,10 @@ require_once CODE_BASE.'sensors/drivers/FETBoardCurrent.php';
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class FETBoardCurrentTest extends DriverTestBase
+class FETBoardVoltageTest extends DriverTestBase
 {
     /** This is the class we are testing */
-    protected $class = "FETBoardCurrent";
+    protected $class = "FETBoardVoltage";
 
     /**
     * Sets up the fixture, for example, open a network connection.
@@ -76,7 +76,7 @@ class FETBoardCurrentTest extends DriverTestBase
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
         $this->o = \HUGnet\sensors\DriverAVR::factory(
-            "FETBoardCurrent", $sensor
+            "FETBoardVoltage", $sensor
         );
     }
 
@@ -105,7 +105,7 @@ class FETBoardCurrentTest extends DriverTestBase
                 array(
                     "Sensor" => array(
                         "get" => array(
-                            "id" => 0x50,
+                            "id" => 0x40,
                             "type" => "fetBoard",
                         ),
                     ),
@@ -116,13 +116,13 @@ class FETBoardCurrentTest extends DriverTestBase
                     "timeConstant" => 1,
                 ),
                 array(),
-                152.7
+                1.2219
             ),
             array(
                 array(
                     "Sensor" => array(
                         "get" => array(
-                            "id" => 0x50,
+                            "id" => 0x40,
                             "type" => "fetBoard",
                         ),
                     ),
@@ -139,7 +139,7 @@ class FETBoardCurrentTest extends DriverTestBase
                 array(
                     "Sensor" => array(
                         "get" => array(
-                            "id" => 0x50,
+                            "id" => 0x40,
                             "type" => "fetBoard",
                         ),
                     ),
@@ -156,7 +156,7 @@ class FETBoardCurrentTest extends DriverTestBase
                 array(
                     "Sensor" => array(
                         "get" => array(
-                            "id" => 0x50,
+                            "id" => 0x40,
                             "type" => "fetBoard",
                         ),
                     ),
@@ -167,7 +167,7 @@ class FETBoardCurrentTest extends DriverTestBase
                     "timeConstant" => 1,
                 ),
                 array(),
-                10009.6
+                80.077,
             ),
         );
     }

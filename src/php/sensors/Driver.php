@@ -117,6 +117,7 @@ abstract class Driver
         "11:DEFAULT"                 => "ADuCPower",
         "40:ControllerVoltage"       => "ControllerVoltage",
         "40:BARO4"                   => "AVRBAROA4V",
+        "40:fetBoard"                => "FETBoardVoltage",
         "41:DEFAULT"                 => "ADuCVoltage",
         "41:ADuCPressure"            => "ADuCPressure",
         "42:DEFAULT"                 => "ADuCThermocouple",
