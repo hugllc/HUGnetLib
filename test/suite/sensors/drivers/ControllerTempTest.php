@@ -71,7 +71,9 @@ class ControllerTempTest extends DriverTestBase
         parent::setUp();
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
-        $this->o = &ControllerTemp::factory($sensor);
+        $this->o = \HUGnet\sensors\DriverAVR::factory(
+            "ControllerTemp", $sensor
+        );
     }
 
     /**

@@ -71,7 +71,9 @@ class ControllerCurrentTest extends DriverTestBase
         parent::setUp();
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
-        $this->o = &ControllerCurrent::factory($sensor);
+        $this->o = \HUGnet\sensors\DriverAVR::factory(
+            "ControllerCurrent", $sensor
+        );
     }
 
     /**

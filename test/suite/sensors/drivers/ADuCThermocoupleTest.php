@@ -71,7 +71,9 @@ class ADuCThermocoupleTest extends DriverTestBase
         parent::setUp();
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
-        $this->o = &ADuCThermocouple::factory($sensor, 0);
+        $this->o = \HUGnet\sensors\DriverADuC::factory(
+            "ADuCThermocouple", $sensor, 0
+        );
     }
 
     /**

@@ -75,7 +75,9 @@ class AVRBAROA4VTest extends DriverTestBase
         parent::setUp();
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
-        $this->o = &AVRBAROA4V::factory($sensor);
+        $this->o = \HUGnet\sensors\DriverAVR::factory(
+            "AVRBAROA4V", $sensor
+        );
     }
 
     /**

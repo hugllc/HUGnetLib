@@ -71,7 +71,9 @@ class ComputationVirtualTest extends DriverTestBase
         parent::setUp();
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
-        $this->o = &ComputationVirtual::factory($sensor);
+        $this->o = \HUGnet\sensors\DriverVirtual::factory(
+            "ComputationVirtual", $sensor
+        );
     }
 
     /**

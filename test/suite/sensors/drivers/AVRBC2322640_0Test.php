@@ -71,7 +71,9 @@ class AVRBC2322640_0Test extends DriverTestBase
         parent::setUp();
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
-        $this->o = &AVRBC2322640_0::factory($sensor);
+        $this->o = \HUGnet\sensors\DriverAVR::factory(
+            "AVRBC2322640_0", $sensor
+        );
     }
 
     /**

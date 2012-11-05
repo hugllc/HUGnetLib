@@ -83,7 +83,9 @@ class CloneVirtualTest extends DriverTestBase
                 ),
             )
         );
-        $this->o = &CloneVirtual::factory($sensor);
+        $this->o = \HUGnet\sensors\DriverVirtual::factory(
+            "CloneVirtual", $sensor
+        );
     }
 
     /**

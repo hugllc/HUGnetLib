@@ -71,7 +71,9 @@ class BinaryVirtualTest extends DriverTestBase
         parent::setUp();
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
-        $this->o = &BinaryVirtual::factory($sensor);
+        $this->o = \HUGnet\sensors\DriverVirtual::factory(
+            "BinaryVirtual", $sensor
+        );
     }
 
     /**

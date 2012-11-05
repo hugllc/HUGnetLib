@@ -71,7 +71,9 @@ class WindChillVirtualTest extends DriverTestBase
         parent::setUp();
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
-        $this->o = &WindChillVirtual::factory($sensor);
+        $this->o = \HUGnet\sensors\DriverVirtual::factory(
+            "WindChillVirtual", $sensor
+        );
     }
 
     /**

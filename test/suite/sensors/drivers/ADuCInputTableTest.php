@@ -76,7 +76,7 @@ class ADuCInputTableTest extends DriverTestBase
         $sensor = new \HUGnet\DummyBase("Sensor");
         $table = new \HUGnet\DummyBase("Table");
         $sensor->resetMock(array());
-        $this->o = &ADuCInputTable::factory($sensor, $table);
+        $this->o = ADuCInputTable::factory($sensor, $table);
     }
 
     /**

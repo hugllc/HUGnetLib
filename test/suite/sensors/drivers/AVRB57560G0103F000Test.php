@@ -71,7 +71,9 @@ class AVRB57560G0103F000Test extends DriverTestBase
         parent::setUp();
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
-        $this->o = &AVRB57560G0103F000::factory($sensor);
+        $this->o = \HUGnet\sensors\DriverAVR::factory(
+            "AVRB57560G0103F000", $sensor
+        );
     }
 
     /**

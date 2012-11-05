@@ -71,7 +71,9 @@ class AlarmVirtualTest extends DriverTestBase
         parent::setUp();
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
-        $this->o = &AlarmVirtual::factory($sensor, 0);
+        $this->o = \HUGnet\sensors\DriverVirtual::factory(
+            "AlarmVirtual", $sensor
+        );
     }
 
     /**
