@@ -39,6 +39,8 @@ namespace HUGnet\sensors\drivers;
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is my base class */
 require_once dirname(__FILE__)."/../DriverVirtual.php";
+/** This is my base class */
+require_once dirname(__FILE__)."/../../contrib/evalmath.class.php";
 
 /**
  * Driver for reading voltage based pressure sensors
@@ -123,7 +125,10 @@ class ComputationVirtual extends \HUGnet\sensors\DriverVirtual
         $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
         $fct = $this->createFunction($this->getExtra(0), $data);
-        $ret = (is_callable($fct)) ? @call_user_func($fct) : false;
+        //$ret = (is_callable($fct)) ? @call_user_func($fct) : false;
+        $math = new \EvalMath;
+        $math->suppress_errors = true;
+        $ret = $math->e($fct);
         if (!is_bool($ret)) {
             $ret = round($ret, $this->get("maxDecimals"));
         } else {
@@ -154,12 +159,15 @@ class ComputationVirtual extends \HUGnet\sensors\DriverVirtual
                 break;
             }
         }
+        return $mathCode;
+        /*
         if (is_string($mathCode)) {
             $text = "return ".$this->sanatize($mathCode).";";
         } else {
             $text = "return false;";
         }
         return @create_function("", $text);
+        */
     }
     /**
      * Creates a function to crunch numbers

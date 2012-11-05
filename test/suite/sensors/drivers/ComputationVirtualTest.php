@@ -228,11 +228,11 @@ class ComputationVirtualTest extends DriverTestBase
                 0,
                 0,
                 array(
-                    0 => array("value" => 4.1),
+                    0 => array("value" => 4),
                     1 => array("value" => 3),
                 ),
                 0,
-                4.1
+                2,
             ),
             array( // #6
                 array(
@@ -350,7 +350,7 @@ class ComputationVirtualTest extends DriverTestBase
                 0,
                 4.1,
             ),
-            array( // #10 Null input #2
+            array( // #11 Null input #2
                 array(
                     "Sensor" => array(
                         "get" => array(
@@ -374,7 +374,7 @@ class ComputationVirtualTest extends DriverTestBase
                 0,
                 null,
             ),
-            array( // #10 Null input #3 defaults to the old behaviour
+            array( // #12 Null input #3 defaults to the old behaviour
                 array(
                     "Sensor" => array(
                         "get" => array(
@@ -396,6 +396,29 @@ class ComputationVirtualTest extends DriverTestBase
                 ),
                 0,
                 null,
+            ),
+            array( // #13 Null input #3 defaults to the old behaviour
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(
+                                "{1}^{2}",
+                                "&#176;C",
+                                "Temperature",
+                                \HUGnet\channels\Driver::TYPE_DIFF,
+                                "3"
+                            ),
+                        ),
+                    ),
+                ),
+                0,
+                0,
+                array(
+                    0 => array("value" => 4),
+                    1 => array("value" => 2),
+                ),
+                0,
+                16,
             ),
         );
     }
