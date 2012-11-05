@@ -203,12 +203,12 @@ class WebAPI extends HTML
     * This function executes the api call.
     *
     * @param mixed  $ident The ID to use
-    * @param object $obj   The object to work on
+    * @param object &$obj  The object to work on
     * @param array  $extra Extra data that should be added to the HTMLArgs data
     *
     * @return null
     */
-    private function _executeTable($ident, $obj, $extra = array())
+    private function _executeTable($ident, &$obj, $extra = array())
     {
         $ret = null;
         $action = strtolower(trim($this->args()->get("action")));
@@ -227,28 +227,41 @@ class WebAPI extends HTML
                 $ret = $obj->toArray(true);
             }
         } else if ($action === "list") {
-            $data = (array)$this->args()->get("data");
-            $where = $obj->sanitizeWhere($data);
-            $whereText = "";
-            $whereData = array();
-            if (is_array($where) && !empty($where)) {
-                $sep       = "";
-                foreach ($where as $key => $value) {
-                    $whereText .= $sep."`$key` = ?";
-                    $sep = " AND ";
-                    $whereData[] = $value;
-                }
-            } else {
-                $whereText = "1";
-            }
-            $ret = array();
-            foreach ((array)$obj->select($whereText, $whereData) as $row) {
-                $ret[] = $row->toArray(true);
-            }
+            $ret = $this->_executeTableList($ident, $obj);
         } else {
             if (is_callable(array($obj, "webAPI"))) {
                 $ret = $obj->webAPI($this->args(), $extra);
             }
+        }
+        return $ret;
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param mixed  $ident The ID to use
+    * @param object &$obj  The object to work on
+    *
+    * @return null
+    */
+    private function _executeTableList($ident, &$obj)
+    {
+        $data = (array)$this->args()->get("data");
+        $where = $obj->sanitizeWhere($data);
+        $whereText = "";
+        $whereData = array();
+        if (is_array($where) && !empty($where)) {
+            $sep       = "";
+            foreach ($where as $key => $value) {
+                $whereText .= $sep."`$key` = ?";
+                $sep = " AND ";
+                $whereData[] = $value;
+            }
+        } else {
+            $whereText = "1";
+        }
+        $ret = array();
+        foreach ((array)$obj->select($whereText, $whereData) as $row) {
+            $ret[] = $row->toArray(true);
         }
         return $ret;
     }
@@ -266,34 +279,7 @@ class WebAPI extends HTML
         $ret = null;
         $action = strtolower(trim($this->args()->get("action")));
         if ($action === "get") {
-            $data = (array)$this->args()->get("data");
-            $extraWhere = "";
-            if (isset($data["limit"]) && is_numeric($data["limit"])) {
-                $hist->sqlLimit = (int)$data["limit"];
-            }
-            if (isset($data["start"]) && is_numeric($data["start"])) {
-                $hist->sqlStart = (int)$data["start"];
-            }
-            if (isset($data["order"])) {
-                $order = trim(strtolower($data["order"]));
-                if (($order === "asc") || ($order === "desc")) {
-                    $hist->sqlOrderBy = "Date ".$order;
-                }
-            }
-            $extraData = array();
-            $res = $hist->getPeriod(
-                (int)$data["since"],
-                (int)$data["until"],
-                $did,
-                "history",
-                $extraWhere,
-                $extraData
-            );
-            $ret = array();
-            while ($res) {
-                $ret[] = $hist->toArray(true);
-                $res = $hist->nextInto();
-            }
+            $ret = $this->_executeHistoryGet($did, $hist);
         } else if ($action === "put") {
             $data = (array)$this->args()->get("data");
             $ret = array();
@@ -316,6 +302,46 @@ class WebAPI extends HTML
             if (!$hist->isEmpty()) {
                 $ret = $hist->toArray(true);
             }
+        }
+        return $ret;
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param int    $did   The deviceID to use
+    * @param object &$hist The history to use
+    *
+    * @return null
+    */
+    private function _executeHistoryGet($did, &$hist)
+    {
+        $data = (array)$this->args()->get("data");
+        $extraWhere = "";
+        if (isset($data["limit"]) && is_numeric($data["limit"])) {
+            $hist->sqlLimit = (int)$data["limit"];
+        }
+        if (isset($data["start"]) && is_numeric($data["start"])) {
+            $hist->sqlStart = (int)$data["start"];
+        }
+        if (isset($data["order"])) {
+            $order = trim(strtolower($data["order"]));
+            if (($order === "asc") || ($order === "desc")) {
+                $hist->sqlOrderBy = "Date ".$order;
+            }
+        }
+        $extraData = array();
+        $res = $hist->getPeriod(
+            (int)$data["since"],
+            (int)$data["until"],
+            $did,
+            "history",
+            $extraWhere,
+            $extraData
+        );
+        $ret = array();
+        while ($res) {
+            $ret[] = $hist->toArray(true);
+            $res = $hist->nextInto();
         }
         return $ret;
     }
