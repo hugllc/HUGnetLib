@@ -134,6 +134,7 @@ abstract class Driver
         "70:generic"                 => "GenericPulse",
         "70:genericRevolver"         => "GenericRevolving",
         "70:liquidflowmeter"         => "LiquidFlow",
+        "70:maximumAnemometer"       => "MaximumAnemometer",
         "7F:DEFAULT"                 => "GenericPulse",
         "7F:hs"                      => "GenericPulse",
         "7F:hsRevolver"              => "GenericRevolving",
