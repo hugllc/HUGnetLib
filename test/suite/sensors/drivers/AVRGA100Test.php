@@ -39,7 +39,7 @@ namespace HUGnet\sensors\drivers;
 /** This is the base class */
 require_once dirname(__FILE__)."/DriverTestBase.php";
 /** This is a required class */
-require_once CODE_BASE.'sensors/drivers/AVRBAROA4V.php';
+require_once CODE_BASE.'sensors/drivers/AVRGA100.php';
 
 /**
  * Test class for filter.
@@ -57,10 +57,10 @@ require_once CODE_BASE.'sensors/drivers/AVRBAROA4V.php';
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class AVRBAROA4VTest extends DriverTestBase
+class AVRGA100Test extends DriverTestBase
 {
     /** This is the class we are testing */
-    protected $class = "AVRBAROA4V";
+    protected $class = "AVRGA100";
 
     /**
     * Sets up the fixture, for example, open a network connection.
@@ -76,7 +76,7 @@ class AVRBAROA4VTest extends DriverTestBase
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
         $this->o = \HUGnet\sensors\DriverAVR::factory(
-            "AVRBAROA4V", $sensor
+            "AVRGA100", $sensor
         );
     }
 
@@ -108,7 +108,7 @@ class AVRBAROA4VTest extends DriverTestBase
                     "Sensor" => array(
                         "get" => array(
                             "id" => 0x40,
-                            "type" => "BARO4",
+                            "type" => "GA100",
                         ),
                     ),
                 ),
@@ -118,14 +118,14 @@ class AVRBAROA4VTest extends DriverTestBase
                     "timeConstant" => 1,
                 ),
                 array(),
-                664.2125
+                0.0659
             ),
             array(
                 array(
                     "Sensor" => array(
                         "get" => array(
                             "id" => 0x40,
-                            "type" => "BARO4",
+                            "type" => "GA100",
                         ),
                     ),
                 ),
@@ -142,7 +142,7 @@ class AVRBAROA4VTest extends DriverTestBase
                     "Sensor" => array(
                         "get" => array(
                             "id" => 0x40,
-                            "type" => "BARO4",
+                            "type" => "GA100",
                         ),
                     ),
                 ),
@@ -159,28 +159,28 @@ class AVRBAROA4VTest extends DriverTestBase
                     "Sensor" => array(
                         "get" => array(
                             "id" => 0x40,
-                            "type" => "BARO4",
+                            "type" => "GA100",
                         ),
                     ),
                 ),
-                55000,
+                58000,
                 1,
                 array(
                     "timeConstant" => 1,
                 ),
                 array(),
-                1093.7875
+                0.9824
             ),
             array(
                 array(
                     "Sensor" => array(
                         "get" => array(
                             "id" => 0x40,
-                            "type" => "BARO4",
+                            "type" => "GA100",
                         ),
                     ),
                 ),
-                56000,
+                60000,
                 1,
                 array(
                     "timeConstant" => 1,
