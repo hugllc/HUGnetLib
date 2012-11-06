@@ -79,7 +79,7 @@ class AVRBAROA4V extends \HUGnet\sensors\DriverAVR
         // Null    nothing
         "extraValues" => array(5, 5, 5, 5, 5),
         "extraDefault" => array(.25, 4.25, 600, 1100, 5),
-        "maxDecimals" => 2,
+        "maxDecimals" => 4,
     );
     /**
     * Changes a raw reading into a output value
@@ -103,7 +103,10 @@ class AVRBAROA4V extends \HUGnet\sensors\DriverAVR
         $Pmax = $this->getExtra(3);
         $Vref = $this->getExtra(4);
         $V = $this->getVoltage($A, $Vref, $data["timeConstant"]);
-        return $this->linearBounded($V, $Vmin, $Vmax, $Pmin, $Pmax);
+        return round(
+            $this->linearBounded($V, $Vmin, $Vmax, $Pmin, $Pmax),
+            $this->get("maxDecimals")
+        );
     }
 
     /******************************************************************
