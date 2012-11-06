@@ -55,15 +55,15 @@ require_once dirname(__FILE__)."/../Driver.php";
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class MaximumAnemometer extends \HUGnet\sensors\Driver
+class MaximumRain extends \HUGnet\sensors\Driver
 {
     /**
     * This is the array of sensor information.
     */
     protected $params = array(
-        "longName" => "Maximum Inc Hall Effect Anemometer",
-        "unitType" => "Speed",
-        "storageUnit" => "MPH",
+        "longName" => "Maximum Inc Rain Gauge",
+        "unitType" => "Length",
+        "storageUnit" => "inches",
         "storageType" => \HUGnet\channels\Driver::TYPE_DIFF,
         "extraText" => array(),
         // Integer is the size of the field needed to edit
@@ -72,6 +72,7 @@ class MaximumAnemometer extends \HUGnet\sensors\Driver
         "extraValues" => array(),
         "extraDefault" => array(),
         "maxDecimals" => 2,
+        "total" => true,
     );
 
     /**
@@ -88,17 +89,7 @@ class MaximumAnemometer extends \HUGnet\sensors\Driver
     */
     public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
-        if (empty($deltaT)) {
-            return null;
-        }
-        if ($A <= 0) {
-            return 0.0;
-        }
-        $speed = (($A / $deltaT) * 1.6965) - 0.1;
-        if ($speed < 0) {
-            $speed = 0.0;
-        }
-        return round($speed, 4);
+        return $A/100;
     }
 
 }
