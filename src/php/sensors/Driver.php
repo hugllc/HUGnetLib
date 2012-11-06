@@ -111,6 +111,7 @@ abstract class Driver
         "02:DEFAULT"                 => "AVRBC2322640",
         "02:AVRB57560G0103F000"      => "AVRB57560G0103F000",
         "02:ControllerTemp"          => "ControllerTemp",
+        "02:imcSolar"                => "AVRIMCSolar",
         "04:DEFAULT"                 => "ADuCVishayRTD",
         "10:DEFAULT"                 => "AVRChsMss",
         "10:chsMss"                  => "AVRChsMss",
