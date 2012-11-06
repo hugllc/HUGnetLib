@@ -381,7 +381,7 @@ abstract class Driver
     */
     public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
-        return null;
+        return $A;
     }
     /**
     * Takes in a raw string from a sensor and makes an int out it

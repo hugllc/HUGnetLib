@@ -557,6 +557,143 @@ class DriverADuCTest extends drivers\DriverTestBase
         $this->assertSame($expect, $val);
     }
     /**
+    * data provider for testNumeric
+    *
+    * @return array
+    */
+    public static function dataAdcOn()
+    {
+        return array(
+            array(  // #0 Normal ch0
+                array(
+                    "Entry" => array(
+                        "gain" => 5,
+                        "enabled" => array(
+                            "0" => true,
+                            "1" => false,
+                        ),
+                    ),
+                ),
+                new \HUGnet\DummyBase("Entry"),
+                1,
+                0,
+                0,
+                true,
+            ),
+            array(  // #1 Wrong channel given
+                array(
+                    "Entry" => array(
+                        "gain" => array(
+                            "0" => 5,
+                            "1" => 3,
+                        ),
+                        "enabled" => array(
+                            "0" => true,
+                            "1" => true,
+                        ),
+                    ),
+                ),
+                new \HUGnet\DummyBase("Entry"),
+                1,
+                1,
+                21,
+                false,
+            ),
+            array(  // #2 Normal ch1
+                array(
+                    "Entry" => array(
+                        "gain" => 5,
+                        "enabled" => array(
+                            "0" => false,
+                            "1" => true,
+                        ),
+                    ),
+                ),
+                new \HUGnet\DummyBase("Entry"),
+                1,
+                0,
+                1,
+                true,
+            ),
+            array(  // #3 Normal ch0
+                array(
+                    "Entry" => array(
+                        "gain" => 5,
+                        "enabled" => array(
+                            "0" => false,
+                            "1" => true,
+                        ),
+                    ),
+                ),
+                new \HUGnet\DummyBase("Entry"),
+                1,
+                0,
+                0,
+                false,
+            ),
+            array(  // #4 Wrong channel given
+                array(
+                    "Entry" => array(
+                        "gain" => array(
+                            "0" => 5,
+                            "1" => 3,
+                        ),
+                        "enabled" => array(
+                            "0" => false,
+                            "1" => false,
+                        ),
+                    ),
+                ),
+                new \HUGnet\DummyBase("Entry"),
+                1,
+                1,
+                21,
+                false,
+            ),
+            array(  // #5 Normal ch1
+                array(
+                    "Entry" => array(
+                        "gain" => 5,
+                        "enabled" => array(
+                            "0" => true,
+                            "1" => false,
+                        ),
+                    ),
+                ),
+                new \HUGnet\DummyBase("Entry"),
+                1,
+                0,
+                1,
+                false,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $mocks    The mocks to feed this
+    * @param object $entry    The entry to send
+    * @param int    $offset   The integer to feed to the function
+    * @param int    $initchan The channel to initialize the object to
+    * @param int    $channel  The channel to set
+    * @param int    $expect   The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataAdcOn
+    */
+    public function testAdcOn($mocks, $entry, $offset, $initchan, $channel, $expect)
+    {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($mocks);
+        $obj = &DriverADuC::factory(
+            "DriverADuCTestClass", $sensor, $offset, $entry, $initchan
+        );
+        $val = $obj->adcOn($channel);
+        $this->assertSame($expect, $val);
+    }
+    /**
     * data provider for testDeviceID
     *
     * @return array
@@ -564,7 +701,7 @@ class DriverADuCTest extends drivers\DriverTestBase
     public static function dataDecodeData()
     {
         return array(
-            array(
+            array( // #0 everything enabled, raw
                 array(
                     "Device" => array(
                         "sensor" => new \HUGnet\DummyBase("Sensor"),
@@ -579,6 +716,7 @@ class DriverADuCTest extends drivers\DriverTestBase
                         ),
                     ),
                 ),
+                "DriverADuCTestClass",
                 new \HUGnet\DummyBase("Entry"),
                 1,
                 0,
@@ -595,8 +733,84 @@ class DriverADuCTest extends drivers\DriverTestBase
                         'maxDecimals' => 2,
                         'storageUnit' => 'unknown',
                         'unitType' => 'asdf',
-                        'dataType' => 'raw',
+                        'dataType' => \HUGnet\channels\Driver::TYPE_RAW,
                         'value' => 10.5,
+                    ),
+                ),
+            ),
+            array( // #0 everything enabled, differential
+                array(
+                    "Device" => array(
+                        "sensor" => new \HUGnet\DummyBase("Sensor"),
+                    ),
+                    "Entry" => array(
+                        "gain" => array(
+                            "0" => 2,
+                        ),
+                        "enabled" => array(
+                            "0" => true,
+                            "1" => true,
+                        ),
+                    ),
+                ),
+                "DriverADuCTestClassDiff",
+                new \HUGnet\DummyBase("Entry"),
+                1,
+                0,
+                300,
+                array(
+                    "raw" => 5.25,
+                ),
+                array(
+                ),
+                "15000000",
+                array(
+                    array(
+                        'decimals' => 2,
+                        'units' => 'unknown',
+                        'maxDecimals' => 2,
+                        'storageUnit' => 'unknown',
+                        'unitType' => 'unknown',
+                        'dataType' => \HUGnet\channels\Driver::TYPE_DIFF,
+                        'value' => 5.25,
+                        'raw' => 10.5,
+                    ),
+                ),
+            ),
+            array( // #0 everything enabled, raw
+                array(
+                    "Device" => array(
+                        "sensor" => new \HUGnet\DummyBase("Sensor"),
+                    ),
+                    "Entry" => array(
+                        "gain" => array(
+                            "0" => 2,
+                        ),
+                        "enabled" => array(
+                            "0" => false,
+                            "1" => true,
+                        ),
+                    ),
+                ),
+                "DriverADuCTestClass",
+                new \HUGnet\DummyBase("Entry"),
+                1,
+                0,
+                300,
+                array(
+                ),
+                array(
+                ),
+                "15000000",
+                array(
+                    array(
+                        'decimals' => 2,
+                        'units' => 'unknown',
+                        'maxDecimals' => 2,
+                        'storageUnit' => 'unknown',
+                        'unitType' => 'asdf',
+                        'dataType' => \HUGnet\channels\Driver::TYPE_RAW,
+                        'value' => 21.0,
                     ),
                 ),
             ),
@@ -620,14 +834,15 @@ class DriverADuCTest extends drivers\DriverTestBase
     * @dataProvider dataDecodeData
     */
     public function testDecodeData(
-        $mocks, $entry, $offset, $initchan, $deltaT, $prev, $data, $string, $expect
+        $mocks, $class, $entry, $offset, $initchan, $deltaT, $prev, $data,
+        $string, $expect
     ) {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($mocks);
         $obj = &DriverADuC::factory(
-            "DriverADuCTestClass", $sensor, $offset, $entry, $initchan
+            $class, $sensor, $offset, $entry, $initchan
         );
-        $ret = $obj->decodeData($string);
+        $ret = $obj->decodeData($string, $deltaT, $prev, $data);
         $this->assertEquals($expect, $ret);
     }
 }
@@ -730,5 +945,42 @@ class DriverADuCTestClass extends \HUGnet\sensors\DriverADuC
     {
         return parent::gain($channel);
     }
+    /**
+    * Gets the total gain.
+    *
+    * @param int $channel The channel to get the gain for
+    *
+    * @return null
+    */
+    public function adcOn($channel)
+    {
+        return parent::adcOn($channel);
+    }
+}
+/**
+ * Base driver class for devices.
+ *
+ * This class deals with loading the drivers and figuring out what driver needs
+ * to be loaded.
+ *
+ * @category   Libraries
+ * @package    HUGnetLib
+ * @subpackage Devices
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2012 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.9.7
+ * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @since      0.9.7
+ */
+class DriverADuCTestClassDiff extends \HUGnet\sensors\DriverADuC
+{
+    /**
+    * This is where the data for the driver is stored.  This array must be
+    * put into all derivative classes, even if it is empty.
+    */
+    protected $params = array(
+        "storageType" => \HUGnet\channels\Driver::TYPE_DIFF, // Storage dataType
+    );
 }
 ?>

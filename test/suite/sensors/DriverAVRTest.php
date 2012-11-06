@@ -624,6 +624,9 @@ class DriverAVRTest extends drivers\DriverTestBase
             array(array(), 0, 1, 1, 0.0),
             array(array(), 10000, 10, 1, 1.5274),
             array(array(), 65535, 10, 1, 10.0),
+            array(array(), 65535, 10, 0, 10.0), // 0 Time constant
+            array(array(), -10, 1, 1, 0.0), // Negative A
+
         );
     }
     /**

@@ -273,47 +273,64 @@ class DriverTest extends drivers\DriverTestBase
     {
         return array(
             array(
+                array(),
                 1,
                 "test",
                 "SDEFAULT",
             ),
             array(
+                array(),
                 4,
                 "test",
                 "ADuCVishayRTD",
             ),
             array(
+                array(),
                 0x41,
                 "",
                 "ADuCVoltage",
             ),
             array(
+                array(),
                 0x41,
                 "DEFAULT",
                 "ADuCVoltage",
             ),
             array(
+                array(),
                 0x41,
                 "ADuCPressure",
                 "ADuCPressure",
+            ),
+            array(
+                array(
+                    "38:thisIsATest" => "DriverTestClass",
+                ),
+                0x38,
+                "thisIsATest",
+                "DriverTestClass",
             ),
         );
     }
     /**
     * test the set routine when an extra class exists
     *
-    * @param mixed  $sid    The hardware part number
-    * @param string $type   The firmware part number
-    * @param array  $expect The expected return
+    * @param array  $registers Drivers to register
+    * @param mixed  $sid       The hardware part number
+    * @param string $type      The firmware part number
+    * @param array  $expect    The expected return
     *
     * @return null
     *
     * @dataProvider dataGetDriver
     */
-    public function testGetDriver($sid, $type, $expect)
+    public function testGetDriver($registers, $sid, $type, $expect)
     {
+        foreach ($registers as $key => $class) {
+            Driver::register($key, $class);
+        }
         $this->assertSame(
-            $expect, Driver::getDriver($sid, $type, $FWVersion)
+            $expect, Driver::getDriver($sid, $type)
         );
     }
     /**
@@ -491,11 +508,19 @@ class DriverTest extends drivers\DriverTestBase
         return array(
             array(
                 array(),
-                256210,
+                null,
                 1,
                 array(),
                 array(),
                 null,
+            ),
+            array(
+                array(),
+                256210,
+                1,
+                array(),
+                array(),
+                256210,
             ),
         );
     }
@@ -663,6 +688,14 @@ class DriverTest extends drivers\DriverTestBase
             ),
             array(
                 null,
+                0,
+                100,
+                0,
+                100,
+                null,
+            ),
+            array( // Imin and Imax are the same
+                10,
                 10,
                 10,
                 0,
@@ -691,6 +724,106 @@ class DriverTest extends drivers\DriverTestBase
         bcscale(10);
         $val = $this->o->linearBounded($value, $Imin, $Imax, $Omin, $Omax);
         $this->assertEquals($expect, $val, 0.0001);
+    }
+    /**
+     * Data provider for testGetReading
+     *
+     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     *
+     * @return array
+     */
+    public static function dataDecodeData()
+    {
+        return array(
+            array( // #0 Raw Data
+                array(),
+                "DriverTestClass",
+                "01020304050607080900",
+                1,
+                array(),
+                array(),
+                array(
+                    array(
+                        "value" => 0x030201,
+                        "decimals" => 7,
+                        "units" => "unknown",
+                        "maxDecimals" => 7,
+                        "storageUnit" => "unknown",
+                        "unitType" => "asdf",
+                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
+                    ),
+                ),
+            ),
+            array(  // #1 Differential data
+                array(),
+                "DriverTestClassDiff",
+                "01020304050607080900",
+                1,
+                array(),
+                array(
+                    "raw" => 0x0201,
+                ),
+                array(
+                    array(
+                        "value" => 0x030000,
+                        "decimals" => 2,
+                        "units" => "unknown",
+                        "maxDecimals" => 2,
+                        "storageUnit" => "unknown",
+                        "unitType" => "unknown",
+                        "dataType" => \HUGnet\channels\Driver::TYPE_DIFF,
+                        "raw" => 0x030201
+                    ),
+                ),
+            ),
+            array( // #2 No data.
+                array(),
+                "DriverTestClass",
+                "",
+                1,
+                array(),
+                array(
+                    "raw" => 0x0201,
+                ),
+                array(
+                    array(
+                        "value" => null,
+                        "decimals" => 7,
+                        "units" => "unknown",
+                        "maxDecimals" => 7,
+                        "storageUnit" => "unknown",
+                        "unitType" => "asdf",
+                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * Generic function for testing sensor routines
+    *
+    * This is called by using parent::sensorTest()
+    *
+    * @param array  $sensor The sensor data array
+    * @param string $class  The class to use
+    * @param string $string The string to use
+    * @param float  $deltaT The time differenct
+    * @param array  $data   The data array being built
+    * @param array  $prev   The previous record
+    * @param mixed  $expect The return data to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataDecodeData()
+    */
+    public function testDecodeData(
+        $sensor, $class, $string, $deltaT, $data, $prev, $expect
+    ) {
+        $sen = new \HUGnet\DummyBase("Sensor");
+        $sen->resetMock($sensor);
+        $obj = Driver::factory($class, $sen);
+        $ret = $obj->decodeData($string, $deltaT, $prev, $data);
+        $this->assertEquals($expect, $ret, 0.00001);
     }
     /**
     * data provider for testDeviceID
@@ -844,6 +977,7 @@ class DriverTestClass extends \HUGnet\sensors\Driver
     protected $params = array(
         "unitType" => "asdf", /* This is for test value only */
         "testParam" => "12345", /* This is for test value only */
+        "storageType" => \HUGnet\channels\Driver::TYPE_RAW, // Storage dataType
         "extraDefault" => array(2,3,5,7,11),
         "extraText" => array("a","b","c","d","e"),
         "extraValues" => array(5, 5, 5, 5, 5),
@@ -902,5 +1036,31 @@ class DriverTestClass extends \HUGnet\sensors\Driver
     {
         return parent::getPPM($val, $deltaT);
     }
+}
+/**
+ * Base driver class for devices.
+ *
+ * This class deals with loading the drivers and figuring out what driver needs
+ * to be loaded.
+ *
+ * @category   Libraries
+ * @package    HUGnetLib
+ * @subpackage Devices
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2012 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.9.7
+ * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @since      0.9.7
+ */
+class DriverTestClassDiff extends \HUGnet\sensors\Driver
+{
+    /**
+    * This is where the data for the driver is stored.  This array must be
+    * put into all derivative classes, even if it is empty.
+    */
+    protected $params = array(
+        "storageType" => \HUGnet\channels\Driver::TYPE_DIFF, // Storage dataType
+    );
 }
 ?>

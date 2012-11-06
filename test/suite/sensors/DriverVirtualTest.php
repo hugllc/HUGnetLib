@@ -223,9 +223,42 @@ class DriverVirtualTest extends drivers\DriverTestBase
                 1,
                 array(),
                 array(),
-                null,
+                array(
+                    array(
+                        "value" => null,
+                        "decimals" => 2,
+                        "units" => "unknown",
+                        "maxDecimals" => 2,
+                        "storageUnit" => "unknown",
+                        "unitType" => "asdf",
+                        "dataType" => "raw",
+                    ),
+                ),
             ),
         );
+    }
+    /**
+    * Generic function for testing sensor routines
+    *
+    * This is called by using parent::sensorTest()
+    *
+    * @param array $sensor The sensor data array
+    * @param mixed $A      Data for the sensor to work on
+    * @param float $deltaT The time differenct
+    * @param array $data   The data array being built
+    * @param array $prev   The previous record
+    * @param mixed $expect The return data to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataGetReading()
+    */
+    public function testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+    {
+        $sen = new \HUGnet\DummyBase("Sensor");
+        $sen->resetMock($sensor);
+        $ret = $this->o->decodeData($A, $deltaT, $data, $prev);
+        $this->assertEquals($expect, $ret, 0.00001);
     }
 }
 /** This is the HUGnet namespace */

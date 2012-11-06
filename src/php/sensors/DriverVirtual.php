@@ -76,6 +76,7 @@ abstract class DriverVirtual extends Driver
     * @return float The direction in degrees
     *
     * @SuppressWarnings(PHPMD.ShortVariable)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function decodeData(
         &$string, $deltaT = 0, &$prev = null, &$data = array()
