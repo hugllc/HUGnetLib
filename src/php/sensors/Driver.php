@@ -129,6 +129,8 @@ abstract class Driver
         "50:ControllerCurrent"       => "ControllerCurrent",
         "50:dwyer616"                => "AVRDwyer616",
         "50:fetBoard"                => "FETBoardCurrent",
+        "6F:DEFAULT"                 => "MaximumWindDirection",
+        "6F:maximum-inc"             => "MaximumWindDirection",
         "70:bravo3motion"            => "Bravo3Motion",
         "70:DEFAULT"                 => "GenericPulse",
         "70:generic"                 => "GenericPulse",
