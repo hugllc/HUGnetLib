@@ -64,7 +64,7 @@ class GenericRevolving extends \HUGnet\sensors\Driver
         "longName" => "Generic Revolving Thingy",
         "unitType" => "Frequency",
         "storageUnit" => 'RPM',
-        "storageType" => \HUGnet\channels\Driver::TYPE_DIFF,  // This is the dataType as stored
+        "storageType" => \HUGnet\channels\Driver::TYPE_DIFF,
         "extraText" => array(
             "Counts Per Revolution",
         ),

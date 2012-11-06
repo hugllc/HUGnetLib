@@ -772,6 +772,48 @@ class DriverTest extends drivers\DriverTestBase
     {
         $this->assertSame($expect, $this->o->getPPM($A, $deltaT));
     }
+    /**
+    * Data provider for testGetPPM
+    *
+    * @return array
+    */
+    public static function dataDriversTest()
+    {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock(array());
+        $obj = Driver::factory("DriverTestClass", $sensor);
+        $ret = array();
+        for ($i = 0; $i < 256; $i++) {
+            $types = $obj->getTypes($i);
+            foreach ($types as $name => $class) {
+                $ret[] = array($i, $name, $class);
+            }
+        }
+        return $ret;
+    }
+    /**
+    * test
+    *
+    * @param int   $A      The a to d reading
+    * @param float $deltaT The bias resistance
+    * @param mixed $expect The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataDriversTest
+    */
+    public function testDriversTest($sid, $name, $class)
+    {
+        $file = CODE_BASE."sensors/drivers/$class.php";
+        $this->assertFileExists(
+            $file, "File for $sid:$name and class $class not found"
+        );
+        include_once(CODE_BASE."sensors/drivers/$class.php");
+        $this->assertTrue(
+            class_exists("\\HUGnet\\sensors\\drivers\\".$class),
+            "Class $class doesn't exist for type $sid:$name in file $file"
+        );
+    }
 }
 /** This is the HUGnet namespace */
 namespace HUGnet\sensors\drivers;
