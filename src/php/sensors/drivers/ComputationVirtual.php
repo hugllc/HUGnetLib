@@ -149,30 +149,6 @@ class ComputationVirtual extends \HUGnet\sensors\DriverVirtual
             }
         }
         return $mathCode;
-        /*
-        if (is_string($mathCode)) {
-            $text = "return ".$this->sanatize($mathCode).";";
-        } else {
-            $text = "return false;";
-        }
-        return @create_function("", $text);
-        */
-    }
-    /**
-     * Creates a function to crunch numbers
-     *
-     * @param string $string The string to sanatize
-     *
-     * @return bool|string The name of the function created.
-     */
-    protected function sanatize($string)
-    {
-        $string = preg_replace(
-            '/[^0-9\-\/\+\*\(\)\.]+/',
-            "",
-            $string
-        );
-        return $string;
     }
 
 }
