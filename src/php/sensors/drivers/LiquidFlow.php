@@ -100,15 +100,6 @@ class LiquidFlow extends \HUGnet\sensors\Driver
         }
         return round($ppm/$extra, $this->get("maxDecimals"));
     }
-    /**
-    * Converts data between units
-    *
-    * @return bool True - Total instead of average, False, Average instead of total
-    */
-    public function total()
-    {
-        return true;
-    }
 
 }
 
