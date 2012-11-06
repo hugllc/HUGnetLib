@@ -98,7 +98,7 @@ class GenericRevolving extends \HUGnet\sensors\Driver
         if (is_null($ppm)) {
             return null;
         }
-        return $ppm/$extra;
+        return round($ppm/$extra, $this->get("maxDecimals"));
     }
 
 }

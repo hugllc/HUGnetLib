@@ -773,7 +773,9 @@ class DriverTest extends drivers\DriverTestBase
         $this->assertSame($expect, $this->o->getPPM($A, $deltaT));
     }
     /**
-    * Data provider for testGetPPM
+    * Data provider for testDriversTest
+    *
+    * This extracts all of the drivers and puts them into an array to test.
     *
     * @return array
     */
@@ -794,24 +796,24 @@ class DriverTest extends drivers\DriverTestBase
     /**
     * test
     *
-    * @param int   $A      The a to d reading
-    * @param float $deltaT The bias resistance
-    * @param mixed $expect The expected return value
+    * @param int    $sid   The sensor id
+    * @param string $type  The type of sensor
+    * @param string $class The driver class
     *
     * @return null
     *
     * @dataProvider dataDriversTest
     */
-    public function testDriversTest($sid, $name, $class)
+    public function testDriversTest($sid, $type, $class)
     {
         $file = CODE_BASE."sensors/drivers/$class.php";
         $this->assertFileExists(
-            $file, "File for $sid:$name and class $class not found"
+            $file, "File for $sid:$type and class $class not found"
         );
-        include_once(CODE_BASE."sensors/drivers/$class.php");
+        include_once CODE_BASE."sensors/drivers/$class.php";
         $this->assertTrue(
             class_exists("\\HUGnet\\sensors\\drivers\\".$class),
-            "Class $class doesn't exist for type $sid:$name in file $file"
+            "Class $class doesn't exist for type $sid:$type in file $file"
         );
     }
 }
