@@ -31,7 +31,7 @@
  * @copyright  2012 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
 /** This is a required class */
@@ -53,7 +53,7 @@ require_once TEST_CONFIG_BASE.'stubs/DummyDeviceContainer.php';
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.9.7
- * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  * @SuppressWarnings(PHPMD.UnusedFormalParameter)
  */
@@ -1002,7 +1002,7 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
 * @copyright  2012 Hunt Utilities Group, LLC
 * @copyright  2009 Scott Price
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-* @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+* @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 class TestDeviceSensor extends DeviceSensorBase
 {
@@ -1105,7 +1105,7 @@ class TestDeviceSensor extends DeviceSensorBase
 * @copyright  2012 Hunt Utilities Group, LLC
 * @copyright  2009 Scott Price
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-* @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+* @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 class TestDeviceSensor2 extends DeviceSensorBase
 {
@@ -1179,7 +1179,7 @@ class TestDeviceSensor2 extends DeviceSensorBase
 * @copyright  2012 Hunt Utilities Group, LLC
 * @copyright  2009 Scott Price
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-* @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+* @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 class TestDeviceSensor3 extends DeviceSensorBase
 {

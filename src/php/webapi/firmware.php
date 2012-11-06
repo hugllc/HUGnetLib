@@ -29,7 +29,7 @@
  * @copyright  2007 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    GIT: 0.9.7
- * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
 

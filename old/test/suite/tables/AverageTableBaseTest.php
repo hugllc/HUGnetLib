@@ -31,7 +31,7 @@
  * @copyright  2012 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
 /** This is a required class */
@@ -59,7 +59,7 @@ require_once TEST_CONFIG_BASE.'stubs/DummyBase.php';
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.9.7
- * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class AverageTableBaseTest extends HUGnetDBTableTestBase
 {
@@ -3383,7 +3383,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
  * @copyright  2012 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class AverageTableBaseTestStub extends AverageTableBase
 {

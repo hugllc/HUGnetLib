@@ -31,7 +31,7 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** The base path to all the files included for HUGnet */
 if (!defined("HUGNET_INCLUDE_PATH")) {

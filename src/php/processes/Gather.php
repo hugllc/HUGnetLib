@@ -29,7 +29,7 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
 namespace HUGnet\processes;
@@ -50,7 +50,7 @@ require_once dirname(__FILE__)."/../ui/Daemon.php";
  * @copyright  2012 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.9.7
- * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class Gather extends \HUGnet\ui\Daemon
 {

@@ -31,7 +31,7 @@
  * @copyright  2012 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
 
@@ -57,7 +57,7 @@ require_once TEST_BASE.'plugins/devices/DevicePluginTestBase.php';
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.9.7
- * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class E00392600DeviceTest extends DevicePluginTestBase
 {
@@ -578,7 +578,7 @@ class E00392600DeviceTest extends DevicePluginTestBase
 * @copyright  2012 Hunt Utilities Group, LLC
 * @copyright  2009 Scott Price
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-* @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+* @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 class TestE00392600Device extends E00392600Device
 {
@@ -625,7 +625,7 @@ class TestE00392600Device extends E00392600Device
  * @copyright  2012 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class E00392600DeviceLockTableTestStub extends LockTable
 {
