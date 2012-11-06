@@ -743,6 +743,35 @@ class DriverTest extends drivers\DriverTestBase
         $obj = Driver::factory($name, $sensor);
         $this->assertSame($expect, $obj->channels());
     }
+    /**
+    * Data provider for testGetPPM
+    *
+    * @return array
+    */
+    public static function dataGetPPM()
+    {
+        return array(
+            array(500, 300, 100.0),
+            array(500, 0, null),
+            array(500, -1, null),
+            array(-1, 300, null),
+        );
+    }
+    /**
+    * test
+    *
+    * @param int   $A      The a to d reading
+    * @param float $deltaT The bias resistance
+    * @param mixed $expect The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataGetPPM
+    */
+    public function testGetPPM($A, $deltaT, $expect)
+    {
+        $this->assertSame($expect, $this->o->getPPM($A, $deltaT));
+    }
 }
 /** This is the HUGnet namespace */
 namespace HUGnet\sensors\drivers;
@@ -815,6 +844,19 @@ class DriverTestClass extends \HUGnet\sensors\Driver
     public function linearBounded($value, $Imin, $Imax, $Omin, $Omax)
     {
         return parent::linearBounded($value, $Imin, $Imax, $Omin, $Omax);
+    }
+    /**
+    * This is for a generic pulse counter
+    *
+    * @param int   $val    Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
+    *                      and the last one
+    *
+    * @return float
+    */
+    public function getPPM($val, $deltaT)
+    {
+        return parent::getPPM($val, $deltaT);
     }
 }
 ?>

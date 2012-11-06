@@ -130,8 +130,10 @@ abstract class Driver
         "70:bravo3motion"            => "Bravo3Motion",
         "70:DEFAULT"                 => "GenericPulse",
         "70:generic"                 => "GenericPulse",
+        "70:genericRevolver"         => "GenericRevolving",
         "7F:DEFAULT"                 => "GenericPulse",
         "7F:hs"                      => "GenericPulse",
+        "7F:hsRevolver"              => "GenericRevolving",
         "F9:DEFAULT"                 => "ADuCInputTable",
         "FA:DEFAULT"                 => "SDEFAULT",
         "FE:DEFAULT"                 => "EmptyVirtual",
@@ -501,6 +503,26 @@ abstract class Driver
     {
         return (array)$this->_arch[$this->sensor()->device()->get("arch")]
             + (array)$this->_arch["all"];
+    }
+    /**
+    * This is for a generic pulse counter
+    *
+    * @param int   $val    Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
+    *                      and the last one
+    *
+    * @return float
+    */
+    protected function getPPM($val, $deltaT)
+    {
+        if ($deltaT <= 0) {
+            return null;
+        }
+        $ppm = ($val / $deltaT) * 60;
+        if ($ppm < 0) {
+            return null;
+        }
+        return round($ppm, 4);
     }
 }
 
