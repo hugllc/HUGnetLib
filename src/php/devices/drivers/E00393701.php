@@ -76,17 +76,6 @@ class E00393701 extends \HUGnet\devices\drivers\E00393700
         "job"  => "sense",
         "arch" => "ADuC",
     );
-    /**
-    * This function creates the system.
-    *
-    * @param object &$device The device record we are attached to
-    *
-    * @return null
-    */
-    public static function &factory(&$device)
-    {
-        return parent::intFactory($device);
-    }
 
 }
 

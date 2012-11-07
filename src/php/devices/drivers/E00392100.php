@@ -76,17 +76,6 @@ class E00392100 extends \HUGnet\devices\Driver
         "job"  => "control",
         "arch" => "AVR",
     );
-    /**
-    * This function creates the system.
-    *
-    * @param object &$device The device record we are attached to
-    *
-    * @return null
-    */
-    public static function &factory(&$device)
-    {
-        return parent::intFactory($device);
-    }
 
     /**
     * This function returns the configuration packet arrays
@@ -160,9 +149,9 @@ class E00392100 extends \HUGnet\devices\Driver
                 "id" => 0xFE,
             );
         }
-        $obj = \HUGnet\Sensor::factory(
-            $this->device()->system(), $this->device(), $data
-        );
+        $system = $this->device()->system();
+        $device = $this->device();
+        $obj = \HUGnet\Sensor::factory($system, $device, $data);
         if (is_null($obj->get("id"))
             || ((int)$obj->get("id") !== $type["id"])
             || ((int)$obj->get("type") !== $type["type"])

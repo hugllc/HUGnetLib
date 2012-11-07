@@ -71,7 +71,7 @@ class EVIRTUALTest extends DriverTestBase
         parent::setUp();
         $device  = new \HUGnet\DummyTable("Device");
         $device->resetMock(array());
-        $this->o = &EVIRTUAL::factory($device);
+        $this->o = \HUGnet\devices\Driver::factory("EVIRTUAL", $device);
     }
 
     /**

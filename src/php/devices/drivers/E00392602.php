@@ -74,17 +74,6 @@ class E00392602 extends E00392600
         "packetTimeout" => 2,
         "arch" => "PC",
     );
-    /**
-    * This function creates the system.
-    *
-    * @param object &$device The device record we are attached to
-    *
-    * @return null
-    */
-    public static function &factory(&$device)
-    {
-        return parent::intFactory($device);
-    }
 }
 
 

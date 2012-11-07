@@ -187,10 +187,10 @@ abstract class Driver
             $driver, "devices/drivers", true, "\\HUGnet\\devices\\drivers"
         );
         if (class_exists($class)) {
-            return $class::factory($device);
+            return new $class($device);
         }
         include_once dirname(__FILE__)."/drivers/EDEFAULT.php";
-        return \HUGnet\devices\drivers\EDEFAULT::factory($device);
+        return new \HUGnet\devices\drivers\EDEFAULT($device);
     }
     /**
     * Checks to see if a piece of data exists

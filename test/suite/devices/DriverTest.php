@@ -129,7 +129,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     {
         $device  = new \HUGnet\DummyTable("Device");
         $device->resetMock($mocks);
-        $o = &DriverTestClass::factory($device);
+        $o = Driver::factory("DriverTestClass", $device);
         $this->assertSame($expect, $o->present($name));
     }
     /**
@@ -177,7 +177,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     {
         $device  = new \HUGnet\DummyTable("Device");
         $device->resetMock($mocks);
-        $o = &DriverTestClass::factory($device);
+        $o = Driver::factory("DriverTestClass", $device);
         $this->assertSame($expect, $o->get($name));
     }
     /**
@@ -220,7 +220,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     {
         $device  = new \HUGnet\DummyTable("Device");
         $device->resetMock($mocks);
-        $o = &Driver::factory($name, $device);
+        $o = Driver::factory($name, $device);
         $this->assertSame($expect, get_class($o));
     }
     /**
@@ -460,7 +460,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     {
         $device  = new \HUGnet\DummyTable("Device");
         $device->resetMock($mocks);
-        $obj = &DriverTestClass::factory($device);
+        $obj = Driver::factory("DriverTestClass", $device);
         $this->assertEquals($expect, $obj->decodeSensorString($string));
     }
     /**
@@ -473,25 +473,25 @@ class DriverTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(),
-                "\HUGnet\devices\DriverTestClass",
+                "DriverTestClass",
                 true,
                 "E00392800History"
             ),
             array(
                 array(),
-                "\HUGnet\devices\DriverTestClass",
+                "DriverTestClass",
                 false,
                 "E00392800Average"
             ),
             array(
                 array(),
-                "\HUGnet\devices\DriverTestClass2",
+                "DriverTestClass2",
                 true,
                 "EDEFAULTHistory"
             ),
             array(
                 array(),
-                "\HUGnet\devices\DriverTestClass2",
+                "DriverTestClass2",
                 false,
                 "EDEFAULTAverage"
             ),
@@ -513,7 +513,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     {
         $device  = new \HUGnet\DummyTable("Device");
         $device->resetMock($mocks);
-        $obj = &$class::factory($device);
+        $obj = Driver::factory($class, $device);
         $this->assertEquals($expect, $obj->historyTable($history));
     }
     /**
@@ -526,7 +526,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(),
-                "\HUGnet\devices\DriverTestClass",
+                "DriverTestClass",
                 array(
                     'packetTimeout' => 6,
                     'totalSensors' => 13,
@@ -546,7 +546,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(),
-                "\HUGnet\devices\DriverTestClass2",
+                "DriverTestClass2",
                 array(
                     'packetTimeout' => 9,
                     'totalSensors' => 13,
@@ -581,7 +581,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     {
         $device  = new \HUGnet\DummyTable("Device");
         $device->resetMock($mocks);
-        $obj = &$class::factory($device);
+        $obj = Driver::factory($class, $device);
         $this->assertEquals($expect, $obj->toArray());
     }
     /**
@@ -724,7 +724,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     {
         $device  = new \HUGnet\DummyTable("Device");
         $device->resetMock($mocks);
-        $obj = DriverTestClass::factory($device);
+        $obj = Driver::factory("DriverTestClass", $device);
         $obj->decode($string, $device);
         $ret = $device->retrieve();
         $this->assertEquals($expect, $ret);
@@ -888,11 +888,14 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     {
         $device  = new \HUGnet\DummyTable("Device");
         $device->resetMock($mocks);
-        $obj = DriverTestClass::factory($device);
+        $obj = Driver::factory("DriverTestClass", $device);
         $ret = $obj->encode($showFixed);
         $this->assertSame($expect, $ret);
     }
 }
+/** This is the HUGnet namespace */
+namespace HUGnet\devices\drivers;
+
 /**
  * Base driver class for devices.
  *
@@ -909,7 +912,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class DriverTestClass extends Driver
+class DriverTestClass extends \HUGnet\devices\Driver
 {
     /**
     * This is where the data for the driver is stored.  This array must be
@@ -921,17 +924,6 @@ class DriverTestClass extends Driver
         "historyTable" => "E00392800History",
         "averageTable" => "E00392800Average",
     );
-    /**
-    * This function creates the system.
-    *
-    * @param object &$device The device record we are attached to
-    *
-    * @return null
-    */
-    public static function &factory(&$device)
-    {
-        return parent::intFactory($device);
-    }
 }
 /**
  * Base driver class for devices.
@@ -949,7 +941,7 @@ class DriverTestClass extends Driver
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class DriverTestClass2 extends Driver
+class DriverTestClass2 extends \HUGnet\devices\Driver
 {
     /**
     * This is where the data for the driver is stored.  This array must be
@@ -961,16 +953,5 @@ class DriverTestClass2 extends Driver
         "historyTable" => "ABADHistory",
         "averageTable" => "ABADAverage",
     );
-    /**
-    * This function creates the system.
-    *
-    * @param object &$device The device record we are attached to
-    *
-    * @return null
-    */
-    public static function &factory(&$device)
-    {
-        return parent::intFactory($device);
-    }
 }
 ?>

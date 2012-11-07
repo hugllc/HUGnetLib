@@ -72,17 +72,6 @@ class E00392800 extends \HUGnet\devices\Driver
         "job"  => "sense",
         "arch" => "AVR",
     );
-    /**
-    * This function creates the system.
-    *
-    * @param object &$device The device record we are attached to
-    *
-    * @return null
-    */
-    public static function &factory(&$device)
-    {
-        return parent::intFactory($device);
-    }
 
 }
 

@@ -74,17 +74,6 @@ class EVIRTUAL extends \HUGnet\devices\Driver
         "arch" => "virtual",
     );
     /**
-    * This function creates the system.
-    *
-    * @param object &$device The device record we are attached to
-    *
-    * @return null
-    */
-    public static function &factory(&$device)
-    {
-        return parent::intFactory($device);
-    }
-    /**
     * Checks a record to see if it needs fixing
     *
     * @return array

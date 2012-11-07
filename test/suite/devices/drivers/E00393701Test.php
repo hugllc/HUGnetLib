@@ -71,7 +71,7 @@ class E00393701Test extends DriverTestBase
         parent::setUp();
         $device  = new \HUGnet\DummyTable("Device");
         $device->resetMock(array());
-        $this->o = &E00393701::factory($device);
+        $this->o = \HUGnet\devices\Driver::factory("E00393701", $device);
     }
 
     /**
