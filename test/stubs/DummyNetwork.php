@@ -67,7 +67,7 @@ class DummyNetwork extends \HUGnet\DummyBase
     *
     * @return null
     */
-    public function &factory($name)
+    static public function &factory($name)
     {
         return new DummyNetwork($name);
     }

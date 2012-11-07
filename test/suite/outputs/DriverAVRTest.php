@@ -74,7 +74,7 @@ class DriverAVRTest extends drivers\DriverTestBase
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
-        $this->o = &DriverAVRTestClass::factory($sensor);
+        $this->o = \HUGnet\outputs\Driver::factory("DriverAVRTestClass", $sensor);
     }
 
     /**
@@ -88,119 +88,6 @@ class DriverAVRTest extends drivers\DriverTestBase
     protected function tearDown()
     {
         unset($this->o);
-    }
-
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataPresent()
-    {
-        return array(
-            array(
-                "ThisIsABadName",
-                false,
-            ),
-            array(
-                "longName",
-                true,
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $name   The name of the variable to test.
-    * @param array  $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataPresent
-    */
-    public function testPresent($name, $expect)
-    {
-        $this->assertSame($expect, $this->o->present($name, 1));
-    }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataGet()
-    {
-        return array(
-            array(
-                "ThisIsABadName",
-                null,
-            ),
-            array(
-                "shortName",
-                "Unknown",
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $name   The name of the variable to test.
-    * @param array  $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataGet
-    */
-    public function testGet($name, $expect)
-    {
-        $this->assertSame($expect, $this->o->get($name, 1));
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @return null
-    */
-    public function testToArray()
-    {
-        $expect = array(
-            'longName' => 'Unknown Output',
-            'shortName' => 'Unknown',
-        );
-        $this->assertEquals($expect, $this->o->toArray(1));
-    }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataFactory()
-    {
-        return array(
-            array(
-                "asdf",
-                "HUGnet\outputs\drivers\EmptyOutput",
-            ),
-            array(
-                "EmptyOutput",
-                "HUGnet\outputs\drivers\EmptyOutput",
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $name   The name of the variable to test.
-    * @param array  $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataFactory
-    */
-    public function testFactory($name, $expect)
-    {
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock(array());
-        $o = &DriverAVR::factory($name, $sensor);
-        $this->assertSame($expect, get_class($o));
     }
     /**
      * Data provider for testGetReading
@@ -223,6 +110,8 @@ class DriverAVRTest extends drivers\DriverTestBase
         );
     }
 }
+/** This is the HUGnet namespace */
+namespace HUGnet\outputs\drivers;
 /**
  * Base driver class for devices.
  *
@@ -239,7 +128,7 @@ class DriverAVRTest extends drivers\DriverTestBase
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class DriverAVRTestClass extends DriverAVR
+class DriverAVRTestClass extends \HUGnet\outputs\DriverAVR
 {
     /**
     * This is where the data for the driver is stored.  This array must be
@@ -254,17 +143,6 @@ class DriverAVRTestClass extends DriverAVR
         "2000" => 30.0,
         "1000" => 40.0,
     );
-    /**
-    * This function creates the system.
-    *
-    * @param object &$sensor The sensor object
-    *
-    * @return null
-    */
-    public static function &factory(&$sensor)
-    {
-        return parent::intFactory($sensor);
-    }
     /**
     * Gets the extra values
     *

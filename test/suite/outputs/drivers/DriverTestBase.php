@@ -91,20 +91,6 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-    * test the set routine when an extra class exists
-    *
-    * @return null
-    */
-    public function testFactory()
-    {
-        $this->assertSame(
-            "HUGnet\outputs\drivers\\".$this->class, get_class($this->o)
-        );
-    }
-
-
-
-    /**
     * data provider for testType
     *
     * @return array
@@ -251,7 +237,10 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    abstract public static function dataGetReading();
+    public static function dataGetReading()
+    {
+        return array();
+    }
     /**
     * Generic function for testing sensor routines
     *

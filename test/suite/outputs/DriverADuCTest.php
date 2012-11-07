@@ -76,7 +76,7 @@ class DriverADuCTest extends drivers\DriverTestBase
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
-        $this->o = &\HUGnet\outputs\drivers\DriverADuCTestClass::factory($sensor);
+        $this->o = \HUGnet\outputs\Driver::factory("DriverADuCTestClass", $sensor);
     }
 
     /**
@@ -127,168 +127,6 @@ class DriverADuCTest extends drivers\DriverTestBase
     public function testPresent($name, $expect)
     {
         $this->assertSame($expect, $this->o->present($name, 1));
-    }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataGet()
-    {
-        return array(
-            array(
-                "ThisIsABadName",
-                null,
-            ),
-            array(
-                "testParam",
-                "12345",
-            ),
-            array(
-                "unitType",
-                'asdf',
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $name   The name of the variable to test.
-    * @param array  $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataGet
-    */
-    public function testGet($name, $expect)
-    {
-        $this->assertSame($expect, $this->o->get($name, 1));
-    }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataGetExtra()
-    {
-        return array(
-            array(
-                array(
-                ),
-                0,
-                0,
-                2
-            ),
-            array(
-                array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(3,4,5,6),
-                        ),
-                    ),
-                ),
-                0,
-                0,
-                3
-            ),
-            array(
-                array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(3,4,5,6),
-                        ),
-                    ),
-                ),
-                0,
-                1,
-                4
-            ),
-            array(
-                array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(3,4,5,6),
-                        ),
-                    ),
-                ),
-                1,
-                1,
-                5
-            ),
-            array(
-                array(
-                ),
-                1,
-                1,
-                3
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array $mock   The mocks to use
-    * @param int   $index  The index to get
-    * @param int   $offset The offset to use
-    * @param array $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataGetExtra
-    */
-    public function testGetExtra($mock, $index, $offset, $expect)
-    {
-        unset($this->o);
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock($mock);
-        $this->o = &\HUGnet\outputs\drivers\DriverADuCTestClass::factory(
-            $sensor, $offset
-        );
-        $this->assertSame($expect, $this->o->getExtra($index));
-    }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataFactory()
-    {
-        return array(
-            array(
-                "asdf",
-                0,
-                null,
-                0,
-                "HUGnet\outputs\drivers\EmptyOutput",
-            ),
-            array(
-                "EmptyOutput",
-                0,
-                null,
-                0,
-                "HUGnet\outputs\drivers\EmptyOutput",
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $name    The name of the variable to test.
-    * @param int    $offset  The offset to use
-    * @param object $entry   The table entry
-    * @param int    $channel The channel in that entry
-    * @param array  $expect  The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataFactory
-    */
-    public function testFactory($name, $offset, $entry, $channel, $expect)
-    {
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock(array());
-        $o = &DriverADuC::factory($name, $sensor, $offset, $entry, $channel);
-        $this->assertSame($expect, get_class($o));
     }
     /**
      * Data provider for testGetReading
@@ -510,18 +348,6 @@ class DriverADuCTestClass extends \HUGnet\outputs\DriverADuC
         "extraText" => array("a","b","c","d","e"),
         "extraValues" => array(5, 5, 5, 5, 5),
     );
-    /**
-    * This function creates the system.
-    *
-    * @param object &$sensor The sensor object
-    * @param int    $offset  The offset for getExtra
-    *
-    * @return null
-    */
-    public static function &factory(&$sensor, $offset = 0)
-    {
-        return parent::intFactory($sensor, $offset);
-    }
     /**
     * Gets the extra values
     *

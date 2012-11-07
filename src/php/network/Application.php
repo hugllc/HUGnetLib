@@ -380,7 +380,8 @@ final class Application
         // Continue to do the unsolicited stuff
         $count = 0;
         do {
-            $ret = $this->_unsolicited($this->_transport->unsolicited());
+            $pkts = $this->_transport->unsolicited();
+            $ret = $this->_unsolicited($pkts);
         } while (($count++ < self::MAX_UNSOL) && $ret);
     }
     /**

@@ -74,7 +74,7 @@ class DriverTest extends drivers\DriverTestBase
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($extra);
-        $this->o = &DriverTestClass::factory($sensor);
+        $this->o = Driver::factory("DriverTestClass", $sensor);
     }
 
     /**
@@ -204,7 +204,7 @@ class DriverTest extends drivers\DriverTestBase
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($extra);
-        $o = &Driver::factory($name, $sensor);
+        $o = Driver::factory($name, $sensor);
         $this->assertSame($expect, get_class($o));
     }
     /**
@@ -448,7 +448,7 @@ class DriverTest extends drivers\DriverTestBase
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($mocks);
-        $obj = DriverTestClass::factory($sensor);
+        $obj = Driver::factory("DriverTestClass", $sensor);
         $obj->decode($string);
         $ret = $sensor->retrieve();
         $this->assertEquals($expect, $ret);
@@ -487,11 +487,13 @@ class DriverTest extends drivers\DriverTestBase
     {
         $sensor  = new \HUGnet\DummyTable("Sensor");
         $sensor->resetMock($mocks);
-        $obj = DriverTestClass::factory($sensor);
+        $obj = Driver::factory("DriverTestClass", $sensor);
         $ret = $obj->encode();
         $this->assertSame($expect, $ret);
     }
 }
+/** This is the HUGnet namespace */
+namespace HUGnet\outputs\drivers;
 /**
  * Base driver class for devices.
  *
@@ -508,7 +510,7 @@ class DriverTest extends drivers\DriverTestBase
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class DriverTestClass extends Driver
+class DriverTestClass extends \HUGnet\outputs\Driver
 {
     /**
     * This is where the data for the driver is stored.  This array must be
@@ -516,17 +518,6 @@ class DriverTestClass extends Driver
     */
     protected $params = array(
     );
-    /**
-    * This function creates the system.
-    *
-    * @param object &$sensor The sensor object
-    *
-    * @return null
-    */
-    public static function &factory(&$sensor)
-    {
-        return parent::intFactory($sensor);
-    }
     /**
     * Gets the extra values
     *

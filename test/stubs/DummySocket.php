@@ -67,7 +67,7 @@ class DummySocket extends \HUGnet\DummyBase
     *
     * @return null
     */
-    public function &factory($config = array())
+    static public function &factory($config = array())
     {
         $obj = new DummySocket($config["name"]);
         return $obj;

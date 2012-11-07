@@ -197,7 +197,7 @@ final class Transport
     */
     private function _receive()
     {
-        $pkt =& $this->_network->receive();
+        $pkt = $this->_network->receive();
         // If we don't get a packet back exit
         if (is_object($pkt)) {
             // Check every packet until one claims it or we get to the end

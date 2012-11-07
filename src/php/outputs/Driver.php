@@ -109,7 +109,7 @@ abstract class Driver
     *
     * @return null
     */
-    private function __construct(&$sensor)
+    protected function __construct(&$sensor)
     {
         $this->_sensor = &$sensor;
     }
@@ -132,19 +132,6 @@ abstract class Driver
     /**
     * This function creates the system.
     *
-    * @param object &$sensor The sensor object
-    *
-    * @return null
-    */
-    protected static function &intFactory(&$sensor)
-    {
-        $class = get_called_class();
-        $object = new $class($sensor);
-        return $object;
-    }
-    /**
-    * This function creates the system.
-    *
     * @param string $driver  The driver to load
     * @param object &$sensor The sensor object
     *
@@ -158,10 +145,10 @@ abstract class Driver
             include_once $file;
         }
         if (class_exists($class)) {
-            return $class::factory($sensor);
+            return new $class($sensor);
         }
         include_once dirname(__FILE__)."/drivers/EmptyOutput.php";
-        return \HUGnet\outputs\drivers\EmptyOutput::factory($sensor);
+        return new \HUGnet\outputs\drivers\EmptyOutput($sensor);
     }
     /**
     * Checks to see if a piece of data exists
