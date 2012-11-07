@@ -141,6 +141,7 @@ abstract class Driver
         "70:liquidflowmeter"         => "LiquidFlow",
         "70:maximumAnemometer"       => "MaximumAnemometer",
         "70:maximumRainGauge"        => "MaximumRain",
+        "70:wattnode"                => "WattNode",
         "7E:DEFAULT"                 => "AVROnTimePulse",
         "7F:DEFAULT"                 => "GenericPulse",
         "7F:hs"                      => "GenericPulse",
