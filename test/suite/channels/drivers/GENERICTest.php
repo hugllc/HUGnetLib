@@ -71,7 +71,7 @@ class GENERICTest extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->o = &GENERIC::factory("test");
+        $this->o = \HUGnet\channels\Driver::factory("GENERIC", "test");
     }
 
     /**
@@ -114,7 +114,7 @@ class GENERICTest extends DriverTestBase
     */
     public function testGetValid($units, $expect)
     {
-        $obj = GENERIC::factory($units);
+        $obj = \HUGnet\channels\Driver::factory("GENERIC", $units);
         $this->assertEquals($expect, $obj->getValid());
     }
 
@@ -151,7 +151,7 @@ class GENERICTest extends DriverTestBase
     */
     public function testValid($units, $check, $expect)
     {
-        $obj = GENERIC::factory($units);
+        $obj = \HUGnet\channels\Driver::factory("GENERIC", $units);
         $this->assertSame($expect, $obj->valid($check));
     }
     /**
@@ -187,7 +187,7 @@ class GENERICTest extends DriverTestBase
     */
     public function testNumeric($units, $check, $expect)
     {
-        $obj = GENERIC::factory($units);
+        $obj = \HUGnet\channels\Driver::factory("GENERIC", $units);
         $this->assertSame($expect, $obj->numeric($check));
     }
     /**

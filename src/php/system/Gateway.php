@@ -69,7 +69,7 @@ class Gateway extends \HUGnet\base\SystemTableBase
     *
     * @return null
     */
-    public static function &factory($system, $data=null, $table="Gateways")
+    public static function &factory(&$system, $data=null, $table="Gateways")
     {
         $object = parent::factory($system, $data, $table);
         return $object;

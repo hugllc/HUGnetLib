@@ -138,7 +138,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
         $dev = new DummyBase("Device");
         // This just resets the mock
         $table->resetMock();
-        $obj = Sensor::factory($config, $dev, $gateway, $class);
+        $obj = Sensor::factory($config, $gateway, $class, $dev);
         // Make sure we have the right object
         $this->assertTrue((get_class($obj) === "HUGnet\Sensor"), "Class wrong");
     }
@@ -226,7 +226,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
         $sys = new DummySystem("System");
         $dev = new DummyBase("Device");
         $sys->resetMock($config);
-        $obj = Sensor::factory($sys, $dev, null, $class);
+        $obj = Sensor::factory($sys, null, $class, $dev);
         $json = $obj->json();
         $this->assertSame($expect, $json);
         unset($obj);
@@ -302,7 +302,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
         $sys = new DummySystem("System");
         $dev = new DummyBase("Device");
         $sys->resetMock($config);
-        $obj = Sensor::factory($sys, $dev, null, $class);
+        $obj = Sensor::factory($sys, null, $class, $dev);
         $this->assertSame($expect, $obj->get($field));
         unset($obj);
     }
@@ -452,7 +452,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
         $sys = new DummySystem("System");
         $dev = new DummyBase("Device");
         $sys->resetMock($config);
-        $obj = Sensor::factory($sys, $dev, null, $class);
+        $obj = Sensor::factory($sys, null, $class, $dev);
         $ret = $obj->load($data);
         $this->assertSame($return, $ret, "Return Wrong");
         $ret = $class->retrieve("Table");
@@ -604,7 +604,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
     {
         $sys = new DummySystem("System");
         $dev = new DummyBase("Device");
-        $obj = Sensor::factory($sys, $dev, null, $class);
+        $obj = Sensor::factory($sys, null, $class, $dev);
         $sys->resetMock($config);
         $ret = $obj->change($data);
         $this->assertSame($return, $ret, "Return Wrong");
@@ -819,7 +819,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
         $sys = new DummySystem("System");
         $dev = new DummyBase("Device");
         $sys->resetMock($config);
-        $obj = Sensor::factory($sys, $dev, null, $class);
+        $obj = Sensor::factory($sys, null, $class, $dev);
         $ret = $obj->decodeData($string, $deltaT, $prev, $data);
         $this->assertEquals($expect, $ret, "Return wrong");
         $this->assertSame($strExpect, $string, "String wrong");
@@ -962,7 +962,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
         $sys = new DummySystem("System");
         $dev = new DummyBase("Device");
         $sys->resetMock($config);
-        $obj = Sensor::factory($sys, $dev, null, $class);
+        $obj = Sensor::factory($sys, null, $class, $dev);
         $this->assertSame(
             $ret,
             $obj->convertUnits($data, $units),
@@ -1018,7 +1018,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
     ) {
         $config->resetMock($mocks);
         $dev = new DummyBase("Device");
-        $obj = Sensor::factory($config, $dev, $device, $class);
+        $obj = Sensor::factory($config, $device, $class, $dev);
         $this->assertEquals(
             $expect, $obj->encode(), "Return Wrong"
         );
@@ -1133,7 +1133,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
     ) {
         $config->resetMock($mocks);
         $dev = new DummyBase("Device");
-        $obj = Sensor::factory($config, $dev, $device, $class);
+        $obj = Sensor::factory($config, $device, $class, $dev);
         $obj->decode($string);
         $ret = $config->retrieve();
         $this->assertEquals(
@@ -1202,7 +1202,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
     ) {
         $config->resetMock($mocks);
         $dev = new DummyBase("Device");
-        $obj = Sensor::factory($config, $dev, $device, $class);
+        $obj = Sensor::factory($config, $device, $class, $dev);
         $this->assertEquals(
             $expect, $obj->Channels(), "Return Wrong"
         );
@@ -1275,7 +1275,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
     ) {
         $config->resetMock($mocks);
         $dev = new DummyBase("Device");
-        $obj = Sensor::factory($config, $dev, $device, $class);
+        $obj = Sensor::factory($config, $device, $class, $dev);
         $this->assertEquals(
             $expect, $obj->ChannelStart(), "Return Wrong"
         );
@@ -1321,17 +1321,6 @@ class TestSensorDriver1 extends \HUGnet\sensors\Driver
         "extraDefault" => array(2210, '&#176;C'),
         "maxDecimals" => 4,
     );
-    /**
-    * This function creates the system.
-    *
-    * @param object &$sensor The sensor object
-    *
-    * @return null
-    */
-    public static function &factory(&$sensor)
-    {
-        return parent::intFactory($sensor);
-    }
     /**
     * Changes a raw reading into a output value
     *
@@ -1386,17 +1375,6 @@ class TestSensorDriver2 extends \HUGnet\sensors\Driver
         "extraDefault" => array(2210, '&#176;C'),
         "maxDecimals" => 4,
     );
-    /**
-    * This function creates the system.
-    *
-    * @param object &$sensor The sensor object
-    *
-    * @return null
-    */
-    public static function &factory(&$sensor)
-    {
-        return parent::intFactory($sensor);
-    }
     /**
     * Changes a raw reading into a output value
     *

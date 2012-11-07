@@ -84,20 +84,23 @@ class Sensor extends \HUGnet\base\SystemTableBase
     * This function creates the system.
     *
     * @param mixed  &$system (object)The system object to use
-    * @param object &$device The device object to use
     * @param mixed  $data    (int)The id of the item, (array) data info array
     * @param string $table   The table to use
+    * @param object &$device The device object to use
     *
     * @return null
     */
     public static function &factory(
-        &$system, &$device, $data=null, $table="Sensors"
+        &$system, $data=null, $table=null, &$device = null
     ) {
         System::exception(
             "\HUGnet\Sensor needs to be passed a device object",
             "InvalidArgument",
             !is_object($device)
         );
+        if (empty($table)) {
+            $table = "Sensors";
+        }
         $object = parent::factory($system, $data, $table);
         $object->_device = &$device;
         return $object;

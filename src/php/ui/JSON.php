@@ -58,12 +58,13 @@ class JSON extends HTML
     * Creates the object
     *
     * @param array &$config The configuration to use
+    * @param mixed &$system The system object to use
     *
     * @return null
     */
-    static public function &factory(&$config = array())
+    static public function &factory(&$config = array(), &$system = null)
     {
-        $obj = new JSON($config);
+        $obj = new JSON($config, $system);
         return $obj;
     }
 

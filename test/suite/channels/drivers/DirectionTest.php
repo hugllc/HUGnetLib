@@ -71,7 +71,7 @@ class DirectionTest extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->o = &Direction::factory();
+        $this->o = \HUGnet\channels\Driver::factory("Direction", "&#176;");
     }
 
     /**
@@ -125,9 +125,11 @@ class DirectionTest extends DriverTestBase
         return array(
             array(
                 "&#176;",
+                "&#176;",
                 true,
             ),
             array(
+                "&#176;",
                 "psi",
                 false,
             ),
@@ -143,13 +145,16 @@ class DirectionTest extends DriverTestBase
         return array(
             array(
                 "&#176;",
+                "&#176;",
                 true,
             ),
             array(
+                "&#176;",
                 "Direction",
                 false,
             ),
             array(
+                "&#176;",
                 "psi",
                 false,
             ),

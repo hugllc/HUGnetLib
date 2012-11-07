@@ -72,10 +72,13 @@ abstract class Driver
     /**
     * Sets everything up
     *
+    * @param string $units    The units we are loading
+    *
     * @return null
     */
-    private function __construct()
+    protected function __construct($units)
     {
+
     }
 
     /**

@@ -41,6 +41,8 @@ require_once CODE_BASE.'system/Device.php';
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
 require_once CODE_BASE.'system/Sensor.php';
+/** This is a required class */
+require_once CODE_BASE.'channels/Driver.php';
 /** This is the dummy table container */
 require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
 /** This is the dummy table container */
@@ -675,9 +677,10 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $sensors = array();
         $obj = Sensor::factory(
             new DummySystem("TestStuff"),
-            new DummySystem("Device"),
             array(
-            )
+            ),
+            null,
+            new DummySystem("Device")
         );
         $obj->change(array());
         for ($i = 0; $i < 13; $i++) {

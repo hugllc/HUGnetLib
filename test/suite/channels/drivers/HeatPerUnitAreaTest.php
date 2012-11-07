@@ -71,7 +71,7 @@ class HeatPerUnitAreaTest extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->o = &HeatPerUnitArea::factory();
+        $this->o = \HUGnet\channels\Driver::factory("HeatPerUnitArea", "W/m^2");
     }
 
     /**
@@ -123,9 +123,11 @@ class HeatPerUnitAreaTest extends DriverTestBase
         return array(
             array(
                 "Btu/hr ft^2",
+                "Btu/hr ft^2",
                 true,
             ),
             array(
+                "Btu/hr ft^2",
                 "psi",
                 false,
             ),
@@ -141,9 +143,11 @@ class HeatPerUnitAreaTest extends DriverTestBase
         return array(
             array(
                 "Btu/hr ft^2",
+                "Btu/hr ft^2",
                 true,
             ),
             array(
+                "Btu/hr ft^2",
                 "psi",
                 false,
             ),

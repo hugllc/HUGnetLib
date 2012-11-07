@@ -71,7 +71,7 @@ class PressureTest extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->o = &Pressure::factory();
+        $this->o = \HUGnet\channels\Driver::factory("Pressure", "Pa");
     }
 
     /**
@@ -126,10 +126,12 @@ class PressureTest extends DriverTestBase
     {
         return array(
             array(
+                "psi",
                 "%",
                 false,
             ),
             array(
+                "psi",
                 "psi",
                 true,
             ),
@@ -144,10 +146,12 @@ class PressureTest extends DriverTestBase
     {
         return array(
             array(
+                "psi",
                 "%",
                 false,
             ),
             array(
+                "psi",
                 "psi",
                 true,
             ),

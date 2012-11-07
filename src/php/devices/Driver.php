@@ -394,8 +394,10 @@ abstract class Driver
             "sensor" => $sid,
             "dev" => $this->device()->id(),
         );
+        $system = $this->device()->system();
+        $device = $this->device();
         $obj = \HUGnet\Sensor::factory(
-            $this->device()->system(), $this->device(), $data
+            $system, $data, null, $device
         );
         if (is_null($obj->get("id"))) {
             $tSensors = $this->device()->get("sensors");

@@ -189,16 +189,17 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $units  The units to check
+    * @param string $units  The units to setup up for
+    * @param string $check  The units to check
     * @param string $expect The expected data
     *
     * @return null
     *
     * @dataProvider dataValid
     */
-    public function testValid($units, $expect)
+    public function testValid($units, $check, $expect)
     {
-        $this->assertSame($expect, $this->o->valid($units));
+        $this->assertSame($expect, $this->o->valid($check));
     }
     /**
     * data provider for testGetTypes
@@ -212,16 +213,17 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $units  The units to check
+    * @param string $units  The units to setup up for
+    * @param string $check  The units to check
     * @param string $expect The expected data
     *
     * @return null
     *
     * @dataProvider dataNumeric
     */
-    public function testNumeric($units, $expect)
+    public function testNumeric($units, $check, $expect)
     {
-        $this->assertSame($expect, $this->o->numeric($units));
+        $this->assertSame($expect, $this->o->numeric($check));
     }
 
     /**

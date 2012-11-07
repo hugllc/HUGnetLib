@@ -151,7 +151,7 @@ class E00392100 extends \HUGnet\devices\Driver
         }
         $system = $this->device()->system();
         $device = $this->device();
-        $obj = \HUGnet\Sensor::factory($system, $device, $data);
+        $obj = \HUGnet\Sensor::factory($system, $data, null, $device);
         if (is_null($obj->get("id"))
             || ((int)$obj->get("id") !== $type["id"])
             || ((int)$obj->get("type") !== $type["type"])

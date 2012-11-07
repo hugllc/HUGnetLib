@@ -71,7 +71,7 @@ class TemperatureTest extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->o = &Temperature::factory();
+        $this->o = \HUGnet\channels\Driver::factory("Temperature", "&#176;F");
     }
 
     /**
@@ -124,9 +124,11 @@ class TemperatureTest extends DriverTestBase
         return array(
             array(
                 "&#176;C",
+                "&#176;C",
                 true,
             ),
             array(
+                "&#176;C",
                 "psi",
                 false,
             ),
@@ -142,9 +144,11 @@ class TemperatureTest extends DriverTestBase
         return array(
             array(
                 "&#176;C",
+                "&#176;C",
                 true,
             ),
             array(
+                "&#176;C",
                 "psi",
                 false,
             ),

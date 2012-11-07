@@ -71,7 +71,7 @@ class PercentTest extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->o = &Percent::factory();
+        $this->o = \HUGnet\channels\Driver::factory("Percent", "decimal");
     }
 
     /**
@@ -123,9 +123,11 @@ class PercentTest extends DriverTestBase
         return array(
             array(
                 "%",
+                "%",
                 true,
             ),
             array(
+                "%",
                 "psi",
                 false,
             ),
@@ -141,9 +143,11 @@ class PercentTest extends DriverTestBase
         return array(
             array(
                 "%",
+                "%",
                 true,
             ),
             array(
+                "%",
                 "psi",
                 false,
             ),
