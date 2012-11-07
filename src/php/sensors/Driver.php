@@ -116,6 +116,8 @@ abstract class Driver
         "10:DEFAULT"                 => "AVRChsMss",
         "10:chsMss"                  => "AVRChsMss",
         "11:DEFAULT"                 => "ADuCPower",
+        "30:DEFAULT"                 => "AVROSRAMLight",
+        "30:OSRAM BPW-34"            => "AVROSRAMLight",
         "40:ControllerVoltage"       => "ControllerVoltage",
         "40:BARO4"                   => "AVRBAROA4V",
         "40:fetBoard"                => "FETBoardVoltage",
