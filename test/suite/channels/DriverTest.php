@@ -156,9 +156,11 @@ class DriverTest extends drivers\DriverTestBase
         return array(
             array(
                 "K",
+                "K",
                 true,
             ),
             array(
+                "K",
                 "psi",
                 false,
             ),
@@ -174,9 +176,11 @@ class DriverTest extends drivers\DriverTestBase
         return array(
             array(
                 "K",
+                "K",
                 true,
             ),
             array(
+                "K",
                 "psi",
                 false,
             ),
