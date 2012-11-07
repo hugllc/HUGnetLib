@@ -820,6 +820,7 @@ class DriverADuCTest extends drivers\DriverTestBase
     * test the set routine when an extra class exists
     *
     * @param array  $mocks    The value to preload into the mocks
+    * @param string $class    The class to use
     * @param object $entry    The entry to send
     * @param int    $offset   The integer to feed to the function
     * @param int    $initchan The channel to initialize the object to
