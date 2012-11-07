@@ -164,7 +164,9 @@ class Gather extends \HUGnet\ui\Daemon
         }
         $ret = $lastContact > self::PING_TIME;
         if ($ret) {
+            $this->_device->load($this->_device->id());
             $this->_device->setParam("LastContactTry", time());
+            $this->_device->store();
         }
         return $ret;
     }
@@ -385,6 +387,7 @@ class Gather extends \HUGnet\ui\Daemon
                 }
                 $index++;
             }
+            $dev->store();
             $out = sprintf("%02X", (int)$dev->store());
             $this->_reply($pkt, $out);
         }
