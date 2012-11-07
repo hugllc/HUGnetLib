@@ -434,10 +434,10 @@ abstract class Average extends History
     /**
     * Sets the extra attributes field
     *
-    * @param int    $start The start of the time
-    * @param int    $end   The end of the time
-    * @param mixed  $devId The ID to use.  None if null
-    * @param string $type  The type of record
+    * @param int    $start      The start of the time
+    * @param int    $end        The end of the time
+    * @param mixed  $devId      The ID to use.  None if null
+    * @param string $type       The type of record
     * @param string $extraWhere Extra where clause
     * @param array  $extraData  Data for the extraWhere clause
     *

@@ -200,7 +200,7 @@ class DataCollectors extends \HUGnet\db\Table
     /**
     * Creates the object from a string or array
     *
-    * @param mixed &$data This is whatever you want to give the class
+    * @param mixed $data This is whatever you want to give the class
     *
     * @return null
     */

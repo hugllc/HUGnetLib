@@ -63,9 +63,9 @@ class Gateway extends \HUGnet\base\SystemTableBase
     /**
     * This function creates the system.
     *
-    * @param mixed  $system (object)The system object to use
-    * @param mixed  $data   (int)The id of the item, (array) data info array
-    * @param string $table  The table to use
+    * @param mixed  &$system (object)The system object to use
+    * @param mixed  $data    (int)The id of the item, (array) data info array
+    * @param string $table   The table to use
     *
     * @return null
     */

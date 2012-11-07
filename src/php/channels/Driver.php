@@ -72,7 +72,7 @@ abstract class Driver
     /**
     * Sets everything up
     *
-    * @param string $units    The units we are loading
+    * @param string $units The units we are loading
     *
     * @return null
     */
