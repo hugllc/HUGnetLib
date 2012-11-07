@@ -62,6 +62,8 @@ require_once dirname(__FILE__)."/drivers/DriverTestBase.php";
  */
 class DriverTest extends drivers\DriverTestBase
 {
+    /** This is the class we are testing */
+    protected $class = "DriverTestClass";
     /**
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
@@ -234,7 +236,7 @@ class DriverTest extends drivers\DriverTestBase
     *
     * @return array
     */
-    public static function dataFactory()
+    public static function dataFactory2()
     {
         return array(
             array(
@@ -255,9 +257,9 @@ class DriverTest extends drivers\DriverTestBase
     *
     * @return null
     *
-    * @dataProvider dataFactory
+    * @dataProvider dataFactory2
     */
-    public function testFactory($name, $expect)
+    public function testFactory2($name, $expect)
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($extra);

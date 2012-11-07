@@ -64,6 +64,8 @@ require_once dirname(__FILE__)."/drivers/DriverTestBase.php";
  */
 class DriverADuCTest extends drivers\DriverTestBase
 {
+    /** This is the class we are testing */
+    protected $class = "DriverADuCTestClass";
     /**
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
@@ -144,42 +146,32 @@ class DriverADuCTest extends drivers\DriverTestBase
         return array(
             array(
                 "ThisIsABadName",
+                array(),
                 null,
             ),
             array(
                 "storageType",
+                array(),
                 \HUGnet\channels\Driver::TYPE_RAW,
             ),
             array(
                 "testParam",
+                array(),
                 "12345",
             ),
             array(
                 "unitType",
+                array(),
                 'asdf',
             ),
         );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $name   The name of the variable to test.
-    * @param array  $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataGet
-    */
-    public function testGet($name, $expect)
-    {
-        $this->assertSame($expect, $this->o->get($name, 1));
     }
     /**
     * data provider for testDeviceID
     *
     * @return array
     */
-    public static function dataGetExtra()
+    public static function dataGetExtra2()
     {
         return array(
             array(
@@ -244,9 +236,9 @@ class DriverADuCTest extends drivers\DriverTestBase
     *
     * @return null
     *
-    * @dataProvider dataGetExtra
+    * @dataProvider dataGetExtra2
     */
-    public function testGetExtra($mock, $index, $offset, $expect)
+    public function testGetExtra2($mock, $index, $offset, $expect)
     {
         unset($this->o);
         $sensor = new \HUGnet\DummyBase("Sensor");
@@ -255,50 +247,6 @@ class DriverADuCTest extends drivers\DriverTestBase
             "DriverADuCTestClass", $sensor, $offset
         );
         $this->assertSame($expect, $this->o->getExtra($index));
-    }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataFactory()
-    {
-        return array(
-            array(
-                "asdf",
-                0,
-                null,
-                0,
-                "HUGnet\sensors\drivers\SDEFAULT",
-            ),
-            array(
-                "SDEFAULT",
-                0,
-                null,
-                0,
-                "HUGnet\sensors\drivers\SDEFAULT",
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $name    The name of the variable to test.
-    * @param int    $offset  The offset to use
-    * @param object $entry   The table entry
-    * @param int    $channel The channel in that entry
-    * @param array  $expect  The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataFactory
-    */
-    public function testFactory($name, $offset, $entry, $channel, $expect)
-    {
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock(array());
-        $o = &DriverADuC::factory($name, $sensor, $offset, $entry, $channel);
-        $this->assertSame($expect, get_class($o));
     }
     /**
      * Data provider for testGetReading

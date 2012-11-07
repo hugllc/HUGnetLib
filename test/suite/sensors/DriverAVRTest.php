@@ -62,6 +62,8 @@ require_once dirname(__FILE__)."/drivers/DriverTestBase.php";
  */
 class DriverAVRTest extends drivers\DriverTestBase
 {
+    /** This is the class we are testing */
+    protected $class = "DriverAVRTestClass";
     /**
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
@@ -133,46 +135,6 @@ class DriverAVRTest extends drivers\DriverTestBase
         $this->assertSame($expect, $this->o->present($name, 1));
     }
     /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataGet()
-    {
-        return array(
-            array(
-                "ThisIsABadName",
-                null,
-            ),
-            array(
-                "storageType",
-                \HUGnet\channels\Driver::TYPE_RAW,
-            ),
-            array(
-                "testParam",
-                "12345",
-            ),
-            array(
-                "unitType",
-                'asdf',
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $name   The name of the variable to test.
-    * @param array  $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataGet
-    */
-    public function testGet($name, $expect)
-    {
-        $this->assertSame($expect, $this->o->get($name, 1));
-    }
-    /**
     * test the set routine when an extra class exists
     *
     * @return null
@@ -206,41 +168,6 @@ class DriverAVRTest extends drivers\DriverTestBase
             'inputSize' => 3,
         );
         $this->assertEquals($expect, $this->o->toArray(1));
-    }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataFactory()
-    {
-        return array(
-            array(
-                "asdf",
-                "HUGnet\sensors\drivers\SDEFAULT",
-            ),
-            array(
-                "SDEFAULT",
-                "HUGnet\sensors\drivers\SDEFAULT",
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $name   The name of the variable to test.
-    * @param array  $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataFactory
-    */
-    public function testFactory($name, $expect)
-    {
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock(array());
-        $o = &DriverAVR::factory($name, $sensor);
-        $this->assertSame($expect, get_class($o));
     }
     /**
      * Data provider for testGetReading

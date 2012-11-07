@@ -122,9 +122,9 @@ class ADuCInputTable extends \HUGnet\sensors\Driver
     *
     * @return null
     */
-    public static function &factory(&$sensor, $class = "InputTable")
+    public static function &testFactory(&$sensor, $class = "InputTable")
     {
-        $obj = new ADuCInputTable($sensor);
+        $obj = \HUGnet\sensors\Driver::factory("ADuCInputTable", $sensor);
         if (is_object($class)) {
             $obj->_table = $class;
         } else if (is_string($class)) {

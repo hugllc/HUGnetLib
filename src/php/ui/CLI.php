@@ -120,7 +120,7 @@ class CLI
         if (strlen($this->_config["file"])) {
             $this->out("Using config at ".$this->_config["file"]);
         } else {
-            $this->out("No config file found.  I hope that is right...");
+            $this->out("No config file found.  I hope that is right...", 1);
         }
         // Set up our IP address
         $this->_config["IPAddr"] = $this->_getIP();

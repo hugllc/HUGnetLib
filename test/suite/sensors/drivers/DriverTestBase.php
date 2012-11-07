@@ -459,7 +459,10 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    abstract public static function dataGetReading();
+    public static function dataGetReading()
+    {
+        return array();
+    }
     /**
     * Generic function for testing sensor routines
     *

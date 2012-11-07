@@ -114,14 +114,6 @@ abstract class Periodic
     /**
     * This function creates the system.
     *
-    * @param object &$gui The user interface to use
-    *
-    * @return null
-    */
-    abstract public static function &factory(&$gui);
-    /**
-    * This function creates the system.
-    *
     * @return null
     */
     abstract public function &execute();

@@ -62,6 +62,8 @@ require_once dirname(__FILE__)."/drivers/DriverTestBase.php";
  */
 class DriverVirtualTest extends drivers\DriverTestBase
 {
+    /** This is the class we are testing */
+    protected $class = "DriverVirtualTestClass";
     /**
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
@@ -142,18 +144,22 @@ class DriverVirtualTest extends drivers\DriverTestBase
         return array(
             array(
                 "ThisIsABadName",
+                array(),
                 null,
             ),
             array(
                 "storageType",
+                array(),
                 \HUGnet\channels\Driver::TYPE_RAW,
             ),
             array(
                 "testParam",
+                array(),
                 "12345",
             ),
             array(
                 "unitType",
+                array(),
                 'asdf',
             ),
         );
@@ -162,50 +168,16 @@ class DriverVirtualTest extends drivers\DriverTestBase
     * test the set routine when an extra class exists
     *
     * @param string $name   The name of the variable to test.
+    * @param array  $mock   The mocks to use
     * @param array  $expect The expected return
     *
     * @return null
     *
     * @dataProvider dataGet
     */
-    public function testGet($name, $expect)
+    public function testGet($name, $mock, $expect)
     {
         $this->assertSame($expect, $this->o->get($name, 1));
-    }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataFactory()
-    {
-        return array(
-            array(
-                "asdf",
-                "HUGnet\sensors\drivers\SDEFAULT",
-            ),
-            array(
-                "SDEFAULT",
-                "HUGnet\sensors\drivers\SDEFAULT",
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $name   The name of the variable to test.
-    * @param array  $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataFactory
-    */
-    public function testFactory($name, $expect)
-    {
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock(array());
-        $obj = DriverVirtual::factory($name, $sensor);
-        $this->assertSame($expect, get_class($obj));
     }
     /**
      * Data provider for testGetReading

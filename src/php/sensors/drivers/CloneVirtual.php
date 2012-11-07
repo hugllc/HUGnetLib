@@ -88,7 +88,8 @@ class CloneVirtual extends \HUGnet\sensors\DriverVirtual
             $did = hexdec($this->getExtra(0));
             $sen = $this->getExtra(1);
             if ($did == 0) {
-                $this->_clone = parent::factory("SDEFAULT", $this->sensor());
+                $sensor = $this->sensor();
+                $this->_clone = parent::factory("SDEFAULT", $sensor);
             } else {
                 $sensor = $this->sensor()->system()->device($did)->sensor($sen);
                 $this->_clone = parent::factory(
