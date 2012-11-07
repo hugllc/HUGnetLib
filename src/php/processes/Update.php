@@ -79,7 +79,7 @@ class Update extends \HUGnet\ui\Daemon
         parent::__construct($config);
         /* Get our Device */
         $this->_device = $this->system()->device();
-        $this->_plugins = &\HUGnet\processes\updater\Periodic::plugins($this);
+        $this->_plugins = \HUGnet\processes\updater\Periodic::plugins($this);
     }
     /**
     * Creates the object
@@ -154,7 +154,7 @@ class Update extends \HUGnet\ui\Daemon
     */
     public function &device($config = array())
     {
-        $ret = &parent::device($config);
+        $ret = parent::device($config);
         $this->_myID = $this->system()->network()->device()->getID();
         $conf = $this->system()->runtime();
         if (!is_bool($conf["update"])) {

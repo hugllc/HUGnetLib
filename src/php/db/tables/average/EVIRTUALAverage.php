@@ -113,7 +113,7 @@ class EVIRTUALAverage extends \HUGnet\db\Average
                 if (!is_a($aSen[$i], "AverageTableBase")) {
                     $devId = $sensor->getDeviceID();
                     if (!is_object($aDev[$devId])) {
-                        $aDev[$devId] = &$sensor->getAverageTable();
+                        $aDev[$devId] = $sensor->getAverageTable();
                         $aDev[$devId]->sqlLimit = $this->sqlLimit;
                         $aDev[$devId]->sqlOrderBy = "Date ASC";
                         $query = "`id` = ? AND `Type`=? AND `Date` > ?";

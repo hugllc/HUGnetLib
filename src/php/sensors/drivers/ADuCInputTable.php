@@ -154,7 +154,7 @@ class ADuCInputTable extends \HUGnet\sensors\Driver
             $driver = explode(":", (string)$driver);
             $sensor = $this->sensor();
             $entry  = $this->_entry();
-            $this->_driver[$num] = &\HUGnet\sensors\DriverADuC::factory(
+            $this->_driver[$num] = \HUGnet\sensors\DriverADuC::factory(
                 \HUGnet\sensors\Driver::getDriver(hexdec($driver[0]), $driver[1]),
                 $sensor,
                 $offset,

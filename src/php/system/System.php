@@ -165,17 +165,17 @@ class System
                     include_once $net."Application.php";
                     include_once $net."Transport.php";
                     include_once $net."Network.php";
-                    $network = &network\Network::factory($config);
-                    $transport = &network\Transport::factory(
+                    $network   = network\Network::factory($config);
+                    $transport = network\Transport::factory(
                         $network, $config
                     );
-                    $this->_network = &network\Application::factory(
+                    $this->_network = network\Application::factory(
                         $transport, $this, $config
                     );
                 } else {
                     include_once $net."Dummy.php";
                     /* No network config, so give them a dummy */
-                    $this->_network = &network\Dummy::factory($this);
+                    $this->_network = network\Dummy::factory($this);
                 }
             }
         }

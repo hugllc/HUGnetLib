@@ -127,7 +127,7 @@ class ActionVirtual extends Action
         }
         if (!is_object($this->_histCache[$dev])) {
             $device = $this->system->device($dev);
-            $this->_histCache[$dev] = &$device->action()->poll(
+            $this->_histCache[$dev] = $device->action()->poll(
                 $this->device->get('id'), $time
             );
             $device->store();

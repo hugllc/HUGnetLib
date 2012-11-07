@@ -118,7 +118,7 @@ abstract class DriverADuC extends Driver
     */
     protected static function &intFactory(&$sensor, $offset = 0)
     {
-        $object = &parent::intFactory($sensor);
+        $object = parent::intFactory($sensor);
         if (is_int($offset)) {
             $object->_offset = $offset;
         }

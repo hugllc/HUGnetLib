@@ -38,7 +38,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
 
 $tid    = hexdec($json->args()->id);
 $action = strtolower($json->args()->action);
-$test   = &$json->system()->device();
+$test   = $json->system()->device();
 $ret    = "";
 $since  = (int)$_REQUEST["since"];
 $limit  = ((int)$_REQUEST["limit"]) ? (int)$_REQUEST["limit"] : 100;

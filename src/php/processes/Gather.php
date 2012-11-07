@@ -434,7 +434,7 @@ class Gather extends \HUGnet\ui\Daemon
     */
     public function &device($config = array())
     {
-        $ret = &parent::device($config);
+        $ret = parent::device($config);
         $this->_myID = $this->system()->network()->device()->getID();
         $this->system()->device($this->_myID);
         $this->system()->network()->unsolicited(

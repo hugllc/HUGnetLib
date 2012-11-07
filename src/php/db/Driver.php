@@ -130,7 +130,7 @@ abstract class Driver implements \HUGnetDBDriverInterface
             !is_object($table)
         );
         if (!is_a($connect, "ConnectionManager")) {
-            $connect = &Connection::factory($system);
+            $connect = Connection::factory($system);
         }
         $group = $table->get("group");
         $connect->connect();

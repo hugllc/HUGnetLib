@@ -180,7 +180,7 @@ class Route extends \HUGnet\ui\Daemon
     */
     public function &device($config = array())
     {
-        $ret = &parent::device($config);
+        $ret = parent::device($config);
         $this->_myID = $this->system()->network()->device()->getID();
         /* Print packets out on the screen */
         $this->system()->network()->monitor(array($this, "monitor"));

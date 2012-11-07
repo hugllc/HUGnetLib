@@ -39,8 +39,8 @@ defined('_HUGNET') or die('HUGnetSystem not found');
 $did    = hexdec($json->args()->id);
 $sid    = $json->args()->sid;
 $action = strtolower($json->args()->action);
-$dev    = &$json->system()->device($did);
-$sen    = &$dev->sensor($sid);
+$dev    = $json->system()->device($did);
+$sen    = $dev->sensor($sid);
 $ret    = "";
 
 if ($action === "post") {

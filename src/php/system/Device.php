@@ -92,7 +92,7 @@ class Device extends \HUGnet\base\SystemTableBase
     */
     public static function &factory(&$system, $data=null, $table="Devices")
     {
-        $object = &parent::factory($system, $data, $table);
+        $object = parent::factory($system, $data, $table);
         return $object;
     }
     /**
@@ -242,7 +242,7 @@ class Device extends \HUGnet\base\SystemTableBase
         }
         if (!is_object($this->_driverCache[$driver])) {
             include_once dirname(__FILE__)."/../devices/Driver.php";
-            $this->_driverCache[$driver] = &devices\Driver::factory($driver, $this);
+            $this->_driverCache[$driver] = devices\Driver::factory($driver, $this);
         }
         return $this->_driverCache[$driver];
     }

@@ -69,7 +69,7 @@ class DataCollector extends \HUGnet\base\SystemTableBase
     public static function &factory(
         $system, $data=null, $table="Datacollectors"
     ) {
-        $object = &parent::factory($system, $data, $table);
+        $object = parent::factory($system, $data, $table);
         return $object;
     }
     /**

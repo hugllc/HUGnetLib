@@ -98,7 +98,7 @@ class Analysis extends \HUGnet\ui\Daemon
         /* Get our Device */
         $this->_device = $this->system()->device();
         $this->_dev = $this->system()->device();
-        $this->_plugins = &\HUGnet\processes\analysis\Device::plugins($this);
+        $this->_plugins = \HUGnet\processes\analysis\Device::plugins($this);
 
     }
     /**
@@ -193,7 +193,7 @@ class Analysis extends \HUGnet\ui\Daemon
     */
     public function &device($config = array())
     {
-        $ret = &parent::device($config);
+        $ret = parent::device($config);
         $this->_myID = $this->system()->network()->device()->getID();
         $this->system()->device($this->_myID);
         $this->system()->network()->unsolicited(

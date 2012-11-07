@@ -46,8 +46,8 @@ $limit  = ((int)$_REQUEST["limit"]) ? (int)$_REQUEST["limit"] : 100;
 $order  = ((int)$_REQUEST["order"]) ? 'desc' : 'asc';
 $format = $_REQUEST["format"];
 
-$device = &$json->system()->device($did);
-$table = &$device->historyFactory(array());
+$device = $json->system()->device($did);
+$table = $device->historyFactory(array());
 
 $table->sqlLimit = $limit;
 $table->sqlOrderBy = "Date ".$order;

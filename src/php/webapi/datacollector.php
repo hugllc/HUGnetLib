@@ -36,7 +36,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
 
 $uuid    = $json->args()->uuid;
 $action  = strtolower($json->args()->action);
-$dataCol = &$json->system()->dataCollector();
+$dataCol = $json->system()->dataCollector();
 $ret     = array();
 
 
