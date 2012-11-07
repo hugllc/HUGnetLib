@@ -165,7 +165,7 @@ final class Network
     */
     private function _forward($pkt, $from)
     {
-        $ifaces = &$this->_ifaces();
+        $ifaces = $this->_ifaces();
         if ((count($ifaces) > 1) && $this->_config["forward"]) {
             $fto = array_diff($ifaces, array($from, $this->_local));
             \HUGnet\VPrint::out(

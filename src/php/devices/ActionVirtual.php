@@ -126,7 +126,7 @@ class ActionVirtual extends Action
             return null;
         }
         if (!is_object($this->_histCache[$dev])) {
-            $device = &$this->system->device($dev);
+            $device = $this->system->device($dev);
             $this->_histCache[$dev] = &$device->action()->poll(
                 $this->device->get('id'), $time
             );
@@ -184,7 +184,7 @@ class ActionVirtual extends Action
         $this->device->setParam("LastContact", $time);
         $this->device->setParam("PollFail", 0);
         $this->device->setParam("ContactFail", 0);
-        $history = &$this->device->historyFactory($hist);
+        $history = $this->device->historyFactory($hist);
         if ($history->insertRow()) {
             $this->device->setParam("LastHistory", $time);
         }

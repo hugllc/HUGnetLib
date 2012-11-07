@@ -149,7 +149,7 @@ final class Matcher
     {
         $this->main();
         foreach (array_keys($this->_packets) as $index) {
-            $reply = &$this->_packets[$index]->reply($pkt);
+            $reply = $this->_packets[$index]->reply($pkt);
             if (is_object($reply)) {
                 $this->_callback($index);
                 unset($this->_packets[$index]);

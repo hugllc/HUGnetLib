@@ -287,7 +287,7 @@ abstract class History extends \HUGnet\db\Table
             $prev = $this->toArray();
             for ($i = 0; $i < $this->datacols; $i++) {
                 $col = "Data".$i;
-                $sensor = &$this->device->sensor($i);
+                $sensor = $this->device->sensor($i);
                 // This changes raw mode into differential mode
                 if (($sensor->storageType === \HUGnet\channels\Driver::TYPE_RAW)
                     && ($sensor->dataType === \HUGnet\channels\Driver::TYPE_DIFF)

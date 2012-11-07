@@ -106,7 +106,7 @@ final class TransportPacket
         if (empty($this->_config["ident"])) {
             $this->_config["ident"] = sprintf("%06X", mt_rand(0, 0xFFFFFF));
         }
-        $this->_packet = &$this->_fix($pkt);
+        $this->_packet = $this->_fix($pkt);
         $this->_find = (bool)$this->_config["find"]
             && ($this->_packet->type() !== "FINDPING");
     }
@@ -160,7 +160,7 @@ final class TransportPacket
     {
         $return = null;
         if (!is_null($pkt) && !is_object($this->_reply)) {
-            $reply = &$this->_fix($pkt);
+            $reply = $this->_fix($pkt);
             if ($this->_isReply($reply)) {
                 if ($reply->data() === $this->_ident) {
                     // Ident packet.  Return true and reset _ident

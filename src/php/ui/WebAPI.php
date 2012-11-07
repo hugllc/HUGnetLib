@@ -112,7 +112,7 @@ class WebAPI extends HTML
     private function _executeDevice($extra = array())
     {
         $did = hexdec($this->args()->get("id"));
-        $dev = &$this->system()->device();
+        $dev = $this->system()->device();
         return $this->_executeSystem($did, $dev, $extra);
     }
     /**
@@ -125,7 +125,7 @@ class WebAPI extends HTML
     private function _executeInputtable($extra = array())
     {
         $iid = (int)$this->args()->get("id");
-        $table = &$this->system()->table("InputTable");
+        $table = $this->system()->table("InputTable");
         return $this->_executeTable($iid, $table, $extra);
     }
     /**
@@ -145,7 +145,7 @@ class WebAPI extends HTML
         if ($action === "list") {
             $this->args()->set("data", array("dev" => $did));
         }
-        $sen = &$this->system()->device($did)->sensor($sid);
+        $sen = $this->system()->device($did)->sensor($sid);
         return $this->_executeSystem($ident, $sen, $extra);
     }
     /**
@@ -158,7 +158,7 @@ class WebAPI extends HTML
     private function _executeDatacollector($extra = array())
     {
         $uuid = strtolower($this->args()->get("id"));
-        $datacol = &$this->system()->datacollector();
+        $datacol = $this->system()->datacollector();
         return $this->_executeSystem($uuid, $datacol, $extra);
     }
     /**
@@ -275,7 +275,7 @@ class WebAPI extends HTML
     private function _executeHistory($extra = array())
     {
         $did = hexdec($this->args()->get("id"));
-        $hist = &$this->system()->device($did)->historyFactory(array(), true);
+        $hist = $this->system()->device($did)->historyFactory(array(), true);
         $ret = null;
         $action = strtolower(trim($this->args()->get("action")));
         if ($action === "get") {

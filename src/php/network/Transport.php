@@ -158,7 +158,7 @@ final class Transport
         if (!is_object($this->_packets[$token])) {
             return false;
         }
-        $reply = &$this->_packets[$token]->reply();
+        $reply = $this->_packets[$token]->reply();
         if (is_object($reply) || ($reply === false)) {
             unset($this->_packets[$token]);
         }
@@ -184,7 +184,7 @@ final class Transport
     private function _send()
     {
         foreach (array_keys($this->_packets) as $key) {
-            $pkt =& $this->_packets[$key]->send();
+            $pkt = $this->_packets[$key]->send();
             if (is_string($pkt) || is_object($pkt)) {
                 $this->_network->send($pkt);
             }
@@ -202,7 +202,7 @@ final class Transport
         if (is_object($pkt)) {
             // Check every packet until one claims it or we get to the end
             foreach (array_keys($this->_packets) as $key) {
-                $reply = &$this->_packets[$key]->reply($pkt);
+                $reply = $this->_packets[$key]->reply($pkt);
                 if ($reply) {
                     break;
                 }

@@ -453,7 +453,7 @@ class Device extends \HUGnet\base\SystemTableBase
                     $pkt = $this->network()->sensorConfig($i);
                     if (strlen($pkt->reply()) > 0) {
                         $this->system()->out("sensor $step/$steps success", 1);
-                        $sen = &$this->sensor($i);
+                        $sen = $this->sensor($i);
                         $sen->decode($pkt->reply());
                         $sen->change(array());
                     } else {

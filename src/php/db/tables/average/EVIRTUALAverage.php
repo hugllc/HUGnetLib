@@ -108,7 +108,7 @@ class EVIRTUALAverage extends \HUGnet\db\Average
         $aSen = &$this->averages["sensors"];
         $aDev = &$this->averages["DeviceID"];
         for ($i = 0; $i < $this->device->sensors->Sensors; $i++) {
-            $sensor = &$this->device->sensor($i);
+            $sensor = $this->device->sensor($i);
             if (method_exists($sensor, "getAverageTable")) {
                 if (!is_a($aSen[$i], "AverageTableBase")) {
                     $devId = $sensor->getDeviceID();
@@ -160,7 +160,7 @@ class EVIRTUALAverage extends \HUGnet\db\Average
         $this->Type = self::AVERAGE_15MIN;
         $notEmpty = false;
         for ($i = 0; $i < $this->device->sensors->Sensors; $i++) {
-            $sensor = &$this->device->sensor($i);
+            $sensor = $this->device->sensor($i);
             if (is_a($this->averages["sensors"][$i], "AverageTableBase")) {
                 if ($this->averages["sensors"][$i]->Date == $date) {
                     $data = $this->averages["sensors"][$i]->toArray();
