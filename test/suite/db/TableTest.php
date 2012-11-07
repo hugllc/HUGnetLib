@@ -2132,7 +2132,30 @@ class HUGnetDBTableTestStub extends \HUGnet\db\Table
     {
         return parent::outputDate($field);
     }
-
+    /**
+    * Sets the extra attributes field
+    *
+    * @param int    $start      The start of the time
+    * @param int    $end        The end of the time
+    * @param mixed  $rid        The ID to use.  None if null
+    * @param string $idField    The ID Field to use.  Table Primary id if left blank
+    * @param string $extraWhere Extra where clause
+    * @param array  $extraData  Data for the extraWhere clause
+    *
+    * @return mixed The value of the attribute
+    */
+    public function getPeriod(
+        $start,
+        $end = null,
+        $rid = null,
+        $idField = null,
+        $extraWhere = null,
+        $extraData = null
+    ) {
+        return parent::getTimePeriod(
+            $start, $end, $rid, $idField, $extraWhere, $extraData
+        );
+    }
 }
 /**
  * Test class for HUGnetDB.
@@ -2247,6 +2270,30 @@ class HUGnetDBTableTestStub2 extends \HUGnet\db\Table
     protected function setMyOtherDate($value)
     {
         $this->data["myOtherDate"] = self::unixDate($value);
+    }
+    /**
+    * Sets the extra attributes field
+    *
+    * @param int    $start      The start of the time
+    * @param int    $end        The end of the time
+    * @param mixed  $rid        The ID to use.  None if null
+    * @param string $idField    The ID Field to use.  Table Primary id if left blank
+    * @param string $extraWhere Extra where clause
+    * @param array  $extraData  Data for the extraWhere clause
+    *
+    * @return mixed The value of the attribute
+    */
+    public function getPeriod(
+        $start,
+        $end = null,
+        $rid = null,
+        $idField = null,
+        $extraWhere = null,
+        $extraData = null
+    ) {
+        return parent::getTimePeriod(
+            $start, $end, $rid, $idField, $extraWhere, $extraData
+        );
     }
 
 }

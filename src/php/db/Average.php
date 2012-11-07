@@ -438,12 +438,20 @@ abstract class Average extends History
     * @param int    $end   The end of the time
     * @param mixed  $devId The ID to use.  None if null
     * @param string $type  The type of record
+    * @param string $extraWhere Extra where clause
+    * @param array  $extraData  Data for the extraWhere clause
     *
     * @return mixed The value of the attribute
     */
-    public function getPeriod($start, $end = null, $devId = null, $type = "15MIN")
-    {
-        return parent::getPeriod(
+    public function getPeriod(
+        $start,
+        $end = null,
+        $devId = null,
+        $type = "15MIN",
+        $extraWhere = null,
+        $extraData = null
+    ) {
+        return parent::getTimePeriod(
             $start, $end, $devId, "id", "Type = ?", array($type)
         );
     }

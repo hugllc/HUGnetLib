@@ -269,7 +269,7 @@ abstract class History extends \HUGnet\db\Table
         $extraWhere = null,
         $extraData = null
     ) {
-        return parent::getPeriod(
+        return parent::getTimePeriod(
             $start, $end, $devId, "id", $extraWhere, $extraData
         );
     }

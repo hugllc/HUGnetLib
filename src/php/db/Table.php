@@ -334,7 +334,7 @@ abstract class Table extends \HUGnet\base\Container
     *
     * @return mixed The value of the attribute
     */
-    public function getPeriod(
+    protected function getTimePeriod(
         $start,
         $end = null,
         $rid = null,
