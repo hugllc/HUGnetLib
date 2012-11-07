@@ -168,10 +168,11 @@ class ActionVirtual extends Action
         $sensors = $this->device->get("totalSensors");
         for ($i = 0; $i < $sensors; $i++) {
             $sen = $this->device->sensor($i);
+            $point = $this->_getPoint($sen, $time);
             $hist = array_merge(
                 $hist,
                 $sen->decodeData(
-                    $this->_getPoint($sen, $time),
+                    $point,
                     $hist["deltaT"],
                     $prev[$i],
                     $hist
