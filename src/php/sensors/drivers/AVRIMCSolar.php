@@ -64,6 +64,7 @@ class AVRIMCSolar extends \HUGnet\sensors\DriverAVR
     */
     protected $params = array(
         "longName" => "IMC Solar Sensor",
+        "shortName" => "IMCSolar",
         "unitType" => "Temperature",
         "storageUnit" => '&#176;C',
         "storageType" => \HUGnet\channels\Driver::TYPE_RAW,

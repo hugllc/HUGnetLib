@@ -65,6 +65,7 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
     protected $params = array(
         "longName" => "ADuC Power Meter",
         "shortName" => "ADuCPower",
+        "unitType" => "Varies",
         "storageType" => \HUGnet\channels\Driver::TYPE_RAW, // Storage dataType
         "extraText" => array(
             "Voltage Ref (V)",

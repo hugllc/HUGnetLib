@@ -74,9 +74,9 @@ abstract class Driver
     * This is where all of the defaults are stored.
     */
     private $_default = array(
-        "longName" => "Unknown Sensor",
-        "shortName" => "Unknown",
-        "unitType" => "unknown",
+        "longName" => "",
+        "shortName" => "",
+        "unitType" => "",
         "bound" => false,                // This says if this sensor is changeable
         "virtual" => false,              // This says if we are a virtual sensor
         "total"   => false,              // Whether to total instead of average

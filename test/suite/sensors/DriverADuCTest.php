@@ -873,6 +873,8 @@ class DriverADuCTestClass extends \HUGnet\sensors\DriverADuC
     * put into all derivative classes, even if it is empty.
     */
     protected $params = array(
+        "longName" => "Unknown Sensor",
+        "shortName" => "Unknown",
         "unitType" => "asdf", /* This is for test value only */
         "testParam" => "12345", /* This is for test value only */
         "extraDefault" => array(2,3,5,7,11),
@@ -981,6 +983,9 @@ class DriverADuCTestClassDiff extends \HUGnet\sensors\DriverADuC
     * put into all derivative classes, even if it is empty.
     */
     protected $params = array(
+        "longName" => "Unknown Sensor",
+        "shortName" => "Unknown",
+        "unitType" => "unknown",
         "storageType" => \HUGnet\channels\Driver::TYPE_DIFF, // Storage dataType
     );
 }

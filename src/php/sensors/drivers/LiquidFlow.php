@@ -62,6 +62,7 @@ class LiquidFlow extends \HUGnet\sensors\Driver
     */
     protected $params = array(
         "longName" => "Liquid Flow Meter",
+        "shortName" => "LiquidFlow",
         "unitType" => "Volume",
         "storageUnit" => 'gal',
         "storageType" => \HUGnet\channels\Driver::TYPE_RAW,

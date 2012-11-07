@@ -64,6 +64,7 @@ class AVRBAROA4V extends \HUGnet\sensors\DriverAVR
     */
     protected $params = array(
         "longName" => "BARO-A-4V Barometric Pressure Sensor",
+        "shortName" => "BAROA4V",
         "unitType" => "Pressure",
         "storageUnit" => 'mBar',
         "storageType" => \HUGnet\channels\Driver::TYPE_RAW,

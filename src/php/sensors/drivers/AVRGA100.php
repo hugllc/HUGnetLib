@@ -64,6 +64,7 @@ class AVRGA100 extends \HUGnet\sensors\DriverAVR
     */
     protected $params = array(
         "longName" => "GA100 Differential Pressure Sensor",
+        "shortName" => "GA100Press",
         "unitType" => "Pressure",
         "storageUnit" => 'psi',
         "storageType" => \HUGnet\channels\Driver::TYPE_RAW,

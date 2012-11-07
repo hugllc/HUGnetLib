@@ -286,6 +286,8 @@ class DriverVirtualTestClass extends \HUGnet\sensors\DriverVirtual
     * put into all derivative classes, even if it is empty.
     */
     protected $params = array(
+        "longName" => "Unknown Sensor",
+        "shortName" => "Unknown",
         "unitType" => "asdf", /* This is for test value only */
         "testParam" => "12345", /* This is for test value only */
         "extraDefault" => array(2,3,5,7,11),

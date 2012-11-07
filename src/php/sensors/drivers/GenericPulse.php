@@ -62,6 +62,7 @@ class GenericPulse extends \HUGnet\sensors\Driver
     */
     protected $params = array(
         "longName" => "Generic Pulse Counter",
+        "shortName" => "Pulse",
         "unitType" => "Frequency",
         "storageUnit" => 'Pulses',
         "storageType" => \HUGnet\channels\Driver::TYPE_RAW,

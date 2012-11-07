@@ -62,6 +62,7 @@ class WattNode extends \HUGnet\sensors\Driver
     */
     protected $params = array(
         "longName" => "CCS WattNode Pulse Output Power Meter",
+        "shortName" => "WattNode",
         "unitType" => "Power",
         "storageUnit" => 'kWh',
         "storageType" => \HUGnet\channels\Driver::TYPE_RAW,

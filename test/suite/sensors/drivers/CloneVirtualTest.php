@@ -548,7 +548,7 @@ class CloneVirtualTest extends DriverTestBase
     {
         $sens = new \HUGnet\DummyTable("Sensor");
         $sens->resetMock($mocks);
-        $this->assertSame($expect, $this->o->toArray());
+        $this->assertEquals($expect, $this->o->toArray());
     }
 
 }

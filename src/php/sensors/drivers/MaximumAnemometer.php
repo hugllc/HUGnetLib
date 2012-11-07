@@ -62,6 +62,7 @@ class MaximumAnemometer extends \HUGnet\sensors\Driver
     */
     protected $params = array(
         "longName" => "Maximum Inc Hall Effect Anemometer",
+        "shortName" => "MaxWindSpeed",
         "unitType" => "Speed",
         "storageUnit" => "MPH",
         "storageType" => \HUGnet\channels\Driver::TYPE_DIFF,

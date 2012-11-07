@@ -63,7 +63,8 @@ class FETBoardCurrent extends \HUGnet\sensors\DriverAVR
     * This is the array of sensor information.
     */
     protected $params = array(
-        "longName" => "FETBoard Board Current Sensor",
+        "longName" => "FETBoard Current Sensor",
+        "shortName" => "FETBoardCurrent",
         "unitType" => "Current",
         "storageUnit" => 'mA',
         "storageType" => \HUGnet\channels\Driver::TYPE_RAW,

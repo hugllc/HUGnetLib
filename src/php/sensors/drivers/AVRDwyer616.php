@@ -64,6 +64,7 @@ class AVRDwyer616 extends \HUGnet\sensors\DriverAVR
     */
     protected $params = array(
         "longName" => "Dwyer 616 Pressure Sensor",
+        "shortName" => "Dwyer616",
         "unitType" => "Pressure",
         "storageUnit" => 'psi',
         "storageType" => \HUGnet\channels\Driver::TYPE_RAW,

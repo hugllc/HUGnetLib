@@ -62,6 +62,7 @@ class GenericRevolving extends \HUGnet\sensors\Driver
     */
     protected $params = array(
         "longName" => "Generic Revolving Thingy",
+        "shortName" => "Revolver",
         "unitType" => "Frequency",
         "storageUnit" => 'RPM',
         "storageType" => \HUGnet\channels\Driver::TYPE_DIFF,

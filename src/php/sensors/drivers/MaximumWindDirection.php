@@ -81,6 +81,7 @@ class MaximumWindDirection extends \HUGnet\sensors\Driver
     */
     protected $params = array(
         "longName" => "Maximum Inc Wind Direction Sensor",
+        "shortName" => "MaxWindDir",
         "unitType" => "Direction",
         "storageUnit" => '&#176;',
         "storageType" => \HUGnet\channels\Driver::TYPE_RAW,

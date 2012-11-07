@@ -64,6 +64,7 @@ class AVRChsMss extends \HUGnet\sensors\DriverAVR
     */
     protected $params = array(
         "longName" => "TDK CHS-MSS",
+        "shortName" => "ChsMss",
         "unitType" => "Relative Humidity",
         "storageUnit" => '%',
         "storageType" => \HUGnet\channels\Driver::TYPE_RAW,

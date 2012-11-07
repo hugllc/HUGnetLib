@@ -64,6 +64,7 @@ class AVRHitachiVFDFan extends \HUGnet\sensors\DriverAVR
     */
     protected $params = array(
         "longName" => "Hitachi VFD Fan Speed Sensor",
+        "shortName" => "HitachiVFD",
         "unitType" => "Percent",
         "storageUnit" => 'decimal',
         "storageType" => \HUGnet\channels\Driver::TYPE_RAW,

@@ -62,6 +62,7 @@ class AVROnTimePulse extends \HUGnet\sensors\DriverAVR
     */
     protected $params = array(
         "longName" => "On Time Pulse Sensor",
+        "shortName" => "OnTime",
         "unitType" => "Percent",
         "storageUnit" => '%',
         "storageType" => \HUGnet\channels\Driver::TYPE_RAW,

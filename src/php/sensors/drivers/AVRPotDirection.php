@@ -64,6 +64,7 @@ class AVRPotDirection extends \HUGnet\sensors\DriverAVR
     */
     protected $params = array(
         "longName" => "POT Direction Sensor",
+        "shortName" => "POTDir",
         "unitType" => "Direction",
         "storageUnit" => '&#176;',
         "storageType" => \HUGnet\channels\Driver::TYPE_RAW,

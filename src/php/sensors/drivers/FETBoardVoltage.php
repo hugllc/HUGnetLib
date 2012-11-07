@@ -63,7 +63,8 @@ class FETBoardVoltage extends \HUGnet\sensors\DriverAVR
     * This is the array of sensor information.
     */
     protected $params = array(
-        "longName" => "FETBoard Board Voltage Sensor",
+        "longName" => "FETBoard Voltage Sensor",
+        "shortName" => "FETBoardVoltage",
         "unitType" => "Voltage",
         "storageUnit" => 'V',
         "storageType" => \HUGnet\channels\Driver::TYPE_RAW,

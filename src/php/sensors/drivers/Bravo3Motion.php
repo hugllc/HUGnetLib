@@ -62,6 +62,7 @@ class Bravo3Motion extends \HUGnet\sensors\Driver
     */
     protected $params = array(
         "longName" => "DSC Bravo 3 Motion Sensor",
+        "shortName" => "Bravo3Motion",
         "unitType" => "Frequency",
         "storageUnit" => "counts",
         "storageType" => \HUGnet\channels\Driver::TYPE_DIFF,

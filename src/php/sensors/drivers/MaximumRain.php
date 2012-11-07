@@ -62,6 +62,7 @@ class MaximumRain extends \HUGnet\sensors\Driver
     */
     protected $params = array(
         "longName" => "Maximum Inc Rain Gauge",
+        "shortName" => "MaxRainGuage",
         "unitType" => "Length",
         "storageUnit" => "inches",
         "storageType" => \HUGnet\channels\Driver::TYPE_DIFF,
