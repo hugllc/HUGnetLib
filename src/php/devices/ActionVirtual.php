@@ -76,26 +76,6 @@ class ActionVirtual extends Action
         return $object;
     }
     /**
-    * Gets all of the device ids that are needed
-    *
-    * @return array of device keys
-    */
-    private function _getIDs()
-    {
-        $sensors = $this->device->get("totalSensors");
-        for ($i = 0; $i < $sensors; $i++) {
-            $sen = $this->device->sensor($i);
-            if ($sen->get("driver") === "CloneVirtual") {
-                $extra = $sen->get("extra");
-                $dev = hexdec($extra[0]);
-                if (!empty($dev)) {
-                    $ret[$dev] = sprintf("%06X", $dev);
-                }
-            }
-        }
-        return $ret;
-    }
-    /**
     * Pings the device and sets the LastContact if it is successful
     *
     * @param bool $find Whether or not to use a find ping
@@ -136,6 +116,10 @@ class ActionVirtual extends Action
     */
     private function _getPoint(&$sensor, $time)
     {
+        if ($sensor->get("driver") !== "CloneVirtual") {
+             // Only get clone virtual points.
+             return null;
+        }
         $extra = $sensor->get("extra");
         $dev = hexdec($extra[0]);
         if (empty($dev)) {
