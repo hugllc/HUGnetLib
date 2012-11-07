@@ -3414,11 +3414,11 @@ class AverageTestStub extends \HUGnet\db\Average
     * stored in the instance this is called from.  If this is fed history table
     * then it will calculate 15 minute averages.
     *
-    * @param HistoryTableBase $data This is the data to use to calculate the averages
+    * @param History &$data This is the data to use to calculate the average
     *
-    * @return bool True on success, false on failure
+    * @return float The number to multiply by for the weighted average.
     */
-    public function calc15MinAverage(\HUGnet\db\History $data)
+    public function calc15MinAverage(\HUGnet\db\History &$data)
     {
         return parent::calc15MinAverage($data);
     }

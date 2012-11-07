@@ -204,7 +204,7 @@ class DataCollectors extends \HUGnet\db\Table
     *
     * @return null
     */
-    public function fromAny(&$data)
+    public function fromAny($data)
     {
         if (is_object($data) && is_a($data, "HUGnet\Device")) {
             $this->fromDevice($data);

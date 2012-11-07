@@ -88,7 +88,10 @@ abstract class TableTestBase extends \PHPUnit_Extensions_Database_TestCase
     *
     * @return array
     */
-    abstract public static function dataColumns();
+    public static function dataColumns()
+    {
+        return array();
+    }
     /**
     * test the set routine when an extra class exists
     *
@@ -159,7 +162,10 @@ abstract class TableTestBase extends \PHPUnit_Extensions_Database_TestCase
     *
     * @return array
     */
-    abstract public static function dataIndexes();
+    public static function dataIndexes()
+    {
+        return array();
+    }
     /**
     * test the set routine when an extra class exists
     *
@@ -218,7 +224,10 @@ abstract class TableTestBase extends \PHPUnit_Extensions_Database_TestCase
     *
     * @return array
     */
-    abstract public static function dataVars();
+    public static function dataVars()
+    {
+        return array();
+    }
     /**
     * test the set routine when an extra class exists
     *
