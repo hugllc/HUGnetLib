@@ -106,15 +106,6 @@ class Pressure extends \HUGnet\channels\Driver
             "Torr" => 19.337E-3,
         ),
     );
-    /**
-    * This function creates the system.
-    *
-    * @return null
-    */
-    public static function &factory()
-    {
-        return parent::intFactory();
-    }
 
 }
 ?>

@@ -81,17 +81,6 @@ abstract class Driver
     /**
     * This function creates the system.
     *
-    * @return null
-    */
-    protected static function &intFactory()
-    {
-        $class = get_called_class();
-        $object = new $class();
-        return $object;
-    }
-    /**
-    * This function creates the system.
-    *
     * @param string $unitType The type of unit to load
     * @param string $units    The units we are loading
     *
@@ -105,10 +94,10 @@ abstract class Driver
             include_once $file;
         }
         if (class_exists($class)) {
-            return $class::factory($units);
+            return new $class($units);
         }
         include_once dirname(__FILE__)."/drivers/GENERIC.php";
-        return \HUGnet\channels\drivers\GENERIC::factory($units);
+        return new \HUGnet\channels\drivers\GENERIC($units);
     }
 
     /**

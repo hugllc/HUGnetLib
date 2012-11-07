@@ -68,15 +68,6 @@ class Percent extends \HUGnet\channels\Driver
             "%" => 0.01,
         ),
     );
-    /**
-    * This function creates the system.
-    *
-    * @return null
-    */
-    public static function &factory()
-    {
-        return parent::intFactory();
-    }
 
 }
 ?>

@@ -62,15 +62,6 @@ class Temperature extends \HUGnet\channels\Driver
     /** @var The units that are valid for conversion */
     protected $valid = array("&#176;F", "&#176;C", "K");
     /**
-    * This function creates the system.
-    *
-    * @return null
-    */
-    public static function &factory()
-    {
-        return parent::intFactory();
-    }
-    /**
     * Does the actual conversion
     *
     * @param mixed  &$data The data to convert

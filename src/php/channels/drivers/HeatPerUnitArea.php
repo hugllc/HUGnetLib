@@ -68,14 +68,5 @@ class HeatPerUnitArea extends \HUGnet\channels\Driver
             "Btu/hr ft^2" => 3.154,
         ),
     );
-    /**
-    * This function creates the system.
-    *
-    * @return null
-    */
-    public static function &factory()
-    {
-        return parent::intFactory();
-    }
 }
 ?>

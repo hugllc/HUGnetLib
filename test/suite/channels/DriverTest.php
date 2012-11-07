@@ -74,7 +74,7 @@ class DriverTest extends drivers\DriverTestBase
     */
     protected function setUp()
     {
-        $this->o = &DriverTestClass::factory();
+        $this->o = &Driver::factory("DriverTestClass", "&#176;F");
     }
 
     /**
@@ -201,6 +201,8 @@ class DriverTest extends drivers\DriverTestBase
         );
     }
 }
+/** This is the HUGnet namespace */
+namespace HUGnet\channels\drivers;
 /**
  * Base driver class for devices.
  *
@@ -217,18 +219,9 @@ class DriverTest extends drivers\DriverTestBase
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class DriverTestClass extends Driver
+class DriverTestClass extends \HUGnet\channels\Driver
 {
     /** @var The units that are valid for conversion */
     protected $valid = array("&#176;F", "&#176;C", "&#176;R", "K");
-    /**
-    * This function creates the system.
-    *
-    * @return null
-    */
-    public static function &factory()
-    {
-        return parent::intFactory();
-    }
 }
 ?>

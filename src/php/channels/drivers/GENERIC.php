@@ -58,19 +58,6 @@ defined('_HUGNET') or die('HUGnetSystem not found');
 class GENERIC extends \HUGnet\channels\Driver
 {
     /**
-    * This function creates the system.
-    *
-    * @param string $units The unuts with which to set this up.
-    *
-    * @return null
-    */
-    public static function &factory($units)
-    {
-        $class = parent::intFactory();
-        $class->setUnits($units);
-        return $class;
-    }
-    /**
     * This sets what units we are using.
     *
     * @param string $units The units to check for validity

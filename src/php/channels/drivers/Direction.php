@@ -79,15 +79,6 @@ class Direction extends \HUGnet\channels\Driver
         "NNW" => 337.5,
     );
     /**
-    * This function creates the system.
-    *
-    * @return null
-    */
-    public static function &factory()
-    {
-        return parent::intFactory();
-    }
-    /**
     * Does the actual conversion
     *
     * @param mixed  &$data The data to convert
