@@ -152,7 +152,7 @@ abstract class Driver
         "FE:DEFAULT"                 => "EmptyVirtual",
         "FE:AlarmVirtual"            => "AlarmVirtual",
         "FE:BinaryVirtual"           => "BinaryVirtual",
-        "FE:CelaniPower"             => "CelaniPowerCalVirtual",
+        "FE:CelaniPowerCalVirtual"   => "CelaniPowerCalVirtual",
         "FE:CloneVirtual"            => "CloneVirtual",
         "FE:ComputationVirtual"      => "ComputationVirtual",
         "FE:DewPointVirtual"         => "DewPointVirtual",
