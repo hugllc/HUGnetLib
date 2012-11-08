@@ -70,12 +70,14 @@ class System
 {
     /** @var array The configuration that we are going to use */
     private $_config = array();
-    /** @var array The configuration that we are going to use */
+    /** @var object The configuration that we are going to use */
     private $_dbconnect = array();
-    /** @var array This is our network configuration */
+    /** @var object This is our network configuration */
     private $_network = null;
-    /** @var array This is our user interface */
+    /** @var object This is our user interface */
     private $_ui = null;
+    /** @var array This is our static things that get might want to retrieve */
+    private $_fixed = array();
     /** @var array The default configuration */
     private $_configDefault = array(
         "verbose" => 0,
@@ -119,6 +121,9 @@ class System
     {
         if (is_array($config)) {
             $this->_config = array_merge($this->_configDefault, (array)$config);
+            $this->_fixed["version"] = trim(
+                file_get_contents(dirname(__FILE__)."/../VERSION.TXT")
+            );
         }
         // Return the configuration
         return $this->_config;
@@ -203,7 +208,9 @@ class System
     */
     public function get($field)
     {
-        if (isset($this->_config[$field])) {
+        if (isset($this->_fixed[$field])) {
+            return $this->_fixed[$field];
+        } else if (isset($this->_config[$field])) {
             return $this->_config[$field];
         }
         return null;

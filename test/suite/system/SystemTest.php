@@ -176,6 +176,11 @@ class SystemTest extends \PHPUnit_Framework_TestCase
                 "badIdea",
                 null,
             ),
+            array(
+                array(),
+                "version",
+                trim(file_get_contents(CODE_BASE."VERSION.TXT")),
+            ),
         );
     }
     /**

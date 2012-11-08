@@ -80,7 +80,7 @@ class EVIRTUAL extends \HUGnet\devices\Driver
     */
     public function checkRecord()
     {
-        $Ver   = trim(@file_get_contents(dirname(__FILE__)."/../../VERSION.TXT"));
+        $Ver   = $this->device()->system()->get("version");
         $myVer = $this->device()->get("FWVersion");
         if ($Ver !== $myVer) {
             $this->device()->set("FWVersion", $Ver);

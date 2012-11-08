@@ -85,9 +85,7 @@ final class Device
         $this->_network = &$application;
         $this->_system  = &$system;
         $this->_config["FWPartNum"] = "0039-26-00-P";
-        $this->_config["FWVersion"] = @file_get_contents(
-            dirname(__FILE__).'/../VERSION.TXT'
-        );
+        $this->_config["FWVersion"] = $this->_system->get("version");
         $this->_setupDevice();
         $this->getID();
         $this->_network->unsolicited(
