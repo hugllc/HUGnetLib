@@ -70,6 +70,10 @@ class TestTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
+        $this->system = new DummySystem();
+        // This just resets the mock
+        $this->system->resetMock($mocks);
+        $this->o = Test::factory($this->system, array());
     }
 
     /**
@@ -187,6 +191,120 @@ class TestTest extends \PHPUnit_Framework_TestCase
         if (is_object($table)) {
             $this->assertEquals(
                 $expectTable, $table->retrieve("Table"), "Data Wrong"
+            );
+        }
+    }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataDevice()
+    {
+        return array(
+            array(
+                array(
+                    "System" => array(
+                        "device" => "asdf",
+                    ),
+                    "Test" => array(
+                        "id" => 5,
+                    ),
+                ),
+                "asdf",
+                array(
+                    "Tests" => array(
+                        "get" => array(
+                            array("device"),
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array $mocks  The mocks to use
+    * @param array $expect The table to expect
+    * @param array $calls  The expected calls
+    *
+    * @return null
+    *
+    * @dataProvider dataDevice
+    */
+    public function testDevice($mocks, $expect, $calls)
+    {
+        // This just resets the mock
+        $this->system->resetMock($mocks);
+        $this->assertEquals(
+            $expect, $this->o->device()
+        );
+        foreach ((array)$calls as $fct => $call) {
+            $this->assertEquals(
+                $call, $this->system->retrieve($fct), "$fct Calls Wrong"
+            );
+        }
+   }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataHistory()
+    {
+        return array(
+            array(
+                array(
+                    "System" => array(
+                        "device" => new \HUGnet\DummyTable("Device"),
+                    ),
+                    "Device" => array(
+                        "historyFactory" => new \HUGnet\DummyTable("History"),
+                        "id" => 12,
+                    ),
+                    "Tests" => array(
+                        "get" => array(
+                            "startdate" => 1,
+                            "enddate" => 2,
+                        ),
+                    ),
+                    "History" => array(
+                        "getPeriod" => "asdf",
+                    ),
+                ),
+                "asdf",
+                array(
+                    "History" => array(
+                        "getPeriod" => array(
+                            array(1, 2, 12),
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array $mocks  The mocks to use
+    * @param array $expect The table to expect
+    * @param array $calls  The expected calls
+    *
+    * @return null
+    *
+    * @dataProvider dataHistory
+    */
+    public function testHistory($mocks, $expect, $calls)
+    {
+        // This just resets the mock
+        $this->system->resetMock($mocks);
+        $this->assertEquals(
+            $expect, $this->o->history(), "Return Wrong"
+        );
+        foreach ((array)$calls as $fct => $call) {
+            $this->assertEquals(
+                $call, $this->system->retrieve($fct), "$fct Calls Wrong"
             );
         }
     }

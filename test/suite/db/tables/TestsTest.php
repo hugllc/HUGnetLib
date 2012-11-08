@@ -65,7 +65,7 @@ require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
  * @version    Release: 0.9.7
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class AnnotationsTest extends TableTestBase
+class TestsTest extends TableTestBase
 {
 
     /**
@@ -99,7 +99,7 @@ class AnnotationsTest extends TableTestBase
         $data = array(
         );
         $this->o = \HUGnet\db\Table::factory(
-            $this->system, $data, "Annotations", $this->connect
+            $this->system, $data, "Tests", $this->connect
         );
         parent::Setup();
     }
@@ -127,7 +127,7 @@ class AnnotationsTest extends TableTestBase
     protected function getDataSet()
     {
         return $this->createXMLDataSet(
-            TEST_CONFIG_BASE.'files/AnnotationsTableTest.xml'
+            TEST_CONFIG_BASE.'files/TestsTableTest.xml'
         );
     }
     /**
@@ -140,7 +140,7 @@ class AnnotationsTest extends TableTestBase
         $system = new \HUGnet\DummySystem("System");
         $connect = \HUGnet\db\Connection::factory($system);
         $obj = \HUGnet\db\Table::factory(
-            $system, $data, "Annotations", $connect
+            $system, $data, "Tests", $connect
         );
         return TableTestBase::splitObject($obj, "sqlColumns");
     }
@@ -154,7 +154,7 @@ class AnnotationsTest extends TableTestBase
         $system = new \HUGnet\DummySystem("System");
         $connect = \HUGnet\db\Connection::factory($system);
         $obj = \HUGnet\db\Table::factory(
-            $system, $data, "Annotations", $connect
+            $system, $data, "Tests", $connect
         );
         return TableTestBase::splitObject($obj, "sqlIndexes");
     }
@@ -170,7 +170,7 @@ class AnnotationsTest extends TableTestBase
         return array(
             array(
                 \HUGnet\db\Table::factory(
-                    $system, $data, "Annotations", $connect
+                    $system, $data, "Tests", $connect
                 )
             ),
         );

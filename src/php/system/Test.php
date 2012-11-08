@@ -60,6 +60,10 @@ require_once dirname(__FILE__)."/../base/SystemTableBase.php";
  */
 class Test extends \HUGnet\base\SystemTableBase
 {
+    /** This is the device we are attached to */
+    private $_device = null;
+    /** This is our history to */
+    private $_history = null;
     /**
     * This function creates the system.
     *
@@ -74,7 +78,35 @@ class Test extends \HUGnet\base\SystemTableBase
         $object = parent::factory($system, $data, $table);
         return $object;
     }
-
+    /**
+    * This function creates the device object
+    *
+    * @return null
+    */
+    public function &device()
+    {
+        if (!is_object($this->_device)) {
+            $dev = $this->get("device");
+            $this->_device = $this->system()->device($dev);
+        }
+        return $this->_device;
+    }
+    /**
+    * This function creates the device object
+    *
+    * @return null
+    */
+    public function &history()
+    {
+        if (!is_object($this->_history)) {
+            $this->_history = $this->device()->historyFactory();
+        }
+        return $this->_history->getPeriod(
+            (int)$this->get("startdate"),
+            $this->get("enddate"),
+            $this->device()->id()
+        );
+    }
 }
 
 
