@@ -135,6 +135,32 @@ class WebAPI extends HTML
     *
     * @return null
     */
+    private function _executeAnnotation($extra = array())
+    {
+        $aid = (int)$this->args()->get("id");
+        $table = $this->system()->table("Annotations");
+        return $this->_executeTable($aid, $table, $extra);
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    */
+    private function _executeTests($extra = array())
+    {
+        $tid = (int)$this->args()->get("id");
+        $test = $this->system()->test();
+        return $this->_executeSystem($tid, $test, $extra);
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    */
     private function _executeSensor($extra = array())
     {
         $ids = explode(".", $this->args()->get("id"));

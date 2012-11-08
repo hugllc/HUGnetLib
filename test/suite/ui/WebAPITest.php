@@ -892,6 +892,75 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
+            array(  // #17
+                array(
+                    "task" => "tests",
+                    "action" => "get",
+                    "id" => "5",
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "test" => new \HUGnet\DummyBase("Test"),
+                    ),
+                    "Test" => array(
+                        "load" => true,
+                        "toArray" => array(
+                            "Real" => "array",
+                        ),
+                    ),
+                ),
+                array(),
+                json_encode(array("Real" => "array")),
+                array(
+                    "Test" => array(
+                        "toArray" => array(
+                            array(true),
+                        ),
+                        "load" => array(
+                            array(5),
+                        ),
+                    ),
+                ),
+            ),
+            array(  // #7
+                array(
+                    "task" => "annotation",
+                    "action" => "get",
+                    "id" => "10",
+                    "data" => array(
+                        "a" => "b",
+                        "c" => "d",
+                    ),
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "table" => new \HUGnet\DummyTable("Table"),
+                    ),
+                    "Table" => array(
+                        "isEmpty" => false,
+                        "toArray" => array(
+                            "Real" => "array",
+                        ),
+                    ),
+                ),
+                array(),
+                json_encode(array("Real" => "array")),
+                array(
+                    "Table" => array(
+                        "getRow" => array(
+                            array(10),
+                        ),
+                        "isEmpty" => array(array()),
+                        "toArray" => array(array(true)),
+                    ),
+                ),
+            ),
         );
     }
     /**

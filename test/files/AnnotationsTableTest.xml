@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+    <table name="annotations">
+        <column>id</column>
+        <column>date</column>
+        <column>title</column>
+        <column>text</column>
+        <column>test</column>
+        <column>author</column>
+    </table>
+</dataset>
