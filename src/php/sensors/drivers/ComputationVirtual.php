@@ -71,7 +71,7 @@ class ComputationVirtual extends \HUGnet\sensors\DriverVirtual
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            20, 10, 15,
+            200, 10, 15,
             array(
                 \HUGnet\channels\Driver::TYPE_RAW
                     => \HUGnet\channels\Driver::TYPE_RAW,
