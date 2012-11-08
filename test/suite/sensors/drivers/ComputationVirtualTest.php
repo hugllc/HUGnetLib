@@ -103,7 +103,7 @@ class ComputationVirtualTest extends DriverTestBase
                     "Sensor" => array(
                         "get" => array(
                             "extra" => array(
-                                "(({1} - {2}) / 3) + 1",
+                                "(({0} - {1}) / 3) + 1",
                                 "&#176;C",
                                 "Temperature",
                                 \HUGnet\channels\Driver::TYPE_RAW,
@@ -126,7 +126,7 @@ class ComputationVirtualTest extends DriverTestBase
                     "Sensor" => array(
                         "get" => array(
                             "extra" => array(
-                                "({1} + {2}) + 1",
+                                "({0} + {1}) + 1",
                                 "&#176;C",
                                 "Temperature",
                                 \HUGnet\channels\Driver::TYPE_RAW,
@@ -149,7 +149,7 @@ class ComputationVirtualTest extends DriverTestBase
                     "Sensor" => array(
                         "get" => array(
                             "extra" => array(
-                                "({1} / {2})",
+                                "({0} / {1})",
                                 "&#176;C",
                                 "Temperature",
                                 \HUGnet\channels\Driver::TYPE_RAW,
@@ -172,7 +172,7 @@ class ComputationVirtualTest extends DriverTestBase
                     "Sensor" => array(
                         "get" => array(
                             "extra" => array(
-                                "({1} / ",
+                                "({0} / ",
                                 "&#176;C",
                                 "Temperature",
                                 \HUGnet\channels\Driver::TYPE_RAW,
@@ -218,7 +218,7 @@ class ComputationVirtualTest extends DriverTestBase
                     "Sensor" => array(
                         "get" => array(
                             "extra" => array(
-                                "sqrt({1});",
+                                "sqrt({0});",
                                 "&#176;C",
                                 "Temperature",
                                 \HUGnet\channels\Driver::TYPE_RAW,
@@ -241,7 +241,7 @@ class ComputationVirtualTest extends DriverTestBase
                     "Sensor" => array(
                         "get" => array(
                             "extra" => array(
-                                "{1} + {2}",
+                                "{0} + {1}",
                                 "&#176;C",
                                 "Temperature",
                                 \HUGnet\channels\Driver::TYPE_RAW,
@@ -264,7 +264,7 @@ class ComputationVirtualTest extends DriverTestBase
                     "Sensor" => array(
                         "get" => array(
                             "extra" => array(
-                                "{1} - {2}",
+                                "{0} - {1}",
                                 "&#176;C",
                                 "Temperature",
                                 \HUGnet\channels\Driver::TYPE_DIFF,
@@ -287,7 +287,7 @@ class ComputationVirtualTest extends DriverTestBase
                     "Sensor" => array(
                         "get" => array(
                             "extra" => array(
-                                "({1} - {2}) / 0",
+                                "({0} - {1}) / 0",
                                 "&#176;C",
                                 "Temperature",
                                 \HUGnet\channels\Driver::TYPE_DIFF,
@@ -310,7 +310,7 @@ class ComputationVirtualTest extends DriverTestBase
                     "Sensor" => array(
                         "get" => array(
                             "extra" => array(
-                                "{1} / {2}",
+                                "{0} / {1}",
                                 "&#176;C",
                                 "Temperature",
                                 \HUGnet\channels\Driver::TYPE_DIFF,
@@ -333,7 +333,7 @@ class ComputationVirtualTest extends DriverTestBase
                     "Sensor" => array(
                         "get" => array(
                             "extra" => array(
-                                "{1} + {2}",
+                                "{0} + {1}",
                                 "&#176;C",
                                 "Temperature",
                                 \HUGnet\channels\Driver::TYPE_DIFF,
@@ -357,7 +357,7 @@ class ComputationVirtualTest extends DriverTestBase
                     "Sensor" => array(
                         "get" => array(
                             "extra" => array(
-                                "{1} + {2}",
+                                "{0} + {1}",
                                 "&#176;C",
                                 "Temperature",
                                 \HUGnet\channels\Driver::TYPE_DIFF,
@@ -381,7 +381,7 @@ class ComputationVirtualTest extends DriverTestBase
                     "Sensor" => array(
                         "get" => array(
                             "extra" => array(
-                                "{1} + {2}",
+                                "{0} + {1}",
                                 "&#176;C",
                                 "Temperature",
                                 \HUGnet\channels\Driver::TYPE_DIFF,
@@ -404,7 +404,7 @@ class ComputationVirtualTest extends DriverTestBase
                     "Sensor" => array(
                         "get" => array(
                             "extra" => array(
-                                "{1}^{2}",
+                                "{0}^{1}",
                                 "&#176;C",
                                 "Temperature",
                                 \HUGnet\channels\Driver::TYPE_DIFF,

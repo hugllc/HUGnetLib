@@ -139,12 +139,11 @@ class ComputationVirtual extends \HUGnet\sensors\DriverVirtual
     {
         $zero = (bool)$this->getExtra(5);
         $mathCode = $math;
-        for ($i = 1; $i < 20; $i++) {
-            $index = $i - 1;
+        for ($i = 0; $i < 20; $i++) {
             $mathCode = str_ireplace(
-                '{'.$i.'}', (float)$data[$index]["value"], $mathCode, $count
+                '{'.$i.'}', (float)$data[$i]["value"], $mathCode, $count
             );
-            if (is_null($data[$index]["value"]) && ($count > 0) && !$zero) {
+            if (is_null($data[$i]["value"]) && ($count > 0) && !$zero) {
                 $mathCode = false;
                 break;
             }
