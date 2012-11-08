@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+    <table name="tests">
+        <column>id</column>
+        <column>creationdate</column>
+        <column>startdate</column>
+        <column>enddate</column>
+        <column>device</column>
+        <column>title</column>
+        <column>description</column>
+        <column>author</column>
+    </table>
+</dataset>
