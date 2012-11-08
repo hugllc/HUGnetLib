@@ -103,7 +103,7 @@ class LinearTransformVirtualTest extends DriverTestBase
                     "Sensor" => array(
                         "get" => array(
                             "extra" => array(
-                                1, 10, 5.5, 0, 60,
+                                0, 10, 5.5, 0, 60,
                                 "&#176;C",
                                 "Temperature",
                                 \HUGnet\channels\Driver::TYPE_RAW,
@@ -126,7 +126,7 @@ class LinearTransformVirtualTest extends DriverTestBase
                     "Sensor" => array(
                         "get" => array(
                             "extra" => array(
-                                1, 10, 5.5, 0, 60,
+                                0, 10, 5.5, 0, 60,
                                 "&#176;C",
                                 "Temperature",
                                 \HUGnet\channels\Driver::TYPE_RAW,
@@ -149,30 +149,7 @@ class LinearTransformVirtualTest extends DriverTestBase
                     "Sensor" => array(
                         "get" => array(
                             "extra" => array(
-                                0, 10, 5.5, 0, 60,
-                                "&#176;C",
-                                "Temperature",
-                                \HUGnet\channels\Driver::TYPE_RAW,
-                                "3"
-                            ),
-                        ),
-                    ),
-                ),
-                0,
-                0,
-                array(
-                    0 => array("value" => 5),
-                    1 => array("value" => 2),
-                ),
-                0,
-                null
-            ),
-            array( // #3
-                array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(
-                                1, 20, 5.5, 0, 60,
+                                0, 20, 5.5, 0, 60,
                                 "&#176;C",
                                 "Temperature",
                                 \HUGnet\channels\Driver::TYPE_RAW,
@@ -195,7 +172,7 @@ class LinearTransformVirtualTest extends DriverTestBase
                     "Sensor" => array(
                         "get" => array(
                             "extra" => array(
-                                1, 1, -5.5, 0, 60,
+                                0, 1, -5.5, 0, 60,
                                 "&#176;C",
                                 "Temperature",
                                 \HUGnet\channels\Driver::TYPE_RAW,

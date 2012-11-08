@@ -103,7 +103,7 @@ class DewPointVirtualTest extends DriverTestBase
                     "Sensor" => array(
                         "get" => array(
                             "extra" => array(
-                                1, 2
+                                0, 1
                             ),
                         ),
                     ),
@@ -122,7 +122,7 @@ class DewPointVirtualTest extends DriverTestBase
                     "Sensor" => array(
                         "get" => array(
                             "extra" => array(
-                                1, 2
+                                0, 1
                             ),
                         ),
                     ),
@@ -141,7 +141,7 @@ class DewPointVirtualTest extends DriverTestBase
                     "Sensor" => array(
                         "get" => array(
                             "extra" => array(
-                                1, 2
+                                0, 1
                             ),
                         ),
                     ),
@@ -160,7 +160,7 @@ class DewPointVirtualTest extends DriverTestBase
                     "Sensor" => array(
                         "get" => array(
                             "extra" => array(
-                                1, 2
+                                0, 1
                             ),
                         ),
                     ),
@@ -179,7 +179,7 @@ class DewPointVirtualTest extends DriverTestBase
                     "Sensor" => array(
                         "get" => array(
                             "extra" => array(
-                                1, 2
+                                0, 1
                             ),
                         ),
                     ),
@@ -198,7 +198,7 @@ class DewPointVirtualTest extends DriverTestBase
                     "Sensor" => array(
                         "get" => array(
                             "extra" => array(
-                                1, 2
+                                0, 1
                             ),
                         ),
                     ),
@@ -217,7 +217,7 @@ class DewPointVirtualTest extends DriverTestBase
                     "Sensor" => array(
                         "get" => array(
                             "extra" => array(
-                                1, 2
+                                0, 1
                             ),
                         ),
                     ),

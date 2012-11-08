@@ -102,8 +102,8 @@ class WindChillVirtual extends \HUGnet\sensors\DriverVirtual
     public function getReading(
         $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
-        $temp = $this->getExtra(0) - 1;
-        $wind = $this->getExtra(1) - 1;
+        $temp = $this->getExtra(0);
+        $wind = $this->getExtra(1);
 
         $Ta = $data[$temp]["value"];
         if ($Ta > 10) {

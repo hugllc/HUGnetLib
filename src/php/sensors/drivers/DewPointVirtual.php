@@ -103,8 +103,8 @@ class DewPointVirtual extends \HUGnet\sensors\DriverVirtual
     public function getReading(
         $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
-        $temp = $this->getExtra(0) - 1;
-        $hum = $this->getExtra(1) - 1;
+        $temp = $this->getExtra(0);
+        $hum = $this->getExtra(1);
 
         $T = $data[$temp]["value"];
         if (($T > 60) || ($T < 0)) {

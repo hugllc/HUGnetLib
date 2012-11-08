@@ -113,7 +113,7 @@ class LinearTransformVirtual extends \HUGnet\sensors\DriverVirtual
     public function getReading(
         $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
-        $index = ((int)$this->getExtra(0)) - 1;
+        $index = ((int)$this->getExtra(0));
         $y = $data[$index]["value"];
         if (is_null($y)) {
             return null;

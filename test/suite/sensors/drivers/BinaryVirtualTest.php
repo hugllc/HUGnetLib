@@ -103,7 +103,7 @@ class BinaryVirtualTest extends DriverTestBase
                     "Sensor" => array(
                         "get" => array(
                             "extra" => array(
-                                1, 5, 3, 60,
+                                0, 5, 3, 60,
                                 "&#176;C",
                                 "Temperature",
                                 "3"
@@ -125,7 +125,7 @@ class BinaryVirtualTest extends DriverTestBase
                     "Sensor" => array(
                         "get" => array(
                             "extra" => array(
-                                1, 10, 5.5, 60,
+                                0, 10, 5.5, 60,
                                 "&#176;C",
                                 "Temperature",
                                 \HUGnet\channels\Driver::TYPE_RAW,
@@ -148,30 +148,7 @@ class BinaryVirtualTest extends DriverTestBase
                     "Sensor" => array(
                         "get" => array(
                             "extra" => array(
-                                0, 10, 5.5, 60,
-                                "&#176;C",
-                                "Temperature",
-                                \HUGnet\channels\Driver::TYPE_RAW,
-                                "3"
-                            ),
-                        ),
-                    ),
-                ),
-                0,
-                0,
-                array(
-                    0 => array("value" => 5),
-                    1 => array("value" => 2),
-                ),
-                60.0,
-                null
-            ),
-            array( // #3
-                array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(
-                                1, 20, 10, 60,
+                                0, 20, 10, 60,
                                 "&#176;C",
                                 "Temperature",
                                 "3"
@@ -188,12 +165,12 @@ class BinaryVirtualTest extends DriverTestBase
                 60.0,
                 0.0
             ),
-            array( // #4
+            array( // #3
                 array(
                     "Sensor" => array(
                         "get" => array(
                             "extra" => array(
-                                1, 20, 10, 60,
+                                0, 20, 10, 60,
                                 "&#176;C",
                                 "Temperature",
                                 "3"
@@ -210,12 +187,12 @@ class BinaryVirtualTest extends DriverTestBase
                 60.0,
                 60.0
             ),
-            array( // #5
+            array( // #4
                 array(
                     "Sensor" => array(
                         "get" => array(
                             "extra" => array(
-                                1, 4, 0, 60,
+                                0, 4, 0, 60,
                                 "&#176;C",
                                 "Temperature",
                                 "3"

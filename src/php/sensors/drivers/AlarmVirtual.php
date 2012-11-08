@@ -102,7 +102,7 @@ class AlarmVirtual extends \HUGnet\sensors\DriverVirtual
     public function getReading(
         $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
-        $index = ((int)$this->getExtra(0)) - 1;
+        $index = ((int)$this->getExtra(0));
         if (($index < 0)) {
             return null;
         }
