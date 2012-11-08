@@ -792,6 +792,103 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
+            array(  // #15
+                array(
+                    "task" => "history",
+                    "action" => "get",
+                    "id" => "10",
+                    "data" => array(
+                        "since" => 1234,
+                        "until" => 4321,
+                        "limit" => 1,
+                        "start" => 0,
+                        "order" => "desc",
+                        "type"  => "raw",  // Raw History
+                    ),
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                    ),
+                    "RawHistory" => array(
+                        "isEmpty" => false,
+                        "toArray" => array(
+                            "Real" => "array",
+                        ),
+                        "insertRow" => true,
+                        "getPeriod" => true,
+                        "nextInto" => false,
+                    ),
+                ),
+                array(),
+                json_encode(
+                    array(
+                        array("Real" => "array"),
+                    )
+                ),
+                array(
+                    "RawHistory" => array(
+                        "getPeriod" => array(
+                            array(1234, 4321, 16, 'history', '', array())
+                        ),
+                        "toArray" => array(
+                            array(true),
+                        ),
+                        "nextInto" => array(
+                            array(null)
+                        ),
+                    ),
+                ),
+            ),
+            array(  // #16
+                array(
+                    "task" => "device",
+                    "action" => "put",
+                    "id" => "10",
+                    "data" => array(
+                        "a" => "b",
+                        "c" => "d",
+                    ),
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "load" => false,
+                        "toArray" => array(
+                            "Real" => "array",
+                        ),
+                    ),
+                ),
+                array(),
+                json_encode(array("Real" => "array")),
+                array(
+                    "Device" => array(
+                        "toArray" => array(
+                            array(true),
+                        ),
+                        "load" => array(
+                            array(16),
+                            array(
+                                array(
+                                    "a" => "b",
+                                    "c" => "d",
+                                ),
+                            ),
+                            array(16),
+                        ),
+                        "store" => array(
+                            array(),
+                        ),
+                    ),
+                ),
+            ),
         );
     }
     /**

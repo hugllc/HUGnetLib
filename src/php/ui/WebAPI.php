@@ -185,7 +185,7 @@ class WebAPI extends HTML
                 // Reload it, so that we get what is in the database
             } else {
                 $obj->load($data);
-                $obj->store($data);
+                $obj->store();
             }
             $obj->load($ident);
             $ret = $obj->toArray(true);
@@ -275,13 +275,18 @@ class WebAPI extends HTML
     private function _executeHistory($extra = array())
     {
         $did = hexdec($this->args()->get("id"));
-        $hist = $this->system()->device($did)->historyFactory(array(), true);
+        $data = (array)$this->args()->get("data");
+        if (trim(strtolower($data["type"])) == 'raw') {
+            $hist = $this->system()->table("RawHistory");
+
+        } else {
+            $hist = $this->system()->device($did)->historyFactory(array(), true);
+        }
         $ret = null;
         $action = strtolower(trim($this->args()->get("action")));
         if ($action === "get") {
             $ret = $this->_executeHistoryGet($did, $hist);
         } else if ($action === "put") {
-            $data = (array)$this->args()->get("data");
             $ret = array();
             foreach ($data as $key => $row) {
                 if (is_array($row) && ($row["id"] == $did)
