@@ -187,6 +187,7 @@
     <target name="deb" depends="build,deb.build"/>
     <target name="post" depends="deb.post"/>
     <target name="testpost" depends="build,deb.testpost"/>
+    <target name="rcpost" depends="build,deb.rcpost"/>
     <target name="package" depends="build,package.build,deb.build"/>
     <target name="distclean" depends="clean,deb.clean,package.clean">
         <delete dir="${basedir}/build/rel"/>
