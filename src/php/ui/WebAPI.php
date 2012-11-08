@@ -194,6 +194,7 @@ class WebAPI extends HTML
             $ret = $obj->getList($data, true);
         } else {
             if (is_callable(array($obj, "webAPI"))) {
+                $obj->load($ident);
                 $ret = $obj->webAPI($this->args(), $extra);
             }
         }

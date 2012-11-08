@@ -353,6 +353,9 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                                 array(),
                             ),
                         ),
+                        'load' => array(
+                            array(5),
+                        ),
                     ),
                 ),
             ),

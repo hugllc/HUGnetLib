@@ -123,6 +123,27 @@ class Device extends \HUGnet\base\SystemTableBase
     /**
     * Returns the table as an array
     *
+    * @param bool $default Whether or not to include the default values
+    *
+    * @return array
+    */
+    public function toArray($default = false)
+    {
+        $return = $this->table()->toArray($default);
+        if ($default) {
+            $return = array_merge($this->driver()->toArray(), $return);
+        }
+        if (is_string($return["channels"])) {
+            $return["channels"] = (array)json_decode($return["channels"], true);
+        }
+        if (is_string($return["params"])) {
+            $return["params"] = (array)json_decode($return["params"], true);
+        }
+        return $return;
+    }
+    /**
+    * Returns the table as an array
+    *
     * @return array
     */
     public function fullArray()
@@ -436,7 +457,8 @@ class Device extends \HUGnet\base\SystemTableBase
     */
     public function webAPI(&$args, $extra)
     {
-        $action = strtolower($args->get("action"));
+        $action = trim(strtolower($args->get("action")));
+        $ret = null;
         if ($action === "config") {
             $worked  = true;
             $sensors = $this->get("physicalSensors");
@@ -469,13 +491,12 @@ class Device extends \HUGnet\base\SystemTableBase
             if ($worked) {
                 $this->setParam("LastModified", time());
                 $this->store();
-                $ret = $this->fullArray();
+                $ret = $this->toArray(true);
             } else {
                 $ret = -1;
             }
         } else if ($action === "loadfirmware") {
-            $firmware = $json->system()->table("Firmware");
-            $dev = $json->system()->device($did);
+            $firmware = $this->system()->table("Firmware");
             if (!$this->get("bootloader")) {
                 $firmware->set("FWPartNum", $this->get("FWPartNum"));
             } else {
@@ -486,12 +507,15 @@ class Device extends \HUGnet\base\SystemTableBase
             $ret = -1;
             if ($firmware->getLatest()) {
                 if ($this->network()->loadFirmware($firmware)) {
-                    if ($this->action()->config()) {
-                        $ret = $this->fullArray();
-                    }
+                    $ret = $this->toArray(true);
                 }
             }
+        } else if ($action === "loadconfig") {
+            if ($this->network()->loadConfig()) {
+                $ret = $this->toArray(true);
+            }
         }
+        return $ret;
     }
 }
 
