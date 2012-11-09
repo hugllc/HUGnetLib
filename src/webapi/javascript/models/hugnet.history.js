@@ -99,7 +99,7 @@ HUGnet.Histories = Backbone.Collection.extend({
     refresh: null,
     pause: 1,
     limit: 50,
-    getLimit: 1000,
+    getLimit: 2000,
     count: 0,
     type: "test",
     since: 0,
@@ -117,10 +117,15 @@ HUGnet.Histories = Backbone.Collection.extend({
             this.limit = (options.limit !== undefined) ? parseInt(options.limit, 10) : this.limit;
         }
     },
-    latest: function ()
+    latest: function (period)
     {
+        this.reset();
+        this.limit = 0;
+        var date = new Date;
+        this.since = date.getTime() - (period * 60 * 1000);
+        this.LastHistory = this.since;
         this.until = 0;
-        this.fetch();
+        this.fetch()
     },
     comparator: function (model)
     {
