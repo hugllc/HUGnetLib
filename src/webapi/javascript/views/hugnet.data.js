@@ -58,6 +58,7 @@ HUGnet.DataView = Backbone.View.extend({
     classes: {},
     since: 0,
     until: 0,
+    period: 30,
     polling: false,
     events: {
         'click #autorefresh': 'setRefresh',
@@ -108,7 +109,7 @@ HUGnet.DataView = Backbone.View.extend({
             },
             this
         );
-        this.history.fetch();
+        this.history.latest(this.period);
         this.table = new HUGnet.DataTable({
             model: this.history,
             header: this.header,
@@ -188,7 +189,7 @@ HUGnet.DataView = Backbone.View.extend({
             this.$('input[type="submit"]').prop('disabled', true);
             this.history.on("fetchfail", this._poll, this);
             this.history.on("fetchdone", this._poll, this);
-            this.history.latest();
+            this.history.latest(this.period);
         }
     },
     stopPoll: function()
@@ -216,7 +217,7 @@ HUGnet.DataView = Backbone.View.extend({
         var self = this;
         setTimeout(
             function () {
-                self.history.latest();
+                self.history.latest(self.period);
             },
             (this.pause * 1000)
         );
