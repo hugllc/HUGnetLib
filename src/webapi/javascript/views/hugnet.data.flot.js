@@ -190,7 +190,7 @@ HUGnet.DataFlot = Backbone.View.extend({
         series: { lines: { show: true }, points: { show: false} },
         xaxis: { mode: 'time', timeformat: '%m/%d %y<br/>%H:%M' },
         legend: {
-            position: 'nw', container: '#flot-legend', noColumns: 2
+            position: 'nw', container: '#flot-legend', noColumns: 4
         },
         selection: { mode: 'x' },
         grid: { backgroundColor: '#EEE', hoverable: true, clickable: true }
@@ -269,10 +269,8 @@ HUGnet.DataFlot = Backbone.View.extend({
     _setup: function ()
     {
         this.$graph = $(
-            '<div></div>'
-        ).css({
-            width: "600px", height: "300px"
-        }).appendTo(this.$el);
+            '<div id="flot-graph"></div>'
+        ).appendTo(this.$el);
         this.$legend = $(
             '<div id="flot-legend"></div>'
         ).appendTo(this.$el);
@@ -283,14 +281,14 @@ HUGnet.DataFlot = Backbone.View.extend({
         var i = 0;
         var datasets = this.points.toJSON();
         // insert checkboxes
-        this.$choice = $('<div id="flot-choice"><div>Show</div></div>').prependTo(this.$el);
+        this.$choice = $('<ul id="flot-choice"></ul>').prependTo(this.$el);
         _.each(
             datasets,
             function(val, key) {
                 this.$choice.append(
-                    '<br/><input type="checkbox" name="' + key +
+                    '<li><input type="checkbox" name="' + key +
                     '" checked="checked" id="id' + key + '">' +
-                    '<label for="id' + key + '">' + val.label + '</label>'
+                    '<label for="id' + key + '">' + val.label + '</label></li>'
                 );
             },
             this
