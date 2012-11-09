@@ -101,15 +101,39 @@ HUGnet.DataView = Backbone.View.extend({
                 url: this.url
             }
         );
+        this.getLatest();
         this.history.on(
             'sync',
             function ()
             {
                 this.$("#data-records").text(this.history.length);
+                var since = this.history.since;
+                var until = this.history.until;
+                var d = new Date;
+                function pad(n){return n<10 ? '0'+n : n};
+                if (until != 0) {
+                    d.setTime(until);
+                }
+                until = pad(d.getMonth()+1)+'/'
+                    + pad(d.getDate())+'/'
+                    + d.getFullYear()+' '
+                    + pad(d.getHours())+':'
+                    + pad(d.getMinutes())+':'
+                    + pad(d.getSeconds());
+                if (since != 0) {
+                    d.setTime(since);
+                    since = pad(d.getMonth()+1)+'/'
+                        + pad(d.getDate())+'/'
+                        + d.getFullYear()+' '
+                        + pad(d.getHours())+':'
+                        + pad(d.getMinutes())+':'
+                        + pad(d.getSeconds());
+                }
+                this.$("#since").val(since);
+                this.$("#until").val(until);
             },
             this
         );
-        this.history.latest(this.period);
         this.table = new HUGnet.DataTable({
             model: this.history,
             header: this.header,
@@ -117,6 +141,12 @@ HUGnet.DataView = Backbone.View.extend({
             classes: this.classes
         });
         this.setupPlot();
+    },
+    getLatest: function ()
+    {
+        this.history.latest(this.period);
+        this.since = this.history.since;
+        this.until = this.history.until;
     },
     setupPlot: function ()
     {
@@ -189,7 +219,7 @@ HUGnet.DataView = Backbone.View.extend({
             this.$('input[type="submit"]').prop('disabled', true);
             this.history.on("fetchfail", this._poll, this);
             this.history.on("fetchdone", this._poll, this);
-            this.history.latest(this.period);
+            this.getLatest();
         }
     },
     stopPoll: function()
@@ -217,7 +247,7 @@ HUGnet.DataView = Backbone.View.extend({
         var self = this;
         setTimeout(
             function () {
-                self.history.latest(self.period);
+                self.getLatest();
             },
             (this.pause * 1000)
         );
