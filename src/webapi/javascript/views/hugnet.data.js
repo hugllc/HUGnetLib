@@ -134,7 +134,7 @@ HUGnet.DataView = Backbone.View.extend({
             },
             this
         );
-        this.history.getLatest();
+        this.getLatest();
         this.table = new HUGnet.DataTable({
             model: this.history,
             header: this.header,
