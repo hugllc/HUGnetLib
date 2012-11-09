@@ -130,7 +130,7 @@ class CelaniPowerCalVirtual extends \HUGnet\sensors\DriverVirtual
         $Cint = bcmul((string)$c, bcpow((string)$x_in, 2));
         $Dint = bcmul((string)$d, bcpow((string)$x_in, 2));
         $Eint = bcsub(bcpow((string)$x_in, 2), bcpow((string)$e, 2));
-        if ($Eint === 0) {
+        if ($Eint == 0) {
             return null;
         }
         $Dint2 = bcdiv($Dint, $Eint);
