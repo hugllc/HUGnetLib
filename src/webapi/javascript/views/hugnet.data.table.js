@@ -150,7 +150,7 @@ HUGnet.DataTable = Backbone.View.extend({
     fields: {},
     classes: {},
     views: [],
-    maxRows: 100,
+    maxRows: 15,
     rows: 0,
     events: {
     },
