@@ -4,10 +4,10 @@
 <project name="release" default="build" basedir=".">
     <property name="source" value="${basedir}/src"/>
     <property name="release" value="" />
-    <property name="versionfile" value="${basedir}/src/VERSION.TXT" />
+    <property name="versionfile" value="${basedir}/src/php/VERSION.TXT" />
     <exec executable="grep" failonerror="true"
         outputproperty="version" errorproperty="versionerror">
-        <arg line='-o -e "[0-9]\{1,\}\.[0-9]\{1,\}\.[0-9]\{1,\}" ${versionfile}'
+        <arg line='-o -e "[0-9]\{1,\}\.[0-9]\{1,\}\.[0-9]\{1,\}[~alpharc0-9]\{0,\}" ${release.versionfile}'
             />
     </exec>
     <property name="buildname" value="HUGnetLib-${version}" />

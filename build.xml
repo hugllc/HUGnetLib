@@ -14,6 +14,7 @@
         <delete dir="${basedir}/build/logs" failonerror="false"/>
         <delete dir="${basedir}/build/pdepend" failonerror="false"/>
         <delete dir="${basedir}/Documentation" failonerror="false"/>
+        <delete dir="${basedir}/rel/*" failonerror="false"/>
         <delete failonerror="false" verbose="true">
             <fileset dir=".">
                 <include name="**/php.core"/>
@@ -181,14 +182,13 @@
         </exec>
     </target>
 
-
     <target name="build" depends="buildJavaScript"/>
     <target name="test" depends="clean,setup,build,jshint,jsdoc,jasmine,pdepend,phpmd,phpcpd,phpcs,docblox,phploc,phpunit,phpcb,cleanafter"/>
     <target name="deb" depends="build,deb.build"/>
     <target name="post" depends="deb.post"/>
-    <target name="testpost" depends="build,deb.testpost"/>
-    <target name="rcpost" depends="build,deb.rcpost"/>
-    <target name="package" depends="build,package.build,deb.build"/>
+    <target name="testpost" depends="clean,build,deb.testpost"/>
+    <target name="rcpost" depends="clean,build,deb.rcpost"/>
+    <target name="package" depends="clean,build,package.build,deb.build"/>
     <target name="distclean" depends="clean,deb.clean,package.clean">
         <delete dir="${basedir}/build/rel"/>
     </target>
