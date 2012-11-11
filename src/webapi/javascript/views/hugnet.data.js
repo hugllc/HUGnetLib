@@ -65,7 +65,10 @@ HUGnet.DataView = Backbone.View.extend({
     events: {
         'click #autorefresh': 'setRefresh',
         'submit': 'submit',
-        'click .exportCSV': 'exportCSV'
+        'click .exportCSV': 'exportCSV',
+        'click .minute30': 'minute30',
+        'click .minute240': 'minute240',
+        'click .minute720': 'minute720'
     },
     initialize: function (options)
     {
@@ -163,12 +166,28 @@ HUGnet.DataView = Backbone.View.extend({
         url += "&limit=10000";
         this.iframe.attr('src',url);
     },
+    minute30: function ()
+    {
+        this.period = 30;
+        this.getLatest();
+    },
+    minute240: function ()
+    {
+        this.period = 240;
+        this.getLatest();
+    },
+    minute720: function ()
+    {
+        this.period = 720;
+        this.getLatest();
+    },
     getLatest: function ()
     {
         this.last  = (new Date()).getTime();
         this.history.latest(this.period);
         this.since = this.history.since;
         this.until = this.history.until;
+        this.history.trigger("sync");
     },
     setupPlot: function ()
     {
