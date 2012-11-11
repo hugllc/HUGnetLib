@@ -107,7 +107,6 @@ HUGnet.TestSuite = Backbone.View.extend({
         var self = this;
         var tag = "#tabs-test" + test.get("id");
         if (this.data[tag] !== undefined) {
-            //alert('Tab for "' + test.get("DeviceName") + '" is already open');
             return;
         }
         this.data[tag] = new HUGnet.DataView({
@@ -126,10 +125,9 @@ HUGnet.TestSuite = Backbone.View.extend({
         var self = this;
         var tag = "#tabs-export" + test.get("id");
         if (this.data[tag] !== undefined) {
-            alert('Tab for "' + test.get("DeviceName") + '" is already open');
             return;
         }
-        this.data[tag] = new HUGnet.DataView({
+        this.data[tag] = new HUGnet.ExportView({
             parent: tag,
             model: test,
             TestID: 1,
