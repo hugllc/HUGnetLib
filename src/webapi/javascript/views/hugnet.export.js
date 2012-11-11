@@ -141,6 +141,7 @@ HUGnet.ExportView = Backbone.View.extend({
         }
         data.sinceDate = this.sinceDate;
         data.untilDate = this.untilDate;
+        data.csvlimit  = this.csvlimit;
         var d = new Date;
         d.setTime(data.until);
         this.$el.html(
