@@ -93,6 +93,14 @@ HUGnet.TestSuite = Backbone.View.extend({
             },
             this
         );
+        this.tests.bind(
+            "export",
+            function (test)
+            {
+                this.exportTab(test);
+            },
+            this
+        );
     },
     testTab: function (test)
     {
@@ -109,6 +117,25 @@ HUGnet.TestSuite = Backbone.View.extend({
             url: this.url
         });
         var title = 'View Test "' + test.get("DeviceName") + '"';
+
+        this.tabs.tabs("add", tag, title);
+        $(tag).html(this.data[tag].render().el);
+    },
+    exportTab: function (test)
+    {
+        var self = this;
+        var tag = "#tabs-export" + test.get("id");
+        if (this.data[tag] !== undefined) {
+            alert('Tab for "' + test.get("DeviceName") + '" is already open');
+            return;
+        }
+        this.data[tag] = new HUGnet.DataView({
+            parent: tag,
+            model: test,
+            TestID: 1,
+            url: this.url
+        });
+        var title = 'Export Test "' + test.get("DeviceName") + '" Data';
 
         this.tabs.tabs("add", tag, title);
         $(tag).html(this.data[tag].render().el);

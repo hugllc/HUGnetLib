@@ -46,7 +46,8 @@ var TestEntryView = Backbone.View.extend({
     template: '#TestEntryTemplate',
     parent: null,
     events: {
-        'click .view': 'view'
+        'click .view': 'view',
+        'click .export': 'export'
     },
     initialize: function (options)
     {
@@ -61,6 +62,10 @@ var TestEntryView = Backbone.View.extend({
     view: function (e)
     {
         this.parent.trigger("view", this.model);
+    },
+    export: function (e)
+    {
+        this.parent.trigger("export", this.model);
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
