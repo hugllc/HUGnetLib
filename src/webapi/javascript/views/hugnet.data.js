@@ -160,9 +160,7 @@ HUGnet.DataView = Backbone.View.extend({
         url += "&since="+parseInt(this.since/1000);
         url += "&until="+parseInt(until/1000);
         url += "&order="+((this.limit === 0) ? 0 : 1);
-        if (until == 0) {
-            url += "&limit="+this.limit;
-        }
+        url += "&limit=10000";
         this.iframe.attr('src',url);
     },
     getLatest: function ()
