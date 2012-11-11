@@ -62,7 +62,7 @@ HUGnet.DataView = Backbone.View.extend({
     period: 30,
     polling: false,
     iframe: undefined,
-    csvlimit: 30000,
+    csvlimit: 40000,
     events: {
         'click #autorefresh': 'setRefresh',
         'submit': 'submit',
