@@ -51,7 +51,8 @@ HUGnet.ExportView = Backbone.View.extend({
     until: undefined,
     sinceDate: undefined,
     untilDate: undefined,
-    csvurl: undefined,
+    csvurl: "",
+    order: 1,
     events: {
         'click .minute30': 'minute30',
         'click .minute240': 'minute240',
@@ -87,6 +88,11 @@ HUGnet.ExportView = Backbone.View.extend({
     {
         this.since = Date.parse(this.$('#since').val());
         this.until = Date.parse(this.$('#until').val());
+        if (parseInt(this.$('#order').val(), 10) == 0) {
+            this.order = 0;
+        } else {
+            this.order = 1;
+        }
         this.csvurl = this.url+"?task=history&format=CSV";
         if (this.until != 0) {
             var until = this.until;
@@ -96,8 +102,9 @@ HUGnet.ExportView = Backbone.View.extend({
         this.csvurl += "&id="+this.model.get("id").toString(16);
         this.csvurl += "&since="+parseInt(this.since/1000);
         this.csvurl += "&until="+parseInt(until/1000);
-        this.csvurl += "&order=0";
+        this.csvurl += "&order="+this.order;
         this.csvurl += "&limit="+this.csvlimit;
+        this.$("#csvurl").html(this.csvurl);
         this.iframe.attr('src', this.csvurl);
     },
     updateDates: function ()
@@ -142,6 +149,8 @@ HUGnet.ExportView = Backbone.View.extend({
         data.sinceDate = this.sinceDate;
         data.untilDate = this.untilDate;
         data.csvlimit  = this.csvlimit;
+        data.csvurl    = this.csvurl;
+        data.order     = this.order;
         var d = new Date;
         d.setTime(data.until);
         this.$el.html(
