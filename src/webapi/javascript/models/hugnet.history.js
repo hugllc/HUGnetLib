@@ -99,7 +99,7 @@ HUGnet.Histories = Backbone.Collection.extend({
     refresh: null,
     pause: 1,
     limit: 50,
-    getLimit: 2000,
+    getLimit: 500,
     count: 0,
     type: "test",
     since: 0,
