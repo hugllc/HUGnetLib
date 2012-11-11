@@ -62,6 +62,7 @@ HUGnet.DataView = Backbone.View.extend({
     period: 30,
     polling: false,
     iframe: undefined,
+    csvlimit: 30000,
     events: {
         'click #autorefresh': 'setRefresh',
         'submit': 'submit',
@@ -163,7 +164,7 @@ HUGnet.DataView = Backbone.View.extend({
         url += "&since="+parseInt(this.since/1000);
         url += "&until="+parseInt(until/1000);
         url += "&order="+((this.limit === 0) ? 0 : 1);
-        url += "&limit=10000";
+        url += "&limit="+this.csvlimit;
         this.iframe.attr('src',url);
     },
     minute30: function ()
