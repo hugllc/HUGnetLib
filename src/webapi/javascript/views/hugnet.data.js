@@ -58,11 +58,14 @@ HUGnet.DataView = Backbone.View.extend({
     classes: {},
     since: 0,
     until: 0,
+    last: 0,
     period: 30,
     polling: false,
+    iframe: undefined,
     events: {
         'click #autorefresh': 'setRefresh',
-        'submit': 'submit'
+        'submit': 'submit',
+        'click .exportCSV': 'exportCSV'
     },
     initialize: function (options)
     {
@@ -113,6 +116,8 @@ HUGnet.DataView = Backbone.View.extend({
                 function pad(n){return n<10 ? '0'+n : n};
                 if (until != 0) {
                     d.setTime(until);
+                } else {
+                    d.setTime(this.last);
                 }
                 until = pad(d.getMonth()+1)+'/'
                     + pad(d.getDate())+'/'
@@ -143,8 +148,26 @@ HUGnet.DataView = Backbone.View.extend({
         });
         this.setupPlot();
     },
+    exportCSV: function ()
+    {
+        var url = this.url+"?task=history&format=CSV";
+        if (this.until != 0) {
+            var until = this.until;
+        } else {
+            var until = this.last;
+        }
+        url += "&id="+this.model.get("id").toString(16);
+        url += "&since="+parseInt(this.since/1000);
+        url += "&until="+parseInt(until/1000);
+        url += "&order="+((this.limit === 0) ? 0 : 1);
+        if (until == 0) {
+            url += "&limit="+this.limit;
+        }
+        this.iframe.attr('src',url);
+    },
     getLatest: function ()
     {
+        this.last  = (new Date()).getTime();
         this.history.latest(this.period);
         this.since = this.history.since;
         this.until = this.history.until;
@@ -265,8 +288,35 @@ HUGnet.DataView = Backbone.View.extend({
         var data = this.model.toJSON();
         data.limit = this.limit;
         data.since = this.since;
-        data.until = this.until;
-        data.csvurl = this.url+"?task=history&format=CSV&id="+data.id.toString(16)+"&since="+data.since+"&until="+data.until+"&limit="+data.limit+"&order="+((data.limit === 0) ? 0 : 1);
+        if (this.until != 0) {
+            data.until = this.until;
+        } else {
+            data.until = this.last;
+        }
+        var d = new Date;
+        function pad(n){return n<10 ? '0'+n : n};
+        d.setTime(data.until);
+        data.untilDate = pad(d.getMonth()+1)+'/'
+            + pad(d.getDate())+'/'
+            + d.getFullYear()+' '
+            + pad(d.getHours())+':'
+            + pad(d.getMinutes())+':'
+            + pad(d.getSeconds());
+        d.setTime(data.since);
+        data.sinceDate = pad(d.getMonth()+1)+'/'
+            + pad(d.getDate())+'/'
+            + d.getFullYear()+' '
+            + pad(d.getHours())+':'
+            + pad(d.getMinutes())+':'
+            + pad(d.getSeconds());
+        data.csvurl  = this.url+"?task=history&format=CSV";
+        data.csvurl += "&id="+data.id.toString(16);
+        data.csvurl += "&since="+parseInt(data.since/1000);
+        data.csvurl += "&until="+parseInt(data.until/1000);
+        data.csvurl += "&order="+((data.limit === 0) ? 0 : 1);
+        if (data.until == 0) {
+            data.csvurl += "&limit="+data.limit;
+        }
         this.$el.html(
             _.template(
                 $(this.template).html(),
@@ -275,8 +325,10 @@ HUGnet.DataView = Backbone.View.extend({
         );
         this.$('#since').datetimepicker();
         this.$('#until').datetimepicker();
+        this.iframe = $('<iframe>', { id:'exportCSV' }).hide();
         this.$el.append(this.plot.el);
         this.$el.append(this.table.render().el);
+        this.$el.append(this.iframe);
         return this;
     },
     renderEntry: function (view)
