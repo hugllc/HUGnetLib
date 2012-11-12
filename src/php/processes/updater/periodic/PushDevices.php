@@ -191,6 +191,7 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
     private function _pushHistory(&$dev)
     {
         $hist = $dev->historyFactory(array(), true);
+        $hist->sqlOrderBy = "Date asc";
         $last = (int)$dev->getParam("LastMasterHistoryPush");
         $hist->sqlLimit = self::MAX_HISTORY;
         $first = time();
