@@ -198,6 +198,12 @@ class DevicesTest extends TableTestBase
             array("DeviceGroup", 0x345, "000345"),
             array("id", 0x159, 345),
             array("id", 1.3, 1),
+            array("params", array("hello" => "there"), '{"hello":"there"}'),
+            array("params", 1.2, ""),
+            array("params", "asdf", "asdf"),
+            array("channels", array("hello" => "there"), '{"hello":"there"}'),
+            array("channels", 1.2, ""),
+            array("channels", "asdf", "asdf"),
         );
     }
 

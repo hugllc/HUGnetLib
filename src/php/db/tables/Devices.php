@@ -461,6 +461,7 @@ class Devices extends \HUGnet\db\Table
     {
         $this->data["FWPartNum"] = self::formatPartNum($value);
     }
+
     /**
     * Sets the part number
     *
@@ -472,6 +473,35 @@ class Devices extends \HUGnet\db\Table
     {
         $this->data["HWPartNum"] = self::formatPartNum($value);
     }
-
+    /**
+    * Sets the part number
+    *
+    * @param mixed $value The value to set
+    *
+    * @return null
+    */
+    protected function setParams($value)
+    {
+        if (is_array($value)) {
+            $this->data["params"] = json_encode($value);
+        } else if (is_string($value)) {
+            $this->data["params"] = $value;
+        }
+    }
+    /**
+    * Sets the part number
+    *
+    * @param mixed $value The value to set
+    *
+    * @return null
+    */
+    protected function setChannels($value)
+    {
+        if (is_array($value)) {
+            $this->data["channels"] = json_encode($value);
+        } else if (is_string($value)) {
+            $this->data["channels"] = $value;
+        }
+    }
 }
 ?>
