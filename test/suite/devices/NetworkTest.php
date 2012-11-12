@@ -107,7 +107,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array( // #0 Normal ping
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => \HUGnet\network\packets\Packet::factory(
@@ -125,7 +128,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "Device" => array(
-                        "get" => array(array("id")),
+                        "get" => array(
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
                     ),
                     "Network" => array(
                         "send" => Array(
@@ -137,7 +143,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
+                                    "timeout" => 4,
                                 ),
                             )
                         ),
@@ -153,7 +159,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array( // #1 Find ping
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => \HUGnet\network\packets\Packet::factory(
@@ -171,7 +180,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "Device" => array(
-                        "get" => array(array("id")),
+                        "get" => array(
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
                     ),
                     "Network" => array(
                         "send" => Array(
@@ -183,7 +195,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
+                                    "timeout" => 4,
                                 ),
                             )
                         ),
@@ -199,7 +211,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array( // #0 Normal ping
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => \HUGnet\network\packets\Packet::factory(
@@ -217,7 +232,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "Device" => array(
-                        "get" => array(array("id")),
+                        "get" => array(
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
                     ),
                     "Network" => array(
                         "send" => Array(
@@ -228,7 +246,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
+                                    "timeout" => 4,
                                 ),
                             )
                         ),
@@ -290,7 +308,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => \HUGnet\network\packets\Packet::factory(
@@ -306,7 +327,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "Device" => array(
-                        "get" => array(array("id")),
+                        "get" => array(
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
                     ),
                     "Network" => array(
                         "send" => Array(
@@ -317,7 +341,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
+                                    "timeout" => 4,
                                 ),
                             )
                         ),
@@ -333,7 +357,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => \HUGnet\network\packets\Packet::factory(
@@ -352,7 +379,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "Device" => array(
-                        "get" => array(array("id")),
+                        "get" => array(
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
                     ),
                     "Network" => array(
                         "send" => Array(
@@ -365,7 +395,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
+                                    "timeout" => 4,
                                 ),
                             )
                         ),
@@ -422,7 +452,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => \HUGnet\network\packets\Packet::factory(
@@ -438,7 +471,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "Device" => array(
-                        "get" => array(array("id")),
+                        "get" => array(
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
                     ),
                     "Network" => array(
                         "send" => Array(
@@ -449,7 +485,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
+                                    "timeout" => 4,
                                 ),
                             )
                         ),
@@ -465,7 +501,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => \HUGnet\network\packets\Packet::factory(
@@ -484,7 +523,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "Device" => array(
-                        "get" => array(array("id")),
+                        "get" => array(
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
                     ),
                     "Network" => array(
                         "send" => Array(
@@ -497,7 +539,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
+                                    "timeout" => 4,
                                 ),
                             )
                         ),
@@ -554,7 +596,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => \HUGnet\network\packets\Packet::factory(
@@ -571,7 +616,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "Device" => array(
-                        "get" => array(array("id")),
+                        "get" => array(
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
                     ),
                     "Network" => array(
                         "send" => Array(
@@ -585,7 +633,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
+                                    "timeout" => 4,
                                 ),
                             )
                         ),
@@ -601,7 +649,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => \HUGnet\network\packets\Packet::factory(
@@ -626,7 +677,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "Device" => array(
-                        "get" => array(array("id")),
+                        "get" => array(
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
                     ),
                     "Network" => array(
                         "send" => Array(
@@ -640,7 +694,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
+                                    "timeout" => 4,
                                 ),
                             )
                         ),
@@ -699,7 +753,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => \HUGnet\network\packets\Packet::factory(
@@ -717,7 +774,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "Device" => array(
-                        "get" => array(array("id")),
+                        "get" => array(
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
                     ),
                     "Network" => array(
                         "send" => Array(
@@ -731,7 +791,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
+                                    "timeout" => 4,
                                 ),
                             )
                         ),
@@ -742,7 +802,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => \HUGnet\network\packets\Packet::factory(
@@ -765,7 +828,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => \HUGnet\network\packets\Packet::factory(
@@ -788,7 +854,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => \HUGnet\network\packets\Packet::factory(
@@ -814,7 +883,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "Device" => array(
-                        "get" => array(array("id")),
+                        "get" => array(
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
                     ),
                     "Network" => array(
                         "send" => Array(
@@ -828,7 +900,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
+                                    "timeout" => 4,
                                 ),
                             )
                         ),
@@ -883,7 +955,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => \HUGnet\network\packets\Packet::factory(
@@ -897,7 +972,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "Device" => array(
-                        "get" => array(array("id")),
+                        "get" => array(
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
                     ),
                     "Network" => array(
                         "send" => Array(
@@ -908,7 +986,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
+                                    "timeout" => 4,
                                 ),
                             )
                         ),
@@ -919,7 +997,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => \HUGnet\network\packets\Packet::factory(
@@ -933,7 +1014,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "Device" => array(
-                        "get" => array(array("id")),
+                        "get" => array(
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
                     ),
                     "Network" => array(
                         "send" => Array(
@@ -944,7 +1028,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
+                                    "timeout" => 4,
                                 ),
                             )
                         ),
@@ -955,7 +1039,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => false,
@@ -964,7 +1051,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "Device" => array(
-                        "get" => array(array("id")),
+                        "get" => array(
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
                     ),
                     "Network" => array(
                         "send" => Array(
@@ -975,7 +1065,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
+                                    "timeout" => 4,
                                 ),
                             )
                         ),
@@ -1023,7 +1113,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => \HUGnet\network\packets\Packet::factory(
@@ -1037,7 +1130,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "Device" => array(
-                        "get" => array(array("id")),
+                        "get" => array(
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
                     ),
                     "Network" => array(
                         "send" => Array(
@@ -1048,7 +1144,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
+                                    "timeout" => 4,
                                 ),
                             )
                         ),
@@ -1059,7 +1155,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => \HUGnet\network\packets\Packet::factory(
@@ -1073,7 +1172,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "Device" => array(
-                        "get" => array(array("id")),
+                        "get" => array(
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
                     ),
                     "Network" => array(
                         "send" => Array(
@@ -1084,7 +1186,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
+                                    "timeout" => 4,
                                 ),
                             )
                         ),
@@ -1095,7 +1197,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => false,
@@ -1104,7 +1209,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "Device" => array(
-                        "get" => array(array("id")),
+                        "get" => array(
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
                     ),
                     "Network" => array(
                         "send" => Array(
@@ -1115,7 +1223,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
+                                    "timeout" => 4,
                                 ),
                             )
                         ),
@@ -1163,7 +1271,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => \HUGnet\network\packets\Packet::factory(
@@ -1177,7 +1288,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "Device" => array(
-                        "get" => array(array("id")),
+                        "get" => array(
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
                     ),
                     "Network" => array(
                         "send" => Array(
@@ -1188,7 +1302,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
+                                    "timeout" => 4,
                                 ),
                             )
                         ),
@@ -1199,7 +1313,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => \HUGnet\network\packets\Packet::factory(
@@ -1212,7 +1329,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "Device" => array(
-                        "get" => array(array("id")),
+                        "get" => array(
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
                     ),
                     "Network" => array(
                         "send" => Array(
@@ -1223,7 +1343,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
+                                    "timeout" => 4,
                                 ),
                             )
                         ),
@@ -1234,7 +1354,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => false,
@@ -1243,7 +1366,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "Device" => array(
-                        "get" => array(array("id")),
+                        "get" => array(
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
                     ),
                     "Network" => array(
                         "send" => Array(
@@ -1254,7 +1380,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
+                                    "timeout" => 4,
                                 ),
                             )
                         ),
@@ -1302,7 +1428,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => \HUGnet\network\packets\Packet::factory(
@@ -1316,7 +1445,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "Device" => array(
-                        "get" => array(array("id")),
+                        "get" => array(
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
                     ),
                     "Network" => array(
                         "send" => Array(
@@ -1327,7 +1459,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
+                                    "timeout" => 4,
                                 ),
                             )
                         ),
@@ -1338,7 +1470,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => \HUGnet\network\packets\Packet::factory(
@@ -1351,7 +1486,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "Device" => array(
-                        "get" => array(array("id")),
+                        "get" => array(
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
                     ),
                     "Network" => array(
                         "send" => Array(
@@ -1362,7 +1500,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
+                                    "timeout" => 4,
                                 ),
                             )
                         ),
@@ -1373,7 +1511,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => false,
@@ -1382,7 +1523,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "Device" => array(
-                        "get" => array(array("id")),
+                        "get" => array(
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
                     ),
                     "Network" => array(
                         "send" => Array(
@@ -1393,7 +1537,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
+                                    "timeout" => 4,
                                 ),
                             )
                         ),
@@ -1440,7 +1584,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => \HUGnet\network\packets\Packet::factory(
@@ -1457,7 +1604,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "Device" => array(
-                        "get" => array(array("id")),
+                        "get" => array(
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
                     ),
                     "Network" => array(
                         "send" => Array(
@@ -1469,7 +1619,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
+                                    "timeout" => 4,
                                 ),
                             )
                         ),
@@ -1480,7 +1630,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => \HUGnet\network\packets\Packet::factory(
@@ -1497,7 +1650,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "Device" => array(
-                        "get" => array(array("id")),
+                        "get" => array(
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
                     ),
                     "Network" => array(
                         "send" => Array(
@@ -1509,7 +1665,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
+                                    "timeout" => 4,
                                 ),
                             )
                         ),
@@ -1520,7 +1676,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => \HUGnet\network\packets\Packet::factory(
@@ -1582,7 +1741,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => \HUGnet\network\packets\Packet::factory(
@@ -1599,7 +1761,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "Device" => array(
-                        "get" => array(array("id")),
+                        "get" => array(
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
                     ),
                     "Network" => array(
                         "send" => Array(
@@ -1611,7 +1776,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
+                                    "timeout" => 4,
                                 ),
                             )
                         ),
@@ -1622,7 +1787,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => \HUGnet\network\packets\Packet::factory(
@@ -1639,7 +1807,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "Device" => array(
-                        "get" => array(array("id")),
+                        "get" => array(
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
                     ),
                     "Network" => array(
                         "send" => Array(
@@ -1651,7 +1822,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
+                                    "timeout" => 4,
                                 ),
                             )
                         ),
@@ -1662,7 +1833,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => \HUGnet\network\packets\Packet::factory(
@@ -1725,7 +1899,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => array(
@@ -1757,7 +1934,13 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("id"), array("id"), array("id"), array("id"),
+                            array("id"),
+                            array("id"),
+                            array("packetTimeout"),
+                            array("id"),
+                            array("packetTimeout"),
+                            array("id"),
+                            array("packetTimeout"),
                         ),
                     ),
                     "Network" => array(
@@ -1770,8 +1953,8 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 4,
                                 ),
                             ),
                             array(
@@ -1782,8 +1965,8 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 4,
                                 ),
                             ),
                             array(
@@ -1794,8 +1977,8 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 4,
                                 ),
                             ),
                         ),
@@ -1806,7 +1989,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => array(
@@ -1838,7 +2024,13 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("id"), array("id"), array("id"), array("id"),
+                            array("id"),
+                            array("id"),
+                            array("packetTimeout"),
+                            array("id"),
+                            array("packetTimeout"),
+                            array("id"),
+                            array("packetTimeout"),
                         ),
                     ),
                     "Network" => array(
@@ -1851,8 +2043,8 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 4,
                                 ),
                             ),
                             array(
@@ -1863,8 +2055,8 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 4,
                                 ),
                             ),
                             array(
@@ -1875,8 +2067,8 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 4,
                                 ),
                             ),
                         ),
@@ -1887,7 +2079,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => array(
@@ -1919,7 +2114,11 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("id"), array("id"), array("id"),
+                            array("id"),
+                            array("id"),
+                            array("packetTimeout"),
+                            array("id"),
+                            array("packetTimeout"),
                         ),
                     ),
                     "Network" => array(
@@ -1932,8 +2131,8 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 4,
                                 ),
                             ),
                             array(
@@ -1944,8 +2143,8 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 4,
                                 ),
                             ),
                         ),
@@ -1956,7 +2155,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => array(
@@ -1992,7 +2194,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => array(
@@ -2069,7 +2274,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => array(
@@ -2101,7 +2309,13 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("id"), array("id"), array("id"), array("id"),
+                            array("id"),
+                            array("id"),
+                            array("packetTimeout"),
+                            array("id"),
+                            array("packetTimeout"),
+                            array("id"),
+                            array("packetTimeout"),
                         ),
                     ),
                     "Network" => array(
@@ -2114,8 +2328,8 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 4,
                                 ),
                             ),
                             array(
@@ -2126,8 +2340,8 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 4,
                                 ),
                             ),
                             array(
@@ -2138,8 +2352,8 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 4,
                                 ),
                             ),
                         ),
@@ -2150,7 +2364,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => array(
@@ -2182,7 +2399,13 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("id"), array("id"), array("id"), array("id"),
+                            array("id"),
+                            array("id"),
+                            array("packetTimeout"),
+                            array("id"),
+                            array("packetTimeout"),
+                            array("id"),
+                            array("packetTimeout"),
                         ),
                     ),
                     "Network" => array(
@@ -2195,8 +2418,8 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 4,
                                 ),
                             ),
                             array(
@@ -2207,8 +2430,8 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 4,
                                 ),
                             ),
                             array(
@@ -2219,8 +2442,8 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 4,
                                 ),
                             ),
                         ),
@@ -2231,7 +2454,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => array(
@@ -2263,7 +2489,11 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("id"), array("id"), array("id"),
+                            array("id"),
+                            array("id"),
+                            array("packetTimeout"),
+                            array("id"),
+                            array("packetTimeout"),
                         ),
                     ),
                     "Network" => array(
@@ -2276,8 +2506,8 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 4,
                                 ),
                             ),
                             array(
@@ -2288,8 +2518,8 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 4,
                                 ),
                             ),
                         ),
@@ -2300,7 +2530,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => array(
@@ -2336,7 +2569,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "get" => 21,
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
                     ),
                     "Network" => array(
                         "send" => array(
@@ -2418,6 +2654,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             "id" => 21,
                             "HWPartNum" => "0039-21-01-A",
                             "FWPartNum" => "0039-20-01-C",
+                            "packetTimeout" => 2,
                         ),
                     ),
                     "Network" => array(
@@ -2465,7 +2702,8 @@ S9030000FC",
                     "Device" => array(
                         "get" => array(
                             array("HWPartNum"),
-                            array("id")
+                            array("id"),
+                            array("packetTimeout"),
                         ),
                     ),
                     "Network" => array(
@@ -2477,7 +2715,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
+                                    'timeout' => 2,
                                 ),
                             )
                         ),
@@ -2492,6 +2730,7 @@ S9030000FC",
                             "id" => 21,
                             "HWPartNum" => "0039-21-01-A",
                             "FWPartNum" => "0039-20-01-C",
+                            "packetTimeout" => 2,
                         ),
                     ),
                     "Network" => array(
@@ -2540,7 +2779,9 @@ S9030000FC",
                         "get" => array(
                             array("HWPartNum"),
                             array("id"),
-                            array("id")
+                            array("packetTimeout"),
+                            array("id"),
+                            array("packetTimeout"),
                         ),
                     ),
                     "Network" => array(
@@ -2552,7 +2793,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
+                                    'timeout' => 2,
                                 ),
                             ),
                             array(
@@ -2562,7 +2803,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
+                                    'timeout' => 2,
                                 ),
                             ),
                         ),
@@ -2577,6 +2818,7 @@ S9030000FC",
                             "id" => 21,
                             "HWPartNum" => "0039-21-01-A",
                             "FWPartNum" => "0039-20-01-C",
+                            "packetTimeout" => 2,
                         ),
                     ),
                     "Network" => array(
@@ -2644,9 +2886,12 @@ S9030000FC",
                         "get" => array(
                             array("HWPartNum"),
                             array("id"),
+                            array("packetTimeout"),
+                            array("id"),
+                            array("packetTimeout"),
                             array("id"),
                             array("id"),
-                            array("id"),
+                            array("packetTimeout"),
                         ),
                     ),
                     "Network" => array(
@@ -2658,7 +2903,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
+                                    'timeout' => 2,
                                 ),
                             ),
                             array(
@@ -2668,7 +2913,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
+                                    'timeout' => 2,
                                 ),
                             ),
                             array(
@@ -2685,8 +2930,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 2,
                                 ),
                             ),
                         ),
@@ -2701,6 +2946,7 @@ S9030000FC",
                             "id" => 21,
                             "HWPartNum" => "0039-21-01-A",
                             "FWPartNum" => "0039-20-01-C",
+                            "packetTimeout" => 2,
                         ),
                     ),
                     "Network" => array(
@@ -2792,12 +3038,17 @@ S9030000FC",
                         "get" => array(
                             array("HWPartNum"),
                             array("id"),
+                            array("packetTimeout"),
+                            array("id"),
+                            array("packetTimeout"),
                             array("id"),
                             array("id"),
+                            array("packetTimeout"),
+                            array("id"),
+                            array("packetTimeout"),
                             array("id"),
                             array("id"),
-                            array("id"),
-                            array("id"),
+                            array("packetTimeout"),
                         ),
                     ),
                     "Network" => array(
@@ -2809,7 +3060,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
+                                    'timeout' => 2,
                                 ),
                             ),
                             array(
@@ -2819,7 +3070,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
+                                    'timeout' => 2,
                                 ),
                             ),
                             array(
@@ -2836,8 +3087,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 2,
                                 ),
                             ),
                             array(
@@ -2854,8 +3105,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 2,
                                 ),
                             ),
                             array(
@@ -2872,8 +3123,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 2,
                                 ),
                             ),
                         ),
@@ -2888,6 +3139,7 @@ S9030000FC",
                             "id" => 21,
                             "HWPartNum" => "0039-21-01-A",
                             "FWPartNum" => "0039-20-01-C",
+                            "packetTimeout" => 2,
                         ),
                     ),
                     "Network" => array(
@@ -2997,14 +3249,21 @@ S9030000FC",
                         "get" => array(
                             array("HWPartNum"),
                             array("id"),
+                            array("packetTimeout"),
+                            array("id"),
+                            array("packetTimeout"),
                             array("id"),
                             array("id"),
+                            array("packetTimeout"),
+                            array("id"),
+                            array("packetTimeout"),
                             array("id"),
                             array("id"),
+                            array("packetTimeout"),
                             array("id"),
+                            array("packetTimeout"),
                             array("id"),
-                            array("id"),
-                            array("id"),
+                            array("packetTimeout"),
                         ),
                     ),
                     "Network" => array(
@@ -3016,7 +3275,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
+                                    'timeout' => 2,
                                 ),
                             ),
                             array(
@@ -3026,7 +3285,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
+                                    'timeout' => 2,
                                 ),
                             ),
                             array(
@@ -3043,8 +3302,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 2,
                                 ),
                             ),
                             array(
@@ -3061,8 +3320,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 2,
                                 ),
                             ),
                             array(
@@ -3079,8 +3338,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 2,
                                 ),
                             ),
                             array(
@@ -3097,8 +3356,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 2,
                                 ),
                             ),
                             array(
@@ -3108,7 +3367,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
+                                    'timeout' => 2,
                                 ),
                             ),
                         ),
@@ -3123,6 +3382,7 @@ S9030000FC",
                             "id" => 21,
                             "HWPartNum" => "0039-21-01-A",
                             "FWPartNum" => "0039-20-01-C",
+                            "packetTimeout" => 2,
                         ),
                     ),
                     "Network" => array(
@@ -3238,15 +3498,23 @@ S9030000FC",
                         "get" => array(
                             array("HWPartNum"),
                             array("id"),
+                            array("packetTimeout"),
+                            array("id"),
+                            array("packetTimeout"),
                             array("id"),
                             array("id"),
+                            array("packetTimeout"),
+                            array("id"),
+                            array("packetTimeout"),
                             array("id"),
                             array("id"),
+                            array("packetTimeout"),
                             array("id"),
+                            array("packetTimeout"),
                             array("id"),
+                            array("packetTimeout"),
                             array("id"),
-                            array("id"),
-                            array("id"),
+                            array("packetTimeout"),
                         ),
                     ),
                     "Network" => array(
@@ -3258,7 +3526,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
+                                    'timeout' => 2,
                                 ),
                             ),
                             array(
@@ -3268,7 +3536,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
+                                    'timeout' => 2,
                                 ),
                             ),
                             array(
@@ -3285,8 +3553,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 2,
                                 ),
                             ),
                             array(
@@ -3303,8 +3571,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 2,
                                 ),
                             ),
                             array(
@@ -3321,8 +3589,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 2,
                                 ),
                             ),
                             array(
@@ -3339,8 +3607,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 2,
                                 ),
                             ),
                             array(
@@ -3350,7 +3618,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
+                                    'timeout' => 2,
                                 ),
                             ),
                             array(
@@ -3360,7 +3628,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
+                                    'timeout' => 2,
                                 ),
                             ),
                         ),
@@ -3375,6 +3643,7 @@ S9030000FC",
                             "id" => 21,
                             "HWPartNum" => "0039-21-01-A",
                             "FWPartNum" => "0039-20-01-C",
+                            "packetTimeout" => 2,
                         ),
                     ),
                     "Network" => array(
@@ -3490,15 +3759,23 @@ S9030000FC",
                         "get" => array(
                             array("HWPartNum"),
                             array("id"),
+                            array("packetTimeout"),
+                            array("id"),
+                            array("packetTimeout"),
                             array("id"),
                             array("id"),
+                            array("packetTimeout"),
+                            array("id"),
+                            array("packetTimeout"),
                             array("id"),
                             array("id"),
+                            array("packetTimeout"),
                             array("id"),
+                            array("packetTimeout"),
                             array("id"),
+                            array("packetTimeout"),
                             array("id"),
-                            array("id"),
-                            array("id"),
+                            array("packetTimeout"),
                             array("FWPartNum"),
                         ),
                     ),
@@ -3511,7 +3788,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
+                                    'timeout' => 2,
                                 ),
                             ),
                             array(
@@ -3521,7 +3798,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
+                                    'timeout' => 2,
                                 ),
                             ),
                             array(
@@ -3538,8 +3815,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 2,
                                 ),
                             ),
                             array(
@@ -3556,8 +3833,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 2,
                                 ),
                             ),
                             array(
@@ -3574,8 +3851,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 2,
                                 ),
                             ),
                             array(
@@ -3592,8 +3869,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 2,
                                 ),
                             ),
                             array(
@@ -3603,7 +3880,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
+                                    'timeout' => 2,
                                 ),
                             ),
                             array(
@@ -3613,7 +3890,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
+                                    'timeout' => 2,
                                 ),
                             ),
                         ),
@@ -3628,6 +3905,7 @@ S9030000FC",
                             "id" => 21,
                             "HWPartNum" => "0039-21-01-A",
                             "FWPartNum" => "0039-20-01-C",
+                            "packetTimeout" => 2,
                         ),
                     ),
                     "Network" => array(
@@ -3712,12 +3990,18 @@ S9030000FC",
                         "get" => array(
                             array("HWPartNum"),
                             array("id"),
+                            array("packetTimeout"),
+                            array("id"),
+                            array("packetTimeout"),
                             array("id"),
                             array("id"),
+                            array("packetTimeout"),
                             array("id"),
+                            array("packetTimeout"),
                             array("id"),
+                            array("packetTimeout"),
                             array("id"),
-                            array("id"),
+                            array("packetTimeout"),
                             array("FWPartNum"),
                         ),
                     ),
@@ -3730,7 +4014,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
+                                    'timeout' => 2,
                                 ),
                             ),
                             array(
@@ -3740,7 +4024,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
+                                    'timeout' => 2,
                                 ),
                             ),
                             array(
@@ -3757,8 +4041,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 2,
                                 ),
                             ),
                             array(
@@ -3775,8 +4059,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 2,
                                 ),
                             ),
                             array(
@@ -3786,7 +4070,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
+                                    'timeout' => 2,
                                 ),
                             ),
                             array(
@@ -3796,7 +4080,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
+                                    'timeout' => 2,
                                 ),
                             ),
                         ),
@@ -3811,6 +4095,7 @@ S9030000FC",
                             "id" => 21,
                             "HWPartNum" => "0039-21-01-A",
                             "FWPartNum" => "0039-20-01-C",
+                            "packetTimeout" => 2,
                         ),
                     ),
                     "Network" => array(
@@ -3903,12 +4188,18 @@ S9030000FC",
                         "get" => array(
                             array("HWPartNum"),
                             array("id"),
+                            array("packetTimeout"),
+                            array("id"),
+                            array("packetTimeout"),
                             array("id"),
                             array("id"),
+                            array("packetTimeout"),
                             array("id"),
+                            array("packetTimeout"),
                             array("id"),
+                            array("packetTimeout"),
                             array("id"),
-                            array("id"),
+                            array("packetTimeout"),
                             array("FWPartNum"),
                         ),
                     ),
@@ -3921,7 +4212,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
+                                    'timeout' => 2,
                                 ),
                             ),
                             array(
@@ -3931,7 +4222,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
+                                    'timeout' => 2,
                                 ),
                             ),
                             array(
@@ -3948,8 +4239,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 2,
                                 ),
                             ),
                             array(
@@ -3966,8 +4257,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 2,
                                 ),
                             ),
                             array(
@@ -3977,7 +4268,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
+                                    'timeout' => 2,
                                 ),
                             ),
                             array(
@@ -3987,7 +4278,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
+                                    'timeout' => 2,
                                 ),
                             ),
                         ),
@@ -4002,6 +4293,7 @@ S9030000FC",
                             "id" => 21,
                             "HWPartNum" => "0039-21-01-A",
                             "FWPartNum" => "0039-20-01-C",
+                            "packetTimeout" => 2,
                         ),
                     ),
                     "Network" => array(
@@ -4117,15 +4409,23 @@ S9030000FC",
                         "get" => array(
                             array("HWPartNum"),
                             array("id"),
+                            array("packetTimeout"),
+                            array("id"),
+                            array("packetTimeout"),
                             array("id"),
                             array("id"),
+                            array("packetTimeout"),
+                            array("id"),
+                            array("packetTimeout"),
                             array("id"),
                             array("id"),
+                            array("packetTimeout"),
                             array("id"),
+                            array("packetTimeout"),
                             array("id"),
+                            array("packetTimeout"),
                             array("id"),
-                            array("id"),
-                            array("id"),
+                            array("packetTimeout"),
                         ),
                     ),
                     "Network" => array(
@@ -4137,7 +4437,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
+                                    "timeout" => 2,
                                 ),
                             ),
                             array(
@@ -4147,7 +4447,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
+                                    "timeout" => 2,
                                 ),
                             ),
                             array(
@@ -4164,8 +4464,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 2,
                                 ),
                             ),
                             array(
@@ -4182,8 +4482,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 2,
                                 ),
                             ),
                             array(
@@ -4200,8 +4500,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 2,
                                 ),
                             ),
                             array(
@@ -4218,8 +4518,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
                                     "find" => false,
+                                    "timeout" => 2,
                                 ),
                             ),
                             array(
@@ -4229,7 +4529,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
+                                    "timeout" => 2,
                                 ),
                             ),
                             array(
@@ -4239,7 +4539,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-
+                                    "timeout" => 2,
                                 ),
                             ),
                         ),
@@ -4254,6 +4554,7 @@ S9030000FC",
                             "id" => 21,
                             "HWPartNum" => "0039-21-01-A",
                             "FWPartNum" => "0039-20-01-C",
+                            "packetTimeout" => 2,
                         ),
                     ),
                     "Network" => array(

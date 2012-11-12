@@ -151,6 +151,23 @@ class Network
     /**
     * Polls the device in question
     *
+    * @param mixed  $pkt      The command to send the packet with
+    * @param string $callback The name of the function to call when the packet
+    *                   arrives.  If this is not callable, it will block until the
+    *                   packet arrives.
+    * @param array  $config   The network config to use for the packet
+    * @param mixed  $data     Array|String of data to send out
+    *
+    * @return success or failure of the packet sending
+    */
+    public function send(
+        $pkt, $callback = null, $config = array(), $data = null
+    ) {
+        $this->_sendPkt($pkt, $callback, $config, $data);
+    }
+    /**
+    * Polls the device in question
+    *
     * @param string $callback The name of the function to call when the packet
     *                   arrives.  If this is not callable, it will block until the
     *                   packet arrives.
@@ -528,6 +545,12 @@ class Network
             foreach (array_keys($pkt) as $key) {
                 $pkt[$key]["To"] = $this->_device->get("id");
             }
+        }
+        if (!is_array($config)) {
+            $config = array();
+        }
+        if (!is_int($config["timeout"])) {
+            $config["timeout"] = $this->_device->get("packetTimeout");
         }
         $ret = $this->_system->network()->send($pkt, $callback, (array)$config);
         return $ret;
