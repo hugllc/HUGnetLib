@@ -166,6 +166,54 @@ class DaemonTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, get_class($ret), "Class Wrong");
         $this->assertEquals($expArgs, $ret->config(), "Config wrong");
     }
+    /**
+    * Data provider for testUi
+    *
+    * @return array
+    */
+    public static function dataUi()
+    {
+        return array(
+            array(
+                null,
+                "html",
+                "HUGnet\ui\HTML",
+            ),
+            array(
+                null,
+                "daemon",
+                "HUGnet\ui\Daemon",
+            ),
+            array(
+                null,
+                "webapi",
+                "HUGnet\ui\WebAPI",
+            ),
+            array(
+                array(
+                ),
+                "NotRight",
+                "HUGnet\ui\CLI",
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param mixed  $config  The config to use
+    * @param string $type    The type to use
+    * @param string $expect  The system object we are expecting
+    *
+    *
+    * @return null
+    *
+    * @dataProvider dataUi
+    */
+    public function testUi($config, $type, $expect)
+    {
+        $ret = HUGnetLib::ui($config, $type);
+        $this->assertSame($expect, get_class($ret), "Class Wrong");
+    }
 
 }
 ?>

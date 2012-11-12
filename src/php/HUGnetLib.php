@@ -78,6 +78,26 @@ class HUGnetLib
         return $obj;
     }
     /**
+    * Creates the object
+    *
+    * @param array  $config The configuration to use
+    * @param string $type   The type of args to get.  Automatic if left blank
+    *
+    * @return null
+    */
+    static public function &ui($config, $type = "CLI")
+    {
+        $type = trim(strtolower($type));
+        $fct  = "_ui".ucfirst($type);
+        if (method_exists("HUGnetLib", $fct)) {
+            $obj = self::$fct($config);
+        } else {
+            include_once dirname(__FILE__)."/ui/CLI.php";
+            $obj = \HUGnet\ui\CLI::factory($config);
+        }
+        return $obj;
+    }
+    /**
     * Creates an argument object
     *
     * @param array  $config The configuration to use
@@ -95,26 +115,6 @@ class HUGnetLib
         include_once dirname(__FILE__)."/ui/HTMLArgs.php";
         $count = count($args);
         return \HUGnet\ui\HTMLArgs::factory($args, $count, $config);
-    }
-    /**
-    * Creates the object
-    *
-    * @param array  $config The configuration to use
-    * @param string $type   The type of args to get.  Automatic if left blank
-    *
-    * @return null
-    */
-    static public function &ui($config, $type = "CLI")
-    {
-        $type = trim(strtolower($type));
-        $fct  = "_ui".ucfirst($type);
-        if (method_exists(self, $fct)) {
-            $obj = self::$fct($config);
-        } else {
-            include_once dirname(__FILE__)."/ui/CLI.php";
-            $obj = \HUGnet\ui\CLI::factory($config);
-        }
-        return $obj;
     }
     /**
     * Creates the object
