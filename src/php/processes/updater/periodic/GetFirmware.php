@@ -96,26 +96,31 @@ class GetFirmware extends \HUGnet\processes\updater\Periodic
     */
     public function &execute()
     {
-        if ($this->ready() && (strlen($this->_fwPath["url"]) > 0)) {
-            // State we are looking for firmware
-            $this->system()->out(
-                "Checking for new firmware at ".trim($this->_fwPath["url"])
-            );
-            $files = file($this->_fwPath["url"]."/manifest");
-            foreach ((array)$files as $file) {
-                if (!$this->ui()->loop()) {
-                    return;
+        if ($this->ready()) {
+            foreach (array("url", "local") as $key) {
+                if (strlen($this->_fwPath[$key]) == 0) {
+                    continue;
                 }
-                if (!$this->_firmware->checkFile($file)) {
-                    // State we found some new firmware
-                    $this->system()->out("Found ".trim($file));
-                    // Load the firmware
-                    $this->_firmware->fromFile($file, $this->_fwPath["url"]);
-                    // Insert it.
-                    $this->_firmware->insertRow(true);
+                // State we are looking for firmware
+                $this->system()->out(
+                    "Checking for new firmware at ".trim($this->_fwPath[$key])
+                );
+                $files = file($this->_fwPath[$key]."/manifest");
+                foreach ((array)$files as $file) {
+                    if (!$this->ui()->loop()) {
+                        return;
+                    }
+                    if (!$this->_firmware->checkFile($file)) {
+                        // State we found some new firmware
+                        $this->system()->out("Found ".trim($file));
+                        // Load the firmware
+                        $this->_firmware->fromFile($file, $this->_fwPath[$key]);
+                        // Insert it.
+                        $this->_firmware->insertRow(true);
+                    }
                 }
+                $this->success();
             }
-            $this->success();
         }
     }
 }
