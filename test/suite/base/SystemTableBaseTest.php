@@ -271,6 +271,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                             array(),
                         ),
                         "clearData" => array(array()),
+                        'set' => array(array("id", 2)),
                     ),
                 ),
                 false,

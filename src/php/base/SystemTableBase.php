@@ -179,7 +179,12 @@ abstract class SystemTableBase
         $this->table()->clearData();
         if (is_int($data) || is_string($data)) {
             $this->table()->getRow($data);
-            $ret = !$this->table()->isEmpty();
+            if ($this->table()->isEmpty()) {
+                $ret = false;
+                $this->table()->set($this->table()->sqlId, $data);
+            } else {
+                $ret = true;
+            }
         } else if (is_array($data)) {
             $wdata = (array)$this->table()->sanitizeWhere($data);
             $where = "";
