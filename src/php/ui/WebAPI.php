@@ -375,6 +375,10 @@ class WebAPI extends HTML
             $ret[] = $hist->toArray(true);
             $res = $hist->nextInto();
         }
+        $format = trim(strtoupper((string)$this->args()->get("format")));
+        if ($format == "CSV") {
+            $ret = $this->_historyCSV($did, $ret);
+        }
         return $ret;
     }
     /**
@@ -426,6 +430,42 @@ class WebAPI extends HTML
             header('Content-type: application/json');
         }
         // @codeCoverageIgnoreEnd
+    }
+    /**
+    * Sends the headers out
+    *
+    * This function is not testable.  Headers can't be sent in the tests.
+    *
+    * @return null
+    */
+    private function _historyCSV($did, $records)
+    {
+
+        $channels = $this->system()->device($did)->channels();
+        $chan = $channels->toArray();
+        $out = "";
+        $sep = ",";
+        $out .= "Date";
+        for ($i = 0; $i < count($chan); $i++) {
+            if ($chan[$i]["dataType"] !== 'ignore') {
+                $out .= $sep.$chan[$i]['label'];
+                $sep = ",";
+            }
+        }
+        $out .= "\r\n";
+        $sep  = ",";
+        foreach ($records as $key => $hist) {
+            $out .= date("Y-m-d H:i:s", $hist["Date"]);
+            for ($i = 0; $i < count($chan); $i++) {
+                if ($chan[$i]["dataType"] !== 'ignore') {
+                    $data = $hist["Data".$i];
+                    $out .= $sep.$data;
+                    $sep = ",";
+                }
+            }
+            $out .= "\r\n";
+        }
+        return $out;
     }
     /**
     * Disconnects from the database
