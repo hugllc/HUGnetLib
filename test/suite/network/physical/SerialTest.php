@@ -41,6 +41,8 @@ namespace HUGnet\network\physical;
 require_once CODE_BASE.'network/physical/Serial.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
+/** This is a required class */
+require_once CODE_BASE.'util/VPrint.php';
 
 /**
  * Test class for filter.
@@ -70,6 +72,8 @@ class SerialTest extends \PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
+        // Set up printing
+        \HUGnet\VPrint::config(array("verbose" => 0));
     }
 
     /**
