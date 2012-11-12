@@ -77,6 +77,7 @@ if (strtoupper($format) === "CSV") {
     for ($i = 0; $i < count($chan); $i++) {
         if ($chan[$i]["dataType"] !== 'ignore') {
             $out .= $sep.$chan[$i]['label'];
+            $out .= " (".html_entity_decode($chan[$i]['units']).")";
             $sep = ",";
         }
     }

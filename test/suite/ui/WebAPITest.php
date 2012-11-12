@@ -1000,14 +1000,27 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     ),
                     "Channels" => array(
                         "toArray" => array(
-                            array("label" => "Channel1", "dataType" => "raw"),
-                            array("label" => "Channel2", "dataType" => "ignore"),
-                            array("label" => "Channel3", "dataType" => "raw"),
+                            array(
+                                "label" => "Channel1",
+                                "dataType" => "raw",
+                                "units" => "Dallas",
+                            ),
+                            array(
+                                "label" => "Channel2",
+                                "dataType" => "ignore",
+                                "units" => "there",
+                            ),
+                            array(
+                                "label" => "Channel3",
+                                "dataType" => "raw",
+                                "units" => "hello",
+                            ),
                         ),
                     ),
                 ),
                 array(),
-                "Date,Channel1,Channel3\r\n2012-11-11 21:05:31,1,3\r\n",
+                "Date,Channel1 (Dallas),Channel3 (hello)\r\n"
+                    ."2012-11-11 21:05:31,1,3\r\n",
                 array(
                     "History" => array(
                         "getPeriod" => array(
