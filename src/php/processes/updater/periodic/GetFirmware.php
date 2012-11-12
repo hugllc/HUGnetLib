@@ -105,7 +105,7 @@ class GetFirmware extends \HUGnet\processes\updater\Periodic
                 $this->system()->out(
                     "Checking for new firmware at ".trim($this->_fwPath[$key])
                 );
-                $files = file($this->_fwPath[$key]."/manifest");
+                $files = @file($this->_fwPath[$key]."/manifest");
                 foreach ((array)$files as $file) {
                     if (!$this->ui()->loop()) {
                         return;
