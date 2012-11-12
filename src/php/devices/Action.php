@@ -125,6 +125,29 @@ class Action
         return $object;
     }
     /**
+    * Sends a packet
+    *
+    * @param mixed  $command  The command to send the packet with
+    * @param string $callback The name of the function to call when the packet
+    *                   arrives.  If this is not callable, it will block until the
+    *                   packet arrives.
+    * @param array  $config   The network config to use for the packet
+    * @param mixed  $data     Array|String of data to send out
+    *
+    * @return success or failure of the packet sending
+    */
+    public function send(
+        $command, $callback = null, $config = array(), $data = null
+    ) {
+        if (is_array($command)) {
+            $command = array_change_key_case($command);
+            if (isset($command['command'])) {
+                $command = array($command);
+            }
+        }
+        $this->device->network()->send($command, $callback, $config, $data);
+    }
+    /**
     * Pings the device and sets the LastContact if it is successful
     *
     * @param bool $find Whether or not to use a find ping
