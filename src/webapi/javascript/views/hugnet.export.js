@@ -130,6 +130,10 @@ HUGnet.ExportView = Backbone.View.extend({
         this.$("#since").val(this.sinceDate);
         this.$("#until").val(this.untilDate);
     },
+    exit: function()
+    {
+        this.remove();
+    },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
     *
