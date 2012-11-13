@@ -434,7 +434,8 @@ class WebAPI extends HTML
     /**
     * Sends the headers out
     *
-    * This function is not testable.  Headers can't be sent in the tests.
+    * @param int   $did     The deviceID to use
+    * @param array $records The history to use
     *
     * @return null
     */
