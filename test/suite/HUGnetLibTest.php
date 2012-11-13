@@ -155,7 +155,6 @@ class DaemonTest extends \PHPUnit_Framework_TestCase
     * @param string $expect  The system object we are expecting
     * @param mixed  $expArgs The expected arguments
     *
-    *
     * @return null
     *
     * @dataProvider dataArgs
@@ -200,9 +199,9 @@ class DaemonTest extends \PHPUnit_Framework_TestCase
     /**
     * Tests the iteration and preload functions
     *
-    * @param mixed  $config  The config to use
-    * @param string $type    The type to use
-    * @param string $expect  The system object we are expecting
+    * @param mixed  $config The config to use
+    * @param string $type   The type to use
+    * @param string $expect The system object we are expecting
     *
     *
     * @return null
