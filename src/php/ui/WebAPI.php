@@ -380,12 +380,13 @@ class WebAPI extends HTML
                 $hist->sqlOrderBy = "Date ".$order;
             }
         }
+        $type = trim(strtoupper($data["type"]));
         $extraData = array();
         $res = $hist->getPeriod(
             (int)$data["since"],
             (int)$data["until"],
             $did,
-            "history",
+            (empty($type)) ? "history": $type,
             $extraWhere,
             $extraData
         );

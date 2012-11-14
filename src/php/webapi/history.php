@@ -47,7 +47,21 @@ $order  = ((int)$_REQUEST["order"]) ? 'desc' : 'asc';
 $type   = $_REQUEST["type"];
 $format = $_REQUEST["format"];
 
+
 $device = $json->system()->device($did);
+
+$where = "`id` = ?";
+$data = array($did);
+if (!empty($until)) {
+    $where .=  ' AND `Date` < ?';
+    $data[] = $until;
+}
+if (!empty($since)) {
+    $where .=  ' AND `Date` > ?';
+    $data[] = $since;
+}
+
+
 switch (trim(strtolower($type))) {
 case "raw":
     $table = $this->system()->table("RawHistory");
@@ -62,6 +76,8 @@ case "weekly":
 case "monthly":
 case "yearly":
     $table = $device->historyFactory(array(), false);
+    $where .= " AND Type = ?";
+    $data[] = trim(strtoupper($type));
     break;
 default:
     $table = $device->historyFactory(array(), true);
@@ -70,16 +86,6 @@ default:
 
 $table->sqlLimit = $limit;
 $table->sqlOrderBy = "Date ".$order;
-$where = "`id` = ?";
-$data = array($did);
-if (!empty($until)) {
-    $where .=  ' AND `Date` < ?';
-    $data[] = $until;
-}
-if (!empty($since)) {
-    $where .=  ' AND `Date` > ?';
-    $data[] = $since;
-}
 $run = $table->selectInto($where, $data);
 
 $ret = array();

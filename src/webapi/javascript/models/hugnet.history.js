@@ -101,7 +101,7 @@ HUGnet.Histories = Backbone.Collection.extend({
     limit: 50,
     getLimit: 500,
     count: 0,
-    type: "test",
+    type: "30SEC",
     since: 0,
     until: 0,
     doPoll: false,
@@ -190,7 +190,8 @@ HUGnet.Histories = Backbone.Collection.extend({
                 "since": Math.round(this.LastHistory / 1000),
                 "until": Math.round(this.until / 1000),
                 "limit": limit,
-                "order": (this.limit === 0) ? 0 : 1
+                "order": (this.limit === 0) ? 0 : 1,
+                "type": this.type
             }
         }).done(
             function (data)
@@ -206,46 +207,6 @@ HUGnet.Histories = Backbone.Collection.extend({
                     }
                 } else {
                     self.trigger('fetchfail');
-                }
-            }
-        ).fail(
-            function (data)
-            {
-                self.trigger('fetchfail');
-            }
-        );
-    },
-    /**
-    * Gets infomration about a device.  This is retrieved directly from the device
-    *
-    * This function is for use of the device list
-    *
-    * @param id The id of the device to get
-    *
-    * @return null
-    */
-    poll: function ()
-    {
-        var self = this;
-        $.ajax({
-            type: 'GET',
-            url: this.url,
-            dataType: 'json',
-            cache: false,
-            data: {
-                "task": "poll",
-                "id": this.id.toString(16),
-                "TestID": (this.type === "test") ? 1 : 0
-            }
-        }).done(
-            function (data)
-            {
-                if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
-                    self.add(data);
-                    self.trigger('polldone');
-                    self.trigger('sync');
-                } else {
-                    self.trigger('pollfail');
                 }
             }
         ).fail(
