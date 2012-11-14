@@ -929,54 +929,22 @@ class FastAverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 25,
                         ),
-                        "sensor" => array(
-                            "0" => new \HUGnet\DummyBase("Sensor0"),
-                            "1" => new \HUGnet\DummyBase("Sensor1"),
-                            "2" => new \HUGnet\DummyBase("Sensor2"),
-                            "3" => new \HUGnet\DummyBase("Sensor"),
-                            "4" => new \HUGnet\DummyBase("Sensor"),
-                            "5" => new \HUGnet\DummyBase("Sensor"),
-                            "6" => new \HUGnet\DummyBase("Sensor"),
-                            "7" => new \HUGnet\DummyBase("Sensor"),
-                            "8" => new \HUGnet\DummyBase("Sensor"),
-                            "9" => new \HUGnet\DummyBase("Sensor"),
-                            "10" => new \HUGnet\DummyBase("Sensor"),
-                            "11" => new \HUGnet\DummyBase("Sensor"),
-                            "12" => new \HUGnet\DummyBase("Sensor"),
-                            "13" => new \HUGnet\DummyBase("Sensor"),
-                            "14" => new \HUGnet\DummyBase("Sensor"),
-                        ),
+                        "channels" => new \HUGnet\DummyBase("Channels"),
                     ),
-                    "Sensor" => array(
-                        "id" => 0,
-                        "get" => array(
-                            "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                    "Sensor0" => array(
-                        "id" => 0,
-                        "get" => array(
-                            "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                    "Sensor1" => array(
-                        "id" => 0,
-                        "get" => array(
-                            "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                    "Sensor2" => array(
-                        "id" => 2,
-                        "get" => array(
-                            "id" => 2,
-                            "total" => true,
-                            "maxDecimals" => 2,
+                    "Channels" => array(
+                        "toArray" => array(
+                            array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            array(
+                                "total" => true,
+                                "maxDecimals" => 2,
+                            ),
                         ),
                     ),
                 ),
@@ -1035,54 +1003,22 @@ class FastAverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 26,
                         ),
-                        "sensor" => array(
-                            "0" => new \HUGnet\DummyBase("Sensor0"),
-                            "1" => new \HUGnet\DummyBase("Sensor1"),
-                            "2" => new \HUGnet\DummyBase("Sensor2"),
-                            "3" => new \HUGnet\DummyBase("Sensor"),
-                            "4" => new \HUGnet\DummyBase("Sensor"),
-                            "5" => new \HUGnet\DummyBase("Sensor"),
-                            "6" => new \HUGnet\DummyBase("Sensor"),
-                            "7" => new \HUGnet\DummyBase("Sensor"),
-                            "8" => new \HUGnet\DummyBase("Sensor"),
-                            "9" => new \HUGnet\DummyBase("Sensor"),
-                            "10" => new \HUGnet\DummyBase("Sensor"),
-                            "11" => new \HUGnet\DummyBase("Sensor"),
-                            "12" => new \HUGnet\DummyBase("Sensor"),
-                            "13" => new \HUGnet\DummyBase("Sensor"),
-                            "14" => new \HUGnet\DummyBase("Sensor"),
-                        ),
+                        "channels" => new \HUGnet\DummyBase("Channels"),
                     ),
-                    "Sensor" => array(
-                        "id" => 0,
-                        "get" => array(
-                            "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                    "Sensor0" => array(
-                        "id" => 0,
-                        "get" => array(
-                            "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                    "Sensor1" => array(
-                        "id" => 0,
-                        "get" => array(
-                            "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                    "Sensor2" => array(
-                        "id" => 2,
-                        "get" => array(
-                            "id" => 2,
-                            "total" => true,
-                            "maxDecimals" => 2,
+                    "Channels" => array(
+                        "toArray" => array(
+                            array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            array(
+                                "total" => true,
+                                "maxDecimals" => 2,
+                            ),
                         ),
                     ),
                 ),
@@ -1158,54 +1094,22 @@ class FastAverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 27,
                         ),
-                        "sensor" => array(
-                            "0" => new \HUGnet\DummyBase("Sensor0"),
-                            "1" => new \HUGnet\DummyBase("Sensor1"),
-                            "2" => new \HUGnet\DummyBase("Sensor2"),
-                            "3" => new \HUGnet\DummyBase("Sensor"),
-                            "4" => new \HUGnet\DummyBase("Sensor"),
-                            "5" => new \HUGnet\DummyBase("Sensor"),
-                            "6" => new \HUGnet\DummyBase("Sensor"),
-                            "7" => new \HUGnet\DummyBase("Sensor"),
-                            "8" => new \HUGnet\DummyBase("Sensor"),
-                            "9" => new \HUGnet\DummyBase("Sensor"),
-                            "10" => new \HUGnet\DummyBase("Sensor"),
-                            "11" => new \HUGnet\DummyBase("Sensor"),
-                            "12" => new \HUGnet\DummyBase("Sensor"),
-                            "13" => new \HUGnet\DummyBase("Sensor"),
-                            "14" => new \HUGnet\DummyBase("Sensor"),
-                        ),
+                        "channels" => new \HUGnet\DummyBase("Channels"),
                     ),
-                    "Sensor" => array(
-                        "id" => 0,
-                        "get" => array(
-                            "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                    "Sensor0" => array(
-                        "id" => 0,
-                        "get" => array(
-                            "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                    "Sensor1" => array(
-                        "id" => 0,
-                        "get" => array(
-                            "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                    "Sensor2" => array(
-                        "id" => 2,
-                        "get" => array(
-                            "id" => 2,
-                            "total" => true,
-                            "maxDecimals" => 2,
+                    "Channels" => array(
+                        "toArray" => array(
+                            array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            array(
+                                "total" => true,
+                                "maxDecimals" => 2,
+                            ),
                         ),
                     ),
                 ),
@@ -1265,54 +1169,22 @@ class FastAverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 28,
                         ),
-                        "sensor" => array(
-                            "0" => new \HUGnet\DummyBase("Sensor0"),
-                            "1" => new \HUGnet\DummyBase("Sensor1"),
-                            "2" => new \HUGnet\DummyBase("Sensor2"),
-                            "3" => new \HUGnet\DummyBase("Sensor"),
-                            "4" => new \HUGnet\DummyBase("Sensor"),
-                            "5" => new \HUGnet\DummyBase("Sensor"),
-                            "6" => new \HUGnet\DummyBase("Sensor"),
-                            "7" => new \HUGnet\DummyBase("Sensor"),
-                            "8" => new \HUGnet\DummyBase("Sensor"),
-                            "9" => new \HUGnet\DummyBase("Sensor"),
-                            "10" => new \HUGnet\DummyBase("Sensor"),
-                            "11" => new \HUGnet\DummyBase("Sensor"),
-                            "12" => new \HUGnet\DummyBase("Sensor"),
-                            "13" => new \HUGnet\DummyBase("Sensor"),
-                            "14" => new \HUGnet\DummyBase("Sensor"),
-                        ),
+                        "channels" => new \HUGnet\DummyBase("Channels"),
                     ),
-                    "Sensor" => array(
-                        "id" => 0,
-                        "get" => array(
-                            "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                    "Sensor0" => array(
-                        "id" => 0,
-                        "get" => array(
-                            "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                    "Sensor1" => array(
-                        "id" => 0,
-                        "get" => array(
-                            "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                    "Sensor2" => array(
-                        "id" => 2,
-                        "get" => array(
-                            "id" => 2,
-                            "total" => true,
-                            "maxDecimals" => 2,
+                    "Channels" => array(
+                        "toArray" => array(
+                            array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            array(
+                                "total" => true,
+                                "maxDecimals" => 2,
+                            ),
                         ),
                     ),
                 ),
@@ -1375,54 +1247,22 @@ class FastAverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 25,
                         ),
-                        "sensor" => array(
-                            "0" => new \HUGnet\DummyBase("Sensor0"),
-                            "1" => new \HUGnet\DummyBase("Sensor1"),
-                            "2" => new \HUGnet\DummyBase("Sensor2"),
-                            "3" => new \HUGnet\DummyBase("Sensor"),
-                            "4" => new \HUGnet\DummyBase("Sensor"),
-                            "5" => new \HUGnet\DummyBase("Sensor"),
-                            "6" => new \HUGnet\DummyBase("Sensor"),
-                            "7" => new \HUGnet\DummyBase("Sensor"),
-                            "8" => new \HUGnet\DummyBase("Sensor"),
-                            "9" => new \HUGnet\DummyBase("Sensor"),
-                            "10" => new \HUGnet\DummyBase("Sensor"),
-                            "11" => new \HUGnet\DummyBase("Sensor"),
-                            "12" => new \HUGnet\DummyBase("Sensor"),
-                            "13" => new \HUGnet\DummyBase("Sensor"),
-                            "14" => new \HUGnet\DummyBase("Sensor"),
-                        ),
+                        "channels" => new \HUGnet\DummyBase("Channels"),
                     ),
-                    "Sensor" => array(
-                        "id" => 0,
-                        "get" => array(
-                            "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                    "Sensor0" => array(
-                        "id" => 0,
-                        "get" => array(
-                            "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                    "Sensor1" => array(
-                        "id" => 0,
-                        "get" => array(
-                            "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                    "Sensor2" => array(
-                        "id" => 2,
-                        "get" => array(
-                            "id" => 2,
-                            "total" => true,
-                            "maxDecimals" => 2,
+                    "Channels" => array(
+                        "toArray" => array(
+                            array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            array(
+                                "total" => true,
+                                "maxDecimals" => 2,
+                            ),
                         ),
                     ),
                 ),
@@ -1477,54 +1317,22 @@ class FastAverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 25,
                         ),
-                        "sensor" => array(
-                            "0" => new \HUGnet\DummyBase("Sensor0"),
-                            "1" => new \HUGnet\DummyBase("Sensor1"),
-                            "2" => new \HUGnet\DummyBase("Sensor2"),
-                            "3" => new \HUGnet\DummyBase("Sensor"),
-                            "4" => new \HUGnet\DummyBase("Sensor"),
-                            "5" => new \HUGnet\DummyBase("Sensor"),
-                            "6" => new \HUGnet\DummyBase("Sensor"),
-                            "7" => new \HUGnet\DummyBase("Sensor"),
-                            "8" => new \HUGnet\DummyBase("Sensor"),
-                            "9" => new \HUGnet\DummyBase("Sensor"),
-                            "10" => new \HUGnet\DummyBase("Sensor"),
-                            "11" => new \HUGnet\DummyBase("Sensor"),
-                            "12" => new \HUGnet\DummyBase("Sensor"),
-                            "13" => new \HUGnet\DummyBase("Sensor"),
-                            "14" => new \HUGnet\DummyBase("Sensor"),
-                        ),
+                        "channels" => new \HUGnet\DummyBase("Channels"),
                     ),
-                    "Sensor" => array(
-                        "id" => 0,
-                        "get" => array(
-                            "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                    "Sensor0" => array(
-                        "id" => 0,
-                        "get" => array(
-                            "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                    "Sensor1" => array(
-                        "id" => 0,
-                        "get" => array(
-                            "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                    "Sensor2" => array(
-                        "id" => 2,
-                        "get" => array(
-                            "id" => 2,
-                            "total" => true,
-                            "maxDecimals" => 2,
+                    "Channels" => array(
+                        "toArray" => array(
+                            array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            array(
+                                "total" => true,
+                                "maxDecimals" => 2,
+                            ),
                         ),
                     ),
                 ),
@@ -1646,54 +1454,22 @@ class FastAverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 32,
                         ),
-                        "sensor" => array(
-                            "0" => new \HUGnet\DummyBase("Sensor0"),
-                            "1" => new \HUGnet\DummyBase("Sensor1"),
-                            "2" => new \HUGnet\DummyBase("Sensor2"),
-                            "3" => new \HUGnet\DummyBase("Sensor"),
-                            "4" => new \HUGnet\DummyBase("Sensor"),
-                            "5" => new \HUGnet\DummyBase("Sensor"),
-                            "6" => new \HUGnet\DummyBase("Sensor"),
-                            "7" => new \HUGnet\DummyBase("Sensor"),
-                            "8" => new \HUGnet\DummyBase("Sensor"),
-                            "9" => new \HUGnet\DummyBase("Sensor"),
-                            "10" => new \HUGnet\DummyBase("Sensor"),
-                            "11" => new \HUGnet\DummyBase("Sensor"),
-                            "12" => new \HUGnet\DummyBase("Sensor"),
-                            "13" => new \HUGnet\DummyBase("Sensor"),
-                            "14" => new \HUGnet\DummyBase("Sensor"),
-                        ),
+                        "channels" => new \HUGnet\DummyBase("Channels"),
                     ),
-                    "Sensor" => array(
-                        "id" => 0,
-                        "get" => array(
-                            "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                    "Sensor0" => array(
-                        "id" => 0,
-                        "get" => array(
-                            "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                    "Sensor1" => array(
-                        "id" => 0,
-                        "get" => array(
-                            "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                    "Sensor2" => array(
-                        "id" => 2,
-                        "get" => array(
-                            "id" => 2,
-                            "total" => false,
-                            "maxDecimals" => 2,
+                    "Channels" => array(
+                        "toArray" => array(
+                            array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
                         ),
                     ),
                 ),
@@ -1716,454 +1492,6 @@ class FastAverageTest extends tables\TableTestBase
                     ),
                 ),
             ),
-            /*
-            array(  // #2 basic input.  HOURLY average.  Extra 15MIN average here
-                array(
-                ),
-                array(
-                    array(
-                        "id" => 33,
-                        "Type" => FastAverage::AVERAGE_HOURLY,
-                        "Date" => gmmktime(10, 00, 00, 1, 22, 2009),
-                        "Data0" => 1.0,
-                        "Data1" => 2.0,
-                        "Data2" => 3.0,
-                    ),
-                    array(
-                        "id" => 33,
-                        "Type" => FastAverage::AVERAGE_HOURLY,
-                        "Date" => gmmktime(11, 00, 00, 1, 22, 2009),
-                        "Data0" => 2.0,
-                        "Data1" => 3.0,
-                        "Data2" => 4.0,
-                    ),
-                    array(
-                        "id" => 33,
-                        "Type" => FastAverage::AVERAGE_HOURLY,
-                        "Date" => gmmktime(12, 00, 00, 1, 22, 2009),
-                        "Data0" => 6.0,
-                        "Data1" => 7.0,
-                        "Data2" => 8.0,
-                    ),
-                    array(
-                        "id" => 33,
-                        "Type" => FastAverage::AVERAGE_HOURLY,
-                        "Date" => gmmktime(13, 00, 00, 1, 22, 2009),
-                        "Data0" => 3.0,
-                        "Data1" => 4.0,
-                        "Data2" => 5.0,
-                    ),
-                    array(
-                        "id" => 33,
-                        "Type" => FastAverage::AVERAGE_HOURLY,
-                        "Date" => gmmktime(14, 00, 00, 1, 22, 2009),
-                        "Data0" => 1.0,
-                        "Data1" => 2.0,
-                        "Data2" => 3.0,
-                    ),
-                    array(
-                        "id" => 33,
-                        "Type" => FastAverage::AVERAGE_HOURLY,
-                        "Date" => gmmktime(15, 00, 00, 1, 22, 2009),
-                        "Data0" => 2.0,
-                        "Data1" => 3.0,
-                        "Data2" => 4.0,
-                    ),
-                    array(
-                        "id" => 33,
-                        "Type" => FastAverage::AVERAGE_HOURLY,
-                        "Date" => gmmktime(16, 00, 00, 1, 22, 2009),
-                        "Data0" => 6.0,
-                        "Data1" => 7.0,
-                        "Data2" => 8.0,
-                    ),
-                    array(
-                        "id" => 33,
-                        "Type" => FastAverage::AVERAGE_HOURLY,
-                        "Date" => gmmktime(17, 00, 00, 1, 22, 2009),
-                        "Data0" => 3.0,
-                        "Data1" => 4.0,
-                        "Data2" => 5.0,
-                    ),
-                    array(
-                        "id" => 33,
-                        "Type" => FastAverage::AVERAGE_HOURLY,
-                        "Date" => gmmktime(0, 00, 00, 1, 23, 2009),
-                        "Data0" => 1.0,
-                        "Data1" => 2.0,
-                        "Data2" => 3.0,
-                    ),
-                    array(
-                        "id" => 33,
-                        "Type" => FastAverage::AVERAGE_HOURLY,
-                        "Date" => gmmktime(1, 00, 00, 1, 23, 2009),
-                        "Data0" => 2.0,
-                        "Data1" => 3.0,
-                        "Data2" => 4.0,
-                    ),
-                    array(
-                        "id" => 33,
-                        "Type" => FastAverage::AVERAGE_HOURLY,
-                        "Date" => gmmktime(2, 00, 00, 1, 23, 2009),
-                        "Data0" => 6.0,
-                        "Data1" => 7.0,
-                        "Data2" => 8.0,
-                    ),
-                    array(
-                        "id" => 33,
-                        "Type" => FastAverage::AVERAGE_HOURLY,
-                        "Date" => gmmktime(3, 00, 00, 1, 23, 2009),
-                        "Data0" => 3.0,
-                        "Data1" => 4.0,
-                        "Data2" => 5.0,
-                    ),
-                    array(
-                        "id" => 33,
-                        "Type" => FastAverage::AVERAGE_15MIN,
-                        "Date" => gmmktime(0, 15, 00, 1, 24, 2009),
-                        "Data0" => 16.0,
-                        "Data1" => 17.0,
-                        "Data2" => 18.0,
-                    ),
-                    array(
-                        "id" => 33,
-                        "Type" => FastAverage::AVERAGE_HOURLY,
-                        "Date" => gmmktime(1, 00, 00, 1, 24, 2009),
-                        "Data0" => 3.0,
-                        "Data1" => 4.0,
-                        "Data2" => 5.0,
-                    ),
-
-                ),
-                "\HUGnet\db\AverageMock",
-                FastAverage::AVERAGE_DAILY,
-                array(
-                    "Device" => array(
-                        "id" => 33,
-                        "get" => array(
-                            "id" => 33,
-                        ),
-                        "sensor" => array(
-                            "0" => new \HUGnet\DummyBase("Sensor0"),
-                            "1" => new \HUGnet\DummyBase("Sensor1"),
-                            "2" => new \HUGnet\DummyBase("Sensor2"),
-                            "3" => new \HUGnet\DummyBase("Sensor"),
-                            "4" => new \HUGnet\DummyBase("Sensor"),
-                            "5" => new \HUGnet\DummyBase("Sensor"),
-                            "6" => new \HUGnet\DummyBase("Sensor"),
-                            "7" => new \HUGnet\DummyBase("Sensor"),
-                            "8" => new \HUGnet\DummyBase("Sensor"),
-                            "9" => new \HUGnet\DummyBase("Sensor"),
-                            "10" => new \HUGnet\DummyBase("Sensor"),
-                            "11" => new \HUGnet\DummyBase("Sensor"),
-                            "12" => new \HUGnet\DummyBase("Sensor"),
-                            "13" => new \HUGnet\DummyBase("Sensor"),
-                            "14" => new \HUGnet\DummyBase("Sensor"),
-                        ),
-                    ),
-                    "Sensor" => array(
-                        "id" => 0,
-                        "get" => array(
-                            "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                    "Sensor0" => array(
-                        "id" => 0,
-                        "get" => array(
-                            "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                    "Sensor1" => array(
-                        "id" => 0,
-                        "get" => array(
-                            "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                    "Sensor2" => array(
-                        "id" => 2,
-                        "get" => array(
-                            "id" => 2,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                ),
-                array(
-                    array(
-                        "id" => 33,
-                        "Date" => gmmktime(0, 00, 00, 1, 22, 2009),
-                        "Type" => FastAverage::AVERAGE_DAILY,
-                        "Data0" => 3.0,
-                        "Data1" => 4.0,
-                        "Data2" => 5.0,
-                    ),
-                    array(
-                        "id" => 33,
-                        "Date" => gmmktime(0, 00, 00, 1, 23, 2009),
-                        "Type" => FastAverage::AVERAGE_DAILY,
-                        "Data0" => 3.0,
-                        "Data1" => 4.0,
-                        "Data2" => 5.0,
-                    ),
-                    array(
-                        "id" => 33,
-                        "Date" => gmmktime(0, 00, 00, 1, 24, 2009),
-                        "Type" => FastAverage::AVERAGE_DAILY,
-                        "Data0" => 3.0,
-                        "Data1" => 4.0,
-                        "Data2" => 5.0,
-                    ),
-                ),
-                true,
-            ),
-            array(  // #3 basic input.  Everything present.  Skipped a record
-                array(
-                ),
-                array(
-                    array(
-                        "id" => 32,
-                        "Date" => gmmktime(10, 20, 00, 1, 22, 2009),
-                        "Data0" => 1.0,
-                        "Data1" => 2.0,
-                        "Data2" => 3.0,
-                    ),
-                    array(
-                        "id" => 32,
-                        "Date" => gmmktime(10, 25, 00, 1, 22, 2009),
-                        "Data0" => 2.0,
-                        "Data1" => 3.0,
-                        "Data2" => 4.0,
-                    ),
-                    array(
-                        "id" => 32,
-                        "Date" => gmmktime(10, 30, 00, 1, 22, 2009),
-                        "Data0" => 6.0,
-                        "Data1" => 7.0,
-                        "Data2" => 8.0,
-                    ),
-                    array(
-                        "id" => 32,
-                        "Date" => gmmktime(10, 51, 12, 1, 22, 2009),
-                        "Data0" => 11.0,
-                        "Data1" => 12.0,
-                        "Data2" => 13.0,
-                    ),
-                    array(
-                        "id" => 32,
-                        "Date" => gmmktime(10, 58, 12, 1, 22, 2009),
-                        "Data0" => 13.0,
-                        "Data1" => 14.0,
-                        "Data2" => 15.0,
-                    ),
-
-                ),
-                "\HUGnet\db\HistoryMock",
-                FastAverage::AVERAGE_15MIN,
-                array(
-                    "Device" => array(
-                        "id" => 32,
-                        "get" => array(
-                            "id" => 32,
-                        ),
-                        "sensor" => array(
-                            "0" => new \HUGnet\DummyBase("Sensor0"),
-                            "1" => new \HUGnet\DummyBase("Sensor1"),
-                            "2" => new \HUGnet\DummyBase("Sensor2"),
-                            "3" => new \HUGnet\DummyBase("Sensor"),
-                            "4" => new \HUGnet\DummyBase("Sensor"),
-                            "5" => new \HUGnet\DummyBase("Sensor"),
-                            "6" => new \HUGnet\DummyBase("Sensor"),
-                            "7" => new \HUGnet\DummyBase("Sensor"),
-                            "8" => new \HUGnet\DummyBase("Sensor"),
-                            "9" => new \HUGnet\DummyBase("Sensor"),
-                            "10" => new \HUGnet\DummyBase("Sensor"),
-                            "11" => new \HUGnet\DummyBase("Sensor"),
-                            "12" => new \HUGnet\DummyBase("Sensor"),
-                            "13" => new \HUGnet\DummyBase("Sensor"),
-                            "14" => new \HUGnet\DummyBase("Sensor"),
-                        ),
-                    ),
-                    "Sensor" => array(
-                        "id" => 0,
-                        "get" => array(
-                            "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                    "Sensor0" => array(
-                        "id" => 0,
-                        "get" => array(
-                            "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                    "Sensor1" => array(
-                        "id" => 0,
-                        "get" => array(
-                            "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                    "Sensor2" => array(
-                        "id" => 2,
-                        "get" => array(
-                            "id" => 2,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                ),
-                array(
-                    array(
-                        "id" => 32,
-                        "Date" => gmmktime(10, 15, 00, 1, 22, 2009),
-                        "Data0" => 3.0,
-                        "Data1" => 4.0,
-                        "Data2" => 5.0,
-                    ),
-                    array(
-                        "id" => 32,
-                        "Date" => gmmktime(10, 30, 00, 1, 22, 2009),
-                        "Data0" => 3.0,
-                        "Data1" => 4.0,
-                        "Data2" => 5.0,
-                    ),
-                    array(
-                        "id" => 32,
-                        "Date" => gmmktime(10, 45, 00, 1, 22, 2009),
-                        "Data0" => 12.06,
-                        "Data1" => 13.06,
-                        "Data2" => 14.06,
-                    ),
-                ),
-            ),
-            array(  // #4 basic input.  Everything present.  Skipped 2 records
-                array(
-                ),
-                array(
-                    array(
-                        "id" => 32,
-                        "Date" => gmmktime(10, 20, 00, 1, 22, 2009),
-                        "Data0" => 1.0,
-                        "Data1" => 2.0,
-                        "Data2" => 3.0,
-                    ),
-                    array(
-                        "id" => 32,
-                        "Date" => gmmktime(10, 25, 00, 1, 22, 2009),
-                        "Data0" => 2.0,
-                        "Data1" => 3.0,
-                        "Data2" => 4.0,
-                    ),
-                    array(
-                        "id" => 32,
-                        "Date" => gmmktime(10, 29, 00, 1, 22, 2009),
-                        "Data0" => 6.0,
-                        "Data1" => 7.0,
-                        "Data2" => 8.0,
-                    ),
-                    array(
-                        "id" => 32,
-                        "Date" => gmmktime(11, 01, 12, 1, 22, 2009),
-                        "Data0" => 11.0,
-                        "Data1" => 12.0,
-                        "Data2" => 13.0,
-                    ),
-                    array(
-                        "id" => 32,
-                        "Date" => gmmktime(11, 08, 12, 1, 22, 2009),
-                        "Data0" => 11.0,
-                        "Data1" => 12.0,
-                        "Data2" => 13.0,
-                    ),
-
-                ),
-                "\HUGnet\db\HistoryMock",
-                FastAverage::AVERAGE_15MIN,
-                array(
-                    "Device" => array(
-                        "id" => 32,
-                        "get" => array(
-                            "id" => 32,
-                        ),
-                        "sensor" => array(
-                            "0" => new \HUGnet\DummyBase("Sensor0"),
-                            "1" => new \HUGnet\DummyBase("Sensor1"),
-                            "2" => new \HUGnet\DummyBase("Sensor2"),
-                            "3" => new \HUGnet\DummyBase("Sensor"),
-                            "4" => new \HUGnet\DummyBase("Sensor"),
-                            "5" => new \HUGnet\DummyBase("Sensor"),
-                            "6" => new \HUGnet\DummyBase("Sensor"),
-                            "7" => new \HUGnet\DummyBase("Sensor"),
-                            "8" => new \HUGnet\DummyBase("Sensor"),
-                            "9" => new \HUGnet\DummyBase("Sensor"),
-                            "10" => new \HUGnet\DummyBase("Sensor"),
-                            "11" => new \HUGnet\DummyBase("Sensor"),
-                            "12" => new \HUGnet\DummyBase("Sensor"),
-                            "13" => new \HUGnet\DummyBase("Sensor"),
-                            "14" => new \HUGnet\DummyBase("Sensor"),
-                        ),
-                    ),
-                    "Sensor" => array(
-                        "id" => 0,
-                        "get" => array(
-                            "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                    "Sensor0" => array(
-                        "id" => 0,
-                        "get" => array(
-                            "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                    "Sensor1" => array(
-                        "id" => 0,
-                        "get" => array(
-                            "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                    "Sensor2" => array(
-                        "id" => 2,
-                        "get" => array(
-                            "id" => 2,
-                            "total" => false,
-                            "maxDecimals" => 2,
-                        ),
-                    ),
-                ),
-                array(
-                    array(
-                        "id" => 32,
-                        "Date" => gmmktime(10, 15, 00, 1, 22, 2009),
-                        "Data0" => 2.79,
-                        "Data1" => 3.79,
-                        "Data2" => 4.79,
-                    ),
-                    array(
-                        "id" => 32,
-                        "Date" => gmmktime(11, 00, 00, 1, 22, 2009),
-                        "Data0" => 11.0,
-                        "Data1" => 12.0,
-                        "Data2" => 13.0,
-                    ),
-                ),
-            ),
-            */
         );
     }
 

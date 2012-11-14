@@ -247,6 +247,7 @@ abstract class FastAverage extends History
     protected function settleDivisors()
     {
         // Settle  out the multipliers
+        $channels = $this->device->channels()->toArray();
         for ($i = 0; $i < $this->datacols; $i++) {
             $col = "Data".$i;
             if ($this->divisors[$col] == 0) {
@@ -254,17 +255,17 @@ abstract class FastAverage extends History
             }
             $value = $this->get($col);
             if (!is_null($value)) {
-                if (!$this->device->sensor($i)->get("total")) {
+                if (!$channels[$i]["total"]) {
                     $value = $value / $this->divisors[$col];
                 }
+
                 $this->set(
                     $col,
                     round(
                         $value,
-                        $this->device->sensor($i)->get("maxDecimals")
+                        $channels[$i]["maxDecimals"]
                     )
                 );
-
             }
         }
     }
