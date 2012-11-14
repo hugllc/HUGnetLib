@@ -104,6 +104,7 @@ HUGnet.ExportView = Backbone.View.extend({
         this.csvurl += "&until="+parseInt(until/1000);
         this.csvurl += "&order="+this.order;
         this.csvurl += "&limit="+this.csvlimit;
+        this.csvurl += "&type="+this.$('#type').val();
         this.$("#csvurl").html(this.csvurl);
         this.iframe.attr('src', this.csvurl);
     },
