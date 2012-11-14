@@ -212,8 +212,9 @@ class Average extends \HUGnet\processes\analysis\Device
         $avg = $device->historyFactory($data, false);
 
 
-        $last     = $device->getParam("LastAverage".$type);
-        $lastTry  = $device->getParam("LastAverage".$type."Try");
+        $last     = (int)$device->getParam("LastAverage".$type);
+        $lastTry  = (int)$device->getParam("LastAverage".$type."Try");
+print "Before $last $lastTry\n";
         $lastPrev = $device->getParam($param["prev"]);
         $ret = $hist->getPeriod(
             (int)$last,
@@ -254,6 +255,7 @@ class Average extends \HUGnet\processes\analysis\Device
         if (!empty($now)) {
             $last = (int)$now;
         }
+print "After $last $lastTry\n";
         $device->load($device->id());
         $device->setParam("LastAverage".$type, $last);
         $device->setParam("LastAverage".$type."Try", $lastTry);

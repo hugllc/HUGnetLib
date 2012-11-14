@@ -117,6 +117,7 @@ class WebAPI extends HTML
         if (($action === "list") || ($action == "get")) {
             return $this->_executeSystem($did, $dev, $extra);
         } else {
+            $dev->load($did);
             return $dev->webAPI($this->args(), $extra);
         }
     }

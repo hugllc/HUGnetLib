@@ -460,7 +460,7 @@ class Device extends \HUGnet\base\SystemTableBase
         $action = trim(strtolower($args->get("action")));
         $ret = null;
         if ($action === "put") {
-            $data = (array)$this->args()->get("data");
+            $data = (array)$args->get("data");
             $params = (array)$data["params"];
             unset($data["params"]);
             foreach ($data as $key => $value) {
