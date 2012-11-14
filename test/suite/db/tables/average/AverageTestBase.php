@@ -41,6 +41,8 @@ require_once TEST_BASE.'db/tables/history/HistoryTestBase.php';
 require_once CODE_BASE.'db/History.php';
 /** This is a required class */
 require_once CODE_BASE.'db/Average.php';
+/** This is a required class */
+require_once CODE_BASE.'db/FastAverage.php';
 /**
  * Test class for device drivers
  *

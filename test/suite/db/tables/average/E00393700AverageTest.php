@@ -37,7 +37,7 @@
 
 namespace HUGnet\db\tables;
 /** This is a required class */
-require_once TEST_BASE."db/tables/average/AverageTestBase.php";
+require_once TEST_BASE."db/tables/average/FastAverageTestBase.php";
 /** This is a required class */
 require_once CODE_BASE.'db/Table.php';
 /** This is a required class */
@@ -65,7 +65,7 @@ require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
  * @version    Release: 0.9.7
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class E00393700AverageTest extends AverageTestBase
+class E00393700AverageTest extends FastAverageTestBase
 {
 
     /**

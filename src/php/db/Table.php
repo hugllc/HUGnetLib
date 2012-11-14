@@ -183,6 +183,7 @@ abstract class Table extends \HUGnet\base\Container
         } else if (file_exists(dirname(__FILE__)."/tables/average/".$class.".php")) {
             include_once dirname(__FILE__)."/History.php";
             include_once dirname(__FILE__)."/Average.php";
+            include_once dirname(__FILE__)."/FastAverage.php";
             include_once dirname(__FILE__)."/tables/average/".$class.".php";
         }
         if (substr($class, 0, 17) != "HUGnet\\db\\tables\\") {

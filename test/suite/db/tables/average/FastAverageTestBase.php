@@ -1,9 +1,9 @@
 <?php
 /**
- * This is the default endpoint driver and the base for all other
- * endpoint drivers.
+ * Tests the filter class
  *
  * PHP Version 5
+ *
  * <pre>
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2012 Hunt Utilities Group, LLC
@@ -21,30 +21,32 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * </pre>
  *
  * @category   Libraries
- * @package    HUGnetLib
- * @subpackage PluginsAverageTable
+ * @package    HUGnetLibTest
+ * @subpackage SuitePlugins
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
+ *
  */
 namespace HUGnet\db\tables;
-/** This keeps this file from being included unless HUGnetSystem.php is included */
-defined('_HUGNET') or die('HUGnetSystem not found');
-
+/** This is the database testing extension */
+require_once TEST_BASE.'db/tables/history/HistoryTestBase.php';
+/** This is a required class */
+require_once CODE_BASE.'db/History.php';
+/** This is a required class */
+require_once CODE_BASE.'db/FastAverage.php';
 /**
- * This class has functions that relate to the manipulation of elements
- * of the devInfo array.
+ * Test class for device drivers
  *
  * @category   Libraries
- * @package    HUGnetLib
- * @subpackage PluginsAverageTable
+ * @package    HUGnetLibTest
+ * @subpackage SuitePlugins
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -52,18 +54,25 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @version    Release: 0.9.7
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class ETESTAverage extends \HUGnet\db\FastAverage
+abstract class FastAverageTestBase extends HistoryTestBase
 {
-    /** @var string This is the table we should use */
-    public $sqlTable = "eTEST_average";
-    /** @var This is the dataset */
-    public $datacols = 20;
-
-    /******************************************************************
-     ******************************************************************
-     ********  The following are input modification functions  ********
-     ******************************************************************
-     ******************************************************************/
-
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $class The class to use
+    *
+    * @return null
+    *
+    * @dataProvider dataClassName
+    */
+    public function testParent($class)
+    {
+        $class = "\\HUGnet\\db\\tables\\".$class;
+        $this->assertTrue(
+            is_subclass_of($class, "HUGnet\\db\\FastAverage"),
+            "$class is not a child of HUGnet\\db\\FastAverage"
+        );
+    }
 }
+
 ?>
