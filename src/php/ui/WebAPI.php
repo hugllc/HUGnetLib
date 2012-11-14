@@ -113,7 +113,12 @@ class WebAPI extends HTML
     {
         $did = hexdec($this->args()->get("id"));
         $dev = $this->system()->device();
-        return $this->_executeSystem($did, $dev, $extra);
+        $action = strtolower(trim($this->args()->get("action")));
+        if (($action === "list") || ($action == "get")) {
+            return $this->_executeSystem($did, $dev, $extra);
+        } else {
+            return $dev->webAPI($this->args(), $extra);
+        }
     }
     /**
     * This function executes the api call.

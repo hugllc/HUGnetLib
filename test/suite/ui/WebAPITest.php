@@ -269,28 +269,14 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "toArray" => array(
                             "Real" => "array",
                         ),
+                        "webAPI" => array(
+                            "Real" => "array",
+                        ),
                     ),
                 ),
                 array(),
                 json_encode(array("Real" => "array")),
                 array(
-                    "Device" => array(
-                        "toArray" => array(
-                            array(true),
-                        ),
-                        "change" => array(
-                            array(
-                                array(
-                                    "a" => "b",
-                                    "c" => "d",
-                                ),
-                            ),
-                        ),
-                        "load" => array(
-                            array(16),
-                            array(16),
-                        ),
-                    ),
                 ),
             ),
             array(  // #3
@@ -847,7 +833,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
             ),
             array(  // #16
                 array(
-                    "task" => "device",
+                    "task" => "datacollector",
                     "action" => "put",
                     "id" => "10",
                     "data" => array(
@@ -860,9 +846,9 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "config" => array(
                             "verbose" => 0,
                         ),
-                        "device" => new \HUGnet\DummyBase("Device"),
+                        "datacollector" => new \HUGnet\DummyBase("Datacollector"),
                     ),
-                    "Device" => array(
+                    "Datacollector" => array(
                         "load" => false,
                         "toArray" => array(
                             "Real" => "array",
@@ -872,19 +858,19 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                 array(),
                 json_encode(array("Real" => "array")),
                 array(
-                    "Device" => array(
+                    "Datacollector" => array(
                         "toArray" => array(
                             array(true),
                         ),
                         "load" => array(
-                            array(16),
+                            array(10),
                             array(
                                 array(
                                     "a" => "b",
                                     "c" => "d",
                                 ),
                             ),
-                            array(16),
+                            array(10),
                         ),
                         "store" => array(
                             array(),
