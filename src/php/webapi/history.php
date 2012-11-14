@@ -44,10 +44,29 @@ $since  = (int)$_REQUEST["since"];
 $until  = (int)$_REQUEST["until"];
 $limit  = ((int)$_REQUEST["limit"]) ? (int)$_REQUEST["limit"] : 100;
 $order  = ((int)$_REQUEST["order"]) ? 'desc' : 'asc';
+$type   = $_REQUEST["type"];
 $format = $_REQUEST["format"];
 
 $device = $json->system()->device($did);
-$table = $device->historyFactory(array());
+switch (trim(strtolower($type))) {
+case "raw":
+    $table = $this->system()->table("RawHistory");
+    break;
+case "30sec":
+case "1min":
+case "5min":
+case "15min":
+case "hourly":
+case "daily":
+case "weekly":
+case "monthly":
+case "yearly":
+    $table = $device->historyFactory(array(), false);
+    break;
+default:
+    $table = $device->historyFactory(array(), true);
+    break;
+}
 
 $table->sqlLimit = $limit;
 $table->sqlOrderBy = "Date ".$order;

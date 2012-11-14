@@ -1021,6 +1021,113 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
+            array(  // #19
+                array(
+                    "task" => "history",
+                    "action" => "get",
+                    "id" => "10",
+                    "data" => array(
+                        "since" => 1234,
+                        "until" => 4321,
+                        "limit" => 1,
+                        "start" => 0,
+                        "order" => "desc",
+                        "type" => "30SEC",
+                    ),
+                    "format" => "CSV",
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "device" => new \HUGnet\DummyTable("Device"),
+                    ),
+                    "Device" => array(
+                        "historyFactory" => new \HUGnet\DummyTable("History"),
+                        "channels" => new \HUGnet\DummyBase("Channels"),
+                    ),
+                    "History" => array(
+                        "isEmpty" => false,
+                        "toArray" => array(
+                            "Date" => 1352689531,
+                            "Data0" => 1,
+                            "Data1" => 2,
+                            "Data2" => 3,
+                        ),
+                        "insertRow" => true,
+                        "getPeriod" => true,
+                        "nextInto" => false,
+                    ),
+                    "Channels" => array(
+                        "toArray" => array(
+                            array(
+                                "label" => "Channel1",
+                                "dataType" => "raw",
+                                "units" => "Dallas",
+                            ),
+                            array(
+                                "label" => "Channel2",
+                                "dataType" => "ignore",
+                                "units" => "there",
+                            ),
+                            array(
+                                "label" => "Channel3",
+                                "dataType" => "raw",
+                                "units" => "hello",
+                            ),
+                        ),
+                    ),
+                ),
+                array(),
+                "Date,Channel1 (Dallas),Channel3 (hello)\r\n"
+                    ."2012-11-11 21:05:31,1,3\r\n",
+                array(
+                    "History" => array(
+                        "getPeriod" => array(
+                            array(1234, 4321, 16, 'history', '', array())
+                        ),
+                        "toArray" => array(
+                            array(true),
+                        ),
+                        "nextInto" => array(
+                            array(null)
+                        ),
+                    ),
+                ),
+            ),
+            array(  // #20
+                array(
+                    "task" => "datacollector",
+                    "action" => "put",
+                    "id" => "10",
+                    "data" => array(
+                        "a" => "b",
+                        "c" => "d",
+                    ),
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "datacollector" => new \HUGnet\DummyBase("Datacollector"),
+                    ),
+                    "Datacollector" => array(
+                        "load" => true,
+                        "toArray" => array(
+                            "Real" => "array",
+                        ),
+                        "webAPI" => array(
+                            "Real" => "array",
+                        ),
+                    ),
+                ),
+                array(),
+                json_encode(array("Real" => "array")),
+                array(
+                ),
+            ),
         );
     }
     /**

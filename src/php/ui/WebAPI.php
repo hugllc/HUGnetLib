@@ -309,11 +309,24 @@ class WebAPI extends HTML
     {
         $did = hexdec($this->args()->get("id"));
         $data = (array)$this->args()->get("data");
-        if (trim(strtolower($data["type"])) == 'raw') {
+        switch (trim(strtolower($data["type"]))) {
+        case "raw":
             $hist = $this->system()->table("RawHistory");
-
-        } else {
+            break;
+        case "30sec":
+        case "1min":
+        case "5min":
+        case "15min":
+        case "hourly":
+        case "daily":
+        case "weekly":
+        case "monthly":
+        case "yearly":
+            $hist = $this->system()->device($did)->historyFactory(array(), false);
+            break;
+        default:
             $hist = $this->system()->device($did)->historyFactory(array(), true);
+            break;
         }
         $ret = null;
         $action = strtolower(trim($this->args()->get("action")));
