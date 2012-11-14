@@ -38,7 +38,10 @@
 namespace HUGnet\processes\analysis;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
+/** Required average class */
 require_once dirname(__FILE__)."../../../db/Average.php";
+/** Required fast average class */
+require_once dirname(__FILE__)."../../../db/FastAverage.php";
 
 /**
  * Base driver class for devices.
