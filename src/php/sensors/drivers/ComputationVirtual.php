@@ -141,7 +141,10 @@ class ComputationVirtual extends \HUGnet\sensors\DriverVirtual
         $mathCode = $math;
         for ($i = 0; $i < 20; $i++) {
             $mathCode = str_ireplace(
-                '{'.$i.'}', (float)$data[$i]["value"], $mathCode, $count
+                '{'.$i.'}',
+                sprintf("%f", (float)$data[$i]["value"]),
+                $mathCode,
+                $count
             );
             if (is_null($data[$i]["value"]) && ($count > 0) && !$zero) {
                 $mathCode = false;
