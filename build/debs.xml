@@ -139,6 +139,10 @@
             <arg line="-av ${deb.webapioutputfile}
                         ${deb.postloc}main/"/>
         </exec>
+        <exec executable="rsync" failonerror="true" dir="${deb.builddir}">
+            <arg line="-av ${deb.webapirooutputfile}
+                        ${deb.postloc}main/"/>
+        </exec>
     </target>
     <target name="testpost" description="post the deb" depends="build">
         <exec executable="rsync" failonerror="true" dir="${deb.builddir}">
@@ -149,6 +153,10 @@
             <arg line="-av ${deb.webapioutputfile}
                         ${deb.postloc}testing/"/>
         </exec>
+        <exec executable="rsync" failonerror="true" dir="${deb.builddir}">
+            <arg line="-av ${deb.webapirooutputfile}
+                        ${deb.postloc}testing/"/>
+        </exec>
     </target>
     <target name="rcpost" description="post the deb" depends="build">
         <exec executable="rsync" failonerror="true" dir="${deb.builddir}">
@@ -157,6 +165,10 @@
         </exec>
         <exec executable="rsync" failonerror="true" dir="${deb.builddir}">
             <arg line="-av ${deb.webapioutputfile}
+                        ${deb.postloc}rc/"/>
+        </exec>
+        <exec executable="rsync" failonerror="true" dir="${deb.builddir}">
+            <arg line="-av ${deb.webapirooutputfile}
                         ${deb.postloc}rc/"/>
         </exec>
     </target>
