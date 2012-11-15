@@ -60,18 +60,23 @@ class WebAPI extends HTML
     private $_args = array();
     /** The system object */
     private $_system = null;
+    /** The tells if we are read only or not */
+    private $_ro = true;
 
     /**
     * Creates the object
     *
-    * @param array &$config The configuration to use
-    * @param mixed &$system The system object to use
+    * @param array &$config  The configuration to use
+    * @param mixed &$system  The system object to use
+    * @param bool  $readonly If set to true, all write operations silently fail
     *
     * @return null
     */
-    static public function &factory(&$config = array(), &$system = null)
-    {
+    static public function &factory(
+        &$config = array(), &$system = null, $readonly = true
+    ) {
         $obj = new WebAPI($config, $system);
+        $obj->_ro = (bool)$readonly;
         return $obj;
     }
 
@@ -103,6 +108,22 @@ class WebAPI extends HTML
         $this->_body($ret);
     }
     /**
+    * This authenticates a user and returns true if the user has access
+    *
+    * @param bool $write Asking for write access
+    *
+    * @return bool
+    */
+    private function _auth($write = true)
+    {
+        if ($write && $this->_ro) {
+            return false;
+        }
+        $uuid = strtolower($this->args()->get("uuid"));
+
+        return true;
+    }
+    /**
     * This function executes the api call.
     *
     * @param array $extra Extra data that should be added to the HTMLArgs data
@@ -116,7 +137,7 @@ class WebAPI extends HTML
         $action = strtolower(trim($this->args()->get("action")));
         if (($action === "list") || ($action == "get")) {
             return $this->_executeSystem($did, $dev, $extra);
-        } else {
+        } else if ($this->_auth(true)) {
             $dev->load($did);
             return $dev->webAPI($this->args(), $extra);
         }
@@ -210,7 +231,7 @@ class WebAPI extends HTML
             if ($obj->load($ident)) {
                 $ret = $obj->toArray(true);
             }
-        } else if ($action === "put") {
+        } else if (($action === "put") && $this->_auth(true)) {
             $data = (array)$this->args()->get("data");
             if ($obj->load($ident)) {
                 $obj->change($data);
@@ -224,7 +245,7 @@ class WebAPI extends HTML
         } else if ($action === "list") {
             $data = $this->args()->get("data");
             $ret = $obj->getList($data, true);
-        } else {
+        } else  if ($this->_auth(true)) {
             if (is_callable(array($obj, "webAPI"))) {
                 $obj->load($ident);
                 $ret = $obj->webAPI($this->args(), $extra);
@@ -250,7 +271,7 @@ class WebAPI extends HTML
             if (!$obj->isEmpty()) {
                 $ret = $obj->toArray(true);
             }
-        } else if ($action === "put") {
+        } else if (($action === "put") && $this->_auth(true)) {
             $data = (array)$this->args()->get("data");
             if ($obj->getRow($ident)) {
                 $obj->fromAny($data);
@@ -261,7 +282,7 @@ class WebAPI extends HTML
             }
         } else if ($action === "list") {
             $ret = $this->_executeTableList($ident, $obj);
-        } else {
+        } else if ($this->_auth(true)) {
             if (is_callable(array($obj, "webAPI"))) {
                 $ret = $obj->webAPI($this->args(), $extra);
             }
@@ -332,7 +353,7 @@ class WebAPI extends HTML
         $action = strtolower(trim($this->args()->get("action")));
         if ($action === "get") {
             $ret = $this->_executeHistoryGet($did, $hist);
-        } else if ($action === "put") {
+        } else if (($action === "put") && $this->_auth(true)) {
             $ret = array();
             foreach ($data as $key => $row) {
                 if (is_array($row) && ($row["id"] == $did)

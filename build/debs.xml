@@ -4,10 +4,12 @@
 <project name="deb" default="build" basedir=".">
     <property name="deb.phpsetup" value="${basedir}/deb/hugnetlib"/>
     <property name="deb.webapisetup" value="${basedir}/deb/hugnetlib-webapi"/>
+    <property name="deb.webapirosetup" value="${basedir}/deb/hugnetlib-rowebapi"/>
     <property name="deb.phpsrc" value="${basedir}/src/php"/>
     <property name="deb.webapisrc" value="${basedir}/src/webapi/html"/>
     <property name="deb.phpstaging" value="${basedir}/build/debphp"/>
     <property name="deb.webapistaging" value="${basedir}/build/debwebapi"/>
+    <property name="deb.webapirostaging" value="${basedir}/build/debrowebapi"/>
     <property name="deb.release" value="" />
     <property name="deb.versionfile" value="${basedir}/src/php/VERSION.TXT" />
 
@@ -19,11 +21,13 @@
     <property name="deb.builddir" value="${basedir}/rel" />
     <property name="deb.phpoutputfile" value="${deb.builddir}/HUGnetLib_${deb.version}${deb.release}_all.deb" />
     <property name="deb.webapioutputfile" value="${deb.builddir}/HUGnetLib-webapi_${deb.version}${deb.release}_all.deb" />
+    <property name="deb.webapirooutputfile" value="${deb.builddir}/HUGnetLib-rowebapi_${deb.version}${deb.release}_all.deb" />
     <property name="deb.postloc" value="hugnet.int.hugllc.com:/home/reprepro/incoming/" />
 
     <target name="clean" description="Clean up and create artifact directories">
         <delete dir="${deb.phpstaging}" failonerror="false"/>
         <delete dir="${deb.webapistaging}" failonerror="false"/>
+        <delete dir="${deb.webapirostaging}" failonerror="false"/>
         <delete failonerror="false">
             <fileset dir="${deb.builddir}" includes="*.deb"/>
         </delete>
@@ -78,12 +82,46 @@
                     match="%VERSION%"
                     replace="${deb.version}"
         />
+        <delete file="${deb.webapistaging}/var/www/HUGnetLib/HUGnetLibAPI_RO.php" />
+    </target>
+    <target name="webapirosetup" description="Copy all of the files to build the deb">
+        <echo>Setting up for HUGnetLib-webapi 'v${deb.version}'</echo>
+
+        <mkdir dir="${deb.webapirostaging}"/>
+        <copy todir="${deb.webapirostaging}">
+            <fileset dir="${deb.webapirosetup}" excludes="**/*~"/>
+        </copy>
+        <mkdir dir="${deb.webapirostaging}/var/www/HUGnetLib"/>
+        <copy todir="${deb.webapirostaging}/var/www/HUGnetLib">
+            <fileset dir="${deb.webapisrc}" excludes="**/*~"/>
+        </copy>
+        <mkdir dir="${deb.webapirostaging}/usr/share/php/HUGnetLib/webapi"/>
+        <copy todir="${deb.webapirostaging}/usr/share/php/HUGnetLib/webapi">
+            <fileset dir="${deb.phpsrc}/webapi" excludes="**/*~"/>
+        </copy>
+        <chmod file="${deb.webapirostaging}/DEBIAN/postinst" perm="0755"/>
+        <chmod file="${deb.webapirostaging}/DEBIAN/prerm" perm="0755"/>
+        <replaceregexp file="${deb.webapirostaging}/DEBIAN/control" byline="yes"
+                    match="%VERSION%"
+                    replace="${deb.version}"
+        />
+        <delete file="${deb.webapirostaging}/var/www/HUGnetLib/HUGnetLibAPI.php" />
+        <move file="${deb.webapirostaging}/var/www/HUGnetLib/HUGnetLibAPI_RO.php"
+            toFile="${deb.webapirostaging}/var/www/HUGnetLib/HUGnetLibAPI.php"
+        />
     </target>
     <target name="webapideb" description="build the deb">
         <mkdir dir="${deb.builddir}"/>
         <exec executable="fakeroot" failonerror="true">
             <arg line="dpkg-deb --build ${deb.webapistaging}
                        ${deb.webapioutputfile}"/>
+        </exec>
+    </target>
+    <target name="webapirodeb" description="build the deb">
+        <mkdir dir="${deb.builddir}"/>
+        <exec executable="fakeroot" failonerror="true">
+            <arg line="dpkg-deb --build ${deb.webapirostaging}
+                       ${deb.webapirooutputfile}"/>
         </exec>
     </target>
     <target name="sign" description="sign the deb">
@@ -126,6 +164,6 @@
         <delete dir="${deb.phpstaging}"/>
         <delete dir="${deb.webapistaging}"/>
     </target>
-    <target name="build" depends="clean,phpsetup,webapisetup,phpdeb,webapideb"/>
+    <target name="build" depends="clean,phpsetup,webapisetup,webapirosetup,phpdeb,webapideb,webapirodeb"/>
 
 </project>

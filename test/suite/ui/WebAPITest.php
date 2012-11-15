@@ -202,6 +202,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                false,
                 array(),
                 json_encode(array("Real" => "array")),
                 array(
@@ -234,6 +235,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "toArray" => "Test",
                     ),
                 ),
+                false,
                 array(),
                 "Test",
                 array(
@@ -274,6 +276,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                false,
                 array(),
                 json_encode(array("Real" => "array")),
                 array(
@@ -299,6 +302,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                false,
                 array(),
                 json_encode(array("Real" => "array")),
                 array(
@@ -329,6 +333,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                false,
                 array(),
                 json_encode(array("Real" => "array")),
                 array(
@@ -372,6 +377,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                false,
                 array(),
                 json_encode(array("Real" => "array")),
                 array(
@@ -412,6 +418,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                false,
                 array(),
                 json_encode(array("Real" => "array")),
                 array(
@@ -446,6 +453,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                false,
                 array(),
                 json_encode(array("Real" => "array")),
                 array(
@@ -483,6 +491,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                false,
                 array(),
                 json_encode(array("Real" => "array")),
                 array(
@@ -512,6 +521,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                false,
                 array(),
                 json_encode(array("Real" => "array")),
                 array(
@@ -562,6 +572,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "toArray" => array("ij" => "kl", "mn" => "op"),
                     ),
                 ),
+                false,
                 array(),
                 json_encode(
                     array(
@@ -618,6 +629,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "toArray" => array("ij" => "kl", "mn" => "op"),
                     ),
                 ),
+                false,
                 array(),
                 json_encode(
                     array(
@@ -659,6 +671,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                false,
                 array(),
                 json_encode(
                     array(
@@ -708,6 +721,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "insertRow" => true,
                     ),
                 ),
+                false,
                 array(),
                 json_encode(
                     array(
@@ -761,6 +775,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "nextInto" => false,
                     ),
                 ),
+                false,
                 array(),
                 json_encode(
                     array(
@@ -811,6 +826,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "nextInto" => false,
                     ),
                 ),
+                false,
                 array(),
                 json_encode(
                     array(
@@ -855,6 +871,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                false,
                 array(),
                 json_encode(array("Real" => "array")),
                 array(
@@ -898,6 +915,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                false,
                 array(),
                 json_encode(array("Real" => "array")),
                 array(
@@ -935,6 +953,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                false,
                 array(),
                 json_encode(array("Real" => "array")),
                 array(
@@ -1004,6 +1023,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                false,
                 array(),
                 "Date,Channel1 (Dallas),Channel3 (hello)\r\n"
                     ."2012-11-11 21:05:31,1,3\r\n",
@@ -1079,6 +1099,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                false,
                 array(),
                 "Date,Channel1 (Dallas),Channel3 (hello)\r\n"
                     ."2012-11-11 21:05:31,1,3\r\n",
@@ -1123,8 +1144,223 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                false,
                 array(),
                 json_encode(array("Real" => "array")),
+                array(
+                ),
+            ),
+            array(  // #22
+                array(
+                    "task" => "device",
+                    "action" => "put",
+                    "id" => "10",
+                    "data" => array(
+                        "a" => "b",
+                        "c" => "d",
+                    ),
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "load" => true,
+                        "toArray" => array(
+                            "Real" => "array",
+                        ),
+                        "webAPI" => array(
+                            "Real" => "array",
+                        ),
+                    ),
+                ),
+                true,
+                array(),
+                "",
+                array(
+                ),
+            ),
+            array(  // #23
+                array(
+                    "task" => "inputtable",
+                    "action" => "put",
+                    "id" => "10",
+                    "data" => array(
+                        "a" => "b",
+                        "c" => "d",
+                    ),
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "table" => new \HUGnet\DummyTable("Table"),
+                    ),
+                    "Table" => array(
+                        "isEmpty" => false,
+                        "getRow" => true,
+                        "toArray" => array(
+                            "Real" => "array",
+                        ),
+                    ),
+                ),
+                true,
+                array(),
+                "",
+                array(
+                    "Table" => array(
+                    ),
+                ),
+            ),
+            array(  // #24
+                $config1,
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "datacollector" => new \HUGnet\DummyBase("Datacollector"),
+                    ),
+                    "Datacollector" => array(
+                        "webAPI" => array(
+                            "Real" => "array",
+                        ),
+                    ),
+                ),
+                true,
+                array(),
+                "",
+                array(
+                    "Datacollector" => array(
+                    ),
+                ),
+            ),
+            array(  // #25
+                $config2,
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "table" => new \HUGnet\DummyTable("InputTable"),
+                    ),
+                    "InputTable" => array(
+                        "webAPI" => array(
+                            "Real" => "array",
+                        ),
+                    ),
+                ),
+                true,
+                array(),
+                "",
+                array(
+                    "InputTable" => array(
+                    ),
+                ),
+            ),
+            array(  // #26
+                array(
+                    "task" => "history",
+                    "action" => "put",
+                    "id" => "10",
+                    "data" => array(
+                        "type" => "history",
+                        array("id" => 42, "Date" => 3214),
+                        array("id" => 16, "Date" => 1234),
+                    ),
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "device" => new \HUGnet\DummyTable("Device"),
+                    ),
+                    "Device" => array(
+                        "historyFactory" => new \HUGnet\DummyTable("History"),
+                    ),
+                    "History" => array(
+                        "isEmpty" => false,
+                        "toArray" => array(
+                            "Real" => "array",
+                        ),
+                        "insertRow" => true,
+                    ),
+                ),
+                true,
+                array(),
+                "",
+                array(
+                    "History" => array(
+                    ),
+                ),
+            ),
+            array(  // #27
+                array(
+                    "task" => "datacollector",
+                    "action" => "put",
+                    "id" => "10",
+                    "data" => array(
+                        "a" => "b",
+                        "c" => "d",
+                    ),
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "datacollector" => new \HUGnet\DummyBase("Datacollector"),
+                    ),
+                    "Datacollector" => array(
+                        "load" => false,
+                        "toArray" => array(
+                            "Real" => "array",
+                        ),
+                    ),
+                ),
+                true,
+                array(),
+                "",
+                array(
+                    "Datacollector" => array(
+                    ),
+                ),
+            ),
+            array(  // #28
+                array(
+                    "task" => "datacollector",
+                    "action" => "put",
+                    "id" => "10",
+                    "data" => array(
+                        "a" => "b",
+                        "c" => "d",
+                    ),
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "datacollector" => new \HUGnet\DummyBase("Datacollector"),
+                    ),
+                    "Datacollector" => array(
+                        "load" => true,
+                        "toArray" => array(
+                            "Real" => "array",
+                        ),
+                        "webAPI" => array(
+                            "Real" => "array",
+                        ),
+                    ),
+                ),
+                true,
+                array(),
+                "",
                 array(
                 ),
             ),
@@ -1133,17 +1369,18 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
     /**
     * Tests the iteration and preload functions
     *
-    * @param mixed $config The config to use
-    * @param array $mock   The mocks to use
-    * @param array $extra  The extra data to send to execute
-    * @param mixed $expect The system object we are expecting
-    * @param array $calls  The calls to expect
+    * @param mixed $config   The config to use
+    * @param array $mock     The mocks to use
+    * @param bool  $readonly Whether the system is read only or not
+    * @param array $extra    The extra data to send to execute
+    * @param mixed $expect   The system object we are expecting
+    * @param array $calls    The calls to expect
     *
     * @return null
     *
     * @dataProvider dataExecute()
     */
-    public function testExecute($config, $mock, $extra, $expect, $calls)
+    public function testExecute($config, $mock, $readonly, $extra, $expect, $calls)
     {
         $system = new \HUGnet\DummySystem("System");
         $system->resetMock($mock);
@@ -1155,7 +1392,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
         } else {
             $args = $config;
         }
-        $obj = WebAPI::factory($args, $system);
+        $obj = WebAPI::factory($args, $system, $readonly);
         ob_start();
         $obj->execute($extra);
         $ret = ob_get_contents();
