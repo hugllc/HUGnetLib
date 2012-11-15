@@ -185,6 +185,7 @@ HUGnet.DataFlot = Backbone.View.extend({
     template: '#DataPointTableTemplate',
     fields: {},
     classes: {},
+    checkboxes: [],
     previousPoint: null,
     options: {
         series: { lines: { show: true }, points: { show: false} },
@@ -198,7 +199,8 @@ HUGnet.DataFlot = Backbone.View.extend({
         //pan: { interactive: true }
     },
     events: {
-       'click #flot-choice input': 'render'
+       'click #flot-choice input': 'render',
+       'click #toggle': 'toggle'
     },
     initialize: function (options)
     {
@@ -213,6 +215,17 @@ HUGnet.DataFlot = Backbone.View.extend({
         */
         this.model.bind('sync', this.render, this);
         this._setup();
+    },
+    toggle: function ()
+    {
+        _.each(
+            this.checkboxes,
+            function(val, key) {
+                $("#"+val).prop('checked', !$("#"+val).prop('checked'));
+            },
+            this
+        );
+        this.render();
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -237,12 +250,12 @@ HUGnet.DataFlot = Backbone.View.extend({
                 data.push(datasets[key]);
             }
         });
-        if (data.length === 0) {
-            data = datasets;
-        }
-        if (data.length > 0) {
-            $.plot(this.$graph, data, this.options);
-        }
+        //if (data.length === 0) {
+            //data = datasets;
+        //}
+        //if (data.length > 0) {
+        $.plot(this.$graph, data, this.options);
+        //}
         return this;
     },
     renderTooltip: function (x, y, contents) {
@@ -282,6 +295,7 @@ HUGnet.DataFlot = Backbone.View.extend({
         var datasets = this.points.toJSON();
         // insert checkboxes
         this.$choice = $('<ul id="flot-choice"></ul>').prependTo(this.$el);
+        this.checkboxes = [];
         _.each(
             datasets,
             function(val, key) {
@@ -290,8 +304,13 @@ HUGnet.DataFlot = Backbone.View.extend({
                     '" checked="checked" id="id' + key + '">' +
                     '<label for="id' + key + '">' + val.label + '</label></li>'
                 );
+                var index = this.checkboxes.length;
+                this.checkboxes[index] = 'id'+key;
             },
             this
+        );
+        this.$choice.append(
+            '<li><button id="toggle">Toggle</button></li>'
         );
         return this;
     },
