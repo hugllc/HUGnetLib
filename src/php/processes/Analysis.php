@@ -67,7 +67,7 @@ class Analysis extends \HUGnet\ui\Daemon
     /** This is the time we lose contact for before we start pinging */
     const FAIL_THRESHOLD = 20;
     /** This is the amount of time we wait */
-    const WAIT_TIME = 60;
+    const WAIT_TIME = 20;
 
     /** This is the start time of the current run */
     private $_mainStart;

@@ -68,7 +68,8 @@ HUGnet.DataView = Backbone.View.extend({
         'click .exportCSV': 'exportCSV',
         'click .minute30': 'minute30',
         'click .minute240': 'minute240',
-        'click .minute720': 'minute720'
+        'click .minute720': 'minute720',
+        'change #type': 'submit'
     },
     initialize: function (options)
     {
@@ -165,6 +166,7 @@ HUGnet.DataView = Backbone.View.extend({
         url += "&until="+parseInt(until/1000);
         url += "&order=0";
         url += "&limit="+this.csvlimit;
+        url += "&type="+this.history.type;
         this.iframe.attr('src',url);
     },
     minute30: function ()
@@ -219,6 +221,9 @@ HUGnet.DataView = Backbone.View.extend({
             this.$('input[type="submit"]').prop('disabled', true);
             this.since = Date.parse(this.$('#since').val());
             this.until = Date.parse(this.$('#until').val());
+            if (this.$('#type').val()) {
+                this.history.type = this.$('#type').val();
+            }
             this.history.getPeriod(this.since, this.until);
             this.updateDates();
             var progress = new HUGnet.Progress({
@@ -306,6 +311,7 @@ HUGnet.DataView = Backbone.View.extend({
     {
         var data = this.model.toJSON();
         data.since = this.since;
+        data.type = this.history.type;
         if (this.until != 0) {
             data.until = this.until;
         } else {

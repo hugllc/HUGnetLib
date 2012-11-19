@@ -459,7 +459,19 @@ class Device extends \HUGnet\base\SystemTableBase
     {
         $action = trim(strtolower($args->get("action")));
         $ret = null;
-        if ($action === "config") {
+        if ($action === "put") {
+            $data = (array)$args->get("data");
+            $params = (array)$data["params"];
+            unset($data["params"]);
+            foreach ($data as $key => $value) {
+                $this->set($key, $value);
+            }
+            foreach ($params as $key => $value) {
+                $this->setParam($key, $value);
+            }
+            $this->store();
+            $ret = $this->toArray(true);
+        } else if ($action === "config") {
             $worked  = true;
             $sensors = $this->get("physicalSensors");
             $steps   = $sensors + 2;

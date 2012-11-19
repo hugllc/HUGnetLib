@@ -52,7 +52,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @version    Release: 0.9.7
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class E00393700Average extends \HUGnet\db\Average
+class E00393700Average extends \HUGnet\db\FastAverage
 {
     /** @var string This is the table we should use */
     public $sqlTable = "e00393700_average";

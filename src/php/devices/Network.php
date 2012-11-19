@@ -163,7 +163,7 @@ class Network
     public function send(
         $pkt, $callback = null, $config = array(), $data = null
     ) {
-        $this->_sendPkt($pkt, $callback, $config, $data);
+        return $this->_sendPkt($pkt, $callback, $config, $data);
     }
     /**
     * Polls the device in question

@@ -41,7 +41,6 @@ $args = \HUGnet\ui\WebAPIArgs::factory(
 );
 $args->addLocation("/usr/share/HUGnet/config.ini");
 
-$system = null;
-$api = \HUGnet\ui\WebAPI::factory($args, $system, false);
+$api = \HUGnet\ui\WebAPI::factory($args);
 $api->execute((array)$_REQUEST);
 

@@ -111,6 +111,41 @@ class Average extends \HUGnet\processes\analysis\Device
             "timeout" => 86400,
         ),
     );
+    /** This is the period */
+    private $_fastAverages = array(
+        "30SEC" => array(
+            "base" => null,
+            "prev" => "LastHistory",
+            "type" => \HUGnet\db\FastAverage::AVERAGE_30SEC,
+            "history" => true,
+            "time" => "Y-m-d H:i:s",
+            "timeout" => 25,
+        ),
+        "1MIN" => array(
+            "base" => \HUGnet\db\FastAverage::AVERAGE_30SEC,
+            "prev" => "LastAverage30SEC",
+            "type" => \HUGnet\db\FastAverage::AVERAGE_1MIN,
+            "history" => false,
+            "time" => "Y-m-d H:i",
+            "timeout" => 55,
+        ),
+        "5MIN" => array(
+            "base" => \HUGnet\db\FastAverage::AVERAGE_1MIN,
+            "prev" => "LastAverage1MIN",
+            "type" => \HUGnet\db\FastAverage::AVERAGE_5MIN,
+            "history" => false,
+            "time" => "Y-m-d H:i",
+            "timeout" => 290,
+        ),
+        "15MIN" => array(
+            "base" => \HUGnet\db\FastAverage::AVERAGE_5MIN,
+            "prev" => "LastAverage5MIN",
+            "type" => \HUGnet\db\FastAverage::AVERAGE_15MIN,
+            "history" => false,
+            "time" => "Y-m-d H:i",
+            "timeout" => 800,
+        ),
+    );
     /**
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
@@ -132,76 +167,100 @@ class Average extends \HUGnet\processes\analysis\Device
     */
     public function &execute(&$device)
     {
+        $return = true;
         if (!$this->ready($device)) {
-            return true;
+            return $return;
         }
-        foreach ($this->_averages as $type => $param) {
-            $timeout = time() - $device->getParam("LastAverage".$type."Try");
-            if ($timeout < $param["timeout"]) {
-                continue;
-            }
-            $this->system()->out("$type average starting ", 3);
-            $hist = $device->historyFactory($data, $param["history"]);
-            // We don't want more than 100 records at a time;
-            if (empty($this->conf["maxRecords"])) {
-                $hist->sqlLimit = 1000;
-            } else {
-                $hist->sqlLimit = $this->conf["maxRecords"];
-            }
-            $hist->sqlOrderBy = "Date asc";
+        $avg = $device->historyFactory(array(), false);
+        if (is_subclass_of($avg, "HUGnet\\db\\FastAverage")) {
+            $averages = $this->_fastAverages;
+        } else {
+            $averages = $this->_averages;
+        }
+        foreach ($averages as $type => $param) {
+            $this->_avg($device, $type, $param);
+        }
+        return $return;
+    }
 
-            $avg = $device->historyFactory($data, false);
+    /**
+    * This runs the job.
+    *
+    * @param object &$device The device to use
+    * @param string $type    The type of average to do
+    * @param array  $param   The parameters to use
+    *
+    * @return null
+    */
+    public function _avg(&$device, $type, $param)
+    {
+        $return = true;
+        $timeout = time() - $device->getParam("LastAverage".$type."Try");
+        if ($timeout < $param["timeout"]) {
+            return;
+        }
+        $this->system()->out("$type average starting ", 3);
+        $hist = $device->historyFactory($data, $param["history"]);
+        // We don't want more than 100 records at a time;
+        if (empty($this->conf["maxRecords"])) {
+            $hist->sqlLimit = 1000;
+        } else {
+            $hist->sqlLimit = $this->conf["maxRecords"];
+        }
+        $hist->sqlOrderBy = "Date asc";
 
-            $last     = $device->getParam("LastAverage".$type);
-            $lastTry  = $device->getParam("LastAverage".$type."Try");
-            $lastPrev = $device->getParam($param["prev"]);
-            $ret = $hist->getPeriod(
-                (int)$last,
-                (int)$lastPrev,
-                $device->get("id"),
-                $param["base"]
-            );
-            $bad = 0;
-            $local = 0;
-            if ($ret) {
-                // Go through the records
-                while ($avg->calcAverage($hist, $param["type"])) {
-                    if ($avg->insertRow(true)) {
-                        $now = $avg->get("Date");
-                        $local++;
-                        $lastTry = time();
-                    } else {
-                        $bad++;
-                    }
+        $avg = $device->historyFactory($data, false);
+
+
+        $last     = (int)$device->getParam("LastAverage".$type);
+        $lastTry  = (int)$device->getParam("LastAverage".$type."Try");
+        $lastPrev = $device->getParam($param["prev"]);
+        $ret = $hist->getPeriod(
+            (int)$last,
+            (int)$lastPrev,
+            $device->get("id"),
+            $param["base"]
+        );
+        $bad = 0;
+        $local = 0;
+        if ($ret) {
+            // Go through the records
+            while ($avg->calcAverage($hist, $param["type"])) {
+                if ($avg->insertRow(true)) {
+                    $now = $avg->get("Date");
+                    $local++;
+                    $lastTry = time();
+                } else {
+                    $bad++;
                 }
             }
-
-            if ($bad > 0) {
-                // State we did some uploading
-                $this->system()->out(
-                    "Failed to insert $bad $type average records",
-                    1
-                );
-            }
-            if ($local > 0) {
-                // State we did some uploading
-                $this->system()->out(
-                    "Inserted $local $type average records ".
-                    date($param["time"], $last)." - ".date($param["time"], $now),
-                    1
-                );
-            }
-            if (!empty($now)) {
-                $last = (int)$now;
-            }
-            $device->load($device->id());
-            $device->setParam("LastAverage".$type, $last);
-            $device->setParam("LastAverage".$type."Try", $lastTry);
-            $device->store();
-
-            $this->system()->out("$type average ending ", 3);
         }
-        return true;
+
+        if ($bad > 0) {
+            // State we did some uploading
+            $this->system()->out(
+                "Failed to insert $bad $type average records",
+                1
+            );
+        }
+        if ($local > 0) {
+            // State we did some uploading
+            $this->system()->out(
+                "Inserted $local $type average records ".
+                date($param["time"], $last)." - ".date($param["time"], $now),
+                1
+            );
+        }
+        if (!empty($now)) {
+            $last = (int)$now;
+        }
+        $device->load($device->id());
+        $device->setParam("LastAverage".$type, $last);
+        $device->setParam("LastAverage".$type."Try", $lastTry);
+        $device->store();
+
+        $this->system()->out("$type average ending ", 3);
+        return $return;
     }
     /**
     * This function does the stuff in the class.

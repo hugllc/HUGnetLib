@@ -145,7 +145,8 @@ class Action
                 $command = array($command);
             }
         }
-        $this->device->network()->send($command, $callback, $config, $data);
+        $ret = $this->device->network()->send($command, $callback, $config, $data);
+        return $ret;
     }
     /**
     * Pings the device and sets the LastContact if it is successful

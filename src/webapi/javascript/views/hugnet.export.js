@@ -104,6 +104,7 @@ HUGnet.ExportView = Backbone.View.extend({
         this.csvurl += "&until="+parseInt(until/1000);
         this.csvurl += "&order="+this.order;
         this.csvurl += "&limit="+this.csvlimit;
+        this.csvurl += "&type="+this.$('#type').val();
         this.$("#csvurl").html(this.csvurl);
         this.iframe.attr('src', this.csvurl);
     },
@@ -129,6 +130,10 @@ HUGnet.ExportView = Backbone.View.extend({
             + pad(d.getSeconds());
         this.$("#since").val(this.sinceDate);
         this.$("#until").val(this.untilDate);
+    },
+    exit: function()
+    {
+        this.remove();
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
