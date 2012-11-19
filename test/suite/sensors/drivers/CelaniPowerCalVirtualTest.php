@@ -188,6 +188,42 @@ class CelaniPowerCalVirtualTest extends DriverTestBase
                 0,
                 48.17877
             ),
+            array( // #5 random middle point
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(
+                                0
+                            ),
+                        ),
+                    ),
+                ),
+                0,
+                0,
+                array(
+                    0 => array("value" => null),
+                ),
+                0,
+                null
+            ),
+            array( // #6 random middle point
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(
+                                0
+                            ),
+                        ),
+                    ),
+                ),
+                0,
+                0,
+                array(
+                    0 => array("value" => 4.2109260827983724E+02),
+                ),
+                0,
+                null
+            ),
         );
     }
 
