@@ -34,7 +34,7 @@
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\outputs;
+namespace HUGnet\outputTable;
 /** This is a required class */
 require_once CODE_BASE.'outputTable/ADuCInputTable.php';
 /** This is a required class */

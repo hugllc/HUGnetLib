@@ -147,7 +147,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataJson()
+    public static function data2Array()
     {
         return array(
             array(
@@ -164,48 +164,46 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 new DummyTable("Table"),
-                json_encode(
-                    array(
-                        "longName" => "Silly Sensor Driver 1",
-                        "shortName" => "SSD1",
-                        "unitType" => "Temperature",
-                        "bound" => false,
-                        "virtual" => false,
-                        "total" => false,
-                        "extraText" => array("Silliness Factor", "Storage Unit"),
-                        "extraDefault" => array(2210, '&#176;C'),
-                        "extraValues" => array(5, array('&#176;C', '&#176;F', 'K')),
-                        "storageUnit" => "&#176;C",
-                        "storageType" => \HUGnet\channels\Driver::TYPE_RAW,
-                        "maxDecimals" => 4,
-                        "dataTypes" => array(
-                            \HUGnet\channels\Driver::TYPE_RAW
-                                => \HUGnet\channels\Driver::TYPE_RAW,
-                            \HUGnet\channels\Driver::TYPE_DIFF
-                                => \HUGnet\channels\Driver::TYPE_DIFF,
-                            \HUGnet\channels\Driver::TYPE_IGNORE
-                                => \HUGnet\channels\Driver::TYPE_IGNORE,
-                        ),
-                        "defMin" => 0,
-                        "defMax" => 150,
-                        "inputSize" => 3,
-                        'id' => 0xFD,
-                        'asdf' => 3,
-                        'params' => array(1,2,3,4),
-                        'type' => "TestSensorDriver1",
-                        'otherTypes' => array(
-                            "DEFAULT" => "TestSensorDriver1",
-                        ),
-                        'validUnits' => array(
-                            "&#176;F" => "&#176;F",
-                            "&#176;C" => "&#176;C",
-                            "K" => "K"
-                        ),
-                        'validIds' => array(
-                            254 => "Virtual", 255 => "Empty Slot"
-                        ),
-                    )
-                ),
+                array(
+                    "longName" => "Silly Sensor Driver 1",
+                    "shortName" => "SSD1",
+                    "unitType" => "Temperature",
+                    "bound" => false,
+                    "virtual" => false,
+                    "total" => false,
+                    "extraText" => array("Silliness Factor", "Storage Unit"),
+                    "extraDefault" => array(2210, '&#176;C'),
+                    "extraValues" => array(5, array('&#176;C', '&#176;F', 'K')),
+                    "storageUnit" => "&#176;C",
+                    "storageType" => \HUGnet\channels\Driver::TYPE_RAW,
+                    "maxDecimals" => 4,
+                    "dataTypes" => array(
+                        \HUGnet\channels\Driver::TYPE_RAW
+                            => \HUGnet\channels\Driver::TYPE_RAW,
+                        \HUGnet\channels\Driver::TYPE_DIFF
+                            => \HUGnet\channels\Driver::TYPE_DIFF,
+                        \HUGnet\channels\Driver::TYPE_IGNORE
+                            => \HUGnet\channels\Driver::TYPE_IGNORE,
+                    ),
+                    "defMin" => 0,
+                    "defMax" => 150,
+                    "inputSize" => 3,
+                    'id' => 0xFD,
+                    'asdf' => 3,
+                    'params' => array(1,2,3,4),
+                    'type' => "TestSensorDriver1",
+                    'otherTypes' => array(
+                        "DEFAULT" => "TestSensorDriver1",
+                    ),
+                    'validUnits' => array(
+                        "&#176;F" => "&#176;F",
+                        "&#176;C" => "&#176;C",
+                        "K" => "K"
+                    ),
+                    'validIds' => array(
+                        254 => "Virtual", 255 => "Empty Slot"
+                    ),
+                )
             ),
         );
     }
@@ -218,17 +216,17 @@ class SensorTest extends \PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataJson
+    * @dataProvider data2Array
     */
-    public function testJson(
+    public function test2Array(
         $config, $class, $expect
     ) {
         $sys = new DummySystem("System");
         $dev = new DummyBase("Device");
         $sys->resetMock($config);
         $obj = Sensor::factory($sys, null, $class, $dev);
-        $json = $obj->json();
-        $this->assertSame($expect, $json);
+        $json = $obj->toArray();
+        $this->assertEquals($expect, $json);
         unset($obj);
     }
     /**

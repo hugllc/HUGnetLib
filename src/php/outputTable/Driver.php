@@ -34,7 +34,7 @@
  *
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\outputs;
+namespace HUGnet\outputTable;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 
@@ -148,7 +148,7 @@ abstract class Driver
             return new $class($sensor);
         }
         include_once dirname(__FILE__)."/drivers/EmptyOutput.php";
-        return new \HUGnet\outputs\drivers\EmptyOutput($sensor);
+        return new \HUGnet\outputTable\drivers\EmptyOutput($sensor);
     }
     /**
     * Checks to see if a piece of data exists

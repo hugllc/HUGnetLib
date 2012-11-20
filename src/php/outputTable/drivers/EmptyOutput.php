@@ -34,7 +34,7 @@
  *
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\outputs\drivers;
+namespace HUGnet\outputTable\drivers;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is my base class */
@@ -55,7 +55,7 @@ require_once dirname(__FILE__)."/../Driver.php";
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class EmptyOutput extends \HUGnet\outputs\Driver
+class EmptyOutput extends \HUGnet\outputTable\Driver
 {
     /**
     * This is where the data for the driver is stored.  This array must be

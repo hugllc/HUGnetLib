@@ -73,6 +73,9 @@ class E00393700 extends \HUGnet\devices\Driver
         "type" => "endpoint",
         "job"  => "sense",
         "arch" => "ADuC",
+        "InputTables" => 9,
+        "OutputTables" => 5,
+        "ProcessTables" => 4,
     );
 
 }

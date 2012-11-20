@@ -84,6 +84,9 @@ abstract class Driver
         "job"  => "unknown",
         "actionClass" => "Action",
         "arch" => "unknown",
+        "InputTables" => 9,
+        "OutputTables" => 0,
+        "ProcessTables" => 0,
     );
     /**
     * This is where all of the driver information is stored.
@@ -418,6 +421,27 @@ abstract class Driver
             }
             $obj->store();
         }
+        return $obj;
+    }
+    /**
+    * This creates the sensor drivers
+    *
+    * @param int $sid The sensor id to get.  They are labaled 0 to sensors
+    *
+    * @return null
+    */
+    public function &outputTable($sid)
+    {
+        include_once dirname(__FILE__)."/Output.php";
+        $data = array(
+            "sensor" => $sid,
+            "dev" => $this->device()->id(),
+        );
+        $system = $this->device()->system();
+        $device = $this->device();
+        $obj = \HUGnet\devices\Output::factory(
+            $system, $data, null, $device
+        );
         return $obj;
     }
 }

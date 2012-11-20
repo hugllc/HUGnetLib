@@ -34,7 +34,7 @@
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\outputs\drivers;
+namespace HUGnet\outputTable\drivers;
 /** This is the base class */
 require_once CODE_BASE."/sensors/Driver.php";
 /** This is a required class */

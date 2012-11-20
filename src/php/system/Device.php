@@ -281,6 +281,17 @@ class Device extends \HUGnet\base\SystemTableBase
     /**
     * This creates the sensor drivers
     *
+    * @param int $sid The sensor id to get.  They are labaled 0 to sensors
+    *
+    * @return null
+    */
+    public function &outputTable($sid)
+    {
+        return $this->driver()->outputTable($sid);
+    }
+    /**
+    * This creates the sensor drivers
+    *
     * @param mixed $chans Channel information
     *
     * @return null

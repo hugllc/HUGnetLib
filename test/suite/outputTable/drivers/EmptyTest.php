@@ -34,7 +34,7 @@
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\outputs\drivers;
+namespace HUGnet\outputTable\drivers;
 /** This is the base class */
 require_once dirname(__FILE__)."/DriverTestBase.php";
 /** This is a required class */
@@ -71,7 +71,7 @@ class EmptyOutputTest extends DriverTestBase
         parent::setUp();
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
-        $this->o = \HUGnet\outputs\Driver::factory("EmptyOutput", $sensor);
+        $this->o = \HUGnet\outputTable\Driver::factory("EmptyOutput", $sensor);
     }
 
     /**

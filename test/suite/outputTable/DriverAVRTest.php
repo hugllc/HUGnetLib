@@ -34,7 +34,7 @@
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\outputs;
+namespace HUGnet\outputTable;
 /** This is a required class */
 require_once CODE_BASE.'outputTable/DriverAVR.php';
 /** This is a required class */
@@ -74,7 +74,9 @@ class DriverAVRTest extends drivers\DriverTestBase
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
-        $this->o = \HUGnet\outputs\Driver::factory("DriverAVRTestClass", $sensor);
+        $this->o = \HUGnet\outputTable\Driver::factory(
+            "DriverAVRTestClass", $sensor
+        );
     }
 
     /**
@@ -128,7 +130,7 @@ namespace HUGnet\outputs\drivers;
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class DriverAVRTestClass extends \HUGnet\outputs\DriverAVR
+class DriverAVRTestClass extends \HUGnet\outputTable\DriverAVR
 {
     /**
     * This is where the data for the driver is stored.  This array must be

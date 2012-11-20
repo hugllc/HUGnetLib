@@ -34,7 +34,7 @@
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\outputs;
+namespace HUGnet\outputTable;
 /** This is a required class */
 require_once CODE_BASE.'outputTable/Driver.php';
 /** This is a required class */
@@ -182,11 +182,11 @@ class DriverTest extends drivers\DriverTestBase
         return array(
             array(
                 "asdf",
-                "HUGnet\outputs\drivers\EmptyOutput",
+                "HUGnet\outputTable\drivers\EmptyOutput",
             ),
             array(
                 "EmptyOutput",
-                "HUGnet\outputs\drivers\EmptyOutput",
+                "HUGnet\outputTable\drivers\EmptyOutput",
             ),
         );
     }
@@ -510,7 +510,7 @@ namespace HUGnet\outputs\drivers;
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class DriverTestClass extends \HUGnet\outputs\Driver
+class DriverTestClass extends \HUGnet\outputTable\Driver
 {
     /**
     * This is where the data for the driver is stored.  This array must be

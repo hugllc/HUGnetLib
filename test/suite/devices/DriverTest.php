@@ -542,6 +542,9 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                     'job'  => 'unknown',
                     'actionClass' => 'Action',
                     'arch' => "unknown",
+                    'InputTables' => 9,
+                    'OutputTables' => 0,
+                    'ProcessTables' => 0,
                 ),
             ),
             array(
@@ -562,6 +565,9 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                     'job'  => 'unknown',
                     'actionClass' => 'Action',
                     'arch' => "unknown",
+                    'InputTables' => 9,
+                    'OutputTables' => 0,
+                    'ProcessTables' => 0,
                 ),
             ),
         );

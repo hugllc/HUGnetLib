@@ -34,7 +34,7 @@
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\outputs;
+namespace HUGnet\outputTable;
 /** This is a required class */
 require_once CODE_BASE.'outputTable/DriverADuC.php';
 /** This is a required class */
@@ -76,7 +76,9 @@ class DriverADuCTest extends drivers\DriverTestBase
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
-        $this->o = \HUGnet\outputs\Driver::factory("DriverADuCTestClass", $sensor);
+        $this->o = \HUGnet\outputTable\Driver::factory(
+            "DriverADuCTestClass", $sensor
+        );
     }
 
     /**
@@ -335,7 +337,7 @@ namespace HUGnet\outputs\drivers;
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class DriverADuCTestClass extends \HUGnet\outputs\DriverADuC
+class DriverADuCTestClass extends \HUGnet\outputTable\DriverADuC
 {
     /**
     * This is where the data for the driver is stored.  This array must be
