@@ -36,7 +36,7 @@
 /** This is the HUGnet namespace */
 namespace HUGnet\outputs;
 /** This is a required class */
-require_once CODE_BASE.'outputs/ADuCInputTable.php';
+require_once CODE_BASE.'outputTable/ADuCInputTable.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */

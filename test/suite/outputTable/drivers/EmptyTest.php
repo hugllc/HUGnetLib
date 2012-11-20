@@ -38,7 +38,7 @@ namespace HUGnet\outputs\drivers;
 /** This is the base class */
 require_once dirname(__FILE__)."/DriverTestBase.php";
 /** This is a required class */
-require_once CODE_BASE.'outputs/drivers/EmptyOutput.php';
+require_once CODE_BASE.'outputTable/drivers/EmptyOutput.php';
 
 /**
  * Test class for HUGnetDB.
