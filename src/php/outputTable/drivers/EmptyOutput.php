@@ -64,6 +64,7 @@ class EmptyOutput extends \HUGnet\outputTable\Driver
     protected $params = array(
         "longName" => "Empty Output",
         "shortName" => "Empty",
+        "id" => 0xFF,  // Force ID to be 0xFF
     );
     /**
     * Gets the direction from a direction sensor made out of a POT.

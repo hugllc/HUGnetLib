@@ -167,9 +167,43 @@ class OutputTest extends \PHPUnit_Framework_TestCase
                 ),
                 new \HUGnet\DummyTable("Table"),
                 array(
+                    'longName' => 'Silly Output Driver 1',
+                    'shortName' => 'SSD1',
+                    'id' => 253,
+                    'asdf' => 3,
+                    'params' => Array (
+                        0 => 1,
+                        1 => 2,
+                        2 => 3,
+                        3 => 4,
+                    ),
+                    'type' => 'TestOutputDriver1',
+                    'otherTypes' => Array (
+                        'DEFAULT' => 'TestOutputDriver1'
+                    ),
+                    'validIds' => Array (
+                        255 => 'Empty Slot'
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 0xFF,
+                        ),
+                        "toArray" => array(
+                            "id" => 0xFF,
+                            "asdf" => 3,
+                            "params" => json_encode(array(1,2,3,4)),
+                        ),
+                    ),
+                ),
+                new \HUGnet\DummyTable("Table"),
+                array(
                     'longName' => 'Empty Output',
                     'shortName' => 'Empty',
-                    'id' => 253,
+                    'id' => 255,
                     'asdf' => 3,
                     'params' => Array (
                         0 => 1,
@@ -179,7 +213,7 @@ class OutputTest extends \PHPUnit_Framework_TestCase
                     ),
                     'type' => 'EmptyOutput',
                     'otherTypes' => Array (
-                        //'DEFAULT' => 'TestOutputDriver1'
+                        'DEFAULT' => 'EmptyOutput'
                     ),
                     'validIds' => Array (
                         255 => 'Empty Slot'
@@ -229,7 +263,7 @@ class OutputTest extends \PHPUnit_Framework_TestCase
                 ),
                 new \HUGnet\DummyTable("Table"),
                 "id",
-                2,
+                0xFF,
             ),
             array(
                 array(
@@ -488,12 +522,12 @@ class OutputTest extends \PHPUnit_Framework_TestCase
                 new \HUGnet\DummySystem(),
                 null,
                 array(
-                    "id" => 5,
+                    "id" => 0xFD,
                 ),
                 array(
                     "Table" => array(
                         "get" => array(
-                            "id" => 5,
+                            "id" => 0xFD,
                             "HWPartNum"    => "0039-12-01-C",
                             "FWPartNum"    => "0039-20-03-C",
                             "FWVersion"    => "1.2.3",
@@ -502,7 +536,7 @@ class OutputTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-                "05",
+                "FD",
             ),
         );
     }
@@ -737,16 +771,6 @@ class TestOutputDriver1 extends \HUGnet\outputTable\Driver
     protected $params = array(
         "longName" => "Silly Output Driver 1",
         "shortName" => "SSD1",
-        "unitType" => "Temperature",
-        "storageUnit" => 'getExtra1',
-        "storageType" => \HUGnet\channels\Driver::TYPE_RAW,  // Storage dataType
-        "extraText" => array("Silliness Factor", "Storage Unit"),
-        // Integer is the size of the field needed to edit
-        // Array   is the values that the extra can take
-        // Null    nothing
-        "extraValues" => array(5, array('&#176;C', '&#176;F', 'K')),
-        "extraDefault" => array(2210, '&#176;C'),
-        "maxDecimals" => 4,
     );
     /**
     * Changes a raw reading into a output value
@@ -791,16 +815,6 @@ class TestOutputDriver2 extends \HUGnet\outputTable\Driver
     protected $params = array(
         "longName" => "Silly Output Driver 2",
         "shortName" => "SSD2",
-        "unitType" => "Temperature",
-        "storageUnit" => 'getExtra1',
-        "storageType" => \HUGnet\channels\Driver::TYPE_DIFF,  // Storage dataType
-        "extraText" => array("Silliness Factor", "Storage Unit"),
-        // Integer is the size of the field needed to edit
-        // Array   is the values that the extra can take
-        // Null    nothing
-        "extraValues" => array(5, array('&#176;C', '&#176;F', 'K')),
-        "extraDefault" => array(2210, '&#176;C'),
-        "maxDecimals" => 4,
     );
     /**
     * Changes a raw reading into a output value

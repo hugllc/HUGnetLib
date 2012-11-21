@@ -64,6 +64,7 @@ class EmptyProcess extends \HUGnet\processTable\Driver
     protected $params = array(
         "longName" => "Empty Process",
         "shortName" => "Empty",
+        "id" => 0xFF,  // Force ID to be 0xFF
     );
     /**
     * Gets the direction from a direction sensor made out of a POT.

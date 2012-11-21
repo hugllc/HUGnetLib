@@ -79,6 +79,7 @@ class EmptySensor extends \HUGnet\sensors\Driver
             \HUGnet\channels\Driver::TYPE_IGNORE
                 => \HUGnet\channels\Driver::TYPE_IGNORE,
         ),
+        "id" => 0xFF,  // Force ID to be 0xFF
     );
     /**
     * Changes a raw reading into a output value

@@ -250,7 +250,7 @@ abstract class Driver
     */
     public static function register($key, $class)
     {
-        $driver = '\\HUGnet\\outputs\\drivers\\'.$class;
+        $driver = '\\HUGnet\\outputTable\\drivers\\'.$class;
         if (class_exists($driver) && !isset(self::$_drivers[$key])) {
             self::$_drivers[$key] = $class;
         }
