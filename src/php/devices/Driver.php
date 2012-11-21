@@ -434,7 +434,7 @@ abstract class Driver
     {
         include_once dirname(__FILE__)."/Output.php";
         $data = array(
-            "sensor" => $sid,
+            "output" => $sid,
             "dev" => $this->device()->id(),
         );
         $system = $this->device()->system();

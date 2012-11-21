@@ -114,7 +114,7 @@ class Output extends \HUGnet\base\SystemTableBase
     */
     public function id()
     {
-        return $this->table()->get("sensor");
+        return $this->table()->get("output");
     }
     /**
     * Gets a value
@@ -262,7 +262,7 @@ class Output extends \HUGnet\base\SystemTableBase
         $chan   = 0;
         $sensor = $this->id();
         for ($i = 0; $i < $sensor; $i++) {
-            $chan += count($this->device()->sensor($i)->channels());
+            $chan += count($this->device()->outputTable($i)->channels());
         }
         return $chan;
     }
@@ -295,7 +295,7 @@ class Output extends \HUGnet\base\SystemTableBase
                 "uuid"   => urlencode($this->system()->get("uuid")),
                 "id"     => sprintf("%06X", $sensor["dev"]).".".$sensor["sensor"],
                 "action" => "put",
-                "task"   => "sensor",
+                "task"   => "outputTable",
                 "data"   => $sensor,
             )
         );

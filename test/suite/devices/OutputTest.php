@@ -653,7 +653,7 @@ class OutputTest extends \PHPUnit_Framework_TestCase
                     "Table" => array(
                         "get" => array(
                             "id" => 5,
-                            "sensor" => 4,
+                            "output" => 4,
                             "dev" => 1234,
                             "HWPartNum"    => "0039-12-01-C",
                             "FWPartNum"    => "0039-20-03-C",
@@ -664,7 +664,7 @@ class OutputTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                     "Device" => array(
-                        "sensor" => array(
+                        "outputTable" => array(
                             "0" => new \HUGnet\DummyTable("Output0"),
                             "1" => new \HUGnet\DummyTable("Output1"),
                             "2" => new \HUGnet\DummyTable("Output2"),

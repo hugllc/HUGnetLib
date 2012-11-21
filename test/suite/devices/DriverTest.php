@@ -42,6 +42,8 @@ require_once CODE_BASE.'system/System.php';
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
 /** This is a required class */
+require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
+/** This is a required class */
 require_once CODE_BASE.'util/VPrint.php';
 
 /**
@@ -898,6 +900,69 @@ class DriverTest extends \PHPUnit_Framework_TestCase
         $ret = $obj->encode($showFixed);
         $this->assertSame($expect, $ret);
     }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataOutputTable()
+    {
+        return array(
+            array(
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "id" => 5,
+                        ),
+                        "id" => 5,
+                        "system" => new \HUGnet\DummySystem("System"),
+                    ),
+                ),
+                0,
+                "\HUGnet\devices\Output",
+                array(
+                    array(
+                        array(
+                            "output" => 0,
+                            "dev" => 5,
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $mocks        The configuration to use
+    * @param string $output       The driver to tell it to load
+    * @param string $driverExpect The driver we expect to be loaded
+    * @param int    $expect       The expected sensor id
+    *
+    * @return null
+    *
+    * @dataProvider dataOutputTable
+    */
+    public function testOutputTable(
+        $mocks, $output, $driverExpect, $expect
+    ) {
+        $device  = new \HUGnet\DummyTable("Device");
+        $device->resetMock($mocks);
+        $obj = Driver::factory("DriverTestClass", $device);
+        $sen = $obj->outputTable($output);
+        $this->assertTrue(
+            is_a($sen, $driverExpect),
+            "Return is not a ".$driverExpect
+        );
+        $ret = $device->retrieve();
+        $this->assertEquals(
+            $expect,
+            $ret["DeviceOutputs"]["fromAny"],
+            "Wrong sensor returned"
+        );
+        unset($obj);
+    }
+
 }
 /** This is the HUGnet namespace */
 namespace HUGnet\devices\drivers;
