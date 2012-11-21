@@ -747,10 +747,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataSetSensorConfig()
+    public static function dataSetInputTable()
     {
         return array(
-            array(
+            array( // #0
                 array(
                     "Device" => array(
                         "get" => array(
@@ -785,7 +785,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 array(
                                     array(
                                         "To" => 21,
-                                        "Command" => 'SETSENSORCONFIG',
+                                        "Command" => 'SETINPUTTABLE',
                                         "Data" => "0309080706",
                                     ),
                                 ),
@@ -799,7 +799,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 true,
             ),
-            array(
+            array( // #1
                 array(
                     "Device" => array(
                         "get" => array(
@@ -825,7 +825,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 false,
             ),
-            array(
+            array( // #2
                 array(
                     "Device" => array(
                         "get" => array(
@@ -851,7 +851,48 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 false,
             ),
-            array(
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param array  $mocks        The data to reset the mocks with
+    * @param object $driver       The driver to use
+    * @param int    $sensor       The sensor to write
+    * @param string $sensorConfig The config for the sensor
+    * @param mixed  $callback     The function to call on packet reply
+    * @param array  $config       The configuration array
+    * @param array  $expect       The expected calls in the mock
+    * @param bool   $return       The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataSetInputTable()
+    */
+    public function testSetInputTable(
+        $mocks, $driver, $sensor, $sensorConfig, $callback, $config, $expect, $return
+    ) {
+        $system   = new \HUGnet\DummySystem();
+        $device = new \HUGnet\DummyBase("Device");
+        $system->resetMock($mocks);
+        $devnet = &Network::factory($system, $device, $driver);
+        $ret = $devnet->setInputTable($sensor, $sensorConfig, $callback, $config);
+        $this->assertEquals($return, $ret,  "Return Wrong");
+        $ret = $system->retrieve();
+        foreach ((array)$expect as $obj => $call) {
+            $this->assertEquals($call, $system->retrieve($obj),  "$obj Calls Wrong");
+        }
+
+    }
+    /**
+    * Data provider for testMatcher
+    *
+    * @return array
+    */
+    public static function dataSetOutputTable()
+    {
+        return array(
+            array( // #0
                 array(
                     "Device" => array(
                         "get" => array(
@@ -863,20 +904,12 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "send" => \HUGnet\network\packets\Packet::factory(
                             array(
                                 "From" => 21,
-                                "Reply" => "02030405",
+                                "Reply" => "09080706",
                             )
                         ),
                     ),
-                    "Driver" => array(
-                        "setSensorConfig" => array(
-                            array(
-                                "Command" => "SETSENSORCONFIG",
-                                "Data" => "0102030405",
-                            ),
-                        ),
-                    ),
                 ),
-                new \HUGnet\devices\drivers\DummyDeviceDriver("Driver"),
+                new \HUGnet\DummyBase("Driver"),
                 3,
                 "09080706",
                 null,
@@ -894,8 +927,8 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 array(
                                     array(
                                         "To" => 21,
-                                        "Command" => 'SETSENSORCONFIG',
-                                        "Data" => "0102030405",
+                                        "Command" => 'SETOUTPUTTABLE',
+                                        "Data" => "0309080706",
                                     ),
                                 ),
                                 null,
@@ -905,11 +938,60 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             )
                         ),
                     ),
-                    "Driver" => array(
-                        "setSensorConfig" => array(array(3, "09080706")),
-                    ),
                 ),
                 true,
+            ),
+            array( // #1
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\packets\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => "123456",
+                            )
+                        ),
+                    ),
+                ),
+                new \HUGnet\DummyBase("Driver"),
+                3,
+                "",           // Empty String
+                null,
+                array(),
+                array(
+                ),
+                false,
+            ),
+            array( // #2
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\packets\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => "123456",
+                            )
+                        ),
+                    ),
+                ),
+                new \HUGnet\DummyBase("Driver"),
+                3,
+                array(),  // This is not a string
+                null,
+                array(),
+                array(
+                ),
+                false,
             ),
         );
     }
@@ -927,16 +1009,16 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataSetSensorConfig()
+    * @dataProvider dataSetOutputTable()
     */
-    public function testSetSensorConfig(
+    public function testSetOutputTable(
         $mocks, $driver, $sensor, $sensorConfig, $callback, $config, $expect, $return
     ) {
         $system   = new \HUGnet\DummySystem();
         $device = new \HUGnet\DummyBase("Device");
         $system->resetMock($mocks);
         $devnet = &Network::factory($system, $device, $driver);
-        $ret = $devnet->setSensorConfig($sensor, $sensorConfig, $callback, $config);
+        $ret = $devnet->setOutputTable($sensor, $sensorConfig, $callback, $config);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $system->retrieve();
         foreach ((array)$expect as $obj => $call) {

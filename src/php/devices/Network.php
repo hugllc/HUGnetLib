@@ -237,7 +237,7 @@ class Network
     *
     * @return success or failure of the packet sending
     */
-    public function setSensorConfig(
+    public function setInputTable(
         $sensor, $sensorConfig, $callback = null, $config = array()
     ) {
         if (!is_string($sensorConfig) || (strlen($sensorConfig) == 0)) {
@@ -245,13 +245,43 @@ class Network
         }
         $command = array(
             array(
-                "Command" => "SETSENSORCONFIG",
+                "Command" => "SETINPUTTABLE",
                 "Data" => sprintf("%02X", ($sensor & 0xFF)).$sensorConfig,
             ),
         );
-        if (method_exists($this->_driver, "setSensorConfig")) {
-            $command = $this->_driver->setSensorConfig($sensor, $sensorConfig);
+        $reply = $this->_sendPkt($command, $callback, $config);
+        $data = substr($command[0]["Data"], 2);
+        if (is_object($reply) && is_string($reply->Reply())) {
+            if (strtoupper($reply->reply()) === strtoupper($data)) {
+                return true;
+            }
         }
+        return false;
+    }
+    /**
+    * Gets the configuration for the device in question
+    *
+    * @param int    $sensor       The sensor to read info on
+    * @param string $sensorConfig The string to set the sensor config to
+    * @param string $callback     The name of the function to call when the packet
+    *                   arrives.  If this is not callable, it will block until the
+    *                   packet arrives.
+    * @param array  $config       The network config to use for the packet
+    *
+    * @return success or failure of the packet sending
+    */
+    public function setOutputTable(
+        $sensor, $sensorConfig, $callback = null, $config = array()
+    ) {
+        if (!is_string($sensorConfig) || (strlen($sensorConfig) == 0)) {
+            return false;
+        }
+        $command = array(
+            array(
+                "Command" => "SETOUTPUTTABLE",
+                "Data" => sprintf("%02X", ($sensor & 0xFF)).$sensorConfig,
+            ),
+        );
         $reply = $this->_sendPkt($command, $callback, $config);
         $data = substr($command[0]["Data"], 2);
         if (is_object($reply) && is_string($reply->Reply())) {
@@ -428,19 +458,33 @@ class Network
             return false;
         }
         $this->_system->out("config success", 1);
-        $sensors = $this->_device->get("physicalSensors");
-        for ($i = 0; $i < $sensors; $i++) {
-            $ret = $this->setSensorConfig(
+        $input = (int)$this->_device->get("InputTables");
+        for ($i = 0; $i < $input; $i++) {
+            $ret = $this->setInputTable(
                 $i,
                 $this->_device->sensor($i)->encode(),
                 $callback,
                 $config
             );
             if (!$ret) {
-                $this->_system->out("sensor $i fail", 1);
+                $this->_system->out("inputTable $i fail", 1);
                 return false;
             }
-            $this->_system->out("sensor $i success", 1);
+            $this->_system->out("inputTable $i success", 1);
+        }
+        $output = (int)$this->_device->get("OutputTables");
+        for ($i = 0; $i < $output; $i++) {
+            $ret = $this->setOutputTable(
+                $i,
+                $this->_device->outputTable($i)->encode(),
+                $callback,
+                $config
+            );
+            if (!$ret) {
+                $this->_system->out("outputTable $i fail", 1);
+                return false;
+            }
+            $this->_system->out("outputTable $i success", 1);
         }
         /* This reboots the board */
         $this->_system->out("rebooting", 1);
