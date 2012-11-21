@@ -962,6 +962,68 @@ class DriverTest extends \PHPUnit_Framework_TestCase
         );
         unset($obj);
     }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataProcessTable()
+    {
+        return array(
+            array(
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "id" => 5,
+                        ),
+                        "id" => 5,
+                        "system" => new \HUGnet\DummySystem("System"),
+                    ),
+                ),
+                0,
+                "\HUGnet\devices\Process",
+                array(
+                    array(
+                        array(
+                            "process" => 0,
+                            "dev" => 5,
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $mocks        The configuration to use
+    * @param string $output       The driver to tell it to load
+    * @param string $driverExpect The driver we expect to be loaded
+    * @param int    $expect       The expected sensor id
+    *
+    * @return null
+    *
+    * @dataProvider dataProcessTable
+    */
+    public function testProcessTable(
+        $mocks, $output, $driverExpect, $expect
+    ) {
+        $device  = new \HUGnet\DummyTable("Device");
+        $device->resetMock($mocks);
+        $obj = Driver::factory("DriverTestClass", $device);
+        $sen = $obj->processTable($output);
+        $this->assertTrue(
+            is_a($sen, $driverExpect),
+            "Return is not a ".$driverExpect
+        );
+        $ret = $device->retrieve();
+        $this->assertEquals(
+            $expect,
+            $ret["DeviceProcesses"]["fromAny"],
+            "Wrong sensor returned"
+        );
+        unset($obj);
+    }
 
 }
 /** This is the HUGnet namespace */

@@ -444,6 +444,27 @@ abstract class Driver
         );
         return $obj;
     }
+    /**
+    * This creates the sensor drivers
+    *
+    * @param int $sid The sensor id to get.  They are labaled 0 to sensors
+    *
+    * @return null
+    */
+    public function &processTable($sid)
+    {
+        include_once dirname(__FILE__)."/Process.php";
+        $data = array(
+            "process" => $sid,
+            "dev" => $this->device()->id(),
+        );
+        $system = $this->device()->system();
+        $device = $this->device();
+        $obj = \HUGnet\devices\Process::factory(
+            $system, $data, null, $device
+        );
+        return $obj;
+    }
 }
 
 

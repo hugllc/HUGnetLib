@@ -292,6 +292,39 @@ class Network
         return false;
     }
     /**
+    * Gets the configuration for the device in question
+    *
+    * @param int    $sensor       The sensor to read info on
+    * @param string $sensorConfig The string to set the sensor config to
+    * @param string $callback     The name of the function to call when the packet
+    *                   arrives.  If this is not callable, it will block until the
+    *                   packet arrives.
+    * @param array  $config       The network config to use for the packet
+    *
+    * @return success or failure of the packet sending
+    */
+    public function setProcessTable(
+        $sensor, $sensorConfig, $callback = null, $config = array()
+    ) {
+        if (!is_string($sensorConfig) || (strlen($sensorConfig) == 0)) {
+            return false;
+        }
+        $command = array(
+            array(
+                "Command" => "SETPROCESSTABLE",
+                "Data" => sprintf("%02X", ($sensor & 0xFF)).$sensorConfig,
+            ),
+        );
+        $reply = $this->_sendPkt($command, $callback, $config);
+        $data = substr($command[0]["Data"], 2);
+        if (is_object($reply) && is_string($reply->Reply())) {
+            if (strtoupper($reply->reply()) === strtoupper($data)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    /**
     * Gets the application CRC for the device in question.
     *
     * This only works on devices that have loadable firmware, and only when they are
@@ -485,6 +518,20 @@ class Network
                 return false;
             }
             $this->_system->out("outputTable $i success", 1);
+        }
+        $process = (int)$this->_device->get("ProcessTables");
+        for ($i = 0; $i < $process; $i++) {
+            $ret = $this->setProcessTable(
+                $i,
+                $this->_device->processTable($i)->encode(),
+                $callback,
+                $config
+            );
+            if (!$ret) {
+                $this->_system->out("processTable $i fail", 1);
+                return false;
+            }
+            $this->_system->out("processTable $i success", 1);
         }
         /* This reboots the board */
         $this->_system->out("rebooting", 1);

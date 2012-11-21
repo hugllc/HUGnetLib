@@ -1556,6 +1556,66 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
+    public static function dataProcessTable()
+    {
+        return array(
+            array(
+                array(
+                    "Devices" => array(
+                        "get" => array(
+                            "id" => 5,
+                        ),
+                    ),
+                ),
+                0,
+                "\HUGnet\devices\Process",
+                array(
+                    array(
+                        array(
+                            "process" => 0,
+                            "dev" => 5,
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config       The configuration to use
+    * @param string $sensor       The driver to tell it to load
+    * @param string $driverExpect The driver we expect to be loaded
+    * @param int    $expect       The expected sensor id
+    *
+    * @return null
+    *
+    * @dataProvider dataProcessTable
+    */
+    public function testProcessTable(
+        $config, $sensor, $driverExpect, $expect
+    ) {
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = Device::factory($sys, null);
+        $sen = $obj->processTable($sensor);
+        $this->assertTrue(
+            is_a($sen, $driverExpect),
+            "Return is not a ".$driverExpect
+        );
+        $ret = $sys->retrieve();
+        $this->assertEquals(
+            $expect,
+            $ret["DeviceProcesses"]["fromAny"],
+            "Wrong sensor returned"
+        );
+        unset($obj);
+    }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
     public static function dataChannels()
     {
         return array(
