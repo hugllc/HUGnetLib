@@ -34,9 +34,9 @@
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\outputTable;
+namespace HUGnet\processTable;
 /** This is a required class */
-require_once CODE_BASE.'outputTable/Driver.php';
+require_once CODE_BASE.'processTable/Driver.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
@@ -182,11 +182,11 @@ class DriverTest extends drivers\DriverTestBase
         return array(
             array(
                 "asdf",
-                "HUGnet\outputTable\drivers\EmptyOutput",
+                "HUGnet\processTable\drivers\EmptyProcess",
             ),
             array(
-                "EmptyOutput",
-                "HUGnet\outputTable\drivers\EmptyOutput",
+                "EmptyProcess",
+                "HUGnet\processTable\drivers\EmptyProcess",
             ),
         );
     }
@@ -218,12 +218,12 @@ class DriverTest extends drivers\DriverTestBase
             array(
                 0x41,
                 "DEFAULT",
-                "EmptyOutput",
+                "EmptyProcess",
             ),
             array(
                 0x41,
                 "ADuCPressure",
-                "EmptyOutput",
+                "EmptyProcess",
             ),
         );
     }
@@ -373,7 +373,7 @@ class DriverTest extends drivers\DriverTestBase
             array(
                 0xFF,
                 array(
-                    'DEFAULT' => 'EmptyOutput'
+                    'DEFAULT' => 'EmptyProcess'
                 ),
             ),
         );
@@ -493,7 +493,7 @@ class DriverTest extends drivers\DriverTestBase
     }
 }
 /** This is the HUGnet namespace */
-namespace HUGnet\outputTable\drivers;
+namespace HUGnet\processTable\drivers;
 /**
  * Base driver class for devices.
  *
@@ -510,7 +510,7 @@ namespace HUGnet\outputTable\drivers;
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class DriverTestClass extends \HUGnet\outputTable\Driver
+class DriverTestClass extends \HUGnet\processTable\Driver
 {
     /**
     * This is where the data for the driver is stored.  This array must be

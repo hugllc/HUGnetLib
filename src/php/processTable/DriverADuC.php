@@ -34,7 +34,7 @@
  *
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\outputTable;
+namespace HUGnet\processTable;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our units class */
@@ -92,7 +92,7 @@ abstract class DriverADuC extends Driver
     public static function &factory(
         $driver, &$sensor, $offset = 0, $entry = null, $channel = 0
     ) {
-        $class = '\\HUGnet\\outputTable\\drivers\\'.$driver;
+        $class = '\\HUGnet\\processTable\\drivers\\'.$driver;
         $file = dirname(__FILE__)."/drivers/".$driver.".php";
         if (file_exists($file)) {
             include_once $file;
@@ -101,8 +101,8 @@ abstract class DriverADuC extends Driver
             $obj = new $class($sensor, $offset);
         }
         if (!is_object($obj)) {
-            include_once dirname(__FILE__)."/drivers/EmptyOutput.php";
-            $obj = new \HUGnet\outputTable\drivers\EmptyOutput($sensor);
+            include_once dirname(__FILE__)."/drivers/EmptyProcess.php";
+            $obj = new \HUGnet\processTable\drivers\EmptyProcess($sensor);
         }
         $obj->_entry = $entry;
         $obj->_channel = (int)$channel;
@@ -140,6 +140,27 @@ abstract class DriverADuC extends Driver
             $return = $extra[$index];
         }
         return $return;
+    }
+    /**
+    * Changes an n-bit twos compliment number into a signed number PHP can use
+    *
+    * @param int   $value The incoming number
+    * @param float $bits  The number of bits the incoming number is
+    *
+    * @return int A signed integer for PHP to use
+    */
+    protected function getTwosCompliment($value, $bits = 24)
+    {
+        /* Clear off any excess */
+        $value = (int)($value & (pow(2, $bits) - 1));
+        /* Calculate the top bit */
+        $topBit = pow(2, ($bits - 1));
+        /* Check to see if the top bit is set */
+        if (($value & $topBit) == $topBit) {
+            /* This is a negative number */
+            $value = -(pow(2, $bits) - $value);
+        }
+        return $value;
     }
     /**
     * Compensates for an input and bias resistance.

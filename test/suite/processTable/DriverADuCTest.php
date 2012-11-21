@@ -34,11 +34,11 @@
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\outputTable;
+namespace HUGnet\processTable;
 /** This is a required class */
-require_once CODE_BASE.'outputTable/DriverADuC.php';
+require_once CODE_BASE.'processTable/DriverADuC.php';
 /** This is a required class */
-require_once CODE_BASE.'outputTable/ADuCInputTable.php';
+require_once CODE_BASE.'processTable/ADuCInputTable.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
@@ -76,7 +76,7 @@ class DriverADuCTest extends drivers\DriverTestBase
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
-        $this->o = \HUGnet\outputTable\Driver::factory(
+        $this->o = \HUGnet\processTable\Driver::factory(
             "DriverADuCTestClass", $sensor
         );
     }
@@ -149,6 +149,58 @@ class DriverADuCTest extends drivers\DriverTestBase
                 256210,
             ),
         );
+    }
+    /**
+    * data provider for testNumeric
+    *
+    * @return array
+    */
+    public static function dataGetTwosCompliment()
+    {
+        return array(
+            array(
+                8388608,
+                24,
+                -8388608,
+            ),
+            array(
+                0xFFFFFF,
+                24,
+                -1,
+            ),
+            array(
+                0xFFFFFFFFFFFF,
+                24,
+                -1,
+            ),
+            array(
+                0,
+                24,
+                0,
+            ),
+            array(
+                8388607,
+                24,
+                8388607,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param int $value  The integer to feed to the function
+    * @param int $bits   The number of bits to use
+    * @param int $expect The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataGetTwosCompliment
+    */
+    public function testGetTwosCompliment($value, $bits, $expect)
+    {
+        $val = $this->o->getTwosCompliment($value, $bits);
+        $this->assertSame($expect, $val);
     }
 
     /**
@@ -268,7 +320,7 @@ class DriverADuCTest extends drivers\DriverTestBase
 }
 
 /** This is the HUGnet namespace */
-namespace HUGnet\outputTable\drivers;
+namespace HUGnet\processTable\drivers;
 /**
  * Base driver class for devices.
  *
@@ -285,7 +337,7 @@ namespace HUGnet\outputTable\drivers;
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class DriverADuCTestClass extends \HUGnet\outputTable\DriverADuC
+class DriverADuCTestClass extends \HUGnet\processTable\DriverADuC
 {
     /**
     * This is where the data for the driver is stored.  This array must be
@@ -325,6 +377,18 @@ class DriverADuCTestClass extends \HUGnet\outputTable\DriverADuC
         $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
         return $A;
+    }
+    /**
+    * Changes an n-bit twos compliment number into a signed number PHP can use
+    *
+    * @param int   $value The incoming number
+    * @param float $bits  The number of bits the incoming number is
+    *
+    * @return int A signed integer for PHP to use
+    */
+    public function getTwosCompliment($value, $bits = 24)
+    {
+        return parent::getTwosCompliment($value, $bits);
     }
     /**
     * Compensates for an input and bias resistance.

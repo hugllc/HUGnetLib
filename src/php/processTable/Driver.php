@@ -34,7 +34,7 @@
  *
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\outputTable;
+namespace HUGnet\processTable;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 
@@ -83,7 +83,7 @@ abstract class Driver
     * as the driver class name.
     */
     private static $_drivers = array(
-        "FF:DEFAULT"                 => "EmptyOutput",
+        "FF:DEFAULT"                 => "EmptyProcess",
     );
     /**
     * This is where the correlation between the drivers and the arch is stored.
@@ -139,7 +139,7 @@ abstract class Driver
     */
     public static function &factory($driver, &$sensor)
     {
-        $class = '\\HUGnet\\outputTable\\drivers\\'.$driver;
+        $class = '\\HUGnet\\processTable\\drivers\\'.$driver;
         $file = dirname(__FILE__)."/drivers/".$driver.".php";
         if (file_exists($file)) {
             include_once $file;
@@ -147,8 +147,8 @@ abstract class Driver
         if (class_exists($class)) {
             return new $class($sensor);
         }
-        include_once dirname(__FILE__)."/drivers/EmptyOutput.php";
-        return new \HUGnet\outputTable\drivers\EmptyOutput($sensor);
+        include_once dirname(__FILE__)."/drivers/EmptyProcess.php";
+        return new \HUGnet\processTable\drivers\EmptyProcess($sensor);
     }
     /**
     * Checks to see if a piece of data exists
@@ -217,7 +217,7 @@ abstract class Driver
                 return self::$_drivers[$mask];
             }
         }
-        return "EmptyOutput";
+        return "EmptyProcess";
     }
     /**
     * Returns an array of types that this sensor could be
