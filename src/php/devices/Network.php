@@ -535,11 +535,25 @@ class Network
         }
         /* This reboots the board */
         $this->_system->out("rebooting", 1);
+        $this->reboot();
+        return true;
+
+    }
+    /**
+    * Writes a data buffer to the Flash
+    *
+    * @param string $callback The name of the function to call when the packet
+    *                   arrives.  If this is not callable, it will block until the
+    *                   packet arrives.
+    * @param array  $config   The network config to use for the packet
+    *
+    * @return success or failure of the packet sending
+    */
+    public function reboot()
+    {
         $this->_sendPkt(
             "SETCONFIG", null, array('tries' => 1, "block" => false, "find" => false)
         );
-        return true;
-
     }
     /**
     * Writes a data buffer to the Flash
