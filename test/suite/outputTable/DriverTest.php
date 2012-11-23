@@ -368,7 +368,9 @@ class DriverTest extends drivers\DriverTestBase
             ),
             array(
                 0x01,
-                array(),
+                array(
+                    "DEFAULT" => "ADuCDAC",
+                ),
             ),
             array(
                 0xFF,

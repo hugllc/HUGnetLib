@@ -269,14 +269,14 @@ class OutputTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Table" => array(
                         "get" => array(
-                            "driver" => "EmptyOutput",
+                            "driver" => "ADuCDAC",
                             "id" => 1,
                         ),
                     ),
                 ),
                 new \HUGnet\DummyTable("Table"),
                 "longName",
-                "Empty Output",
+                "Digital to Analog Converter",
             ),
         );
     }
