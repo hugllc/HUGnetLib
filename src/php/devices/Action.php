@@ -207,9 +207,9 @@ class Action
     {
         $input = (int)$this->device->get("InputTables");
         for ($i = 0; $i < $input; $i++) {
-            print "InputTables $i\n";
+            $this->system->out("InputTables $i", 1);
             $ret = $this->send(
-                "READINPUTTABLE", null, array(), sprintf("%02X", $i)
+                "READINPUTTABLE", null, array("find" => false), sprintf("%02X", $i)
             );
             if (is_string($ret->reply())) {
                 $sen = $this->device->sensor($i);
@@ -219,9 +219,9 @@ class Action
         }
         $output = (int)$this->device->get("OutputTables");
         for ($i = 0; $i < $output; $i++) {
-            print "OutputTables $i\n";
+            $this->system->out("OutputTables $i", 1);
             $ret = $this->send(
-                "READOUTPUTTABLE", null, array(), sprintf("%02X", $i)
+                "READOUTPUTTABLE", null, array("find" => false), sprintf("%02X", $i)
             );
             if (is_string($ret->reply())) {
                 $out = $this->device->outputTable($i);
@@ -231,9 +231,9 @@ class Action
         }
         $process = (int)$this->device->get("ProcessTables");
         for ($i = 0; $i < $process; $i++) {
-            print "ProcessTables $i\n";
+            $this->system->out("ProcessTables $i", 1);
             $ret = $this->send(
-                "READPROCESSTABLE", null, array(), sprintf("%02X", $i)
+                "READPROCESSTABLE", null, array("find" => false), sprintf("%02X", $i)
             );
             if (is_string($ret->reply())) {
                 $proc = $this->device->processTable($i);
