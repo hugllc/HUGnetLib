@@ -283,7 +283,9 @@ abstract class Driver
     */
     public function decode($string)
     {
-        $this->sensor()->set("RawSetup", $string);
+        if (is_string($string)) {
+            $this->sensor()->set("RawSetup", $string);
+        }
     }
     /**
     * Encodes this driver as a setup string
@@ -293,7 +295,10 @@ abstract class Driver
     */
     public function encode()
     {
-        $string  = (string)$this->sensor()->get("RawSetup");
+        $string  = $this->sensor()->get("RawSetup");
+        if (!is_string($string)) {
+            $string = "";
+        }
         return $string;
     }
 

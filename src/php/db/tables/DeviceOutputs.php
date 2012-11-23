@@ -161,7 +161,7 @@ class DeviceOutputs extends \HUGnet\db\Table
     );
     /** @var array These are reserved names that shouldn't be set */
     private $_set = array(
-        "RawSetup",
+        "RawSetup", "extra"
     );
     /**
     * This is the constructor

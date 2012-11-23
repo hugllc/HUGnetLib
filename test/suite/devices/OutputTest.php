@@ -594,6 +594,7 @@ class OutputTest extends \PHPUnit_Framework_TestCase
                 array(
                     array("id", 5),
                     array("driver", "EmptyOutput"),
+                    array("RawSetup", "1234"),
                 ),
             ),
             array(

@@ -320,7 +320,7 @@ class DeviceOutputsTest extends TableTestBase
                     "decimals" => 4,
                     "driver" => "asdf",
                     "params" => json_encode(
-                        array("min" => 5, "max" => 15, "extra" => array())
+                        array("extra" => array())
                     ),
                 ),
             ),
