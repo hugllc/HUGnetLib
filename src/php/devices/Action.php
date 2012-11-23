@@ -189,6 +189,7 @@ class Action
                 $this->device->setParam("ConfigFail", 0);
                 $this->device->setParam("ContactFail", 0);
                 $this->device->store();
+                $this->configStuff();
                 return true;
             }
         }
@@ -196,6 +197,50 @@ class Action
         $this->device->setParam("ConfigFail", $fail+1);
         $this->device->store();
         return false;
+    }
+    /**
+    * Gets the config and saves it
+    *
+    * @return string The left over string
+    */
+    protected function configStuff()
+    {
+        $input = (int)$this->device->get("InputTables");
+        for ($i = 0; $i < $input; $i++) {
+            print "InputTables $i\n";
+            $ret = $this->send(
+                "READINPUTTABLE", null, array(), sprintf("%02X", $i)
+            );
+            if (is_string($ret->reply())) {
+                $sen = $this->device->sensor($i);
+                $sen->decode($ret->reply());
+                $sen->store();
+            }
+        }
+        $output = (int)$this->device->get("OutputTables");
+        for ($i = 0; $i < $output; $i++) {
+            print "OutputTables $i\n";
+            $ret = $this->send(
+                "READOUTPUTTABLE", null, array(), sprintf("%02X", $i)
+            );
+            if (is_string($ret->reply())) {
+                $out = $this->device->outputTable($i);
+                $out->decode($ret->reply());
+                $out->store();
+            }
+        }
+        $process = (int)$this->device->get("ProcessTables");
+        for ($i = 0; $i < $process; $i++) {
+            print "ProcessTables $i\n";
+            $ret = $this->send(
+                "READPROCESSTABLE", null, array(), sprintf("%02X", $i)
+            );
+            if (is_string($ret->reply())) {
+                $proc = $this->device->processTable($i);
+                $proc->decode($ret->reply());
+                $proc->store();
+            }
+        }
     }
     /**
     * Polls the device and saves the poll

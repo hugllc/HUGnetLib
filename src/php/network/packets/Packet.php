@@ -125,7 +125,7 @@ final class Packet implements PacketInterface
         "SETPROCESSTABLE" => 0x49,
         "READPROCESSTABLE" => 0x4A,
         "SETINPUTTABLE" => 0x4B,
-        "READPINPUTTABLE" => 0x4C,
+        "READINPUTTABLE" => 0x4C,
         "SETOUTPUTTABLE" => 0x4D,
         "READOUTPUTTABLE" => 0x4E,
         "SETSENSORCONFIG" => 0x4B,
