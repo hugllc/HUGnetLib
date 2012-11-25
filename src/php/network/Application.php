@@ -58,7 +58,7 @@ final class Application
      * This is the max number of unsolicited packets that it will deal with in
      * one go.
      */
-    const MAX_UNSOL = 100;
+    const MAX_UNSOL = 10;
     /** This is our network */
     private $_transport;
     /** This is our system */
@@ -366,6 +366,9 @@ final class Application
     {
         while (is_null($ret = $this->_transport->receive($token))) {
             $this->_main();
+            if ($this->_system->quit()) {
+                break;
+            }
         }
         return $ret;
     }
@@ -376,13 +379,17 @@ final class Application
     */
     private function _main()
     {
-        \HUGnet\System::loopcheck();
         // Continue to do the unsolicited stuff
         $count = 0;
+        // We shouldn't do more than MAX_UNSOL records, or take more than 3 sec
+        $start = time();
         do {
+            if ($this->_system->quit()) {
+                break;
+            }
             $pkts = $this->_transport->unsolicited();
             $ret = $this->_unsolicited($pkts);
-        } while (($count++ < self::MAX_UNSOL) && $ret);
+        } while (($count++ < self::MAX_UNSOL) && $ret && (time() - $start) < 3);
     }
     /**
     * This is the stuff that must get done no matter how we are looping

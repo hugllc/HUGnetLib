@@ -313,6 +313,21 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                             )
                         ),
                     ),
+                    "System" => array(
+                        "quit" => array(
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                        ),
+                    ),
                 ),
                 null,
             ),
@@ -480,6 +495,20 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                         ),
 
                     ),
+                    "System" => array(
+                        "quit" => array(
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                        ),
+                    ),
                 ),
                 null,
             ),
@@ -612,6 +641,12 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                         ),
                         "unsolicited" => array(array()),
                     ),
+                    "System" => array(
+                        "quit" => array(
+                            array(),
+                            array(),
+                        ),
+                    ),
                 ),
                 null,
             ),
@@ -683,6 +718,12 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                             ),
                         ),
                         "unsolicited" => array(array()),
+                    ),
+                    "System" => array(
+                        "quit" => array(
+                            array(),
+                            array(),
+                        ),
                     ),
                 ),
                 null,

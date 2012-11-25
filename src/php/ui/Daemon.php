@@ -209,6 +209,7 @@ class Daemon extends CLI
             $this->out("Got exit signal");
             $this->out("Closing things out.  Please be patient.");
             $this->_loop = false;
+            $this->system()->quit(true);
         }
     }
     /**

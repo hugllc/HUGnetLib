@@ -76,6 +76,8 @@ class System
     private $_network = null;
     /** @var object This is our user interface */
     private $_ui = null;
+    /** @var object This is our user interface */
+    private $_quit = false;
     /** @var array This is our static things that get might want to retrieve */
     private $_fixed = array();
     /** @var array The default configuration */
@@ -304,6 +306,23 @@ class System
         if (function_exists("pcntl_signal_dispatch")) {
             pcntl_signal_dispatch();
         }
+    }
+    /**
+    * Throws an exception
+    *
+    * @return null
+    */
+    public function quit($set = null)
+    {
+        if (is_bool($set)) {
+            $this->_quit = $set;
+        } else {
+            // This dispatches any signals
+            if (function_exists("pcntl_signal_dispatch")) {
+                pcntl_signal_dispatch();
+            }
+        }
+        return $this->_quit;
     }
 
 }
