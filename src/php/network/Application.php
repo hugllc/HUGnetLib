@@ -345,7 +345,9 @@ final class Application
     {
         $this->_main();
         foreach ($this->_queue as $qid => $pkt) {
-            \HUGnet\System::loopcheck();
+            if ($this->_system->quit()) {
+                break;
+            }
             $return = $this->_transport->receive($pkt["token"]);
             if (!is_null($return)) {
                 $this->_receive($qid, $return);
@@ -365,10 +367,10 @@ final class Application
     private function _wait($token)
     {
         while (is_null($ret = $this->_transport->receive($token))) {
-            $this->_main();
             if ($this->_system->quit()) {
                 break;
             }
+            $this->_main();
         }
         return $ret;
     }

@@ -151,7 +151,6 @@ class CLI
     */
     public function main()
     {
-        \HUGnet\System::loopcheck();
         $this->system()->main();
     }
 

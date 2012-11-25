@@ -71,7 +71,6 @@ class Daemon extends CLI
     protected function __construct(&$config)
     {
         parent::__construct($config);
-        \HUGnet\System::loopcheck();
         if (function_exists("pcntl_signal")) {
             pcntl_signal(SIGINT, array($this, "quit"));
         }
@@ -206,10 +205,10 @@ class Daemon extends CLI
     public function quit()
     {
         if ($this->_loop) {
+            $this->system()->quit(true);
             $this->out("Got exit signal");
             $this->out("Closing things out.  Please be patient.");
             $this->_loop = false;
-            $this->system()->quit(true);
         }
     }
     /**

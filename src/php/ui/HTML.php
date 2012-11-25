@@ -155,7 +155,6 @@ class HTML
     */
     public function main()
     {
-        \HUGnet\System::loopcheck();
         $this->system()->main();
     }
     /**

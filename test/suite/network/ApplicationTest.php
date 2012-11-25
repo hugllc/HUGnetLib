@@ -561,7 +561,11 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
             }
             $application->main();
         }
-        $this->assertEquals($expect, $transport->retrieve(), "Calls wrong");
+        $this->assertEquals(
+            $expect["Transport"], $transport->retrieve("Transport"), "Calls wrong"
+        );
+        $ret = $transport->retrieve("System");
+        $this->assertTrue(isset($ret["quit"]), "System->quit not called");
     }
 
     /**

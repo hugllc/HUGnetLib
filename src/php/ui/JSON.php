@@ -73,17 +73,6 @@ class JSON extends HTML
     *
     * @return null
     */
-    public function main()
-    {
-        \HUGnet\System::loopcheck();
-        $this->system()->main();
-    }
-
-    /**
-    * Disconnects from the database
-    *
-    * @return null
-    */
     public function header()
     {
         header('Cache-Control: no-cache, must-revalidate');

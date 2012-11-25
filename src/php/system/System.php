@@ -195,7 +195,7 @@ class System
     */
     public function main()
     {
-        \HUGnet\System::loopcheck();
+        $this->quit();
         // Call it this way so we don't create the object just for this
         if (is_object($this->_network)) {
             $this->_network->main();
@@ -314,7 +314,9 @@ class System
     */
     public function quit($set = null)
     {
-        if (is_bool($set)) {
+        if ($this->_quit) {
+            return true;
+        } else if (is_bool($set)) {
             $this->_quit = $set;
         } else {
             // This dispatches any signals
