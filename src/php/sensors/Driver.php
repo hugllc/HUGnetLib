@@ -560,7 +560,6 @@ abstract class Driver
                 "unitType" => $this->get("unitType"),
                 "dataType" => $this->get("storageType"),
                 "index" => 0,
-                "sensor" => $this->sensor()->id(),
             ),
         );
     }

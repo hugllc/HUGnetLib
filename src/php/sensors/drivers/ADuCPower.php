@@ -347,7 +347,6 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
                 "unitType" => "Current",
                 "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                 "index" => 0,
-                "sensor" => $this->sensor()->id(),
             ),
             array(
                 "decimals" => 6,
@@ -357,7 +356,6 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
                 "unitType" => "Voltage",
                 "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                 "index" => 1,
-                "sensor" => $this->sensor()->id(),
             ),
             array(
                 "decimals" => 6,
@@ -367,7 +365,6 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
                 "unitType" => "Power",
                 "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                 "index" => 2,
-                "sensor" => $this->sensor()->id(),
             ),
             array(
                 "decimals" => 6,
@@ -377,7 +374,6 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
                 "unitType" => "Impedance",
                 "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                 "index" => 3,
-                "sensor" => $this->sensor()->id()
             )
         );
     }

@@ -1177,6 +1177,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                         "sensor"   => 4,
                         "label" => "Test"
+                        "index" => 0,
                     ),
                 ),
             ),

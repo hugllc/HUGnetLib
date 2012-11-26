@@ -204,6 +204,7 @@ class DriverVirtualTest extends drivers\DriverTestBase
                         "storageUnit" => "unknown",
                         "unitType" => "asdf",
                         "dataType" => "raw",
+                        "index" => 0,
                     ),
                 ),
             ),
