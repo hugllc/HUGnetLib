@@ -353,7 +353,7 @@ final class Application
                 $this->_receive($qid, $return);
             }
         }
-        if (is_object($this->_device)) {
+        if (is_object($this->_device) && !$this->_system->quit()) {
             $this->_device->main();
         }
     }
@@ -370,7 +370,7 @@ final class Application
             if ($this->_system->quit()) {
                 break;
             }
-            $this->_main();
+            $ret = $this->_dealWithUnsolicited();
         }
         return $ret;
     }
@@ -389,9 +389,18 @@ final class Application
             if ($this->_system->quit()) {
                 break;
             }
-            $pkts = $this->_transport->unsolicited();
-            $ret = $this->_unsolicited($pkts);
-        } while (($count++ < self::MAX_UNSOL) && $ret && (time() - $start) < 3);
+            $ret = $this->_dealWithUnsolicited();
+        } while (($count++ < self::MAX_UNSOL) && $ret && (time() - $start) < 2);
+    }
+    /**
+    * This is the stuff that must get done no matter how we are looping
+    *
+    * @return null
+    */
+    private function _dealWithUnsolicited()
+    {
+        $pkts = $this->_transport->unsolicited();
+        return $this->_unsolicited($pkts);
     }
     /**
     * This is the stuff that must get done no matter how we are looping
