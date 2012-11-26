@@ -744,6 +744,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 'channel' => 0,
                                 'label' => '',
+                                "index" => 0,
                             ),
                             1 => array(
                                 'decimals' => 2,
@@ -760,6 +761,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 'channel' => 1,
                                 'label' => '',
+                                "index" => 0,
                             ),
                             2 => array(
                                 'decimals' => 2,
@@ -776,6 +778,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 'channel' => 2,
                                 'label' => '',
+                                "index" => 0,
                             ),
                             3 => array(
                                 'decimals' => 2,
@@ -792,6 +795,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 'channel' => 3,
                                 'label' => '',
+                                "index" => 0,
                             ),
                             4 => array(
                                 'decimals' => 2,
@@ -808,6 +812,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 'channel' => 4,
                                 'label' => '',
+                                "index" => 0,
                             ),
                             5 => array(
                                 'decimals' => 2,
@@ -824,6 +829,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 'channel' => 5,
                                 'label' => '',
+                                "index" => 0,
                             ),
                             6 => array(
                                 'decimals' => 2,
@@ -840,6 +846,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 'channel' => 6,
                                 'label' => '',
+                                "index" => 0,
                             ),
                             7 => array(
                                 'decimals' => 2,
@@ -856,6 +863,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 'channel' => 7,
                                 'label' => '',
+                                "index" => 0,
                             ),
                             8 => array(
                                 'decimals' => 2,
@@ -872,6 +880,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 'channel' => 8,
                                 'label' => '',
+                                "index" => 0,
                             ),
                             9 => array(
                                 'decimals' => 2,
@@ -888,6 +897,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 'channel' => 9,
                                 'label' => '',
+                                "index" => 0,
                             ),
                             10 => array(
                                 'decimals' => 2,
@@ -904,6 +914,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 'channel' => 10,
                                 'label' => '',
+                                "index" => 0,
                             ),
                             11 => array(
                                 'decimals' => 2,
@@ -920,6 +931,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 'channel' => 11,
                                 'label' => '',
+                                "index" => 0,
                             ),
                             12 => array(
                                 'decimals' => 2,
@@ -936,6 +948,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 'channel' => 12,
                                 'label' => '',
+                                "index" => 0,
                             ),
                         ),
                     )
@@ -1243,6 +1256,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "unitType" => "Temperature",
                         "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                         "decimals" => 2,
+                        "index" => 0,
                     ),
                     array(
                         "value" => 41.7127,
@@ -1252,6 +1266,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "unitType" => "Temperature",
                         "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                         "decimals" => 2,
+                        "index" => 0,
                     ),
                     array(
                         "value" => 43.843,
@@ -1261,6 +1276,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "unitType" => "Temperature",
                         "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                         "decimals" => 2,
+                        "index" => 0,
                     ),
                     array(
                         "value" => 46.1795,
@@ -1270,6 +1286,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "unitType" => "Temperature",
                         "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                         "decimals" => 2,
+                        "index" => 0,
                     ),
                     array(
                         "value" => 48.7664,
@@ -1279,6 +1296,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "unitType" => "Temperature",
                         "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                         "decimals" => 2,
+                        "index" => 0,
                     ),
                     array(
                         "value" => 51.6594,
@@ -1288,6 +1306,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "unitType" => "Temperature",
                         "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                         "decimals" => 2,
+                        "index" => 0,
                     ),
                     array(
                         "value" => 54.9383,
@@ -1297,6 +1316,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "unitType" => "Temperature",
                         "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                         "decimals" => 2,
+                        "index" => 0,
                     ),
                     array(
                         "value" => 58.717,
@@ -1306,6 +1326,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "unitType" => "Temperature",
                         "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                         "decimals" => 2,
+                        "index" => 0,
                     ),
                     array(
                         "value" => 63.1656,
@@ -1315,6 +1336,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "unitType" => "Temperature",
                         "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                         "decimals" => 2,
+                        "index" => 0,
                     ),
                     array(
                         "value" => null,
@@ -1324,6 +1346,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "unitType" => "Temperature",
                         "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                         "decimals" => 2,
+                        "index" => 0,
                     ),
                     array(
                         "value" => null,
@@ -1333,6 +1356,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "unitType" => "Temperature",
                         "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                         "decimals" => 2,
+                        "index" => 0,
                     ),
                     array(
                         "value" => null,
@@ -1342,6 +1366,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "unitType" => "Temperature",
                         "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                         "decimals" => 2,
+                        "index" => 0,
                     ),
                     array(
                         "value" => null,
@@ -1351,6 +1376,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "unitType" => "Temperature",
                         "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
                         "decimals" => 2,
+                        "index" => 0,
                     ),
                 ),
             ),
