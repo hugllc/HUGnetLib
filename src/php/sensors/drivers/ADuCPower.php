@@ -114,6 +114,33 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
     /**
     * Changes a raw reading into a output value
     *
+    * @param float $Va The value to reverse
+    *
+    * @return mixed The value in whatever the units are in the sensor
+    *
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    protected function getRawVoltage($Va)
+    {
+        if (is_null($Va)) {
+            return null;
+        }
+        $Am   = pow(2, 23);
+        $Vref  = $this->getExtra(0);
+        $Rin   = $this->getExtra(2);
+        $Rbias = $this->getExtra(3);
+
+        $A = ($Va / $Vref) * $Am;
+        $Amod = $this->inputBiasCompensation($A, $Rin, $Rbias);
+        if ($Amod != 0) {
+            $A = $A * ($A / $Amod);
+        }
+        $A = $A * $this->gain();
+        return round($A);
+    }
+    /**
+    * Changes a raw reading into a output value
+    *
     * @param int   $A      Output of the A to D converter
     * @param float $deltaT The time delta in seconds between this record
     * @param array &$data  The data from the other sensors that were crunched
@@ -147,6 +174,37 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
     /**
     * Changes a raw reading into a output value
     *
+    * @param float $Va The value to reverse
+    *
+    * @return mixed The value in whatever the units are in the sensor
+    *
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    protected function getRawCurrent($I)
+    {
+        if (is_null($I)) {
+            return null;
+        }
+        $Am   = pow(2, 23);
+        $Vref  = $this->getExtra(0);
+        $R     = $this->getExtra(1);
+        $Rin   = $this->getExtra(4);
+        $Rbias = $this->getExtra(5);
+        if ($R == 0) {
+            return null;
+        }
+        $Va = $I * $R;
+        $A = ($Va / $Vref) * $Am;
+        $Amod = $this->inputBiasCompensation($A, $Rin, $Rbias);
+        if ($Amod != 0) {
+            $A = $A * ($A / $Amod);
+        }
+        $A = $A * $this->gain();
+        return round($A);
+    }
+    /**
+    * Changes a raw reading into a output value
+    *
     * @param float $deltaT The time delta in seconds between this record
     * @param array &$data  The data from the other sensors that were crunched
     * @param mixed $prev   The previous value for this sensor
@@ -165,6 +223,19 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
         }
         $P = $I * $V;
         return round($P, $this->get("maxDecimals"));
+    }
+    /**
+    * Changes a raw reading into a output value
+    *
+    * @param float $Va The value to reverse
+    *
+    * @return mixed The value in whatever the units are in the sensor
+    *
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    protected function getRawPower($P)
+    {
+        return null;
     }
     /**
     * Changes a raw reading into a output value
@@ -188,6 +259,19 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
         }
         $R = $V / $I;
         return round($R, $this->get("maxDecimals"));
+    }
+    /**
+    * Changes a raw reading into a output value
+    *
+    * @param float $Va The value to reverse
+    *
+    * @return mixed The value in whatever the units are in the sensor
+    *
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    protected function getRawImpedance($R)
+    {
+        return null;
     }
     /**
     * Gets the direction from a direction sensor made out of a POT.
@@ -222,6 +306,32 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
         return $ret;
     }
     /**
+    * Gets the direction from a direction sensor made out of a POT.
+    *
+    * @param array $data The data to use
+    *
+    * @return float The direction in degrees
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    */
+    public function encodeData($data)
+    {
+        $return = "";
+        if (is_array($data) && is_array($data[0]) && isset($data[0]['value'])) {
+            $return .= $this->intToStr($this->getRawCurrent($data[0]['value']));
+        }
+        if (is_array($data) && is_array($data[1]) && isset($data[1]['value'])) {
+            $return .= $this->intToStr($this->getRawVoltage($data[1]['value']));
+        }
+        if (is_array($data) && is_array($data[2]) && isset($data[2]['value'])) {
+            $return .= $this->intToStr($this->getRawPower($data[2]['value']));
+        }
+        if (is_array($data) && is_array($data[3]) && isset($data[3]['value'])) {
+            $return .= $this->intToStr($this->getRawImpedance($data[3]['value']));
+        }
+        return $return;
+    }
+    /**
     * This builds the class from a setup string
     *
     * @return Array of channel information
@@ -236,6 +346,8 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
                 "storageUnit" => "A",
                 "unitType" => "Current",
                 "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
+                "index" => 0,
+                "sensor" => $this->sensor()->id(),
             ),
             array(
                 "decimals" => 6,
@@ -244,6 +356,8 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
                 "storageUnit" => "V",
                 "unitType" => "Voltage",
                 "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
+                "index" => 1,
+                "sensor" => $this->sensor()->id(),
             ),
             array(
                 "decimals" => 6,
@@ -252,6 +366,8 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
                 "storageUnit" => "W",
                 "unitType" => "Power",
                 "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
+                "index" => 2,
+                "sensor" => $this->sensor()->id(),
             ),
             array(
                 "decimals" => 6,
@@ -260,6 +376,8 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
                 "storageUnit" => "Ohms",
                 "unitType" => "Impedance",
                 "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
+                "index" => 3,
+                "sensor" => $this->sensor()->id()
             )
         );
     }
