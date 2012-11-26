@@ -648,7 +648,6 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                     "System" => array(
                         "quit" => array(
                             array(),
-                            array(),
                         ),
                     ),
                 ),
@@ -725,7 +724,6 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                     ),
                     "System" => array(
                         "quit" => array(
-                            array(),
                             array(),
                         ),
                     ),
