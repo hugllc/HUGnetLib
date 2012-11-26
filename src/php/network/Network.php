@@ -169,9 +169,9 @@ final class Network
         if ((count($ifaces) > 1) && $this->_config["forward"]) {
             $fto = array_diff($ifaces, array($from, $this->_local));
             \HUGnet\VPrint::out(
-                "Forwarding to ".implode(", ", $fto)
+                "Forwarding from $from to ".implode(", ", $fto)
                 ." of (".implode(", ", $ifaces).")",
-                7
+                3
             );
             $this->_send($pkt, $fto);
         }

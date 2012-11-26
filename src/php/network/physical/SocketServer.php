@@ -294,6 +294,7 @@ final class SocketServer
         for ($key = 0; $key < $this->_maxClients; $key++) {
             if (is_null($this->_clients[$key]['socket'])) {
                 $this->_clients[$key]['socket'] = @socket_accept($this->_socket);
+                @socket_set_nonblock($this->_clients[$key]['socket']);
                 break;
             }
         }
