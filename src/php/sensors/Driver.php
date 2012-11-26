@@ -390,6 +390,19 @@ abstract class Driver
         return $A;
     }
     /**
+    * Changes a raw reading into a output value
+    *
+    * @param int $value The value to get
+    *
+    * @return mixed The value in whatever the units are in the sensor
+    *
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function getRaw($value)
+    {
+        return $value;
+    }
+    /**
     * Takes in a raw string from a sensor and makes an int out it
     *
     * The sensor data is stored little-endian, so it just takes that and adds
@@ -413,6 +426,28 @@ abstract class Driver
         foreach ($bytes as $b) {
             $return += hexdec($b) << $shift;
             $shift += 8;
+        }
+        return $return;
+    }
+    /**
+    * Takes in a raw string from a sensor and makes an int out it
+    *
+    * The sensor data is stored little-endian, so it just takes that and adds
+    * the bytes together.
+    *
+    * @param int $value the value to convert to a string
+    *
+    * @return int
+    */
+    protected function intToStr($value)
+    {
+        if (is_null($value)) {
+            return "";
+        }
+        $size = $this->get("inputSize");
+        $return = "";
+        for ($i = 0; $i < $size; $i++) {
+            $return .= sprintf("%02X", ($value >> (8 * $i)) & 0xFF);
         }
         return $return;
     }
@@ -444,6 +479,25 @@ abstract class Driver
             );
         }
         return $ret;
+    }
+    /**
+    * Gets the direction from a direction sensor made out of a POT.
+    *
+    * @param array $data The data to use
+    *
+    * @return float The direction in degrees
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    */
+    public function encodeData($data)
+    {
+        $value = 0;
+        if (is_array($data) && is_array($data[0]) && isset($data[0]['value'])) {
+            $value = $this->getRaw(
+                $data[0]['value']
+            );
+        }
+        return $this->intToStr($value);
     }
     /**
     * This makes a line of two ordered pairs, then puts $A on that line
@@ -505,6 +559,8 @@ abstract class Driver
                 "storageUnit" => $this->get("storageUnit"),
                 "unitType" => $this->get("unitType"),
                 "dataType" => $this->get("storageType"),
+                "index" => 0,
+                "sensor" => $this->sensor()->id(),
             ),
         );
     }

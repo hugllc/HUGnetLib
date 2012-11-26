@@ -266,6 +266,9 @@ class ADuCInputTable extends \HUGnet\sensors\Driver
             (array)$this->_driver(0)->channels(),
             (array)$this->_driver(1)->channels()
         );
+        if (is_array($ret[1])) {
+            $ret[1]["index"] = 1;
+        }
         return $ret;
     }
     /**
