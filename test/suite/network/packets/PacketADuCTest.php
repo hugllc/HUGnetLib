@@ -142,6 +142,7 @@ class PacketADuCTest extends \PHPUnit_Framework_TestCase
                     "Address" => 0x11223344,
                     "Command" => 0x50,
                     "Data" => array(0x01,0x02,0x03,0x04),
+                    "Iface" => "asdf",
                 ),
                 array(
                     "Address" => "11223344",
@@ -149,6 +150,7 @@ class PacketADuCTest extends \PHPUnit_Framework_TestCase
                     "Data" => "01020304",
                     "Length" => "09",
                     "Type" => "PROTECT",
+                    "Iface" => "asdf",
                 ),
             ),
             array( // #5 Run

@@ -189,6 +189,7 @@ class PacketTest extends \PHPUnit_Framework_TestCase
                     "From" => "20",
                     "Command" => "01",
                     "Data" => "",
+                    "Iface" => "asdf",
                 ),
                 array(
                     "To" => "000ABC",
@@ -199,6 +200,7 @@ class PacketTest extends \PHPUnit_Framework_TestCase
                     "Checksum" => "97",
                     "Type" => "REPLY",
                     "Extra" => "",
+                    "Iface" => "asdf",
                 ),
             ),
         );

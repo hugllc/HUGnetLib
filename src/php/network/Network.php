@@ -63,7 +63,7 @@ final class Network
     /** Read buffer */
     private $_read = array();
     /** Read buffer */
-    private $_local = "Local";
+    private $_local = "lo";
     /** Route Buffer */
     private $_routes = array();
     /** This is where we store our config */
@@ -227,7 +227,6 @@ final class Network
         ) {
             $this->_config["ifaces"] = array();
             if ($this->_config["noLocal"] != true) {
-                $this->_local = "Local".md5(mt_rand(0x10, 0xFFFF));
                 $this->_config[$this->_local] = array(
                     "driver" => "Local",
                     "name" => $this->_local,
@@ -298,6 +297,8 @@ final class Network
             if (isset($this->_read[$key]) && (strlen($this->_read[$key]) > 0)) {
                 $pkt = packets\Packet::factory($this->_read[$key]);
                 if ($pkt->isValid() === true) {
+                    // Set the interface
+                    $pkt->iface($key);
                     // This sets the buffer to the left over characters
                     $this->_read[$key] = $pkt->extra();
                     $this->_setRoute($pkt, $key);

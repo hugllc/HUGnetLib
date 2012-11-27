@@ -102,6 +102,8 @@ final class Packet implements PacketInterface
     private $_checksum;
     /** Extra string at the end of the packet  */
     private $_extra;
+    /** The interface associated with this packet */
+    private $_iface;
     /** This is where we keep our reply  */
     private $_reply = null;
     /** This is says if we got a whole packet. Default to true */
@@ -396,6 +398,20 @@ final class Packet implements PacketInterface
             $this->_extra = $value;
         }
         return (string)$this->_extra;
+    }
+    /**
+    * Sets and/or returns who the packet is to
+    *
+    * @param mixed $value The value to set this to.
+    *
+    * @return string (6 chars) Returns the to value
+    */
+    public function iface($value = null)
+    {
+        if (is_string($value)) {
+            $this->_iface = trim($value);
+        }
+        return $this->_iface;
     }
     /**
     * Returns the packet length

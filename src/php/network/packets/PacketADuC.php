@@ -95,6 +95,8 @@ final class PacketADuC implements PacketInterface
     private $_checksum;
     /** Extra string at the end of the packet  */
     private $_extra;
+    /** The interface associated with this packet  */
+    private $_iface;
     /** This is where we keep our reply  */
     private $_reply = null;
     /** This is says if we got a whole packet. Default to true */
@@ -331,6 +333,20 @@ final class PacketADuC implements PacketInterface
     public function address($value = null)
     {
         return sprintf("%08X", $this->_setField("_to", $value));
+    }
+    /**
+    * Sets and/or returns the interface associated with this pacekt
+    *
+    * @param mixed $value The value to set this to.
+    *
+    * @return string (8 chars) Returns the to value
+    */
+    public function iface($value = null)
+    {
+        if (is_string($value)) {
+            $this->_iface = trim($value);
+        }
+        return $this->_iface;
     }
     /**
     * Sets and/or returns the from
