@@ -96,5 +96,13 @@ interface PacketInterface
     * @return array The modified confiruation array
     */
     public function config($config = array());
+    /**
+    * Sets and/or returns the interface the packet arrived on
+    *
+    * @param mixed $value The value to set this to.
+    *
+    * @return string Returns the value it is set to
+    */
+    public function iface($value = null);
 
 }

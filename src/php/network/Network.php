@@ -63,7 +63,7 @@ final class Network
     /** Read buffer */
     private $_read = array();
     /** Read buffer */
-    private $_local = "Local";
+    private $_local = "lo";
     /** Route Buffer */
     private $_routes = array();
     /** This is where we store our config */
@@ -158,18 +158,17 @@ final class Network
     /**
     * Sends out a packet
     *
-    * @param object $pkt  The packet to send out
-    * @param string $from The socket this packet is from
+    * @param object $pkt The packet to send out
     *
     * @return null
     */
-    private function _forward($pkt, $from)
+    private function _forward($pkt)
     {
         $ifaces = $this->_ifaces();
         if ((count($ifaces) > 1) && $this->_config["forward"]) {
-            $fto = array_diff($ifaces, array($from, $this->_local));
+            $fto = array_diff($ifaces, array($pkt->iface(), $this->_local));
             \HUGnet\VPrint::out(
-                "Forwarding from $from to ".implode(", ", $fto)
+                "Forwarding from ".$pkt->iface()." to ".implode(", ", $fto)
                 ." of (".implode(", ", $ifaces).")",
                 3
             );
@@ -180,15 +179,14 @@ final class Network
     /**
     * Sends out a packet
     *
-    * @param object &$pkt  The packet to send out
-    * @param string $iface The interface to set the route to
+    * @param object &$pkt The packet to send out
     *
     * @return bool true on success, false on failure
     */
-    private function _setRoute(&$pkt, $iface)
+    private function _setRoute(&$pkt)
     {
         if (is_object($pkt)) {
-            $this->_routes[$pkt->from()]["socket"] = $iface;
+            $this->_routes[$pkt->from()]["socket"] = $pkt->iface();
             $this->_routes[$pkt->from()]["ttl"] = self::ROUTE_TIME_TO_LIVE;
         }
     }
@@ -227,7 +225,6 @@ final class Network
         ) {
             $this->_config["ifaces"] = array();
             if ($this->_config["noLocal"] != true) {
-                $this->_local = "Local".md5(mt_rand(0x10, 0xFFFF));
                 $this->_config[$this->_local] = array(
                     "driver" => "Local",
                     "name" => $this->_local,
@@ -298,10 +295,12 @@ final class Network
             if (isset($this->_read[$key]) && (strlen($this->_read[$key]) > 0)) {
                 $pkt = packets\Packet::factory($this->_read[$key]);
                 if ($pkt->isValid() === true) {
+                    // Set the interface
+                    $pkt->iface($key);
                     // This sets the buffer to the left over characters
                     $this->_read[$key] = $pkt->extra();
-                    $this->_setRoute($pkt, $key);
-                    $this->_forward($pkt, $key);
+                    $this->_setRoute($pkt);
+                    $this->_forward($pkt);
                     return $pkt;
                 } else if ($pkt->isValid() === false) {
                     // Bad packet, remove it from the buffer

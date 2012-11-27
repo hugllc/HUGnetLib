@@ -147,10 +147,11 @@ class Route extends \HUGnet\ui\Daemon
     {
         if (is_object($pkt)) {
             print date("Y-m-d H:i:s");
+            print " ".$pkt->Iface();
             print " From: ".$pkt->From();
             print " -> To: ".$pkt->To();
-            print "  Command: ".$pkt->Command();
-            print "  Type: ".$pkt->Type();
+            print " Command: ".$pkt->Command();
+            print " Type: ".$pkt->Type();
             print "\r\n";
             $data = $pkt->Data();
             if (!empty($data)) {

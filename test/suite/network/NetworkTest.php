@@ -42,6 +42,8 @@ require_once CODE_BASE.'network/packets/Packet.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
+require_once CODE_BASE.'util/VPrint.php';
+/** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummySocket.php';
 /**
  * Test class for HUGnetDB.
@@ -157,6 +159,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             "To" => 0x000020,
                             "Command" => 0x01,
                             "Data" => "0102030405060708090A0B0C0D0E0F",
+                            "Iface" => "default",
                         )
                     ),
                 ),
@@ -394,6 +397,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             "To" => 0x000020,
                             "Command" => 0x01,
                             "Data" => "0102030405060708090A0B0C0D0E0F",
+                            "Iface" => "default",
                         )
                     ),
                     packets\Packet::factory(
@@ -402,6 +406,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             "To" => 0x000020,
                             "Command" => 0x01,
                             "Data" => "0102030405060708090A0B0C0D0E0F",
+                            "Iface" => "nondefault",
                         )
                     ),
                 ),
@@ -506,6 +511,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             "To" => 0x000020,
                             "Command" => 0x01,
                             "Data" => "0102030405060708090A0B0C0D0E0F",
+                            "Iface" => "default",
                         )
                     ),
                     packets\Packet::factory(
@@ -514,6 +520,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             "To" => 0x000021,
                             "Command" => 0x01,
                             "Data" => "0102030405060708090A0B0C0D0E0F",
+                            "Iface" => "default2",
                         )
                     ),
                 ),
@@ -575,6 +582,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             "To" => 0x000020,
                             "Command" => 0x01,
                             "Data" => "0102030405060708090A0B0C0D0E0F",
+                            "Iface" => "default",
                         )
                     ),
                 ),
@@ -672,6 +680,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ."708090A0B0C0D0E0F505A5A5A010000201234590F0102030"
                                 ."405060708090A0B0C0D0E0F515A5A5A0100002012345A0F0"
                                 ."102030405060708090A0B0C0D0E0F52",
+                            "Iface" => "default",
                         )
                     ),
                     packets\Packet::factory(
@@ -684,6 +693,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ."708090A0B0C0D0E0F505A5A5A010000201234590F0102030"
                                 ."405060708090A0B0C0D0E0F515A5A5A0100002012345A0F0"
                                 ."102030405060708090A0B0C0D0E0F52",
+                            "Iface" => "default",
                         )
                     ),
                     packets\Packet::factory(
@@ -695,6 +705,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             "Extra" => "5A5A5A010000201234590F0102030"
                                 ."405060708090A0B0C0D0E0F515A5A5A0100002012345A0F0"
                                 ."102030405060708090A0B0C0D0E0F52",
+                            "Iface" => "default",
                         )
                     ),
                     packets\Packet::factory(
@@ -705,6 +716,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             "Data" => "0102030405060708090A0B0C0D0E0F",
                             "Extra" => "5A5A5A0100002012345A0F0"
                                 ."102030405060708090A0B0C0D0E0F52",
+                            "Iface" => "default",
                         )
                     ),
                     packets\Packet::factory(
@@ -714,6 +726,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             "Command" => 0x01,
                             "Data" => "0102030405060708090A0B0C0D0E0F",
                             "Extra" => "",
+                            "Iface" => "default",
                         )
                     ),
                     false,
@@ -761,6 +774,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             "From" => 0x000020,
                             "Command" => 0x55,
                             "Data" => "",
+                            "Iface" => "lo",
                         )
                     ),
                 ),
