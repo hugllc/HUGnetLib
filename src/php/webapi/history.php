@@ -87,14 +87,16 @@ default:
 $table->sqlLimit = $limit;
 $table->sqlOrderBy = "Date ".$order;
 $run = $table->selectInto($where, $data);
+$channels = $device->channels();
 
 $ret = array();
 while ($run) {
-    $ret[] = $table->toArray(false);
+    $data = $table->toArray(false);
+    $channels->convert($data);
+    $ret[] = $data;
     $run   = $table->nextInto();
 }
 if (strtoupper($format) === "CSV") {
-    $channels = $device->channels();
     $chan = $channels->toArray();
     $out = "";
     $sep = ",";

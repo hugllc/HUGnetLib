@@ -39,6 +39,8 @@ namespace HUGnet;
 require_once CODE_BASE.'system/Channels.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
+/** This is a required class */
+require_once CODE_BASE.'channels/Driver.php';
 /** This is the dummy table container */
 require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
 /** This is the dummy table container */
@@ -165,12 +167,69 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
+                    "Device" => array(
+                        "get" => array(
+                            "totalSensors" => 3,
+                            "channels" => array(
+                                array(
+                                    "units" => "bar",
+                                    "decimals" => 4,
+                                ),
+                                array(
+                                    "units" => "%",
+                                    "decimals" => 4,
+                                ),
+                                array(
+                                    "units" => "%",
+                                    "decimals" => 4,
+                                ),
+                            ),
+                        ),
+                        "sensor" => array(
+                            "0" => new \HUGnet\DummyTable("Sensor0"),
+                            "1" => new \HUGnet\DummyTable("Sensor1"),
+                            "2" => new \HUGnet\DummyTable("Sensor2"),
+                        ),
+                    ),
+                    "Sensor0" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Pressure",
+                                "storageUnit" => "psi",
+                                "storageType" => \HUGnet\channels\Driver::TYPE_RAW,
+                            ),
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Percent",
+                                "storageUnit" => "decimal",
+                                "storageType" => \HUGnet\channels\Driver::TYPE_RAW,
+                            ),
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Percent",
+                                "storageUnit" => "decimal",
+                                "storageType" => \HUGnet\channels\Driver::TYPE_RAW,
+                            ),
+                        ),
+                    ),
                 ),
                 array(
+                    "converted" => false,
+                    "Data0" => 14.5037744,
+                    "Data1" => 0.20,
+                    "Data2" => null,
                 ),
                 array(
-                ),
-                array(
+                    "converted" => true,
+                    "Data0" => 1,
+                    "Data1" => 20.0,
+                    "Data2" => null,
                 ),
             ),
         );
@@ -193,8 +252,8 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
         $dev = new DummyTable("Device");
         $sys->resetMock($config);
         $obj = Channels::factory($sys, $dev);
-        $ret = $obj->convert($record);
-        $this->assertEquals($expect, $ret);
+        $obj->convert($record);
+        $this->assertEquals($expect, $record);
         unset($obj);
     }
     /**

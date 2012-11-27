@@ -130,13 +130,28 @@ class Channels
     /**
     * Throws an exception
     *
-    * @param array $record The record to convert
+    * @param array &$record The record to convert
     *
     * @return null
     */
-    public function convert($record)
+    public function convert(&$record)
     {
-        return $record;
+        if ($record["converted"]) {
+            return;
+        }
+        foreach (array_keys($this->_channels) as $chan) {
+            $data = $record["Data".$chan];
+            $this->units($chan)->convert(
+                $data,
+                $this->_channels[$chan]["units"],
+                $this->_channels[$chan]["storageUnit"],
+                $this->_channels[$chan]["storageType"]
+            );
+            $record["Data".$chan] = round(
+                $data, $this->_channels[$chan]['decimals']
+            );
+        }
+        $record["converted"] = true;
     }
     /**
     * This function gives us access to the table class

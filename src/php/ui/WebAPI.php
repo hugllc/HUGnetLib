@@ -412,8 +412,13 @@ class WebAPI extends HTML
             $extraData
         );
         $ret = array();
+        $channels = $this->system()->device($did)->channels();
         while ($res) {
-            $ret[] = $hist->toArray(true);
+            $stuff = $hist->toArray(true);
+            if (trim(strtolower($data["type"])) != "raw") {
+                $channels->convert($stuff);
+            }
+            $ret[] = $stuff;
             $res = $hist->nextInto();
         }
         $format = trim(strtoupper((string)$this->args()->get("format")));

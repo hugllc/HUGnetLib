@@ -200,6 +200,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "toArray" => array(
                             "Real" => "array",
                         ),
+                        "channels" => new \HUGnet\DummyBase("Channels"),
                     ),
                 ),
                 false,
@@ -233,6 +234,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     "Device" => array(
                         "load" => true,
                         "toArray" => "Test",
+                        "channels" => new \HUGnet\DummyBase("Channels"),
                     ),
                 ),
                 false,
@@ -274,6 +276,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "webAPI" => array(
                             "Real" => "array",
                         ),
+                        "channels" => new \HUGnet\DummyBase("Channels"),
                     ),
                 ),
                 false,
@@ -369,6 +372,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     ),
                     "Device" => array(
                         "sensor" => new \HUGnet\DummyBase("Sensor"),
+                        "channels" => new \HUGnet\DummyBase("Channels"),
                     ),
                     "Sensor" => array(
                         "load" => true,
@@ -410,6 +414,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     ),
                     "Device" => array(
                         "sensor" => new \HUGnet\DummyBase("Sensor"),
+                        "channels" => new \HUGnet\DummyBase("Channels"),
                     ),
                     "Sensor" => array(
                         "load" => true,
@@ -663,6 +668,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     ),
                     "Device" => array(
                         "historyFactory" => new \HUGnet\DummyTable("History"),
+                        "channels" => new \HUGnet\DummyBase("Channels"),
                     ),
                     "History" => array(
                         "isEmpty" => false,
@@ -712,6 +718,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     ),
                     "Device" => array(
                         "historyFactory" => new \HUGnet\DummyTable("History"),
+                        "channels" => new \HUGnet\DummyBase("Channels"),
                     ),
                     "History" => array(
                         "isEmpty" => false,
@@ -763,6 +770,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "device" => new \HUGnet\DummyTable("Device"),
                     ),
                     "Device" => array(
+                        "channels" => new \HUGnet\DummyBase("Channels"),
                         "historyFactory" => new \HUGnet\DummyTable("History"),
                     ),
                     "History" => array(
@@ -773,6 +781,8 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "insertRow" => true,
                         "getPeriod" => true,
                         "nextInto" => false,
+                    ),
+                    "Channels" => array(
                     ),
                 ),
                 false,
@@ -792,6 +802,15 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         ),
                         "nextInto" => array(
                             array(null)
+                        ),
+                    ),
+                    "Channels" => array(
+                        "convert" => array(
+                            array(
+                                array(
+                                    "Real" => "array",
+                                ),
+                            ),
                         ),
                     ),
                 ),
@@ -815,6 +834,11 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "config" => array(
                             "verbose" => 0,
                         ),
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "channels" => new \HUGnet\DummyBase("Channels"),
+                        "historyFactory" => new \HUGnet\DummyTable("History"),
                     ),
                     "RawHistory" => array(
                         "isEmpty" => false,
@@ -844,6 +868,8 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "nextInto" => array(
                             array(null)
                         ),
+                    ),
+                    "Channels" => array(
                     ),
                 ),
             ),
@@ -1115,6 +1141,22 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                             array(null)
                         ),
                     ),
+                    "Channels" => array(
+                        "convert" => array(
+                            array(
+                                array(
+                                    'Date' => 1352689531,
+                                    'Data0' => 1,
+                                    'Data1' => 2,
+                                    'Data2' => 3,
+                                ),
+                            ),
+                        ),
+                        "toArray" => array(
+                            array(
+                            ),
+                        ),
+                    ),
                 ),
             ),
             array(  // #21
@@ -1175,6 +1217,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "webAPI" => array(
                             "Real" => "array",
                         ),
+                        "channels" => new \HUGnet\DummyBase("Channels"),
                     ),
                 ),
                 true,
@@ -1282,6 +1325,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     ),
                     "Device" => array(
                         "historyFactory" => new \HUGnet\DummyTable("History"),
+                        "channels" => new \HUGnet\DummyBase("Channels"),
                     ),
                     "History" => array(
                         "isEmpty" => false,
