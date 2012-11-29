@@ -69,6 +69,7 @@ Currently E_NOTICE must be set to OFF in report_errors in the php.ini file.
 ## Contributing changes
 
 _Any contributions need to be tested in the unit testing_
+
 _All unit tests MUST pass for contributions to be even considered_
 
 Changes can be contributed by either:
