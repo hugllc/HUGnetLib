@@ -63,6 +63,8 @@ created by running 'ant deb'.  The debs will be in the ./rel directory.
 
 The unit tests are the best bet for troubleshooting.
 
+Currently E_NOTICE must be set to OFF in report_errors in the php.ini file.
+
 ## Contributing changes
 
 _Any contributions need to be tested in the unit testing_
