@@ -34,18 +34,19 @@ For example, in Ubuntu, you could create the following symbolic links:
 - /var/www/HUGnetLib -> /your/code/path/HUGnetLib.git/src/webapi/html
 
 ## Testing
+### Unit Testing
 This project uses phpunit (http://phpunit.de) to run unit testing.  There are currently
 thousands of tests that run in about 2 minutes.  All of the tests reside in the
 test/suite/ directory.  Every file in that directory should stand on its own.
 They can all be called separately with phpunit.
 
-### Running all of the tests
+#### Running all of the tests
 Calling phpunit with no arguments in the root directory of the project will cause all of
 the tests to be run.
 
 $ phpunit
 
-### Running one or more sets of tests
+#### Running one or more sets of tests
 Any directory under test/suite/ can be referenced to only run those tests.  The following
 would only test the database code:
 
