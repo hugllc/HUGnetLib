@@ -13,3 +13,5 @@ src/webapi/html/contrib.js
 src/webapi/html/hugnet.min.js
 src/webapi/html/contrib.min.js
 *.gz
+*.kdev4
+.kdev4

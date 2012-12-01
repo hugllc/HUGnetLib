@@ -37,8 +37,6 @@
 namespace HUGnet\base;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
-/** This is for the base class */
-require_once dirname(__FILE__)."/../interfaces/HUGnetContainerInterface.php";
 
 /**
  * This is a generic, extensible container class

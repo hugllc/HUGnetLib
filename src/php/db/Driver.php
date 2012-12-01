@@ -38,8 +38,6 @@ namespace HUGnet\db;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** require our base class */
-require_once dirname(__FILE__)."/../interfaces/HUGnetDBDriverInterface.php";
-/** require our base class */
 require_once dirname(__FILE__)."/Connection.php";
 /**
  * Base class for all database work
@@ -59,7 +57,7 @@ require_once dirname(__FILE__)."/Connection.php";
  * @version    Release: 0.9.7
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-abstract class Driver implements \HUGnetDBDriverInterface
+abstract class Driver
 {
     /** @var int This is where we store the limit */
     public $limit = 0;
