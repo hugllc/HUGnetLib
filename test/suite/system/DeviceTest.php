@@ -1970,6 +1970,68 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $obj->setUnits($data);
         $this->assertEquals($expect, $data);
     }
+    /**
+    * data provider for testGetHardwareTypes
+    *
+    * @return array
+    */
+    public static function dataGetHardwareTypes()
+    {
+        return array(
+            array(
+                array(
+                ),
+                1,
+                array('HWPartNum', 'Parameters', 'Obsolete', 'Notes'),
+                array(
+                    "ARCH", "CPU", "VCC"
+                ),
+            ),
+            array(
+                array(
+                ),
+                0,
+                array('HWPartNum', 'Parameters', 'Obsolete', 'Notes'),
+                array(
+                    "ARCH", "CPU", "VCC", "Firmware"
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $preload    The stuff to give to the constructor
+    * @param string $obsolete   The string to use for the input
+    * @param array  $expect     The expected data
+    * @param array  $parameters The parameters to test
+    *
+    * @return null
+    *
+    * @dataProvider dataGetHardwareTypes
+    */
+    public function testGetHardwareTypes($preload, $obsolete, $expect, $parameters)
+    {
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = Device::factory($sys, null, $class);
+        $ret = $obj->getHardwareTypes($obsolete);
+        foreach ($ret as $val) {
+            $this->assertEquals($obsolete, $val["Obsolete"], "Obsolete is wrong");
+            foreach ($expect as $k) {
+                $this->assertTrue(
+                    isset($val[$k]), "'$k' is missing in ".$val["HWPartNum"]
+                );
+            }
+            foreach ($parameters as $k) {
+                $this->assertTrue(
+                    isset($val["Param"][$k]),
+                    "Param '$k' is missing in ".$val["HWPartNum"]
+                );
+            }
+        }
+    }
 }
 
 /**

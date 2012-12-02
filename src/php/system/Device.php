@@ -551,6 +551,36 @@ class Device extends \HUGnet\base\SystemTableBase
         }
         return $ret;
     }
+    /**
+    * Returns the devices XML file as an array
+    *
+    * @param mixed $obsolete Bool true for yes, bool false for no, anything
+    *                        else for both
+    *
+    * @return array
+    */
+    public function getHardwareTypes($obsolete=0)
+    {
+        $xml = simplexml_load_file(dirname(__FILE__).'/../devices.xml');
+        $devs = array();
+        foreach ($xml->endpoints as $d) {
+            $data = get_object_vars($d);
+            if ((int)$data["Obsolete"] == (int)$obsolete) {
+                foreach (explode("\n", $data['Parameters']) as $val) {
+                    $value = explode(":", $val);
+                    $key = trim($value[0]);
+                    $value = trim($value[1]);
+                    if (!empty($key)) {
+                        $data['Param'][$key] = $value;
+                    }
+                }
+                $devs[] = $data;
+
+            }
+        }
+        return $devs;
+    }
+
 }
 
 

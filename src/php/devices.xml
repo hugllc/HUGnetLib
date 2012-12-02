@@ -30,6 +30,7 @@
     <endpoints>
         <HWPartNum>0039-12-01-A</HWPartNum>
         <Parameters>
+            ARCH: AVR
             CPU: attiny26
             VCC: 5V
         </Parameters>
@@ -39,6 +40,7 @@
     <endpoints>
         <HWPartNum>0039-12-02-A</HWPartNum>
         <Parameters>
+            ARCH: AVR
             CPU: attiny26
             VCC: 3.3V
         </Parameters>
@@ -48,6 +50,7 @@
     <endpoints>
         <HWPartNum>0039-12-02-B</HWPartNum>
         <Parameters>
+            ARCH: AVR
             CPU: attiny26
             VCC: 5V
         </Parameters>
@@ -59,7 +62,9 @@
     </endpoints>
     <endpoints>
         <HWPartNum>0039-12-02-C</HWPartNum>
-        <Parameters>CPU: attiny861
+        <Parameters>
+            ARCH: AVR
+            CPU: attiny861
             VCC: 5V
             Firmware: 0039-20-17-C
             FuseExtended: 0x01
@@ -76,6 +81,7 @@
     <endpoints>
         <HWPartNum>0039-21-01-A</HWPartNum>
         <Parameters>
+            ARCH: AVR
             CPU: atmega16
             VCC: 5V
             Firmware: 0039-20-06-C
@@ -96,6 +102,7 @@
     <endpoints>
         <HWPartNum>0039-21-02-A</HWPartNum>
         <Parameters>CPU: atmega324
+            ARCH: AVR
             VCC: 5V
             Firmware: 0039-20-15-C
             FuseExtended: 0xFC
@@ -114,6 +121,7 @@
     <endpoints>
         <HWPartNum>0039-28-01-A</HWPartNum>
         <Parameters>
+            ARCH: AVR
             CPU: atmega168
             VCC: 5V
             Firmware: 0039-20-13-C
@@ -128,6 +136,48 @@
             12 were made by Scott
             156 were made by Martek
             48 were made by Martek 5/11
+        </Notes>
+    </endpoints>
+    <endpoints>
+        <HWPartNum>0039-37-01-A</HWPartNum>
+        <Parameters>
+            ARCH: ADuC7060
+            CPU: ADuC7060
+            VCC: 2.5V
+            Firmware: 0039-38-01-C
+            Built: ?
+        </Parameters>
+        <Obsolete>0</Obsolete>
+        <Notes>
+            This is the HUGnetLab endpoint
+        </Notes>
+    </endpoints>
+    <endpoints>
+        <HWPartNum>0039-37-01-B</HWPartNum>
+        <Parameters>
+            ARCH: ADuC7060
+            CPU: ADuC7060
+            VCC: 2.5V
+            Firmware: 0039-38-01-C
+            Built: ?
+        </Parameters>
+        <Obsolete>0</Obsolete>
+        <Notes>
+            This is the HUGnetLab endpoint
+        </Notes>
+    </endpoints>
+    <endpoints>
+        <HWPartNum>0039-37-01-C</HWPartNum>
+        <Parameters>
+            ARCH: ADuC7060
+            CPU: ADuC7060
+            VCC: 2.5V
+            Firmware: 0039-38-01-C
+            Built: ?
+        </Parameters>
+        <Obsolete>0</Obsolete>
+        <Notes>
+            This is the HUGnetLab endpoint
         </Notes>
     </endpoints>
 </HUGnet>
