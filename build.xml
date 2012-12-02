@@ -63,7 +63,7 @@
             </sequential>
             <antcall target="phpcpd"/>
             <antcall target="phpcs"/>
-            <antcall target="docblox"/>
+            <antcall target="phpdoc"/>
             <antcall target="phploc"/>
         </parallel>
     </target>
@@ -120,9 +120,9 @@
         </exec>
     </target>
 
-    <target name="docblox" description="Generate API documentation using DocBlox">
-        <exec executable="docblox">
-            <arg line="-c build/docblox.xml" />
+    <target name="phpdoc" description="Generate API documentation using DocBlox">
+        <exec executable="phpdoc">
+            <arg line="" />
         </exec>
     </target>
 
@@ -183,7 +183,7 @@
     </target>
 
     <target name="build" depends="buildJavaScript"/>
-    <target name="test" depends="clean,setup,build,pdepend,phpmd,phpcpd,phpcs,docblox,phploc,phpunit,phpcb,cleanafter"/>
+    <target name="test" depends="clean,setup,build,pdepend,phpmd,phpcpd,phpcs,phpdoc,phploc,phpunit,phpcb,cleanafter"/>
     <target name="deb" depends="build,deb.build"/>
     <target name="post" depends="deb.post"/>
     <target name="testpost" depends="clean,build,deb.testpost"/>
