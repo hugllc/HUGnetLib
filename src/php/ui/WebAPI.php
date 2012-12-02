@@ -129,6 +129,7 @@ class WebAPI extends HTML
     * @param array $extra Extra data that should be added to the HTMLArgs data
     *
     * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
     */
     private function _executeDevice($extra = array())
     {
@@ -148,6 +149,7 @@ class WebAPI extends HTML
     * @param array $extra Extra data that should be added to the HTMLArgs data
     *
     * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
     */
     private function _executeInputtable($extra = array())
     {
@@ -161,6 +163,7 @@ class WebAPI extends HTML
     * @param array $extra Extra data that should be added to the HTMLArgs data
     *
     * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
     */
     private function _executeAnnotation($extra = array())
     {
@@ -174,6 +177,7 @@ class WebAPI extends HTML
     * @param array $extra Extra data that should be added to the HTMLArgs data
     *
     * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
     */
     private function _executeTests($extra = array())
     {
@@ -187,6 +191,7 @@ class WebAPI extends HTML
     * @param array $extra Extra data that should be added to the HTMLArgs data
     *
     * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
     */
     private function _executeSensor($extra = array())
     {
@@ -207,6 +212,7 @@ class WebAPI extends HTML
     * @param array $extra Extra data that should be added to the HTMLArgs data
     *
     * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
     */
     private function _executeDatacollector($extra = array())
     {
@@ -222,6 +228,7 @@ class WebAPI extends HTML
     * @param array  $extra Extra data that should be added to the HTMLArgs data
     *
     * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
     */
     private function _executeSystem($ident, $obj, $extra = array())
     {
@@ -261,6 +268,7 @@ class WebAPI extends HTML
     * @param array  $extra Extra data that should be added to the HTMLArgs data
     *
     * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
     */
     private function _executeTable($ident, &$obj, $extra = array())
     {
@@ -296,6 +304,8 @@ class WebAPI extends HTML
     * @param object &$obj  The object to work on
     *
     * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     private function _executeTableList($ident, &$obj)
     {
@@ -325,6 +335,8 @@ class WebAPI extends HTML
     * @param array $extra Extra data that should be added to the HTMLArgs data
     *
     * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     private function _executeHistory($extra = array())
     {
@@ -384,6 +396,7 @@ class WebAPI extends HTML
     * @param object &$hist The history to use
     *
     * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
     */
     private function _executeHistoryGet($did, &$hist)
     {
@@ -502,7 +515,7 @@ class WebAPI extends HTML
         }
         $out .= "\r\n";
         $sep  = ",";
-        foreach ($records as $key => $hist) {
+        foreach ($records as $hist) {
             $out .= date("Y-m-d H:i:s", $hist["Date"]);
             for ($i = 0; $i < count($chan); $i++) {
                 if ($chan[$i]["dataType"] !== 'ignore') {

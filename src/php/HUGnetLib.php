@@ -84,6 +84,7 @@ class HUGnetLib
     * @param string $type   The type of args to get.  Automatic if left blank
     *
     * @return null
+    * @SuppressWarnings(PHPMD.ShortMethodName)
     */
     static public function &ui($config, $type = "CLI")
     {
@@ -104,6 +105,7 @@ class HUGnetLib
     * @param array $args   The argument array to pass to the class
     *
     * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
     */
     static private function &_argsHtml(
         $config, $args = null
@@ -121,6 +123,7 @@ class HUGnetLib
     * @param array $config The configuration to use
     *
     * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
     */
     static private function &_uiDaemon($config)
     {
@@ -133,6 +136,7 @@ class HUGnetLib
     * @param array $config The configuration to use
     *
     * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
     */
     static private function &_uiHtml($config)
     {
@@ -145,6 +149,7 @@ class HUGnetLib
     * @param array $config The configuration to use
     *
     * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
     */
     static private function &_uiWebapi($config)
     {
