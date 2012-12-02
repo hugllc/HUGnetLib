@@ -252,10 +252,7 @@ class Sensor extends \HUGnet\base\SystemTableBase
     /**
     * Gets the direction from a direction sensor made out of a POT.
     *
-    * @param string &$string The data string
-    * @param float  $deltaT  The time delta in seconds between this record
-    * @param array  &$prev   The previous reading
-    * @param array  &$data   The data from the other sensors that were crunched
+    * @param array $data The data from the other sensors that were crunched
     *
     * @return float The direction in degrees
     *

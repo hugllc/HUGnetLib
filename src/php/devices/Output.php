@@ -165,7 +165,9 @@ class Output extends \HUGnet\base\SystemTableBase
         }
         $return["params"] = (array)$params;
         if ($default) {
-            $return["otherTypes"] = \HUGnet\outputTable\Driver::getTypes($return["id"]);
+            $return["otherTypes"] = \HUGnet\outputTable\Driver::getTypes(
+                $return["id"]
+            );
             $return["validIds"] = $this->driver()->getDrivers();
         }
         return (array)$return;

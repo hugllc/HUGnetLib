@@ -992,11 +992,11 @@ class ADuCPowerTest extends DriverTestBase
     * This is called by using parent::sensorTest()
     *
     * @param array $sensor The sensor data array
-    * @param mixed $A      Data for the sensor to work on
+    * @param mixed $expect The return data to expect
     * @param float $deltaT The time differenct
     * @param array $data   The data array being built
     * @param array $prev   The previous record
-    * @param mixed $expect The return data to expect
+    * @param mixed $A      Data for the sensor to work on
     *
     * @return null
     *

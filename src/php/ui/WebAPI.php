@@ -245,7 +245,7 @@ class WebAPI extends HTML
         } else if ($action === "list") {
             $data = $this->args()->get("data");
             $ret = $obj->getList($data, true);
-        } else  if ($this->_auth(true)) {
+        } else if ($this->_auth(true)) {
             if (is_callable(array($obj, "webAPI"))) {
                 $obj->load($ident);
                 $ret = $obj->webAPI($this->args(), $extra);

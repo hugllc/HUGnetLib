@@ -274,7 +274,7 @@ class PacketLogTest extends TableTestBase
     * Tests for verbosity
     *
     * @param array $preload The array to preload into the class
-    * @param array
+    * @param array $mocks   The mocks to set in place for this test
     * @param bool  $replace Replace any records that collide with this one.
     * @param array $expect  The expected return
     *

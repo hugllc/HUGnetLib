@@ -203,7 +203,6 @@ class DaemonTest extends \PHPUnit_Framework_TestCase
     * @param string $type   The type to use
     * @param string $expect The system object we are expecting
     *
-    *
     * @return null
     *
     * @dataProvider dataUi

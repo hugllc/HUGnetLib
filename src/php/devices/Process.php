@@ -165,7 +165,9 @@ class Process extends \HUGnet\base\SystemTableBase
         }
         $return["params"] = (array)$params;
         if ($default) {
-            $return["otherTypes"] = \HUGnet\processTable\Driver::getTypes($return["id"]);
+            $return["otherTypes"] = \HUGnet\processTable\Driver::getTypes(
+                $return["id"]
+            );
             $return["validIds"] = $this->driver()->getDrivers();
         }
         return (array)$return;

@@ -308,7 +308,9 @@ class System
         }
     }
     /**
-    * Throws an exception
+    * Causes everything to exit
+    *
+    * @param mixed $set (null) Don't set anything, (bool) set quit to this value
     *
     * @return null
     */

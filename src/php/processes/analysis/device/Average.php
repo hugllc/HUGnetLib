@@ -192,7 +192,7 @@ class Average extends \HUGnet\processes\analysis\Device
     *
     * @return null
     */
-    public function _avg(&$device, $type, $param)
+    private function _avg(&$device, $type, $param)
     {
         $return = true;
         $timeout = time() - $device->getParam("LastAverage".$type."Try");

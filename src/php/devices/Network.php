@@ -540,14 +540,9 @@ class Network
 
     }
     /**
-    * Writes a data buffer to the Flash
+    * Causes the endpoint to reboot
     *
-    * @param string $callback The name of the function to call when the packet
-    *                   arrives.  If this is not callable, it will block until the
-    *                   packet arrives.
-    * @param array  $config   The network config to use for the packet
-    *
-    * @return success or failure of the packet sending
+    * @return null
     */
     public function reboot()
     {

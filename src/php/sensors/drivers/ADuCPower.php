@@ -174,7 +174,7 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
     /**
     * Changes a raw reading into a output value
     *
-    * @param float $Va The value to reverse
+    * @param float $I The value to reverse
     *
     * @return mixed The value in whatever the units are in the sensor
     *
@@ -227,7 +227,7 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
     /**
     * Changes a raw reading into a output value
     *
-    * @param float $Va The value to reverse
+    * @param float $P The value to reverse
     *
     * @return mixed The value in whatever the units are in the sensor
     *
@@ -263,7 +263,7 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
     /**
     * Changes a raw reading into a output value
     *
-    * @param float $Va The value to reverse
+    * @param float $R The value to reverse
     *
     * @return mixed The value in whatever the units are in the sensor
     *

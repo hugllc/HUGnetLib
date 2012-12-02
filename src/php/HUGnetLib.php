@@ -100,8 +100,8 @@ class HUGnetLib
     /**
     * Creates an argument object
     *
-    * @param array  $config The configuration to use
-    * @param array  $args   The argument array to pass to the class
+    * @param array $config The configuration to use
+    * @param array $args   The argument array to pass to the class
     *
     * @return null
     */
