@@ -43,6 +43,8 @@ require_once CODE_BASE.'sensors/drivers/ADuCInputTable.php';
 require_once CODE_BASE.'db/Table.php';
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
+/** This is a required class */
+require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
 
 /**
  * Test class for HUGnetDB.
@@ -403,16 +405,20 @@ class ADuCInputTableTest extends DriverTestBase
                             "driver0" => 0x41,
                         ),
                         "select" => array(
-                            "1" => \HUGnet\db\Table::factory(
-                                $system,
-                                array("id" => 1, "name" => "Hello"),
-                                "InputTable"
-                            ),
-                            "2" => \HUGnet\db\Table::factory(
-                                $system,
-                                array("id" => 2, "name" => "Again"),
-                                "InputTable"
-                            ),
+                            1 => new \HUGnet\DummyBase("Table1"),
+                            2 => new \HUGnet\DummyBase("Table2"),
+                        ),
+                    ),
+                    "Table1" => array(
+                        "get" => array(
+                            "id" => 1,
+                            "name" => "Hello",
+                        ),
+                    ),
+                    "Table2" => array(
+                        "get" => array(
+                            "id" => 2,
+                            "name" => "Again",
                         ),
                     ),
                 ),
