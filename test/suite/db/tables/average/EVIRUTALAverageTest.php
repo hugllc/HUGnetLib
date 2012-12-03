@@ -161,6 +161,7 @@ class EVIRTUALAverageTest extends AverageTestBase
     public static function dataCalc15MinAverage()
     {
         return array(
+            /*
             array(  // #0 basic input.  LastAverage15MIN not set
                 array(
                     array(
@@ -716,7 +717,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                 ),
                 false,
             ),
-
+            */
         );
     }
 
@@ -735,10 +736,11 @@ class EVIRTUALAverageTest extends AverageTestBase
     *
     * @dataProvider dataCalc15MinAverage
     */
+    /*
     public function testCalc15MinAverage(
         $devs, $preload, $preloadData, $device, $mockData, $expect, $expectRet
     ) {
-        /*
+        $this->markTestIncomplete("Fix Me");
         $dev = \HUGnet\Device::factory($this->system);
         foreach ((array)$devs as $d) {
             $dev->load($d);
@@ -761,9 +763,9 @@ class EVIRTUALAverageTest extends AverageTestBase
         $ret = $this->o->calcAverage($data, \HUGnet\db\Average::AVERAGE_15MIN);
         $this->assertSame($expectRet, $ret, "Return Wrong");
         $this->assertSame($expect, $this->o->toArray(false));
-        */
-    }
 
+    }
+    */
     /**
     * data provider for testCalcAverage
     *
@@ -772,6 +774,7 @@ class EVIRTUALAverageTest extends AverageTestBase
     public static function dataCalc15MinAverageMulti()
     {
         return array(
+            /*
             array(  // #0 basic input.  LastAverage15MIN not set
                 array(
                     array(
@@ -2609,6 +2612,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                 gmmktime(15, 00, 00, 1, 22, 2009),
                 time(),
             ),
+            */
         );
     }
 
@@ -2628,11 +2632,12 @@ class EVIRTUALAverageTest extends AverageTestBase
     *
     * @dataProvider dataCalc15MinAverageMulti
     */
+    /*
     public function testCalc15MinAverageMulti(
         $devs, $preload, $preloadData, $device,
         $mockData, $expect, $lastHist, $lastPoll
     ) {
-        /*
+        $this->markTestIncomplete("Fix Me");
         $dev = \HUGnet\Device::factory($this->system);
         foreach ((array)$devs as $d) {
             $dev->load($d);
@@ -2667,8 +2672,8 @@ class EVIRTUALAverageTest extends AverageTestBase
             $this->o->device->params->DriverInfo["LastPoll"],
             "LastPoll wrong"
         );
-        */
     }
+    */
 
 }
 

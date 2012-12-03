@@ -105,7 +105,6 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 null,
                 "DummyTable",
                 array(
-                    "clearData" => array(array()),
                 ),
             ),
             array(
@@ -197,7 +196,6 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $table->resetMock($mocks);
         $obj = Device::factory($config, $device);
         // Make sure we have the right object
-        $table = $this->readAttribute($obj, "_table");
         if (is_object($table)) {
             $this->assertEquals(
                 $expectTable, $table->retrieve("Devices"), "Data Wrong"
@@ -966,6 +964,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     * @return null
     *
     * @dataProvider dataJson
+    * @large
     */
     public function testJson(
         $config, $class, $expect
@@ -1088,6 +1087,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     * @return null
     *
     * @dataProvider dataGetParam
+    * @large
     */
     public function testGetParam(
         $config, $class, $field, $expect

@@ -469,6 +469,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
     * @return null
     *
     * @dataProvider dataTransportPacket()
+    * @large
     */
     public function testTransportPacket(
         $config, $packet, $reply, $pause, $loops, $send, $expect, $time

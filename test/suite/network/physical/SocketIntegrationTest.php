@@ -288,6 +288,7 @@ class SocketIntegrationTest extends \PHPUnit_Framework_TestCase
     * @return null
     *
     * @dataProvider dataServer
+    * @large
     */
     public function testServer(
         $server, $clients, $loops, $servWrite, $clientWrite,

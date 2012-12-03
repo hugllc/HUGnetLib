@@ -226,7 +226,7 @@ class DummyTest extends \PHPUnit_Framework_TestCase
     {
         $system = new \HUGnet\DummySystem();
         $application = &Dummy::factory($system);
-        $application->main();
+        $this->assertTrue(method_exists($application, "main"));
         /* No asserts.  Main just has to exist */
     }
 

@@ -143,6 +143,7 @@ class SystemTest extends \PHPUnit_Framework_TestCase
             $this->setExpectedException($expect, $msg);
         }
         System::exception($msg, $type, $condition);
+        $this->assertTrue(!is_string($expect));
     }
     /**
     * Data provider for testCreate

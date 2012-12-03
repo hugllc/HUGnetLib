@@ -919,7 +919,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
     */
     public function testParamBits($name, $param)
     {
-        if (isset($param["bit"]) || isset($param["bits"])) {
+        if (is_numeric($param["bit"]) || is_numeric($param["bits"])) {
             $min = 5;
             $max = 30;
             $this->assertInternalType(
@@ -928,6 +928,9 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
             $this->assertInternalType(
                 "int", $param["bits"], "Bits for $name must be a int"
             );
+        } else {
+            $this->assertNull($param["bit"]);
+            $this->assertNull($param["bits"]);
         }
     }
     /**

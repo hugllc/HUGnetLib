@@ -364,6 +364,8 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
                     ." returned by $name"
                 );
             }
+        } else {
+            $this->assertFalse(method_exists($this->o, $name));
         }
     }
 }

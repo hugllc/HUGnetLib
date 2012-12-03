@@ -249,6 +249,8 @@ abstract class TableTestBase extends \PHPUnit_Extensions_Database_TestCase
                 isset($obj->sqlColumns[$obj->sqlId]),
                 "sqlId set to non-existant column ".$obj->sqlId
             );
+        } else {
+            $this->assertNull($obj->sqlId);
         }
     }
     /**

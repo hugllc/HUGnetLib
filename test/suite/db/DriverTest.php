@@ -1061,6 +1061,8 @@ class DriverTest extends \PHPUnit_Extensions_Database_TestCase
             $stmt = $this->pdo->query("SELECT * FROM `myTable`");
             $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
             $this->assertSame($expect, $rows);
+        } else {
+            $this->assertFalse($replace);
         }
     }
     /**
@@ -1087,6 +1089,8 @@ class DriverTest extends \PHPUnit_Extensions_Database_TestCase
             $stmt = $this->pdo->query("SELECT * FROM `myTable`");
             $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
             $this->assertSame($expect, $rows);
+        } else {
+            $this->assertFalse($replace);
         }
     }
     /**

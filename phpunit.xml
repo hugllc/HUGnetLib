@@ -3,9 +3,10 @@
 
 <phpunit backupGlobals="false"
          backupStaticAttributes="false"
-         strict="false"
+         strict="true"
+         colors="true"
          bootstrap="test/bootstrap.php"
-         verbose="false">
+         verbose="true">
   <testsuites>
     <testsuite name="HUGnetLib">
       <directory suffix="Test.php">test/suite</directory>

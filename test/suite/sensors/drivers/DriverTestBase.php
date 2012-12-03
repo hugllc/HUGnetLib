@@ -215,12 +215,12 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     */
     final public function testIntMaxSize($field, $max, $min)
     {
-        if (!is_null($max)) {
+        ///if (!is_null($max)) {
             $name = (string)$this->o->get($field, 1);
             $this->assertLessThanOrEqual(
                 $max, $name, "$field must be less than $max chars"
             );
-        }
+        //}
     }
     /**
     * Check the string size
@@ -235,12 +235,12 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     */
     final public function testIntMinSize($field, $max, $min)
     {
-        if (!is_null($min)) {
+        //if (!is_null($min)) {
             $name = (string)$this->o->get($field, 1);
             $this->assertGreaterThanOrEqual(
                 $min, $name, "$field must be more than $min characters"
             );
-        }
+        //}
     }
     /**
     * data provider for testType
@@ -292,7 +292,8 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
             \HUGnet\channels\Driver::TYPE_IGNORE
                 => '\HUGnet\channels\Driver::TYPE_IGNORE',
         );
-        $extra = (array)$this->o->get("dataTypes", 1);
+        $extra = $this->o->get("dataTypes", 1);
+        $this->assertInternalType("array", $extra);
         foreach ($extra as $key => $value) {
             $this->assertTrue(
                 isset($validTypes[$key]),
@@ -330,7 +331,8 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     public function testExtraTextValueSize()
     {
         $size = 26;
-        $extra = (array)$this->o->get("extraText", 1);
+        $extra = $this->o->get("extraText", 1);
+        $this->assertInternalType("array", $extra);
         foreach ($extra as $key => $value) {
             $this->assertTrue(
                 (strlen($value) < $size),
@@ -361,7 +363,8 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     public function testExtraValuesElementTypes()
     {
         $size = 26;
-        $extra = (array)$this->o->get("extraValues", 1);
+        $extra = $this->o->get("extraValues", 1);
+        $this->assertInternalType("array", $extra);
         foreach ($extra as $key => $value) {
             $ret = is_null($value);
             $ret = $ret || is_array($value);

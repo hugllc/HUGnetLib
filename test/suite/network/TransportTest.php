@@ -432,6 +432,7 @@ class TransportTest extends \PHPUnit_Framework_TestCase
     * @return null
     *
     * @dataProvider dataReply()
+    * @large
     */
     public function testReply(
         $config, $packet, $network, $timeout, $expect, $unsolicited
