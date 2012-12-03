@@ -128,12 +128,16 @@ class MysqlTest extends \PHPUnit_Extensions_Database_TestCase
             );
         } else {
             $this->skipPDOTests = true;
-            $this->config ["System"]["get"]["servers"] = array(
-                "driver" => "sqlite",
-                "file" => ":memory:",
-                "group" => "default",
+            $this->config["System"]["get"]["servers"] = array(
+                array(
+                    "driver" => "sqlite",
+                    "file" => ":memory:",
+                    "group" => "default",
+                ),
             );
+            $this->system = new \HUGnet\DummySystem("System");
             $this->system->resetMock($this->config);
+            $this->connect = \HUGnet\db\Connection::factory($this->system);
             $this->pdo = &$this->connect->getPDO("default");
             $this->pdo->query("DROP TABLE IF EXISTS `myTable`");
             $this->pdo->query(
