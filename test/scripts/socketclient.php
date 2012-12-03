@@ -39,8 +39,7 @@ declare(ticks = 1);
 $exit = false;
 pcntl_signal(
     SIGINT,
-    function ($signo)
-    {
+    function ($signo) {
         global $exit;
         $exit = true;
     }
