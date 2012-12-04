@@ -74,6 +74,7 @@
                         --jdepend-chart=${basedir}/build/pdepend/dependencies.svg
                         --overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg
                         --configuration=build/pdepend.xml
+                        --ignore=${basedir}/src/php/contrib
                         ${source}" />
         </exec>
     </target>
