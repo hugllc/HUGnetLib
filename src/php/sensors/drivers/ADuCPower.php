@@ -308,28 +308,26 @@ class ADuCPower extends \HUGnet\sensors\DriverADuC
     /**
     * Gets the direction from a direction sensor made out of a POT.
     *
-    * @param array $data The data to use
+    * @param array $data    The data to use
+    * @param int   $channel The channel to get
     *
     * @return float The direction in degrees
     *
     * @SuppressWarnings(PHPMD.ShortVariable)
     */
-    public function encodeData($data)
+    public function encodeData($data, $channel = 0)
     {
-        $return = "";
-        if (is_array($data) && is_array($data[0]) && isset($data[0]['value'])) {
-            $return .= $this->intToStr($this->getRawCurrent($data[0]['value']));
+        $return = 0;
+        if ($channel == 0) {
+            $return = $this->getRawCurrent($data);
+        } else if ($channel == 1) {
+            $return = $this->getRawVoltage($data);
+        } else if ($channel == 2) {
+            $return = $this->getRawPower($data);
+        } else if ($channel == 3) {
+            $return = $this->getRawImpedance($data);
         }
-        if (is_array($data) && is_array($data[1]) && isset($data[1]['value'])) {
-            $return .= $this->intToStr($this->getRawVoltage($data[1]['value']));
-        }
-        if (is_array($data) && is_array($data[2]) && isset($data[2]['value'])) {
-            $return .= $this->intToStr($this->getRawPower($data[2]['value']));
-        }
-        if (is_array($data) && is_array($data[3]) && isset($data[3]['value'])) {
-            $return .= $this->intToStr($this->getRawImpedance($data[3]['value']));
-        }
-        return $return;
+        return $this->intToStr($return);
     }
     /**
     * This builds the class from a setup string
