@@ -256,6 +256,23 @@ class ADuCInputTable extends \HUGnet\sensors\Driver
         return $ret;
     }
     /**
+    * Gets the direction from a direction sensor made out of a POT.
+    *
+    * @param array $data    The data to use
+    * @param int   $channel The channel to get
+    *
+    * @return float The direction in degrees
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    */
+    public function encodeData($data, $channel = 0)
+    {
+        if ($channel > count($this->_driver(0)->channels())) {
+            return $this->_driver(1)->encodeData($data, $channel);
+        }
+        return $this->_driver(0)->encodeData($data, $channel);
+    }
+    /**
     * This builds the class from a setup string
     *
     * @return Array of channel information

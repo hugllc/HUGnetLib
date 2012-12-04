@@ -252,15 +252,16 @@ class Sensor extends \HUGnet\base\SystemTableBase
     /**
     * Gets the direction from a direction sensor made out of a POT.
     *
-    * @param array $data The data from the other sensors that were crunched
+    * @param array $data    The data to use
+    * @param int   $channel The channel to get
     *
     * @return float The direction in degrees
     *
     * @SuppressWarnings(PHPMD.ShortVariable)
     */
-    public function encodeData($data)
+    public function encodeData($data, $channel = 0)
     {
-        return $this->driver()->encodeData($data);
+        return $this->driver()->encodeData($data, $channel);
     }
     /**
     * This function should be overloaded to make changes to the table based on
