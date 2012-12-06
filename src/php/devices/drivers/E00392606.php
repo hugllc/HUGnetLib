@@ -73,6 +73,9 @@ class E00392606 extends E00392600
         "job"  => "route",
         "packetTimeout" => 2,
         "arch" => "PC",
+        "InputTables" => 0,
+        "OutputTables" => 0,
+        "ProcessTables" => 0,
     );
 
 }

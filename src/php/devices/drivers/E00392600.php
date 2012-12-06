@@ -70,6 +70,9 @@ class E00392600 extends \HUGnet\devices\Driver
         "type" => "script",
         "packetTimeout" => 2,
         "arch" => "PC",
+        "InputTables" => 0,
+        "OutputTables" => 0,
+        "ProcessTables" => 0,
     );
     /**
     * Checks a record to see if it needs fixing

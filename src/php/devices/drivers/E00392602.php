@@ -73,6 +73,9 @@ class E00392602 extends E00392600
         "job"  => "update",
         "packetTimeout" => 2,
         "arch" => "PC",
+        "InputTables" => 0,
+        "OutputTables" => 0,
+        "ProcessTables" => 0,
     );
 }
 
