@@ -955,6 +955,58 @@ class DriverTest extends drivers\DriverTestBase
             "Class $class doesn't exist for type $sid:$type in file $file"
         );
     }
+    /**
+     * Data provider for testEncodeData
+     *
+     * @return array
+     */
+    public static function dataEncodeData()
+    {
+        return array(
+            array( // #0
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(),
+                        ),
+                    ),
+                ),
+                "0E0000",
+                1,
+                array(),
+                array(),
+                14.314713,
+                0,
+            ),
+        );
+    }
+    /**
+    * Generic function for testing sensor routines
+    *
+    * This is called by using parent::sensorTest()
+    *
+    * @param array $sensor  The sensor data array
+    * @param mixed $expect  The return data to expect
+    * @param float $deltaT  The time differenct
+    * @param array $data    The data array being built
+    * @param array $prev    The previous record
+    * @param mixed $A       Data for the sensor to work on
+    * @param int   $channel The data channel to use
+    *
+    * @return null
+    *
+    * @dataProvider dataEncodeData()
+    */
+    public function testEncodeData(
+        $sensor, $expect, $deltaT, $data, $prev, $A, $channel
+    ) {
+        $sen = new \HUGnet\DummyBase("Sensor");
+        $sen->resetMock($sensor);
+        $ret = $this->o->encodeData($A, $channel);
+        $this->assertEquals($expect, $ret, 0.00001);
+    }
 }
 /** This is the HUGnet namespace */
 namespace HUGnet\sensors\drivers;

@@ -709,168 +709,14 @@ class ADuCPowerTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "42420F0040420F00",
-                1,
-                array(),
-                array(),
-                array(
-                    array(
-                        "value" => 0.314713,
-                        "decimals" => 6,
-                        "units" => "A",
-                        'maxDecimals' => 6,
-                        'storageUnit' => 'A',
-                        "unitType" => "Current",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
-                        "index" => 0,
-                    ),
-                    array(
-                        "value" => 14.448166,
-                        "decimals" => 6,
-                        "units" => "V",
-                        'maxDecimals' => 6,
-                        'storageUnit' => 'V',
-                        "unitType" => "Voltage",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
-                        "index" => 1,
-                    ),
-                    array(
-                        "value" => 4.547026,
-                        "decimals" => 6,
-                        "units" => "W",
-                        'maxDecimals' => 6,
-                        'storageUnit' => 'W',
-                        "unitType" => "Power",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
-                        "index" => 2,
-                    ),
-                    array(
-                        "value" => 45.909022,
-                        "decimals" => 6,
-                        "units" => "Ohms",
-                        'maxDecimals' => 6,
-                        'storageUnit' => 'Ohms',
-                        "unitType" => "Impedance",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
-                        "index" => 3,
-                    ),
-                ),
-            ),
-            array( // #1
-                array(
-                    "Sensor" => array(
-                        "id" => 1,
-                        "get" => array(
-                            "sensor" => 2,
-                            "extra" => array(),
-                        ),
-                    ),
-                ),
-                "0000000000000000",
-                1,
-                array(),
-                array(),
-                array(
-                    array(
-                        "value" => 0.0,
-                        "decimals" => 6,
-                        "units" => "A",
-                        'maxDecimals' => 6,
-                        'storageUnit' => 'A',
-                        "unitType" => "Current",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
-                        "index" => 0,
-                    ),
-                    array(
-                        "value" => 0.0,
-                        "decimals" => 6,
-                        "units" => "V",
-                        'maxDecimals' => 6,
-                        'storageUnit' => 'V',
-                        "unitType" => "Voltage",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
-                        "index" => 1,
-                    ),
-                    array(
-                        "value" => 0.0,
-                        "decimals" => 6,
-                        "units" => "W",
-                        'maxDecimals' => 6,
-                        'storageUnit' => 'W',
-                        "unitType" => "Power",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
-                        "index" => 2,
-                    ),
-                    array(
-                        "value" => null,
-                        "decimals" => 6,
-                        "units" => "Ohms",
-                        'maxDecimals' => 6,
-                        'storageUnit' => 'Ohms',
-                        "unitType" => "Impedance",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
-                        "index" => 3,
-                    ),
-                ),
-            ),
-            array( // #2
-                array(
-                    "Sensor" => array(
-                        "id" => 1,
-                        "get" => array(
-                            "sensor" => 2,
-                            "extra" => array(),
-                        ),
-                    ),
-                ),
                 "42420F00",
                 1,
                 array(),
                 array(),
-                array(
-                    array(
-                        "value" => 0.314713,
-                        "decimals" => 6,
-                        "units" => "A",
-                        'maxDecimals' => 6,
-                        'storageUnit' => 'A',
-                        "unitType" => "Current",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
-                        "index" => 0,
-                    ),
-                    array(
-                        "value" => null,
-                        "decimals" => 6,
-                        "units" => "V",
-                        'maxDecimals' => 6,
-                        'storageUnit' => 'V',
-                        "unitType" => "Voltage",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
-                        "index" => 1,
-                    ),
-                    array(
-                        "value" => null,
-                        "decimals" => 6,
-                        "units" => "W",
-                        'maxDecimals' => 6,
-                        'storageUnit' => 'W',
-                        "unitType" => "Power",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
-                        "index" => 2,
-                    ),
-                    array(
-                        "value" => null,
-                        "decimals" => 6,
-                        "units" => "Ohms",
-                        'maxDecimals' => 6,
-                        'storageUnit' => 'Ohms',
-                        "unitType" => "Impedance",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
-                        "index" => 3,
-                    ),
-                ),
+                0.314713,
+                0,
             ),
-            array( // #3
+            array( // #1
                 array(
                     "Sensor" => array(
                         "id" => 1,
@@ -884,50 +730,10 @@ class ADuCPowerTest extends DriverTestBase
                 1,
                 array(),
                 array(),
-                array(
-                    array(
-                        "value" => null,
-                        "decimals" => 6,
-                        "units" => "A",
-                        'maxDecimals' => 6,
-                        'storageUnit' => 'A',
-                        "unitType" => "Current",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
-                        "index" => 0,
-                    ),
-                    array(
-                        "value" => null,
-                        "decimals" => 6,
-                        "units" => "V",
-                        'maxDecimals' => 6,
-                        'storageUnit' => 'V',
-                        "unitType" => "Voltage",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
-                        "index" => 1,
-                    ),
-                    array(
-                        "value" => null,
-                        "decimals" => 6,
-                        "units" => "W",
-                        'maxDecimals' => 6,
-                        'storageUnit' => 'W',
-                        "unitType" => "Power",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
-                        "index" => 2,
-                    ),
-                    array(
-                        "value" => null,
-                        "decimals" => 6,
-                        "units" => "Ohms",
-                        'maxDecimals' => 6,
-                        'storageUnit' => 'Ohms',
-                        "unitType" => "Impedance",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
-                        "index" => 3,
-                    ),
-                ),
+                null,
+                0,
             ),
-            array( // #4
+            array( // #2
                 array(
                     "Sensor" => array(
                         "id" => 1,
@@ -941,48 +747,25 @@ class ADuCPowerTest extends DriverTestBase
                 1,
                 array(),
                 array(),
+                14.448166,
+                1,
+            ),
+            array( // #3
                 array(
-                    array(
-                        "value" => null,
-                        "decimals" => 6,
-                        "units" => "A",
-                        'maxDecimals' => 6,
-                        'storageUnit' => 'A',
-                        "unitType" => "Current",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
-                        "index" => 0,
-                    ),
-                    array(
-                        "value" => 14.448166,
-                        "decimals" => 6,
-                        "units" => "V",
-                        'maxDecimals' => 6,
-                        'storageUnit' => 'V',
-                        "unitType" => "Voltage",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
-                        "index" => 1,
-                    ),
-                    array(
-                        "value" => null,
-                        "decimals" => 6,
-                        "units" => "W",
-                        'maxDecimals' => 6,
-                        'storageUnit' => 'W',
-                        "unitType" => "Power",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
-                        "index" => 2,
-                    ),
-                    array(
-                        "value" => null,
-                        "decimals" => 6,
-                        "units" => "Ohms",
-                        'maxDecimals' => 6,
-                        'storageUnit' => 'Ohms',
-                        "unitType" => "Impedance",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
-                        "index" => 3,
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(),
+                        ),
                     ),
                 ),
+                "00000000",
+                1,
+                array(),
+                array(),
+                null,
+                10,
             ),
         );
     }
@@ -991,22 +774,23 @@ class ADuCPowerTest extends DriverTestBase
     *
     * This is called by using parent::sensorTest()
     *
-    * @param array $sensor The sensor data array
-    * @param mixed $expect The return data to expect
-    * @param float $deltaT The time differenct
-    * @param array $data   The data array being built
-    * @param array $prev   The previous record
-    * @param mixed $A      Data for the sensor to work on
+    * @param array $sensor  The sensor data array
+    * @param mixed $expect  The return data to expect
+    * @param float $deltaT  The time differenct
+    * @param array $data    The data array being built
+    * @param array $prev    The previous record
+    * @param mixed $A       Data for the sensor to work on
+    * @param int   $channel The data channel to use
     *
     * @return null
     *
     * @dataProvider dataGetRaw()
     */
-    public function testGetRaw($sensor, $expect, $deltaT, $data, $prev, $A)
+    public function testGetRaw($sensor, $expect, $deltaT, $data, $prev, $A, $channel)
     {
         $sen = new \HUGnet\DummyBase("Sensor");
         $sen->resetMock($sensor);
-        $ret = $this->o->encodeData($A);
+        $ret = $this->o->encodeData($A, $channel);
         $this->assertEquals($expect, $ret, 0.00001);
     }
     /**

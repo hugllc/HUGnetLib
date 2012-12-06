@@ -483,21 +483,20 @@ abstract class Driver
     /**
     * Gets the direction from a direction sensor made out of a POT.
     *
-    * @param array $data The data to use
+    * @param array $data    The data to use
+    * @param int   $channel The channel to get
     *
     * @return float The direction in degrees
     *
     * @SuppressWarnings(PHPMD.ShortVariable)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    public function encodeData($data)
+    public function encodeData($data, $channel = 0)
     {
-        $value = 0;
-        if (is_array($data) && is_array($data[0]) && isset($data[0]['value'])) {
-            $value = $this->getRaw(
-                $data[0]['value']
-            );
-        }
-        return $this->intToStr($value);
+        $value = $this->getRaw(
+            $data
+        );
+        return $this->intToStr((int)$value);
     }
     /**
     * This makes a line of two ordered pairs, then puts $A on that line
