@@ -70,10 +70,10 @@ class E00394100 extends \HUGnet\devices\Driver
         "averageTable" => "EDEFAULTsAverage",
         "type" => "endpoint",
         "job"  => "sense",
-        "arch" => "AVR",
-        "InputTables" => 0,
-        "OutputTables" => 0,
-        "ProcessTables" => 0,
+        "arch" => "Linux",
+        "InputTables" => 9,
+        "OutputTables" => 5,
+        "ProcessTables" => 4,
     );
 
 }
