@@ -38,7 +38,7 @@ namespace HUGnet\devices;
 /** This is a required class */
 require_once CODE_BASE.'devices/Output.php';
 /** This is a required class */
-require_once CODE_BASE.'outputTable/Driver.php';
+require_once CODE_BASE.'devices/outputTable/Driver.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is the dummy table container */
@@ -46,7 +46,7 @@ require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
 /** This is the dummy table container */
 require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
 /** This is our units class */
-require_once CODE_BASE."channels/Driver.php";
+require_once CODE_BASE."devices/datachan/Driver.php";
 
 /**
  * Test class for HUGnetDB.
@@ -74,8 +74,8 @@ class OutputTest extends \PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        \HUGnet\outputTable\Driver::register("FD:DEFAULT", "TestOutputDriver1");
-        \HUGnet\outputTable\Driver::register("FC:DEFAULT", "TestOutputDriver2");
+        \HUGnet\devices\outputTable\Driver::register("FD:DEFAULT", "TestOutputDriver1");
+        \HUGnet\devices\outputTable\Driver::register("FC:DEFAULT", "TestOutputDriver2");
         parent::setUp();
     }
 
@@ -746,7 +746,7 @@ class OutputTest extends \PHPUnit_Framework_TestCase
 
 }
 
-namespace HUGnet\outputTable\drivers;
+namespace HUGnet\devices\outputTable\drivers;
 
 /**
  * Default sensor driver
@@ -763,7 +763,7 @@ namespace HUGnet\outputTable\drivers;
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class TestOutputDriver1 extends \HUGnet\outputTable\Driver
+class TestOutputDriver1 extends \HUGnet\devices\outputTable\Driver
 {
     /**
     * This is where the data for the driver is stored.  This array must be
@@ -807,7 +807,7 @@ class TestOutputDriver1 extends \HUGnet\outputTable\Driver
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class TestOutputDriver2 extends \HUGnet\outputTable\Driver
+class TestOutputDriver2 extends \HUGnet\devices\outputTable\Driver
 {
     /**
     * This is where the data for the driver is stored.  This array must be

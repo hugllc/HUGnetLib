@@ -40,7 +40,7 @@ require_once CODE_BASE.'system/Channels.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
-require_once CODE_BASE.'channels/Driver.php';
+require_once CODE_BASE.'devices/datachan/Driver.php';
 /** This is the dummy table container */
 require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
 /** This is the dummy table container */
@@ -196,7 +196,7 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
                             array(
                                 "unitType" => "Pressure",
                                 "storageUnit" => "psi",
-                                "storageType" => \HUGnet\channels\Driver::TYPE_RAW,
+                                "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                             ),
                         ),
                     ),
@@ -205,7 +205,7 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
                             array(
                                 "unitType" => "Percent",
                                 "storageUnit" => "decimal",
-                                "storageType" => \HUGnet\channels\Driver::TYPE_RAW,
+                                "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                             ),
                         ),
                     ),
@@ -214,7 +214,7 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
                             array(
                                 "unitType" => "Percent",
                                 "storageUnit" => "decimal",
-                                "storageType" => \HUGnet\channels\Driver::TYPE_RAW,
+                                "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                             ),
                         ),
                     ),

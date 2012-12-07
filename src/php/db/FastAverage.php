@@ -38,7 +38,7 @@ namespace HUGnet\db;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is for some constants that it contains */
-require_once dirname(__FILE__)."/../channels/Driver.php";
+require_once dirname(__FILE__)."/../devices/datachan/Driver.php";
 /** This is for some constants that it contains */
 require_once dirname(__FILE__)."/History.php";
 

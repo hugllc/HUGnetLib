@@ -165,7 +165,7 @@ class Process extends \HUGnet\base\SystemTableBase
         }
         $return["params"] = (array)$params;
         if ($default) {
-            $return["otherTypes"] = \HUGnet\processTable\Driver::getTypes(
+            $return["otherTypes"] = processTable\Driver::getTypes(
                 $return["id"]
             );
             $return["validIds"] = $this->driver()->getDrivers();
@@ -197,16 +197,16 @@ class Process extends \HUGnet\base\SystemTableBase
     */
     protected function &driver($driver = null)
     {
-        include_once dirname(__FILE__)."/../processTable/Driver.php";
+        include_once dirname(__FILE__)."/processTable/Driver.php";
         if (empty($driver)) {
-            $driver = \HUGnet\processTable\Driver::getDriver(
+            $driver = processTable\Driver::getDriver(
                 $this->table()->get("id"),
                 $this->table()->get("type")
             );
             $this->table()->set("driver", $driver);
         }
         if (!is_object($this->_driverCache[$driver])) {
-            $this->_driverCache[$driver] = \HUGnet\processTable\Driver::factory(
+            $this->_driverCache[$driver] = processTable\Driver::factory(
                 $driver, $this
             );
         }

@@ -165,7 +165,7 @@ class Output extends \HUGnet\base\SystemTableBase
         }
         $return["params"] = (array)$params;
         if ($default) {
-            $return["otherTypes"] = \HUGnet\outputTable\Driver::getTypes(
+            $return["otherTypes"] = outputTable\Driver::getTypes(
                 $return["id"]
             );
             $return["validIds"] = $this->driver()->getDrivers();
@@ -197,16 +197,16 @@ class Output extends \HUGnet\base\SystemTableBase
     */
     protected function &driver($driver = null)
     {
-        include_once dirname(__FILE__)."/../outputTable/Driver.php";
+        include_once dirname(__FILE__)."/outputTable/Driver.php";
         if (empty($driver)) {
-            $driver = \HUGnet\outputTable\Driver::getDriver(
+            $driver = outputTable\Driver::getDriver(
                 $this->table()->get("id"),
                 $this->table()->get("type")
             );
             $this->table()->set("driver", $driver);
         }
         if (!is_object($this->_driverCache[$driver])) {
-            $this->_driverCache[$driver] = \HUGnet\outputTable\Driver::factory(
+            $this->_driverCache[$driver] = outputTable\Driver::factory(
                 $driver, $this
             );
         }

@@ -38,7 +38,7 @@ namespace HUGnet;
 /** This is a required class */
 require_once CODE_BASE.'system/Sensor.php';
 /** This is a required class */
-require_once CODE_BASE.'inputTable/Driver.php';
+require_once CODE_BASE.'devices/inputTable/Driver.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is the dummy table container */
@@ -46,7 +46,7 @@ require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
 /** This is the dummy table container */
 require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
 /** This is our units class */
-require_once CODE_BASE."channels/Driver.php";
+require_once CODE_BASE."devices/datachan/Driver.php";
 
 /**
  * Test class for HUGnetDB.
@@ -74,8 +74,12 @@ class SensorTest extends \PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        \HUGnet\inputTable\Driver::register("FD:DEFAULT", "TestSensorDriver1");
-        \HUGnet\inputTable\Driver::register("FC:DEFAULT", "TestSensorDriver2");
+        \HUGnet\devices\inputTable\Driver::register(
+            "FD:DEFAULT", "TestSensorDriver1"
+        );
+        \HUGnet\devices\inputTable\Driver::register(
+            "FC:DEFAULT", "TestSensorDriver2"
+        );
         parent::setUp();
     }
 
@@ -175,15 +179,15 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                     "extraDefault" => array(2210, '&#176;C'),
                     "extraValues" => array(5, array('&#176;C', '&#176;F', 'K')),
                     "storageUnit" => "&#176;C",
-                    "storageType" => \HUGnet\channels\Driver::TYPE_RAW,
+                    "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                     "maxDecimals" => 4,
                     "dataTypes" => array(
-                        \HUGnet\channels\Driver::TYPE_RAW
-                            => \HUGnet\channels\Driver::TYPE_RAW,
-                        \HUGnet\channels\Driver::TYPE_DIFF
-                            => \HUGnet\channels\Driver::TYPE_DIFF,
-                        \HUGnet\channels\Driver::TYPE_IGNORE
-                            => \HUGnet\channels\Driver::TYPE_IGNORE,
+                        \HUGnet\devices\datachan\Driver::TYPE_RAW
+                            => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        \HUGnet\devices\datachan\Driver::TYPE_DIFF
+                            => \HUGnet\devices\datachan\Driver::TYPE_DIFF,
+                        \HUGnet\devices\datachan\Driver::TYPE_IGNORE
+                            => \HUGnet\devices\datachan\Driver::TYPE_IGNORE,
                     ),
                     "defMin" => 0,
                     "defMax" => 150,
@@ -623,7 +627,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             "id" => 0xFD,
                             "type" => "TestSensorDriver1",
                             "unitType" => "Pressure",
-                            "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
+                            "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                             "storageUnit" => "psi",
                         ),
                         "toArray" => array(
@@ -631,7 +635,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                             "type" => "TestSensorDriver1",
                             "extra" => array(),
                             "unitType" => "Pressure",
-                            "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
+                            "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                             "storageUnit" => "psi",
                         ),
                     ),
@@ -645,25 +649,25 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         "value" => 25.2134,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                     ),
                     array(
                         "value" => 28.5282,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                     ),
                     array(
                         "value" => 12.3455,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                     ),
                     array(
                         "value" => 82.1253,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                     ),
                 ),
                 array(
@@ -673,7 +677,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         'maxDecimals' => 4,
                         'storageUnit' => '&#176;C',
                         "unitType" => "Temperature",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "decimals" => 4,
                         "index" => 0,
                     ),
@@ -686,7 +690,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 0xFD,
                             "type" => "TestSensorDriver1",
-                            "dataType" => \HUGnet\channels\Driver::TYPE_DIFF,
+                            "dataType" => \HUGnet\devices\datachan\Driver::TYPE_DIFF,
                         ),
                     ),
                 ),
@@ -699,25 +703,25 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         "value" => 25.2134,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                     ),
                     array(
                         "value" => 28.5282,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                     ),
                     array(
                         "value" => 12.3455,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                     ),
                     array(
                         "value" => 82.1253,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                     ),
                 ),
                 array(
@@ -727,7 +731,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         'maxDecimals' => 4,
                         'storageUnit' => '&#176;C',
                         "unitType" => "Temperature",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "decimals" => 4,
                         "index" => 0,
                     ),
@@ -740,7 +744,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 0xFC,
                             "type" => "TestSensorDriver2",
-                            "dataType" => \HUGnet\channels\Driver::TYPE_DIFF,
+                            "dataType" => \HUGnet\devices\datachan\Driver::TYPE_DIFF,
                         ),
                     ),
                 ),
@@ -751,7 +755,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                     "value" => 12.5,
                     "units" => "&#176;C",
                     "unitType" => "Temperature",
-                    "dataType" => \HUGnet\channels\Driver::TYPE_DIFF,
+                    "dataType" => \HUGnet\devices\datachan\Driver::TYPE_DIFF,
                     "raw" => 50,
                 ),
                 array(
@@ -759,25 +763,25 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         "value" => 25.2134,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                     ),
                     array(
                         "value" => 28.5282,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                     ),
                     array(
                         "value" => 12.3455,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                     ),
                     array(
                         "value" => 82.1253,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                     ),
                 ),
                 array(
@@ -787,7 +791,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         'maxDecimals' => 4,
                         'storageUnit' => '&#176;C',
                         "unitType" => "Temperature",
-                        "dataType" => \HUGnet\channels\Driver::TYPE_DIFF,
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_DIFF,
                         "raw" => 100,
                         "decimals" => 4,
                         "index" => 0,
@@ -848,14 +852,14 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                 array(
                     "value" => 0.0,
                     "units" => "&#176;C",
-                    "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
+                    "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                     "unitType" => "Temperature",
                 ),
                 "K",
                 array(
                     "value" => 273.15,
                     "units" => "K",
-                    "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
+                    "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                     "unitType" => "Temperature",
                 ),
                 true,
@@ -875,14 +879,14 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                 array(
                     "value" => 0.0,
                     "units" => "&#176;C",
-                    "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
+                    "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                     "unitType" => "Temperature",
                 ),
                 null,
                 array(
                     "value" => 32.0,
                     "units" => "&#176;F",
-                    "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
+                    "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                     "unitType" => "Temperature",
                 ),
                 true,
@@ -902,14 +906,14 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                 array(
                     "value" => 12.0,
                     "units" => "&#176;C",
-                    "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
+                    "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                     "unitType" => "Temperature",
                 ),
                 "psi",
                 array(
                     "value" => 12.0,
                     "units" => "&#176;C",
-                    "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
+                    "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                     "unitType" => "Temperature",
                 ),
                 false,
@@ -929,14 +933,14 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                 array(
                     "value" => null,
                     "units" => "&#176;C",
-                    "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
+                    "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                     "unitType" => "Temperature",
                 ),
                 "&#176;F",
                 array(
                     "value" => null,
                     "units" => "&#176;C",
-                    "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
+                    "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                     "unitType" => "Temperature",
                 ),
                 true,
@@ -1177,7 +1181,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         "unitType" => 'unknown',
                         'maxDecimals' => 2,
                         'storageUnit' => 'unknown',
-                        "dataType" => \HUGnet\channels\Driver::TYPE_RAW,
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "sensor"   => 4,
                         "label" => "Test",
                         "index" => 0,
@@ -1286,7 +1290,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
 
 }
 
-namespace HUGnet\inputTable\drivers;
+namespace HUGnet\devices\inputTable\drivers;
 
 /**
  * Default sensor driver
@@ -1303,7 +1307,7 @@ namespace HUGnet\inputTable\drivers;
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class TestSensorDriver1 extends \HUGnet\inputTable\Driver
+class TestSensorDriver1 extends \HUGnet\devices\inputTable\Driver
 {
     /**
     * This is where the data for the driver is stored.  This array must be
@@ -1314,7 +1318,7 @@ class TestSensorDriver1 extends \HUGnet\inputTable\Driver
         "shortName" => "SSD1",
         "unitType" => "Temperature",
         "storageUnit" => 'getExtra1',
-        "storageType" => \HUGnet\channels\Driver::TYPE_RAW,  // Storage dataType
+        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,  // Storage dataType
         "extraText" => array("Silliness Factor", "Storage Unit"),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
@@ -1357,7 +1361,7 @@ class TestSensorDriver1 extends \HUGnet\inputTable\Driver
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class TestSensorDriver2 extends \HUGnet\inputTable\Driver
+class TestSensorDriver2 extends \HUGnet\devices\inputTable\Driver
 {
     /**
     * This is where the data for the driver is stored.  This array must be
@@ -1368,7 +1372,7 @@ class TestSensorDriver2 extends \HUGnet\inputTable\Driver
         "shortName" => "SSD2",
         "unitType" => "Temperature",
         "storageUnit" => 'getExtra1',
-        "storageType" => \HUGnet\channels\Driver::TYPE_DIFF,  // Storage dataType
+        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_DIFF,  // Storage dataType
         "extraText" => array("Silliness Factor", "Storage Unit"),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take

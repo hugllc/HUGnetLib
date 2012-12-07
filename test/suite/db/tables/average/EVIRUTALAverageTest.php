@@ -178,7 +178,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -204,7 +204,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -264,7 +264,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                             "type" => "computation",
                             "extra" => array(
                                 "{2} - {1}", "&#176;C", "Temperature",
-                                \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
                     ),
@@ -296,7 +296,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -322,7 +322,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -382,7 +382,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                             "type" => "computation",
                             "extra" => array(
                                 "{2} - {1}", "&#176;C", "Temperature",
-                                \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
                     ),
@@ -415,7 +415,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -438,7 +438,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -495,7 +495,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                             "type" => "computation",
                             "extra" => array(
                                 "{2} - {1}", "&#176;C", "Temperature",
-                                \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
                     ),
@@ -527,7 +527,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -587,7 +587,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                             "type" => "computation",
                             "extra" => array(
                                 "{2} - {1}", "&#176;C", "Temperature",
-                                \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
                     ),
@@ -614,7 +614,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -640,7 +640,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -690,7 +690,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                             "type" => "computation",
                             "extra" => array(
                                 "1 + 1", "&#176;C", "Temperature",
-                                \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
                         array(
@@ -698,7 +698,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                             "type" => "computation",
                             "extra" => array(
                                 "1 + 2", "&#176;C", "Temperature",
-                                \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
                         array(
@@ -706,7 +706,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                             "type" => "computation",
                             "extra" => array(
                                 "1 + 3", "&#176;C", "Temperature",
-                                \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
                     ),
@@ -791,7 +791,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -817,7 +817,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -909,7 +909,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                             "type" => "computation",
                             "extra" => array(
                                 "{2} - {1}", "&#176;C", "Temperature",
-                                \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
                     ),
@@ -958,7 +958,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -984,7 +984,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -1076,7 +1076,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                             "type" => "computation",
                             "extra" => array(
                                 "{2} - {1}", "&#176;C", "Temperature",
-                                \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
                     ),
@@ -1123,7 +1123,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -1149,7 +1149,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -1265,7 +1265,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                             "type" => "computation",
                             "extra" => array(
                                 "{2} - {1}", "&#176;C", "Temperature",
-                                \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
                     ),
@@ -1314,7 +1314,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -1340,7 +1340,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -1400,7 +1400,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                             "type" => "computation",
                             "extra" => array(
                                 "{2} - {1}", "&#176;C", "Temperature",
-                                \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
                     ),
@@ -1434,7 +1434,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -1460,7 +1460,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -1552,7 +1552,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                             "type" => "computation",
                             "extra" => array(
                                 "{2} - {1}", "&#176;C", "Temperature",
-                                \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
                     ),
@@ -1599,7 +1599,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -1625,7 +1625,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -1717,7 +1717,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                             "type" => "computation",
                             "extra" => array(
                                 "{2} - {1}", "&#176;C", "Temperature",
-                                \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
                     ),
@@ -1760,7 +1760,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -1779,7 +1779,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -1812,7 +1812,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                             "type" => "computation",
                             "extra" => array(
                                 "{2} - {1}", "&#176;C", "Temperature",
-                                \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
                     ),
@@ -1841,7 +1841,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -1867,7 +1867,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -1901,7 +1901,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -1993,7 +1993,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                             "type" => "computation",
                             "extra" => array(
                                 "{2} - {1}", "&#176;C", "Temperature",
-                                \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
                     ),
@@ -2042,7 +2042,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -2065,7 +2065,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -2170,7 +2170,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                             "type" => "computation",
                             "extra" => array(
                                 "{2} - {1}", "&#176;C", "Temperature",
-                                \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
                     ),
@@ -2212,7 +2212,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -2238,7 +2238,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -2272,7 +2272,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -2374,7 +2374,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                             "type" => "computation",
                             "extra" => array(
                                 "{2} - {1}", "&#176;C", "Temperature",
-                                \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
                     ),
@@ -2429,7 +2429,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -2455,7 +2455,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -2489,7 +2489,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                                 "type" => "computation",
                                 "extra" => array(
                                     "{2} - {1}", "&#176;C", "Temperature",
-                                    \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                    \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
@@ -2591,7 +2591,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                             "type" => "computation",
                             "extra" => array(
                                 "{2} - {1}", "&#176;C", "Temperature",
-                                \HUGnet\channels\Driver::TYPE_DIFF, 4
+                                \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
                     ),

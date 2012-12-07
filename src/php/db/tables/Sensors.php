@@ -38,7 +38,7 @@ namespace HUGnet\db\tables;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** The data channels driver is necessary for a couple of constants */
-require_once dirname(__FILE__)."/../../channels/Driver.php";
+require_once dirname(__FILE__)."/../../devices/datachan/Driver.php";
 /**
  * This class has functions that relate to the manipulation of elements
  * of the devInfo array.
@@ -110,7 +110,7 @@ class Sensors extends \HUGnet\db\Table
         "dataType" => array(
             "Name" => "dataType",
             "Type" => "varchar(32)",
-            "Default" => \HUGnet\channels\Driver::TYPE_RAW,
+            "Default" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         ),
         "units" => array(
             "Name" => "units",
@@ -300,9 +300,9 @@ class Sensors extends \HUGnet\db\Table
     */
     protected function setDataType($value)
     {
-        if (($value == \HUGnet\channels\Driver::TYPE_RAW)
-            || ($value == \HUGnet\channels\Driver::TYPE_DIFF)
-            || ($value == \HUGnet\channels\Driver::TYPE_IGNORE)
+        if (($value == \HUGnet\devices\datachan\Driver::TYPE_RAW)
+            || ($value == \HUGnet\devices\datachan\Driver::TYPE_DIFF)
+            || ($value == \HUGnet\devices\datachan\Driver::TYPE_IGNORE)
         ) {
             $this->data["dataType"] = $value;
         }

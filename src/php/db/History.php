@@ -38,7 +38,7 @@ namespace HUGnet\db;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is for some constants that it contains */
-require_once dirname(__FILE__)."/../channels/Driver.php";
+require_once dirname(__FILE__)."/../devices/datachan/Driver.php";
 /** This is for some constants that it contains */
 require_once dirname(__FILE__)."/Table.php";
 
@@ -289,8 +289,8 @@ abstract class History extends \HUGnet\db\Table
                 $col = "Data".$i;
                 $sensor = $this->device->input($i);
                 // This changes raw mode into differential mode
-                if (($sensor->storageType === \HUGnet\channels\Driver::TYPE_RAW)
-                    && ($sensor->dataType === \HUGnet\channels\Driver::TYPE_DIFF)
+                if (($sensor->storageType === \HUGnet\devices\datachan\Driver::TYPE_RAW)
+                    && ($sensor->dataType === \HUGnet\devices\datachan\Driver::TYPE_DIFF)
                 ) {
                     if (is_null($this->prev[$col])) {
                         $this->data[$col] = null;

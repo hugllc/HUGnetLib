@@ -38,7 +38,7 @@ namespace HUGnet\devices;
 /** This is a required class */
 require_once CODE_BASE.'devices/Process.php';
 /** This is a required class */
-require_once CODE_BASE.'processTable/Driver.php';
+require_once CODE_BASE.'devices/processTable/Driver.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is the dummy table container */
@@ -46,7 +46,7 @@ require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
 /** This is the dummy table container */
 require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
 /** This is our units class */
-require_once CODE_BASE."channels/Driver.php";
+require_once CODE_BASE."devices/datachan/Driver.php";
 
 /**
  * Test class for HUGnetDB.
@@ -74,8 +74,8 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        \HUGnet\processTable\Driver::register("FD:DEFAULT", "TestProcessDriver1");
-        \HUGnet\processTable\Driver::register("FC:DEFAULT", "TestProcessDriver2");
+        \HUGnet\devices\processTable\Driver::register("FD:DEFAULT", "TestProcessDriver1");
+        \HUGnet\devices\processTable\Driver::register("FC:DEFAULT", "TestProcessDriver2");
         parent::setUp();
     }
 
@@ -745,7 +745,7 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
 
 }
 
-namespace HUGnet\processTable\drivers;
+namespace HUGnet\devices\processTable\drivers;
 
 /**
  * Default sensor driver
@@ -762,7 +762,7 @@ namespace HUGnet\processTable\drivers;
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class TestProcessDriver1 extends \HUGnet\processTable\Driver
+class TestProcessDriver1 extends \HUGnet\devices\processTable\Driver
 {
     /**
     * This is where the data for the driver is stored.  This array must be
@@ -806,7 +806,7 @@ class TestProcessDriver1 extends \HUGnet\processTable\Driver
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class TestProcessDriver2 extends \HUGnet\processTable\Driver
+class TestProcessDriver2 extends \HUGnet\devices\processTable\Driver
 {
     /**
     * This is where the data for the driver is stored.  This array must be
