@@ -255,7 +255,8 @@ abstract class DriverADuC extends Driver
         $A = $this->getTwosCompliment($A, 32);
         $A = $A / $this->gain();
         $ret = $this->channels();
-        if ($this->get("storageType") == \HUGnet\devices\datachan\Driver::TYPE_DIFF) {
+        $type = $this->get("storageType");
+        if ($type == \HUGnet\devices\datachan\Driver::TYPE_DIFF) {
             $ret[0]["value"] = $this->getReading(
                 ($A - $prev["raw"]), $deltaT, $data, $prev
             );

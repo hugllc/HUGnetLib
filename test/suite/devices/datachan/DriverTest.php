@@ -195,11 +195,13 @@ class DriverTest extends drivers\DriverTestBase
     {
         return array(
             array(
-                12.312, "&#176;C", "&#176;F", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                12.312, "&#176;C", "&#176;F",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 false, 12.312
             ),
             array(
-                12.312, "&#176;C", "&#176;C", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                12.312, "&#176;C", "&#176;C",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, 12.312
             ),
         );

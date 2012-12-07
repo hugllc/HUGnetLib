@@ -87,7 +87,7 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
         "shortName" => "ADuCInputTable",
         "unitType" => "Unknown",
         "storageUnit" => "Unknown",
-        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW, // Storage dataType
+        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraText" => array(
             "Table Entry",
             "Channel 0 Reading @ 0",
@@ -155,7 +155,9 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
             $sensor = $this->input();
             $entry  = $this->_entry();
             $this->_driver[$num] = \HUGnet\devices\inputTable\DriverADuC::factory(
-                \HUGnet\devices\inputTable\Driver::getDriver(hexdec($driver[0]), $driver[1]),
+                \HUGnet\devices\inputTable\Driver::getDriver(
+                    hexdec($driver[0]), $driver[1]
+                ),
                 $sensor,
                 $offset,
                 $entry,

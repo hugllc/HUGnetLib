@@ -71,7 +71,9 @@ class EmptyOutputTest extends DriverTestBase
         parent::setUp();
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
-        $this->o = \HUGnet\devices\outputTable\Driver::factory("EmptyOutput", $sensor);
+        $this->o = \HUGnet\devices\outputTable\Driver::factory(
+            "EmptyOutput", $sensor
+        );
     }
 
     /**

@@ -180,17 +180,20 @@ class PercentTest extends DriverTestBase
                 true, 12.312
             ),
             array(
-                0.1, "%", "decimal", \HUGnet\devices\datachan\Driver::TYPE_DIFF, true, 10.0
+                0.1, "%", "decimal", \HUGnet\devices\datachan\Driver::TYPE_DIFF,
+                true, 10.0
             ),
             array(
                 42.13, "decimal", "%", \HUGnet\devices\datachan\Driver::TYPE_DIFF,
                 true, 0.4213
             ),
             array(
-                42.13, "%", "%", \HUGnet\devices\datachan\Driver::TYPE_DIFF, true, 42.13
+                42.13, "%", "%", \HUGnet\devices\datachan\Driver::TYPE_DIFF,
+                true, 42.13
             ),
             array(
-                0.42, "decimal", "decimal", \HUGnet\devices\datachan\Driver::TYPE_DIFF,
+                0.42, "decimal", "decimal",
+                \HUGnet\devices\datachan\Driver::TYPE_DIFF,
                 true, 0.42
             ),
         );

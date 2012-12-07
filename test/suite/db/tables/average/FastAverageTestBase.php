@@ -59,8 +59,6 @@ abstract class FastAverageTestBase extends HistoryTestBase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $class The class to use
-    *
     * @return null
     */
     public function testParent()

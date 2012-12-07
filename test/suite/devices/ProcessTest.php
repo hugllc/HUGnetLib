@@ -74,8 +74,12 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        \HUGnet\devices\processTable\Driver::register("FD:DEFAULT", "TestProcessDriver1");
-        \HUGnet\devices\processTable\Driver::register("FC:DEFAULT", "TestProcessDriver2");
+        \HUGnet\devices\processTable\Driver::register(
+            "FD:DEFAULT", "TestProcessDriver1"
+        );
+        \HUGnet\devices\processTable\Driver::register(
+            "FC:DEFAULT", "TestProcessDriver2"
+        );
         parent::setUp();
     }
 

@@ -102,8 +102,12 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
         $ret = array();
         foreach (static::$units as $unit1) {
             foreach (static::$units as $unit2) {
-                $ret[] = array($unit1, $unit2, \HUGnet\devices\datachan\Driver::TYPE_RAW);
-                $ret[] = array($unit1, $unit2, \HUGnet\devices\datachan\Driver::TYPE_DIFF);
+                $ret[] = array(
+                    $unit1, $unit2, \HUGnet\devices\datachan\Driver::TYPE_RAW
+                );
+                $ret[] = array(
+                    $unit1, $unit2, \HUGnet\devices\datachan\Driver::TYPE_DIFF
+                );
             }
         }
         return $ret;

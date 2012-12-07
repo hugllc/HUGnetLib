@@ -82,7 +82,8 @@ class ControllerCurrent extends \HUGnet\devices\inputTable\DriverAVR
         "dataTypes" => array(
             \HUGnet\devices\datachan\Driver::TYPE_IGNORE
                 => \HUGnet\devices\datachan\Driver::TYPE_IGNORE,
-            \HUGnet\devices\datachan\Driver::TYPE_RAW => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+            \HUGnet\devices\datachan\Driver::TYPE_RAW
+                => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         ),
     );
     /**

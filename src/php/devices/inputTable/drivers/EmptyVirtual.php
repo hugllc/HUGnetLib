@@ -66,7 +66,7 @@ class EmptyVirtual extends \HUGnet\devices\inputTable\DriverVirtual
         "shortName" => "EmptyVirtual",
         "unitType" => "None",
         "storageUnit" => 'none',
-        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_IGNORE, // Storage dataType
+        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_IGNORE, 
         "virtual" => true,              // This says if we are a virtual sensor
         "extraText" => array(
         ),

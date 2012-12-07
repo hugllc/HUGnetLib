@@ -937,7 +937,7 @@ class DriverADuCTestClassDiff extends \HUGnet\devices\inputTable\DriverADuC
         "longName" => "Unknown Sensor",
         "shortName" => "Unknown",
         "unitType" => "unknown",
-        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_DIFF, // Storage dataType
+        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_DIFF, 
     );
 }
 ?>

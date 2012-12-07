@@ -71,7 +71,9 @@ class TemperatureTest extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->o = \HUGnet\devices\datachan\Driver::factory("Temperature", "&#176;F");
+        $this->o = \HUGnet\devices\datachan\Driver::factory(
+            "Temperature", "&#176;F"
+        );
     }
 
     /**
@@ -195,11 +197,13 @@ class TemperatureTest extends DriverTestBase
                 true, 373.15
             ),
             array(
-                12.312, "&#176;C", "&#176;F", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                12.312, "&#176;C", "&#176;F",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, -10.937777777778
             ),
             array(
-                12.312, "&#176;C", "&#176;F", \HUGnet\devices\datachan\Driver::TYPE_DIFF,
+                12.312, "&#176;C", "&#176;F",
+                \HUGnet\devices\datachan\Driver::TYPE_DIFF,
                 true, 6.84
             ),
             array(
@@ -216,15 +220,18 @@ class TemperatureTest extends DriverTestBase
                 true, 12.312
             ),
             array(
-                6.84, "&#176;F", "&#176;C", \HUGnet\devices\datachan\Driver::TYPE_DIFF,
+                6.84, "&#176;F", "&#176;C",
+                \HUGnet\devices\datachan\Driver::TYPE_DIFF,
                 true, 12.312
             ),
             array(
-                12.312, "&#176;C", "&#176;C", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                12.312, "&#176;C", "&#176;C",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, 12.312
             ),
             array(
-                12.312, "&#176;C", "&#176;C", \HUGnet\devices\datachan\Driver::TYPE_DIFF,
+                12.312, "&#176;C", "&#176;C",
+                \HUGnet\devices\datachan\Driver::TYPE_DIFF,
                 true, 12.312
             ),
             array(

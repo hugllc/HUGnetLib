@@ -71,7 +71,9 @@ class EmptyProcessTest extends DriverTestBase
         parent::setUp();
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
-        $this->o = \HUGnet\devices\processTable\Driver::factory("EmptyProcess", $sensor);
+        $this->o = \HUGnet\devices\processTable\Driver::factory(
+            "EmptyProcess", $sensor
+        );
     }
 
     /**

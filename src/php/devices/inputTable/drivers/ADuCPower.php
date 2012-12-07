@@ -66,7 +66,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         "longName" => "ADuC Power Meter",
         "shortName" => "ADuCPower",
         "unitType" => "Varies",
-        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW, // Storage dataType
+        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW, 
         "extraText" => array(
             "Voltage Ref (V)",
             "Shunt Resistor (Ohms)",

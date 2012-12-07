@@ -845,7 +845,8 @@ class DriverTest extends drivers\DriverTestBase
                             "storageUnit" => "unknown",
                             "maxDecimals" => 2,
                             "unitType" => "asdf",
-                            "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                            "storageType" =>
+                                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         ),
                     ),
                 ),
@@ -1037,7 +1038,7 @@ class DriverTestClass extends \HUGnet\devices\inputTable\Driver
         "shortName" => "Unknown",
         "unitType" => "asdf", /* This is for test value only */
         "testParam" => "12345", /* This is for test value only */
-        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW, // Storage dataType
+        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraDefault" => array(2,3,5,7,11),
         "extraText" => array("a","b","c","d","e"),
         "extraValues" => array(5, 5, 5, 5, 5),
@@ -1123,7 +1124,7 @@ class DriverTestClassDiff extends \HUGnet\devices\inputTable\Driver
         "longName" => "Unknown Sensor",
         "shortName" => "Unknown",
         "unitType" => "unknown",
-        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_DIFF, // Storage dataType
+        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_DIFF,
     );
 }
 ?>

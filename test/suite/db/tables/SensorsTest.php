@@ -188,7 +188,9 @@ class SensorsTest extends TableTestBase
                 \HUGnet\devices\datachan\Driver::TYPE_DIFF,
                 \HUGnet\devices\datachan\Driver::TYPE_DIFF
             ),
-            array("dataType", "asdffdsas", \HUGnet\devices\datachan\Driver::TYPE_RAW),
+            array(
+                "dataType", "asdffdsas", \HUGnet\devices\datachan\Driver::TYPE_RAW
+            ),
             array("params", "asdfasdfasdfasdf", "asdfasdfasdfasdf"),
             array("params", array(1,2,3,4), "[1,2,3,4]"),
             array("extra", array(1,2,3,4), array(1,2,3,4)),

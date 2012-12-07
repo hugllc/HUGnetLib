@@ -66,7 +66,7 @@ class ADuCPressure extends \HUGnet\devices\inputTable\DriverADuC
         "shortName" => "ADuCPressure",
         "unitType" => "Pressure",
         "storageUnit" => 'psi',
-        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW, // Storage dataType
+        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW, 
         "extraText" => array(
             "Voltage @ point A (V)",
             "Voltage @ point B (V)",

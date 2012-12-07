@@ -1318,7 +1318,7 @@ class TestSensorDriver1 extends \HUGnet\devices\inputTable\Driver
         "shortName" => "SSD1",
         "unitType" => "Temperature",
         "storageUnit" => 'getExtra1',
-        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,  // Storage dataType
+        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,  
         "extraText" => array("Silliness Factor", "Storage Unit"),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
@@ -1372,7 +1372,7 @@ class TestSensorDriver2 extends \HUGnet\devices\inputTable\Driver
         "shortName" => "SSD2",
         "unitType" => "Temperature",
         "storageUnit" => 'getExtra1',
-        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_DIFF,  // Storage dataType
+        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_DIFF,  
         "extraText" => array("Silliness Factor", "Storage Unit"),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take

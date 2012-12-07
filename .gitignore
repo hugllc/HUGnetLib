@@ -15,3 +15,4 @@ src/webapi/html/contrib.min.js
 *.gz
 *.kdev4
 .kdev4
+.goutputstream*

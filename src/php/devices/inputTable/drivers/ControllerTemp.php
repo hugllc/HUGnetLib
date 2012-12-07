@@ -66,7 +66,7 @@ class ControllerTemp extends \HUGnet\devices\inputTable\drivers\AVRBC2322640
         "shortName" => "ContTemp",
         "unitType" => "Temperature",
         "storageUnit" => '&#176;C',
-        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,  // Data stored as
+        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraText" => array(
             "Bias Resistor (kOhms)",
             "Value @25&#176;C (kOhms)"
@@ -81,7 +81,8 @@ class ControllerTemp extends \HUGnet\devices\inputTable\drivers\AVRBC2322640
         "dataTypes" => array(
             \HUGnet\devices\datachan\Driver::TYPE_IGNORE
                 => \HUGnet\devices\datachan\Driver::TYPE_IGNORE,
-            \HUGnet\devices\datachan\Driver::TYPE_RAW => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+            \HUGnet\devices\datachan\Driver::TYPE_RAW
+                => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         ),
     );
 

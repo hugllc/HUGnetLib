@@ -74,8 +74,12 @@ class OutputTest extends \PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        \HUGnet\devices\outputTable\Driver::register("FD:DEFAULT", "TestOutputDriver1");
-        \HUGnet\devices\outputTable\Driver::register("FC:DEFAULT", "TestOutputDriver2");
+        \HUGnet\devices\outputTable\Driver::register(
+            "FD:DEFAULT", "TestOutputDriver1"
+        );
+        \HUGnet\devices\outputTable\Driver::register(
+            "FC:DEFAULT", "TestOutputDriver2"
+        );
         parent::setUp();
     }
 

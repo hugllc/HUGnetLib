@@ -132,7 +132,7 @@ abstract class Driver
     /**
     * This function creates the system.
     *
-    * @param string $driver  The driver to load
+    * @param string $driver   The driver to load
     * @param object &$process The process object
     *
     * @return null

@@ -66,7 +66,7 @@ class EmptySensor extends \HUGnet\devices\inputTable\Driver
         "shortName" => "Empty",
         "unitType" => "None",
         "storageUnit" => 'none',
-        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_IGNORE, // Storage dataType
+        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_IGNORE, 
         "extraText" => array(
         ),
         // Integer is the size of the field needed to edit

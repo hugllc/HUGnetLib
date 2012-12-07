@@ -87,11 +87,13 @@ abstract class Driver
         // Null    nothing
         "extraValues" => array(),
         "storageUnit" => "unknown",
-        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW, // Storage dataType
+        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "maxDecimals" => 2,
         "dataTypes" => array(
-            \HUGnet\devices\datachan\Driver::TYPE_RAW => \HUGnet\devices\datachan\Driver::TYPE_RAW,
-            \HUGnet\devices\datachan\Driver::TYPE_DIFF => \HUGnet\devices\datachan\Driver::TYPE_DIFF,
+            \HUGnet\devices\datachan\Driver::TYPE_RAW
+                => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+            \HUGnet\devices\datachan\Driver::TYPE_DIFF
+                => \HUGnet\devices\datachan\Driver::TYPE_DIFF,
             \HUGnet\devices\datachan\Driver::TYPE_IGNORE
                 => \HUGnet\devices\datachan\Driver::TYPE_IGNORE,
         ),
@@ -468,7 +470,8 @@ abstract class Driver
     ) {
         $A = $this->strToInt($string);
         $ret = $this->channels();
-        if ($this->get("storageType") == \HUGnet\devices\datachan\Driver::TYPE_DIFF) {
+        $type = $this->get("storageType");
+        if ($type == \HUGnet\devices\datachan\Driver::TYPE_DIFF) {
             $ret[0]["value"] = $this->getReading(
                 ($A - $prev["raw"]), $deltaT, $data, $prev
             );

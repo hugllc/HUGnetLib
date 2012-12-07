@@ -196,7 +196,8 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
                             array(
                                 "unitType" => "Pressure",
                                 "storageUnit" => "psi",
-                                "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
                             ),
                         ),
                     ),
@@ -205,7 +206,8 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
                             array(
                                 "unitType" => "Percent",
                                 "storageUnit" => "decimal",
-                                "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
                             ),
                         ),
                     ),
@@ -214,7 +216,8 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
                             array(
                                 "unitType" => "Percent",
                                 "storageUnit" => "decimal",
-                                "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
                             ),
                         ),
                     ),

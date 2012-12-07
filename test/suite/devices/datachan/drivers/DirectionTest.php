@@ -169,143 +169,180 @@ class DirectionTest extends DriverTestBase
     {
         return array(
             array(
-                0, "Direction", "&#176;", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                0, "Direction", "&#176;",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, "N"
             ),
             array(
-                22.5, "Direction", "&#176;", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                22.5, "Direction", "&#176;",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, "NNE"
             ),
             array(
-                45, "Direction", "&#176;", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                45, "Direction", "&#176;",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, "NE"
             ),
             array(
-                67.5, "Direction", "&#176;", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                67.5, "Direction", "&#176;",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, "ENE"
             ),
             array(
-                90, "Direction", "&#176;", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                90, "Direction", "&#176;",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, "E"
             ),
             array(
-                112.5, "Direction", "&#176;", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                112.5, "Direction", "&#176;",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, "ESE"
             ),
             array(
-                135, "Direction", "&#176;", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                135, "Direction", "&#176;",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, "SE"
             ),
             array(
-                157.5, "Direction", "&#176;", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                157.5, "Direction", "&#176;",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, "SSE"
             ),
             array(
-                180, "Direction", "&#176;", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                180, "Direction", "&#176;",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, "S"
             ),
             array(
-                202.5, "Direction", "&#176;", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                202.5, "Direction", "&#176;",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, "SSW"
             ),
             array(
-                225, "Direction", "&#176;", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                225, "Direction", "&#176;",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, "SW"
             ),
             array(
-                247.5, "Direction", "&#176;", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                247.5, "Direction", "&#176;",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, "WSW"
             ),
             array(
-                270, "Direction", "&#176;", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                270, "Direction", "&#176;",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, "W"
             ),
             array(
-                292.5, "Direction", "&#176;", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                292.5, "Direction", "&#176;",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, "WNW"
             ),
             array(
-                315, "Direction", "&#176;", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                315, "Direction", "&#176;",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, "NW"
             ),
             array(
-                337.5, "Direction", "&#176;", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                337.5, "Direction", "&#176;",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, "NNW"
             ),
             array(
-                900, "Direction", "&#176;", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                900, "Direction", "&#176;",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, "N"
             ),
 
             array(
-                "N", "&#176;", "Direction", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                "N", "&#176;", "Direction",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, 0
             ),
             array(
-                "NNE", "&#176;", "Direction", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                "NNE", "&#176;", "Direction",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, 22.5
             ),
             array(
-                "NE", "&#176;", "Direction", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                "NE", "&#176;", "Direction",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, 45
             ),
             array(
-                "ENE", "&#176;", "Direction", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                "ENE", "&#176;", "Direction",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, 67.5
             ),
             array(
-                "E", "&#176;", "Direction", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                "E", "&#176;", "Direction",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, 90
             ),
             array(
-                "ESE", "&#176;", "Direction", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                "ESE", "&#176;", "Direction",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, 112.5
             ),
             array(
-                "SE", "&#176;", "Direction", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                "SE", "&#176;", "Direction",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, 135
             ),
             array(
-                "SSE", "&#176;", "Direction", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                "SSE", "&#176;", "Direction",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, 157.5
             ),
             array(
-                "S", "&#176;", "Direction", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                "S", "&#176;", "Direction",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, 180
             ),
             array(
-                "SSW", "&#176;", "Direction", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                "SSW", "&#176;", "Direction",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, 202.5
             ),
             array(
-                "SW", "&#176;", "Direction", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                "SW", "&#176;", "Direction",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, 225
             ),
             array(
-                "WSW", "&#176;", "Direction", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                "WSW", "&#176;", "Direction",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, 247.5
             ),
             array(
-                "W", "&#176;", "Direction", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                "W", "&#176;", "Direction",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, 270
             ),
             array(
-                "WNW", "&#176;", "Direction", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                "WNW", "&#176;", "Direction",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, 292.5
             ),
             array(
-                "NW", "&#176;", "Direction", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                "NW", "&#176;", "Direction",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, 315
             ),
             array(
-                "NNW", "&#176;", "Direction", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                "NNW", "&#176;", "Direction",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, 337.5
             ),
             array(
-                "ASDF", "&#176;", "Direction", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                "ASDF", "&#176;", "Direction",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, 0
             ),
-            array(0, "&#176;", "&#176;", \HUGnet\devices\datachan\Driver::TYPE_RAW, true, 0),
+            array(
+                0, "&#176;", "&#176;",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW, true, 0
+            ),
         );
     }
 

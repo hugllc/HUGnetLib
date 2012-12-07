@@ -198,7 +198,8 @@ class AVRIMCSolarTest extends DriverTestBase
                             "id" => 0x02,
                             "type" => "IMCSolar",
                             "extra" => array(10),
-                            'dataType' => \HUGnet\devices\datachan\Driver::TYPE_IGNORE,
+                            'dataType' =>
+                                \HUGnet\devices\datachan\Driver::TYPE_IGNORE,
                         ),
                     ),
                 ),
