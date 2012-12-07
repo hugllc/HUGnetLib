@@ -1414,7 +1414,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataSensor()
+    public static function dataInput()
     {
         return array(
             array(
@@ -1496,15 +1496,15 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataSensor
+    * @dataProvider dataInput
     */
-    public function testSensor(
+    public function testInput(
         $config, $sensor, $driverExpect, $expect
     ) {
         $sys = new DummySystem("System");
         $sys->resetMock($config);
         $obj = Device::factory($sys, null);
-        $sen = $obj->sensor($sensor);
+        $sen = $obj->input($sensor);
         $this->assertTrue(
             is_a($sen, $driverExpect),
             "Return is not a ".$driverExpect
@@ -1522,7 +1522,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataOutputTable()
+    public static function dataOutput()
     {
         return array(
             array(
@@ -1556,15 +1556,15 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataOutputTable
+    * @dataProvider dataOutput
     */
-    public function testOutputTable(
+    public function testOutput(
         $config, $sensor, $driverExpect, $expect
     ) {
         $sys = new DummySystem("System");
         $sys->resetMock($config);
         $obj = Device::factory($sys, null);
-        $sen = $obj->outputTable($sensor);
+        $sen = $obj->output($sensor);
         $this->assertTrue(
             is_a($sen, $driverExpect),
             "Return is not a ".$driverExpect
@@ -1582,7 +1582,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataProcessTable()
+    public static function dataProcess()
     {
         return array(
             array(
@@ -1616,15 +1616,15 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataProcessTable
+    * @dataProvider dataProcess
     */
-    public function testProcessTable(
+    public function testProcess(
         $config, $sensor, $driverExpect, $expect
     ) {
         $sys = new DummySystem("System");
         $sys->resetMock($config);
         $obj = Device::factory($sys, null);
-        $sen = $obj->processTable($sensor);
+        $sen = $obj->process($sensor);
         $this->assertTrue(
             is_a($sen, $driverExpect),
             "Return is not a ".$driverExpect

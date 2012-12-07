@@ -137,7 +137,7 @@ class ControllerVoltage extends \HUGnet\inputTable\DriverAVR
     public function decodeData(
         &$string, $deltaT = 0, &$prev = null, &$data = array()
     ) {
-        if ($this->sensor()->id() == 0) {
+        if ($this->input()->id() == 0) {
             $size = $this->get("inputSize") * 2;
             /* Remove the current and temp */
             $pre = substr($string, 0, $size * 2);

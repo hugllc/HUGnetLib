@@ -603,7 +603,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
             array( // #0
                 array(
                     "Device" => array(
-                        "sensor" => new \HUGnet\DummyBase("Sensor"),
+                        "input" => new \HUGnet\DummyBase("Sensor"),
                     )
                 ),
                 "0102030405060708090A",
@@ -612,7 +612,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                         "set" => array(
                             array("TimeConstant", 1),
                         ),
-                        "sensor" => array(
+                        "input" => array(
                             array(0),
                             array(1),
                             array(2),
@@ -642,7 +642,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
             array( // #1 String not big enough
                 array(
                     "Device" => array(
-                        "sensor" => new \HUGnet\DummyBase("Sensor"),
+                        "input" => new \HUGnet\DummyBase("Sensor"),
                     )
                 ),
                 "010203040506",
@@ -651,7 +651,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                         "set" => array(
                             array("TimeConstant", 1),
                         ),
-                        "sensor" => array(
+                        "input" => array(
                             array(0),
                             array(1),
                             array(2),
@@ -673,7 +673,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
             array( // #2 String empty
                 array(
                     "Device" => array(
-                        "sensor" => new \HUGnet\DummyBase("Sensor"),
+                        "input" => new \HUGnet\DummyBase("Sensor"),
                     )
                 ),
                 "01FFFFFFFFFFFFFFFFFFFF",
@@ -688,7 +688,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
             array( // #3 String empty too long
                 array(
                     "Device" => array(
-                        "sensor" => new \HUGnet\DummyBase("Sensor"),
+                        "input" => new \HUGnet\DummyBase("Sensor"),
                     )
                 ),
                 "01FFFFFFFFFFFFFFFFFFFFFFFF",
@@ -703,7 +703,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
             array( // #4 String empty too short
                 array(
                     "Device" => array(
-                        "sensor" => new \HUGnet\DummyBase("Sensor"),
+                        "input" => new \HUGnet\DummyBase("Sensor"),
                     )
                 ),
                 "01FFFFFFFFFFFFFFFF",
@@ -748,7 +748,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
             array( // #0
                 array(
                     "Device" => array(
-                        "sensor" => array(
+                        "input" => array(
                             0 => new \HUGnet\DummyBase("Sensor0"),
                             1 => new \HUGnet\DummyBase("Sensor1"),
                             2 => new \HUGnet\DummyBase("Sensor2"),
@@ -815,7 +815,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
             array( // #0
                 array(
                     "Device" => array(
-                        "sensor" => array(
+                        "input" => array(
                             0 => new \HUGnet\DummyBase("Sensor0"),
                             1 => new \HUGnet\DummyBase("Sensor1"),
                             2 => new \HUGnet\DummyBase("Sensor2"),
@@ -905,7 +905,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataOutputTable()
+    public static function dataOutput()
     {
         return array(
             array(
@@ -941,15 +941,15 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataOutputTable
+    * @dataProvider dataOutput
     */
-    public function testOutputTable(
+    public function testOutput(
         $mocks, $output, $driverExpect, $expect
     ) {
         $device  = new \HUGnet\DummyTable("Device");
         $device->resetMock($mocks);
         $obj = Driver::factory("DriverTestClass", $device);
-        $sen = $obj->outputTable($output);
+        $sen = $obj->output($output);
         $this->assertTrue(
             is_a($sen, $driverExpect),
             "Return is not a ".$driverExpect
@@ -967,7 +967,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataProcessTable()
+    public static function dataProcess()
     {
         return array(
             array(
@@ -1003,15 +1003,15 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataProcessTable
+    * @dataProvider dataProcess
     */
-    public function testProcessTable(
+    public function testProcess(
         $mocks, $output, $driverExpect, $expect
     ) {
         $device  = new \HUGnet\DummyTable("Device");
         $device->resetMock($mocks);
         $obj = Driver::factory("DriverTestClass", $device);
-        $sen = $obj->processTable($output);
+        $sen = $obj->process($output);
         $this->assertTrue(
             is_a($sen, $driverExpect),
             "Return is not a ".$driverExpect

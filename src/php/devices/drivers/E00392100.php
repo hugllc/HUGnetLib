@@ -122,7 +122,7 @@ class E00392100 extends \HUGnet\devices\Driver
     *
     * @return null
     */
-    public function &sensor($sid)
+    public function &input($sid)
     {
         $sid = (int)$sid;
         include_once dirname(__FILE__)."/../../system/Sensor.php";

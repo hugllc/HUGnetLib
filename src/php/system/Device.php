@@ -157,7 +157,7 @@ class Device extends \HUGnet\base\SystemTableBase
         $return["params"] = (array)$params;
         $return["sensors"] = array();
         for ($i = 0; $i < $return["totalSensors"]; $i++) {
-            $return["sensors"][$i] = $this->sensor($i)->toArray();
+            $return["sensors"][$i] = $this->input($i)->toArray();
         }
         $return["channels"] = $this->channels()->toArray(true);
         if ($return["loadable"]) {
@@ -274,9 +274,9 @@ class Device extends \HUGnet\base\SystemTableBase
     *
     * @return null
     */
-    public function &sensor($sid)
+    public function &input($sid)
     {
-        return $this->driver()->sensor($sid);
+        return $this->driver()->input($sid);
     }
     /**
     * This creates the sensor drivers
@@ -285,9 +285,9 @@ class Device extends \HUGnet\base\SystemTableBase
     *
     * @return null
     */
-    public function &outputTable($sid)
+    public function &output($sid)
     {
-        return $this->driver()->outputTable($sid);
+        return $this->driver()->output($sid);
     }
     /**
     * This creates the sensor drivers
@@ -296,9 +296,9 @@ class Device extends \HUGnet\base\SystemTableBase
     *
     * @return null
     */
-    public function &processTable($sid)
+    public function &process($sid)
     {
-        return $this->driver()->processTable($sid);
+        return $this->driver()->process($sid);
     }
     /**
     * This creates the sensor drivers
@@ -418,7 +418,7 @@ class Device extends \HUGnet\base\SystemTableBase
     {
         $sensors = $this->get("totalSensors");
         for ($i = 0; $i < $sensors; $i++) {
-            $this->sensor($i)->convertUnits($data[$i]);
+            $this->input($i)->convertUnits($data[$i]);
         }
     }
     /**
@@ -447,7 +447,7 @@ class Device extends \HUGnet\base\SystemTableBase
         for ($i = 0; $i < $sensors; $i++) {
             $ret = array_merge(
                 $ret,
-                (array)$this->sensor($i)->decodeData(
+                (array)$this->input($i)->decodeData(
                     $data["String"], $deltaT, $prev[$i], $ret
                 )
             );
@@ -509,7 +509,7 @@ class Device extends \HUGnet\base\SystemTableBase
                     $pkt = $this->network()->sensorConfig($i);
                     if (strlen($pkt->reply()) > 0) {
                         $this->system()->out("sensor $step/$steps success", 1);
-                        $sen = $this->sensor($i);
+                        $sen = $this->input($i);
                         $sen->decode($pkt->reply());
                         $sen->change(array());
                     } else {

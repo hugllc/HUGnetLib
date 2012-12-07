@@ -88,10 +88,10 @@ class CloneVirtual extends \HUGnet\inputTable\DriverVirtual
             $did = hexdec($this->getExtra(0));
             $sen = $this->getExtra(1);
             if ($did == 0) {
-                $sensor = $this->sensor();
+                $sensor = $this->input();
                 $this->_clone = parent::factory("SDEFAULT", $sensor);
             } else {
-                $sensor = $this->sensor()->system()->device($did)->sensor($sen);
+                $sensor = $this->input()->system()->device($did)->input($sen);
                 $this->_clone = parent::factory(
                     $sensor->get("driver"),
                     $sensor
@@ -151,7 +151,7 @@ class CloneVirtual extends \HUGnet\inputTable\DriverVirtual
         &$hist, $deltaT = 0, &$prev = null, &$data = array()
     ) {
         $ret = $this->channels();
-        $oid = $this->_clone()->sensor()->channelStart();
+        $oid = $this->_clone()->input()->channelStart();
         foreach (array_keys((array)$ret) as $key) {
             $sen = $oid + $key;
             if (is_object($hist)) {

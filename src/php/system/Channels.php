@@ -95,7 +95,7 @@ class Channels
         $sensors = $this->_device->get("totalSensors");
         for ($i = 0; $i < $sensors; $i++) {
             $this->_channels = array_merge(
-                $this->_channels, $this->_device->sensor($i)->channels()
+                $this->_channels, $this->_device->input($i)->channels()
             );
         }
         if (!is_string($channels) && !is_array($channels)) {

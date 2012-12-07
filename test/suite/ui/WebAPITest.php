@@ -371,7 +371,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "device" => new \HUGnet\DummyBase("Device"),
                     ),
                     "Device" => array(
-                        "sensor" => new \HUGnet\DummyBase("Sensor"),
+                        "input" => new \HUGnet\DummyBase("Sensor"),
                         "channels" => new \HUGnet\DummyBase("Channels"),
                     ),
                     "Sensor" => array(
@@ -413,7 +413,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "device" => new \HUGnet\DummyBase("Device"),
                     ),
                     "Device" => array(
-                        "sensor" => new \HUGnet\DummyBase("Sensor"),
+                        "input" => new \HUGnet\DummyBase("Sensor"),
                         "channels" => new \HUGnet\DummyBase("Channels"),
                     ),
                     "Sensor" => array(

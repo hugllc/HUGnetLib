@@ -133,7 +133,7 @@ abstract class DriverADuC extends Driver
     */
     public function getExtra($index)
     {
-        $extra = (array)$this->sensor()->get("extra");
+        $extra = (array)$this->output()->get("extra");
         $return = $extra[$index + $this->_offset];
         if (is_null($return)) {
             $extra = $this->get("extraDefault");

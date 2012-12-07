@@ -165,7 +165,7 @@ class E00392100Test extends DriverTestBase
     *
     * @return array
     */
-    public static function dataSensor()
+    public static function dataInput()
     {
         return array(
             array(
@@ -356,13 +356,13 @@ class E00392100Test extends DriverTestBase
     *
     * @return null
     *
-    * @dataProvider dataSensor
+    * @dataProvider dataInput
     */
-    public function testSensor($mocks, $sid, $expect)
+    public function testInput($mocks, $sid, $expect)
     {
         $device  = new \HUGnet\DummyTable("Device");
         $device->resetMock($mocks);
-        $sensor = $this->o->sensor($sid);
+        $sensor = $this->o->input($sid);
         $ret = $device->retrieve();
         $this->assertEquals(
             $expect, $ret["Sensors"]["fromAny"][1][0], "Setup is wrong"

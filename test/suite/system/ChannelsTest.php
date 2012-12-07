@@ -185,7 +185,7 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "sensor" => array(
+                        "input" => array(
                             "0" => new \HUGnet\DummyTable("Sensor0"),
                             "1" => new \HUGnet\DummyTable("Sensor1"),
                             "2" => new \HUGnet\DummyTable("Sensor2"),
@@ -296,7 +296,7 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
                                 )
                             ),
                         ),
-                        "sensor" => array(
+                        "input" => array(
                             '0' => new DummyTable("Sensor0"),
                             '1' => new DummyTable("Sensor1"),
                             '2' => new DummyTable("Sensor2"),

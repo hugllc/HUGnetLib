@@ -338,7 +338,7 @@ abstract class Driver
             $sid = substr($sensorString, (2 * $i), 2);
             // Only do this if we have enough string
             if (strlen($sid) === 2) {
-                $this->device()->sensor($i)->change(
+                $this->device()->input($i)->change(
                     array(
                         "id" => hexdec($sid),
                     )
@@ -361,7 +361,7 @@ abstract class Driver
             $sensors = $this->get("physicalSensors");
             for ($i = 0; $i < $sensors; $i++) {
                 $string .= sprintf(
-                    "%02X", ($this->device()->sensor($i)->get("id") & 0xFF)
+                    "%02X", ($this->device()->input($i)->get("id") & 0xFF)
                 );
             }
         }
@@ -392,7 +392,7 @@ abstract class Driver
     *
     * @return null
     */
-    public function &sensor($sid)
+    public function &input($sid)
     {
         include_once dirname(__FILE__)."/../system/Sensor.php";
         $data = array(
@@ -432,7 +432,7 @@ abstract class Driver
     *
     * @return null
     */
-    public function &outputTable($sid)
+    public function &output($sid)
     {
         include_once dirname(__FILE__)."/Output.php";
         $data = array(
@@ -453,7 +453,7 @@ abstract class Driver
     *
     * @return null
     */
-    public function &processTable($sid)
+    public function &process($sid)
     {
         include_once dirname(__FILE__)."/Process.php";
         $data = array(

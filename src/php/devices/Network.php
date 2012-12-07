@@ -495,7 +495,7 @@ class Network
         for ($i = 0; $i < $input; $i++) {
             $ret = $this->setInputTable(
                 $i,
-                $this->_device->sensor($i)->encode(),
+                $this->_device->input($i)->encode(),
                 $callback,
                 $config
             );

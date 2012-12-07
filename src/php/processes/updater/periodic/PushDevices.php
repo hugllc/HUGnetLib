@@ -164,7 +164,7 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
             if (!$this->ui()->loop()) {
                 break;
             }
-            $ret = $dev->sensor($i)->action()->post($url);
+            $ret = $dev->input($i)->action()->post($url);
             if (is_array($ret)
                 && ($ret["dev"] == $dev->id())
                 && ($ret["sensor"] == $i)

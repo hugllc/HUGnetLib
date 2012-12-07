@@ -212,7 +212,7 @@ class Action
                 "READINPUTTABLE", null, array("find" => false), sprintf("%02X", $i)
             );
             if (is_string($ret->reply())) {
-                $sen = $this->device->sensor($i);
+                $sen = $this->device->input($i);
                 $sen->decode($ret->reply());
                 $sen->store();
             }

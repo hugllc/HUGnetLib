@@ -135,7 +135,7 @@ class ControllerCurrent extends \HUGnet\inputTable\DriverAVR
     public function decodeData(
         &$string, $deltaT = 0, &$prev = null, &$data = array()
     ) {
-        if ($this->sensor()->id() == 4) {
+        if ($this->input()->id() == 4) {
             $size = $this->get("inputSize") * 2;
             /* Remove the current and temp */
             $pre = substr($string, 0, $size);

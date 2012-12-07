@@ -1239,7 +1239,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                     "Device" => array(
-                        "sensor" => array(
+                        "input" => array(
                             "0" => new \HUGnet\DummyTable("Sensor0"),
                             "1" => new \HUGnet\DummyTable("Sensor1"),
                             "2" => new \HUGnet\DummyTable("Sensor2"),
