@@ -59,9 +59,9 @@ defined('_HUGNET') or die('HUGnetSystem not found');
 abstract class Driver
 {
     /**
-    * This is where we store the sensor.
+    * This is where we store the output.
     */
-    private $_sensor = null;
+    private $_output = null;
     /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
@@ -107,39 +107,39 @@ abstract class Driver
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
     *
-    * @param object &$sensor The sensor in question
+    * @param object &$output The output in question
     *
     * @return null
     */
-    protected function __construct(&$sensor)
+    protected function __construct(&$output)
     {
-        $this->_sensor = &$sensor;
+        $this->_output = &$output;
     }
     /**
     * This is the destructor
     */
     public function __destruct()
     {
-        unset($this->_sensor);
+        unset($this->_output);
     }
     /**
     * This is the destructor
     *
     * @return object
     */
-    public function sensor()
+    public function output()
     {
-        return $this->_sensor;
+        return $this->_output;
     }
     /**
     * This function creates the system.
     *
     * @param string $driver  The driver to load
-    * @param object &$sensor The sensor object
+    * @param object &$output The output object
     *
     * @return null
     */
-    public static function &factory($driver, &$sensor)
+    public static function &factory($driver, &$output)
     {
         $class = '\\HUGnet\\outputTable\\drivers\\'.$driver;
         $file = dirname(__FILE__)."/drivers/".$driver.".php";
@@ -147,10 +147,10 @@ abstract class Driver
             include_once $file;
         }
         if (class_exists($class)) {
-            return new $class($sensor);
+            return new $class($output);
         }
         include_once dirname(__FILE__)."/drivers/EmptyOutput.php";
-        return new \HUGnet\outputTable\drivers\EmptyOutput($sensor);
+        return new \HUGnet\outputTable\drivers\EmptyOutput($output);
     }
     /**
     * Checks to see if a piece of data exists
@@ -161,7 +161,7 @@ abstract class Driver
     */
     public function present($name)
     {
-        return !is_null($this->get($name, $this->sensor()));
+        return !is_null($this->get($name, $this->output()));
     }
     /**
     * Gets an item
@@ -187,7 +187,7 @@ abstract class Driver
     /**
     * Returns all of the parameters and defaults in an array
     *
-    * @return array of data from the sensor
+    * @return array of data from the output
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function toArray()
@@ -202,8 +202,8 @@ abstract class Driver
     /**
     * Returns the driver that should be used for a particular device
     *
-    * @param mixed  $sid  The ID of the sensor
-    * @param string $type The type of the sensor
+    * @param mixed  $sid  The ID of the output
+    * @param string $type The type of the output
     *
     * @return string The driver to use
     */
@@ -222,7 +222,7 @@ abstract class Driver
         return "EmptyOutput";
     }
     /**
-    * Returns an array of types that this sensor could be
+    * Returns an array of types that this output could be
     *
     * @param int $sid The ID to check
     *
@@ -231,10 +231,10 @@ abstract class Driver
     public static function getTypes($sid)
     {
         $array = array();
-        $sensor = sprintf("%02X", (int)$sid);
+        $output = sprintf("%02X", (int)$sid);
         foreach ((array)self::$_drivers as $key => $driver) {
             $k = explode(":", $key);
-            if (trim(strtoupper($k[0])) == $sensor) {
+            if (trim(strtoupper($k[0])) == $output) {
                 $array[$k[1]] = $driver;
             }
         }
@@ -266,7 +266,7 @@ abstract class Driver
     */
     public function getExtra($index)
     {
-        $extra = (array)$this->sensor()->get("extra");
+        $extra = (array)$this->output()->get("extra");
         if (!isset($extra[$index])) {
             $extra = $this->get("extraDefault");
         }
@@ -284,7 +284,7 @@ abstract class Driver
     public function decode($string)
     {
         if (is_string($string)) {
-            $this->sensor()->set("RawSetup", $string);
+            $this->output()->set("RawSetup", $string);
         }
     }
     /**
@@ -295,7 +295,7 @@ abstract class Driver
     */
     public function encode()
     {
-        $string  = $this->sensor()->get("RawSetup");
+        $string  = $this->output()->get("RawSetup");
         if (!is_string($string)) {
             $string = "";
         }
@@ -307,10 +307,10 @@ abstract class Driver
     *
     * @param int   $A      Output of the A to D converter
     * @param float $deltaT The time delta in seconds between this record
-    * @param array &$data  The data from the other sensors that were crunched
-    * @param mixed $prev   The previous value for this sensor
+    * @param array &$data  The data from the other outputs that were crunched
+    * @param mixed $prev   The previous value for this output
     *
-    * @return mixed The value in whatever the units are in the sensor
+    * @return mixed The value in whatever the units are in the output
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
@@ -319,12 +319,12 @@ abstract class Driver
         return null;
     }
     /**
-    * Gets the direction from a direction sensor made out of a POT.
+    * Gets the direction from a direction output made out of a POT.
     *
     * @param string &$string The data string
     * @param float  $deltaT  The time delta in seconds between this record
     * @param array  &$prev   The previous reading
-    * @param array  &$data   The data from the other sensors that were crunched
+    * @param array  &$data   The data from the other outputs that were crunched
     *
     * @return float The direction in degrees
     *
@@ -402,7 +402,7 @@ abstract class Driver
     */
     public function getDrivers()
     {
-        return (array)$this->_arch[$this->sensor()->device()->get("arch")]
+        return (array)$this->_arch[$this->output()->device()->get("arch")]
             + (array)$this->_arch["all"];
     }
 }

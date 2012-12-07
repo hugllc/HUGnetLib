@@ -40,7 +40,7 @@ $did    = hexdec($json->args()->id);
 $sid    = $json->args()->sid;
 $action = strtolower($json->args()->action);
 $dev    = $json->system()->device($did);
-$sen    = $dev->sensor($sid);
+$sen    = $dev->input($sid);
 $ret    = "";
 
 if ($action === "post") {
@@ -60,7 +60,7 @@ if ($action === "post") {
     $ret = array();
     $sensors = $dev->get("totalSensors");
     for ($i = 0; $i < $sensors; $i++) {
-        $ret[] = $dev->sensor($i)->toArray();
+        $ret[] = $dev->input($i)->toArray();
     }
 }
 print json_encode($ret);

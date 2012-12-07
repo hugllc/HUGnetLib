@@ -91,7 +91,7 @@ if ($action === "post") {
             $pkt = $dev->network()->sensorConfig($i);
             if (strlen($pkt->reply()) > 0) {
                 \HUGnet\VPrint::out("sensor $step/$steps success", 1);
-                $sen = $dev->sensor($i);
+                $sen = $dev->input($i);
                 $sen->decode($pkt->reply());
                 $sen->change(array());
             } else {

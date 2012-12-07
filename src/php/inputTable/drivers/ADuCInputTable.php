@@ -152,7 +152,7 @@ class ADuCInputTable extends \HUGnet\inputTable\Driver
                 return null;
             }
             $driver = explode(":", (string)$driver);
-            $sensor = $this->sensor();
+            $sensor = $this->input();
             $entry  = $this->_entry();
             $this->_driver[$num] = \HUGnet\inputTable\DriverADuC::factory(
                 \HUGnet\inputTable\Driver::getDriver(hexdec($driver[0]), $driver[1]),
@@ -174,7 +174,7 @@ class ADuCInputTable extends \HUGnet\inputTable\Driver
     private function &_table($class = "InputTable")
     {
         if (!is_object($this->_table)) {
-            $this->_table = $this->sensor()->system()->table($class);
+            $this->_table = $this->input()->system()->table($class);
         }
         return $this->_table;
     }
@@ -187,7 +187,7 @@ class ADuCInputTable extends \HUGnet\inputTable\Driver
     {
         if (!is_object($this->_entry)) {
             include_once dirname(__FILE__)."/../ADuCInputTable.php";
-            $extra = $this->sensor()->get("extra");
+            $extra = $this->input()->get("extra");
             $this->_table()->getRow((int)$extra[0]);
             $this->_entry = \HUGnet\inputTable\ADuCInputTable::factory(
                 $this, $this->_table()->toArray()
@@ -316,10 +316,10 @@ class ADuCInputTable extends \HUGnet\inputTable\Driver
     public function decode($string)
     {
         $this->_entry()->decode($string);
-        $extra = $this->sensor()->get("extra");
+        $extra = $this->input()->get("extra");
         $extra[1] = $this->_decode32(substr($string, 20, 8));
         $extra[2] = $this->_decode32(substr($string, 28, 8));
-        $this->sensor()->set("extra", $extra);
+        $this->input()->set("extra", $extra);
     }
     /**
     * Encodes this driver as a setup string

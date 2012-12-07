@@ -167,7 +167,7 @@ class ActionVirtual extends Action
         );
         $sensors = $this->device->get("totalSensors");
         for ($i = 0; $i < $sensors; $i++) {
-            $sen = $this->device->sensor($i);
+            $sen = $this->device->input($i);
             $point = $this->_getPoint($sen, $time);
             $hist = array_merge(
                 $hist,

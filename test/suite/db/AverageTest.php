@@ -735,7 +735,7 @@ class AverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 15,
                         ),
-                        "sensor" => array(
+                        "input" => array(
                             "0" => new \HUGnet\DummyBase("Sensor0"),
                             "1" => new \HUGnet\DummyBase("Sensor1"),
                             "2" => new \HUGnet\DummyBase("Sensor2"),
@@ -836,7 +836,7 @@ class AverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 18,
                         ),
-                        "sensor" => array(
+                        "input" => array(
                             "0" => new \HUGnet\DummyBase("Sensor0"),
                             "1" => new \HUGnet\DummyBase("Sensor1"),
                             "2" => new \HUGnet\DummyBase("Sensor2"),
@@ -937,7 +937,7 @@ class AverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 21,
                         ),
-                        "sensor" => array(
+                        "input" => array(
                             "0" => new \HUGnet\DummyBase("Sensor0"),
                             "1" => new \HUGnet\DummyBase("Sensor1"),
                             "2" => new \HUGnet\DummyBase("Sensor2"),
@@ -1038,7 +1038,7 @@ class AverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 22,
                         ),
-                        "sensor" => array(
+                        "input" => array(
                             "0" => new \HUGnet\DummyBase("Sensor0"),
                             "1" => new \HUGnet\DummyBase("Sensor1"),
                             "2" => new \HUGnet\DummyBase("Sensor2"),
@@ -1139,7 +1139,7 @@ class AverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 23,
                         ),
-                        "sensor" => array(
+                        "input" => array(
                             "0" => new \HUGnet\DummyBase("Sensor0"),
                             "1" => new \HUGnet\DummyBase("Sensor1"),
                             "2" => new \HUGnet\DummyBase("Sensor2"),
@@ -1240,7 +1240,7 @@ class AverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 24,
                         ),
-                        "sensor" => array(
+                        "input" => array(
                             "0" => new \HUGnet\DummyBase("Sensor0"),
                             "1" => new \HUGnet\DummyBase("Sensor1"),
                             "2" => new \HUGnet\DummyBase("Sensor2"),
@@ -1347,7 +1347,7 @@ class AverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 23,
                         ),
-                        "sensor" => array(
+                        "input" => array(
                             "0" => new \HUGnet\DummyBase("Sensor0"),
                             "1" => new \HUGnet\DummyBase("Sensor1"),
                             "2" => new \HUGnet\DummyBase("Sensor2"),
@@ -1512,7 +1512,7 @@ class AverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 25,
                         ),
-                        "sensor" => array(
+                        "input" => array(
                             "0" => new \HUGnet\DummyBase("Sensor0"),
                             "1" => new \HUGnet\DummyBase("Sensor1"),
                             "2" => new \HUGnet\DummyBase("Sensor2"),
@@ -1618,7 +1618,7 @@ class AverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 26,
                         ),
-                        "sensor" => array(
+                        "input" => array(
                             "0" => new \HUGnet\DummyBase("Sensor0"),
                             "1" => new \HUGnet\DummyBase("Sensor1"),
                             "2" => new \HUGnet\DummyBase("Sensor2"),
@@ -1733,7 +1733,7 @@ class AverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 27,
                         ),
-                        "sensor" => array(
+                        "input" => array(
                             "0" => new \HUGnet\DummyBase("Sensor0"),
                             "1" => new \HUGnet\DummyBase("Sensor1"),
                             "2" => new \HUGnet\DummyBase("Sensor2"),
@@ -1840,7 +1840,7 @@ class AverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 28,
                         ),
-                        "sensor" => array(
+                        "input" => array(
                             "0" => new \HUGnet\DummyBase("Sensor0"),
                             "1" => new \HUGnet\DummyBase("Sensor1"),
                             "2" => new \HUGnet\DummyBase("Sensor2"),
@@ -1955,7 +1955,7 @@ class AverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 28,
                         ),
-                        "sensor" => array(
+                        "input" => array(
                             "0" => new \HUGnet\DummyBase("Sensor0"),
                             "1" => new \HUGnet\DummyBase("Sensor1"),
                             "2" => new \HUGnet\DummyBase("Sensor2"),
@@ -2062,7 +2062,7 @@ class AverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 29,
                         ),
-                        "sensor" => array(
+                        "input" => array(
                             "0" => new \HUGnet\DummyBase("Sensor0"),
                             "1" => new \HUGnet\DummyBase("Sensor1"),
                             "2" => new \HUGnet\DummyBase("Sensor2"),
@@ -2169,7 +2169,7 @@ class AverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 31,
                         ),
-                        "sensor" => array(
+                        "input" => array(
                             "0" => new \HUGnet\DummyBase("Sensor0"),
                             "1" => new \HUGnet\DummyBase("Sensor1"),
                             "2" => new \HUGnet\DummyBase("Sensor2"),
@@ -2275,7 +2275,7 @@ class AverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 31,
                         ),
-                        "sensor" => array(
+                        "input" => array(
                             "0" => new \HUGnet\DummyBase("Sensor0"),
                             "1" => new \HUGnet\DummyBase("Sensor1"),
                             "2" => new \HUGnet\DummyBase("Sensor2"),
@@ -2386,7 +2386,7 @@ class AverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 25,
                         ),
-                        "sensor" => array(
+                        "input" => array(
                             "0" => new \HUGnet\DummyBase("Sensor0"),
                             "1" => new \HUGnet\DummyBase("Sensor1"),
                             "2" => new \HUGnet\DummyBase("Sensor2"),
@@ -2539,7 +2539,7 @@ class AverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 32,
                         ),
-                        "sensor" => array(
+                        "input" => array(
                             "0" => new \HUGnet\DummyBase("Sensor0"),
                             "1" => new \HUGnet\DummyBase("Sensor1"),
                             "2" => new \HUGnet\DummyBase("Sensor2"),
@@ -2733,7 +2733,7 @@ class AverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 33,
                         ),
-                        "sensor" => array(
+                        "input" => array(
                             "0" => new \HUGnet\DummyBase("Sensor0"),
                             "1" => new \HUGnet\DummyBase("Sensor1"),
                             "2" => new \HUGnet\DummyBase("Sensor2"),
@@ -2861,7 +2861,7 @@ class AverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 32,
                         ),
-                        "sensor" => array(
+                        "input" => array(
                             "0" => new \HUGnet\DummyBase("Sensor0"),
                             "1" => new \HUGnet\DummyBase("Sensor1"),
                             "2" => new \HUGnet\DummyBase("Sensor2"),
@@ -2985,7 +2985,7 @@ class AverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 32,
                         ),
-                        "sensor" => array(
+                        "input" => array(
                             "0" => new \HUGnet\DummyBase("Sensor0"),
                             "1" => new \HUGnet\DummyBase("Sensor1"),
                             "2" => new \HUGnet\DummyBase("Sensor2"),

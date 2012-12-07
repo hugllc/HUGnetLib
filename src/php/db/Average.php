@@ -284,7 +284,7 @@ abstract class Average extends History
     */
     protected function calc15MinAverageMult(History &$data, $last, $col)
     {
-        if ($this->device->sensor($col)->get("total")) {
+        if ($this->device->input($col)->get("total")) {
             if ($data->get("Date") > $this->endTime) {
                 $mult = ($this->endTime - $last);
                 $denom = $data->get("Date") - $last;
@@ -364,14 +364,14 @@ abstract class Average extends History
             }
             $value = $this->get($col);
             if (!is_null($value)) {
-                if (!$this->device->sensor($i)->get("total")) {
+                if (!$this->device->input($i)->get("total")) {
                     $value = $value / $this->divisors[$col];
                 }
                 $this->set(
                     $col,
                     round(
                         $value,
-                        $this->device->sensor($i)->get("maxDecimals")
+                        $this->device->input($i)->get("maxDecimals")
                     )
                 );
 

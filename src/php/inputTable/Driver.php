@@ -63,7 +63,7 @@ abstract class Driver
     /**
     * This is where we store the sensor.
     */
-    private $_sensor = null;
+    private $_input = null;
     /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
@@ -189,23 +189,23 @@ abstract class Driver
     */
     protected function __construct(&$sensor)
     {
-        $this->_sensor = &$sensor;
+        $this->_input = &$sensor;
     }
     /**
     * This is the destructor
     */
     public function __destruct()
     {
-        unset($this->_sensor);
+        unset($this->_input);
     }
     /**
     * This is the destructor
     *
     * @return object
     */
-    public function sensor()
+    public function input()
     {
-        return $this->_sensor;
+        return $this->_input;
     }
     /**
     * This function creates the system.
@@ -237,7 +237,7 @@ abstract class Driver
     */
     public function present($name)
     {
-        return !is_null($this->get($name, $this->sensor()));
+        return !is_null($this->get($name, $this->input()));
     }
     /**
     * Gets an item
@@ -342,7 +342,7 @@ abstract class Driver
     */
     public function getExtra($index)
     {
-        $extra = (array)$this->sensor()->get("extra");
+        $extra = (array)$this->input()->get("extra");
         if (!isset($extra[$index])) {
             $extra = $this->get("extraDefault");
         }
@@ -569,7 +569,7 @@ abstract class Driver
     */
     public function getDrivers()
     {
-        return (array)$this->_arch[$this->sensor()->device()->get("arch")]
+        return (array)$this->_arch[$this->input()->device()->get("arch")]
             + (array)$this->_arch["all"];
     }
     /**

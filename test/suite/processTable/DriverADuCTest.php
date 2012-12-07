@@ -74,10 +74,10 @@ class DriverADuCTest extends drivers\DriverTestBase
     */
     protected function setUp()
     {
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock(array());
+        $process = new \HUGnet\DummyBase("Sensor");
+        $process->resetMock(array());
         $this->o = \HUGnet\processTable\Driver::factory(
-            "DriverADuCTestClass", $sensor
+            "DriverADuCTestClass", $process
         );
     }
 
@@ -133,7 +133,7 @@ class DriverADuCTest extends drivers\DriverTestBase
     /**
      * Data provider for testGetReading
      *
-     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     * testGetReading($process, $A, $deltaT, $data, $prev, $expect)
      *
      * @return array
      */
@@ -267,7 +267,7 @@ class DriverADuCTest extends drivers\DriverTestBase
             array(
                 array(
                     "Device" => array(
-                        "sensor" => new \HUGnet\DummyBase("Sensor"),
+                        "process" => new \HUGnet\DummyBase("Sensor"),
                     ),
                     "Entry" => array(
                         "gain" => array(
@@ -298,7 +298,7 @@ class DriverADuCTest extends drivers\DriverTestBase
     * @param int    $initchan The channel to initialize the object to
     * @param float  $deltaT   The time delta in seconds between this record
     * @param array  $prev     The previous reading
-    * @param array  $data     The data from the other sensors that were crunched
+    * @param array  $data     The data from the other processs that were crunched
     * @param string $string   The setup string to test
     * @param array  $expect   The expected return
     *
@@ -309,10 +309,10 @@ class DriverADuCTest extends drivers\DriverTestBase
     public function testDecodeData(
         $mocks, $entry, $offset, $initchan, $deltaT, $prev, $data, $string, $expect
     ) {
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock($mocks);
+        $process = new \HUGnet\DummyBase("Sensor");
+        $process->resetMock($mocks);
         $obj = &DriverADuC::factory(
-            "DriverADuCTestClass", $sensor, $offset, $entry, $initchan
+            "DriverADuCTestClass", $process, $offset, $entry, $initchan
         );
         $ret = $obj->decodeData($string);
         $this->assertEquals($expect, $ret);
@@ -366,10 +366,10 @@ class DriverADuCTestClass extends \HUGnet\processTable\DriverADuC
     *
     * @param int   $A      Output of the A to D converter
     * @param float $deltaT The time delta in seconds between this record
-    * @param array &$data  The data from the other sensors that were crunched
-    * @param mixed $prev   The previous value for this sensor
+    * @param array &$data  The data from the other processs that were crunched
+    * @param mixed $prev   The previous value for this process
     *
-    * @return mixed The value in whatever the units are in the sensor
+    * @return mixed The value in whatever the units are in the process
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */

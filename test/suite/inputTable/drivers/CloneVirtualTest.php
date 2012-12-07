@@ -126,7 +126,7 @@ class CloneVirtualTest extends DriverTestBase
                         ),
                     ),
                     "Device1008" => array(
-                        "sensor" => new \HUGnet\DummyTable("Sensor1")
+                        "input" => new \HUGnet\DummyTable("Sensor1")
                     ),
                     "Sensor1" => array(
                         "id" => 2,
@@ -172,7 +172,7 @@ class CloneVirtualTest extends DriverTestBase
                         ),
                     ),
                     "Device1008" => array(
-                        "sensor" => new \HUGnet\DummyTable("Sensor1")
+                        "input" => new \HUGnet\DummyTable("Sensor1")
                     ),
                     "Sensor1" => array(
                         "id" => 1,
@@ -251,7 +251,7 @@ class CloneVirtualTest extends DriverTestBase
                         ),
                     ),
                     "Device1008" => array(
-                        "sensor" => new \HUGnet\DummyTable("Sensor1")
+                        "input" => new \HUGnet\DummyTable("Sensor1")
                     ),
                     "Sensor1" => array(
                         "id" => 3,
@@ -330,7 +330,7 @@ class CloneVirtualTest extends DriverTestBase
                         ),
                     ),
                     "Device1008" => array(
-                        "sensor" => new \HUGnet\DummyTable("Sensor1")
+                        "input" => new \HUGnet\DummyTable("Sensor1")
                     ),
                     "Sensor1" => array(
                         "id" => 1,
@@ -442,7 +442,7 @@ class CloneVirtualTest extends DriverTestBase
                         "device" => new \HUGnet\DummyBase("Device"),
                     ),
                     "Device" => array(
-                        "sensor" => new \HUGnet\DummyBase("Sensor2"),
+                        "input" => new \HUGnet\DummyBase("Sensor2"),
                     ),
                     "Sensor2" => array(
                         "get" => array(
@@ -465,7 +465,7 @@ class CloneVirtualTest extends DriverTestBase
                         "device" => new \HUGnet\DummyBase("Device"),
                     ),
                     "Device" => array(
-                        "sensor" => new \HUGnet\DummyBase("Sensor2"),
+                        "input" => new \HUGnet\DummyBase("Sensor2"),
                     ),
                     "Sensor2" => array(
                         "get" => array(
@@ -515,7 +515,7 @@ class CloneVirtualTest extends DriverTestBase
                         "device" => new \HUGnet\DummyBase("Device"),
                     ),
                     "Device" => array(
-                        "sensor" => new \HUGnet\DummyBase("Sensor2"),
+                        "input" => new \HUGnet\DummyBase("Sensor2"),
                     ),
                     "Sensor2" => array(
                         "get" => array(

@@ -203,7 +203,7 @@ class WebAPI extends HTML
         if ($action === "list") {
             $this->args()->set("data", array("dev" => $did));
         }
-        $sen = $this->system()->device($did)->sensor($sid);
+        $sen = $this->system()->device($did)->input($sid);
         return $this->_executeSystem($ident, $sen, $extra);
     }
     /**

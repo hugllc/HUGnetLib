@@ -287,7 +287,7 @@ abstract class History extends \HUGnet\db\Table
             $prev = $this->toArray();
             for ($i = 0; $i < $this->datacols; $i++) {
                 $col = "Data".$i;
-                $sensor = $this->device->sensor($i);
+                $sensor = $this->device->input($i);
                 // This changes raw mode into differential mode
                 if (($sensor->storageType === \HUGnet\channels\Driver::TYPE_RAW)
                     && ($sensor->dataType === \HUGnet\channels\Driver::TYPE_DIFF)
@@ -340,11 +340,11 @@ abstract class History extends \HUGnet\db\Table
         foreach ($cols as $col) {
             if (substr($col, 0, 4) == "Data") {
                 $key = (int)substr($col, 4);
-                $units = $this->device->sensor($key)->units;
-                $graphable = $this->device->sensor($key)->numeric(
+                $units = $this->device->input($key)->units;
+                $graphable = $this->device->input($key)->numeric(
                     $units
                 );
-                $unitType = $this->device->sensor($key)->unitType;
+                $unitType = $this->device->input($key)->unitType;
                 if ($units == $params["units"][1]) {
                     $params["fields"][1][] = $col;
                     $params["unitTypes"][1] = $unitType;
@@ -380,7 +380,7 @@ abstract class History extends \HUGnet\db\Table
             foreach ($cols as $col) {
                 if (substr($col, 0, 4) == "Data") {
                     $key = (int)substr($col, 4);
-                    $filters[$col] = $this->device->sensor($key)->filter;
+                    $filters[$col] = $this->device->input($key)->filter;
                 }
             }
         }

@@ -378,7 +378,7 @@ class Sensor extends \HUGnet\base\SystemTableBase
         $chan   = 0;
         $sensor = $this->id();
         for ($i = 0; $i < $sensor; $i++) {
-            $chan += count($this->device()->sensor($i)->channels());
+            $chan += count($this->device()->input($i)->channels());
         }
         return $chan;
     }
