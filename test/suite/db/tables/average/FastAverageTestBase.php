@@ -62,15 +62,12 @@ abstract class FastAverageTestBase extends HistoryTestBase
     * @param string $class The class to use
     *
     * @return null
-    *
-    * @dataProvider dataClassName
     */
-    public function testParent($class)
+    public function testParent()
     {
-        $class = "\\HUGnet\\db\\tables\\".$class;
-        $this->assertTrue(
-            is_subclass_of($class, "HUGnet\\db\\FastAverage"),
-            "$class is not a child of HUGnet\\db\\FastAverage"
+        $this->assertInstanceOf(
+            "HUGnet\\db\\FastAverage",
+            $this->o
         );
     }
 }

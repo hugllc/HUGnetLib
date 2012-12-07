@@ -36,7 +36,7 @@
 /** This is the HUGnet namespace */
 namespace HUGnet\processTable\drivers;
 /** This is the base class */
-require_once CODE_BASE."/sensors/Driver.php";
+require_once CODE_BASE."/processTable/Driver.php";
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */

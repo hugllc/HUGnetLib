@@ -165,7 +165,7 @@ class Sensor extends \HUGnet\base\SystemTableBase
         }
         $return["params"] = (array)$params;
         if ($default) {
-            $return["otherTypes"] = \HUGnet\sensors\Driver::getTypes($return["id"]);
+            $return["otherTypes"] = \HUGnet\inputTable\Driver::getTypes($return["id"]);
             $return["validUnits"] = $this->units()->getValid();
             $return["validIds"] = $this->driver()->getDrivers();
         }
@@ -205,16 +205,16 @@ class Sensor extends \HUGnet\base\SystemTableBase
     */
     protected function &driver($driver = null)
     {
-        include_once dirname(__FILE__)."/../sensors/Driver.php";
+        include_once dirname(__FILE__)."/../inputTable/Driver.php";
         if (empty($driver)) {
-            $driver = sensors\Driver::getDriver(
+            $driver = inputTable\Driver::getDriver(
                 $this->table()->get("id"),
                 $this->table()->get("type")
             );
             $this->table()->set("driver", $driver);
         }
         if (!is_object($this->_driverCache[$driver])) {
-            $this->_driverCache[$driver] = sensors\Driver::factory($driver, $this);
+            $this->_driverCache[$driver] = inputTable\Driver::factory($driver, $this);
         }
         return $this->_driverCache[$driver];
     }

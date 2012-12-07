@@ -64,15 +64,12 @@ abstract class AverageTestBase extends HistoryTestBase
     * @param string $class The class to use
     *
     * @return null
-    *
-    * @dataProvider dataClassName
     */
-    public function testParent($class)
+    public function testParent()
     {
-        $class = "\\HUGnet\\db\\tables\\".$class;
-        $this->assertTrue(
-            is_subclass_of($class, "HUGnet\\db\\Average"),
-            "$class is not a child of HUGnet\\db\\Average"
+        $this->assertInstanceOf(
+            "HUGnet\\db\\Average",
+            $this->o
         );
     }
 }

@@ -38,7 +38,7 @@ namespace HUGnet;
 /** This is a required class */
 require_once CODE_BASE.'system/Sensor.php';
 /** This is a required class */
-require_once CODE_BASE.'sensors/Driver.php';
+require_once CODE_BASE.'inputTable/Driver.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is the dummy table container */
@@ -74,8 +74,8 @@ class SensorTest extends \PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        \HUGnet\sensors\Driver::register("FD:DEFAULT", "TestSensorDriver1");
-        \HUGnet\sensors\Driver::register("FC:DEFAULT", "TestSensorDriver2");
+        \HUGnet\inputTable\Driver::register("FD:DEFAULT", "TestSensorDriver1");
+        \HUGnet\inputTable\Driver::register("FC:DEFAULT", "TestSensorDriver2");
         parent::setUp();
     }
 
@@ -1286,7 +1286,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
 
 }
 
-namespace HUGnet\sensors\drivers;
+namespace HUGnet\inputTable\drivers;
 
 /**
  * Default sensor driver
@@ -1303,7 +1303,7 @@ namespace HUGnet\sensors\drivers;
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class TestSensorDriver1 extends \HUGnet\sensors\Driver
+class TestSensorDriver1 extends \HUGnet\inputTable\Driver
 {
     /**
     * This is where the data for the driver is stored.  This array must be
@@ -1357,7 +1357,7 @@ class TestSensorDriver1 extends \HUGnet\sensors\Driver
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class TestSensorDriver2 extends \HUGnet\sensors\Driver
+class TestSensorDriver2 extends \HUGnet\inputTable\Driver
 {
     /**
     * This is where the data for the driver is stored.  This array must be

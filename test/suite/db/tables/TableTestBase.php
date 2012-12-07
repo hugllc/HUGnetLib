@@ -292,6 +292,20 @@ abstract class TableTestBase extends \PHPUnit_Extensions_Database_TestCase
             '$obj->default["group"] must be set to "default"'
         );
     }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $class The class to use
+    *
+    * @return null
+    */
+    public function testParent()
+    {
+        $this->assertInstanceOf(
+            "HUGnet\\db\\Table",
+            $this->o
+        );
+    }
 }
 
 ?>
