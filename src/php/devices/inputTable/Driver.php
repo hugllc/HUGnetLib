@@ -114,7 +114,22 @@ abstract class Driver
     * index in the root array is the driver name.  It should be exactly the same
     * as the driver class name.
     */
-    private static $_drivers = array(
+    protected static $drivers = array(
+        "70:bravo3motion"            => "Bravo3Motion",
+        "70:DEFAULT"                 => "GenericPulse",
+        "70:generic"                 => "GenericPulse",
+        "70:genericRevolver"         => "GenericRevolving",
+        "70:liquidflowmeter"         => "LiquidFlow",
+        "70:maximumAnemometer"       => "MaximumAnemometer",
+        "70:maximumRainGauge"        => "MaximumRain",
+        "70:wattnode"                => "WattNode",
+        "7F:DEFAULT"                 => "GenericPulse",
+        "7F:hs"                      => "GenericPulse",
+        "7F:hsRevolver"              => "GenericRevolving",
+        "7F:hsliquidflowmeter"       => "LiquidFlow",
+        "FA:DEFAULT"                 => "SDEFAULT",
+        "FF:DEFAULT"                 => "EmptySensor",
+        /*
         "00:DEFAULT"                 => "AVRBC2322640_0",
         "02:DEFAULT"                 => "AVRBC2322640",
         "02:AVRB57560G0103F000"      => "AVRB57560G0103F000",
@@ -167,6 +182,7 @@ abstract class Driver
         "FE:LinearTransformVirtual"  => "LinearTransformVirtual",
         "FE:WindChillVirtual"        => "WindChillVirtual",
         "FF:DEFAULT"                 => "EmptySensor",
+        */
     );
     /**
     * This is where the correlation between the drivers and the arch is stored.
@@ -318,17 +334,42 @@ abstract class Driver
     */
     public static function getDriver($sid, $type = "DEFAULT")
     {
+        $driver = null;
+        Driver::getDriverInt($driver, $sid, $type);
+        DriverAVR::getDriverInt($driver, $sid, $type);
+        DriverADuC::getDriverInt($driver, $sid, $type);
+        DriverVirtual::getDriverInt($driver, $sid, $type);
+        if (is_null($driver)) {
+            $driver = "SDEFAULT";
+        }
+        return $driver;
+    }
+    /**
+    * Returns the driver that should be used for a particular device
+    *
+    * @param string &$driver The driver to use
+    * @param mixed  $sid     The ID of the sensor
+    * @param string $type    The type of the sensor
+    *
+    * @return string The driver to use
+    */
+    protected static function getDriverInt(&$driver, $sid, $type = "DEFAULT")
+    {
+        if (is_string($driver) || !empty($driver)) {
+            return false;
+        }
         $try = array(
             sprintf("%02X", (int)$sid).":".$type,
             sprintf("%02X", (int)$sid),
             sprintf("%02X", (int)$sid).":DEFAULT",
         );
         foreach ($try as $mask) {
-            if (isset(self::$_drivers[$mask])) {
-                return self::$_drivers[$mask];
+            if (isset(static::$drivers[$mask])) {
+                $driver = static::$drivers[$mask];
+                return true;
             }
         }
-        return "SDEFAULT";
+        return false;
     }
     /**
     * Returns an array of types that this sensor could be
@@ -341,7 +382,13 @@ abstract class Driver
     {
         $array = array();
         $sensor = sprintf("%02X", (int)$sid);
-        foreach ((array)self::$_drivers as $key => $driver) {
+        $drivers = array_merge(
+            (array)Driver::$drivers,
+            (array)DriverAVR::$drivers,
+            (array)DriverADuC::$drivers,
+            (array)DriverVirtual::$drivers
+        );
+        foreach ((array)$drivers as $key => $driver) {
             $k = explode(":", $key);
             if (trim(strtoupper($k[0])) == $sensor) {
                 $array[$k[1]] = $driver;
@@ -362,8 +409,14 @@ abstract class Driver
     public static function register($key, $class)
     {
         $driver = '\\HUGnet\\devices\\inputTable\\drivers\\'.$class;
-        if (class_exists($driver) && !isset(self::$_drivers[$key])) {
-            self::$_drivers[$key] = $class;
+        $driv = array_merge(
+            (array)static::$drivers,
+            (array)DriverAVR::$drivers,
+            (array)DriverADuC::$drivers,
+            (array)DriverVirtual::$drivers
+        );
+        if (class_exists($driver) && !isset($driv[$key])) {
+            self::$drivers[$key] = $class;
         }
     }
     /**

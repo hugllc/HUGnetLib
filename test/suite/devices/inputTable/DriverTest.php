@@ -925,11 +925,9 @@ class DriverTest extends drivers\DriverTestBase
         $sensor->resetMock(array());
         $obj = Driver::factory("DriverTestClass", $sensor);
         $ret = array();
-        for ($i = 0; $i < 256; $i++) {
-            $types = $obj->getTypes($i);
-            foreach ($types as $name => $class) {
-                $ret[] = array($i, $name, $class);
-            }
+        $types = $obj->getTypesTest($i);
+        foreach ($types as $name => $class) {
+            $ret[] = array($i, $name, $class);
         }
         return $ret;
     }
@@ -1096,6 +1094,17 @@ class DriverTestClass extends \HUGnet\devices\inputTable\Driver
     public function getPPM($val, $deltaT)
     {
         return parent::getPPM($val, $deltaT);
+    }
+    /**
+    * Returns an array of types that this sensor could be
+    *
+    * @param int $sid The ID to check
+    *
+    * @return The extra value (or default if empty)
+    */
+    public static function getTypesTest($sid)
+    {
+        return static::$drivers;
     }
 }
 /**

@@ -68,6 +68,34 @@ abstract class DriverAVR extends Driver
     /** This is a constant */
     const D = 65535;
     /**
+    * This is where all of the driver information is stored.
+    *
+    * Drivers must be registered here, otherwise they will never get loaded.  The
+    * index in the root array is the driver name.  It should be exactly the same
+    * as the driver class name.
+    */
+    protected static $drivers = array(
+        "00:DEFAULT"                 => "AVRBC2322640_0",
+        "02:DEFAULT"                 => "AVRBC2322640",
+        "02:AVRB57560G0103F000"      => "AVRB57560G0103F000",
+        "02:ControllerTemp"          => "ControllerTemp",
+        "02:imcSolar"                => "AVRIMCSolar",
+        "02:potDirection"            => "AVRPotDirection",
+        "10:DEFAULT"                 => "AVRChsMss",
+        "10:chsMss"                  => "AVRChsMss",
+        "30:DEFAULT"                 => "AVROSRAMLight",
+        "30:OSRAM BPW-34"            => "AVROSRAMLight",
+        "40:ControllerVoltage"       => "ControllerVoltage",
+        "40:BARO4"                   => "AVRBAROA4V",
+        "40:fetBoard"                => "FETBoardVoltage",
+        "40:GA100"                   => "AVRGA100",
+        "40:HitachiVFDFan"           => "AVRHitachiVFDFan",
+        "50:ControllerCurrent"       => "ControllerCurrent",
+        "50:dwyer616"                => "AVRDwyer616",
+        "50:fetBoard"                => "FETBoardCurrent",
+        "7E:DEFAULT"                 => "AVROnTimePulse",
+    );
+    /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */

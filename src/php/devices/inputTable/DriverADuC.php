@@ -79,6 +79,22 @@ abstract class DriverADuC extends Driver
     */
     private $_channel = 0;
     /**
+    * This is where all of the driver information is stored.
+    *
+    * Drivers must be registered here, otherwise they will never get loaded.  The
+    * index in the root array is the driver name.  It should be exactly the same
+    * as the driver class name.
+    */
+    protected static $drivers = array(
+        "04:DEFAULT"                 => "ADuCVishayRTD",
+        "11:DEFAULT"                 => "ADuCPower",
+        "41:DEFAULT"                 => "ADuCVoltage",
+        "41:ADuCPressure"            => "ADuCPressure",
+        "42:DEFAULT"                 => "ADuCThermocouple",
+        "43:DEFAULT"                 => "ADuCVoltage",
+        "44:DEFAULT"                 => "ADuCPressure",
+    );
+    /**
     * This function creates the system.
     *
     * @param string $driver  The driver to load

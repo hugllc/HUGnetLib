@@ -66,6 +66,24 @@ abstract class DriverVirtual extends Driver
     protected $params = array(
     );
     /**
+    * This is where all of the driver information is stored.
+    *
+    * Drivers must be registered here, otherwise they will never get loaded.  The
+    * index in the root array is the driver name.  It should be exactly the same
+    * as the driver class name.
+    */
+    protected static $drivers = array(
+        "FE:DEFAULT"                 => "EmptyVirtual",
+        "FE:AlarmVirtual"            => "AlarmVirtual",
+        "FE:BinaryVirtual"           => "BinaryVirtual",
+        "FE:CelaniPowerCalVirtual"   => "CelaniPowerCalVirtual",
+        "FE:CloneVirtual"            => "CloneVirtual",
+        "FE:ComputationVirtual"      => "ComputationVirtual",
+        "FE:DewPointVirtual"         => "DewPointVirtual",
+        "FE:LinearTransformVirtual"  => "LinearTransformVirtual",
+        "FE:WindChillVirtual"        => "WindChillVirtual",
+    );
+    /**
     * This function creates an object if it finds the right class
     *
     * @param object &$obj    The object container to put an object in.
