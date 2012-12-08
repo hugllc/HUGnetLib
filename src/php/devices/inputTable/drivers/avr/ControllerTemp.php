@@ -34,16 +34,14 @@
  *
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\devices\inputTable;
+namespace HUGnet\devices\inputTable\drivers\avr;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
-/** This is our units class */
-require_once dirname(__FILE__)."/Driver.php";
+/** This is my base class */
+require_once dirname(__FILE__)."/AVRBC2322640.php";
+
 /**
- * Base driver class for devices.
- *
- * This class deals with loading the drivers and figuring out what driver needs
- * to be loaded.
+ * Driver for reading voltage based pressure sensors
  *
  * @category   Libraries
  * @package    HUGnetLib
@@ -53,64 +51,41 @@ require_once dirname(__FILE__)."/Driver.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.9.7
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
- * @since      0.9.8
+ * @since      0.9.9
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-abstract class DriverVirtual extends Driver
+class ControllerTemp extends \HUGnet\devices\inputTable\drivers\avr\AVRBC2322640
 {
     /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
     protected $params = array(
+        "longName" => "Controller Board Temperature Sensor",
+        "shortName" => "ContTemp",
+        "unitType" => "Temperature",
+        "storageUnit" => '&#176;C',
+        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+        "extraText" => array(
+            "Bias Resistor (kOhms)",
+            "Value @25&#176;C (kOhms)"
+        ),
+        // Integer is the size of the field needed to edit
+        // Array   is the values that the extra can take
+        // Null    nothing
+        "extraValues" => array(5, 5),
+        "extraDefault" => array(100, 10),
+        "inputSize" => 2,
+        "maxDecimals" => 2,
+        "dataTypes" => array(
+            \HUGnet\devices\datachan\Driver::TYPE_IGNORE
+                => \HUGnet\devices\datachan\Driver::TYPE_IGNORE,
+            \HUGnet\devices\datachan\Driver::TYPE_RAW
+                => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+        ),
     );
-    /**
-    * This function creates an object if it finds the right class
-    *
-    * @param object &$obj    The object container to put an object in.
-    * @param string $driver  The driver to load
-    * @param object &$sensor The sensor object
-    *
-    * @return null
-    */
-    protected static function driverFactory(&$obj, $driver, &$sensor)
-    {
-        if (is_object($obj)) {
-            return false;
-        }
-        $class = '\\HUGnet\\devices\\inputTable\\drivers\\virtual\\'.$driver;
-        $file = dirname(__FILE__)."/drivers/virtual/".$driver.".php";
-        if (file_exists($file)) {
-            include_once $file;
-        }
-        if (class_exists($class)) {
-            $obj = new $class($sensor);
-            return true;
-        }
-        return false;
-    }
-    /**
-    * Gets the direction from a direction sensor made out of a POT.
-    *
-    * @param string &$string The data string
-    * @param float  $deltaT  The time delta in seconds between this record
-    * @param array  &$prev   The previous reading
-    * @param array  &$data   The data from the other sensors that were crunched
-    *
-    * @return float The direction in degrees
-    *
-    * @SuppressWarnings(PHPMD.ShortVariable)
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-    */
-    public function decodeData(
-        &$string, $deltaT = 0, &$prev = null, &$data = array()
-    ) {
-        $ret = $this->channels();
-        $A = null;
-        $ret[0]["value"] = $this->getReading($A, $deltaT, $data, $prev);
-        return $ret;
-    }
+
 }
 
 

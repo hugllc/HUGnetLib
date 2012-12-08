@@ -92,22 +92,36 @@ abstract class DriverADuC extends Driver
     public static function &factory(
         $driver, &$sensor, $offset = 0, $entry = null, $channel = 0
     ) {
-        $class = '\\HUGnet\\devices\\inputTable\\drivers\\'.$driver;
-        $file = dirname(__FILE__)."/drivers/".$driver.".php";
+        $obj = parent::factory($driver, $sensor);
+        $obj->offset = (int)$offset;
+        $obj->_entry = $entry;
+        $obj->_channel = (int)$channel;
+        return $obj;
+    }
+    /**
+    * This function creates an object if it finds the right class
+    *
+    * @param object &$obj    The object container to put an object in.
+    * @param string $driver  The driver to load
+    * @param object &$sensor The sensor object
+    *
+    * @return null
+    */
+    protected static function driverFactory(&$obj, $driver, &$sensor)
+    {
+        if (is_object($obj)) {
+            return false;
+        }
+        $class = '\\HUGnet\\devices\\inputTable\\drivers\\aduc\\'.$driver;
+        $file = dirname(__FILE__)."/drivers/aduc/".$driver.".php";
         if (file_exists($file)) {
             include_once $file;
         }
         if (class_exists($class)) {
             $obj = new $class($sensor);
-            $obj->offset = (int)$offset;
+            return true;
         }
-        if (!is_object($obj)) {
-            include_once dirname(__FILE__)."/drivers/SDEFAULT.php";
-            $obj = new \HUGnet\devices\inputTable\drivers\SDEFAULT($sensor);
-        }
-        $obj->_entry = $entry;
-        $obj->_channel = (int)$channel;
-        return $obj;
+        return false;
     }
     /**
     * Gets the extra values

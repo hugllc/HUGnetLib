@@ -108,6 +108,31 @@ abstract class DriverAVR extends Driver
         return round($Read, 4);
     }
     /**
+    * This function creates an object if it finds the right class
+    *
+    * @param object &$obj    The object container to put an object in.
+    * @param string $driver  The driver to load
+    * @param object &$sensor The sensor object
+    *
+    * @return null
+    */
+    protected static function driverFactory(&$obj, $driver, &$sensor)
+    {
+        if (is_object($obj)) {
+            return false;
+        }
+        $class = '\\HUGnet\\devices\\inputTable\\drivers\\avr\\'.$driver;
+        $file = dirname(__FILE__)."/drivers/avr/".$driver.".php";
+        if (file_exists($file)) {
+            include_once $file;
+        }
+        if (class_exists($class)) {
+            $obj = new $class($sensor);
+            return true;
+        }
+        return false;
+    }
+    /**
     * This returns the voltage that the port is seeing
     *
     * @param int   $A    The AtoD reading

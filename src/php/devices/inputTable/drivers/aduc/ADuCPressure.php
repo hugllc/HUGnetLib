@@ -34,16 +34,14 @@
  *
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\devices\inputTable;
+namespace HUGnet\devices\inputTable\drivers\aduc;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
-/** This is our units class */
-require_once dirname(__FILE__)."/Driver.php";
+/** This is my base class */
+require_once dirname(__FILE__)."/../../DriverADuC.php";
+
 /**
- * Base driver class for devices.
- *
- * This class deals with loading the drivers and figuring out what driver needs
- * to be loaded.
+ * Driver for reading voltage based pressure sensors
  *
  * @category   Libraries
  * @package    HUGnetLib
@@ -53,64 +51,72 @@ require_once dirname(__FILE__)."/Driver.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.9.7
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
- * @since      0.9.8
+ * @since      0.9.7
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-abstract class DriverVirtual extends Driver
+class ADuCPressure extends \HUGnet\devices\inputTable\DriverADuC
 {
     /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
     protected $params = array(
+        "longName" => "ADuC Pressure Sensor",
+        "shortName" => "ADuCPressure",
+        "unitType" => "Pressure",
+        "storageUnit" => 'psi',
+        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+        "extraText" => array(
+            "Voltage @ point A (V)",
+            "Voltage @ point B (V)",
+            "Read @ A Voltage (psi)",
+            "Read @ B Voltage (psi)",
+            "Voltage Ref (V)",
+            "R input (kOhms)",
+            "R to ground (kOhms)"
+        ),
+        // Integer is the size of the field needed to edit
+        // Array   is the values that the extra can take
+        // Null    nothing
+        "extraValues" => array(20, 20, 20, 20, 20, 20, 20),
+        "extraDefault" => array(0, 5, 0, 100, 1.2, 100, 1),
+        "maxDecimals" => 4,
+        "inputSize" => 4,
     );
     /**
-    * This function creates an object if it finds the right class
+    * Changes a raw reading into a output value
     *
-    * @param object &$obj    The object container to put an object in.
-    * @param string $driver  The driver to load
-    * @param object &$sensor The sensor object
+    * @param int   $A      Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
+    * @param array &$data  The data from the other sensors that were crunched
+    * @param mixed $prev   The previous value for this sensor
     *
-    * @return null
-    */
-    protected static function driverFactory(&$obj, $driver, &$sensor)
-    {
-        if (is_object($obj)) {
-            return false;
-        }
-        $class = '\\HUGnet\\devices\\inputTable\\drivers\\virtual\\'.$driver;
-        $file = dirname(__FILE__)."/drivers/virtual/".$driver.".php";
-        if (file_exists($file)) {
-            include_once $file;
-        }
-        if (class_exists($class)) {
-            $obj = new $class($sensor);
-            return true;
-        }
-        return false;
-    }
-    /**
-    * Gets the direction from a direction sensor made out of a POT.
+    * @return mixed The value in whatever the units are in the sensor
     *
-    * @param string &$string The data string
-    * @param float  $deltaT  The time delta in seconds between this record
-    * @param array  &$prev   The previous reading
-    * @param array  &$data   The data from the other sensors that were crunched
-    *
-    * @return float The direction in degrees
-    *
-    * @SuppressWarnings(PHPMD.ShortVariable)
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    public function decodeData(
-        &$string, $deltaT = 0, &$prev = null, &$data = array()
+    public function getReading(
+        $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
-        $ret = $this->channels();
-        $A = null;
-        $ret[0]["value"] = $this->getReading($A, $deltaT, $data, $prev);
-        return $ret;
+        bcscale(10);
+        $Am   = pow(2, 23);
+        $Vmin  = $this->getExtra(0);
+        $Vmax  = $this->getExtra(1);
+        $Pmin  = $this->getExtra(2);
+        $Pmax  = $this->getExtra(3);
+        $Vref  = $this->getExtra(4);
+        $Rin   = $this->getExtra(5);
+        $Rbias = $this->getExtra(6);
+
+        $A = $this->inputBiasCompensation($A, $Rin, $Rbias);
+
+        $Va = ($A / $Am) * $Vref;
+        $P = $this->linearUnbounded($Va, $Vmin, $Vmax, $Pmin, $Pmax);
+        return round($P, $this->get("maxDecimals", 1));
+
     }
+
 }
 
 

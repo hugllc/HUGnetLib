@@ -39,6 +39,12 @@ namespace HUGnet\devices\inputTable;
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our units class */
 require_once dirname(__FILE__)."/../datachan/Driver.php";
+/** This is our units class */
+require_once dirname(__FILE__)."/DriverADuC.php";
+/** This is our units class */
+require_once dirname(__FILE__)."/DriverAVR.php";
+/** This is our units class */
+require_once dirname(__FILE__)."/DriverVirtual.php";
 
 /**
  * Base driver class for devices.
@@ -219,16 +225,41 @@ abstract class Driver
     */
     public static function &factory($driver, &$sensor)
     {
+        $obj = null;
+        DriverADuC::driverFactory($obj, $driver, $sensor);
+        DriverAVR::driverFactory($obj, $driver, $sensor);
+        DriverVirtual::driverFactory($obj, $driver, $sensor);
+        self::driverFactory($obj, $driver, $sensor);
+        if (!is_object($obj)) {
+            include_once dirname(__FILE__)."/drivers/SDEFAULT.php";
+            $obj = new \HUGnet\devices\inputTable\drivers\SDEFAULT($sensor);
+        }
+        return $obj;
+    }
+    /**
+    * This function creates an object if it finds the right class
+    *
+    * @param object &$obj    The object container to put an object in.
+    * @param string $driver  The driver to load
+    * @param object &$sensor The sensor object
+    *
+    * @return null
+    */
+    protected static function driverFactory(&$obj, $driver, &$sensor)
+    {
+        if (is_object($obj)) {
+            return false;
+        }
         $class = '\\HUGnet\\devices\\inputTable\\drivers\\'.$driver;
         $file = dirname(__FILE__)."/drivers/".$driver.".php";
         if (file_exists($file)) {
             include_once $file;
         }
         if (class_exists($class)) {
-            return new $class($sensor);
+            $obj = new $class($sensor);
+            return true;
         }
-        include_once dirname(__FILE__)."/drivers/SDEFAULT.php";
-        return new \HUGnet\devices\inputTable\drivers\SDEFAULT($sensor);
+        return false;
     }
     /**
     * Checks to see if a piece of data exists

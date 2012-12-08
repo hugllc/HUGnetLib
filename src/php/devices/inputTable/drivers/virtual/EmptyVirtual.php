@@ -34,16 +34,14 @@
  *
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\devices\inputTable;
+namespace HUGnet\devices\inputTable\drivers\virtual;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
-/** This is our units class */
-require_once dirname(__FILE__)."/Driver.php";
+/** This is my base class */
+require_once dirname(__FILE__)."/../../DriverVirtual.php";
+
 /**
- * Base driver class for devices.
- *
- * This class deals with loading the drivers and figuring out what driver needs
- * to be loaded.
+ * Driver for reading voltage based pressure sensors
  *
  * @category   Libraries
  * @package    HUGnetLib
@@ -53,64 +51,65 @@ require_once dirname(__FILE__)."/Driver.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.9.7
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
- * @since      0.9.8
+ * @since      0.9.7
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-abstract class DriverVirtual extends Driver
+class EmptyVirtual extends \HUGnet\devices\inputTable\DriverVirtual
 {
     /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
     protected $params = array(
+        "longName" => "Empty Virtual Sensor",
+        "shortName" => "EmptyVirtual",
+        "unitType" => "None",
+        "storageUnit" => 'none',
+        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_IGNORE,
+        "virtual" => true,              // This says if we are a virtual sensor
+        "extraText" => array(
+        ),
+        // Integer is the size of the field needed to edit
+        // Array   is the values that the extra can take
+        // Null    nothing
+        "extraValues" => array(),
+        "extraDefault" => array(),
+        "maxDecimals" => 0,
+        "dataTypes" => array(
+            \HUGnet\devices\datachan\Driver::TYPE_IGNORE
+                => \HUGnet\devices\datachan\Driver::TYPE_IGNORE,
+        ),
     );
     /**
-    * This function creates an object if it finds the right class
+    * Changes a raw reading into a output value
     *
-    * @param object &$obj    The object container to put an object in.
-    * @param string $driver  The driver to load
-    * @param object &$sensor The sensor object
+    * @param int   $A      Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
+    * @param array &$data  The data from the other sensors that were crunched
+    * @param mixed $prev   The previous value for this sensor
     *
-    * @return null
-    */
-    protected static function driverFactory(&$obj, $driver, &$sensor)
-    {
-        if (is_object($obj)) {
-            return false;
-        }
-        $class = '\\HUGnet\\devices\\inputTable\\drivers\\virtual\\'.$driver;
-        $file = dirname(__FILE__)."/drivers/virtual/".$driver.".php";
-        if (file_exists($file)) {
-            include_once $file;
-        }
-        if (class_exists($class)) {
-            $obj = new $class($sensor);
-            return true;
-        }
-        return false;
-    }
-    /**
-    * Gets the direction from a direction sensor made out of a POT.
+    * @return mixed The value in whatever the units are in the sensor
     *
-    * @param string &$string The data string
-    * @param float  $deltaT  The time delta in seconds between this record
-    * @param array  &$prev   The previous reading
-    * @param array  &$data   The data from the other sensors that were crunched
-    *
-    * @return float The direction in degrees
-    *
-    * @SuppressWarnings(PHPMD.ShortVariable)
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    public function decodeData(
-        &$string, $deltaT = 0, &$prev = null, &$data = array()
+    public function getReading(
+        $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
-        $ret = $this->channels();
-        $A = null;
-        $ret[0]["value"] = $this->getReading($A, $deltaT, $data, $prev);
-        return $ret;
+        return null;
+
     }
+    /**
+    * This builds the class from a setup string
+    *
+    * @return Array of channel information
+    */
+    public function channels()
+    {
+        return array(
+        );
+    }
+
 }
 
 
