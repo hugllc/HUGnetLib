@@ -306,8 +306,9 @@ class TableParamsTest extends  \PHPUnit_Extensions_Database_TestCase
     /**
     * Tests the insert of a DeviceID
     *
-    * @param mixed $data   The data to use
-    * @param array $expect The expected return
+    * @param mixed $data      The data to use
+    * @param array $setParams The params to set in the class
+    * @param array $expect    The expected return
     *
     * @dataProvider dataFromArray
     *
