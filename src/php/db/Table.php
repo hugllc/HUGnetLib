@@ -130,9 +130,6 @@ abstract class Table extends \HUGnet\base\Container
     protected $default = array(
         "group" => "default",    // Server group to use
     );
-    /** @var The labels for the output columns */
-    protected $labels = array(
-    );
     /** @var This is the date field for this record */
     public $dateField = null;
     /** @var This is the output parameters */
@@ -625,123 +622,6 @@ abstract class Table extends \HUGnet\base\Container
             return 0;
         }
         return (int)$date->format("U");
-    }
-    /**
-    * There should only be a single instance of this class
-    *
-    * @param array $cols The columns to get
-    *
-    * @return array
-    */
-    protected function getOutputCols($cols = null)
-    {
-        if (!is_array($cols) || empty($cols)) {
-            if (empty($this->labels)) {
-                $cols = array_keys($this->default);
-            } else {
-                $cols = array_keys($this->labels);
-            }
-        }
-        return $cols;
-    }
-    /**
-    * By default it outputs the date in the format specified in myConfig
-    *
-    * @param string $field The field to output
-    *
-    * @return string The date as a formatted string
-    */
-    protected function outputDate($field)
-    {
-        return $this->get($field);
-    }
-    /**
-    * There should only be a single instance of this class
-    *
-    * @param array $cols The columns to get
-    *
-    * @return array
-    */
-    public function toOutput($cols = null)
-    {
-        $cols = $this->getOutputCols($cols);
-        $ret = array();
-        foreach ($cols as $col) {
-            if ($col == $this->dateField) {
-                $ret[$col] = $this->outputDate($col);
-            } else {
-                $ret[$col] = $this->get($col);
-            }
-        }
-        return $ret;
-    }
-    /**
-    * There should only be a single instance of this class
-    *
-    * @param array $cols The columns to get
-    *
-    * @return array
-    */
-    public function toOutputHeader($cols = null)
-    {
-        if (!is_array($cols) || empty($cols)) {
-            if (empty($this->labels)) {
-                $cols = array_keys($this->default);
-            } else {
-                $cols = array_keys($this->labels);
-            }
-        }
-        $ret = array();
-        foreach ($cols as $col) {
-            if (isset($this->labels[$col])) {
-                $ret[$col] = $this->labels[$col];
-            } else {
-                $ret[$col] = $col;
-            }
-        }
-        return $ret;
-    }
-    /**
-    * There should only be a single instance of this class
-    *
-    * @param string $type The output plugin type
-    * @param array  $cols The columns to get
-    *
-    * @return array
-    *
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-    */
-    public function outputParams($type, $cols = null)
-    {
-        return (array)$this->outputParams[$type];
-    }
-    /**
-    * There should only be a single instance of this class
-    *
-    * @param array $cols The columns to get
-    *
-    * @return array
-    *
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-    */
-    public function outputFilters($cols = null)
-    {
-        return (array)$this->outputParams['filters'];
-    }
-
-    /**
-    * This sets the labels, or gets them if no argument
-    *
-    * @param array $cols The columns with their labels
-    *
-    * @return array
-    */
-    public function labels($cols = null)
-    {
-        if (is_array($cols)) {
-            $this->labels = $cols;
-        }
-        return $this->labels;
     }
     /**
     * This remove everything from the array but keys that are columns
