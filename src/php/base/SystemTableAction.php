@@ -72,7 +72,7 @@ abstract class SystemTableAction extends SystemTableBase
     public function __destruct()
     {
         parent::__destruct();
-        foreach(array_keys($this->_callCache) as $key) {
+        foreach (array_keys($this->_callCache) as $key) {
             unset($this->_callCache[$key]);
         }
     }

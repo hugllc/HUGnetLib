@@ -168,6 +168,8 @@ class SystemTableActionTest extends \PHPUnit_Framework_TestCase
     * This tests the object creation
     *
     * @param array  $config    The configuration to use
+    * @param array  $functions The functions array to use
+    * @param array  $classes   The classes array to use
     * @param string $function  This is the function to call
     * @param mixed  $arg       This is the argument to the function
     * @param mixed  $expect    The value we expect back
@@ -230,8 +232,6 @@ class SystemTableActionTestStub extends SystemTableAction
     /**
     * This sets the classes
     *
-    * @param array $classes The classes to set
-    *
     * @return null
     */
     public function silly()
@@ -240,8 +240,6 @@ class SystemTableActionTestStub extends SystemTableAction
     }
     /**
     * This sets the classes
-    *
-    * @param array $classes The classes to set
     *
     * @return null
     */
