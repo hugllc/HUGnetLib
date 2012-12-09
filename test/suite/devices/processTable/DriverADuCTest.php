@@ -38,8 +38,6 @@ namespace HUGnet\devices\processTable;
 /** This is a required class */
 require_once CODE_BASE.'devices/processTable/DriverADuC.php';
 /** This is a required class */
-require_once CODE_BASE.'devices/processTable/ADuCInputTable.php';
-/** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
