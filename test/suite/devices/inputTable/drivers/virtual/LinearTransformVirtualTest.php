@@ -38,7 +38,8 @@ namespace HUGnet\devices\inputTable\drivers\virtual;
 /** This is the base class */
 require_once dirname(__FILE__)."/DriverTestBaseVirtual.php";
 /** This is a required class */
-require_once CODE_BASE.'devices/inputTable/drivers/virtual/LinearTransformVirtual.php';
+require_once CODE_BASE
+    .'devices/inputTable/drivers/virtual/LinearTransformVirtual.php';
 
 /**
  * Test class for HUGnetDB.
