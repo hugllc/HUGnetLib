@@ -68,11 +68,11 @@ abstract class FastAverage extends History
     const AVERAGE_15MIN = "15MIN";
 
     /** @var string This is the table we should use */
-    public $sqlTable = "";
+    protected $sqlTable = "";
     /** @var string This is the primary key of the table.  Leave blank if none  */
     public $sqlId = null;
     /** @var string This is the date field for the table.  Leave blank if none  */
-    public $dateField = "Date";
+    protected $dateField = "Date";
     /** @var string The orderby clause for this table */
     public $sqlOrderBy = "Date desc";
     /**
@@ -158,7 +158,7 @@ abstract class FastAverage extends History
         "raw" => array(),
     );
     /** @var This is the dataset */
-    public $datacols = 15;
+    protected $datacols = 15;
     /** @var This is the  raw data for differential mode */
     public $raw = array();
     /** @var This is the  raw data for differential mode */

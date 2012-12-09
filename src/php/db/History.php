@@ -40,7 +40,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is for some constants that it contains */
 require_once dirname(__FILE__)."/../devices/datachan/Driver.php";
 /** This is for some constants that it contains */
-require_once dirname(__FILE__)."/TableDate.php";
+require_once dirname(__FILE__)."/Table.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -56,14 +56,14 @@ require_once dirname(__FILE__)."/TableDate.php";
  * @version    Release: 0.9.7
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-abstract class History extends TableDate
+abstract class History extends Table
 {
     /** @var string This is the table we should use */
-    public $sqlTable = "";
+    protected $sqlTable = "";
     /** @var string This is the primary key of the table.  Leave blank if none  */
     public $sqlId = null;
     /** @var string This is the date field for the table.  Leave blank if none  */
-    public $dateField = "Date";
+    protected $dateField = "Date";
     /** @var string The orderby clause for this table */
     public $sqlOrderBy = "Date desc";
     /**
@@ -145,34 +145,13 @@ abstract class History extends TableDate
         "converted" => false,    //  Says whether the unit conversion has been done
     );
     /** @var This is the dataset */
-    public $datacols = 15;
+    protected $datacols = 15;
     /** @var This is the  raw data for differential mode */
     public $raw = array();
     /** @var This is the  raw data for differential mode */
     public $device = null;
     /** @var This is where we store the previous record for differential mode */
     public $prev = array();
-    /** @var This is the output parameters */
-    protected $outputParams = array(
-        "JPGraphDatLin" => array(
-            "units" => array(1 => "", 2 => ""),
-            "unitTypes" => array(1 => "", 2 => ""),
-            "dateField" => "Date",
-            "fields" => array(
-                1 => array(),
-                2 => array(),
-            ),
-        ),
-        "FlotDatLin" => array(
-            "units" => array(1 => "", 2 => ""),
-            "unitTypes" => array(1 => "", 2 => ""),
-            "dateField" => "Date",
-            "fields" => array(
-                1 => array(),
-                2 => array(),
-            ),
-        ),
-    );
     /**
     * This is the constructor
     *

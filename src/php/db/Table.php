@@ -57,6 +57,8 @@ require_once dirname(__FILE__)."/TableBase.php";
  */
 abstract class Table extends TableBase
 {
+    /** @var This is the date field for this record */
+    protected $dateField = null;
 
     /**
     * This function creates other tables that are identical to this one, except
@@ -213,6 +215,57 @@ abstract class Table extends TableBase
         }
         return $array;
     }
+    /**
+    * Sets the extra attributes field
+    *
+    * @param int    $start      The start of the time
+    * @param int    $end        The end of the time
+    * @param mixed  $rid        The ID to use.  None if null
+    * @param string $idField    The ID Field to use.  Table Primary id if left blank
+    * @param string $extraWhere Extra where clause
+    * @param array  $extraData  Data for the extraWhere clause
+    *
+    * @return mixed The value of the attribute
+    */
+    protected function getTimePeriod(
+        $start,
+        $end = null,
+        $rid = null,
+        $idField = null,
+        $extraWhere = null,
+        $extraData = null
+    ) {
+        // If date field doesn't exist return
+        if (empty($this->dateField)) {
+            return false;
+        }
+        if (is_null($idField)) {
+            $idField = $this->sqlId;
+        }
+        // Make sure the start and end dates are in the correct form
+        if (empty($end)) {
+            $end = $start;
+        }
+        $end = self::unixDate($end);
+        // Set up the where and data fields
+        $where = "`".$this->dateField."` >= ? AND `".$this->dateField."` <= ?";
+        $data = array($start, $end);
+        if (!is_null($rid)) {
+            $where .= " AND `".$idField."` = ?";
+            $data[] = $rid;
+        }
+        if (!empty($extraWhere)) {
+            $where .= " AND ".$extraWhere;
+        }
+        if (is_array($extraData)) {
+            $data = array_merge($data, $extraData);
+        }
+        return $this->selectInto(
+            $where,
+            $data
+        );
+    }
+
 
 }
 

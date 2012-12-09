@@ -1364,6 +1364,211 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
         $this->o->fromAny($preload);
         $this->assertSame($expect, $this->o->sanitizeWhere($array));
     }
+    /**
+    * Data provider for testGetPeriod
+    *
+    * @return array
+    */
+    public static function dataGetPeriod()
+    {
+        return array(
+            array(
+                array(
+                ),
+                3,
+                6,
+                32,
+                null,
+                array(
+                    array(
+                        "group" => "default",
+                        "fluff" => "nStuff",
+                        "other" => "things",
+                        "id" => "32",
+                        "myDate" => "1970-01-01 00:00:00",
+                        "myOtherDate" => 4,
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                    array(
+                        "group" => "default",
+                        "fluff" => "nStuff",
+                        "other" => "things",
+                        "id" => "32",
+                        "myDate" => "1970-01-01 00:00:00",
+                        "myOtherDate" => 5,
+                        "name" => "A way up here thing",
+                        "value" => "24.0",
+                    ),
+                    array(
+                        "group" => "default",
+                        "fluff" => "nStuff",
+                        "other" => "things",
+                        "id" => "32",
+                        "myDate" => "1970-01-01 00:00:00",
+                        "myOtherDate" => 6,
+                        "name" => "A way up here thing",
+                        "value" => "25.0",
+                    ),
+                ),
+            ),
+            array(
+                array(
+                ),
+                5,
+                6,
+                32,
+                "id",
+                array(
+                    array(
+                        "group" => "default",
+                        "fluff" => "nStuff",
+                        "other" => "things",
+                        "id" => "32",
+                        "myDate" => "1970-01-01 00:00:00",
+                        "myOtherDate" => 5,
+                        "name" => "A way up here thing",
+                        "value" => "24.0",
+                    ),
+                    array(
+                        "group" => "default",
+                        "fluff" => "nStuff",
+                        "other" => "things",
+                        "id" => "32",
+                        "myDate" => "1970-01-01 00:00:00",
+                        "myOtherDate" => 6,
+                        "name" => "A way up here thing",
+                        "value" => "25.0",
+                    ),
+                ),
+            ),
+            array(
+                array(
+                ),
+                5,
+                null,
+                32,
+                null,
+                array(
+                    array(
+                        "group" => "default",
+                        "fluff" => "nStuff",
+                        "other" => "things",
+                        "id" => "32",
+                        "myDate" => "1970-01-01 00:00:00",
+                        "myOtherDate" => 5,
+                        "name" => "A way up here thing",
+                        "value" => "24.0",
+                    ),
+                ),
+            ),
+            array(
+                array(
+                ),
+                5,
+                6,
+                32,
+                "id",
+                array(
+                    array(
+                        "group" => "default",
+                        "fluff" => "nStuff",
+                        "other" => "things",
+                        "id" => "32",
+                        "myDate" => "1970-01-01 00:00:00",
+                        "myOtherDate" => 6,
+                        "name" => "A way up here thing",
+                        "value" => "25.0",
+                    ),
+                ),
+                "value = ?",
+                array(25.0),
+            ),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param array  $preload    The array to preload into the class
+    * @param int    $start      The first date
+    * @param int    $end        The last date
+    * @param mixed  $key        The key to use
+    * @param string $sqlId      The id field to use
+    * @param array  $expect     The expected return
+    * @param string $extraWhere The extra where clause to use
+    * @param array  $extraData  The data for the extra where clause
+    *
+    * @dataProvider dataGetPeriod
+    *
+    * @return null
+    */
+    public function testGetPeriod(
+        $preload,
+        $start,
+        $end,
+        $key,
+        $sqlId,
+        $expect,
+        $extraWhere = null,
+        $extraData = null
+    ) {
+        $obj = \HUGnet\db\Table::factory(
+            $this->system, $preload, "HUGnetDBTableTestStub2", $this->connect
+        );
+        $ret = $obj->getPeriod($start, $end, $key, $sqlId, $extraWhere, $extraData);
+        if ($ret !== false) {
+            $ret = array();
+            do {
+                $ret[] = $obj->toArray();
+            } while ($obj->nextInto());
+        }
+        $this->assertSame($expect, $ret);
+    }
+    /**
+    * Data provider for testGetPeriod2
+    *
+    * @return array
+    */
+    public static function dataGetPeriod2()
+    {
+        return array(
+            array(
+                array(
+                ),
+                1,
+                3,
+                2,
+                false,
+            ),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param array $preload The array to preload into the class
+    * @param int   $start   The first date
+    * @param int   $end     The last date
+    * @param mixed $key     The key to use
+    * @param array $expect  The expected return
+    *
+    * @dataProvider dataGetPeriod2
+    *
+    * @return null
+    */
+    public function testGetPeriod2($preload, $start, $end, $key, $expect)
+    {
+        $obj = \HUGnet\db\Table::factory(
+            $this->system, $preload, "HUGnetDBTableTestStub", $this->connect
+        );
+        $ret = $obj->getPeriod($start, $end, $key);
+        if ($ret !== false) {
+            $ret = array();
+            do {
+                $ret[] = $obj->toArray();
+            } while ($obj->nextInto());
+        }
+        $this->assertSame($expect, $ret);
+    }
 
 }
 namespace HUGnet\db\tables;
