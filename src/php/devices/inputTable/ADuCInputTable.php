@@ -694,11 +694,12 @@ class ADuCInputTable
     * @param bool $default Whether or not to include the default values
     *
     * @return array
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function toArray($default = false)
     {
         $return = array();
-        foreach ($this->_params as $field => $vals) {
+        foreach (array_keys($this->_params) as $field) {
             $return[$field] = $this->_params($field);
         }
         return $return;
@@ -709,6 +710,7 @@ class ADuCInputTable
     * @param bool $default Whether or not to include the default values
     *
     * @return array
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function fullArray($default = false)
     {

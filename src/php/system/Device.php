@@ -476,6 +476,7 @@ class Device extends \HUGnet\base\SystemTableBase
     * @param array  $extra Extra data from the
     *
     * @return string
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function webAPI(&$args, $extra)
     {

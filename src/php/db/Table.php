@@ -208,7 +208,7 @@ abstract class Table extends TableBase
         if (!is_array($array)) {
             return array();
         }
-        foreach ($array as $key => $value) {
+        foreach (array_keys($array) as $key) {
             if (!isset($this->sqlColumns[$key])) {
                 unset($array[$key]);
             }

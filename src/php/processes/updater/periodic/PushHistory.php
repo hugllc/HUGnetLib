@@ -140,7 +140,7 @@ class PushHistory extends \HUGnet\processes\updater\Periodic
                         }
                         $ret = $this->_post(
                             null,
-                            $id,
+                            null,
                             $records
                         );
                         if (is_array($ret) && (count($ret) > 0)) {

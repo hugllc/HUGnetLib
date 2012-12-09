@@ -75,6 +75,7 @@ abstract class Driver
     * @param string $units The units we are loading
     *
     * @return null
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     protected function __construct($units)
     {

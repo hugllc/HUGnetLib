@@ -111,7 +111,7 @@ final class TransportPacket
             && ($this->_packet->type() !== "FINDPING");
         if ($this->_config["timeout"] <= 0) {
             // Fix the timeout if we get one that is invalid.
-            $thsi->_config["timeout"] = 5.0;
+            $this->_config["timeout"] = 5.0;
         }
     }
     /**

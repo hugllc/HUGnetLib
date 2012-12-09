@@ -153,6 +153,7 @@ abstract class Device
     * This says if we are ready to run
     *
     * @return bool
+    * @SuppressWarnings(PHPMD.ShortMethodName)
     */
     protected function &ui()
     {

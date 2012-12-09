@@ -709,7 +709,6 @@ class Network
         if (strlen($buffer) > 0) {
             $buffer = str_split($buffer, $chunkSize*2);
             $pages = count($buffer);
-            $devID = $this->_device->get("id");
             foreach ($buffer as $page => $data) {
                 $data = str_pad($data, $chunkSize*2, $empty);
                 $addr = $start + ($page * $chunkSize);

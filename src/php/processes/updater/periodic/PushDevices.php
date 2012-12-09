@@ -98,7 +98,7 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
         if ($this->ready() && $this->hasMaster()) {
             $now = time();
             $ids = $this->_device->ids();
-            foreach ($ids as $key => $devID) {
+            foreach (array_keys($ids) as $key) {
                 $this->system()->main();
                 if (!$this->ui()->loop()) {
                     break;
@@ -133,7 +133,7 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
             "Pushing ".sprintf("%06X", $dev->id())." to master server..."
         );
         $dev->setParam("LastMasterPush", $now);
-        $ret = $dev->action()->post($url);
+        $ret = $dev->action()->post();
         if (is_array($ret) && ($ret["id"] == $dev->id())) {
             $this->system()->out(
                 "Successfully pushed ".sprintf("%06X", $dev->id())."."
@@ -164,7 +164,7 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
             if (!$this->ui()->loop()) {
                 break;
             }
-            $ret = $dev->input($i)->action()->post($url);
+            $ret = $dev->input($i)->action()->post();
             if (is_array($ret)
                 && ($ret["dev"] == $dev->id())
                 && ($ret["sensor"] == $i)
