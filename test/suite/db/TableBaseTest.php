@@ -35,7 +35,7 @@
  */
 namespace HUGnet\db;
 /** This is a required class */
-require_once CODE_BASE.'db/Table.php';
+require_once CODE_BASE.'db/TableBase.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
@@ -57,7 +57,7 @@ require_once 'PHPUnit/Extensions/Database/TestCase.php';
  * @version    Release: 0.9.7
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class TableTest extends \PHPUnit_Extensions_Database_TestCase
+class TableBaseTest extends \PHPUnit_Extensions_Database_TestCase
 {
     /** @var object This is our database object */
     protected $pdo;
@@ -122,8 +122,8 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
         );
         parent::setUp();
         $data = array();
-        $this->o = \HUGnet\db\Table::factory(
-            $this->system, $data, "HUGnetDBTableTestStub", $this->connect
+        $this->o = \HUGnet\db\tables\HUGnetDBTableBaseTestStub::factory(
+            $this->system, $data, "HUGnetDBTableBaseTestStub", $this->connect
         );
 
 
@@ -166,7 +166,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     protected function getDataSet()
     {
         return $this->createXMLDataSet(
-            TEST_CONFIG_BASE.'files/HUGnetDBTableTest.xml'
+            TEST_CONFIG_BASE.'files/HUGnetDBTableBaseTest.xml'
         );
     }
     /**
@@ -176,7 +176,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     *
     * @return null
     */
-    public function testConstructTableExec()
+    public function testConstructTableBaseExec()
     {
         $config = $this->config;
         $config["System"]["get"]["servers"] = array(
@@ -187,71 +187,14 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
         );
         $this->system->resetMock($config);
         $data = array();
-        $obj = \HUGnet\db\Table::factory(
-            $this->system, $data, "HUGnetDBTableTestStub"
+        $obj = \HUGnet\db\tables\HUGnetDBTableBaseTestStub::factory(
+            $this->system, $data, "HUGnetDBTableBaseTestStub"
         );
         // This causes it to try to connect to a bad database, and causes
         // the exception.
         $obj->getRow(5);
     }
 
-    /**
-    * Data provider for testConstructor
-    *
-    * @return array
-    */
-    public static function dataConstructor()
-    {
-        return array(
-            array(
-                array(),
-                array(
-                    "group" => "default",
-                    "fluff" => "nStuff",
-                    "other" => "things",
-                    "id" => 5,
-                    "myDate" => "1970-01-01 00:00:00",
-                    "myOtherDate" => 0,
-                    "name" => "Name",
-                    "value" => 12.0,
-                ),
-            ),
-            array(
-                array(
-                    "group" => "nonDefault",
-                ),
-                array(
-                    "group" => "nonDefault",
-                    "fluff" => "nStuff",
-                    "other" => "things",
-                    "id" => 5,
-                    "myDate" => "1970-01-01 00:00:00",
-                    "myOtherDate" => 0,
-                    "name" => "Name",
-                    "value" => 12.0,
-                ),
-            ),
-        );
-    }
-    /**
-    * Tests for verbosity
-    *
-    * @param array $preload The array to preload into the class
-    * @param array $expect  The expected return
-    *
-    * @dataProvider dataConstructor
-    *
-    * @return null
-    */
-    public function testConstructor($preload, $expect)
-    {
-        $obj = \HUGnet\db\Table::factory(
-            $this->system, $preload, "HUGnetDBTableTestStub", $this->connect
-        );
-        $this->assertSame($expect, $obj->toArray());
-        $default = $this->readAttribute($obj, "default");
-        $this->assertSame($expect["group"], $default["group"]);
-    }
 
     /**
     * Data provider for testGetRow
@@ -290,35 +233,10 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     */
     public function testGetRow($preload, $key, $expect)
     {
-        $obj = \HUGnet\db\Table::factory(
-            $this->system, $preload, "HUGnetDBTableTestStub", $this->connect
+        $obj = \HUGnet\db\tables\HUGnetDBTableBaseTestStub::factory(
+            $this->system, $preload, "HUGnetDBTableBaseTestStub", $this->connect
         );
         $obj->getRow($key);
-        if (is_array($expect)) {
-            $this->assertSame($expect, $obj->toArray());
-        } else {
-            $this->assertNull($ret);
-        }
-    }
-    /**
-    * Tests for verbosity
-    *
-    * @param array $preload The array to preload into the class
-    * @param mixed $key     The key to use
-    * @param array $expect  The expected return
-    *
-    * @dataProvider dataGetRow
-    *
-    * @return null
-    */
-    public function testRefresh($preload, $key, $expect)
-    {
-        $obj = \HUGnet\db\Table::factory(
-            $this->system, $preload, "HUGnetDBTableTestStub", $this->connect
-        );
-        $sqlId = $obj->sqlId;
-        $obj->set($sqlId, $key);
-        $obj->refresh();
         if (is_array($expect)) {
             $this->assertSame($expect, $obj->toArray());
         } else {
@@ -373,8 +291,8 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     public function testCreate($preload, $key, $expect)
     {
         $this->pdo->query("DROP TABLE IF EXISTS `myTable`");
-        $obj = \HUGnet\db\Table::factory(
-            $this->system, $preload, "HUGnetDBTableTestStub", $this->connect
+        $obj = \HUGnet\db\tables\HUGnetDBTableBaseTestStub::factory(
+            $this->system, $preload, "HUGnetDBTableBaseTestStub", $this->connect
         );
         $obj->create();
         $myDriver = $this->readAttribute($obj, "_driver");
@@ -452,8 +370,8 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     */
     public function testSelect($preload, $where, $data, $expect)
     {
-        $obj = \HUGnet\db\Table::factory(
-            $this->system, $preload, "HUGnetDBTableTestStub", $this->connect
+        $obj = \HUGnet\db\tables\HUGnetDBTableBaseTestStub::factory(
+            $this->system, $preload, "HUGnetDBTableBaseTestStub", $this->connect
         );
         $res = $obj->select($where, $data);
         foreach ($res as $val) {
@@ -497,8 +415,8 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     */
     public function testCount($preload, $where, $data, $expect)
     {
-        $obj = \HUGnet\db\Table::factory(
-            $this->system, $preload, "HUGnetDBTableTestStub", $this->connect
+        $obj = \HUGnet\db\tables\HUGnetDBTableBaseTestStub::factory(
+            $this->system, $preload, "HUGnetDBTableBaseTestStub", $this->connect
         );
         $res = $obj->count($where, $data);
         $this->assertSame($expect, $res);
@@ -517,8 +435,8 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     */
     public function testSelectInto($preload, $where, $data, $expect)
     {
-        $obj = \HUGnet\db\Table::factory(
-            $this->system, $preload, "HUGnetDBTableTestStub", $this->connect
+        $obj = \HUGnet\db\tables\HUGnetDBTableBaseTestStub::factory(
+            $this->system, $preload, "HUGnetDBTableBaseTestStub", $this->connect
         );
         $ret = $obj->selectInto($where, $data);
         foreach ($expect as $e) {
@@ -573,8 +491,8 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     */
     public function testSerialize($preload, $expect)
     {
-        $obj = \HUGnet\db\Table::factory(
-            $this->system, $preload, "HUGnetDBTableTestStub", $this->connect
+        $obj = \HUGnet\db\tables\HUGnetDBTableBaseTestStub::factory(
+            $this->system, $preload, "HUGnetDBTableBaseTestStub", $this->connect
         );
         $data = serialize($obj);
         $obj2 = unserialize($data);
@@ -582,51 +500,6 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
         $this->assertSame($expect, $obj2->toArray(), "Data is wrong");
     }
 
-    /**
-    * Data provider for testSelectOneInto
-    *
-    * @return array
-    */
-    public static function dataSelectOneInto()
-    {
-        return array(
-            array(
-                array(),
-                "",
-                array(),
-                array(
-                    "group" => "default",
-                    "fluff" => "nStuff",
-                    "other" => "things",
-                    "id" => "-5",
-                    "myDate" => "1970-01-01 00:00:00",
-                    "myOtherDate" => 0,
-                    "name" => "Something Negative",
-                    "value" => "-25.0",
-                ),
-            ),
-        );
-    }
-    /**
-    * Tests for verbosity
-    *
-    * @param array  $preload The array to preload into the class
-    * @param string $where   The where clause
-    * @param array  $data    The data to use with the where clause
-    * @param array  $expect  The expected return
-    *
-    * @dataProvider dataSelectOneInto
-    *
-    * @return null
-    */
-    public function testSelectOneInto($preload, $where, $data, $expect)
-    {
-        $obj = \HUGnet\db\Table::factory(
-            $this->system, $preload, "HUGnetDBTableTestStub", $this->connect
-        );
-        $res = $obj->selectOneInto($where, $data);
-        $this->assertSame($expect, $obj->toArray());
-    }
     /**
     * Data provider for testSelectIDs
     *
@@ -659,8 +532,8 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     */
     public function testSelectIds($preload, $where, $data, $expect)
     {
-        $obj = \HUGnet\db\Table::factory(
-            $this->system, $preload, "HUGnetDBTableTestStub", $this->connect
+        $obj = \HUGnet\db\tables\HUGnetDBTableBaseTestStub::factory(
+            $this->system, $preload, "HUGnetDBTableBaseTestStub", $this->connect
         );
         $ret = $obj->selectIDs($where, $data);
         $this->assertSame($expect, $ret);
@@ -744,8 +617,8 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     */
     public function testUpdateRow($preload, $expect)
     {
-        $obj = \HUGnet\db\Table::factory(
-            $this->system, $preload, "HUGnetDBTableTestStub", $this->connect
+        $obj = \HUGnet\db\tables\HUGnetDBTableBaseTestStub::factory(
+            $this->system, $preload, "HUGnetDBTableBaseTestStub", $this->connect
         );
         $obj->updateRow();
         $stmt = $this->pdo->query("SELECT * FROM `myTable`");
@@ -839,8 +712,8 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     */
     public function testInsertRow($preload, $replace, $expect)
     {
-        $obj = \HUGnet\db\Table::factory(
-            $this->system, $preload, "HUGnetDBTableTestStub", $this->connect
+        $obj = \HUGnet\db\tables\HUGnetDBTableBaseTestStub::factory(
+            $this->system, $preload, "HUGnetDBTableBaseTestStub", $this->connect
         );
         $obj->insertRow($replace);
         $stmt = $this->pdo->query("SELECT * FROM `myTable`");
@@ -922,8 +795,8 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     */
     public function testDeleteRow($preload, $expect)
     {
-        $obj = \HUGnet\db\Table::factory(
-            $this->system, $preload, "HUGnetDBTableTestStub", $this->connect
+        $obj = \HUGnet\db\tables\HUGnetDBTableBaseTestStub::factory(
+            $this->system, $preload, "HUGnetDBTableBaseTestStub", $this->connect
         );
         $obj->deleteRow();
         $stmt = $this->pdo->query("SELECT * FROM `myTable`");
@@ -986,235 +859,14 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     */
     public function testToDB($preload, $expect, $default = true)
     {
-        $obj = \HUGnet\db\Table::factory(
-            $this->system, $preload, "HUGnetDBTableTestStub"
+        $obj = \HUGnet\db\tables\HUGnetDBTableBaseTestStub::factory(
+            $this->system, $preload, "HUGnetDBTableBaseTestStub"
         );
         $ret = $obj->toDB($default);
         $this->assertSame(
             $expect,
             $ret
         );
-    }
-    /**
-    * data provider for testFactory
-    *
-    * @return array
-    */
-    public static function dataFactory()
-    {
-        return array(
-            array( // #0
-                array(
-                ),
-                "HUGnetDBTableTestStub",
-                array(
-                    "group" => "default",
-                    "fluff" => "nStuff",
-                    "other" => "things",
-                    "id" => 5,
-                    "myDate" => "1970-01-01 00:00:00",
-                    "myOtherDate" => 0,
-                    "name" => "Name",
-                    "value" => 12.0,
-                    "myOtherDate" => 0,
-                ),
-                "HUGnet\\db\\tables\\HUGnetDBTableTestStub",
-            ),
-            array( // #1
-                array(
-                    "fluff" => "more",
-                    "other" => "thing",
-                    "id" => 7,
-                    "name" => "here",
-                    "value" => 35.0,
-                ),
-                "HUGnetDBTableTestStub",
-                array(
-                    "group" => "default",
-                    "fluff" => "more",
-                    "other" => "thing",
-                    "id" => 7,
-                    "myDate" => "1970-01-01 00:00:00",
-                    "myOtherDate" => 0,
-                    "name" => "here",
-                    "value" => 35.0,
-                    "myOtherDate" => 0,
-                ),
-                "HUGnet\\db\\tables\\HUGnetDBTableTestStub",
-            ),
-            array( // #2
-                array(
-                    "fluff" => "more",
-                    "other" => "thing",
-                    "id" => 7,
-                    "name" => "here",
-                    "value" => 35.0,
-                ),
-                "HUGnetDBTableTestStub",
-                array(
-                    "group" => "default",
-                    "fluff" => "more",
-                    "other" => "thing",
-                    "id" => 7,
-                    "myDate" => "1970-01-01 00:00:00",
-                    "myOtherDate" => 0,
-                    "name" => "here",
-                    "value" => 35.0,
-                ),
-                "HUGnet\\db\\tables\\HUGnetDBTableTestStub",
-            ),
-            array( // #3
-                array(
-                    "fluff" => "more",
-                    "other" => "thing",
-                    "id" => 7,
-                    "name" => "here",
-                    "value" => 35.0,
-                ),
-                "ThisIsNotAValidTableName",
-                array(
-                    "group" => "default",
-                    "id" => 7,
-                ),
-                "HUGnet\\db\\tables\\Generic",
-            ),
-            array( // #3
-                array(
-                    "fluff" => "more",
-                    "other" => "thing",
-                    "id" => 7,
-                    "name" => "here",
-                    "value" => 35.0,
-                ),
-                "myTable",
-                array(
-                    'group' => 'default',
-                    'id' => 7,
-                    'name' => 'here',
-                    'value' => 35.0,
-                ),
-                "HUGnet\\db\\tables\\Generic",
-            ),
-        );
-    }
-    /**
-    * tests the factory
-    *
-    * @param array  $preload What to preload the object with
-    * @param string $table   The name of the table class to use
-    * @param array  $expect  The expected return
-    * @param string $eTable  The expected table class
-    *
-    * @return null
-    *
-    * @dataProvider dataFactory
-    */
-    public function testFactory($preload, $table, $expect, $eTable)
-    {
-        $obj = \HUGnet\db\Table::factory(
-            $this->system, $preload, $table, $this->connect
-        );
-        $this->assertAttributeSame(
-            $expect,
-            "data",
-            $obj
-        );
-        $this->assertSame($eTable, get_class($obj));
-    }
-    /**
-    * data provider for testFactory
-    *
-    * @return array
-    */
-    public static function dataDuplicate()
-    {
-        return array(
-            array(
-                array(
-                ),
-                "HUGnetDBTableTestStub",
-                array(
-                    "group" => "default",
-                    "fluff" => "nStuff",
-                    "other" => "things",
-                    "id" => 5,
-                    "myDate" => "1970-01-01 00:00:00",
-                    "myOtherDate" => 0,
-                    "name" => "Name",
-                    "value" => 12.0,
-                    "myOtherDate" => 0,
-                ),
-                "HUGnet\\db\\tables\\HUGnetDBTableTestStub",
-            ),
-            array(
-                array(
-                    "fluff" => "more",
-                    "other" => "thing",
-                    "id" => 7,
-                    "name" => "here",
-                    "value" => 35.0,
-                ),
-                "HUGnetDBTableTestStub",
-                array(
-                    "group" => "default",
-                    "fluff" => "more",
-                    "other" => "thing",
-                    "id" => 7,
-                    "myDate" => "1970-01-01 00:00:00",
-                    "myOtherDate" => 0,
-                    "name" => "here",
-                    "value" => 35.0,
-                    "myOtherDate" => 0,
-                ),
-                "HUGnet\\db\\tables\\HUGnetDBTableTestStub",
-            ),
-            array(
-                array(
-                    "fluff" => "more",
-                    "other" => "thing",
-                    "id" => 7,
-                    "name" => "here",
-                    "value" => 35.0,
-                ),
-                "HUGnetDBTableTestStub",
-                array(
-                    "group" => "default",
-                    "fluff" => "more",
-                    "other" => "thing",
-                    "id" => 7,
-                    "myDate" => "1970-01-01 00:00:00",
-                    "myOtherDate" => 0,
-                    "name" => "here",
-                    "value" => 35.0,
-                ),
-                "HUGnet\\db\\tables\\HUGnetDBTableTestStub",
-            ),
-        );
-    }
-    /**
-    * tests the factory
-    *
-    * @param array  $preload What to preload the object with
-    * @param string $table   The name of the table class to use
-    * @param array  $expect  The expected return
-    * @param string $eTable  The expected table class
-    *
-    * @return null
-    *
-    * @dataProvider dataDuplicate
-    */
-    public function testDuplicate($preload, $table, $expect, $eTable)
-    {
-        $obj = \HUGnet\db\Table::factory(
-            $this->system, array(), $table
-        );
-        $obj2 = &$obj->duplicate($preload);
-        $this->assertAttributeSame(
-            $expect,
-            "data",
-            $obj2
-        );
-        $this->assertSame($eTable, get_class($obj2));
     }
     /**
     * data provider for testSet
@@ -1224,20 +876,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     public static function dataSet()
     {
         return array(
-            array("myDate", "2010-04-25 13:42:23", "2010-04-25 13:42:23"),
-            array("myDate", "2010-04-25", "2010-04-25 00:00:00"),
-            array(
-                "myDate", "Sun, 25 April 2010, 1:42:23pm", "2010-04-25 13:42:23"
-            ),
-            array("myDate", 1234567890, "2009-02-13 17:31:30"),
-            array("myDate", "1234567890", "2009-02-13 17:31:30"),
-            array("myDate", "This is not a date", "1970-01-01 00:00:00"),
-            array("myOtherDate", "2010-04-25 13:42:23", 1272202943),
-            array("myOtherDate", "2010-04-25", 1272153600),
-            array("myOtherDate", "Sun, 25 April 2010, 1:42:23pm", 1272202943),
-            array("myOtherDate", 1234567890, 1234567890),
-            array("myOtherDate", "1234567890", 1234567890),
-            array("myOtherDate", "This is not a date", 0),
+            array("name", "hello", "hello"),
         );
     }
 
@@ -1258,113 +897,6 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
         $data = $this->readAttribute($this->o, "data");
         $this->assertSame($expect, $data[$var]);
     }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataFromCSV()
-    {
-        return array(
-            array(
-                "13, This is a string, -35",
-                array(
-                    "group" => "default",
-                    "fluff" => "nStuff",
-                    "other" => "things",
-                    "id" => "13",
-                    "myDate" => "1970-01-01 00:00:00",
-                    "myOtherDate" => 0,
-                    "name" =>  "This is a string",
-                    "value" =>  "-35",
-                ),
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array $array  The array to use to build it
-    * @param array $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataFromCSV
-    */
-    public function testFromCSV($array, $expect)
-    {
-        $this->o->clearData();
-        $this->o->fromCSV($array);
-        $this->assertSame(
-            $expect,
-            $this->readAttribute($this->o, "data")
-        );
-    }
-    /**
-    * data provider for testCalcAverage
-    *
-    * @return array
-    */
-    public static function dataSanitizeWhere()
-    {
-        return array(
-            array(
-                array(
-                ),
-                array(
-                    "id"  => 41,
-                    "value"   => gmmktime(0, 0, 0, 1, 1, 2010),
-                    "name"  => "Date",
-                ),
-                array(
-                    "id"  => 41,
-                    "value"   => gmmktime(0, 0, 0, 1, 1, 2010),
-                    "name"  => "Date",
-                ),
-            ),
-            array(
-                array(
-                ),
-                array(
-                    "id"  => 41,
-                    "value"   => gmmktime(0, 0, 0, 1, 1, 2010),
-                    "name"  => "Date",
-                    "WebNark" => "SeaMonster",
-                ),
-                array(
-                    "id"  => 41,
-                    "value"   => gmmktime(0, 0, 0, 1, 1, 2010),
-                    "name"  => "Date",
-                ),
-            ),
-            array(
-                array(
-                ),
-                "ThisIsNotAnArray",
-                array(
-                ),
-            ),
-        );
-    }
-
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param mixed  $preload The data to preload into the object
-    * @param string $array   The array to sanitize
-    * @param string $expect  The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataSanitizeWhere
-    */
-    public function testSanitizeWhere($preload, $array, $expect)
-    {
-        $this->o->clearData();
-        $this->o->fromAny($preload);
-        $this->assertSame($expect, $this->o->sanitizeWhere($array));
-    }
-
 }
 namespace HUGnet\db\tables;
 
@@ -1381,7 +913,7 @@ namespace HUGnet\db\tables;
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class HUGnetDBTableTestStub extends \HUGnet\db\Table
+class HUGnetDBTableBaseTestStub extends \HUGnet\db\TableBase
 {
     /** @var string This is the table we should use */
     public $sqlTable = "myTable";
@@ -1467,61 +999,21 @@ class HUGnetDBTableTestStub extends \HUGnet\db\Table
         "filters" => array("this is" => "a filter"),
     );
     /**
-    * function to set To
+    * This function creates other tables that are identical to this one, except
+    * for the data given.
     *
-    * @param string $value The value to set
+    * @param object &$system  The system object to use
+    * @param mixed  $data     This is an array or string to create the object from
+    * @param string $class    The class to use
+    * @param object &$connect The connection manager
     *
-    * @return null
+    * @return object A reference to a table object
     */
-    protected function setMyDate($value)
-    {
-        $this->data["myDate"] = self::sqlDate($value);
-    }
-    /**
-    * function to set To
-    *
-    * @param string $value The value to set
-    *
-    * @return null
-    */
-    protected function setMyOtherDate($value)
-    {
-        $this->data["myOtherDate"] = self::unixDate($value);
-    }
-    /**
-    * By default it outputs the date in the format specified in myConfig
-    *
-    * @param string $field The field to output
-    *
-    * @return string The date as a formatted string
-    */
-    public function outputDate($field)
-    {
-        return parent::outputDate($field);
-    }
-    /**
-    * Sets the extra attributes field
-    *
-    * @param int    $start      The start of the time
-    * @param int    $end        The end of the time
-    * @param mixed  $rid        The ID to use.  None if null
-    * @param string $idField    The ID Field to use.  Table Primary id if left blank
-    * @param string $extraWhere Extra where clause
-    * @param array  $extraData  Data for the extraWhere clause
-    *
-    * @return mixed The value of the attribute
-    */
-    public function getPeriod(
-        $start,
-        $end = null,
-        $rid = null,
-        $idField = null,
-        $extraWhere = null,
-        $extraData = null
+    static public function &factory(
+        &$system, $data = array(), $class = "Generic", &$connect = null
     ) {
-        return parent::getTimePeriod(
-            $start, $end, $rid, $idField, $extraWhere, $extraData
-        );
+        $class = "\\HUGnet\\db\\tables\\".$class;
+        return new $class($system, $data, $connect);
     }
 }
 /**
@@ -1537,7 +1029,7 @@ class HUGnetDBTableTestStub extends \HUGnet\db\Table
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class HUGnetDBTableTestStub2 extends \HUGnet\db\Table
+class HUGnetDBTableBaseTestStub2 extends \HUGnet\db\TableBase
 {
     /** @var string This is the table we should use */
     public $sqlTable = "myTable2";
@@ -1617,51 +1109,21 @@ class HUGnetDBTableTestStub2 extends \HUGnet\db\Table
         "myOtherDate" => 0,
     );
     /**
-    * function to set To
+    * This function creates other tables that are identical to this one, except
+    * for the data given.
     *
-    * @param string $value The value to set
+    * @param object &$system  The system object to use
+    * @param mixed  $data     This is an array or string to create the object from
+    * @param string $class    The class to use
+    * @param object &$connect The connection manager
     *
-    * @return null
+    * @return object A reference to a table object
     */
-    protected function setMyDate($value)
-    {
-        $this->data["myDate"] = self::sqlDate($value);
-    }
-    /**
-    * function to set To
-    *
-    * @param string $value The value to set
-    *
-    * @return null
-    */
-    protected function setMyOtherDate($value)
-    {
-        $this->data["myOtherDate"] = self::unixDate($value);
-    }
-    /**
-    * Sets the extra attributes field
-    *
-    * @param int    $start      The start of the time
-    * @param int    $end        The end of the time
-    * @param mixed  $rid        The ID to use.  None if null
-    * @param string $idField    The ID Field to use.  Table Primary id if left blank
-    * @param string $extraWhere Extra where clause
-    * @param array  $extraData  Data for the extraWhere clause
-    *
-    * @return mixed The value of the attribute
-    */
-    public function getPeriod(
-        $start,
-        $end = null,
-        $rid = null,
-        $idField = null,
-        $extraWhere = null,
-        $extraData = null
+    static public function &factory(
+        &$system, $data = array(), $class = "Generic", &$connect = null
     ) {
-        return parent::getTimePeriod(
-            $start, $end, $rid, $idField, $extraWhere, $extraData
-        );
+        $class = "\\HUGnet\\db\\tables\\".$class;
+        return new $class($system, $data, $connect);
     }
-
 }
 ?>

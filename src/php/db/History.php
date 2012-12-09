@@ -40,7 +40,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is for some constants that it contains */
 require_once dirname(__FILE__)."/../devices/datachan/Driver.php";
 /** This is for some constants that it contains */
-require_once dirname(__FILE__)."/Table.php";
+require_once dirname(__FILE__)."/TableDate.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -56,7 +56,7 @@ require_once dirname(__FILE__)."/Table.php";
  * @version    Release: 0.9.7
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-abstract class History extends \HUGnet\db\Table
+abstract class History extends TableDate
 {
     /** @var string This is the table we should use */
     public $sqlTable = "";
