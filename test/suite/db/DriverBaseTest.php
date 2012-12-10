@@ -832,7 +832,8 @@ class DriverBaseTest extends \PHPUnit_Extensions_Database_TestCase
         $this->assertEquals($ret, $rows);
         $table = $this->system->retrieve("Table");
         $this->assertEquals($expect, $table["fromArray"]);
-    }    /**
+    }
+    /**
     * Data provider for testQuery
     *
     * @return array
