@@ -39,6 +39,8 @@ namespace HUGnet\db\tables;
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** The data channels driver is necessary for a couple of constants */
 require_once dirname(__FILE__)."/../../devices/datachan/Driver.php";
+/** The data channels driver is necessary for a couple of constants */
+require_once dirname(__FILE__)."/../TableParams.php";
 /**
  * This class has functions that relate to the manipulation of elements
  * of the devInfo array.
@@ -53,7 +55,7 @@ require_once dirname(__FILE__)."/../../devices/datachan/Driver.php";
  * @version    Release: 0.9.7
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DeviceProcesses extends \HUGnet\db\Table
+class DeviceProcesses extends \HUGnet\db\TableParams
 {
     /** @var string This is the table we should use */
     public $sqlTable = "deviceProcesses";
@@ -160,7 +162,7 @@ class DeviceProcesses extends \HUGnet\db\Table
         "group" => "default",    // Server group to use
     );
     /** @var array These are reserved names that shouldn't be set */
-    private $_set = array(
+    protected $setParams = array(
         "min",
         "max",
         "extra",
@@ -176,43 +178,6 @@ class DeviceProcesses extends \HUGnet\db\Table
     {
         parent::__construct($system, $data, $connect);
         $this->create();
-    }
-    /**
-    * Overload the set attribute
-    *
-    * @param string $name  This is the attribute to set
-    * @param mixed  $value The value to set it to
-    *
-    * @return mixed The value of the attribute
-    */
-    public function set($name, $value)
-    {
-        if (array_key_exists($name, $this->default)) {
-            $ret = parent::set($name, $value);
-        } else {
-            if (in_array($name, $this->_set)) {
-                $array = (array)json_decode(parent::get("params"), true);
-                $array[$name] = $value;
-                parent::set("params", $array);
-            }
-        }
-        return $ret;
-    }
-    /**
-    * Overload the get attribute
-    *
-    * @param string $name This is the attribute to get
-    *
-    * @return mixed The value of the attribute
-    */
-    public function get($name)
-    {
-        $ret = parent::get($name);
-        if (is_null($ret)) {
-            $array = (array)json_decode(parent::get("params"), true);
-            $ret = $array[$name];
-        }
-        return $ret;
     }
 
     /**
@@ -230,67 +195,12 @@ class DeviceProcesses extends \HUGnet\db\Table
         $this->dbDriver()->reset();
         return $ret;
     }
-    /**
-    * Sets all of the endpoint attributes from an array
-    *
-    * @param array $array This is an array of this class's attributes
-    *
-    * @return null
-    */
-    public function fromArray($array)
-    {
-        parent::fromArray($array);
-        if (!isset($array["params"]) || !is_string($array["params"])) {
-            foreach ($this->getProperties() as $key) {
-                unset($array[$key]);
-            }
-            $old = json_decode($this->get("params"), true);
-            $set = array();
-            foreach ($this->_set as $key) {
-                if (isset($array[$key])) {
-                    $set[$key] = $array[$key];
-                } else if (isset($old[$key])) {
-                    $set[$key] = $old[$key];
-                }
-            }
-            $this->set("params", $set);
-        }
-    }
-    /**
-    * Sets all of the endpoint attributes from an array
-    *
-    * @param bool $default Return items set to their default?
-    *
-    * @return null
-    */
-    public function toArray($default = true)
-    {
-        $data = parent::toArray($default);
-        $params = json_decode($data["params"], true);
-        unset($data["params"]);
-        return array_merge((array)$params, (array)$data);
-    }
 
     /******************************************************************
      ******************************************************************
      ********  The following are input modification functions  ********
      ******************************************************************
      ******************************************************************/
-    /**
-    * function to set LastHistory
-    *
-    * @param string $value The value to set
-    *
-    * @return null
-    */
-    protected function setParams($value)
-    {
-        if (is_array($value)) {
-            $this->data["params"] = json_encode($value);
-        } else if (is_string($value)) {
-            $this->data["params"] = $value;
-        }
-    }
     /**
     * function to set LastHistory
     *
