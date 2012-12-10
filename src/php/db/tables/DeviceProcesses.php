@@ -38,8 +38,6 @@ namespace HUGnet\db\tables;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** The data channels driver is necessary for a couple of constants */
-require_once dirname(__FILE__)."/../../devices/datachan/Driver.php";
-/** The data channels driver is necessary for a couple of constants */
 require_once dirname(__FILE__)."/../TableParams.php";
 /**
  * This class has functions that relate to the manipulation of elements
@@ -104,30 +102,10 @@ class DeviceProcesses extends \HUGnet\db\TableParams
             "Type" => "varchar(128)",
             "Default" => '',
         ),
-        "location" => array(
-            "Name" => "location",
-            "Type" => "varchar(128)",
-            "Default" => '',
-        ),
-        "dataType" => array(
-            "Name" => "dataType",
-            "Type" => "varchar(32)",
-            "Default" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
-        ),
-        "units" => array(
-            "Name" => "units",
-            "Type" => "varchar(32)",
-            "Default" => '',
-        ),
-        "decimals" => array(
-            "Name" => "decimals",
-            "Type" => "smallint",
-            "Default" => '2',
-        ),
         "driver" => array(
             "Name" => "driver",
             "Type" => "varchar(32)",
-            "Default" => 'SDEFAULT',
+            "Default" => 'EmptyProcess',
         ),
         "params" => array(
             "Name" => "params",
@@ -163,9 +141,7 @@ class DeviceProcesses extends \HUGnet\db\TableParams
     );
     /** @var array These are reserved names that shouldn't be set */
     protected $setParams = array(
-        "min",
-        "max",
-        "extra",
+        "RawSetup", "extra"
     );
     /**
     * This is the constructor
@@ -201,22 +177,6 @@ class DeviceProcesses extends \HUGnet\db\TableParams
      ********  The following are input modification functions  ********
      ******************************************************************
      ******************************************************************/
-    /**
-    * function to set LastHistory
-    *
-    * @param string $value The value to set
-    *
-    * @return null
-    */
-    protected function setDataType($value)
-    {
-        if (($value == \HUGnet\devices\datachan\Driver::TYPE_RAW)
-            || ($value == \HUGnet\devices\datachan\Driver::TYPE_DIFF)
-            || ($value == \HUGnet\devices\datachan\Driver::TYPE_IGNORE)
-        ) {
-            $this->data["dataType"] = $value;
-        }
-    }
 
 }
 ?>

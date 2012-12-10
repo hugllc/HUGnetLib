@@ -5,10 +5,7 @@
         <column>process</column>
         <column>id</column>
         <column>type</column>
-        <column>location</column>
-        <column>dataType</column>
-        <column>units</column>
-        <column>decimals</column>
+        <column>driver</column>
         <column>params</column>
     </table>
 </dataset>

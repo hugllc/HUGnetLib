@@ -183,14 +183,6 @@ class DeviceOutputsTest extends TableTestBase
     public static function dataSet()
     {
         return array(
-            array(
-                "dataType",
-                \HUGnet\devices\datachan\Driver::TYPE_DIFF,
-                \HUGnet\devices\datachan\Driver::TYPE_DIFF
-            ),
-            array(
-                "dataType", "asdffdsas", \HUGnet\devices\datachan\Driver::TYPE_RAW
-            ),
             array("params", "asdfasdfasdfasdf", "asdfasdfasdfasdf"),
             array("params", array(1,2,3,4), "[1,2,3,4]"),
             array("extra", array(1,2,3,4), array(1,2,3,4)),
@@ -316,10 +308,6 @@ class DeviceOutputsTest extends TableTestBase
                     "output" => 23,
                     "id" => 1,
                     "type" => "asdf",
-                    "location" => "HERE",
-                    "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
-                    "units" => '&deg;C',
-                    "decimals" => 4,
                     "driver" => "asdf",
                     "params" => json_encode(
                         array("extra" => array())
@@ -343,11 +331,7 @@ class DeviceOutputsTest extends TableTestBase
                     "output" => 23,
                     "id" => 1,
                     "type" => "asdf",
-                    "location" => "HERE",
-                    "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
-                    "units" => '&deg;C',
-                    "decimals" => 4,
-                    "driver"  => "SDEFAULT",
+                    "driver"  => "EmptyOutput",
                     "params" => '{"storageUnits":"&deg;C","unitType":"Temperature"}',
                 ),
             ),
@@ -370,11 +354,7 @@ class DeviceOutputsTest extends TableTestBase
                     "output" => 23,
                     "id" => 1,
                     "type" => "asdf",
-                    "location" => "HERE",
-                    "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
-                    "units" => '&deg;C',
-                    "decimals" => 4,
-                    "driver"  => "SDEFAULT",
+                    "driver"  => "EmptyOutput",
                     "params" => '{"extra":[1,2,3,4]}',
                 ),
             ),
@@ -425,12 +405,8 @@ class DeviceOutputsTest extends TableTestBase
                     "output" => 23,
                     "id" => 1,
                     "type" => "asdf",
-                    "location" => "HERE",
-                    "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
-                    "units" => '&deg;C',
-                    "decimals" => 4,
                     "storageUnits" => "&deg;C",
-                    "driver"  => "SDEFAULT",
+                    "driver"  => "EmptyOutput",
                     "unitType" => "Temperature",
                 ),
             ),
