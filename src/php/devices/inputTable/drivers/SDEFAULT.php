@@ -60,7 +60,7 @@ class SDEFAULT extends \HUGnet\devices\inputTable\Driver
     * put into all derivative classes, even if it is empty.
     */
     protected $params = array(
-        "longName" => "Unknown Sensor",
+        "longName" => "Unknown Input",
         "shortName" => "Unknown",
         "unitType" => "unknown",
     );

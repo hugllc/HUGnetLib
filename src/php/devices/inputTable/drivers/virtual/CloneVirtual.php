@@ -69,7 +69,7 @@ class CloneVirtual extends \HUGnet\devices\inputTable\DriverVirtual
         "shortName" => "CloneVirtual",
         "virtual" => true,              // This says if we are a virtual sensor
         "extraText" => array(
-            "Device ID", "Sensor"
+            "Device ID", "Input"
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take

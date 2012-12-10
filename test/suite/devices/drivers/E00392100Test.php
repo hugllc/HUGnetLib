@@ -181,7 +181,7 @@ class E00392100Test extends DriverTestBase
                 0,
                 array(
                     "id" => 0x40,
-                    "sensor" => 0,
+                    "input" => 0,
                     "dev" => 5,
                     "type" => "ControllerVoltage",
                 ),
@@ -199,7 +199,7 @@ class E00392100Test extends DriverTestBase
                 1,
                 array(
                     "id" => 0x50,
-                    "sensor" => 1,
+                    "input" => 1,
                     "dev" => 5,
                     "type" => "ControllerCurrent",
                 ),
@@ -217,7 +217,7 @@ class E00392100Test extends DriverTestBase
                 2,
                 array(
                     "id" => 2,
-                    "sensor" => 2,
+                    "input" => 2,
                     "dev" => 5,
                     "type" => "ControllerTemp",
                 ),
@@ -236,7 +236,7 @@ class E00392100Test extends DriverTestBase
                 3,
                 array(
                     "id" => 0x40,
-                    "sensor" => 3,
+                    "input" => 3,
                     "dev" => 5,
                     "type" => "ControllerVoltage",
                 ),
@@ -254,7 +254,7 @@ class E00392100Test extends DriverTestBase
                 4,
                 array(
                     "id" => 0x50,
-                    "sensor" => 4,
+                    "input" => 4,
                     "dev" => 5,
                     "type" => "ControllerCurrent",
                 ),
@@ -272,7 +272,7 @@ class E00392100Test extends DriverTestBase
                 5,
                 array(
                     "id" => 2,
-                    "sensor" => 5,
+                    "input" => 5,
                     "dev" => 5,
                     "type" => "ControllerTemp",
                 ),
@@ -290,7 +290,7 @@ class E00392100Test extends DriverTestBase
                 6,
                 array(
                     "id" => 0xFE,
-                    "sensor" => 6,
+                    "input" => 6,
                     "dev" => 5,
                 ),
             ),
@@ -307,7 +307,7 @@ class E00392100Test extends DriverTestBase
                 7,
                 array(
                     "id" => 0xFE,
-                    "sensor" => 7,
+                    "input" => 7,
                     "dev" => 5,
                 ),
             ),
@@ -324,7 +324,7 @@ class E00392100Test extends DriverTestBase
                 8,
                 array(
                     "id" => 0xFE,
-                    "sensor" => 8,
+                    "input" => 8,
                     "dev" => 5,
                 ),
             ),
@@ -341,7 +341,7 @@ class E00392100Test extends DriverTestBase
                 9,
                 array(
                     "id" => 0xFE,
-                    "sensor" => 9,
+                    "input" => 9,
                     "dev" => 5,
                 ),
             ),
@@ -351,7 +351,7 @@ class E00392100Test extends DriverTestBase
     * test the set routine when an extra class exists
     *
     * @param array  $mocks  The value to preload into the mocks
-    * @param int    $sid    The sensor id to get
+    * @param int    $sid    The input id to get
     * @param string $expect The expected return
     *
     * @return null
@@ -362,10 +362,10 @@ class E00392100Test extends DriverTestBase
     {
         $device  = new \HUGnet\DummyTable("Device");
         $device->resetMock($mocks);
-        $sensor = $this->o->input($sid);
+        $input = $this->o->input($sid);
         $ret = $device->retrieve();
         $this->assertEquals(
-            $expect, $ret["Sensors"]["fromAny"][1][0], "Setup is wrong"
+            $expect, $ret["DeviceInputs"]["fromAny"][1][0], "Setup is wrong"
         );
 
         /*

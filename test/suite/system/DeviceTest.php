@@ -40,7 +40,7 @@ require_once CODE_BASE.'system/Device.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
-require_once CODE_BASE.'system/Sensor.php';
+require_once CODE_BASE.'devices/Input.php';
 /** This is a required class */
 require_once CODE_BASE.'devices/datachan/Driver.php';
 /** This is the dummy table container */
@@ -673,7 +673,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     public static function dataJson()
     {
         $sensors = array();
-        $obj = Sensor::factory(
+        $obj = \HUGnet\devices\Input::factory(
             new DummySystem("TestStuff"),
             array(
             ),
@@ -734,7 +734,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 'storageUnit' => '&#176;C',
                                 'unitType' => 'Temperature',
                                 'dataType' => 'raw',
-                                'sensor' => null,
+                                'input' => null,
                                 'validUnits' => array(
                                     '&#176;F' => '&#176;F',
                                     '&#176;C' => '&#176;C',
@@ -751,7 +751,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 'storageUnit' => '&#176;C',
                                 'unitType' => 'Temperature',
                                 'dataType' => 'raw',
-                                'sensor' => null,
+                                'input' => null,
                                 'validUnits' => array(
                                     '&#176;F' => '&#176;F',
                                     '&#176;C' => '&#176;C',
@@ -768,7 +768,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 'storageUnit' => '&#176;C',
                                 'unitType' => 'Temperature',
                                 'dataType' => 'raw',
-                                'sensor' => null,
+                                'input' => null,
                                 'validUnits' => array(
                                     '&#176;F' => '&#176;F',
                                     '&#176;C' => '&#176;C',
@@ -785,7 +785,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 'storageUnit' => '&#176;C',
                                 'unitType' => 'Temperature',
                                 'dataType' => 'raw',
-                                'sensor' => null,
+                                'input' => null,
                                 'validUnits' => array(
                                     '&#176;F' => '&#176;F',
                                     '&#176;C' => '&#176;C',
@@ -802,7 +802,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 'storageUnit' => '&#176;C',
                                 'unitType' => 'Temperature',
                                 'dataType' => 'raw',
-                                'sensor' => null,
+                                'input' => null,
                                 'validUnits' => array(
                                     '&#176;F' => '&#176;F',
                                     '&#176;C' => '&#176;C',
@@ -819,7 +819,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 'storageUnit' => '&#176;C',
                                 'unitType' => 'Temperature',
                                 'dataType' => 'raw',
-                                'sensor' => null,
+                                'input' => null,
                                 'validUnits' => array(
                                     '&#176;F' => '&#176;F',
                                     '&#176;C' => '&#176;C',
@@ -836,7 +836,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 'storageUnit' => '&#176;C',
                                 'unitType' => 'Temperature',
                                 'dataType' => 'raw',
-                                'sensor' => null,
+                                'input' => null,
                                 'validUnits' => array(
                                     '&#176;F' => '&#176;F',
                                     '&#176;C' => '&#176;C',
@@ -853,7 +853,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 'storageUnit' => '&#176;C',
                                 'unitType' => 'Temperature',
                                 'dataType' => 'raw',
-                                'sensor' => null,
+                                'input' => null,
                                 'validUnits' => array(
                                     '&#176;F' => '&#176;F',
                                     '&#176;C' => '&#176;C',
@@ -870,7 +870,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 'storageUnit' => '&#176;C',
                                 'unitType' => 'Temperature',
                                 'dataType' => 'raw',
-                                'sensor' => null,
+                                'input' => null,
                                 'validUnits' => array(
                                     '&#176;F' => '&#176;F',
                                     '&#176;C' => '&#176;C',
@@ -887,7 +887,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 'storageUnit' => '&#176;C',
                                 'unitType' => 'Temperature',
                                 'dataType' => 'raw',
-                                'sensor' => null,
+                                'input' => null,
                                 'validUnits' => array(
                                     '&#176;F' => '&#176;F',
                                     '&#176;C' => '&#176;C',
@@ -904,7 +904,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 'storageUnit' => '&#176;C',
                                 'unitType' => 'Temperature',
                                 'dataType' => 'raw',
-                                'sensor' => null,
+                                'input' => null,
                                 'validUnits' => array(
                                     '&#176;F' => '&#176;F',
                                     '&#176;C' => '&#176;C',
@@ -921,7 +921,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 'storageUnit' => '&#176;C',
                                 'unitType' => 'Temperature',
                                 'dataType' => 'raw',
-                                'sensor' => null,
+                                'input' => null,
                                 'validUnits' => array(
                                     '&#176;F' => '&#176;F',
                                     '&#176;C' => '&#176;C',
@@ -938,7 +938,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 'storageUnit' => '&#176;C',
                                 'unitType' => 'Temperature',
                                 'dataType' => 'raw',
-                                'sensor' => null,
+                                'input' => null,
                                 'validUnits' => array(
                                     '&#176;F' => '&#176;F',
                                     '&#176;C' => '&#176;C',
@@ -1219,7 +1219,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         unset($obj);
     }
     /**
-    * data provider for testSensor
+    * data provider for testInput
     *
     * @return array
     */
@@ -1425,7 +1425,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             "sensors" => array(array("id" => 0x15)),
                         ),
                     ),
-                    "Sensors" => array(
+                    "Inputs" => array(
                         "sanitizeWhere" => array(
                             "sensor" => 5,
                             "name" => 3,
@@ -1434,7 +1434,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 0,
-                "\HUGnet\Sensor",
+                "\HUGnet\devices\Input",
                 0x15,
             ),
             array(
@@ -1453,7 +1453,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 0,
-                "\HUGnet\Sensor",
+                "\HUGnet\devices\Input",
                 0x18,
             ),
             array(
@@ -1466,7 +1466,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 10,
-                "\HUGnet\Sensor",
+                "\HUGnet\devices\Input",
                 0xFE,
             ),
             array(
@@ -1481,7 +1481,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 1,
-                "\HUGnet\Sensor",
+                "\HUGnet\devices\Input",
                 0x42,
             ),
         );
@@ -1512,7 +1512,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $ret = $sys->retrieve();
         $this->assertSame(
             $expect,
-            $ret["Sensors"]["fromAny"][1][0]["id"],
+            $ret["DeviceInputs"]["fromAny"][1][0]["id"],
             "Wrong sensor returned"
         );
         unset($obj);

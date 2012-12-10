@@ -394,14 +394,14 @@ abstract class Driver
     */
     public function &input($sid)
     {
-        include_once dirname(__FILE__)."/../system/Sensor.php";
+        include_once dirname(__FILE__)."/Input.php";
         $data = array(
             "sensor" => $sid,
             "dev" => $this->device()->id(),
         );
         $system = $this->device()->system();
         $device = $this->device();
-        $obj = \HUGnet\Sensor::factory(
+        $obj = Input::factory(
             $system, $data, null, $device
         );
         if (is_null($obj->get("id"))) {

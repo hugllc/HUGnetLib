@@ -35,7 +35,7 @@
  *
  */
 /** This is the HUGnet namespace */
-namespace HUGnet;
+namespace HUGnet\devices;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our base class */
@@ -58,7 +58,7 @@ require_once dirname(__FILE__)."/../base/SystemTableBase.php";
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class Sensor extends \HUGnet\base\SystemTableBase
+class Input extends \HUGnet\base\SystemTableBase
 {
     /**
     * This is the cache for the drivers.
@@ -93,13 +93,13 @@ class Sensor extends \HUGnet\base\SystemTableBase
     public static function &factory(
         &$system, $data=null, $table=null, &$device = null
     ) {
-        System::exception(
-            "\HUGnet\Sensor needs to be passed a device object",
+        \HUGnet\System::exception(
+            "\HUGnet\devices\Input needs to be passed a device object",
             "InvalidArgument",
             !is_object($device)
         );
         if (empty($table)) {
-            $table = "Sensors";
+            $table = "DeviceInputs";
         }
         $object = parent::factory($system, $data, $table);
         $object->_device = &$device;
@@ -108,13 +108,13 @@ class Sensor extends \HUGnet\base\SystemTableBase
     /**
     * Lists the ids of the table values
     *
-    * @return The ID of this sensor
+    * @return The ID of this input
     *
     * @SuppressWarnings(PHPMD.ShortMethodName)
     */
     public function id()
     {
-        return $this->table()->get("sensor");
+        return $this->table()->get("input");
     }
     /**
     * Gets a value
@@ -236,12 +236,12 @@ class Sensor extends \HUGnet\base\SystemTableBase
         return $units;
     }
     /**
-    * Gets the direction from a direction sensor made out of a POT.
+    * Gets the direction from a direction input made out of a POT.
     *
     * @param string &$string The data string
     * @param float  $deltaT  The time delta in seconds between this record
     * @param array  &$prev   The previous reading
-    * @param array  &$data   The data from the other sensors that were crunched
+    * @param array  &$data   The data from the other inputs that were crunched
     *
     * @return float The direction in degrees
     *
@@ -253,7 +253,7 @@ class Sensor extends \HUGnet\base\SystemTableBase
         return $this->driver()->decodeData($string, $deltaT, $prev, $data);
     }
     /**
-    * Gets the direction from a direction sensor made out of a POT.
+    * Gets the direction from a direction input made out of a POT.
     *
     * @param array $data    The data to use
     * @param int   $channel The channel to get
@@ -367,7 +367,7 @@ class Sensor extends \HUGnet\base\SystemTableBase
         $sid = $this->id();
         foreach (array_keys($channels) as $key) {
             $channels[$key]['label'] = $this->get("location");
-            $channels[$key]["sensor"] = $sid;
+            $channels[$key]["input"] = $sid;
         }
         return $channels;
     }
@@ -379,8 +379,8 @@ class Sensor extends \HUGnet\base\SystemTableBase
     public function channelStart()
     {
         $chan   = 0;
-        $sensor = $this->id();
-        for ($i = 0; $i < $sensor; $i++) {
+        $input = $this->id();
+        for ($i = 0; $i < $input; $i++) {
             $chan += count($this->device()->input($i)->channels());
         }
         return $chan;
@@ -407,15 +407,15 @@ class Sensor extends \HUGnet\base\SystemTableBase
             $master = $this->system()->get("master");
             $url = $master["url"];
         }
-        $sensor = $this->toArray(false);
+        $input = $this->toArray(false);
         return \HUGnet\Util::postData(
             $url,
             array(
                 "uuid"   => urlencode($this->system()->get("uuid")),
-                "id"     => sprintf("%06X", $sensor["dev"]).".".$sensor["sensor"],
+                "id"     => sprintf("%06X", $input["dev"]).".".$input["input"],
                 "action" => "put",
-                "task"   => "sensor",
-                "data"   => $sensor,
+                "task"   => "input",
+                "data"   => $input,
             )
         );
     }

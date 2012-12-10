@@ -34,9 +34,9 @@
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet;
+namespace HUGnet\devices;
 /** This is a required class */
-require_once CODE_BASE.'system/Sensor.php';
+require_once CODE_BASE.'devices/Input.php';
 /** This is a required class */
 require_once CODE_BASE.'devices/inputTable/Driver.php';
 /** This is a required class */
@@ -62,7 +62,7 @@ require_once CODE_BASE."devices/datachan/Driver.php";
  * @version    Release: 0.9.7
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class SensorTest extends \PHPUnit_Framework_TestCase
+class InputTest extends \PHPUnit_Framework_TestCase
 {
     /**
     * Sets up the fixture, for example, opens a network connection.
@@ -75,10 +75,10 @@ class SensorTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         \HUGnet\devices\inputTable\Driver::register(
-            "FD:DEFAULT", "TestSensorDriver1"
+            "FD:DEFAULT", "TestInputDriver1"
         );
         \HUGnet\devices\inputTable\Driver::register(
-            "FC:DEFAULT", "TestSensorDriver2"
+            "FC:DEFAULT", "TestInputDriver2"
         );
         parent::setUp();
     }
@@ -105,12 +105,12 @@ class SensorTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                new DummySystem(),
+                new \HUGnet\DummySystem(),
                 null,
                 "DummyTable",
             ),
             array(
-                new DummySystem(),
+                new \HUGnet\DummySystem(),
                 array(
                     "id" => 5,
                     "name" => 3,
@@ -119,9 +119,9 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                 "DummyTable",
             ),
             array(
-                new DummySystem(),
-                array("dev" => 2, "sensor" => 0),
-                new DummyTable(),
+                new \HUGnet\DummySystem(),
+                array("dev" => 2, "input" => 0),
+                new \HUGnet\DummyTable(),
             ),
         );
     }
@@ -138,13 +138,15 @@ class SensorTest extends \PHPUnit_Framework_TestCase
     */
     public function testCreate($config, $gateway, $class)
     {
-        $table = new DummyTable();
-        $dev = new DummyBase("Device");
+        $table = new \HUGnet\DummyTable();
+        $dev = new \HUGnet\DummyBase("Device");
         // This just resets the mock
         $table->resetMock();
-        $obj = Sensor::factory($config, $gateway, $class, $dev);
+        $obj = Input::factory($config, $gateway, $class, $dev);
         // Make sure we have the right object
-        $this->assertTrue((get_class($obj) === "HUGnet\Sensor"), "Class wrong");
+        $this->assertInstanceOf(
+            "HUGnet\devices\Input", $obj, "Class wrong"
+        );
     }
     /**
     * Data provider for testCreate
@@ -167,9 +169,9 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-                new DummyTable("Table"),
+                new \HUGnet\DummyTable("Table"),
                 array(
-                    "longName" => "Silly Sensor Driver 1",
+                    "longName" => "Silly Input Driver 1",
                     "shortName" => "SSD1",
                     "unitType" => "Temperature",
                     "bound" => false,
@@ -195,9 +197,9 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                     'id' => 0xFD,
                     'asdf' => 3,
                     'params' => array(1,2,3,4),
-                    'type' => "TestSensorDriver1",
+                    'type' => "TestInputDriver1",
                     'otherTypes' => array(
-                        "DEFAULT" => "TestSensorDriver1",
+                        "DEFAULT" => "TestInputDriver1",
                     ),
                     'validUnits' => array(
                         "&#176;F" => "&#176;F",
@@ -225,10 +227,10 @@ class SensorTest extends \PHPUnit_Framework_TestCase
     public function test2Array(
         $config, $class, $expect
     ) {
-        $sys = new DummySystem("System");
-        $dev = new DummyBase("Device");
+        $sys = new \HUGnet\DummySystem("System");
+        $dev = new \HUGnet\DummyBase("Device");
         $sys->resetMock($config);
-        $obj = Sensor::factory($sys, null, $class, $dev);
+        $obj = Input::factory($sys, null, $class, $dev);
         $json = $obj->toArray();
         $this->assertEquals($expect, $json);
         unset($obj);
@@ -250,7 +252,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-                new DummyTable("Table"),
+                new \HUGnet\DummyTable("Table"),
                 "id",
                 2,
             ),
@@ -263,15 +265,15 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-                new DummyTable("Table"),
+                new \HUGnet\DummyTable("Table"),
                 "longName",
-                "Unknown Sensor",
+                "Unknown Input",
             ),
             array(
                 array(
                     "Table" => array(
                         "get" => array(
-                            "driver" => "TestSensorDriver1",
+                            "driver" => "TestInputDriver1",
                             "id" => 0xFD,
                             "extra" => array("a", "b"),
                         ),
@@ -280,7 +282,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-                new DummyTable("Table"),
+                new \HUGnet\DummyTable("Table"),
                 "storageUnit",
                 "b",
             ),
@@ -301,10 +303,10 @@ class SensorTest extends \PHPUnit_Framework_TestCase
     public function testGet(
         $config, $class, $field, $expect
     ) {
-        $sys = new DummySystem("System");
-        $dev = new DummyBase("Device");
+        $sys = new \HUGnet\DummySystem("System");
+        $dev = new \HUGnet\DummyBase("Device");
         $sys->resetMock($config);
-        $obj = Sensor::factory($sys, null, $class, $dev);
+        $obj = Input::factory($sys, null, $class, $dev);
         $this->assertSame($expect, $obj->get($field));
         unset($obj);
     }
@@ -322,7 +324,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 0xFA,
                             "type" => "raw",
-                            "sensor" => 5,
+                            "input" => 5,
                         ),
                         "sanitizeWhere" => array(
                             "id" => 5,
@@ -333,7 +335,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         "updateRow" => true,
                     ),
                 ),
-                new DummyTable(),
+                new \HUGnet\DummyTable(),
                 array(
                     "id" => 5,
                     "name" => 3,
@@ -372,16 +374,16 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         "selectOneInto" => true,
                         "sanitizeWhere" => array(
                             "dev" => 2,
-                            "sensor" => 0,
+                            "input" => 0,
                         ),
                     ),
                 ),
-                new DummyTable("Table"),
-                array("dev" => 2, "sensor" => 0),
+                new \HUGnet\DummyTable("Table"),
+                array("dev" => 2, "input" => 0),
                 array(
                     "selectOneInto" => array(
                         array(
-                            "`dev` = ? AND `sensor` = ?",
+                            "`dev` = ? AND `input` = ?",
                             array(2, 0),
                         ),
                     ),
@@ -390,7 +392,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         array(
                             array(
                                 "dev" => 2,
-                                "sensor" => 0,
+                                "input" => 0,
                             ),
                         ),
                     ),
@@ -404,30 +406,30 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 0xFA,
                             "type" => "raw",
-                            "sensor" => 5,
+                            "input" => 5,
                         ),
                         "sanitizeWhere" => array(
                             "dev" => 2,
-                            "sensor" => 0,
+                            "input" => 0,
                         ),
                         "insertRow" => true,
                         "updateRow" => true,
                     ),
                 ),
-                new DummyTable("Table"),
-                array("dev" => 2, "sensor" => 0),
+                new \HUGnet\DummyTable("Table"),
+                array("dev" => 2, "input" => 0),
                 array(
                     "fromAny" => array(
                         array(
                             array(
                                 "dev" => 2,
-                                "sensor" => 0,
+                                "input" => 0,
                             ),
                         ),
                     ),
                     "selectOneInto" => array(
                         array(
-                            "`dev` = ? AND `sensor` = ?",
+                            "`dev` = ? AND `input` = ?",
                             array(2, 0),
                         ),
                     ),
@@ -451,10 +453,10 @@ class SensorTest extends \PHPUnit_Framework_TestCase
     */
     public function testLoad($config, $class, $data, $expectTable, $return)
     {
-        $sys = new DummySystem("System");
-        $dev = new DummyBase("Device");
+        $sys = new \HUGnet\DummySystem("System");
+        $dev = new \HUGnet\DummyBase("Device");
         $sys->resetMock($config);
-        $obj = Sensor::factory($sys, null, $class, $dev);
+        $obj = Input::factory($sys, null, $class, $dev);
         $ret = $obj->load($data);
         $this->assertSame($return, $ret, "Return Wrong");
         $ret = $class->retrieve("Table");
@@ -476,11 +478,11 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 0xFA,
                             "type" => "raw",
-                            "sensor" => 5,
+                            "input" => 5,
                         ),
                     ),
                 ),
-                new DummyTable(),
+                new \HUGnet\DummyTable(),
                 array(
                     "id" => 5,
                     "name" => 3,
@@ -531,15 +533,15 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-                new DummyTable("Table"),
-                array("dev" => 2, "sensor" => 0, "extra" => array(1,2,3,4,5,6,7,8)),
+                new \HUGnet\DummyTable("Table"),
+                array("dev" => 2, "input" => 0, "extra" => array(1,2,3,4,5,6,7,8)),
                 array(
                     "Table" => array(
                         'fromAny' => array(
                             array(
                                 array(
                                     'dev' => 2,
-                                    'sensor' => 0,
+                                    'input' => 0,
                                     "extra" => array(1,2,3,4,5,6,7,8),
                                 ),
                             )
@@ -581,7 +583,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         "selectOneInto" => false,
                     ),
                 ),
-                new DummyTable("Table"),
+                new \HUGnet\DummyTable("Table"),
                 false,
                 array(
                 ),
@@ -604,16 +606,16 @@ class SensorTest extends \PHPUnit_Framework_TestCase
     */
     public function testChange($config, $class, $data, $expectTable, $return)
     {
-        $sys = new DummySystem("System");
-        $dev = new DummyBase("Device");
-        $obj = Sensor::factory($sys, null, $class, $dev);
+        $sys = new \HUGnet\DummySystem("System");
+        $dev = new \HUGnet\DummyBase("Device");
+        $obj = Input::factory($sys, null, $class, $dev);
         $sys->resetMock($config);
         $ret = $obj->change($data);
         $this->assertSame($return, $ret, "Return Wrong");
         $this->assertEquals($expectTable, $class->retrieve(), "Data Wrong");
     }
     /**
-    * data provider for testSensor
+    * data provider for testInput
     *
     * @return array
     */
@@ -625,14 +627,14 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                     "Table" => array(
                         "get" => array(
                             "id" => 0xFD,
-                            "type" => "TestSensorDriver1",
+                            "type" => "TestInputDriver1",
                             "unitType" => "Pressure",
                             "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                             "storageUnit" => "psi",
                         ),
                         "toArray" => array(
                             "id" => 0xFD,
-                            "type" => "TestSensorDriver1",
+                            "type" => "TestInputDriver1",
                             "extra" => array(),
                             "unitType" => "Pressure",
                             "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
@@ -640,7 +642,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-                new DummyTable("Table"),
+                new \HUGnet\DummyTable("Table"),
                 "6F4401ABCDEF",
                 300,
                 12345,
@@ -689,12 +691,12 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                     "Table" => array(
                         "get" => array(
                             "id" => 0xFD,
-                            "type" => "TestSensorDriver1",
+                            "type" => "TestInputDriver1",
                             "dataType" => \HUGnet\devices\datachan\Driver::TYPE_DIFF,
                         ),
                     ),
                 ),
-                new DummyTable("Table"),
+                new \HUGnet\DummyTable("Table"),
                 "AE0100123456",
                 300,
                 0x12345,
@@ -743,12 +745,12 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                     "Table" => array(
                         "get" => array(
                             "id" => 0xFC,
-                            "type" => "TestSensorDriver2",
+                            "type" => "TestInputDriver2",
                             "dataType" => \HUGnet\devices\datachan\Driver::TYPE_DIFF,
                         ),
                     ),
                 ),
-                new DummyTable("Table"),
+                new \HUGnet\DummyTable("Table"),
                 "640000",
                 300,
                 array(
@@ -810,7 +812,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
     * @param string $string    String returned by the device
     * @param float  $deltaT    The time delta in seconds between this record
     * @param array  $prev      The previous reading
-    * @param array  $data      The data from the other sensors that were crunched
+    * @param array  $data      The data from the other inputs that were crunched
     * @param array  $expect    The expected data
     * @param array  $strExpect The expected string afterwards
     *
@@ -821,10 +823,10 @@ class SensorTest extends \PHPUnit_Framework_TestCase
     public function testDecodeData(
         $config, $class, $string, $deltaT, $prev, $data, $expect, $strExpect
     ) {
-        $sys = new DummySystem("System");
-        $dev = new DummyBase("Device");
+        $sys = new \HUGnet\DummySystem("System");
+        $dev = new \HUGnet\DummyBase("Device");
         $sys->resetMock($config);
-        $obj = Sensor::factory($sys, null, $class, $dev);
+        $obj = Input::factory($sys, null, $class, $dev);
         $ret = $obj->decodeData($string, $deltaT, $prev, $data);
         $this->assertEquals($expect, $ret, "Return wrong");
         $this->assertSame($strExpect, $string, "String wrong");
@@ -848,7 +850,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         )
                     ),
                 ),
-                new DummyTable("Table"),
+                new \HUGnet\DummyTable("Table"),
                 array(
                     "value" => 0.0,
                     "units" => "&#176;C",
@@ -875,7 +877,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         )
                     ),
                 ),
-                new DummyTable("Table"),
+                new \HUGnet\DummyTable("Table"),
                 array(
                     "value" => 0.0,
                     "units" => "&#176;C",
@@ -902,7 +904,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         )
                     ),
                 ),
-                new DummyTable("Table"),
+                new \HUGnet\DummyTable("Table"),
                 array(
                     "value" => 12.0,
                     "units" => "&#176;C",
@@ -929,7 +931,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         )
                     ),
                 ),
-                new DummyTable("Table"),
+                new \HUGnet\DummyTable("Table"),
                 array(
                     "value" => null,
                     "units" => "&#176;C",
@@ -964,10 +966,10 @@ class SensorTest extends \PHPUnit_Framework_TestCase
     */
     public function testConvertUnits($config, $class, $data, $units, $expect, $ret)
     {
-        $sys = new DummySystem("System");
-        $dev = new DummyBase("Device");
+        $sys = new \HUGnet\DummySystem("System");
+        $dev = new \HUGnet\DummyBase("Device");
         $sys->resetMock($config);
-        $obj = Sensor::factory($sys, null, $class, $dev);
+        $obj = Input::factory($sys, null, $class, $dev);
         $this->assertSame(
             $ret,
             $obj->convertUnits($data, $units),
@@ -984,7 +986,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                new DummySystem(),
+                new \HUGnet\DummySystem(),
                 null,
                 array(
                     "id" => 5,
@@ -1022,8 +1024,8 @@ class SensorTest extends \PHPUnit_Framework_TestCase
         $config, $device, $class, $mocks, $expect
     ) {
         $config->resetMock($mocks);
-        $dev = new DummyBase("Device");
-        $obj = Sensor::factory($config, $device, $class, $dev);
+        $dev = new \HUGnet\DummyBase("Device");
+        $obj = Input::factory($config, $device, $class, $dev);
         $this->assertEquals(
             $expect, $obj->encode(), "Return Wrong"
         );
@@ -1038,7 +1040,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                new DummySystem(),
+                new \HUGnet\DummySystem(),
                 null,
                 array(
                     "id" => 5,
@@ -1068,7 +1070,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                 ),
             ),
             array(
-                new DummySystem(),
+                new \HUGnet\DummySystem(),
                 null,
                 array(
                     "id" => 5,
@@ -1097,7 +1099,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                 ),
             ),
             array(
-                new DummySystem(),
+                new \HUGnet\DummySystem(),
                 null,
                 array(
                     "id" => 5,
@@ -1137,8 +1139,8 @@ class SensorTest extends \PHPUnit_Framework_TestCase
         $config, $device, $class, $mocks, $string, $expect
     ) {
         $config->resetMock($mocks);
-        $dev = new DummyBase("Device");
-        $obj = Sensor::factory($config, $device, $class, $dev);
+        $dev = new \HUGnet\DummyBase("Device");
+        $obj = Input::factory($config, $device, $class, $dev);
         $obj->decode($string);
         $ret = $config->retrieve();
         $this->assertEquals(
@@ -1155,7 +1157,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                new DummySystem(),
+                new \HUGnet\DummySystem(),
                 null,
                 array(
                     "id" => 5,
@@ -1164,7 +1166,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                     "Table" => array(
                         "get" => array(
                             "id" => 5,
-                            "sensor" => 4,
+                            "input" => 4,
                             "HWPartNum"    => "0039-12-01-C",
                             "FWPartNum"    => "0039-20-03-C",
                             "FWVersion"    => "1.2.3",
@@ -1182,7 +1184,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                         'maxDecimals' => 2,
                         'storageUnit' => 'unknown',
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
-                        "sensor"   => 4,
+                        "input"   => 4,
                         "label" => "Test",
                         "index" => 0,
                     ),
@@ -1207,8 +1209,8 @@ class SensorTest extends \PHPUnit_Framework_TestCase
         $config, $device, $class, $mocks, $expect
     ) {
         $config->resetMock($mocks);
-        $dev = new DummyBase("Device");
-        $obj = Sensor::factory($config, $device, $class, $dev);
+        $dev = new \HUGnet\DummyBase("Device");
+        $obj = Input::factory($config, $device, $class, $dev);
         $this->assertEquals(
             $expect, $obj->Channels(), "Return Wrong"
         );
@@ -1223,7 +1225,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array( // #0
-                new DummySystem("System"),
+                new \HUGnet\DummySystem("System"),
                 null,
                 array(
                     "id" => 5,
@@ -1232,7 +1234,7 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                     "Table" => array(
                         "get" => array(
                             "id" => 5,
-                            "sensor" => 4,
+                            "input" => 4,
                             "dev" => 1234,
                             "HWPartNum"    => "0039-12-01-C",
                             "FWPartNum"    => "0039-20-03-C",
@@ -1244,20 +1246,20 @@ class SensorTest extends \PHPUnit_Framework_TestCase
                     ),
                     "Device" => array(
                         "input" => array(
-                            "0" => new \HUGnet\DummyTable("Sensor0"),
-                            "1" => new \HUGnet\DummyTable("Sensor1"),
-                            "2" => new \HUGnet\DummyTable("Sensor2"),
-                            "3" => new \HUGnet\DummyTable("Sensor3"),
-                            "4" => new \HUGnet\DummyTable("Sensor4"),
-                            "5" => new \HUGnet\DummyTable("Sensor5"),
+                            "0" => new \HUGnet\DummyTable("Input0"),
+                            "1" => new \HUGnet\DummyTable("Input1"),
+                            "2" => new \HUGnet\DummyTable("Input2"),
+                            "3" => new \HUGnet\DummyTable("Input3"),
+                            "4" => new \HUGnet\DummyTable("Input4"),
+                            "5" => new \HUGnet\DummyTable("Input5"),
                         ),
                     ),
-                    "Sensor0" => array("channels" => array(0)),
-                    "Sensor1" => array("channels" => array(0, 1)),
-                    "Sensor2" => array("channels" => array(0, 2, 3)),
-                    "Sensor3" => array("channels" => array(0)),
-                    "Sensor4" => array("channels" => array(0)),
-                    "Sensor5" => array("channels" => array(0)),
+                    "Input0" => array("channels" => array(0)),
+                    "Input1" => array("channels" => array(0, 1)),
+                    "Input2" => array("channels" => array(0, 2, 3)),
+                    "Input3" => array("channels" => array(0)),
+                    "Input4" => array("channels" => array(0)),
+                    "Input5" => array("channels" => array(0)),
                 ),
                 7,
             ),
@@ -1280,8 +1282,8 @@ class SensorTest extends \PHPUnit_Framework_TestCase
         $config, $device, $class, $mocks, $expect
     ) {
         $config->resetMock($mocks);
-        $dev = new DummyBase("Device");
-        $obj = Sensor::factory($config, $device, $class, $dev);
+        $dev = new \HUGnet\DummyBase("Device");
+        $obj = Input::factory($config, $device, $class, $dev);
         $this->assertEquals(
             $expect, $obj->ChannelStart(), "Return Wrong"
         );
@@ -1293,11 +1295,11 @@ class SensorTest extends \PHPUnit_Framework_TestCase
 namespace HUGnet\devices\inputTable\drivers;
 
 /**
- * Default sensor driver
+ * Default input driver
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage Sensors
+ * @subpackage Inputs
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
@@ -1307,18 +1309,18 @@ namespace HUGnet\devices\inputTable\drivers;
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class TestSensorDriver1 extends \HUGnet\devices\inputTable\Driver
+class TestInputDriver1 extends \HUGnet\devices\inputTable\Driver
 {
     /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
     protected $params = array(
-        "longName" => "Silly Sensor Driver 1",
+        "longName" => "Silly Input Driver 1",
         "shortName" => "SSD1",
         "unitType" => "Temperature",
         "storageUnit" => 'getExtra1',
-        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,  
+        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraText" => array("Silliness Factor", "Storage Unit"),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
@@ -1332,10 +1334,10 @@ class TestSensorDriver1 extends \HUGnet\devices\inputTable\Driver
     *
     * @param int   $A      Output of the A to D converter
     * @param float $deltaT The time delta in seconds between this record
-    * @param array &$data  The data from the other sensors that were crunched
-    * @param mixed $prev   The previous value for this sensor
+    * @param array &$data  The data from the other inputs that were crunched
+    * @param mixed $prev   The previous value for this input
     *
-    * @return mixed The value in whatever the units are in the sensor
+    * @return mixed The value in whatever the units are in the input
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
@@ -1347,11 +1349,11 @@ class TestSensorDriver1 extends \HUGnet\devices\inputTable\Driver
 
 }
 /**
- * Default sensor driver
+ * Default input driver
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage Sensors
+ * @subpackage Inputs
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
@@ -1361,18 +1363,18 @@ class TestSensorDriver1 extends \HUGnet\devices\inputTable\Driver
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class TestSensorDriver2 extends \HUGnet\devices\inputTable\Driver
+class TestInputDriver2 extends \HUGnet\devices\inputTable\Driver
 {
     /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
     protected $params = array(
-        "longName" => "Silly Sensor Driver 2",
+        "longName" => "Silly Input Driver 2",
         "shortName" => "SSD2",
         "unitType" => "Temperature",
         "storageUnit" => 'getExtra1',
-        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_DIFF,  
+        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_DIFF,
         "extraText" => array("Silliness Factor", "Storage Unit"),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
@@ -1386,10 +1388,10 @@ class TestSensorDriver2 extends \HUGnet\devices\inputTable\Driver
     *
     * @param int   $A      Output of the A to D converter
     * @param float $deltaT The time delta in seconds between this record
-    * @param array &$data  The data from the other sensors that were crunched
-    * @param mixed $prev   The previous value for this sensor
+    * @param array &$data  The data from the other inputs that were crunched
+    * @param mixed $prev   The previous value for this input
     *
-    * @return mixed The value in whatever the units are in the sensor
+    * @return mixed The value in whatever the units are in the input
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */

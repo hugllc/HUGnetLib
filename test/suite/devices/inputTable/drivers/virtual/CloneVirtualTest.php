@@ -40,7 +40,7 @@ require_once dirname(__FILE__)."/DriverTestBaseVirtual.php";
 /** This is a required class */
 require_once CODE_BASE.'devices/inputTable/drivers/virtual/CloneVirtual.php';
 /** This is a required class */
-require_once CODE_BASE.'system/Sensor.php';
+require_once CODE_BASE.'devices/Input.php';
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
 /** This is a required class */
@@ -75,10 +75,10 @@ class CloneVirtualTest extends DriverTestBaseVirtual
     protected function setUp()
     {
         parent::setUp();
-        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor = new \HUGnet\DummyBase("Input");
         $sensor->resetMock(
             array(
-                "Sensor" => array(
+                "Input" => array(
                     "system" => new \HUGnet\DummySystem("System"),
                 ),
             )
@@ -112,7 +112,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
         return array(
             array( // #0
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "id" => 1,
                         "get" => array(
                             "sensor" => 1,
@@ -126,9 +126,9 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         ),
                     ),
                     "Device1008" => array(
-                        "input" => new \HUGnet\DummyTable("Sensor1")
+                        "input" => new \HUGnet\DummyTable("Input1")
                     ),
-                    "Sensor1" => array(
+                    "Input1" => array(
                         "id" => 2,
                         "get" => array(
                             "sensor" => 2,
@@ -158,7 +158,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
             ),
             array( // #1
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "id" => 1,
                         "get" => array(
                             "sensor" => 1,
@@ -172,9 +172,9 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         ),
                     ),
                     "Device1008" => array(
-                        "input" => new \HUGnet\DummyTable("Sensor1")
+                        "input" => new \HUGnet\DummyTable("Input1")
                     ),
-                    "Sensor1" => array(
+                    "Input1" => array(
                         "id" => 1,
                         "get" => array(
                             "driver" => "ADuCPower",
@@ -237,7 +237,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
             ),
             array( // #1
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "id" => 1,
                         "get" => array(
                             "sensor" => 1,
@@ -251,9 +251,9 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         ),
                     ),
                     "Device1008" => array(
-                        "input" => new \HUGnet\DummyTable("Sensor1")
+                        "input" => new \HUGnet\DummyTable("Input1")
                     ),
-                    "Sensor1" => array(
+                    "Input1" => array(
                         "id" => 3,
                         "get" => array(
                             "driver" => "ADuCPower",
@@ -316,7 +316,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
             ),
             array( // #1
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "id" => 1,
                         "get" => array(
                             "sensor" => 1,
@@ -330,9 +330,9 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         ),
                     ),
                     "Device1008" => array(
-                        "input" => new \HUGnet\DummyTable("Sensor1")
+                        "input" => new \HUGnet\DummyTable("Input1")
                     ),
-                    "Sensor1" => array(
+                    "Input1" => array(
                         "id" => 1,
                         "get" => array(
                             "driver" => "ADuCPower",
@@ -417,7 +417,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
     */
     public function testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
     {
-        $sen = new \HUGnet\DummyBase("Sensor");
+        $sen = new \HUGnet\DummyBase("Input");
         $sen->resetMock($sensor);
         $ret = $this->o->decodeData($A, $deltaT, $data, $prev);
         $this->assertEquals($expect, $ret, 0.00001);
@@ -432,7 +432,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
         return array(
             array(
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "system" => new \HUGnet\DummySystem("System"),
                         "get" => array(
                             "extra" => array("0000AC", 3),
@@ -442,9 +442,9 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "device" => new \HUGnet\DummyBase("Device"),
                     ),
                     "Device" => array(
-                        "input" => new \HUGnet\DummyBase("Sensor2"),
+                        "input" => new \HUGnet\DummyBase("Input2"),
                     ),
-                    "Sensor2" => array(
+                    "Input2" => array(
                         "get" => array(
                             "driver" => "AVRBC2322640",
                         ),
@@ -455,7 +455,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
             ),
             array(
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "system" => new \HUGnet\DummySystem("System"),
                         "get" => array(
                             "extra" => array("0000AC", 3),
@@ -465,9 +465,9 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "device" => new \HUGnet\DummyBase("Device"),
                     ),
                     "Device" => array(
-                        "input" => new \HUGnet\DummyBase("Sensor2"),
+                        "input" => new \HUGnet\DummyBase("Input2"),
                     ),
-                    "Sensor2" => array(
+                    "Input2" => array(
                         "get" => array(
                             "driver" => "AVRBC2322640_0",
                         ),
@@ -491,7 +491,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
     */
     public function testGet($mocks, $name, $expect)
     {
-        $sens = new \HUGnet\DummyTable("Sensor");
+        $sens = new \HUGnet\DummyTable("Input");
         $sens->resetMock($mocks);
         $this->assertSame($expect, $this->o->get($name));
     }
@@ -505,7 +505,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
         return array(
             array(
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "system" => new \HUGnet\DummySystem("System"),
                         "get" => array(
                             "extra" => array("0000AC", 3),
@@ -515,9 +515,9 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "device" => new \HUGnet\DummyBase("Device"),
                     ),
                     "Device" => array(
-                        "input" => new \HUGnet\DummyBase("Sensor2"),
+                        "input" => new \HUGnet\DummyBase("Input2"),
                     ),
-                    "Sensor2" => array(
+                    "Input2" => array(
                         "get" => array(
                             "driver" => "AVRBC2322640",
                         ),
@@ -530,7 +530,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                     'bound'        => false,
                     'virtual'      => true,
                     'total'        => false,
-                    'extraText'    => array('Device ID', 'Sensor'),
+                    'extraText'    => array('Device ID', 'Input'),
                     'extraDefault' => array('', ''),
                     'extraValues'  => array(8, 3),
                     'storageUnit'  => '&#176;C',
@@ -560,7 +560,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
     */
     public function test2Array($mocks, $expect)
     {
-        $sens = new \HUGnet\DummyTable("Sensor");
+        $sens = new \HUGnet\DummyTable("Input");
         $sens->resetMock($mocks);
         $this->assertEquals($expect, $this->o->toArray());
     }

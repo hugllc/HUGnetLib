@@ -125,9 +125,9 @@ class E00392100 extends \HUGnet\devices\Driver
     public function &input($sid)
     {
         $sid = (int)$sid;
-        include_once dirname(__FILE__)."/../../system/Sensor.php";
+        include_once dirname(__FILE__)."/../Input.php";
         $data = array(
-            "sensor" => $sid,
+            "input" => $sid,
             "dev" => $this->device()->id(),
         );
         if (($sid == 0) || ($sid === 3)) {
@@ -152,7 +152,7 @@ class E00392100 extends \HUGnet\devices\Driver
         }
         $system = $this->device()->system();
         $device = $this->device();
-        $obj = \HUGnet\Sensor::factory($system, $data, null, $device);
+        $obj = \HUGnet\devices\Input::factory($system, $data, null, $device);
         if (is_null($obj->get("id"))
             || ((int)$obj->get("id") !== $type["id"])
             || ((int)$obj->get("type") !== $type["type"])
