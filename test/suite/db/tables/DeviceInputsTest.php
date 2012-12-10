@@ -40,7 +40,7 @@ require_once CODE_BASE.'db/Table.php';
 /** This is a required class */
 require_once CODE_BASE.'db/Connection.php';
 /** This is a required class */
-require_once CODE_BASE.'db/tables/Sensors.php';
+require_once CODE_BASE.'db/tables/DeviceInputs.php';
 /** This is a required class */
 require_once TEST_BASE."db/tables/TableTestBase.php";
 /** This is a required class */
@@ -64,7 +64,7 @@ require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
  * @version    Release: 0.9.7
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class SensorsTest extends TableTestBase
+class DeviceInputsTest extends TableTestBase
 {
 
     /**
@@ -98,7 +98,7 @@ class SensorsTest extends TableTestBase
         $data = array(
         );
         $this->o = \HUGnet\db\Table::factory(
-            $this->system, $data, "Sensors", $this->connect
+            $this->system, $data, "DeviceInputs", $this->connect
         );
         parent::Setup();
     }
@@ -126,7 +126,7 @@ class SensorsTest extends TableTestBase
     protected function getDataSet()
     {
         return $this->createXMLDataSet(
-            TEST_CONFIG_BASE.'files/SensorsTableTest.xml'
+            TEST_CONFIG_BASE.'files/DeviceInputsTableTest.xml'
         );
     }
     /**
@@ -139,7 +139,7 @@ class SensorsTest extends TableTestBase
         $system = new \HUGnet\DummySystem("System");
         $connect = \HUGnet\db\Connection::factory($system);
         $obj = \HUGnet\db\Table::factory(
-            $system, $data, "Sensors", $connect
+            $system, $data, "DeviceInputs", $connect
         );
         return TableTestBase::splitObject($obj, "sqlColumns");
     }
@@ -153,7 +153,7 @@ class SensorsTest extends TableTestBase
         $system = new \HUGnet\DummySystem("System");
         $connect = \HUGnet\db\Connection::factory($system);
         $obj = \HUGnet\db\Table::factory(
-            $system, $data, "Sensors", $connect
+            $system, $data, "DeviceInputs", $connect
         );
         return TableTestBase::splitObject($obj, "sqlIndexes");
     }
@@ -169,7 +169,7 @@ class SensorsTest extends TableTestBase
         return array(
             array(
                 \HUGnet\db\Table::factory(
-                    $system, $data, "Sensors", $connect
+                    $system, $data, "DeviceInputs", $connect
                 )
             ),
         );
@@ -183,14 +183,6 @@ class SensorsTest extends TableTestBase
     public static function dataSet()
     {
         return array(
-            array(
-                "dataType",
-                \HUGnet\devices\datachan\Driver::TYPE_DIFF,
-                \HUGnet\devices\datachan\Driver::TYPE_DIFF
-            ),
-            array(
-                "dataType", "asdffdsas", \HUGnet\devices\datachan\Driver::TYPE_RAW
-            ),
             array("params", "asdfasdfasdfasdf", "asdfasdfasdfasdf"),
             array("params", array(1,2,3,4), "[1,2,3,4]"),
             array("extra", array(1,2,3,4), array(1,2,3,4)),
@@ -226,13 +218,13 @@ class SensorsTest extends TableTestBase
                 array(
                     array(
                         "dev" => 156,
-                        "sensor" => 23,
+                        "input" => 23,
                         "id" => 1,
                     ),
                 ),
                 array(
                     "dev" => 156,
-                    "sensor" => 23,
+                    "input" => 23,
                     "id" => 1,
                 ),
                 true
@@ -241,13 +233,13 @@ class SensorsTest extends TableTestBase
                 array(
                     array(
                         "dev" => 158,
-                        "sensor" => 23,
+                        "input" => 23,
                         "id" => 1,
                     ),
                 ),
                 array(
                     "dev" => 156,
-                    "sensor" => 23,
+                    "input" => 23,
                     "id" => 1,
                 ),
                 false
@@ -257,7 +249,7 @@ class SensorsTest extends TableTestBase
                 ),
                 array(
                     "dev" => 156,
-                    "sensor" => 23,
+                    "input" => 23,
                     "id" => 1,
                 ),
                 false
@@ -297,7 +289,7 @@ class SensorsTest extends TableTestBase
             array(
                 array(
                     "dev" => 156,
-                    "sensor" => 23,
+                    "input" => 23,
                     "id" => 1,
                     "type" => "asdf",
                     "location" => "HERE",
@@ -313,13 +305,10 @@ class SensorsTest extends TableTestBase
                 array(
                     "group" => 'default',
                     "dev" => 156,
-                    "sensor" => 23,
+                    "input" => 23,
                     "id" => 1,
                     "type" => "asdf",
                     "location" => "HERE",
-                    "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
-                    "units" => '&deg;C',
-                    "decimals" => 4,
                     "driver" => "asdf",
                     "params" => json_encode(
                         array("min" => 5, "max" => 15, "extra" => array())
@@ -329,7 +318,7 @@ class SensorsTest extends TableTestBase
             array(
                 array(
                     "dev" => 156,
-                    "sensor" => 23,
+                    "input" => 23,
                     "id" => 1,
                     "type" => "asdf",
                     "location" => "HERE",
@@ -340,13 +329,10 @@ class SensorsTest extends TableTestBase
                 array(
                     "group" => 'default',
                     "dev" => 156,
-                    "sensor" => 23,
+                    "input" => 23,
                     "id" => 1,
                     "type" => "asdf",
                     "location" => "HERE",
-                    "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
-                    "units" => '&deg;C',
-                    "decimals" => 4,
                     "driver"  => "SDEFAULT",
                     "params" => '{"storageUnits":"&deg;C","unitType":"Temperature"}',
                 ),
@@ -354,7 +340,7 @@ class SensorsTest extends TableTestBase
             array(
                 array(
                     "dev" => 156,
-                    "sensor" => 23,
+                    "input" => 23,
                     "id" => 1,
                     "type" => "asdf",
                     "location" => "HERE",
@@ -367,13 +353,10 @@ class SensorsTest extends TableTestBase
                 array(
                     "group" => 'default',
                     "dev" => 156,
-                    "sensor" => 23,
+                    "input" => 23,
                     "id" => 1,
                     "type" => "asdf",
                     "location" => "HERE",
-                    "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
-                    "units" => '&deg;C',
-                    "decimals" => 4,
                     "driver"  => "SDEFAULT",
                     "params" => '{"extra":[1,2,3,4]}',
                 ),
@@ -408,7 +391,7 @@ class SensorsTest extends TableTestBase
             array(
                 array(
                     "dev" => 156,
-                    "sensor" => 23,
+                    "input" => 23,
                     "id" => 1,
                     "type" => "asdf",
                     "location" => "HERE",
@@ -422,13 +405,10 @@ class SensorsTest extends TableTestBase
                 array(
                     "group" => 'default',
                     "dev" => 156,
-                    "sensor" => 23,
+                    "input" => 23,
                     "id" => 1,
                     "type" => "asdf",
                     "location" => "HERE",
-                    "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
-                    "units" => '&deg;C',
-                    "decimals" => 4,
                     "storageUnits" => "&deg;C",
                     "driver"  => "SDEFAULT",
                     "unitType" => "Temperature",

@@ -38,8 +38,6 @@ namespace HUGnet\db\tables;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** The data channels driver is necessary for a couple of constants */
-require_once dirname(__FILE__)."/../../devices/datachan/Driver.php";
-/** The data channels driver is necessary for a couple of constants */
 require_once dirname(__FILE__)."/../TableParams.php";
 /**
  * This class has functions that relate to the manipulation of elements
@@ -55,10 +53,10 @@ require_once dirname(__FILE__)."/../TableParams.php";
  * @version    Release: 0.9.7
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Sensors extends \HUGnet\db\TableParams
+class DeviceInputs extends \HUGnet\db\TableParams
 {
     /** @var string This is the table we should use */
-    public $sqlTable = "sensors";
+    public $sqlTable = "DeviceInputs";
     /** @var string This is the primary key of the table.  Leave blank if none  */
     public $sqlId = null;
     /**
@@ -91,8 +89,8 @@ class Sensors extends \HUGnet\db\TableParams
             "Name" => "dev",
             "Type" => "INTEGER",
         ),
-        "sensor" => array(
-            "Name" => "sensor",
+        "input" => array(
+            "Name" => "input",
             "Type" => "INTEGER",
         ),
         "id" => array(
@@ -108,21 +106,6 @@ class Sensors extends \HUGnet\db\TableParams
             "Name" => "location",
             "Type" => "varchar(128)",
             "Default" => '',
-        ),
-        "dataType" => array(
-            "Name" => "dataType",
-            "Type" => "varchar(32)",
-            "Default" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
-        ),
-        "units" => array(
-            "Name" => "units",
-            "Type" => "varchar(32)",
-            "Default" => '',
-        ),
-        "decimals" => array(
-            "Name" => "decimals",
-            "Type" => "smallint",
-            "Default" => '2',
         ),
         "driver" => array(
             "Name" => "driver",
@@ -150,10 +133,10 @@ class Sensors extends \HUGnet\db\TableParams
     *   ),
     */
     public $sqlIndexes = array(
-        "DevSensor" => array(
-            "Name" => "DevSensor",
+        "DevInput" => array(
+            "Name" => "DevInput",
             "Unique" => true,
-            "Columns" => array("dev", "sensor"),
+            "Columns" => array("dev", "input"),
         ),
     );
 
@@ -188,8 +171,8 @@ class Sensors extends \HUGnet\db\TableParams
     {
 
         $ret = (bool) $this->dbDriver()->countWhere(
-            "dev = ? AND sensor = ?",
-            array($this->get("dev"), $this->get("sensor")), "dev"
+            "dev = ? AND input = ?",
+            array($this->get("dev"), $this->get("input")), "dev"
         );
         $this->dbDriver()->reset();
         return $ret;
@@ -199,22 +182,6 @@ class Sensors extends \HUGnet\db\TableParams
      ********  The following are input modification functions  ********
      ******************************************************************
      ******************************************************************/
-    /**
-    * function to set LastHistory
-    *
-    * @param string $value The value to set
-    *
-    * @return null
-    */
-    protected function setDataType($value)
-    {
-        if (($value == \HUGnet\devices\datachan\Driver::TYPE_RAW)
-            || ($value == \HUGnet\devices\datachan\Driver::TYPE_DIFF)
-            || ($value == \HUGnet\devices\datachan\Driver::TYPE_IGNORE)
-        ) {
-            $this->data["dataType"] = $value;
-        }
-    }
 
 }
 ?>

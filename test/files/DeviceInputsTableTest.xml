@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dataset>
-    <table name="sensors">
+    <table name="DeviceInputs">
         <column>dev</column>
-        <column>sensor</column>
+        <column>input</column>
         <column>id</column>
         <column>type</column>
         <column>location</column>
-        <column>dataType</column>
-        <column>units</column>
-        <column>decimals</column>
         <column>params</column>
     </table>
 </dataset>
