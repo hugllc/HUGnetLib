@@ -257,7 +257,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         if (($I == 0) || is_null($V)) {
             return null;
         }
-        $R = $V / $I;
+        $R = abs($V / $I);
         return round($R, $this->get("maxDecimals"));
     }
     /**
