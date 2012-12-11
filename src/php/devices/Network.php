@@ -509,7 +509,7 @@ class Network
         for ($i = 0; $i < $output; $i++) {
             $ret = $this->setOutputTable(
                 $i,
-                $this->_device->outputTable($i)->encode(),
+                $this->_device->output($i)->encode(),
                 $callback,
                 $config
             );
@@ -523,7 +523,7 @@ class Network
         for ($i = 0; $i < $process; $i++) {
             $ret = $this->setProcessTable(
                 $i,
-                $this->_device->processTable($i)->encode(),
+                $this->_device->process($i)->encode(),
                 $callback,
                 $config
             );
