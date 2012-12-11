@@ -174,13 +174,15 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
         );
         $config2 = \HUGnet\ui\WebAPIArgs::factory(
             array(
-                "task" => "inputtable",
+                "task" => "outputtable",
                 "action" => "someFunction",
                 "id" => "5",
             ),
             3
         );
-
+        include_once CODE_BASE."/devices/inputTable/ADuCInputTable.php";
+        $table = \HUGnet\devices\inputTable\ADuCInputTable::factory(array());
+        $fullInputTable = $table->fullArray();
         return array(
             array(  // #0
                 array(
@@ -460,7 +462,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                 ),
                 false,
                 array(),
-                json_encode(array("Real" => "array")),
+                json_encode(array("Real" => "array", "params" => $fullInputTable)),
                 array(
                     "Table" => array(
                         "getRow" => array(
@@ -498,7 +500,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                 ),
                 false,
                 array(),
-                json_encode(array("Real" => "array")),
+                json_encode(array("Real" => "array", "params" => $fullInputTable)),
                 array(
                     "Table" => array(
                         "getRow" => array(
@@ -518,9 +520,9 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "config" => array(
                             "verbose" => 0,
                         ),
-                        "table" => new \HUGnet\DummyTable("InputTable"),
+                        "table" => new \HUGnet\DummyTable("OutputTable"),
                     ),
-                    "InputTable" => array(
+                    "OutputTable" => array(
                         "webAPI" => array(
                             "Real" => "array",
                         ),
@@ -530,7 +532,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                 array(),
                 json_encode(array("Real" => "array")),
                 array(
-                    "InputTable" => array(
+                    "OutputTable" => array(
                         "webAPI" => array(
                             array(
                                 $config2,
@@ -581,8 +583,12 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                 array(),
                 json_encode(
                     array(
-                        array("ab" => "cd", "ef" => "gh"),
-                        array("ij" => "kl", "mn" => "op"),
+                        array(
+                            "ab" => "cd", "ef" => "gh", "params" => $fullInputTable
+                        ),
+                        array(
+                            "ij" => "kl", "mn" => "op", "params" => $fullInputTable
+                        ),
                     )
                 ),
                 array(
@@ -598,7 +604,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
             ),
             array(  // #11
                 array(
-                    "task" => "inputtable",
+                    "task" => "outputtable",
                     "action" => "list",
                     "data" => array(
                         "a" => "b",
@@ -1228,7 +1234,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
             ),
             array(  // #23
                 array(
-                    "task" => "inputtable",
+                    "task" => "processtable",
                     "action" => "put",
                     "id" => "10",
                     "data" => array(

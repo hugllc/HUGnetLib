@@ -100,16 +100,16 @@ HUGnet.InputTable = Backbone.Model.extend({
                 data:
                 {
                     "task": "inputTable",
-                    "action": "post",
+                    "action": "put",
                     "id": id.toString(16),
-                    "inputTable": self.toJSON()
+                    "data": self.toJSON()
                 }
             }).done(
                 function (data)
                 {
-                    if (data === "success") {
+                    if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
                         self.trigger('saved');
-                        self.fetch();
+                        self.set(data);
                     } else {
                         self.trigger('savefail', "saved failed on server");
                     }
@@ -137,7 +137,7 @@ HUGnet.InputTable = Backbone.Model.extend({
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 HUGnet.InputTables = Backbone.Collection.extend({
-    url: '/HUGnetLib/index.php',
+    url: '/HUGnetLib/HUGnetLibAPI.php',
     model: HUGnet.InputTable,
     comparator: function (model)
     {
@@ -161,7 +161,7 @@ HUGnet.InputTables = Backbone.Collection.extend({
             dataType: 'json',
             cache: false,
             data: {
-                "task": "inputTable", "action": "getall"
+                "task": "inputTable", "action": "list"
             }
         });
         ret.done(

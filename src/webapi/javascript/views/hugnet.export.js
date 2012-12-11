@@ -89,22 +89,22 @@ HUGnet.ExportView = Backbone.View.extend({
         this.since = Date.parse(this.$('#since').val());
         this.until = Date.parse(this.$('#until').val());
         if (parseInt(this.$('#order').val(), 10) == 0) {
-            this.order = 0;
+            this.order = "asc";
         } else {
-            this.order = 1;
+            this.order = "desc";
         }
-        this.csvurl = this.url+"?task=history&format=CSV";
+        this.csvurl = this.url+"?task=history&action=get&format=CSV";
         if (this.until != 0) {
             var until = this.until;
         } else {
             var until = this.last;
         }
         this.csvurl += "&id="+this.model.get("id").toString(16);
-        this.csvurl += "&since="+parseInt(this.since/1000);
-        this.csvurl += "&until="+parseInt(until/1000);
-        this.csvurl += "&order="+this.order;
-        this.csvurl += "&limit="+this.csvlimit;
-        this.csvurl += "&type="+this.$('#type').val();
+        this.csvurl += "&data[since]="+parseInt(this.since/1000);
+        this.csvurl += "&data[until]="+parseInt(until/1000);
+        this.csvurl += "&data[order]="+this.order;
+        this.csvurl += "&data[limit]="+this.csvlimit;
+        this.csvurl += "&data[type]="+this.$('#type').val();
         this.$("#csvurl").html(this.csvurl);
         this.iframe.attr('src', this.csvurl);
     },

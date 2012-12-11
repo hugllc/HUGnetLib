@@ -155,18 +155,18 @@ HUGnet.DataView = Backbone.View.extend({
     },
     exportCSV: function ()
     {
-        var url = this.url+"?task=history&format=CSV";
+        var url = this.url+"?task=history&action=get&format=CSV";
         if (this.until != 0) {
             var until = this.until;
         } else {
             var until = this.last;
         }
         url += "&id="+this.model.get("id").toString(16);
-        url += "&since="+parseInt(this.since/1000);
-        url += "&until="+parseInt(until/1000);
-        url += "&order=0";
-        url += "&limit="+this.csvlimit;
-        url += "&type="+this.history.type;
+        url += "&data[since]="+parseInt(this.since/1000);
+        url += "&data[until]="+parseInt(until/1000);
+        url += "&data[order]=desc";
+        url += "&data[limit]="+this.csvlimit;
+        url += "&data[type]="+this.history.type;
         this.iframe.attr('src',url);
     },
     minute30: function ()
@@ -333,13 +333,13 @@ HUGnet.DataView = Backbone.View.extend({
             + pad(d.getHours())+':'
             + pad(d.getMinutes())+':'
             + pad(d.getSeconds());
-        data.csvurl  = this.url+"?task=history&format=CSV";
+        data.csvurl  = this.url+"?task=history&action=get&format=CSV";
         data.csvurl += "&id="+data.id.toString(16);
-        data.csvurl += "&since="+parseInt(data.since/1000);
-        data.csvurl += "&until="+parseInt(data.until/1000);
-        data.csvurl += "&order="+((data.limit === 0) ? 0 : 1);
+        data.csvurl += "&data[since]="+parseInt(data.since/1000);
+        data.csvurl += "&data[until]="+parseInt(data.until/1000);
+        data.csvurl += "&data[order]="+((data.limit === 0) ? "desc" : "asc");
         if (data.until == 0) {
-            data.csvurl += "&limit="+this.csvlimit;
+            data.csvurl += "&data[limit]="+this.csvlimit;
         }
         this.$el.html(
             _.template(

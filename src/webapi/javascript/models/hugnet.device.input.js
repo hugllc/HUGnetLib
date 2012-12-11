@@ -40,22 +40,19 @@
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-HUGnet.DeviceSensor = Backbone.Model.extend({
+HUGnet.DeviceInput = Backbone.Model.extend({
     defaults:
     {
         dev: null,
-        sensor: null,
+        input: null,
         id: null,
         type: "Unknown",
         location: 'No Name',
-        dataType: 'raw',
-        units: 'Unknown',
         extra: {},
-        decimals: 0,
         driver: 'SDEFAULT',
         params: {},
     },
-    idAttribute: 'sensor',
+    idAttribute: 'input',
     /**
     * This function initializes the object
     */
@@ -82,8 +79,8 @@ HUGnet.DeviceSensor = Backbone.Model.extend({
             {
                 "task": "sensor",
                 "action": "get",
-                "id": parseInt(dev, 10).toString(16),
-                "sid": this.get("sensor")
+                "id": parseInt(dev, 10).toString(16)+":"+this.get("input"),
+                "sid": this.get("input")
             }
         }).done(
             function (data)
@@ -122,18 +119,19 @@ HUGnet.DeviceSensor = Backbone.Model.extend({
             cache: false,
             dataType: 'json',
             data: {
-                "task": "sensor",
-                "action": "post",
-                "id": parseInt(dev, 10).toString(16),
-                "sid": this.get("sensor"),
-                "sensor": data
+                "task": "deviceinput",
+                "action": "put",
+                "id": parseInt(dev, 10).toString(16)+":"+this.get("input"),
+                "data": data
             }
         }).done(
             function (data)
             {
-                if (data === "success") {
+                if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
                     self.trigger('saved');
-                    self.fetch();
+                    self.set(data);
+                    self.trigger('fetchdone');
+                    self.trigger('sync');
                 } else {
                     self.trigger('savefail', "save failed on server");
                 }
@@ -159,12 +157,12 @@ HUGnet.DeviceSensor = Backbone.Model.extend({
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-HUGnet.DeviceSensors = Backbone.Collection.extend({
-    url: '/HUGnetLib/index.php',
-    model: HUGnet.DeviceSensor,
+HUGnet.DeviceInputs = Backbone.Collection.extend({
+    url: '/HUGnetLib/HUGnetLibAPI.php',
+    model: HUGnet.DeviceInput,
     comparator: function (model)
     {
-        return parseInt(model.get("sensor"), 10);
+        return parseInt(model.get("input"), 10);
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device

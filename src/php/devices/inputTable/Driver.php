@@ -242,10 +242,10 @@ abstract class Driver
     public static function &factory($driver, &$sensor)
     {
         $obj = null;
+        Driver::driverFactory($obj, $driver, $sensor);
         DriverADuC::driverFactory($obj, $driver, $sensor);
         DriverAVR::driverFactory($obj, $driver, $sensor);
         DriverVirtual::driverFactory($obj, $driver, $sensor);
-        self::driverFactory($obj, $driver, $sensor);
         if (!is_object($obj)) {
             include_once dirname(__FILE__)."/drivers/SDEFAULT.php";
             $obj = new \HUGnet\devices\inputTable\drivers\SDEFAULT($sensor);
@@ -335,10 +335,10 @@ abstract class Driver
     public static function getDriver($sid, $type = "DEFAULT")
     {
         $driver = null;
-        Driver::getDriverInt($driver, $sid, $type);
         DriverAVR::getDriverInt($driver, $sid, $type);
         DriverADuC::getDriverInt($driver, $sid, $type);
         DriverVirtual::getDriverInt($driver, $sid, $type);
+        Driver::getDriverInt($driver, $sid, $type);
         if (is_null($driver)) {
             $driver = "SDEFAULT";
         }

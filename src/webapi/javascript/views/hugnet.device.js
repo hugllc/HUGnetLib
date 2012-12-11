@@ -46,23 +46,23 @@ var DevicePropertiesView = Backbone.View.extend({
     tagName: 'div',
     events: {
         'click .SaveDevice': 'save',
-        'click .sensorList': 'sensorList',
-        'submit #sensorForm': 'saveSensor',
-        'change #sensorForm select': 'saveSensor'
+        'click .inputList': 'inputList',
+        'submit #inputForm': 'saveInput',
+        'change #inputForm select': 'saveInput'
     },
     initialize: function (options)
     {
-        this.sensorsmodel = new HUGnet.DeviceSensors();
-        var sensors = this.model.get('sensors');
-        this.sensorsmodel.reset(sensors);
-        this.sensors = new HUGnet.DeviceSensorsView({
-            model: this.sensorsmodel
+        this.inputsmodel = new HUGnet.DeviceInputs();
+        var inputs = this.model.get('sensors');
+        this.inputsmodel.reset(inputs);
+        this.inputs = new HUGnet.DeviceInputsView({
+            model: this.inputsmodel
         });
-        this.sensorsmodel.on(
+        this.inputsmodel.on(
             'change',
             function (model, collection, view)
             {
-                this.model.set('sensors', this.sensorsmodel.toJSON());
+                this.model.set('inputs', this.inputsmodel.toJSON());
                 this.model.fetch();
             },
             this
@@ -95,12 +95,12 @@ var DevicePropertiesView = Backbone.View.extend({
         this.model.on('saved', this.saveSuccess, this);
 
     },
-    sensorList: function ()
+    inputList: function ()
     {
-        var view = new HUGnet.DeviceSensorsView({ model: this.sensorsmodel });
+        var view = new HUGnet.DeviceInputsView({ model: this.inputsmodel });
         this.popup(
             view,
-            "Sensors for device " + this.model.get('id').toString(16).toUpperCase()
+            "Inputs for device " + this.model.get('id').toString(16).toUpperCase()
         );
     },
     save: function (e)
@@ -114,13 +114,13 @@ var DevicePropertiesView = Backbone.View.extend({
         });
         this.model.save();
     },
-    saveSensor: function (e)
+    saveInput: function (e)
     {
-        this.model.saveSensor($("#sensorForm").serialize());
+        this.model.saveInput($("#inputForm").serialize());
     },
     saveFail: function ()
     {
-        this.setTitle();
+        this.setTitle("");
         //alert("Save Failed");
     },
     saveSuccess: function ()
@@ -155,7 +155,7 @@ var DevicePropertiesView = Backbone.View.extend({
             )
         );
         this.$("#DeviceChannelsDiv").html(this.channels.render().el);
-        this.setTitle();
+        this.setTitle("");
         return this;
     },
     /**

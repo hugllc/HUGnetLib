@@ -155,7 +155,18 @@ class WebAPI extends HTML
     {
         $iid = (int)$this->args()->get("id");
         $table = $this->system()->table("InputTable");
-        return $this->_executeTable($iid, $table, $extra);
+        $ret = $this->_executeTable($iid, $table, $extra);
+        $action = strtolower(trim($this->args()->get("action")));
+        include_once dirname(__FILE__)."/../devices/inputTable/ADuCInputTable.php";
+        $table = \HUGnet\devices\inputTable\ADuCInputTable::factory(array());
+        if ($action == "list") {
+            foreach (array_keys($ret) as $key) {
+                $ret[$key]["params"] = $table->fullArray();
+            }
+        } else {
+            $ret["params"] = $table->fullArray();
+        }
+        return $ret;
     }
     /**
     * This function executes the api call.

@@ -93,6 +93,7 @@ abstract class DriverADuC extends Driver
         "42:DEFAULT"                 => "ADuCThermocouple",
         "43:DEFAULT"                 => "ADuCVoltage",
         "44:DEFAULT"                 => "ADuCPressure",
+        "F9:DEFAULT"                 => "ADuCInputTable",
     );
     /**
     * This function creates the system.

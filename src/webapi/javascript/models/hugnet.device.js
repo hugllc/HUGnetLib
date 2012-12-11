@@ -63,6 +63,9 @@ HUGnet.Device = Backbone.Model.extend({
         DeviceGroup: 'FFFFFF',
         sensors: {},
         params: {},
+        InputTables: 0,
+        OutputTables: 0,
+        ProcessputTables: 0,
         actions: '',
         ViewButtonID: '',
         RefreshButtonID: '',
@@ -134,16 +137,18 @@ HUGnet.Device = Backbone.Model.extend({
                 data:
                 {
                     "task": "device",
-                    "action": "post",
+                    "action": "put",
                     "id": id.toString(16),
-                    "device": self.toJSON()
+                    "data": self.toJSON()
                 }
             }).done(
                 function (data)
                 {
-                    if (data === "success") {
+                    if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
                         self.trigger('saved');
-                        self.fetch();
+                        self.set(data);
+                        self.trigger('fetchdone');
+                        self.trigger('sync');
                     } else {
                         self.trigger('savefail', "saved failed on server");
                     }
@@ -301,7 +306,7 @@ HUGnet.Device = Backbone.Model.extend({
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 HUGnet.Devices = Backbone.Collection.extend({
-    url: '/HUGnetLib/index.php',
+    url: '/HUGnetLib/HUGnetLibAPI.php',
     model: HUGnet.Device,
     initialize: function (options)
     {
@@ -331,7 +336,7 @@ HUGnet.Devices = Backbone.Collection.extend({
             dataType: 'json',
             cache: false,
             data: {
-                "task": "device", "action": "getall"
+                "task": "device", "action": "list"
             }
         });
         ret.done(

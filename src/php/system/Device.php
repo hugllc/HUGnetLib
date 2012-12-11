@@ -140,6 +140,27 @@ class Device extends \HUGnet\base\SystemTableAction
         if (is_string($return["params"])) {
             $return["params"] = (array)json_decode($return["params"], true);
         }
+        if ($default) {
+            $return["sensors"] = array();
+            for ($i = 0; $i < $return["totalSensors"]; $i++) {
+                $return["sensors"][$i] = $this->input($i)->toArray();
+            }
+            $return["channels"] = $this->channels()->toArray(true);
+            if ($return["loadable"]) {
+                $this->firmware()->set("HWPartNum", $return["HWPartNum"]);
+                $this->firmware()->set("FWPartNum", $return["FWPartNum"]);
+                $this->firmware()->set("RelStatus", \HUGnet\db\tables\Firmware::DEV);
+                $this->firmware()->getLatest();
+                $new = $this->firmware()->compareVersion(
+                    $return["FWVersion"], $this->firmware()->Version
+                );
+                // @codeCoverageIgnoreStart
+                if ($new < 0) {
+                    $return["update"] = $this->firmware()->Version;
+                }
+                // @codeCoverageIgnoreEnd
+            }
+        }
         return $return;
     }
     /**

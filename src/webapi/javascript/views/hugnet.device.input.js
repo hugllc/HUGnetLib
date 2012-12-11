@@ -22,7 +22,7 @@
  *
  * @category   JavaScript
  * @package    HUGnetLib
- * @subpackage DeviceSensors
+ * @subpackage DeviceInputs
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
@@ -33,16 +33,16 @@
 *
 * @category   JavaScript
 * @package    HUGnetLib
-* @subpackage DeviceSensors
+* @subpackage DeviceInputs
 * @author     Scott Price <prices@hugllc.com>
 * @copyright  2012 Hunt Utilities Group, LLC
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-var DeviceSensorPropertiesView = Backbone.View.extend({
-    template: '#DeviceSensorPropertiesTemplate',
-    tTemplate: '#DeviceSensorPropertiesTitleTemplate',
+var DeviceInputPropertiesView = Backbone.View.extend({
+    template: '#DeviceInputPropertiesTemplate',
+    tTemplate: '#DeviceInputPropertiesTitleTemplate',
     tagName: 'div',
     _close: false,
     events: {
@@ -67,8 +67,8 @@ var DeviceSensorPropertiesView = Backbone.View.extend({
     },
     saveFail: function (msg)
     {
-        this.setTitle();
-        //alert("Sensor Faled: " + msg);
+        this.setTitle("");
+        //alert("Input Faled: " + msg);
     },
     saveclose: function (e)
     {
@@ -117,7 +117,7 @@ var DeviceSensorPropertiesView = Backbone.View.extend({
                 data
             )
         );
-        this.setTitle();
+        this.setTitle("");
         return this;
     },
     /**
@@ -143,17 +143,17 @@ var DeviceSensorPropertiesView = Backbone.View.extend({
 *
 * @category   JavaScript
 * @package    HUGnetLib
-* @subpackage DeviceSensors
+* @subpackage DeviceInputs
 * @author     Scott Price <prices@hugllc.com>
 * @copyright  2012 Hunt Utilities Group, LLC
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-var DeviceSensorEntryView = Backbone.View.extend({
-    model: HUGnet.DeviceSensor,
+var DeviceInputEntryView = Backbone.View.extend({
+    model: HUGnet.DeviceInput,
     tagName: 'tr',
-    template: '#DeviceSensorEntryTemplate',
+    template: '#DeviceInputEntryTemplate',
     parent: null,
     events: {
         'click .properties': 'properties'
@@ -166,7 +166,7 @@ var DeviceSensorEntryView = Backbone.View.extend({
     },
     properties: function (e)
     {
-        var view = new DeviceSensorPropertiesView({ model: this.model });
+        var view = new DeviceInputPropertiesView({ model: this.model });
         this.parent.popup(view);
     },
     /**
@@ -195,16 +195,16 @@ var DeviceSensorEntryView = Backbone.View.extend({
 *
 * @category   JavaScript
 * @package    HUGnetLib
-* @subpackage DeviceSensors
+* @subpackage DeviceInputs
 * @author     Scott Price <prices@hugllc.com>
 * @copyright  2012 Hunt Utilities Group, LLC
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-HUGnet.DeviceSensorsView = Backbone.View.extend({
-    model: HUGnet.DeviceSensors,
-    template: "#DeviceSensorListTemplate",
+HUGnet.DeviceInputsView = Backbone.View.extend({
+    model: HUGnet.DeviceInputs,
+    template: "#DeviceInputListTemplate",
     rows: 0,
     events: {
     },
@@ -236,7 +236,7 @@ HUGnet.DeviceSensorsView = Backbone.View.extend({
     },
     insert: function (model, key)
     {
-        var view = new DeviceSensorEntryView({ model: model, parent: this });
+        var view = new DeviceInputEntryView({ model: model, parent: this });
         this.$('tbody').append(view.render().el);
     },
     popup: function (view)

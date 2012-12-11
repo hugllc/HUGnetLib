@@ -43,7 +43,7 @@
 HUGnet.TestSuite = Backbone.View.extend({
     tabs: undefined,
     data: {},
-    url: '/HUGnetLib/index.php',
+    url: '/HUGnetLib/HUGnetLibAPI.php',
     initialize: function (options)
     {
         if (options.url) this.url = options.url;
