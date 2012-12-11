@@ -56,7 +56,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class WebAPI
+class WebInterface
 {
     /**
     * This is the system object
@@ -121,7 +121,7 @@ class WebAPI
     */
     public static function &factory(&$network, &$device, &$driver)
     {
-        $object = new WebAPI($network, $device, $driver);
+        $object = new WebInterface($network, $device, $driver);
         return $object;
     }
     /**
@@ -172,11 +172,9 @@ class WebAPI
     /**
     * returns a history object for this device
     *
-    * @param object &$args The argument object
-    *
     * @return string
     */
-    private function _config(&$args)
+    private function _config()
     {
         if ($this->_device->action()->config()) {
             $this->_device->setParam("LastModified", time());
@@ -190,11 +188,9 @@ class WebAPI
     /**
     * returns a history object for this device
     *
-    * @param object &$args The argument object
-    *
     * @return string
     */
-    private function _loadFirmware(&$args)
+    private function _loadFirmware()
     {
         $firmware = $this->_device->system()->table("Firmware");
         if (!$this->_device->get("bootloader")) {
@@ -215,11 +211,9 @@ class WebAPI
     /**
     * returns a history object for this device
     *
-    * @param object &$args The argument object
-    *
     * @return string
     */
-    private function _loadConfig(&$args)
+    private function _loadConfig()
     {
         if ($this->_device->network()->loadConfig()) {
             $ret = $this->_device->toArray(true);

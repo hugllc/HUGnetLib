@@ -36,7 +36,7 @@
 /** This is the HUGnet namespace */
 namespace HUGnet\devices;
 /** This is a required class */
-require_once CODE_BASE.'devices/WebAPI.php';
+require_once CODE_BASE.'devices/WebInterface.php';
 /** This is a required class */
 require_once CODE_BASE.'network/packets/Packet.php';
 /** This is a required class */
@@ -70,7 +70,7 @@ require_once CODE_BASE.'db/tables/Firmware.php';
  * @version    Release: 0.9.7
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class WebAPITest extends \PHPUnit_Framework_TestCase
+class WebInterfaceTest extends \PHPUnit_Framework_TestCase
 {
     /**
     * Sets up the fixture, for example, opens a network connection.
@@ -101,7 +101,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataWebAPI()
+    public static function dataWebInterface()
     {
 
         return array(
@@ -294,15 +294,15 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataWebAPI()
+    * @dataProvider dataWebInterface()
     */
-    public function testWebAPI($config, $mock, $readonly, $extra, $expect, $calls)
+    public function testWebInterface($config, $mock, $readonly, $extra, $expect, $calls)
     {
         $system = new \HUGnet\DummySystem("System");
         $system->resetMock($mock);
         $device = new \HUGnet\DummyBase("Device");
         $driver = new \HUGnet\DummyBase("Driver");
-        $obj = WebAPI::factory($system, $device, $driver);
+        $obj = WebInterface::factory($system, $device, $driver);
         $ret = $obj->WebAPI($config, $extra);
         $this->assertEquals($expect, $ret, "Output wrong");
         foreach ((array)$calls as $obj => $call) {

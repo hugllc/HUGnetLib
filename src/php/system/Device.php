@@ -76,7 +76,7 @@ class Device extends \HUGnet\base\SystemTableAction
         "output" => "driver",
         "process" => "driver",
         "insertVirtual" => "table",
-        "webAPI" => "webAPI",
+        "webAPI" => "webInterface",
     );
     /** This is where we store our objects */
     protected $classes = array(
@@ -197,10 +197,10 @@ class Device extends \HUGnet\base\SystemTableAction
     *
     * @return Reference to the network object
     */
-    protected function &webAPI()
+    protected function &webInterface()
     {
-        include_once dirname(__FILE__)."/../devices/WebAPI.php";
-        return \HUGnet\devices\WebAPI::factory(
+        include_once dirname(__FILE__)."/../devices/WebInterface.php";
+        return \HUGnet\devices\WebInterface::factory(
             $this->system(),
             $this,
             $this->driver()
