@@ -76,6 +76,7 @@ class Device extends \HUGnet\base\SystemTableAction
         "output" => "driver",
         "process" => "driver",
         "insertVirtual" => "table",
+        "webAPI" => "webAPI",
     );
     /** This is where we store our objects */
     protected $classes = array(
@@ -186,6 +187,20 @@ class Device extends \HUGnet\base\SystemTableAction
     {
         include_once dirname(__FILE__)."/../devices/Network.php";
         return \HUGnet\devices\Network::factory(
+            $this->system(),
+            $this,
+            $this->driver()
+        );
+    }
+    /**
+    * This function creates the system.
+    *
+    * @return Reference to the network object
+    */
+    protected function &webAPI()
+    {
+        include_once dirname(__FILE__)."/../devices/WebAPI.php";
+        return \HUGnet\devices\WebAPI::factory(
             $this->system(),
             $this,
             $this->driver()
@@ -407,89 +422,6 @@ class Device extends \HUGnet\base\SystemTableAction
         $obj = $this->system()->table($class, $data);
         $obj->device = &$this;
         return $obj;
-    }
-    /**
-    * returns a history object for this device
-    *
-    * @param object &$args The argument object
-    * @param array  $extra Extra data from the
-    *
-    * @return string
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-    */
-    public function webAPI(&$args, $extra)
-    {
-        $action = trim(strtolower($args->get("action")));
-        $ret = null;
-        if ($action === "put") {
-            $data = (array)$args->get("data");
-            $params = (array)$data["params"];
-            unset($data["params"]);
-            foreach ($data as $key => $value) {
-                $this->set($key, $value);
-            }
-            foreach ($params as $key => $value) {
-                $this->setParam($key, $value);
-            }
-            $this->store();
-            $ret = $this->toArray(true);
-        } else if ($action === "config") {
-            $worked  = true;
-            $sensors = $this->get("physicalSensors");
-            $steps   = $sensors + 2;
-            $step    = 1;
-            $this->system()->out("config $step/$steps success", 1);
-            if ($this->action()->config()) {
-                $step++;
-                $sensors = $this->get("physicalSensors");
-                $this->system()->out("sensor $step/$steps success", 1);
-                $this->store();
-                for ($i = 0; $i < $sensors; $i++) {
-                    $step++;
-                    $pkt = $this->network()->sensorConfig($i);
-                    if (strlen($pkt->reply()) > 0) {
-                        $this->system()->out("sensor $step/$steps success", 1);
-                        $sen = $this->input($i);
-                        $sen->decode($pkt->reply());
-                        $sen->change(array());
-                    } else {
-                        $this->system()->out("sensor $step/$steps failure", 1);
-                        $worked = false;
-                        break;
-                    }
-                }
-            } else {
-                $this->system()->out("sensor $step/$steps failure", 1);
-                $worked = false;
-            }
-            if ($worked) {
-                $this->setParam("LastModified", time());
-                $this->store();
-                $ret = $this->toArray(true);
-            } else {
-                $ret = -1;
-            }
-        } else if ($action === "loadfirmware") {
-            $firmware = $this->system()->table("Firmware");
-            if (!$this->get("bootloader")) {
-                $firmware->set("FWPartNum", $this->get("FWPartNum"));
-            } else {
-                $firmware->set("FWPartNum", "0039-38-01-C");
-            }
-            $firmware->set("HWPartNum", $this->get("HWPartNum"));
-            $firmware->set("RelStatus", \HUGnet\db\tables\Firmware::DEV);
-            $ret = -1;
-            if ($firmware->getLatest()) {
-                if ($this->network()->loadFirmware($firmware)) {
-                    $ret = $this->toArray(true);
-                }
-            }
-        } else if ($action === "loadconfig") {
-            if ($this->network()->loadConfig()) {
-                $ret = $this->toArray(true);
-            }
-        }
-        return $ret;
     }
     /**
     * Returns the devices XML file as an array
