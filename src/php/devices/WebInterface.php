@@ -74,13 +74,13 @@ class WebInterface
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
     *
-    * @param object &$system The network application object
-    * @param object &$device The device device object
-    * @param object &$driver The device driver object
+    * @param object $system The network application object
+    * @param object $device The device device object
+    * @param object $driver The device driver object
     *
     * @return null
     */
-    private function __construct(&$system, &$device, &$driver)
+    private function __construct($system, $device, $driver)
     {
         \HUGnet\System::exception(
             get_class($this)." needs to be passed a system object",
@@ -113,13 +113,13 @@ class WebInterface
     /**
     * This function creates the system.
     *
-    * @param mixed  &$network (object)The system object to use
-    * @param string &$device  (object)The device to use
-    * @param object &$driver  The device driver object
+    * @param mixed  $network (object)The system object to use
+    * @param string $device  (object)The device to use
+    * @param object $driver  The device driver object
     *
     * @return null
     */
-    public static function &factory(&$network, &$device, &$driver)
+    public static function factory($network, $device, $driver)
     {
         $object = new WebInterface($network, $device, $driver);
         return $object;
@@ -133,7 +133,7 @@ class WebInterface
     * @return string
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    public function webAPI(&$args, $extra)
+    public function webAPI($args, $extra)
     {
         $action = trim(strtolower($args->get("action")));
         $ret = null;
@@ -155,7 +155,7 @@ class WebInterface
     *
     * @return string
     */
-    private function _put(&$args)
+    private function _put($args)
     {
         $data = (array)$args->get("data");
         $params = (array)$data["params"];

@@ -597,8 +597,8 @@ class OutputTest extends \PHPUnit_Framework_TestCase
                 "051234",
                 array(
                     array("id", 5),
-                    array("driver", "EmptyOutput"),
                     array("RawSetup", "1234"),
+                    array("driver", "EmptyOutput"),
                 ),
             ),
             array(
@@ -622,6 +622,7 @@ class OutputTest extends \PHPUnit_Framework_TestCase
                 "05",
                 array(
                     array("id", 5),
+                    array("RawSetup", ""),
                 ),
             ),
             array(

@@ -283,9 +283,7 @@ abstract class Driver
     */
     public function decode($string)
     {
-        if (is_string($string)) {
-            $this->output()->set("RawSetup", $string);
-        }
+        /* Do nothing by default */
     }
     /**
     * Encodes this driver as a setup string

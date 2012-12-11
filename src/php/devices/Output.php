@@ -248,6 +248,7 @@ class Output extends \HUGnet\base\SystemTableBase
             return;
         }
         $this->set("id", hexdec(substr($string, 0, 2)));
+        $this->set("RawSetup", substr($string, 2));
         $extra = substr($string, 2);
         if (strlen($extra) > 1) {
             $this->driver()->decode($extra, $this);
@@ -290,15 +291,15 @@ class Output extends \HUGnet\base\SystemTableBase
             $master = $this->system()->get("master");
             $url = $master["url"];
         }
-        $sensor = $this->toArray(false);
+        $output = $this->toArray(false);
         return \HUGnet\Util::postData(
             $url,
             array(
                 "uuid"   => urlencode($this->system()->get("uuid")),
-                "id"     => sprintf("%06X", $sensor["dev"]).".".$sensor["sensor"],
+                "id"     => sprintf("%06X", $output["dev"]).".".$output["output"],
                 "action" => "put",
-                "task"   => "outputTable",
-                "data"   => $sensor,
+                "task"   => "deviceoutput",
+                "data"   => $output,
             )
         );
     }

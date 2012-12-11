@@ -141,7 +141,9 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
             $dev->load($dev->id());
             $dev->setParam("LastMasterPush", $now);
             $dev->store();
-            $this->_pushSensors($dev);
+            $this->_pushInputs($dev);
+            $this->_pushOutputs($dev);
+            $this->_pushProcesses($dev);
         } else {
             $this->system()->out("Failure.");
             /* Don't store it if we fail */
@@ -154,9 +156,9 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
      *
      * @return none
      */
-    private function _pushSensors(&$dev)
+    private function _pushInputs(&$dev)
     {
-        $sens = $dev->get("totalSensors");
+        $sens = $dev->get("InputTables");
         $good = 0;
         $bad  = 0;
         for ($i = 0; $i < $sens; $i++) {
@@ -167,7 +169,7 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
             $ret = $dev->input($i)->action()->post();
             if (is_array($ret)
                 && ($ret["dev"] == $dev->id())
-                && ($ret["sensor"] == $i)
+                && ($ret["input"] == $i)
             ) {
                 $good++;
             } else {
@@ -175,10 +177,78 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
             }
         }
         if ($good > 0) {
-            $this->system()->out("Successfully pushed ".$good." sensors");
+            $this->system()->out("Successfully pushed ".$good." device inputs");
         }
         if ($bad > 0) {
-            $this->system()->out("Failure to push out ".$bad." sensors!");
+            $this->system()->out("Failure to push out ".$bad." device inputs!");
+        }
+    }
+    /**
+     * This pushes out all of the sensors for a device
+     *
+     * @param int &$dev The device to use
+     *
+     * @return none
+     */
+    private function _pushOutputs(&$dev)
+    {
+        $sens = $dev->get("OutputTables");
+        $good = 0;
+        $bad  = 0;
+        for ($i = 0; $i < $sens; $i++) {
+            $this->system()->main();
+            if (!$this->ui()->loop()) {
+                break;
+            }
+            $ret = $dev->output($i)->action()->post();
+            if (is_array($ret)
+                && ($ret["dev"] == $dev->id())
+                && ($ret["output"] == $i)
+            ) {
+                $good++;
+            } else {
+                $bad++;
+            }
+        }
+        if ($good > 0) {
+            $this->system()->out("Successfully pushed ".$good." device output");
+        }
+        if ($bad > 0) {
+            $this->system()->out("Failure to push out ".$bad." device outputs!");
+        }
+    }
+    /**
+     * This pushes out all of the sensors for a device
+     *
+     * @param int &$dev The device to use
+     *
+     * @return none
+     */
+    private function _pushProcesses(&$dev)
+    {
+        $sens = $dev->get("ProcessTables");
+        $good = 0;
+        $bad  = 0;
+        for ($i = 0; $i < $sens; $i++) {
+            $this->system()->main();
+            if (!$this->ui()->loop()) {
+                break;
+            }
+            $ret = $dev->process($i)->action()->post();
+            if (is_array($ret)
+                && ($ret["dev"] == $dev->id())
+                && ($ret["process"] == $i)
+            ) {
+                $good++;
+            } else {
+                $bad++;
+            }
+        }
+        if ($good > 0) {
+            $this->system()->out("Successfully pushed ".$good." device processes");
+        }
+        if ($bad > 0) {
+            $this->system()->out("Failure to push out ".$bad." device processes!");
         }
     }
     /**

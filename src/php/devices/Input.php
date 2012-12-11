@@ -350,6 +350,7 @@ class Input extends \HUGnet\base\SystemTableBase
             return;
         }
         $this->set("id", hexdec(substr($string, 0, 2)));
+        $this->set("RawSetup", substr($string, 2));
         $extra = substr($string, 2);
         if (strlen($extra) > 1) {
             $this->driver()->decode($extra, $this);
@@ -414,7 +415,7 @@ class Input extends \HUGnet\base\SystemTableBase
                 "uuid"   => urlencode($this->system()->get("uuid")),
                 "id"     => sprintf("%06X", $input["dev"]).".".$input["input"],
                 "action" => "put",
-                "task"   => "input",
+                "task"   => "deviceinput",
                 "data"   => $input,
             )
         );

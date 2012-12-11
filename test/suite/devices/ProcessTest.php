@@ -597,6 +597,7 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
                 "051234",
                 array(
                     array("id", 5),
+                    array("RawSetup", "1234"),
                     array("driver", "EmptyProcess"),
                 ),
             ),
@@ -621,6 +622,7 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
                 "05",
                 array(
                     array("id", 5),
+                    array("RawSetup", ""),
                 ),
             ),
             array(

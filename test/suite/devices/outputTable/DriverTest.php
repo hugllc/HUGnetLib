@@ -431,14 +431,6 @@ class DriverTest extends drivers\DriverTestBase
                 ),
                 "010203040506",
                 array(
-                    "Sensor" => array(
-                        "set" => array(
-                            array(
-                                "RawSetup",
-                                "010203040506"
-                            ),
-                        ),
-                    ),
                 ),
             ),
         );

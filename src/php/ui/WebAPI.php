@@ -66,14 +66,14 @@ class WebAPI extends HTML
     /**
     * Creates the object
     *
-    * @param array &$config  The configuration to use
-    * @param mixed &$system  The system object to use
-    * @param bool  $readonly If set to true, all write operations silently fail
+    * @param array $config  The configuration to use
+    * @param mixed $system  The system object to use
+    * @param bool  readonly If set to true, all write operations silently fail
     *
     * @return null
     */
     static public function &factory(
-        &$config = array(), &$system = null, $readonly = true
+        $config = array(), $system = null, $readonly = true
     ) {
         $obj = new WebAPI($config, $system);
         $obj->_ro = (bool)$readonly;
@@ -165,6 +165,34 @@ class WebAPI extends HTML
     * @return null
     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
     */
+    private function _executeOutputtable($extra = array())
+    {
+        $iid = (int)$this->args()->get("id");
+        $table = $this->system()->table("OutputTable");
+        return $this->_executeTable($iid, $table, $extra);
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+    */
+    private function _executeProcesstable($extra = array())
+    {
+        $iid = (int)$this->args()->get("id");
+        $table = $this->system()->table("ProcessTable");
+        return $this->_executeTable($iid, $table, $extra);
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+    */
     private function _executeAnnotation($extra = array())
     {
         $aid = (int)$this->args()->get("id");
@@ -193,17 +221,59 @@ class WebAPI extends HTML
     * @return null
     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
     */
-    private function _executeSensor($extra = array())
+    private function _executeDeviceInput($extra = array())
     {
         $ids = explode(".", $this->args()->get("id"));
         $did = hexdec($ids[0]);
         $sid = (int)$ids[1];
-        $ident = array("dev" => $did, "sensor" => $sid);
+        $ident = array("dev" => $did, "input" => $sid);
         $action = strtolower(trim($this->args()->get("action")));
         if ($action === "list") {
             $this->args()->set("data", array("dev" => $did));
         }
         $sen = $this->system()->device($did)->input($sid);
+        return $this->_executeSystem($ident, $sen, $extra);
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+    */
+    private function _executeDeviceOutput($extra = array())
+    {
+        $ids = explode(".", $this->args()->get("id"));
+        $did = hexdec($ids[0]);
+        $sid = (int)$ids[1];
+        $ident = array("dev" => $did, "output" => $sid);
+        $action = strtolower(trim($this->args()->get("action")));
+        if ($action === "list") {
+            $this->args()->set("data", array("dev" => $did));
+        }
+        $sen = $this->system()->device($did)->output($sid);
+        return $this->_executeSystem($ident, $sen, $extra);
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+    */
+    private function _executeDeviceProcess($extra = array())
+    {
+        $ids = explode(".", $this->args()->get("id"));
+        $did = hexdec($ids[0]);
+        $sid = (int)$ids[1];
+        $ident = array("dev" => $did, "process" => $sid);
+        $action = strtolower(trim($this->args()->get("action")));
+        if ($action === "list") {
+            $this->args()->set("data", array("dev" => $did));
+        }
+        $sen = $this->system()->device($did)->process($sid);
         return $this->_executeSystem($ident, $sen, $extra);
     }
     /**
