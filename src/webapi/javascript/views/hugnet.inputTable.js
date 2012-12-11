@@ -282,7 +282,10 @@ HUGnet.InputTablesView = Backbone.View.extend({
             data:
             {
                 "task": "inputTable",
-                "action": "new",
+                "action": "put",
+                "data": {
+                    "name": 'New Table',
+                }
             }
         }).done(
             function (data)

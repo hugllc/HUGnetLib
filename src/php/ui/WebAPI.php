@@ -153,7 +153,10 @@ class WebAPI extends HTML
     */
     private function _executeInputtable($extra = array())
     {
-        $iid = (int)$this->args()->get("id");
+        $iid = $this->args()->get("id");
+        if (!is_null($iid)) {
+            $iid = (int)$iid;
+        }
         $table = $this->system()->table("InputTable");
         $ret = $this->_executeTable($iid, $table, $extra);
         $action = strtolower(trim($this->args()->get("action")));
@@ -362,7 +365,16 @@ class WebAPI extends HTML
             }
         } else if (($action === "put") && $this->_auth(true)) {
             $data = (array)$this->args()->get("data");
-            if ($obj->getRow($ident)) {
+            if (is_null($ident) && isset($data["name"])) {
+                $obj->clearData();
+                $obj->set("id", null);
+                $obj->set("name", $data["name"]);
+                if ($obj->insertRow()) {
+                    $obj->sqlOrderBy = "id desc";
+                    $obj->selectOneInto("name = ?", $data["name"]);
+                    $ret = $obj->toArray();
+                }
+            } else if ($obj->getRow($ident)) {
                 $obj->fromAny($data);
                 $obj->updateRow();
                 // Reload it, so that we get what is in the database
