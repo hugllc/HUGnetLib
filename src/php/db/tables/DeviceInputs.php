@@ -56,7 +56,7 @@ require_once dirname(__FILE__)."/../TableParams.php";
 class DeviceInputs extends \HUGnet\db\TableParams
 {
     /** @var string This is the table we should use */
-    public $sqlTable = "DeviceInputs";
+    public $sqlTable = "deviceInputs";
     /** @var string This is the primary key of the table.  Leave blank if none  */
     public $sqlId = null;
     /**
