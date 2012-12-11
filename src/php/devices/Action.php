@@ -224,7 +224,7 @@ class Action
                 "READOUTPUTTABLE", null, array("find" => false), sprintf("%02X", $i)
             );
             if (is_string($ret->reply())) {
-                $out = $this->device->outputTable($i);
+                $out = $this->device->output($i);
                 $out->decode($ret->reply());
                 $out->store();
             }
@@ -236,7 +236,7 @@ class Action
                 "READPROCESSTABLE", null, array("find" => false), sprintf("%02X", $i)
             );
             if (is_string($ret->reply())) {
-                $proc = $this->device->processTable($i);
+                $proc = $this->device->process($i);
                 $proc->decode($ret->reply());
                 $proc->store();
             }
