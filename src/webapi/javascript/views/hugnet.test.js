@@ -174,7 +174,7 @@ HUGnet.TestsView = Backbone.View.extend({
             cache: false,
             data:
             {
-                "task": "test",
+                "task": "datacollector",
                 "action": action,
             }
         }).done(

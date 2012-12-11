@@ -91,6 +91,74 @@ class DataCollector extends \HUGnet\base\SystemTableBase
             )
         );
     }
+    /**
+    * returns a history object for this device
+    *
+    * @param object $args  The argument object
+    * @param array  $extra Extra data from the
+    *
+    * @return string
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function webAPI($args, $extra)
+    {
+        $action = trim(strtolower($args->get("action")));
+        $ret = null;
+        if ($action === "run") {
+            $ret = $this->_run();
+        } else if ($action === "status") {
+            $ret = $this->_status();
+        }
+        return $ret;
+    }
+    /**
+    * returns a history object for this device
+    *
+    * @return string
+    */
+    private function _run()
+    {
+        $this->load($this->system()->get("uuid"));
+        $config = json_decode($this->get("Runtime"), true);
+        if ($config["gather"]) {
+            $config["gather"] = false;
+            $config["gatherpoll"] = false;
+            $config["gatherconfig"] = false;
+        } else {
+            $config["gather"] = true;
+            $config["gatherpoll"] = true;
+            $config["gatherconfig"] = false;
+        }
+        $this->set("Runtime", json_encode($config));
+        $this->store();
+        $this->system()->network()->send(
+            array("To" => '000000', "Command" => "5B"),
+            null,
+            array(
+                "tries" => 1,
+                "find" => false,
+                "block" => false,
+            )
+        );
+        return $this->_status();
+    }
+    /**
+    * returns a history object for this device
+    *
+    * @return string
+    */
+    private function _status()
+    {
+        $this->load($this->system()->get("uuid"));
+        $config = json_decode($this->get("Runtime"), true);
+        if ($config["gather"]) {
+            $ret = 1;
+        } else {
+            $ret = 0;
+        }
+        return $ret;
+
+    }
 }
 
 

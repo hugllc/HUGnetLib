@@ -79,7 +79,7 @@ class WebAPIArgs extends HTMLArgs
         "action" => array("name" => "action", "type" => "string"),
         "format" => array("name" => "action", "type" => "string"),
         "id" => array("name" => "id", "type" => "string"),
-        "uuid" => array("name" => "uuid", "type" => "string"),
+        "cuuid" => array("name" => "cuuid", "type" => "string"),
         "data" => array("name" => "data", "type" => "array", "default" => array()),
     );
     /**
