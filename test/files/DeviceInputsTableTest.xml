@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dataset>
-    <table name="DeviceInputs">
+    <table name="deviceInputs">
         <column>dev</column>
         <column>input</column>
         <column>id</column>
