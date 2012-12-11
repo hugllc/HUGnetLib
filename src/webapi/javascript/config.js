@@ -50,10 +50,22 @@ HUGnet.Config = Backbone.View.extend({
             model: options.devices,
             url: this.url
         });
-        var tables = new HUGnet.InputTables();
-        tables.fetch();
+        var itables = new HUGnet.InputTables();
+        itables.fetch();
         this.inputTables = new HUGnet.InputTablesView({
-            model: tables,
+            model: itables,
+            url: this.url
+        });
+        var otables = new HUGnet.OutputTables();
+        otables.fetch();
+        this.outputTables = new HUGnet.OutputTablesView({
+            model: otables,
+            url: this.url
+        });
+        var ptables = new HUGnet.ProcessTables();
+        ptables.fetch();
+        this.processTables = new HUGnet.ProcessTablesView({
+            model: ptables,
             url: this.url
         });
         this.render();
@@ -75,6 +87,10 @@ HUGnet.Config = Backbone.View.extend({
         $('#config-tabs-devices').html(this.devices.render().el);
         this.tabs.tabs("add", '#config-tabs-inputTable', 'Input Tables');
         $('#config-tabs-inputTable').html(this.inputTables.render().el);
+        this.tabs.tabs("add", '#config-tabs-outputTable', 'Output Tables');
+        $('#config-tabs-outputTable').html(this.outputTables.render().el);
+        this.tabs.tabs("add", '#config-tabs-processTable', 'Process Tables');
+        $('#config-tabs-processTable').html(this.processTables.render().el);
     }
 });
 

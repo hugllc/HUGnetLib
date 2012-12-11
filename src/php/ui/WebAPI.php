@@ -164,10 +164,10 @@ class WebAPI extends HTML
         $table = \HUGnet\devices\inputTable\ADuCInputTable::factory(array());
         if ($action == "list") {
             foreach (array_keys($ret) as $key) {
-                $ret[$key]["params"] = $table->fullArray();
+                $ret[$key]["specs"] = $table->fullArray();
             }
         } else {
-            $ret["params"] = $table->fullArray();
+            $ret["specs"] = $table->fullArray();
         }
         return $ret;
     }
@@ -181,7 +181,10 @@ class WebAPI extends HTML
     */
     private function _executeOutputtable($extra = array())
     {
-        $iid = (int)$this->args()->get("id");
+        $iid = $this->args()->get("id");
+        if (!is_null($iid)) {
+            $iid = (int)$iid;
+        }
         $table = $this->system()->table("OutputTable");
         return $this->_executeTable($iid, $table, $extra);
     }
@@ -195,7 +198,10 @@ class WebAPI extends HTML
     */
     private function _executeProcesstable($extra = array())
     {
-        $iid = (int)$this->args()->get("id");
+        $iid = $this->args()->get("id");
+        if (!is_null($iid)) {
+            $iid = (int)$iid;
+        }
         $table = $this->system()->table("ProcessTable");
         return $this->_executeTable($iid, $table, $extra);
     }

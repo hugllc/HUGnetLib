@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+    <table name="processTable">
+        <column>id</column>
+        <column>name</column>
+        <column>arch</column>
+        <column>desc</column>
+        <column>params</column>
+    </table>
+</dataset>

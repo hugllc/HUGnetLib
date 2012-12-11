@@ -54,9 +54,9 @@ require_once dirname(__FILE__)."/../DeviceTable.php";
  * @version    Release: 0.9.7
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class InputTable extends \HUGnet\db\DeviceTable
+class OutputTable extends \HUGnet\db\DeviceTable
 {
     /** @var string This is the table we should use */
-    public $sqlTable = "inputTable";
+    public $sqlTable = "outputTable";
 }
 ?>
