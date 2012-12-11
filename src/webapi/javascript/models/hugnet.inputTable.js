@@ -92,6 +92,7 @@ HUGnet.InputTable = Backbone.Model.extend({
         var id = this.get('id');
         if (id !== 0) {
             var self = this;
+            console.log(self.toJSON());
             $.ajax({
                 type: 'POST',
                 url: this.url(),

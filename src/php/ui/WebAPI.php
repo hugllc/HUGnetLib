@@ -164,10 +164,12 @@ class WebAPI extends HTML
         $table = \HUGnet\devices\inputTable\ADuCInputTable::factory(array());
         if ($action == "list") {
             foreach (array_keys($ret) as $key) {
-                $ret[$key]["specs"] = $table->fullArray();
+                $table->fromArray($ret[$key]);
+                $ret[$key]["params"] = $table->fullArray();
             }
         } else {
-            $ret["specs"] = $table->fullArray();
+            $table->fromArray($ret);
+            $ret["params"] = $table->fullArray();
         }
         return $ret;
     }
