@@ -39,7 +39,7 @@ namespace HUGnet;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our base class */
-require_once dirname(__FILE__)."/../base/SystemTableBase.php";
+require_once dirname(__FILE__)."/../base/SystemTableAction.php";
 /** This the driver class we use */
 require_once dirname(__FILE__)."/../devices/Driver.php";
 
@@ -60,7 +60,7 @@ require_once dirname(__FILE__)."/../devices/Driver.php";
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class Device extends \HUGnet\base\SystemTableBase
+class Device extends \HUGnet\base\SystemTableAction
 {
     /**
     * This is the cache for the drivers.
@@ -70,6 +70,16 @@ class Device extends \HUGnet\base\SystemTableBase
     * This is the firmware table
     */
     private $_firmware = null;
+    /** This is where we store our objects */
+    protected $functions = array(
+        "input" => "driver",
+        "output" => "driver",
+        "process" => "driver",
+        "insertVirtual" => "table",
+    );
+    /** This is where we store our objects */
+    protected $classes = array(
+    );
     /**
     * This is the destructor
     */
@@ -109,16 +119,6 @@ class Device extends \HUGnet\base\SystemTableBase
             $ret = $this->table()->get($field);
         }
         return $ret;
-    }
-    /**
-    * Returns the table as a json string
-    *
-    * @return json string
-    */
-    public function json()
-    {
-        $ret = $this->fullArray();
-        return json_encode($ret);
     }
     /**
     * Returns the table as an array
@@ -270,39 +270,6 @@ class Device extends \HUGnet\base\SystemTableBase
     /**
     * This creates the sensor drivers
     *
-    * @param int $sid The sensor id to get.  They are labaled 0 to sensors
-    *
-    * @return null
-    */
-    public function &input($sid)
-    {
-        return $this->driver()->input($sid);
-    }
-    /**
-    * This creates the sensor drivers
-    *
-    * @param int $sid The sensor id to get.  They are labaled 0 to sensors
-    *
-    * @return null
-    */
-    public function &output($sid)
-    {
-        return $this->driver()->output($sid);
-    }
-    /**
-    * This creates the sensor drivers
-    *
-    * @param int $sid The sensor id to get.  They are labaled 0 to sensors
-    *
-    * @return null
-    */
-    public function &process($sid)
-    {
-        return $this->driver()->process($sid);
-    }
-    /**
-    * This creates the sensor drivers
-    *
     * @param mixed $chans Channel information
     *
     * @return null
@@ -369,17 +336,6 @@ class Device extends \HUGnet\base\SystemTableBase
         }
         return $this->_firmware;
     }
-    /**
-    * This function gives us access to the table class
-    *
-    * @param mixed $data The array to use to insert this row
-    *
-    * @return reference to the table class object
-    */
-    public function newVirtual($data = array())
-    {
-        return $this->table()->insertVirtual($data);
-    }
 
     /**
     * Loads the data into the table class
@@ -403,23 +359,6 @@ class Device extends \HUGnet\base\SystemTableBase
             );
         }
         return $ret;
-    }
-    /**
-    * Changes the units on the data
-    *
-    * The data coming in to this function should be the same as that produced
-    * by decodeData.
-    *
-    * @param array &$data The data to convert.
-    *
-    * @return null
-    */
-    public function setUnits(&$data)
-    {
-        $sensors = $this->get("totalSensors");
-        for ($i = 0; $i < $sensors; $i++) {
-            $this->input($i)->convertUnits($data[$i]);
-        }
     }
     /**
     * Decodes the sensor data

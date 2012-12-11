@@ -93,21 +93,21 @@ abstract class SystemTableAction extends SystemTableBase
         if (isset($this->functions[$name])) {
             $class = $this->functions[$name];
             if (method_exists($this, $class)) {
-                $ret = call_user_func_array(
-                    array($this->$class(), $name), $args
+                $obj = $this->$class();
+                return call_user_func_array(
+                    array($obj, $name), $args
                 );
             } else if (isset($this->classes[$class])) {
                 $this->_setupClass($class);
-                $ret = call_user_func_array(
+                return call_user_func_array(
                     array($this->_callCache[$class], $name), $args
                 );
             }
+            // @codeCoverageIgnoreStart
         }
-        if (!is_null($ret)) {
-            return $ret;
-        }
+        // @codeCoverageIgnoreEnd
         \HUGnet\System::exception(
-            "Call to undefined method $name on class ".__CLASS__
+            "Call to undefined method $name on ".get_class($this)
         );
         // @codeCoverageIgnoreStart
     }
