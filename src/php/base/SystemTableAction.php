@@ -89,7 +89,6 @@ abstract class SystemTableAction extends SystemTableBase
     */
     public function &__call($name, $args)
     {
-        $ret = null;
         if (isset($this->functions[$name])) {
             $class = $this->functions[$name];
             if (method_exists($this, $class)) {
