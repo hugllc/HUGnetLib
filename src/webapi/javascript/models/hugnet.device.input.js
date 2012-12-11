@@ -79,7 +79,7 @@ HUGnet.DeviceInput = Backbone.Model.extend({
             {
                 "task": "sensor",
                 "action": "get",
-                "id": parseInt(dev, 10).toString(16)+":"+this.get("input"),
+                "id": parseInt(dev, 10).toString(16)+"."+this.get("input"),
                 "sid": this.get("input")
             }
         }).done(
@@ -121,7 +121,7 @@ HUGnet.DeviceInput = Backbone.Model.extend({
             data: {
                 "task": "deviceinput",
                 "action": "put",
-                "id": parseInt(dev, 10).toString(16)+":"+this.get("input"),
+                "id": parseInt(dev, 10).toString(16)+"."+this.get("input"),
                 "data": data
             }
         }).done(
