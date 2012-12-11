@@ -296,8 +296,9 @@ class WebInterfaceTest extends \PHPUnit_Framework_TestCase
     *
     * @dataProvider dataWebInterface()
     */
-    public function testWebInterface($config, $mock, $readonly, $extra, $expect, $calls)
-    {
+    public function testWebInterface(
+        $config, $mock, $readonly, $extra, $expect, $calls
+    ) {
         $system = new \HUGnet\DummySystem("System");
         $system->resetMock($mock);
         $device = new \HUGnet\DummyBase("Device");

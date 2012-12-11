@@ -66,9 +66,9 @@ class WebAPI extends HTML
     /**
     * Creates the object
     *
-    * @param array $config  The configuration to use
-    * @param mixed $system  The system object to use
-    * @param bool  readonly If set to true, all write operations silently fail
+    * @param array $config   The configuration to use
+    * @param mixed $system   The system object to use
+    * @param bool  $readonly If set to true, all write operations silently fail
     *
     * @return null
     */

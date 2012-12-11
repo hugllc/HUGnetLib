@@ -127,7 +127,7 @@ class WebInterface
     /**
     * returns a history object for this device
     *
-    * @param object &$args The argument object
+    * @param object $args  The argument object
     * @param array  $extra Extra data from the
     *
     * @return string
@@ -151,7 +151,7 @@ class WebInterface
     /**
     * returns a history object for this device
     *
-    * @param object &$args The argument object
+    * @param object $args The argument object
     *
     * @return string
     */
