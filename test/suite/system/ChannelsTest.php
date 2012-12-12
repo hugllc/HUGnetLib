@@ -267,14 +267,16 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
     public static function data2Array()
     {
         return array(
-            array(
+            array(   // #0
+                array(
+                ),
                 array(
                 ),
                 false,
                 array(
                 ),
             ),
-            array(
+            array(  // #1
                 array(
                     "Device" => array(
                         "get" => array(
@@ -354,6 +356,7 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                null,
                 false,
                 array(
                     array(
@@ -388,26 +391,239 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
+            array(  // #2
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "totalSensors" => 5,
+                            "channels" => json_encode(
+                                array(
+                                    array(
+                                        "label" => "Output 0",
+                                    ),
+                                    array(
+                                        "label" => "Output 1",
+                                    ),
+                                    array(
+                                        "label" => "Output 2",
+                                    ),
+                                    array(
+                                        "label" => "Output 3",
+                                    ),
+                                    array(
+                                        "label" => "Output 4",
+                                    ),
+                                )
+                            ),
+                        ),
+                        "input" => array(
+                            '0' => new DummyTable("Sensor0"),
+                            '1' => new DummyTable("Sensor1"),
+                            '2' => new DummyTable("Sensor2"),
+                            '3' => new DummyTable("Sensor3"),
+                            '4' => new DummyTable("Sensor4"),
+                        ),
+
+                    ),
+                    "Sensor0" => array(
+                        "channels" => array(
+                            array(
+                                "storageUnit" => "&#176;C",
+                                "units" => "&#176;C",
+                                "unitType" => "Temperature",
+                                "maxDecimals" => 4,
+                                "decimals" => 4,
+                                "dataType"
+                                    => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "index" => 0,
+                                "input" => 0,
+                            ),
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "channels" => array(
+                            array(
+                                "storageUnit" => "&#176;C",
+                                "units" => "&#176;C",
+                                "unitType" => "Temperature",
+                                "maxDecimals" => 4,
+                                "decimals" => 4,
+                                "dataType"
+                                    => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "index" => 0,
+                                "input" => 1,
+                            ),
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "channels" => array(
+                            array(
+                                "storageUnit" => "&#176;C",
+                                "units" => "&#176;C",
+                                "unitType" => "Temperature",
+                                "maxDecimals" => 4,
+                                "decimals" => 4,
+                                "dataType"
+                                    => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "index" => 0,
+                                "input" => 2,
+                            ),
+                        ),
+                    ),
+                    "Sensor3" => array(
+                        "channels" => array(
+                            array(
+                                "storageUnit" => "&#176;C",
+                                "units" => "&#176;C",
+                                "unitType" => "Temperature",
+                                "maxDecimals" => 4,
+                                "decimals" => 4,
+                                "dataType"
+                                    => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "index" => 0,
+                                "input" => 3,
+                            ),
+                        ),
+                    ),
+                    "Sensor4" => array(
+                        "channels" => array(
+                            array(
+                                "storageUnit" => "&#176;C",
+                                "units" => "&#176;C",
+                                "unitType" => "Temperature",
+                                "maxDecimals" => 4,
+                                "decimals" => 4,
+                                "dataType"
+                                    => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "index" => 0,
+                                "input" => 4,
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    array(
+                        "storageUnit" => "asdf",
+                        "units" => "fdsa",
+                        "unitType" => "Pressure",
+                        "label" => "Test Label",
+                        "maxDecimals" => 8,
+                        "decimals" => 6,
+                        "dataType"
+                            => \HUGnet\devices\datachan\Driver::TYPE_DIFF,
+                        "index" => 7,
+                        "input" => 1,
+                    ),
+                    array(
+                        "storageUnit" => "&#176;C",
+                        "units" => "&#176;C",
+                        "unitType" => "Temperature",
+                        "label" => "Output 1",
+                    ),
+                    array(
+                        "storageUnit" => "&#176;C",
+                        "units" => "&#176;C",
+                        "unitType" => "Temperature",
+                        "label" => "Output 2",
+                    ),
+                    array(
+                        "storageUnit" => "&#176;C",
+                        "units" => "&#176;C",
+                        "unitType" => "Temperature",
+                        "label" => "Output 3",
+                    ),
+                    array(
+                        "storageUnit" => "&#176;C",
+                        "units" => "&#176;C",
+                        "unitType" => "Temperature",
+                        "label" => "Output 4",
+                    ),
+                ),
+                false,
+                array(
+                    array(
+                        "storageUnit" => "&#176;C",
+                        "units" => "&#176;C",
+                        "unitType" => "Temperature",
+                        "label" => "Test Label",
+                        "maxDecimals" => 4,
+                        "decimals" => 4,
+                        "dataType"
+                            => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "index" => 0,
+                        "input" => 0,
+                    ),
+                    array(
+                        "storageUnit" => "&#176;C",
+                        "units" => "&#176;C",
+                        "unitType" => "Temperature",
+                        "label" => "Output 1",
+                        "maxDecimals" => 4,
+                        "decimals" => 4,
+                        "dataType"
+                            => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "index" => 0,
+                        "input" => 1,
+                    ),
+                    array(
+                        "storageUnit" => "&#176;C",
+                        "units" => "&#176;C",
+                        "unitType" => "Temperature",
+                        "label" => "Output 2",
+                        "maxDecimals" => 4,
+                        "decimals" => 4,
+                        "dataType"
+                            => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "index" => 0,
+                        "input" => 2,
+                    ),
+                    array(
+                        "storageUnit" => "&#176;C",
+                        "units" => "&#176;C",
+                        "unitType" => "Temperature",
+                        "label" => "Output 3",
+                        "maxDecimals" => 4,
+                        "decimals" => 4,
+                        "dataType"
+                            => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "index" => 0,
+                        "input" => 3,
+                    ),
+                    array(
+                        "storageUnit" => "&#176;C",
+                        "units" => "&#176;C",
+                        "unitType" => "Temperature",
+                        "label" => "Output 4",
+                        "maxDecimals" => 4,
+                        "decimals" => 4,
+                        "dataType"
+                            => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "index" => 0,
+                        "input" => 4,
+                    ),
+                ),
+            ),
         );
     }
     /**
     * This tests the object creation
     *
-    * @param array $config  The configuration to use
-    * @param mixed $default Whether or not to show the default stuff
-    * @param mixed $expect  The value we expect back
+    * @param array $config   The configuration to use
+    * @param array $channels The channels to give it
+    * @param mixed $default  Whether or not to show the default stuff
+    * @param mixed $expect   The value we expect back
     *
     * @return null
     *
     * @dataProvider data2Array
     */
     public function test2Array(
-        $config, $default, $expect
+        $config, $channels, $default, $expect
     ) {
         $sys = new DummySystem("System");
         $dev = new DummyTable("Device");
         $sys->resetMock($config);
-        $obj = Channels::factory($sys, $dev);
+        $obj = Channels::factory($sys, $dev, $channels);
         $ret = $obj->toArray($default);
         $this->assertEquals($expect, $ret);
         unset($obj);

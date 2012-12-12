@@ -104,13 +104,16 @@ class Channels
         if (is_string($channels)) {
             $channels = json_decode($channels, true);
         }
+        $move = array("units", "label", "decimals");
         foreach (array_keys($this->_channels) as $chan) {
             if (is_array($channels[$chan])) {
-                $this->_channels[$chan] = array_merge(
-                    $this->_channels[$chan],
-                    $channels[$chan]
-                );
+                foreach ($move as $key) {
+                    if (isset($channels[$chan][$key])) {
+                        $this->_channels[$chan][$key] = $channels[$chan][$key];
+                    }
+                }
             }
+            $this->check($chan);
         }
     }
     /**
@@ -197,6 +200,23 @@ class Channels
         }
         return $this->_device->set("channels", json_encode($ret));
 
+    }
+    /**
+    * This creates the units driver
+    *
+    * @param int $index The index of the units to return
+    *
+    * @return object
+    */
+    protected function check($index)
+    {
+        $chan = &$this->_channels[$index];
+        if (!$this->units($index)->valid($chan["units"])) {
+            $chan["units"] = $chan["storageUnit"];
+        }
+        if ($chan["decimals"] > $chan["maxDecimals"]) {
+            $chan["decimals"] = $chan["maxDecimals"];
+        }
     }
     /**
     * This creates the units driver
