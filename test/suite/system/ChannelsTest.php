@@ -549,7 +549,7 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
                         "maxDecimals" => 4,
                         "decimals" => 4,
                         "dataType"
-                            => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                            => \HUGnet\devices\datachan\Driver::TYPE_DIFF,
                         "index" => 0,
                         "input" => 0,
                     ),

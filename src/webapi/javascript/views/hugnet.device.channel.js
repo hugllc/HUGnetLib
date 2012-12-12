@@ -49,6 +49,7 @@ var DeviceChannelEntryView = Backbone.View.extend({
         'change [name="label"]': 'changeLabel',
         'change [name="units"]': 'changeUnits',
         'change [name="decimals"]': 'changeDecimals',
+        'change [name="dataType"]': 'changeDataType',
     },
     initialize: function (options)
     {
@@ -67,6 +68,10 @@ var DeviceChannelEntryView = Backbone.View.extend({
     changeDecimals: function ()
     {
         this.model.set("decimals", this.$('[name="decimals"]').val());
+    },
+    changeDataType: function ()
+    {
+        this.model.set("dataType", this.$('[name="dataType"]').val());
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device

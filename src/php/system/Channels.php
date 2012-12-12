@@ -104,7 +104,7 @@ class Channels
         if (is_string($channels)) {
             $channels = json_decode($channels, true);
         }
-        $move = array("units", "label", "decimals");
+        $move = array("units", "label", "decimals", "dataType");
         foreach (array_keys($this->_channels) as $chan) {
             if (is_array($channels[$chan])) {
                 foreach ($move as $key) {
