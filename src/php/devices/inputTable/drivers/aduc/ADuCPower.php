@@ -101,9 +101,10 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         if (is_null($A)) {
             return null;
         }
+        bcscale(10);
         $Am   = pow(2, 23);
         $A = $this->getTwosCompliment($A, 32);
-        $A = $A / $this->gain();
+        $A = $A / $this->gain(1);
         $Vref  = $this->getExtra(0);
         $Rin   = $this->getExtra(2);
         $Rbias = $this->getExtra(3);
@@ -125,6 +126,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         if (is_null($Va)) {
             return null;
         }
+        bcscale(10);
         $Am   = pow(2, 23);
         $Vref  = $this->getExtra(0);
         $Rin   = $this->getExtra(2);
@@ -135,7 +137,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         if ($Amod != 0) {
             $A = $A * ($A / $Amod);
         }
-        $A = $A * $this->gain();
+        $A = $A * $this->gain(1);
         return round($A);
     }
     /**
@@ -156,6 +158,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         if (is_null($A)) {
             return null;
         }
+        bcscale(10);
         $Am   = pow(2, 23);
         $A = $this->getTwosCompliment($A, 32);
         $A = $A / $this->gain();
@@ -185,6 +188,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         if (is_null($I)) {
             return null;
         }
+        bcscale(10);
         $Am   = pow(2, 23);
         $Vref  = $this->getExtra(0);
         $R     = $this->getExtra(1);
@@ -199,7 +203,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         if ($Amod != 0) {
             $A = $A * ($A / $Amod);
         }
-        $A = $A * $this->gain();
+        $A = $A * $this->gain(0);
         return round($A);
     }
     /**
@@ -213,7 +217,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    public function getPower(
+    public function getCalcPower(
         $deltaT = 0, &$data = array(), $prev = null
     ) {
         $I = $data[0]["value"];
@@ -222,6 +226,42 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
             return null;
         }
         $P = $I * $V;
+        return round($P, $this->get("maxDecimals"));
+    }
+    /**
+    * Changes a raw reading into a output value
+    *
+    * @param int   $A      Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
+    * @param array &$data  The data from the other sensors that were crunched
+    * @param mixed $prev   The previous value for this sensor
+    *
+    * @return mixed The value in whatever the units are in the sensor
+    *
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function getPower(
+        $A, $deltaT = 0, &$data = array(), $prev = null
+    ) {
+        if (is_null($A)) {
+            return null;
+        }
+        bcscale(10);
+        $Am   = pow(2, 23);
+        $Vref   = $this->getExtra(0);
+        $R      = $this->getExtra(1);
+        $Rin1   = $this->getExtra(2);
+        $Rbias1 = $this->getExtra(3);
+        $Rin2   = $this->getExtra(4);
+        $Rbias2 = $this->getExtra(5);
+
+        $A = $this->getTwosCompliment($A, 32);
+        $A = $A / $this->gain(0);
+        $A = $A / $this->gain(1);
+        $A = $this->inputBiasCompensation($A, $Rin1, $Rbias1);
+        $A = $this->inputBiasCompensation($A, $Rin2, $Rbias2);
+        $P = $A * ($Vref * $Vref) / ($Am * $Am) / $R;
+
         return round($P, $this->get("maxDecimals"));
     }
     /**
@@ -240,6 +280,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
     /**
     * Changes a raw reading into a output value
     *
+    * @param int   $A      Output of the A to D converter
     * @param float $deltaT The time delta in seconds between this record
     * @param array &$data  The data from the other sensors that were crunched
     * @param mixed $prev   The previous value for this sensor
@@ -249,6 +290,45 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function getImpedance(
+        $A, $deltaT = 0, &$data = array(), $prev = null
+    ) {
+        if (is_null($A)) {
+            return null;
+        }
+        bcscale(10);
+        $Am   = pow(2, 23);
+        $Vref   = $this->getExtra(0);
+        $R      = $this->getExtra(1);
+        $Rin1   = (float)$this->getExtra(2);
+        $Rbias1 = (float)$this->getExtra(3);
+        $Rin2   = (float)$this->getExtra(4);
+        $Rbias2 = (float)$this->getExtra(5);
+
+        $A  = $this->getTwosCompliment($A, 32);
+        $A  /= $this->gain(1);
+        $A  *= $this->gain(0);
+        $C1 = $this->inputBiasCompensation(1.0, $Rin1, $Rbias1);
+        $C2 = $this->inputBiasCompensation(1.0, $Rin2, $Rbias2);
+        if ($C2 == 0) {
+            return null;
+        }
+        $A = ($A * $C1)/ $C2;
+        $P = $A * $R;
+
+        return round($P, $this->get("maxDecimals"));
+    }
+    /**
+    * Changes a raw reading into a output value
+    *
+    * @param float $deltaT The time delta in seconds between this record
+    * @param array &$data  The data from the other sensors that were crunched
+    * @param mixed $prev   The previous value for this sensor
+    *
+    * @return mixed The value in whatever the units are in the sensor
+    *
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function getCalcImpedance(
         $deltaT = 0, &$data = array(), $prev = null
     ) {
         /* Impedance */
@@ -297,10 +377,10 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         $ret[1]["value"] = $this->getVoltage(
             $A, $deltaT, $ret, $prev
         );
-        $ret[2]["value"] = $this->getPower(
+        $ret[2]["value"] = $this->getCalcPower(
             $deltaT, $ret, $prev
         );
-        $ret[3]["value"] = $this->getImpedance(
+        $ret[3]["value"] = $this->getCalcImpedance(
             $deltaT, $ret, $prev
         );
         return $ret;

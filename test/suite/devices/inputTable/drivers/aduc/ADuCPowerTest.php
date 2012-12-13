@@ -721,6 +721,63 @@ class ADuCPowerTest extends DriverTestBaseADuC
                     ),
                 ),
             ),
+            array( // #6
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(),
+                        ),
+                    ),
+                ),
+                "4002000040480000",
+                1,
+                array(),
+                array(),
+                array(
+                    array(
+                        "value" => 0.000181,
+                        "decimals" => 6,
+                        "units" => "A",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'A',
+                        "unitType" => "Current",
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "index" => 0,
+                    ),
+                    array(
+                        "value" => 0.267233,
+                        "decimals" => 6,
+                        "units" => "V",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'V',
+                        "unitType" => "Voltage",
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "index" => 1,
+                    ),
+                    array(
+                        "value" => 0.000048,
+                        "decimals" => 6,
+                        "units" => "W",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'W',
+                        "unitType" => "Power",
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "index" => 2,
+                    ),
+                    array(
+                        "value" => 1476.425414,
+                        "decimals" => 6,
+                        "units" => "Ohms",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'Ohms',
+                        "unitType" => "Impedance",
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "index" => 3,
+                    ),
+                ),
+            ),
         );
     }
     /**
@@ -850,6 +907,133 @@ class ADuCPowerTest extends DriverTestBaseADuC
         $ret = $this->o->encodeData($A, $channel);
         $this->assertEquals($expect, $ret, 0.00001);
     }
+    /**
+     * Data provider for testGetReading
+     *
+     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     *
+     * @return array
+     */
+    public static function dataGetPower()
+    {
+        return array(
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(),
+                        ),
+                    ),
+                ),
+                null,
+                1,
+                array(),
+                array(),
+                null
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(),
+                        ),
+                    ),
+                ),
+                0x11251000,
+                1,
+                array(),
+                array(),
+                0.001308
+            ),
+        );
+    }
+    /**
+    * Generic function for testing sensor routines
+    *
+    * This is called by using parent::sensorTest()
+    *
+    * @param array $sensor The sensor data array
+    * @param mixed $A      Data for the sensor to work on
+    * @param float $deltaT The time differenct
+    * @param array $data   The data array being built
+    * @param array $prev   The previous record
+    * @param mixed $expect The return data to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataGetPower()
+    */
+    public function testGetPower($sensor, $A, $deltaT, $data, $prev, $expect)
+    {
+        $sen = new \HUGnet\DummyBase("Sensor");
+        $sen->resetMock($sensor);
+        $ret = $this->o->getPower($A, $deltaT, $data, $prev);
+        $this->assertEquals($expect, $ret, 0.00001);
+    }
+    /**
+     * Data provider for testGetReading
+     *
+     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     *
+     * @return array
+     */
+    public static function dataGetImpedance()
+    {
+        return array(
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(),
+                        ),
+                    ),
+                ),
+                null,
+                1,
+                array(),
+                array(),
+                null
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(),
+                        ),
+                    ),
+                ),
+                (0x4804 / 0x204),
+                1,
+                array(),
+                array(),
+                1606.818182
+            ),
+        );
+    }
+    /**
+    * Generic function for testing sensor routines
+    *
+    * This is called by using parent::sensorTest()
+    *
+    * @param array $sensor The sensor data array
+    * @param mixed $A      Data for the sensor to work on
+    * @param float $deltaT The time differenct
+    * @param array $data   The data array being built
+    * @param array $prev   The previous record
+    * @param mixed $expect The return data to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataGetImpedance()
+    */
+    public function testGetImpedance($sensor, $A, $deltaT, $data, $prev, $expect)
+    {
+        $sen = new \HUGnet\DummyBase("Sensor");
+        $sen->resetMock($sensor);
+        $ret = $this->o->getImpedance($A, $deltaT, $data, $prev);
+        $this->assertEquals($expect, $ret, 0.00001);
+    }
+
     /**
     * data provider for testDeviceID
     *
