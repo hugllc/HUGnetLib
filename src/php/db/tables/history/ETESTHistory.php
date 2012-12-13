@@ -57,7 +57,7 @@ class ETESTHistory extends \HUGnet\db\History
     /** @var string This is the table we should use */
     public $sqlTable = "eTEST_history";
     /** @var This is the dataset */
-    public $datacols = 20;
+    public $datacols = 30;
 
     /******************************************************************
      ******************************************************************

@@ -73,6 +73,9 @@ class ETEST extends EVIRTUAL
         "job"  => "sense",
         "actionClass" => "ActionVirtual",
         "arch" => "virtual",
+        "InputTables" => 20,
+        "OutputTables" => 0,
+        "ProcessTables" => 0,
     );
 
 }

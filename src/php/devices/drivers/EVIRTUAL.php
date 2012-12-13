@@ -72,6 +72,9 @@ class EVIRTUAL extends \HUGnet\devices\Driver
         "job"  => "calculate",
         "actionClass" => "ActionVirtual",
         "arch" => "virtual",
+        "InputTables" => 20,
+        "OutputTables" => 0,
+        "ProcessTables" => 0,
     );
     /**
     * Checks a record to see if it needs fixing

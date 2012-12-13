@@ -148,7 +148,7 @@ class ETESTHistoryTest extends HistoryTestBase
     */
     public function testDatacols()
     {
-        $this->assertSame(20, $this->o->datacols);
+        $this->assertSame(30, $this->o->datacols);
     }
 
 }
