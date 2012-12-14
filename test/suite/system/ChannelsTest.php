@@ -113,6 +113,18 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
         Channels::factory($test, $test2);
     }
     /**
+    * This tests the exception when a system object is not passed
+    *
+    * @return null
+    */
+    public function testSystem()
+    {
+        $dev = new \HUGnet\DummyBase("Device");
+        $sys = new \HUGnet\DummyBase("System");
+        $obj = Channels::factory($sys, $dev);
+        $this->assertSame($sys, $obj->system());
+    }
+    /**
     * Data provider for testCreate
     *
     * @return array
@@ -232,6 +244,76 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
                     "converted" => true,
                     "Data0" => 1,
                     "Data1" => 20.0,
+                    "Data2" => null,
+                ),
+            ),
+            array(
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "totalSensors" => 3,
+                            "channels" => array(
+                                array(
+                                    "units" => "bar",
+                                    "decimals" => 4,
+                                ),
+                                array(
+                                    "units" => "%",
+                                    "decimals" => 4,
+                                ),
+                                array(
+                                    "units" => "%",
+                                    "decimals" => 4,
+                                ),
+                            ),
+                        ),
+                        "input" => array(
+                            "0" => new \HUGnet\DummyTable("Sensor0"),
+                            "1" => new \HUGnet\DummyTable("Sensor1"),
+                            "2" => new \HUGnet\DummyTable("Sensor2"),
+                        ),
+                    ),
+                    "Sensor0" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Pressure",
+                                "storageUnit" => "psi",
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                            ),
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Percent",
+                                "storageUnit" => "decimal",
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                            ),
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Percent",
+                                "storageUnit" => "decimal",
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    "converted" => true,
+                    "Data0" => 14.5037744,
+                    "Data1" => 0.20,
+                    "Data2" => null,
+                ),
+                array(
+                    "converted" => true,
+                    "Data0" => 14.5037744,
+                    "Data1" => 0.20,
                     "Data2" => null,
                 ),
             ),
@@ -360,33 +442,23 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
                 false,
                 array(
                     array(
-                        "storageUnit" => "&#176;C",
                         "units" => "&#176;C",
-                        "unitType" => "Temperature",
                         "label" => "Output 0",
                     ),
                     array(
-                        "storageUnit" => "&#176;C",
                         "units" => "&#176;C",
-                        "unitType" => "Temperature",
                         "label" => "Output 1",
                     ),
                     array(
-                        "storageUnit" => "&#176;C",
                         "units" => "&#176;C",
-                        "unitType" => "Temperature",
                         "label" => "Output 2",
                     ),
                     array(
-                        "storageUnit" => "&#176;C",
                         "units" => "&#176;C",
-                        "unitType" => "Temperature",
                         "label" => "Output 3",
                     ),
                     array(
-                        "storageUnit" => "&#176;C",
                         "units" => "&#176;C",
-                        "unitType" => "Temperature",
                         "label" => "Output 4",
                     ),
                 ),
@@ -518,7 +590,6 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
                         "storageUnit" => "&#176;C",
                         "units" => "&#176;C",
                         "unitType" => "Temperature",
-                        "label" => "Output 1",
                     ),
                     array(
                         "storageUnit" => "&#176;C",
@@ -539,7 +610,7 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
                         "label" => "Output 4",
                     ),
                 ),
-                false,
+                true,
                 array(
                     array(
                         "storageUnit" => "&#176;C",
@@ -552,18 +623,30 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
                             => \HUGnet\devices\datachan\Driver::TYPE_DIFF,
                         "index" => 0,
                         "input" => 0,
+                        "channel" => 0,
+                        'validUnits' => array(
+                           '&#176;F' => '&#176;F',
+                           '&#176;C' => '&#176;C',
+                           'K' => 'K',
+                        ),
                     ),
                     array(
                         "storageUnit" => "&#176;C",
                         "units" => "&#176;C",
                         "unitType" => "Temperature",
-                        "label" => "Output 1",
+                        "label" => "Data Channel 1",
                         "maxDecimals" => 4,
                         "decimals" => 4,
                         "dataType"
                             => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "index" => 0,
                         "input" => 1,
+                        "channel" => 1,
+                        'validUnits' => array(
+                           '&#176;F' => '&#176;F',
+                           '&#176;C' => '&#176;C',
+                           'K' => 'K',
+                        ),
                     ),
                     array(
                         "storageUnit" => "&#176;C",
@@ -576,6 +659,12 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
                             => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "index" => 0,
                         "input" => 2,
+                        "channel" => 2,
+                        'validUnits' => array(
+                           '&#176;F' => '&#176;F',
+                           '&#176;C' => '&#176;C',
+                           'K' => 'K',
+                        ),
                     ),
                     array(
                         "storageUnit" => "&#176;C",
@@ -588,6 +677,12 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
                             => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "index" => 0,
                         "input" => 3,
+                        "channel" => 3,
+                        'validUnits' => array(
+                           '&#176;F' => '&#176;F',
+                           '&#176;C' => '&#176;C',
+                           'K' => 'K',
+                        ),
                     ),
                     array(
                         "storageUnit" => "&#176;C",
@@ -600,6 +695,12 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
                             => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "index" => 0,
                         "input" => 4,
+                        "channel" => 4,
+                        'validUnits' => array(
+                           '&#176;F' => '&#176;F',
+                           '&#176;C' => '&#176;C',
+                           'K' => 'K',
+                        ),
                     ),
                 ),
             ),
@@ -626,6 +727,162 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
         $obj = Channels::factory($sys, $dev, $channels);
         $ret = $obj->toArray($default);
         $this->assertEquals($expect, $ret);
+        unset($obj);
+    }
+    /**
+    * Data provider for testGetField
+    *
+    * @return array
+    */
+    public static function dataStore()
+    {
+        return array(
+            array(   // #0
+                array(
+                ),
+                array(
+                ),
+                array(
+                    array(
+                        "channels",
+                        json_encode(array()),
+                    ),
+                ),
+            ),
+            array(  // #1
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "totalSensors" => 5,
+                            "channels" => json_encode(
+                                array(
+                                    array(
+                                        "label" => "Output 0",
+                                    ),
+                                    array(
+                                        "label" => "Output 1",
+                                    ),
+                                    array(
+                                        "label" => "Output 2",
+                                    ),
+                                    array(
+                                        "label" => "Output 3",
+                                    ),
+                                    array(
+                                        "label" => "Output 4",
+                                    ),
+                                )
+                            ),
+                        ),
+                        "input" => array(
+                            '0' => new DummyTable("Sensor0"),
+                            '1' => new DummyTable("Sensor1"),
+                            '2' => new DummyTable("Sensor2"),
+                            '3' => new DummyTable("Sensor3"),
+                            '4' => new DummyTable("Sensor4"),
+                        ),
+
+                    ),
+                    "Sensor0" => array(
+                        "channels" => array(
+                            array(
+                                "storageUnit" => "&#176;C",
+                                "units" => "&#176;C",
+                                "unitType" => "Temperature",
+                            ),
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "channels" => array(
+                            array(
+                                "storageUnit" => "&#176;C",
+                                "units" => "&#176;C",
+                                "unitType" => "Temperature",
+                            ),
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "channels" => array(
+                            array(
+                                "storageUnit" => "&#176;C",
+                                "units" => "&#176;C",
+                                "unitType" => "Temperature",
+                            ),
+                        ),
+                    ),
+                    "Sensor3" => array(
+                        "channels" => array(
+                            array(
+                                "storageUnit" => "&#176;C",
+                                "units" => "&#176;C",
+                                "unitType" => "Temperature",
+                            ),
+                        ),
+                    ),
+                    "Sensor4" => array(
+                        "channels" => array(
+                            array(
+                                "storageUnit" => "&#176;C",
+                                "units" => "&#176;C",
+                                "unitType" => "Temperature",
+                            ),
+                        ),
+                    ),
+                ),
+                null,
+                array(
+                    array(
+                        "channels",
+                        json_encode(
+                            array(
+                                array(
+                                    "units" => "&#176;C",
+                                    "label" => "Output 0",
+                                ),
+                                array(
+                                    "units" => "&#176;C",
+                                    "label" => "Output 1",
+                                ),
+                                array(
+                                    "units" => "&#176;C",
+                                    "label" => "Output 2",
+                                ),
+                                array(
+                                    "units" => "&#176;C",
+                                    "label" => "Output 3",
+                                ),
+                                array(
+                                    "units" => "&#176;C",
+                                    "label" => "Output 4",
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array $config   The configuration to use
+    * @param array $channels The channels to give it
+    * @param mixed $expect   The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataStore
+    */
+    public function testStore(
+        $config, $channels, $expect
+    ) {
+        $sys = new DummySystem("System");
+        $dev = new DummyTable("Device");
+        $sys->resetMock($config);
+        $obj = Channels::factory($sys, $dev, $channels);
+        $obj->store();
+        $ret = $sys->retrieve("Device");
+        $this->assertEquals($expect, $ret["set"]);
         unset($obj);
     }
 

@@ -740,7 +740,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 'K' => 'K'
                             ),
                             'channel' => 0,
-                            'label' => '',
+                            'label' => 'Data Channel 0',
                             "index" => 0,
                         ),
                         1 => array(
@@ -757,7 +757,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 'K' => 'K'
                             ),
                             'channel' => 1,
-                            'label' => '',
+                            'label' => 'Data Channel 1',
                             "index" => 0,
                         ),
                         2 => array(
@@ -774,7 +774,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 'K' => 'K'
                             ),
                             'channel' => 2,
-                            'label' => '',
+                            'label' => 'Data Channel 2',
                             "index" => 0,
                         ),
                         3 => array(
@@ -791,7 +791,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 'K' => 'K'
                             ),
                             'channel' => 3,
-                            'label' => '',
+                            'label' => 'Data Channel 3',
                             "index" => 0,
                         ),
                         4 => array(
@@ -808,7 +808,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 'K' => 'K'
                             ),
                             'channel' => 4,
-                            'label' => '',
+                            'label' => 'Data Channel 4',
                             "index" => 0,
                         ),
                         5 => array(
@@ -825,7 +825,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 'K' => 'K'
                             ),
                             'channel' => 5,
-                            'label' => '',
+                            'label' => 'Data Channel 5',
                             "index" => 0,
                         ),
                         6 => array(
@@ -842,7 +842,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 'K' => 'K'
                             ),
                             'channel' => 6,
-                            'label' => '',
+                            'label' => 'Data Channel 6',
                             "index" => 0,
                         ),
                         7 => array(
@@ -859,7 +859,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 'K' => 'K'
                             ),
                             'channel' => 7,
-                            'label' => '',
+                            'label' => 'Data Channel 7',
                             "index" => 0,
                         ),
                         8 => array(
@@ -876,7 +876,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 'K' => 'K'
                             ),
                             'channel' => 8,
-                            'label' => '',
+                            'label' => 'Data Channel 8',
                             "index" => 0,
                         ),
                         9 => array(
@@ -893,7 +893,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 'K' => 'K'
                             ),
                             'channel' => 9,
-                            'label' => '',
+                            'label' => 'Data Channel 9',
                             "index" => 0,
                         ),
                         10 => array(
@@ -910,7 +910,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 'K' => 'K'
                             ),
                             'channel' => 10,
-                            'label' => '',
+                            'label' => 'Data Channel 10',
                             "index" => 0,
                         ),
                         11 => array(
@@ -927,7 +927,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 'K' => 'K'
                             ),
                             'channel' => 11,
-                            'label' => '',
+                            'label' => 'Data Channel 11',
                             "index" => 0,
                         ),
                         12 => array(
@@ -944,7 +944,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 'K' => 'K'
                             ),
                             'channel' => 12,
-                            'label' => '',
+                            'label' => 'Data Channel 12',
                             "index" => 0,
                         ),
                     ),

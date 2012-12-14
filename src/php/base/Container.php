@@ -94,6 +94,13 @@ abstract class Container
         return $this->_system;
     }
     /**
+    * This is the destructor
+    */
+    public function __destruct()
+    {
+        unset($this->_system);
+    }
+    /**
     * Overload the set attribute
     *
     * @param string $name  This is the attribute to set

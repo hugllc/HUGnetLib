@@ -41,6 +41,8 @@ namespace HUGnet;
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our base class */
 require_once dirname(__FILE__)."/../base/SystemTableBase.php";
+/** This is our base class */
+require_once dirname(__FILE__)."/../devices/DataChan.php";
 
 
 /**
@@ -68,6 +70,8 @@ class Channels
     private $_channels = array();
     /** @var array The configuration that we are going to use */
     private $_system = null;
+    /** @var array The configuration that we are going to use */
+    private $_setable = array("units", "label", "decimals", "dataType");
 
     /**
     * This sets up the basic parts of the object for us when we create it
@@ -93,9 +97,10 @@ class Channels
         $this->_system = &$system;
         $this->_device = &$device;
         $sensors = $this->_device->get("totalSensors");
+        $chans = array();
         for ($i = 0; $i < $sensors; $i++) {
-            $this->_channels = array_merge(
-                $this->_channels, $this->_device->input($i)->channels()
+            $chans = array_merge(
+                $chans, $this->_device->input($i)->channels()
             );
         }
         if (!is_string($channels) && !is_array($channels)) {
@@ -104,16 +109,13 @@ class Channels
         if (is_string($channels)) {
             $channels = json_decode($channels, true);
         }
-        $move = array("units", "label", "decimals", "dataType");
-        foreach (array_keys($this->_channels) as $chan) {
-            if (is_array($channels[$chan])) {
-                foreach ($move as $key) {
-                    if (isset($channels[$chan][$key])) {
-                        $this->_channels[$chan][$key] = $channels[$chan][$key];
-                    }
-                }
-            }
-            $this->check($chan);
+        foreach (array_keys($chans) as $chan) {
+            $chans[$chan]["label"] = "Data Channel $chan";
+            $this->_channels[$chan] = \HUGnet\devices\DataChan::factory(
+                $device,
+                $chans[$chan],
+                $channels[$chan]
+            );
         }
     }
     /**
@@ -133,6 +135,17 @@ class Channels
     /**
     * Throws an exception
     *
+    * @param int $chan The data channel to get
+    *
+    * @return null
+    */
+    public function dataChannel($chan)
+    {
+        return $this->_channels[$chan];
+    }
+    /**
+    * Throws an exception
+    *
     * @param array &$record The record to convert
     *
     * @return null
@@ -143,15 +156,8 @@ class Channels
             return;
         }
         foreach (array_keys($this->_channels) as $chan) {
-            $data = $record["Data".$chan];
-            $this->units($chan)->convert(
-                $data,
-                $this->_channels[$chan]["units"],
-                $this->_channels[$chan]["storageUnit"],
-                $this->_channels[$chan]["storageType"]
-            );
-            $record["Data".$chan] = round(
-                $data, $this->_channels[$chan]['decimals']
+            $this->dataChannel($chan)->convert(
+                $record["Data".$chan]
             );
         }
         $record["converted"] = true;
@@ -174,11 +180,12 @@ class Channels
     */
     public function toArray($default = true)
     {
-        $ret = (array)$this->_channels;
-        if ($default) {
-            foreach (array_keys($ret) as $key) {
+        $ret = array();
+        foreach (array_keys($this->_channels) as $key) {
+            $ret[$key] = $this->dataChannel($key)->toArray($default);
+            if ($default) {
                 $ret[$key]["channel"] = $key;
-                $ret[$key]["validUnits"] = $this->units($key)->getValid();
+                $ret[$key]["validUnits"] = $this->dataChannel($key)->validUnits();
             }
         }
         return $ret;
@@ -191,48 +198,9 @@ class Channels
     */
     public function store()
     {
-        $ret = array();
-        foreach (array_keys($this->_channels) as $key) {
-            $ret[$key] = array();
-            foreach (array("label", "units", "decimals") as $field) {
-                $ret[$key][$field] = $this->_channels[$key][$field];
-            }
-        }
+        $ret = $this->toArray(false);
         return $this->_device->set("channels", json_encode($ret));
 
-    }
-    /**
-    * This creates the units driver
-    *
-    * @param int $index The index of the units to return
-    *
-    * @return object
-    */
-    protected function check($index)
-    {
-        $chan = &$this->_channels[$index];
-        if (!$this->units($index)->valid($chan["units"])) {
-            $chan["units"] = $chan["storageUnit"];
-        }
-        if ($chan["decimals"] > $chan["maxDecimals"]) {
-            $chan["decimals"] = $chan["maxDecimals"];
-        }
-    }
-    /**
-    * This creates the units driver
-    *
-    * @param int $index The index of the units to return
-    *
-    * @return object
-    */
-    protected function &units($index)
-    {
-        include_once dirname(__FILE__)."/../devices/datachan/Driver.php";
-        $units = \HUGnet\devices\datachan\Driver::factory(
-            $this->_channels[$index]["unitType"],
-            $this->_channels[$index]["storageUnit"]
-        );
-        return $units;
     }
 
 }
