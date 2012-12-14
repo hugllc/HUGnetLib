@@ -1685,6 +1685,23 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         unset($obj);
     }
     /**
+    * This tests the object creation
+    *
+    * @return null
+    */
+    public function testDataChannel()
+    {
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = Device::factory($sys, null, $class);
+        $sen = $obj->dataChannel(0);
+        $this->assertInstanceOf(
+            "\\HUGnet\\devices\\DataChan",
+            $sen
+        );
+        unset($obj);
+    }
+    /**
     * Data provider for testHistoryFactory
     *
     * @return array
