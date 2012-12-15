@@ -438,7 +438,7 @@ class Device extends \HUGnet\base\SystemTableAction
     *
     * @return string
     */
-    public function &historyFactory($data, $history = true)
+    public function &historyFactory($data = array(), $history = true)
     {
         $class = $this->driver()->historyTable($history);
         $obj = $this->system()->table($class, $data);
