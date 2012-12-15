@@ -73,6 +73,9 @@ class E00393802 extends \HUGnet\devices\Driver
         "type" => "bootloader",
         "job"  => "load",
         "arch" => "bootloader",
+        "InputTables" => 0,
+        "OutputTables" => 0,
+        "ProcessTables" => 0,
     );
 
 }
