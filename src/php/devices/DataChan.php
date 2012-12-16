@@ -184,7 +184,7 @@ class DataChan
         return $this->_units()->getValid();
     }
     /**
-    * Throws an exception
+    * Does unit conversions
     *
     * @param array &$data The data to convert
     *
@@ -199,6 +199,29 @@ class DataChan
             $this->get("storageType")
         );
         $data = round($data, $this->get('decimals'));
+    }
+    /**
+    * Encodes data for this channel
+    *
+    * @param array $data The data to convert
+    *
+    * @return null
+    */
+    public function encode($data)
+    {
+        return $this->input()->encodeData(
+            $data,
+            $this->get("index")
+        );
+    }
+    /**
+    * Returns the input object associated with this channel
+    *
+    * @return null
+    */
+    public function input()
+    {
+        return $this->_device->input($this->get("input"));
     }
     /**
     * Checks for consistancy
@@ -216,8 +239,6 @@ class DataChan
     }
     /**
     * This creates the units driver
-    *
-    * @param int $index The index of the units to return
     *
     * @return object
     */
