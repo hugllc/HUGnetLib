@@ -40,7 +40,7 @@
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-HUGnet.DeviceInput = Backbone.Model.extend({
+HUGnet.DeviceOutput = Backbone.Model.extend({
     defaults:
     {
         dev: null,
@@ -77,9 +77,9 @@ HUGnet.DeviceInput = Backbone.Model.extend({
             dataType: 'json',
             data:
             {
-                "task": "deviceinput",
+                "task": "deviceoutput",
                 "action": "get",
-                "id": parseInt(dev, 10).toString(16)+"."+this.get("input"),
+                "id": parseInt(dev, 10).toString(16)+"."+this.get("output"),
                 "sid": this.get("input")
             }
         }).done(
@@ -119,9 +119,9 @@ HUGnet.DeviceInput = Backbone.Model.extend({
             cache: false,
             dataType: 'json',
             data: {
-                "task": "deviceinput",
+                "task": "deviceoutput",
                 "action": "put",
-                "id": parseInt(dev, 10).toString(16)+"."+this.get("input"),
+                "id": parseInt(dev, 10).toString(16)+"."+this.get("output"),
                 "data": data
             }
         }).done(
@@ -157,12 +157,12 @@ HUGnet.DeviceInput = Backbone.Model.extend({
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-HUGnet.DeviceInputs = Backbone.Collection.extend({
+HUGnet.DeviceOutputs = Backbone.Collection.extend({
     url: '/HUGnetLib/HUGnetLibAPI.php',
-    model: HUGnet.DeviceInput,
+    model: HUGnet.DeviceOutput,
     comparator: function (model)
     {
-        return parseInt(model.get("input"), 10);
+        return parseInt(model.get("output"), 10);
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device

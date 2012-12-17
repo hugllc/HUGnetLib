@@ -47,13 +47,15 @@ var DevicePropertiesView = Backbone.View.extend({
     events: {
         'click .SaveDevice': 'save',
         'click .inputList': 'inputList',
+        'click .outputList': 'outputList',
+        'click .processList': 'processList',
         'submit #inputForm': 'saveInput',
         'change #inputForm select': 'saveInput'
     },
     initialize: function (options)
     {
         this.inputsmodel = new HUGnet.DeviceInputs();
-        var inputs = this.model.get('sensors');
+        var inputs = this.model.get('inputs');
         this.inputsmodel.reset(inputs);
         this.inputs = new HUGnet.DeviceInputsView({
             model: this.inputsmodel
@@ -67,6 +69,40 @@ var DevicePropertiesView = Backbone.View.extend({
             },
             this
         );
+
+        this.outputsmodel = new HUGnet.DeviceOutputs();
+        var outputs = this.model.get('outputs');
+        this.outputsmodel.reset(outputs);
+        this.outputs = new HUGnet.DeviceOutputsView({
+            model: this.outputsmodel
+        });
+        this.outputsmodel.on(
+            'change',
+            function (model, collection, view)
+            {
+                this.model.set('outputs', this.outputsmodel.toJSON());
+                this.model.fetch();
+            },
+            this
+        );
+
+        this.processesmodel = new HUGnet.DeviceProcesses();
+        var processes = this.model.get('processes');
+        this.processesmodel.reset(processes);
+        this.processes = new HUGnet.DeviceProcessesView({
+            model: this.processesmodel
+        });
+        this.processesmodel.on(
+            'change',
+            function (model, collection, view)
+            {
+                this.model.set('processes', this.processesmodel.toJSON());
+                this.model.fetch();
+            },
+            this
+        );
+
+
         this.channelsmodel = new HUGnet.DeviceChannels();
         var channels = this.model.get('channels');
         this.channelsmodel.reset(channels);
@@ -101,6 +137,22 @@ var DevicePropertiesView = Backbone.View.extend({
         this.popup(
             view,
             "Inputs for device " + this.model.get('id').toString(16).toUpperCase()
+        );
+    },
+    outputList: function ()
+    {
+        var view = new HUGnet.DeviceOutputsView({ model: this.outputsmodel });
+        this.popup(
+            view,
+            "Outputs for device " + this.model.get('id').toString(16).toUpperCase()
+        );
+    },
+    processList: function ()
+    {
+        var view = new HUGnet.DeviceProcessesView({ model: this.processesmodel });
+        this.popup(
+            view,
+            "Processes for device " + this.model.get('id').toString(16).toUpperCase()
         );
     },
     save: function (e)

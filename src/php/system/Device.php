@@ -142,11 +142,19 @@ class Device extends \HUGnet\base\SystemTableAction
             $return["params"] = (array)json_decode($return["params"], true);
         }
         if ($default) {
-            $return["sensors"] = array();
-            for ($i = 0; $i < $return["totalSensors"]; $i++) {
-                $return["sensors"][$i] = $this->input($i)->toArray();
+            $return["inputs"] = array();
+            for ($i = 0; $i < $return["InputTables"]; $i++) {
+                $return["inputs"][$i] = $this->input($i)->toArray();
             }
             $return["channels"] = $this->channels()->toArray(true);
+            $return["outputs"] = array();
+            for ($i = 0; $i < $return["OutputTables"]; $i++) {
+                $return["outputs"][$i] = $this->output($i)->toArray();
+            }
+            $return["processes"] = array();
+            for ($i = 0; $i < $return["ProcessTables"]; $i++) {
+                $return["processes"][$i] = $this->process($i)->toArray();
+            }
             if ($return["loadable"]) {
                 $this->firmware()->set("HWPartNum", $return["HWPartNum"]);
                 $this->firmware()->set("FWPartNum", $return["FWPartNum"]);
