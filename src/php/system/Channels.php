@@ -66,11 +66,13 @@ require_once dirname(__FILE__)."/../devices/DataChan.php";
  */
 class Channels
 {
-    /** @var array The configuration that we are going to use */
+    /** @var Channels objects are stored here */
     private $_channels = array();
-    /** @var array The configuration that we are going to use */
+    /** @var System is stored here */
     private $_system = null;
-    /** @var array The configuration that we are going to use */
+    /** @var Device is stored here */
+    private $_device = null;
+    /** @var These are the items that can be set by the user */
     private $_setable = array("units", "label", "decimals", "dataType");
 
     /**
@@ -96,7 +98,7 @@ class Channels
         );
         $this->_system = &$system;
         $this->_device = &$device;
-        $sensors = $this->_device->get("totalSensors");
+        $sensors = (int)$this->_device->get("InputTables");
         $chans = array();
         for ($i = 0; $i < $sensors; $i++) {
             $chans = array_merge(
@@ -112,7 +114,7 @@ class Channels
         foreach (array_keys($chans) as $chan) {
             $chans[$chan]["label"] = "Data Channel $chan";
             $this->_channels[$chan] = \HUGnet\devices\DataChan::factory(
-                $device,
+                $this->_device,
                 $chans[$chan],
                 $channels[$chan]
             );
@@ -141,7 +143,15 @@ class Channels
     */
     public function dataChannel($chan)
     {
-        return $this->_channels[$chan];
+        $chan = (int)$chan;
+        if (is_object($this->_channels[$chan])) {
+            return $this->_channels[$chan];
+        }
+        return \HUGnet\devices\DataChan::factory(
+            $this->_device,
+            array(),
+            array()
+        );
     }
     /**
     * Throws an exception

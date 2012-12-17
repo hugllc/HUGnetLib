@@ -138,7 +138,7 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("totalSensors"),
+                            array("InputTables"),
                             array("channels"),
                         ),
                     ),
@@ -181,7 +181,7 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            "totalSensors" => 3,
+                            "InputTables" => 3,
                             "channels" => array(
                                 array(
                                     "units" => "bar",
@@ -251,7 +251,7 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            "totalSensors" => 3,
+                            "InputTables" => 3,
                             "channels" => array(
                                 array(
                                     "units" => "bar",
@@ -362,7 +362,7 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            "totalSensors" => 5,
+                            "InputTables" => 5,
                             "channels" => json_encode(
                                 array(
                                     array(
@@ -467,7 +467,7 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            "totalSensors" => 5,
+                            "InputTables" => 5,
                             "channels" => json_encode(
                                 array(
                                     array(
@@ -753,7 +753,7 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            "totalSensors" => 5,
+                            "InputTables" => 5,
                             "channels" => json_encode(
                                 array(
                                     array(
