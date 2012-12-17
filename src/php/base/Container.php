@@ -258,9 +258,7 @@ abstract class Container
     public function fromAny($data)
     {
         if (is_string($data)) {
-            if ($this->fromString($data) === false) {
-                @$this->fromZip($data);
-            }
+            $this->fromString($data);
         } else if (is_array($data)) {
             $this->fromArray($data);
         }
@@ -275,34 +273,15 @@ abstract class Container
     public function fromString($string)
     {
         if (!empty($string)) {
-            $stuff = self::fromStringDecode($string);
+            $stuff = unserialize(base64_decode($string));
+            if (!is_array($stuff)) {
+                $stuff = json_decode($string, true);
+            }
         }
         if ($stuff) {
             $this->fromArray($stuff);
         }
         return (bool)$stuff;
-    }
-    /**
-    * Creates the object from a string
-    *
-    * @param string $string This is the raw string for the device
-    *
-    * @return array
-    */
-    static protected function fromStringDecode($string)
-    {
-        return unserialize(base64_decode($string));
-    }
-    /**
-    * Creates the object from a string
-    *
-    * @param array $array This is the array to encode
-    *
-    * @return string
-    */
-    static protected function toStringEncode($array)
-    {
-        return base64_encode(serialize($array));
     }
     /**
     * Returns the object as a string
@@ -313,35 +292,7 @@ abstract class Container
     */
     public function toString($default = true)
     {
-        return self::toStringEncode($this->toArray($default));
-    }
-    /**
-    * Creates the object from a string
-    *
-    * @param string $zip This is the raw string for the device
-    *
-    * @return null
-    */
-    public function fromZip($zip)
-    {
-        if (!empty($zip)) {
-            $stuff = unserialize(gzuncompress($zip));
-        }
-        if ($stuff) {
-            $this->fromArray($stuff);
-        }
-        return (bool) $stuff;
-    }
-    /**
-    * Returns the object as a string
-    *
-    * @param bool $default Return items set to their default?
-    *
-    * @return string
-    */
-    public function toZip($default = true)
-    {
-        return gzcompress(serialize($this->toArray($default)));
+        return json_encode($this->toArray($default));
     }
     /**
     * Returns the md5 hash of the object

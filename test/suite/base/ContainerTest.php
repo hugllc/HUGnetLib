@@ -572,14 +572,12 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
                     "Attrib6" => array("Two Element"),
                     "Attrib8" => 4.321,
                 ),
-                base64_encode(
-                    serialize(
-                        array(
-                            "Attrib1" => 10,
-                            "Attrib2" => "Hello",
-                            "Attrib3" => "Data",
-                            "Attrib4" => array("Hi"),
-                        )
+                json_encode(
+                    array(
+                        "Attrib1" => 10,
+                        "Attrib2" => "Hello",
+                        "Attrib3" => "Data",
+                        "Attrib4" => array("Hi"),
                     )
                 ),
             ),
@@ -592,14 +590,12 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
                     "Attrib6" => array("Two Element"),
                     "Attrib8" => 4.321,
                 ),
-                base64_encode(
-                    serialize(
-                        array(
-                            "Attrib1" => 10,
-                            "Attrib2" => "Hello",
-                            "Attrib3" => "Data",
-                            "Attrib4" => array("Hi"),
-                        )
+                json_encode(
+                    array(
+                        "Attrib1" => 10,
+                        "Attrib2" => "Hello",
+                        "Attrib3" => "Data",
+                        "Attrib4" => array("Hi"),
                     )
                 ),
             ),
@@ -614,14 +610,12 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
                     "Attrib7" => 1.15,
                     "Attrib8" => 9.95,
                 ),
-                base64_encode(
-                    serialize(
-                        array(
-                            "Attrib1" => 100,
-                            "Attrib2" => "Hello There",
-                            "Attrib3" => "Some Data",
-                            "Attrib4" => array("Hello Everyone"),
-                        )
+                json_encode(
+                    array(
+                        "Attrib1" => 100,
+                        "Attrib2" => "Hello There",
+                        "Attrib3" => "Some Data",
+                        "Attrib4" => array("Hello Everyone"),
                     )
                 ),
             ),
@@ -665,7 +659,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
                     "Attrib6" => array("Two Element"),
                     "Attrib8" => 4.321,
                 ),
-                "a04a8ebc79e7c01d0e5cf18aa1673102"
+                "8d6c4f5be65833c0a48ba98dbafff5cd"
             ),
             array(
                 array(
@@ -676,7 +670,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
                     "Attrib6" => array("Two Element"),
                     "Attrib8" => 4.321,
                 ),
-                "a04a8ebc79e7c01d0e5cf18aa1673102",
+                "8d6c4f5be65833c0a48ba98dbafff5cd",
             ),
             array(
                 array(
@@ -689,7 +683,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
                     "Attrib7" => 1.15,
                     "Attrib8" => 9.95,
                 ),
-                "fbcaed74fc7dd6ad1c9994fe098758a9",
+                "213a1a7b777472df269e077d96420f71",
             ),
         );
     }
@@ -853,6 +847,62 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
                     "Attrib4" => array("Hello Everyone"),
                 ),
             ),
+            array(
+                json_encode(
+                    array(
+                        "Attrib1" => 10,
+                        "Attrib2" => "Hello",
+                        "Attrib4" => array("Hi"),
+                        "Attrib5" => "Another string",
+                        "Attrib6" => array("Two Element"),
+                        "Attrib8" => 4.321,
+                    )
+                ),
+                array(
+                    "Attrib1" => 10,
+                    "Attrib2" => "Hello",
+                    "Attrib3" => "Data",
+                    "Attrib4" => array("Hi"),
+                ),
+            ),
+            array(
+                json_encode(
+                    array(
+                        "Attrib1" => 10,
+                        "Attrib2" => "Hello",
+                        "Attrib4" => array("Hi"),
+                        "Attrib5" => "Another string",
+                        "Attrib6" => array("Two Element"),
+                        "Attrib8" => 4.321,
+                    )
+                ),
+                array(
+                    "Attrib1" => 10,
+                    "Attrib2" => "Hello",
+                    "Attrib3" => "Data",
+                    "Attrib4" => array("Hi"),
+                ),
+            ),
+            array(
+                json_encode(
+                    array(
+                        "Attrib1" => 100,
+                        "Attrib2" => "Hello There",
+                        "Attrib3" => "Some Data",
+                        "Attrib4" => array("Hello Everyone"),
+                        "Attrib5" => "NonBlank String",
+                        "Attrib6" => array("Three Element"),
+                        "Attrib7" => 1.15,
+                        "Attrib8" => 9.95,
+                    )
+                ),
+                array(
+                    "Attrib1" => 100,
+                    "Attrib2" => "Hello There",
+                    "Attrib3" => "Some Data",
+                    "Attrib4" => array("Hello Everyone"),
+                ),
+            ),
         );
     }
     /**
@@ -877,189 +927,6 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-    * data provider for testFromZip
-    *
-    * @return array
-    */
-    public static function dataFromZip()
-    {
-        return array(
-            array(
-                gzcompress(
-                    serialize(
-                        array(
-                            "Attrib1" => 10,
-                            "Attrib2" => "Hello",
-                            "Attrib4" => array("Hi"),
-                            "Attrib5" => "Another string",
-                            "Attrib6" => array("Two Element"),
-                            "Attrib8" => 4.321,
-                        )
-                    )
-                ),
-                array(
-                    "Attrib1" => 10,
-                    "Attrib2" => "Hello",
-                    "Attrib3" => "Data",
-                    "Attrib4" => array("Hi"),
-                ),
-            ),
-            array(
-                gzcompress(
-                    serialize(
-                        array(
-                            "Attrib1" => 10,
-                            "Attrib2" => "Hello",
-                            "Attrib4" => array("Hi"),
-                            "Attrib5" => "Another string",
-                            "Attrib6" => array("Two Element"),
-                            "Attrib8" => 4.321,
-                        )
-                    )
-                ),
-                array(
-                    "Attrib1" => 10,
-                    "Attrib2" => "Hello",
-                    "Attrib3" => "Data",
-                    "Attrib4" => array("Hi"),
-                ),
-            ),
-            array(
-                gzcompress(
-                    serialize(
-                        array(
-                            "Attrib1" => 100,
-                            "Attrib2" => "Hello There",
-                            "Attrib3" => "Some Data",
-                            "Attrib4" => array("Hello Everyone"),
-                            "Attrib5" => "NonBlank String",
-                            "Attrib6" => array("Three Element"),
-                            "Attrib7" => 1.15,
-                            "Attrib8" => 9.95,
-                        )
-                    )
-                ),
-                array(
-                    "Attrib1" => 100,
-                    "Attrib2" => "Hello There",
-                    "Attrib3" => "Some Data",
-                    "Attrib4" => array("Hello Everyone"),
-                ),
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $string The array to use to build it
-    * @param array  $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataFromZip
-    */
-    public function testFromZip($string, $expect)
-    {
-        $this->o->fromZip($string);
-        $this->assertSame(
-            $expect,
-            $this->o->toArray()
-        );
-    }
-    /**
-    * data provider for testToZip
-    *
-    * @return array
-    */
-    public static function dataToZip()
-    {
-        return array(
-            array(
-                array(
-                    "Attrib1" => 10,
-                    "Attrib2" => "Hello",
-                    "Attrib4" => array("Hi"),
-                    "Attrib5" => "Another string",
-                    "Attrib6" => array("Two Element"),
-                    "Attrib8" => 4.321,
-                ),
-                gzcompress(
-                    serialize(
-                        array(
-                            "Attrib1" => 10,
-                            "Attrib2" => "Hello",
-                            "Attrib3" => "Data",
-                            "Attrib4" => array("Hi"),
-                        )
-                    )
-                ),
-            ),
-            array(
-                array(
-                    "Attrib1" => 10,
-                    "Attrib2" => "Hello",
-                    "Attrib4" => array("Hi"),
-                    "Attrib5" => "Another string",
-                    "Attrib6" => array("Two Element"),
-                    "Attrib8" => 4.321,
-                ),
-                gzcompress(
-                    serialize(
-                        array(
-                            "Attrib1" => 10,
-                            "Attrib2" => "Hello",
-                            "Attrib3" => "Data",
-                            "Attrib4" => array("Hi"),
-                        )
-                    )
-                ),
-            ),
-            array(
-                array(
-                    "Attrib1" => 100,
-                    "Attrib2" => "Hello There",
-                    "Attrib3" => "Some Data",
-                    "Attrib4" => array("Hello Everyone"),
-                    "Attrib5" => "NonBlank String",
-                    "Attrib6" => array("Three Element"),
-                    "Attrib7" => 1.15,
-                    "Attrib8" => 9.95,
-                ),
-                gzcompress(
-                    serialize(
-                        array(
-                            "Attrib1" => 100,
-                            "Attrib2" => "Hello There",
-                            "Attrib3" => "Some Data",
-                            "Attrib4" => array("Hello Everyone"),
-                        )
-                    )
-                ),
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array  $preload Data to preload
-    * @param string $expect  The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataToZip
-    */
-    public function testToZip($preload, $expect)
-    {
-        $obj = &HUGnetContainerTestClass::factory(
-            $this->system, $preload, "HUGnetContainerTestClass"
-        );
-        $ret = $obj->toZip();
-        $this->assertSame(
-            $expect,
-            $ret
-        );
-    }
     /**
     * data provider for testDeviceID
     *
@@ -1104,26 +971,6 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 base64_encode(
-                    serialize(
-                        array(
-                            "Attrib1" => 10,
-                            "Attrib2" => "Hello",
-                            "Attrib4" => array("Hi"),
-                            "Attrib5" => "Another string",
-                            "Attrib6" => array("Two Element"),
-                            "Attrib8" => 4.321,
-                        )
-                    )
-                ),
-                array(
-                    "Attrib1" => 10,
-                    "Attrib2" => "Hello",
-                    "Attrib3" => "Data",
-                    "Attrib4" => array("Hi"),
-                ),
-            ),
-            array(
-                gzcompress(
                     serialize(
                         array(
                             "Attrib1" => 10,
