@@ -316,7 +316,6 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
     *
     * @dataProvider dataFreq
     */
-    /*
     public function testFreq($mock, $preload, $expect)
     {
         $sensor = new \HUGnet\DummyTable("Sensor");
@@ -325,7 +324,6 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
         $ret = $obj->freq();
         $this->assertEquals($expect, $ret, 0.0001);
     }
-    */
     /**
     * Data provider for testRemove
     *

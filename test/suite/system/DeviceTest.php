@@ -879,6 +879,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             'label' => 'Data Channel 8',
                             "index" => 0,
                         ),
+                        /*
                         9 => array(
                             'decimals' => 2,
                             'units' => '&#176;C',
@@ -947,6 +948,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             'label' => 'Data Channel 12',
                             "index" => 0,
                         ),
+                        */
                     ),
                 )
             ),

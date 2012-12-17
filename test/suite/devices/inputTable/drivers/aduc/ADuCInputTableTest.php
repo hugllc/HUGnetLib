@@ -518,6 +518,115 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                     ),
                 ),
             ),
+            array( // #2 Test extra[0] not set, but found
+                array(
+                    "Device" => array(
+                        "sensor" => new \HUGnet\DummyBase("Sensor"),
+                    ),
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(1 => 2, 2 => 3),
+                        ),
+                    ),
+                    "Table" => array(
+                        "toArray" => array(
+                            'driver0' => 255,
+                            'driver1' => 255,
+                            'priority' => 0,
+                            'process' => 0,
+                            'ADC0EN' => 1,
+                            'ADC0DIAG' => 0,
+                            'HIGHEXTREF0' => 0,
+                            'AMP_CM' => 0,
+                            'ADC0CODE' => 0,
+                            'ADC0CH' => 3,
+                            'ADC0REF' => 0,
+                            'ADC0PGA' => 0,
+                            'ADC1EN' => 1,
+                            'ADC1DIAG' => 0,
+                            'HIGHEXTREF1' => 0,
+                            'ADC1CODE' => 0,
+                            'ADC1CH' => 12,
+                            'ADC1REF' => 0,
+                            'BUF_BYPASS' => 0,
+                            'ADC1PGA' => 0,
+                            'CHOPEN' => 1,
+                            'RAVG2' => 0,
+                            'AF' => 0,
+                            'NOTCH2' => 0,
+                            'SF' => 9,
+                        ),
+                        "selectInto" => true,
+                        "nextInto" => false,
+                        "get" => array(
+                            "id" => 5,
+                        ),
+                    ),
+                ),
+                "FF00C0800086098041FF0102030405060708",
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            array("extra"),
+                            array("extra")
+                        ),
+                        "set" => array(
+                            array(
+                                "extra",
+                                array(0 => 5, 1 => 0x04030201, 2 => 0x08070605)
+                            ),
+                        ),
+                    ),
+                    "Table" => array(
+                        "getRow" => array(array(0)),
+                        "toArray" => array(array(), array()),
+                        "selectInto" => array(array('1')),
+                        "get" => array(array("id")),
+                    ),
+                ),
+            ),
+            array( // #3 Test extra[0] not set, but not found
+                array(
+                    "Device" => array(
+                        "sensor" => new \HUGnet\DummyBase("Sensor"),
+                    ),
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(1 => 2, 2 => 3),
+                        ),
+                    ),
+                    "Table" => array(
+                        "toArray" => array(
+                        ),
+                        "selectInto" => true,
+                        "nextInto" => false,
+                        "get" => array(
+                            "id" => 5,
+                        ),
+                    ),
+                ),
+                "FF00C0800086098041FF0102030405060708",
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            array("extra"),
+                            array("extra")
+                        ),
+                        "set" => array(
+                            array(
+                                "extra",
+                                array(1 => 0x04030201, 2 => 0x08070605)
+                            ),
+                        ),
+                    ),
+                    "Table" => array(
+                        "getRow" => array(array(0)),
+                        "toArray" => array(array(), array()),
+                        "selectInto" => array(array('1')),
+                        "nextInto" => array(array()),
+                    ),
+                ),
+            ),
         );
     }
     /**

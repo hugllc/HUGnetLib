@@ -323,7 +323,37 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
         $extra = $this->input()->get("extra");
         $extra[1] = $this->_decode32(substr($string, 20, 8));
         $extra[2] = $this->_decode32(substr($string, 28, 8));
+        if (!isset($extra[0])) {
+            $iid = $this->_find();
+            if (!is_null($iid)) {
+                $extra[0] = $iid;
+            }
+        }
         $this->input()->set("extra", $extra);
+    }
+    /**
+    * Encodes this driver as a setup string
+    *
+    * @return mixed int if found, null if not
+    */
+    private function _find()
+    {
+        $entry = \HUGnet\devices\inputTable\ADuCInputTable::factory(
+            $this, array()
+        );
+        $mine = json_encode($this->_entry()->toArray());
+        $ret = $this->_table()->selectInto("1");
+        while ($ret) {
+            $entry = \HUGnet\devices\inputTable\ADuCInputTable::factory(
+                $this, $this->_table()->toArray()
+            );
+            $row = json_encode($entry->toArray());
+            if ($row === $mine) {
+                return $this->_table()->get("id");
+            }
+            $ret = $this->_table()->nextInto();
+        }
+        return null;
     }
     /**
     * Encodes this driver as a setup string

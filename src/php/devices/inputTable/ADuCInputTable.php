@@ -678,7 +678,7 @@ class ADuCInputTable
     */
     public function decode($string)
     {
-        if (strlen($string) === 20) {
+        if (strlen($string) >= 20) {
             $this->priority(substr($string, 0, 2));
             $this->immediateProcessRoutine(substr($string, 2, 2));
             $this->register("ADC0CON", substr($string, 6, 2).substr($string, 4, 2));
