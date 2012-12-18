@@ -186,8 +186,15 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
                         'DEFAULT' => 'TestProcessDriver1'
                     ),
                     'validIds' => Array (
+                        1 => "LevelHolderProcess",
                         255 => 'Empty Slot'
                     ),
+                    "extraText" => array(),
+                    "extraDefault" => array(),
+                    // Integer is the size of the field needed to edit
+                    // Array   is the values that the extra can take
+                    // Null    nothing
+                    "extraValues" => array(),
                 ),
             ),
             array(
@@ -220,8 +227,15 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
                         'DEFAULT' => 'EmptyProcess'
                     ),
                     'validIds' => Array (
+                        1 => "LevelHolderProcess",
                         255 => 'Empty Slot'
                     ),
+                    "extraText" => array(),
+                    "extraDefault" => array(),
+                    // Integer is the size of the field needed to edit
+                    // Array   is the values that the extra can take
+                    // Null    nothing
+                    "extraValues" => array(),
                 ),
             ),
         );
@@ -274,7 +288,7 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
                     "Table" => array(
                         "get" => array(
                             "driver" => "EmptyProcess",
-                            "id" => 1,
+                            "id" => 0xFF,
                         ),
                     ),
                 ),

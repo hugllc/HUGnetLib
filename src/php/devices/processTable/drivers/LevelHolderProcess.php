@@ -34,7 +34,7 @@
  *
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\devices\outputTable\drivers;
+namespace HUGnet\devices\processTable\drivers;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is my base class */
@@ -55,61 +55,25 @@ require_once dirname(__FILE__)."/../Driver.php";
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class ADuCDAC extends \HUGnet\devices\outputTable\Driver
+class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
 {
     /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
     protected $params = array(
-        "longName" => "Digital to Analog Converter",
-        "shortName" => "DAC",
+        "longName" => "LevelHolder Process",
+        "shortName" => "LevelHolder",
         "extraText" => array(
-            0 => "Low Power Mode",
-            1 => "Op Amp Mode",
-            2 => "Output Buffer",
-            3 => "Mode",
-            4 => "Interpolation Clock",
-            5 => "Range"
         ),
         "extraDefault" => array(
-            0, 0, 0, 0, 0, 3
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            array(
-                0 => "Disable",
-                1 => "Enable"
-            ),
-            array(
-                0 => "Disable",
-                1 => "Enable"
-            ),
-            array(
-                0 => "Enable",
-                1 => "Disable"
-            ),
-            array(
-                0 => "12 Bit",
-                1 => "16 Bit Interpolation"
-            ),
-            array(
-                0 => "UCLK/32",
-                1 => "UCLK/16"
-            ),
-            array(
-                3 => "0 V to AVDD",
-                2 => "REF2IN− to REF2IN+",
-                1 => "VREF− to VREF+",
-                0 => "0 V to VREF (1.2 V)",
-            ),
         ),
     );
-    /** This is the base for our setup byte */
-    protected $regBase = 0x0010;
-
     /**
     * Gets the direction from a direction sensor made out of a POT.
     *
@@ -137,49 +101,6 @@ class ADuCDAC extends \HUGnet\devices\outputTable\Driver
     {
         return array(
         );
-    }
-    /**
-    * Decodes the driver portion of the setup string
-    *
-    * @param string $string The string to decode
-    *
-    * @return array
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-    */
-    public function decode($string)
-    {
-        $extra = (array)$this->output()->get("extra");
-        $DAC0Con  = hexdec(substr($string, 0, 2));
-        $DAC0Con += hexdec(substr($string, 2, 2))<<8;
-        $extra[0] = ($DAC0Con & (1<<8)) ? 1 : 0;
-        $extra[1] = ($DAC0Con & (1<<7)) ? 1 : 0;
-        $extra[2] = ($DAC0Con & (1<<6)) ? 1 : 0;
-        $extra[3] = ($DAC0Con & (1<<3)) ? 1 : 0;
-        $extra[4] = ($DAC0Con & (1<<2)) ? 1 : 0;
-        $extra[5] = $DAC0Con & 3;
-        $this->output()->set("extra", $extra);
-    }
-    /**
-    * Encodes this driver as a setup string
-    *
-    * @return array
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-    */
-    public function encode()
-    {
-        $DAC0Con = $this->regBase;
-        $DAC0Con |= ((int)$this->getExtra(0))<<8;
-        $DAC0Con |= ((int)$this->getExtra(1))<<7;
-        $DAC0Con |= ((int)$this->getExtra(2))<<6;
-        $DAC0Con |= ((int)$this->getExtra(3))<<3;
-        $DAC0Con |= ((int)$this->getExtra(4))<<2;
-        $DAC0Con |= ((int)$this->getExtra(5));
-        $string = sprintf(
-            "%02X%02X",
-            $DAC0Con & 0xFF,
-            ($DAC0Con >> 8) & 0xFF
-        );
-        return $string;
     }
 
 }

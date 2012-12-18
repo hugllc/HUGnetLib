@@ -169,6 +169,12 @@ class DriverTest extends drivers\DriverTestBase
         $expect = array(
             'longName' => 'Unknown Output',
             'shortName' => 'Unknown',
+            "extraText" => array(),
+            "extraDefault" => array(),
+            // Integer is the size of the field needed to edit
+            // Array   is the values that the extra can take
+            // Null    nothing
+            "extraValues" => array(),
         );
         $this->assertEquals($expect, $this->o->toArray(1));
     }
@@ -264,7 +270,8 @@ class DriverTest extends drivers\DriverTestBase
                     ),
                 ),
                 array(
-                    255 => 'Empty Slot'
+                    1 => 'LevelHolderProcess',
+                    255 => 'Empty Slot',
                 ),
             ),
             array(
@@ -279,7 +286,8 @@ class DriverTest extends drivers\DriverTestBase
                     ),
                 ),
                 array(
-                    255 => 'Empty Slot'
+                    1 => 'LevelHolderProcess',
+                    255 => 'Empty Slot',
                 ),
             ),
         );
@@ -368,7 +376,9 @@ class DriverTest extends drivers\DriverTestBase
             ),
             array(
                 0x01,
-                array(),
+                array(
+                    'DEFAULT' => 'LevelHolderProcess'
+                ),
             ),
             array(
                 0xFF,
