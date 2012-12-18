@@ -58,6 +58,8 @@ class LevelHolderProcessTest extends DriverTestBase
 {
     /** This is the class we are testing */
     protected $class = "LevelHolderProcess";
+    /** This is the process */
+    protected $process;
     /**
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
@@ -69,10 +71,10 @@ class LevelHolderProcessTest extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $process = new \HUGnet\DummyBase("Process");
-        $process->resetMock(array());
+        $this->process = new \HUGnet\DummyBase("Process");
+        $this->process->resetMock(array());
         $this->o = \HUGnet\devices\processTable\Driver::factory(
-            "LevelHolderProcess", $process
+            "LevelHolderProcess", $this->process
         );
     }
 
@@ -122,6 +124,172 @@ class LevelHolderProcessTest extends DriverTestBase
     public function testChannels()
     {
         $this->assertSame(array(), $this->o->channels());
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataDecode()
+    {
+        return array(
+            array( // #0
+                array(
+                    "Process" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "channels" => new \HUGnet\DummyBase("Channels"),
+                    ),
+                    "Channels" => array(
+                        "dataChannel" => array(
+                            "0" => new \HUGnet\DummyBase("DataChan0"),
+                            "1" => new \HUGnet\DummyBase("DataChan1"),
+                            "2" => new \HUGnet\DummyBase("DataChan2"),
+                            "3" => new \HUGnet\DummyBase("DataChan3"),
+                            "4" => new \HUGnet\DummyBase("DataChan4"),
+                        ),
+                    ),
+                    "DataChan0" => array(
+                    ),
+                    "DataChan1" => array(
+                    ),
+                    "DataChan2" => array(
+                        "decode" => array(
+                            "12345678" => "12",
+                            "11223344" => "14",
+                        ),
+                    ),
+                    "DataChan3" => array(
+                    ),
+                    "DataChan4" => array(
+                    ),
+                ),
+                "22010214060000C20D0000021234567811223344",
+                array(
+                    "get" => array(
+                        array('extra'),
+                    ),
+                    "set" => array(
+                        array(
+                            'extra',
+                            array(
+                                0 => 34,
+                                1 => 1,
+                                2 => 2,
+                                3 => 2,
+                                4 => 13.0,
+                                5 => 1.0,
+                            )
+                        ),
+                    ),
+                    "device" => array(
+                        array(),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $mocks  The value to preload into the mocks
+    * @param string $string The setup string to test
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataDecode
+    */
+    public function testDecode($mocks, $string, $expect)
+    {
+        $this->process->resetMock($mocks);
+        $this->o->decode($string);
+        $ret = $this->process->retrieve("Process");
+        $this->assertEquals($expect, $ret);
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataEncode()
+    {
+        return array(
+            array( // #0
+                array(
+                    "Process" => array(
+                        "getExtra" => array(
+                        ),
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "channels" => new \HUGnet\DummyBase("Channels"),
+                    ),
+                    "Channels" => array(
+                    ),
+                ),
+                "22000214060000C20D0000",
+            ),
+            array( // #0
+                array(
+                    "Process" => array(
+                        "get" => array(
+                            "extra" => array(
+                                1 => 1,
+                                3 => 2,
+                                4 => 12,
+                                5 => 14,
+                            ),
+                        ),
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "channels" => new \HUGnet\DummyBase("Channels"),
+                    ),
+                    "Channels" => array(
+                        "dataChannel" => array(
+                            "0" => new \HUGnet\DummyBase("DataChan0"),
+                            "1" => new \HUGnet\DummyBase("DataChan1"),
+                            "2" => new \HUGnet\DummyBase("DataChan2"),
+                            "3" => new \HUGnet\DummyBase("DataChan3"),
+                            "4" => new \HUGnet\DummyBase("DataChan4"),
+                        ),
+                    ),
+                    "DataChan0" => array(
+                    ),
+                    "DataChan1" => array(
+                    ),
+                    "DataChan2" => array(
+                        "encode" => array(
+                            "12" => "12345678",
+                            "14" => "11223344",
+                        ),
+                    ),
+                    "DataChan3" => array(
+                    ),
+                    "DataChan4" => array(
+                    ),
+                ),
+                "22010214060000C20D0000021234567811223344",
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $mocks  The value to preload into the mocks
+    * @param array $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataEncode
+    */
+    public function testEncode($mocks, $expect)
+    {
+        $this->process->resetMock($mocks);
+        $ret = $this->o->encode();
+        $this->assertSame($expect, $ret);
     }
 
 }
