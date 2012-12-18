@@ -142,35 +142,44 @@ class Device extends \HUGnet\base\SystemTableAction
             $return["params"] = (array)json_decode($return["params"], true);
         }
         if ($default) {
-            $return["inputs"] = array();
-            for ($i = 0; $i < $return["InputTables"]; $i++) {
-                $return["inputs"][$i] = $this->input($i)->toArray();
-            }
-            $return["channels"] = $this->channels()->toArray(true);
-            $return["outputs"] = array();
-            for ($i = 0; $i < $return["OutputTables"]; $i++) {
-                $return["outputs"][$i] = $this->output($i)->toArray();
-            }
-            $return["processes"] = array();
-            for ($i = 0; $i < $return["ProcessTables"]; $i++) {
-                $return["processes"][$i] = $this->process($i)->toArray();
-            }
-            if ($return["loadable"]) {
-                $this->firmware()->set("HWPartNum", $return["HWPartNum"]);
-                $this->firmware()->set("FWPartNum", $return["FWPartNum"]);
-                $this->firmware()->set("RelStatus", \HUGnet\db\tables\Firmware::DEV);
-                $this->firmware()->getLatest();
-                $new = $this->firmware()->compareVersion(
-                    $return["FWVersion"], $this->firmware()->Version
-                );
-                // @codeCoverageIgnoreStart
-                if ($new < 0) {
-                    $return["update"] = $this->firmware()->Version;
-                }
-                // @codeCoverageIgnoreEnd
-            }
+            $this->_toArrayExtra();
         }
         return $return;
+    }
+    /**
+    * Returns the extra bits of the table as an array
+    *
+    * @return array
+    */
+    private function _toArrayExtra()
+    {
+        $return["inputs"] = array();
+        for ($i = 0; $i < $return["InputTables"]; $i++) {
+            $return["inputs"][$i] = $this->input($i)->toArray();
+        }
+        $return["channels"] = $this->channels()->toArray(true);
+        $return["outputs"] = array();
+        for ($i = 0; $i < $return["OutputTables"]; $i++) {
+            $return["outputs"][$i] = $this->output($i)->toArray();
+        }
+        $return["processes"] = array();
+        for ($i = 0; $i < $return["ProcessTables"]; $i++) {
+            $return["processes"][$i] = $this->process($i)->toArray();
+        }
+        if ($return["loadable"]) {
+            $this->firmware()->set("HWPartNum", $return["HWPartNum"]);
+            $this->firmware()->set("FWPartNum", $return["FWPartNum"]);
+            $this->firmware()->set("RelStatus", \HUGnet\db\tables\Firmware::DEV);
+            $this->firmware()->getLatest();
+            $new = $this->firmware()->compareVersion(
+                $return["FWVersion"], $this->firmware()->Version
+            );
+            // @codeCoverageIgnoreStart
+            if ($new < 0) {
+                $return["update"] = $this->firmware()->Version;
+            }
+            // @codeCoverageIgnoreEnd
+        }
     }
     /**
     * Returns the table as an array
