@@ -151,12 +151,13 @@ class ADuCDAC extends \HUGnet\devices\outputTable\Driver
         $extra = (array)$this->output()->get("extra");
         $DAC0Con  = hexdec(substr($string, 0, 2));
         $DAC0Con += hexdec(substr($string, 2, 2))<<8;
-        $extra[0] = ($DAC0Con & (1<<8)) ? 1 : 0;
-        $extra[1] = ($DAC0Con & (1<<7)) ? 1 : 0;
-        $extra[2] = ($DAC0Con & (1<<6)) ? 1 : 0;
-        $extra[3] = ($DAC0Con & (1<<3)) ? 1 : 0;
-        $extra[4] = ($DAC0Con & (1<<2)) ? 1 : 0;
-        $extra[5] = $DAC0Con & 3;
+        $extra[0] = ($DAC0Con>>8) & 0x01;  // Bit 8
+        $extra[1] = ($DAC0Con>>7) & 0x01;  // Bit 7
+        $extra[2] = ($DAC0Con>>6) & 0x01;  // Bit 6
+        $extra[3] = ($DAC0Con>>3) & 0x01;  // Bit 3
+        $extra[4] = ($DAC0Con>>2) & 0x01;  // Bit 2
+        $extra[5] = $DAC0Con & 3;  // Bits 0 & 1
+
         $this->output()->set("extra", $extra);
     }
     /**

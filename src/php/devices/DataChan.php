@@ -59,10 +59,6 @@ defined('_HUGNET') or die('HUGnetSystem not found');
 class DataChan
 {
     /**
-    * This is the cache for the drivers.
-    */
-    private $_driverCache = array();
-    /**
     * This is the device we rode in on
     */
     private $_device;

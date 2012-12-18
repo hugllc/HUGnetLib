@@ -296,8 +296,6 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
             return null;
         }
         bcscale(10);
-        $Am   = pow(2, 23);
-        $Vref   = $this->getExtra(0);
         $R      = $this->getExtra(1);
         $Rin1   = (float)$this->getExtra(2);
         $Rbias1 = (float)$this->getExtra(3);

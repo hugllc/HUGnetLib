@@ -72,8 +72,6 @@ class Channels
     private $_system = null;
     /** @var Device is stored here */
     private $_device = null;
-    /** @var These are the items that can be set by the user */
-    private $_setable = array("units", "label", "decimals", "dataType");
 
     /**
     * This sets up the basic parts of the object for us when we create it
