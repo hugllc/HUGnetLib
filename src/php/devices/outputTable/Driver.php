@@ -74,6 +74,12 @@ abstract class Driver
     private $_default = array(
         "longName" => "Unknown Output",
         "shortName" => "Unknown",
+        "extraText" => array(),
+        "extraDefault" => array(),
+        // Integer is the size of the field needed to edit
+        // Array   is the values that the extra can take
+        // Null    nothing
+        "extraValues" => array(),
     );
     /**
     * This is where all of the driver information is stored.

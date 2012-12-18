@@ -100,6 +100,9 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
         return array(
             array("longName", "string"),
             array("shortName", "string"),
+            array("extraText", "array"),
+            array("extraValues", "array"),
+            array("extraDefault", "array"),
         );
     }
     /**
@@ -163,6 +166,73 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
         $name = (string)$this->o->get($field, 1);
         $this->assertGreaterThanOrEqual(
             $min, strlen($name), "$field must be more than $min characters"
+        );
+    }
+    /**
+    * Check the extraText value size
+    *
+    * @return null
+    */
+    public function testExtraTextValueSize()
+    {
+        $size = 26;
+        $extra = $this->o->get("extraText", 1);
+        $this->assertInternalType("array", $extra);
+        foreach ($extra as $key => $value) {
+            $this->assertTrue(
+                (strlen($value) < $size),
+                "extraText[$key] must be less than $size chars"
+            );
+        }
+    }
+    /**
+    * Check the number of entries in extraText
+    *
+    * @return null
+    */
+    public function testExtraTextCount()
+    {
+        $extra   = (array)$this->o->get("extraText", 1);
+        $default = (array)$this->o->get("extraDefault", 1);
+        $this->assertSame(
+            count($default),
+            count($extra),
+            "extraText needs to have the same number of entries as extraDefault"
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @return null
+    */
+    public function testExtraValuesElementTypes()
+    {
+        $size = 26;
+        $extra = $this->o->get("extraValues", 1);
+        $this->assertInternalType("array", $extra);
+        foreach ($extra as $key => $value) {
+            $ret = is_null($value);
+            $ret = $ret || is_array($value);
+            $ret = $ret || is_int($value);
+            $this->assertTrue(
+                $ret,
+                "extraValues[$key] must be null, an array, or an int"
+            );
+        }
+    }
+    /**
+    * Check the number of entries in extraValues
+    *
+    * @return null
+    */
+    public function testExtraValuesCount()
+    {
+        $extra   = (array)$this->o->get("extraValues", 1);
+        $default = (array)$this->o->get("extraDefault", 1);
+        $this->assertSame(
+            count($default),
+            count($extra),
+            "extraValues needs to have the same number of entries as extraDefault"
         );
     }
 

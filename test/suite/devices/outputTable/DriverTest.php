@@ -169,6 +169,9 @@ class DriverTest extends drivers\DriverTestBase
         $expect = array(
             'longName' => 'Unknown Output',
             'shortName' => 'Unknown',
+            'extraText' => Array (),
+            'extraDefault' => Array (),
+            'extraValues' => Array (),
         );
         $this->assertEquals($expect, $this->o->toArray(1));
     }

@@ -188,6 +188,9 @@ class OutputTest extends \PHPUnit_Framework_TestCase
                     'validIds' => Array (
                         255 => 'Empty Slot'
                     ),
+                    "extraText" => array(),
+                    "extraDefault" => array(),
+                    "extraValues" => array(),
                 ),
             ),
             array(
@@ -222,6 +225,9 @@ class OutputTest extends \PHPUnit_Framework_TestCase
                     'validIds' => Array (
                         255 => 'Empty Slot'
                     ),
+                    "extraText" => array(),
+                    "extraDefault" => array(),
+                    "extraValues" => array(),
                 ),
             ),
         );

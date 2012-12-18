@@ -58,6 +58,10 @@ class ADuCDACTest extends DriverTestBase
 {
     /** This is the class we are testing */
     protected $class = "ADuCDAC";
+    /** This is the object under test */
+    protected $o;
+    /** This is the output */
+    protected $output;
     /**
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
@@ -69,9 +73,11 @@ class ADuCDACTest extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock(array());
-        $this->o = \HUGnet\devices\outputTable\Driver::factory("ADuCDAC", $sensor);
+        $this->output = new \HUGnet\DummyBase("Output");
+        $this->output->resetMock(array());
+        $this->o = \HUGnet\devices\outputTable\Driver::factory(
+            "ADuCDAC", $this->output
+        );
     }
 
     /**
@@ -89,7 +95,7 @@ class ADuCDACTest extends DriverTestBase
     /**
      * Data provider for testGetReading
      *
-     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     * testGetReading($output, $A, $deltaT, $data, $prev, $expect)
      *
      * @return array
      */
@@ -98,7 +104,7 @@ class ADuCDACTest extends DriverTestBase
         return array(
             array(
                 array(
-                    "Sensor" => array(
+                    "Output" => array(
                         "get" => array(
                             "extra" => array(),
                         ),
@@ -120,6 +126,297 @@ class ADuCDACTest extends DriverTestBase
     public function testChannels()
     {
         $this->assertSame(array(), $this->o->channels());
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataDecode()
+    {
+        return array(
+            array( // #0
+                array(
+                    "Device" => array(
+                        "sensor" => new \HUGnet\DummyBase("Output"),
+                    )
+                ),
+                "1300",
+                array(
+                    "Output" => array(
+                        "get" => array(
+                            array('extra'),
+                        ),
+                        "set" => array(
+                            array('extra', array(0, 0, 0, 0, 0, 3)),
+                        ),
+                    ),
+                ),
+            ),
+            array( // #1
+                array(
+                    "Device" => array(
+                        "sensor" => new \HUGnet\DummyBase("Output"),
+                    )
+                ),
+                "1001",
+                array(
+                    "Output" => array(
+                        "get" => array(
+                            array('extra'),
+                        ),
+                        "set" => array(
+                            array('extra', array(1, 0, 0, 0, 0, 0)),
+                        ),
+                    ),
+                ),
+            ),
+            array( // #2
+                array(
+                    "Device" => array(
+                        "sensor" => new \HUGnet\DummyBase("Output"),
+                    )
+                ),
+                "9000",
+                array(
+                    "Output" => array(
+                        "get" => array(
+                            array('extra'),
+                        ),
+                        "set" => array(
+                            array('extra', array(0, 1, 0, 0, 0, 0)),
+                        ),
+                    ),
+                ),
+            ),
+            array( // #3
+                array(
+                    "Device" => array(
+                        "sensor" => new \HUGnet\DummyBase("Output"),
+                    )
+                ),
+                "5000",
+                array(
+                    "Output" => array(
+                        "get" => array(
+                            array('extra'),
+                        ),
+                        "set" => array(
+                            array('extra', array(0, 0, 1, 0, 0, 0)),
+                        ),
+                    ),
+                ),
+            ),
+            array( // #4
+                array(
+                    "Device" => array(
+                        "sensor" => new \HUGnet\DummyBase("Output"),
+                    )
+                ),
+                "1800",
+                array(
+                    "Output" => array(
+                        "get" => array(
+                            array('extra'),
+                        ),
+                        "set" => array(
+                            array('extra', array(0, 0, 0, 1, 0, 0)),
+                        ),
+                    ),
+                ),
+            ),
+            array( // #5
+                array(
+                    "Device" => array(
+                        "sensor" => new \HUGnet\DummyBase("Output"),
+                    )
+                ),
+                "1400",
+                array(
+                    "Output" => array(
+                        "get" => array(
+                            array('extra'),
+                        ),
+                        "set" => array(
+                            array('extra', array(0, 0, 0, 0, 1, 0)),
+                        ),
+                    ),
+                ),
+            ),
+            array( // #6
+                array(
+                    "Device" => array(
+                        "sensor" => new \HUGnet\DummyBase("Output"),
+                    )
+                ),
+                "1100",
+                array(
+                    "Output" => array(
+                        "get" => array(
+                            array('extra'),
+                        ),
+                        "set" => array(
+                            array('extra', array(0, 0, 0, 0, 0, 1)),
+                        ),
+                    ),
+                ),
+            ),
+            array( // #7
+                array(
+                    "Device" => array(
+                        "sensor" => new \HUGnet\DummyBase("Output"),
+                    )
+                ),
+                "1200",
+                array(
+                    "Output" => array(
+                        "get" => array(
+                            array('extra'),
+                        ),
+                        "set" => array(
+                            array('extra', array(0, 0, 0, 0, 0, 2)),
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $mocks  The value to preload into the mocks
+    * @param string $string The setup string to test
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataDecode
+    */
+    public function testDecode($mocks, $string, $expect)
+    {
+        $this->output->resetMock($mocks);
+        $this->o->decode($string);
+        $ret = $this->output->retrieve();
+        $this->assertEquals($expect, $ret);
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataEncode()
+    {
+        return array(
+            array( // #0
+                array(
+                    "Output" => array(
+                        "getExtra" => array(
+                        ),
+                    ),
+                ),
+                "1300",
+            ),
+            array( // #1
+                array(
+                    "Output" => array(
+                        "get" => array(
+                            "extra" => array(
+                                1, 0, 0, 0, 0, 0
+                            ),
+                        ),
+                    ),
+                ),
+                "1001",
+            ),
+            array( // #2
+                array(
+                    "Output" => array(
+                        "get" => array(
+                            "extra" => array(
+                                0, 1, 0, 0, 0, 0
+                            ),
+                        ),
+                    ),
+                ),
+                "9000",
+            ),
+            array( // #3
+                array(
+                    "Output" => array(
+                        "get" => array(
+                            "extra" => array(
+                                0, 0, 1, 0, 0, 0
+                            ),
+                        ),
+                    ),
+                ),
+                "5000",
+            ),
+            array( // #4
+                array(
+                    "Output" => array(
+                        "get" => array(
+                            "extra" => array(
+                                0, 0, 0, 1, 0, 0
+                            ),
+                        ),
+                    ),
+                ),
+                "1800",
+            ),
+            array( // #5
+                array(
+                    "Output" => array(
+                        "get" => array(
+                            "extra" => array(
+                                0, 0, 0, 0, 1, 0
+                            ),
+                        ),
+                    ),
+                ),
+                "1400",
+            ),
+            array( // #6
+                array(
+                    "Output" => array(
+                        "get" => array(
+                            "extra" => array(
+                                0, 0, 0, 0, 0, 1
+                            ),
+                        ),
+                    ),
+                ),
+                "1100",
+            ),
+            array( // #7
+                array(
+                    "Output" => array(
+                        "get" => array(
+                            "extra" => array(
+                                0, 0, 0, 0, 0, 2
+                            ),
+                        ),
+                    ),
+                ),
+                "1200",
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $mocks  The value to preload into the mocks
+    * @param array $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataEncode
+    */
+    public function testEncode($mocks, $expect)
+    {
+        $this->output->resetMock($mocks);
+        $ret = $this->o->encode();
+        $this->assertSame($expect, $ret);
     }
 
 }

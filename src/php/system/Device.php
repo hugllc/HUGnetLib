@@ -135,23 +135,26 @@ class Device extends \HUGnet\base\SystemTableAction
         if ($default) {
             $return = array_merge($this->driver()->toArray(), $return);
         }
-        if (is_string($return["channels"])) {
-            $return["channels"] = (array)json_decode($return["channels"], true);
-        }
+        //if (is_string($return["channels"])) {
+        //    $return["channels"] = (array)json_decode($return["channels"], true);
+        //}
+        $return["channels"] = $this->channels()->toArray();
         if (is_string($return["params"])) {
             $return["params"] = (array)json_decode($return["params"], true);
         }
         if ($default) {
-            $this->_toArrayExtra();
+            $this->_toArrayExtra($return);
         }
         return $return;
     }
     /**
     * Returns the extra bits of the table as an array
     *
-    * @return array
+    * @param array &$return The array to add to
+    *
+    * @return null
     */
-    private function _toArrayExtra()
+    private function _toArrayExtra(&$return)
     {
         $return["inputs"] = array();
         for ($i = 0; $i < $return["InputTables"]; $i++) {
