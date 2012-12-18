@@ -570,6 +570,35 @@ abstract class Driver
     /**
     * Gets the direction from a direction sensor made out of a POT.
     *
+    * @param string $string The data string
+    * @param int    $channel The channel to decode
+    * @param float  $deltaT  The time delta in seconds between this record
+    * @param array  &$prev   The previous reading
+    * @param array  &$data   The data from the other sensors that were crunched
+    *
+    * @return float The direction in degrees
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    */
+    public function decData(
+        $string, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
+        $A = $this->strToInt($string);
+        $type = $this->get("storageType");
+        if ($type == \HUGnet\devices\datachan\Driver::TYPE_DIFF) {
+            $ret = $this->getReading(
+                ($A - $prev["raw"]), $deltaT, $data, $prev
+            );
+        } else {
+            $ret = $this->getReading(
+                $A, $deltaT, $data, $prev
+            );
+        }
+        return $ret;
+    }
+    /**
+    * Gets the direction from a direction sensor made out of a POT.
+    *
     * @param array $data    The data to use
     * @param int   $channel The channel to get
     *

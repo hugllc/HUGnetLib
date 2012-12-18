@@ -386,6 +386,35 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
     /**
     * Gets the direction from a direction sensor made out of a POT.
     *
+    * @param string $string  The data string
+    * @param int    $channel The channel to use
+    * @param float  $deltaT  The time delta in seconds between this record
+    * @param array  &$prev   The previous reading
+    * @param array  &$data   The data from the other sensors that were crunched
+    *
+    * @return float The direction in degrees
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    */
+    public function decData(
+        $string, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
+        $return = null;
+        $A = $this->strToInt($string);
+        if ($channel == 0) {
+            $return = $this->getCurrent($A, $deltaT, $ret, $prev);
+        } else if ($channel == 1) {
+            $return = $this->getVoltage($A, $deltaT, $ret, $prev);
+        } else if ($channel == 2) {
+            $return = $this->getPower($A, $deltaT, $ret, $prev);
+        } else if ($channel == 3) {
+            $return = $this->getImpedance($A, $deltaT, $ret, $prev);
+        }
+        return $return;
+    }
+    /**
+    * Gets the direction from a direction sensor made out of a POT.
+    *
     * @param array $data    The data to use
     * @param int   $channel The channel to get
     *

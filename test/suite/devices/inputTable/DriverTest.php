@@ -831,6 +831,79 @@ class DriverTest extends drivers\DriverTestBase
         $this->assertEquals($expect, $ret, 0.00001);
     }
     /**
+     * Data provider for testGetReading
+     *
+     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     *
+     * @return array
+     */
+    public static function dataDecData()
+    {
+        return array(
+            array( // #0 Raw Data
+                array(),
+                "DriverTestClass",
+                "01020304050607080900",
+                0,
+                1,
+                array(),
+                array(),
+                0x030201,
+            ),
+            array(  // #1 Differential data
+                array(),
+                "DriverTestClassDiff",
+                "01020304050607080900",
+                0,
+                1,
+                array(),
+                array(
+                    "raw" => 0x0201,
+                ),
+                0x030000,
+            ),
+            array( // #2 No data.
+                array(),
+                "DriverTestClass",
+                "",
+                0,
+                1,
+                array(),
+                array(
+                    "raw" => 0x0201,
+                ),
+                null,
+            ),
+        );
+    }
+    /**
+    * Generic function for testing sensor routines
+    *
+    * This is called by using parent::sensorTest()
+    *
+    * @param array  $sensor  The sensor data array
+    * @param string $class   The class to use
+    * @param string $string  The string to use
+    * @param int    $channel The channel to use
+    * @param float  $deltaT  The time differenct
+    * @param array  $data    The data array being built
+    * @param array  $prev    The previous record
+    * @param mixed  $expect  The return data to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataDecData()
+    */
+    public function testDecData(
+        $sensor, $class, $string, $channel, $deltaT, $data, $prev, $expect
+    ) {
+        $sen = new \HUGnet\DummyBase("Sensor");
+        $sen->resetMock($sensor);
+        $obj = Driver::factory($class, $sen);
+        $ret = $obj->decData($string, $channel, $deltaT, $prev, $data);
+        $this->assertEquals($expect, $ret, 0.00001);
+    }
+    /**
     * data provider for testDeviceID
     *
     * @return array
