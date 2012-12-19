@@ -265,10 +265,10 @@ class Input extends \HUGnet\base\SystemTableBase
     *
     * @SuppressWarnings(PHPMD.ShortVariable)
     */
-    public function decData(
+    public function decodeDataPoint(
         $string, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
     ) {
-        return $this->driver()->decData(
+        return $this->driver()->decodeDataPoint(
             $string, $channel, $deltaT, $prev, $data
         );
     }
@@ -282,9 +282,9 @@ class Input extends \HUGnet\base\SystemTableBase
     *
     * @SuppressWarnings(PHPMD.ShortVariable)
     */
-    public function encodeData($data, $channel = 0)
+    public function encodeDataPoint($data, $channel = 0)
     {
-        return $this->driver()->encodeData($data, $channel);
+        return $this->driver()->encodeDataPoint($data, $channel);
     }
     /**
     * This function should be overloaded to make changes to the table based on

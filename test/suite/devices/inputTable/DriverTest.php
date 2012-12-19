@@ -837,7 +837,7 @@ class DriverTest extends drivers\DriverTestBase
      *
      * @return array
      */
-    public static function dataDecData()
+    public static function dataDecodeDataPoint()
     {
         return array(
             array( // #0 Raw Data
@@ -892,15 +892,15 @@ class DriverTest extends drivers\DriverTestBase
     *
     * @return null
     *
-    * @dataProvider dataDecData()
+    * @dataProvider dataDecodeDataPoint()
     */
-    public function testDecData(
+    public function testDecodeDataPoint(
         $sensor, $class, $string, $channel, $deltaT, $data, $prev, $expect
     ) {
         $sen = new \HUGnet\DummyBase("Sensor");
         $sen->resetMock($sensor);
         $obj = Driver::factory($class, $sen);
-        $ret = $obj->decData($string, $channel, $deltaT, $prev, $data);
+        $ret = $obj->decodeDataPoint($string, $channel, $deltaT, $prev, $data);
         $this->assertEquals($expect, $ret, 0.00001);
     }
     /**
@@ -1032,7 +1032,7 @@ class DriverTest extends drivers\DriverTestBase
      *
      * @return array
      */
-    public static function dataEncodeData()
+    public static function dataEncodeDataPoint()
     {
         return array(
             array( // #0
@@ -1069,14 +1069,14 @@ class DriverTest extends drivers\DriverTestBase
     *
     * @return null
     *
-    * @dataProvider dataEncodeData()
+    * @dataProvider dataEncodeDataPoint()
     */
-    public function testEncodeData(
+    public function testEncodeDataPoint(
         $sensor, $expect, $deltaT, $data, $prev, $A, $channel
     ) {
         $sen = new \HUGnet\DummyBase("Sensor");
         $sen->resetMock($sensor);
-        $ret = $this->o->encodeData($A, $channel);
+        $ret = $this->o->encodeDataPoint($A, $channel);
         $this->assertEquals($expect, $ret, 0.00001);
     }
 }

@@ -396,7 +396,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
     *
     * @SuppressWarnings(PHPMD.ShortVariable)
     */
-    public function decData(
+    public function decodeDataPoint(
         $string, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
     ) {
         $return = null;
@@ -422,7 +422,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
     *
     * @SuppressWarnings(PHPMD.ShortVariable)
     */
-    public function encodeData($data, $channel = 0)
+    public function encodeDataPoint($data, $channel = 0)
     {
         $return = 0;
         if ($channel == 0) {

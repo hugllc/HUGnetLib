@@ -359,7 +359,7 @@ class DataChanTest extends \PHPUnit_Framework_TestCase
                         "input" => new \HUGnet\DummyBase("Input"),
                     ),
                     "Input" => array(
-                        "encodeData" => "asdf",
+                        "encodeDataPoint" => "asdf",
                     ),
                 ),
                 array(

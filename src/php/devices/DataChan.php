@@ -205,7 +205,7 @@ class DataChan
     */
     public function encode($data)
     {
-        return $this->input()->encodeData(
+        return $this->input()->encodeDataPoint(
             $data,
             $this->get("index")
         );
@@ -219,7 +219,7 @@ class DataChan
     */
     public function decode($data)
     {
-        return $this->input()->decData(
+        return $this->input()->decodeDataPoint(
             $data,
             $this->get("index")
         );

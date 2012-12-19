@@ -904,7 +904,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
     {
         $sen = new \HUGnet\DummyBase("Sensor");
         $sen->resetMock($sensor);
-        $ret = $this->o->encodeData($A, $channel);
+        $ret = $this->o->encodeDataPoint($A, $channel);
         $this->assertEquals($expect, $ret, 0.00001);
     }
     /**

@@ -555,15 +555,11 @@ abstract class Driver
         $A = $this->strToInt($string);
         $ret = $this->channels();
         $type = $this->get("storageType");
+        $ret[0]["value"] = $this->decodeDataPoint(
+            $A, 0, $deltaT, $prev, $data
+        );
         if ($type == \HUGnet\devices\datachan\Driver::TYPE_DIFF) {
-            $ret[0]["value"] = $this->getReading(
-                ($A - $prev["raw"]), $deltaT, $data, $prev
-            );
             $ret[0]["raw"] = $A;
-        } else {
-            $ret[0]["value"] = $this->getReading(
-                $A, $deltaT, $data, $prev
-            );
         }
         return $ret;
     }
@@ -580,10 +576,10 @@ abstract class Driver
     *
     * @SuppressWarnings(PHPMD.ShortVariable)
     */
-    public function decData(
+    public function decodeDataPoint(
         $string, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
     ) {
-        $A = $this->strToInt($string);
+        $A = (is_string($string)) ? $this->strToInt($string) : (int)$string;
         $type = $this->get("storageType");
         if ($type == \HUGnet\devices\datachan\Driver::TYPE_DIFF) {
             $ret = $this->getReading(
@@ -607,7 +603,7 @@ abstract class Driver
     * @SuppressWarnings(PHPMD.ShortVariable)
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    public function encodeData($data, $channel = 0)
+    public function encodeDataPoint($data, $channel = 0)
     {
         $value = $this->getRaw(
             $data
