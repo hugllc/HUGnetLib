@@ -249,19 +249,7 @@ class Devices extends \HUGnet\db\Table
     */
     public function insertVirtual($data = null)
     {
-        if (!is_array($data)) {
-            $data = array();
-        }
-        if (!isset($data["HWPartNum"])) {
-            $data["HWPartNum"] = "0039-24-02-P";
-        }
-        if (!isset($data["GatewayKey"])) {
-            $data["GatewayKey"] = -1;
-        }
-        if (!isset($data["id"])) {
-            $data["id"] = self::MIN_VIRTUAL_SN;
-        }
-        $data["FWPartNum"] = "0039-24-00-P";
+        $this->_insertVirtualSetupData($data);
         $this->clearData();
         $this->fromArray($data);
         $this->set('DeviceID', dechex($this->get('id')));
@@ -277,6 +265,34 @@ class Devices extends \HUGnet\db\Table
             }
         }
         return $ret;
+    }
+    /**
+    * Inserts a device ID into the database if it isn't there already
+    *
+    * @param mixed &$data The array to use to insert this row
+    *
+    * @return null
+    */
+    public function _insertVirtualSetupData(&$data)
+    {
+        if (!is_array($data)) {
+            $data = array();
+        }
+        if (!isset($data["HWPartNum"])) {
+            $data["HWPartNum"] = "0039-24-02-P";
+        }
+        if (!isset($data["GatewayKey"])) {
+            $data["GatewayKey"] = -1;
+        }
+        if (!isset($data["id"])) {
+            $data["id"] = $this->dbDriver()->getNextID(
+                "`id` >= ".self::MIN_VIRTUAL_SN." AND `id` =< ".self::MAX_VIRTUAL_SN
+            );
+            if ($data["id"] < self::MIN_VIRTUAL_SN) {
+                $data["id"] = self::MIN_VIRTUAL_SN;
+            }
+        }
+        $data["FWPartNum"] = "0039-24-00-P";
     }
     /**
     * returns true if the container is empty.  False otherwise

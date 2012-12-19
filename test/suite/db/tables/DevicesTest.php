@@ -276,7 +276,7 @@ class DevicesTest extends TableTestBase
     public static function dataInsertVirtual()
     {
         return array(
-            array(
+            array( // #0
                 array(
                     "id" => 0x156,
                 ),
@@ -308,7 +308,7 @@ class DevicesTest extends TableTestBase
                 ),
                 0x156,
             ),
-            array(
+            array(  // #1
                 array(
                     "id" => Devices::MIN_TEMP_SN,
                 ),
@@ -318,7 +318,7 @@ class DevicesTest extends TableTestBase
                 ),
                 false,
             ),
-            array(
+            array(  // #2
                 array(
                     "id" => 0x156,
                 ),
