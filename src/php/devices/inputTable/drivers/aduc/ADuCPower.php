@@ -422,7 +422,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
     *
     * @SuppressWarnings(PHPMD.ShortVariable)
     */
-    public function encodeDataPoint($data, $channel = 0)
+    protected function getRaw($data, $channel = 0)
     {
         $return = 0;
         if ($channel == 0) {
@@ -434,7 +434,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         } else if ($channel == 3) {
             $return = $this->getRawImpedance($data);
         }
-        return $this->intToStr($return);
+        return $return;
     }
     /**
     * This builds the class from a setup string

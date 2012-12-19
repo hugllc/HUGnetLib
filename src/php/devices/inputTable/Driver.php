@@ -478,13 +478,14 @@ abstract class Driver
     /**
     * Changes a raw reading into a output value
     *
-    * @param int $value The value to get
+    * @param array $data    The data to use
+    * @param int   $channel The channel to get
     *
     * @return mixed The value in whatever the units are in the sensor
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    public function getRaw($value)
+    protected function getRaw($value, $channel = 0)
     {
         return $value;
     }
@@ -606,9 +607,12 @@ abstract class Driver
     public function encodeDataPoint($data, $channel = 0)
     {
         $value = $this->getRaw(
-            $data
+            $data, $channel
         );
-        return $this->intToStr((int)$value);
+        if (!is_null($value)) {
+            return $this->intToStr((int)$value);
+        }
+        return null;
     }
     /**
     * This makes a line of two ordered pairs, then puts $A on that line
