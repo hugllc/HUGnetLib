@@ -460,14 +460,19 @@ abstract class Driver extends DriverBase
     /**
     * Gets the next ID to use from the table.
     *
+    * @param string $where The where data to use
+    *
     * This only works with integer ID columns!
     *
     * @return int
     */
-    public function getNextID()
+    public function getNextID($where = "")
     {
         $query = "SELECT MAX(".$this->myTable->sqlId.") as id "
                 ." from ".$this->table();
+        if (is_string($where) && (strlen($where) > 0)) {
+            $query .= " WHERE ".$where;
+        }
         $ret   = $this->query($query);
         $newID = (isset($ret[0]['id'])) ? (int) $ret[0]['id'] : 0 ;
         return $newID + 1;
@@ -476,14 +481,19 @@ abstract class Driver extends DriverBase
     /**
     * Gets one less that the smallest ID to use from the table.
     *
+    * @param string $where The where data to use
+    *
     * This only works with integer ID columns!
     *
     * @return int
     */
-    public function getPrevID()
+    public function getPrevID($where = "")
     {
         $query = "SELECT MIN(".$this->myTable->sqlId.") as id "
                 ." from ".$this->table();
+        if (is_string($where) && (strlen($where) > 0)) {
+            $query .= " WHERE ".$where;
+        }
         $ret   = $this->query($query);
         $newID = ($ret[0]['id'] < 0) ? (int) $ret[0]['id'] : 0 ;
         return $newID - 1;

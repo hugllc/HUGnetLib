@@ -279,6 +279,13 @@ class DriverTest extends \PHPUnit_Extensions_Database_TestCase
         return array(
             array(
                 'INSERT into `myTable` (`id`, `name`, `value`) VALUES (532, "", 32)',
+                null,
+                533
+            ),
+            array(
+                'INSERT into `myTable` (`id`, `name`, `value`) VALUES (532, "", 32);'
+                .'INSERT into `myTable` (`id`, `name`,`value`) VALUES (832, "", 32)',
+                "`id` < 800",
                 533
             ),
         );
@@ -287,16 +294,19 @@ class DriverTest extends \PHPUnit_Extensions_Database_TestCase
     * test
     *
     * @param string $preload SQL query preload
+    * @param string $where   The where data to use
     * @param string $expect  The query created
     *
     * @return null
     *
     * @dataProvider dataGetNextID
     */
-    public function testGetNextID($preload, $expect)
+    public function testGetNextID($preload, $where, $expect)
     {
-        $this->pdo->query($preload);
-        $ret = $this->o->getNextID();
+        foreach (explode(";", $preload) as $query) {
+            $this->pdo->query($query);
+        }
+        $ret = $this->o->getNextID($where);
         $this->assertSame($expect, $ret);
     }
     /**
@@ -309,6 +319,13 @@ class DriverTest extends \PHPUnit_Extensions_Database_TestCase
         return array(
             array(
                 'INSERT into `myTable` (`id`, `name`, `value`) VALUES (-10, "", 32)',
+                null,
+                -11
+            ),
+            array(
+                'INSERT into `myTable` (`id`, `name`, `value`) VALUES (-10, "", 32);'
+                .'INSERT into `myTable` (`id`, `name`,`value`) VALUES (-20, "", 32)',
+                "`id` > -19",
                 -11
             ),
         );
@@ -317,16 +334,19 @@ class DriverTest extends \PHPUnit_Extensions_Database_TestCase
     * test
     *
     * @param string $preload SQL query preload
+    * @param string $where   The where data to use
     * @param string $expect  The query created
     *
     * @return null
     *
     * @dataProvider dataGetPrevID
     */
-    public function testGetPrevID($preload, $expect)
+    public function testGetPrevID($preload, $where, $expect)
     {
-        $this->pdo->query($preload);
-        $ret = $this->o->getPrevID();
+        foreach (explode(";", $preload) as $query) {
+            $this->pdo->query($query);
+        }
+        $ret = $this->o->getPrevID($where);
         $this->assertSame($expect, $ret);
     }
     /**
