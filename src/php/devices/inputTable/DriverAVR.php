@@ -324,7 +324,7 @@ abstract class DriverAVR extends Driver
         $s = self::S;
         $Tf = self::TF;
         $D = self::D;
-        if (($R <= 0) || ($Bias <= 0)) {
+        if (($R < 0) || ($Bias <= 0)) {
             return null;
         }
         $A = ((($Am*$s*$Tc*$Tf)/$D)*$R)/($R + $Bias);
