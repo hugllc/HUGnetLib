@@ -130,6 +130,48 @@ class ADuCScaledTempTest extends DriverTestBaseADuC
             ),
         );
     }
+    /**
+     * Data provider for testGetReading
+     *
+     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     *
+     * @return array
+     */
+    public static function dataEncodeDataPoint()
+    {
+        return array(
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(),
+                        ),
+                    ),
+                ),
+                "00400000",
+                1,
+                array(),
+                array(),
+                60.69711538
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(
+                                4 => 21.1,
+                            ),
+                        ),
+                    ),
+                ),
+                "00400000",
+                1,
+                array(),
+                array(),
+                81.79711538
+            ),
+        );
+    }
 
 }
 ?>

@@ -109,6 +109,44 @@ class ADuCScaledTemp extends \HUGnet\devices\inputTable\DriverADuC
         $T = (($Va * 1000) / $scale) + $offset;
         return round($T, $this->get('maxDecimals', 1));
     }
+    /**
+    * Returns the reversed reading
+    *
+    * @param array $value   The data to use
+    * @param int   $channel The channel to get
+    * @param float $deltaT  The time delta in seconds between this record
+    * @param array &$prev   The previous reading
+    * @param array &$data   The data from the other sensors that were crunched
+    *
+    * @return string The reading as it would have come out of the endpoint
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    protected function getRaw(
+        $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
+        if (is_null($value)) {
+            return null;
+        }
+        bcscale(10);
+        $Am   = pow(2, 23);
+        $Rin    = $this->getExtra(0);
+        $Rbias  = $this->getExtra(1);
+        $Vref   = $this->getExtra(2);
+        $scale  = $this->getExtra(3);
+        $offset = $this->getExtra(4);
+
+        $Va = (($value - $offset) * $scale) / 1000;
+
+        $A = ($Va / $Vref) * $Am;
+        $Amod = $this->inputBiasCompensation($A, $Rin, $Rbias);
+        if ($Amod != 0) {
+            $A = $A * ($A / $Amod);
+        }
+        //$A = $A * $this->gain(1);
+        return (int)round($A);
+    }
 
 }
 

@@ -812,7 +812,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
      *
      * @return array
      */
-    public static function dataGetRaw()
+    public static function dataEncodeDataPoint()
     {
         return array(
             array( // #0
@@ -884,30 +884,6 @@ class ADuCPowerTest extends DriverTestBaseADuC
                 10,
             ),
         );
-    }
-    /**
-    * Generic function for testing sensor routines
-    *
-    * This is called by using parent::sensorTest()
-    *
-    * @param array $sensor  The sensor data array
-    * @param mixed $expect  The return data to expect
-    * @param float $deltaT  The time differenct
-    * @param array $data    The data array being built
-    * @param array $prev    The previous record
-    * @param mixed $A       Data for the sensor to work on
-    * @param int   $channel The data channel to use
-    *
-    * @return null
-    *
-    * @dataProvider dataGetRaw()
-    */
-    public function testGetRaw($sensor, $expect, $deltaT, $data, $prev, $A, $channel)
-    {
-        $sen = new \HUGnet\DummyBase("Sensor");
-        $sen->resetMock($sensor);
-        $ret = $this->o->encodeDataPoint($A, $channel);
-        $this->assertEquals($expect, $ret, 0.00001);
     }
     /**
      * Data provider for testGetReading

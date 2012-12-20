@@ -198,5 +198,73 @@ class ADuCVishayRTDTest extends DriverTestBaseADuC
             ),
         );
     }
+    /**
+     * Data provider for testGetReading
+     *
+     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     *
+     * @return array
+     */
+    public static function dataEncodeDataPoint()
+    {
+        return array(
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array()
+                        ),
+                    ),
+                ),
+                "558CFBFF",
+                0,
+                array(),
+                array(),
+                -51.7004,
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(),
+                        ),
+                    ),
+                ),
+                "B505FAFF",
+                0,
+                array(),
+                array(),
+                21.2240,
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            'extra' => array(2210),
+                        ),
+                    ),
+                ),
+                "157FF8FF",
+                0,
+                array(),
+                array(),
+                97.6624,
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            'extra' => array(2210),
+                        ),
+                    ),
+                ),
+                "",
+                0,
+                array(),
+                array(),
+                null,
+            ),
+        );
+    }
 }
 ?>

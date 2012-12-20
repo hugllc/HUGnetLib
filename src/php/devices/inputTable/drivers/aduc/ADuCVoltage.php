@@ -135,7 +135,7 @@ class ADuCVoltage extends \HUGnet\devices\inputTable\DriverADuC
             $A = $A * ($A / $Amod);
         }
         //$A = $A * $this->gain(1);
-        return (int)$A;
+        return (int)round($A);
     }
 }
 

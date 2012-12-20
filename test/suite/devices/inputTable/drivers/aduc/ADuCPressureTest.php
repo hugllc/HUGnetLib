@@ -171,6 +171,103 @@ class ADuCPressureTest extends DriverTestBaseADuC
 
         );
     }
+    /**
+     * Data provider for testGetReading
+     *
+     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     *
+     * @return array
+     */
+    public static function dataEncodeDataPoint()
+    {
+        return array(
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array()
+                        ),
+                    ),
+                ),
+                "D2E80300",
+                1,
+                array(),
+                array(),
+                74.0353,
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array()
+                        ),
+                    ),
+                ),
+                "A0860100",
+                1,
+                array(),
+                array(),
+                28.8963,
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(0, 5, 0, 1000, 1.2, 100, 1)
+                        ),
+                    ),
+                ),
+                "6F440100",
+                1,
+                array(),
+                array(),
+                239.9985,
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(0, 5, 0, 150, 1.2, 100, 1)
+                        ),
+                    ),
+                ),
+                "6F440100",
+                1,
+                array(),
+                array(),
+                35.9998,
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(0, 5, 0, 150, 1.2, 100, 1)
+                        ),
+                    ),
+                ),
+                "08580100",
+                1,
+                array(),
+                array(),
+                38.1744,
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(0, 5, 0, 150, 0, 100, 1)
+                        ),
+                    ),
+                ),
+                "",
+                1,
+                array(),
+                array(),
+                38.1744,
+            ),
+
+        );
+    }
 
 }
 ?>

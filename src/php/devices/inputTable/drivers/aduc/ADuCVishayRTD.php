@@ -148,7 +148,35 @@ class ADuCVishayRTD extends \HUGnet\devices\inputTable\DriverADuC
         $diff  = $fract * ($table[$last] - $table[$prev]);
         return (float)($out + $diff);
     }
+    /**
+    * Returns the reversed reading
+    *
+    * @param array $value   The data to use
+    * @param int   $channel The channel to get
+    * @param float $deltaT  The time delta in seconds between this record
+    * @param array &$prev   The previous reading
+    * @param array &$data   The data from the other sensors that were crunched
+    *
+    * @return string The reading as it would have come out of the endpoint
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    protected function getRaw(
+        $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
+        $Am    = pow(2, 23);
+        $Rbias = $this->getExtra(0);
 
+        if (is_null($value)) {
+            return null;
+        }
+        $table = array_flip($this->_valueTable);
+        $R = $this->_tableInterpolate($value, $table);
+        $A = ($R * $Am) / ($Rbias + $R);
+        return (int)round(($A * -1));
+
+    }
 }
 
 

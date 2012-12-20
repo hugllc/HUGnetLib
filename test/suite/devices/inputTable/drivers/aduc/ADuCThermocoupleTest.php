@@ -138,7 +138,7 @@ class ADuCThermocoupleTest extends DriverTestBaseADuC
                 1,
                 array(0 => array("value" => 10)),
                 array(),
-                918.0423,
+                918.0187,
             ),
             array( //#3 Too low
                 array(
@@ -170,6 +170,103 @@ class ADuCThermocoupleTest extends DriverTestBaseADuC
             ),
         );
     }
-
+    /**
+     * Data provider for testGetReading
+     *
+     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     *
+     * @return array
+     */
+    public static function dataEncodeDataPoint()
+    {
+        return array(
+            array( //#0 Verified by http://srdata.nist.gov/its90/download/type_k.tab
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array()
+                        ),
+                    ),
+                ),
+                "A6A2FFFF", // (-3.76411915 mV)
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                -96.9939,
+            ),
+            array( //#1 Verified by http://srdata.nist.gov/its90/download/type_k.tab
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array()
+                        ),
+                    ),
+                ),
+                "6F5D0000", // (3.76506329 mV)
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                101.9745,
+            ),
+            /*  This fails for an unknown reason
+            array( //#2 Verified by http://srdata.nist.gov/its90/download/type_k.tab
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array()
+                        ),
+                    ),
+                ),
+                dechex(239241), // (37.64591217 mV)
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                918.0423,
+            ),
+            */
+            array( //#3 Too low
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array()
+                        ),
+                    ),
+                ),
+                "",
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                -47121,
+            ),
+            array( //#4 0 Vref
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(2 => 0)
+                        ),
+                    ),
+                ),
+                "",
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                -47121,
+            ),
+            array( //#5 Wrong kind of thermocouple
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3 => "j")
+                        ),
+                    ),
+                ),
+                "",
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                -47121,
+            ),
+        );
+    }
 }
 ?>

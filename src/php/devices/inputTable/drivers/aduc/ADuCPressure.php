@@ -113,10 +113,49 @@ class ADuCPressure extends \HUGnet\devices\inputTable\DriverADuC
 
         $Va = ($A / $Am) * $Vref;
         $P = $this->linearUnbounded($Va, $Vmin, $Vmax, $Pmin, $Pmax);
+
         return round($P, $this->get("maxDecimals", 1));
 
     }
+    /**
+    * Returns the reversed reading
+    *
+    * @param array $value   The data to use
+    * @param int   $channel The channel to get
+    * @param float $deltaT  The time delta in seconds between this record
+    * @param array &$prev   The previous reading
+    * @param array &$data   The data from the other sensors that were crunched
+    *
+    * @return string The reading as it would have come out of the endpoint
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    protected function getRaw(
+        $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
+        bcscale(10);
+        $Am   = pow(2, 23);
+        $Vmin  = $this->getExtra(0);
+        $Vmax  = $this->getExtra(1);
+        $Pmin  = $this->getExtra(2);
+        $Pmax  = $this->getExtra(3);
+        $Vref  = $this->getExtra(4);
+        $Rin   = $this->getExtra(5);
+        $Rbias = $this->getExtra(6);
 
+        if ($Vref == 0) {
+            return null;
+        }
+
+        $Va = $this->linearUnbounded($value, $Pmin, $Pmax, $Vmin, $Vmax);
+        $A = (int)round(($Va / $Vref) * $Am);
+        $Amod = $this->inputBiasCompensation($A, $Rin, $Rbias);
+        if ($Amod != 0) {
+            $A = $A * ($A / $Amod);
+        }
+        return (int)round($A);
+    }
 }
 
 

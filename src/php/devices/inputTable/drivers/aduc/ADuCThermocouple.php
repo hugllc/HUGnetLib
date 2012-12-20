@@ -58,7 +58,7 @@ require_once dirname(__FILE__)."/../../DriverADuC.php";
 class ADuCThermocouple extends \HUGnet\devices\inputTable\DriverADuC
 {
     /** This is the number of decimal places we use for our *MATH*, not the output */
-    const DECIMAL_PLACES = 10;
+    const DECIMAL_PLACES = 20;
     /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
@@ -103,6 +103,31 @@ class ADuCThermocouple extends \HUGnet\devices\inputTable\DriverADuC
             ),
         ),
     );
+    /** These are the coeffients of the thermocouple equasion */
+    private $_revCoeffients = array(
+        "k" => array(
+            "-270" => null, // For below -270 deg C
+            // From http://srdata.nist.gov/its90/type_k/kcoefficients_inverse.html
+            "0" => array(// For below 0(0 mV) degC
+                "c" => array(
+                    0, 0.394501280250E-1, 0.236223735980E-4, -0.328589067840E-6,
+                    -0.499048287770E-8, -0.675090591730E-10, -0.574103274280E-12,
+                    -0.310888728940E-14, -0.104516093650E-16, -0.198892668780E-19,
+                    -0.163226974860E-22
+                ),
+                "a" => array(0, 0, 0),
+            ),
+            "1372" => array(// For between 0(0 mV) and 1372 deg C
+                "c" => array(
+                    -0.176004136860E-1, 0.389212049750E-1, 0.185587700320E-4,
+                    -0.994575928740E-7, 0.318409457190E-9, -0.560728448890E-12,
+                    0.560750590590E-15, -0.320207200030E-18, 0.971511471520E-22,
+                    -0.121047212750E-25
+                ),
+                "a" => array(0.1185976, -0.1183432E-3, 0.1269686E3),
+            ),
+        ),
+    );
     /**
     * Changes a raw reading into a output value
     *
@@ -130,7 +155,7 @@ class ADuCThermocouple extends \HUGnet\devices\inputTable\DriverADuC
         if (is_null($T)) {
             return null;
         }
-        return round($T, $this->get('maxDecimals', 1));
+        return round($T, $this->get('maxDecimals'));
     }
     /**
     * Changes a raw reading into a output value
@@ -164,7 +189,86 @@ class ADuCThermocouple extends \HUGnet\devices\inputTable\DriverADuC
         }
         return $T;
     }
+    /**
+    * Returns the reversed reading
+    *
+    * @param array $value   The data to use
+    * @param int   $channel The channel to get
+    * @param float $deltaT  The time delta in seconds between this record
+    * @param array &$prev   The previous reading
+    * @param array &$data   The data from the other sensors that were crunched
+    *
+    * @return string The reading as it would have come out of the endpoint
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    protected function getRaw(
+        $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
+        $Am    = pow(2, 23);
+        $Rin   = $this->getExtra(0);
+        $Rbias = $this->getExtra(1);
+        $Vref  = $this->getExtra(2);
+        $type  = $this->getExtra(3);
 
+        if ($Vref == 0) {
+            return null;
+        }
+        $Va = $this->_revThermocouple($value, $data[0]["value"], $type);
+        if (is_null($Va)) {
+            return null;
+        }
+        $A = ($Va / $Vref) * $Am;
+        $Amod = $this->inputBiasCompensation($A, $Rin, $Rbias);
+        if ($Amod != 0) {
+            $A = $A * ($A / $Amod);
+        }
+        return (int)round($A);
+    }
+    /**
+    * Changes a raw reading into a output value
+    *
+    * @param float $V     Voltage output of thermocouple in milliVolts
+    * @param float $TCold Cold junction temperature in degrees C
+    * @param float $type  Thermocouple type
+    *
+    * @return mixed The temperature
+    */
+    private function _revThermocouple($T, $TCold, $type = "k")
+    {
+        bcscale(self::DECIMAL_PLACES);
+        $V = null;
+        if (!is_array($this->_revCoeffients[$type])) {
+            return null;
+        }
+        foreach ((array)array_keys($this->_revCoeffients[$type]) as $k) {
+            if ($T < (float)$k) {
+                if (empty($this->_revCoeffients[$type][$k])) {
+                    break;
+                }
+                $V = 0;
+                $T -= $TCold;
+                $c = &$this->_revCoeffients[$type][$k]["c"];
+                for ($i = 0; isset($c[$i]); $i++) {
+                    /* This is required so when php converts the float to a string
+                     * it is *NOT* in scientific notation.  bc functions don't seem
+                     * to like scientific notation, and they require string inputs */
+                    $coef = number_format($c[$i], self::DECIMAL_PLACES, '.', '');
+                    $V = bcadd($V, bcmul($coef, bcpow($T, $i)));
+                }
+                $a = &$this->_revCoeffients[$type][$k]["a"];
+                $a0 = number_format($a[0], self::DECIMAL_PLACES, '.', '');
+                $a1 = number_format($a[1], self::DECIMAL_PLACES, '.', '');
+                $a2 = number_format($a[2], self::DECIMAL_PLACES, '.', '');
+                $exp = (float)bcmul($a1, bcpow(bcsub($T, $a2), 2));
+                $adder = bcmul($a0, exp($exp));
+                $V = (float)bcadd($V, $adder);
+                break;
+            }
+        }
+        return $V;
+    }
 }
 
 

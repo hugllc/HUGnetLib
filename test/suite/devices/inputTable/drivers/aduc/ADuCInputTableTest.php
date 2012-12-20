@@ -397,7 +397,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                         ),
                     ),
                 ),
-                "3F420F00",
+                "40420F00",
                 1,
                 array(),
                 array(),
