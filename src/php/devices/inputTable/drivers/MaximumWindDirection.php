@@ -132,17 +132,22 @@ class MaximumWindDirection extends \HUGnet\devices\inputTable\Driver
         return null;
     }
     /**
-    * Returns the raw value when given the crunched value
+    * Returns the reversed reading
     *
-    * @param array $data    The data to use
+    * @param array $value   The data to use
     * @param int   $channel The channel to get
+    * @param float $deltaT  The time delta in seconds between this record
+    * @param array &$prev   The previous reading
+    * @param array &$data   The data from the other sensors that were crunched
     *
-    * @return float The direction in degrees
+    * @return string The reading as it would have come out of the endpoint
     *
     * @SuppressWarnings(PHPMD.ShortVariable)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    protected function getRaw($data, $channel = 0)
-    {
+    protected function getRaw(
+        $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
         foreach ($this->directions as $mask => $dir) {
             if ($data === $dir) {
                 return bindec($mask);

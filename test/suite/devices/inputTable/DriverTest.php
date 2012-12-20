@@ -1008,6 +1008,35 @@ class DriverTest extends drivers\DriverTestBase
         $this->assertSame($expect, $this->o->getPPM($A, $deltaT));
     }
     /**
+    * Data provider for testRevPPM
+    *
+    * @return array
+    */
+    public static function dataRevPPM()
+    {
+        return array(
+            array(100, 300, 500),
+            array(500, 0, null),
+            array(500, -1, null),
+            array(-1, 300, null),
+        );
+    }
+    /**
+    * test
+    *
+    * @param int   $A      The a to d reading
+    * @param float $deltaT The bias resistance
+    * @param mixed $expect The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataRevPPM
+    */
+    public function testRevPPM($A, $deltaT, $expect)
+    {
+        $this->assertSame($expect, $this->o->revPPM($A, $deltaT));
+    }
+    /**
     * Data provider for testDriversTest
     *
     * This extracts all of the drivers and puts them into an array to test.
@@ -1189,6 +1218,19 @@ class DriverTestClass extends \HUGnet\devices\inputTable\Driver
     public function getPPM($val, $deltaT)
     {
         return parent::getPPM($val, $deltaT);
+    }
+    /**
+    * This is for a generic pulse counter
+    *
+    * @param int   $ppm    Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
+    *                      and the last one
+    *
+    * @return float
+    */
+    public function revPPM($ppm, $deltaT)
+    {
+        return parent::revPPM($ppm, $deltaT);
     }
     /**
     * Returns an array of types that this sensor could be

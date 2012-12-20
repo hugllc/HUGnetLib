@@ -207,6 +207,86 @@ class LiquidFlowTest extends DriverTestBase
             ),
         );
     }
+    /**
+     * Data provider for testEncodeDataPoint
+     *
+     * @return array
+     */
+    public static function dataEncodeDataPoint()
+    {
+        return array(
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x70,
+                            "type" => "liquidflowmeter",
+                        ),
+                    ),
+                ),
+                "000000",
+                300,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                0.10
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x70,
+                            "type" => "liquidflowmeter",
+                            "extra" => array(100),
+                        ),
+                    ),
+                ),
+                "881300",
+                300,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                10.0
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x7F,
+                            "type" => "hsliquidflowmeter",
+                            "extra" => array(0),
+                        ),
+                    ),
+                ),
+                "881300",
+                300,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                1000.0
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x70,
+                            "type" => "liquidflowmeter",
+                        ),
+                    ),
+                ),
+                null,
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                null
+            ),
+        );
+    }
 
 }
 

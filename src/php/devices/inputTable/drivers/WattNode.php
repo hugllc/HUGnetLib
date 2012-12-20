@@ -113,7 +113,7 @@ class WattNode extends \HUGnet\devices\inputTable\Driver
     * @SuppressWarnings(PHPMD.ShortVariable)
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    public function getRaw(
+    protected function getRaw(
         $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
     ) {
         $extra = $this->getExtra(0);

@@ -476,17 +476,22 @@ abstract class Driver
         return $A;
     }
     /**
-    * Changes a raw reading into a output value
+    * Returns the reversed reading
     *
-    * @param array $data    The data to use
+    * @param array $value   The data to use
     * @param int   $channel The channel to get
+    * @param float $deltaT  The time delta in seconds between this record
+    * @param array &$prev   The previous reading
+    * @param array &$data   The data from the other sensors that were crunched
     *
-    * @return mixed The value in whatever the units are in the sensor
+    * @return string The reading as it would have come out of the endpoint
     *
+    * @SuppressWarnings(PHPMD.ShortVariable)
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    protected function getRaw($value, $channel = 0)
-    {
+    protected function getRaw(
+        $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
         return $value;
     }
     /**
@@ -714,6 +719,23 @@ abstract class Driver
             return null;
         }
         return round($ppm, 4);
+    }
+    /**
+    * This is for a generic pulse counter
+    *
+    * @param int   $ppm    Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
+    *                      and the last one
+    *
+    * @return float
+    */
+    protected function revPPM($ppm, $deltaT)
+    {
+        if (($deltaT <= 0) || ($ppm < 0)) {
+            return null;
+        }
+        $val = ($ppm / 60) * $deltaT;
+        return (int)$val;
     }
 }
 
