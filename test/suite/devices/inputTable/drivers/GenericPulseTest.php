@@ -171,6 +171,68 @@ class GenericPulseTest extends DriverTestBase
             ),
         );
     }
+    /**
+     * Data provider for testEncodeDataPoint
+     *
+     * @return array
+     */
+    public static function dataEncodeDataPoint()
+    {
+        return array(
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x70,
+                            "type" => "GenericPulse",
+                        ),
+                    ),
+                ),
+                "000000",
+                300,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                0.10
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x70,
+                            "type" => "GenericPulse",
+                            "extra" => array(100),
+                        ),
+                    ),
+                ),
+                "881300",
+                300,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                5000
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x70,
+                            "type" => "GenericPulse",
+                        ),
+                    ),
+                ),
+                null,
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                null
+            ),
+        );
+    }
 
 }
 

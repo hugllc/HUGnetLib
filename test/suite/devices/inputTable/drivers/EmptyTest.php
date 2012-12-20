@@ -115,6 +115,32 @@ class EmptySensorTest extends DriverTestBase
         );
     }
     /**
+     * Data provider for testGetReading
+     *
+     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     *
+     * @return array
+     */
+    public static function dataEncodeDataPoint()
+    {
+        return array(
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(),
+                        ),
+                    ),
+                ),
+                "",
+                1,
+                array(),
+                array(),
+                256210,
+            ),
+        );
+    }
+    /**
     * test the set routine when an extra class exists
     *
     * @return null

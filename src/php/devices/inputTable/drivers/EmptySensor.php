@@ -66,7 +66,7 @@ class EmptySensor extends \HUGnet\devices\inputTable\Driver
         "shortName" => "Empty",
         "unitType" => "None",
         "storageUnit" => 'none',
-        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_IGNORE, 
+        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_IGNORE,
         "extraText" => array(
         ),
         // Integer is the size of the field needed to edit
@@ -98,6 +98,25 @@ class EmptySensor extends \HUGnet\devices\inputTable\Driver
     ) {
         return null;
 
+    }
+    /**
+    * Returns the reversed reading
+    *
+    * @param array $value   The data to use
+    * @param int   $channel The channel to get
+    * @param float $deltaT  The time delta in seconds between this record
+    * @param array &$prev   The previous reading
+    * @param array &$data   The data from the other sensors that were crunched
+    *
+    * @return string The reading as it would have come out of the endpoint
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    protected function getRaw(
+        $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
+        return null;
     }
     /**
     * Gets the direction from a direction sensor made out of a POT.

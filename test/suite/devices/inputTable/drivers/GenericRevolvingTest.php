@@ -210,6 +210,68 @@ class GenericRevolvingTest extends DriverTestBase
             ),
         );
     }
+    /**
+     * Data provider for testEncodeDataPoint
+     *
+     * @return array
+     */
+    public static function dataEncodeDataPoint()
+    {
+        return array(
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x70,
+                            "type" => "GenericRevolving",
+                        ),
+                    ),
+                ),
+                "000000",
+                300,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                0.10
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x70,
+                            "type" => "GenericRevolving",
+                            "extra" => array(100),
+                        ),
+                    ),
+                ),
+                "881300",
+                300,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                10.0
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x70,
+                            "type" => "GenericRevolving",
+                        ),
+                    ),
+                ),
+                null,
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                null
+            ),
+        );
+    }
 
 }
 
