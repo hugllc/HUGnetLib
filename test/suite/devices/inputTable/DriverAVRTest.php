@@ -541,6 +541,37 @@ class DriverAVRTest extends drivers\DriverTestBase
         $this->assertSame($expect, $this->o->getResistance($A, $Bias, $Tc));
     }
     /**
+     * Data provider for testGetResistance
+     *
+     * @return array
+     */
+    public static function dataRevResistance()
+    {
+        return array(
+            array(array(), 0, 1, 0, 0.0),
+            array(array(), 10000, 10, 1, 1.8027),
+        );
+    }
+    /**
+    * test
+    *
+    * @param array $preload The values to preload into the object
+    * @param mixed $expect  The expected return value
+    * @param float $Bias    The bias resistance
+    * @param int   $Tc      The time constant
+    * @param int   $A       The a to d reading
+    *
+    * @return null
+    *
+    * @dataProvider dataRevResistance
+    */
+    public function testRevResistance($preload, $expect, $Bias, $Tc, $A)
+    {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($preload);
+        $this->assertSame($expect, $this->o->revResistance($A, $Bias, $Tc));
+    }
+    /**
     * Data provider for testGetResistance
     *
     * @return array
@@ -580,6 +611,39 @@ class DriverAVRTest extends drivers\DriverTestBase
     *
     * @return array
     */
+    public static function dataRevSweep()
+    {
+        return array(
+            array(array(), 0, 1, 1, 0.0),
+            array(array(), 10000, 10, 1, 1.5274),
+            array(array(), 65472, 10, 1, 10.0),
+
+        );
+    }
+    /**
+    * test
+    *
+    * @param array $preload The values to preload into the object
+    * @param mixed $expect  The expected return value
+    * @param float $R       The bias resistance
+    * @param int   $Tc      The time constant
+    * @param int   $A       The a to d reading
+    *
+    * @return null
+    *
+    * @dataProvider dataRevSweep
+    */
+    public function testRevSweep($preload, $expect, $R, $Tc, $A)
+    {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($preload);
+        $this->assertSame($expect, $this->o->revSweep($A, $R, $Tc));
+    }
+    /**
+    * Data provider for testGetResistance
+    *
+    * @return array
+    */
     public static function dataTableInterpolate()
     {
         return array(
@@ -603,9 +667,15 @@ class DriverAVRTest extends drivers\DriverTestBase
     */
     public function testTableInterpolate($preload, $R, $expect)
     {
+        $valueTable = array(
+            "4000" => 10.0,
+            "3000" => 20.0,
+            "2000" => 30.0,
+            "1000" => 40.0,
+        );
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($preload);
-        $this->assertSame($expect, $this->o->tableInterpolate($R));
+        $this->assertSame($expect, $this->o->tableInterpolate($R, $valueTable));
     }
     /**
     * Data provider for testDriversTest
@@ -711,13 +781,6 @@ class DriverAVRTestClass extends \HUGnet\devices\inputTable\DriverAVR
         "extraDefault" => array(2,3,5,7,11),
         "extraText" => array("a","b","c","d","e"),
         "extraValues" => array(5, 5, 5, 5, 5),
-    );
-    /** @var array The table for tableInterpolate */
-    protected $valueTable = array(
-        "4000" => 10.0,
-        "3000" => 20.0,
-        "2000" => 30.0,
-        "1000" => 40.0,
     );
     /**
     * Gets the extra values
@@ -855,6 +918,23 @@ class DriverAVRTestClass extends \HUGnet\devices\inputTable\DriverAVR
     /**
     * Converts a raw AtoD reading into resistance
     *
+    * This function takes in the AtoD value and returns the calculated
+    * resistance of the sensor.  It does this using a fairly complex
+    * formula.  This formula and how it was derived is detailed in
+    *
+    * @param int   $R    Integer The AtoD reading
+    * @param float $Bias Float The bias resistance in kOhms
+    * @param int   $Tc   The time constant
+    *
+    * @return The value corresponding the the resistance given
+    */
+    public function revResistance($R, $Bias, $Tc)
+    {
+        return parent::revResistance($R, $Bias, $Tc);
+    }
+    /**
+    * Converts a raw AtoD reading into resistance
+    *
     * If you connect the two ends of a pot up to Vcc and ground, and connect the
     * sweep terminal to the AtoD converter, this function returns the
     * resistance between ground and the sweep terminal.
@@ -874,16 +954,38 @@ class DriverAVRTestClass extends \HUGnet\devices\inputTable\DriverAVR
         return parent::getSweep($A, $R, $Tc);
     }
     /**
+    * Converts a raw AtoD reading into resistance
+    *
+    * If you connect the two ends of a pot up to Vcc and ground, and connect the
+    * sweep terminal to the AtoD converter, this function returns the
+    * resistance between ground and the sweep terminal.
+    *
+    * This function takes in the AtoD value and returns the calculated
+    * resistance that the sweep is at.  It does this using a fairly complex
+    * formula.  This formula and how it was derived is detailed in
+    *
+    * @param int   $Rs Integer The AtoD reading
+    * @param float $R  Float The overall resistance in kOhms
+    * @param int   $Tc The time constant
+    *
+    * @return The resistance corresponding to the values given in k Ohms
+    */
+    public function revSweep($Rs, $R, $Tc)
+    {
+        return parent::revSweep($Rs, $R, $Tc);
+    }
+    /**
     * This function should be called with the values set for the specific
     * thermistor that is used.
     *
-    * @param float $R The current resistance of the thermistor in ohms
+    * @param float $R     The current resistance of the thermistor in ohms
+    * @param array $table The table to use
     *
     * @return float The Temperature in degrees C
     */
-    public function tableInterpolate($R)
+    public function tableInterpolate($R, &$table)
     {
-        return parent::tableInterpolate($R);
+        return parent::tableInterpolate($R, $table);
     }
     /**
     * Returns an array of types that this sensor could be

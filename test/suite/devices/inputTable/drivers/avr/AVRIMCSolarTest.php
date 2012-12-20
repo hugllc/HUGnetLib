@@ -213,6 +213,54 @@ class AVRIMCSolarTest extends DriverTestBaseAVR
             ),
         );
     }
+    /**
+    * Data provider for testGetReading
+    *
+    * @return array
+    */
+    public static function dataEncodeDataPoint()
+    {
+        return array(
+            array( // #3
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x02,
+                            "type" => "IMCSolar",
+                            "extra" => array(10),
+                        ),
+                    ),
+                ),
+                "881300",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                93.4199
+            ),
+            array( // #5
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x02,
+                            "type" => "IMCSolar",
+                            "extra" => array(10),
+                            'dataType' =>
+                                \HUGnet\devices\datachan\Driver::TYPE_IGNORE,
+                        ),
+                    ),
+                ),
+                "881300",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                93.4199
+            ),
+        );
+    }
 
 }
 

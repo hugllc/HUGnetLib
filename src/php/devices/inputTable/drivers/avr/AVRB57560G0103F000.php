@@ -127,7 +127,32 @@ class AVRB57560G0103F000 extends \HUGnet\devices\inputTable\DriverAVR
         $T = round($T, $this->get("maxDecimals"));
         return $T;
     }
-
+    /**
+    * Returns the reversed reading
+    *
+    * @param array $value   The data to use
+    * @param int   $channel The channel to get
+    * @param float $deltaT  The time delta in seconds between this record
+    * @param array &$prev   The previous reading
+    * @param array &$data   The data from the other sensors that were crunched
+    *
+    * @return string The reading as it would have come out of the endpoint
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    protected function getRaw(
+        $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
+        $Bias  = $this->getExtra(0);
+        $table = array_reverse(array_flip($this->valueTable), true);
+        $Kohms = $this->tableInterpolate($value, $table) / 1000;
+        $A     = $this->revResistance($Kohms, $Bias, $data["timeConstant"]);
+        if (is_null($A)) {
+            return null;
+        }
+        return (int)round($A);
+    }
 }
 
 

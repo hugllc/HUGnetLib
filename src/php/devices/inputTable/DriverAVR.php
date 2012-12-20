@@ -308,6 +308,31 @@ abstract class DriverAVR extends Driver
     /**
     * Converts a raw AtoD reading into resistance
     *
+    * This function takes in the AtoD value and returns the calculated
+    * resistance of the sensor.  It does this using a fairly complex
+    * formula.  This formula and how it was derived is detailed in
+    *
+    * @param int   $R    Integer The AtoD reading
+    * @param float $Bias Float The bias resistance in kOhms
+    * @param int   $Tc   The time constant
+    *
+    * @return The value corresponding the the resistance given
+    */
+    protected function revResistance($R, $Bias, $Tc)
+    {
+        $Am = self::AM;
+        $s = self::S;
+        $Tf = self::TF;
+        $D = self::D;
+        if (($R <= 0) || ($Bias <= 0)) {
+            return null;
+        }
+        $A = ((($Am*$s*$Tc*$Tf)/$D)*$R)/($R + $Bias);
+        return (int)round($A);
+    }
+    /**
+    * Converts a raw AtoD reading into resistance
+    *
     * If you connect the two ends of a pot up to Vcc and ground, and connect the
     * sweep terminal to the AtoD converter, this function returns the
     * resistance between ground and the sweep terminal.
@@ -342,6 +367,38 @@ abstract class DriverAVR extends Driver
         return round($Rs, 4);
     }
     /**
+    * Converts a raw AtoD reading into resistance
+    *
+    * If you connect the two ends of a pot up to Vcc and ground, and connect the
+    * sweep terminal to the AtoD converter, this function returns the
+    * resistance between ground and the sweep terminal.
+    *
+    * This function takes in the AtoD value and returns the calculated
+    * resistance that the sweep is at.  It does this using a fairly complex
+    * formula.  This formula and how it was derived is detailed in
+    *
+    * @param int   $Rs Integer The AtoD reading
+    * @param float $R  Float The overall resistance in kOhms
+    * @param int   $Tc The time constant
+    *
+    * @return The resistance corresponding to the values given in k Ohms
+    */
+    protected function revSweep($Rs, $R, $Tc)
+    {
+        $Am = self::AM;
+        $s = self::S;
+        $Tf = self::TF;
+        $D = self::D;
+        $Den = (($Am*$s*$Tc*$Tf)/$D);
+        if ($R == 0) {
+            return null;
+        }
+        $A = ($Rs * $Den) / $R;
+        return (int)round($A);
+    }
+
+
+    /**
     * This function should be called with the values set for the specific
     * thermistor that is used.
     *
@@ -354,12 +411,13 @@ abstract class DriverAVR extends Driver
     {
         $max = max(array_keys($table));
         $min = min(array_keys($table));
+
         if (($R < $min) || ($R > $max)) {
             return null;
         }
-        $table = &$table;
         foreach (array_keys($table) as $ohm) {
             $last = $ohm;
+
             if ((float)$ohm <= (float)$R) {
                 break;
             }

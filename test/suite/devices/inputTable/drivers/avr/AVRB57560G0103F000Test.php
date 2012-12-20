@@ -182,5 +182,35 @@ class AVRB57560G0103F000Test extends DriverTestBaseAVR
         );
     }
 
+    /**
+     * Data provider for testGetReading
+     *
+     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     *
+     * @return array
+     */
+    public static function dataEncodeDataPoint()
+    {
+        return array(
+            array(// #0
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            'extra' => array(10)
+                        ),
+                    ),
+                ),
+                "881300",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                105.32
+            ),
+
+        );
+    }
+
 }
 ?>
