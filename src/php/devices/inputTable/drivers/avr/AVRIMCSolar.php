@@ -243,7 +243,7 @@ class AVRIMCSolar extends \HUGnet\devices\inputTable\DriverAVR
     {
         $Bias  = $this->getExtra(0);
         $kohms = $this->getResistance($A, $Bias, $data["timeConstant"]);
-        $T     = $this->tableInterpolate($kohms * 1000);
+        $T     = $this->tableInterpolate($kohms * 1000, $this->valueTable);
         if (is_null($T)) {
             return null;
         }

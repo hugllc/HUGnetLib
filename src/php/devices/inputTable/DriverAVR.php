@@ -345,18 +345,19 @@ abstract class DriverAVR extends Driver
     * This function should be called with the values set for the specific
     * thermistor that is used.
     *
-    * @param float $R The current resistance of the thermistor in ohms
+    * @param float $R     The current resistance of the thermistor in ohms
+    * @param array $table The table to use
     *
     * @return float The Temperature in degrees C
     */
-    protected function tableInterpolate($R)
+    protected function tableInterpolate($R, &$table)
     {
-        $max = max(array_keys($this->valueTable));
-        $min = min(array_keys($this->valueTable));
+        $max = max(array_keys($table));
+        $min = min(array_keys($table));
         if (($R < $min) || ($R > $max)) {
             return null;
         }
-        $table = &$this->valueTable;
+        $table = &$table;
         foreach (array_keys($table) as $ohm) {
             $last = $ohm;
             if ((float)$ohm <= (float)$R) {
