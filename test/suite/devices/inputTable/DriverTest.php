@@ -874,6 +874,28 @@ class DriverTest extends drivers\DriverTestBase
                 ),
                 null,
             ),
+            array( // #3 null data.
+                array(),
+                "DriverTestClass",
+                null,
+                0,
+                1,
+                array(),
+                array(
+                    "raw" => 0x0201,
+                ),
+                null,
+            ),
+            array( // #4 Int Data
+                array(),
+                "DriverTestClass",
+                0x030201,
+                0,
+                1,
+                array(),
+                array(),
+                0x030201,
+            ),
         );
     }
     /**

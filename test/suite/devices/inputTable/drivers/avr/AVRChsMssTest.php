@@ -120,7 +120,7 @@ class AVRChsMssTest extends DriverTestBaseAVR
                 array(),
                 null
             ),
-            array(   // #0
+            array(   // #1
                 array(
                     "Sensor" => array(
                         "get" => array(
@@ -137,7 +137,7 @@ class AVRChsMssTest extends DriverTestBaseAVR
                 array(),
                 97.45
             ),
-            array(   // #1
+            array(   // #2
                 array(
                     "Sensor" => array(
                         "get" => array(
@@ -154,7 +154,7 @@ class AVRChsMssTest extends DriverTestBaseAVR
                 array(),
                 1.93
             ),
-            array(   // #2
+            array(   // #3
                 array(
                     "Sensor" => array(
                         "get" => array(
@@ -171,7 +171,7 @@ class AVRChsMssTest extends DriverTestBaseAVR
                 array(),
                 null,
             ),
-            array(   // #3
+            array(   // #4
                 array(
                     "Sensor" => array(
                         "get" => array(
