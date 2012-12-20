@@ -404,19 +404,21 @@ class CloneVirtualTest extends DriverTestBaseVirtual
     *
     * This is called by using parent::sensorTest()
     *
-    * @param array $sensor The sensor data array
-    * @param mixed $A      Data for the sensor to work on
-    * @param float $deltaT The time differenct
-    * @param array $data   The data array being built
-    * @param array $prev   The previous record
-    * @param mixed $expect The return data to expect
+    * @param array $sensor  The sensor data array
+    * @param mixed $A       Data for the sensor to work on
+    * @param float $deltaT  The time differenct
+    * @param array $data    The data array being built
+    * @param array $prev    The previous record
+    * @param mixed $expect  The return data to expect
+    * @param int   $channel The channel to test
     *
     * @return null
     *
     * @dataProvider dataGetReading()
     */
-    public function testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
-    {
+    public function testGetReading(
+        $sensor, $A, $deltaT, $data, $prev, $expect, $channel = 0
+    ) {
         $sen = new \HUGnet\DummyBase("Input");
         $sen->resetMock($sensor);
         $ret = $this->o->decodeData($A, $deltaT, $data, $prev);
