@@ -153,7 +153,30 @@ class AVRBC2322640 extends \HUGnet\devices\inputTable\DriverAVR
         $T -= 273.15;
         return($T);
     }
+    /**
+    * This formula is from BCcomponents PDF file for the
+    * # 2322 640 thermistor series on page 6.  See the data sheet for
+    * more information.
+    *
+    * This function should be called with the values set for the specific
+    * thermistor that is used.  See eDEFAULT::Therm0Interpolate as an example.
+    *
+    * R = R0 * e^(A+(B/T^2)+(C/T^3)+(D/T^4))
+    *
+    * @param float $R  The current resistance of the thermistor in kOhms
+    * @param float $R0 The resistance of the thermistor at 25C in kOhms
+    * @param float $A  Thermistor Constant A (From datasheet)
+    * @param float $B  Thermistor Constant B (From datasheet)
+    * @param float $C  Thermistor Constant C (From datasheet)
+    * @param float $D  Thermistor Constant D (From datasheet)
+    *
+    * @return float The Temperature in degrees C
+    */
+    private function _revInterpolate($R, $R0, $A, $B, $C, $D)
+    {
+        /* R = R0 * e^(A+(B/T^2)+(C/T^3)+(D/T^4)) */
 
+    }
 }
 
 
