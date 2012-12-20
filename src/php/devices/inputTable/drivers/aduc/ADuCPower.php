@@ -413,26 +413,31 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         return $return;
     }
     /**
-    * Gets the direction from a direction sensor made out of a POT.
+    * Returns the reversed reading
     *
-    * @param array $data    The data to use
+    * @param array $value    The data to use
     * @param int   $channel The channel to get
+    * @param float $deltaT  The time delta in seconds between this record
+    * @param array &$prev   The previous reading
+    * @param array &$data   The data from the other sensors that were crunched
     *
-    * @return float The direction in degrees
+    * @return string The reading as it would have come out of the endpoint
     *
     * @SuppressWarnings(PHPMD.ShortVariable)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    protected function getRaw($data, $channel = 0)
-    {
+    public function getRaw(
+        $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
         $return = 0;
         if ($channel == 0) {
-            $return = $this->getRawCurrent($data);
+            $return = $this->getRawCurrent($value);
         } else if ($channel == 1) {
-            $return = $this->getRawVoltage($data);
+            $return = $this->getRawVoltage($value);
         } else if ($channel == 2) {
-            $return = $this->getRawPower($data);
+            $return = $this->getRawPower($value);
         } else if ($channel == 3) {
-            $return = $this->getRawImpedance($data);
+            $return = $this->getRawImpedance($value);
         }
         return $return;
     }

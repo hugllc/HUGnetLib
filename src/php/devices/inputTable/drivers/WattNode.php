@@ -100,19 +100,24 @@ class WattNode extends \HUGnet\devices\inputTable\Driver
         return round($Wh / 1000, 4);
     }
     /**
-    * Returns the raw value when given the crunched value
+    * Returns the reversed reading
     *
-    * @param array $data    The data to use
+    * @param array $value   The data to use
     * @param int   $channel The channel to get
+    * @param float $deltaT  The time delta in seconds between this record
+    * @param array &$prev   The previous reading
+    * @param array &$data   The data from the other sensors that were crunched
     *
-    * @return float The direction in degrees
+    * @return string The reading as it would have come out of the endpoint
     *
     * @SuppressWarnings(PHPMD.ShortVariable)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    protected function getRaw($data, $channel = 0)
-    {
+    public function getRaw(
+        $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
         $extra = $this->getExtra(0);
-        $Wh = $data * 1000;
+        $Wh = $value * 1000;
         if ($extra == 0) {
             return null;
         }

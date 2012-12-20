@@ -138,6 +138,52 @@ class MaximumRainTest extends DriverTestBase
 
         );
     }
+    /**
+     * Data provider for testGetReading
+     *
+     * @return array
+     */
+    public static function dataEncodeDataPoint()
+    {
+        return array(
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x70,
+                            "type" => "maximumRainGauge",
+                        ),
+                    ),
+                ),
+                "F40100",
+                300,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                5
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x70,
+                            "type" => "maximumRainGauge",
+                        ),
+                    ),
+                ),
+                "E80300",
+                300,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                10
+            ),
+
+        );
+    }
+
 }
 
 ?>

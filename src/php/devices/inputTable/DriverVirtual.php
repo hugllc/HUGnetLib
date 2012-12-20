@@ -130,19 +130,22 @@ abstract class DriverVirtual extends Driver
         return $ret;
     }
     /**
-    * Returns the raw value when given the crunched value
+    * Gets the direction from a direction sensor made out of a POT.
     *
-    * Raw readings have no meaning for virtual sensors
-    *
-    * @param array $data    The data to use
+    * @param array $value   The data to use
     * @param int   $channel The channel to get
+    * @param float $deltaT  The time delta in seconds between this record
+    * @param array &$prev   The previous reading
+    * @param array &$data   The data from the other sensors that were crunched
     *
-    * @return float The direction in degrees
+    * @return string The reading as it would have come out of the endpoint
     *
     * @SuppressWarnings(PHPMD.ShortVariable)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    protected function getRaw($data, $channel = 0)
-    {
+    public function encodeDataPoint(
+        $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
         return null;
     }
 

@@ -101,7 +101,32 @@ class MaximumAnemometer extends \HUGnet\devices\inputTable\Driver
         }
         return round($speed, 4);
     }
-
+    /**
+    * Returns the reversed reading
+    *
+    * @param array $value   The data to use
+    * @param int   $channel The channel to get
+    * @param float $deltaT  The time delta in seconds between this record
+    * @param array &$prev   The previous reading
+    * @param array &$data   The data from the other sensors that were crunched
+    *
+    * @return string The reading as it would have come out of the endpoint
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function getRaw(
+        $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
+        if (empty($deltaT)) {
+            return null;
+        }
+        if ($value <= 0) {
+            return 0.0;
+        }
+        $A = (($value + 0.1) / 1.6965) * $deltaT;
+        return round($A);
+    }
 }
 
 ?>

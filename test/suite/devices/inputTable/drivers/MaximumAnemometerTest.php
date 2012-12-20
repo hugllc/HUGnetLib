@@ -189,6 +189,85 @@ class MaximumAnemometerTest extends DriverTestBase
 
         );
     }
+    /**
+     * Data provider for testGetReading
+     *
+     * @return array
+     */
+    public static function dataEncodeDataPoint()
+    {
+        return array(
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x70,
+                            "type" => "maximumAnemometer",
+                        ),
+                    ),
+                ),
+                'F40100',
+                300,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                2.7275
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x70,
+                            "type" => "maximumAnemometer",
+                        ),
+                    ),
+                ),
+                null,
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                2.7275
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x70,
+                            "type" => "maximumAnemometer",
+                        ),
+                    ),
+                ),
+                0,
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                null
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x70,
+                            "type" => "maximumAnemometer",
+                        ),
+                    ),
+                ),
+                '000000',
+                300,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                0.0
+            ),
+
+        );
+    }
 }
 
 ?>
