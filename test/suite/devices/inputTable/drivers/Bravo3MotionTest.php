@@ -118,6 +118,20 @@ class Bravo3MotionTest extends DriverTestBase
             array(array("extra" => array(1)), 1000, 300, array(), array(), 1000),
         );
     }
+    /**
+     * Data provider for testGetReading
+     *
+     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     *
+     * @return array
+     */
+    public static function dataEncodeDataPoint()
+    {
+        return array(
+            array(array(), "F40100", 300, array(), array(), 500),
+            array(array("extra" => array(1)), "E80300", 300, array(), array(), 1000),
+        );
+    }
 
 }
 
