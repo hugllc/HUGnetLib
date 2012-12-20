@@ -841,6 +841,33 @@ class DriverADuCTest extends drivers\DriverTestBase
             "Class $class doesn't exist for type $sid:$type in file $file"
         );
     }
+    /**
+     * Data provider for testEncodeData
+     *
+     * @return array
+     */
+    public static function dataEncodeDataPoint()
+    {
+        return array(
+            array( // #0
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(),
+                        ),
+                    ),
+                ),
+                "0E0000",
+                1,
+                array(),
+                array(),
+                14.314713,
+                0,
+            ),
+        );
+    }
 }
 
 /** This is the HUGnet namespace */

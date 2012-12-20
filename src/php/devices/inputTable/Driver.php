@@ -618,13 +618,13 @@ abstract class Driver
     public function encodeDataPoint(
         $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
     ) {
-        $value = $this->getRaw(
+        $val = $this->getRaw(
             $value, $channel, $deltaT, $prev, $data
         );
-        if (!is_null($value)) {
-            return $this->intToStr((int)$value);
+        if (!is_null($val)) {
+            return $this->intToStr((int)$val);
         }
-        return null;
+        return "";
     }
     /**
     * This makes a line of two ordered pairs, then puts $A on that line

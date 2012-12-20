@@ -1103,6 +1103,23 @@ class DriverTest extends drivers\DriverTestBase
                 14.314713,
                 0,
             ),
+            array( // #1
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(),
+                        ),
+                    ),
+                ),
+                "",
+                1,
+                array(),
+                array(),
+                null,
+                0,
+            ),
         );
     }
     /**
@@ -1128,7 +1145,7 @@ class DriverTest extends drivers\DriverTestBase
         $sen = new \HUGnet\DummyBase("Sensor");
         $sen->resetMock($sensor);
         $ret = $this->o->encodeDataPoint($A, $channel);
-        $this->assertEquals($expect, $ret, 0.00001);
+        $this->assertSame($expect, $ret);
     }
 }
 /** This is the HUGnet namespace */

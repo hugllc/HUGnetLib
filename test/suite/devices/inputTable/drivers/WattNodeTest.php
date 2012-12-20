@@ -212,7 +212,7 @@ class WattNodeTest extends DriverTestBase
                         ),
                     ),
                 ),
-                null,
+                "",
                 300,
                 array(
                     "timeConstant" => 1,

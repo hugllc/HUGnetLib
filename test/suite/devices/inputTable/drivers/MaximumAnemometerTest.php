@@ -223,7 +223,7 @@ class MaximumAnemometerTest extends DriverTestBase
                         ),
                     ),
                 ),
-                null,
+                "",
                 0,
                 array(
                     "timeConstant" => 1,
@@ -240,7 +240,7 @@ class MaximumAnemometerTest extends DriverTestBase
                         ),
                     ),
                 ),
-                0,
+                "",
                 0,
                 array(
                     "timeConstant" => 1,

@@ -146,7 +146,7 @@ abstract class DriverVirtual extends Driver
     public function encodeDataPoint(
         $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
     ) {
-        return null;
+        return "";
     }
 
 }

@@ -223,7 +223,7 @@ class GenericPulseTest extends DriverTestBase
                         ),
                     ),
                 ),
-                null,
+                "",
                 0,
                 array(
                     "timeConstant" => 1,

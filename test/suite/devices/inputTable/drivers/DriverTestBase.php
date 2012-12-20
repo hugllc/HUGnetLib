@@ -525,7 +525,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
         $sen = new \HUGnet\DummyBase("Sensor");
         $sen->resetMock($sensor);
         $ret = $this->o->encodeDataPoint($A, $channel, $deltaT, $prev, $data);
-        $this->assertEquals($expect, $ret, 0.00001);
+        $this->assertSame($expect, $ret);
     }
 }
 ?>

@@ -149,7 +149,7 @@ class MaximumWindDirection extends \HUGnet\devices\inputTable\Driver
         $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
     ) {
         foreach ($this->directions as $mask => $dir) {
-            if ($data === $dir) {
+            if ($value === $dir) {
                 return bindec($mask);
             }
         }
