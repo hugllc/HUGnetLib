@@ -87,7 +87,7 @@ class AVROSRAMLight extends \HUGnet\devices\inputTable\DriverAVR
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
+    protected function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
         $L  = (-1500.0)*$A * self::TF * $data["timeConstant"];
         $L  = $L / (self::AM * self::S * self::D);

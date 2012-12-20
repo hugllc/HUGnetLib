@@ -31,3 +31,6 @@ node_modules/backbone:
 
 node_modules/jasmine-node:
 	npm install jasmine-node
+
+clean:
+	find . -iname "*~" -exec rm -f {} \;

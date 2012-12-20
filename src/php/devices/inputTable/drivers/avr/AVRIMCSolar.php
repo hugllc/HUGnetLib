@@ -239,7 +239,7 @@ class AVRIMCSolar extends \HUGnet\devices\inputTable\DriverAVR
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
+    protected function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
         $Bias  = $this->getExtra(0);
         $kohms = $this->getResistance($A, $Bias, $data["timeConstant"]);

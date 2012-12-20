@@ -93,7 +93,7 @@ class EmptyVirtual extends \HUGnet\devices\inputTable\DriverVirtual
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    public function getReading(
+    protected function getReading(
         $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
         return null;

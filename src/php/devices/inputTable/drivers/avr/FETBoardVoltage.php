@@ -92,7 +92,7 @@ class FETBoardVoltage extends \HUGnet\devices\inputTable\DriverAVR
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
+    protected function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
         bcscale(6);
         $R1   = $this->getExtra(0);

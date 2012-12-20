@@ -87,7 +87,7 @@ class AVROnTimePulse extends \HUGnet\devices\inputTable\DriverAVR
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
+    protected function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
         if ($A < 0) {
             return null;

@@ -100,7 +100,7 @@ class ControllerVoltage extends \HUGnet\devices\inputTable\DriverAVR
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    public function getReading(
+    protected function getReading(
         $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
         return null;

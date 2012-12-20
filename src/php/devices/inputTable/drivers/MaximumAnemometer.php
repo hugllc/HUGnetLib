@@ -87,7 +87,7 @@ class MaximumAnemometer extends \HUGnet\devices\inputTable\Driver
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
+    protected function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
         if (empty($deltaT)) {
             return null;

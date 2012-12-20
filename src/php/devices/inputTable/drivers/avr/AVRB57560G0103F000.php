@@ -114,7 +114,7 @@ class AVRB57560G0103F000 extends \HUGnet\devices\inputTable\DriverAVR
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    public function getReading(
+    protected function getReading(
         $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
         $Bias = $this->getExtra(0);

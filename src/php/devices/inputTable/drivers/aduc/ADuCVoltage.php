@@ -92,7 +92,7 @@ class ADuCVoltage extends \HUGnet\devices\inputTable\DriverADuC
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    public function getReading(
+    protected function getReading(
         $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
         $Am    = pow(2, 23);
