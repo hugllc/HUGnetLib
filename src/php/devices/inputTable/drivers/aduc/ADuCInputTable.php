@@ -272,7 +272,7 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
     *
     * @SuppressWarnings(PHPMD.ShortVariable)
     */
-    public function decData(
+    public function decodeDataPoint(
         $string, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
     ) {
 
@@ -286,19 +286,28 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
     /**
     * Gets the direction from a direction sensor made out of a POT.
     *
-    * @param array $data    The data to use
+    * @param array $value    The data to use
     * @param int   $channel The channel to get
+    * @param float $deltaT  The time delta in seconds between this record
+    * @param array &$prev   The previous reading
+    * @param array &$data   The data from the other sensors that were crunched
     *
-    * @return float The direction in degrees
+    * @return string The reading as it would have come out of the endpoint
     *
     * @SuppressWarnings(PHPMD.ShortVariable)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    public function encodeData($data, $channel = 0)
-    {
+    public function encodeDataPoint(
+        $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
         if ($channel > count($this->_driver(0)->channels())) {
-            return $this->_driver(1)->encodeData($data, $channel);
+            return $this->_driver(1)->encodeDataPoint(
+                $value, $channel, $deltaT, $prev, $data
+            );
         }
-        return $this->_driver(0)->encodeData($data, $channel);
+        return $this->_driver(0)->encodeDataPoint(
+            $value, $channel, $deltaT, $prev, $data
+        );
     }
     /**
     * This builds the class from a setup string

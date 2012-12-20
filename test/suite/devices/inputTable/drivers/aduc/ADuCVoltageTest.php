@@ -128,6 +128,46 @@ class ADuCVoltageTest extends DriverTestBaseADuC
             ),
         );
     }
+    /**
+     * Data provider for testGetReading
+     *
+     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     *
+     * @return array
+     */
+    public static function dataEncodeDataPoint()
+    {
+        return array(
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(),
+                        ),
+                    ),
+                ),
+                "000080FF",
+                1,
+                array(),
+                array(),
+                -121.2
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(),
+                        ),
+                    ),
+                ),
+                "FFFFFFFF",
+                1,
+                array(),
+                array(),
+                -1.445E-5
+            ),
+        );
+    }
 
 }
 ?>

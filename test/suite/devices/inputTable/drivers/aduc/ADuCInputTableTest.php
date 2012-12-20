@@ -373,6 +373,63 @@ class ADuCInputTableTest extends DriverTestBaseADuC
         $this->assertEquals($expect, $ret, 0.00001);
     }
     /**
+     * Data provider for testGetReading
+     *
+     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     *
+     * @return array
+     */
+    public static function dataEncodeDataPoint()
+    {
+        return array(
+            array( // #0
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array("41", 1, 0),
+                        ),
+                    ),
+                    "Table" => array(
+                        "toArray" => array(
+                            "driver0" => 0x41,
+                        ),
+                    ),
+                ),
+                "3F420F00",
+                1,
+                array(),
+                array(),
+                14.44816589,
+            ),
+            array( // #1
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(
+                                "44", 1, 0,
+                                0, 5, 0, 200, 1.2, 100000, 1000
+                                ),
+                        ),
+                    ),
+                    "Table" => array(
+                        "toArray" => array(
+                            "driver0" => 0x44,
+                        ),
+                    ),
+                ),
+                "00DAF9FF",
+                1,
+                array(),
+                array(),
+                -232.8721,
+            ),
+        );
+    }
+    /**
     * data provider for testDeviceID
     *
     * @return array
