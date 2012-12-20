@@ -458,7 +458,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     /**
      * Data provider for testGetReading
      *
-     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect, $channel = 0)
      *
      * @return array
      */
@@ -489,6 +489,42 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
         $sen = new \HUGnet\DummyBase("Sensor");
         $sen->resetMock($sensor);
         $ret = $this->o->decodeDataPoint($A, $channel, $deltaT, $prev, $data);
+        $this->assertEquals($expect, $ret, 0.00001);
+    }
+    /**
+     * Data provider for testGetReading
+     *
+     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect, $channel = 0)
+     *
+     * @return array
+     */
+    public static function dataEncodeDataPoint()
+    {
+        return array();
+    }
+    /**
+    * Generic function for testing sensor routines
+    *
+    * This is called by using parent::sensorTest()
+    *
+    * @param array $sensor  The sensor data array
+    * @param mixed $expect  Data for the sensor to work on
+    * @param float $deltaT  The time differenct
+    * @param array $data    The data array being built
+    * @param array $prev    The previous record
+    * @param mixed $A       The return data to expect
+    * @param int   $channel The channel to test
+    *
+    * @return null
+    *
+    * @dataProvider dataEncodeDataPoint()
+    */
+    public function testEncodeDataPoint(
+        $sensor, $expect, $deltaT, $data, $prev, $A, $channel = 0
+    ) {
+        $sen = new \HUGnet\DummyBase("Sensor");
+        $sen->resetMock($sensor);
+        $ret = $this->o->encodeDataPoint($A, $channel);
         $this->assertEquals($expect, $ret, 0.00001);
     }
 }

@@ -99,6 +99,27 @@ class WattNode extends \HUGnet\devices\inputTable\Driver
         }
         return round($Wh / 1000, 4);
     }
+    /**
+    * Returns the raw value when given the crunched value
+    *
+    * @param array $data    The data to use
+    * @param int   $channel The channel to get
+    *
+    * @return float The direction in degrees
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    */
+    protected function getRaw($data, $channel = 0)
+    {
+        $extra = $this->getExtra(0);
+        $Wh = $data * 1000;
+        if ($extra == 0) {
+            return null;
+        }
+        $A = $Wh / $extra;
+        return round($A);
+
+    }
 }
 
 ?>

@@ -98,6 +98,28 @@ abstract class DriverTestBaseVirtual extends
             $this->o
         );
     }
+    /**
+     * Data provider for testEncodeData
+     *
+     * @return array
+     */
+    public static function dataEncodeDataPoint()
+    {
+        return array(
+            array( // #0
+                array(
+                ),
+                "",
+                1,
+                array(),
+                array(),
+                14.314713,
+                0,
+            ),
+        );
+    }
+
+
 
 }
 ?>

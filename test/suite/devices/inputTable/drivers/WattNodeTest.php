@@ -158,6 +158,71 @@ class WattNodeTest extends DriverTestBase
 
         );
     }
+    /**
+     * Data provider for testGetReading
+     *
+     * @return array
+     */
+    public static function dataEncodeDataPoint()
+    {
+        return array(
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            'extra' => array(),
+                            'id' => 0x70,
+                            'type' => "WattNode",
+                        ),
+                    ),
+                ),
+                "F40100",
+                300,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                2.5
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            'extra' => array(1),
+                            'id' => 0x70,
+                            'type' => "WattNode",
+                        ),
+                    ),
+                ),
+                "E80300",
+                300,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                1
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            'extra' => array(0),
+                            'id' => 0x70,
+                            'type' => "WattNode",
+                        ),
+                    ),
+                ),
+                null,
+                300,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                1
+            ),
+
+        );
+    }
 
 }
 

@@ -1094,7 +1094,7 @@ class DriverTest extends drivers\DriverTestBase
     * @dataProvider dataEncodeDataPoint()
     */
     public function testEncodeDataPoint(
-        $sensor, $expect, $deltaT, $data, $prev, $A, $channel
+        $sensor, $expect, $deltaT, $data, $prev, $A, $channel = 0
     ) {
         $sen = new \HUGnet\DummyBase("Sensor");
         $sen->resetMock($sensor);

@@ -129,6 +129,23 @@ abstract class DriverVirtual extends Driver
         $ret[0]["value"] = $this->decodeDataPoint($A, 0, $deltaT, $data, $prev);
         return $ret;
     }
+    /**
+    * Returns the raw value when given the crunched value
+    *
+    * Raw readings have no meaning for virtual sensors
+    *
+    * @param array $data    The data to use
+    * @param int   $channel The channel to get
+    *
+    * @return float The direction in degrees
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    */
+    protected function getRaw($data, $channel = 0)
+    {
+        return null;
+    }
+
 }
 
 
