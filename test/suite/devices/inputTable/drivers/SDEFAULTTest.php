@@ -108,6 +108,26 @@ class SDEFAULTTest extends DriverTestBase
             ),
         );
     }
+    /**
+     * Data provider for testGetReading
+     *
+     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     *
+     * @return array
+     */
+    public static function dataEncodeDataPoint()
+    {
+        return array(
+            array(
+                array(),
+                "D2E803",
+                1,
+                array(),
+                array(),
+                0x03E8D2,
+            ),
+        );
+    }
 
 }
 ?>

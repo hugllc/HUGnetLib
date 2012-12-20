@@ -447,6 +447,306 @@ class MaximumWindDirectionTest extends DriverTestBase
             ),
         );
     }
+    /**
+     * Data provider for testGetReading
+     *
+     * @return array
+     */
+    public static function dataEncodeDataPoint()
+    {
+        return array(
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x6F,
+                            "type" => "maximum-inc",
+                        ),
+                    ),
+                ),
+                "010000",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                0.0
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x6F,
+                            "type" => "maximum-inc",
+                        ),
+                    ),
+                ),
+                "040000",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                90.0
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x6F,
+                            "type" => "maximum-inc",
+                        ),
+                    ),
+                ),
+                "100000",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                180.0
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x6F,
+                            "type" => "maximum-inc",
+                        ),
+                    ),
+                ),
+                "400000",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                270.0
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x6F,
+                            "type" => "maximum-inc",
+                        ),
+                    ),
+                ),
+                "020000",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                45.0
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x6F,
+                            "type" => "maximum-inc",
+                        ),
+                    ),
+                ),
+                "080000",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                135.0
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x6F,
+                            "type" => "maximum-inc",
+                        ),
+                    ),
+                ),
+                "200000",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                225.0
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x6F,
+                            "type" => "maximum-inc",
+                        ),
+                    ),
+                ),
+                "800000",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                315.0
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x6F,
+                            "type" => "maximum-inc",
+                        ),
+                    ),
+                ),
+                "030000",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                22.5
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x6F,
+                            "type" => "maximum-inc",
+                        ),
+                    ),
+                ),
+                "810000",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                337.5
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x6F,
+                            "type" => "maximum-inc",
+                        ),
+                    ),
+                ),
+                "060000",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                67.5
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x6F,
+                            "type" => "maximum-inc",
+                        ),
+                    ),
+                ),
+                "0C0000",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                112.5
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x6F,
+                            "type" => "maximum-inc",
+                        ),
+                    ),
+                ),
+                "180000",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                157.5
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x6F,
+                            "type" => "maximum-inc",
+                        ),
+                    ),
+                ),
+                "300000",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                202.5
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x6F,
+                            "type" => "maximum-inc",
+                        ),
+                    ),
+                ),
+                "600000",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                247.5
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x6F,
+                            "type" => "maximum-inc",
+                        ),
+                    ),
+                ),
+                "C00000",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                292.5
+            ),
+            // Two cardinal directions
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x6F,
+                            "type" => "maximum-inc",
+                        ),
+                    ),
+                ),
+                null,
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                292.0
+            ),
+        );
+    }
 }
 
 ?>

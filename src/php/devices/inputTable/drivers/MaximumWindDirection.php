@@ -91,7 +91,7 @@ class MaximumWindDirection extends \HUGnet\devices\inputTable\Driver
         // Null    nothing
         "extraValues" => array(),
         "extraDefault" => array(),
-        "inputSize" => 5,
+        "inputSize" => 3,
         "maxDecimals" => 0,
     );
     /**
@@ -131,7 +131,25 @@ class MaximumWindDirection extends \HUGnet\devices\inputTable\Driver
         }
         return null;
     }
-
+    /**
+    * Returns the raw value when given the crunched value
+    *
+    * @param array $data    The data to use
+    * @param int   $channel The channel to get
+    *
+    * @return float The direction in degrees
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    */
+    protected function getRaw($data, $channel = 0)
+    {
+        foreach ($this->directions as $mask => $dir) {
+            if ($data === $dir) {
+                return bindec($mask);
+            }
+        }
+        return null;
+    }
 }
 
 ?>
