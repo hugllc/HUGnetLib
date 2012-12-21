@@ -112,7 +112,6 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
     * @param string $string The string to decode
     *
     * @return array
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function decode($string)
     {
@@ -132,7 +131,6 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
     * @param array  &$extra The extra array to use
     *
     * @return array
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function _decodeChannels($string, &$extra)
     {
@@ -173,7 +171,6 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
     * Encodes this driver as a setup string
     *
     * @return array
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function encode()
     {
@@ -189,13 +186,9 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
     /**
     * Decodes the driver portion of the setup string
     *
-    * @param string $string The string to decode
-    * @param array  &$extra The extra array to use
-    *
     * @return array
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    public function _encodeChannels()
+    private function _encodeChannels()
     {
         $index = 3;
         $channels = $this->process()->device()->channels();

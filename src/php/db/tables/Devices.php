@@ -273,7 +273,7 @@ class Devices extends \HUGnet\db\Table
     *
     * @return null
     */
-    public function _insertVirtualSetupData(&$data)
+    private function _insertVirtualSetupData(&$data)
     {
         if (!is_array($data)) {
             $data = array();

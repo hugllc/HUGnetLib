@@ -415,7 +415,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
     /**
     * Returns the reversed reading
     *
-    * @param array $value    The data to use
+    * @param array $value   The data to use
     * @param int   $channel The channel to get
     * @param float $deltaT  The time delta in seconds between this record
     * @param array &$prev   The previous reading

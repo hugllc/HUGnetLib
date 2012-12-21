@@ -976,8 +976,8 @@ class DriverAVRTestClass extends \HUGnet\devices\inputTable\DriverAVR
     * This function should be called with the values set for the specific
     * thermistor that is used.
     *
-    * @param float $R     The current resistance of the thermistor in ohms
-    * @param array $table The table to use
+    * @param float $R      The current resistance of the thermistor in ohms
+    * @param array &$table The table to use
     *
     * @return float The Temperature in degrees C
     */

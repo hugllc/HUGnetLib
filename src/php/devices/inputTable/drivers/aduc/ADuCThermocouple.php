@@ -229,7 +229,7 @@ class ADuCThermocouple extends \HUGnet\devices\inputTable\DriverADuC
     /**
     * Changes a raw reading into a output value
     *
-    * @param float $V     Voltage output of thermocouple in milliVolts
+    * @param float $T     Voltage output of thermocouple in milliVolts
     * @param float $TCold Cold junction temperature in degrees C
     * @param float $type  Thermocouple type
     *

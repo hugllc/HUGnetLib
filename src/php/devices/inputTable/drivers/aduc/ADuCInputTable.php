@@ -286,7 +286,7 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
     /**
     * Gets the direction from a direction sensor made out of a POT.
     *
-    * @param array $value    The data to use
+    * @param array $value   The data to use
     * @param int   $channel The channel to get
     * @param float $deltaT  The time delta in seconds between this record
     * @param array &$prev   The previous reading

@@ -570,7 +570,7 @@ abstract class Driver
     /**
     * Gets the direction from a direction sensor made out of a POT.
     *
-    * @param string $string The data string
+    * @param string $string  The data string
     * @param int    $channel The channel to decode
     * @param float  $deltaT  The time delta in seconds between this record
     * @param array  &$prev   The previous reading
@@ -602,7 +602,7 @@ abstract class Driver
     /**
     * Gets the direction from a direction sensor made out of a POT.
     *
-    * @param array $value    The data to use
+    * @param array $value   The data to use
     * @param int   $channel The channel to get
     * @param float $deltaT  The time delta in seconds between this record
     * @param array &$prev   The previous reading

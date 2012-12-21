@@ -266,7 +266,7 @@ class Input extends \HUGnet\base\SystemTableBase
     * @SuppressWarnings(PHPMD.ShortVariable)
     */
     public function decodeDataPoint(
-        $string, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+        &$string, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
     ) {
         return $this->driver()->decodeDataPoint(
             $string, $channel, $deltaT, $prev, $data
