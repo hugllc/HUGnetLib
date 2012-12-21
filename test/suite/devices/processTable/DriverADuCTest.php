@@ -259,62 +259,6 @@ class DriverADuCTest extends drivers\DriverTestBase
     *
     * @return array
     */
-    public static function dataDecodeData()
-    {
-        return array(
-            array(
-                array(
-                    "Device" => array(
-                        "process" => new \HUGnet\DummyBase("Sensor"),
-                    ),
-                    "Entry" => array(
-                        "gain" => array(
-                            "0" => 2,
-                        ),
-                    ),
-                ),
-                new \HUGnet\DummyBase("Entry"),
-                1,
-                0,
-                300,
-                array(
-                ),
-                array(
-                ),
-                "15000000",
-                array(
-                ),
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array  $mocks    The value to preload into the mocks
-    * @param object $entry    The entry to send
-    * @param int    $offset   The integer to feed to the function
-    * @param int    $initchan The channel to initialize the object to
-    * @param float  $deltaT   The time delta in seconds between this record
-    * @param array  $prev     The previous reading
-    * @param array  $data     The data from the other processs that were crunched
-    * @param string $string   The setup string to test
-    * @param array  $expect   The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataDecodeData
-    */
-    public function testDecodeData(
-        $mocks, $entry, $offset, $initchan, $deltaT, $prev, $data, $string, $expect
-    ) {
-        $process = new \HUGnet\DummyBase("Sensor");
-        $process->resetMock($mocks);
-        $obj = &DriverADuC::factory(
-            "DriverADuCTestClass", $process, $offset, $entry, $initchan
-        );
-        $ret = $obj->decodeData($string);
-        $this->assertEquals($expect, $ret);
-    }
 }
 
 /** This is the HUGnet namespace */

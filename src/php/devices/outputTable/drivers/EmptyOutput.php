@@ -66,34 +66,6 @@ class EmptyOutput extends \HUGnet\devices\outputTable\Driver
         "shortName" => "Empty",
         "id" => 0xFF,  // Force ID to be 0xFF
     );
-    /**
-    * Gets the direction from a direction sensor made out of a POT.
-    *
-    * @param string &$string The data string
-    * @param float  $deltaT  The time delta in seconds between this record
-    * @param array  &$prev   The previous reading
-    * @param array  &$data   The data from the other sensors that were crunched
-    *
-    * @return float The direction in degrees
-    *
-    * @SuppressWarnings(PHPMD.ShortVariable)
-    */
-    public function decodeData(
-        &$string, $deltaT = 0, &$prev = null, &$data = array()
-    ) {
-        return array();
-    }
-
-    /**
-    * This builds the class from a setup string
-    *
-    * @return Array of channel information
-    */
-    public function channels()
-    {
-        return array(
-        );
-    }
 
 }
 
