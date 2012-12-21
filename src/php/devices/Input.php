@@ -306,14 +306,6 @@ class Input extends \HUGnet\base\SystemTableBase
         if (!is_array($extra)) {
             $table->set("extra", array());
         }
-        $min = $table->get("min");
-        $max = $table->get("max");
-        if (!is_numeric($min) || ($min == $max)) {
-            $table->set("min", $this->_get("defMin", $driver));
-        }
-        if (!is_numeric($max) || ($min == $max)) {
-            $table->set("max", $this->_get("defMax", $driver));
-        }
     }
     /**
     * Converts data between units

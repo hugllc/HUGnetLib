@@ -88,41 +88,6 @@ class EmptyOutputTest extends DriverTestBase
     {
         parent::tearDown();
     }
-    /**
-     * Data provider for testGetReading
-     *
-     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
-     *
-     * @return array
-     */
-    public static function dataGetReading()
-    {
-        return array(
-            array(
-                array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(),
-                        ),
-                    ),
-                ),
-                256210,
-                1,
-                array(),
-                array(),
-                null,
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @return null
-    */
-    public function testChannels()
-    {
-        $this->assertSame(array(), $this->o->channels());
-    }
 
 }
 ?>

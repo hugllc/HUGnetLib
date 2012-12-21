@@ -225,8 +225,6 @@ class DriverTest extends drivers\DriverTestBase
                 \HUGnet\devices\datachan\Driver::TYPE_IGNORE
                     => \HUGnet\devices\datachan\Driver::TYPE_IGNORE,
             ),
-            'defMin' => 0,
-            'defMax' => 150,
             'inputSize' => 3,
         );
         $this->assertEquals($expect, $this->o->toArray(1));

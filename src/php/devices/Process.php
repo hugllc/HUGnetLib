@@ -260,20 +260,6 @@ class Process extends \HUGnet\base\SystemTableBase
     *
     * @return Array of channel information
     */
-    public function channelStart()
-    {
-        $chan   = 0;
-        $sensor = $this->id();
-        for ($i = 0; $i < $sensor; $i++) {
-            $chan += count($this->device()->processTable($i)->channels());
-        }
-        return $chan;
-    }
-    /**
-    * This builds the class from a setup string
-    *
-    * @return Array of channel information
-    */
     public function device()
     {
         return $this->_device;

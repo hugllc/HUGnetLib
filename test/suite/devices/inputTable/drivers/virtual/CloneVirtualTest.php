@@ -543,8 +543,6 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         'diff'   => 'diff',
                         'ignore' => 'ignore',
                     ),
-                    'defMin'       => 0,
-                    'defMax'       => 150,
                     'inputSize'    => 3,
                 ),
             ),

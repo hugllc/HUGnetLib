@@ -103,8 +103,6 @@ abstract class Driver
             \HUGnet\devices\datachan\Driver::TYPE_IGNORE
                 => \HUGnet\devices\datachan\Driver::TYPE_IGNORE,
         ),
-        "defMin" => 0,
-        "defMax" => 150,
         "inputSize" => 3,
     );
     /**
