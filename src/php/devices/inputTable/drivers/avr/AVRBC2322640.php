@@ -96,15 +96,20 @@ class AVRBC2322640 extends \HUGnet\devices\inputTable\DriverAVR
         $Bias      = $this->getExtra(0);
         $baseTherm = $this->getExtra(1);
         $ohms      = $this->getResistance($A, $Bias, $data["timeConstant"]);
-        $T         = $this->_BcTherm2322640Interpolate(
+        $T         = $this->_Interpolate(
             $ohms,
             $baseTherm,
+            3.354016E-3,
+            2.569850E-4,
+            2.620131E-6,
+            6.383091E-8
+            /*
             3.354016e-3,
             2.569355e-4,
             2.626311e-6,
             0.675278e-7
+            */
         );
-
         if (is_null($T)) {
             return null;
         }
@@ -117,7 +122,39 @@ class AVRBC2322640 extends \HUGnet\devices\inputTable\DriverAVR
         $T = round($T, 4);
         return $T;
     }
-
+    /**
+    * Returns the reversed reading
+    *
+    * @param array $value   The data to use
+    * @param int   $channel The channel to get
+    * @param float $deltaT  The time delta in seconds between this record
+    * @param array &$prev   The previous reading
+    * @param array &$data   The data from the other sensors that were crunched
+    *
+    * @return string The reading as it would have come out of the endpoint
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    protected function getRaw(
+        $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
+        $Bias      = $this->getExtra(0);
+        $baseTherm = $this->getExtra(1);
+        $R = $this->_revInterpolate(
+            $value,
+            $baseTherm,
+            -14.6337,
+            4791.842,
+            -115334,
+            -3.730535E6
+        );
+        $A = $this->revResistance($R, $Bias, $data["timeConstant"]);
+        if (is_null($A) || is_null($R)) {
+            return null;
+        }
+        return (int)round($A);
+    }
     /**
     * This formula is from BCcomponents PDF file for the
     * # 2322 640 thermistor series on page 6.  See the data sheet for
@@ -128,14 +165,14 @@ class AVRBC2322640 extends \HUGnet\devices\inputTable\DriverAVR
     *
     * @param float $R  The current resistance of the thermistor in kOhms
     * @param float $R0 The resistance of the thermistor at 25C in kOhms
-    * @param float $A  Thermistor Constant A (From datasheet)
-    * @param float $B  Thermistor Constant B (From datasheet)
-    * @param float $C  Thermistor Constant C (From datasheet)
-    * @param float $D  Thermistor Constant D (From datasheet)
+    * @param float $A  Thermistor Constant A1 (From datasheet)
+    * @param float $B  Thermistor Constant B1 (From datasheet)
+    * @param float $C  Thermistor Constant C1 (From datasheet)
+    * @param float $D  Thermistor Constant D1 (From datasheet)
     *
     * @return float The Temperature in degrees C
     */
-    private function _bcTherm2322640Interpolate($R, $R0, $A, $B, $C, $D)
+    private function _Interpolate($R, $R0, $A, $B, $C, $D)
     {
         // This gets out bad values
         if ($R <= 0) {
@@ -161,7 +198,7 @@ class AVRBC2322640 extends \HUGnet\devices\inputTable\DriverAVR
     * This function should be called with the values set for the specific
     * thermistor that is used.  See eDEFAULT::Therm0Interpolate as an example.
     *
-    * R = R0 * e^(A+(B/T^2)+(C/T^3)+(D/T^4))
+    * R = R0 * e^(A+B/T+(C/T^2)+(D/T^3))
     *
     * @param float $R  The current resistance of the thermistor in kOhms
     * @param float $R0 The resistance of the thermistor at 25C in kOhms
@@ -172,9 +209,20 @@ class AVRBC2322640 extends \HUGnet\devices\inputTable\DriverAVR
     *
     * @return float The Temperature in degrees C
     */
-    private function _revInterpolate($R, $R0, $A, $B, $C, $D)
+    private function _revInterpolate($T, $R0, $A, $B, $C, $D)
     {
-        /* R = R0 * e^(A+(B/T^2)+(C/T^3)+(D/T^4)) */
+        /* R = R0 * e^(A+B/T+(C/T^2)+(D/T^3)) */
+        // This gets out bad values
+        if ($R0 == 0) {
+            return null;
+        }
+        $T += 273.15;
+        $exp  = $A;
+        $exp += ($B / $T);
+        $exp += ($C / pow($T, 2));
+        $exp += ($D / pow($T, 3));
+        $R  = $R0 * exp($exp);
+        return($R);
 
     }
 }
