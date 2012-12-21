@@ -78,6 +78,7 @@ class Device extends \HUGnet\base\SystemTableAction
         "insertVirtual" => "table",
         "webAPI" => "webInterface",
         "dataChannel" => "channels",
+        "reboot" => "network",
     );
     /** This is where we store our objects */
     protected $classes = array(
