@@ -93,41 +93,6 @@ class ADuCDACTest extends DriverTestBase
         parent::tearDown();
     }
     /**
-     * Data provider for testGetReading
-     *
-     * testGetReading($output, $A, $deltaT, $data, $prev, $expect)
-     *
-     * @return array
-     */
-    public static function dataGetReading()
-    {
-        return array(
-            array(
-                array(
-                    "Output" => array(
-                        "get" => array(
-                            "extra" => array(),
-                        ),
-                    ),
-                ),
-                256210,
-                1,
-                array(),
-                array(),
-                null,
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @return null
-    */
-    public function testChannels()
-    {
-        $this->assertSame(array(), $this->o->channels());
-    }
-    /**
     * data provider for testDeviceID
     *
     * @return array

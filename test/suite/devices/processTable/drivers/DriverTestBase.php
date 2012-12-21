@@ -230,39 +230,5 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
         $sensor->resetMock($mock);
         $this->assertSame($expect, $this->o->getExtra($extra));
     }
-    /**
-     * Data provider for testGetReading
-     *
-     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
-     *
-     * @return array
-     */
-    public static function dataGetReading()
-    {
-        return array();
-    }
-    /**
-    * Generic function for testing sensor routines
-    *
-    * This is called by using parent::sensorTest()
-    *
-    * @param array $sensor The sensor data array
-    * @param mixed $A      Data for the sensor to work on
-    * @param float $deltaT The time differenct
-    * @param array $data   The data array being built
-    * @param array $prev   The previous record
-    * @param mixed $expect The return data to expect
-    *
-    * @return null
-    *
-    * @dataProvider dataGetReading()
-    */
-    public function testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
-    {
-        $sen = new \HUGnet\DummyBase("Sensor");
-        $sen->resetMock($sensor);
-        $ret = $this->o->getReading($A, $deltaT, $data, $prev);
-        $this->assertEquals($expect, $ret, 0.00001);
-    }
 }
 ?>

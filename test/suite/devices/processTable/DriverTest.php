@@ -404,26 +404,6 @@ class DriverTest extends drivers\DriverTestBase
         $this->assertSame($expect, Driver::getTypes($sid));
     }
     /**
-     * Data provider for testGetReading
-     *
-     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
-     *
-     * @return array
-     */
-    public static function dataGetReading()
-    {
-        return array(
-            array(
-                array(),
-                256210,
-                1,
-                array(),
-                array(),
-                null,
-            ),
-        );
-    }
-    /**
     * data provider for testDeviceID
     *
     * @return array
