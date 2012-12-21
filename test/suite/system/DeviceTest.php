@@ -1677,7 +1677,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     "rawData" => "010001100D00200C00300B00400A0050090060080"
                         ."0700700800600900500",
                     array(
-                        "value" => 39.7559,
+                        "value" => 39.7591,
                         "units" => "&#176;C",
                         'maxDecimals' => 2,
                         'storageUnit' => '&#176;C',
@@ -1687,7 +1687,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "index" => 0,
                     ),
                     array(
-                        "value" => 41.7127,
+                        "value" => 41.7163,
                         "units" => "&#176;C",
                         'maxDecimals' => 2,
                         'storageUnit' => '&#176;C',
@@ -1697,7 +1697,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "index" => 0,
                     ),
                     array(
-                        "value" => 43.843,
+                        "value" => 43.8471,
                         "units" => "&#176;C",
                         'maxDecimals' => 2,
                         'storageUnit' => '&#176;C',
@@ -1707,7 +1707,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "index" => 0,
                     ),
                     array(
-                        "value" => 46.1795,
+                        "value" => 46.1842,
                         "units" => "&#176;C",
                         'maxDecimals' => 2,
                         'storageUnit' => '&#176;C',
@@ -1717,7 +1717,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "index" => 0,
                     ),
                     array(
-                        "value" => 48.7664,
+                        "value" => 48.7716,
                         "units" => "&#176;C",
                         'maxDecimals' => 2,
                         'storageUnit' => '&#176;C',
@@ -1727,7 +1727,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "index" => 0,
                     ),
                     array(
-                        "value" => 51.6594,
+                        "value" => 51.6653,
                         "units" => "&#176;C",
                         'maxDecimals' => 2,
                         'storageUnit' => '&#176;C',
@@ -1737,7 +1737,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "index" => 0,
                     ),
                     array(
-                        "value" => 54.9383,
+                        "value" => 54.945,
                         "units" => "&#176;C",
                         'maxDecimals' => 2,
                         'storageUnit' => '&#176;C',
@@ -1747,7 +1747,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "index" => 0,
                     ),
                     array(
-                        "value" => 58.717,
+                        "value" => 58.7246,
                         "units" => "&#176;C",
                         'maxDecimals' => 2,
                         'storageUnit' => '&#176;C',
@@ -1757,7 +1757,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "index" => 0,
                     ),
                     array(
-                        "value" => 63.1656,
+                        "value" => 63.1742,
                         "units" => "&#176;C",
                         'maxDecimals' => 2,
                         'storageUnit' => '&#176;C',

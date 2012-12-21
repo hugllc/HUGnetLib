@@ -96,6 +96,7 @@ class AVRPotDirection extends \HUGnet\devices\inputTable\DriverAVR
     */
     protected function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
+        bcscale(10);
         $RTotal = $this->getExtra(0);
         $dir1   = $this->getExtra(1);
         $R1     = $this->getExtra(2);
@@ -103,14 +104,10 @@ class AVRPotDirection extends \HUGnet\devices\inputTable\DriverAVR
         $R2     = $this->getExtra(4);
         $R      = $this->getSweep($A, $RTotal, $data["timeConstant"]);
 
-        if (is_null($R) || ($dir1 == $dir2) || ($R1 == $R2) || ($RTotal == 0)) {
+        $dir = $this->linearUnbounded($R, $R1, $R2, $dir1, $dir2);
+        if (is_null($R) || ($RTotal == 0) || is_null($dir)) {
             return null;
         }
-
-        $m = ($dir1 - $dir2) / ($R1 - $R2);
-        $b = $dir2 - ($m * $R2);
-        $dir = ($m * $R) + $b;
-
         while ($dir > 360) {
             $dir -= 360;
         }
@@ -119,11 +116,33 @@ class AVRPotDirection extends \HUGnet\devices\inputTable\DriverAVR
         }
         return round($dir, $this->get("maxDecimals"));
     }
-    /******************************************************************
-     ******************************************************************
-     ********  The following are input modification functions  ********
-     ******************************************************************
-     ******************************************************************/
+    /**
+    * Returns the reversed reading
+    *
+    * @param array $value   The data to use
+    * @param int   $channel The channel to get
+    * @param float $deltaT  The time delta in seconds between this record
+    * @param array &$prev   The previous reading
+    * @param array &$data   The data from the other sensors that were crunched
+    *
+    * @return string The reading as it would have come out of the endpoint
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    protected function getRaw(
+        $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
+        $RTotal = $this->getExtra(0);
+        $dir1   = $this->getExtra(1);
+        $R1     = $this->getExtra(2);
+        $dir2   = $this->getExtra(3);
+        $R2     = $this->getExtra(4);
+        $R      = $this->linearUnbounded($value, $dir1, $dir2, $R1, $R2);
+        $A      = $this->revSweep($R, $RTotal, $data["timeConstant"]);
+
+        return (int)round($A);
+    }
 
 }
 ?>

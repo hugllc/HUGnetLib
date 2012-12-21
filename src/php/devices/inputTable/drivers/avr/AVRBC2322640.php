@@ -110,16 +110,10 @@ class AVRBC2322640 extends \HUGnet\devices\inputTable\DriverAVR
             0.675278e-7
             */
         );
-        if (is_null($T)) {
-            return null;
-        }
-        if ($T > 150) {
-            return null;
-        }
-        if ($T < -40) {
-            return null;
-        }
         $T = round($T, 4);
+        if (is_null($T) || ($T > 150) || ($T < -40)) {
+            return null;
+        }
         return $T;
     }
     /**

@@ -663,7 +663,7 @@ abstract class Driver
         if (is_null($value)) {
             return null;
         }
-        if ($Imax == $Imin) {
+        if (($Imax == $Imin) || ($Omax == $Omin)) {
             return null;
         }
         $mult = bcdiv(bcsub($Omax, $Omin), bcsub($Imax, $Imin));

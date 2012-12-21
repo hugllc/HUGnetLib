@@ -264,6 +264,88 @@ class AVRPotDirectionTest extends DriverTestBaseAVR
             ),
         );
     }
+    /**
+     * Data provider for testGetReading
+     *
+     * @return array
+     */
+    public static function dataEncodeDataPoint()
+    {
+        return array(
+            array(   // #0
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            'extra' => array(10, 0, 0, 180, 10),
+                            'id' => 2,
+                            'type' => "potDirection",
+                        ),
+                    ),
+                ),
+                "C0FF00",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                180.0
+            ),
+            array(   // #1
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            'extra' => array(),
+                            'id' => 2,
+                            'type' => "potDirection",
+                        ),
+                    ),
+                ),
+                "000000",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                0.0,
+            ),
+            array(   // #2
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            'extra' => array(),
+                            'id' => 2,
+                            'type' => "potDirection",
+                        ),
+                    ),
+                ),
+                "C0FF00",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                180.0,
+            ),
+            array(   // #3
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            'extra' => array(),
+                            'id' => 2,
+                            'type' => "potDirection",
+                        ),
+                    ),
+                ),
+                "048000",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                90.1,
+            ),
+        );
+    }
 }
 
 ?>

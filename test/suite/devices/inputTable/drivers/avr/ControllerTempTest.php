@@ -147,7 +147,7 @@ class ControllerTempTest extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                93.3105
+                93.3246
             ),
             array(
                 array(
@@ -163,7 +163,7 @@ class ControllerTempTest extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                29.3987
+                29.3996
             ),
             array(
                 array(
@@ -180,7 +180,7 @@ class ControllerTempTest extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                29.3987
+                29.3996
             ),
             array(
                 array(
@@ -261,6 +261,86 @@ class ControllerTempTest extends DriverTestBaseAVR
                     ),
                 ),
                 5000,
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                29.3996
+            ),
+        );
+    }
+    /**
+     * Data provider for testGetReading
+     *
+     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     *
+     * @return array
+     */
+    public static function dataEncodeDataPoint()
+    {
+        return array(
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            'extra' => array(10, 10),
+                            'id' => 2,
+                        ),
+                    ),
+                ),
+                "8A13",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                93.3105
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 2,
+                        ),
+                    ),
+                ),
+                "8813",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                29.3987
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0,
+                            "extra" => array(100, 10),
+                        ),
+                    ),
+                ),
+                "8813",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                29.3987
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            'dataType'=>
+                                \HUGnet\devices\datachan\Driver::TYPE_IGNORE,
+                            'id' => 2,
+                        ),
+                    ),
+                ),
+                "8813",
                 0,
                 array(
                     "timeConstant" => 1,
