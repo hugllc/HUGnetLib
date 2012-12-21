@@ -191,8 +191,6 @@ class InputTest extends \PHPUnit_Framework_TestCase
                         \HUGnet\devices\datachan\Driver::TYPE_IGNORE
                             => \HUGnet\devices\datachan\Driver::TYPE_IGNORE,
                     ),
-                    "defMin" => 0,
-                    "defMax" => 150,
                     "inputSize" => 3,
                     'id' => 0xFD,
                     'asdf' => 3,
@@ -356,8 +354,6 @@ class InputTest extends \PHPUnit_Framework_TestCase
                         array("driver", "SDEFAULT"),
                         array("driver", "SDEFAULT"),
                         array("units", "unknown"),
-                        array("min", 0),
-                        array("max", 150),
                     ),
                     "selectOneInto" => array(
                         array(
@@ -509,16 +505,12 @@ class InputTest extends \PHPUnit_Framework_TestCase
                             array("type"),
                             array("units"),
                             array("extra"),
-                            array("min"),
-                            array("max"),
                         ),
                         'set' => array(
                             array("driver", "SDEFAULT"),
                             array("driver", "SDEFAULT"),
                             array("driver", "SDEFAULT"),
                             array('units', 'unknown'),
-                            array('min', 0),
-                            array('max', 150),
                         ),
                     ),
                 ),
@@ -556,8 +548,6 @@ class InputTest extends \PHPUnit_Framework_TestCase
                             array("type"),
                             array("units"),
                             array("extra"),
-                            array("min"),
-                            array("max"),
                         ),
                         'set' => array(
                             array("driver", "SDEFAULT"),
@@ -565,12 +555,6 @@ class InputTest extends \PHPUnit_Framework_TestCase
                             array("driver", "SDEFAULT"),
                             array(
                                 'units', 'unknown'
-                            ),
-                            array(
-                                'min', 0
-                            ),
-                            array(
-                                'max', 150
                             ),
                         ),
                     ),
@@ -1066,8 +1050,6 @@ class InputTest extends \PHPUnit_Framework_TestCase
                     array("driver", "SDEFAULT"),
                     array("driver", "SDEFAULT"),
                     array("units", "unknown"),
-                    array("min", 0),
-                    array("max", 150),
                 ),
             ),
             array(
@@ -1096,8 +1078,6 @@ class InputTest extends \PHPUnit_Framework_TestCase
                     array("driver", "SDEFAULT"),
                     array("driver", "SDEFAULT"),
                     array("units", "unknown"),
-                    array("min", 0),
-                    array("max", 150),
                 ),
             ),
             array(
