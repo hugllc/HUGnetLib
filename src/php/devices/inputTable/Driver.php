@@ -408,7 +408,7 @@ abstract class Driver
     {
         $driver = '\\HUGnet\\devices\\inputTable\\drivers\\'.$class;
         $driv = array_merge(
-            (array)static::$drivers,
+            (array)Driver::$drivers,
             (array)DriverAVR::$drivers,
             (array)DriverADuC::$drivers,
             (array)DriverVirtual::$drivers

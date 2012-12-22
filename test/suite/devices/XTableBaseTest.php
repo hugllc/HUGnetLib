@@ -134,10 +134,10 @@ class XTableBaseTest extends \PHPUnit_Framework_TestCase
         $dev = new \HUGnet\DummyBase("Device");
         // This just resets the mock
         $table->resetMock();
-        $obj = XTableBase::factory($config, $gateway, $class, $dev);
+        $obj = XTableBaseStub::factory($config, $gateway, $class, $dev);
         // Make sure we have the right object
-        $this->assertTrue(
-            (get_class($obj) === "HUGnet\devices\XTableBase"), "Class wrong"
+        $this->assertInstanceOf(
+            "HUGnet\devices\XTableBase", $obj, "Class wrong"
         );
     }
     /**
@@ -229,7 +229,7 @@ class XTableBaseTest extends \PHPUnit_Framework_TestCase
         $sys = new \HUGnet\DummySystem("System");
         $dev = new \HUGnet\DummyBase("Device");
         $sys->resetMock($config);
-        $obj = XTableBase::factory($sys, null, $class, $dev);
+        $obj = XTableBaseStub::factory($sys, null, $class, $dev);
         $json = $obj->toArray();
         $this->assertEquals($expect, $json);
         unset($obj);
@@ -288,7 +288,7 @@ class XTableBaseTest extends \PHPUnit_Framework_TestCase
         $sys = new \HUGnet\DummySystem("System");
         $dev = new \HUGnet\DummyBase("Device");
         $sys->resetMock($config);
-        $obj = XTableBase::factory($sys, null, $class, $dev);
+        $obj = XTableBaseStub::factory($sys, null, $class, $dev);
         $this->assertSame($expect, $obj->get($field));
         unset($obj);
     }
@@ -388,7 +388,7 @@ class XTableBaseTest extends \PHPUnit_Framework_TestCase
         $sys = new \HUGnet\DummySystem("System");
         $dev = new \HUGnet\DummyBase("Device");
         $sys->resetMock($config);
-        $obj = XTableBase::factory($sys, null, $class, $dev);
+        $obj = XTableBaseStub::factory($sys, null, $class, $dev);
         $ret = $obj->load($data);
         $this->assertSame($return, $ret, "Return Wrong");
         $ret = $class->retrieve("Table");
@@ -494,7 +494,7 @@ class XTableBaseTest extends \PHPUnit_Framework_TestCase
     {
         $sys = new \HUGnet\DummySystem("System");
         $dev = new \HUGnet\DummyBase("Device");
-        $obj = XTableBase::factory($sys, null, $class, $dev);
+        $obj = XTableBaseStub::factory($sys, null, $class, $dev);
         $sys->resetMock($config);
         $ret = $obj->change($data);
         $this->assertSame($return, $ret, "Return Wrong");
@@ -548,7 +548,7 @@ class XTableBaseTest extends \PHPUnit_Framework_TestCase
     ) {
         $config->resetMock($mocks);
         $dev = new \HUGnet\DummyBase("Device");
-        $obj = XTableBase::factory($config, $device, $class, $dev);
+        $obj = XTableBaseStub::factory($config, $device, $class, $dev);
         $this->assertEquals(
             $expect, $obj->encode(), "Return Wrong"
         );
@@ -653,7 +653,7 @@ class XTableBaseTest extends \PHPUnit_Framework_TestCase
     ) {
         $config->resetMock($mocks);
         $dev = new \HUGnet\DummyBase("Device");
-        $obj = XTableBase::factory($config, $device, $class, $dev);
+        $obj = XTableBaseStub::factory($config, $device, $class, $dev);
         $obj->decode($string);
         $ret = $config->retrieve();
         $this->assertEquals(
@@ -662,6 +662,27 @@ class XTableBaseTest extends \PHPUnit_Framework_TestCase
         unset($obj);
     }
 
+}
+/**
+ * Base driver class for devices.
+ *
+ * This class deals with loading the drivers and figuring out what driver needs
+ * to be loaded.
+ *
+ * @category   Libraries
+ * @package    HUGnetLib
+ * @subpackage Sensors
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2012 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.9.7
+ * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @since      0.9.7
+ *
+ * @SuppressWarnings(PHPMD.ShortVariable)
+ */
+class XTableBaseStub extends XTableBase
+{
 }
 namespace HUGnet\devices\replaceme;
 /**
