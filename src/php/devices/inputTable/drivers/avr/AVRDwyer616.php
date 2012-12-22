@@ -108,7 +108,8 @@ class AVRDwyer616 extends \HUGnet\devices\inputTable\DriverAVR
         $Vref = $this->getExtra(6);
         $Amps = $this->getCurrent($A, $R, $Gain, $Vref, $data["timeConstant"]);
         $mA = $Amps * 1000; // Convert to milliamps.
-        return $this->linearBounded($mA, $Amin, $Amax, $Pmin, $Pmax);
+        $P = $this->linearBounded($mA, $Amin, $Amax, $Pmin, $Pmax);
+        return round($P, 1);
     }
 
 }

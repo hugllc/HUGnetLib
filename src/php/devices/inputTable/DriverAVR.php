@@ -119,21 +119,16 @@ abstract class DriverAVR extends Driver
     */
     protected function getDividerVoltage($A, $R1, $R2, $Vref, $Tc)
     {
-        // If we get null we should return it.
+        // This avoids a divide by zero error.
+        if ($R2 == 0) {
+            return 0.0;
+        }
+        $V = $this->getVoltage($A, $Vref, $Tc);
         if (is_null($A)) {
             return null;
         }
-        $Am = self::AM;
-        $s = self::S;
-        $Tf = self::TF;
-        $D = self::D;
-        $denom = $s * $Tc * $Tf * $Am * $R2;
-        if ($denom == 0) {
-            return 0.0;
-        }
-        $numer = $A * $D * $Vref * ($R1 + $R2);
-        $Read = $numer/$denom;
-        return round($Read, 4);
+        $Read = $V * ($R1 + $R2) / $R2;
+        return (float)$Read;
     }
     /**
     * This function creates an object if it finds the right class
@@ -185,7 +180,7 @@ abstract class DriverAVR extends Driver
         $num = $A * $D * $Vref;
 
         $volts = $num / $denom;
-        return round($volts, 4);
+        return (float)$volts;
     }
 
 
@@ -257,7 +252,7 @@ abstract class DriverAVR extends Driver
         $numer = $A * $D * $Vref;
 
         $Read = $numer/$denom;
-        return round($Read, 4);
+        return (float)$Read;
     }
 
     /**
@@ -277,7 +272,7 @@ abstract class DriverAVR extends Driver
         $G = $this->getExtra(1);
         $Vref = $this->getExtra(2);
         $A = $this->getCurrent($val, $R, $G, $Vref, $Tc);
-        return round($A * 1000, 1);
+        return (float)($A * 1000);
     }
     /**
     * Converts a raw AtoD reading into resistance
@@ -303,7 +298,7 @@ abstract class DriverAVR extends Driver
             $Den = 1.0;
         }
         $R = (float)($A*$Bias)/$Den;
-        return round($R, 4);
+        return (float)$R;
     }
     /**
     * Converts a raw AtoD reading into resistance
@@ -364,7 +359,7 @@ abstract class DriverAVR extends Driver
         if ($Rs < 0) {
             return 0.0;
         }
-        return round($Rs, 4);
+        return (float)$Rs;
     }
     /**
     * Converts a raw AtoD reading into resistance

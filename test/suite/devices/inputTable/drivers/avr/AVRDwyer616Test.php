@@ -113,7 +113,7 @@ class AVRDwyer616Test extends DriverTestBaseAVR
                         ),
                     ),
                 ),
-                13000,
+                13100,
                 1,
                 array(
                     "timeConstant" => 1,

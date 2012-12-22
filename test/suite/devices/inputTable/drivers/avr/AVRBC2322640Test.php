@@ -147,7 +147,7 @@ class AVRBC2322640Test extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                93.3246
+                93.3234
             ),
             array(
                 array(
@@ -163,7 +163,7 @@ class AVRBC2322640Test extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                93.3246
+                93.3234
             ),
             array(
                 array(
@@ -266,7 +266,7 @@ class AVRBC2322640Test extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                93.3246
+                93.3234
             ),
         );
     }

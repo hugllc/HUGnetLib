@@ -222,7 +222,7 @@ class DriverAVRTest extends drivers\DriverTestBase
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($preload);
         $ret = $this->o->getDividerVoltage($A, $R1, $R2, $Vref, $Tc);
-        $this->assertSame($expect, $ret);
+        $this->assertEquals($expect, $ret, "Return wrong!", 0.001);
     }
 
 
@@ -276,7 +276,7 @@ class DriverAVRTest extends drivers\DriverTestBase
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($preload);
         $ret = $this->o->indirectVoltage($val, $Tc);
-        $this->assertSame($expect, $ret);
+        $this->assertEquals($expect, $ret, "Return wrong!", 0.001);
     }
 
     /**
@@ -312,7 +312,7 @@ class DriverAVRTest extends drivers\DriverTestBase
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($preload);
         $ret = $this->o->getVoltage($A, $Vref, $Tc);
-        $this->assertSame($expect, $ret);
+        $this->assertEquals($expect, $ret, "Return wrong!", 0.001);
     }
 
     /**
@@ -390,7 +390,7 @@ class DriverAVRTest extends drivers\DriverTestBase
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($preload);
         $ret = $this->o->directVoltage($val, $Tc);
-        $this->assertSame($expect, $ret);
+        $this->assertEquals($expect, $ret, "Return wrong!", 0.001);
     }
     /**
     * Data provider for GetVoltage
@@ -427,7 +427,7 @@ class DriverAVRTest extends drivers\DriverTestBase
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($preload);
         $ret = $this->o->getCurrent($A, $R, $G, $Vref, $Tc);
-        $this->assertSame($expect, $ret);
+        $this->assertEquals($expect, $ret, "Return wrong!", 0.001);
     }
 
     /**
@@ -505,7 +505,7 @@ class DriverAVRTest extends drivers\DriverTestBase
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($preload);
         $ret = $this->o->directCurrent($val, $Tc);
-        $this->assertSame($expect, $ret);
+        $this->assertEquals($expect, $ret, "Return wrong!", 0.1);
     }
     /**
      * Data provider for testGetResistance
@@ -536,7 +536,8 @@ class DriverAVRTest extends drivers\DriverTestBase
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($preload);
-        $this->assertSame($expect, $this->o->getResistance($A, $Bias, $Tc));
+        $ret = $this->o->getResistance($A, $Bias, $Tc);
+        $this->assertEquals($expect, $ret, "Return wrong!", 0.001);
     }
     /**
      * Data provider for testGetResistance
@@ -602,7 +603,8 @@ class DriverAVRTest extends drivers\DriverTestBase
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($preload);
-        $this->assertSame($expect, $this->o->getSweep($A, $R, $Tc));
+        $ret = $this->o->getSweep($A, $R, $Tc);
+        $this->assertEquals($expect, $ret, "Return wrong!", 0.001);
     }
     /**
     * Data provider for testGetResistance

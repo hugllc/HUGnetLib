@@ -98,7 +98,8 @@ class FETBoardVoltage extends \HUGnet\devices\inputTable\DriverAVR
         $R1   = $this->getExtra(0);
         $R2   = $this->getExtra(1);
         $Vref = $this->getExtra(2);
-        return $this->getDividerVoltage($A, $R1, $R2, $Vref, $data["timeConstant"]);
+        $V = $this->getDividerVoltage($A, $R1, $R2, $Vref, $data["timeConstant"]);
+        return round($V, 4);
     }
 
 }

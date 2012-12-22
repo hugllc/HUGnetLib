@@ -156,7 +156,7 @@ class ControllerVoltage extends \HUGnet\devices\inputTable\DriverAVR
         $Vl    = $this->indirectVoltage($Al, 1);
         $ret = $this->channels();
         if (!is_null($Vh) && !is_null($Vl)) {
-            $ret[0]["value"] = $Vh - $Vl;
+            $ret[0]["value"] = round($Vh - $Vl, 4);
         } else {
             $ret[0]["value"] = null;
         }

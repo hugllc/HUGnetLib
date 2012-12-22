@@ -171,7 +171,7 @@ class AVRIMCSolarTest extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                93.4199
+                93.4187
             ),
             array( // #4
                 array(
@@ -209,7 +209,7 @@ class AVRIMCSolarTest extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                93.4199
+                93.4187
             ),
         );
     }

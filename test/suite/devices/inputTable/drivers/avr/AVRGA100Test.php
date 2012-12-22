@@ -169,7 +169,7 @@ class AVRGA100Test extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                0.9824
+                0.9823
             ),
             array(
                 array(

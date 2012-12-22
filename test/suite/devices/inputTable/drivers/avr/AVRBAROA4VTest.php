@@ -118,7 +118,7 @@ class AVRBAROA4VTest extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                664.2125
+                664.2107
             ),
             array(
                 array(
@@ -169,7 +169,7 @@ class AVRBAROA4VTest extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                1093.7875
+                1093.7836
             ),
             array(
                 array(

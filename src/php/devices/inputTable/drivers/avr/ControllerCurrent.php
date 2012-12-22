@@ -149,7 +149,7 @@ class ControllerCurrent extends \HUGnet\devices\inputTable\DriverAVR
             $A = $this->strToInt($string);
         }
         $ret             = $this->channels();
-        $ret[0]["value"] = $this->directCurrent($A, 1);
+        $ret[0]["value"] = round($this->directCurrent($A, 1), 1);
         return $ret;
     }
 

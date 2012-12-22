@@ -104,7 +104,8 @@ class AVRChsMss extends \HUGnet\devices\inputTable\DriverAVR
         $Hmax = $this->getExtra(3);
         $Vref = $this->getExtra(4);
         $V = $this->getVoltage($A, $Vref, $data["timeConstant"]);
-        return $this->linearBounded($V, $Vmin, $Vmax, $Hmin, $Hmax);
+        $H = $this->linearBounded($V, $Vmin, $Vmax, $Hmin, $Hmax);
+        return round($H, 2);
     }
 
     /******************************************************************

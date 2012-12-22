@@ -99,7 +99,7 @@ class FETBoardCurrent extends \HUGnet\devices\inputTable\DriverAVR
         $Gain = $this->getExtra(1);
         $Vref = $this->getExtra(2);
         $Amps = $this->getCurrent($A, $R, $Gain, $Vref, $data["timeConstant"]);
-        return $Amps * 1000;  // Return mA
+        return round($Amps * 1000, 1);  // Return mA
     }
 
     /******************************************************************
