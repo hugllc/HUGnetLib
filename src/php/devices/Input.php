@@ -39,7 +39,7 @@ namespace HUGnet\devices;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our base class */
-require_once dirname(__FILE__)."/../base/SystemTableBase.php";
+require_once dirname(__FILE__)."/XTableBase.php";
 
 /**
  * Base system class.
@@ -58,28 +58,13 @@ require_once dirname(__FILE__)."/../base/SystemTableBase.php";
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class Input extends \HUGnet\base\SystemTableBase
+class Input extends XTableBase
 {
     /**
     * This is the cache for the drivers.
     */
-    private $_driverCache = array();
-    /**
-    * This is the device we rode in on
-    */
-    private $_device;
+    protected $driverLoc = "inputTable";
 
-    /**
-    * This is the destructor
-    */
-    public function __destruct()
-    {
-        foreach (array_keys((array)$this->_driverCache) as $key) {
-            unset($this->_driverCache[$key]);
-        }
-        unset($this->_device);
-        parent::__destruct();
-    }
     /**
     * This function creates the system.
     *
@@ -93,16 +78,10 @@ class Input extends \HUGnet\base\SystemTableBase
     public static function &factory(
         &$system, $data=null, $table=null, &$device = null
     ) {
-        \HUGnet\System::exception(
-            "\HUGnet\devices\Input needs to be passed a device object",
-            "InvalidArgument",
-            !is_object($device)
-        );
         if (empty($table)) {
             $table = "DeviceInputs";
         }
-        $object = parent::factory($system, $data, $table);
-        $object->_device = &$device;
+        $object = parent::factory($system, $data, $table, $device);
         return $object;
     }
     /**
@@ -117,33 +96,6 @@ class Input extends \HUGnet\base\SystemTableBase
         return $this->table()->get("input");
     }
     /**
-    * Gets a value
-    *
-    * @param string $field the field to get
-    *
-    * @return null
-    */
-    public function get($field)
-    {
-        return $this->_get($field, $this->driver());
-    }
-    /**
-    * Gets a value
-    *
-    * @param string $field  the field to get
-    * @param object $driver The driver to use
-    *
-    * @return null
-    */
-    private function _get($field, $driver)
-    {
-        $ret = $driver->get($field);
-        if (is_null($ret)) {
-            $ret = parent::get($field);
-        }
-        return $ret;
-    }
-    /**
     * Returns the table as an array
     *
     * @param bool $default Whether to include the default params or not
@@ -152,18 +104,7 @@ class Input extends \HUGnet\base\SystemTableBase
     */
     public function toArray($default = true)
     {
-        $return = (array)$this->table()->toArray($default);
-        if ($default) {
-            $driver = $this->driver()->toArray();
-            $return = array_merge($driver, $return);
-        }
-        $params = json_decode($return["params"], true);
-        if (empty($return["type"])) {
-            $return["type"] = implode(
-                "", array_slice(explode('\\', get_class($this->driver())), -1)
-            );
-        }
-        $return["params"] = (array)$params;
+        $return = (array)parent::toArray($default);
         if ($default) {
             $return["otherTypes"] = \HUGnet\devices\inputTable\Driver::getTypes(
                 $return["id"]
@@ -172,54 +113,6 @@ class Input extends \HUGnet\base\SystemTableBase
             $return["validIds"] = $this->driver()->getDrivers();
         }
         return (array)$return;
-    }
-    /**
-    * Returns the table as a json string
-    *
-    * @return json string
-    */
-    public function json()
-    {
-        return json_encode($this->toArray(true));
-    }
-    /**
-    * Loads the data into the table class
-    *
-    * @param mixed $data (int)The id of the record,
-    *                    (array) or (string) data info array
-    *
-    * @return bool Whether we found this in the db or not.
-    */
-    public function load($data)
-    {
-        $ret = parent::load($data);
-        if (!$ret) {
-            $ret = $this->table()->insertRow();
-        }
-        return $ret;
-    }
-    /**
-    * This creates the driver
-    *
-    * @param string $driver The driver to use.  Leave blank for automatic.
-    *
-    * @return object
-    */
-    protected function &driver($driver = null)
-    {
-        include_once dirname(__FILE__)."/../devices/inputTable/Driver.php";
-        if (empty($driver)) {
-            $driver = \HUGnet\devices\inputTable\Driver::getDriver(
-                $this->table()->get("id"),
-                $this->table()->get("type")
-            );
-            $this->table()->set("driver", $driver);
-        }
-        if (!is_object($this->_driverCache[$driver])) {
-            $this->_driverCache[$driver]
-                = \HUGnet\devices\inputTable\Driver::factory($driver, $this);
-        }
-        return $this->_driverCache[$driver];
     }
     /**
     * This creates the units driver
@@ -300,7 +193,7 @@ class Input extends \HUGnet\base\SystemTableBase
         $table =& $this->table();
         $driver =& $this->driver();
         if (!$this->units()->valid($table->get("units"))) {
-            $table->set("units", $this->_get("storageUnit", $driver));
+            $table->set("units", $this->get("storageUnit", $driver));
         }
         $extra = (array)$table->get("extra");
         if (!is_array($extra)) {
@@ -339,37 +232,6 @@ class Input extends \HUGnet\base\SystemTableBase
         return $ret;
     }
     /**
-    * This takes the class and makes it into a setup string
-    *
-    * @return Reference to the network object
-    */
-    public function encode()
-    {
-        $string  = sprintf("%02X", ($this->get("id") & 0xFF));
-        $string .= $this->driver()->encode($this);
-        return $string;
-    }
-    /**
-    * This builds the class from a setup string
-    *
-    * @param string $string The setup string to decode
-    *
-    * @return Reference to the network object
-    */
-    public function decode($string)
-    {
-        if (!is_string($string) || (strlen($string) < 2)) {
-            return;
-        }
-        $this->set("id", hexdec(substr($string, 0, 2)));
-        $this->set("RawSetup", substr($string, 2));
-        $extra = substr($string, 2);
-        if (strlen($extra) > 1) {
-            $this->driver()->decode($extra, $this);
-        }
-        $this->fixTable();
-    }
-    /**
     * This builds the class from a setup string
     *
     * @return Array of channel information
@@ -399,15 +261,6 @@ class Input extends \HUGnet\base\SystemTableBase
         return $chan;
     }
     /**
-    * This builds the class from a setup string
-    *
-    * @return Array of channel information
-    */
-    public function device()
-    {
-        return $this->_device;
-    }
-    /**
     * Gets the config and saves it
     *
     * @param string $url The url to post to
@@ -431,17 +284,6 @@ class Input extends \HUGnet\base\SystemTableBase
                 "data"   => $input,
             )
         );
-    }
-    /**
-    * Stores data into the database
-    *
-    * @param bool $replace Replace any record that is in the way
-    *
-    * @return null
-    */
-    public function store($replace = true)
-    {
-        return parent::store($replace);
     }
 }
 

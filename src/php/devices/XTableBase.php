@@ -107,17 +107,6 @@ class XTableBase extends \HUGnet\base\SystemTableBase
         return $object;
     }
     /**
-    * Lists the ids of the table values
-    *
-    * @return The ID of this sensor
-    *
-    * @SuppressWarnings(PHPMD.ShortMethodName)
-    */
-    public function id()
-    {
-        return $this->table()->get("output");
-    }
-    /**
     * Gets a value
     *
     * @param string $field the field to get
