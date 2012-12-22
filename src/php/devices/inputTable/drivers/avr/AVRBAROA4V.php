@@ -109,12 +109,36 @@ class AVRBAROA4V extends \HUGnet\devices\inputTable\DriverAVR
             $this->get("maxDecimals")
         );
     }
-
-    /******************************************************************
-     ******************************************************************
-     ********  The following are input modification functions  ********
-     ******************************************************************
-     ******************************************************************/
+    /**
+    * Returns the reversed reading
+    *
+    * @param array $value   The data to use
+    * @param int   $channel The channel to get
+    * @param float $deltaT  The time delta in seconds between this record
+    * @param array &$prev   The previous reading
+    * @param array &$data   The data from the other sensors that were crunched
+    *
+    * @return string The reading as it would have come out of the endpoint
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    protected function getRaw(
+        $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
+        bcscale(6);
+        $Vmin = $this->getExtra(0);
+        $Vmax = $this->getExtra(1);
+        $Pmin = $this->getExtra(2);
+        $Pmax = $this->getExtra(3);
+        $Vref = $this->getExtra(4);
+        $V      = $this->linearUnbounded($value, $Pmin, $Pmax, $Vmin, $Vmax);
+        $A      = $this->revVoltage($V, $Vref, $data["timeConstant"]);
+        if (is_null($V) || is_null($A)) {
+            return null;
+        }
+        return (int)round($A);
+    }
 
 }
 ?>

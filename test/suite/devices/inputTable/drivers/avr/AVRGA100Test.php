@@ -190,6 +190,69 @@ class AVRGA100Test extends DriverTestBaseAVR
             ),
         );
     }
+    /**
+     * Data provider for testGetReading
+     *
+     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     *
+     * @return array
+     */
+    public static function dataEncodeDataPoint()
+    {
+        return array(
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x40,
+                            "type" => "GA100",
+                        ),
+                    ),
+                ),
+                "0F2700",
+                1,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                0.0659
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x40,
+                            "type" => "GA100",
+                        ),
+                    ),
+                ),
+                "",
+                1,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                null
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x40,
+                            "type" => "GA100",
+                        ),
+                    ),
+                ),
+                "8EE200",
+                1,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                0.9823
+            ),
+        );
+    }
 
 }
 

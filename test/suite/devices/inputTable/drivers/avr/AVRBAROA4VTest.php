@@ -190,6 +190,69 @@ class AVRBAROA4VTest extends DriverTestBaseAVR
             ),
         );
     }
+    /**
+     * Data provider for testGetReading
+     *
+     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     *
+     * @return array
+     */
+    public static function dataEncodeDataPoint()
+    {
+        return array(
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x40,
+                            "type" => "BARO4",
+                        ),
+                    ),
+                ),
+                "102700",
+                1,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                664.2107
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x40,
+                            "type" => "BARO4",
+                        ),
+                    ),
+                ),
+                "",
+                1,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                null
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x40,
+                            "type" => "BARO4",
+                        ),
+                    ),
+                ),
+                "D8D600",
+                1,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                1093.7836
+            ),
+        );
+    }
 
 }
 

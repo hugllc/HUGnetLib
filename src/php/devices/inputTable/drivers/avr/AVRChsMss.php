@@ -107,12 +107,36 @@ class AVRChsMss extends \HUGnet\devices\inputTable\DriverAVR
         $H = $this->linearBounded($V, $Vmin, $Vmax, $Hmin, $Hmax);
         return round($H, 2);
     }
-
-    /******************************************************************
-     ******************************************************************
-     ********  The following are input modification functions  ********
-     ******************************************************************
-     ******************************************************************/
+    /**
+    * Returns the reversed reading
+    *
+    * @param array $value   The data to use
+    * @param int   $channel The channel to get
+    * @param float $deltaT  The time delta in seconds between this record
+    * @param array &$prev   The previous reading
+    * @param array &$data   The data from the other sensors that were crunched
+    *
+    * @return string The reading as it would have come out of the endpoint
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    protected function getRaw(
+        $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
+        bcscale(6);
+        $Vmin = $this->getExtra(0);
+        $Vmax = $this->getExtra(1);
+        $Hmin = $this->getExtra(2);
+        $Hmax = $this->getExtra(3);
+        $Vref = $this->getExtra(4);
+        $V      = $this->linearUnbounded($value, $Hmin, $Hmax, $Vmin, $Vmax);
+        $A      = $this->revVoltage($V, $Vref, $data["timeConstant"]);
+        if (is_null($V) || is_null($A)) {
+            return null;
+        }
+        return (int)round($A);
+    }
 
 }
 ?>

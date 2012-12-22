@@ -182,6 +182,33 @@ abstract class DriverAVR extends Driver
         $volts = $num / $denom;
         return (float)$volts;
     }
+    /**
+    * This returns the voltage that the port is seeing
+    *
+    * @param int   $V    The Voltage
+    * @param float $Vref The voltage reference
+    * @param int   $Tc   The time constant
+    *
+    * @return The units for a particular sensor type
+    */
+    protected function revVoltage($V, $Vref, $Tc)
+    {
+        if (is_null($V)) {
+            return null;
+        }
+        $Am = self::AM;
+        $s = self::S;
+        $Tf = self::TF;
+        $D = self::D;
+        $denom = $D * $Vref;
+        if ($denom == 0) {
+            return null;
+        }
+        $num = $V * $Tc * $Tf * $Am * $s;
+
+        $A = $num / $denom;
+        return (int)round($A);
+    }
 
 
     /**

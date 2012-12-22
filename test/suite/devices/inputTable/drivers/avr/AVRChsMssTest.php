@@ -190,6 +190,103 @@ class AVRChsMssTest extends DriverTestBaseAVR
             ),
         );
     }
+    /**
+     * Data provider for testGetReading
+     *
+     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     *
+     * @return array
+     */
+    public static function dataEncodeDataPoint()
+    {
+        return array(
+            array(   // #0
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x10,
+                            "type" => "ChsMss",
+                        ),
+                    ),
+                ),
+                "",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                null
+            ),
+            array(   // #1
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x10,
+                            "type" => "ChsMss",
+                        ),
+                    ),
+                ),
+                "92E200",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                97.45
+            ),
+            array(   // #2
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x10,
+                            "type" => "ChsMss",
+                        ),
+                    ),
+                ),
+                "7D0400",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                1.93
+            ),
+            array(   // #3
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x10,
+                            "type" => "ChsMss",
+                        ),
+                    ),
+                ),
+                "",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                null,
+            ),
+            array(   // #4
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x10,
+                            "type" => "ChsMss",
+                        ),
+                    ),
+                ),
+                "000000",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                0.0,
+            ),
+        );
+    }
 
 }
 

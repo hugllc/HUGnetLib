@@ -314,6 +314,40 @@ class DriverAVRTest extends drivers\DriverTestBase
         $ret = $this->o->getVoltage($A, $Vref, $Tc);
         $this->assertEquals($expect, $ret, "Return wrong!", 0.001);
     }
+    /**
+    * Data provider for GetVoltage
+    *
+    * @return array
+    */
+    public static function dataRevVoltage()
+    {
+        return array(
+            array(null, array(), 1, 1, null),
+            array(null, array("Vcc" => 1), null, 1, 0),
+            array(0, array(), 1, 1, 0.0),
+            array(4000, array(), 10, 1, 0.6109),
+        );
+    }
+    /**
+    * test
+    *
+    * @param mixed $expect  The expected return value
+    * @param int   $preload The values to preload into the object
+    * @param float $Vref    The voltage reference
+    * @param int   $Tc      The time constant
+    * @param int   $A       The AtoD reading
+    *
+    * @return null
+    *
+    * @dataProvider dataRevVoltage
+    */
+    public function testRevVoltage($expect, $preload, $Vref, $Tc, $A)
+    {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($preload);
+        $ret = $this->o->revVoltage($A, $Vref, $Tc);
+        $this->assertEquals($expect, $ret, "Return wrong!", 0.001);
+    }
 
     /**
     * Data provider for testchsMss
@@ -839,7 +873,19 @@ class DriverAVRTestClass extends \HUGnet\devices\inputTable\DriverAVR
     {
         return parent::getVoltage($A, $Vref, $Tc);
     }
-
+    /**
+    * This returns the voltage that the port is seeing
+    *
+    * @param int   $V    The Voltage
+    * @param float $Vref The voltage reference
+    * @param int   $Tc   The time constant
+    *
+    * @return The units for a particular sensor type
+    */
+    public function revVoltage($V, $Vref, $Tc)
+    {
+        return parent::revVoltage($V, $Vref, $Tc);
+    }
 
     /**
     * Volgate for the FET board voltage dividers
