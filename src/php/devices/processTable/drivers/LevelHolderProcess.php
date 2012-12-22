@@ -132,7 +132,7 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
     *
     * @return array
     */
-    public function _decodeChannels($string, &$extra)
+    protected function _decodeChannels($string, &$extra)
     {
         $index = 0;
         $channels = $this->process()->device()->channels();

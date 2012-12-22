@@ -96,7 +96,7 @@ class AVRBC2322640 extends \HUGnet\devices\inputTable\DriverAVR
         $Bias      = $this->getExtra(0);
         $baseTherm = $this->getExtra(1);
         $ohms      = $this->getResistance($A, $Bias, $data["timeConstant"]);
-        $T         = $this->_Interpolate(
+        $T         = $this->_interpolate(
             $ohms,
             $baseTherm,
             3.354016E-3,
@@ -166,7 +166,7 @@ class AVRBC2322640 extends \HUGnet\devices\inputTable\DriverAVR
     *
     * @return float The Temperature in degrees C
     */
-    private function _Interpolate($R, $R0, $A, $B, $C, $D)
+    private function _interpolate($R, $R0, $A, $B, $C, $D)
     {
         // This gets out bad values
         if ($R <= 0) {
@@ -194,14 +194,14 @@ class AVRBC2322640 extends \HUGnet\devices\inputTable\DriverAVR
     *
     * R = R0 * e^(A+B/T+(C/T^2)+(D/T^3))
     *
-    * @param float $R  The current resistance of the thermistor in kOhms
+    * @param float $T  The current temperature of the thermistor in Degrees C
     * @param float $R0 The resistance of the thermistor at 25C in kOhms
     * @param float $A  Thermistor Constant A (From datasheet)
     * @param float $B  Thermistor Constant B (From datasheet)
     * @param float $C  Thermistor Constant C (From datasheet)
     * @param float $D  Thermistor Constant D (From datasheet)
     *
-    * @return float The Temperature in degrees C
+    * @return float The Resistance in Ohms
     */
     private function _revInterpolate($T, $R0, $A, $B, $C, $D)
     {
