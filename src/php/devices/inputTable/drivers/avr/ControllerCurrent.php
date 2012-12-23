@@ -104,6 +104,34 @@ class ControllerCurrent extends \HUGnet\devices\inputTable\DriverAVR
         return round($this->directCurrent($A, 1), 1);
     }
     /**
+    * Returns the reversed reading
+    *
+    * @param array $value   The data to use
+    * @param int   $channel The channel to get
+    * @param float $deltaT  The time delta in seconds between this record
+    * @param array &$prev   The previous reading
+    * @param array &$data   The data from the other sensors that were crunched
+    *
+    * @return string The reading as it would have come out of the endpoint
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    protected function getRaw(
+        $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
+        if (is_null($value)) {
+            return null;
+        }
+        $R    = $this->getExtra(0);
+        $G    = $this->getExtra(1);
+        $Vref = $this->getExtra(2);
+        $A    = $this->revCurrent(
+            $value / 1000, $R, $G, $Vref, 1
+        );
+        return (int)round($A);
+    }
+    /**
     * This crunches the actual numbers for the sensor data
     *
     * Here is the actual sensor array (actual view):

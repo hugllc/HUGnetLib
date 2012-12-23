@@ -117,6 +117,66 @@ class ControllerCurrentTest extends DriverTestBaseAVR
      *
      * @return array
      */
+    public static function dataEncodeDataPoint()
+    {
+        return array(
+            array( // #0  first current
+                array(
+                    "Input" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 1,
+                            "extra" => array(),
+                        ),
+                    ),
+                ),
+                "6D06",
+                1,
+                array(),
+                array(),
+                35.9,
+            ),
+            array( // #1  second current
+                array(
+                    "Input" => array(
+                        "id" => 4,
+                        "get" => array(
+                            "sensor" => 4,
+                            "extra" => array(),
+                        ),
+                    ),
+                ),
+                "7503",
+                1,
+                array(),
+                array(),
+                19.3,
+            ),
+            array( // #2  No Input
+                array(
+                    "Input" => array(
+                        "id" => 4,
+                        "get" => array(
+                            "sensor" => 4,
+                            "extra" => array(),
+                        ),
+                    ),
+                ),
+                "",
+                1,
+                array(),
+                array(),
+                null,
+            ),
+        );
+    }
+    /**
+     * Data provider for testGetReading
+     *
+     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     *
+     * @return array
+     */
     public static function dataDecodeData()
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
