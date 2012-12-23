@@ -101,12 +101,35 @@ class FETBoardCurrent extends \HUGnet\devices\inputTable\DriverAVR
         $Amps = $this->getCurrent($A, $R, $Gain, $Vref, $data["timeConstant"]);
         return round($Amps * 1000, 1);  // Return mA
     }
-
-    /******************************************************************
-     ******************************************************************
-     ********  The following are input modification functions  ********
-     ******************************************************************
-     ******************************************************************/
+    /**
+    * Returns the reversed reading
+    *
+    * @param array $value   The data to use
+    * @param int   $channel The channel to get
+    * @param float $deltaT  The time delta in seconds between this record
+    * @param array &$prev   The previous reading
+    * @param array &$data   The data from the other sensors that were crunched
+    *
+    * @return string The reading as it would have come out of the endpoint
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    protected function getRaw(
+        $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
+        bcscale(6);
+        $R    = $this->getExtra(0);
+        $Gain = $this->getExtra(1);
+        $Vref = $this->getExtra(2);
+        $A      = $this->revCurrent(
+            $value / 1000, $R, $Gain, $Vref, $data["timeConstant"]
+        );
+        if (is_null($A) ||is_null($value)) {
+            return null;
+        }
+        return (int)round($A);
+    }
 
 }
 ?>

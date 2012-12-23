@@ -281,6 +281,36 @@ abstract class DriverAVR extends Driver
         $Read = $numer/$denom;
         return (float)$Read;
     }
+    /**
+    * This takes in a raw AtoD reading and returns the current.
+    *
+    * This is further documented at: {@link
+    * https://dev.hugllc.com/index.php/Project:HUGnet_Current_Sensors Current
+    * Sensors }
+    *
+    * @param int   $I    The raw AtoD reading
+    * @param float $R    The resistance of the current sensing resistor
+    * @param float $G    The gain of the circuit
+    * @param float $Vref The voltage reference
+    * @param int   $Tc   The time constant
+    *
+    * @return float The current sensed
+    */
+    protected function revCurrent($I, $R, $G, $Vref, $Tc)
+    {
+        $Am = self::AM;
+        $s = self::S;
+        $Tf = self::TF;
+        $D = self::D;
+        $denom = $D * $Vref;
+        if (is_null($I) || ($denom == 0)) {
+            return null;
+        }
+        $numer = $I * $s * $Tc * $Tf * $Am * $G * $R;
+
+        $A = $numer/$denom;
+        return (int)round($A);
+    }
 
     /**
     *  This is specifically for the current sensor in the FET board.

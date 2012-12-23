@@ -174,6 +174,86 @@ class AVRDwyer616Test extends DriverTestBaseAVR
             ),
         );
     }
+    /**
+     * Data provider for testGetReading
+     *
+     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     *
+     * @return array
+     */
+    public static function dataEncodeDataPoint()
+    {
+        return array(
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x50,
+                            "type" => "Dwyer616",
+                        ),
+                    ),
+                ),
+                "F23200",
+                1,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                -1.5
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x50,
+                            "type" => "Dwyer616",
+                        ),
+                    ),
+                ),
+                '',
+                1,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                null
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x50,
+                            "type" => "Dwyer616",
+                        ),
+                    ),
+                ),
+                "D69800",
+                1,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                0.0
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x50,
+                            "type" => "Dwyer616",
+                        ),
+                    ),
+                ),
+                "BAFE00",
+                1,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                1.5
+            ),
+        );
+    }
 
 }
 

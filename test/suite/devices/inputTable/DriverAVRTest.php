@@ -463,6 +463,41 @@ class DriverAVRTest extends drivers\DriverTestBase
         $ret = $this->o->getCurrent($A, $R, $G, $Vref, $Tc);
         $this->assertEquals($expect, $ret, "Return wrong!", 0.001);
     }
+    /**
+    * Data provider for GetVoltage
+    *
+    * @return array
+    */
+    public static function dataRevCurrent()
+    {
+        return array(
+            array(500, array(), 0.5, 1, 5.0, 1, 0.0764),
+            array(0, array(), 1, 2, 5.0, 3, 0.0),
+            array(null, array(), 0, 2, 0, 3, 0.0),
+        );
+    }
+    /**
+    * test
+    *
+    * @param mixed $expect  The expected return value
+    * @param int   $preload The values to preload into the object
+    * @param float $R       The resistance of the current sensing resistor
+    * @param float $G       The gain of the circuit
+    * @param float $Vref    The voltage reference
+    * @param int   $Tc      The time constant
+    * @param int   $A       The AtoD reading
+    *
+    * @return null
+    *
+    * @dataProvider dataRevCurrent
+    */
+    public function testRevCurrent($expect, $preload, $R, $G, $Vref, $Tc, $A)
+    {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($preload);
+        $ret = $this->o->revCurrent($A, $R, $G, $Vref, $Tc);
+        $this->assertEquals($expect, $ret, "Return wrong!", 0.001);
+    }
 
     /**
     * Data provider for testchsMss
@@ -930,6 +965,25 @@ class DriverAVRTestClass extends \HUGnet\devices\inputTable\DriverAVR
     public function getCurrent($A, $R, $G, $Vref, $Tc)
     {
         return parent::getCurrent($A, $R, $G, $Vref, $Tc);
+    }
+    /**
+    * This takes in a raw AtoD reading and returns the current.
+    *
+    * This is further documented at: {@link
+    * https://dev.hugllc.com/index.php/Project:HUGnet_Current_Sensors Current
+    * Sensors }
+    *
+    * @param int   $I    The raw AtoD reading
+    * @param float $R    The resistance of the current sensing resistor
+    * @param float $G    The gain of the circuit
+    * @param float $Vref The voltage reference
+    * @param int   $Tc   The time constant
+    *
+    * @return float The current sensed
+    */
+    public function revCurrent($I, $R, $G, $Vref, $Tc)
+    {
+        return parent::revCurrent($I, $R, $G, $Vref, $Tc);
     }
 
     /**

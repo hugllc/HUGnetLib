@@ -101,7 +101,7 @@ class ControllerCurrent extends \HUGnet\devices\inputTable\DriverAVR
     protected function getReading(
         $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
-        return null;
+        return round($this->directCurrent($A, 1), 1);
     }
     /**
     * This crunches the actual numbers for the sensor data
@@ -149,7 +149,7 @@ class ControllerCurrent extends \HUGnet\devices\inputTable\DriverAVR
             $A = $this->strToInt($string);
         }
         $ret             = $this->channels();
-        $ret[0]["value"] = round($this->directCurrent($A, 1), 1);
+        $ret[0]["value"] = $this->getReading($A);
         return $ret;
     }
 

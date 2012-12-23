@@ -111,6 +111,41 @@ class AVRDwyer616 extends \HUGnet\devices\inputTable\DriverAVR
         $P = $this->linearBounded($mA, $Amin, $Amax, $Pmin, $Pmax);
         return round($P, 1);
     }
+    /**
+    * Returns the reversed reading
+    *
+    * @param array $value   The data to use
+    * @param int   $channel The channel to get
+    * @param float $deltaT  The time delta in seconds between this record
+    * @param array &$prev   The previous reading
+    * @param array &$data   The data from the other sensors that were crunched
+    *
+    * @return string The reading as it would have come out of the endpoint
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    protected function getRaw(
+        $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
+        bcscale(6);
+        $Amin = $this->getExtra(0);
+        $Amax = $this->getExtra(1);
+        $Pmin = $this->getExtra(2);
+        $Pmax = $this->getExtra(3);
+        $R    = $this->getExtra(4);
+        $Gain = $this->getExtra(5);
+        $Vref = $this->getExtra(6);
+        $mA = $this->linearBounded($value, $Pmin, $Pmax, $Amin, $Amax);
+        $Amps = $mA / 1000;  // Convert to amps
+        $A      = $this->revCurrent(
+            $Amps, $R, $Gain, $Vref, $data["timeConstant"]
+        );
+        if (is_null($A) || is_null($value) || is_null($mA)) {
+            return null;
+        }
+        return (int)round($A);
+    }
 
 }
 ?>
