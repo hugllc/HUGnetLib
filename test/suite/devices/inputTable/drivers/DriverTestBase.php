@@ -501,6 +501,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     public static function dataEncodeDataPoint()
     {
         return array(
+            /*
             array( // #0
                 array(
                     "Sensor" => array(
@@ -518,6 +519,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
                 null,
                 0,
             ),
+            */
         );
         return array();
     }

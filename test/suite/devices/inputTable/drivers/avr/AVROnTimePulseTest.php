@@ -151,6 +151,64 @@ class AVROnTimePulseTest extends DriverTestBaseAVR
             ),
         );
     }
+    /**
+    * Data provider for testGetReading
+    *
+    * @return array
+    */
+    public static function dataEncodeDataPoint()
+    {
+        return array(
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            'id' => 0x7E,
+                        ),
+                    ),
+                ),
+                "8CF800",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                0.9709
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            'id' => 0x7E,
+                        ),
+                    ),
+                ),
+                "92F800",
+                0,
+                array(
+                    "timeConstant" => 2,
+                ),
+                array(),
+                0.4855
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            'id' => 0x7E,
+                        ),
+                    ),
+                ),
+                '',
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                null
+            ),
+        );
+    }
 
 }
 

@@ -137,6 +137,50 @@ class AVROSRAMLightTest extends DriverTestBaseAVR
             ),
         );
     }
+    /**
+     * Data provider for testGetReading
+     *
+     * @return array
+     */
+    public static function dataEncodeDataPoint()
+    {
+        return array(
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            'id' => 0x7E,
+                            'type' => "OSRAM BPW-34",
+                        ),
+                    ),
+                ),
+                "C0FF00",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                0.0,
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            'id' => 0x7E,
+                            'type' => "OSRAM BPW-34",
+                        ),
+                    ),
+                ),
+                "000000",
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                1500.0,
+            ),
+        );
+    }
 
 }
 
