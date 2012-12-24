@@ -131,6 +131,31 @@ abstract class DriverAVR extends Driver
         return (float)$Read;
     }
     /**
+    * This returns the voltage on the upper side of a voltage divider if the
+    * AtoD input is in the middle of the divider
+    *
+    * @param int   $V    The incoming value
+    * @param float $R1   The resistor to the voltage
+    * @param float $R2   The resistor to ground
+    * @param float $Vref The voltage reveference
+    * @param int   $Tc   The time constant
+    *
+    * @return float Voltage rounded to 4 places
+    */
+    protected function revDividerVoltage($V, $R1, $R2, $Vref, $Tc)
+    {
+        // This avoids a divide by zero error.
+        if (($R2 <= 0) || ($R1 <= 0)) {
+            return null;
+        }
+        $value = $V * $R2 / ($R1 + $R2);
+        $Read = $this->revVoltage($value, $Vref, $Tc);
+        if (is_null($Read)) {
+            return null;
+        }
+        return (int)round($Read);
+    }
+    /**
     * This function creates an object if it finds the right class
     *
     * @param object &$obj    The object container to put an object in.

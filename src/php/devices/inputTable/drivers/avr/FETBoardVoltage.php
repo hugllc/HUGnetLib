@@ -101,6 +101,34 @@ class FETBoardVoltage extends \HUGnet\devices\inputTable\DriverAVR
         $V = $this->getDividerVoltage($A, $R1, $R2, $Vref, $data["timeConstant"]);
         return round($V, 4);
     }
+    /**
+    * Returns the reversed reading
+    *
+    * @param array $value   The data to use
+    * @param int   $channel The channel to get
+    * @param float $deltaT  The time delta in seconds between this record
+    * @param array &$prev   The previous reading
+    * @param array &$data   The data from the other sensors that were crunched
+    *
+    * @return string The reading as it would have come out of the endpoint
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    protected function getRaw(
+        $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
+        $R1   = $this->getExtra(0);
+        $R2   = $this->getExtra(1);
+        $Vref = $this->getExtra(2);
+        $A    = $this->revDividerVoltage(
+            $value, $R1, $R2, $Vref, $data["timeConstant"]
+        );
+        if (($A < 0) || is_null($A) || is_null($value)) {
+            return null;
+        }
+        return (int)round($A);
+    }
 
 }
 ?>

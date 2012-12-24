@@ -172,6 +172,85 @@ class AVRHitachiVFDFanTest extends DriverTestBaseAVR
 
         );
     }
+    /**
+    * Data provider for testLinearBoundedIndirect
+    *
+    * @return array
+    */
+    public static function dataEncodeDataPoint()
+    {
+        return array(
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x40,
+                            "type" => "HitachiVFDFan",
+                        ),
+                    ),
+                ),
+                "102700",
+                1,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                0.1944
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x40,
+                            "type" => "HitachiVFDFan",
+                        ),
+                    ),
+                ),
+                "",
+                1,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                null
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x40,
+                            "type" => "HitachiVFDFan",
+                        ),
+                    ),
+                ),
+                "000000",
+                1,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                0.0
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x40,
+                            "type" => "HitachiVFDFan",
+                        ),
+                    ),
+                ),
+                "52C300",
+                1,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                0.9720
+            ),
+
+        );
+    }
 }
 
 ?>

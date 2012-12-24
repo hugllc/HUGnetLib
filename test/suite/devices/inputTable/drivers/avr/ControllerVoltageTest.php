@@ -117,6 +117,70 @@ class ControllerVoltageTest extends DriverTestBaseAVR
      *
      * @return array
      */
+    public static function dataEncodeDataPoint()
+    {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $driver = \HUGnet\devices\inputTable\DriverAVR::factory(
+            "ControllerVoltage", $sensor
+        );
+        return array(
+            array( // #0  first voltage
+                array(
+                    "Sensor" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "sensor" => 0,
+                            "extra" => array(),
+                        ),
+                    ),
+                ),
+                "2448",
+                1,
+                array(),
+                array(),
+                10.8129,
+            ),
+            array( // #1 Second voltage
+                array(
+                    "Sensor" => array(
+                        "id" => 3,
+                        "get" => array(
+                            "sensor" => 3,
+                            "extra" => array(),
+                        ),
+                    ),
+                ),
+                "C848",
+                1,
+                array(),
+                array(),
+                10.9089,
+            ),
+            array( // #1 Second voltage
+                array(
+                    "Sensor" => array(
+                        "id" => 0,
+                        "get" => array(
+                            "sensor" => 0,
+                            "extra" => array(),
+                        ),
+                    ),
+                ),
+                "",
+                1,
+                array(),
+                array(),
+                null,
+            ),
+        );
+    }
+    /**
+     * Data provider for testGetReading
+     *
+     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     *
+     * @return array
+     */
     public static function dataDecodeData()
     {
         $sensor = new \HUGnet\DummyBase("Sensor");

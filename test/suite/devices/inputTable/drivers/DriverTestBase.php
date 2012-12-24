@@ -500,25 +500,6 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
      */
     public static function dataEncodeDataPoint()
     {
-        return array(
-            array( // #0
-                array(
-                    "Sensor" => array(
-                        "id" => 1,
-                        "get" => array(
-                            "sensor" => 2,
-                            "extra" => array(),
-                        ),
-                    ),
-                ),
-                "",
-                1,
-                array(),
-                array(),
-                null,
-                0,
-            ),
-        );
         return array();
     }
     /**

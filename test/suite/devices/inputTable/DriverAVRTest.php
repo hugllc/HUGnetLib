@@ -224,6 +224,43 @@ class DriverAVRTest extends drivers\DriverTestBase
         $ret = $this->o->getDividerVoltage($A, $R1, $R2, $Vref, $Tc);
         $this->assertEquals($expect, $ret, "Return wrong!", 0.001);
     }
+    /**
+    * Data provider for testGetDividerVoltage
+    *
+    * @return array
+    */
+    public static function dataRevDividerVoltage()
+    {
+        return array(
+            array(null, 1, 0, 5, array(), 1, 0.4),
+            array(1, 1, 1, 5, array(), 1, 0.0002),
+            array(1000, 1, 1, 5, array(), 1, 0.1527),
+            array(null, 1, 1, 5, array(), 1, null),
+        );
+    }
+    /**
+    * test
+    *
+    * @param mixed $expect  The expected return value
+    * @param float $R1      The resistor to the voltage
+    * @param float $R2      The resistor to ground
+    * @param float $Vref    The reference voltage
+    * @param array $preload The values to preload into the object
+    * @param int   $Tc      The time constant
+    * @param int   $A       The incoming value
+    *
+    * @return null
+    *
+    * @dataProvider dataRevDividerVoltage
+    */
+    public function testRevDividerVoltage(
+        $expect, $R1, $R2, $Vref, $preload, $Tc, $A
+    ) {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($preload);
+        $ret = $this->o->revDividerVoltage($A, $R1, $R2, $Vref, $Tc);
+        $this->assertEquals($expect, $ret, "Return wrong!", 0.001);
+    }
 
 
     /**
@@ -894,6 +931,22 @@ class DriverAVRTestClass extends \HUGnet\devices\inputTable\DriverAVR
     public function getDividerVoltage($A, $R1, $R2, $Vref, $Tc)
     {
         return parent::getDividerVoltage($A, $R1, $R2, $Vref, $Tc);
+    }
+    /**
+    * This returns the voltage on the upper side of a voltage divider if the
+    * AtoD input is in the middle of the divider
+    *
+    * @param int   $V    The incoming value
+    * @param float $R1   The resistor to the voltage
+    * @param float $R2   The resistor to ground
+    * @param float $Vref The voltage reveference
+    * @param int   $Tc   The time constant
+    *
+    * @return float Voltage rounded to 4 places
+    */
+    public function revDividerVoltage($V, $R1, $R2, $Vref, $Tc)
+    {
+        return parent::revDividerVoltage($V, $R1, $R2, $Vref, $Tc);
     }
     /**
     * This returns the voltage that the port is seeing

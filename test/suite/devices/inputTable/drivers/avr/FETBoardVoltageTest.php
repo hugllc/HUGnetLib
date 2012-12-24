@@ -171,6 +171,84 @@ class FETBoardVoltageTest extends DriverTestBaseAVR
             ),
         );
     }
+    /**
+    * Data provider for testfetBoard
+    *
+    * @return array
+    */
+    public static function dataEncodeDataPoint()
+    {
+        return array(
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x40,
+                            "type" => "fetBoard",
+                        ),
+                    ),
+                ),
+                "E80300",
+                1,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                1.2219
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x40,
+                            "type" => "fetBoard",
+                        ),
+                    ),
+                ),
+                "",
+                1,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                null
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x40,
+                            "type" => "fetBoard",
+                        ),
+                    ),
+                ),
+                '000000',
+                1,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                0.0
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 0x40,
+                            "type" => "fetBoard",
+                        ),
+                    ),
+                ),
+                "FFFF00",
+                1,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(),
+                80.077,
+            ),
+        );
+    }
 
 }
 

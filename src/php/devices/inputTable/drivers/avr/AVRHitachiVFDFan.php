@@ -112,12 +112,40 @@ class AVRHitachiVFDFan extends \HUGnet\devices\inputTable\DriverAVR
             $this->get("maxDecimals")
         );
     }
-
-    /******************************************************************
-     ******************************************************************
-     ********  The following are input modification functions  ********
-     ******************************************************************
-     ******************************************************************/
+    /**
+    * Returns the reversed reading
+    *
+    * @param array $value   The data to use
+    * @param int   $channel The channel to get
+    * @param float $deltaT  The time delta in seconds between this record
+    * @param array &$prev   The previous reading
+    * @param array &$data   The data from the other sensors that were crunched
+    *
+    * @return string The reading as it would have come out of the endpoint
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    protected function getRaw(
+        $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
+        bcscale(6);
+        $R1   = $this->getExtra(0);
+        $R2   = $this->getExtra(1);
+        $Vmin = $this->getExtra(2);
+        $Vmax = $this->getExtra(3);
+        $Omin = $this->getExtra(4);
+        $Omax = $this->getExtra(5);
+        $Vref = $this->getExtra(6);
+        $V    = $this->linearBounded($value * 100, $Omin, $Omax, $Vmin, $Vmax);
+        $A    = $this->revDividerVoltage(
+            $V, $R1, $R2, $Vref, $data["timeConstant"]
+        );
+        if (($A < 0) || is_null($A) || is_null($value)) {
+            return null;
+        }
+        return (int)round($A);
+    }
 
 }
 ?>
