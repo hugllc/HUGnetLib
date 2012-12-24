@@ -587,9 +587,7 @@ class ADuCInputTable
         } else {
             $process = "process1";
         }
-        return sprintf("%02X", $this->_params(
-            $process, $set)
-        );
+        return sprintf("%02X", $this->_params($process, $set));
     }
     /**
     * This builds teh ADCFLT Register
