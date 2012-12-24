@@ -526,7 +526,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                         ),
                     ),
                 ),
-                "FF00C0800086098041FF0102030405060708",
+                "FF00C0800086098041FF000102030405060708",
                 array(
                     "Sensor" => array(
                         "get" => array(
@@ -557,7 +557,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                         ),
                     ),
                 ),
-                "FF00C0800086098041FFFFFFFFFF00000080",
+                "FF00C0800086098041FF00FFFFFFFF00000080",
                 array(
                     "Sensor" => array(
                         "get" => array(
@@ -593,6 +593,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                             'driver1' => 255,
                             'priority' => 0,
                             'process' => 0,
+                            'process1' => 1,
                             'ADC0EN' => 1,
                             'ADC0DIAG' => 0,
                             'HIGHEXTREF0' => 0,
@@ -622,7 +623,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                         ),
                     ),
                 ),
-                "FF00C0800086098041FF0102030405060708",
+                "FF00C0800086098041FF010102030405060708",
                 array(
                     "Sensor" => array(
                         "get" => array(
@@ -664,7 +665,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                         ),
                     ),
                 ),
-                "FF00C0800086098041FF0102030405060708",
+                "FF00C0800086098041FF000102030405060708",
                 array(
                     "Sensor" => array(
                         "get" => array(
@@ -729,7 +730,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                         ),
                     ),
                 ),
-                "FF00C0800086098041FF0000000000000000",
+                "FF00C0800086098041FF000000000000000000",
             ),
         );
     }

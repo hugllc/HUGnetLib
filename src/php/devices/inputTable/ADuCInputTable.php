@@ -107,7 +107,18 @@ class ADuCInputTable
                 0x03 => "Square Data",
                 0x04 => "Calculate Power and Impedance",
             ),
-            "desc"  => "Immediate Processing Routine",
+            "desc"  => "Immediate Processing 0",
+        ),
+        "process1"  => array(
+            "value" => 0,
+            'mask'  => 0xFF,
+            "valid" => array(
+                0x00 => "None",
+                0x01 => "Multiply by 128",
+                0x02 => "Divide by 128",
+                0x03 => "Square Data",
+            ),
+            "desc"  => "Immediate Processing 1",
         ),
         "ADC0EN"    => array(
             'value' => 1,
@@ -564,13 +575,21 @@ class ADuCInputTable
     /**
     * This builds teh ADCFLT Register
     *
-    * @param string $set The values to set the register to
+    * @param string $set     The values to set the register to
+    * @param int    $channel The channel to use
     *
     * @return 16 bit integer that is the FLT setup
     */
-    public function immediateProcessRoutine($set = null)
+    public function immediateProcessRoutine($set = null, $channel = 0)
     {
-        return sprintf("%02X", $this->_params("process", $set));
+        if ($channel == 0) {
+            $process = "process";
+        } else {
+            $process = "process1";
+        }
+        return sprintf("%02X", $this->_params(
+            $process, $set)
+        );
     }
     /**
     * This builds teh ADCFLT Register
@@ -658,7 +677,7 @@ class ADuCInputTable
     {
         $ret  = "";
         $ret .= $this->priority();
-        $ret .= $this->immediateProcessRoutine();
+        $ret .= $this->immediateProcessRoutine(null, 0);
         /* This is because encoding is little endian */
         foreach (array("ADC0CON", "ADC1CON", "ADCFLT") as $reg) {
             $value = $this->register($reg);
@@ -667,6 +686,7 @@ class ADuCInputTable
         }
         $ret .= $this->driver0();
         $ret .= $this->driver1();
+        $ret .= $this->immediateProcessRoutine(null, 1);
         return $ret;
     }
     /**
@@ -680,12 +700,13 @@ class ADuCInputTable
     {
         if (strlen($string) >= 20) {
             $this->priority(substr($string, 0, 2));
-            $this->immediateProcessRoutine(substr($string, 2, 2));
+            $this->immediateProcessRoutine(substr($string, 2, 2), 0);
             $this->register("ADC0CON", substr($string, 6, 2).substr($string, 4, 2));
             $this->register("ADC1CON", substr($string, 10, 2).substr($string, 8, 2));
             $this->register("ADCFLT", substr($string, 14, 2).substr($string, 12, 2));
             $this->driver0(substr($string, 16, 2));
             $this->driver1(substr($string, 18, 2));
+            $this->immediateProcessRoutine(substr($string, 20, 2), 1);
             return true;
         }
         return false;
@@ -748,7 +769,12 @@ class ADuCInputTable
     public function gain($channel = 0)
     {
         $gain = 1;
-        switch((int)$this->_params("process")) {
+        if ($channel == 0) {
+            $process = (int)$this->_params("process");
+        } else {
+            $process = (int)$this->_params("process1");
+        }
+        switch($process) {
         case 1:
             $gain *= 128;
             break;

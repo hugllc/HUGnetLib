@@ -354,8 +354,8 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
     {
         $this->_entry()->decode($string);
         $extra = $this->input()->get("extra");
-        $extra[1] = $this->_decode32(substr($string, 20, 8));
-        $extra[2] = $this->_decode32(substr($string, 28, 8));
+        $extra[1] = $this->_decode32(substr($string, 22, 8));
+        $extra[2] = $this->_decode32(substr($string, 30, 8));
         if (!isset($extra[0])) {
             $iid = $this->_find();
             if (!is_null($iid)) {

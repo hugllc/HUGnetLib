@@ -482,6 +482,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                     'driver1' => 0x41,
                     'priority' => 3,
                     'process' => 4,
+                    'process1' => 3,
                     'ADC0EN' => 1,
                     'ADC0DIAG' => 0,
                     'HIGHEXTREF0' => 0,
@@ -504,7 +505,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                     'NOTCH2' => 0,
                     'SF' => 9,
                 ),
-                "0304C080008609800441",
+                "0304C08000860980044103",
             ),
             array( // #1 Array in
                 array(
@@ -538,7 +539,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                 ),
-                "0304C080008609800441",
+                "0304C08000860980044100",
             ),
             array( // #2 Empty array
                 array(
@@ -547,7 +548,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                 ),
-                "FF00C08000860980FFFF",
+                "FF00C08000860980FFFF00",
             ),
             array( // #3 SF 31, AF 63  --  Valid
                 array(
@@ -558,7 +559,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 array(
                     "AF" => 63,
                 ),
-                "FF00C08000861FBFFFFF",
+                "FF00C08000861FBFFFFF00",
             ),
             array( // #4 SF 63, AF 7  --  Valid
                 array(
@@ -569,7 +570,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 array(
                     "AF" => 7,
                 ),
-                "FF00C08000863F87FFFF",
+                "FF00C08000863F87FFFF00",
             ),
             array( // #5 SF 127, AF 0  --  Valid
                 array(
@@ -580,7 +581,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 array(
                     "AF" => 0,
                 ),
-                "FF00C08000867F80FFFF",
+                "FF00C08000867F80FFFF00",
             ),
             array( // #6 AF 5, SF 127  --  Not valid: Becomes AF 0, SF 127
                 array(
@@ -591,7 +592,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 array(
                     "SF" => 127,
                 ),
-                "FF00C08000867F80FFFF",
+                "FF00C08000867F80FFFF00",
             ),
             array( // #7 AF 10, SF 63  --  Not valid: Becomes AF 7, SF 63
                 array(
@@ -602,7 +603,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 array(
                     "SF" => 63,
                 ),
-                "FF00C08000863F87FFFF",
+                "FF00C08000863F87FFFF00",
             ),
             array( // #8 SF 63, AF 8  --  Not valid: Becomes AF 8, SF 31
                 array(
@@ -613,7 +614,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 array(
                     "AF" => 8,
                 ),
-                "FF00C08000861F88FFFF",
+                "FF00C08000861F88FFFF00",
             ),
             array( // #8 SF 127, AF 7  --  Not valid: Becomes AF 7, SF 63
                 array(
@@ -624,7 +625,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 array(
                     "AF" => 7,
                 ),
-                "FF00C08000863F87FFFF",
+                "FF00C08000863F87FFFF00",
             ),
             array( // #8 Real World test
                 array(
@@ -639,6 +640,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                     'driver1' => 255,
                     'priority' => 1,
                     'process' => 0,
+                    'process1' => 0,
                     'ADC0EN' => 0,
                     'ADC0DIAG' => 0,
                     'HIGHEXTREF0' => 0,
@@ -663,7 +665,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                 ),
-                "0100C0000083098004FF",
+                "0100C0000083098004FF00",
             ),
         );
     }
@@ -700,13 +702,14 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 array(
                 ),
                 null,
-                "0102C080008609800404",
+                "0102C08000860980040403",
                 true,
                 array(
                     'driver0' => 4,
                     'driver1' => 4,
                     'priority' => 1,
                     'process' => 2,
+                    'process1' => 3,
                     'ADC0EN' => 1,
                     'ADC0DIAG' => 0,
                     'HIGHEXTREF0' => 0,
@@ -733,7 +736,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
             array( // #1 Feed the string in through the constructor
                 array(
                 ),
-                "0102C080008609800404",
+                "0102C08000860980040400",
                 "",
                 false,
                 array(
@@ -741,6 +744,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                     'driver1' => 4,
                     'priority' => 1,
                     'process' => 2,
+                    'process1' => 0,
                     'ADC0EN' => 1,
                     'ADC0DIAG' => 0,
                     'HIGHEXTREF0' => 0,
@@ -775,6 +779,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                     'driver1' => 0xFF,
                     'priority' => 0xFF,
                     'process' => 0,
+                    'process1' => 0,
                     'ADC0EN' => 1,
                     'ADC0DIAG' => 0,
                     'HIGHEXTREF0' => 0,
@@ -802,13 +807,14 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 array(
                 ),
                 null,
-                "0100C0000083098004FF",
+                "0100C0000083098004FF00",
                 true,
                 array(
                     'driver0' => 4,
                     'driver1' => 255,
                     'priority' => 1,
                     'process' => 0,
+                    'process1' => 0,
                     'ADC0EN' => 0,
                     'ADC0DIAG' => 0,
                     'HIGHEXTREF0' => 0,
@@ -878,7 +884,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 array(
                 ),
                 array(
-                    "process" => 1,
+                    "process1" => 1,
                     "ADC1PGA" => 3,
                 ),
                 1,
