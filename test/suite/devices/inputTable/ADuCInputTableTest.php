@@ -505,7 +505,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                     'NOTCH2' => 0,
                     'SF' => 9,
                 ),
-                "0304C08000860980044103",
+                "0304C08000860980044103".str_repeat("FF", ADuCInputTable::PADDING),
             ),
             array( // #1 Array in
                 array(
@@ -539,7 +539,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                 ),
-                "0304C08000860980044100",
+                "0304C08000860980044100".str_repeat("FF", ADuCInputTable::PADDING),
             ),
             array( // #2 Empty array
                 array(
@@ -548,7 +548,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                 ),
-                "FF00C08000860980FFFF00",
+                "FF00C08000860980FFFF00".str_repeat("FF", ADuCInputTable::PADDING),
             ),
             array( // #3 SF 31, AF 63  --  Valid
                 array(
@@ -559,7 +559,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 array(
                     "AF" => 63,
                 ),
-                "FF00C08000861FBFFFFF00",
+                "FF00C08000861FBFFFFF00".str_repeat("FF", ADuCInputTable::PADDING),
             ),
             array( // #4 SF 63, AF 7  --  Valid
                 array(
@@ -570,7 +570,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 array(
                     "AF" => 7,
                 ),
-                "FF00C08000863F87FFFF00",
+                "FF00C08000863F87FFFF00".str_repeat("FF", ADuCInputTable::PADDING),
             ),
             array( // #5 SF 127, AF 0  --  Valid
                 array(
@@ -581,7 +581,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 array(
                     "AF" => 0,
                 ),
-                "FF00C08000867F80FFFF00",
+                "FF00C08000867F80FFFF00".str_repeat("FF", ADuCInputTable::PADDING),
             ),
             array( // #6 AF 5, SF 127  --  Not valid: Becomes AF 0, SF 127
                 array(
@@ -592,7 +592,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 array(
                     "SF" => 127,
                 ),
-                "FF00C08000867F80FFFF00",
+                "FF00C08000867F80FFFF00".str_repeat("FF", ADuCInputTable::PADDING),
             ),
             array( // #7 AF 10, SF 63  --  Not valid: Becomes AF 7, SF 63
                 array(
@@ -603,7 +603,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 array(
                     "SF" => 63,
                 ),
-                "FF00C08000863F87FFFF00",
+                "FF00C08000863F87FFFF00".str_repeat("FF", ADuCInputTable::PADDING),
             ),
             array( // #8 SF 63, AF 8  --  Not valid: Becomes AF 8, SF 31
                 array(
@@ -614,7 +614,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 array(
                     "AF" => 8,
                 ),
-                "FF00C08000861F88FFFF00",
+                "FF00C08000861F88FFFF00".str_repeat("FF", ADuCInputTable::PADDING),
             ),
             array( // #8 SF 127, AF 7  --  Not valid: Becomes AF 7, SF 63
                 array(
@@ -625,7 +625,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 array(
                     "AF" => 7,
                 ),
-                "FF00C08000863F87FFFF00",
+                "FF00C08000863F87FFFF00".str_repeat("FF", ADuCInputTable::PADDING),
             ),
             array( // #8 Real World test
                 array(
@@ -665,7 +665,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                 ),
-                "0100C0000083098004FF00",
+                "0100C0000083098004FF00".str_repeat("FF", ADuCInputTable::PADDING),
             ),
         );
     }

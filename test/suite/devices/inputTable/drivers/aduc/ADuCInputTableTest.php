@@ -526,7 +526,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                         ),
                     ),
                 ),
-                "FF00C0800086098041FF000102030405060708",
+                "FF00C0800086098041FF00FFFFFFFFFFFFFFFF0102030405060708",
                 array(
                     "Sensor" => array(
                         "get" => array(
@@ -557,7 +557,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                         ),
                     ),
                 ),
-                "FF00C0800086098041FF00FFFFFFFF00000080",
+                "FF00C0800086098041FF00FFFFFFFFFFFFFFFFFFFFFFFF00000080",
                 array(
                     "Sensor" => array(
                         "get" => array(
@@ -623,7 +623,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                         ),
                     ),
                 ),
-                "FF00C0800086098041FF010102030405060708",
+                "FF00C0800086098041FF01FFFFFFFFFFFFFFFF0102030405060708",
                 array(
                     "Sensor" => array(
                         "get" => array(
@@ -665,7 +665,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                         ),
                     ),
                 ),
-                "FF00C0800086098041FF000102030405060708",
+                "FF00C0800086098041FF00FFFFFFFFFFFFFFFF0102030405060708",
                 array(
                     "Sensor" => array(
                         "get" => array(
@@ -730,7 +730,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                         ),
                     ),
                 ),
-                "FF00C0800086098041FF000000000000000000",
+                "FF00C0800086098041FF00FFFFFFFFFFFFFFFF0000000000000000",
             ),
         );
     }
