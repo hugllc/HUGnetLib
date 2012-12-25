@@ -509,7 +509,7 @@ class DriverADuCTest extends drivers\DriverTestBase
     *
     * @return array
     */
-    public static function dataIPR()
+    public static function dataIPRoutine()
     {
         return array(
             array(  // #0 Normal
@@ -587,17 +587,18 @@ class DriverADuCTest extends drivers\DriverTestBase
     *
     * @return null
     *
-    * @dataProvider dataIPR
+    * @dataProvider dataIPRoutine
     */
-    public function testIPR($mocks, $entry, $offset, $initchan, $channel, $expect)
-    {
+    public function testIPRoutine(
+        $mocks, $entry, $offset, $initchan, $channel, $expect
+    ) {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($mocks);
         $obj = &DriverADuC::factory(
             "DriverADuCTestClass", $sensor, $offset, $entry, $initchan
         );
 
-        $val = $obj->IPR($channel);
+        $val = $obj->IPRoutine($channel);
         $this->assertSame($expect, $val);
     }
     /**
@@ -1073,9 +1074,9 @@ class DriverADuCTestClass extends \HUGnet\devices\inputTable\DriverADuC
     *
     * @return null
     */
-    public function IPR($channel = null)
+    public function IPRoutine($channel = null)
     {
-        return parent::IPR($channel);
+        return parent::IPRoutine($channel);
     }
     /**
     * Gets the total gain.

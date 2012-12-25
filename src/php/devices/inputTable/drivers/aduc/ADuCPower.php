@@ -391,7 +391,8 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         &$string, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
     ) {
         $return = null;
-        $E = $this->IPR(0) == \HUGnet\devices\inputTable\ADuCInputTable::IPR_POWER;
+        $ipr = $this->IPRoutine(0);
+        $Enable = $ipr == \HUGnet\devices\inputTable\ADuCInputTable::IPR_POWER;
         if ($channel == 0) {
             $A = $this->strToInt($string);
             $return = $this->getCurrent($A, $deltaT, $data, $prev);
@@ -399,14 +400,14 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
             $A = $this->strToInt($string);
             $return = $this->getVoltage($A, $deltaT, $data, $prev);
         } else if ($channel == 2) {
-            if ($E) {
+            if ($Enable) {
                 $A = $this->strToInt($string);
                 $return = $this->getPower($A, $deltaT, $data, $prev);
             } else {
                 $return = $this->getCalcPower($deltaT, $data, $prev);
             }
         } else if ($channel == 3) {
-            if ($E) {
+            if ($Enable) {
                 $A = $this->strToInt($string);
                 $return = $this->getImpedance($A, $deltaT, $data, $prev);
             } else {
