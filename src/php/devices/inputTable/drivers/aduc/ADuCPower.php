@@ -367,26 +367,17 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         &$string, $deltaT = 0, &$prev = null, &$data = array()
     ) {
         $ret = $this->channels();
-        $A = $this->strToInt($string);
-        $ret[0]["value"] = $this->getCurrent(
-            $A, $deltaT, $ret, $prev
-        );
-        $A = $this->strToInt($string);
-        $ret[1]["value"] = $this->getVoltage(
-            $A, $deltaT, $ret, $prev
-        );
-        $ret[2]["value"] = $this->getCalcPower(
-            $deltaT, $ret, $prev
-        );
-        $ret[3]["value"] = $this->getCalcImpedance(
-            $deltaT, $ret, $prev
-        );
+        foreach (array_keys($ret) as $key) {
+            $ret[$key]["value"] = $this->decodeDataPoint(
+                $string, $key, $deltaT, $prev, $ret
+            );
+        }
         return $ret;
     }
     /**
     * Gets the direction from a direction sensor made out of a POT.
     *
-    * @param string $string  The data string
+    * @param string &$string The data string
     * @param int    $channel The channel to use
     * @param float  $deltaT  The time delta in seconds between this record
     * @param array  &$prev   The previous reading
@@ -397,18 +388,30 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
     * @SuppressWarnings(PHPMD.ShortVariable)
     */
     public function decodeDataPoint(
-        $string, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+        &$string, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
     ) {
         $return = null;
-        $A = $this->strToInt($string);
+        $E = $this->IPR(0) == \HUGnet\devices\inputTable\ADuCInputTable::IPR_POWER;
         if ($channel == 0) {
-            $return = $this->getCurrent($A, $deltaT, $ret, $prev);
+            $A = $this->strToInt($string);
+            $return = $this->getCurrent($A, $deltaT, $data, $prev);
         } else if ($channel == 1) {
-            $return = $this->getVoltage($A, $deltaT, $ret, $prev);
+            $A = $this->strToInt($string);
+            $return = $this->getVoltage($A, $deltaT, $data, $prev);
         } else if ($channel == 2) {
-            $return = $this->getPower($A, $deltaT, $ret, $prev);
+            if ($E) {
+                $A = $this->strToInt($string);
+                $return = $this->getPower($A, $deltaT, $data, $prev);
+            } else {
+                $return = $this->getCalcPower($deltaT, $data, $prev);
+            }
         } else if ($channel == 3) {
-            $return = $this->getImpedance($A, $deltaT, $ret, $prev);
+            if ($E) {
+                $A = $this->strToInt($string);
+                $return = $this->getImpedance($A, $deltaT, $data, $prev);
+            } else {
+                $return = $this->getCalcImpedance($deltaT, $data, $prev);
+            }
         }
         return $return;
     }

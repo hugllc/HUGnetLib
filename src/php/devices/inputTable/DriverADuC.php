@@ -239,6 +239,21 @@ abstract class DriverADuC extends Driver
     *
     * @return null
     */
+    protected function IPR($channel = null)
+    {
+        if (is_null($channel)) {
+            $channel = $this->_channel;
+        }
+        $channel = (int)$channel;
+        return hexdec($this->_entry()->immediateProcessRoutine($channel));
+    }
+    /**
+    * Gets the total gain.
+    *
+    * @param int $channel The channel to get the gain for
+    *
+    * @return null
+    */
     protected function twosComplimentEnabled($channel = null)
     {
         if (is_null($channel)) {

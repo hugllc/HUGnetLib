@@ -808,7 +808,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
     /**
      * Data provider for testGetReading
      *
-     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect, $channel)
      *
      * @return array
      */

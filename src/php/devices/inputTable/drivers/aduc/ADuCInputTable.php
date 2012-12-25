@@ -273,13 +273,13 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
     * @SuppressWarnings(PHPMD.ShortVariable)
     */
     public function decodeDataPoint(
-        $string, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+        &$string, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
     ) {
 
         if ($channel > count($this->_driver(0)->channels())) {
-            $ret = $this->_driver(1)->decData($string, $channel);
+            $ret = $this->_driver(1)->decodeDataPoint($string, $channel);
         } else {
-            $ret = $this->_driver(0)->decData($string, $channel);
+            $ret = $this->_driver(0)->decodeDataPoint($string, $channel);
         }
         return $ret;
     }

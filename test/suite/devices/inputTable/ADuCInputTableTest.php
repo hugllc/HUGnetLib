@@ -139,22 +139,6 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 0x105,
                 "05",
             ),
-            array(
-                array(
-                ),
-                null,
-                "immediateProcessRoutine",
-                4,
-                "04",
-            ),
-            array(
-                array(
-                ),
-                null,
-                "immediateProcessRoutine",
-                0xFE,
-                "00",
-            ),
         );
     }
     /**
@@ -176,6 +160,57 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
         $sensor->resetMock($mock);
         $obj = ADuCInputTable::factory($sensor, $preload);
         $ret = $obj->$param($set);
+        $this->assertSame($expect, $ret);
+    }
+    /**
+    * Data provider for testRemove
+    *
+    * @return array
+    */
+    public static function dataChanParams()
+    {
+        return array(
+            array(
+                array(
+                ),
+                null,
+                "immediateProcessRoutine",
+                0,
+                4,
+                "04",
+            ),
+            array(
+                array(
+                ),
+                null,
+                "immediateProcessRoutine",
+                1,
+                0xFE,
+                "00",
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param array  $mock    The mocks to preload
+    * @param string $preload The string to give to the class
+    * @param string $param   The driver number
+    * @param int    $channel THe channel to use
+    * @param string $set     The values to set the register to
+    * @param array  $expect  The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataChanParams
+    */
+    public function testChanParams(
+        $mock, $preload, $param, $channel, $set, $expect
+    ) {
+        $sensor = new \HUGnet\DummyTable("Sensor");
+        $sensor->resetMock($mock);
+        $obj = ADuCInputTable::factory($sensor, $preload);
+        $ret = $obj->$param($channel, $set);
         $this->assertSame($expect, $ret);
     }
     /**

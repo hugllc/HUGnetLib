@@ -509,6 +509,102 @@ class DriverADuCTest extends drivers\DriverTestBase
     *
     * @return array
     */
+    public static function dataIPR()
+    {
+        return array(
+            array(  // #0 Normal
+                array(
+                    "Entry" => array(
+                        "immediateProcessRoutine" => array(
+                            "0" => "05",
+                            "1" => "03",
+                        ),
+                    ),
+                ),
+                new \HUGnet\DummyBase("Entry"),
+                1,
+                0,
+                0,
+                5,
+            ),
+            array(  // #1 No channel given
+                array(
+                    "Entry" => array(
+                        "immediateProcessRoutine" => array(
+                            "0" => "05",
+                            "1" => "03",
+                        ),
+                    ),
+                ),
+                new \HUGnet\DummyBase("Entry"),
+                1,
+                1,
+                null,
+                3,
+            ),
+            array( // #2 No valid entry
+                array(
+                    "Entry" => array(
+                        "immediateProcessRoutine" => array(
+                            "0" => 5,
+                            "1" => 3,
+                        ),
+                    ),
+                ),
+                null,
+                1,
+                1,
+                null,
+                0,
+            ),
+            array(  // #3 Asking for channel 0 when ADC0 is not enabled
+                array(
+                    "Entry" => array(
+                        "immediateProcessRoutine" => array(
+                            "0" => "05",
+                            "1" => "13",
+                        ),
+                    ),
+                ),
+                new \HUGnet\DummyBase("Entry"),
+                1,
+                1,
+                1,
+                19,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $mocks    The mocks to feed this
+    * @param object $entry    The entry to send
+    * @param int    $offset   The integer to feed to the function
+    * @param int    $initchan The channel to initialize the object to
+    * @param int    $channel  The channel to set
+    * @param int    $expect   The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataIPR
+    */
+    public function testIPR($mocks, $entry, $offset, $initchan, $channel, $expect)
+    {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($mocks);
+        $obj = &DriverADuC::factory(
+            "DriverADuCTestClass", $sensor, $offset, $entry, $initchan
+        );
+
+        $val = $obj->IPR($channel);
+        $this->assertSame($expect, $val);
+    }
+    /**
+    * data provider for testNumeric
+    *
+    * @return array
+    */
     public static function dataAdcOn()
     {
         return array(
@@ -969,6 +1065,17 @@ class DriverADuCTestClass extends \HUGnet\devices\inputTable\DriverADuC
     public function gain($channel = null)
     {
         return parent::gain($channel);
+    }
+    /**
+    * Gets the immediate processing routine.
+    *
+    * @param int $channel The channel to get the gain for
+    *
+    * @return null
+    */
+    public function IPR($channel = null)
+    {
+        return parent::IPR($channel);
     }
     /**
     * Gets the total gain.
