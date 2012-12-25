@@ -391,7 +391,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         &$string, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
     ) {
         $return = null;
-        $ipr = $this->IPRoutine(0);
+        $ipr = $this->ipRoutine(0);
         $Enable = $ipr == \HUGnet\devices\inputTable\ADuCInputTable::IPR_POWER;
         if ($channel == 0) {
             $A = $this->strToInt($string);

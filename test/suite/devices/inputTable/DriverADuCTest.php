@@ -509,7 +509,7 @@ class DriverADuCTest extends drivers\DriverTestBase
     *
     * @return array
     */
-    public static function dataIPRoutine()
+    public static function dataIpRoutine()
     {
         return array(
             array(  // #0 Normal
@@ -587,9 +587,9 @@ class DriverADuCTest extends drivers\DriverTestBase
     *
     * @return null
     *
-    * @dataProvider dataIPRoutine
+    * @dataProvider dataIpRoutine
     */
-    public function testIPRoutine(
+    public function testIpRoutine(
         $mocks, $entry, $offset, $initchan, $channel, $expect
     ) {
         $sensor = new \HUGnet\DummyBase("Sensor");
@@ -598,7 +598,7 @@ class DriverADuCTest extends drivers\DriverTestBase
             "DriverADuCTestClass", $sensor, $offset, $entry, $initchan
         );
 
-        $val = $obj->IPRoutine($channel);
+        $val = $obj->ipRoutine($channel);
         $this->assertSame($expect, $val);
     }
     /**
@@ -1074,9 +1074,9 @@ class DriverADuCTestClass extends \HUGnet\devices\inputTable\DriverADuC
     *
     * @return null
     */
-    public function IPRoutine($channel = null)
+    public function ipRoutine($channel = null)
     {
-        return parent::IPRoutine($channel);
+        return parent::ipRoutine($channel);
     }
     /**
     * Gets the total gain.

@@ -239,7 +239,7 @@ abstract class DriverADuC extends Driver
     *
     * @return null
     */
-    protected function IPRoutine($channel = null)
+    protected function ipRoutine($channel = null)
     {
         if (is_null($channel)) {
             $channel = $this->_channel;
