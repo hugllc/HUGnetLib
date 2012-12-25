@@ -95,7 +95,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    public function getVoltage(
+    protected function getVoltage(
         $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
         if (is_null($A)) {
@@ -152,7 +152,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    public function getCurrent(
+    protected function getCurrent(
         $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
         if (is_null($A)) {
@@ -217,7 +217,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    public function getCalcPower(
+    protected function getCalcPower(
         $deltaT = 0, &$data = array(), $prev = null
     ) {
         $I = $data[0]["value"];
@@ -240,7 +240,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    public function getPower(
+    protected function getPower(
         $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
         if (is_null($A)) {
@@ -289,7 +289,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    public function getImpedance(
+    protected function getImpedance(
         $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
         if (is_null($A)) {
@@ -326,7 +326,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    public function getCalcImpedance(
+    protected function getCalcImpedance(
         $deltaT = 0, &$data = array(), $prev = null
     ) {
         /* Impedance */

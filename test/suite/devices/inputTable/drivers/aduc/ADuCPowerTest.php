@@ -60,6 +60,8 @@ class ADuCPowerTest extends DriverTestBaseADuC
 {
     /** This is the class we are testing */
     protected $class = "ADuCPower";
+    /** This is our sensor class */
+    protected $sensor;
     /**
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
@@ -71,10 +73,11 @@ class ADuCPowerTest extends DriverTestBaseADuC
     protected function setUp()
     {
         parent::setUp();
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock(array());
-        $this->o = \HUGnet\devices\inputTable\Driver::factory(
-            "ADuCPower", $sensor, 0
+        $this->sensor = new \HUGnet\DummyBase("Sensor");
+        $this->sensor->resetMock(array());
+        $entry = new \HUGnet\DummyBase("Entry");
+        $this->o = \HUGnet\devices\inputTable\DriverADuC::factory(
+            "ADuCPower", $this->sensor, 0, $entry
         );
     }
 
@@ -388,6 +391,12 @@ class ADuCPowerTest extends DriverTestBaseADuC
                             "extra" => array(),
                         ),
                     ),
+                    "Entry" => array(
+                        "enabled" => 1,
+                        "gain" => 1,
+                        "twosComplimentEnabled" => 1,
+                        "immediateProcessRoutine" => 0,
+                    ),
                 ),
                 "40420F0040420F00",
                 1,
@@ -444,6 +453,12 @@ class ADuCPowerTest extends DriverTestBaseADuC
                             "sensor" => 2,
                             "extra" => array(),
                         ),
+                    ),
+                    "Entry" => array(
+                        "enabled" => 1,
+                        "gain" => 1,
+                        "twosComplimentEnabled" => 1,
+                        "immediateProcessRoutine" => 0,
                     ),
                 ),
                 "FFFFFFFF00000000",
@@ -502,6 +517,12 @@ class ADuCPowerTest extends DriverTestBaseADuC
                             "extra" => array(),
                         ),
                     ),
+                    "Entry" => array(
+                        "enabled" => 1,
+                        "gain" => 1,
+                        "twosComplimentEnabled" => 1,
+                        "immediateProcessRoutine" => 0,
+                    ),
                 ),
                 "40420F00",
                 1,
@@ -558,6 +579,12 @@ class ADuCPowerTest extends DriverTestBaseADuC
                             "sensor" => 2,
                             "extra" => array(),
                         ),
+                    ),
+                    "Entry" => array(
+                        "enabled" => 1,
+                        "gain" => 1,
+                        "twosComplimentEnabled" => 1,
+                        "immediateProcessRoutine" => 0,
                     ),
                 ),
                 "",
@@ -616,6 +643,12 @@ class ADuCPowerTest extends DriverTestBaseADuC
                             "extra" => array(1.2, 0, 100, 1, 1, 10),
                         ),
                     ),
+                    "Entry" => array(
+                        "enabled" => 1,
+                        "gain" => 1,
+                        "twosComplimentEnabled" => 1,
+                        "immediateProcessRoutine" => 0,
+                    ),
                 ),
                 "40420F0040420F00",
                 1,
@@ -672,6 +705,12 @@ class ADuCPowerTest extends DriverTestBaseADuC
                             "sensor" => 2,
                             "extra" => array(),
                         ),
+                    ),
+                    "Entry" => array(
+                        "enabled" => 1,
+                        "gain" => 1,
+                        "twosComplimentEnabled" => 1,
+                        "immediateProcessRoutine" => 0,
                     ),
                 ),
                 "40420F00C0BDF0FF",
@@ -730,6 +769,12 @@ class ADuCPowerTest extends DriverTestBaseADuC
                             "extra" => array(),
                         ),
                     ),
+                    "Entry" => array(
+                        "enabled" => 1,
+                        "gain" => 1,
+                        "twosComplimentEnabled" => 1,
+                        "immediateProcessRoutine" => 0,
+                    ),
                 ),
                 "4002000040480000",
                 1,
@@ -778,6 +823,195 @@ class ADuCPowerTest extends DriverTestBaseADuC
                     ),
                 ),
             ),
+            array( // #7
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(),
+                        ),
+                    ),
+                    "Entry" => array(
+                        "enabled" => 1,
+                        "gain" => 1,
+                        "twosComplimentEnabled" => 1,
+                        "immediateProcessRoutine" => 4,
+                    ),
+                ),
+                "40020000404800000010251123000000",
+                1,
+                array(),
+                array(),
+                array(
+                    array(
+                        "value" => 0.000181,
+                        "decimals" => 6,
+                        "units" => "A",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'A',
+                        "unitType" => "Current",
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "index" => 0,
+                    ),
+                    array(
+                        "value" => 0.267233,
+                        "decimals" => 6,
+                        "units" => "V",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'V',
+                        "unitType" => "Voltage",
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "index" => 1,
+                    ),
+                    array(
+                        "value" => 0.001308,
+                        "decimals" => 6,
+                        "units" => "W",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'W',
+                        "unitType" => "Power",
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "index" => 2,
+                    ),
+                    array(
+                        "value" => 1606.818182,
+                        "decimals" => 6,
+                        "units" => "Ohms",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'Ohms',
+                        "unitType" => "Impedance",
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "index" => 3,
+                    ),
+                ),
+            ),
+            array( // #8
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(),
+                        ),
+                    ),
+                    "Entry" => array(
+                        "enabled" => 1,
+                        "gain" => 1,
+                        "twosComplimentEnabled" => 1,
+                        "immediateProcessRoutine" => 4,
+                    ),
+                ),
+                "4002000040480000",
+                1,
+                array(),
+                array(),
+                array(
+                    array(
+                        "value" => 0.000181,
+                        "decimals" => 6,
+                        "units" => "A",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'A',
+                        "unitType" => "Current",
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "index" => 0,
+                    ),
+                    array(
+                        "value" => 0.267233,
+                        "decimals" => 6,
+                        "units" => "V",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'V',
+                        "unitType" => "Voltage",
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "index" => 1,
+                    ),
+                    array(
+                        "value" => null,
+                        "decimals" => 6,
+                        "units" => "W",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'W',
+                        "unitType" => "Power",
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "index" => 2,
+                    ),
+                    array(
+                        "value" => null,
+                        "decimals" => 6,
+                        "units" => "Ohms",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'Ohms',
+                        "unitType" => "Impedance",
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "index" => 3,
+                    ),
+                ),
+            ),
+            array( // #9
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(5 => 0),
+                        ),
+                    ),
+                    "Entry" => array(
+                        "enabled" => 1,
+                        "gain" => 1,
+                        "twosComplimentEnabled" => 1,
+                        "immediateProcessRoutine" => 4,
+                    ),
+                ),
+                "40020000404800000010251123000000",
+                1,
+                array(),
+                array(),
+                array(
+                    array(
+                        "value" => 0.0,
+                        "decimals" => 6,
+                        "units" => "A",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'A',
+                        "unitType" => "Current",
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "index" => 0,
+                    ),
+                    array(
+                        "value" => 0.267233,
+                        "decimals" => 6,
+                        "units" => "V",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'V',
+                        "unitType" => "Voltage",
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "index" => 1,
+                    ),
+                    array(
+                        "value" => 0.0,
+                        "decimals" => 6,
+                        "units" => "W",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'W',
+                        "unitType" => "Power",
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "index" => 2,
+                    ),
+                    array(
+                        "value" => null,
+                        "decimals" => 6,
+                        "units" => "Ohms",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'Ohms',
+                        "unitType" => "Impedance",
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "index" => 3,
+                    ),
+                ),
+            ),
         );
     }
     /**
@@ -800,8 +1034,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
     public function testGetReading(
         $sensor, $A, $deltaT, $data, $prev, $expect, $channel = 0
     ) {
-        $sen = new \HUGnet\DummyBase("Sensor");
-        $sen->resetMock($sensor);
+        $this->sensor->resetMock($sensor);
         $ret = $this->o->decodeData($A, $deltaT, $data, $prev);
         $this->assertEquals($expect, $ret, 0.00001);
     }
@@ -824,6 +1057,12 @@ class ADuCPowerTest extends DriverTestBaseADuC
                             "extra" => array(),
                         ),
                     ),
+                    "Entry" => array(
+                        "enabled" => 1,
+                        "gain" => 1,
+                        "twosComplimentEnabled" => 1,
+                        "immediateProcessRoutine" => 0,
+                    ),
                 ),
                 "42420F00",
                 1,
@@ -840,6 +1079,10 @@ class ADuCPowerTest extends DriverTestBaseADuC
                             "sensor" => 2,
                             "extra" => array(),
                         ),
+                    ),
+                    "Entry" => array(
+                        "enabled" => 1,
+                        "gain" => 1,
                     ),
                 ),
                 "",
@@ -858,6 +1101,12 @@ class ADuCPowerTest extends DriverTestBaseADuC
                             "extra" => array(1.2, 0, 100, 1, 1, 10),
                         ),
                     ),
+                    "Entry" => array(
+                        "enabled" => 1,
+                        "gain" => 1,
+                        "twosComplimentEnabled" => 1,
+                        "immediateProcessRoutine" => 0,
+                    ),
                 ),
                 "40420F00",
                 1,
@@ -875,6 +1124,12 @@ class ADuCPowerTest extends DriverTestBaseADuC
                             "extra" => array(),
                         ),
                     ),
+                    "Entry" => array(
+                        "enabled" => 1,
+                        "gain" => 1,
+                        "twosComplimentEnabled" => 1,
+                        "immediateProcessRoutine" => 0,
+                    ),
                 ),
                 "00000000",
                 1,
@@ -883,133 +1138,54 @@ class ADuCPowerTest extends DriverTestBaseADuC
                 null,
                 10,
             ),
-        );
-    }
-    /**
-     * Data provider for testGetReading
-     *
-     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
-     *
-     * @return array
-     */
-    public static function dataGetPower()
-    {
-        return array(
-            array(
+            array( // #4
                 array(
                     "Sensor" => array(
+                        "id" => 1,
                         "get" => array(
-                            "extra" => array(),
+                            "sensor" => 2,
+                            "extra" => array(1 => 0),
                         ),
                     ),
+                    "Entry" => array(
+                        "enabled" => 1,
+                        "gain" => 1,
+                        "twosComplimentEnabled" => 1,
+                        "immediateProcessRoutine" => 0,
+                    ),
                 ),
+                "",
+                1,
+                array(),
+                array(),
+                0.314713,
+                0,
+            ),
+            array( // #5
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(1.2, 0, 100, 1, 1, 10),
+                        ),
+                    ),
+                    "Entry" => array(
+                        "enabled" => 1,
+                        "gain" => 1,
+                        "twosComplimentEnabled" => 1,
+                        "immediateProcessRoutine" => 0,
+                    ),
+                ),
+                "",
+                1,
+                array(),
+                array(),
                 null,
                 1,
-                array(),
-                array(),
-                null
             ),
-            array(
-                array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(),
-                        ),
-                    ),
-                ),
-                0x11251000,
-                1,
-                array(),
-                array(),
-                0.001308
-            ),
+
         );
-    }
-    /**
-    * Generic function for testing sensor routines
-    *
-    * This is called by using parent::sensorTest()
-    *
-    * @param array $sensor The sensor data array
-    * @param mixed $A      Data for the sensor to work on
-    * @param float $deltaT The time differenct
-    * @param array $data   The data array being built
-    * @param array $prev   The previous record
-    * @param mixed $expect The return data to expect
-    *
-    * @return null
-    *
-    * @dataProvider dataGetPower()
-    */
-    public function testGetPower($sensor, $A, $deltaT, $data, $prev, $expect)
-    {
-        $sen = new \HUGnet\DummyBase("Sensor");
-        $sen->resetMock($sensor);
-        $ret = $this->o->getPower($A, $deltaT, $data, $prev);
-        $this->assertEquals($expect, $ret, 0.00001);
-    }
-    /**
-     * Data provider for testGetReading
-     *
-     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
-     *
-     * @return array
-     */
-    public static function dataGetImpedance()
-    {
-        return array(
-            array(
-                array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(),
-                        ),
-                    ),
-                ),
-                null,
-                1,
-                array(),
-                array(),
-                null
-            ),
-            array(
-                array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(),
-                        ),
-                    ),
-                ),
-                (0x4804 / 0x204),
-                1,
-                array(),
-                array(),
-                1606.818182
-            ),
-        );
-    }
-    /**
-    * Generic function for testing sensor routines
-    *
-    * This is called by using parent::sensorTest()
-    *
-    * @param array $sensor The sensor data array
-    * @param mixed $A      Data for the sensor to work on
-    * @param float $deltaT The time differenct
-    * @param array $data   The data array being built
-    * @param array $prev   The previous record
-    * @param mixed $expect The return data to expect
-    *
-    * @return null
-    *
-    * @dataProvider dataGetImpedance()
-    */
-    public function testGetImpedance($sensor, $A, $deltaT, $data, $prev, $expect)
-    {
-        $sen = new \HUGnet\DummyBase("Sensor");
-        $sen->resetMock($sensor);
-        $ret = $this->o->getImpedance($A, $deltaT, $data, $prev);
-        $this->assertEquals($expect, $ret, 0.00001);
     }
 
     /**
