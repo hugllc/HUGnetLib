@@ -1012,6 +1012,69 @@ class ADuCPowerTest extends DriverTestBaseADuC
                     ),
                 ),
             ),
+            array( // #9
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(1 => 0),
+                        ),
+                    ),
+                    "Entry" => array(
+                        "enabled" => 1,
+                        "gain" => 1,
+                        "twosComplimentEnabled" => 1,
+                        "immediateProcessRoutine" => 4,
+                    ),
+                ),
+                "40020000404800000010251123000000",
+                1,
+                array(),
+                array(),
+                array(
+                    array(
+                        "value" => 0.0,
+                        "decimals" => 6,
+                        "units" => "A",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'A',
+                        "unitType" => "Current",
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "index" => 0,
+                    ),
+                    array(
+                        "value" => 0.267233,
+                        "decimals" => 6,
+                        "units" => "V",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'V',
+                        "unitType" => "Voltage",
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "index" => 1,
+                    ),
+                    array(
+                        "value" => 0.0,
+                        "decimals" => 6,
+                        "units" => "W",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'W',
+                        "unitType" => "Power",
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "index" => 2,
+                    ),
+                    array(
+                        "value" => null,
+                        "decimals" => 6,
+                        "units" => "Ohms",
+                        'maxDecimals' => 6,
+                        'storageUnit' => 'Ohms',
+                        "unitType" => "Impedance",
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "index" => 3,
+                    ),
+                ),
+            ),
         );
     }
     /**
@@ -1251,6 +1314,167 @@ class ADuCPowerTest extends DriverTestBaseADuC
                 array(),
                 array(),
                 null,
+                3,
+            ),
+            array( // #9
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(),
+                        ),
+                    ),
+                    "Entry" => array(
+                        "enabled" => 1,
+                        "gain" => 1,
+                        "twosComplimentEnabled" => 1,
+                        "immediateProcessRoutine" => 0,
+                    ),
+                ),
+                "D05B2511",
+                1,
+                array(),
+                array(),
+                0.001308,
+                2,
+            ),
+            array( // #10
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(1 => 0),
+                        ),
+                    ),
+                    "Entry" => array(
+                        "enabled" => 1,
+                        "gain" => 1,
+                        "twosComplimentEnabled" => 1,
+                        "immediateProcessRoutine" => 0,
+                    ),
+                ),
+                "",
+                1,
+                array(),
+                array(),
+                0.001308,
+                2,
+            ),
+            array( // #11
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(0 => 0),
+                        ),
+                    ),
+                    "Entry" => array(
+                        "enabled" => 1,
+                        "gain" => 1,
+                        "twosComplimentEnabled" => 1,
+                        "immediateProcessRoutine" => 0,
+                    ),
+                ),
+                "",
+                1,
+                array(),
+                array(),
+                0.001308,
+                2,
+            ),
+            array( // #12
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(),
+                        ),
+                    ),
+                    "Entry" => array(
+                        "enabled" => 1,
+                        "gain" => 1,
+                        "twosComplimentEnabled" => 1,
+                        "immediateProcessRoutine" => 0,
+                    ),
+                ),
+                "",
+                1,
+                array(),
+                array(),
+                null,
+                2,
+            ),
+            array( // #13
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(3 => 0),
+                        ),
+                    ),
+                    "Entry" => array(
+                        "enabled" => 1,
+                        "gain" => 1,
+                        "twosComplimentEnabled" => 1,
+                        "immediateProcessRoutine" => 0,
+                    ),
+                ),
+                "",
+                1,
+                array(),
+                array(),
+                0.001308,
+                2,
+            ),
+            array( // #14
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(5 => 0),
+                        ),
+                    ),
+                    "Entry" => array(
+                        "enabled" => 1,
+                        "gain" => 1,
+                        "twosComplimentEnabled" => 1,
+                        "immediateProcessRoutine" => 0,
+                    ),
+                ),
+                "",
+                1,
+                array(),
+                array(),
+                0.001308,
+                2,
+            ),
+            array( // #15
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(3 => 0),
+                        ),
+                    ),
+                    "Entry" => array(
+                        "enabled" => 1,
+                        "gain" => 1,
+                        "twosComplimentEnabled" => 1,
+                        "immediateProcessRoutine" => 0,
+                    ),
+                ),
+                "",
+                1,
+                array(),
+                array(),
+                1606.818182,
                 3,
             ),
 

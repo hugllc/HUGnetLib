@@ -255,6 +255,10 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         $Rin2   = $this->getExtra(4);
         $Rbias2 = $this->getExtra(5);
 
+        if ($R == 0) {
+            return null;
+        }
+
         $A = $this->getTwosCompliment($A, 32);
         $A = $A / $this->gain(0);
         $A = $A / $this->gain(1);
@@ -275,7 +279,30 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
     */
     protected function getRawPower($P)
     {
-        return null;
+        bcscale(10);
+        $Am   = pow(2, 23);
+        $Vref   = $this->getExtra(0);
+        $R      = $this->getExtra(1);
+        $Rin1   = $this->getExtra(2);
+        $Rbias1 = $this->getExtra(3);
+        $Rin2   = $this->getExtra(4);
+        $Rbias2 = $this->getExtra(5);
+
+        if (($R == 0) || ($Vref == 0) || is_null($P)) {
+            return null;
+        }
+        $A = $P / (($Vref * $Vref) / ($Am * $Am) / $R);
+
+        $C1 = $this->inputBiasCompensation(1.0, $Rin1, $Rbias1);
+        $C2 = $this->inputBiasCompensation(1.0, $Rin2, $Rbias2);
+        if (($C2 == 0) || ($C1 == 0)) {
+            return null;
+        }
+        $A = $A / ($C1 * $C2);
+        $A = $A * $this->gain(0);
+        $A = $A * $this->gain(1);
+
+        return (int)round($A);
     }
     /**
     * Changes a raw reading into a output value
