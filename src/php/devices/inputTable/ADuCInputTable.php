@@ -57,9 +57,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  */
 class ADuCInputTable
 {
-    /** This is our padding, in case we add anything new. */
-    const PADDING = 8;
-    /** This is our padding, in case we add anything new. */
+    /** This is our power calculator. */
     const IPR_POWER = 4;
     /**
     * This is where we store our sensor object
@@ -689,7 +687,6 @@ class ADuCInputTable
         $ret .= $this->driver0();
         $ret .= $this->driver1();
         $ret .= $this->immediateProcessRoutine(1);
-        $ret .= str_repeat("FF", self::PADDING);
         return $ret;
     }
     /**

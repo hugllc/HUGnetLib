@@ -354,7 +354,7 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
     {
         $this->_entry()->decode($string);
         $extra = $this->input()->get("extra");
-        $start = 22 + (\HUGnet\devices\inputTable\ADuCInputTable::PADDING * 2);
+        $start = 22;
         $extra[1] = $this->_decode32(substr($string, $start, 8));
         $start += 8;
         $extra[2] = $this->_decode32(substr($string, $start, 8));
