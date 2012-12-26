@@ -1184,6 +1184,75 @@ class ADuCPowerTest extends DriverTestBaseADuC
                 null,
                 1,
             ),
+            array( // #6
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(),
+                        ),
+                    ),
+                    "Entry" => array(
+                        "enabled" => 1,
+                        "gain" => 1,
+                        "twosComplimentEnabled" => 1,
+                        "immediateProcessRoutine" => 0,
+                    ),
+                ),
+                "23000000",
+                1,
+                array(),
+                array(),
+                1606.818182,
+                3,
+            ),
+            array( // #7
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(1 => 0),
+                        ),
+                    ),
+                    "Entry" => array(
+                        "enabled" => 1,
+                        "gain" => 1,
+                        "twosComplimentEnabled" => 1,
+                        "immediateProcessRoutine" => 0,
+                    ),
+                ),
+                "",
+                1,
+                array(),
+                array(),
+                1606.818182,
+                3,
+            ),
+            array( // #8
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(),
+                        ),
+                    ),
+                    "Entry" => array(
+                        "enabled" => 1,
+                        "gain" => 1,
+                        "twosComplimentEnabled" => 1,
+                        "immediateProcessRoutine" => 0,
+                    ),
+                ),
+                "",
+                1,
+                array(),
+                array(),
+                null,
+                3,
+            ),
 
         );
     }

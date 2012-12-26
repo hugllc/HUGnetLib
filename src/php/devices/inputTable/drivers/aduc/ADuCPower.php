@@ -341,15 +341,38 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
     /**
     * Changes a raw reading into a output value
     *
-    * @param float $R The value to reverse
+    * @param float $Z The value to reverse
     *
     * @return mixed The value in whatever the units are in the sensor
     *
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    protected function getRawImpedance($R)
+    protected function getRawImpedance($Z)
     {
-        return null;
+        if (is_null($Z)) {
+            return null;
+        }
+        bcscale(10);
+        $R      = $this->getExtra(1);
+        $Rin1   = (float)$this->getExtra(2);
+        $Rbias1 = (float)$this->getExtra(3);
+        $Rin2   = (float)$this->getExtra(4);
+        $Rbias2 = (float)$this->getExtra(5);
+
+        if ($R == 0) {
+            return null;
+        }
+        $A = $Z / $R;
+        $C1 = $this->inputBiasCompensation(1.0, $Rin1, $Rbias1);
+        $C2 = $this->inputBiasCompensation(1.0, $Rin2, $Rbias2);
+        if ($C1 == 0) {
+            return null;
+        }
+        $A = ($A / $C1) * $C2;
+        $A  *= $this->gain(1);
+        $A  /= $this->gain(0);
+
+        return (int)round($A);
     }
     /**
     * Gets the direction from a direction sensor made out of a POT.
