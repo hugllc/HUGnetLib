@@ -203,8 +203,8 @@ class LevelHolderProcessTest extends DriverTestBase
                             "extra" => array(
                                 1 => 1,
                                 3 => 2,
-                                4 => 12,
-                                5 => 14,
+                                4 => 13,
+                                5 => 1,
                             ),
                         ),
                         "device" => new \HUGnet\DummyBase("Device"),

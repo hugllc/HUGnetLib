@@ -92,18 +92,15 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
             "Data Channel 2",
             "Set Point 2",
             "Tolerance 2",
-            "Data Channel 3",
-            "Set Point 3",
-            "Tolerance 3",
         ),
         "extraDefault" => array(
-            34, 0, 2, null, 0, 0.01, null, 0, 0.01, null, 0, 0.01, null, 0, 0.01,
+            34, 0, 2, "", 0, 0.01, "", 0, 0.01, "", 0, 0.01,
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            4, 3, 3, 3, 15, 15, 3, 15, 15, 3, 15, 15, 3, 15, 15
+            4, 3, 3, 3, 15, 15, 3, 15, 15, 3, 15, 15
         ),
     );
     /**
@@ -191,19 +188,28 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
     private function _encodeChannels()
     {
         $channels = $this->process()->device()->channels();
+        $data = "";
         for ($i = 3; $i < count($this->params["extraText"]); $i += 3) {
             $chan = $this->getExtra($i);
-            if (strlen($chan) == 0) {
+            if ((strlen((string)$chan) == 0) || (!is_numeric($chan))) {
                 break;
             }
             $chan = (int)$chan;
-            $data .= $this->_getProcessStrInt($chan, 1);
-            $data .= $channels->dataChannel($chan)->encode(
-                (float)$this->getExtra($i+1)
+            $setpoint  = (float)$this->getExtra($i+1);
+            $tolerance = (float)$this->getExtra($i+2);
+            $low = $channels->dataChannel($chan)->encode(
+                $setpoint - $tolerance
             );
-            $data .= $channels->dataChannel($chan)->encode(
-                (float)$this->getExtra($i+2)
+            if (strlen($low) == 0) {
+                break;
+            }
+            $high = $channels->dataChannel($chan)->encode(
+                $setpoint + $tolerance
             );
+            if (strlen($high) == 0) {
+                break;
+            }
+            $data .= $this->_getProcessStrInt($chan, 1).$low.$high;
         }
         return $data;
     }

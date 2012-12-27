@@ -337,7 +337,7 @@ class Action
     */
     public function loadConfig()
     {
-        $this->device->network()->loadConfig();
+        return $this->device->network()->loadConfig();
     }
     /**
     * Checks the record to see if something needs to be done about it.
