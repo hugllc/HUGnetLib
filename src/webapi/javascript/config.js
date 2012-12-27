@@ -87,10 +87,12 @@ HUGnet.Config = Backbone.View.extend({
         $('#config-tabs-devices').html(this.devices.render().el);
         this.tabs.tabs("add", '#config-tabs-inputTable', 'Input Tables');
         $('#config-tabs-inputTable').html(this.inputTables.render().el);
+        /*
         this.tabs.tabs("add", '#config-tabs-outputTable', 'Output Tables');
         $('#config-tabs-outputTable').html(this.outputTables.render().el);
         this.tabs.tabs("add", '#config-tabs-processTable', 'Process Tables');
         $('#config-tabs-processTable').html(this.processTables.render().el);
+        */
     }
 });
 
