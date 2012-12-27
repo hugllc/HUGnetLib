@@ -687,7 +687,9 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                 array(),
                 json_encode(
                     array(
-                        "Real" => "array",
+                        array(
+                            "Real" => "array",
+                        )
                     )
                 ),
                 array(
@@ -1572,6 +1574,155 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     "Sensor" => array(
                         "getList" => array(
                             array(array("dev" => 16), true),
+                        ),
+                    ),
+                ),
+            ),
+            array(  // #33
+                array(
+                    "task" => "history",
+                    "action" => "get",
+                    "id" => "10",
+                    "data" => array(
+                        "since" => 1234,
+                        "until" => 4321,
+                        "limit" => 1,
+                        "start" => 0,
+                        "order" => "desc",
+                    ),
+                    "format" => "HTML",
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "device" => new \HUGnet\DummyTable("Device"),
+                    ),
+                    "Device" => array(
+                        "historyFactory" => new \HUGnet\DummyTable("History"),
+                        "channels" => new \HUGnet\DummyBase("Channels"),
+                    ),
+                    "History" => array(
+                        "isEmpty" => false,
+                        "toArray" => array(
+                            "Date" => 1352689531,
+                            "Data0" => 1,
+                            "Data1" => 2,
+                            "Data2" => 3,
+                        ),
+                        "insertRow" => true,
+                        "getPeriod" => true,
+                        "nextInto" => false,
+                    ),
+                    "Channels" => array(
+                        "toArray" => array(
+                            array(
+                                "label" => "Channel1",
+                                "dataType" => "raw",
+                                "units" => "Dallas",
+                            ),
+                            array(
+                                "label" => "Channel2",
+                                "dataType" => "ignore",
+                                "units" => "there",
+                            ),
+                            array(
+                                "label" => "Channel3",
+                                "dataType" => "raw",
+                                "units" => "hello",
+                            ),
+                        ),
+                    ),
+                ),
+                false,
+                array(),
+                "<!DOCTYPE html>\r\n<html>\r\n<body><table>\r\n"
+                    ."<tr><th>Date</th><th>Channel1 (Dallas)</th><th>Channel3 "
+                    ."(hello)</th></tr>\r\n"
+                    ."<tr><td>2012-11-11 21:05:31</td><td>1</td><td>3</td></tr>"
+                    ."\r\n</table></body>\r\n</html>",
+                array(
+                    "History" => array(
+                        "getPeriod" => array(
+                            array(1234, 4321, 16, 'history', '', array())
+                        ),
+                        "toArray" => array(
+                            array(true),
+                        ),
+                        "nextInto" => array(
+                            array(null)
+                        ),
+                    ),
+                ),
+            ),
+            array(  // #33
+                array(
+                    "task" => "history",
+                    "action" => "last",
+                    "id" => "10",
+                    "format" => "HTML",
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "device" => new \HUGnet\DummyTable("Device"),
+                    ),
+                    "Device" => array(
+                        "historyFactory" => new \HUGnet\DummyTable("History"),
+                        "channels" => new \HUGnet\DummyBase("Channels"),
+                    ),
+                    "History" => array(
+                        "isEmpty" => false,
+                        "toArray" => array(
+                            "Date" => 1352689531,
+                            "Data0" => 1,
+                            "Data1" => 2,
+                            "Data2" => 3,
+                        ),
+                        "insertRow" => true,
+                        "getPeriod" => true,
+                        "nextInto" => false,
+                    ),
+                    "Channels" => array(
+                        "toArray" => array(
+                            array(
+                                "label" => "Channel1",
+                                "dataType" => "raw",
+                                "units" => "Dallas",
+                            ),
+                            array(
+                                "label" => "Channel2",
+                                "dataType" => "ignore",
+                                "units" => "there",
+                            ),
+                            array(
+                                "label" => "Channel3",
+                                "dataType" => "raw",
+                                "units" => "hello",
+                            ),
+                        ),
+                    ),
+                ),
+                false,
+                array(),
+                "<!DOCTYPE html>\r\n<html>\r\n<body><table>\r\n"
+                    ."<tr><th>Date</th><th>Channel1 (Dallas)</th><th>Channel3 "
+                    ."(hello)</th></tr>\r\n"
+                    ."<tr><td>2012-11-11 21:05:31</td><td>1</td><td>3</td></tr>"
+                    ."\r\n</table></body>\r\n</html>",
+                array(
+                    "History" => array(
+                        "toArray" => array(
+                            array(true),
+                        ),
+                        "selectOneInto" => array(
+                            array("`id` = ?", array(16))
+                        ),
+                        "isEmpty" => array(
+                            array(),
                         ),
                     ),
                 ),

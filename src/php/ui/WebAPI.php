@@ -484,8 +484,20 @@ class WebAPI extends HTML
             $whereText = "`id` = ?";
             $whereData = array($did);
             $hist->selectOneInto($whereText, $whereData);
+            $ret = array();
             if (!$hist->isEmpty()) {
-                $ret = $hist->toArray(true);
+                $channels = $this->system()->device($did)->channels();
+                $stuff = $hist->toArray(true);
+                if (trim(strtolower($data["type"])) != "raw") {
+                    $channels->convert($stuff);
+                }
+                $ret[] = $stuff;
+                $format = trim(strtoupper((string)$this->args()->get("format")));
+                if ($format == "HTML") {
+                    $ret = $this->_historyHTML($did, $ret);
+                } else if ($format == "CSV") {
+                    $ret = $this->_historyCSV($did, $ret);
+                }
             }
         }
         return $ret;
@@ -536,7 +548,9 @@ class WebAPI extends HTML
             $res = $hist->nextInto();
         }
         $format = trim(strtoupper((string)$this->args()->get("format")));
-        if ($format == "CSV") {
+        if ($format == "HTML") {
+            $ret = $this->_historyHTML($did, $ret);
+        } else if ($format == "CSV") {
             $ret = $this->_historyCSV($did, $ret);
         }
         return $ret;
@@ -573,6 +587,21 @@ class WebAPI extends HTML
                 'Content-disposition: attachment;'
                 .'filename=HUGnet.'.$this->args()->get("id").'.csv'
             );
+        }
+        // @codeCoverageIgnoreEnd
+    }
+    /**
+    * Sends the headers out
+    *
+    * This function is not testable.  Headers can't be sent in the tests.
+    *
+    * @return null
+    */
+    private function _headerHTML()
+    {
+        if (!headers_sent()) {
+            // @codeCoverageIgnoreStart
+            header('Content-type: text/html');
         }
         // @codeCoverageIgnoreEnd
     }
@@ -630,6 +659,45 @@ class WebAPI extends HTML
         return $out;
     }
     /**
+    * Sends the headers out
+    *
+    * @param int   $did     The deviceID to use
+    * @param array $records The history to use
+    *
+    * @return null
+    */
+    private function _historyHTML($did, $records)
+    {
+
+        $channels = $this->system()->device($did)->channels();
+        $chan = $channels->toArray();
+        $out = "<!DOCTYPE html>\r\n<html>\r\n<body><table>\r\n";
+        $out .= "<tr>";
+        $out .= "<th>Date</th>";
+        for ($i = 0; $i < count($chan); $i++) {
+            if ($chan[$i]["dataType"] !== 'ignore') {
+                $out .= "<th>";
+                $out .= $chan[$i]['label'];
+                $out .= " (".$chan[$i]['units'].")";
+                $out .= "</th>";
+            }
+        }
+        $out .= "</tr>\r\n";
+        foreach ($records as $hist) {
+            $out .= "<tr>";
+            $out .= "<td>".date("Y-m-d H:i:s", $hist["Date"])."</td>";
+            for ($i = 0; $i < count($chan); $i++) {
+                if ($chan[$i]["dataType"] !== 'ignore') {
+                    $data = $hist["Data".$i];
+                    $out .= "<td>".$data."</td>";
+                }
+            }
+            $out .= "</tr>\r\n";
+        }
+        $out .= "</table></body>\r\n</html>";
+        return $out;
+    }
+    /**
     * Disconnects from the database
     *
     * @param string $data The data to print out.
@@ -639,7 +707,11 @@ class WebAPI extends HTML
     private function _body($data)
     {
         $format = trim($this->args()->get("format"));
-        if (strtoupper($format) === "CSV") {
+        if (strtoupper($format) === "HTML") {
+            $this->_headerNoCache();
+            $this->_headerHTML();
+            print $data;
+        } else if (strtoupper($format) === "CSV") {
             $this->_headerNoCache();
             $this->_headerCSV();
             print $data;
