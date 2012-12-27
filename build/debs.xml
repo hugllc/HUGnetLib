@@ -44,6 +44,9 @@
         <copy todir="${deb.phpstaging}/usr/share/php/HUGnetLib">
             <fileset dir="${deb.phpsrc}" excludes="**/*~"/>
         </copy>
+        <copy todir="${deb.phpstaging}/DEBIAN/sql">
+            <fileset dir="${basedir}/sql" excludes="**/*~"/>
+        </copy>
         <delete dir="${deb.phpstaging}/usr/share/php/HUGnetLib/webapi"/>
         <chmod file="${deb.phpstaging}/DEBIAN/postinst" perm="0755"/>
         <chmod file="${deb.phpstaging}/DEBIAN/prerm" perm="0755"/>

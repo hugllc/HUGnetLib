@@ -1,0 +1,19 @@
+
+Template: hugnetlib/mysql_root_user
+Type: string
+Default: root
+Description: Database administrator:
+ This is the username that is used to connect to the mysql server so that a
+ database can be created.
+
+Template: hugnetlib/mysql_root_pw
+Type: password
+Default:
+Description: Database administrator password:
+ The password to connect as the administrative user.
+
+Template: hugnetlib/mysql_db
+Type: string
+Default: HUGnet
+Description: Database for mysql server:
+ This is the database that is used on the server
