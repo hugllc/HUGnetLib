@@ -1,5 +1,9 @@
 #!/bin/sh
 
+. /usr/share/debconf/confmodule
+
+export PATH=$PATH:/sbin:/usr/sbin:/bin:/usr/bin
+
 db_get hugnetlab/mysql_db
 MYSQLDB=${RET}
 db_get hugnetlab/mysql_root_user
@@ -7,7 +11,7 @@ MYSQLUSER=${RET}
 db_get hugnetlab/mysql_root_pw
 MYSQLPW=${RET}
 
-mysql -f -u ${MYSQLUSER} -p "${MYSQLPW}"--database=${MYSQLDB} < sql/mysql/0.10.0/renamesensors.sql > /dev/null 2>&1 || true
-mysql -f -u ${MYSQLUSER} -p "${MYSQLPW}"--database=${MYSQLDB} < sql/mysql/0.10.0/updatehistory.sql > /dev/null 2>&1 || true
+mysql -f -u ${MYSQLUSER} -p "${MYSQLPW}"--database=${MYSQLDB} < /usr/share/HUGnetLib/sql/mysql/0.10.0/renamesensors.sql > /dev/null 2>&1 || true
+mysql -f -u ${MYSQLUSER} -p "${MYSQLPW}"--database=${MYSQLDB} < /usr/share/HUGnetLib/sql/mysql/0.10.0/updatehistory.sql > /dev/null 2>&1 || true
 
 exit $?

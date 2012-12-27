@@ -44,12 +44,13 @@
         <copy todir="${deb.phpstaging}/usr/share/php/HUGnetLib">
             <fileset dir="${deb.phpsrc}" excludes="**/*~"/>
         </copy>
-        <copy todir="${deb.phpstaging}/DEBIAN/sql">
+        <copy todir="${deb.phpstaging}/usr/share/HUGnetLib/sql">
             <fileset dir="${basedir}/sql" excludes="**/*~"/>
         </copy>
         <delete dir="${deb.phpstaging}/usr/share/php/HUGnetLib/webapi"/>
-        <chmod file="${deb.phpstaging}/DEBIAN/postinst" perm="0755"/>
-        <chmod file="${deb.phpstaging}/DEBIAN/prerm" perm="0755"/>
+        <chmod file="${deb.phpstaging}/DEBIAN/postinst" perm="ugo+rx"/>
+        <chmod file="${deb.phpstaging}/DEBIAN/prerm" perm="ugo+rx"/>
+        <chmod file="${deb.phpstaging}/DEBIAN/config" perm="ugo+rx"/>
         <chmod file="${deb.phpstaging}/usr/**" perm="0755" type="dir"/>
         <chmod file="${deb.phpstaging}/usr/**" perm="0644" type="file"/>
         <replaceregexp file="${deb.phpstaging}/DEBIAN/control"
