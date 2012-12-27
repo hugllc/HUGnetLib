@@ -110,7 +110,7 @@ class ADuCScaledTempTest extends DriverTestBaseADuC
                 1,
                 array(),
                 array(),
-                60.69711538
+                60.69711623
             ),
             array(
                 array(
@@ -126,7 +126,7 @@ class ADuCScaledTempTest extends DriverTestBaseADuC
                 1,
                 array(),
                 array(),
-                81.79711538
+                66.10737272
             ),
         );
     }
@@ -168,7 +168,7 @@ class ADuCScaledTempTest extends DriverTestBaseADuC
                 1,
                 array(),
                 array(),
-                81.79711538
+                66.10737272
             ),
         );
     }

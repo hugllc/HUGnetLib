@@ -71,14 +71,14 @@ class ADuCScaledTemp extends \HUGnet\devices\inputTable\DriverADuC
             "R1 to Source (kOhms)",
             "R2 to Ground (kOhms)",
             "AtoD Ref Voltage",
-            "Scale (mV/&#176;C)",
-            "Offset",
+            "Scale (&#176;C/mV)",
+            "Offset (mV)",
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(5, 5, 5, 10, 10),
-        "extraDefault" => array(100, 1, 1.2, 3.9, 0),
+        "extraDefault" => array(100, 1, 1.2, 0.25641026, 0),
         "maxDecimals" => 8,
         "inputSize" => 4,
     );
@@ -106,7 +106,8 @@ class ADuCScaledTemp extends \HUGnet\devices\inputTable\DriverADuC
 
         $A = $this->inputBiasCompensation($A, $Rin, $Rbias);
         $Va = ($A / $Am) * $Vref;
-        $T = (($Va * 1000) / $scale) + $offset;
+        //$T = (($Va * 1000) / $scale) + $offset;
+        $T = (($Va * 1000) + $offset) * $scale;
         return round($T, $this->get('maxDecimals', 1));
     }
     /**
@@ -137,8 +138,8 @@ class ADuCScaledTemp extends \HUGnet\devices\inputTable\DriverADuC
         $scale  = $this->getExtra(3);
         $offset = $this->getExtra(4);
 
-        $Va = (($value - $offset) * $scale) / 1000;
-
+        //$Va = (($value - $offset) * $scale) / 1000;
+        $Va = (($value / $scale) - $offset) / 1000;
         $A = ($Va / $Vref) * $Am;
         $Amod = $this->inputBiasCompensation($A, $Rin, $Rbias);
         if ($Amod != 0) {
