@@ -180,6 +180,20 @@ class Input extends XTableBase
         return $this->driver()->encodeDataPoint($data, $channel);
     }
     /**
+    * Gets the direction from a direction sensor made out of a POT.
+    *
+    * @param string &$string The data string
+    * @param int    $channel The channel to decode
+    *
+    * @return float The raw value
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    */
+    public function getRawData(&$string, $channel = 0)
+    {
+        return $this->driver()->getRawData($string, $channel);
+    }
+    /**
     * This function should be overloaded to make changes to the table based on
     * changes to incoming data.
     *

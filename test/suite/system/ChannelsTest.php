@@ -346,6 +346,197 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
+    public static function dataCount()
+    {
+        return array(
+            array(
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "InputTables" => 3,
+                            "channels" => array(
+                                array(
+                                    "units" => "bar",
+                                    "decimals" => 4,
+                                ),
+                                array(
+                                    "units" => "%",
+                                    "decimals" => 4,
+                                ),
+                                array(
+                                    "units" => "%",
+                                    "decimals" => 4,
+                                ),
+                            ),
+                        ),
+                        "input" => array(
+                            "0" => new \HUGnet\DummyTable("Sensor0"),
+                            "1" => new \HUGnet\DummyTable("Sensor1"),
+                            "2" => new \HUGnet\DummyTable("Sensor2"),
+                        ),
+                    ),
+                    "Sensor0" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Pressure",
+                                "storageUnit" => "psi",
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                            ),
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Percent",
+                                "storageUnit" => "decimal",
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                            ),
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Percent",
+                                "storageUnit" => "decimal",
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                            ),
+                        ),
+                    ),
+                ),
+                3
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array $config The configuration to use
+    * @param mixed $expect The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataCount
+    */
+    public function testCount(
+        $config, $expect
+    ) {
+        $sys = new DummySystem("System");
+        $dev = new DummyTable("Device");
+        $sys->resetMock($config);
+        $obj = Channels::factory($sys, $dev);
+        $this->assertEquals($expect, $obj->count());
+        unset($obj);
+    }
+    /**
+    * Data provider for testGetField
+    *
+    * @return array
+    */
+    public static function dataDecodeRaw()
+    {
+        return array(
+            array(
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "InputTables" => 3,
+                            "channels" => array(
+                                array(
+                                    "units" => "bar",
+                                    "decimals" => 4,
+                                ),
+                                array(
+                                    "units" => "%",
+                                    "decimals" => 4,
+                                ),
+                                array(
+                                    "units" => "%",
+                                    "decimals" => 4,
+                                ),
+                            ),
+                        ),
+                        "input" => array(
+                            "0" => new \HUGnet\DummyTable("Sensor0"),
+                            "1" => new \HUGnet\DummyTable("Sensor1"),
+                            "2" => new \HUGnet\DummyTable("Sensor2"),
+                        ),
+                    ),
+                    "Sensor0" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Pressure",
+                                "storageUnit" => "psi",
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                               "input" => 0,
+                            ),
+                        ),
+                        "getRawData" => 15,
+                    ),
+                    "Sensor1" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Percent",
+                                "storageUnit" => "decimal",
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                               "input" => 1,
+                            ),
+                        ),
+                        "getRawData" => 18,
+                    ),
+                    "Sensor2" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Percent",
+                                "storageUnit" => "decimal",
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                               "input" => 2,
+                            ),
+                        ),
+                        "getRawData" => 25,
+                    ),
+                ),
+                "B507FAFFB5FFFFFFA08F0A00BDFFFFFFB58E0A00",
+                array (
+                    0 => 15,
+                    1 => 18,
+                    2 => 25,
+                )
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array $config The configuration to use
+    * @param mixed $record The record to convert
+    * @param mixed $expect The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataDecodeRaw
+    */
+    public function testDecodeRaw(
+        $config, $record, $expect
+    ) {
+        $sys = new DummySystem("System");
+        $dev = new DummyTable("Device");
+        $sys->resetMock($config);
+        $obj = Channels::factory($sys, $dev);
+        $ret = $obj->decodeRaw($record);
+        $this->assertEquals($expect, $ret);
+        unset($obj);
+    }
+    /**
+    * Data provider for testGetField
+    *
+    * @return array
+    */
     public static function data2Array()
     {
         return array(

@@ -225,6 +225,20 @@ class DataChan
         );
     }
     /**
+    * Encodes data for this channel
+    *
+    * @param array &$data The data to convert
+    *
+    * @return null
+    */
+    public function decodeRaw(&$data)
+    {
+        return $this->input()->getRawData(
+            $data,
+            $this->get("index")
+        );
+    }
+    /**
     * Returns the input object associated with this channel
     *
     * @return null

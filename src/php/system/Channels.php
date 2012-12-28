@@ -211,6 +211,30 @@ class Channels
 
     }
 
+    /**
+    * Returns the number of channels
+    *
+    * @return null
+    */
+    public function count()
+    {
+        return count($this->_channels);
+    }
+    /**
+    * Decodes the string
+    *
+    * @param string $string The string to decode
+    *
+    * @return null
+    */
+    public function decodeRaw($string)
+    {
+        $return = array();
+        for ($index = 0; $index < $this->count(); $index++) {
+            $return[] = $this->dataChannel($index)->decodeRaw($string);
+        }
+        return $return;
+    }
 }
 
 

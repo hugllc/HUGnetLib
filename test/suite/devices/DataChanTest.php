@@ -399,6 +399,62 @@ class DataChanTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expect, $input);
         unset($obj);
     }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataDecodeRaw()
+    {
+        return array(
+            array(
+                array(
+                    "Device" => array(
+                        "input" => new \HUGnet\DummyBase("Input"),
+                    ),
+                    "Input" => array(
+                        "getRawData" => array(
+                            "5" => "asdf",
+                        ),
+                    ),
+                ),
+                array(
+                    "input" => 5,
+                ),
+                array(
+                    "units" => "&#176;F",
+                    "label" => "This is a label",
+                    "decimals" => 8,
+                    "dataType" => "raw",
+                ),
+                5,
+                "asdf"
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array $mocks  The configuration to use
+    * @param mixed $driver The driver data to use
+    * @param mixed $data   The data to use
+    * @param float $value  The value to convert
+    * @param mixed $expect The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataDecodeRaw
+    */
+    public function testDecodeRaw(
+        $mocks, $driver, $data, $value, $expect
+    ) {
+        $dev = new \HUGnet\DummyBase("Device");
+        $dev->resetMock($mocks);
+        $obj = DataChan::factory($dev, $driver, $data);
+        $input = $obj->decodeRaw($value);
+        $this->assertEquals($expect, $input);
+        unset($obj);
+    }
 }
 
 
