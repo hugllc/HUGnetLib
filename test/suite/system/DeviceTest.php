@@ -2084,7 +2084,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 "DummyTable",
-                "\HUGnet\Channels",
+                "\HUGnet\devices\DataChannels",
                 0x15,
             ),
         );
@@ -2108,8 +2108,8 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $sys->resetMock($config);
         $obj = Device::factory($sys, null, $class);
         $sen = $obj->channels();
-        $this->assertTrue(
-            is_a($sen, $driverExpect),
+        $this->assertInstanceOf(
+            $driverExpect, $sen,
             "Return is not a ".$driverExpect
         );
         unset($obj);

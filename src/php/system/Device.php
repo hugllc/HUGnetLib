@@ -334,8 +334,8 @@ class Device extends \HUGnet\base\SystemTableAction
     */
     public function &channels($chans = null)
     {
-        include_once dirname(__FILE__)."/Channels.php";
-        return Channels::factory($this->system(), $this, $chans);
+        include_once dirname(__FILE__)."/../devices/DataChannels.php";
+        return \HUGnet\devices\DataChannels::factory($this->system(), $this, $chans);
     }
     /**
     * Gets one of the parameters

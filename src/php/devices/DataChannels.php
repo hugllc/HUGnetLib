@@ -35,14 +35,14 @@
  *
  */
 /** This is our namespace */
-namespace HUGnet;
+namespace HUGnet\devices;
 
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our base class */
 require_once dirname(__FILE__)."/../base/SystemTableBase.php";
 /** This is our base class */
-require_once dirname(__FILE__)."/../devices/DataChan.php";
+require_once dirname(__FILE__)."/DataChan.php";
 
 
 /**
@@ -64,7 +64,7 @@ require_once dirname(__FILE__)."/../devices/DataChan.php";
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class Channels
+class DataChannels
 {
     /** @var Channels objects are stored here */
     private $_channels = array();
@@ -84,12 +84,12 @@ class Channels
     */
     private function __construct(&$system, &$device, $channels)
     {
-        System::exception(
+        \HUGnet\System::exception(
             get_class($this)." needs to be passed a system object",
             "InvalidArgument",
             !is_object($system)
         );
-        System::exception(
+        \HUGnet\System::exception(
             get_class($this)." needs to be passed a device object",
             "InvalidArgument",
             !is_object($device)
@@ -129,7 +129,7 @@ class Channels
     */
     public static function &factory(&$system, &$device, $channels = null)
     {
-        $obj = new Channels($system, $device, $channels);
+        $obj = new DataChannels($system, $device, $channels);
         return $obj;
     }
     /**

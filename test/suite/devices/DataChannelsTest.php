@@ -34,9 +34,9 @@
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet;
+namespace HUGnet\devices;
 /** This is a required class */
-require_once CODE_BASE.'system/Channels.php';
+require_once CODE_BASE.'devices/DataChannels.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
@@ -59,7 +59,7 @@ require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
  * @version    Release: 0.9.7
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class ChannelsTest extends \PHPUnit_Framework_TestCase
+class DataChannelsTest extends \PHPUnit_Framework_TestCase
 {
     /**
     * Sets up the fixture, for example, opens a network connection.
@@ -96,7 +96,7 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException("InvalidArgumentException");
         // This throws an exception because $test is not a object
-        Channels::factory($test, $test2);
+        DataChannels::factory($test, $test2);
     }
     /**
     * This tests the exception when a system object is not passed
@@ -105,12 +105,12 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
     */
     public function testCreateThrowException2()
     {
-        $test = new DummyTable();
+        $test = new \HUGnet\DummyTable();
         // This just resets the mock
         $test->resetMock();
         $this->setExpectedException("InvalidArgumentException");
         // This throws an exception because $test is not a object
-        Channels::factory($test, $test2);
+        DataChannels::factory($test, $test2);
     }
     /**
     * This tests the exception when a system object is not passed
@@ -121,7 +121,7 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
     {
         $dev = new \HUGnet\DummyBase("Device");
         $sys = new \HUGnet\DummyBase("System");
-        $obj = Channels::factory($sys, $dev);
+        $obj = DataChannels::factory($sys, $dev);
         $this->assertSame($sys, $obj->system());
     }
     /**
@@ -133,8 +133,8 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                new DummySystem(),
-                new DummyTable("Device"),
+                new \HUGnet\DummySystem(),
+                new \HUGnet\DummyTable("Device"),
                 array(
                     "Device" => array(
                         "get" => array(
@@ -159,12 +159,13 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
     */
     public function testCreate($config, $gateway, $expectTable)
     {
-        $table = new DummyTable();
+        $table = new \HUGnet\DummyTable();
         // This just resets the mock
         $table->resetMock();
-        $obj = Channels::factory($config, $gateway);
+        $obj = DataChannels::factory($config, $gateway);
         // Make sure we have the right object
-        $this->assertTrue((get_class($obj) === "HUGnet\Channels"), "Class wrong");
+        $this->assertInstanceOf(
+            "HUGnet\devices\DataChannels", $obj, "Class wrong");
         if (is_object($table)) {
             $this->assertEquals($expectTable, $table->retrieve(), "Data Wrong");
         }
@@ -333,10 +334,10 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
     public function testConvert(
         $config, $record, $expect
     ) {
-        $sys = new DummySystem("System");
-        $dev = new DummyTable("Device");
+        $sys = new \HUGnet\DummySystem("System");
+        $dev = new \HUGnet\DummyTable("Device");
         $sys->resetMock($config);
-        $obj = Channels::factory($sys, $dev);
+        $obj = DataChannels::factory($sys, $dev);
         $obj->convert($record);
         $this->assertEquals($expect, $record);
         unset($obj);
@@ -423,10 +424,10 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
     public function testCount(
         $config, $expect
     ) {
-        $sys = new DummySystem("System");
-        $dev = new DummyTable("Device");
+        $sys = new \HUGnet\DummySystem("System");
+        $dev = new \HUGnet\DummyTable("Device");
         $sys->resetMock($config);
-        $obj = Channels::factory($sys, $dev);
+        $obj = DataChannels::factory($sys, $dev);
         $this->assertEquals($expect, $obj->count());
         unset($obj);
     }
@@ -524,10 +525,10 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
     public function testDecodeRaw(
         $config, $record, $expect
     ) {
-        $sys = new DummySystem("System");
-        $dev = new DummyTable("Device");
+        $sys = new \HUGnet\DummySystem("System");
+        $dev = new \HUGnet\DummyTable("Device");
         $sys->resetMock($config);
-        $obj = Channels::factory($sys, $dev);
+        $obj = DataChannels::factory($sys, $dev);
         $ret = $obj->decodeRaw($record);
         $this->assertEquals($expect, $ret);
         unset($obj);
@@ -575,11 +576,11 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
                             ),
                         ),
                         "input" => array(
-                            '0' => new DummyTable("Sensor0"),
-                            '1' => new DummyTable("Sensor1"),
-                            '2' => new DummyTable("Sensor2"),
-                            '3' => new DummyTable("Sensor3"),
-                            '4' => new DummyTable("Sensor4"),
+                            '0' => new \HUGnet\DummyTable("Sensor0"),
+                            '1' => new \HUGnet\DummyTable("Sensor1"),
+                            '2' => new \HUGnet\DummyTable("Sensor2"),
+                            '3' => new \HUGnet\DummyTable("Sensor3"),
+                            '4' => new \HUGnet\DummyTable("Sensor4"),
                         ),
 
                     ),
@@ -680,11 +681,11 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
                             ),
                         ),
                         "input" => array(
-                            '0' => new DummyTable("Sensor0"),
-                            '1' => new DummyTable("Sensor1"),
-                            '2' => new DummyTable("Sensor2"),
-                            '3' => new DummyTable("Sensor3"),
-                            '4' => new DummyTable("Sensor4"),
+                            '0' => new \HUGnet\DummyTable("Sensor0"),
+                            '1' => new \HUGnet\DummyTable("Sensor1"),
+                            '2' => new \HUGnet\DummyTable("Sensor2"),
+                            '3' => new \HUGnet\DummyTable("Sensor3"),
+                            '4' => new \HUGnet\DummyTable("Sensor4"),
                         ),
 
                     ),
@@ -912,10 +913,10 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
     public function test2Array(
         $config, $channels, $default, $expect
     ) {
-        $sys = new DummySystem("System");
-        $dev = new DummyTable("Device");
+        $sys = new \HUGnet\DummySystem("System");
+        $dev = new \HUGnet\DummyTable("Device");
         $sys->resetMock($config);
-        $obj = Channels::factory($sys, $dev, $channels);
+        $obj = DataChannels::factory($sys, $dev, $channels);
         $ret = $obj->toArray($default);
         $this->assertEquals($expect, $ret);
         unset($obj);
@@ -966,11 +967,11 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
                             ),
                         ),
                         "input" => array(
-                            '0' => new DummyTable("Sensor0"),
-                            '1' => new DummyTable("Sensor1"),
-                            '2' => new DummyTable("Sensor2"),
-                            '3' => new DummyTable("Sensor3"),
-                            '4' => new DummyTable("Sensor4"),
+                            '0' => new \HUGnet\DummyTable("Sensor0"),
+                            '1' => new \HUGnet\DummyTable("Sensor1"),
+                            '2' => new \HUGnet\DummyTable("Sensor2"),
+                            '3' => new \HUGnet\DummyTable("Sensor3"),
+                            '4' => new \HUGnet\DummyTable("Sensor4"),
                         ),
 
                     ),
@@ -1067,10 +1068,10 @@ class ChannelsTest extends \PHPUnit_Framework_TestCase
     public function testStore(
         $config, $channels, $expect
     ) {
-        $sys = new DummySystem("System");
-        $dev = new DummyTable("Device");
+        $sys = new \HUGnet\DummySystem("System");
+        $dev = new \HUGnet\DummyTable("Device");
         $sys->resetMock($config);
-        $obj = Channels::factory($sys, $dev, $channels);
+        $obj = DataChannels::factory($sys, $dev, $channels);
         $obj->store();
         $ret = $sys->retrieve("Device");
         $this->assertEquals($expect, $ret["set"]);
