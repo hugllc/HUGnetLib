@@ -237,7 +237,7 @@ class WebInterface
         );
         if (is_object($pkt)) {
             $string = $pkt->Reply();
-            $ret = $this->_device->channels()->decodeRaw($string);
+            $ret = $this->_device->dataChannels()->decodeRaw($string);
         }
         return $ret;
     }

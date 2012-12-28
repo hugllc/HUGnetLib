@@ -87,7 +87,7 @@ default:
 $table->sqlLimit = $limit;
 $table->sqlOrderBy = "Date ".$order;
 $run = $table->selectInto($where, $data);
-$channels = $device->channels();
+$channels = $device->dataChannels();
 
 $ret = array();
 while ($run) {

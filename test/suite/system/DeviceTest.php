@@ -2107,7 +2107,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $sys = new DummySystem("System");
         $sys->resetMock($config);
         $obj = Device::factory($sys, null, $class);
-        $sen = $obj->channels();
+        $sen = $obj->dataChannels();
         $this->assertInstanceOf(
             $driverExpect, $sen,
             "Return is not a ".$driverExpect

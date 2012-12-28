@@ -763,7 +763,7 @@ class FastAverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 25,
                         ),
-                        "channels" => new \HUGnet\DummyBase("Channels"),
+                        "dataChannels" => new \HUGnet\DummyBase("Channels"),
                     ),
                     "Channels" => array(
                         "toArray" => array(
@@ -837,7 +837,7 @@ class FastAverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 26,
                         ),
-                        "channels" => new \HUGnet\DummyBase("Channels"),
+                        "dataChannels" => new \HUGnet\DummyBase("Channels"),
                     ),
                     "Channels" => array(
                         "toArray" => array(
@@ -928,7 +928,7 @@ class FastAverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 27,
                         ),
-                        "channels" => new \HUGnet\DummyBase("Channels"),
+                        "dataChannels" => new \HUGnet\DummyBase("Channels"),
                     ),
                     "Channels" => array(
                         "toArray" => array(
@@ -1003,7 +1003,7 @@ class FastAverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 28,
                         ),
-                        "channels" => new \HUGnet\DummyBase("Channels"),
+                        "dataChannels" => new \HUGnet\DummyBase("Channels"),
                     ),
                     "Channels" => array(
                         "toArray" => array(
@@ -1081,7 +1081,7 @@ class FastAverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 25,
                         ),
-                        "channels" => new \HUGnet\DummyBase("Channels"),
+                        "dataChannels" => new \HUGnet\DummyBase("Channels"),
                     ),
                     "Channels" => array(
                         "toArray" => array(
@@ -1151,7 +1151,7 @@ class FastAverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 25,
                         ),
-                        "channels" => new \HUGnet\DummyBase("Channels"),
+                        "dataChannels" => new \HUGnet\DummyBase("Channels"),
                     ),
                     "Channels" => array(
                         "toArray" => array(
@@ -1288,7 +1288,7 @@ class FastAverageTest extends tables\TableTestBase
                         "get" => array(
                             "id" => 32,
                         ),
-                        "channels" => new \HUGnet\DummyBase("Channels"),
+                        "dataChannels" => new \HUGnet\DummyBase("Channels"),
                     ),
                     "Channels" => array(
                         "toArray" => array(

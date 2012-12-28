@@ -77,7 +77,7 @@ class Device extends \HUGnet\base\SystemTableAction
         "process" => "driver",
         "insertVirtual" => "table",
         "webAPI" => "webInterface",
-        "dataChannel" => "channels",
+        "dataChannel" => "dataChannels",
         "reboot" => "network",
     );
     /** This is where we store our objects */
@@ -139,7 +139,7 @@ class Device extends \HUGnet\base\SystemTableAction
         //if (is_string($return["channels"])) {
         //    $return["channels"] = (array)json_decode($return["channels"], true);
         //}
-        $return["channels"] = $this->channels()->toArray();
+        $return["channels"] = $this->dataChannels()->toArray();
         if (is_string($return["params"])) {
             $return["params"] = (array)json_decode($return["params"], true);
         }
@@ -161,7 +161,7 @@ class Device extends \HUGnet\base\SystemTableAction
         for ($i = 0; $i < $return["InputTables"]; $i++) {
             $return["inputs"][$i] = $this->input($i)->toArray();
         }
-        $return["channels"] = $this->channels()->toArray(true);
+        $return["channels"] = $this->dataChannels()->toArray(true);
         $return["outputs"] = array();
         for ($i = 0; $i < $return["OutputTables"]; $i++) {
             $return["outputs"][$i] = $this->output($i)->toArray();
@@ -203,7 +203,7 @@ class Device extends \HUGnet\base\SystemTableAction
         for ($i = 0; $i < $return["totalSensors"]; $i++) {
             $return["sensors"][$i] = $this->input($i)->toArray();
         }
-        $return["channels"] = $this->channels()->toArray(true);
+        $return["channels"] = $this->dataChannels()->toArray(true);
         if ($return["loadable"]) {
             $this->firmware()->set("HWPartNum", $return["HWPartNum"]);
             $this->firmware()->set("FWPartNum", $return["FWPartNum"]);
@@ -332,7 +332,7 @@ class Device extends \HUGnet\base\SystemTableAction
     *
     * @return null
     */
-    public function &channels($chans = null)
+    public function &dataChannels($chans = null)
     {
         include_once dirname(__FILE__)."/../devices/DataChannels.php";
         return \HUGnet\devices\DataChannels::factory($this->system(), $this, $chans);

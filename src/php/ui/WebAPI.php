@@ -486,7 +486,7 @@ class WebAPI extends HTML
             $hist->selectOneInto($whereText, $whereData);
             $ret = array();
             if (!$hist->isEmpty()) {
-                $channels = $this->system()->device($did)->channels();
+                $channels = $this->system()->device($did)->dataChannels();
                 $stuff = $hist->toArray(true);
                 if (trim(strtolower($data["type"])) != "raw") {
                     $channels->convert($stuff);
@@ -538,7 +538,7 @@ class WebAPI extends HTML
             $extraData
         );
         $ret = array();
-        $channels = $this->system()->device($did)->channels();
+        $channels = $this->system()->device($did)->dataChannels();
         while ($res) {
             $stuff = $hist->toArray(true);
             if (trim(strtolower($data["type"])) != "raw") {
@@ -631,7 +631,7 @@ class WebAPI extends HTML
     private function _historyCSV($did, $records)
     {
 
-        $channels = $this->system()->device($did)->channels();
+        $channels = $this->system()->device($did)->dataChannels();
         $chan = $channels->toArray();
         $out = "";
         $sep = ",";
@@ -723,7 +723,7 @@ class WebAPI extends HTML
     private function _historyHTML($did, $records)
     {
 
-        $channels = $this->system()->device($did)->channels();
+        $channels = $this->system()->device($did)->dataChannels();
         $chan = $channels->toArray();
         $out = "<!DOCTYPE html>\r\n<html>\r\n<body><table>\r\n";
         $out .= "<tr>";

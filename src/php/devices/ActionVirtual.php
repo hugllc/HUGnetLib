@@ -214,7 +214,7 @@ class ActionVirtual extends Action
             $filename = $prefix.$this->device->get("DeviceID").".".date("Ymd");
             $new = !file_exists($filename);
             $fdr = fopen($filename, "a");
-            $channels = $this->device->channels();
+            $channels = $this->device->dataChannels();
             $chan = $channels->toArray();
             if ($new) {
                 $sep = ",";
