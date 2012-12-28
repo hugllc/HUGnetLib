@@ -231,7 +231,10 @@ class Channels
     {
         $return = array();
         for ($index = 0; $index < $this->count(); $index++) {
-            $return[] = $this->dataChannel($index)->decodeRaw($string);
+            $ret = $this->dataChannel($index)->decodeRaw($string);
+            if (!is_null($ret)) {
+                $return[$index] = $ret;
+            }
         }
         return $return;
     }

@@ -145,6 +145,8 @@ class WebInterface
             $ret = $this->_loadfirmware($args);
         } else if ($action === "loadconfig") {
             $ret = $this->_loadconfig($args);
+        } else if ($action === "getraw") {
+            $ret = $this->_getRaw($args);
         }
         return $ret;
     }
@@ -219,6 +221,23 @@ class WebInterface
             $ret = $this->_device->toArray(true);
         } else {
             $ret = -1;
+        }
+        return $ret;
+    }
+    /**
+    * returns a history object for this device
+    *
+    * @return string
+    */
+    private function _getRaw()
+    {
+        $ret = array();
+        $pkt = $this->_device->action()->send(
+            "54"
+        );
+        if (is_object($pkt)) {
+            $string = $pkt->Reply();
+            $ret = $this->_device->channels()->decodeRaw($string);
         }
         return $ret;
     }

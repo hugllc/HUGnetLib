@@ -661,6 +661,60 @@ class WebAPI extends HTML
     /**
     * Sends the headers out
     *
+    * @param array $array The array to make into an HTML table
+    *
+    * @return null
+    */
+    private function _arrayHTML($array)
+    {
+        $out = "<!DOCTYPE html>\r\n<html>\r\n<body><table>\r\n";
+        if (!is_array($array[0])) {
+            $out .= $this->_arrayHTMLHeader($array);
+            $out .= $this->_arrayHTMLRow($array);
+        } else {
+            $out .= $this->_arrayHTMLHeader($array[0]);
+            foreach ($array as $row) {
+                $out .= $this->_arrayHTMLRow($row);
+            }
+        }
+        $out .= "</table></body>\r\n</html>";
+        return $out;
+    }
+    /**
+    * Sends the headers out
+    *
+    * @param array $array The array to make into an HTML table
+    *
+    * @return null
+    */
+    private function _arrayHTMLRow($array)
+    {
+        $out = "<tr>";
+        foreach ((array)$array as $data) {
+            $out .= "<td>".$data."</td>";
+        }
+        $out .= "</tr>\r\n";
+        return $out;
+    }
+    /**
+    * Sends the headers out
+    *
+    * @param array $array The array to make into an HTML table
+    *
+    * @return null
+    */
+    private function _arrayHTMLHeader($array)
+    {
+        $out = "<tr>";
+        foreach (array_keys((array)$array) as $data) {
+            $out .= "<th>".$data."</th>";
+        }
+        $out .= "</tr>\r\n";
+        return $out;
+    }
+    /**
+    * Sends the headers out
+    *
     * @param int   $did     The deviceID to use
     * @param array $records The history to use
     *
@@ -710,6 +764,9 @@ class WebAPI extends HTML
         if (strtoupper($format) === "HTML") {
             $this->_headerNoCache();
             $this->_headerHTML();
+            if (is_array($data)) {
+                $data = $this->_arrayHTML($data);
+            }
             print $data;
         } else if (strtoupper($format) === "CSV") {
             $this->_headerNoCache();
