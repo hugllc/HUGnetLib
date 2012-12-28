@@ -395,6 +395,110 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "enabled" => 1,
                         "gain" => 1,
                         "twosComplimentEnabled" => 1,
+                        "immediateProcessRoutine" => 4,
+                    ),
+                ),
+                null,
+                1,
+                array(),
+                array(),
+                null,
+                0
+            ),
+            array( // #1
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(),
+                        ),
+                    ),
+                    "Entry" => array(
+                        "enabled" => 1,
+                        "gain" => 1,
+                        "twosComplimentEnabled" => 1,
+                        "immediateProcessRoutine" => 4,
+                    ),
+                ),
+                null,
+                1,
+                array(),
+                array(),
+                null,
+                1
+            ),
+            array( // #2
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(),
+                        ),
+                    ),
+                    "Entry" => array(
+                        "enabled" => 1,
+                        "gain" => 1,
+                        "twosComplimentEnabled" => 1,
+                        "immediateProcessRoutine" => 4,
+                    ),
+                ),
+                null,
+                1,
+                array(),
+                array(),
+                null,
+                2
+            ),
+            array( // #3
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(),
+                        ),
+                    ),
+                    "Entry" => array(
+                        "enabled" => 1,
+                        "gain" => 1,
+                        "twosComplimentEnabled" => 1,
+                        "immediateProcessRoutine" => 4,
+                    ),
+                ),
+                null,
+                1,
+                array(),
+                array(),
+                null,
+                3
+            ),
+        );
+    }
+    /**
+     * Data provider for testGetReading
+     *
+     * testGetReading($sensor, $A, $deltaT, $data, $prev, $expect)
+     *
+     * @return array
+     */
+    public static function dataDecodeData()
+    {
+        return array(
+            array( // #0
+                array(
+                    "Sensor" => array(
+                        "id" => 1,
+                        "get" => array(
+                            "sensor" => 2,
+                            "extra" => array(),
+                        ),
+                    ),
+                    "Entry" => array(
+                        "enabled" => 1,
+                        "gain" => 1,
+                        "twosComplimentEnabled" => 1,
                         "immediateProcessRoutine" => 0,
                     ),
                 ),
@@ -776,7 +880,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "immediateProcessRoutine" => 0,
                     ),
                 ),
-                "4002000040480000",
+                "400200004048000012345678",
                 1,
                 array(),
                 array(),
@@ -822,6 +926,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "index" => 3,
                     ),
                 ),
+                8  // THis makes sure it doesn't take too much of the string
             ),
             array( // #7
                 array(
@@ -1082,24 +1187,25 @@ class ADuCPowerTest extends DriverTestBaseADuC
     *
     * This is called by using parent::sensorTest()
     *
-    * @param array $sensor  The sensor data array
-    * @param mixed $A       Data for the sensor to work on
-    * @param float $deltaT  The time differenct
-    * @param array $data    The data array being built
-    * @param array $prev    The previous record
-    * @param mixed $expect  The return data to expect
-    * @param int   $channel The channel to test
+    * @param array $sensor   The sensor data array
+    * @param mixed $A        Data for the sensor to work on
+    * @param float $deltaT   The time differenct
+    * @param array $data     The data array being built
+    * @param array $prev     The previous record
+    * @param mixed $expect   The return data to expect
+    * @param int   $leftover The channel to test
     *
     * @return null
     *
-    * @dataProvider dataGetReading()
+    * @dataProvider dataDecodeData()
     */
-    public function testGetReading(
-        $sensor, $A, $deltaT, $data, $prev, $expect, $channel = 0
+    public function testDecodeData(
+        $sensor, $A, $deltaT, $data, $prev, $expect, $leftover = 0
     ) {
         $this->sensor->resetMock($sensor);
         $ret = $this->o->decodeData($A, $deltaT, $data, $prev);
         $this->assertEquals($expect, $ret, 0.00001);
+        $this->assertEquals($leftover, strlen($A), "Too much removed from string");
     }
     /**
      * Data provider for testGetReading

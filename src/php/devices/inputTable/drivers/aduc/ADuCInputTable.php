@@ -276,10 +276,31 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
         &$string, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
     ) {
 
-        if ($channel > count($this->_driver(0)->channels())) {
-            $ret = $this->_driver(1)->decodeDataPoint($string, $channel);
+        $chan0 = count($this->_driver(0)->channels());
+        if ($channel >  $chan0) {
+            $ret = $this->_driver(1)->decodeDataPoint($string, ($channel - $chan0));
         } else {
             $ret = $this->_driver(0)->decodeDataPoint($string, $channel);
+        }
+        return $ret;
+    }
+    /**
+    * Gets the direction from a direction sensor made out of a POT.
+    *
+    * @param string &$string The data string
+    * @param int    $channel The channel to decode
+    *
+    * @return float The raw value
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    */
+    public function getRawData(&$string, $channel = 0)
+    {
+        $chan0 = count($this->_driver(0)->channels());
+        if ($channel >  $chan0) {
+            $ret = $this->_driver(1)->getRawData($string, ($channel - $chan0));
+        } else {
+            $ret = $this->_driver(0)->getRawData($string, $channel);
         }
         return $ret;
     }
@@ -300,9 +321,10 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
     public function encodeDataPoint(
         $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
     ) {
-        if ($channel > count($this->_driver(0)->channels())) {
+        $chan0 = count($this->_driver(0)->channels());
+        if ($channel >  $chan0) {
             return $this->_driver(1)->encodeDataPoint(
-                $value, $channel, $deltaT, $prev, $data
+                $value, ($channel - $chan0), $deltaT, $prev, $data
             );
         }
         return $this->_driver(0)->encodeDataPoint(

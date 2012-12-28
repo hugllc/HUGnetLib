@@ -103,7 +103,6 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         }
         bcscale(10);
         $Am   = pow(2, 23);
-        $A = $this->getTwosCompliment($A, 32);
         $A = $A / $this->gain(1);
         $Vref  = $this->getExtra(0);
         $Rin   = $this->getExtra(2);
@@ -159,9 +158,8 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
             return null;
         }
         bcscale(10);
-        $Am   = pow(2, 23);
-        $A = $this->getTwosCompliment($A, 32);
-        $A = $A / $this->gain();
+        $Am    = pow(2, 23);
+        $A     = $A / $this->gain();
         $Vref  = $this->getExtra(0);
         $R     = $this->getExtra(1);
         $Rin   = $this->getExtra(4);
@@ -259,7 +257,6 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
             return null;
         }
 
-        $A = $this->getTwosCompliment($A, 32);
         $A = $A / $this->gain(0);
         $A = $A / $this->gain(1);
         $A = $this->inputBiasCompensation($A, $Rin1, $Rbias1);
@@ -329,7 +326,6 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         $Rin2   = (float)$this->getExtra(4);
         $Rbias2 = (float)$this->getExtra(5);
 
-        $A  = $this->getTwosCompliment($A, 32);
         $A  /= $this->gain(1);
         $A  *= $this->gain(0);
         $C1 = $this->inputBiasCompensation(1.0, $Rin1, $Rbias1);
@@ -443,26 +439,47 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         $return = null;
         $ipr = $this->ipRoutine(0);
         $Enable = $ipr == \HUGnet\devices\inputTable\ADuCInputTable::IPR_POWER;
+        $A = $this->getRawData($string, $channel);
         if ($channel == 0) {
-            $A = $this->strToInt($string);
             $return = $this->getCurrent($A, $deltaT, $data, $prev);
         } else if ($channel == 1) {
-            $A = $this->strToInt($string);
             $return = $this->getVoltage($A, $deltaT, $data, $prev);
         } else if ($channel == 2) {
             if ($Enable) {
-                $A = $this->strToInt($string);
                 $return = $this->getPower($A, $deltaT, $data, $prev);
             } else {
                 $return = $this->getCalcPower($deltaT, $data, $prev);
             }
         } else if ($channel == 3) {
             if ($Enable) {
-                $A = $this->strToInt($string);
                 $return = $this->getImpedance($A, $deltaT, $data, $prev);
             } else {
                 $return = $this->getCalcImpedance($deltaT, $data, $prev);
             }
+        }
+        return $return;
+    }
+    /**
+    * Gets the direction from a direction sensor made out of a POT.
+    *
+    * @param string &$string The data string
+    * @param int    $channel The channel to decode
+    *
+    * @return float The raw value
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    */
+    public function getRawData(&$string, $channel = 0)
+    {
+        if (is_null($string)) {
+            return null;
+        }
+        $return = null;
+        $ipr = $this->ipRoutine(0);
+        $Enable = $ipr == \HUGnet\devices\inputTable\ADuCInputTable::IPR_POWER;
+        if (($channel < 2) || ($Enable && ($channel < 4))) {
+            $A = $this->strToInt($string);
+            $return = $this->getTwosCompliment($A, 32);
         }
         return $return;
     }

@@ -556,7 +556,7 @@ abstract class Driver
     public function decodeData(
         &$string, $deltaT = 0, &$prev = null, &$data = array()
     ) {
-        $A = $this->strToInt($string);
+        $A = $this->getRawData($string);
         $ret = $this->channels();
         $type = $this->get("storageType");
         $ret[0]["value"] = $this->decodeDataPoint(
@@ -586,7 +586,7 @@ abstract class Driver
         if (is_null($string)) {
             return null;
         }
-        $A = (is_string($string)) ? $this->strToInt($string) : (int)$string;
+        $A = $this->getRawData($string, $channel);
         $type = $this->get("storageType");
         if ($type == \HUGnet\devices\datachan\Driver::TYPE_DIFF) {
             $ret = $this->getReading(
@@ -598,6 +598,20 @@ abstract class Driver
             );
         }
         return $ret;
+    }
+    /**
+    * Gets the direction from a direction sensor made out of a POT.
+    *
+    * @param string &$string The data string
+    * @param int    $channel The channel to decode
+    *
+    * @return float The raw value
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    */
+    public function getRawData(&$string, $channel = 0)
+    {
+        return (is_string($string)) ? $this->strToInt($string) : (int)$string;
     }
     /**
     * Gets the direction from a direction sensor made out of a POT.

@@ -297,8 +297,7 @@ abstract class DriverADuC extends Driver
     public function decodeData(
         &$string, $deltaT = 0, &$prev = null, &$data = array()
     ) {
-        $A = $this->strToInt($string);
-        $A = $this->getTwosCompliment($A, 32);
+        $A = $this->getRawData($string);
         $A = $A / $this->gain();
         $ret = $this->channels();
         $type = $this->get("storageType");
@@ -313,6 +312,25 @@ abstract class DriverADuC extends Driver
             );
         }
         return $ret;
+    }
+    /**
+    * Gets the direction from a direction sensor made out of a POT.
+    *
+    * @param string &$string The data string
+    * @param int    $channel The channel to decode
+    *
+    * @return float The raw value
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    */
+    public function getRawData(&$string, $channel = 0)
+    {
+        if (is_string($string)) {
+            $A = $this->getTwosCompliment($this->strToInt($string), 32);
+        } else {
+            $A = (int)$string;
+        }
+        return $A;
     }
 
 
