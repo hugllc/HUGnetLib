@@ -277,7 +277,7 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
     ) {
 
         $chan0 = count($this->_driver(0)->channels());
-        if ($channel >  $chan0) {
+        if ($channel >=  $chan0) {
             $ret = $this->_driver(1)->decodeDataPoint($string, ($channel - $chan0));
         } else {
             $ret = $this->_driver(0)->decodeDataPoint($string, $channel);
@@ -297,7 +297,7 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
     public function getRawData(&$string, $channel = 0)
     {
         $chan0 = count($this->_driver(0)->channels());
-        if ($channel >  $chan0) {
+        if ($channel >=  $chan0) {
             $ret = $this->_driver(1)->getRawData($string, ($channel - $chan0));
         } else {
             $ret = $this->_driver(0)->getRawData($string, $channel);
@@ -322,7 +322,7 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
         $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
     ) {
         $chan0 = count($this->_driver(0)->channels());
-        if ($channel >  $chan0) {
+        if ($channel >=  $chan0) {
             return $this->_driver(1)->encodeDataPoint(
                 $value, ($channel - $chan0), $deltaT, $prev, $data
             );
@@ -348,24 +348,6 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
         return $ret;
     }
     /**
-    * Takes a little endian 32 bit ascii hex number and turns it into an int
-    *
-    * @param int $value The value to encode
-    *
-    * @return string
-    */
-    private function _decode32($value)
-    {
-        $ret = hexdec(
-            substr($value, 6, 2).substr($value, 4, 2)
-            .substr($value, 2, 2).substr($value, 0, 2)
-        );
-        if (($ret & 0x80000000) === 0x80000000) {
-            $ret = -(0x100000000 - $ret);
-        }
-        return $ret;
-    }
-    /**
     * Decodes the driver portion of the setup string
     *
     * @param string $string The string to decode
@@ -377,9 +359,15 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
         $this->_entry()->decode($string);
         $extra = $this->input()->get("extra");
         $start = 22;
-        $extra[1] = $this->_decode32(substr($string, $start, 8));
-        $start += 8;
-        $extra[2] = $this->_decode32(substr($string, $start, 8));
+        $data = substr($string, $start);
+        $val = $this->decodeDataPoint($data, 0);
+        if (!is_null($val)) {
+            $extra[1] = $val;
+        }
+        $val = $this->decodeDataPoint($data, 1);
+        if (!is_null($val)) {
+            $extra[2] = $val;
+        }
         if (!isset($extra[0])) {
             $iid = $this->_find();
             if (!is_null($iid)) {
@@ -415,30 +403,17 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
     /**
     * Encodes this driver as a setup string
     *
-    * @param int $value The value to encode
-    *
-    * @return string
-    */
-    private function _encode32($value)
-    {
-        return sprintf(
-            "%02X%02X%02X%02X",
-            ($value >> 0) & 0xFF,
-            ($value >> 8) & 0xFF,
-            ($value >> 16) & 0xFF,
-            ($value >> 24) & 0xFF
-        );
-    }
-    /**
-    * Encodes this driver as a setup string
-    *
     * @return string
     */
     public function encode()
     {
         $string  = $this->_entry()->encode();
-        $string .= $this->_encode32($this->getExtra(1));
-        $string .= $this->_encode32($this->getExtra(2));
+        $string .= str_pad(
+            $this->encodeDataPoint($this->getExtra(1), 0), 8, "0", STR_PAD_RIGHT
+        );
+        $string .= str_pad(
+            $this->encodeDataPoint($this->getExtra(2), 1), 8, "0", STR_PAD_RIGHT
+        );
         return $string;
     }
 
