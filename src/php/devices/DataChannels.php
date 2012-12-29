@@ -104,7 +104,7 @@ class DataChannels
             );
         }
         if (!is_string($channels) && !is_array($channels)) {
-            $channels = $this->_device->get("channels");
+            $channels = $this->_device->get("dataChannels");
         }
         if (is_string($channels)) {
             $channels = json_decode($channels, true);

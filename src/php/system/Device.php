@@ -136,10 +136,7 @@ class Device extends \HUGnet\base\SystemTableAction
         if ($default) {
             $return = array_merge($this->driver()->toArray(), $return);
         }
-        //if (is_string($return["channels"])) {
-        //    $return["channels"] = (array)json_decode($return["channels"], true);
-        //}
-        $return["channels"] = $this->dataChannels()->toArray();
+        $return["dataChannels"] = $this->dataChannels()->toArray();
         if (is_string($return["params"])) {
             $return["params"] = (array)json_decode($return["params"], true);
         }
@@ -161,7 +158,7 @@ class Device extends \HUGnet\base\SystemTableAction
         for ($i = 0; $i < $return["InputTables"]; $i++) {
             $return["inputs"][$i] = $this->input($i)->toArray();
         }
-        $return["channels"] = $this->dataChannels()->toArray(true);
+        $return["dataChannels"] = $this->dataChannels()->toArray(true);
         $return["outputs"] = array();
         for ($i = 0; $i < $return["OutputTables"]; $i++) {
             $return["outputs"][$i] = $this->output($i)->toArray();

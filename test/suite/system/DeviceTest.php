@@ -1037,7 +1037,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     'job'  => 'unknown',
                     'actionClass' => 'Action',
                     'arch' => 'unknown',
-                    "channels" => array(
+                    "dataChannels" => array(
                         0 => array(
                             'decimals' => 2,
                             'units' => '&#176;C',
@@ -1222,7 +1222,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     'id' => 2,
                     'asdf' => 3,
                     'params' => array(1,2,3,4),
-                    "channels" => array(
+                    "dataChannels" => array(
                         0 => array(
                             'decimals' => 2,
                             'units' => '&#176;C',

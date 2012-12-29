@@ -40,10 +40,10 @@
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-var DeviceChannelEntryView = Backbone.View.extend({
+var DeviceDataChannelEntryView = Backbone.View.extend({
     model: HUGnet.DeviceChannel,
     tagName: 'tr',
-    template: '#DeviceChannelEntryTemplate',
+    template: '#DeviceDataChannelEntryTemplate',
     parent: null,
     events: {
         'change [name="label"]': 'changeLabel',
@@ -108,9 +108,9 @@ var DeviceChannelEntryView = Backbone.View.extend({
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-HUGnet.DeviceChannelsView = Backbone.View.extend({
-    model: HUGnet.DeviceChannels,
-    template: "#DeviceChannelListTemplate",
+HUGnet.DeviceDataChannelsView = Backbone.View.extend({
+    model: HUGnet.DeviceDataChannels,
+    template: "#DeviceDataChannelListTemplate",
     rows: 0,
     events: {
     },
@@ -144,7 +144,7 @@ HUGnet.DeviceChannelsView = Backbone.View.extend({
     },
     insert: function (model, key)
     {
-        var view = new DeviceChannelEntryView({ model: model, parent: this });
+        var view = new DeviceDataChannelEntryView({ model: model, parent: this });
         this.$('tbody').append(view.render().el);
     },
     popup: function (view)

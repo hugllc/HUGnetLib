@@ -64,10 +64,12 @@ HUGnet.Device = Backbone.Model.extend({
         inputs: {},
         outputs: {},
         processes: {},
+        dataChannels: {},
         params: {},
         InputTables: 0,
         OutputTables: 0,
         ProcessputTables: 0,
+
         actions: '',
         ViewButtonID: '',
         RefreshButtonID: '',

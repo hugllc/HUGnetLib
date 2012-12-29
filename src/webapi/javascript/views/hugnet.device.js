@@ -103,17 +103,17 @@ var DevicePropertiesView = Backbone.View.extend({
         );
 
 
-        this.channelsmodel = new HUGnet.DeviceChannels();
-        var channels = this.model.get('channels');
-        this.channelsmodel.reset(channels);
-        this.channels = new HUGnet.DeviceChannelsView({
-            model: this.channelsmodel
+        this.datachannelsmodel = new HUGnet.DeviceDataChannels();
+        var datachannels = this.model.get('dataChannels');
+        this.datachannelsmodel.reset(datachannels);
+        this.datachannels = new HUGnet.DeviceDataChannelsView({
+            model: this.datachannelsmodel
         });
-        this.channelsmodel.on(
+        this.datachannelsmodel.on(
             'change',
             function (model, collection, view)
             {
-                this.model.set('channels', this.channelsmodel.toJSON());
+                this.model.set('dataChannels', this.datachannelsmodel.toJSON());
             },
             this
         );
@@ -121,8 +121,8 @@ var DevicePropertiesView = Backbone.View.extend({
             'change',
             function (model, collection, view)
             {
-                var channels = this.model.get('channels');
-                this.channelsmodel.reset(channels);
+                var datachannels = this.model.get('dataChannels');
+                this.datachannelsmodel.reset(datachannels);
                 this.render();
             },
             this
@@ -199,14 +199,14 @@ var DevicePropertiesView = Backbone.View.extend({
 
         var data = this.model.toJSON();
         _.extend(data, HUGnet.viewHelpers);
-        data.channels = '<div id="DeviceChannelsDiv"></div>';
+        data.dataChannels = '<div id="DeviceDataChannelsDiv"></div>';
         this.$el.html(
             _.template(
                 $(this.template).html(),
                 data
             )
         );
-        this.$("#DeviceChannelsDiv").html(this.channels.render().el);
+        this.$("#DeviceDataChannelsDiv").html(this.datachannels.render().el);
         this.setTitle("");
         return this;
     },

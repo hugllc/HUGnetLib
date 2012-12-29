@@ -186,8 +186,13 @@ class Devices extends \HUGnet\db\Table
             "Type" => "varchar(6)",
             "Default" => 'FFFFFF',
         ),
-        "channels" => array(
-            "Name" => "channels",
+        "dataChannels" => array(
+            "Name" => "dataChannels",
+            "Type" => "longtext",
+            "Default" => '',
+        ),
+        "controlChannels" => array(
+            "Name" => "controlChannels",
             "Type" => "longtext",
             "Default" => '',
         ),
@@ -511,12 +516,27 @@ class Devices extends \HUGnet\db\Table
     *
     * @return null
     */
-    protected function setChannels($value)
+    protected function setDataChannels($value)
     {
         if (is_array($value)) {
-            $this->data["channels"] = json_encode($value);
+            $this->data["dataChannels"] = json_encode($value);
         } else if (is_string($value)) {
-            $this->data["channels"] = $value;
+            $this->data["dataChannels"] = $value;
+        }
+    }
+    /**
+    * Sets the part number
+    *
+    * @param mixed $value The value to set
+    *
+    * @return null
+    */
+    protected function setControlChannels($value)
+    {
+        if (is_array($value)) {
+            $this->data["controlChannels"] = json_encode($value);
+        } else if (is_string($value)) {
+            $this->data["controlChannels"] = $value;
         }
     }
 }

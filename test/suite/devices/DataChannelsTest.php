@@ -139,7 +139,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                     "Device" => array(
                         "get" => array(
                             array("InputTables"),
-                            array("channels"),
+                            array("dataChannels"),
                         ),
                     ),
                 ),
@@ -183,7 +183,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                     "Device" => array(
                         "get" => array(
                             "InputTables" => 3,
-                            "channels" => array(
+                            "dataChannels" => array(
                                 array(
                                     "units" => "bar",
                                     "decimals" => 4,
@@ -253,7 +253,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                     "Device" => array(
                         "get" => array(
                             "InputTables" => 3,
-                            "channels" => array(
+                            "dataChannels" => array(
                                 array(
                                     "units" => "bar",
                                     "decimals" => 4,
@@ -355,7 +355,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                     "Device" => array(
                         "get" => array(
                             "InputTables" => 3,
-                            "channels" => array(
+                            "dataChannels" => array(
                                 array(
                                     "units" => "bar",
                                     "decimals" => 4,
@@ -444,7 +444,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                     "Device" => array(
                         "get" => array(
                             "InputTables" => 3,
-                            "channels" => array(
+                            "dataChannels" => array(
                                 array(
                                     "units" => "bar",
                                     "decimals" => 4,
@@ -555,7 +555,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                     "Device" => array(
                         "get" => array(
                             "InputTables" => 5,
-                            "channels" => json_encode(
+                            "dataChannels" => json_encode(
                                 array(
                                     array(
                                         "label" => "Output 0",
@@ -660,7 +660,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                     "Device" => array(
                         "get" => array(
                             "InputTables" => 5,
-                            "channels" => json_encode(
+                            "dataChannels" => json_encode(
                                 array(
                                     array(
                                         "label" => "Output 0",
@@ -946,7 +946,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                     "Device" => array(
                         "get" => array(
                             "InputTables" => 5,
-                            "channels" => json_encode(
+                            "dataChannels" => json_encode(
                                 array(
                                     array(
                                         "label" => "Output 0",
