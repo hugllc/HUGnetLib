@@ -936,7 +936,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                     array(
-                        "channels",
+                        "dataChannels",
                         json_encode(array()),
                     ),
                 ),
@@ -1024,7 +1024,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                 null,
                 array(
                     array(
-                        "channels",
+                        "dataChannels",
                         json_encode(
                             array(
                                 array(

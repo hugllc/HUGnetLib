@@ -207,7 +207,7 @@ class DataChannels
     public function store()
     {
         $ret = $this->toArray(false);
-        return $this->_device->set("channels", json_encode($ret));
+        return $this->_device->set("dataChannels", json_encode($ret));
 
     }
 
