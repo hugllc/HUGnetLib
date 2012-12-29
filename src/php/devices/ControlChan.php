@@ -38,8 +38,6 @@
 namespace HUGnet\devices;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
-/** This is our base class */
-require_once dirname(__FILE__)."/XTableBase.php";
 
 /**
  * Base system class.
@@ -58,41 +56,86 @@ require_once dirname(__FILE__)."/XTableBase.php";
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class Output extends XTableBase
+class ControlChan
 {
     /**
-    * This is the cache for the drivers.
+    * This is the device we rode in on
     */
-    protected $driverLoc = "outputTable";
+    private $_device;
+    /** @var array The configuration that we are going to use */
+    private $_setable = array("label");
     /**
-    * This function creates the system.
+    * This is the device we rode in on
+    */
+    private $_data = array();
+
+    /**
+    * This function sets up the driver object, and the database object.  The
+    * database object is taken from the driver object.
     *
-    * @param mixed  &$system (object)The system object to use
-    * @param mixed  $data    (int)The id of the item, (array) data info array
-    * @param string $table   The table to use
-    * @param object &$device The device object to use
+    * @param object $device The device object to use
+    * @param array  $driver The driver information
     *
     * @return null
     */
-    public static function &factory(
-        &$system, $data=null, $table=null, &$device = null
-    ) {
-        if (empty($table)) {
-            $table = "DeviceOutputs";
-        }
-        $object = parent::factory($system, $data, $table, $device);
+    protected function __construct($device, $driver)
+    {
+        \HUGnet\System::exception(
+            get_class($this)." needs to be passed a device object",
+            "InvalidArgument",
+            !is_object($device)
+        );
+        $this->_device = &$device;
+        $this->_data = (array)$driver;
+    }
+
+    /**
+    * This is the destructor
+    */
+    public function __destruct()
+    {
+        unset($this->_device);
+    }
+    /**
+    * This function creates the system.
+    *
+    * @param object $device The device object to use
+    * @param array  $driver The driver information
+    * @param mixed  $data   (array) data info array
+    *
+    * @return null
+    */
+    public static function &factory($device, $driver, $data)
+    {
+        $object = new ControlChan($device, $driver);
+        $object->fromArray($data);
         return $object;
     }
     /**
-    * Lists the ids of the table values
+    * Gets a value
     *
-    * @return The ID of this sensor
+    * @param string $field the field to get
     *
-    * @SuppressWarnings(PHPMD.ShortMethodName)
+    * @return null
     */
-    public function id()
+    public function get($field)
     {
-        return $this->table()->get("output");
+        return $this->_data[$field];
+    }
+    /**
+    * Gets a value
+    *
+    * @param string $field the field to get
+    * @param mixed  $value The value to set it to
+    *
+    * @return null
+    */
+    private function _set($field, $value)
+    {
+        if (in_array($field, $this->_setable)) {
+            $this->_data[$field] = $value;
+        }
+        return $this->get($field);
     }
     /**
     * Returns the table as an array
@@ -103,65 +146,42 @@ class Output extends XTableBase
     */
     public function toArray($default = true)
     {
-        $return = (array)parent::toArray($default);
-        if ($default) {
-            $return["otherTypes"] = outputTable\Driver::getTypes(
-                $return["id"]
-            );
-            $return["validIds"] = $this->driver()->getDrivers();
+        $data = (array)$this->_data;
+        if (!$default) {
+            $data = array_intersect_key($data, array_flip($this->_setable));
         }
-        return (array)$return;
+        return $data;
     }
     /**
-    * This function should be overloaded to make changes to the table based on
-    * changes to incoming data.
+    * Returns the table as an array
     *
-    * This is a way to make sure that the data is consistant before it gets stored
-    * in the database
+    * @param array $array The array to use
+    *
+    * @return array
+    */
+    public function fromArray($array)
+    {
+        foreach ((array)$array as $field => $value) {
+            $this->_set($field, $value);
+        }
+        $this->_check();
+    }
+    /**
+    * Returns the input object associated with this channel
     *
     * @return null
     */
-    protected function fixTable()
+    public function output()
     {
+        return $this->_device->input($this->get("input"));
     }
     /**
-    * This builds the class from a setup string
+    * Checks for consistancy
     *
-    * @return Array of channel information
+    * @return object
     */
-    public function channels()
+    private function _check()
     {
-        $channels = (array)$this->driver()->channels();
-        $sid = $this->id();
-        foreach (array_keys($channels) as $key) {
-            $channels[$key]["output"] = $sid;
-        }
-        return $channels;
-    }
-    /**
-    * Gets the config and saves it
-    *
-    * @param string $url The url to post to
-    *
-    * @return string The left over string
-    */
-    public function post($url = null)
-    {
-        if (!is_string($url) || (strlen($url) == 0)) {
-            $master = $this->system()->get("master");
-            $url = $master["url"];
-        }
-        $output = $this->toArray(false);
-        return \HUGnet\Util::postData(
-            $url,
-            array(
-                "uuid"   => urlencode($this->system()->get("uuid")),
-                "id"     => sprintf("%06X", $output["dev"]).".".$output["output"],
-                "action" => "put",
-                "task"   => "deviceoutput",
-                "data"   => $output,
-            )
-        );
     }
 }
 

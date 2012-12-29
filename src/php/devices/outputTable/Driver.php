@@ -305,6 +305,22 @@ abstract class Driver
         }
         return $string;
     }
+    /**
+    * This builds the class from a setup string
+    *
+    * @return Array of channel information
+    */
+    public function channels()
+    {
+        return array(
+            array(
+                "min" => $this->get("min"),
+                "max" => $this->get("max"),
+                "label" => $this->get("shortName"),
+                "index" => 0,
+            ),
+        );
+    }
 
     /**
     * Returns the driver that should be used for a particular device

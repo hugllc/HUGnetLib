@@ -65,6 +65,8 @@ class EmptyOutput extends \HUGnet\devices\outputTable\Driver
         "longName" => "Empty Output",
         "shortName" => "Empty",
         "id" => 0xFF,  // Force ID to be 0xFF
+        "min" => 0,
+        "max" => 0,
     );
 
 }

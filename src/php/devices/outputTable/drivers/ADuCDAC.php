@@ -106,6 +106,8 @@ class ADuCDAC extends \HUGnet\devices\outputTable\Driver
                 0 => "0 V to VREF (1.2 V)",
             ),
         ),
+        "min" => 0,
+        "max" => 4096,
     );
     /** This is the base for our setup byte */
     protected $regBase = 0x0010;

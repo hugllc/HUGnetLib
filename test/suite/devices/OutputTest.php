@@ -191,6 +191,8 @@ class OutputTest extends \PHPUnit_Framework_TestCase
                     "extraText" => array(),
                     "extraDefault" => array(),
                     "extraValues" => array(),
+                    "min" => 1234,
+                    "max" => 4321,
                 ),
             ),
             array(
@@ -228,6 +230,8 @@ class OutputTest extends \PHPUnit_Framework_TestCase
                     "extraText" => array(),
                     "extraDefault" => array(),
                     "extraValues" => array(),
+                    "min" => 0,
+                    "max" => 0,
                 ),
             ),
         );
@@ -252,6 +256,65 @@ class OutputTest extends \PHPUnit_Framework_TestCase
         $obj = Output::factory($sys, null, $class, $dev);
         $json = $obj->toArray();
         $this->assertEquals($expect, $json);
+        unset($obj);
+    }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataChannels()
+    {
+        return array(
+            array(
+                new \HUGnet\DummySystem(),
+                null,
+                array(
+                    "id" => 5,
+                ),
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 0xFD,
+                            "output" => 4,
+                            "location" => "Test",
+                        ),
+                    ),
+                ),
+                array(
+                    array(
+                        "output"   => 4,
+                        "index" => 0,
+                        "min" => 1234,
+                        "max" => 4321,
+                        'label' => 'SSD1'
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config The configuration to use
+    * @param mixed  $device The device to set
+    * @param mixed  $class  This is either the name of a class or an object
+    * @param array  $mocks  The mocks to use
+    * @param string $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataChannels
+    */
+    public function testChannels(
+        $config, $device, $class, $mocks, $expect
+    ) {
+        $config->resetMock($mocks);
+        $dev = new \HUGnet\DummyBase("Device");
+        $obj = Output::factory($config, $device, $class, $dev);
+        $this->assertEquals(
+            $expect, $obj->Channels(), "Return Wrong"
+        );
         unset($obj);
     }
 }
@@ -282,6 +345,8 @@ class TestOutputDriver1 extends \HUGnet\devices\outputTable\Driver
     protected $params = array(
         "longName" => "Silly Output Driver 1",
         "shortName" => "SSD1",
+        "min" => 1234,
+        "max" => 4321,
     );
     /**
     * Changes a raw reading into a output value
@@ -326,6 +391,8 @@ class TestOutputDriver2 extends \HUGnet\devices\outputTable\Driver
     protected $params = array(
         "longName" => "Silly Output Driver 2",
         "shortName" => "SSD2",
+        "min" => 11,
+        "max" => 22,
     );
     /**
     * Changes a raw reading into a output value
