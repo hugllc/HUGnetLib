@@ -193,6 +193,7 @@ class OutputTest extends \PHPUnit_Framework_TestCase
                     "extraValues" => array(),
                     "min" => 1234,
                     "max" => 4321,
+                    "zero" => 0,
                 ),
             ),
             array(
@@ -232,6 +233,7 @@ class OutputTest extends \PHPUnit_Framework_TestCase
                     "extraValues" => array(),
                     "min" => 0,
                     "max" => 0,
+                    "zero" => 0,
                 ),
             ),
         );

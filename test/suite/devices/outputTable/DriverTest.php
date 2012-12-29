@@ -174,6 +174,7 @@ class DriverTest extends drivers\DriverTestBase
             'extraValues' => Array (),
             "min" => 25,
             "max" => 81,
+            "zero" => 0,
         );
         $this->assertEquals($expect, $this->o->toArray(1));
     }

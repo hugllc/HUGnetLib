@@ -2115,6 +2115,55 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         unset($obj);
     }
     /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataControlChannels()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "sensors"  => array(array("id" => 0x15)),
+                            "controlChannels" => "",
+                        ),
+                    ),
+                ),
+                "DummyTable",
+                "\HUGnet\devices\ControlChannels",
+                0x15,
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config       The configuration to use
+    * @param mixed  $class        This is either the name of a class or an object
+    * @param string $driverExpect The driver we expect to be loaded
+    * @param int    $expect       The expected sensor id
+    *
+    * @return null
+    *
+    * @dataProvider dataControlChannels
+    */
+    public function testControlChannels(
+        $config, $class, $driverExpect, $expect
+    ) {
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = Device::factory($sys, null, $class);
+        $sen = $obj->controlChannels();
+        $this->assertInstanceOf(
+            $driverExpect, $sen,
+            "Return is not a ".$driverExpect
+        );
+        unset($obj);
+    }
+    /**
     * This tests the object creation
     *
     * @return null
@@ -2127,6 +2176,23 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $sen = $obj->dataChannel(0);
         $this->assertInstanceOf(
             "\\HUGnet\\devices\\DataChan",
+            $sen
+        );
+        unset($obj);
+    }
+    /**
+    * This tests the object creation
+    *
+    * @return null
+    */
+    public function testControlChannel()
+    {
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = Device::factory($sys, null, $class);
+        $sen = $obj->controlChannel(0);
+        $this->assertInstanceOf(
+            "\\HUGnet\\devices\\ControlChan",
             $sen
         );
         unset($obj);

@@ -108,6 +108,7 @@ class ADuCDAC extends \HUGnet\devices\outputTable\Driver
         ),
         "min" => 0,
         "max" => 4096,
+        "zero" => 1556,
     );
     /** This is the base for our setup byte */
     protected $regBase = 0x0010;

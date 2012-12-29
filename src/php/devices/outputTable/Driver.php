@@ -80,6 +80,9 @@ abstract class Driver
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(),
+        "min" => 0,
+        "max" => 0,
+        "zero" => 0,
     );
     /**
     * This is where all of the driver information is stored.

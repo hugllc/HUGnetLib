@@ -103,6 +103,9 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
             array("extraText", "array"),
             array("extraValues", "array"),
             array("extraDefault", "array"),
+            array("min", "int"),
+            array("max", "int"),
+            array("zero", "int"),
         );
     }
     /**
