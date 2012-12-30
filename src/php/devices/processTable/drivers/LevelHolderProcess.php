@@ -132,7 +132,7 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
     private function _decodeChannels($string, &$extra)
     {
         $index = 0;
-        $channels = $this->process()->device()->channels();
+        $channels = $this->process()->device()->dataChannels();
         for ($i = 3; $i < count($this->params["extraText"]); $i += 3) {
             $chan = substr($string, $index, 2);
             if (($chan == "FF") || ($chan === false)) {
@@ -187,7 +187,7 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
     */
     private function _encodeChannels()
     {
-        $channels = $this->process()->device()->channels();
+        $channels = $this->process()->device()->dataChannels();
         $data = "";
         for ($i = 3; $i < count($this->params["extraText"]); $i += 3) {
             $chan = $this->getExtra($i);
