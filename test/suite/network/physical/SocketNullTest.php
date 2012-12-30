@@ -89,7 +89,8 @@ class SocketNullTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException("RuntimeException");
         $config = array();
-        $socket = SocketNull::factory($config);
+        $sys = new \HUGnet\DummyBase("System");
+        $socket = SocketNull::factory($sys, $config);
         $socket->read();
     }
     /**
@@ -101,7 +102,8 @@ class SocketNullTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException("RuntimeException");
         $config = array();
-        $socket = SocketNull::factory($config);
+        $sys = new \HUGnet\DummyBase("System");
+        $socket = SocketNull::factory($sys, $config);
         $socket->write();
     }
     /**
@@ -112,7 +114,8 @@ class SocketNullTest extends \PHPUnit_Framework_TestCase
     public function testAvailable()
     {
         $config = array();
-        $socket = SocketNull::factory($config);
+        $sys = new \HUGnet\DummyBase("System");
+        $socket = SocketNull::factory($sys, $config);
         $this->assertFalse($socket->available());
     }
 

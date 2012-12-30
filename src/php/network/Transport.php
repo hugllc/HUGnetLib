@@ -59,7 +59,9 @@ final class Transport
     /** This is the max number of unsolicited packets that can queue up */
     const MAX_UNSOL = 100;
     /** This is our network */
-    private $_network = array();
+    private $_network;
+    /** This is our system */
+    private $_system;
     /** These are the packets we are sending */
     private $_packets = array();
     /** These are the packets we get we weren't expecting */
@@ -76,12 +78,14 @@ final class Transport
     * Sets our configuration
     *
     * @param object &$network The network object to use
+    * @param object &$system  The system object to use
     * @param array  $config   The configuration to use
     */
-    private function __construct(&$network, $config)
+    private function __construct(&$network, &$system, $config)
     {
         $this->_config  = array_merge($this->_defaultConfig, $config);
         $this->_network = &$network;
+        $this->_system = &$system;
         // This is our packet container
         include_once dirname(__FILE__)."/TransportPacket.php";
     }
@@ -89,13 +93,14 @@ final class Transport
     * Creates the object
     *
     * @param object &$network The network object to use
+    * @param object &$system  The system object to use
     * @param array  $config   The configuration to use
     *
     * @return Transport Object
     */
-    static public function &factory(&$network, $config = array())
+    static public function &factory(&$network, &$system, $config = array())
     {
-        $obj = new Transport($network, (array)$config);
+        $obj = new Transport($network, $system, (array)$config);
         return $obj;
     }
 

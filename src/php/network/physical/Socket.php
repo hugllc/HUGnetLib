@@ -78,6 +78,10 @@ final class Socket
     */
     private $_config = array();
     /**
+    * This is the system object to use
+    */
+    private $_system = "";
+    /**
     * This our socket
     */
     private $_socket;
@@ -93,10 +97,12 @@ final class Socket
     /**
     * Sets our configuration
     *
-    * @param array $config The configuration to use
+    * @param object &$system The system object to use
+    * @param array  $config  The configuration to use
     */
-    private function __construct($config)
+    private function __construct(&$system, $config)
     {
+        $this->_system = &$system;
         $this->_config = array_merge($this->_defaultConfig, $config);
         if (is_string($this->_config["type"]) && defined($this->_config["type"])) {
             $this->_config["type"] = constant($this->_config["type"]);
@@ -107,13 +113,14 @@ final class Socket
     /**
     * Creates the object
     *
-    * @param array $config The configuration to use
+    * @param object &$system The system object to use
+    * @param array  $config  The configuration to use
     *
     * @return null
     */
-    static public function &factory($config = array())
+    static public function &factory(&$system, $config = array())
     {
-        $obj = new Socket((array)$config);
+        $obj = new Socket($system, (array)$config);
         return $obj;
     }
 
@@ -147,7 +154,7 @@ final class Socket
         if (is_resource($this->_socket)) {
             return true;
         }
-        \HUGnet\VPrint::out(
+        $this->_system->out(
             $this->_config["name"]."(".$this->_config["driver"].") Opening "
             ."connection to ".$this->_config["location"],
             6
@@ -185,7 +192,7 @@ final class Socket
             if (socket_last_error($this->_socket) > 0) {
                 socket_clear_error($this->_socket);
                 $this->_disconnect();
-                \HUGnet\VPrint::out(
+                $this->_system->out(
                     "Socket ".$this->_config["location"]." disappeared.  "
                     ."Waiting 10s",
                     1
@@ -193,7 +200,7 @@ final class Socket
                 sleep(10);
                 $this->_connect();
             }
-            \HUGnet\VPrint::out(
+            $this->_system->out(
                 $this->_config["name"]."(".$this->_config["driver"].") -> ".$return,
                 6
             );
@@ -209,7 +216,7 @@ final class Socket
     */
     private function _write($string)
     {
-        \HUGnet\VPrint::out(
+        $this->_system->out(
             $this->_config["name"]."(".$this->_config["driver"].") <- ".$string,
             6
         );

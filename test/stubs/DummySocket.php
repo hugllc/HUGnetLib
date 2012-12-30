@@ -63,11 +63,12 @@ class DummySocket extends \HUGnet\DummyBase
     /**
     * Creates the object
     *
-    * @param array $config The configuration to use
+    * @param object &$system The system object to use
+    * @param array  $config  The configuration to use
     *
     * @return null
     */
-    static public function &factory($config = array())
+    static public function &factory(&$system, $config = array())
     {
         $obj = new DummySocket($config["name"]);
         return $obj;

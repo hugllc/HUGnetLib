@@ -126,8 +126,9 @@ class LocalTest extends \PHPUnit_Framework_TestCase
         if (is_string($exception)) {
             $this->setExpectedException($exception);
         }
+        $sys = new \HUGnet\DummyBase("System");
         // This sets up the server
-        $obj = Local::factory($preload);
+        $obj = Local::factory($sys, $preload);
         $this->assertSame($available, $obj->available(), "Available Wrong");
         // This writes to the connection
         $this->assertSame($expect, $obj->write($write), "The return is wrong");

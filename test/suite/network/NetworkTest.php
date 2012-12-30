@@ -805,7 +805,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         }
         $sys = new \HUGnet\DummyBase("HUGnetSystem");
         $sys->resetMock($system);
-        $network = &Network::factory($config);
+        $network = &Network::factory($sys, $config);
         for ($i = 0; $i < $loops; $i++) {
             if (isset($send[$i])) {
                 $network->send($send[$i]);
@@ -815,7 +815,9 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 $this->assertEquals($recv[$i], $ret, "Return wrong ($i)");
             }
         }
-        $this->assertEquals($expect, $sys->retrieve(), "Calls wrong");
+        foreach ($expect as $name => $args) {
+            $this->assertEquals($args, $sys->retrieve($name), "$name Calls wrong");
+        }
     }
 
 }

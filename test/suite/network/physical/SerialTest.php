@@ -178,8 +178,9 @@ class SerialTest extends \PHPUnit_Framework_TestCase
             touch($preload["location"]);
             $this->files[] = $preload["location"];
         }
+        $sys = new \HUGnet\DummyBase("System");
         // This sets up the server
-        $obj = Serial::factory($preload);
+        $obj = Serial::factory($sys, $preload);
         $this->assertSame($available, $obj->available(), "Available Wrong");
         // This writes to the connection
         $this->assertSame($expect, $obj->write($write), "The return is wrong");
