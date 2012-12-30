@@ -104,7 +104,7 @@ class LevelHolderProcessTest extends DriverTestBase
                         "device" => new \HUGnet\DummyBase("Device"),
                     ),
                     "Device" => array(
-                        "channels" => new \HUGnet\DummyBase("Channels"),
+                        "dataChannels" => new \HUGnet\DummyBase("Channels"),
                     ),
                     "Channels" => array(
                         "dataChannel" => array(
@@ -189,7 +189,7 @@ class LevelHolderProcessTest extends DriverTestBase
                         "device" => new \HUGnet\DummyBase("Device"),
                     ),
                     "Device" => array(
-                        "channels" => new \HUGnet\DummyBase("Channels"),
+                        "dataChannels" => new \HUGnet\DummyBase("Channels"),
                     ),
                     "Channels" => array(
                     ),
@@ -210,7 +210,7 @@ class LevelHolderProcessTest extends DriverTestBase
                         "device" => new \HUGnet\DummyBase("Device"),
                     ),
                     "Device" => array(
-                        "channels" => new \HUGnet\DummyBase("Channels"),
+                        "dataChannels" => new \HUGnet\DummyBase("Channels"),
                     ),
                     "Channels" => array(
                         "dataChannel" => array(
