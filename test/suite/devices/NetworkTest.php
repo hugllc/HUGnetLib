@@ -50,8 +50,6 @@ require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummyDeviceDriver.php';
 /** This is a required class */
-require_once CODE_BASE.'util/VPrint.php';
-/** This is a required class */
 require_once CODE_BASE.'db/tables/Firmware.php';
 
 

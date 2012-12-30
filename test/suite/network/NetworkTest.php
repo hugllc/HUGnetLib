@@ -42,8 +42,6 @@ require_once CODE_BASE.'network/packets/Packet.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
-require_once CODE_BASE.'util/VPrint.php';
-/** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummySocket.php';
 /**
  * Test class for HUGnetDB.
