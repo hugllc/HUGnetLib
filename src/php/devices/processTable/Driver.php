@@ -90,6 +90,7 @@ abstract class Driver
     */
     private static $_drivers = array(
         "01:DEFAULT"                 => "LevelHolderProcess",
+        "02:DEFAULT"                 => "PIDProcess",
         "FF:DEFAULT"                 => "EmptyProcess",
     );
     /**
@@ -103,6 +104,7 @@ abstract class Driver
         "AVR" => array(
         ),
         "ADuC" => array(
+            0x02 => "PIDProcess",
         ),
         "all" => array(
             0x01 => "LevelHolderProcess",
