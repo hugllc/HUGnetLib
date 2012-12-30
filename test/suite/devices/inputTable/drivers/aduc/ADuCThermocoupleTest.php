@@ -69,8 +69,21 @@ class ADuCThermocoupleTest extends DriverTestBaseADuC
     protected function setUp()
     {
         parent::setUp();
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock(array());
+        $sensor = new \HUGnet\DummyBase("Input");
+        $sensor->resetMock(
+            array(
+                "Input" => array(
+                    "device" => new \HUGnet\DummyBase("Device"),
+                ),
+                "Device" => array(
+                    "dataChannels" => new \HUGnet\DummyBase("dataChannels"),
+                ),
+                "dataChannels" => array(
+                    "select" => array(),
+                ),
+
+            )
+        );
         $this->o = \HUGnet\devices\inputTable\Driver::factory(
             "ADuCThermocouple", $sensor, 0
         );
@@ -100,7 +113,7 @@ class ADuCThermocoupleTest extends DriverTestBaseADuC
         return array(
             array( //#0 Verified by http://srdata.nist.gov/its90/download/type_k.tab
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array()
                         ),
@@ -114,7 +127,7 @@ class ADuCThermocoupleTest extends DriverTestBaseADuC
             ),
             array( //#1 Verified by http://srdata.nist.gov/its90/download/type_k.tab
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array()
                         ),
@@ -128,7 +141,7 @@ class ADuCThermocoupleTest extends DriverTestBaseADuC
             ),
             array( //#2 Verified by http://srdata.nist.gov/its90/download/type_k.tab
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array()
                         ),
@@ -142,7 +155,7 @@ class ADuCThermocoupleTest extends DriverTestBaseADuC
             ),
             array( //#3 Too low
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array()
                         ),
@@ -156,7 +169,7 @@ class ADuCThermocoupleTest extends DriverTestBaseADuC
             ),
             array( //#4 Too high
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array()
                         ),
@@ -167,6 +180,20 @@ class ADuCThermocoupleTest extends DriverTestBaseADuC
                 array(0 => array("value" => 10)),
                 array(),
                 null,
+            ),
+            array( //#5 Verified by http://srdata.nist.gov/its90/download/type_k.tab
+                array(
+                    "Input" => array(
+                        "get" => array(
+                            "extra" => array(4 => 4)
+                        ),
+                    ),
+                ),
+                -23921, // (-3.76411915 mV)
+                1,
+                array(4 => array("value" => 10)),
+                array(),
+                -96.9944,
             ),
         );
     }
@@ -182,7 +209,7 @@ class ADuCThermocoupleTest extends DriverTestBaseADuC
         return array(
             array( //#0 Verified by http://srdata.nist.gov/its90/download/type_k.tab
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array()
                         ),
@@ -196,7 +223,7 @@ class ADuCThermocoupleTest extends DriverTestBaseADuC
             ),
             array( //#1 Verified by http://srdata.nist.gov/its90/download/type_k.tab
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array()
                         ),
@@ -211,7 +238,7 @@ class ADuCThermocoupleTest extends DriverTestBaseADuC
             /*  This fails for an unknown reason
             array( //#2 Verified by http://srdata.nist.gov/its90/download/type_k.tab
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array()
                         ),
@@ -226,7 +253,7 @@ class ADuCThermocoupleTest extends DriverTestBaseADuC
             */
             array( //#3 Too low
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array()
                         ),
@@ -240,7 +267,7 @@ class ADuCThermocoupleTest extends DriverTestBaseADuC
             ),
             array( //#4 0 Vref
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array(2 => 0)
                         ),
@@ -254,7 +281,7 @@ class ADuCThermocoupleTest extends DriverTestBaseADuC
             ),
             array( //#5 Wrong kind of thermocouple
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array(3 => "j")
                         ),
@@ -265,6 +292,20 @@ class ADuCThermocoupleTest extends DriverTestBaseADuC
                 array(0 => array("value" => 10)),
                 array(),
                 -47121,
+            ),
+            array( //#6 Verified by http://srdata.nist.gov/its90/download/type_k.tab
+                array(
+                    "Input" => array(
+                        "get" => array(
+                            "extra" => array(4 => 3)
+                        ),
+                    ),
+                ),
+                "A6A2FFFF", // (-3.76411915 mV)
+                1,
+                array(3 => array("value" => 10)),
+                array(),
+                -96.9939,
             ),
         );
     }
