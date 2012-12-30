@@ -165,7 +165,8 @@ class ControlChannelsTest extends \PHPUnit_Framework_TestCase
         $obj = ControlChannels::factory($config, $gateway);
         // Make sure we have the right object
         $this->assertInstanceOf(
-            "HUGnet\devices\ControlChannels", $obj, "Class wrong");
+            "HUGnet\devices\ControlChannels", $obj, "Class wrong"
+        );
         if (is_object($table)) {
             $this->assertEquals($expectTable, $table->retrieve(), "Data Wrong");
         }
