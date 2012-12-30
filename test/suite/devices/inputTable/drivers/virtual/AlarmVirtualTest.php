@@ -69,8 +69,21 @@ class AlarmVirtualTest extends DriverTestBaseVirtual
     protected function setUp()
     {
         parent::setUp();
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock(array());
+        $sensor = new \HUGnet\DummyBase("Input");
+        $sensor->resetMock(
+            array(
+                "Input" => array(
+                    "device" => new \HUGnet\DummyBase("Device"),
+                ),
+                "Device" => array(
+                    "dataChannels" => new \HUGnet\DummyBase("dataChannels"),
+                ),
+                "dataChannels" => array(
+                    "select" => array(),
+                ),
+
+            )
+        );
         $this->o = \HUGnet\devices\inputTable\DriverVirtual::factory(
             "AlarmVirtual", $sensor
         );
@@ -100,7 +113,7 @@ class AlarmVirtualTest extends DriverTestBaseVirtual
         return array(
             array( // #0
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array(
                                 0, 5, 3
@@ -119,7 +132,7 @@ class AlarmVirtualTest extends DriverTestBaseVirtual
             ),
             array( // #1
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array(
                                 0, 10, 5.5
@@ -138,7 +151,7 @@ class AlarmVirtualTest extends DriverTestBaseVirtual
             ),
             array( // #2
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array(
                                 0, 10, 5.5
@@ -157,7 +170,7 @@ class AlarmVirtualTest extends DriverTestBaseVirtual
             ),
             array( // #3
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array(
                                 0, 20, 10,
@@ -176,7 +189,7 @@ class AlarmVirtualTest extends DriverTestBaseVirtual
             ),
             array( // #5
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array(
                                 0, 20, 10
@@ -195,7 +208,7 @@ class AlarmVirtualTest extends DriverTestBaseVirtual
             ),
             array( // #6
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array(
                                 0, 4, 0
@@ -214,7 +227,7 @@ class AlarmVirtualTest extends DriverTestBaseVirtual
             ),
             array( // #7
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array(
                                 0, 0, 4
@@ -233,7 +246,7 @@ class AlarmVirtualTest extends DriverTestBaseVirtual
             ),
             array( // #8
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array(
                                 0, 0, 4
@@ -252,7 +265,7 @@ class AlarmVirtualTest extends DriverTestBaseVirtual
             ),
             array( // #9
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array(
                                 0, 0, 4
@@ -271,7 +284,7 @@ class AlarmVirtualTest extends DriverTestBaseVirtual
             ),
             array( // #10
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array(
                                 0, 0, 4
@@ -290,7 +303,7 @@ class AlarmVirtualTest extends DriverTestBaseVirtual
             ),
             array( // #11
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array(
                                 0, 0, 4

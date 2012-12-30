@@ -433,6 +433,104 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
         unset($obj);
     }
     /**
+    * Data provider for testSelect
+    *
+    * @return array
+    */
+    public static function dataSelect()
+    {
+        return array(
+            array(
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "InputTables" => 3,
+                            "dataChannels" => array(
+                                array(
+                                    "units" => "bar",
+                                    "decimals" => 4,
+                                ),
+                                array(
+                                    "units" => "%",
+                                    "decimals" => 4,
+                                ),
+                                array(
+                                    "units" => "%",
+                                    "decimals" => 4,
+                                ),
+                            ),
+                        ),
+                        "input" => array(
+                            "0" => new \HUGnet\DummyTable("Sensor0"),
+                            "1" => new \HUGnet\DummyTable("Sensor1"),
+                            "2" => new \HUGnet\DummyTable("Sensor2"),
+                        ),
+                    ),
+                    "Sensor0" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Pressure",
+                                "storageUnit" => "psi",
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                            ),
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Percent",
+                                "storageUnit" => "decimal",
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                            ),
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Percent",
+                                "storageUnit" => "decimal",
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    "q" => "Favorite Letter",
+                ),
+                array(
+                    "q" => "Favorite Letter",
+                    0 => 'Data Channel 0 (bar)',
+                    1 => 'Data Channel 1 (%)',
+                    2 => 'Data Channel 2 (%)',
+                )
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array $config The configuration to use
+    * @param array $array  The array to start with
+    * @param mixed $expect The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataSelect
+    */
+    public function testSelect(
+        $config, $array, $expect
+    ) {
+        $sys = new \HUGnet\DummySystem("System");
+        $dev = new \HUGnet\DummyTable("Device");
+        $sys->resetMock($config);
+        $obj = DataChannels::factory($sys, $dev);
+        $this->assertEquals($expect, $obj->select($array));
+        unset($obj);
+    }
+    /**
     * Data provider for testGetField
     *
     * @return array

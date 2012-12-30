@@ -107,9 +107,25 @@ OutputHiLimit
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            4, 3, 3, 15, 15, 15, 15, 15, 15
+            4, array(), array(), 15, 15, 15, 15, 15, 15
         ),
     );
+    /**
+    * Gets an item
+    *
+    * @param string $name The name of the property to get
+    *
+    * @return null
+    */
+    public function get($name)
+    {
+        $ret = parent::get($name);
+        if ($name == "extraValues") {
+            $ret[1] = $this->process()->device()->controlChannels()->select();
+            $ret[2] = $this->process()->device()->dataChannels()->select();
+        }
+        return $ret;
+    }
     /**
     * Decodes the driver portion of the setup string
     *

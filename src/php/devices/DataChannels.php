@@ -171,6 +171,22 @@ class DataChannels
         $record["converted"] = true;
     }
     /**
+    * Returns an array to select the data channel
+    *
+    * @param array $ret The base array to start with
+    *
+    * @return array of id -> name pairs
+    */
+    public function select($ret = array())
+    {
+        $ret = (array)$ret;
+        foreach (array_keys($this->_channels) as $chan) {
+            $ret[$chan]  = $this->_channels[$chan]->get("label");
+            $ret[$chan] .= " (".$this->_channels[$chan]->get("units").")";
+        }
+        return $ret;
+    }
+    /**
     * This function gives us access to the table class
     *
     * @return reference to the system object

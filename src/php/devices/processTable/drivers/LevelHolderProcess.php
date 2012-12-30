@@ -100,9 +100,32 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            4, 3, 3, 3, 15, 15, 3, 15, 15, 3, 15, 15
+            4, array(), 3, array(), 15, 15, array(), 15, 15, array(), 15, 15
         ),
     );
+    /**
+    * Gets an item
+    *
+    * @param string $name The name of the property to get
+    *
+    * @return null
+    */
+    public function get($name)
+    {
+        $ret = parent::get($name);
+        if ($name == "extraValues") {
+            $control = $this->process()->device()->controlChannels()->select(
+                array("" => "None")
+            );
+            $dataChans = $this->process()->device()->dataChannels();
+            $data = $dataChans->select(array("" => "None"));
+            $ret[1] = $control;
+            $ret[3] = $dataChans->select();
+            $ret[6] = $data;
+            $ret[9] = $data;
+        }
+        return $ret;
+    }
     /**
     * Decodes the driver portion of the setup string
     *

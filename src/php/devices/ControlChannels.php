@@ -188,6 +188,21 @@ class ControlChannels
         return $this->_device->set("controlChannels", json_encode($ret));
 
     }
+    /**
+    * Returns an array to select the data channel
+    *
+    * @param array $ret The base array to start with
+    *
+    * @return array of id -> name pairs
+    */
+    public function select($ret = array())
+    {
+        $ret = (array)$ret;
+        foreach (array_keys($this->_channels) as $chan) {
+            $ret[$chan] = $this->_channels[$chan]->get("label");
+        }
+        return $ret;
+    }
 
     /**
     * Returns the number of channels

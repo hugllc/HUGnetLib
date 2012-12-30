@@ -69,7 +69,7 @@ class LinearTransformVirtual extends \HUGnet\devices\inputTable\DriverVirtual
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            5, 10, 10, 15, 15, 10, 15,
+            array(), 10, 10, 15, 15, 10, 15,
             array(
                 \HUGnet\devices\datachan\Driver::TYPE_RAW
                     => \HUGnet\devices\datachan\Driver::TYPE_RAW,
@@ -98,6 +98,21 @@ class LinearTransformVirtual extends \HUGnet\devices\inputTable\DriverVirtual
                 => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         ),
     );
+    /**
+    * Gets an item
+    *
+    * @param string $name The name of the property to get
+    *
+    * @return null
+    */
+    public function get($name)
+    {
+        $ret = parent::get($name);
+        if ($name == "extraValues") {
+            $ret[0] = $this->input()->device()->dataChannels()->select();
+        }
+        return $ret;
+    }
     /**
     * Changes a raw reading into a output value
     *
