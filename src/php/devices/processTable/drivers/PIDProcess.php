@@ -85,13 +85,14 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
             "Data Channel",
             "Input Offset",
             "Setpoint",
+            "Error Threshold",
             "P",
             "I",
             "D",
             "Output Offset",
         ),
         "extraDefault" => array(
-            0, 0, 0, 0, 0, 0, 0, 0, 0
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
@@ -138,9 +139,9 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
         $str   = substr($string, $index, 8);
         $index += 8;
         $extra[4] = $this->_getProcessIntStr($str, 4);
-        $str   = substr($string, $index, 8);
-        $index += 8;
-        $extra[5] = round($this->_getProcessIntStr($str, 4)/(1<<16), 6);
+        $str   = substr($string, $index, 4);
+        $index += 4;
+        $extra[5] = $this->_getProcessIntStr($str, 2);
         $str   = substr($string, $index, 8);
         $index += 8;
         $extra[6] = round($this->_getProcessIntStr($str, 4)/(1<<16), 6);
@@ -149,7 +150,10 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
         $extra[7] = round($this->_getProcessIntStr($str, 4)/(1<<16), 6);
         $str   = substr($string, $index, 8);
         $index += 8;
-        $extra[8] = $this->_getProcessIntStr($str, 4);
+        $extra[8] = round($this->_getProcessIntStr($str, 4)/(1<<16), 6);
+        $str   = substr($string, $index, 8);
+        $index += 8;
+        $extra[9] = $this->_getProcessIntStr($str, 4);
         $this->process()->set("extra", $extra);
     }
     /**
@@ -165,10 +169,11 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
         }
         $data .= $this->_getProcessStrInt($this->getExtra(3), 4);
         $data .= $this->_getProcessStrInt($this->getExtra(4), 4);
-        $data .= $this->_getProcessStrInt($this->getExtra(5)*(1<<16), 4);
+        $data .= $this->_getProcessStrInt($this->getExtra(5), 2);
         $data .= $this->_getProcessStrInt($this->getExtra(6)*(1<<16), 4);
         $data .= $this->_getProcessStrInt($this->getExtra(7)*(1<<16), 4);
-        $data .= $this->_getProcessStrInt($this->getExtra(8), 4);
+        $data .= $this->_getProcessStrInt($this->getExtra(8)*(1<<16), 4);
+        $data .= $this->_getProcessStrInt($this->getExtra(9), 4);
         $data .= $this->_getProcessStrInt(0, 4);
         $data .= $this->_getProcessStrInt(4096, 4);
         return $data;
