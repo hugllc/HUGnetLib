@@ -130,7 +130,8 @@ class PIDProcessTest extends DriverTestBase
                     "DataChan4" => array(
                     ),
                 ),
-                "010203040000000500000006000000070000000800000009000000",
+                "010203040000000500000000000600000007000000080009000000"
+                    ."0000000000100000",
                 array(
                     array(
                         'extra',
@@ -143,6 +144,57 @@ class PIDProcessTest extends DriverTestBase
                             5 => 6,
                             6 => 7,
                             7 => 8,
+                            8 => 9,
+                        )
+                    ),
+                ),
+            ),
+            array( // #0
+                array(
+                    "Process" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "dataChannels" => new \HUGnet\DummyBase("Channels"),
+                    ),
+                    "Channels" => array(
+                        "dataChannel" => array(
+                            "0" => new \HUGnet\DummyBase("DataChan0"),
+                            "1" => new \HUGnet\DummyBase("DataChan1"),
+                            "2" => new \HUGnet\DummyBase("DataChan2"),
+                            "3" => new \HUGnet\DummyBase("DataChan3"),
+                            "4" => new \HUGnet\DummyBase("DataChan4"),
+                        ),
+                    ),
+                    "DataChan0" => array(
+                    ),
+                    "DataChan1" => array(
+                    ),
+                    "DataChan2" => array(
+                        "decode" => array(
+                            "12345678" => "12",
+                            "11223344" => "14",
+                        ),
+                    ),
+                    "DataChan3" => array(
+                    ),
+                    "DataChan4" => array(
+                    ),
+                ),
+                "010203040000000500000001000600100007000010080009000000"
+                    ."0000000000100000",
+                array(
+                    array(
+                        'extra',
+                        array(
+                            0 => 1,
+                            1 => 2,
+                            2 => 3,
+                            3 => 4,
+                            4 => 5,
+                            5 => 6.000015,
+                            6 => 7.000244,
+                            7 => 8.0625,
                             8 => 9,
                         )
                     ),
@@ -200,7 +252,35 @@ class PIDProcessTest extends DriverTestBase
                     "Channels" => array(
                     ),
                 ),
-                "010203040000000500000006000000070000000800000009000000",
+                "010203040000000500000000000600000007000000080009000000"
+                    ."0000000000100000",
+            ),
+            array( // #1
+                array(
+                    "Process" => array(
+                        "get" => array(
+                            'extra' => array(
+                                0 => 1,
+                                1 => 2,
+                                2 => 3,
+                                3 => 4,
+                                4 => 5,
+                                5 => 6.000016,
+                                6 => 7.000254,
+                                7 => 8.0625,
+                                8 => 9,
+                            )
+                        ),
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "dataChannels" => new \HUGnet\DummyBase("Channels"),
+                    ),
+                    "Channels" => array(
+                    ),
+                ),
+                "010203040000000500000001000600100007000010080009000000"
+                    ."0000000000100000",
             ),
         );
     }
