@@ -324,7 +324,7 @@ abstract class Driver
         return $this->process()->device()->send(
             array(
                 "Command" => "SETPROCESSTABLERAM",
-                "Data" => $this->encode()
+                "Data" => $this->process()->encode()
             )
         );
     }
