@@ -80,6 +80,7 @@ class Device extends \HUGnet\base\SystemTableAction
         "dataChannel" => "dataChannels",
         "controlChannel" => "controlChannels",
         "reboot" => "network",
+        "send" => "action",
     );
     /** This is where we store our objects */
     protected $classes = array(
