@@ -138,7 +138,8 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
         $extra[3] = $this->_getProcessIntStr($str, 4);
         $str   = substr($string, $index, 8);
         $index += 8;
-        $extra[4] = $this->_getProcessIntStr($str, 4);
+        $dataChan = $this->process()->device()->dataChannel($extra[2]);
+        $extra[4] = $dataChan->decode($str);
         $str   = substr($string, $index, 4);
         $index += 4;
         $extra[5] = $this->_getProcessIntStr($str, 2);
@@ -168,7 +169,9 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
             $data .= $this->_getProcessStrInt($this->getExtra($i), 1);
         }
         $data .= $this->_getProcessStrInt($this->getExtra(3), 4);
-        $data .= $this->_getProcessStrInt($this->getExtra(4), 4);
+        $dataChan = $this->process()->device()->dataChannel($this->getExtra(2));
+        $setpoint = $dataChan->encode($this->getExtra(4));
+        $data .= str_pad($setpoint, 8, "0", STR_PAD_RIGHT);
         $data .= $this->_getProcessStrInt($this->getExtra(5), 2);
         $data .= $this->_getProcessStrInt($this->getExtra(6)*(1<<16), 4);
         $data .= $this->_getProcessStrInt($this->getExtra(7)*(1<<16), 4);

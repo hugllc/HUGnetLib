@@ -105,6 +105,13 @@ class PIDProcessTest extends DriverTestBase
                     ),
                     "Device" => array(
                         "dataChannels" => new \HUGnet\DummyBase("Channels"),
+                        "dataChannel" => array(
+                            "0" => new \HUGnet\DummyBase("DataChan0"),
+                            "1" => new \HUGnet\DummyBase("DataChan1"),
+                            "2" => new \HUGnet\DummyBase("DataChan2"),
+                            "3" => new \HUGnet\DummyBase("DataChan3"),
+                            "4" => new \HUGnet\DummyBase("DataChan4"),
+                        ),
                     ),
                     "Channels" => array(
                         "dataChannel" => array(
@@ -115,19 +122,10 @@ class PIDProcessTest extends DriverTestBase
                             "4" => new \HUGnet\DummyBase("DataChan4"),
                         ),
                     ),
-                    "DataChan0" => array(
-                    ),
-                    "DataChan1" => array(
-                    ),
-                    "DataChan2" => array(
-                        "decode" => array(
-                            "12345678" => "12",
-                            "11223344" => "14",
-                        ),
-                    ),
                     "DataChan3" => array(
-                    ),
-                    "DataChan4" => array(
+                        "decode" => array(
+                            "05000000" => 5,
+                        ),
                     ),
                 ),
                 "0102030400000005000000060000000600000007000000080009000000"
@@ -157,6 +155,13 @@ class PIDProcessTest extends DriverTestBase
                     ),
                     "Device" => array(
                         "dataChannels" => new \HUGnet\DummyBase("Channels"),
+                        "dataChannel" => array(
+                            "0" => new \HUGnet\DummyBase("DataChan0"),
+                            "1" => new \HUGnet\DummyBase("DataChan1"),
+                            "2" => new \HUGnet\DummyBase("DataChan2"),
+                            "3" => new \HUGnet\DummyBase("DataChan3"),
+                            "4" => new \HUGnet\DummyBase("DataChan4"),
+                        ),
                     ),
                     "Channels" => array(
                         "dataChannel" => array(
@@ -167,19 +172,10 @@ class PIDProcessTest extends DriverTestBase
                             "4" => new \HUGnet\DummyBase("DataChan4"),
                         ),
                     ),
-                    "DataChan0" => array(
-                    ),
-                    "DataChan1" => array(
-                    ),
-                    "DataChan2" => array(
-                        "decode" => array(
-                            "12345678" => "12",
-                            "11223344" => "14",
-                        ),
-                    ),
                     "DataChan3" => array(
-                    ),
-                    "DataChan4" => array(
+                        "decode" => array(
+                            "05000000" => 5,
+                        ),
                     ),
                 ),
                 "0102030400000005000000060001000600100007000010080009000000"
@@ -251,8 +247,20 @@ class PIDProcessTest extends DriverTestBase
                     ),
                     "Device" => array(
                         "dataChannels" => new \HUGnet\DummyBase("Channels"),
+                        "dataChannel" => array(
+                            "0" => new \HUGnet\DummyBase("DataChan0"),
+                            "1" => new \HUGnet\DummyBase("DataChan1"),
+                            "2" => new \HUGnet\DummyBase("DataChan2"),
+                            "3" => new \HUGnet\DummyBase("DataChan3"),
+                            "4" => new \HUGnet\DummyBase("DataChan4"),
+                        ),
                     ),
                     "Channels" => array(
+                    ),
+                    "DataChan3" => array(
+                        "encode" => array(
+                            "5" => "05000000",
+                        ),
                     ),
                 ),
                 "0102030400000005000000060000000600000007000000080009000000"
@@ -279,6 +287,18 @@ class PIDProcessTest extends DriverTestBase
                     ),
                     "Device" => array(
                         "dataChannels" => new \HUGnet\DummyBase("Channels"),
+                        "dataChannel" => array(
+                            "0" => new \HUGnet\DummyBase("DataChan0"),
+                            "1" => new \HUGnet\DummyBase("DataChan1"),
+                            "2" => new \HUGnet\DummyBase("DataChan2"),
+                            "3" => new \HUGnet\DummyBase("DataChan3"),
+                            "4" => new \HUGnet\DummyBase("DataChan4"),
+                        ),
+                    ),
+                    "DataChan3" => array(
+                        "encode" => array(
+                            "5" => "05000000",
+                        ),
                     ),
                     "Channels" => array(
                     ),
