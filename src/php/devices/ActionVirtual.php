@@ -103,6 +103,10 @@ class ActionVirtual extends Action
             "FWVersion",
             $this->device->system()->get("version")
         );
+        $this->device->set(
+            "RawSetup",
+            $this->device->encode()
+        );
         $this->device->setParam("LastContact", time());
         $this->device->setParam("LastConfig", time());
         $this->device->setParam("ConfigFail", 0);
