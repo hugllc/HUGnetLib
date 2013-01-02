@@ -249,8 +249,9 @@ final class Device
     {
         static $lastBoredom;
 
-        $last = time() - $this->_lastContact;
-        if (($last > 3600) && ((time() - $lastBoredom) > 3600)) {
+        $lastPkt = time() - $this->_lastContact;
+        $last = time() - $this->_device->getParam("LastConfig");
+        if (($lastPkt > 3600) && ((time() - $lastBoredom) > 3600)) {
             $newPacket = packets\Packet::factory(
                 array(
                     "To"      => "000000",
@@ -263,6 +264,18 @@ final class Device
                 $newPacket, null, array("tries" => 1, "find" => false)
             );
             $lastBoredom = time();
+        } else if ($last > 60) {
+            /* This is so we don't get bogged down trying to find a device on this
+             * computer */
+            $this->_system->out(
+                "Updating my config as ".sprintf("%06X", $this->_device->id())
+            );
+            $this->_device->load($this->_device->id());
+            $this->_device->setParam("LastContact", time());
+            $this->_device->setParam("LastConfig", time());
+            $this->_device->setParam("ConfigFail", 0);
+            $this->_device->setParam("ContactFail", 0);
+            $this->_device->store();
         }
     }
 }
