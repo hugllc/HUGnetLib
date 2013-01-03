@@ -66,12 +66,12 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
      * The minimum value for the DAC
      *  (int)(self::CGND_OFFSET / self::STEP_VOLTAGE);
      */
-    private $_min = 1556;
+    private $_min = 0;
     /**
      * The maximum value for the DAC
      *  (int)((self::MAX_VOLTAGE + self::CGND_OFFSET) / self::STEP_VOLTAGE);
      */
-    private $_max = 3522;
+    private $_max = 4096;
     /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
@@ -177,8 +177,8 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
         $data .= $this->_getProcessStrInt($this->getExtra(7)*(1<<16), 4);
         $data .= $this->_getProcessStrInt($this->getExtra(8)*(1<<16), 4);
         $data .= $this->_getProcessStrInt($this->getExtra(9), 4);
-        $data .= $this->_getProcessStrInt(0, 4);
-        $data .= $this->_getProcessStrInt(4096, 4);
+        $data .= $this->_getProcessStrInt($this->_min, 4);
+        $data .= $this->_getProcessStrInt($this->_max, 4);
         return $data;
     }
     /**
