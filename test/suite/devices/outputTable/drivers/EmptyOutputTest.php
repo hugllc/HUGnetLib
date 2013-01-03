@@ -58,6 +58,8 @@ class EmptyOutputTest extends DriverTestBase
 {
     /** This is the class we are testing */
     protected $class = "EmptyOutput";
+    /** This is the output object */
+    protected $output;
     /**
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
@@ -69,10 +71,10 @@ class EmptyOutputTest extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock(array());
+        $this->output = new \HUGnet\DummyBase("Output");
+        $this->output->resetMock(array());
         $this->o = \HUGnet\devices\outputTable\Driver::factory(
-            "EmptyOutput", $sensor
+            "EmptyOutput", $this->output
         );
     }
 
@@ -96,6 +98,53 @@ class EmptyOutputTest extends DriverTestBase
     public function testChannels()
     {
         $this->assertSame(array(), $this->o->channels());
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataEncode()
+    {
+        return array(
+            array( // #0
+                array(
+                    "Output" => array(
+                        "getExtra" => array(
+                        ),
+                    ),
+                ),
+                "",
+            ),
+            array( // #0
+                array(
+                    "Output" => array(
+                        "getExtra" => array(
+                        ),
+                        "get" => array(
+                            "RawSetup" => "0102030405",
+                        ),
+                    ),
+                ),
+                "",
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $mocks  The value to preload into the mocks
+    * @param array $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataEncode
+    */
+    public function testEncode($mocks, $expect)
+    {
+        $this->output->resetMock($mocks);
+        $ret = $this->o->encode();
+        $this->assertSame($expect, $ret);
     }
 
 }

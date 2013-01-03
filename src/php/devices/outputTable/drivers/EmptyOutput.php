@@ -78,6 +78,15 @@ class EmptyOutput extends \HUGnet\devices\outputTable\Driver
         return array(
         );
     }
+    /**
+    * Encodes this driver as a setup string
+    *
+    * @return array
+    */
+    public function encode()
+    {
+        return "";
+    }
 
 }
 
