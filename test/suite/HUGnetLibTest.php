@@ -51,7 +51,7 @@ require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
  * @version    Release: 0.9.7
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DaemonTest extends \PHPUnit_Framework_TestCase
+class HUGnetLibTest extends \PHPUnit_Framework_TestCase
 {
     /** Files that have been created */
     private $_files = array();

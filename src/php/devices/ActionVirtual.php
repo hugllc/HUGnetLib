@@ -99,6 +99,14 @@ class ActionVirtual extends Action
     {
         $this->checkRecord();
         $this->device->load($this->device->id());
+        $this->device->set(
+            "FWVersion",
+            $this->device->system()->get("version")
+        );
+        $this->device->set(
+            "RawSetup",
+            $this->device->encode()
+        );
         $this->device->setParam("LastContact", time());
         $this->device->setParam("LastConfig", time());
         $this->device->setParam("ConfigFail", 0);

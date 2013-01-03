@@ -112,6 +112,11 @@ class DeviceInputs extends \HUGnet\db\TableParams
             "Type" => "varchar(32)",
             "Default" => 'SDEFAULT',
         ),
+        "calibration" => array(
+            "Name" => "calibration",
+            "Type" => "longtext",
+            "Default" => "",
+        ),
         "params" => array(
             "Name" => "params",
             "Type" => "longtext",

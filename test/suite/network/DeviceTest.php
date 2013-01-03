@@ -232,7 +232,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             )
                         ),
                         null,
-                        array("tries" => 1, "find" => false),
+                        array("tries" => 1, "find" => false, 'block' => false),
                     ),
                     array(
                         packets\Packet::factory(
@@ -282,7 +282,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             )
                         ),
                         null,
-                        array("tries" => 1, "find" => false),
+                        array("tries" => 1, "find" => false, 'block' => false),
                     ),
                     array(
                         packets\Packet::factory(
@@ -335,7 +335,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             )
                         ),
                         null,
-                        array("tries" => 1, "find" => false),
+                        array("tries" => 1, "find" => false, 'block' => false),
                     ),
                     array(
                         packets\Packet::factory(
