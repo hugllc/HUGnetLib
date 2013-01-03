@@ -313,6 +313,7 @@ class DeviceInputsTest extends TableTestBase
                     "params" => json_encode(
                         array("min" => 5, "max" => 15, "extra" => array())
                     ),
+                    'calibration' => '',
                 ),
             ),
             array(
@@ -335,6 +336,7 @@ class DeviceInputsTest extends TableTestBase
                     "location" => "HERE",
                     "driver"  => "SDEFAULT",
                     "params" => '{"storageUnits":"&deg;C","unitType":"Temperature"}',
+                    'calibration' => '',
                 ),
             ),
             array(
@@ -359,6 +361,7 @@ class DeviceInputsTest extends TableTestBase
                     "location" => "HERE",
                     "driver"  => "SDEFAULT",
                     "params" => '{"extra":[1,2,3,4]}',
+                    'calibration' => '',
                 ),
             ),
         );
@@ -412,6 +415,7 @@ class DeviceInputsTest extends TableTestBase
                     "storageUnits" => "&deg;C",
                     "driver"  => "SDEFAULT",
                     "unitType" => "Temperature",
+                    'calibration' => '',
                 ),
             ),
         );
