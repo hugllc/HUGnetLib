@@ -185,12 +185,6 @@ final class Socket
             if (socket_last_error($this->_socket) > 0) {
                 socket_clear_error($this->_socket);
                 $this->_disconnect();
-                \HUGnet\VPrint::out(
-                    "Socket ".$this->_config["location"]." disappeared.  "
-                    ."Waiting 10s",
-                    1
-                );
-                sleep(10);
                 $this->_connect();
             }
             \HUGnet\VPrint::out(
