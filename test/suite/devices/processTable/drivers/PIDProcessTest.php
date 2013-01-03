@@ -72,7 +72,23 @@ class PIDProcessTest extends DriverTestBase
     {
         parent::setUp();
         $this->process = new \HUGnet\DummyBase("Process");
-        $this->process->resetMock(array());
+        $this->process->resetMock(
+            array(
+                "Process" => array(
+                    "device" => new \HUGnet\DummyBase("Device")
+                ),
+                "Device" => array(
+                    "controlChannels" => new \HUGnet\DummyBase("ControlChannels"),
+                    "dataChannels" => new \HUGnet\DummyBase("DataChannels"),
+                ),
+                "ControlChannels" => array(
+                    "select" => array("asdf", "fdsa"),
+                ),
+                "DataChannels" => array(
+                    "select" => array("asdf", "fdsa"),
+                ),
+            )
+        );
         $this->o = \HUGnet\devices\processTable\Driver::factory(
             "PIDProcess", $this->process
         );

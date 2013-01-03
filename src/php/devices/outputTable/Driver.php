@@ -298,7 +298,6 @@ abstract class Driver
     * Encodes this driver as a setup string
     *
     * @return array
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function encode()
     {

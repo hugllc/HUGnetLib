@@ -98,7 +98,7 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            4, array(), array(), 15, 15, 15, 15, 15, 15
+            4, array(), array(), 15, 15, 15, 15, 15, 15, 15
         ),
     );
     /**
@@ -173,9 +173,11 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
         $setpoint = $dataChan->encode($this->getExtra(4));
         $data .= str_pad($setpoint, 8, "0", STR_PAD_RIGHT);
         $data .= $this->_getProcessStrInt($this->getExtra(5), 2);
-        $data .= $this->_getProcessStrInt($this->getExtra(6)*(1<<16), 4);
-        $data .= $this->_getProcessStrInt($this->getExtra(7)*(1<<16), 4);
-        $data .= $this->_getProcessStrInt($this->getExtra(8)*(1<<16), 4);
+        for ($i = 6; $i < 9; $i++) {
+            $value = $this->getExtra($i) *(0x10000);
+            $str = $this->_getProcessStrInt((int)$value, 4);
+            $data .= $str;
+        }
         $data .= $this->_getProcessStrInt($this->getExtra(9), 4);
         $data .= $this->_getProcessStrInt($this->_min, 4);
         $data .= $this->_getProcessStrInt($this->_max, 4);

@@ -149,6 +149,20 @@ class Process extends XTableBase
             )
         );
     }
+    /**
+    * Encodes this driver as a setup string
+    *
+    * @return array
+    */
+    public function push()
+    {
+        return $this->device()->send(
+            array(
+                "Command" => "SETPROCESSTABLERAM",
+                "Data" => $this->encode()
+            )
+        );
+    }
 }
 
 

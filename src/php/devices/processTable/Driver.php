@@ -314,20 +314,6 @@ abstract class Driver
         return (array)$this->_arch[$this->process()->device()->get("arch")]
             + (array)$this->_arch["all"];
     }
-    /**
-    * Encodes this driver as a setup string
-    *
-    * @return array
-    */
-    public function push()
-    {
-        return $this->process()->device()->send(
-            array(
-                "Command" => "SETPROCESSTABLERAM",
-                "Data" => $this->process()->encode()
-            )
-        );
-    }
 
 }
 

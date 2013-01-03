@@ -262,6 +262,63 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expect, $json);
         unset($obj);
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataPush()
+    {
+        return array(
+            array( // #0
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "id" => 7,
+                        ),
+                        "send" => true,
+                    ),
+                    "Process" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                ),
+                true,
+            ),
+            array( // #1
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "id" => 7,
+                        ),
+                        "send" => "asdf",
+                    ),
+                    "Process" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                ),
+                "asdf",
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $mocks  The value to preload into the mocks
+    * @param array $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataPush
+    */
+    public function testPush($mocks, $expect)
+    {
+        $sys = new \HUGnet\DummySystem("System");
+        $dev = new \HUGnet\DummyBase("Device");
+        $sys->resetMock($mocks);
+        $obj = Process::factory($sys, null, $class, $dev);
+        $ret = $obj->push();
+        $this->assertSame($expect, $ret);
+    }
 
 }
 
