@@ -208,7 +208,7 @@ final class Device
             )
         );
         $this->_network->send(
-            $newPacket, null, array("tries" => 1, "find" => false)
+            $newPacket, null, array("tries" => 1, "find" => false, "block" => false)
         );
     }
     /**
