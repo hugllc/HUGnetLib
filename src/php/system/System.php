@@ -202,6 +202,15 @@ class System
         }
     }
     /**
+    * Returns the database connection object
+    *
+    * @return object The database connection object
+    */
+    public function &dbconnect()
+    {
+        return $this->_dbconnect;
+    }
+    /**
     * Gets a value
     *
     * @param string $field the field to get

@@ -11,6 +11,9 @@
     <testsuite name="HUGnetLib">
       <directory suffix="Test.php">test/suite</directory>
     </testsuite>
+    <testsuite name="Integration">
+      <directory suffix="Test.php">test/integration</directory>
+    </testsuite>
   </testsuites>
 
   <logging>
