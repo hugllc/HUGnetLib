@@ -40,9 +40,7 @@ namespace HUGnet\devices;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our base class */
-require_once dirname(__FILE__)."/../base/SystemTableBase.php";
-/** This is our base class */
-require_once dirname(__FILE__)."/DataChan.php";
+require_once dirname(__FILE__)."/ControlChan.php";
 
 
 /**
@@ -64,7 +62,7 @@ require_once dirname(__FILE__)."/DataChan.php";
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class DataChannels
+class ControlChannels
 {
     /** @var Channels objects are stored here */
     private $_channels = array();
@@ -96,22 +94,22 @@ class DataChannels
         );
         $this->_system = &$system;
         $this->_device = &$device;
-        $sensors = (int)$this->_device->get("InputTables");
+        $outputs = (int)$this->_device->get("OutputTables");
         $chans = array();
-        for ($i = 0; $i < $sensors; $i++) {
+        for ($i = 0; $i < $outputs; $i++) {
             $chans = array_merge(
-                $chans, $this->_device->input($i)->channels()
+                $chans, $this->_device->output($i)->channels()
             );
         }
         if (!is_string($channels) && !is_array($channels)) {
-            $channels = $this->_device->get("dataChannels");
+            $channels = $this->_device->get("controlChannels");
         }
         if (is_string($channels)) {
             $channels = json_decode($channels, true);
         }
         foreach (array_keys($chans) as $chan) {
-            $chans[$chan]["label"] = "Data Channel $chan";
-            $this->_channels[$chan] = \HUGnet\devices\DataChan::factory(
+            $chans[$chan]["label"] = $chans[$chan]["label"]." $chan";
+            $this->_channels[$chan] = \HUGnet\devices\ControlChan::factory(
                 $this->_device,
                 $chans[$chan],
                 $channels[$chan]
@@ -129,7 +127,7 @@ class DataChannels
     */
     public static function &factory(&$system, &$device, $channels = null)
     {
-        $obj = new DataChannels($system, $device, $channels);
+        $obj = new ControlChannels($system, $device, $channels);
         return $obj;
     }
     /**
@@ -139,52 +137,17 @@ class DataChannels
     *
     * @return null
     */
-    public function dataChannel($chan)
+    public function controlChannel($chan)
     {
         $chan = (int)$chan;
         if (is_object($this->_channels[$chan])) {
             return $this->_channels[$chan];
         }
-        return \HUGnet\devices\DataChan::factory(
+        return \HUGnet\devices\ControlChan::factory(
             $this->_device,
             array(),
             array()
         );
-    }
-    /**
-    * Throws an exception
-    *
-    * @param array &$record The record to convert
-    *
-    * @return null
-    */
-    public function convert(&$record)
-    {
-        if ($record["converted"]) {
-            return;
-        }
-        foreach (array_keys($this->_channels) as $chan) {
-            $this->dataChannel($chan)->convert(
-                $record["Data".$chan]
-            );
-        }
-        $record["converted"] = true;
-    }
-    /**
-    * Returns an array to select the data channel
-    *
-    * @param array $ret The base array to start with
-    *
-    * @return array of id -> name pairs
-    */
-    public function select($ret = array())
-    {
-        $ret = (array)$ret;
-        foreach (array_keys($this->_channels) as $chan) {
-            $ret[$chan]  = $this->_channels[$chan]->get("label");
-            $ret[$chan] .= " (".$this->_channels[$chan]->get("units").")";
-        }
-        return $ret;
     }
     /**
     * This function gives us access to the table class
@@ -206,10 +169,9 @@ class DataChannels
     {
         $ret = array();
         foreach (array_keys($this->_channels) as $key) {
-            $ret[$key] = $this->dataChannel($key)->toArray($default);
+            $ret[$key] = $this->controlChannel($key)->toArray($default);
             if ($default) {
                 $ret[$key]["channel"] = $key;
-                $ret[$key]["validUnits"] = $this->dataChannel($key)->validUnits();
             }
         }
         return $ret;
@@ -223,8 +185,23 @@ class DataChannels
     public function store()
     {
         $ret = $this->toArray(false);
-        return $this->_device->set("dataChannels", json_encode($ret));
+        return $this->_device->set("controlChannels", json_encode($ret));
 
+    }
+    /**
+    * Returns an array to select the data channel
+    *
+    * @param array $ret The base array to start with
+    *
+    * @return array of id -> name pairs
+    */
+    public function select($ret = array())
+    {
+        $ret = (array)$ret;
+        foreach (array_keys($this->_channels) as $chan) {
+            $ret[$chan] = $this->_channels[$chan]->get("label");
+        }
+        return $ret;
     }
 
     /**
@@ -235,24 +212,6 @@ class DataChannels
     public function count()
     {
         return count($this->_channels);
-    }
-    /**
-    * Decodes the string
-    *
-    * @param string $string The string to decode
-    *
-    * @return null
-    */
-    public function decodeRaw($string)
-    {
-        $return = array();
-        for ($index = 0; $index < $this->count(); $index++) {
-            $ret = $this->dataChannel($index)->decodeRaw($string);
-            if (!is_null($ret)) {
-                $return[$index] = $ret;
-            }
-        }
-        return $return;
     }
 }
 

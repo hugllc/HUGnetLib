@@ -78,6 +78,10 @@ final class Serial
     */
     private $_config = array();
     /**
+    * This is the system object to use
+    */
+    private $_system = "";
+    /**
     * This our socket
     */
     private $_port;
@@ -92,10 +96,12 @@ final class Serial
     /**
     * Sets our configuration
     *
-    * @param array $config The configuration to use
+    * @param object &$system The system object to use
+    * @param array  $config  The configuration to use
     */
-    private function __construct($config)
+    private function __construct(&$system, $config)
     {
+        $this->_system = &$system;
         $this->_config = array_merge($this->_defaultConfig, $config);
         // Connect immediately
         $this->_connect();
@@ -103,13 +109,14 @@ final class Serial
     /**
     * Creates the object
     *
-    * @param array $config The configuration to use
+    * @param object &$system The system object to use
+    * @param array  $config  The configuration to use
     *
     * @return null
     */
-    static public function &factory($config = array())
+    static public function &factory(&$system, $config = array())
     {
-        $obj = new Serial((array)$config);
+        $obj = new Serial($system, (array)$config);
         return $obj;
     }
 
@@ -177,7 +184,7 @@ final class Serial
                 break;
             }
             if (substr($port, strlen($port) - 3) === "USB") {
-                \HUGnet\VPrint::out(
+                $this->_system->out(
                     "Serial port disappeared.  Trying again in 30 seconds.", 1
                 );
                 sleep(30);
@@ -188,7 +195,7 @@ final class Serial
             "Runtime",
             !file_exists($port) && !$this->_config["quiet"]
         );
-        \HUGnet\VPrint::out("Using port $port", 1);
+        $this->_system->out("Using port $port", 1);
     }
     /**
     * Sets up the connection to the socket
@@ -294,7 +301,7 @@ final class Serial
             $return = \HUGnet\Util::hexify(
                 @fread($this->_port, self::MAX_BYTES)
             );
-            \HUGnet\VPrint::out(
+            $this->_system->out(
                 $this->_config["name"]."(".$this->_config["driver"].") -> ".$return,
                 6
             );
@@ -314,7 +321,7 @@ final class Serial
     */
     private function _write($string)
     {
-        \HUGnet\VPrint::out(
+        $this->_system->out(
             $this->_config["name"]."(".$this->_config["driver"].") <- ".$string,
             6
         );

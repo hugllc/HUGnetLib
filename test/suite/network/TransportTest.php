@@ -439,7 +439,8 @@ class TransportTest extends \PHPUnit_Framework_TestCase
     ) {
         $net = DummyNetwork::factory("Network");
         $net->resetMock($network);
-        $transport = Transport::factory($net, $config);
+        $sys = DummyNetwork::factory("System");
+        $transport = Transport::factory($net, $sys, $config);
         $return = array();
         $tokens = array();
         $index = 0;
@@ -548,7 +549,8 @@ class TransportTest extends \PHPUnit_Framework_TestCase
     ) {
         $net = DummyNetwork::factory("Network");
         $net->resetMock($network);
-        $transport = Transport::factory($net, $config);
+        $sys = DummyNetwork::factory("System");
+        $transport = Transport::factory($net, $sys, $config);
         foreach ($packet as $pkt) {
             $transport->send($pkt);
         }

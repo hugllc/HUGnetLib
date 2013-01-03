@@ -55,7 +55,7 @@ require_once dirname(__FILE__)."/../Driver.php";
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
+class PIDProcess extends \HUGnet\devices\processTable\Driver
 {
     /*
     const CGND_OFFSET = 0.95;
@@ -77,30 +77,28 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
     * put into all derivative classes, even if it is empty.
     */
     protected $params = array(
-        "longName" => "LevelHolder Process",
-        "shortName" => "LevelHolder",
+        "longName" => "PID Process",
+        "shortName" => "PID",
         "extraText" => array(
             "Priority",
-            "Control",
-            "Step",
-            "Data Channel 0",
-            "Set Point 0",
-            "Tolerance 0",
-            "Data Channel 1",
-            "Set Point 1",
-            "Tolerance 1",
-            "Data Channel 2",
-            "Set Point 2",
-            "Tolerance 2",
+            "Control Channel",
+            "Data Channel",
+            "Input Offset",
+            "Setpoint",
+            "Error Threshold",
+            "P",
+            "I",
+            "D",
+            "Output Offset",
         ),
         "extraDefault" => array(
-            34, 0, 2, "", 0, 0.01, "", 0, 0.01, "", 0, 0.01,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            4, array(), 3, array(), 15, 15, array(), 15, 15, array(), 15, 15
+            4, array(), array(), 15, 15, 15, 15, 15, 15
         ),
     );
     /**
@@ -114,15 +112,8 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
     {
         $ret = parent::get($name);
         if ($name == "extraValues") {
-            $control = $this->process()->device()->controlChannels()->select(
-                array("" => "None")
-            );
-            $dataChans = $this->process()->device()->dataChannels();
-            $data = $dataChans->select(array("" => "None"));
-            $ret[1] = $control;
-            $ret[3] = $dataChans->select();
-            $ret[6] = $data;
-            $ret[9] = $data;
+            $ret[1] = $this->process()->device()->controlChannels()->select();
+            $ret[2] = $this->process()->device()->dataChannels()->select();
         }
         return $ret;
     }
@@ -136,56 +127,35 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
     public function decode($string)
     {
         $extra = (array)$this->process()->get("extra");
-        $extra[0] = $this->_getProcessIntStr(substr($string, 0, 2), 1);
-        $extra[1] = $this->_getProcessIntStr(substr($string, 2, 2), 1);
-        $extra[2] = $this->_getProcessIntStr(substr($string, 4, 2), 1);
-        // min is hard coded at substr($string, 6, 8)
-        // max is hard coded at substr($string, 14, 8)
-        $this->_decodeChannels(substr($string, 22), $extra);
-        $this->process()->set("extra", $extra);
-    }
-    /**
-    * Decodes the driver portion of the setup string
-    *
-    * @param string $string The string to decode
-    * @param array  &$extra The extra array to use
-    *
-    * @return array
-    */
-    private function _decodeChannels($string, &$extra)
-    {
         $index = 0;
-        $channels = $this->process()->device()->dataChannels();
-        for ($i = 3; $i < count($this->params["extraText"]); $i += 3) {
-            $chan = substr($string, $index, 2);
-            if (($chan == "FF") || ($chan === false)) {
-                // Empty string or slot
-                unset($extra[$i]);
-                unset($extra[$i+1]);
-                unset($extra[$i+2]);
-                continue;
-            }
-            $extra[$i] = $this->_getProcessIntStr($chan, 1);
+        for ($i = 0; $i < 3; $i++) {
+            $str   = substr($string, $index, 2);
+            $extra[$i] = $this->_getProcessIntStr($str, 1);
             $index += 2;
-
-            $dataChan = $channels->dataChannel($extra[$i]);
-            $low = $dataChan->decode(
-                substr($string, $index, 8)
-            );
-            $index += 8;
-            $high = $dataChan->decode(
-                substr($string, $index, 8)
-            );
-            $index += 8;
-            $extra[$i+1] = round(
-                ($low + $high) / 2,
-                $dataChan->get("decimals")
-            );
-            $extra[$i+2] = round(
-                abs($high - $low) / 2,
-                $dataChan->get("decimals")
-            );
         }
+        $str   = substr($string, $index, 8);
+        $index += 8;
+        $extra[3] = $this->_getProcessIntStr($str, 4);
+        $str   = substr($string, $index, 8);
+        $index += 8;
+        $dataChan = $this->process()->device()->dataChannel($extra[2]);
+        $extra[4] = $dataChan->decode($str);
+        $str   = substr($string, $index, 4);
+        $index += 4;
+        $extra[5] = $this->_getProcessIntStr($str, 2);
+        $str   = substr($string, $index, 8);
+        $index += 8;
+        $extra[6] = round($this->_getProcessIntStr($str, 4)/(1<<16), 6);
+        $str   = substr($string, $index, 8);
+        $index += 8;
+        $extra[7] = round($this->_getProcessIntStr($str, 4)/(1<<16), 6);
+        $str   = substr($string, $index, 8);
+        $index += 8;
+        $extra[8] = round($this->_getProcessIntStr($str, 4)/(1<<16), 6);
+        $str   = substr($string, $index, 8);
+        $index += 8;
+        $extra[9] = $this->_getProcessIntStr($str, 4);
+        $this->process()->set("extra", $extra);
     }
     /**
     * Encodes this driver as a setup string
@@ -195,45 +165,20 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
     public function encode()
     {
         $data  = "";
-        $data .= $this->_getProcessStrInt($this->getExtra(0), 1);
-        $data .= $this->_getProcessStrInt($this->getExtra(1), 1);
-        $data .= $this->_getProcessStrInt($this->getExtra(2), 1);
-        $data .= $this->_getProcessStrInt($this->_min, 4);
-        $data .= $this->_getProcessStrInt($this->_max, 4);
-        $data .= $this->_encodeChannels();
-        return $data;
-    }
-    /**
-    * Decodes the driver portion of the setup string
-    *
-    * @return array
-    */
-    private function _encodeChannels()
-    {
-        $channels = $this->process()->device()->dataChannels();
-        $data = "";
-        for ($i = 3; $i < count($this->params["extraText"]); $i += 3) {
-            $chan = $this->getExtra($i);
-            if ((strlen((string)$chan) == 0) || (!is_numeric($chan))) {
-                break;
-            }
-            $chan = (int)$chan;
-            $setpoint  = (float)$this->getExtra($i+1);
-            $tolerance = (float)$this->getExtra($i+2);
-            $low = $channels->dataChannel($chan)->encode(
-                $setpoint - $tolerance
-            );
-            if (strlen($low) == 0) {
-                break;
-            }
-            $high = $channels->dataChannel($chan)->encode(
-                $setpoint + $tolerance
-            );
-            if (strlen($high) == 0) {
-                break;
-            }
-            $data .= $this->_getProcessStrInt($chan, 1).$low.$high;
+        for ($i = 0; $i < 3; $i++) {
+            $data .= $this->_getProcessStrInt($this->getExtra($i), 1);
         }
+        $data .= $this->_getProcessStrInt($this->getExtra(3), 4);
+        $dataChan = $this->process()->device()->dataChannel($this->getExtra(2));
+        $setpoint = $dataChan->encode($this->getExtra(4));
+        $data .= str_pad($setpoint, 8, "0", STR_PAD_RIGHT);
+        $data .= $this->_getProcessStrInt($this->getExtra(5), 2);
+        $data .= $this->_getProcessStrInt($this->getExtra(6)*(1<<16), 4);
+        $data .= $this->_getProcessStrInt($this->getExtra(7)*(1<<16), 4);
+        $data .= $this->_getProcessStrInt($this->getExtra(8)*(1<<16), 4);
+        $data .= $this->_getProcessStrInt($this->getExtra(9), 4);
+        $data .= $this->_getProcessStrInt(0, 4);
+        $data .= $this->_getProcessStrInt(4096, 4);
         return $data;
     }
     /**

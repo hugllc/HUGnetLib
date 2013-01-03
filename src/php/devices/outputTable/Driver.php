@@ -80,6 +80,9 @@ abstract class Driver
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(),
+        "min" => 0,
+        "max" => 0,
+        "zero" => 0,
     );
     /**
     * This is where all of the driver information is stored.
@@ -304,6 +307,22 @@ abstract class Driver
             $string = "";
         }
         return $string;
+    }
+    /**
+    * This builds the class from a setup string
+    *
+    * @return Array of channel information
+    */
+    public function channels()
+    {
+        return array(
+            array(
+                "min" => $this->get("min"),
+                "max" => $this->get("max"),
+                "label" => $this->get("shortName"),
+                "index" => 0,
+            ),
+        );
     }
 
     /**

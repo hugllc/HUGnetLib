@@ -297,8 +297,9 @@ class SocketIntegrationTest extends \PHPUnit_Framework_TestCase
         if (is_string($exception)) {
             $this->setExpectedException($exception);
         }
+        $sys = new \HUGnet\DummyBase("System");
         if (!empty($server)) {
-            $serv = SocketServer::factory($server);
+            $serv = SocketServer::factory($sys, $server);
         }
         $clien = array();
         $sread = "";
@@ -307,7 +308,7 @@ class SocketIntegrationTest extends \PHPUnit_Framework_TestCase
             foreach (array_keys($clients) as $key) {
                 if (!is_null($clientWrite[$key][$i]) && !is_object($clien[$key])) {
                     // Create the client if there is something to write
-                    $clien[$key] = &Socket::factory($clients[$key]);
+                    $clien[$key] = &Socket::factory($sys, $clients[$key]);
                 } else if (is_null($clientWrite[$key][$i])) {
                     // Destroy the client if there is not
                     unset($clien[$key]);
@@ -335,8 +336,10 @@ class SocketIntegrationTest extends \PHPUnit_Framework_TestCase
     public function testAvailable()
     {
         $sock = sys_get_temp_dir()."/test".md5(mt_rand());
+        $sys = new \HUGnet\DummyBase("System");
         // This sets up the server
         $obj = SocketServer::factory(
+            $sys,
             array(
                 "type" => AF_UNIX,
                 "location" => $sock,
@@ -346,6 +349,7 @@ class SocketIntegrationTest extends \PHPUnit_Framework_TestCase
         );
         // This sets up the client
         $obj2 = Socket::factory(
+            $sys,
             array(
                 "type" => AF_UNIX,
                 "location" => $sock,

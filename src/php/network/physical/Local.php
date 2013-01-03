@@ -55,29 +55,36 @@ final class Local
      */
     private $_name = "";
     /**
+     * This is the system object to use
+     */
+    private $_system = "";
+    /**
      * This our configuration resides here
      */
     private $_config = "";
     /**
     * Sets our configuration
     *
-    * @param array $config The configuration to use
+    * @param object &$system The system object to use
+    * @param array  $config  The configuration to use
     */
-    private function __construct($config)
+    private function __construct(&$system, $config)
     {
+        $this->_system = &$system;
         $this->_config = $config;
         $this->_name = $this->_config["name"];
     }
     /**
     * Creates the object
     *
-    * @param array $config The configuration to use
+    * @param object &$system The system object to use
+    * @param array  $config  The configuration to use
     *
     * @return null
     */
-    static public function &factory($config = array())
+    static public function &factory(&$system, $config = array())
     {
-        return new Local((array)$config);
+        return new Local($system, (array)$config);
     }
 
     /**

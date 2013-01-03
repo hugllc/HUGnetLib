@@ -66,6 +66,10 @@ final class SocketServer
     */
     private $_config = array();
     /**
+    * This is the system object to use
+    */
+    private $_system = "";
+    /**
     * This our socket
     */
     private $_socket;
@@ -91,10 +95,12 @@ final class SocketServer
     /**
     * Sets our configuration
     *
-    * @param array $config The configuration to use
+    * @param object &$system The system object to use
+    * @param array  $config  The configuration to use
     */
-    private function __construct($config)
+    private function __construct(&$system, $config)
     {
+        $this->_system = &$system;
         $this->_config = array_merge($this->_defaultConfig, $config);
         if (is_string($this->_config["type"]) && defined($this->_config["type"])) {
             $this->_config["type"] = constant($this->_config["type"]);
@@ -119,13 +125,14 @@ final class SocketServer
     /**
     * Creates the object
     *
-    * @param array $config The configuration to use
+    * @param object &$system The system object to use
+    * @param array  $config  The configuration to use
     *
     * @return null
     */
-    static public function &factory($config = array())
+    static public function &factory(&$system, $config = array())
     {
-        $obj = new SocketServer((array)$config);
+        $obj = new SocketServer($system, (array)$config);
         return $obj;
     }
 
@@ -138,14 +145,14 @@ final class SocketServer
         foreach (array_keys($this->_clients) as $key) {
             $this->_disconnect($key);
         }
-        \HUGnet\VPrint::out("Closing socket", 3);
+        $this->_system->out("Closing socket", 3);
         if (is_resource($this->_socket)) {
             socket_close($this->_socket);
         }
         if (($this->_config["type"] == AF_UNIX)
             && file_exists($this->_config["location"])
         ) {
-            \HUGnet\VPrint::out("Removing file ".$this->_config["location"], 3);
+            $this->_system->out("Removing file ".$this->_config["location"], 3);
             unlink($this->_config["location"]);
         }
     }
@@ -170,7 +177,7 @@ final class SocketServer
     */
     private function _setup()
     {
-        \HUGnet\VPrint::out(
+        $this->_system->out(
             $this->_config["name"].": Setting up at "
             .$this->_config["location"],
             6
@@ -217,7 +224,7 @@ final class SocketServer
                 if (strlen($input) === 0) {
                     $this->_disconnect($key);
                 } else if ($input) {
-                    \HUGnet\VPrint::out(
+                    $this->_system->out(
                         $this->_config["name"]."(".$this->_config["driver"]."):"
                         .$key." -> ".$input,
                         6
@@ -249,7 +256,7 @@ final class SocketServer
         foreach (array_keys($this->_clients) as $key) {
             $client = &$this->_clients[$key];
             if (!is_null($client['socket']) && ($skip !== $key)) {
-                \HUGnet\VPrint::out(
+                $this->_system->out(
                     $this->_config["name"]."(".$this->_config["driver"]."):".$key
                     ." <- ".$string, 6
                 );

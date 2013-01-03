@@ -65,7 +65,19 @@ class EmptyOutput extends \HUGnet\devices\outputTable\Driver
         "longName" => "Empty Output",
         "shortName" => "Empty",
         "id" => 0xFF,  // Force ID to be 0xFF
+        "min" => 0,
+        "max" => 0,
     );
+    /**
+    * This builds the class from a setup string
+    *
+    * @return Array of channel information
+    */
+    public function channels()
+    {
+        return array(
+        );
+    }
 
 }
 

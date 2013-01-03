@@ -78,7 +78,9 @@ class Device extends \HUGnet\base\SystemTableAction
         "insertVirtual" => "table",
         "webAPI" => "webInterface",
         "dataChannel" => "dataChannels",
+        "controlChannel" => "controlChannels",
         "reboot" => "network",
+        "send" => "action",
     );
     /** This is where we store our objects */
     protected $classes = array(
@@ -333,6 +335,20 @@ class Device extends \HUGnet\base\SystemTableAction
     {
         include_once dirname(__FILE__)."/../devices/DataChannels.php";
         return \HUGnet\devices\DataChannels::factory($this->system(), $this, $chans);
+    }
+    /**
+    * This creates the sensor drivers
+    *
+    * @param mixed $chans Channel information
+    *
+    * @return null
+    */
+    public function &controlChannels($chans = null)
+    {
+        include_once dirname(__FILE__)."/../devices/ControlChannels.php";
+        return \HUGnet\devices\ControlChannels::factory(
+            $this->system(), $this, $chans
+        );
     }
     /**
     * Gets one of the parameters

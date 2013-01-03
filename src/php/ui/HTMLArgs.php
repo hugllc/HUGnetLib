@@ -64,11 +64,6 @@ require_once dirname(__FILE__)."/Args.php";
  */
 class HTMLArgs extends Args
 {
-    /** This is the config for printing stuff out */
-    protected $vprintConfig = array(
-        "debug" => true,
-        "html" => true,
-    );
     /** These are pretty standard config changes */
     protected $defaultConfig = array(
         "q" => array("name" => "quiet", "type" => "bool", "default" => false),

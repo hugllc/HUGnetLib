@@ -69,8 +69,21 @@ class WindChillVirtualTest extends DriverTestBaseVirtual
     protected function setUp()
     {
         parent::setUp();
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock(array());
+        $sensor = new \HUGnet\DummyBase("Input");
+        $sensor->resetMock(
+            array(
+                "Input" => array(
+                    "device" => new \HUGnet\DummyBase("Device"),
+                ),
+                "Device" => array(
+                    "dataChannels" => new \HUGnet\DummyBase("dataChannels"),
+                ),
+                "dataChannels" => array(
+                    "select" => array(),
+                ),
+
+            )
+        );
         $this->o = \HUGnet\devices\inputTable\DriverVirtual::factory(
             "WindChillVirtual", $sensor
         );
@@ -100,7 +113,7 @@ class WindChillVirtualTest extends DriverTestBaseVirtual
         return array(
             array( // #0
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array(
                                 0, 1
@@ -119,7 +132,7 @@ class WindChillVirtualTest extends DriverTestBaseVirtual
             ),
             array( // #1
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array(
                                 0, 1
@@ -138,7 +151,7 @@ class WindChillVirtualTest extends DriverTestBaseVirtual
             ),
             array( // #2
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array(
                                 0, 1
@@ -157,7 +170,7 @@ class WindChillVirtualTest extends DriverTestBaseVirtual
             ),
             array( // #3
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array(
                                 0, 1

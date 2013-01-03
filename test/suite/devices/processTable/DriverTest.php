@@ -41,8 +41,6 @@ require_once CODE_BASE.'devices/processTable/Driver.php';
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
-/** This is a required class */
-require_once CODE_BASE.'util/VPrint.php';
 /** This is our base class */
 require_once dirname(__FILE__)."/drivers/DriverTestBase.php";
 
@@ -479,6 +477,62 @@ class DriverTest extends drivers\DriverTestBase
         $sensor->resetMock($mocks);
         $obj = Driver::factory("DriverTestClass", $sensor);
         $ret = $obj->encode();
+        $this->assertSame($expect, $ret);
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataPush()
+    {
+        return array(
+            array( // #0
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "id" => 7,
+                        ),
+                        "send" => true,
+                    ),
+                    "Process" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                ),
+                true,
+            ),
+            array( // #1
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "id" => 7,
+                        ),
+                        "send" => "asdf",
+                    ),
+                    "Process" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                ),
+                "asdf",
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $mocks  The value to preload into the mocks
+    * @param array $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataPush
+    */
+    public function testPush($mocks, $expect)
+    {
+        $process  = new \HUGnet\DummyTable("Process");
+        $process->resetMock($mocks);
+        $obj = Driver::factory("DriverTestClass", $process);
+        $ret = $obj->push();
         $this->assertSame($expect, $ret);
     }
 }

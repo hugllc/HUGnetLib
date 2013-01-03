@@ -37,8 +37,6 @@ namespace HUGnet\ui;
 require_once dirname(__FILE__)."/../system/System.php";
 /** This is our argument class */
 require_once dirname(__FILE__)."/HTMLArgs.php";
-/** This will go away soon */
-require_once dirname(__FILE__)."/../util/VPrint.php";
 /**
  * This code routes packets to their correct destinations.
  *
@@ -128,10 +126,6 @@ class HTML
         }
         // Set up our IP address
         $this->_config["IPAddr"] = $_SERVER["SERVER_ADDR"];
-        // Set up printing
-        $config = $this->_config;
-        $config["debug"] = true;
-        \HUGnet\VPrint::config($config);
 
         return $this->_config;
     }

@@ -172,9 +172,9 @@ class System
                     include_once $net."Application.php";
                     include_once $net."Transport.php";
                     include_once $net."Network.php";
-                    $network   = network\Network::factory($config);
+                    $network   = network\Network::factory($this, $config);
                     $transport = network\Transport::factory(
-                        $network, $config
+                        $network, $this, $config
                     );
                     $this->_network = network\Application::factory(
                         $transport, $this, $config

@@ -76,7 +76,7 @@ class BinaryVirtual extends \HUGnet\devices\inputTable\DriverVirtual
             "Unit Type", "Max Decimals"
         ),
         "extraDefault" => array(
-            1, 0, 1, 1, "decimal", "Percent", 4
+            array(), 0, 1, 1, "decimal", "Percent", 4
         ),
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "storageUnit" => "decimal",
@@ -90,6 +90,21 @@ class BinaryVirtual extends \HUGnet\devices\inputTable\DriverVirtual
                 => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         ),
     );
+    /**
+    * Gets an item
+    *
+    * @param string $name The name of the property to get
+    *
+    * @return null
+    */
+    public function get($name)
+    {
+        $ret = parent::get($name);
+        if ($name == "extraValues") {
+            $ret[0] = $this->input()->device()->dataChannels()->select();
+        }
+        return $ret;
+    }
     /**
     * Changes a raw reading into a output value
     *

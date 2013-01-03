@@ -41,8 +41,6 @@ require_once CODE_BASE."devices/outputTable/Driver.php";
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
-/** This is a required class */
-require_once CODE_BASE.'util/VPrint.php';
 
 /**
  * Test class for HUGnetDB.
@@ -103,6 +101,9 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
             array("extraText", "array"),
             array("extraValues", "array"),
             array("extraDefault", "array"),
+            array("min", "int"),
+            array("max", "int"),
+            array("zero", "int"),
         );
     }
     /**

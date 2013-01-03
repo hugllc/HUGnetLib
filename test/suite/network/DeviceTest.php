@@ -45,8 +45,6 @@ require_once CODE_BASE.'system/System.php';
 require_once TEST_CONFIG_BASE.'stubs/DummyNetwork.php';
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
-/** This is a required class */
-require_once CODE_BASE.'util/VPrint.php';
 
 /**
  * Test class for HUGnetDB.

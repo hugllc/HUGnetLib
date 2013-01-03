@@ -41,8 +41,6 @@ require_once CODE_BASE."/devices/Driver.php";
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
-/** This is a required class */
-require_once CODE_BASE.'util/VPrint.php';
 
 /**
  * Test class for HUGnetDB.

@@ -74,12 +74,13 @@ class ADuCThermocouple extends \HUGnet\devices\inputTable\DriverADuC
             "R2 to Ground (kOhms)",
             "AtoD Ref Voltage (mV)",
             "Thermocouple Type",
+            "Junction Temp Channel",
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
-        "extraValues" => array(5, 5, 5, array("k" => "k")),
-        "extraDefault" => array(1, 10, 1200, "k"),
+        "extraValues" => array(5, 5, 5, array("k" => "k"), array()),
+        "extraDefault" => array(1, 10, 1200, "k", 0),
         "maxDecimals" => 4,
         "inputSize" => 4,
     );
@@ -129,6 +130,21 @@ class ADuCThermocouple extends \HUGnet\devices\inputTable\DriverADuC
         ),
     );
     /**
+    * Gets an item
+    *
+    * @param string $name The name of the property to get
+    *
+    * @return null
+    */
+    public function get($name)
+    {
+        $ret = parent::get($name);
+        if ($name == "extraValues") {
+            $ret[4] = $this->input()->device()->dataChannels()->select();
+        }
+        return $ret;
+    }
+    /**
     * Changes a raw reading into a output value
     *
     * @param int   $A      Output of the A to D converter
@@ -143,15 +159,17 @@ class ADuCThermocouple extends \HUGnet\devices\inputTable\DriverADuC
     protected function getReading(
         $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
+        bcscale(self::DECIMAL_PLACES);
         $Am    = pow(2, 23);
         $Rin   = $this->getExtra(0);
         $Rbias = $this->getExtra(1);
         $Vref  = $this->getExtra(2);
         $type  = $this->getExtra(3);
+        $ref   = $this->getExtra(4);
 
         $A = $this->inputBiasCompensation($A, $Rin, $Rbias);
         $Va = ($A / $Am) * $Vref;
-        $T = $this->_getThermocouple($Va, $data[0]["value"], $type);
+        $T = $this->_getThermocouple($Va, $data[$ref]["value"], $type);
         if (is_null($T)) {
             return null;
         }
@@ -168,7 +186,6 @@ class ADuCThermocouple extends \HUGnet\devices\inputTable\DriverADuC
     */
     private function _getThermocouple($V, $TCold, $type = "k")
     {
-        bcscale(self::DECIMAL_PLACES);
         foreach ((array)array_keys($this->_coeffients[$type]) as $k) {
             if ($V < (float)$k) {
                 if (empty($this->_coeffients[$type][$k])) {
@@ -206,16 +223,18 @@ class ADuCThermocouple extends \HUGnet\devices\inputTable\DriverADuC
     protected function getRaw(
         $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
     ) {
+        bcscale(self::DECIMAL_PLACES);
         $Am    = pow(2, 23);
         $Rin   = $this->getExtra(0);
         $Rbias = $this->getExtra(1);
         $Vref  = $this->getExtra(2);
         $type  = $this->getExtra(3);
+        $ref   = $this->getExtra(4);
 
         if ($Vref == 0) {
             return null;
         }
-        $Va = $this->_revThermocouple($value, $data[0]["value"], $type);
+        $Va = $this->_revThermocouple($value, $data[$ref]["value"], $type);
         if (is_null($Va)) {
             return null;
         }
@@ -237,7 +256,6 @@ class ADuCThermocouple extends \HUGnet\devices\inputTable\DriverADuC
     */
     private function _revThermocouple($T, $TCold, $type = "k")
     {
-        bcscale(self::DECIMAL_PLACES);
         $V = null;
         if (!is_array($this->_revCoeffients[$type])) {
             return null;

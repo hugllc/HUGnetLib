@@ -41,8 +41,6 @@ namespace HUGnet\network\physical;
 require_once CODE_BASE.'network/physical/Serial.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
-/** This is a required class */
-require_once CODE_BASE.'util/VPrint.php';
 
 /**
  * Test class for filter.
@@ -72,8 +70,6 @@ class SerialTest extends \PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        // Set up printing
-        \HUGnet\VPrint::config(array("verbose" => 0));
     }
 
     /**
@@ -178,8 +174,9 @@ class SerialTest extends \PHPUnit_Framework_TestCase
             touch($preload["location"]);
             $this->files[] = $preload["location"];
         }
+        $sys = new \HUGnet\DummyBase("System");
         // This sets up the server
-        $obj = Serial::factory($preload);
+        $obj = Serial::factory($sys, $preload);
         $this->assertSame($available, $obj->available(), "Available Wrong");
         // This writes to the connection
         $this->assertSame($expect, $obj->write($write), "The return is wrong");

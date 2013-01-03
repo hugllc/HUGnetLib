@@ -90,6 +90,7 @@ abstract class Driver
     */
     private static $_drivers = array(
         "01:DEFAULT"                 => "LevelHolderProcess",
+        "02:DEFAULT"                 => "PIDProcess",
         "FF:DEFAULT"                 => "EmptyProcess",
     );
     /**
@@ -103,6 +104,7 @@ abstract class Driver
         "AVR" => array(
         ),
         "ADuC" => array(
+            0x02 => "PIDProcess",
         ),
         "all" => array(
             0x01 => "LevelHolderProcess",
@@ -295,7 +297,6 @@ abstract class Driver
     * Encodes this driver as a setup string
     *
     * @return array
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function encode()
     {
@@ -313,6 +314,21 @@ abstract class Driver
         return (array)$this->_arch[$this->process()->device()->get("arch")]
             + (array)$this->_arch["all"];
     }
+    /**
+    * Encodes this driver as a setup string
+    *
+    * @return array
+    */
+    public function push()
+    {
+        return $this->process()->device()->send(
+            array(
+                "Command" => "SETPROCESSTABLERAM",
+                "Data" => $this->process()->encode()
+            )
+        );
+    }
+
 }
 
 

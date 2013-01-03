@@ -41,8 +41,6 @@ require_once CODE_BASE.'devices/outputTable/Driver.php';
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
-/** This is a required class */
-require_once CODE_BASE.'util/VPrint.php';
 /** This is our base class */
 require_once dirname(__FILE__)."/drivers/DriverTestBase.php";
 
@@ -172,6 +170,9 @@ class DriverTest extends drivers\DriverTestBase
             'extraText' => Array (),
             'extraDefault' => Array (),
             'extraValues' => Array (),
+            "min" => 25,
+            "max" => 81,
+            "zero" => 0,
         );
         $this->assertEquals($expect, $this->o->toArray(1));
     }
@@ -476,6 +477,54 @@ class DriverTest extends drivers\DriverTestBase
         $ret = $obj->encode();
         $this->assertSame($expect, $ret);
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataChannels()
+    {
+        return array(
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "storageUnit" => "unknown",
+                            "maxDecimals" => 2,
+                            "unitType" => "asdf",
+                        ),
+                    ),
+                ),
+                "DriverTestClass",
+                array(
+                    array(
+                        'min' => 25,
+                        'max' => 81,
+                        'label' => 'Unknown',
+                        'index' => 0,
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $mocks  The mocks to use
+    * @param string $name   The name of the variable to test.
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataChannels
+    */
+    public function testChannels($mocks, $name, $expect)
+    {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($mocks);
+        $obj = Driver::factory($name, $sensor);
+        $this->assertSame($expect, $obj->channels());
+    }
 }
 /** This is the HUGnet namespace */
 namespace HUGnet\devices\outputTable\drivers;
@@ -502,6 +551,8 @@ class DriverTestClass extends \HUGnet\devices\outputTable\Driver
     * put into all derivative classes, even if it is empty.
     */
     protected $params = array(
+        "min" => 25,
+        "max" => 81,
     );
     /**
     * Gets the extra values

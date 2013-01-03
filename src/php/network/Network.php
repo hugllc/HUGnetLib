@@ -66,6 +66,8 @@ final class Network
     private $_local = "lo";
     /** Route Buffer */
     private $_routes = array();
+    /** Route Buffer */
+    private $_system;
     /** This is where we store our config */
     private $_config = array();
     /** This is where we store our config */
@@ -76,10 +78,12 @@ final class Network
     /**
     * Sets our configuration
     *
-    * @param array $config The configuration to use
+    * @param object &$system The system object to use
+    * @param array  $config  The configuration to use
     */
-    private function __construct($config)
+    private function __construct(&$system, $config)
     {
+        $this->_system = &$system;
         $this->_config = array_merge($this->_defaultConfig, $config);
         include_once dirname(__FILE__)."/packets/Packet.php";
         foreach (array_keys($this->_ifaces()) as $key) {
@@ -90,13 +94,14 @@ final class Network
     /**
     * Creates the object
     *
-    * @param array $config The configuration to use
+    * @param object &$system The system object to use
+    * @param array  $config  The configuration to use
     *
     * @return null
     */
-    static public function &factory($config = array())
+    static public function &factory(&$system, $config = array())
     {
-        $obj = new Network((array)$config);
+        $obj = new Network($system, (array)$config);
         return $obj;
     }
 
@@ -167,7 +172,7 @@ final class Network
         $ifaces = $this->_ifaces();
         if ((count($ifaces) > 1) && $this->_config["forward"]) {
             $fto = array_diff($ifaces, array($pkt->iface(), $this->_local));
-            \HUGnet\VPrint::out(
+            $this->_system->out(
                 "Forwarding from ".$pkt->iface()." to ".implode(", ", $fto)
                 ." of (".implode(", ", $ifaces).")",
                 3
@@ -347,22 +352,22 @@ final class Network
             && isset($this->_config[$socket]["driver"])
         ) {
 
-            \HUGnet\VPrint::out("Opening socket ".$socket, 6);
+            $this->_system->out("Opening socket ".$socket, 6);
             $class = $this->_config[$socket]["driver"];
             @include_once dirname(__FILE__)."/physical/".$class.".php";
             $class = __NAMESPACE__."\\physical\\".$class;
 
             if (class_exists($class)) {
-                \HUGnet\VPrint::out("Using class ".$class, 6);
+                $this->_system->out("Using class ".$class, 6);
                 $this->_sockets[$socket] = $class::factory(
-                    $this->_config[$socket]
+                    $this->_system, $this->_config[$socket]
                 );
                 return;
             }
             // Last resort include SocketNull
             include_once dirname(__FILE__)."/physical/SocketNull.php";
             $this->_sockets[$socket] = physical\SocketNull::factory(
-                $socket, $this->_config[$socket]
+                $this->_system, $this->_config[$socket]
             );
         }
     }

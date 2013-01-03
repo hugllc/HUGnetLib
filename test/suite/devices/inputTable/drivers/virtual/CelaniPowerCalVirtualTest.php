@@ -70,8 +70,21 @@ class CelaniPowerCalVirtualTest extends DriverTestBaseVirtual
     protected function setUp()
     {
         parent::setUp();
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock(array());
+        $sensor = new \HUGnet\DummyBase("Input");
+        $sensor->resetMock(
+            array(
+                "Input" => array(
+                    "device" => new \HUGnet\DummyBase("Device"),
+                ),
+                "Device" => array(
+                    "dataChannels" => new \HUGnet\DummyBase("dataChannels"),
+                ),
+                "dataChannels" => array(
+                    "select" => array(),
+                ),
+
+            )
+        );
         $this->o = \HUGnet\devices\inputTable\DriverVirtual::factory(
             "CelaniPowerCalVirtual", $sensor
         );
@@ -101,7 +114,7 @@ class CelaniPowerCalVirtualTest extends DriverTestBaseVirtual
         return array(
             array( // #0  lower boundry
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array(
                                 0
@@ -119,7 +132,7 @@ class CelaniPowerCalVirtualTest extends DriverTestBaseVirtual
             ),
             array( // #1  upper boundry
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array(
                                 0
@@ -137,7 +150,7 @@ class CelaniPowerCalVirtualTest extends DriverTestBaseVirtual
             ),
             array( // #2 random middle point
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array(
                                 0
@@ -155,7 +168,7 @@ class CelaniPowerCalVirtualTest extends DriverTestBaseVirtual
             ),
             array( // #3 random middle point
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array(
                                 0
@@ -173,7 +186,7 @@ class CelaniPowerCalVirtualTest extends DriverTestBaseVirtual
             ),
             array( // #4 random middle point
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array(
                                 0
@@ -191,7 +204,7 @@ class CelaniPowerCalVirtualTest extends DriverTestBaseVirtual
             ),
             array( // #5 random middle point
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array(
                                 0
@@ -209,7 +222,7 @@ class CelaniPowerCalVirtualTest extends DriverTestBaseVirtual
             ),
             array( // #6 random middle point
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "extra" => array(
                                 0
