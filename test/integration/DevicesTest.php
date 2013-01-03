@@ -70,52 +70,51 @@ class DevicesTest extends \PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        if (!is_object($this->system)) {
-            $this->config = array(
-                'uuid' => '743d933e-2d6e-4f62-9768-42ad204026d2',
-                'GatewayKey' => '1',
-                'servers' => array(
-                    'default' => array(
-                        "driver" => "sqlite",
-                        "file" => ":memory:",
-                        "group" => "default",
-                    ),
+        $this->config = array(
+            'uuid' => '743d933e-2d6e-4f62-9768-42ad204026d2',
+            'GatewayKey' => '1',
+            'servers' => array(
+                'default' => array(
+                    "driver" => "sqlite",
+                    "file" => ":memory:",
+                    "group" => "default",
                 ),
-                'network' => array(
-                    'default' => array (
-                        'driver' => 'Local',
-                        'quiet' => true,
-                    ),
+            ),
+            'network' => array(
+                'default' => array (
+                    'driver' => 'Local',
+                    'quiet' => true,
                 ),
-                'quiet' => false,
-                'verbose' => -1,
-                'debug' => false,
-                'test' => false,
-            );
-            $this->ui     = \HUGnet\ui\CLI::factory($this->config);
-            $this->system = $this->ui->system();
-            $this->pdo    = $this->system->dbconnect()->getPDO("default");
-            // Create tables to be filled
-            $tables = array(
-                "Datacollectors", "DeviceInputs", "DeviceOutputs", "DeviceProcesses",
-                "Devices", "InputTable", "E00393700Average", "E00393700History",
-                "ETESTHistory", "ETESTAverage"
-            );
-            foreach ($tables as $name) {
-                $table = $this->system->table($name);
-            }
-            // This fills the tables
-            $sql = file_get_contents(TEST_INTEGRATION_BASE."/sql/HUGnet_1.sql");
-            foreach (explode("--", $sql) as $query) {
-                $this->pdo->exec($query);
-            }
-            // This creates our device
-            $dev = array(
-                "id" => 0x123456,
-                "DeviceID" => "123456",
-            );
-            $this->system->network()->device($dev);
+                "noLocal" => true,
+            ),
+            'quiet' => false,
+            'verbose' => -1,
+            'debug' => false,
+            'test' => false,
+        );
+        $this->ui     = \HUGnet\ui\CLI::factory($this->config);
+        $this->system = $this->ui->system();
+        $this->pdo    = $this->system->dbconnect()->getPDO("default");
+        // Create tables to be filled
+        $tables = array(
+            "Datacollectors", "DeviceInputs", "DeviceOutputs", "DeviceProcesses",
+            "Devices", "InputTable", "E00393700Average", "E00393700History",
+            "ETESTHistory", "ETESTAverage"
+        );
+        foreach ($tables as $name) {
+            $table = $this->system->table($name);
         }
+        // This fills the tables
+        $sql = file_get_contents(TEST_INTEGRATION_BASE."/sql/HUGnet_1.sql");
+        foreach (explode("--", $sql) as $query) {
+            $this->pdo->exec($query);
+        }
+        // This creates our device
+        $dev = array(
+            "id" => 0xFEF88E,
+            "DeviceID" => "FEF88E",
+        );
+        $this->system->network()->device($dev);
     }
 
     /**

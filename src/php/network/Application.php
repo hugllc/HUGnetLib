@@ -353,6 +353,15 @@ final class Application
                 $this->_receive($qid, $return);
             }
         }
+        $this->_devMain();
+    }
+    /**
+    * Runs the device main
+    *
+    * @return null
+    */
+    private function _devMain()
+    {
         if (is_object($this->_device) && !$this->_system->quit()) {
             $this->_device->main();
         }
@@ -367,6 +376,7 @@ final class Application
     private function _wait($token)
     {
         while (is_null($ret = $this->_transport->receive($token))) {
+            $this->_devMain();
             if ($this->_system->quit()) {
                 break;
             }
