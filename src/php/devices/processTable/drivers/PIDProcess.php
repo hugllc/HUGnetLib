@@ -113,7 +113,9 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
         $ret = parent::get($name);
         if ($name == "extraValues") {
             $ret[1] = $this->process()->device()->controlChannels()->select();
-            $ret[2] = $this->process()->device()->dataChannels()->select();
+            $ret[2] = $this->process()->device()->dataChannels()->select(
+                array(), true
+            );
         }
         return $ret;
     }

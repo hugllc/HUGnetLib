@@ -184,10 +184,14 @@ class DataChannels
     *
     * @return array of id -> name pairs
     */
-    public function select($ret = array())
+    public function select($ret = array(), $epOnly = false)
     {
         $ret = (array)$ret;
         foreach (array_keys($this->_channels) as $chan) {
+            $epChannel = $this->_channels[$chan]->get("epChannel");
+            if ($epOnly && is_null($epChannel)) {
+                continue;
+            }
             $ret[$chan]  = $this->_channels[$chan]->get("label");
             $ret[$chan] .= " (".$this->_channels[$chan]->get("units").")";
         }
