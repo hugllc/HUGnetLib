@@ -112,6 +112,7 @@ class DataChannels
         $epChan = 0;
         foreach (array_keys($chans) as $chan) {
             $chans[$chan]["label"] = "Data Channel $chan";
+            $chans[$chan]["channel"] = $chan;
             if ($chans[$chan]["epChannel"] == true) {
                 $chans[$chan]["epChannel"] = $epChan++;
             } else {
@@ -214,7 +215,6 @@ class DataChannels
         foreach (array_keys($this->_channels) as $key) {
             $ret[$key] = $this->dataChannel($key)->toArray($default);
             if ($default) {
-                $ret[$key]["channel"] = $key;
                 $ret[$key]["validUnits"] = $this->dataChannel($key)->validUnits();
             }
         }
