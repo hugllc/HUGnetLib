@@ -120,7 +120,7 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
             $dataChans = $this->process()->device()->dataChannels();
             $data = $dataChans->select(array("" => "None"), true);
             $ret[1] = $control;
-            $ret[3] = $dataChans->select();
+            $ret[3] = $dataChans->select(array(), true);
             $ret[6] = $data;
             $ret[9] = $data;
         }
