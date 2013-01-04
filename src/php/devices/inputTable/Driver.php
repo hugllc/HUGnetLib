@@ -699,6 +699,7 @@ abstract class Driver
                 "unitType" => $this->get("unitType"),
                 "dataType" => $this->get("storageType"),
                 "index" => 0,
+                "epChannel" => true,
             ),
         );
     }

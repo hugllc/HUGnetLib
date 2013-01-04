@@ -203,6 +203,7 @@ class DriverVirtualTest extends drivers\DriverTestBase
                         "unitType" => "asdf",
                         "dataType" => "raw",
                         "index" => 0,
+                        "epChannel" => false,
                     ),
                 ),
             ),

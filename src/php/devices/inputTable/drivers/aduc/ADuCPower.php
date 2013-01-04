@@ -519,6 +519,8 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
     */
     public function channels()
     {
+        $ipr = $this->ipRoutine(0);
+        $Enable = $ipr == \HUGnet\devices\inputTable\ADuCInputTable::IPR_POWER;
         return array(
             array(
                 "decimals" => 6,
@@ -528,6 +530,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
                 "unitType" => "Current",
                 "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 "index" => 0,
+                "epChannel" => true,
             ),
             array(
                 "decimals" => 6,
@@ -537,6 +540,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
                 "unitType" => "Voltage",
                 "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 "index" => 1,
+                "epChannel" => true,
             ),
             array(
                 "decimals" => 6,
@@ -546,6 +550,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
                 "unitType" => "Power",
                 "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 "index" => 2,
+                "epChannel" => $Enable,
             ),
             array(
                 "decimals" => 6,
@@ -555,6 +560,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
                 "unitType" => "Impedance",
                 "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 "index" => 3,
+                "epChannel" => $Enable,
             )
         );
     }

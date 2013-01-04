@@ -148,6 +148,19 @@ abstract class DriverVirtual extends Driver
     ) {
         return "";
     }
+    /**
+    * This builds the class from a setup string
+    *
+    * @return Array of channel information
+    */
+    public function channels()
+    {
+        $ret = parent::channels();
+        foreach (array_keys((array)$ret) as $key) {
+            $ret[$key]["epChannel"] = false;
+        }
+        return $ret;
+    }
 
 }
 

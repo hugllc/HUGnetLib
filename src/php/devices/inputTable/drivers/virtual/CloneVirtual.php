@@ -133,7 +133,11 @@ class CloneVirtual extends \HUGnet\devices\inputTable\DriverVirtual
     */
     public function channels()
     {
-        return $this->_clone()->channels();
+        $ret = $this->_clone()->channels();
+        foreach (array_keys((array)$ret) as $key) {
+            $ret[$key]["epChannel"] = false;
+        }
+        return $ret;
     }
     /**
     * Gets the direction from a direction sensor made out of a POT.

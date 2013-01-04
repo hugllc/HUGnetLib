@@ -153,6 +153,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "unitType" => "Voltage",
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "index" => 0,
+                        "epChannel" => false,
                     ),
                 ),
             ),
@@ -202,6 +203,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "unitType" => "Current",
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "index" => 0,
+                        "epChannel" => false,
                     ),
                     array(
                         "value" => 14.448166,
@@ -212,6 +214,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "unitType" => "Voltage",
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "index" => 1,
+                        "epChannel" => false,
                     ),
                     array(
                         "value" => 4.547026,
@@ -222,6 +225,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "unitType" => "Power",
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "index" => 2,
+                        "epChannel" => false,
                     ),
                     array(
                         "value" => 45.909022,
@@ -232,6 +236,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "unitType" => "Impedance",
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "index" => 3,
+                        "epChannel" => false,
                     ),
                 ),
             ),
@@ -281,6 +286,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "unitType" => "Current",
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "index" => 0,
+                        "epChannel" => false,
                     ),
                     array(
                         "value" => 14.448166,
@@ -291,6 +297,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "unitType" => "Voltage",
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "index" => 1,
+                        "epChannel" => false,
                     ),
                     array(
                         "value" => 4.547026,
@@ -301,6 +308,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "unitType" => "Power",
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "index" => 2,
+                        "epChannel" => false,
                     ),
                     array(
                         "value" => 45.909022,
@@ -311,6 +319,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "unitType" => "Impedance",
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "index" => 3,
+                        "epChannel" => false,
                     ),
                 ),
             ),
@@ -363,6 +372,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "unitType" => "Current",
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "index" => 0,
+                        "epChannel" => false,
                     ),
                     array(
                         "value" => 14.448166,
@@ -373,6 +383,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "unitType" => "Voltage",
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "index" => 1,
+                        "epChannel" => false,
                     ),
                     array(
                         "value" => 4.547026,
@@ -383,6 +394,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "unitType" => "Power",
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "index" => 2,
+                        "epChannel" => false,
                     ),
                     array(
                         "value" => 45.909022,
@@ -393,6 +405,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "unitType" => "Impedance",
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "index" => 3,
+                        "epChannel" => false,
                     ),
                 ),
             ),

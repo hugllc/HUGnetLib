@@ -742,6 +742,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             'channel' => 0,
                             'label' => 'Data Channel 0',
                             "index" => 0,
+                            "epChannel" => true,
                         ),
                         1 => array(
                             'decimals' => 2,
@@ -759,6 +760,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             'channel' => 1,
                             'label' => 'Data Channel 1',
                             "index" => 0,
+                            "epChannel" => true,
                         ),
                         2 => array(
                             'decimals' => 2,
@@ -776,6 +778,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             'channel' => 2,
                             'label' => 'Data Channel 2',
                             "index" => 0,
+                            "epChannel" => true,
                         ),
                         3 => array(
                             'decimals' => 2,
@@ -793,6 +796,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             'channel' => 3,
                             'label' => 'Data Channel 3',
                             "index" => 0,
+                            "epChannel" => true,
                         ),
                         4 => array(
                             'decimals' => 2,
@@ -810,6 +814,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             'channel' => 4,
                             'label' => 'Data Channel 4',
                             "index" => 0,
+                            "epChannel" => true,
                         ),
                         5 => array(
                             'decimals' => 2,
@@ -827,6 +832,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             'channel' => 5,
                             'label' => 'Data Channel 5',
                             "index" => 0,
+                            "epChannel" => true,
                         ),
                         6 => array(
                             'decimals' => 2,
@@ -844,6 +850,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             'channel' => 6,
                             'label' => 'Data Channel 6',
                             "index" => 0,
+                            "epChannel" => true,
                         ),
                         7 => array(
                             'decimals' => 2,
@@ -861,6 +868,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             'channel' => 7,
                             'label' => 'Data Channel 7',
                             "index" => 0,
+                            "epChannel" => true,
                         ),
                         8 => array(
                             'decimals' => 2,
@@ -878,6 +886,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             'channel' => 8,
                             'label' => 'Data Channel 8',
                             "index" => 0,
+                            "epChannel" => true,
                         ),
                         /*
                         9 => array(
@@ -1054,6 +1063,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             'channel' => 0,
                             'label' => 'Data Channel 0',
                             "index" => 0,
+                            "epChannel" => true,
                         ),
                         1 => array(
                             'decimals' => 2,
@@ -1071,6 +1081,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             'channel' => 1,
                             'label' => 'Data Channel 1',
                             "index" => 0,
+                            "epChannel" => true,
                         ),
                         2 => array(
                             'decimals' => 2,
@@ -1088,6 +1099,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             'channel' => 2,
                             'label' => 'Data Channel 2',
                             "index" => 0,
+                            "epChannel" => true,
                         ),
                         3 => array(
                             'decimals' => 2,
@@ -1105,6 +1117,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             'channel' => 3,
                             'label' => 'Data Channel 3',
                             "index" => 0,
+                            "epChannel" => true,
                         ),
                         4 => array(
                             'decimals' => 2,
@@ -1122,6 +1135,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             'channel' => 4,
                             'label' => 'Data Channel 4',
                             "index" => 0,
+                            "epChannel" => true,
                         ),
                         5 => array(
                             'decimals' => 2,
@@ -1139,6 +1153,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             'channel' => 5,
                             'label' => 'Data Channel 5',
                             "index" => 0,
+                            "epChannel" => true,
                         ),
                         6 => array(
                             'decimals' => 2,
@@ -1156,6 +1171,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             'channel' => 6,
                             'label' => 'Data Channel 6',
                             "index" => 0,
+                            "epChannel" => true,
                         ),
                         7 => array(
                             'decimals' => 2,
@@ -1173,6 +1189,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             'channel' => 7,
                             'label' => 'Data Channel 7',
                             "index" => 0,
+                            "epChannel" => true,
                         ),
                         8 => array(
                             'decimals' => 2,
@@ -1190,6 +1207,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             'channel' => 8,
                             'label' => 'Data Channel 8',
                             "index" => 0,
+                            "epChannel" => true,
                         ),
                     ),
                     "outputs" => array(
@@ -1239,6 +1257,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             'channel' => 0,
                             'label' => 'Data Channel 0',
                             "index" => 0,
+                            "epChannel" => true,
                         ),
                         1 => array(
                             'decimals' => 2,
@@ -1256,6 +1275,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             'channel' => 1,
                             'label' => 'Data Channel 1',
                             "index" => 0,
+                            "epChannel" => true,
                         ),
                         2 => array(
                             'decimals' => 2,
@@ -1273,6 +1293,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             'channel' => 2,
                             'label' => 'Data Channel 2',
                             "index" => 0,
+                            "epChannel" => true,
                         ),
                         3 => array(
                             'decimals' => 2,
@@ -1290,6 +1311,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             'channel' => 3,
                             'label' => 'Data Channel 3',
                             "index" => 0,
+                            "epChannel" => true,
                         ),
                         4 => array(
                             'decimals' => 2,
@@ -1307,6 +1329,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             'channel' => 4,
                             'label' => 'Data Channel 4',
                             "index" => 0,
+                            "epChannel" => true,
                         ),
                         5 => array(
                             'decimals' => 2,
@@ -1324,6 +1347,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             'channel' => 5,
                             'label' => 'Data Channel 5',
                             "index" => 0,
+                            "epChannel" => true,
                         ),
                         6 => array(
                             'decimals' => 2,
@@ -1341,6 +1365,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             'channel' => 6,
                             'label' => 'Data Channel 6',
                             "index" => 0,
+                            "epChannel" => true,
                         ),
                         7 => array(
                             'decimals' => 2,
@@ -1358,6 +1383,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             'channel' => 7,
                             'label' => 'Data Channel 7',
                             "index" => 0,
+                            "epChannel" => true,
                         ),
                         8 => array(
                             'decimals' => 2,
@@ -1375,6 +1401,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             'channel' => 8,
                             'label' => 'Data Channel 8',
                             "index" => 0,
+                            "epChannel" => true,
                         ),
                     ),
                 )
@@ -1685,6 +1712,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "decimals" => 2,
                         "index" => 0,
+                        "epChannel" => true,
                     ),
                     array(
                         "value" => 41.7162,
@@ -1695,6 +1723,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "decimals" => 2,
                         "index" => 0,
+                        "epChannel" => true,
                     ),
                     array(
                         "value" => 43.8471,
@@ -1705,6 +1734,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "decimals" => 2,
                         "index" => 0,
+                        "epChannel" => true,
                     ),
                     array(
                         "value" => 46.1845,
@@ -1715,6 +1745,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "decimals" => 2,
                         "index" => 0,
+                        "epChannel" => true,
                     ),
                     array(
                         "value" => 48.7713,
@@ -1725,6 +1756,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "decimals" => 2,
                         "index" => 0,
+                        "epChannel" => true,
                     ),
                     array(
                         "value" => 51.665,
@@ -1735,6 +1767,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "decimals" => 2,
                         "index" => 0,
+                        "epChannel" => true,
                     ),
                     array(
                         "value" => 54.9448,
@@ -1745,6 +1778,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "decimals" => 2,
                         "index" => 0,
+                        "epChannel" => true,
                     ),
                     array(
                         "value" => 58.7243,
@@ -1755,6 +1789,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "decimals" => 2,
                         "index" => 0,
+                        "epChannel" => true,
                     ),
                     array(
                         "value" => 63.1738,
@@ -1765,6 +1800,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "decimals" => 2,
                         "index" => 0,
+                        "epChannel" => true,
                     ),
                     array(
                         "value" => null,
@@ -1775,6 +1811,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "decimals" => 2,
                         "index" => 0,
+                        "epChannel" => true,
                     ),
                     array(
                         "value" => null,
@@ -1785,6 +1822,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "decimals" => 2,
                         "index" => 0,
+                        "epChannel" => true,
                     ),
                     array(
                         "value" => null,
@@ -1795,6 +1833,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "decimals" => 2,
                         "index" => 0,
+                        "epChannel" => true,
                     ),
                     array(
                         "value" => null,
@@ -1805,6 +1844,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         "decimals" => 2,
                         "index" => 0,
+                        "epChannel" => true,
                     ),
                 ),
             ),
