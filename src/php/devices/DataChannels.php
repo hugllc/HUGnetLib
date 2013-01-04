@@ -68,6 +68,8 @@ class DataChannels
 {
     /** @var Channels objects are stored here */
     private $_channels = array();
+    /** @var Channels objects are stored here */
+    private $_epChannels = array();
     /** @var System is stored here */
     private $_system = null;
     /** @var Device is stored here */
@@ -114,6 +116,7 @@ class DataChannels
             $chans[$chan]["label"] = "Data Channel $chan";
             $chans[$chan]["channel"] = $chan;
             if ($chans[$chan]["epChannel"] == true) {
+                $this->_epChannels[$epChan] = &$this->_channels[$chan];
                 $chans[$chan]["epChannel"] = $epChan++;
             } else {
                 $chans[$chan]["epChannel"] = null;
@@ -151,6 +154,25 @@ class DataChannels
         $chan = (int)$chan;
         if (is_object($this->_channels[$chan])) {
             return $this->_channels[$chan];
+        }
+        return \HUGnet\devices\DataChan::factory(
+            $this->_device,
+            array(),
+            array()
+        );
+    }
+    /**
+    * Throws an exception
+    *
+    * @param int $chan The data channel to get
+    *
+    * @return null
+    */
+    public function epChannel($chan)
+    {
+        $chan = (int)$chan;
+        if (is_object($this->_epChannels[$chan])) {
+            return $this->_epChannels[$chan];
         }
         return \HUGnet\devices\DataChan::factory(
             $this->_device,

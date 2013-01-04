@@ -609,6 +609,483 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
         unset($obj);
     }
     /**
+    * Data provider for testSelect
+    *
+    * @return array
+    */
+    public static function dataEpChannel()
+    {
+        return array(
+            array(
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "InputTables" => 3,
+                            "dataChannels" => array(
+                                array(
+                                    "units" => "bar",
+                                    "decimals" => 4,
+                                ),
+                                array(
+                                    "units" => "%",
+                                    "decimals" => 4,
+                                ),
+                                array(
+                                    "units" => "%",
+                                    "decimals" => 4,
+                                ),
+                            ),
+                        ),
+                        "input" => array(
+                            "0" => new \HUGnet\DummyTable("Sensor0"),
+                            "1" => new \HUGnet\DummyTable("Sensor1"),
+                            "2" => new \HUGnet\DummyTable("Sensor2"),
+                        ),
+                    ),
+                    "Sensor0" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Pressure",
+                                "storageUnit" => "psi",
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "epChannel" => true,
+                            ),
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Percent",
+                                "storageUnit" => "decimal",
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "epChannel" => false,
+                            ),
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Percent",
+                                "storageUnit" => "decimal",
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "epChannel" => true,
+                            ),
+                        ),
+                    ),
+                ),
+                1,
+                array(
+                    'unitType' => 'Percent',
+                    'storageUnit' => 'decimal',
+                    'storageType' => 'raw',
+                    'epChannel' => 1,
+                    'label' => 'Data Channel 2',
+                    'channel' => 2,
+                    'units' => '%',
+                    'decimals' => null,
+                )
+            ),
+            array(
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "InputTables" => 3,
+                            "dataChannels" => array(
+                                array(
+                                    "units" => "bar",
+                                    "decimals" => 4,
+                                ),
+                                array(
+                                    "units" => "%",
+                                    "decimals" => 4,
+                                ),
+                                array(
+                                    "units" => "%",
+                                    "decimals" => 4,
+                                ),
+                            ),
+                        ),
+                        "input" => array(
+                            "0" => new \HUGnet\DummyTable("Sensor0"),
+                            "1" => new \HUGnet\DummyTable("Sensor1"),
+                            "2" => new \HUGnet\DummyTable("Sensor2"),
+                        ),
+                    ),
+                    "Sensor0" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Pressure",
+                                "storageUnit" => "psi",
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "epChannel" => true,
+                            ),
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Percent",
+                                "storageUnit" => "decimal",
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "epChannel" => false,
+                            ),
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Percent",
+                                "storageUnit" => "decimal",
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "epChannel" => true,
+                            ),
+                        ),
+                    ),
+                ),
+                0,
+                array(
+                    'unitType' => 'Pressure',
+                    'storageUnit' => 'psi',
+                    'storageType' => 'raw',
+                    'epChannel' => 0,
+                    'label' => 'Data Channel 0',
+                    'channel' => 0,
+                    'units' => 'bar',
+                    'decimals' => null,
+                )
+            ),
+            array(
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "InputTables" => 3,
+                            "dataChannels" => array(
+                                array(
+                                    "units" => "bar",
+                                    "decimals" => 4,
+                                ),
+                                array(
+                                    "units" => "%",
+                                    "decimals" => 4,
+                                ),
+                                array(
+                                    "units" => "%",
+                                    "decimals" => 4,
+                                ),
+                            ),
+                        ),
+                        "input" => array(
+                            "0" => new \HUGnet\DummyTable("Sensor0"),
+                            "1" => new \HUGnet\DummyTable("Sensor1"),
+                            "2" => new \HUGnet\DummyTable("Sensor2"),
+                        ),
+                    ),
+                    "Sensor0" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Pressure",
+                                "storageUnit" => "psi",
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "epChannel" => true,
+                            ),
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Percent",
+                                "storageUnit" => "decimal",
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "epChannel" => false,
+                            ),
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Percent",
+                                "storageUnit" => "decimal",
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "epChannel" => true,
+                            ),
+                        ),
+                    ),
+                ),
+                10,
+                array(
+                )
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array $config The configuration to use
+    * @param array $chan   The channel
+    * @param mixed $expect The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataEpChannel
+    */
+    public function testEpChannel(
+        $config, $chan, $expect
+    ) {
+        $sys = new \HUGnet\DummySystem("System");
+        $dev = new \HUGnet\DummyTable("Device");
+        $sys->resetMock($config);
+        $obj = DataChannels::factory($sys, $dev);
+        $this->assertEquals($expect, $obj->epChannel($chan)->toArray());
+        unset($obj);
+    }
+    /**
+    * Data provider for testSelect
+    *
+    * @return array
+    */
+    public static function dataDataChannel()
+    {
+        return array(
+            array(
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "InputTables" => 3,
+                            "dataChannels" => array(
+                                array(
+                                    "units" => "bar",
+                                    "decimals" => 4,
+                                ),
+                                array(
+                                    "units" => "%",
+                                    "decimals" => 4,
+                                ),
+                                array(
+                                    "units" => "%",
+                                    "decimals" => 4,
+                                ),
+                            ),
+                        ),
+                        "input" => array(
+                            "0" => new \HUGnet\DummyTable("Sensor0"),
+                            "1" => new \HUGnet\DummyTable("Sensor1"),
+                            "2" => new \HUGnet\DummyTable("Sensor2"),
+                        ),
+                    ),
+                    "Sensor0" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Pressure",
+                                "storageUnit" => "psi",
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "epChannel" => true,
+                            ),
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Percent",
+                                "storageUnit" => "decimal",
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "epChannel" => false,
+                            ),
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Percent",
+                                "storageUnit" => "decimal",
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "epChannel" => true,
+                            ),
+                        ),
+                    ),
+                ),
+                2,
+                array(
+                    'unitType' => 'Percent',
+                    'storageUnit' => 'decimal',
+                    'storageType' => 'raw',
+                    'epChannel' => 1,
+                    'label' => 'Data Channel 2',
+                    'channel' => 2,
+                    'units' => '%',
+                    'decimals' => null,
+                )
+            ),
+            array(
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "InputTables" => 3,
+                            "dataChannels" => array(
+                                array(
+                                    "units" => "bar",
+                                    "decimals" => 4,
+                                ),
+                                array(
+                                    "units" => "%",
+                                    "decimals" => 4,
+                                ),
+                                array(
+                                    "units" => "%",
+                                    "decimals" => 4,
+                                ),
+                            ),
+                        ),
+                        "input" => array(
+                            "0" => new \HUGnet\DummyTable("Sensor0"),
+                            "1" => new \HUGnet\DummyTable("Sensor1"),
+                            "2" => new \HUGnet\DummyTable("Sensor2"),
+                        ),
+                    ),
+                    "Sensor0" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Pressure",
+                                "storageUnit" => "psi",
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "epChannel" => true,
+                            ),
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Percent",
+                                "storageUnit" => "decimal",
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "epChannel" => false,
+                            ),
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Percent",
+                                "storageUnit" => "decimal",
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "epChannel" => true,
+                            ),
+                        ),
+                    ),
+                ),
+                0,
+                array(
+                    'unitType' => 'Pressure',
+                    'storageUnit' => 'psi',
+                    'storageType' => 'raw',
+                    'epChannel' => 0,
+                    'label' => 'Data Channel 0',
+                    'channel' => 0,
+                    'units' => 'bar',
+                    'decimals' => null,
+                )
+            ),
+            array(
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "InputTables" => 3,
+                            "dataChannels" => array(
+                                array(
+                                    "units" => "bar",
+                                    "decimals" => 4,
+                                ),
+                                array(
+                                    "units" => "%",
+                                    "decimals" => 4,
+                                ),
+                                array(
+                                    "units" => "%",
+                                    "decimals" => 4,
+                                ),
+                            ),
+                        ),
+                        "input" => array(
+                            "0" => new \HUGnet\DummyTable("Sensor0"),
+                            "1" => new \HUGnet\DummyTable("Sensor1"),
+                            "2" => new \HUGnet\DummyTable("Sensor2"),
+                        ),
+                    ),
+                    "Sensor0" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Pressure",
+                                "storageUnit" => "psi",
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "epChannel" => true,
+                            ),
+                        ),
+                    ),
+                    "Sensor1" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Percent",
+                                "storageUnit" => "decimal",
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "epChannel" => false,
+                            ),
+                        ),
+                    ),
+                    "Sensor2" => array(
+                        "channels" => array(
+                            array(
+                                "unitType" => "Percent",
+                                "storageUnit" => "decimal",
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "epChannel" => true,
+                            ),
+                        ),
+                    ),
+                ),
+                10,
+                array(
+                )
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array $config The configuration to use
+    * @param array $chan   The channel
+    * @param mixed $expect The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataDataChannel
+    */
+    public function testDataChannel(
+        $config, $chan, $expect
+    ) {
+        $sys = new \HUGnet\DummySystem("System");
+        $dev = new \HUGnet\DummyTable("Device");
+        $sys->resetMock($config);
+        $obj = DataChannels::factory($sys, $dev);
+        $this->assertEquals($expect, $obj->dataChannel($chan)->toArray());
+        unset($obj);
+    }    /**
     * Data provider for testGetField
     *
     * @return array
