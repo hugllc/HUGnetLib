@@ -212,6 +212,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                                 "storageUnit" => "psi",
                                 "storageType" =>
                                     \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "epChannel" => true,
                             ),
                         ),
                     ),
@@ -222,6 +223,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                                 "storageUnit" => "decimal",
                                 "storageType" =>
                                     \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "epChannel" => false,
                             ),
                         ),
                     ),
@@ -232,6 +234,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                                 "storageUnit" => "decimal",
                                 "storageType" =>
                                     \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "epChannel" => true,
                             ),
                         ),
                     ),
@@ -800,6 +803,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                                     => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                                 "index" => 0,
                                 "input" => 0,
+                                "epChannel" => true,
                             ),
                         ),
                     ),
@@ -815,6 +819,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                                     => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                                 "index" => 0,
                                 "input" => 1,
+                                "epChannel" => false,
                             ),
                         ),
                     ),
@@ -830,6 +835,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                                     => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                                 "index" => 0,
                                 "input" => 2,
+                                "epChannel" => true,
                             ),
                         ),
                     ),
@@ -845,6 +851,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                                     => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                                 "index" => 0,
                                 "input" => 3,
+                                "epChannel" => true,
                             ),
                         ),
                     ),
@@ -860,6 +867,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                                     => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                                 "index" => 0,
                                 "input" => 4,
+                                "epChannel" => true,
                             ),
                         ),
                     ),
@@ -920,6 +928,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                            '&#176;C' => '&#176;C',
                            'K' => 'K',
                         ),
+                        "epChannel" => 0,
                     ),
                     array(
                         "storageUnit" => "&#176;C",
@@ -938,6 +947,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                            '&#176;C' => '&#176;C',
                            'K' => 'K',
                         ),
+                        "epChannel" => null,
                     ),
                     array(
                         "storageUnit" => "&#176;C",
@@ -956,6 +966,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                            '&#176;C' => '&#176;C',
                            'K' => 'K',
                         ),
+                        "epChannel" => 1,
                     ),
                     array(
                         "storageUnit" => "&#176;C",
@@ -974,6 +985,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                            '&#176;C' => '&#176;C',
                            'K' => 'K',
                         ),
+                        "epChannel" => 2,
                     ),
                     array(
                         "storageUnit" => "&#176;C",
@@ -992,6 +1004,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                            '&#176;C' => '&#176;C',
                            'K' => 'K',
                         ),
+                        "epChannel" => 3,
                     ),
                 ),
             ),

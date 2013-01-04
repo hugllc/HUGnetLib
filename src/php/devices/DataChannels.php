@@ -109,8 +109,14 @@ class DataChannels
         if (is_string($channels)) {
             $channels = json_decode($channels, true);
         }
+        $epChan = 0;
         foreach (array_keys($chans) as $chan) {
             $chans[$chan]["label"] = "Data Channel $chan";
+            if ($chans[$chan]["epChannel"] == true) {
+                $chans[$chan]["epChannel"] = $epChan++;
+            } else {
+                $chans[$chan]["epChannel"] = null;
+            }
             $this->_channels[$chan] = \HUGnet\devices\DataChan::factory(
                 $this->_device,
                 $chans[$chan],
