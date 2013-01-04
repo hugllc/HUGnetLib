@@ -183,7 +183,7 @@ HUGnet.Histories = Backbone.Collection.extend({
             "since": Math.round(this.LastHistory / 1000),
             "until": Math.round(this.until / 1000),
             "limit": limit,
-            "order": "desc",
+            "order": "asc",
             "type": this.type
         };
         $.ajax({
