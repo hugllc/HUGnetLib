@@ -130,20 +130,46 @@ class LevelHolderProcessTest extends DriverTestBase
                             "3" => new \HUGnet\DummyBase("DataChan3"),
                             "4" => new \HUGnet\DummyBase("DataChan4"),
                         ),
+                        "epChannel" => array(
+                            "0" => new \HUGnet\DummyBase("DataChan0"),
+                            "1" => new \HUGnet\DummyBase("DataChan1"),
+                            "2" => new \HUGnet\DummyBase("DataChan3"),
+                            "3" => new \HUGnet\DummyBase("DataChan4"),
+                        ),
                     ),
                     "DataChan0" => array(
+                        "get" => array(
+                            "channel" => 0,
+                            "decimals" => 0,
+                        ),
                     ),
                     "DataChan1" => array(
+                        "get" => array(
+                            "channel" => 1,
+                            "decimals" => 0,
+                        ),
                     ),
                     "DataChan2" => array(
+                        "get" => array(
+                            "channel" => 2,
+                            "decimals" => 0,
+                        ),
+                    ),
+                    "DataChan3" => array(
                         "decode" => array(
                             "12345678" => "12",
                             "11223344" => "14",
                         ),
-                    ),
-                    "DataChan3" => array(
+                        "get" => array(
+                            "channel" => 3,
+                            "decimals" => 0,
+                        ),
                     ),
                     "DataChan4" => array(
+                        "get" => array(
+                            "channel" => 4,
+                            "decimals" => 0,
+                        ),
                     ),
                 ),
                 "22010214060000C20D0000021234567811223344",
@@ -158,7 +184,7 @@ class LevelHolderProcessTest extends DriverTestBase
                                 0 => 34,
                                 1 => 1,
                                 2 => 2,
-                                3 => 2,
+                                3 => 3,
                                 4 => 13.0,
                                 5 => 1.0,
                             )
@@ -208,6 +234,9 @@ class LevelHolderProcessTest extends DriverTestBase
                         "dataChannels" => new \HUGnet\DummyBase("Channels"),
                     ),
                     "Channels" => array(
+                        "get" => array(
+                            "epChannel" => 1,
+                        ),
                     ),
                 ),
                 "22000214060000C20D0000",
@@ -246,13 +275,16 @@ class LevelHolderProcessTest extends DriverTestBase
                             "12" => "12345678",
                             "14" => "11223344",
                         ),
+                        "get" => array(
+                            "epChannel" => 1,
+                        ),
                     ),
                     "DataChan3" => array(
                     ),
                     "DataChan4" => array(
                     ),
                 ),
-                "22010214060000C20D0000021234567811223344",
+                "22010214060000C20D0000011234567811223344",
             ),
         );
     }
