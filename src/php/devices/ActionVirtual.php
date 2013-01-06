@@ -211,7 +211,10 @@ class ActionVirtual extends Action
     private function _writeFile($hist)
     {
         if (is_object($hist)) {
-            if (file_exists("/home/tmp")) {
+            $setupDir = (string)$this->system->get("dataDir");
+            if ((strlen($setupDir) > 0) && file_exists($setupDir)) {
+                $prefix = $setupDir;
+            } else if (file_exists("/home/tmp")) {
                 $prefix = "/home/tmp";
             } else if (file_exists("/var/tmp")) {
                 $prefix = "/var/tmp";
