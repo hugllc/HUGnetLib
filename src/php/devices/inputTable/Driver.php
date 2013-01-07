@@ -583,10 +583,10 @@ abstract class Driver
     public function decodeDataPoint(
         &$string, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
     ) {
-        if (is_null($string)) {
-            return null;
+        $A = null;
+        if (!is_null($string)) {
+            $A = $this->getRawData($string, $channel);
         }
-        $A = $this->getRawData($string, $channel);
         $type = $this->get("storageType");
         if ($type == \HUGnet\devices\datachan\Driver::TYPE_DIFF) {
             $ret = $this->getReading(
