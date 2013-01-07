@@ -137,10 +137,20 @@ class PIDProcessTest extends DriverTestBase
                             "3" => new \HUGnet\DummyBase("DataChan3"),
                             "4" => new \HUGnet\DummyBase("DataChan4"),
                         ),
+                        "epChannel" => array(
+                            "0" => new \HUGnet\DummyBase("DataChan0"),
+                            "1" => new \HUGnet\DummyBase("DataChan1"),
+                            "2" => new \HUGnet\DummyBase("DataChan2"),
+                            "3" => new \HUGnet\DummyBase("DataChan3"),
+                            "4" => new \HUGnet\DummyBase("DataChan4"),
+                        ),
                     ),
                     "DataChan3" => array(
                         "decode" => array(
                             "05000000" => 5,
+                        ),
+                        "get" => array(
+                            "channel" => 3,
                         ),
                     ),
                 ),
@@ -187,10 +197,20 @@ class PIDProcessTest extends DriverTestBase
                             "3" => new \HUGnet\DummyBase("DataChan3"),
                             "4" => new \HUGnet\DummyBase("DataChan4"),
                         ),
+                        "epChannel" => array(
+                            "0" => new \HUGnet\DummyBase("DataChan0"),
+                            "1" => new \HUGnet\DummyBase("DataChan1"),
+                            "2" => new \HUGnet\DummyBase("DataChan2"),
+                            "3" => new \HUGnet\DummyBase("DataChan3"),
+                            "4" => new \HUGnet\DummyBase("DataChan4"),
+                        ),
                     ),
                     "DataChan3" => array(
                         "decode" => array(
                             "05000000" => 5,
+                        ),
+                        "get" => array(
+                            "channel" => 3,
                         ),
                     ),
                 ),
@@ -277,6 +297,10 @@ class PIDProcessTest extends DriverTestBase
                         "encode" => array(
                             "5" => "05000000",
                         ),
+                        "get" => array(
+                            "channel" => 3,
+                            "epChannel" => 3,
+                        ),
                     ),
                 ),
                 "0102030400000005000000060000000600000007000000080009000000"
@@ -315,11 +339,15 @@ class PIDProcessTest extends DriverTestBase
                         "encode" => array(
                             "5" => "05000000",
                         ),
+                        "get" => array(
+                            "channel" => 3,
+                            "epChannel" => 5,
+                        ),
                     ),
                     "Channels" => array(
                     ),
                 ),
-                "0102030400000005000000060001000600100007000010080009000000"
+                "0102050400000005000000060001000600100007000010080009000000"
                     ."0000000000100000",
             ),
         );

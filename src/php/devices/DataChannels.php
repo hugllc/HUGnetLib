@@ -202,7 +202,8 @@ class DataChannels
     /**
     * Returns an array to select the data channel
     *
-    * @param array $ret The base array to start with
+    * @param array $ret    The base array to start with
+    * @param bool  $epOnly If set to true, only show endpoint data channels
     *
     * @return array of id -> name pairs
     */

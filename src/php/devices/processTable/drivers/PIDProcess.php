@@ -130,17 +130,24 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
     {
         $extra = (array)$this->process()->get("extra");
         $index = 0;
-        for ($i = 0; $i < 3; $i++) {
-            $str   = substr($string, $index, 2);
-            $extra[$i] = $this->_getProcessIntStr($str, 1);
-            $index += 2;
-        }
+        $str   = substr($string, $index, 2);
+        $extra[0] = $this->_getProcessIntStr($str, 1);
+        $index += 2;
+        $str   = substr($string, $index, 2);
+        $extra[1] = $this->_getProcessIntStr($str, 1);
+        $index += 2;
+        $str   = substr($string, $index, 2);
+        $epChan = $this->_getProcessIntStr($str, 1);
+        $dataChan = $this->process()->device()->dataChannels()->epChannel(
+            $epChan
+        );
+        $extra[2] = $dataChan->get("channel");
+        $index += 2;
         $str   = substr($string, $index, 8);
         $index += 8;
         $extra[3] = $this->_getProcessIntStr($str, 4);
         $str   = substr($string, $index, 8);
         $index += 8;
-        $dataChan = $this->process()->device()->dataChannel($extra[2]);
         $extra[4] = $dataChan->decode($str);
         $str   = substr($string, $index, 4);
         $index += 4;
@@ -167,11 +174,11 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
     public function encode()
     {
         $data  = "";
-        for ($i = 0; $i < 3; $i++) {
-            $data .= $this->_getProcessStrInt($this->getExtra($i), 1);
-        }
-        $data .= $this->_getProcessStrInt($this->getExtra(3), 4);
+        $data .= $this->_getProcessStrInt($this->getExtra(0), 1);
+        $data .= $this->_getProcessStrInt($this->getExtra(1), 1);
         $dataChan = $this->process()->device()->dataChannel($this->getExtra(2));
+        $data .= $this->_getProcessStrInt($dataChan->get("epChannel"), 1);
+        $data .= $this->_getProcessStrInt($this->getExtra(3), 4);
         $setpoint = $dataChan->encode($this->getExtra(4));
         $data .= str_pad($setpoint, 8, "0", STR_PAD_RIGHT);
         $data .= $this->_getProcessStrInt($this->getExtra(5), 2);

@@ -157,18 +157,20 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
         $index = 0;
         $channels = $this->process()->device()->dataChannels();
         for ($i = 3; $i < count($this->params["extraText"]); $i += 3) {
-            $chan = substr($string, $index, 2);
-            if (($chan == "FF") || ($chan === false)) {
+            $epChan = substr($string, $index, 2);
+            if (($epChan == "FF") || ($epChan === false)) {
                 // Empty string or slot
                 unset($extra[$i]);
                 unset($extra[$i+1]);
                 unset($extra[$i+2]);
                 continue;
             }
-            $extra[$i] = $this->_getProcessIntStr($chan, 1);
+            $epChan = $this->_getProcessIntStr($epChan, 1);
+            $dataChan = $channels->epChannel($epChan);
+
+            $extra[$i] = $dataChan->get("channel");
             $index += 2;
 
-            $dataChan = $channels->dataChannel($extra[$i]);
             $low = $dataChan->decode(
                 substr($string, $index, 8)
             );
@@ -218,21 +220,23 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
                 break;
             }
             $chan = (int)$chan;
+            $dataChan  = $channels->dataChannel($chan);
+            $epChan    = (int)$dataChan->get("epChannel");
             $setpoint  = (float)$this->getExtra($i+1);
             $tolerance = (float)$this->getExtra($i+2);
-            $low = $channels->dataChannel($chan)->encode(
+            $low = $dataChan->encode(
                 $setpoint - $tolerance
             );
             if (strlen($low) == 0) {
                 break;
             }
-            $high = $channels->dataChannel($chan)->encode(
+            $high = $dataChan->encode(
                 $setpoint + $tolerance
             );
             if (strlen($high) == 0) {
                 break;
             }
-            $data .= $this->_getProcessStrInt($chan, 1).$low.$high;
+            $data .= $this->_getProcessStrInt($epChan, 1).$low.$high;
         }
         return $data;
     }

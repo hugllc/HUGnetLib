@@ -1085,7 +1085,8 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
         $obj = DataChannels::factory($sys, $dev);
         $this->assertEquals($expect, $obj->dataChannel($chan)->toArray());
         unset($obj);
-    }    /**
+    }
+    /**
     * Data provider for testGetField
     *
     * @return array
