@@ -122,6 +122,17 @@ HUGnet.Device = Backbone.Model.extend({
         }
     },
     /**
+    * Sets the data to be sent back to the server
+    *
+    * @return JSON string
+    */
+    saveData: function()
+    {
+        var data = this.toJSON();
+        data.params = [];
+        return data;
+    },
+    /**
     * Gets infomration about a device.  This is retrieved from the database only.
     *
     * @param id The id of the device to get
@@ -143,7 +154,7 @@ HUGnet.Device = Backbone.Model.extend({
                     "task": "device",
                     "action": "put",
                     "id": id.toString(16),
-                    "data": self.toJSON()
+                    "data": self.saveData()
                 }
             }).done(
                 function (data)
