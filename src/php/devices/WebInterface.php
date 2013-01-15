@@ -168,6 +168,7 @@ class WebInterface
         foreach ($params as $key => $value) {
             $this->_device->setParam($key, $value);
         }
+        $this->_device->setParam("LastModified", $this->_system->now());
         $this->_device->store();
         return $this->_device->toArray(true);
     }
@@ -179,7 +180,7 @@ class WebInterface
     private function _config()
     {
         if ($this->_device->action()->config()) {
-            $this->_device->setParam("LastModified", time());
+            $this->_device->setParam("LastModified", $this->_system->now());
             $this->_device->store();
             $ret = $this->_device->toArray(true);
         } else {

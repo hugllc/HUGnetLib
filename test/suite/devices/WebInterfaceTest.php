@@ -111,6 +111,7 @@ class WebInterfaceTest extends \PHPUnit_Framework_TestCase
                             "verbose" => 0,
                         ),
                         "device" => new \HUGnet\DummyBase("Device"),
+                        "now" => 1234,
                     ),
                     "Device" => array(
                         "load" => true,
@@ -146,6 +147,7 @@ class WebInterfaceTest extends \PHPUnit_Framework_TestCase
                         ),
                         "setParam" => array(
                             array("e", "F"),
+                            array("LastModified", 1234),
                         ),
                         "store" => array(
                             array(),

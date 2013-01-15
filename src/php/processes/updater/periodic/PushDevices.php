@@ -96,7 +96,7 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
     public function &execute()
     {
         if ($this->ready() && $this->hasMaster()) {
-            $now = time();
+            $now = $this->system()->now();
             $ids = $this->_device->ids();
             foreach (array_keys($ids) as $key) {
                 $this->system()->main();
