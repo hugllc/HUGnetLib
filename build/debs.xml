@@ -76,10 +76,6 @@
         <copy todir="${deb.webapistaging}/var/www/HUGnetLib">
             <fileset dir="${deb.webapisrc}" excludes="**/*~"/>
         </copy>
-        <mkdir dir="${deb.webapistaging}/usr/share/php/HUGnetLib/webapi"/>
-        <copy todir="${deb.webapistaging}/usr/share/php/HUGnetLib/webapi">
-            <fileset dir="${deb.phpsrc}/webapi" excludes="**/*~"/>
-        </copy>
         <chmod file="${deb.webapistaging}/DEBIAN/postinst" perm="0755"/>
         <chmod file="${deb.webapistaging}/DEBIAN/prerm" perm="0755"/>
         <replaceregexp file="${deb.webapistaging}/DEBIAN/control" byline="yes"
@@ -98,10 +94,6 @@
         <mkdir dir="${deb.webapirostaging}/var/www/HUGnetLib"/>
         <copy todir="${deb.webapirostaging}/var/www/HUGnetLib">
             <fileset dir="${deb.webapisrc}" excludes="**/*~"/>
-        </copy>
-        <mkdir dir="${deb.webapirostaging}/usr/share/php/HUGnetLib/webapi"/>
-        <copy todir="${deb.webapirostaging}/usr/share/php/HUGnetLib/webapi">
-            <fileset dir="${deb.phpsrc}/webapi" excludes="**/*~"/>
         </copy>
         <chmod file="${deb.webapirostaging}/DEBIAN/postinst" perm="0755"/>
         <chmod file="${deb.webapirostaging}/DEBIAN/prerm" perm="0755"/>
