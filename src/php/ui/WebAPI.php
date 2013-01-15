@@ -441,21 +441,22 @@ class WebAPI extends HTML
     */
     private function _executeHistory($extra = array())
     {
-        $did = hexdec($this->args()->get("id"));
-        $data = (array)$this->args()->get("data");
-        switch (trim(strtolower($data["type"]))) {
-        case "raw":
+        $did     = hexdec($this->args()->get("id"));
+        $data    = (array)$this->args()->get("data");
+        $type    = trim(strtoupper($data["type"]));
+        switch ($type) {
+        case "RAW":
             $hist = $this->system()->table("RawHistory");
             break;
-        case "30sec":
-        case "1min":
-        case "5min":
-        case "15min":
-        case "hourly":
-        case "daily":
-        case "weekly":
-        case "monthly":
-        case "yearly":
+        case "30SEC":
+        case "1MIN":
+        case "5MIN":
+        case "15MIN":
+        case "HOURLY":
+        case "DAILY":
+        case "WEEKLY":
+        case "MONTHLY":
+        case "YEARLY":
             $hist = $this->system()->device($did)->historyFactory(array(), false);
             break;
         default:
@@ -483,6 +484,10 @@ class WebAPI extends HTML
             $hist->sqlOrderBy = "Date desc";
             $whereText = "`id` = ?";
             $whereData = array($did);
+            if (!is_null($hist->get("Type"))) {
+                $whereText .= " AND Type = ?";
+                $whereData[] = $type;
+            }
             $hist->selectOneInto($whereText, $whereData);
             $ret = array();
             if (!$hist->isEmpty()) {
@@ -725,9 +730,14 @@ class WebAPI extends HTML
 
         $channels = $this->system()->device($did)->dataChannels();
         $chan = $channels->toArray();
-        $out = "<!DOCTYPE html>\r\n<html>\r\n<body><table>\r\n";
-        $out .= "<tr>";
-        $out .= "<th>Date</th>";
+        $out   = "<!DOCTYPE html>\r\n<html>\r\n<body><table>\r\n";
+        $out  .= "<tr>";
+        $out  .= "<th>Date</th>";
+        $type = false;
+        if (isset($records[0]["Type"])) {
+            $type = true;
+            $out .= "<th>Type</th>";
+        }
         for ($i = 0; $i < count($chan); $i++) {
             if ($chan[$i]["dataType"] !== 'ignore') {
                 $out .= "<th>";
@@ -740,6 +750,9 @@ class WebAPI extends HTML
         foreach ($records as $hist) {
             $out .= "<tr>";
             $out .= "<td>".date("Y-m-d H:i:s", $hist["Date"])."</td>";
+            if ($type) {
+                $out .= "<td>".$hist["Type"]."</td>";
+            }
             for ($i = 0; $i < count($chan); $i++) {
                 if ($chan[$i]["dataType"] !== 'ignore') {
                     $data = $hist["Data".$i];
