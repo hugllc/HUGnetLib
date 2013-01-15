@@ -105,7 +105,7 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
                 }
 
                 $this->_device->load($key);
-                $this->_pushDevice($this->_device);
+                $this->_pushDevice($this->_device, $now);
                 $this->_pushHistory($this->_device);
             }
             $this->last = $now;
@@ -115,10 +115,11 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
      * This pushes out all of the sensors for a device
      *
      * @param int &$dev The device to use
+     * @param int $now  The time to use
      *
      * @return none
      */
-    private function _pushDevice(&$dev)
+    private function _pushDevice(&$dev, $now)
     {
         /* Let's just push the regular devices */
         if ($dev->id() >= 0xFE0000) {
