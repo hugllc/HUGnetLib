@@ -82,6 +82,18 @@ class SystemTest extends \PHPUnit_Framework_TestCase
         unset($this->o);
     }
     /**
+    * This tests the now function
+    *
+    * @return null
+    */
+    public function testNow()
+    {
+        $time = time();
+        $config = array();
+        $obj = System::factory($config);
+        $this->assertGreaterThanOrEqual($time, $obj->now());
+    }
+    /**
     * Data provider for testFactory
     *
     * @return array

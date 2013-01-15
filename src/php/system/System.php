@@ -284,6 +284,15 @@ class System
         );
     }
     /**
+    * This returns the time
+    *
+    * @return int The time in unix format
+    */
+    public function now()
+    {
+        return time();
+    }
+    /**
     * Throws an exception
     *
     * @param string $msg       The message
