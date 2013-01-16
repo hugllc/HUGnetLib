@@ -571,8 +571,9 @@ class WebAPI extends HTML
     {
         if (!headers_sent()) {
             // @codeCoverageIgnoreStart
-            header('Cache-Control: no-cache, must-revalidate');
+            header('Cache-Control: no-cache, must-revalidate, max-age=0');
             header('Expires: Sat, 4 Apr 1998 20:00:00 GMT');
+            header('Pragma: no-cache');
         }
         // @codeCoverageIgnoreEnd
     }
