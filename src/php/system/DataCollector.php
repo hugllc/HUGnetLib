@@ -127,7 +127,7 @@ class DataCollector extends \HUGnet\base\SystemTableBase
         } else {
             $config["gather"] = true;
             $config["gatherpoll"] = true;
-            $config["gatherconfig"] = false;
+            $config["gatherconfig"] = true;
         }
         $this->set("Runtime", json_encode($config));
         $this->store();
