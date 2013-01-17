@@ -38,7 +38,7 @@ namespace HUGnet\devices\inputTable;
 /** This is a required class */
 require_once CODE_BASE.'devices/inputTable/DriverADuC.php';
 /** This is a required class */
-require_once CODE_BASE.'devices/inputTable/ADuCInputTable.php';
+require_once CODE_BASE.'devices/inputTable/tables/ADuCInputTable.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
@@ -332,7 +332,9 @@ class DriverADuCTest extends drivers\DriverTestBase
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
-        $ent = \HUGnet\devices\inputTable\ADuCInputTable::factory($sensor, $entry);
+        $ent = \HUGnet\devices\inputTable\tables\ADuCInputTable::factory(
+            $sensor, $entry
+        );
         $obj = DriverADuC::factory(
             "DriverADuCTestClass", $sensor, 0, $ent
         );

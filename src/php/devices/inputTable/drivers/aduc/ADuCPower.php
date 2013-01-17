@@ -420,6 +420,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         }
         return $ret;
     }
+
     /**
     * Gets the direction from a direction sensor made out of a POT.
     *
@@ -438,7 +439,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
     ) {
         $return = null;
         $ipr = $this->ipRoutine(0);
-        $Enable = $ipr == \HUGnet\devices\inputTable\ADuCInputTable::IPR_POWER;
+        $Enable = $ipr == \HUGnet\devices\inputTable\tables\ADuCInputTable::IPR_POWER;
         $A = $this->getRawData($string, $channel);
         if ($channel == 0) {
             $return = $this->getCurrent($A, $deltaT, $data, $prev);
@@ -475,8 +476,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
             return null;
         }
         $return = null;
-        $ipr = $this->ipRoutine(0);
-        $Enable = $ipr == \HUGnet\devices\inputTable\ADuCInputTable::IPR_POWER;
+        $Enable = $this->_hardwareEnable();
         if (($channel < 2) || ($Enable && ($channel < 4))) {
             $A = $this->strToInt($string);
             $return = $this->getTwosCompliment($A, 32);
@@ -517,10 +517,19 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
     *
     * @return Array of channel information
     */
-    public function channels()
+    private function _hardwareEnable()
     {
         $ipr = $this->ipRoutine(0);
-        $Enable = $ipr == \HUGnet\devices\inputTable\ADuCInputTable::IPR_POWER;
+        return $ipr == \HUGnet\devices\inputTable\tables\ADuCInputTable::IPR_POWER;
+    }
+    /**
+    * This builds the class from a setup string
+    *
+    * @return Array of channel information
+    */
+    public function channels()
+    {
+        $Enable = $this->_hardwareEnable();
         return array(
             array(
                 "decimals" => 6,

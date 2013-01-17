@@ -160,8 +160,9 @@ class WebAPI extends HTML
         $table = $this->system()->table("InputTable");
         $ret = $this->_executeTable($iid, $table, $extra);
         $action = strtolower(trim($this->args()->get("action")));
-        include_once dirname(__FILE__)."/../devices/inputTable/ADuCInputTable.php";
-        $table = \HUGnet\devices\inputTable\ADuCInputTable::factory(array());
+        $fle = dirname(__FILE__)."/../devices/inputTable/tables/ADuCInputTable.php";
+        include_once $fle;
+        $table = \HUGnet\devices\inputTable\tables\ADuCInputTable::factory(array());
         if ($action == "list") {
             foreach (array_keys($ret) as $key) {
                 $table->fromArray($ret[$key]);

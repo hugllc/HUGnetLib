@@ -180,8 +180,8 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
             ),
             3
         );
-        include_once CODE_BASE."/devices/inputTable/ADuCInputTable.php";
-        $table = \HUGnet\devices\inputTable\ADuCInputTable::factory(array());
+        include_once CODE_BASE."/devices/inputTable/tables/ADuCInputTable.php";
+        $table = \HUGnet\devices\inputTable\tables\ADuCInputTable::factory(array());
         $fullInputTable = $table->fullArray();
         return array(
             array(  // #0

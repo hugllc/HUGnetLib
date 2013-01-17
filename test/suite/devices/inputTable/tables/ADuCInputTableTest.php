@@ -34,9 +34,9 @@
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\devices\inputTable;
+namespace HUGnet\devices\inputTable\tables;
 /** This is a required class */
-require_once CODE_BASE.'devices/inputTable/ADuCInputTable.php';
+require_once CODE_BASE.'devices/inputTable/tables/ADuCInputTable.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */

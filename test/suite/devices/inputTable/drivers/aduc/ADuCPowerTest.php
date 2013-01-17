@@ -40,7 +40,7 @@ require_once dirname(__FILE__)."/DriverTestBaseADuC.php";
 /** This is a required class */
 require_once CODE_BASE.'devices/inputTable/drivers/aduc/ADuCPower.php';
 /** This is a required class */
-require_once CODE_BASE.'devices/inputTable/ADuCInputTable.php';
+require_once CODE_BASE.'devices/inputTable/tables/ADuCInputTable.php';
 
 /**
  * Test class for HUGnetDB.

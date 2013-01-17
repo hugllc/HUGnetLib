@@ -34,7 +34,7 @@
  *
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\devices\inputTable;
+namespace HUGnet\devices\inputTable\tables;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /**

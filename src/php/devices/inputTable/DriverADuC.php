@@ -207,7 +207,7 @@ abstract class DriverADuC extends Driver
     private function &_entry()
     {
         if (!is_object($this->_entry)) {
-            $this->_entry = \HUGnet\devices\inputTable\ADuCInputTable::factory(
+            $this->_entry = \HUGnet\devices\inputTable\tables\ADuCInputTable::factory(
                 $this, array()
             );
         }

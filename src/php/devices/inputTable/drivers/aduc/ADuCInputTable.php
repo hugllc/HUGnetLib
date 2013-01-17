@@ -190,10 +190,11 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
     private function &_entry()
     {
         if (!is_object($this->_entry)) {
-            include_once dirname(__FILE__)."/../../ADuCInputTable.php";
+            include_once dirname(__FILE__)."/../../tables/ADuCInputTable.php";
             $extra = $this->input()->get("extra");
             $this->_table()->getRow((int)$extra[0]);
-            $this->_entry = \HUGnet\devices\inputTable\ADuCInputTable::factory(
+            $this->_entry
+                = \HUGnet\devices\inputTable\tables\ADuCInputTable::factory(
                 $this, $this->_table()->toArray()
             );
         }
@@ -383,13 +384,13 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
     */
     private function _find()
     {
-        $entry = \HUGnet\devices\inputTable\ADuCInputTable::factory(
+        $entry = \HUGnet\devices\inputTable\tables\ADuCInputTable::factory(
             $this, array()
         );
         $mine = json_encode($this->_entry()->toArray());
         $ret = $this->_table()->selectInto("1");
         while ($ret) {
-            $entry = \HUGnet\devices\inputTable\ADuCInputTable::factory(
+            $entry = \HUGnet\devices\inputTable\tables\ADuCInputTable::factory(
                 $this, $this->_table()->toArray()
             );
             $row = json_encode($entry->toArray());
