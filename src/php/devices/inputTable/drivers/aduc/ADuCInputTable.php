@@ -193,10 +193,10 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
             include_once dirname(__FILE__)."/../../tables/ADuCInputTable.php";
             $extra = $this->input()->get("extra");
             $this->_table()->getRow((int)$extra[0]);
-            $this->_entry
-                = \HUGnet\devices\inputTable\tables\ADuCInputTable::factory(
+            $entry = \HUGnet\devices\inputTable\tables\ADuCInputTable::factory(
                 $this, $this->_table()->toArray()
             );
+            $this->_entry = &$entry;
         }
         return $this->_entry;
     }
