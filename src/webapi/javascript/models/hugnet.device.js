@@ -159,18 +159,18 @@ HUGnet.Device = Backbone.Model.extend({
                 function (data)
                 {
                     if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
-                        self.trigger('saved');
+                        self.trigger('refresh');
                         self.set(data);
                         self.trigger('fetchdone');
                         self.trigger('sync');
                     } else {
-                        self.trigger('savefail', "saved failed on server");
+                        self.trigger('refreshfail', "saved failed on server");
                     }
                 }
             ).fail(
                 function ()
                 {
-                    self.trigger('savefail', "failed to contact server");
+                    self.trigger('refreshfail', "failed to contact server");
                 }
             );
         }

@@ -278,6 +278,7 @@ var DeviceEntryView = Backbone.View.extend({
         if (action === 'refresh') {
             this.refresh(e);
         } else if (action === 'properties') {
+            this.model.refresh();
             this.properties(e);
         } else if (action === 'loadfirmware') {
             this.loadfirmware(e);
