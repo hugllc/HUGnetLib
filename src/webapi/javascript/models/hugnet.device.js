@@ -139,6 +139,49 @@ HUGnet.Device = Backbone.Model.extend({
     *
     * @return null
     */
+    refresh: function()
+    {
+        var id = this.get('id');
+        if (id !== 0) {
+            var self = this;
+            $.ajax({
+                type: 'POST',
+                url: this.url(),
+                dataType: 'json',
+                cache: false,
+                data:
+                {
+                    "task": "device",
+                    "action": "get",
+                    "id": id.toString(16),
+                }
+            }).done(
+                function (data)
+                {
+                    if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
+                        self.trigger('saved');
+                        self.set(data);
+                        self.trigger('fetchdone');
+                        self.trigger('sync');
+                    } else {
+                        self.trigger('savefail', "saved failed on server");
+                    }
+                }
+            ).fail(
+                function ()
+                {
+                    self.trigger('savefail', "failed to contact server");
+                }
+            );
+        }
+    },
+    /**
+    * Gets infomration about a device.  This is retrieved from the database only.
+    *
+    * @param id The id of the device to get
+    *
+    * @return null
+    */
     save: function()
     {
         var id = this.get('id');
