@@ -276,15 +276,35 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 7,
                         ),
-                        "send" => true,
+                        "send" => new \HUGnet\DummyBase("Packet"),
                     ),
                     "Process" => array(
                         "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Packet" => array(
+                        "reply" => "FF",
                     ),
                 ),
                 true,
             ),
             array( // #1
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "id" => 7,
+                        ),
+                        "send" => new \HUGnet\DummyBase("Packet"),
+                    ),
+                    "Process" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Packet" => array(
+                        "reply" => "AD",
+                    ),
+                ),
+                false,
+            ),
+            array( // #2
                 array(
                     "Device" => array(
                         "get" => array(
@@ -296,7 +316,7 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
                         "device" => new \HUGnet\DummyBase("Device"),
                     ),
                 ),
-                "asdf",
+                false,
             ),
         );
     }

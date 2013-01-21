@@ -156,12 +156,17 @@ class Process extends XTableBase
     */
     public function push()
     {
-        return $this->device()->send(
+        $encode = $this->encode();
+        $ret = $this->device()->send(
             array(
                 "Command" => "SETPROCESSTABLERAM",
-                "Data" => $this->encode()
+                "Data" => sprintf("%02X", $this->get("process")).$encode
             )
         );
+        if (is_object($ret)) {
+            return $ret->reply() == $encode;
+        }
+        return false;
     }
 }
 
