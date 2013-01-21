@@ -97,7 +97,9 @@ var DeviceOutputPropertiesView = Backbone.View.extend({
         if (extra == "undefined") {
             extra = "";
         }
-        this.$el.dialog( "option", "title", this.title() + extra );
+        if (this.$el.is(':data(dialog)')) {
+            this.$el.dialog( "option", "title", this.title() + extra );
+        }
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -255,7 +257,9 @@ HUGnet.DeviceOutputsView = Backbone.View.extend({
             'change',
             function ()
             {
-                this.$el.dialog( "option", "title", this.title() );
+                if (this.$el.is(':data(dialog)')) {
+                    this.$el.dialog( "option", "title", this.title() );
+                }
             },
             view
         );

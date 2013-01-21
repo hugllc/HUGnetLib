@@ -199,7 +199,9 @@ var DevicePropertiesView = Backbone.View.extend({
     },
     setTitle: function (extra)
     {
-        this.$el.dialog( "option", "title", this.title() + extra );
+        if (this.$el.is(':data(dialog)')) {
+            this.$el.dialog( "option", "title", this.title() + extra );
+        }
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -221,7 +223,6 @@ var DevicePropertiesView = Backbone.View.extend({
             )
         );
         this.$("#DeviceDataChannelsDiv").html(this.datachannels.render().el);
-        this.setTitle("");
         return this;
     },
     /**
@@ -413,7 +414,9 @@ HUGnet.DevicesView = Backbone.View.extend({
             'change',
             function ()
             {
-                this.$el.dialog( "option", "title", this.title() );
+                if (this.$el.is(':data(dialog)')) {
+                    this.$el.dialog( "option", "title", this.title() );
+                }
             },
             view
         );
