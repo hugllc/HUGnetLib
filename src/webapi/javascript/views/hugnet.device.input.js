@@ -119,7 +119,6 @@ var DeviceInputPropertiesView = Backbone.View.extend({
                 data
             )
         );
-        this.setTitle("");
         return this;
     },
     /**
