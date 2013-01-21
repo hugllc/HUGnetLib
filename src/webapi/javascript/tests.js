@@ -44,6 +44,7 @@ HUGnet.TestSuite = Backbone.View.extend({
     tabs: undefined,
     data: {},
     url: '/HUGnetLib/HUGnetLibAPI.php',
+    tabTemplate: '<li style="white-space: nowrap;"><a href="#{href}">#{label}</a> <span name="#{href}" class="ui-icon ui-icon-close">Remove Tab</span></li>',
     initialize: function (options)
     {
         if (options.url) this.url = options.url;
@@ -58,31 +59,29 @@ HUGnet.TestSuite = Backbone.View.extend({
         this.$el.html('<div id="tests-tabs"><ul></ul></div>');
         var self = this;
         this.tabs = $('#tests-tabs').tabs({
-            tabTemplate: '<li><a href="#{href}">#{label}</a></li>',
+            active: 0,
             cookie: {
                 // store a session cookie
                 expires: 10
             }
         });
-        this.tabs.tabs("add", '#tests-tabs-tests', 'Test Definitions');
+        //this.tabs.tabs("add", '#tests-tabs-tests', 'Test Definitions');
+        this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#tests-tabs-tests">Test Definitions</a></li>');
+        this.tabs.append( "<div id='tests-tabs-tests'></div>" );
         $('#tests-tabs-tests').html(this.tests.render().el);
+        this.tabs.tabs("refresh");
+        this.tabs.tabs("option", "active", 0);
 
         /* Further tabs will have a close button */
-        this.tabs.tabs("option", "tabTemplate", '<li style="white-space: nowrap;"><a href="#{href}">#{label}</a> <span name="#{href}" class="ui-icon ui-icon-close">Remove Tab</span></li>');
+        //this.tabs.tabs("option", "tabTemplate", '<li style="white-space: nowrap;"><a href="#{href}">#{label}</a> <span name="#{href}" class="ui-icon ui-icon-close">Remove Tab</span></li>');
         /* close icon: removing the tab on click */
-        $( "#tests-tabs span.ui-icon-close" ).live( "click", function(event, ui) {
-            var index = $( "li", self.tabs ).index( $( this ).parent() );
-            var id = $( this ).attr("name");
-            self.data[id].exit();
-            delete self.data[id];
-            self.tabs.tabs( "remove", index );
-        });
-
-        /* This selects a newly added tab */
-        this.tabs.tabs({
-            add: function(event, ui) {
-                self.tabs.tabs('select', '#' + ui.panel.id);
-            }
+        var tabs = this.tabs;
+        $(document).on( "click", "#tests-tabs span.ui-icon-close", function(event, ui) {
+            var panelId = $( this ).closest( "li" ).remove().attr( "aria-controls" );
+            self.data[panelId].exit();
+            delete self.data[panelId];
+            $( "#" + panelId ).remove();
+            tabs.tabs( "refresh" );
         });
 
         this.tests.bind(
@@ -105,7 +104,7 @@ HUGnet.TestSuite = Backbone.View.extend({
     testTab: function (test)
     {
         var self = this;
-        var tag = "#tabs-test" + test.get("id");
+        var tag = "tabs-test" + test.get("id");
         if (this.data[tag] !== undefined) {
             return;
         }
@@ -117,13 +116,17 @@ HUGnet.TestSuite = Backbone.View.extend({
         });
         var title = 'View Test "' + test.get("DeviceName") + '"';
 
-        this.tabs.tabs("add", tag, title);
-        $(tag).html(this.data[tag].render().el);
+        //this.tabs.tabs("add", tag, title);
+        this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+tag+'">'+title+'</a> <span name="#{href}" class="ui-icon ui-icon-close">Remove Tab</span></li>');
+        this.tabs.append( "<div id='"+tag+"'></div>" );
+        $("#"+tag).html(this.data[tag].render().el);
+        this.tabs.tabs("refresh");
+        this.tabs.tabs("option", "active", -1);
     },
     exportTab: function (test)
     {
         var self = this;
-        var tag = "#tabs-export" + test.get("id");
+        var tag = "tabs-export" + test.get("id");
         if (this.data[tag] !== undefined) {
             return;
         }
@@ -135,7 +138,11 @@ HUGnet.TestSuite = Backbone.View.extend({
         });
         var title = 'Export Test "' + test.get("DeviceName") + '" Data';
 
-        this.tabs.tabs("add", tag, title);
-        $(tag).html(this.data[tag].render().el);
+        //this.tabs.tabs("add", tag, title);
+        this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+tag+'">'+title+'</a> <span name="#{href}" class="ui-icon ui-icon-close">Remove Tab</span></li>');
+        this.tabs.append( "<div id='"+tag+"'></div>" );
+        $("#"+tag).html(this.data[tag].render().el);
+        this.tabs.tabs("refresh");
+        this.tabs.tabs("option", "active", -1);
     }
 });
