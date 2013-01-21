@@ -145,7 +145,7 @@ HUGnet.Device = Backbone.Model.extend({
         if (id !== 0) {
             var self = this;
             $.ajax({
-                type: 'POST',
+                type: 'GET',
                 url: this.url(),
                 dataType: 'json',
                 cache: false,
