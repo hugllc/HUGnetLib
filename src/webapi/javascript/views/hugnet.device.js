@@ -122,7 +122,7 @@ var DevicePropertiesView = Backbone.View.extend({
             function (model, collection, view)
             {
                 var datachannels = this.model.get('dataChannels');
-                this.datachannelsmodel.update(datachannels);
+                this.datachannelsmodel.reset(datachannels);
                 this.render();
             },
             this
