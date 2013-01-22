@@ -139,6 +139,8 @@ class WebInterface
         $ret = null;
         if ($action === "put") {
             $ret = $this->_put($args);
+        } else if ($action === "new") {
+            $ret = $this->_new($args);
         } else if ($action === "config") {
             $ret = $this->_config($args);
         } else if ($action === "loadfirmware") {
@@ -149,6 +151,27 @@ class WebInterface
             $ret = $this->_getRaw($args);
         }
         return $ret;
+    }
+    /**
+    * returns a history object for this device
+    *
+    * @param object $args The argument object
+    *
+    * @return string
+    */
+    private function _new($args)
+    {
+        $data = (array)$args->get("data");
+        $dev  = array();
+        if (trim(strtolower($data["type"])) == "test") {
+            $dev["HWPartNum"] = "0039-24-03-P";
+        }
+        if ($this->_device->insertVirtual($dev)) {
+            $this->_device->setParam("Created", $this->_system->now());
+            $this->_device->store();
+            return $this->_device->toArray(true);
+        }
+        return array();
     }
     /**
     * returns a history object for this device

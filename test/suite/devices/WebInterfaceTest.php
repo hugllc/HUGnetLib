@@ -279,6 +279,93 @@ class WebInterfaceTest extends \PHPUnit_Framework_TestCase
                 array(
                 ),
             ),
+            array(  // #5
+                new \HUGnet\DummyBase("Args"),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "device" => new \HUGnet\DummyBase("Device"),
+                        "now" => 5,
+                    ),
+                    "Device" => array(
+                        "load" => true,
+                        "toArray" => array(
+                            "Real" => "array",
+                        ),
+                        "network" => new \HUGnet\DummyBase("Network"),
+                        "action" => new \HUGnet\DummyBase("Action"),
+                        "insertVirtual" => true,
+                    ),
+                    "Args" => array(
+                        "get" => array(
+                            "action" => "new",
+                        ),
+                    ),
+                    "Network" => array(
+                        "loadConfig" => true,
+                    ),
+
+                ),
+                false,
+                array(),
+                array("Real" => "array"),
+                array(
+                    "Device" => array(
+                        "insertVirtual" => array(
+                            array(
+                                array(),
+                            ),
+                        ),
+                        "setParam" => array(array("Created", 5)),
+                        "store" => array(array()),
+                        "toArray" => array(array(true)),
+                    ),
+                ),
+            ),
+            array(  // #6
+                new \HUGnet\DummyBase("Args"),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "load" => true,
+                        "toArray" => array(
+                            "Real" => "array",
+                        ),
+                        "network" => new \HUGnet\DummyBase("Network"),
+                        "action" => new \HUGnet\DummyBase("Action"),
+                        "insertVirtual" => false,
+                    ),
+                    "Args" => array(
+                        "get" => array(
+                            "action" => "new",
+                            "data" => array("type" => "test"),
+                        ),
+                    ),
+                    "Network" => array(
+                        "loadConfig" => true,
+                    ),
+
+                ),
+                false,
+                array(),
+                array(),
+                array(
+                    "Device" => array(
+                        "insertVirtual" => array(
+                            array(
+                                array('HWPartNum' => '0039-24-03-P'),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
 
         );
     }
