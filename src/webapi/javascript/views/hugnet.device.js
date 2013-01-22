@@ -117,12 +117,36 @@ var DevicePropertiesView = Backbone.View.extend({
             },
             this
         );
+        this.controlchannelsmodel = new HUGnet.DeviceControlChannels();
+        var controlchannels = this.model.get('controlChannels');
+        this.controlchannelsmodel.reset(controlchannels);
+        this.controlchannels = new HUGnet.DeviceControlChannelsView({
+            model: this.controlchannelsmodel
+        });
+        this.datachannelsmodel.on(
+            'change',
+            function (model, collection, view)
+            {
+                this.model.set('dataChannels', this.datachannelsmodel.toJSON());
+            },
+            this
+        );
+        this.controlchannelsmodel.on(
+            'change',
+            function (model, collection, view)
+            {
+                this.model.set('controlChannels', this.controlchannelsmodel.toJSON());
+            },
+            this
+        );
         this.model.on(
             'change',
             function (model, collection, view)
             {
                 var datachannels = this.model.get('dataChannels');
                 this.datachannelsmodel.reset(datachannels);
+                var controlchannels = this.model.get('controlChannels');
+                this.controlchannelsmodel.reset(controlchannels);
                 this.render();
             },
             this
@@ -131,6 +155,10 @@ var DevicePropertiesView = Backbone.View.extend({
             'sync',
             function (model, collection, view)
             {
+                var datachannels = this.model.get('dataChannels');
+                this.datachannelsmodel.reset(datachannels);
+                var controlchannels = this.model.get('controlChannels');
+                this.controlchannelsmodel.reset(controlchannels);
                 var inputs = this.model.get('inputs');
                 this.inputsmodel.update(inputs);
                 var outputs = this.model.get('outputs');
@@ -216,6 +244,7 @@ var DevicePropertiesView = Backbone.View.extend({
         var data = this.model.toJSON();
         _.extend(data, HUGnet.viewHelpers);
         data.dataChannels = '<div id="DeviceDataChannelsDiv"></div>';
+        data.controlChannels = '<div id="DeviceControlChannelsDiv"></div>';
         this.$el.html(
             _.template(
                 $(this.template).html(),
@@ -223,6 +252,7 @@ var DevicePropertiesView = Backbone.View.extend({
             )
         );
         this.$("#DeviceDataChannelsDiv").html(this.datachannels.render().el);
+        this.$("#DeviceControlChannelsDiv").html(this.controlchannels.render().el);
         return this;
     },
     /**

@@ -1210,6 +1210,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             "epChannel" => 8,
                         ),
                     ),
+                    "controlChannels" => array(),
                     "outputs" => array(
                     ),
                     "processes" => array(
@@ -1296,6 +1297,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             'label' => 'Data Channel 8',
                         ),
                     ),
+                    "controlChannels" => array(),
                 )
             ),
         );

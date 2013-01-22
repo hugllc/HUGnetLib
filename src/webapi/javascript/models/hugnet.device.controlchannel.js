@@ -40,21 +40,14 @@
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-HUGnet.DeviceDataChannel = Backbone.Model.extend({
+HUGnet.DeviceControlChannel = Backbone.Model.extend({
     defaults:
     {
         channel: null,
-        input: null,
+        output: null,
         dev: null,
         type: "Unknown",
         label: 'No Name',
-        dataType: 'raw',
-        units: 'Unknown',
-        storageUnit: "Unknown",
-        epChannel: null,
-        validUnits: [],
-        decimals: 0,
-        maxDecimals: 0
     },
     idAttribute: 'channel',
 });
@@ -71,9 +64,9 @@ HUGnet.DeviceDataChannel = Backbone.Model.extend({
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-HUGnet.DeviceDataChannels = Backbone.Collection.extend({
+HUGnet.DeviceControlChannels = Backbone.Collection.extend({
     url: '/HUGnetLib/HUGnetLibAPI.php',
-    model: HUGnet.DeviceDataChannel,
+    model: HUGnet.DeviceControlChannel,
     comparator: function (model)
     {
         return parseInt(model.get("channel"), 10);

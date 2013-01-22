@@ -139,6 +139,7 @@ class Device extends \HUGnet\base\SystemTableAction
             $return = array_merge($this->driver()->toArray(), $return);
         }
         $return["dataChannels"] = $this->dataChannels()->toArray($default);
+        $return["controlChannels"] = $this->controlChannels()->toArray($default);
         if (is_string($return["params"])) {
             $return["params"] = (array)json_decode($return["params"], true);
         }
