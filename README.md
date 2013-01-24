@@ -15,7 +15,13 @@ This project is broken up into the following directories:
 - The src/ This contains the source code
 
 ### Requirements
+#### Development
 - phpunit (http://www.phpunit.de) with database test extension
+- phpqatools (pear install pear.phpqatools.org/phpqatools)
+- Apache Ant
+
+#### Running
+- php 5.3 or 5.4
 - php-mysql extensions
 - php-sqlite extensions
 
@@ -52,6 +58,12 @@ would only test the database code:
 
 $ phpunit test/suite/db
 
+## Coding Style
+The code should all be in a uniform, documented code style.  This style is checked using
+phpcs.  To run the style checker do the following:
+
+$ ant style
+
 
 ## Deploying
 
@@ -72,10 +84,25 @@ _Any contributions need to be tested in the unit testing_
 
 _All unit tests MUST pass for contributions to be even considered_
 
+_Style must be consistant as reported by the style checker_
+
+_All commit messages need to reference bugs in the Mantis bug tracker (see below)_
+
 Changes can be contributed by either:
 
 1. Using git to create patches and emailing them to patches@hugllc.com
 2. Creating another github repository to make your changes to and submitting pull requests.
+
+## Git Checkins
+All git checkins MUST REFERENCE A BUG in Mantis.  This can be done in a number of ways.
+The commit message should contain one of the following forms:
+
+bug #XXXX
+fixed #XXXX
+fixes #XXXX
+
+This automatically ties our git repositories into our Mantis bug tracker.
+
 
 ## Filing Bug Reports
 The bug tracker for this project is at http://dev.hugllc.com/bugs/ .  If you want an
