@@ -74,8 +74,7 @@ class ControlInput extends \HUGnet\devices\inputTable\Driver
         // Null    nothing
         "extraValues" => array(5, array()),
         "extraDefault" => array(1, 0),
-        "maxDecimals" => 2,
-        "total" => true,
+        "maxDecimals" => 0,
     );
     /**
     * Changes a raw reading into a output value
