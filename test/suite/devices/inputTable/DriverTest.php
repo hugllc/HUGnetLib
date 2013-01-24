@@ -351,8 +351,9 @@ class DriverTest extends drivers\DriverTestBase
                     ),
                 ),
                 array(
-                    254 => 'Virtual',
-                    255 => 'Empty Slot'
+                    0x60 => "Control Value Input",
+                    0xFE => 'Virtual',
+                    0xFF => 'Empty Slot'
                 ),
             ),
             array(
@@ -367,9 +368,10 @@ class DriverTest extends drivers\DriverTestBase
                     ),
                 ),
                 array(
-                    2 => 'Generic Analog',
-                    254 => 'Virtual',
-                    255 => 'Empty Slot'
+                    0x02 => 'Generic Analog',
+                    0x60 => "Control Value Input",
+                    0xFE => 'Virtual',
+                    0xFF => 'Empty Slot'
                 ),
             ),
         );

@@ -198,6 +198,7 @@ abstract class Driver
             0xF9 => "Input Table Entry",
         ),
         "all" => array(
+            0x60 => "Control Value Input",
             0xFE => "Virtual",
             0xFF => "Empty Slot",
         ),

@@ -268,7 +268,7 @@ class DriverTest extends drivers\DriverTestBase
                     ),
                 ),
                 array(
-                    255 => 'Empty Slot'
+                    0xFF => 'Empty Slot'
                 ),
             ),
             array(
@@ -283,7 +283,7 @@ class DriverTest extends drivers\DriverTestBase
                     ),
                 ),
                 array(
-                    255 => 'Empty Slot'
+                    0xFF => 'Empty Slot'
                 ),
             ),
         );
