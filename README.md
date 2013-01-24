@@ -19,6 +19,8 @@ This project is broken up into the following directories:
 - phpunit (http://www.phpunit.de) with database test extension
 - phpqatools (pear install pear.phpqatools.org/phpqatools)
 - Apache Ant
+- uglifyjs (To build the .js archives)
+- Ubuntu or Debian build environment to build debs
 
 #### Running
 - php 5.3 or 5.4
@@ -97,9 +99,9 @@ Changes can be contributed by either:
 All git checkins MUST REFERENCE A BUG in Mantis.  This can be done in a number of ways.
 The commit message should contain one of the following forms:
 
-bug #XXXX
-fixed #XXXX
-fixes #XXXX
+- bug #XXXX
+- fixed #XXXX
+- fixes #XXXX
 
 This automatically ties our git repositories into our Mantis bug tracker.
 
