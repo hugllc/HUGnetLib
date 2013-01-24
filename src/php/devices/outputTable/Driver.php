@@ -93,6 +93,7 @@ abstract class Driver
     */
     private static $_drivers = array(
         "01:DEFAULT"                 => "ADuCDAC",
+        "FE:DEFAULT"                 => "NullOutput",
         "FF:DEFAULT"                 => "EmptyOutput",
     );
     /**
@@ -109,6 +110,7 @@ abstract class Driver
             0x01 => "ADuC DAC",
         ),
         "all" => array(
+            0xFE => "Null Output",
             0xFF => "Empty Slot"
         ),
     );

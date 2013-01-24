@@ -186,7 +186,8 @@ class OutputTest extends \PHPUnit_Framework_TestCase
                         'DEFAULT' => 'TestOutputDriver1'
                     ),
                     'validIds' => Array (
-                        255 => 'Empty Slot'
+                        0xFE => 'Null Output',
+                        0xFF => 'Empty Slot'
                     ),
                     "extraText" => array(),
                     "extraDefault" => array(),
@@ -226,7 +227,8 @@ class OutputTest extends \PHPUnit_Framework_TestCase
                         'DEFAULT' => 'EmptyOutput'
                     ),
                     'validIds' => Array (
-                        255 => 'Empty Slot'
+                        0xFE => 'Null Output',
+                        0xFF => 'Empty Slot'
                     ),
                     "extraText" => array(),
                     "extraDefault" => array(),
