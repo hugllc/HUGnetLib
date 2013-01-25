@@ -77,23 +77,6 @@ class ControlInput extends \HUGnet\devices\inputTable\Driver
         "maxDecimals" => 0,
     );
     /**
-    * Changes a raw reading into a output value
-    *
-    * @param int   $A      Output of the A to D converter
-    * @param float $deltaT The time delta in seconds between this record
-    * @param array &$data  The data from the other sensors that were crunched
-    * @param mixed $prev   The previous value for this sensor
-    *
-    * @return mixed The value in whatever the units are in the sensor
-    *
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-    */
-    protected function getReading(
-        $A, $deltaT = 0, &$data = array(), $prev = null
-    ) {
-        return $A;
-    }
-    /**
     * Gets an item
     *
     * @param string $name The name of the property to get
