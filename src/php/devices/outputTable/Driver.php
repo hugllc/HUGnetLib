@@ -93,6 +93,7 @@ abstract class Driver
     */
     private static $_drivers = array(
         "01:DEFAULT"                 => "ADuCDAC",
+        "02:DEFAULT"                 => "ADuCPWM",
         "FE:DEFAULT"                 => "NullOutput",
         "FF:DEFAULT"                 => "EmptyOutput",
     );
@@ -108,6 +109,7 @@ abstract class Driver
         ),
         "ADuC" => array(
             0x01 => "ADuC DAC",
+            0x02 => "ADuC PWM",
         ),
         "all" => array(
             0xFE => "Null Output",
