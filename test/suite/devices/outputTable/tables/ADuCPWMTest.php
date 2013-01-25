@@ -80,54 +80,6 @@ class ADuCPWMTest extends \PHPUnit_Framework_TestCase
     {
         parent::tearDown();
     }
-
-    /**
-    * Data provider for testRemove
-    *
-    * @return array
-    */
-    public static function dataParams()
-    {
-        return array(
-            array(
-                array(
-                ),
-                null,
-                "priority",
-                5,
-                "05",
-            ),
-            array(
-                array(
-                ),
-                null,
-                "priority",
-                0x105,
-                "05",
-            ),
-        );
-    }
-    /**
-    * Tests the iteration and preload functions
-    *
-    * @param array  $mock    The mocks to preload
-    * @param string $preload The string to give to the class
-    * @param string $param   The driver number
-    * @param string $set     The values to set the register to
-    * @param array  $expect  The info to expect returned
-    *
-    * @return null
-    *
-    * @dataProvider dataParams
-    */
-    public function testParams($mock, $preload, $param, $set, $expect)
-    {
-        $sensor = new \HUGnet\DummyTable("Sensor");
-        $sensor->resetMock($mock);
-        $obj = ADuCPWM::factory($sensor, $preload);
-        $ret = $obj->$param($set);
-        $this->assertSame($expect, $ret);
-    }
     /**
     * Data provider for testRemove
     *
@@ -177,7 +129,7 @@ class ADuCPWMTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-    * Data provider for testRemove
+    * Data provider for testEncode
     *
     * @return array
     */
@@ -190,7 +142,6 @@ class ADuCPWMTest extends \PHPUnit_Framework_TestCase
                 array(
                 ),
                 array(
-                    'priority' => 2,
                     'PWM0LEN' => 0x1234,
                     'PWM1LEN' => 0x5678,
                     'PWM2LEN' => 0x9900,
@@ -206,9 +157,9 @@ class ADuCPWMTest extends \PHPUnit_Framework_TestCase
                     'LCOMP' => 0,
                     'DIR' => 0,
                     'HMODE' => 1,
-                    'PWMEN' => 0,
+                    'PWMEN' => 1,
                 ),
-                "020140341278560099",
+                "0140341278560099",
             ),
         );
     }
@@ -234,7 +185,7 @@ class ADuCPWMTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, $ret);
     }
     /**
-    * Data provider for testRemove
+    * Data provider for testDecode
     *
     * @return array
     */
@@ -245,10 +196,9 @@ class ADuCPWMTest extends \PHPUnit_Framework_TestCase
                 array(
                 ),
                 null,
-                "010140341278560099",
+                "0140341278560099",
                 true,
                 array(
-                    'priority' => 1,
                     'PWM0LEN' => 0x1234,
                     'PWM1LEN' => 0x5678,
                     'PWM2LEN' => 0x9900,
@@ -256,15 +206,10 @@ class ADuCPWMTest extends \PHPUnit_Framework_TestCase
                     'PWM5INV' => 0,
                     'PWM3INV' => 0,
                     'PWM1INV' => 0,
-                    'PWMTRIP' => 0,
-                    'ENA' => 0,
                     'PWMCP' => 0,
                     'POINV' => 0,
                     'HOFF' => 0,
-                    'LCOMP' => 0,
                     'DIR' => 0,
-                    'HMODE' => 0,
-                    'PWMEN' => 1,
                 ),
             ),
             array( // #1 String too short
@@ -274,7 +219,6 @@ class ADuCPWMTest extends \PHPUnit_Framework_TestCase
                 "01",
                 false,
                 array(
-                    'priority' => 0xFF,
                     'PWM0LEN' => 0xFFFF,
                     'PWM1LEN' => 0xFFFF,
                     'PWM2LEN' => 0xFFFF,
@@ -282,25 +226,19 @@ class ADuCPWMTest extends \PHPUnit_Framework_TestCase
                     'PWM5INV' => 0,
                     'PWM3INV' => 0,
                     'PWM1INV' => 0,
-                    'PWMTRIP' => 0,
-                    'ENA' => 0,
                     'PWMCP' => 0,
                     'POINV' => 0,
                     'HOFF' => 0,
-                    'LCOMP' => 0,
                     'DIR' => 0,
-                    'HMODE' => 0,
-                    'PWMEN' => 1,
                 ),
             ),
             array( // #2  All FF given
                 array(
                 ),
                 null,
-                "FFFFFFFFFFFFFFFFFF",
+                "FFFFFFFFFFFFFFFF",
                 true,
                 array(
-                    'priority' => 0xFF,
                     'PWM0LEN' => 0xFFFF,
                     'PWM1LEN' => 0xFFFF,
                     'PWM2LEN' => 0xFFFF,
@@ -308,15 +246,10 @@ class ADuCPWMTest extends \PHPUnit_Framework_TestCase
                     'PWM5INV' => 1,
                     'PWM3INV' => 1,
                     'PWM1INV' => 1,
-                    'PWMTRIP' => 0,
-                    'ENA' => 0,
                     'PWMCP' => 7,
                     'POINV' => 1,
                     'HOFF' => 1,
-                    'LCOMP' => 0,
                     'DIR' => 1,
-                    'HMODE' => 0,
-                    'PWMEN' => 1,
                 ),
             ),
         );

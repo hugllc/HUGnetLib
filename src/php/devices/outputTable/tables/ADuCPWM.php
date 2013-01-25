@@ -65,12 +65,6 @@ class ADuCPWM
     * This is where we setup the sensor object
     */
     private $_params = array(
-        "priority" => array(
-            "value" => 0xFF,
-            'mask'  => 0xFF,
-            "desc"  => "Priority",
-            'size'  => 3,
-        ),
         "PWM0LEN" => array(
             "value" => 0xFFFF,
             'mask'  => 0xFFFF,
@@ -297,17 +291,6 @@ class ADuCPWM
         return sprintf("%0".round($bits / 4)."X", $ret);
     }
     /**
-    * This sets or gets the priority
-    *
-    * @param string $set The values to set the register to
-    *
-    * @return 16 bit integer that is the FLT setup
-    */
-    public function priority($set = null)
-    {
-        return sprintf("%02X", $this->_params("priority", $set));
-    }
-    /**
     * This builds teh ADCFLT Register
     *
     * @param int    $count The number of the length register to set
@@ -355,7 +338,6 @@ class ADuCPWM
     public function encode()
     {
         $ret  = "";
-        $ret .= $this->priority();
         /* This is because encoding is little endian */
         foreach (array("PWMCON") as $reg) {
             $value = $this->register($reg);
@@ -378,12 +360,11 @@ class ADuCPWM
     */
     public function decode($string)
     {
-        if (strlen($string) >= 18) {
-            $this->priority(substr($string, 0, 2));
-            $this->register("PWMCON", substr($string, 4, 2).substr($string, 2, 2));
-            $this->length(0, substr($string, 8, 2).substr($string, 6, 2));
-            $this->length(1, substr($string, 12, 2).substr($string, 10, 2));
-            $this->length(2, substr($string, 16, 2).substr($string, 14, 2));
+        if (strlen($string) >= 16) {
+            $this->register("PWMCON", substr($string, 2, 2).substr($string, 0, 2));
+            $this->length(0, substr($string, 6, 2).substr($string, 4, 2));
+            $this->length(1, substr($string, 10, 2).substr($string, 8, 2));
+            $this->length(2, substr($string, 14, 2).substr($string, 12, 2));
             return true;
         }
         return false;
@@ -399,8 +380,10 @@ class ADuCPWM
     public function toArray($default = false)
     {
         $return = array();
-        foreach (array_keys($this->_params) as $field) {
-            $return[$field] = $this->_params($field);
+        foreach ($this->_params as $field => $vals) {
+            if ($vals["hidden"] !== true) {
+                $return[$field] = $this->_params($field);
+            }
         }
         return $return;
     }
@@ -416,8 +399,10 @@ class ADuCPWM
     {
         $return = array();
         foreach ($this->_params as $field => $vals) {
-            $return[$field] = $vals;
-            $return[$field]["value"] = $this->_params($field);
+            if ($vals["hidden"] !== true) {
+                $return[$field] = $vals;
+                $return[$field]["value"] = $this->_params($field);
+            }
         }
         return $return;
     }
