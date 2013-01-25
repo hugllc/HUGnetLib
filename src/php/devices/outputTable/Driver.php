@@ -115,6 +115,10 @@ abstract class Driver
         ),
     );
     /**
+    * This is where we store our entry in the input table
+    */
+    private $_entry;
+    /**
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
     *
@@ -141,6 +145,24 @@ abstract class Driver
     public function output()
     {
         return $this->_output;
+    }
+    /**
+    * Returns the driver object
+    *
+    * @return object The driver requested
+    */
+    protected function &entry()
+    {
+        $file = dirname(__FILE__)."/tables/".$this->entryClass.".php";
+        if (!is_object($this->_entry) && file_exists($file)) {
+            include_once $file;
+            $class = "\\HUGnet\\devices\\outputTable\\tables\\".$this->entryClass;
+            $entry = $class::factory(
+                $this
+            );
+            $this->_entry = &$entry;
+        }
+        return $this->_entry;
     }
     /**
     * This function creates the system.

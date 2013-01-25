@@ -65,12 +65,6 @@ class ADuCDAC
     * This is where we setup the sensor object
     */
     private $_params = array(
-        "priority" => array(
-            "value" => 0xFF,
-            'mask'  => 0xFF,
-            "desc"  => "Priority",
-            'size'  => 3,
-        ),
         "reserved"    => array(
             'value' => 0,
             'bit'   => 10,
@@ -240,17 +234,6 @@ class ADuCDAC
         return sprintf("%0".round($bits / 4)."X", $ret);
     }
     /**
-    * This sets or gets the priority
-    *
-    * @param string $set The values to set the register to
-    *
-    * @return 16 bit integer that is the FLT setup
-    */
-    public function priority($set = null)
-    {
-        return sprintf("%02X", $this->_params("priority", $set));
-    }
-    /**
     * This builds teh ADCFLT Register
     *
     * @param string $param The parameter to set
@@ -285,7 +268,6 @@ class ADuCDAC
     public function encode()
     {
         $ret  = "";
-        $ret .= $this->priority();
         /* This is because encoding is little endian */
         foreach (array("DAC0CON") as $reg) {
             $value = $this->register($reg);
@@ -303,9 +285,8 @@ class ADuCDAC
     */
     public function decode($string)
     {
-        if (strlen($string) >= 6) {
-            $this->priority(substr($string, 0, 2));
-            $this->register("DAC0CON", substr($string, 4, 2).substr($string, 2, 2));
+        if (strlen($string) >= 4) {
+            $this->register("DAC0CON", substr($string, 2, 2).substr($string, 0, 2));
             return true;
         }
         return false;

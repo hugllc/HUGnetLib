@@ -57,6 +57,8 @@ require_once dirname(__FILE__)."/../Driver.php";
  */
 class ADuCDAC extends \HUGnet\devices\outputTable\Driver
 {
+    /** This is the class for our table entry */
+    protected $entryClass = "ADuCDAC";
     /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
@@ -65,12 +67,6 @@ class ADuCDAC extends \HUGnet\devices\outputTable\Driver
         "longName" => "Digital to Analog Converter",
         "shortName" => "DAC",
         "extraText" => array(
-            0 => "Low Power Mode",
-            1 => "Op Amp Mode",
-            2 => "Output Buffer",
-            3 => "Mode",
-            4 => "Interpolation Clock",
-            5 => "Range"
         ),
         "extraDefault" => array(
             0, 0, 0, 0, 0, 3
@@ -79,32 +75,6 @@ class ADuCDAC extends \HUGnet\devices\outputTable\Driver
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            array(
-                0 => "Disable",
-                1 => "Enable"
-            ),
-            array(
-                0 => "Disable",
-                1 => "Enable"
-            ),
-            array(
-                0 => "Enable",
-                1 => "Disable"
-            ),
-            array(
-                0 => "12 Bit",
-                1 => "16 Bit Interpolation"
-            ),
-            array(
-                0 => "UCLK/32",
-                1 => "UCLK/16"
-            ),
-            array(
-                3 => "0 V to AVDD",
-                2 => "REF2IN− to REF2IN+",
-                1 => "VREF− to VREF+",
-                0 => "0 V to VREF (1.2 V)",
-            ),
         ),
         "min" => 0,
         "max" => 4096,
@@ -112,6 +82,35 @@ class ADuCDAC extends \HUGnet\devices\outputTable\Driver
     );
     /** This is the base for our setup byte */
     protected $regBase = 0x0010;
+    /**
+    * Gets an item
+    *
+    * @param string $name The name of the property to get
+    *
+    * @return null
+    */
+    public function get($name)
+    {
+        $ret = parent::get($name);
+        if ($name == "extraValues") {
+            $entry = $this->entry()->fullArray();
+            $ret[0] = $entry["DACBUFLP"]["valid"];
+            $ret[1] = $entry["OPAMP"]["valid"];
+            $ret[2] = $entry["DACBUFBYPASS"]["valid"];
+            $ret[3] = $entry["DACMODE"]["valid"];
+            $ret[4] = $entry["Rate"]["valid"];
+            $ret[5] = $entry["Range"]["valid"];
+        } else if ($name == "extraText") {
+            $entry = $this->entry()->fullArray();
+            $ret[0] = $entry["DACBUFLP"]["desc"];
+            $ret[1] = $entry["OPAMP"]["desc"];
+            $ret[2] = $entry["DACBUFBYPASS"]["desc"];
+            $ret[3] = $entry["DACMODE"]["desc"];
+            $ret[4] = $entry["Rate"]["desc"];
+            $ret[5] = $entry["Range"]["desc"];
+        }
+        return $ret;
+    }
 
     /**
     * Decodes the driver portion of the setup string
@@ -123,15 +122,14 @@ class ADuCDAC extends \HUGnet\devices\outputTable\Driver
     public function decode($string)
     {
         $extra = (array)$this->output()->get("extra");
-        $DAC0Con  = hexdec(substr($string, 0, 2));
-        $DAC0Con += hexdec(substr($string, 2, 2))<<8;
-        $extra[0] = ($DAC0Con>>8) & 0x01;  // Bit 8
-        $extra[1] = ($DAC0Con>>7) & 0x01;  // Bit 7
-        $extra[2] = ($DAC0Con>>6) & 0x01;  // Bit 6
-        $extra[3] = ($DAC0Con>>3) & 0x01;  // Bit 3
-        $extra[4] = ($DAC0Con>>2) & 0x01;  // Bit 2
-        $extra[5] = $DAC0Con & 3;  // Bits 0 & 1
-
+        $this->entry()->decode($string);
+        $decode = $this->entry()->toArray();
+        $extra[0] = $decode["DACBUFLP"];
+        $extra[1] = $decode["OPAMP"];
+        $extra[2] = $decode["DACBUFBYPASS"];
+        $extra[3] = $decode["DACMODE"];
+        $extra[4] = $decode["Rate"];
+        $extra[5] = $decode["Range"];
         $this->output()->set("extra", $extra);
     }
     /**
@@ -141,19 +139,16 @@ class ADuCDAC extends \HUGnet\devices\outputTable\Driver
     */
     public function encode()
     {
-        $DAC0Con = $this->regBase;
-        $DAC0Con |= ((int)$this->getExtra(0))<<8;
-        $DAC0Con |= ((int)$this->getExtra(1))<<7;
-        $DAC0Con |= ((int)$this->getExtra(2))<<6;
-        $DAC0Con |= ((int)$this->getExtra(3))<<3;
-        $DAC0Con |= ((int)$this->getExtra(4))<<2;
-        $DAC0Con |= ((int)$this->getExtra(5));
-        $string = sprintf(
-            "%02X%02X",
-            $DAC0Con & 0xFF,
-            ($DAC0Con >> 8) & 0xFF
+        $encode = array(
+            "DACBUFLP"     => $this->getExtra(0),
+            "OPAMP"        => $this->getExtra(1),
+            "DACBUFBYPASS" => $this->getExtra(2),
+            "DACMODE"      => $this->getExtra(3),
+            "Rate"         => $this->getExtra(4),
+            "Range"        => $this->getExtra(5),
         );
-        return $string;
+        $this->entry()->fromArray($encode);
+        return $this->entry()->encode();
     }
 
 }

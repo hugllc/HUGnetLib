@@ -383,6 +383,33 @@ class ADuCDACTest extends DriverTestBase
         $ret = $this->o->encode();
         $this->assertSame($expect, $ret);
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataGet()
+    {
+        return array(
+            array(
+                "ThisIsABadName",
+                array(),
+                null,
+            ),
+            array(
+                "extraText",
+                array(),
+                array(
+                    0 => 'Power Mode',
+                    1 => 'Buffer Mode',
+                    2 => 'Buffer Bypass',
+                    3 => 'Interpolation Mode',
+                    4 => 'Interpolation Rate',
+                    5 => 'Output Range',
+                ),
+            ),
+        );
+    }
 
 }
 ?>

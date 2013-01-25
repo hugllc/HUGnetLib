@@ -86,53 +86,6 @@ class ADuCDACTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataParams()
-    {
-        return array(
-            array(
-                array(
-                ),
-                null,
-                "priority",
-                5,
-                "05",
-            ),
-            array(
-                array(
-                ),
-                null,
-                "priority",
-                0x105,
-                "05",
-            ),
-        );
-    }
-    /**
-    * Tests the iteration and preload functions
-    *
-    * @param array  $mock    The mocks to preload
-    * @param string $preload The string to give to the class
-    * @param string $param   The driver number
-    * @param string $set     The values to set the register to
-    * @param array  $expect  The info to expect returned
-    *
-    * @return null
-    *
-    * @dataProvider dataParams
-    */
-    public function testParams($mock, $preload, $param, $set, $expect)
-    {
-        $sensor = new \HUGnet\DummyTable("Sensor");
-        $sensor->resetMock($mock);
-        $obj = ADuCDAC::factory($sensor, $preload);
-        $ret = $obj->$param($set);
-        $this->assertSame($expect, $ret);
-    }
-    /**
-    * Data provider for testRemove
-    *
-    * @return array
-    */
     public static function dataRegister()
     {
         return array(
@@ -190,7 +143,6 @@ class ADuCDACTest extends \PHPUnit_Framework_TestCase
                 array(
                 ),
                 array(
-                    'priority' => 2,
                     'DACBUFLP' => 1,
                     'OPAMP' => 1,
                     'DACBUFBYPASS' => 1,
@@ -199,7 +151,7 @@ class ADuCDACTest extends \PHPUnit_Framework_TestCase
                     'Rate' => 0,
                     'Range' => 3,
                 ),
-                "02D301",
+                "D301",
             ),
         );
     }
@@ -236,10 +188,9 @@ class ADuCDACTest extends \PHPUnit_Framework_TestCase
                 array(
                 ),
                 null,
-                "01D301",
+                "D301",
                 true,
                 array(
-                    'priority' => 1,
                     'DACBUFLP' => 1,
                     'OPAMP' => 1,
                     'DACBUFBYPASS' => 1,
@@ -256,7 +207,6 @@ class ADuCDACTest extends \PHPUnit_Framework_TestCase
                 "01",
                 false,
                 array(
-                    'priority' => 255,
                     'DACBUFLP' => 0,
                     'OPAMP' => 0,
                     'DACBUFBYPASS' => 0,
@@ -270,10 +220,9 @@ class ADuCDACTest extends \PHPUnit_Framework_TestCase
                 array(
                 ),
                 null,
-                "FFFFFFFFFFFFFFFFFF",
+                "FFFFFFFFFFFFFFFF",
                 true,
                 array(
-                    'priority' => 255,
                     'DACBUFLP' => 1,
                     'OPAMP' => 1,
                     'DACBUFBYPASS' => 1,
