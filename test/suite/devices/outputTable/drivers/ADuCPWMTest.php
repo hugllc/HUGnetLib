@@ -210,6 +210,63 @@ class ADuCPWMTest extends DriverTestBase
             ),
         );
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataChannels()
+    {
+        return array(
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "storageUnit" => "unknown",
+                            "maxDecimals" => 2,
+                            "unitType" => "asdf",
+                        ),
+                    ),
+                ),
+                array(
+                    array(
+                        'min' => 0,
+                        'max' => 0xFFFF,
+                        'label' => 'PWM0',
+                        'index' => 0,
+                    ),
+                    array(
+                        'min' => 0,
+                        'max' => 0xFFFF,
+                        'label' => 'PWM1',
+                        'index' => 1,
+                    ),
+                    array(
+                        'min' => 0,
+                        'max' => 0xFFFF,
+                        'label' => 'PWM2',
+                        'index' => 2,
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $mocks  The mocks to use
+    * @param array $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataChannels
+    */
+    public function testChannels($mocks, $expect)
+    {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($mocks);
+        $this->assertSame($expect, $this->o->channels());
+    }
 
 }
 ?>

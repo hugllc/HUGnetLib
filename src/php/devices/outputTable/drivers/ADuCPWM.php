@@ -64,8 +64,8 @@ class ADuCPWM extends \HUGnet\devices\outputTable\Driver
     * put into all derivative classes, even if it is empty.
     */
     protected $params = array(
-        "longName" => "Digital to Analog Converter",
-        "shortName" => "DAC",
+        "longName" => "Pulse Width Modulator",
+        "shortName" => "PWM",
         "extraText" => array(
         ),
         "extraDefault" => array(
@@ -100,7 +100,11 @@ class ADuCPWM extends \HUGnet\devices\outputTable\Driver
         if ($name == "extraValues") {
             $entry = $this->entry()->fullArray();
             foreach ($this->entryMap as $key => $field) {
-                $ret[$key]  = $entry[$field]["valid"];
+                if (is_array($entry[$field]["valid"])) {
+                    $ret[$key]  = $entry[$field]["valid"];
+                } else {
+                    $ret[$key]  = $entry[$field]["size"];
+                }
             }
         } else if ($name == "extraText") {
             $entry = $this->entry()->fullArray();
@@ -141,6 +145,34 @@ class ADuCPWM extends \HUGnet\devices\outputTable\Driver
         }
         $this->entry()->fromArray($encode);
         return $this->entry()->encode();
+    }
+    /**
+    * This builds the class from a setup string
+    *
+    * @return Array of channel information
+    */
+    public function channels()
+    {
+        return array(
+            array(
+                "min" => 0,
+                "max" => 0xFFFF,
+                "label" => $this->get("shortName")."0",
+                "index" => 0,
+            ),
+            array(
+                "min" => 0,
+                "max" => 0xFFFF,
+                "label" => $this->get("shortName")."1",
+                "index" => 1,
+            ),
+            array(
+                "min" => 0,
+                "max" => 0xFFFF,
+                "label" => $this->get("shortName")."2",
+                "index" => 2,
+            ),
+        );
     }
 
 }
