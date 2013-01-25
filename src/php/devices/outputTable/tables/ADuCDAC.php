@@ -126,7 +126,6 @@ class ADuCDAC
             'valid' => array(0 => "HCLK", 1 => "Timer1"),
             'desc'  => "Update Timer",
             'register' => "DAC0CON",
-            'hidden' => true,
         ),
         "DACCLR"    => array(
             'value' => 1,
@@ -146,7 +145,6 @@ class ADuCDAC
             'valid' => array(0 => "12-bit", 1 => "16-bit interpolation"),
             'desc'  => "Interpolation Mode",
             'register' => "DAC0CON",
-            'hidden' => true,
         ),
         "Rate"    => array(
             'value' => 0,
@@ -156,7 +154,6 @@ class ADuCDAC
             'valid' => array(0 => "UCLK/16", 1 => "UCLK/12"),
             'desc'  => "Interpolation Rate",
             'register' => "DAC0CON",
-            'hidden' => true,
         ),
         "Range"    => array(
             'value' => 3,
@@ -324,8 +321,10 @@ class ADuCDAC
     public function toArray($default = false)
     {
         $return = array();
-        foreach (array_keys($this->_params) as $field) {
-            $return[$field] = $this->_params($field);
+        foreach ($this->_params as $field => $vals) {
+            if ($vals["hidden"] !== true) {
+                $return[$field] = $this->_params($field);
+            }
         }
         return $return;
     }
@@ -341,8 +340,10 @@ class ADuCDAC
     {
         $return = array();
         foreach ($this->_params as $field => $vals) {
-            $return[$field] = $vals;
-            $return[$field]["value"] = $this->_params($field);
+            if ($vals["hidden"] !== true) {
+                $return[$field] = $vals;
+                $return[$field]["value"] = $this->_params($field);
+            }
         }
         return $return;
     }
