@@ -84,7 +84,9 @@ var ProcessTablePropertiesView = Backbone.View.extend({
     },
     setTitle: function (extra)
     {
-        this.$el.dialog( "option", "title", this.title() + extra );
+        if (this.$el.is(':data(dialog)')) {
+            this.$el.dialog( "option", "title", this.title() + extra );
+        }
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -104,7 +106,6 @@ var ProcessTablePropertiesView = Backbone.View.extend({
                 data
             )
         );
-        this.setTitle();
         return this;
     },
     /**
