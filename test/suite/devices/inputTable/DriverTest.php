@@ -351,7 +351,6 @@ class DriverTest extends drivers\DriverTestBase
                     ),
                 ),
                 array(
-                    0x60 => "Control Value Input",
                     0xFE => 'Virtual',
                     0xFF => 'Empty Slot'
                 ),
@@ -369,7 +368,24 @@ class DriverTest extends drivers\DriverTestBase
                 ),
                 array(
                     0x02 => 'Generic Analog',
-                    0x60 => "Control Value Input",
+                    0xFE => 'Virtual',
+                    0xFF => 'Empty Slot'
+                ),
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "get" => array(
+                            "arch" => "ADuC",
+                        ),
+                    ),
+                ),
+                array(
+                    0x60 => 'Control Value Input',
+                    0xF9 => 'Input Table Entry',
                     0xFE => 'Virtual',
                     0xFF => 'Empty Slot'
                 ),
