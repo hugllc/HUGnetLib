@@ -71,6 +71,24 @@ class ADuCPWM
             "desc"  => "Priority",
             'size'  => 3,
         ),
+        "PWM0LEN" => array(
+            "value" => 0xFFFF,
+            'mask'  => 0xFFFF,
+            "desc"  => "Freq Counter 0",
+            'size'  => 6,
+        ),
+        "PWM1LEN" => array(
+            "value" => 0xFFFF,
+            'mask'  => 0xFFFF,
+            "desc"  => "Freq Counter 1",
+            'size'  => 6,
+        ),
+        "PWM2LEN" => array(
+            "value" => 0xFFFF,
+            'mask'  => 0xFFFF,
+            "desc"  => "Freq Counter 2",
+            'size'  => 6,
+        ),
         "SYNC"    => array(
             'value' => 0,
             'bit'   => 14,
@@ -279,7 +297,7 @@ class ADuCPWM
         return sprintf("%0".round($bits / 4)."X", $ret);
     }
     /**
-    * This builds teh ADCFLT Register
+    * This sets or gets the priority
     *
     * @param string $set The values to set the register to
     *
@@ -288,6 +306,19 @@ class ADuCPWM
     public function priority($set = null)
     {
         return sprintf("%02X", $this->_params("priority", $set));
+    }
+    /**
+    * This builds teh ADCFLT Register
+    *
+    * @param int    $count The number of the length register to set
+    * @param string $set   The values to set the register to
+    *
+    * @return 16 bit integer that is the FLT setup
+    */
+    public function length($count, $set = null)
+    {
+        $count = (int)$count;
+        return sprintf("%04X", $this->_params("PWM".$count."LEN", $set));
     }
     /**
     * This builds teh ADCFLT Register
@@ -331,6 +362,11 @@ class ADuCPWM
             $ret .= substr($value, 2, 2);
             $ret .= substr($value, 0, 2);
         }
+        foreach (array(0, 1, 2) as $key) {
+            $value = $this->length($key);
+            $ret .= substr($value, 2, 2);
+            $ret .= substr($value, 0, 2);
+        }
         return $ret;
     }
     /**
@@ -342,9 +378,12 @@ class ADuCPWM
     */
     public function decode($string)
     {
-        if (strlen($string) >= 6) {
+        if (strlen($string) >= 18) {
             $this->priority(substr($string, 0, 2));
             $this->register("PWMCON", substr($string, 4, 2).substr($string, 2, 2));
+            $this->length(0, substr($string, 8, 2).substr($string, 6, 2));
+            $this->length(1, substr($string, 12, 2).substr($string, 10, 2));
+            $this->length(2, substr($string, 16, 2).substr($string, 14, 2));
             return true;
         }
         return false;

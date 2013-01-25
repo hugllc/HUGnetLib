@@ -191,6 +191,9 @@ class ADuCPWMTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                     'priority' => 2,
+                    'PWM0LEN' => 0x1234,
+                    'PWM1LEN' => 0x5678,
+                    'PWM2LEN' => 0x9900,
                     'SYNC' => 1,
                     'PWM5INV' => 0,
                     'PWM3INV' => 0,
@@ -205,7 +208,7 @@ class ADuCPWMTest extends \PHPUnit_Framework_TestCase
                     'HMODE' => 1,
                     'PWMEN' => 0,
                 ),
-                "020140",
+                "020140341278560099",
             ),
         );
     }
@@ -242,10 +245,13 @@ class ADuCPWMTest extends \PHPUnit_Framework_TestCase
                 array(
                 ),
                 null,
-                "010140",
+                "010140341278560099",
                 true,
                 array(
                     'priority' => 1,
+                    'PWM0LEN' => 0x1234,
+                    'PWM1LEN' => 0x5678,
+                    'PWM2LEN' => 0x9900,
                     'SYNC' => 1,
                     'PWM5INV' => 0,
                     'PWM3INV' => 0,
@@ -269,6 +275,9 @@ class ADuCPWMTest extends \PHPUnit_Framework_TestCase
                 false,
                 array(
                     'priority' => 0xFF,
+                    'PWM0LEN' => 0xFFFF,
+                    'PWM1LEN' => 0xFFFF,
+                    'PWM2LEN' => 0xFFFF,
                     'SYNC' => 0,
                     'PWM5INV' => 0,
                     'PWM3INV' => 0,
@@ -288,10 +297,13 @@ class ADuCPWMTest extends \PHPUnit_Framework_TestCase
                 array(
                 ),
                 null,
-                "FFFFFF",
+                "FFFFFFFFFFFFFFFFFF",
                 true,
                 array(
                     'priority' => 0xFF,
+                    'PWM0LEN' => 0xFFFF,
+                    'PWM1LEN' => 0xFFFF,
+                    'PWM2LEN' => 0xFFFF,
                     'SYNC' => 1,
                     'PWM5INV' => 1,
                     'PWM3INV' => 1,
