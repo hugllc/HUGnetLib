@@ -230,12 +230,14 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
             if (strlen($low) == 0) {
                 break;
             }
+            $low = substr($low."00000000", 0, 8);
             $high = $dataChan->encode(
                 $setpoint + $tolerance
             );
             if (strlen($high) == 0) {
                 break;
             }
+            $high = substr($high."00000000", 0, 8);
             $data .= $this->_getProcessStrInt($epChan, 1).$low.$high;
         }
         return $data;

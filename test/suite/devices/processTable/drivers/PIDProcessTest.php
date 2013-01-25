@@ -350,6 +350,94 @@ class PIDProcessTest extends DriverTestBase
                 "0102050400000005000000060001000600100007000010080009000000"
                     ."0000000000100000",
             ),
+            array( // #2  DataChan return too short
+                array(
+                    "Process" => array(
+                        "get" => array(
+                            'extra' => array(
+                                0 => 1,
+                                1 => 2,
+                                2 => 3,
+                                3 => 4,
+                                4 => 5,
+                                5 => 6,
+                                6 => 6.000016,
+                                7 => 7.000254,
+                                8 => 8.0625,
+                                9 => 9,
+                            )
+                        ),
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "dataChannels" => new \HUGnet\DummyBase("Channels"),
+                        "dataChannel" => array(
+                            "0" => new \HUGnet\DummyBase("DataChan0"),
+                            "1" => new \HUGnet\DummyBase("DataChan1"),
+                            "2" => new \HUGnet\DummyBase("DataChan2"),
+                            "3" => new \HUGnet\DummyBase("DataChan3"),
+                            "4" => new \HUGnet\DummyBase("DataChan4"),
+                        ),
+                    ),
+                    "DataChan3" => array(
+                        "encode" => array(
+                            "5" => "05",
+                        ),
+                        "get" => array(
+                            "channel" => 3,
+                            "epChannel" => 5,
+                        ),
+                    ),
+                    "Channels" => array(
+                    ),
+                ),
+                "0102050400000005000000060001000600100007000010080009000000"
+                    ."0000000000100000",
+            ),
+            array( // #3  DataChan return too long
+                array(
+                    "Process" => array(
+                        "get" => array(
+                            'extra' => array(
+                                0 => 1,
+                                1 => 2,
+                                2 => 3,
+                                3 => 4,
+                                4 => 5,
+                                5 => 6,
+                                6 => 6.000016,
+                                7 => 7.000254,
+                                8 => 8.0625,
+                                9 => 9,
+                            )
+                        ),
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "dataChannels" => new \HUGnet\DummyBase("Channels"),
+                        "dataChannel" => array(
+                            "0" => new \HUGnet\DummyBase("DataChan0"),
+                            "1" => new \HUGnet\DummyBase("DataChan1"),
+                            "2" => new \HUGnet\DummyBase("DataChan2"),
+                            "3" => new \HUGnet\DummyBase("DataChan3"),
+                            "4" => new \HUGnet\DummyBase("DataChan4"),
+                        ),
+                    ),
+                    "DataChan3" => array(
+                        "encode" => array(
+                            "5" => "0500000000",
+                        ),
+                        "get" => array(
+                            "channel" => 3,
+                            "epChannel" => 5,
+                        ),
+                    ),
+                    "Channels" => array(
+                    ),
+                ),
+                "0102050400000005000000060001000600100007000010080009000000"
+                    ."0000000000100000",
+            ),
         );
     }
     /**

@@ -180,7 +180,7 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
         $data .= $this->_getProcessStrInt($dataChan->get("epChannel"), 1);
         $data .= $this->_getProcessStrInt($this->getExtra(3), 4);
         $setpoint = $dataChan->encode($this->getExtra(4));
-        $data .= str_pad($setpoint, 8, "0", STR_PAD_RIGHT);
+        $data .= substr($setpoint."00000000", 0, 8);
         $data .= $this->_getProcessStrInt($this->getExtra(5), 2);
         for ($i = 6; $i < 9; $i++) {
             $value = $this->getExtra($i) *(0x10000);
