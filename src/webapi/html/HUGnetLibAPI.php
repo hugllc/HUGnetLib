@@ -5,7 +5,7 @@
  * PHP Version 5
  * <pre>
  * HUGnetAPI is a web interface for the HUGnet devices.
- * Copyright (C) 2012 Hunt Utilities Group, LLC
+ * Copyright (C) 2013 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,7 +26,7 @@
  * @package    HUGnetLib
  * @subpackage Webapi
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2012 Hunt Utilities Group, LLC
+ * @copyright  2013 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    GIT: 0.9.7
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib

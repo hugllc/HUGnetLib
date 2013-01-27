@@ -29,7 +29,7 @@
  * @package    HUGnetLibTest
  * @subpackage Setup
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2012 Hunt Utilities Group, LLC
+ * @copyright  2013 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:Comtimeclock
  */
