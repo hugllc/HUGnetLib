@@ -28,7 +28,7 @@
  * @package    HUGnetLib
  * @subpackage Sensors
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2012 Hunt Utilities Group, LLC
+ * @copyright  2013 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  *
@@ -38,7 +38,7 @@ namespace HUGnet\devices\outputTable\drivers;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is my base class */
-require_once dirname(__FILE__)."/../Driver.php";
+require_once dirname(__FILE__)."/../DriverADuC.php";
 
 /**
  * Driver for reading voltage based pressure sensors
@@ -47,15 +47,15 @@ require_once dirname(__FILE__)."/../Driver.php";
  * @package    HUGnetLib
  * @subpackage Sensors
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2012 Hunt Utilities Group, LLC
+ * @copyright  2013 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.9.7
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
- * @since      0.9.7
+ * @since      0.10.0
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class ADuCDAC extends \HUGnet\devices\outputTable\Driver
+class ADuCDAC extends \HUGnet\devices\outputTable\DriverADuC
 {
     /** This is the class for our table entry */
     protected $entryClass = "ADuCDAC";

@@ -147,59 +147,6 @@ class DriverADuCTest extends drivers\DriverTestBase
         );
     }
 
-    /**
-    * data provider for testNumeric
-    *
-    * @return array
-    */
-    public static function dataInputBiasCompensation()
-    {
-        return array(
-            array(
-                8388608,
-                10,
-                0,
-                null,
-            ),
-            array(
-                123456,
-                0,
-                244.252,
-                123456.0,
-            ),
-            array(
-                0,
-                24,
-                1,
-                0.0,
-            ),
-            array(
-                1000,
-                1,
-                100,
-                1010.0,
-            ),
-        );
-    }
-
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param int   $value  The integer to feed to the function
-    * @param float $Rin    The input resistance to use
-    * @param float $Rbias  The bias resistance to use
-    * @param int   $expect The expected data
-    *
-    * @return null
-    *
-    * @dataProvider dataInputBiasCompensation
-    */
-    public function testInputBiasComensation($value, $Rin, $Rbias, $expect)
-    {
-        bcscale(10);
-        $val = $this->o->inputBiasCompensation($value, $Rin, $Rbias);
-        $this->assertEquals($expect, $val, 0.0001);
-    }
 }
 
 /** This is the HUGnet namespace */
@@ -260,22 +207,6 @@ class DriverADuCTestClass extends \HUGnet\devices\outputTable\DriverADuC
         $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
         return $A;
-    }
-    /**
-    * Compensates for an input and bias resistance.
-    *
-    * The bias and input resistance values can be in Ohms, kOhms or even MOhms.  It
-    * doesn't matter as long as they are both the same units.
-    *
-    * @param float $value The incoming number
-    * @param float $Rin   The input resistor.
-    * @param float $Rbias The bias resistor.
-    *
-    * @return float The compensated value
-    */
-    public function inputBiasCompensation($value, $Rin, $Rbias)
-    {
-        return parent::inputBiasCompensation($value, $Rin, $Rbias);
     }
 }
 ?>
