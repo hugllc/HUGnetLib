@@ -452,7 +452,7 @@ class Device extends \HUGnet\base\SystemTableAction
             "timeConstant" => $data["timeConstant"],
             "rawData" => $string,
         );
-        $sensors = $this->get("totalSensors");
+        $sensors = $this->get("InputTables");
 
         for ($i = 0; $i < $sensors; $i++) {
             $ret = array_merge(
