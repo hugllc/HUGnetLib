@@ -81,7 +81,7 @@ class ADuCPWM extends \HUGnet\devices\outputTable\Driver
         "zero" => 1556,
     );
     /** This tells us our mapping from extra to entry */
-    private $entryMap = array(
+    protected $entryMap = array(
         "PWM5INV", "PWM3INV", "PWM1INV", "PWMCP", "POINV", "HOFF", "DIR",
         "PWM0LEN", "PWM1LEN", "PWM2LEN"
     );
