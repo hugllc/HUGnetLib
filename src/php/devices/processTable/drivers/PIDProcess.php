@@ -188,8 +188,12 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
             $data .= $str;
         }
         $data .= $this->_getProcessStrInt($this->getExtra(9), 4);
-        $data .= $this->_getProcessStrInt($this->_min, 4);
-        $data .= $this->_getProcessStrInt($this->_max, 4);
+
+        $output = $this->process()->device()->controlChannels()->controlChannel(
+            $this->getExtra(1)
+        );
+        $data .= $this->_getProcessStrInt($output->get("min"), 4);
+        $data .= $this->_getProcessStrInt($output->get("max"), 4);
         return $data;
     }
     /**

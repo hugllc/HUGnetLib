@@ -63,16 +63,6 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
     const MAX_VOLTAGE = 1.2;
     */
     /**
-     * The minimum value for the DAC
-     *  (int)(self::CGND_OFFSET / self::STEP_VOLTAGE);
-     */
-    private $_min = 1556;
-    /**
-     * The maximum value for the DAC
-     *  (int)((self::MAX_VOLTAGE + self::CGND_OFFSET) / self::STEP_VOLTAGE);
-     */
-    private $_max = 3522;
-    /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
@@ -200,8 +190,11 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
         $data .= $this->_getProcessStrInt($this->getExtra(0), 1);
         $data .= $this->_getProcessStrInt($this->getExtra(1), 1);
         $data .= $this->_getProcessStrInt($this->getExtra(2), 1);
-        $data .= $this->_getProcessStrInt($this->_min, 4);
-        $data .= $this->_getProcessStrInt($this->_max, 4);
+        $output = $this->process()->device()->controlChannels()->controlChannel(
+            $this->getExtra(1)
+        );
+        $data .= $this->_getProcessStrInt($output->get("min"), 4);
+        $data .= $this->_getProcessStrInt($output->get("max"), 4);
         $data .= $this->_encodeChannels();
         return $data;
     }

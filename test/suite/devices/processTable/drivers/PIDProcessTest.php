@@ -290,6 +290,7 @@ class PIDProcessTest extends DriverTestBase
                             "3" => new \HUGnet\DummyBase("DataChan3"),
                             "4" => new \HUGnet\DummyBase("DataChan4"),
                         ),
+                        "controlChannels" => new \HUGnet\DummyBase("cChannels"),
                     ),
                     "Channels" => array(
                     ),
@@ -302,6 +303,15 @@ class PIDProcessTest extends DriverTestBase
                             "epChannel" => 3,
                         ),
                     ),
+                    "cChannels" => array(
+                        "controlChannel" => new \HUGnet\DummyBase("cChannel"),
+                    ),
+                    "cChannel" => array(
+                        "get" => array(
+                            "min" => 0,
+                            "max" => 4096,
+                        ),
+                    )
                 ),
                 "0102030400000005000000060000000600000007000000080009000000"
                     ."0000000000100000",
@@ -334,6 +344,7 @@ class PIDProcessTest extends DriverTestBase
                             "3" => new \HUGnet\DummyBase("DataChan3"),
                             "4" => new \HUGnet\DummyBase("DataChan4"),
                         ),
+                        "controlChannels" => new \HUGnet\DummyBase("cChannels"),
                     ),
                     "DataChan3" => array(
                         "encode" => array(
@@ -346,6 +357,15 @@ class PIDProcessTest extends DriverTestBase
                     ),
                     "Channels" => array(
                     ),
+                    "cChannels" => array(
+                        "controlChannel" => new \HUGnet\DummyBase("cChannel"),
+                    ),
+                    "cChannel" => array(
+                        "get" => array(
+                            "min" => 0,
+                            "max" => 4096,
+                        ),
+                    )
                 ),
                 "0102050400000005000000060001000600100007000010080009000000"
                     ."0000000000100000",
@@ -378,6 +398,7 @@ class PIDProcessTest extends DriverTestBase
                             "3" => new \HUGnet\DummyBase("DataChan3"),
                             "4" => new \HUGnet\DummyBase("DataChan4"),
                         ),
+                        "controlChannels" => new \HUGnet\DummyBase("cChannels"),
                     ),
                     "DataChan3" => array(
                         "encode" => array(
@@ -390,6 +411,15 @@ class PIDProcessTest extends DriverTestBase
                     ),
                     "Channels" => array(
                     ),
+                    "cChannels" => array(
+                        "controlChannel" => new \HUGnet\DummyBase("cChannel"),
+                    ),
+                    "cChannel" => array(
+                        "get" => array(
+                            "min" => 0,
+                            "max" => 4096,
+                        ),
+                    )
                 ),
                 "0102050400000005000000060001000600100007000010080009000000"
                     ."0000000000100000",
@@ -422,6 +452,7 @@ class PIDProcessTest extends DriverTestBase
                             "3" => new \HUGnet\DummyBase("DataChan3"),
                             "4" => new \HUGnet\DummyBase("DataChan4"),
                         ),
+                        "controlChannels" => new \HUGnet\DummyBase("cChannels"),
                     ),
                     "DataChan3" => array(
                         "encode" => array(
@@ -434,6 +465,15 @@ class PIDProcessTest extends DriverTestBase
                     ),
                     "Channels" => array(
                     ),
+                    "cChannels" => array(
+                        "controlChannel" => new \HUGnet\DummyBase("cChannel"),
+                    ),
+                    "cChannel" => array(
+                        "get" => array(
+                            "min" => 0,
+                            "max" => 4096,
+                        ),
+                    )
                 ),
                 "0102050400000005000000060001000600100007000010080009000000"
                     ."0000000000100000",

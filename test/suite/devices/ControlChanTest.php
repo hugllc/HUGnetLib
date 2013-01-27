@@ -147,14 +147,14 @@ class ControlChanTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Device" => array(
-                        "input" => new \HUGnet\DummyBase("Input"),
+                        "output" => new \HUGnet\DummyBase("Output"),
                     ),
-                    "Input" => array(
+                    "Output" => array(
                         "id" => 5,
                     ),
                 ),
                 array(
-                    "input" => 5,
+                    "output" => 5,
                 ),
                 array(
                     "units" => "&#176;F",

@@ -232,12 +232,22 @@ class LevelHolderProcessTest extends DriverTestBase
                     ),
                     "Device" => array(
                         "dataChannels" => new \HUGnet\DummyBase("Channels"),
+                        "controlChannels" => new \HUGnet\DummyBase("cChannels"),
                     ),
                     "Channels" => array(
                         "get" => array(
                             "epChannel" => 1,
                         ),
                     ),
+                    "cChannels" => array(
+                        "controlChannel" => new \HUGnet\DummyBase("cChannel"),
+                    ),
+                    "cChannel" => array(
+                        "get" => array(
+                            "min" => 1556,
+                            "max" => 3522,
+                        ),
+                    )
                 ),
                 "22000214060000C20D0000",
             ),
@@ -256,6 +266,7 @@ class LevelHolderProcessTest extends DriverTestBase
                     ),
                     "Device" => array(
                         "dataChannels" => new \HUGnet\DummyBase("Channels"),
+                        "controlChannels" => new \HUGnet\DummyBase("cChannels"),
                     ),
                     "Channels" => array(
                         "dataChannel" => array(
@@ -283,6 +294,15 @@ class LevelHolderProcessTest extends DriverTestBase
                     ),
                     "DataChan4" => array(
                     ),
+                    "cChannels" => array(
+                        "controlChannel" => new \HUGnet\DummyBase("cChannel"),
+                    ),
+                    "cChannel" => array(
+                        "get" => array(
+                            "min" => 1556,
+                            "max" => 3522,
+                        ),
+                    )
                 ),
                 "22010214060000C20D0000011234567811223344",
             ),
@@ -301,6 +321,7 @@ class LevelHolderProcessTest extends DriverTestBase
                     ),
                     "Device" => array(
                         "dataChannels" => new \HUGnet\DummyBase("Channels"),
+                        "controlChannels" => new \HUGnet\DummyBase("cChannels"),
                     ),
                     "Channels" => array(
                         "dataChannel" => array(
@@ -328,6 +349,15 @@ class LevelHolderProcessTest extends DriverTestBase
                     ),
                     "DataChan4" => array(
                     ),
+                    "cChannels" => array(
+                        "controlChannel" => new \HUGnet\DummyBase("cChannel"),
+                    ),
+                    "cChannel" => array(
+                        "get" => array(
+                            "min" => 1556,
+                            "max" => 3522,
+                        ),
+                    )
                 ),
                 "22010214060000C20D0000011234567811223344",
             ),
@@ -346,6 +376,7 @@ class LevelHolderProcessTest extends DriverTestBase
                     ),
                     "Device" => array(
                         "dataChannels" => new \HUGnet\DummyBase("Channels"),
+                        "controlChannels" => new \HUGnet\DummyBase("cChannels"),
                     ),
                     "Channels" => array(
                         "dataChannel" => array(
@@ -373,6 +404,15 @@ class LevelHolderProcessTest extends DriverTestBase
                     ),
                     "DataChan4" => array(
                     ),
+                    "cChannels" => array(
+                        "controlChannel" => new \HUGnet\DummyBase("cChannel"),
+                    ),
+                    "cChannel" => array(
+                        "get" => array(
+                            "min" => 1556,
+                            "max" => 3522,
+                        ),
+                    )
                 ),
                 "22010214060000C20D0000011200000011000000",
             ),

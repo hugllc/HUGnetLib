@@ -173,7 +173,7 @@ class ControlChan
     */
     public function output()
     {
-        return $this->_device->input($this->get("input"));
+        return $this->_device->output($this->get("output"));
     }
     /**
     * Checks for consistancy

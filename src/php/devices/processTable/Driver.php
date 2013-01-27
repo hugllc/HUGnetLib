@@ -104,10 +104,10 @@ abstract class Driver
         "AVR" => array(
         ),
         "ADuC" => array(
-            0x02 => "PIDProcess",
         ),
         "all" => array(
             0x01 => "LevelHolderProcess",
+            0x02 => "PIDProcess",
             0xFF => "Empty Slot"
         ),
     );
