@@ -57,21 +57,6 @@ require_once dirname(__FILE__)."/../Driver.php";
  */
 class PIDProcess extends \HUGnet\devices\processTable\Driver
 {
-    /*
-    const CGND_OFFSET = 0.95;
-    const STEP_VOLTAGE = 0.0006103515625;  // 2.5 / 4096
-    const MAX_VOLTAGE = 1.2;
-    */
-    /**
-     * The minimum value for the DAC
-     *  (int)(self::CGND_OFFSET / self::STEP_VOLTAGE);
-     */
-    private $_min = 0;
-    /**
-     * The maximum value for the DAC
-     *  (int)((self::MAX_VOLTAGE + self::CGND_OFFSET) / self::STEP_VOLTAGE);
-     */
-    private $_max = 4096;
     /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
