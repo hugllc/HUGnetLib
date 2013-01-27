@@ -138,7 +138,7 @@ class ControlInputTest extends DriverTestBase
         return array(
             array(
                 array(),
-                "D2E803",
+                "D2E80300",
                 1,
                 array(),
                 array(),

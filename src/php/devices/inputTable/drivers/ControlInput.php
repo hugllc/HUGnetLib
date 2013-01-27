@@ -75,6 +75,7 @@ class ControlInput extends \HUGnet\devices\inputTable\Driver
         "extraValues" => array(5, array()),
         "extraDefault" => array(1, 0),
         "maxDecimals" => 0,
+        "inputSize" => 4,
     );
     /**
     * Gets an item
