@@ -80,8 +80,10 @@ class ADuCDAC extends \HUGnet\devices\outputTable\Driver
         "max" => 4096,
         "zero" => 1556,
     );
-    /** This is the base for our setup byte */
-    protected $regBase = 0x0010;
+    /** This tells us our mapping from extra to entry */
+    protected $entryMap = array(
+        "DACBUFLP", "OPAMP", "DACBUFBYPASS", "DACMODE", "Rate", "Range"
+    );
     /**
     * Gets an item
     *
@@ -94,20 +96,19 @@ class ADuCDAC extends \HUGnet\devices\outputTable\Driver
         $ret = parent::get($name);
         if ($name == "extraValues") {
             $entry = $this->entry()->fullArray();
-            $ret[0] = $entry["DACBUFLP"]["valid"];
-            $ret[1] = $entry["OPAMP"]["valid"];
-            $ret[2] = $entry["DACBUFBYPASS"]["valid"];
-            $ret[3] = $entry["DACMODE"]["valid"];
-            $ret[4] = $entry["Rate"]["valid"];
-            $ret[5] = $entry["Range"]["valid"];
+            foreach ($this->entryMap as $key => $field) {
+                if (is_array($entry[$field]["valid"])) {
+                    $ret[$key]  = $entry[$field]["valid"];
+                } else {
+                    $ret[$key]  = $entry[$field]["size"];
+                }
+            }
         } else if ($name == "extraText") {
             $entry = $this->entry()->fullArray();
-            $ret[0] = $entry["DACBUFLP"]["desc"];
-            $ret[1] = $entry["OPAMP"]["desc"];
-            $ret[2] = $entry["DACBUFBYPASS"]["desc"];
-            $ret[3] = $entry["DACMODE"]["desc"];
-            $ret[4] = $entry["Rate"]["desc"];
-            $ret[5] = $entry["Range"]["desc"];
+            $entry = $this->entry()->fullArray();
+            foreach ($this->entryMap as $key => $field) {
+                $ret[$key]  = $entry[$field]["desc"];
+            }
         }
         return $ret;
     }
@@ -124,12 +125,9 @@ class ADuCDAC extends \HUGnet\devices\outputTable\Driver
         $extra = (array)$this->output()->get("extra");
         $this->entry()->decode($string);
         $decode = $this->entry()->toArray();
-        $extra[0] = $decode["DACBUFLP"];
-        $extra[1] = $decode["OPAMP"];
-        $extra[2] = $decode["DACBUFBYPASS"];
-        $extra[3] = $decode["DACMODE"];
-        $extra[4] = $decode["Rate"];
-        $extra[5] = $decode["Range"];
+        foreach ($this->entryMap as $key => $field) {
+            $extra[$key] = $decode[$field];
+        }
         $this->output()->set("extra", $extra);
     }
     /**
@@ -139,14 +137,10 @@ class ADuCDAC extends \HUGnet\devices\outputTable\Driver
     */
     public function encode()
     {
-        $encode = array(
-            "DACBUFLP"     => $this->getExtra(0),
-            "OPAMP"        => $this->getExtra(1),
-            "DACBUFBYPASS" => $this->getExtra(2),
-            "DACMODE"      => $this->getExtra(3),
-            "Rate"         => $this->getExtra(4),
-            "Range"        => $this->getExtra(5),
-        );
+        $encode = array();
+        foreach ($this->entryMap as $key => $field) {
+            $encode[$field] = $this->getExtra($key);
+        }
         $this->entry()->fromArray($encode);
         return $this->entry()->encode();
     }
