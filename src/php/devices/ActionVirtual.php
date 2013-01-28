@@ -133,12 +133,17 @@ class ActionVirtual extends Action
         if (empty($dev)) {
             return null;
         }
-        if (!is_object($this->_histCache[$dev])) {
+        if (!is_object($this->_histCache[$dev])
+            && ($this->_histCache[$dev] != $time)
+        ) {
             $device = $this->system->device($dev);
             $this->_histCache[$dev] = $device->action()->poll(
                 $this->device->get('id'), $time
             );
             $device->store();
+            if (!is_object($this->_histCache[$dev])) {
+                $this->_histCache[$dev] = $time;
+            }
         }
         return $this->_histCache[$dev];
     }
