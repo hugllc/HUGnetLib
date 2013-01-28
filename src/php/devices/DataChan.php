@@ -188,6 +188,9 @@ class DataChan
     */
     public function convert(&$data)
     {
+        if (is_null($data)) {
+            return;
+        }
         $this->_units()->convert(
             $data,
             $this->get("units"),

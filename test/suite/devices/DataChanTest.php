@@ -263,6 +263,24 @@ class DataChanTest extends \PHPUnit_Framework_TestCase
                 100.0,
                 212.0
             ),
+            array(
+                array(
+                ),
+                array(
+                    "storageUnit" => "&#176;C",
+                    "storageType" => "raw",
+                    "maxDecimals" => 5,
+                    "unitType" => "Temperature",
+                ),
+                array(
+                    "units" => "&#176;F",
+                    "label" => "This is a label",
+                    "decimals" => 8,
+                    "dataType" => "raw",
+                ),
+                null,
+                null
+            ),
         );
     }
     /**

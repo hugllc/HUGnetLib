@@ -75,6 +75,7 @@ HUGnet.History = Backbone.Model.extend({
     },
     initialize: function ()
     {
+        console.log(this.get("Data0"));
         this.set("UnixDate", this.get("Date") * 1000);
     }
 });
@@ -201,6 +202,7 @@ HUGnet.Histories = Backbone.Collection.extend({
             function (data)
             {
                 if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
+                    console.log(data);
                     self.add(data);
                     if ((data.length < self.getLimit) || (self.limit === limit)) {
                         self.trigger('fetchdone');
