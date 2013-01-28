@@ -116,7 +116,7 @@ class ADuCPWM
             'mask'  => 0x1,
             'bits'  => 1,
             'valid' => array(0 => "Normal", 1 => "Invert"),
-            'desc'  => "Invert PWM3",
+            'desc'  => "Invert PWM1",
             'register' => "PWMCON",
         ),
         "PWMTRIP"    => array(
@@ -175,7 +175,7 @@ class ADuCPWM
                 0 => "Normal",
                 1 => "PWM0&2 High/PWM1&3 Low"
             ),
-            'desc'  => "Invert All Channels",
+            'desc'  => "High Side Off",
             'register' => "PWMCON",
         ),
         "LCOMP"    => array(
@@ -197,7 +197,7 @@ class ADuCPWM
                 0 => "PWM0:1 High/PWM2:3 Low",
                 1 => "PWM2:3 High/PWM0:1 Low"
             ),
-            'desc'  => "Invert PWM3",
+            'desc'  => "Direction Control",
             'register' => "PWMCON",
         ),
         "HMODE"    => array(

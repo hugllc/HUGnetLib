@@ -161,6 +161,19 @@ class ADuCPWMTest extends DriverTestBase
                 ),
                 "1100341278560099",
             ),
+            array( // #1 Strings
+                array(
+                    "Output" => array(
+                        "get" => array(
+                            "extra" => array(
+                                "0", "0", "0", "0", "0", "1", "0",
+                                "65535", "65535", "65535"
+                            ),
+                        ),
+                    ),
+                ),
+                "1100FFFFFFFFFFFF",
+            ),
         );
     }
     /**
@@ -198,11 +211,11 @@ class ADuCPWMTest extends DriverTestBase
                 array(
                     0 => 'Invert PWM5',
                     1 => 'Invert PWM3',
-                    2 => 'Invert PWM3',
+                    2 => 'Invert PWM1',
                     3 => 'Clock Prescaler',
                     4 => 'Invert All Channels',
-                    5 => 'Invert All Channels',
-                    6 => 'Invert PWM3',
+                    5 => 'High Side Off',
+                    6 => 'Direction Control',
                     7 => 'Freq Counter 0',
                     8 => 'Freq Counter 1',
                     9 => 'Freq Counter 2',

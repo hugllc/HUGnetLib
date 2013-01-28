@@ -141,7 +141,7 @@ class ADuCPWM extends \HUGnet\devices\outputTable\DriverADuC
     {
         $encode = array();
         foreach ($this->entryMap as $key => $field) {
-            $encode[$field] = $this->getExtra($key);
+            $encode[$field] = (int)$this->getExtra($key);
         }
         $this->entry()->fromArray($encode);
         return $this->entry()->encode();
