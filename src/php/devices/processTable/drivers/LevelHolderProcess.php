@@ -128,10 +128,10 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
         $extra = (array)$this->process()->get("extra");
         $extra[0] = $this->_getProcessIntStr(substr($string, 0, 2), 1);
         $extra[1] = $this->_getProcessIntStr(substr($string, 2, 2), 1);
-        $extra[2] = $this->_getProcessIntStr(substr($string, 4, 2), 1);
+        $extra[2] = $this->_getProcessIntStr(substr($string, 4, 4), 2, true);
         // min is hard coded at substr($string, 6, 8)
         // max is hard coded at substr($string, 14, 8)
-        $this->_decodeChannels(substr($string, 22), $extra);
+        $this->_decodeChannels(substr($string, 24), $extra);
         $this->process()->set("extra", $extra);
     }
     /**
@@ -189,7 +189,7 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
         $data  = "";
         $data .= $this->_getProcessStrInt($this->getExtra(0), 1);
         $data .= $this->_getProcessStrInt($this->getExtra(1), 1);
-        $data .= $this->_getProcessStrInt($this->getExtra(2), 1);
+        $data .= $this->_getProcessStrInt($this->getExtra(2), 2);
         $output = $this->process()->device()->controlChannels()->controlChannel(
             $this->getExtra(1)
         );
@@ -258,16 +258,29 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
     /**
     * This builds the string for the levelholder.
     *
-    * @param string $val   The value to use
-    * @param int    $bytes The number of bytes to set
+    * @param string $val    The value to use
+    * @param int    $bytes  The number of bytes to set
+    * @param bool   $signed If the number is signed or not
     *
     * @return string The string
     */
-    private function _getProcessIntStr($val, $bytes = 4)
+    private function _getProcessIntStr($val, $bytes = 4, $signed = false)
     {
         $int = 0;
         for ($i = 0; $i < $bytes; $i++) {
             $int += hexdec(substr($val, ($i * 2), 2))<<($i * 8);
+        }
+        $bits = $bytes * 8;
+        $int = (int)($int & (pow(2, $bits) - 1));
+        if ($signed) {
+            /* Calculate the top bit */
+            $topBit = pow(2, ($bits - 1));
+            /* Check to see if the top bit is set */
+            if (($int & $topBit) == $topBit) {
+                /* This is a negative number */
+                $int = -(pow(2, $bits) - $int);
+            }
+
         }
         return $int;
 
