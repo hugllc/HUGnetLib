@@ -55,7 +55,9 @@ HUGnet.Progress = Backbone.View.extend({
         if (value >= 100) {
             this.remove();
         }
-        this.$bar.progressbar('option', 'value', value);
+        //if (this.$el.is(':data(dialog)')) {
+            this.$bar.progressbar('option', 'value', value);
+        //}
     },
     render: function ()
     {

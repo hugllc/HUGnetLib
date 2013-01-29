@@ -226,6 +226,7 @@ HUGnet.DataView = Backbone.View.extend({
             }
             this.history.getPeriod(this.since, this.until);
             this.updateDates();
+            /*
             var progress = new HUGnet.Progress({
                 modal: false,
                 draggable: true,
@@ -236,6 +237,7 @@ HUGnet.DataView = Backbone.View.extend({
             });
             this.history.on('fetchagain', progress.update, progress);
             this.history.on('sync', progress.remove, progress);
+            */
             this.history.on('sync', this._finishFetch, this);
         }
     },
