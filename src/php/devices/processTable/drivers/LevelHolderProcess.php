@@ -90,7 +90,7 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            4, array(), 3, array(), 15, 15, array(), 15, 15, array(), 15, 15
+            4, array(), 10, array(), 15, 15, array(), 15, 15, array(), 15, 15
         ),
     );
     /**
