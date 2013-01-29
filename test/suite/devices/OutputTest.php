@@ -59,7 +59,7 @@ require_once CODE_BASE."devices/datachan/Driver.php";
  * @copyright  2013 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.9.7
+ * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class OutputTest extends \PHPUnit_Framework_TestCase
@@ -334,7 +334,7 @@ namespace HUGnet\devices\outputTable\drivers;
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2013 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.9.7
+ * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  *
@@ -380,7 +380,7 @@ class TestOutputDriver1 extends \HUGnet\devices\outputTable\Driver
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2013 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.9.7
+ * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  *

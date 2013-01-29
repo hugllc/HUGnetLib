@@ -58,7 +58,7 @@ require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
  * @copyright  2013 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.9.7
+ * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
@@ -946,7 +946,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
  * @copyright  2013 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.9.7
+ * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class SystemTableBaseTestStub extends SystemTableBase

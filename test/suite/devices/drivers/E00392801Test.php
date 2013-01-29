@@ -51,7 +51,7 @@ require_once CODE_BASE.'devices/drivers/E00392801.php';
  * @copyright  2013 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.9.7
+ * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class E00392801Test extends DriverTestBase
