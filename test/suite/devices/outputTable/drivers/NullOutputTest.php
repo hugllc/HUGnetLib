@@ -212,6 +212,54 @@ class NullOutputTest extends DriverTestBase
         $ret = $this->o->encode();
         $this->assertSame($expect, $ret);
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataGet()
+    {
+        return array(
+            array(
+                "ThisIsABadName",
+                array(),
+                null,
+            ),
+            array(
+                "max",
+                array(
+                    "Output" => array(
+                        "get" => array(
+                            "extra" => array(0, 1, 2, 3)
+                        ),
+                    ),
+                ),
+                2,
+            ),
+            array(
+                "min",
+                array(
+                    "Output" => array(
+                        "get" => array(
+                            "extra" => array(0, 1, 2, 3)
+                        ),
+                    ),
+                ),
+                1,
+            ),
+            array(
+                "zero",
+                array(
+                    "Output" => array(
+                        "get" => array(
+                            "extra" => array(0, 1, 2, 3)
+                        ),
+                    ),
+                ),
+                3,
+            ),
+        );
+    }
 
 }
 ?>

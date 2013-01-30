@@ -66,20 +66,39 @@ class NullOutput extends \HUGnet\devices\outputTable\Driver
         "shortName" => "NullOutput",
         "extraText" => array(
             "Initial Value",
+            "Min",
+            "Max",
+            "Zero"
         ),
         "extraDefault" => array(
-            0,
+            0, -2147483648, 2147483647, 0
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            15
+            15, 15, 15, 15
         ),
-        "min" => -2147483648,
-        "max" => 2147483647,
-        "zero" => 0,
     );
+    /**
+    * Gets an item
+    *
+    * @param string $name The name of the property to get
+    *
+    * @return null
+    */
+    public function get($name)
+    {
+        $ret = parent::get($name);
+        if ($name == "min") {
+            $ret = $this->getExtra(1);
+        } else if ($name == "max") {
+            $ret = $this->getExtra(2);
+        } else if ($name == "zero") {
+            $ret = $this->getExtra(3);
+        }
+        return $ret;
+    }
     /**
     * Decodes the driver portion of the setup string
     *
