@@ -93,6 +93,7 @@ abstract class DriverADuC extends Driver
         "42:DEFAULT"                 => "ADuCThermocouple",
         "43:DEFAULT"                 => "ADuCScaledTemp",
         "44:DEFAULT"                 => "ADuCPressure",
+        "45:DEFAULT"                 => "ADuCGenericLinear",
         "F9:DEFAULT"                 => "ADuCInputTable",
     );
     /**
