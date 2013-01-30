@@ -117,7 +117,7 @@ class LinearTransformVirtualTest extends DriverTestBaseVirtual
                     "Input" => array(
                         "get" => array(
                             "extra" => array(
-                                0, 10, 5.5, 0, 60,
+                                0, 0, 1, 5.5, 15.5, "unbounded",
                                 "&#176;C",
                                 "Temperature",
                                 \HUGnet\devices\datachan\Driver::TYPE_RAW,
@@ -140,7 +140,7 @@ class LinearTransformVirtualTest extends DriverTestBaseVirtual
                     "Input" => array(
                         "get" => array(
                             "extra" => array(
-                                0, 10, 5.5, 0, 60,
+                                0, 0, 1, 5.5, 15.5, "unbounded",
                                 "&#176;C",
                                 "Temperature",
                                 \HUGnet\devices\datachan\Driver::TYPE_RAW,
@@ -163,7 +163,7 @@ class LinearTransformVirtualTest extends DriverTestBaseVirtual
                     "Input" => array(
                         "get" => array(
                             "extra" => array(
-                                0, 20, 5.5, 0, 60,
+                                0, 0, 1, 5.5, 25.5, "bounded",
                                 "&#176;C",
                                 "Temperature",
                                 \HUGnet\devices\datachan\Driver::TYPE_RAW,
@@ -179,14 +179,14 @@ class LinearTransformVirtualTest extends DriverTestBaseVirtual
                     1 => array("value" => 2),
                 ),
                 0,
-                60.0
+                null
             ),
             array( // #3
                 array(
                     "Input" => array(
                         "get" => array(
                             "extra" => array(
-                                0, 1, -5.5, 0, 60,
+                                0, 0, 1, 5.5, 0, "bounded",
                                 "&#176;C",
                                 "Temperature",
                                 \HUGnet\devices\datachan\Driver::TYPE_RAW,

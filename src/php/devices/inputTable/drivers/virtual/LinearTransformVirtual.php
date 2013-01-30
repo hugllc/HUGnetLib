@@ -64,12 +64,14 @@ class LinearTransformVirtual extends \HUGnet\devices\inputTable\DriverVirtual
     protected $params = array(
         "longName" => "Linear Transform Virtual Sensor",
         "shortName" => "LinearTVirtual",
-        "unitType" => "getExtra6",
+        "unitType" => "getExtra7",
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            array(), 10, 10, 15, 15, 10, 15,
+            array(), 15, 15, 15, 15,
+            array("unbounded" => "Not Bound", "bounded" => "Bound"),
+            10, 15,
             array(
                 \HUGnet\devices\datachan\Driver::TYPE_RAW
                     => \HUGnet\devices\datachan\Driver::TYPE_RAW,
@@ -79,16 +81,24 @@ class LinearTransformVirtual extends \HUGnet\devices\inputTable\DriverVirtual
             3,
         ),
         "extraText" => array(
-            "Input", "Slope", "Y Intercept", "Y Min", "Y Max", "Storage Unit",
-            "Unit Type", "Data Type", "Max Decimals"
+            "Input",
+            "Orig Value @ Point A",
+            "Orig Value @ Point B",
+            "New Value @ Point A",
+            "New Value @ Point B",
+            "Type",
+            "Storage Unit",
+            "Unit Type",
+            "Data Type",
+            "Max Decimals"
         ),
         "extraDefault" => array(
-            "", 0, 0, "none", "none", "unknown", "Generic",
+            "", 0, 0, 0, 0, 'unbounded', "unknown", "Generic",
             \HUGnet\devices\datachan\Driver::TYPE_RAW, 4
         ),
-        "storageType" => "getExtra7",
-        "storageUnit" => "getExtra5",
-        "maxDecimals" => "getExtra8",
+        "storageType" => "getExtra8",
+        "storageUnit" => "getExtra6",
+        "maxDecimals" => "getExtra9",
 
         "virtual" => true,              // This says if we are a virtual sensor
         "dataTypes" => array(
@@ -128,23 +138,23 @@ class LinearTransformVirtual extends \HUGnet\devices\inputTable\DriverVirtual
     protected function getReading(
         $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
+        bcscale(10);
         $index = ((int)$this->getExtra(0));
-        $y = $data[$index]["value"];
-        if (is_null($y)) {
+        $In   = $data[$index]["value"];
+        $Imin = $this->getExtra(1);
+        $Imax = $this->getExtra(2);
+        $Omin = $this->getExtra(3);
+        $Omax = $this->getExtra(4);
+
+        if ($this->getExtra(5) == "bounded") {
+            $O = $this->linearBounded($In, $Imin, $Imax, $Omin, $Omax);
+        } else {
+            $O = $this->linearUnbounded($In, $Imin, $Imax, $Omin, $Omax);
+        }
+        if (is_null($O)) {
             return null;
         }
-        $m = $this->getExtra(1);
-        $b = $this->getExtra(2);
-        $x = ($m * $y) + $b;
-        $min = $this->getExtra(3);
-        $max = $this->getExtra(4);
-        if (is_numeric($min) && ($x < $min)) {
-            $x = $min;
-        } else if (is_numeric($max) && ($x > $max)) {
-            $x = $max;
-        }
-        $x = round($x, $this->get("maxDecimals"));
-        return $x;
+        return round((float)$O, $this->get("maxDecimals"));
     }
 
 }
