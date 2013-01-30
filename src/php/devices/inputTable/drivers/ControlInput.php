@@ -78,6 +78,32 @@ class ControlInput extends \HUGnet\devices\inputTable\Driver
         "inputSize" => 4,
     );
     /**
+    * Changes a raw reading into a output value
+    *
+    * @param int   $A      Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
+    * @param array &$data  The data from the other sensors that were crunched
+    * @param mixed $prev   The previous value for this sensor
+    *
+    * @return mixed The value in whatever the units are in the sensor
+    *
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    protected function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
+    {
+        $bits = 32;
+        $A = (int)($A & (pow(2, $bits) - 1));
+        /* Calculate the top bit */
+        $topBit = pow(2, ($bits - 1));
+        /* Check to see if the top bit is set */
+        if (($A & $topBit) == $topBit) {
+            /* This is a negative number */
+            $A = -(pow(2, $bits) - $A);
+        }
+
+        return $A;
+    }
+    /**
     * Gets an item
     *
     * @param string $name The name of the property to get
