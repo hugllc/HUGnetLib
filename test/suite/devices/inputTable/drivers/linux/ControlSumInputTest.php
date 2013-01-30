@@ -34,9 +34,9 @@
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\devices\inputTable\drivers;
+namespace HUGnet\devices\inputTable\drivers\linux;
 /** This is the base class */
-require_once dirname(__FILE__)."/../DriverTestBase.php";
+require_once dirname(__FILE__)."/DriverTestBaseLinux.php";
 /** This is a required class */
 require_once CODE_BASE.'devices/inputTable/drivers/linux/ControlSumInput.php';
 
@@ -54,7 +54,7 @@ require_once CODE_BASE.'devices/inputTable/drivers/linux/ControlSumInput.php';
  * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class ControlSumInputTest extends DriverTestBase
+class ControlSumInputTest extends DriverTestBaseLinux
 {
     /** This is the class we are testing */
     protected $class = "ControlSumInput";
