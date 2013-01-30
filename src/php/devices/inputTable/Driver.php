@@ -45,6 +45,8 @@ require_once dirname(__FILE__)."/DriverADuC.php";
 require_once dirname(__FILE__)."/DriverAVR.php";
 /** This is our units class */
 require_once dirname(__FILE__)."/DriverVirtual.php";
+/** This is our units class */
+require_once dirname(__FILE__)."/DriverLinux.php";
 
 /**
  * Base driver class for devices.
@@ -198,6 +200,10 @@ abstract class Driver
             0x60 => "Control Value Input",
             0xF9 => "Input Table Entry",
         ),
+        "Linux" => array(
+            0x60 => "Control Value Input",
+            0x61 => "Control Sum Input",
+        ),
         "all" => array(
             0xFE => "Virtual",
             0xFF => "Empty Slot",
@@ -246,6 +252,7 @@ abstract class Driver
         DriverADuC::driverFactory($obj, $driver, $sensor);
         DriverAVR::driverFactory($obj, $driver, $sensor);
         DriverVirtual::driverFactory($obj, $driver, $sensor);
+        DriverLinux::driverFactory($obj, $driver, $sensor);
         if (!is_object($obj)) {
             include_once dirname(__FILE__)."/drivers/SDEFAULT.php";
             $obj = new \HUGnet\devices\inputTable\drivers\SDEFAULT($sensor);
@@ -338,6 +345,7 @@ abstract class Driver
         DriverAVR::getDriverInt($driver, $sid, $type);
         DriverADuC::getDriverInt($driver, $sid, $type);
         DriverVirtual::getDriverInt($driver, $sid, $type);
+        DriverLinux::getDriverInt($driver, $sid, $type);
         Driver::getDriverInt($driver, $sid, $type);
         if (is_null($driver)) {
             $driver = "SDEFAULT";
@@ -386,7 +394,8 @@ abstract class Driver
             (array)Driver::$drivers,
             (array)DriverAVR::$drivers,
             (array)DriverADuC::$drivers,
-            (array)DriverVirtual::$drivers
+            (array)DriverVirtual::$drivers,
+            (array)DriverLinux::$drivers
         );
         foreach ((array)$drivers as $key => $driver) {
             $k = explode(":", $key);
@@ -512,14 +521,7 @@ abstract class Driver
         }
         $work = substr($string, 0, ($size * 2));
         $string = (string)substr($string, ($size * 2));
-        $bytes = str_split($work, 2);
-        $shift = 0;
-        $return = 0;
-        foreach ($bytes as $b) {
-            $return += hexdec($b) << $shift;
-            $shift += 8;
-        }
-        return $return;
+        return $this->decodeInt($work, $size);
     }
     /**
     * Takes in a raw string from a sensor and makes an int out it
@@ -537,11 +539,8 @@ abstract class Driver
             return "";
         }
         $size = $this->get("inputSize");
-        $return = "";
-        for ($i = 0; $i < $size; $i++) {
-            $return .= sprintf("%02X", ($value >> (8 * $i)) & 0xFF);
-        }
-        return $return;
+
+        return $this->encodeInt($value, $size);
     }
     /**
     * Gets the direction from a direction sensor made out of a POT.
@@ -751,6 +750,56 @@ abstract class Driver
         }
         $val = ($ppm / 60) * $deltaT;
         return (int)$val;
+    }
+    /**
+    * This builds the string for the levelholder.
+    *
+    * @param int $val   The value to use
+    * @param int $bytes The number of bytes to set
+    *
+    * @return string The string
+    */
+    protected function encodeInt($val, $bytes = 4)
+    {
+        $val = (int)$val;
+        for ($i = 0; $i < $bytes; $i++) {
+            $str .= sprintf(
+                "%02X",
+                ($val >> ($i * 8)) & 0xFF
+            );
+        }
+        return $str;
+
+    }
+    /**
+    * This builds the string for the levelholder.
+    *
+    * @param string $val    The value to use
+    * @param int    $bytes  The number of bytes to set
+    * @param bool   $signed If the number is signed or not
+    *
+    * @return string The string
+    */
+    protected function decodeInt($val, $bytes = 4, $signed = false)
+    {
+        $int = 0;
+        for ($i = 0; $i < $bytes; $i++) {
+            $int += hexdec(substr($val, ($i * 2), 2))<<($i * 8);
+        }
+        $bits = $bytes * 8;
+        $int = (int)($int & (pow(2, $bits) - 1));
+        if ($signed) {
+            /* Calculate the top bit */
+            $topBit = pow(2, ($bits - 1));
+            /* Check to see if the top bit is set */
+            if (($int & $topBit) == $topBit) {
+                /* This is a negative number */
+                $int = -(pow(2, $bits) - $int);
+            }
+
+        }
+        return $int;
+
     }
 }
 
