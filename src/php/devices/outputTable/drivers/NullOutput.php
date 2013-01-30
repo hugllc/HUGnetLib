@@ -65,18 +65,46 @@ class NullOutput extends \HUGnet\devices\outputTable\Driver
         "longName" => "Null Output Driver",
         "shortName" => "NullOutput",
         "extraText" => array(
+            "Initial Value",
         ),
         "extraDefault" => array(
+            0,
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
+            15
         ),
         "min" => -2147483648,
         "max" => 2147483647,
         "zero" => 0,
     );
+    /**
+    * Decodes the driver portion of the setup string
+    *
+    * @param string $string The string to decode
+    *
+    * @return array
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function decode($string)
+    {
+        $extra = $this->output()->get("extra");
+        $extra[0] = $this->decodeInt(substr($string, 0, 8), 4, true);
+        $this->output()->set("extra", $extra);
+    }
+    /**
+    * Encodes this driver as a setup string
+    *
+    * @return array
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function encode()
+    {
+        $string  = $this->encodeInt($this->getExtra(0), 4);
+        return $string;
+    }
 
 }
 

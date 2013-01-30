@@ -92,6 +92,126 @@ class NullOutputTest extends DriverTestBase
     {
         parent::tearDown();
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataDecode()
+    {
+        return array(
+            array( // #0
+                array(
+                    "Device" => array(
+                        "sensor" => new \HUGnet\DummyBase("Output"),
+                    )
+                ),
+                "78563412",
+                array(
+                    "Output" => array(
+                        "get" => array(
+                            array('extra'),
+                        ),
+                        "set" => array(
+                            array(
+                                'extra',
+                                array(0x12345678)
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+            array( // #1 Negative Numbers
+                array(
+                    "Device" => array(
+                        "sensor" => new \HUGnet\DummyBase("Output"),
+                    )
+                ),
+                "FFFFFFFF",
+                array(
+                    "Output" => array(
+                        "get" => array(
+                            array('extra'),
+                        ),
+                        "set" => array(
+                            array(
+                                'extra',
+                                array(-1)
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $mocks  The value to preload into the mocks
+    * @param string $string The setup string to test
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataDecode
+    */
+    public function testDecode($mocks, $string, $expect)
+    {
+        $this->output->resetMock($mocks);
+        $this->o->decode($string);
+        $ret = $this->output->retrieve();
+        $this->assertEquals($expect, $ret);
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataEncode()
+    {
+        return array(
+            array( // #0
+                array(
+                    "Output" => array(
+                        "get" => array(
+                            "extra" => array(
+                                0x12345678
+                            ),
+                        ),
+                    ),
+                ),
+                "78563412",
+            ),
+            array( // #1 Negative number
+                array(
+                    "Output" => array(
+                        "get" => array(
+                            "extra" => array(
+                                -1
+                            ),
+                        ),
+                    ),
+                ),
+                "FFFFFFFF",
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $mocks  The value to preload into the mocks
+    * @param array $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataEncode
+    */
+    public function testEncode($mocks, $expect)
+    {
+        $this->output->resetMock($mocks);
+        $ret = $this->o->encode();
+        $this->assertSame($expect, $ret);
+    }
 
 }
 ?>
