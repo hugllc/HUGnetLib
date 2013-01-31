@@ -63,14 +63,9 @@ class MathInput extends \HUGnet\devices\inputTable\Driver
         "longName" => "Endpoint Math Input",
         "shortName" => "MathInput",
         "unitType" => "Units",
-        "storageUnit" => 'units',
-        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_DIFF,
         "extraText" => array(
             "Priority",
-            "Data Channel",
-            "Operator",
-            "Data Channel",
-            "Operator",
             "Data Channel",
             "Operator",
             "Data Channel",
@@ -81,40 +76,80 @@ class MathInput extends \HUGnet\devices\inputTable\Driver
         "extraValues" => array(
             5, array(),
             array(0 => "+", 1 => "-"), array(),
-            array(0 => "+", 1 => "-"), array(),
-            array(0 => "+", 1 => "-"), array(),
         ),
         "extraDefault" => array(
-            1, 0, 1, 0, 1, 0xFF, 1, 0xFF
+            1, 0, 1, 0
         ),
-        "maxDecimals" => 0,
+        "maxDecimals" => 8,
         "inputSize" => 4,
     );
     /**
-    * Changes a raw reading into a output value
+    * Gets the direction from a direction sensor made out of a POT.
     *
-    * @param int   $A      Output of the A to D converter
-    * @param float $deltaT The time delta in seconds between this record
-    * @param array &$data  The data from the other sensors that were crunched
-    * @param mixed $prev   The previous value for this sensor
+    * @param string &$string The data string
+    * @param int    $channel The channel to decode
+    * @param float  $deltaT  The time delta in seconds between this record
+    * @param array  &$prev   The previous reading
+    * @param array  &$data   The data from the other sensors that were crunched
     *
-    * @return mixed The value in whatever the units are in the sensor
+    * @return float The direction in degrees
     *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    */
+    public function decodeDataPoint(
+        &$string, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
+        $A = null;
+        if (!is_null($string)) {
+            $A = $this->getRawData($string, $channel);
+        }
+        $me = $this->get("channel");
+        $read = 0;
+        $chan = $this->getExtra(1);
+        if ($chan != $me) {
+            $dataChan0 = $this->input()->device()->dataChannel($chan);
+            $read = $dataChan0->decode($A);
+        }
+        $chan = $this->getExtra(3);
+        if ($chan != $me) {
+            $dataChan1 = $this->input()->device()->dataChannel($chan);
+            $read -= $dataChan1->decode(0);
+        }
+        return $read;
+    }
+    /**
+    * Gets the direction from a direction sensor made out of a POT.
+    *
+    * @param array $value   The data to use
+    * @param int   $channel The channel to get
+    * @param float $deltaT  The time delta in seconds between this record
+    * @param array &$prev   The previous reading
+    * @param array &$data   The data from the other sensors that were crunched
+    *
+    * @return string The reading as it would have come out of the endpoint
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    protected function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
-    {
-        $bits = 32;
-        $A = (int)($A & (pow(2, $bits) - 1));
-        /* Calculate the top bit */
-        $topBit = pow(2, ($bits - 1));
-        /* Check to see if the top bit is set */
-        if (($A & $topBit) == $topBit) {
-            /* This is a negative number */
-            $A = -(pow(2, $bits) - $A);
+    public function encodeDataPoint(
+        $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
+        $me = $this->input()->get("channel");
+        $val = 0;
+        $chan = $this->getExtra(1);
+        if ($chan !== $me) {
+            $dataChan0 = $this->input()->device()->dataChannel($chan);
+            $val = $this->decodeInt($dataChan0->encode($value), 4);
         }
-
-        return $A;
+        $chan = $this->getExtra(3);
+        if ($chan != $me) {
+            $dataChan1 = $this->input()->device()->dataChannel($chan);
+            $val -= $this->decodeInt($dataChan1->encode(0), 4);
+        }
+        if (!is_null($val)) {
+            return $this->intToStr((int)$val);
+        }
+        return "";
     }
     /**
     * Gets an item
@@ -130,11 +165,13 @@ class MathInput extends \HUGnet\devices\inputTable\Driver
             $data = $this->input()->device()->dataChannels()->select();
             $ret[1] = $data;
             $ret[3] = $data;
-            $data = $this->input()->device()->dataChannels()->select(
-                array(0xFF => "None")
-            );
-            $ret[5] = $data;
-            $ret[7] = $data;
+        } else if ($name == "storageUnit") {
+            if ($this->getExtra(1) != $this->get("channel")) {
+                $dataChan = $this->input()->device()->dataChannel($this->getExtra(1));
+                $ret = $dataChan->get("storageUnit");
+            } else {
+                $ret = "Unknown";
+            }
         }
         return $ret;
     }

@@ -80,12 +80,18 @@ class MathInputTest extends DriverTestBase
                 "Device" => array(
                     "dataChannels" => new \HUGnet\DummyBase("dataChannels"),
                     "controlChannels" => new \HUGnet\DummyBase("controlChannels"),
+                    "dataChannel" => new \HUGnet\DummyBase("dataChannel"),
                 ),
                 "dataChannels" => array(
                     "select" => array(),
                 ),
                 "controlChannels" => array(
                     "select" => array(),
+                ),
+                "dataChannel" => array(
+                    "get" => array(
+                        "storageUnit" => "asdf",
+                    ),
                 ),
             )
         );
@@ -117,20 +123,39 @@ class MathInputTest extends DriverTestBase
     {
         return array(
             array(
-                array(),
+                array(
+                    "Input" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                        "get" => array(
+                            "extra" => array(0, 1, 1, 2),
+                        ),
+                    ),
+                    "Device" => array(
+                        "dataChannels" => new \HUGnet\DummyBase("dataChannels"),
+                        "controlChannels" => new \HUGnet\DummyBase("controlChannels"),
+                        "dataChannel" => new \HUGnet\DummyBase("dataChannel"),
+                    ),
+                    "dataChannels" => array(
+                        "select" => array(),
+                    ),
+                    "controlChannels" => array(
+                        "select" => array(),
+                    ),
+                    "dataChannel" => array(
+                        "get" => array(
+                            "storageUnit" => "asdf",
+                        ),
+                        "decode" => array(
+                            "256210" => 123456,
+                            "0" => 23456,
+                        ),
+                    ),
+                ),
                 256210,
                 1,
                 array(),
                 array(),
-                256210,
-            ),
-            array(
-                array(),
-                0xFFFFFFFF,
-                1,
-                array(),
-                array(),
-                -1,
+                100000,
             ),
         );
     }
@@ -145,12 +170,40 @@ class MathInputTest extends DriverTestBase
     {
         return array(
             array(
-                array(),
+                array(
+                    "Input" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                        "get" => array(
+                            "extra" => array(0, 1, 1, 2),
+                            "channel" => 3,
+                        ),
+                    ),
+                    "Device" => array(
+                        "dataChannels" => new \HUGnet\DummyBase("dataChannels"),
+                        "controlChannels" => new \HUGnet\DummyBase("controlChannels"),
+                        "dataChannel" => new \HUGnet\DummyBase("dataChannel"),
+                    ),
+                    "dataChannels" => array(
+                        "select" => array(),
+                    ),
+                    "controlChannels" => array(
+                        "select" => array(),
+                    ),
+                    "dataChannel" => array(
+                        "get" => array(
+                            "storageUnit" => "asdf",
+                        ),
+                        "encode" => array(
+                            "256210" => "D2F80300",
+                            "0" => "00100000",
+                        ),
+                    ),
+                ),
                 "D2E80300",
                 1,
                 array(),
                 array(),
-                0x03E8D2,
+                256210,
             ),
         );
     }
@@ -248,13 +301,13 @@ class MathInputTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "1301020304050607",
+                "13010203",
                 array(
                     "get" => array(
                         array('extra'),
                     ),
                     "set" => array(
-                        array('extra', array(19, 1, 2, 4, 4, 6, 6, 8)),
+                        array('extra', array(19, 1, 2, 4)),
                     ),
                     "device" => array(
                         array(),
@@ -384,13 +437,13 @@ class MathInputTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "0100010001FF01FF",
+                "01000100",
             ),
             array( // #1
                 array(
                     "Input" => array(
                         "get" => array(
-                            "extra" => array(19, 1, 2, 3, 1, 3, 0, 3),
+                            "extra" => array(19, 1, 2, 3),
                         ),
                         "device" => new \HUGnet\DummyBase("Device"),
                     ),
@@ -452,7 +505,7 @@ class MathInputTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "1302020401040004",
+                "13020204",
             ),
         );
     }
