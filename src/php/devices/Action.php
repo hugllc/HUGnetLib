@@ -180,6 +180,9 @@ class Action
     */
     public function config()
     {
+        if ($this->programLock()) {
+            return false;
+        }
         $pkt = $this->device->network()->config();
         $this->device->load($this->device->id());
         if (strlen($pkt->reply())) {
@@ -243,6 +246,41 @@ class Action
         }
     }
     /**
+    * Gets the config and saves it
+    *
+    * @return string The left over string
+    */
+    protected function programLock($set = null)
+    {
+        $now = $this->system->now();
+        $locked = $this->device->getParam("ProgramLock");
+        if (($now <= $locked) && !($set === false)) {
+            $this->system->out(
+                "Device locked until ".date("Y-m-d H:i:s", $locked), 1
+            );
+            return true;
+        }
+        if (is_bool($set)) {
+            if ($set) {
+                $lock = $now + 60;
+                $this->system->out(
+                    "Setting device lock to expire ".date("Y-m-d H:i:s", $lock), 1
+                );
+            } else {
+                $lock = 0;
+                $this->system->out(
+                    "Device unlocked", 1
+                );
+            }
+            $this->device->load($this->device->id());
+            $this->device->setParam("ProgramLock", $lock);
+            $this->device->store();
+            return $lock;
+        }
+        return false;
+
+    }
+    /**
     * Polls the device and saves the poll
     *
     * @param int $TestID The test ID of this poll
@@ -252,6 +290,9 @@ class Action
     */
     public function poll($TestID = null, $time = null)
     {
+        if ($this->programLock()) {
+            return false;
+        }
         $HWPart = $this->device->get("HWPartNum");
         if (empty($HWPart)) {
             return false;
@@ -323,11 +364,12 @@ class Action
         $firmware->set("HWPartNum", $this->device->get("HWPartNum"));
         $firmware->set("RelStatus", \HUGnet\db\tables\Firmware::DEV);
         $ret = false;
-        if ($firmware->getLatest()) {
+        if ($firmware->getLatest() && is_int($this->programLock(true))) {
             if ($this->device->network()->loadFirmware($firmware)) {
                 $ret = true;
             }
         }
+        $this->programLock(false);
         return $ret;
     }
     /**
@@ -337,7 +379,12 @@ class Action
     */
     public function loadConfig()
     {
-        return $this->device->network()->loadConfig();
+        if (is_bool($this->programLock(true))) {
+            return false;
+        }
+        $ret = $this->device->network()->loadConfig();
+        $this->programLock(false);
+        return $ret;
     }
     /**
     * Checks the record to see if something needs to be done about it.
