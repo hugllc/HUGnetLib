@@ -210,7 +210,7 @@ class Action
     {
         $input = (int)$this->device->get("InputTables");
         for ($i = 0; $i < $input; $i++) {
-            $this->system->out("InputTables $i", 1);
+            $this->system->out("InputTables $i", 2);
             $ret = $this->send(
                 "READINPUTTABLE", null, array("find" => false), sprintf("%02X", $i)
             );
@@ -222,7 +222,7 @@ class Action
         }
         $output = (int)$this->device->get("OutputTables");
         for ($i = 0; $i < $output; $i++) {
-            $this->system->out("OutputTables $i", 1);
+            $this->system->out("OutputTables $i", 2);
             $ret = $this->send(
                 "READOUTPUTTABLE", null, array("find" => false), sprintf("%02X", $i)
             );
@@ -234,7 +234,7 @@ class Action
         }
         $process = (int)$this->device->get("ProcessTables");
         for ($i = 0; $i < $process; $i++) {
-            $this->system->out("ProcessTables $i", 1);
+            $this->system->out("ProcessTables $i", 2);
             $ret = $this->send(
                 "READPROCESSTABLE", null, array("find" => false), sprintf("%02X", $i)
             );
