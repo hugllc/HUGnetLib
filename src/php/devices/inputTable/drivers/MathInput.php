@@ -60,7 +60,7 @@ class MathInput extends \HUGnet\devices\inputTable\Driver
     * put into all derivative classes, even if it is empty.
     */
     protected $params = array(
-        "longName" => "Control Value Return Input",
+        "longName" => "Endpoint Math Input",
         "shortName" => "MathInput",
         "unitType" => "Units",
         "storageUnit" => 'units',
@@ -70,32 +70,22 @@ class MathInput extends \HUGnet\devices\inputTable\Driver
             "Data Channel",
             "Operator",
             "Data Channel",
-            "Storage Unit",
-            "Unit Type",
-            "Data Type",
-            "Max Decimals"
+            "Operator",
+            "Data Channel",
+            "Operator",
+            "Data Channel",
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            5, array(), array(0 => "+", 1 => "-"), array(),
-            30,
-            30,
-            array(
-                \HUGnet\devices\datachan\Driver::TYPE_RAW
-                    => \HUGnet\devices\datachan\Driver::TYPE_RAW,
-                \HUGnet\devices\datachan\Driver::TYPE_DIFF
-                    => \HUGnet\devices\datachan\Driver::TYPE_DIFF
-            ),
-            3,
+            5, array(),
+            array(0 => "+", 1 => "-"), array(),
+            array(0 => "+", 1 => "-"), array(),
+            array(0 => "+", 1 => "-"), array(),
         ),
         "extraDefault" => array(
-            1, 0, 1, 0,
-            "unknown",
-            "Unknown",
-            \HUGnet\devices\datachan\Driver::TYPE_DIFF,
-            4
+            1, 0, 1, 0, 1, 0xFF, 1, 0xFF
         ),
         "maxDecimals" => 0,
         "inputSize" => 4,
@@ -140,6 +130,11 @@ class MathInput extends \HUGnet\devices\inputTable\Driver
             $data = $this->input()->device()->dataChannels()->select();
             $ret[1] = $data;
             $ret[3] = $data;
+            $data = $this->input()->device()->dataChannels()->select(
+                array(0xFF => "None")
+            );
+            $ret[5] = $data;
+            $ret[7] = $data;
         }
         return $ret;
     }
@@ -160,10 +155,20 @@ class MathInput extends \HUGnet\devices\inputTable\Driver
         $dataChan = $channels->epChannel($epChan);
         $extra[1] = $dataChan->get("channel");
 
-        $extra[2] = $this->decodeInt(substr($string, 4, 2), 1);
-        $epChan   = $this->decodeInt(substr($string, 6, 2), 1);
-        $dataChan = $channels->epChannel($epChan);
-        $extra[3] = $dataChan->get("channel");
+        $index = 4;
+        for ($i = 2; $i < count($this->params["extraText"]); $i+=2) {
+            $extra[$i] = $this->decodeInt(substr($string, $index, 2), 1);
+            $index += 2;
+            $epChan   = $this->decodeInt(substr($string, $index, 2), 1);
+            if ($epChan == 0xFF) {
+                $extra[$i+1] = 0xFF;
+            } else {
+                $dataChan = $channels->epChannel($epChan);
+                $extra[$i+1] = $dataChan->get("channel");
+            }
+            $index += 2;
+        }
+
         $this->input()->set("extra", $extra);
     }
     /**
@@ -179,10 +184,18 @@ class MathInput extends \HUGnet\devices\inputTable\Driver
         $dataChan = $channels->dataChannel((int)$this->getExtra(1));
         $epChan   = (int)$dataChan->get("epChannel");
         $string  .= $this->encodeInt($epChan, 1);
-        $string  .= $this->encodeInt($this->getExtra(2), 1);
-        $dataChan = $channels->dataChannel((int)$this->getExtra(3));
-        $epChan   = (int)$dataChan->get("epChannel");
-        $string  .= $this->encodeInt($epChan, 1);
+
+        for ($i = 2; $i < count($this->params["extraText"]); $i+=2) {
+            $string  .= $this->encodeInt($this->getExtra($i), 1);
+            $chan = (int)$this->getExtra($i+1);
+            if ($chan == 0xFF) {
+                $epChan = 0xFF;
+            } else {
+                $dataChan = $channels->dataChannel($chan);
+                $epChan   = (int)$dataChan->get("epChannel");
+            }
+            $string  .= $this->encodeInt($epChan, 1);
+        }
         return $string;
     }
 

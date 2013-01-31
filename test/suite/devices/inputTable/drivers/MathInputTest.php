@@ -183,6 +183,10 @@ class MathInputTest extends DriverTestBase
                             "1" => new \HUGnet\DummyBase("DataChan1"),
                             "2" => new \HUGnet\DummyBase("DataChan3"),
                             "3" => new \HUGnet\DummyBase("DataChan4"),
+                            "4" => new \HUGnet\DummyBase("DataChan5"),
+                            "5" => new \HUGnet\DummyBase("DataChan6"),
+                            "6" => new \HUGnet\DummyBase("DataChan7"),
+                            "7" => new \HUGnet\DummyBase("DataChan8"),
                         ),
                     ),
                     "DataChan0" => array(
@@ -219,14 +223,38 @@ class MathInputTest extends DriverTestBase
                             "decimals" => 0,
                         ),
                     ),
+                    "DataChan5" => array(
+                        "get" => array(
+                            "channel" => 5,
+                            "decimals" => 0,
+                        ),
+                    ),
+                    "DataChan6" => array(
+                        "get" => array(
+                            "channel" => 6,
+                            "decimals" => 0,
+                        ),
+                    ),
+                    "DataChan7" => array(
+                        "get" => array(
+                            "channel" => 7,
+                            "decimals" => 0,
+                        ),
+                    ),
+                    "DataChan8" => array(
+                        "get" => array(
+                            "channel" => 8,
+                            "decimals" => 0,
+                        ),
+                    ),
                 ),
-                "13010203",
+                "1301020304050607",
                 array(
                     "get" => array(
                         array('extra'),
                     ),
                     "set" => array(
-                        array('extra', array(19, 1, 2, 4)),
+                        array('extra', array(19, 1, 2, 4, 4, 6, 6, 8)),
                     ),
                     "device" => array(
                         array(),
@@ -327,14 +355,42 @@ class MathInputTest extends DriverTestBase
                             "epChannel" => 4,
                         ),
                     ),
+                    "DataChan5" => array(
+                        "get" => array(
+                            "channel" => 5,
+                            "decimals" => 0,
+                            "epChannel" => 5,
+                        ),
+                    ),
+                    "DataChan6" => array(
+                        "get" => array(
+                            "channel" => 6,
+                            "decimals" => 0,
+                            "epChannel" => 6,
+                        ),
+                    ),
+                    "DataChan7" => array(
+                        "get" => array(
+                            "channel" => 7,
+                            "decimals" => 0,
+                            "epChannel" => 7,
+                        ),
+                    ),
+                    "DataChan8" => array(
+                        "get" => array(
+                            "channel" => 8,
+                            "decimals" => 0,
+                            "epChannel" => 8,
+                        ),
+                    ),
                 ),
-                "01000100",
+                "0100010001FF01FF",
             ),
             array( // #1
                 array(
                     "Input" => array(
                         "get" => array(
-                            "extra" => array(19, 1, 2, 3),
+                            "extra" => array(19, 1, 2, 3, 1, 3, 0, 3),
                         ),
                         "device" => new \HUGnet\DummyBase("Device"),
                     ),
@@ -396,7 +452,7 @@ class MathInputTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "13020204",
+                "1302020401040004",
             ),
         );
     }
