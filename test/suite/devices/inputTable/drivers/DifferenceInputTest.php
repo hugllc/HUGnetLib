@@ -38,7 +38,7 @@ namespace HUGnet\devices\inputTable\drivers;
 /** This is the base class */
 require_once dirname(__FILE__)."/DriverTestBase.php";
 /** This is a required class */
-require_once CODE_BASE.'devices/inputTable/drivers/MathInput.php';
+require_once CODE_BASE.'devices/inputTable/drivers/DifferenceInput.php';
 
 /**
  * Test class for HUGnetDB.
@@ -54,10 +54,10 @@ require_once CODE_BASE.'devices/inputTable/drivers/MathInput.php';
  * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class MathInputTest extends DriverTestBase
+class DifferenceInputTest extends DriverTestBase
 {
     /** This is the class we are testing */
-    protected $class = "MathInput";
+    protected $class = "DifferenceInput";
     /** This is the input class */
     protected $input;
     /**
@@ -96,7 +96,7 @@ class MathInputTest extends DriverTestBase
             )
         );
         $this->o = \HUGnet\devices\inputTable\Driver::factory(
-            "MathInput", $this->input
+            "DifferenceInput", $this->input
         );
     }
 
@@ -124,38 +124,30 @@ class MathInputTest extends DriverTestBase
         return array(
             array(
                 array(
-                    "Input" => array(
-                        "device" => new \HUGnet\DummyBase("Device"),
-                        "get" => array(
-                            "extra" => array(0, 1, 1, 2),
-                        ),
-                    ),
-                    "Device" => array(
-                        "dataChannels" => new \HUGnet\DummyBase("dataChannels"),
-                        "controlChannels" => new \HUGnet\DummyBase("controlChannels"),
-                        "dataChannel" => new \HUGnet\DummyBase("dataChannel"),
-                    ),
-                    "dataChannels" => array(
-                        "select" => array(),
-                    ),
-                    "controlChannels" => array(
-                        "select" => array(),
-                    ),
-                    "dataChannel" => array(
-                        "get" => array(
-                            "storageUnit" => "asdf",
-                        ),
-                        "decode" => array(
-                            "256210" => 123456,
-                            "0" => 23456,
-                        ),
-                    ),
                 ),
                 256210,
                 1,
                 array(),
                 array(),
-                100000,
+                256210,
+            ),
+            array(  #1 Negative Numbers
+                array(
+                ),
+                0xFFFFFFFF,
+                1,
+                array(),
+                array(),
+                -1,
+            ),
+            array(  #1 Negative Numbers
+                array(
+                ),
+                "8E260000",
+                1,
+                array(),
+                array(),
+                9870,
             ),
         );
     }
@@ -171,39 +163,12 @@ class MathInputTest extends DriverTestBase
         return array(
             array(
                 array(
-                    "Input" => array(
-                        "device" => new \HUGnet\DummyBase("Device"),
-                        "get" => array(
-                            "extra" => array(0, 1, 1, 2),
-                            "channel" => 3,
-                        ),
-                    ),
-                    "Device" => array(
-                        "dataChannels" => new \HUGnet\DummyBase("dataChannels"),
-                        "controlChannels" => new \HUGnet\DummyBase("controlChannels"),
-                        "dataChannel" => new \HUGnet\DummyBase("dataChannel"),
-                    ),
-                    "dataChannels" => array(
-                        "select" => array(),
-                    ),
-                    "controlChannels" => array(
-                        "select" => array(),
-                    ),
-                    "dataChannel" => array(
-                        "get" => array(
-                            "storageUnit" => "asdf",
-                        ),
-                        "encode" => array(
-                            "256210" => "D2F80300",
-                            "0" => "00100000",
-                        ),
-                    ),
                 ),
                 "D2E80300",
                 1,
                 array(),
                 array(),
-                256210,
+                0x03E8D2,
             ),
         );
     }
@@ -301,13 +266,112 @@ class MathInputTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "13010203",
+                "1301030A000000",
                 array(
                     "get" => array(
                         array('extra'),
                     ),
                     "set" => array(
-                        array('extra', array(19, 1, 2, 4)),
+                        array('extra', array(19, 1, 4, 10)),
+                    ),
+                    "device" => array(
+                        array(),
+                    ),
+                ),
+            ),
+            array( // #0
+                array(
+                    "Input" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "dataChannels" => new \HUGnet\DummyBase("Channels"),
+                    ),
+                    "Channels" => array(
+                        "dataChannel" => array(
+                            "0" => new \HUGnet\DummyBase("DataChan0"),
+                            "1" => new \HUGnet\DummyBase("DataChan1"),
+                            "2" => new \HUGnet\DummyBase("DataChan2"),
+                            "3" => new \HUGnet\DummyBase("DataChan3"),
+                            "4" => new \HUGnet\DummyBase("DataChan4"),
+                        ),
+                        "epChannel" => array(
+                            "0" => new \HUGnet\DummyBase("DataChan0"),
+                            "1" => new \HUGnet\DummyBase("DataChan1"),
+                            "2" => new \HUGnet\DummyBase("DataChan3"),
+                            "3" => new \HUGnet\DummyBase("DataChan4"),
+                            "4" => new \HUGnet\DummyBase("DataChan5"),
+                            "5" => new \HUGnet\DummyBase("DataChan6"),
+                            "6" => new \HUGnet\DummyBase("DataChan7"),
+                            "7" => new \HUGnet\DummyBase("DataChan8"),
+                        ),
+                    ),
+                    "DataChan0" => array(
+                        "get" => array(
+                            "channel" => 0,
+                            "decimals" => 0,
+                        ),
+                    ),
+                    "DataChan1" => array(
+                        "get" => array(
+                            "channel" => 1,
+                            "decimals" => 0,
+                        ),
+                    ),
+                    "DataChan2" => array(
+                        "get" => array(
+                            "channel" => 2,
+                            "decimals" => 0,
+                        ),
+                    ),
+                    "DataChan3" => array(
+                        "decode" => array(
+                            "12345678" => "12",
+                            "11223344" => "14",
+                        ),
+                        "get" => array(
+                            "channel" => 3,
+                            "decimals" => 0,
+                        ),
+                    ),
+                    "DataChan4" => array(
+                        "get" => array(
+                            "channel" => 4,
+                            "decimals" => 0,
+                        ),
+                    ),
+                    "DataChan5" => array(
+                        "get" => array(
+                            "channel" => 5,
+                            "decimals" => 0,
+                        ),
+                    ),
+                    "DataChan6" => array(
+                        "get" => array(
+                            "channel" => 6,
+                            "decimals" => 0,
+                        ),
+                    ),
+                    "DataChan7" => array(
+                        "get" => array(
+                            "channel" => 7,
+                            "decimals" => 0,
+                        ),
+                    ),
+                    "DataChan8" => array(
+                        "get" => array(
+                            "channel" => 8,
+                            "decimals" => 0,
+                        ),
+                    ),
+                ),
+                "13010378563412",
+                array(
+                    "get" => array(
+                        array('extra'),
+                    ),
+                    "set" => array(
+                        array('extra', array(19, 1, 4, 0x12345678)),
                     ),
                     "device" => array(
                         array(),
@@ -437,13 +501,13 @@ class MathInputTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "01000100",
+                "01000000000000",
             ),
-            array( // #1
+            array( // #1 Negative Offset
                 array(
                     "Input" => array(
                         "get" => array(
-                            "extra" => array(19, 1, 2, 3),
+                            "extra" => array(19, 1, 3, -1),
                         ),
                         "device" => new \HUGnet\DummyBase("Device"),
                     ),
@@ -505,7 +569,75 @@ class MathInputTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "13020204",
+                "130204FFFFFFFF",
+            ),
+            array( // #1 Negative Offset
+                array(
+                    "Input" => array(
+                        "get" => array(
+                            "extra" => array(19, 1, 3, 10),
+                        ),
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "dataChannels" => new \HUGnet\DummyBase("Channels"),
+                    ),
+                    "Channels" => array(
+                        "dataChannel" => array(
+                            "0" => new \HUGnet\DummyBase("DataChan0"),
+                            "1" => new \HUGnet\DummyBase("DataChan1"),
+                            "2" => new \HUGnet\DummyBase("DataChan2"),
+                            "3" => new \HUGnet\DummyBase("DataChan3"),
+                            "4" => new \HUGnet\DummyBase("DataChan4"),
+                        ),
+                        "epChannel" => array(
+                            "0" => new \HUGnet\DummyBase("DataChan0"),
+                            "1" => new \HUGnet\DummyBase("DataChan1"),
+                            "2" => new \HUGnet\DummyBase("DataChan3"),
+                            "3" => new \HUGnet\DummyBase("DataChan4"),
+                        ),
+                    ),
+                    "DataChan0" => array(
+                        "get" => array(
+                            "channel" => 0,
+                            "decimals" => 0,
+                            "epChannel" => 1,
+                        ),
+                    ),
+                    "DataChan1" => array(
+                        "get" => array(
+                            "channel" => 1,
+                            "decimals" => 0,
+                            "epChannel" => 2,
+                        ),
+                    ),
+                    "DataChan2" => array(
+                        "get" => array(
+                            "channel" => 2,
+                            "decimals" => 0,
+                            "epChannel" => 3,
+                        ),
+                    ),
+                    "DataChan3" => array(
+                        "decode" => array(
+                            "12345678" => "12",
+                            "11223344" => "14",
+                        ),
+                        "get" => array(
+                            "channel" => 3,
+                            "decimals" => 0,
+                            "epChannel" => 4,
+                        ),
+                    ),
+                    "DataChan4" => array(
+                        "get" => array(
+                            "channel" => 4,
+                            "decimals" => 0,
+                            "epChannel" => 5,
+                        ),
+                    ),
+                ),
+                "1302040A000000",
             ),
         );
     }
