@@ -97,6 +97,7 @@ class ADuCScaledTemp extends \HUGnet\devices\inputTable\DriverADuC
     protected function getReading(
         $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
+        bcscale(20);
         $Am     = pow(2, 23);
         $Rin    = $this->getExtra(0);
         $Rbias  = $this->getExtra(1);
@@ -130,7 +131,7 @@ class ADuCScaledTemp extends \HUGnet\devices\inputTable\DriverADuC
         if (is_null($value)) {
             return null;
         }
-        bcscale(10);
+        bcscale(20);
         $Am   = pow(2, 23);
         $Rin    = $this->getExtra(0);
         $Rbias  = $this->getExtra(1);

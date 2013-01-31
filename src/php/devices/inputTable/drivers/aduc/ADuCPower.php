@@ -101,14 +101,14 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         if (is_null($A)) {
             return null;
         }
-        bcscale(10);
+        bcscale(20);
         $Am   = pow(2, 23);
-        $A = $A / $this->gain(1);
+        $A = bcdiv($A, $this->gain(1));
         $Vref  = $this->getExtra(0);
         $Rin   = $this->getExtra(2);
         $Rbias = $this->getExtra(3);
         $A = $this->inputBiasCompensation($A, $Rin, $Rbias);
-        $Va = ($A / $Am) * $Vref;
+        $Va = bcmul(bcdiv($A, $Am), $Vref);
         return round($Va, $this->get("maxDecimals"));
     }
     /**
@@ -125,7 +125,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         if (is_null($Va)) {
             return null;
         }
-        bcscale(10);
+        bcscale(20);
         $Am   = pow(2, 23);
         $Vref  = $this->getExtra(0);
         $Rin   = $this->getExtra(2);
@@ -157,9 +157,9 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         if (is_null($A)) {
             return null;
         }
-        bcscale(10);
+        bcscale(20);
         $Am    = pow(2, 23);
-        $A     = $A / $this->gain();
+        $A     = bcdiv($A, $this->gain());
         $Vref  = $this->getExtra(0);
         $R     = $this->getExtra(1);
         $Rin   = $this->getExtra(4);
@@ -168,8 +168,8 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
             return null;
         }
         $A = $this->inputBiasCompensation($A, $Rin, $Rbias);
-        $Va = ($A / $Am) * $Vref;
-        $I = $Va / $R;
+        $Va = bcmul(bcdiv($A, $Am), $Vref);
+        $I = bcdiv($Va, $R);
         return round($I, $this->get("maxDecimals"));
     }
     /**
@@ -186,7 +186,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         if (is_null($I)) {
             return null;
         }
-        bcscale(10);
+        bcscale(20);
         $Am   = pow(2, 23);
         $Vref  = $this->getExtra(0);
         $R     = $this->getExtra(1);
@@ -223,7 +223,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         if (is_null($I) || is_null($V)) {
             return null;
         }
-        $P = $I * $V;
+        $P = bcmul($I, $V);
         return round($P, $this->get("maxDecimals"));
     }
     /**
@@ -244,7 +244,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         if (is_null($A)) {
             return null;
         }
-        bcscale(10);
+        bcscale(20);
         $Am   = pow(2, 23);
         $Vref   = $this->getExtra(0);
         $R      = $this->getExtra(1);
@@ -257,11 +257,11 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
             return null;
         }
 
-        $A = $A / $this->gain(0);
-        $A = $A / $this->gain(1);
+        $A = bcdiv($A, $this->gain(0));
+        $A = bcdiv($A, $this->gain(1));
         $A = $this->inputBiasCompensation($A, $Rin1, $Rbias1);
         $A = $this->inputBiasCompensation($A, $Rin2, $Rbias2);
-        $P = $A * ($Vref * $Vref) / ($Am * $Am) / $R;
+        $P = bcdiv(bcdiv(bcmul($A, bcmul($Vref, $Vref)), bcmul($Am, $Am)), $R);
 
         return round($P, $this->get("maxDecimals"));
     }
@@ -276,7 +276,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
     */
     protected function getRawPower($P)
     {
-        bcscale(10);
+        bcscale(20);
         $Am   = pow(2, 23);
         $Vref   = $this->getExtra(0);
         $R      = $this->getExtra(1);
@@ -319,22 +319,22 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         if (is_null($A)) {
             return null;
         }
-        bcscale(10);
+        bcscale(20);
         $R      = $this->getExtra(1);
         $Rin1   = (float)$this->getExtra(2);
         $Rbias1 = (float)$this->getExtra(3);
         $Rin2   = (float)$this->getExtra(4);
         $Rbias2 = (float)$this->getExtra(5);
 
-        $A  /= $this->gain(1);
-        $A  *= $this->gain(0);
+        $A  = bcdiv($A, $this->gain(1));
+        $A  = bcmul($A, $this->gain(0));
         $C1 = $this->inputBiasCompensation(1.0, $Rin1, $Rbias1);
         $C2 = $this->inputBiasCompensation(1.0, $Rin2, $Rbias2);
         if ($C2 == 0) {
             return null;
         }
-        $A = ($A * $C1)/ $C2;
-        $P = $A * $R;
+        $A = bcdiv(bcmul($A, $C1), $C2);
+        $P = bcmul($A, $R);
 
         return round($P, $this->get("maxDecimals"));
     }
@@ -375,7 +375,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         if (is_null($Z)) {
             return null;
         }
-        bcscale(10);
+        bcscale(20);
         $R      = $this->getExtra(1);
         $Rin1   = (float)$this->getExtra(2);
         $Rbias1 = (float)$this->getExtra(3);

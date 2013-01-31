@@ -109,6 +109,7 @@ class ADuCVishayRTD extends \HUGnet\devices\inputTable\DriverADuC
     protected function getReading(
         $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
+        bcscale(20);
         $Am    = pow(2, 23);
         $Rbias = $this->getExtra(0);
 
@@ -165,6 +166,7 @@ class ADuCVishayRTD extends \HUGnet\devices\inputTable\DriverADuC
     protected function getRaw(
         $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
     ) {
+        bcscale(20);
         $Am    = pow(2, 23);
         $Rbias = $this->getExtra(0);
 

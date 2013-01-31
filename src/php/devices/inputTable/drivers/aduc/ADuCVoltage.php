@@ -95,14 +95,15 @@ class ADuCVoltage extends \HUGnet\devices\inputTable\DriverADuC
     protected function getReading(
         $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
+        bcscale(20);
         $Am    = pow(2, 23);
         $Rin   = $this->getExtra(0);
         $Rbias = $this->getExtra(1);
         $Vref  = $this->getExtra(2);
 
         $A = $this->inputBiasCompensation($A, $Rin, $Rbias);
-        $Va = ($A / $Am) * $Vref;
-        return round($Va, $this->get('maxDecimals', 1));
+        $Va = bcmul(bcdiv($A, $Am), $Vref);
+        return round($Va, $this->get('maxDecimals'));
     }
     /**
     * Returns the reversed reading
@@ -124,7 +125,7 @@ class ADuCVoltage extends \HUGnet\devices\inputTable\DriverADuC
         if (is_null($value)) {
             return null;
         }
-        bcscale(10);
+        bcscale(20);
         $Am   = pow(2, 23);
         $Rin   = $this->getExtra(0);
         $Rbias = $this->getExtra(1);

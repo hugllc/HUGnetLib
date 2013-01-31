@@ -99,7 +99,7 @@ class ADuCPressure extends \HUGnet\devices\inputTable\DriverADuC
     protected function getReading(
         $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
-        bcscale(10);
+        bcscale(20);
         $Am   = pow(2, 23);
         $Vmin  = $this->getExtra(0);
         $Vmax  = $this->getExtra(1);
@@ -134,7 +134,7 @@ class ADuCPressure extends \HUGnet\devices\inputTable\DriverADuC
     protected function getRaw(
         $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
     ) {
-        bcscale(10);
+        bcscale(20);
         $Am   = pow(2, 23);
         $Vmin  = $this->getExtra(0);
         $Vmax  = $this->getExtra(1);
