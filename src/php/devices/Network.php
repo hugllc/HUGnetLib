@@ -577,12 +577,16 @@ class Network
             return false;
         }
         $this->_system->out("bootloader 1/1 success", 1);
-        $bootConfig = $this->config();
-        if (!is_object($bootConfig) || is_null($bootConfig->Reply())) {
-            $this->_system->out("setup 1/1 fail", 1);
+        $pkt = $this->config();
+        if (is_object($pkt)
+            && strlen($pkt->reply())
+            && ($this->_device->decode($pkt->reply()))
+        ) {
+            $this->_system->out("config 1/1 success", 1);
+        } else {
+            $this->_system->out("config 1/1 fail", 1);
             return false;
         }
-        $this->_system->out("config 1/1 success", 1);
         $code = $this->writeFlashBuffer(
             $firmware->getCode()
         );
@@ -616,6 +620,17 @@ class Network
             return false;
         }
         $this->_system->out("run 1/1 success", 1);
+
+        $pkt = $this->config();
+        if (is_object($pkt)
+            && strlen($pkt->reply())
+            && ($this->_device->decode($pkt->reply()))
+        ) {
+            $this->_system->out("config 1/1 success", 1);
+        } else {
+            $this->_system->out("config 1/1 fail", 1);
+            return false;
+        }
         return $this->loadConfig();
     }
     /**

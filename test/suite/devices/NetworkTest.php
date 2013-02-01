@@ -2730,6 +2730,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             "FWPartNum" => "0039-20-01-C",
                             "packetTimeout" => 2,
                         ),
+                        "decode" => true,
                     ),
                     "Network" => array(
                         "send" => array(
@@ -2806,6 +2807,7 @@ S9030000FC",
                             "FWPartNum" => "0039-20-01-C",
                             "packetTimeout" => 2,
                         ),
+                        "decode" => true,
                     ),
                     "Network" => array(
                         "send" => array(
@@ -2894,6 +2896,7 @@ S9030000FC",
                             "FWPartNum" => "0039-20-01-C",
                             "packetTimeout" => 2,
                         ),
+                        "decode" => true,
                     ),
                     "Network" => array(
                         "send" => array(
@@ -2966,6 +2969,12 @@ S9030000FC",
                             array("id"),
                             array("packetTimeout"),
                         ),
+                        "decode" => array(
+                            array(
+                                "00000000E800392801410039201343000009"
+                                    ."FFFFFF50010202020202020202"
+                            ),
+                        ),
                     ),
                     "Network" => array(
                         "send" => Array(
@@ -3021,6 +3030,7 @@ S9030000FC",
                             "FWPartNum" => "0039-20-01-C",
                             "packetTimeout" => 2,
                         ),
+                        "decode" => true,
                     ),
                     "Network" => array(
                         "send" => array(
@@ -3120,6 +3130,12 @@ S9030000FC",
                             array("packetTimeout"),
                             array("id"),
                             array("packetTimeout"),
+                        ),
+                        "decode" => array(
+                            array(
+                                "00000000E800392801410039201343000009"
+                                    ."FFFFFF50010202020202020202"
+                            ),
                         ),
                     ),
                     "Network" => array(
@@ -3212,6 +3228,7 @@ S9030000FC",
                             "FWPartNum" => "0039-20-01-C",
                             "packetTimeout" => 2,
                         ),
+                        "decode" => true,
                     ),
                     "Network" => array(
                         "send" => array(
@@ -3333,6 +3350,12 @@ S9030000FC",
                             array("packetTimeout"),
                             array("id"),
                             array("packetTimeout"),
+                        ),
+                        "decode" => array(
+                            array(
+                                "00000000E800392801410039201343000009"
+                                    ."FFFFFF50010202020202020202"
+                            ),
                         ),
                     ),
                     "Network" => array(
@@ -3453,6 +3476,7 @@ S9030000FC",
                             "FWPartNum" => "0039-20-01-C",
                             "packetTimeout" => 2,
                         ),
+                        "decode" => true,
                     ),
                     "Network" => array(
                         "send" => array(
@@ -3582,6 +3606,12 @@ S9030000FC",
                             array("packetTimeout"),
                             array("id"),
                             array("packetTimeout"),
+                        ),
+                        "decode" => array(
+                            array(
+                                "00000000E800392801410039201343000009"
+                                    ."FFFFFF50010202020202020202"
+                            ),
                         ),
                     ),
                     "Network" => array(
@@ -3712,6 +3742,7 @@ S9030000FC",
                             "FWPartNum" => "0039-20-01-C",
                             "packetTimeout" => 2,
                         ),
+                        "decode" => true,
                     ),
                     "Network" => array(
                         "send" => array(
@@ -3786,6 +3817,13 @@ S9030000FC",
                                 array(
                                     "From" => 21,
                                     "Reply" => "",
+                                )
+                            ),
+                            \HUGnet\network\packets\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "00000000E800392801410039201343000009"
+                                    ."FFFFFF50010202020202020202",
                                 )
                             ),
                         ),
@@ -3841,7 +3879,19 @@ S9030000FC",
                             array("packetTimeout"),
                             array("id"),
                             array("packetTimeout"),
+                            array("id"),
+                            array("packetTimeout"),
                             array("FWPartNum"),
+                        ),
+                        "decode" => array(
+                            array(
+                                "00000000E800392801410039201343000009"
+                                    ."FFFFFF50010202020202020202"
+                            ),
+                            array(
+                                "00000000E800392801410039201343000009"
+                                    ."FFFFFF50010202020202020202"
+                            ),
                         ),
                     ),
                     "Network" => array(
@@ -3958,6 +4008,16 @@ S9030000FC",
                                     'timeout' => 2,
                                 ),
                             ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'CONFIG',
+                                ),
+                                null,
+                                array(
+                                    'timeout' => 2,
+                                ),
+                            ),
                         ),
                     ),
                 ),
@@ -3972,6 +4032,7 @@ S9030000FC",
                             "FWPartNum" => "0039-20-01-C",
                             "packetTimeout" => 2,
                         ),
+                        "decode" => true,
                     ),
                     "Network" => array(
                         "send" => array(
@@ -4022,6 +4083,13 @@ S9030000FC",
                                 array(
                                     "From" => 21,
                                     "Reply" => "",
+                                )
+                            ),
+                            \HUGnet\network\packets\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "00000000E800392801410039201343000009"
+                                    ."FFFFFF50010202020202020202",
                                 )
                             ),
                         ),
@@ -4066,7 +4134,19 @@ S9030000FC",
                             array("packetTimeout"),
                             array("id"),
                             array("packetTimeout"),
+                            array("id"),
+                            array("packetTimeout"),
                             array("FWPartNum"),
+                        ),
+                        "decode" => array(
+                            array(
+                                "00000000E800392801410039201343000009"
+                                    ."FFFFFF50010202020202020202"
+                            ),
+                            array(
+                                "00000000E800392801410039201343000009"
+                                    ."FFFFFF50010202020202020202"
+                            ),
                         ),
                     ),
                     "Network" => array(
@@ -4147,6 +4227,16 @@ S9030000FC",
                                     'timeout' => 2,
                                 ),
                             ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'CONFIG',
+                                ),
+                                null,
+                                array(
+                                    'timeout' => 2,
+                                ),
+                            ),
                         ),
                     ),
                 ),
@@ -4161,6 +4251,7 @@ S9030000FC",
                             "FWPartNum" => "0039-20-01-C",
                             "packetTimeout" => 2,
                         ),
+                        "decode" => true,
                     ),
                     "Network" => array(
                         "send" => array(
@@ -4211,6 +4302,13 @@ S9030000FC",
                                 array(
                                     "From" => 21,
                                     "Reply" => "",
+                                )
+                            ),
+                            \HUGnet\network\packets\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "00000000E800392801410039201343000009"
+                                    ."FFFFFF50010202020202020202",
                                 )
                             ),
                         ),
@@ -4263,7 +4361,19 @@ S9030000FC",
                             array("packetTimeout"),
                             array("id"),
                             array("packetTimeout"),
+                            array("id"),
+                            array("packetTimeout"),
                             array("FWPartNum"),
+                        ),
+                        "decode" => array(
+                            array(
+                                "00000000E800392801410039201343000009"
+                                    ."FFFFFF50010202020202020202"
+                            ),
+                            array(
+                                "00000000E800392801410039201343000009"
+                                    ."FFFFFF50010202020202020202"
+                            ),
                         ),
                     ),
                     "Network" => array(
@@ -4344,6 +4454,16 @@ S9030000FC",
                                     'timeout' => 2,
                                 ),
                             ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'CONFIG',
+                                ),
+                                null,
+                                array(
+                                    'timeout' => 2,
+                                ),
+                            ),
                         ),
                     ),
                 ),
@@ -4358,6 +4478,7 @@ S9030000FC",
                             "FWPartNum" => "0039-20-01-C",
                             "packetTimeout" => 2,
                         ),
+                        "decode" => true,
                     ),
                     "Network" => array(
                         "send" => array(
@@ -4487,6 +4608,12 @@ S9030000FC",
                             array("packetTimeout"),
                             array("id"),
                             array("packetTimeout"),
+                        ),
+                        "decode" => array(
+                            array(
+                                "00000000E800392801410039201343000009"
+                                    ."FFFFFF50010202020202020202"
+                            ),
                         ),
                     ),
                     "Network" => array(
