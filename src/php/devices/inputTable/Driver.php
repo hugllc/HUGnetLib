@@ -713,8 +713,10 @@ abstract class Driver
     */
     public function getDrivers()
     {
-        return (array)$this->_arch[$this->input()->device()->get("arch")]
+        $ret = (array)$this->_arch[$this->input()->device()->get("arch")]
             + (array)$this->_arch["all"];
+        ksort($ret);
+        return $ret;
     }
     /**
     * This is for a generic pulse counter

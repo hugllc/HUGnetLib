@@ -358,8 +358,10 @@ abstract class Driver
     */
     public function getDrivers()
     {
-        return (array)$this->_arch[$this->output()->device()->get("arch")]
+        $ret = (array)$this->_arch[$this->output()->device()->get("arch")]
             + (array)$this->_arch["all"];
+        ksort($ret);
+        return $ret;
     }
     /**
     * This builds the string for the levelholder.
