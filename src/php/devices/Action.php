@@ -248,7 +248,9 @@ class Action
     /**
     * Gets the config and saves it
     *
-    * @return string The left over string
+    * @param mixed $set - null = read lock stat, true = set, false = remove
+    *
+    * @return int if lock is set,false if lock doesn't exist, true if it does
     */
     protected function programLock($set = null)
     {
