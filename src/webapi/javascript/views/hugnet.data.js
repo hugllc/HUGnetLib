@@ -66,9 +66,7 @@ HUGnet.DataView = Backbone.View.extend({
         'click #autorefresh': 'setRefresh',
         'submit': 'submit',
         'click .exportCSV': 'exportCSV',
-        'click .minute30': 'minute30',
-        'click .minute240': 'minute240',
-        'click .minute720': 'minute720',
+        'change #setPeriod': '_setPeriod',
         'change #type': 'submit'
     },
     initialize: function (options)
@@ -169,20 +167,16 @@ HUGnet.DataView = Backbone.View.extend({
         url += "&data[type]="+this.history.type;
         this.iframe.attr('src',url);
     },
-    minute30: function ()
+    _setPeriod: function ()
     {
-        this.period = 30;
-        this.getLatest();
-    },
-    minute240: function ()
-    {
-        this.period = 240;
-        this.getLatest();
-    },
-    minute720: function ()
-    {
-        this.period = 720;
-        this.getLatest();
+        var period = parseInt(this.$('#setPeriod').val(), 10);
+        if (period != 0) {
+            if (period > 1440) {
+                period = 1440;
+            }
+            this.period = period;
+            this.getLatest();
+        }
     },
     getLatest: function ()
     {
