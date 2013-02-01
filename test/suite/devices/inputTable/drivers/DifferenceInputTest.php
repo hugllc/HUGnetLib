@@ -131,7 +131,7 @@ class DifferenceInputTest extends DriverTestBase
                 array(),
                 256210,
             ),
-            array(  #1 Negative Numbers
+            array(  // #1 Negative Numbers
                 array(
                 ),
                 0xFFFFFFFF,
@@ -140,7 +140,7 @@ class DifferenceInputTest extends DriverTestBase
                 array(),
                 -1,
             ),
-            array(  #1 Negative Numbers
+            array(  // #2 Negative Numbers
                 array(
                 ),
                 "8E260000",
