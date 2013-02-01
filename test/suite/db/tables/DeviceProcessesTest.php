@@ -308,6 +308,7 @@ class DeviceProcessesTest extends TableTestBase
                     "process" => 23,
                     "id" => 1,
                     "type" => "asdf",
+                    "location" => "HERE",
                     "driver" => "asdf",
                     "params" => json_encode(
                         array("extra" => array())
@@ -331,6 +332,7 @@ class DeviceProcessesTest extends TableTestBase
                     "process" => 23,
                     "id" => 1,
                     "type" => "asdf",
+                    "location" => "HERE",
                     "driver"  => "EmptyProcess",
                     "params" => '{"storageUnits":"&deg;C","unitType":"Temperature"}',
                 ),
@@ -354,6 +356,7 @@ class DeviceProcessesTest extends TableTestBase
                     "process" => 23,
                     "id" => 1,
                     "type" => "asdf",
+                    "location" => "HERE",
                     "driver"  => "EmptyProcess",
                     "params" => '{"extra":[1,2,3,4]}',
                 ),
@@ -405,6 +408,7 @@ class DeviceProcessesTest extends TableTestBase
                     "process" => 23,
                     "id" => 1,
                     "type" => "asdf",
+                    "location" => "HERE",
                     "storageUnits" => "&deg;C",
                     "driver"  => "EmptyProcess",
                     "unitType" => "Temperature",

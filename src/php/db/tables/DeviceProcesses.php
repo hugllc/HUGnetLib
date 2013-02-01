@@ -102,6 +102,11 @@ class DeviceProcesses extends \HUGnet\db\TableParams
             "Type" => "varchar(128)",
             "Default" => '',
         ),
+        "location" => array(
+            "Name" => "location",
+            "Type" => "varchar(128)",
+            "Default" => '',
+        ),
         "driver" => array(
             "Name" => "driver",
             "Type" => "varchar(32)",

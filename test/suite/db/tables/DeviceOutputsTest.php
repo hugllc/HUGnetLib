@@ -308,6 +308,7 @@ class DeviceOutputsTest extends TableTestBase
                     "output" => 23,
                     "id" => 1,
                     "type" => "asdf",
+                    "location" => "HERE",
                     "driver" => "asdf",
                     "params" => json_encode(
                         array("extra" => array())
@@ -331,6 +332,7 @@ class DeviceOutputsTest extends TableTestBase
                     "output" => 23,
                     "id" => 1,
                     "type" => "asdf",
+                    "location" => "HERE",
                     "driver"  => "EmptyOutput",
                     "params" => '{"storageUnits":"&deg;C","unitType":"Temperature"}',
                 ),
@@ -354,6 +356,7 @@ class DeviceOutputsTest extends TableTestBase
                     "output" => 23,
                     "id" => 1,
                     "type" => "asdf",
+                    "location" => "HERE",
                     "driver"  => "EmptyOutput",
                     "params" => '{"extra":[1,2,3,4]}',
                 ),
@@ -405,6 +408,7 @@ class DeviceOutputsTest extends TableTestBase
                     "output" => 23,
                     "id" => 1,
                     "type" => "asdf",
+                    "location" => "HERE",
                     "storageUnits" => "&deg;C",
                     "driver"  => "EmptyOutput",
                     "unitType" => "Temperature",
