@@ -62,6 +62,7 @@ HUGnet.DataView = Backbone.View.extend({
     polling: false,
     iframe: undefined,
     csvlimit: 40000,
+    progress: undefined,
     events: {
         'click #autorefresh': 'setRefresh',
         'submit': 'submit',
@@ -181,6 +182,7 @@ HUGnet.DataView = Backbone.View.extend({
     getLatest: function ()
     {
         this.last  = (new Date()).getTime();
+        this._setupProgress();
         this.history.latest(this.period);
         this.since = this.history.since;
         this.until = this.history.until;
@@ -218,10 +220,16 @@ HUGnet.DataView = Backbone.View.extend({
             if (this.$('#type').val()) {
                 this.history.type = this.$('#type').val();
             }
+            this._setupProgress();
+            this.history.on('sync', this._finishFetch, this);
             this.history.getPeriod(this.since, this.until);
             this.updateDates();
-            /*
-            var progress = new HUGnet.Progress({
+        }
+    },
+    _setupProgress: function()
+    {
+        if (typeof this.progress !== "object") {
+            this.progress = new HUGnet.Progress({
                 modal: false,
                 draggable: true,
                 width: 300,
@@ -229,10 +237,26 @@ HUGnet.DataView = Backbone.View.extend({
                 dialogClass: "window",
                 zIndex: 500
             });
-            this.history.on('fetchagain', progress.update, progress);
-            this.history.on('sync', progress.remove, progress);
-            */
-            this.history.on('sync', this._finishFetch, this);
+            this.history.on('fetchagain', this._updateProgress, this);
+            this.history.on('fetchfail', this._teardownProgress, this);
+            this.history.on('fetchdone', this._teardownProgress, this);
+        }
+    },
+    _teardownProgress: function()
+    {
+        this.history.off('fetchagain', this._updateProgress, this);
+        this.history.off('fetchfail', this._teardownProgress, this);
+        this.history.off('fetchdone', this._teardownProgress, this);
+        if (this.progress !== undefined) {
+            this.progress.update(1);
+            this.progress.remove();
+            delete this.progress;
+        }
+    },
+    _updateProgress: function(value)
+    {
+        if (typeof this.progress === "object") {
+            this.progress.update(value);
         }
     },
     getField: function (index, field)
@@ -283,7 +307,6 @@ HUGnet.DataView = Backbone.View.extend({
         this.$('#autorefresh').prop("disabled", false);
         this.history.off("fetchfail", this._finishFetch, this);
         this.history.off("fetchdone", this._finishFetch, this);
-        this.history.off('sync', this._finishFetch, this);
         this.polling = false;
     },
     _poll: function ()
