@@ -221,7 +221,7 @@ HUGnet.DataFlot = Backbone.View.extend({
         _.each(
             this.checkboxes,
             function(val, key) {
-                $("#"+val).prop('checked', !$("#"+val).prop('checked'));
+                this.$("#"+val).prop('checked', !this.$("#"+val).prop('checked'));
             },
             this
         );
