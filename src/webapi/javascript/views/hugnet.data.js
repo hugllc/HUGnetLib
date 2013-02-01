@@ -105,6 +105,7 @@ HUGnet.DataView = Backbone.View.extend({
                 url: this.url
             }
         );
+        this._setupProgress();
         this.getLatest();
         this.history.on(
             'sync',
@@ -176,13 +177,13 @@ HUGnet.DataView = Backbone.View.extend({
                 period = 1440;
             }
             this.period = period;
+            this._setupProgress();
             this.getLatest();
         }
     },
     getLatest: function ()
     {
         this.last  = (new Date()).getTime();
-        this._setupProgress();
         this.history.latest(this.period);
         this.since = this.history.since;
         this.until = this.history.until;
