@@ -316,6 +316,7 @@ class System
     public static function exception($msg, $type = "Runtime", $condition = true)
     {
         if ((boolean)$condition) {
+            syslog(LOG_CRIT, $msg);
             $class = "\\".$type."Exception";
             if (class_exists($class)) {
                 throw new $class($msg);
