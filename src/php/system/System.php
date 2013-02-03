@@ -105,6 +105,7 @@ class System
             $uname["fqdn"] = $uname["nodename"].".".$uname["domainname"];
             $this->_fixed = array_merge($this->_fixed, $uname);
         }
+        $this->_fixed["phpversion"] = phpversion();
         $this->config((array)$config);
         $this->_dbconnect = \HUGnet\db\Connection::factory($this);
         $this->_ui = $interface;

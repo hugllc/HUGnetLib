@@ -175,6 +175,12 @@ class SystemTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
+                ),
+                "phpversion",
+                phpversion(),
+            ),
+            array(
+                array(
                     "hello" => "there",
                     "asdf" => array(1, 2),
                 ),
