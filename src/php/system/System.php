@@ -79,7 +79,11 @@ class System
     /** @var object This is our user interface */
     private $_quit = false;
     /** @var array This is our static things that get might want to retrieve */
-    private $_fixed = array();
+    private $_fixed = array(
+        "nodename" => "unknown",
+        "domainname" => "example.com",
+        "fqdn" => "unknown.example.com",
+    );
     /** @var array The default configuration */
     private $_configDefault = array(
         "verbose" => 0,
@@ -95,6 +99,12 @@ class System
     */
     private function __construct($config = array(), &$interface = null)
     {
+        if (function_exists("posix_uname")) {
+            $uname = posix_uname();
+            $uname["osversion"] = $uname["version"];
+            $uname["fqdn"] = $uname["nodename"].".".$uname["domainname"];
+            $this->_fixed = array_merge($this->_fixed, $uname);
+        }
         $this->config((array)$config);
         $this->_dbconnect = \HUGnet\db\Connection::factory($this);
         $this->_ui = $interface;

@@ -164,7 +164,7 @@ class SystemTest extends \PHPUnit_Framework_TestCase
     */
     public static function dataGet()
     {
-        return array(
+        $ret = array(
             array(
                 array(
                     "hello" => "there",
@@ -195,6 +195,19 @@ class SystemTest extends \PHPUnit_Framework_TestCase
                 trim(file_get_contents(CODE_BASE."VERSION.TXT")),
             ),
         );
+        if (function_exists("posix_uname")) {
+            $uname = posix_uname();
+            foreach ($uname as $key => $value) {
+                if ($key === "version") {
+                    $key = "osversion";
+                }
+                $ret[] = array(
+                    array(), $key, $value
+                );
+            }
+        }
+
+        return $ret;
     }
     /**
     * This tests the object creation
