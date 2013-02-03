@@ -157,6 +157,204 @@ class WatchdogTest extends \PHPUnit_Framework_TestCase
         unset($conf["IPAddr"]);
         $this->assertEquals($expect, $conf, "Config wrong");
     }
+    /**
+    * Data provider for testRemove
+    *
+    * @return array
+    */
+    public static function dataCriticalError()
+    {
+        return array(
+            array(
+                new \HUGnet\DummySystem("System"),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 5,
+                            "other" => "stuff",
+                        ),
+                        "network" => new \HUGnet\network\DummyNetwork("Network"),
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Network" => array(
+                        "device" => new \HUGnet\DummyBase("NetDevice"),
+                    ),
+                ),
+                true,
+                array(
+                ),
+                true,
+                array(
+                ),
+            ),
+            array(
+                new \HUGnet\DummySystem("System"),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 5,
+                            "other" => "stuff",
+                        ),
+                        "network" => new \HUGnet\network\DummyNetwork("Network"),
+                        "device" => new \HUGnet\DummyBase("Device"),
+                        "get" => array(
+                            "fqdn" => "hugllc.com",
+                            "nodename" => "asdf",
+                            "phpversion" => "1.2.3",
+                            "error_email" => "asdf@asdf.com",
+                        ),
+                    ),
+                    "Network" => array(
+                        "device" => new \HUGnet\DummyBase("NetDevice"),
+                    ),
+                ),
+                true,
+                array(
+                    "Ouch!  An error occurred!",
+                ),
+                true,
+                array(
+                    'to' => "asdf@asdf.com",
+                    'subject' => 'Critical Error on asdf',
+                    'message' => ' * Ouch!  An error occurred!
+',
+                    'headers' => 'MIME-Version: 1.0
+Content-type: text/plain; charset=UTF-8
+From: HUGnet Admin <admin@hugllc.com>
+X-Mailer: PHP/1.2.3',
+                    'params' => ''
+                ),
+            ),
+            array(
+                new \HUGnet\DummySystem("System"),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 5,
+                            "other" => "stuff",
+                        ),
+                        "network" => new \HUGnet\network\DummyNetwork("Network"),
+                        "device" => new \HUGnet\DummyBase("Device"),
+                        "get" => array(
+                            "fqdn" => "hugllc.com",
+                            "nodename" => "asdf",
+                            "phpversion" => "1.2.3",
+                            "error_email" => array("hello"),
+                        ),
+                    ),
+                    "Network" => array(
+                        "device" => new \HUGnet\DummyBase("NetDevice"),
+                    ),
+                ),
+                true,
+                array(
+                    "Ouch!  An error occurred!",
+                ),
+                false,
+                array(
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param mixed $config The config to use
+    * @param array $mock   The mocks to use
+    * @param bool  $ret    The return to set
+    * @param array $errors The errors to send out
+    * @param mixed $expect The return we are expecting
+    * @param array $email  The email that gets sent out
+    *
+    * @return null
+    *
+    * @dataProvider dataCriticalError()
+    */
+    public function testCriticalError(
+        $config, $mock, $ret, $errors, $expect, $email
+    ) {
+        if (is_array($mock)) {
+            $config->resetMock($mock);
+        }
+        $obj = WatchdogTestClass::factory($config);
+        $obj->mailRet = $ret;
+        foreach ((array)$errors as $error) {
+            $obj->criticalError($error);
+        }
+        $ret = $obj->criticalErrorMail();
+        $this->assertSame($expect, $ret, "Return Wrong!");
+        if ($ret) {
+            $this->assertEquals($email, $obj->mailStuff, "Email Wrong");
+        }
+    }
 
+}
+/**
+ * This code makes sure all of the other HUGnet stuff is running.
+ *
+ * @category   Libraries
+ * @package    HUGnetLib
+ * @subpackage UI
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2013 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.10.2
+ * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
+ */
+class WatchdogTestClass extends Watchdog
+{
+    /** This is to store mail information */
+    public $mailStuff = array();
+    /** This is to store mail information */
+    public $mailRet = true;
+    /**
+    * Creates the object
+    *
+    * @param array &$config The configuration to use
+    *
+    * @return null
+    */
+    static public function &factory(&$config = array())
+    {
+        $obj = new WatchdogTestClass($config);
+        return $obj;
+    }
+    /**
+    * This sends out a critical error email
+    *
+    * This creates our email
+    *
+    * @return true on success, false on failure, null on not time yet.
+    */
+    public function criticalErrorMail()
+    {
+        return parent::criticalErrorMail();
+    }
+    /**
+    * Wrapper to send out an email
+    *
+    * This wrapper is just for testing purposes, so I can isolate the call to 'mail'
+    *
+    * @param string $to      The address to send the message to
+    * @param string $subject The subject of the message
+    * @param string $message The actual message
+    * @param string $headers THe extra headers to send
+    * @param string $params  Additional parameters to send
+    *
+    * @return mixed Array in test mode, bool in normal mode
+    * @codeCoverageIgnoreStart
+    * Can't test this call
+    */
+    protected function mail($to, $subject, $message, $headers, $params)
+    {
+        $this->mailStuff = array(
+            "to" => $to,
+            "subject" => $subject,
+            "message" => $message,
+            "headers" => $headers,
+            "params" => $params,
+        );
+        return $this->mailRet;
+    }
 }
 ?>

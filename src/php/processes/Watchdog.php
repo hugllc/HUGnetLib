@@ -39,11 +39,7 @@ require_once dirname(__FILE__)."/../ui/Daemon.php";
 require_once dirname(__FILE__)."/watchdog/Periodic.php";
 
 /**
- * This code routes packets to their correct destinations.
- *
- * This is the router class, essentially.  It will take packets and figure out
- * which network interface to send them out.  This implements the Network layer
- * of the OSI model.
+ * This code makes sure all of the other HUGnet stuff is running.
  *
  * @category   Libraries
  * @package    HUGnetLib
@@ -67,6 +63,12 @@ class Watchdog extends \HUGnet\ui\Daemon
     private $_myID;
     /** This is the start time of the current run */
     private $_plugins = array();
+    /** This is where we keep the last time we did things */
+    private $_last = array(
+        "criticalError" => 0,
+    );
+    /** This is our critical Error locations */
+    private $_criticalError = array();
     /**
     * Sets our configuration
     *
@@ -110,6 +112,7 @@ class Watchdog extends \HUGnet\ui\Daemon
         foreach ($this->_plugins as $obj) {
             $obj->execute();
         }
+        $this->criticalErrorMail();
         $this->_wait();
     }
     /**
@@ -130,19 +133,6 @@ class Watchdog extends \HUGnet\ui\Daemon
         }
     }
     /**
-    * Deals with incoming packets
-    *
-    * @param object $pkt The packet to send out
-    *
-    * @return null
-    */
-    public function packet($pkt)
-    {
-        if ($pkt->type() === "RECONFIG") {
-
-        }
-    }
-    /**
     * Creates the object
     *
     * @param array $config The configuration to use
@@ -153,5 +143,81 @@ class Watchdog extends \HUGnet\ui\Daemon
     {
         return false;
     }
+    /**
+    * This sets a critical error
+    *
+    * @param string $error The error message
+    *
+    * @return null
+    */
+    public function criticalError($error)
+    {
+        $this->_criticalError[] = (string)$error;
+    }
+    /**
+    * This sends out a critical error email
+    *
+    * This creates our email
+    *
+    * @return true on success, false on failure, null on not time yet.
+    */
+    protected function criticalErrorMail()
+    {
+        if (($this->last["criticalError"] + 600) > time()) {
+            return null;
+        }
+        if (empty($this->_criticalError)) {
+            return true;
+        }
+        $email = $this->system()->get("error_email");
+        if (empty($email) || !is_string($email)) {
+            return false;
+        }
+        $subject = "Critical Error on ".$this->system()->get("nodename");
+        $message = "";
+        foreach($this->_criticalError as $text) {
+            $message .= " * ".wordwrap($text)."\n";
+        }
+        $headers = array(
+            "MIME-Version: 1.0",
+            "Content-type: text/plain; charset=UTF-8",
+            "From: HUGnet Admin <admin@".$this->system()->get("fqdn").">",
+            "X-Mailer: PHP/".$this->system()->get("phpversion"),
+        );
+        $params = "";
+        $ret = $this->mail(
+            $email, $subject, $message, implode("\n", $headers), $params
+        );
+        if ($ret) {
+            $this->_criticalError = array();
+        }
+        return $ret;
+    }
+    /**
+    * Wrapper to send out an email
+    *
+    * This wrapper is just for testing purposes, so I can isolate the call to 'mail'
+    *
+    * @param string $to      The address to send the message to
+    * @param string $subject The subject of the message
+    * @param string $message The actual message
+    * @param string $headers THe extra headers to send
+    * @param string $params  Additional parameters to send
+    *
+    * @return mixed Array in test mode, bool in normal mode
+    * @codeCoverageIgnoreStart
+    * Can't test this call
+    */
+    protected function mail($to, $subject, $message, $headers, $params)
+    {
+        return mail(
+            $this->myConfig->admin_email,
+            $subject,
+            $message,
+            $headers,
+            $params
+        );
+    }
+    // @codeCoverageIgnoreEnd
 }
 ?>
