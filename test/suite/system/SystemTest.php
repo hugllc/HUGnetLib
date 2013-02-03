@@ -177,7 +177,7 @@ class SystemTest extends \PHPUnit_Framework_TestCase
                 array(
                 ),
                 "phpversion",
-                phpversion(),
+                PHP_VERSION,
             ),
             array(
                 array(

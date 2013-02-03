@@ -83,6 +83,7 @@ class System
         "nodename" => "unknown",
         "domainname" => "example.com",
         "fqdn" => "unknown.example.com",
+        "phpversion" => PHP_VERSION,
     );
     /** @var array The default configuration */
     private $_configDefault = array(
@@ -105,7 +106,6 @@ class System
             $uname["fqdn"] = $uname["nodename"].".".$uname["domainname"];
             $this->_fixed = array_merge($this->_fixed, $uname);
         }
-        $this->_fixed["phpversion"] = phpversion();
         $this->config((array)$config);
         $this->_dbconnect = \HUGnet\db\Connection::factory($this);
         $this->_ui = $interface;
