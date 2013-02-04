@@ -105,11 +105,11 @@ class ControlChannelsTest extends \PHPUnit_Framework_TestCase
     */
     public function testCreateThrowException2()
     {
-        $test = new \HUGnet\DummyTable();
+        $test = new \HUGnet\DummySystem();
         // This just resets the mock
         $test->resetMock();
-        $this->setExpectedException("InvalidArgumentException");
-        // This throws an exception because $test is not a object
+        $this->setExpectedException("RuntimeException");
+        // This throws an exception because $test2 is not a object
         ControlChannels::factory($test, $test2);
     }
     /**
@@ -133,13 +133,22 @@ class ControlChannelsTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                new \HUGnet\DummySystem(),
+                new \HUGnet\DummySystem("System"),
                 new \HUGnet\DummyTable("Device"),
                 array(
                     "Device" => array(
                         "get" => array(
                             array("OutputTables"),
                             array("controlChannels"),
+                        ),
+                    ),
+                    "System" => array(
+                        "fatalError" => array(
+                            array(
+                                "HUGnet\devices\ControlChannels needs to be passed"
+                                    ." a device object",
+                                false,
+                            ),
                         ),
                     ),
                 ),

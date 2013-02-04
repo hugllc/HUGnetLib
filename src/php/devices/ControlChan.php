@@ -80,9 +80,8 @@ class ControlChan
     */
     protected function __construct($device, $driver)
     {
-        \HUGnet\System::exception(
+        \HUGnet\System::systemMissing(
             get_class($this)." needs to be passed a device object",
-            "InvalidArgument",
             !is_object($device)
         );
         $this->_device = &$device;

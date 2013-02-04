@@ -153,9 +153,8 @@ abstract class Driver
     */
     private function __construct(&$device)
     {
-        \HUGnet\System::exception(
+        \HUGnet\System::systemMissing(
             get_class($this)." needs to be passed a system object",
-            "InvalidArgument",
             !is_object($device)
         );
         $this->_device = &$device;

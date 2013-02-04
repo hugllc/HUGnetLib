@@ -105,10 +105,10 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
     */
     public function testCreateThrowException2()
     {
-        $test = new \HUGnet\DummyTable();
+        $test = new \HUGnet\DummySystem();
         // This just resets the mock
         $test->resetMock();
-        $this->setExpectedException("InvalidArgumentException");
+        $this->setExpectedException("RuntimeException");
         // This throws an exception because $test is not a object
         DataChannels::factory($test, $test2);
     }
@@ -140,6 +140,15 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("InputTables"),
                             array("dataChannels"),
+                        ),
+                    ),
+                    "System" => array(
+                        "fatalError" => array(
+                            array(
+                                "HUGnet\devices\DataChannels needs to be passed"
+                                    ." a device object",
+                                false,
+                            ),
                         ),
                     ),
                 ),

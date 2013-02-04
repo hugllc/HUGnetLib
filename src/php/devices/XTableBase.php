@@ -97,9 +97,12 @@ abstract class XTableBase extends \HUGnet\base\SystemTableBase
     public static function &factory(
         &$system, $data=null, $table=null, &$device = null
     ) {
-        \HUGnet\System::exception(
-            __CLASS__." needs to be passed a device object",
-            "InvalidArgument",
+        \HUGnet\System::systemMissing(
+            get_class($this)." needs to be passed a system object",
+            !is_object($system)
+        );
+        $system->fatalError(
+            get_class($this)." needs to be passed a device object",
             !is_object($device)
         );
         $object = parent::factory($system, $data, $table);

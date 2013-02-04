@@ -82,19 +82,16 @@ class Network
     */
     private function __construct(&$system, &$device, &$driver)
     {
-        \HUGnet\System::exception(
+        \HUGnet\System::systemMissing(
             get_class($this)." needs to be passed a system object",
-            "InvalidArgument",
             !is_object($system)
         );
-        \HUGnet\System::exception(
+        $system->fatalError(
             get_class($this)." needs to be passed a driver object",
-            "InvalidArgument",
             !is_object($driver)
         );
-        \HUGnet\System::exception(
+        $system->fatalError(
             get_class($this)." needs to be passed a device object",
-            "InvalidArgument",
             !is_object($device)
         );
         $this->_system = &$system;
