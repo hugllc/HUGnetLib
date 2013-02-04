@@ -85,6 +85,11 @@ class SystemTableActionTest extends \PHPUnit_Framework_TestCase
         parent::setUp();
         $this->system = new \HUGnet\DummySystem("System");
         $this->table = new \HUGnet\DummyTable("Table");
+        $this->system->resetMock(
+            array(
+                "error" => true,
+            )
+        );
         $this->o = SystemTableActionTestStub::factory(
             $this->system, null, $this->table
         );
@@ -120,8 +125,18 @@ class SystemTableActionTest extends \PHPUnit_Framework_TestCase
                 array(),
                 "asdf",
                 "asdf",
-                2,
-                "RuntimeException",
+                null,
+                array(
+                    "System" => array(
+                        "error" => array(
+                            array(
+                                "Call to undefined method asdf on "
+                                    ."HUGnet\base\SystemTableActionTestStub",
+                                \HUGnet\Error::CRITICAL
+                            ),
+                        ),
+                    ),
+                ),
             ),
             array(
                 array(
@@ -140,11 +155,15 @@ class SystemTableActionTest extends \PHPUnit_Framework_TestCase
                 "sillyFct",
                 "hello",
                 25,
-                null,
+                array(
+                    "Silly" => array(
+                        "sillyFct" => array(array("hello")),
+                    ),
+                ),
             ),
             array(
                 array(
-                    "SillySystem" => array(
+                    "DummyNetwork" => array(
                         "sillyFct" => array(
                             "hello" => 25,
                             "there" => 50,
@@ -160,7 +179,11 @@ class SystemTableActionTest extends \PHPUnit_Framework_TestCase
                 "sillyFct",
                 "hello",
                 25,
-                null,
+                array(
+                    "DummyNetwork" => array(
+                        "sillyFct" => array(array("hello")),
+                    ),
+                ),
             ),
         );
     }
@@ -173,14 +196,14 @@ class SystemTableActionTest extends \PHPUnit_Framework_TestCase
     * @param string $function  This is the function to call
     * @param mixed  $arg       This is the argument to the function
     * @param mixed  $expect    The value we expect back
-    * @param string $exception If this is a string, it is the excpected exception
+    * @param array  $calls     The calls that should have happened
     *
     * @return null
     *
     * @dataProvider dataCall
     */
     public function testCall(
-        $config, $functions, $classes, $function, $arg, $expect, $exception
+        $config, $functions, $classes, $function, $arg, $expect, $calls
     ) {
         $this->system->resetMock($config);
         if (is_string($exception)) {
@@ -188,7 +211,8 @@ class SystemTableActionTest extends \PHPUnit_Framework_TestCase
         }
         $this->o->setFunctions($functions);
         $this->o->setClasses($classes);
-        $this->assertSame($expect, $this->o->$function($arg));
+        $this->assertSame($expect, $this->o->$function($arg), "Return Wrong");
+        $this->assertEquals($calls, $this->system->retrieve(), "Calls Wrong");
     }
 
 }
@@ -237,15 +261,6 @@ class SystemTableActionTestStub extends SystemTableAction
     public function silly()
     {
         return new \HUGnet\DummyBase("Silly");
-    }
-    /**
-    * This sets the classes
-    *
-    * @return null
-    */
-    public function &system()
-    {
-        return "SillySystem";
     }
 }
 ?>

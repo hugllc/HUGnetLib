@@ -45,6 +45,8 @@ if (!defined("_HUGNET")) {
 require_once dirname(__FILE__).'/../util/Util.php';
 /** THis is our db connection class */
 require_once dirname(__FILE__).'/../db/Connection.php';
+/** This is the error class */
+require_once dirname(__FILE__).'/Error.php';
 
 
 /**
@@ -350,7 +352,7 @@ class System
     {
         if ((boolean)$condition) {
             syslog(LOG_CRIT, $msg);
-            throw new \RuntimeException($msg);
+            throw new \InvalidArgumentException($msg);
         }
     }
     /**
@@ -365,7 +367,6 @@ class System
     */
     private function _error()
     {
-        include_once dirname(__FILE__).'/Error.php';
         if (!is_object($this->_error)) {
             $this->_error = Error::factory($this);
         }

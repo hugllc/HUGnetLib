@@ -170,8 +170,8 @@ class SystemTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array("Test Message", false, null),
-            array("Test Message", true, "RuntimeException"),
-            array("Test Message", true, "RuntimeException"),
+            array("Test Message", true, "InvalidArgumentException"),
+            array("Test Message", true, "InvalidArgumentException"),
         );
     }
     /**

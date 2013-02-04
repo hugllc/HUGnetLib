@@ -105,8 +105,9 @@ abstract class SystemTableAction extends SystemTableBase
             // @codeCoverageIgnoreStart
         }
         // @codeCoverageIgnoreEnd
-        \HUGnet\System::exception(
-            "Call to undefined method $name on ".get_class($this)
+        $this->system()->error(
+            "Call to undefined method $name on ".get_class($this),
+            \HUGnet\Error::CRITICAL
         );
         // @codeCoverageIgnoreStart
     }
