@@ -92,6 +92,7 @@ class System
     /** @var array The default configuration */
     private $_configDefault = array(
         "verbose" => 0,
+        "min_log" => Error::ERROR,
     );
 
     /**
@@ -326,28 +327,6 @@ class System
     *
     * @return null
     */
-    public static function exception($msg, $type = "Runtime", $condition = true)
-    {
-        if ((boolean)$condition) {
-            syslog(LOG_CRIT, $msg);
-            $class = "\\".$type."Exception";
-            if (class_exists($class)) {
-                throw new $class($msg);
-            } else {
-                throw new \RuntimeException($msg);
-            }
-        }
-    }
-    /**
-    * Throws an exception
-    *
-    * @param string $msg       The message
-    * @param string $type      The type of exception to throw
-    * @param bool   $condition If true the exception is thrown.  On false it
-    *                 is ignored.
-    *
-    * @return null
-    */
     public static function systemMissing($msg, $condition)
     {
         if ((boolean)$condition) {
@@ -400,6 +379,8 @@ class System
     {
         if (!(boolean)$condition) {
             return false;
+        } else if ($severity < $this->get("min_log")) {
+            return true;
         }
         $this->_error()->syslog($msg, $severity);
         $debug = debug_backtrace();

@@ -38,6 +38,8 @@ namespace HUGnet\processes;
 /** This is a required class */
 require_once CODE_BASE.'processes/Update.php';
 /** This is a required class */
+require_once CODE_BASE.'system/Error.php';
+/** This is a required class */
 require_once CODE_BASE.'ui/Args.php';
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
@@ -127,6 +129,7 @@ class UpdateTest extends \PHPUnit_Framework_TestCase
                     "quiet" => false,
                     "debug" => false,
                     "test" => false,
+                    "min_log" => \HUGnet\Error::ERROR,
                 )
             ),
         );

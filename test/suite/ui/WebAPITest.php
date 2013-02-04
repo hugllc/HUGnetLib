@@ -38,6 +38,8 @@ namespace HUGnet\ui;
 /** This is a required class */
 require_once CODE_BASE.'ui/WebAPI.php';
 /** This is a required class */
+require_once CODE_BASE.'system/Error.php';
+/** This is a required class */
 require_once CODE_BASE.'ui/WebAPIArgs.php';
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
@@ -111,6 +113,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     "verbose" => 5,
                     "other" => "stuff",
                     "html" => true,
+                    "min_log" => \HUGnet\Error::ERROR,
                 ),
             ),
             array(
@@ -121,6 +124,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                 array(
                     "verbose" => 5,
                     "html" => true,
+                    "min_log" => \HUGnet\Error::ERROR,
                 )
             ),
             array(
@@ -132,6 +136,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     "quiet" => false,
                     "debug" => false,
                     "test" => false,
+                    "min_log" => \HUGnet\Error::ERROR,
                 )
             ),
         );

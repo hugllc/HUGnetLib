@@ -38,6 +38,8 @@ namespace HUGnet\ui;
 /** This is a required class */
 require_once CODE_BASE.'ui/HTML.php';
 /** This is a required class */
+require_once CODE_BASE.'system/Error.php';
+/** This is a required class */
 require_once CODE_BASE.'ui/HTMLArgs.php';
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
@@ -109,6 +111,7 @@ class HTMLTest extends \PHPUnit_Framework_TestCase
                     "verbose" => 0,
                     "html" => true,
                     "other" => "stuff",
+                    "min_log" => \HUGnet\Error::ERROR,
                 ),
             ),
             array(
@@ -119,6 +122,7 @@ class HTMLTest extends \PHPUnit_Framework_TestCase
                 array(
                     "verbose" => 5,
                     "html" => true,
+                    "min_log" => \HUGnet\Error::ERROR,
                 )
             ),
             array(
@@ -130,6 +134,7 @@ class HTMLTest extends \PHPUnit_Framework_TestCase
                     "quiet" => false,
                     "debug" => false,
                     "test" => false,
+                    "min_log" => \HUGnet\Error::ERROR,
                 )
             ),
         );

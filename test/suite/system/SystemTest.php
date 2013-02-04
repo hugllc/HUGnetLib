@@ -105,8 +105,14 @@ class SystemTest extends \PHPUnit_Framework_TestCase
     public static function dataFactory()
     {
         return array(
-            array(array("verbose" => 12), array("verbose" => 12)),
-            array(array(), array("verbose" => 0)),
+            array(
+                array("verbose" => 12),
+                array("verbose" => 12, "min_log" => Error::ERROR)
+            ),
+            array(
+                array(),
+                array("verbose" => 0, "min_log" => Error::ERROR)
+            ),
         );
     }
     /**
@@ -126,40 +132,6 @@ class SystemTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(get_class($obj) === "HUGnet\System");
         // Make sure the configuration is set.
         $this->assertAttributeSame($expect, "_config", $obj);
-    }
-    /**
-    * Data provider for testThrowException
-    *
-    * @return array
-    */
-    public static function dataException()
-    {
-        return array(
-            array("Test Message", 5, false, null),
-            array("Test Message", "BadStuff", true, "RuntimeException"),
-            array("Test Message", "Logic", true, "LogicException"),
-        );
-    }
-    /**
-    * This tests the object creation
-    *
-    * @param string $msg       The message
-    * @param int    $type      The error code
-    * @param bool   $condition If true the exception is thrown.  On false it
-    *                          is ignored.
-    * @param array  $expect    The table to expect
-    *
-    * @return null
-    *
-    * @dataProvider dataException
-    */
-    public function testException($msg, $type, $condition, $expect)
-    {
-        if (is_string($expect)) {
-            $this->setExpectedException($expect, $msg);
-        }
-        System::exception($msg, $type, $condition);
-        $this->assertTrue(!is_string($expect));
     }
     /**
     * Data provider for testThrowException
@@ -477,6 +449,7 @@ class SystemTest extends \PHPUnit_Framework_TestCase
     {
         $default = array(
             "verbose" => 0,
+            "min_log" => Error::ERROR
         );
         return array(
             array(
