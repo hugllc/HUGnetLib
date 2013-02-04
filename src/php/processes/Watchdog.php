@@ -54,6 +54,8 @@ class Watchdog extends \HUGnet\ui\Daemon
 {
     /** This is the amount of time we wait */
     const WAIT_TIME = 30;
+    /** This is the amount of time we wait to send another email */
+    const EMAIL_WAIT_TIME = 1200;
 
     /** This is the start time of the current run */
     private $_mainStart;
@@ -146,13 +148,27 @@ class Watchdog extends \HUGnet\ui\Daemon
     /**
     * This sets a critical error
     *
+    * @param string $key   The key for the critical error
     * @param string $error The error message
     *
     * @return null
     */
-    public function criticalError($error)
+    public function criticalError($key, $error)
     {
-        $this->_criticalError[] = (string)$error;
+        $this->_criticalError[$key] = (string)$error;
+    }
+    /**
+    * This clears an error
+    *
+    * @param string $key The key for the critical error
+    *
+    * @return null
+    */
+    public function clearError($key)
+    {
+        if (isset($this->_criticalError[$key])) {
+            unset($this->_criticalError[$key]);
+        }
     }
     /**
     * This sends out a critical error email
@@ -163,7 +179,7 @@ class Watchdog extends \HUGnet\ui\Daemon
     */
     protected function criticalErrorMail()
     {
-        if (($this->last["criticalError"] + 600) > time()) {
+        if (($this->last["criticalError"] + 1200) > time()) {
             return null;
         }
         if (empty($this->_criticalError)) {
@@ -174,7 +190,7 @@ class Watchdog extends \HUGnet\ui\Daemon
             return false;
         }
         $subject = "Critical Error on ".$this->system()->get("nodename");
-        $message = "";
+        $message = "The following new errors have occurred:\n\n\n";
         foreach($this->_criticalError as $text) {
             $message .= " * ".wordwrap($text)."\n";
         }
@@ -211,7 +227,7 @@ class Watchdog extends \HUGnet\ui\Daemon
     protected function mail($to, $subject, $message, $headers, $params)
     {
         return mail(
-            $this->myConfig->admin_email,
+            $to,
             $subject,
             $message,
             $headers,

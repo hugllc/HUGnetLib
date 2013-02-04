@@ -219,8 +219,8 @@ class WatchdogTest extends \PHPUnit_Framework_TestCase
                 array(
                     'to' => "asdf@asdf.com",
                     'subject' => 'Critical Error on asdf',
-                    'message' => ' * Ouch!  An error occurred!
-',
+                    'message' => "The following new errors have occurred:\n\n\n"
+                        ." * Ouch!  An error occurred!\n",
                     'headers' => 'MIME-Version: 1.0
 Content-type: text/plain; charset=UTF-8
 From: HUGnet Admin <admin@hugllc.com>
@@ -281,8 +281,8 @@ X-Mailer: PHP/1.2.3',
         }
         $obj = WatchdogTestClass::factory($config);
         $obj->mailRet = $ret;
-        foreach ((array)$errors as $error) {
-            $obj->criticalError($error);
+        foreach ((array)$errors as $key => $error) {
+            $obj->criticalError($key, $error);
         }
         $ret = $obj->criticalErrorMail();
         $this->assertSame($expect, $ret, "Return Wrong!");

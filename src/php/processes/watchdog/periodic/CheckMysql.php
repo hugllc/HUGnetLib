@@ -91,12 +91,22 @@ class CheckMysql extends \HUGnet\processes\watchdog\Periodic
     public function &execute()
     {
         if ($this->ready()) {
-            foreach ($this->system()->dbconnect()->groups() as $group) {
-                $pdo = $this->system()->dbconnect()->getPDO("default");
+            $groups = $this->system()->dbconnect()->groups();
+            $this->ui()->out(
+                "Checking DB server groups: ".implode(", ", $groups)
+            );
+            foreach ($groups as $group) {
+                $pdo = $this->system()->dbconnect()->getPDO($group);
                 if (!is_a($pdo, "\\PDO")) {
-                    $this->ui()->out("Oops");
+                    $this->ui()->criticalError(
+                        "DBServer".$group,
+                        "DB Server group '$group' is not reachable"
+                    );
+                } else {
+                    $this->ui()->clearError("DBServer".$group);
                 }
             }
+            $this->last = $this->ui()->system()->now();
         }
     }
 }
