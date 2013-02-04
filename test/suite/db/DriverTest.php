@@ -180,13 +180,14 @@ class DriverTest extends \PHPUnit_Extensions_Database_TestCase
     /**
     * Tests for exceptions
     *
-    * @expectedException InvalidArgumentException
+    * @expectedException RuntimeException
     *
     * @return null
     */
     public function testConstructTableExec2()
     {
-        $obj = Driver::factory($this->system, $empty);
+        $system = \HUGnet\System::factory();
+        $obj = Driver::factory($system, $empty);
     }
     /**
     * Tests for exceptions

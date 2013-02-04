@@ -76,14 +76,12 @@ abstract class Driver extends DriverBase
     static public function &factory(
         &$system, &$table, &$connect = null, $driver=null
     ) {
-        \HUGnet\System::exception(
+        \HUGnet\System::systemMissing(
             get_class($this)." needs to be passed a system object",
-            "InvalidArgument",
             !is_object($system)
         );
-        \HUGnet\System::exception(
+        $system->fatalError(
             get_class($this)." needs to be passed a table object",
-            "InvalidArgument",
             !is_object($table)
         );
         if (!is_a($connect, "ConnectionManager")) {

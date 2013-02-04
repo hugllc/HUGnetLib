@@ -83,19 +83,16 @@ abstract class DriverQuery
     */
     protected function __construct(&$system, &$table, &$connect)
     {
-        \HUGnet\System::exception(
+        \HUGnet\System::systemMissing(
             get_class($this)." needs to be passed a system object",
-            "InvalidArgument",
             !is_object($system)
         );
-        \HUGnet\System::exception(
+        $system->fatalError(
             get_class($this)." needs to be passed a table object",
-            "InvalidArgument",
             !is_object($table)
         );
-        \HUGnet\System::exception(
+        $system->fatalError(
             get_class($this)." needs to be passed a connection object",
-            "InvalidArgument",
             !is_object($connect)
         );
         $this->system = &$system;
@@ -131,12 +128,11 @@ abstract class DriverQuery
     protected function connect()
     {
         $group = $this->myTable->get("group");
-        \HUGnet\System::exception(
+        $this->system->fatalError(
             "No available database connection available in group '".$group
             ."'.  Check your database configuration.  Available php drivers: "
             .implode(", ", \PDO::getAvailableDrivers())." "
             .print_r($this->connect->config($group), true),
-            "PDOException",
             !is_a($this->pdo(), "\PDO")
         );
         $verbose = $this->system->get("verbose");

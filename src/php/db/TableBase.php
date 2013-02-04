@@ -140,9 +140,8 @@ abstract class TableBase extends \HUGnet\base\Container
     */
     protected function __construct(&$system, $data="", &$connect = null)
     {
-        \HUGnet\System::exception(
+        \HUGnet\System::systemMissing(
             get_class($this)." needs to be passed a system object",
-            "InvalidArgument",
             !is_object($system)
         );
         $this->setupColsDefault();

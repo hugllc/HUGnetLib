@@ -86,5 +86,25 @@ class DummySystem extends DummyBase
         }
         return $ret;
     }
+    /**
+    * Throws an exception
+    *
+    * @param string $msg       The message
+    * @param int    $severity  The severity of the error
+    * @param bool   $condition If true the exception is thrown.  On false it
+    *                 is ignored.
+    *
+    * @return null
+    */
+    public function fatalError($msg, $condition = true)
+    {
+        parent::fatalError($msg, $condition);
+        if (!(boolean)$condition) {
+            return false;
+        }
+        throw new \RuntimeException($msg);
+    }
+
+
 }
 ?>

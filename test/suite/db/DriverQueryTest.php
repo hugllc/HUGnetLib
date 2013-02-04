@@ -182,19 +182,6 @@ class DriverQueryTest extends \PHPUnit_Extensions_Database_TestCase
     /**
     * Tests for exceptions
     *
-    * @expectedException InvalidArgumentException
-    *
-    * @return null
-    */
-    public function testConstructTableExec2()
-    {
-        $obj = \HUGnet\db\drivers\DriverQueryTestStub::factory(
-            $this->system, $empty
-        );
-    }
-    /**
-    * Tests for exceptions
-    *
     * @expectedException RuntimeException
     *
     * @return null

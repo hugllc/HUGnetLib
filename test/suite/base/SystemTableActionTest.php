@@ -126,17 +126,7 @@ class SystemTableActionTest extends \PHPUnit_Framework_TestCase
                 "asdf",
                 "asdf",
                 null,
-                array(
-                    "System" => array(
-                        "error" => array(
-                            array(
-                                "Call to undefined method asdf on "
-                                    ."HUGnet\base\SystemTableActionTestStub",
-                                \HUGnet\Error::CRITICAL
-                            ),
-                        ),
-                    ),
-                ),
+                "RuntimeException"
             ),
             array(
                 array(
@@ -155,11 +145,7 @@ class SystemTableActionTest extends \PHPUnit_Framework_TestCase
                 "sillyFct",
                 "hello",
                 25,
-                array(
-                    "Silly" => array(
-                        "sillyFct" => array(array("hello")),
-                    ),
-                ),
+                null,
             ),
             array(
                 array(
@@ -179,11 +165,7 @@ class SystemTableActionTest extends \PHPUnit_Framework_TestCase
                 "sillyFct",
                 "hello",
                 25,
-                array(
-                    "DummyNetwork" => array(
-                        "sillyFct" => array(array("hello")),
-                    ),
-                ),
+                null,
             ),
         );
     }
@@ -196,14 +178,14 @@ class SystemTableActionTest extends \PHPUnit_Framework_TestCase
     * @param string $function  This is the function to call
     * @param mixed  $arg       This is the argument to the function
     * @param mixed  $expect    The value we expect back
-    * @param array  $calls     The calls that should have happened
+    * @param array  $exception The exception to expect.  Null for none
     *
     * @return null
     *
     * @dataProvider dataCall
     */
     public function testCall(
-        $config, $functions, $classes, $function, $arg, $expect, $calls
+        $config, $functions, $classes, $function, $arg, $expect, $exception
     ) {
         $this->system->resetMock($config);
         if (is_string($exception)) {
@@ -212,7 +194,6 @@ class SystemTableActionTest extends \PHPUnit_Framework_TestCase
         $this->o->setFunctions($functions);
         $this->o->setClasses($classes);
         $this->assertSame($expect, $this->o->$function($arg), "Return Wrong");
-        $this->assertEquals($calls, $this->system->retrieve(), "Calls Wrong");
     }
 
 }

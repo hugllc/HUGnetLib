@@ -384,6 +384,20 @@ class System
     */
     public function error($msg, $severity, $condition = true)
     {
+        return $this->_setError($msg, $severity, $condition);
+    }
+    /**
+    * Throws an exception
+    *
+    * @param string $msg       The message
+    * @param int    $severity  The severity of the error
+    * @param bool   $condition If true the exception is thrown.  On false it
+    *                 is ignored.
+    *
+    * @return null
+    */
+    private function _setError($msg, $severity, $condition = true)
+    {
         if (!(boolean)$condition) {
             return false;
         }
@@ -391,14 +405,30 @@ class System
         $debug = debug_backtrace();
         $method = "unknown";
         $class = "unknown";
-        if (isset($debug[1])) {
-            $method = $debug[1]["function"];
-            $class = $debug[1]["class"];
+        if (isset($debug[2])) {
+            $method = $debug[2]["function"];
+            $class = $debug[2]["class"];
         }
         $ret = $this->_error()->log(-1, $msg, $severity, $method, $class);
-        if ($severity == Error::CRITICAL) {
-            $this->_error()->exception($msg, "Runtime");
+        return $ret;
+    }
+    /**
+    * Throws an exception
+    *
+    * @param string $msg       The message
+    * @param int    $severity  The severity of the error
+    * @param bool   $condition If true the exception is thrown.  On false it
+    *                 is ignored.
+    *
+    * @return null
+    */
+    public function fatalError($msg, $condition = true)
+    {
+        if (!(boolean)$condition) {
+            return false;
         }
+        $this->_setError($msg, Error::CRITICAL);
+        $this->_error()->exception($msg, "Runtime");
         return $ret;
     }
     /**

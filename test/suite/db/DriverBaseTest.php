@@ -182,7 +182,7 @@ class DriverBaseTest extends \PHPUnit_Extensions_Database_TestCase
     /**
     * Tests for exceptions
     *
-    * @expectedException InvalidArgumentException
+    * @expectedException RuntimeException
     *
     * @return null
     */

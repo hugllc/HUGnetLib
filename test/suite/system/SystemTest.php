@@ -260,11 +260,6 @@ class SystemTest extends \PHPUnit_Framework_TestCase
                             4 => 'HUGnet\SystemTest',
                         ),
                     ),
-                    "exception" => array(
-                        array(
-                            "Test Message", "Runtime"
-                        ),
-                    ),
                 ),
             ),
         );
@@ -292,6 +287,109 @@ class SystemTest extends \PHPUnit_Framework_TestCase
         $obj = System::factory(array(), null, $error);
         $ret = $obj->error($msg, $severity, $condition);
         $this->assertSame($return, $ret, "Return Wrong");
+        $this->assertEquals($expect, $error->retrieve("Error"), "Calls Wrong");
+    }
+    /**
+    * Data provider for testThrowException
+    *
+    * @return array
+    */
+    public static function dataFatalError()
+    {
+        return array(
+            array(
+                array(),
+                "Test Message",
+                Error::WARNING,
+                false,
+                false,
+                array(
+                ),
+            ),
+            array(
+                array(
+                    "Error" => array(
+                        "log" => true,
+                    ),
+                ),
+                "Test Message",
+                Error::ERROR,
+                true,
+                true,
+                array(
+                    "syslog" => array(
+                        array(
+                            "Test Message", Error::CRITICAL,
+                        ),
+                    ),
+                    "log" => array(
+                        array(
+                            0 => -1,
+                            1 => 'Test Message',
+                            2 => Error::CRITICAL,
+                            3 => 'testFatalError',
+                            4 => 'HUGnet\SystemTest',
+                        ),
+                    ),
+                    "exception" => array(
+                        array(
+                            "Test Message", "Runtime"
+                        ),
+                    ),
+                ),
+            ),
+            array(
+                array(),
+                "Test Message",
+                Error::CRITICAL,
+                true,
+                null,
+                array(
+                    "syslog" => array(
+                        array(
+                            "Test Message", Error::CRITICAL,
+                        ),
+                    ),
+                    "log" => array(
+                        array(
+                            0 => -1,
+                            1 => 'Test Message',
+                            2 => Error::CRITICAL,
+                            3 => 'testFatalError',
+                            4 => 'HUGnet\SystemTest',
+                        ),
+                    ),
+                    "exception" => array(
+                        array(
+                            "Test Message", "Runtime"
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $mocks     The mocks to use
+    * @param string $msg       The message
+    * @param int    $type      The error code
+    * @param bool   $condition If true the exception is thrown.  On false it
+    *                          is ignored.
+    * @param string $return    The expected return
+    * @param array  $expect    The table to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataFatalError
+    */
+    public function testFatalError(
+        $mocks, $msg, $severity, $condition, $return, $expect
+    ) {
+        $error = new DummyBase("Error");
+        $error->resetMock($mocks);
+        $obj = System::factory(array(), null, $error);
+        $ret = $obj->fatalError($msg, $condition);
         $this->assertEquals($expect, $error->retrieve("Error"), "Calls Wrong");
     }
     /**

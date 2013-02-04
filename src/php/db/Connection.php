@@ -89,9 +89,8 @@ class Connection  implements \ConnectionManager
     */
     private function __construct(&$system)
     {
-        \HUGnet\System::exception(
+        \HUGnet\System::systemMissing(
             get_class($this)." needs to be passed a system object",
-            "InvalidArgument",
             !is_object($system)
         );
         $this->_system = &$system;
