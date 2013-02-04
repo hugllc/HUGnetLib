@@ -43,6 +43,8 @@ require_once CODE_BASE.'network/physical/SocketServer.php';
 require_once CODE_BASE.'network/physical/Socket.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
+/** This is a required class */
+require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
 
 /**
  * Test class for filter.
@@ -297,7 +299,7 @@ class SocketIntegrationTest extends \PHPUnit_Framework_TestCase
         if (is_string($exception)) {
             $this->setExpectedException($exception);
         }
-        $sys = new \HUGnet\DummyBase("System");
+        $sys = new \HUGnet\DummySystem("System");
         if (!empty($server)) {
             $serv = SocketServer::factory($sys, $server);
         }

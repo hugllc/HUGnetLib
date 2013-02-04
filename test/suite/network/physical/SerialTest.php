@@ -41,6 +41,8 @@ namespace HUGnet\network\physical;
 require_once CODE_BASE.'network/physical/Serial.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
+/** This is a required class */
+require_once TEST_CONFIG_BASE.'stubs/DummySocket.php';
 
 /**
  * Test class for filter.
@@ -174,7 +176,7 @@ class SerialTest extends \PHPUnit_Framework_TestCase
             touch($preload["location"]);
             $this->files[] = $preload["location"];
         }
-        $sys = new \HUGnet\DummyBase("System");
+        $sys = new \HUGnet\DummySystem("System");
         // This sets up the server
         $obj = Serial::factory($sys, $preload);
         $this->assertSame($available, $obj->available(), "Available Wrong");

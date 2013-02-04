@@ -154,9 +154,8 @@ final class Serial
         $this->_checkPort($port);
         $this->_setupPort($port);
         $this->_port = @fopen($port, "rn+b");
-        \HUGnet\System::exception(
+        $this->_system->fatalError(
             "Failed to open port:  ".$this->_config["location"],
-            "Runtime",
             !is_resource($this->_port) && !$this->_config["quiet"]
         );
         @stream_set_blocking($this->_port, 0);
@@ -190,9 +189,8 @@ final class Serial
                 sleep(30);
             }
         }
-        \HUGnet\System::exception(
+        $this->_system->fatalError(
             "Serial port doesn't exist:  ".$this->_config["location"],
-            "Runtime",
             !file_exists($port) && !$this->_config["quiet"]
         );
         $this->_system->out("Using port $port", 1);
@@ -241,10 +239,9 @@ final class Serial
             "$command $flags 2>&1",
             $out, $return
         );
-        \HUGnet\System::exception(
+        $this->_system->fatalError(
             "stty failed on ".$this->_config["name"]." (".$return."):  "
             .implode($out, "\n"),
-            "Runtime",
             ($return  != 0) && !$this->_config["quiet"]
         );
     }
@@ -279,10 +276,9 @@ final class Serial
             $command." DATA=8 STOP=1 PARITY=n TO=on DTR=off XON=off",
             $out, $return
         );
-        \HUGnet\System::exception(
+        $this->_system->fatalError(
             "mode failed on ".$this->_config["name"]." (".$return."):  "
             .implode($out, "\n"),
-            "Runtime",
             ($return  != 0) && !$this->_config["quiet"]
         );
     }

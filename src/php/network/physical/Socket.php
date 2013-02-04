@@ -163,9 +163,8 @@ final class Socket
         $bound = @socket_connect(
             $this->_socket, $this->_config["location"], $this->_config["port"]
         );
-        \HUGnet\System::exception(
+        $this->_system->fatalError(
             "Failed to connect to socket ".print_r($this->_config, true),
-            "Runtime",
             !$bound && !$this->_config["quiet"]
         );
         if ((socket_last_error() > 0) && $this->_config["quiet"]) {

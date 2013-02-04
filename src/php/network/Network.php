@@ -126,9 +126,8 @@ final class Network
     private function &_socket($socket = "default")
     {
         $this->_connect($socket);
-        \HUGnet\System::exception(
+        $this->_system->fatalError(
             "No connection available on socket ".$socket,
-            "Runtime",
             !isset($this->_sockets[$socket]) || !is_object($this->_sockets[$socket])
         );
         return $this->_sockets[$socket];

@@ -116,9 +116,8 @@ final class SocketServer
             $this->_config["perms"] = octdec($this->_config["perms"]);
         }
         $this->_setup();
-        \HUGnet\System::exception(
+        $this->_system->fatalError(
             "Failed to create socket with\n ".print_r($config, true),
-            "Runtime",
             !is_resource($this->_socket)
         );
     }
@@ -186,9 +185,8 @@ final class SocketServer
         $bound = @socket_bind(
             $this->_socket, $this->_config["location"], $this->_config["port"]
         );
-        \HUGnet\System::exception(
+        $this->_system->fatalError(
             "Failed to bind to socket ".print_r($this->_config, true),
-            "Runtime",
             !$bound
         );
         @socket_listen($this->_socket);

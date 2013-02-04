@@ -111,9 +111,8 @@ final class SocketNull
     */
     public function write()
     {
-        \HUGnet\System::exception(
-            "No connection available on ".$this->_name,
-            "Runtime"
+        $this->_system->fatalError(
+            "No connection available on ".$this->_name
         );
         // @codeCoverageIgnoreStart
         // Due to the exception here the function never ends
@@ -126,9 +125,8 @@ final class SocketNull
     */
     public function read()
     {
-        \HUGnet\System::exception(
-            "No connection available on ".$this->_name,
-            "Runtime"
+        $this->_system->fatalError(
+            "No connection available on ".$this->_name
         );
         // @codeCoverageIgnoreStart
         // Due to the exception here the function never ends

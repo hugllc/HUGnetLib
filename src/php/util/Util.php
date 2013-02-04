@@ -82,9 +82,8 @@ class Util
         if (class_exists($class)) {
             return $class;
         }
-        System::exception(
+        System::systemMissing(
             "Class '".$baseclass."' doesn't exist",
-            "InvalidArgument",
             !$quiet
         );
         return null;
