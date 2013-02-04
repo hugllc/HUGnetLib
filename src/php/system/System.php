@@ -41,10 +41,10 @@ namespace HUGnet;
 if (!defined("_HUGNET")) {
     define("_HUGNET", true);
 }
-/** This is the system error class.  Everybody needs it */
-require_once dirname(__FILE__).'/Error.php';
 /** This is the system utility class.  Everybody needs it also */
 require_once dirname(__FILE__).'/../util/Util.php';
+/** THis is our db connection class */
+require_once dirname(__FILE__).'/../db/Connection.php';
 
 
 /**
@@ -76,8 +76,10 @@ class System
     private $_network = null;
     /** @var object This is our user interface */
     private $_ui = null;
-    /** @var object This is our user interface */
+    /** @var bool This is our quit flag */
     private $_quit = false;
+    /** @var object This is our user interface */
+    private $_error = null;
     /** @var array This is our static things that get might want to retrieve */
     private $_fixed = array(
         "nodename" => "unknown",
@@ -93,13 +95,14 @@ class System
     /**
     * This sets up the basic parts of the object for us when we create it
     *
-    * @param array  $config     The configuration array
-    * @param object &$interface The user interface to use
+    * @param array  $config    The configuration array
+    * @param object $interface The user interface to use
     *
     * @return null
     */
-    private function __construct($config = array(), &$interface = null)
-    {
+    private function __construct(
+        $config = array(), $interface = null, $error = null
+    ) {
         if (function_exists("posix_uname")) {
             $uname = posix_uname();
             $uname["osversion"] = $uname["version"];
@@ -109,18 +112,23 @@ class System
         $this->config((array)$config);
         $this->_dbconnect = \HUGnet\db\Connection::factory($this);
         $this->_ui = $interface;
+        if (is_object($error)) {
+            $this->_error = &$error;
+        }
     }
     /**
     * This function creates the system.
     *
-    * @param mixed  $config     (array)The configuration, (string) File path to open
-    * @param object &$interface The user interface to use
+    * @param mixed  $config    (array)The configuration, (string) File path to open
+    * @param object $interface The user interface to use
+    * @param object $error     The error object
     *
     * @return null
     */
-    public static function &factory($config = array(), &$interface = null)
-    {
-        $obj = new System($config, $interface);
+    public static function &factory(
+        $config = array(), $interface = null, $error = null
+    ) {
+        $obj = new System($config, $interface, $error);
         return $obj;
     }
     /**
@@ -163,6 +171,9 @@ class System
     public function __destruct()
     {
         unset($this->_error);
+        unset($this->_ui);
+        unset($this->_network);
+        unset($this->_dbconnect);
     }
     /**
     * This sets the configuration array _config
@@ -324,6 +335,70 @@ class System
                 throw new \RuntimeException($msg);
             }
         }
+    }
+    /**
+    * Throws an exception
+    *
+    * @param string $msg       The message
+    * @param string $type      The type of exception to throw
+    * @param bool   $condition If true the exception is thrown.  On false it
+    *                 is ignored.
+    *
+    * @return null
+    */
+    public static function systemMissing($msg, $condition)
+    {
+        if ((boolean)$condition) {
+            syslog(LOG_CRIT, $msg);
+            throw new \RuntimeException($msg);
+        }
+    }
+    /**
+    * Throws an exception
+    *
+    * @param string $msg       The message
+    * @param int    $severity  The severity of the error
+    * @param bool   $condition If true the exception is thrown.  On false it
+    *                 is ignored.
+    *
+    * @return null
+    */
+    private function _error()
+    {
+        include_once dirname(__FILE__).'/Error.php';
+        if (!is_object($this->_error)) {
+            $this->_error = Error::factory($this);
+        }
+        return $this->_error;
+    }
+    /**
+    * Throws an exception
+    *
+    * @param string $msg       The message
+    * @param int    $severity  The severity of the error
+    * @param bool   $condition If true the exception is thrown.  On false it
+    *                 is ignored.
+    *
+    * @return null
+    */
+    public function error($msg, $severity, $condition = true)
+    {
+        if (!(boolean)$condition) {
+            return false;
+        }
+        $this->_error()->syslog($msg, $severity);
+        $debug = debug_backtrace();
+        $method = "unknown";
+        $class = "unknown";
+        if (isset($debug[1])) {
+            $method = $debug[1]["function"];
+            $class = $debug[1]["class"];
+        }
+        $ret = $this->_error()->log(-1, $msg, $severity, $method, $class);
+        if ($severity == Error::CRITICAL) {
+            $this->_error()->exception($msg, "Runtime");
+        }
+        return $ret;
     }
     /**
     * Throws an exception

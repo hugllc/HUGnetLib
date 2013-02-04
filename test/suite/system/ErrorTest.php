@@ -36,6 +36,8 @@
 /** This is the HUGnet namespace */
 namespace HUGnet;
 /** This is a required class */
+require_once CODE_BASE.'system/System.php';
+/** This is a required class */
 require_once CODE_BASE.'system/Error.php';
 /** This is the dummy table container */
 require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
@@ -57,6 +59,12 @@ require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
  */
 class ErrorTest extends \PHPUnit_Framework_TestCase
 {
+    /** @var The system object */
+    protected $sys = null;
+    /** @var The table object */
+    protected $table = null;
+    /** @var The test object */
+    protected $o = null;
     /**
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
@@ -67,6 +75,16 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
+        $this->sys = new DummyBase("System");
+        $this->sys->resetMock(
+            array(
+                "System" => array(
+                    "now" => 1234,
+                ),
+            )
+        );
+        $this->table = new DummyTable("ErrorTable");
+        $this->o = Error::factory($this->sys, null, $this->table);
         parent::setUp();
     }
 
@@ -93,7 +111,7 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "System" => array(
-                        "time" => 1234,
+                        "now" => 1234,
                     ),
                 ),
                 1,
@@ -118,7 +136,7 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
                         "insertRow" => array(array(true)),
                     ),
                     "System" => array(
-                        "time" => array(array()),
+                        "now" => array(array()),
                     ),
                 ),
             ),
@@ -142,12 +160,41 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
     public function testLog(
         $system, $errno, $errmsg, $severity, $method, $class, $expect
     ) {
-        $sys = new DummyBase("System");
-        $sys->resetMock($system);
-        $table = new DummyTable("ErrorTable");
-        $obj = Error::factory($sys, null, $table);
+        $this->sys->resetMock($system);
+        $obj = Error::factory($this->sys, null, $this->table);
         $obj->log($errno, $errmsg, $severity, $method, $class);
-        $this->assertEquals($expect, $table->retrieve(), "Data Wrong");
+        $this->assertEquals($expect, $this->table->retrieve(), "Data Wrong");
+    }
+    /**
+    * Data provider for testThrowException
+    *
+    * @return array
+    */
+    public static function dataException()
+    {
+        return array(
+            array("Test Message", "BadStuff", "RuntimeException"),
+            array("Test Message", "Logic", "LogicException"),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param string $msg    The message
+    * @param int    $type   The error code
+    * @param array  $expect The table to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataException
+    */
+    public function testException($msg, $type, $expect)
+    {
+        if (is_string($expect)) {
+            $this->setExpectedException($expect, $msg);
+        }
+        $this->o->exception($msg, $type);
+        $this->assertTrue(!is_string($expect));
     }
 
 

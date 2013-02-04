@@ -215,7 +215,7 @@ class MysqlTest extends \PHPUnit_Extensions_Database_TestCase
                 "MySQL server has gone away"
             ),
             "test",
-            \HUGnet\Error::SEVERITY_WARNING
+            \HUGnet\Error::WARNING
         );
         $this->assertTrue($this->connect->connected($group));
     }

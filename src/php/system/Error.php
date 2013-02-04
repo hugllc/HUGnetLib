@@ -57,16 +57,21 @@ require_once dirname(__FILE__)."/../base/SystemTableBase.php";
  */
 class Error extends \HUGnet\base\SystemTableBase
 {
-    /** @var notice level severity */
-    const SEVERITY_NOTICE = 1;
-    /** @var warning level severity */
-    const SEVERITY_WARNING = 2;
-    /** @var error level severity */
-    const SEVERITY_ERROR = 4;
-    /** @var critical level severity */
-    const SEVERITY_CRITICAL = 8;
-    /** @var notice level severity */
-    const EXCEPTION_OBJ_NOT_CONFIG = -99;
+    /** notice level severity */
+    const NOTICE = 1;
+    /** warning level severity */
+    const WARNING = 2;
+    /** error level severity */
+    const ERROR = 4;
+    /** critical level severity */
+    const CRITICAL = 8;
+    /** @var Severity level for syslog */
+    private $_syslog = array(
+        self::NOTICE => LOG_NOTICE,
+        self::WARNING => LOG_WARNING,
+        self::ERROR => LOG_ERR,
+        self::CRITICAL => LOG_CRIT,
+    );
     /**
     * Logs an error in the database
     *
@@ -86,13 +91,46 @@ class Error extends \HUGnet\base\SystemTableBase
                 "method"   => $method,
                 "errno"    => $errno,
                 "error"    => $errmsg,
-                "Date"     => $this->system()->time(),
+                "Date"     => $this->system()->now(),
                 "Severity" => $severity,
             )
         );
         return $this->table()->insertRow(true);
     }
-
+    /**
+    * Logs an error in the database
+    *
+    * @param string $msg      The error message
+    * @param string $severity The severity of the message
+    *
+    * @return null
+    */
+    public function syslog($msg, $severity = self::WARNING)
+    {
+        if (isset($this->_syslog[$severity])) {
+            $sev = $this->_syslog[$severity];
+        } else {
+            $sev = LOG_NOTICE;
+        }
+        return syslog($sev, $msg);
+    }
+    /**
+    * Throws an exception
+    *
+    * @param string $msg  The message
+    * @param string $type The type of exception to throw
+    *
+    * @return null
+    */
+    public function exception($msg, $type = "Runtime")
+    {
+        $class = "\\".$type."Exception";
+        if (class_exists($class)) {
+            throw new $class($msg);
+        } else {
+            throw new \RuntimeException($msg);
+        }
+    }
 }
 
 

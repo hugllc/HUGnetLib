@@ -38,8 +38,12 @@ namespace HUGnet;
 
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
+/** This is a required class */
+require_once CODE_BASE.'system/Error.php';
 /** This is the dummy table container */
 require_once TEST_CONFIG_BASE.'stubs/DummyNetwork.php';
+/** This is the dummy base */
+require_once TEST_CONFIG_BASE.'stubs/DummyBase.php';
 
 /**
  * Test class for HUGnetDB.
@@ -156,6 +160,139 @@ class SystemTest extends \PHPUnit_Framework_TestCase
         }
         System::exception($msg, $type, $condition);
         $this->assertTrue(!is_string($expect));
+    }
+    /**
+    * Data provider for testThrowException
+    *
+    * @return array
+    */
+    public static function dataSystemMissing()
+    {
+        return array(
+            array("Test Message", false, null),
+            array("Test Message", true, "RuntimeException"),
+            array("Test Message", true, "RuntimeException"),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param string $msg       The message
+    * @param int    $type      The error code
+    * @param bool   $condition If true the exception is thrown.  On false it
+    *                          is ignored.
+    * @param array  $expect    The table to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataSystemMissing
+    */
+    public function testSystemMissing($msg, $condition, $expect)
+    {
+        if (is_string($expect)) {
+            $this->setExpectedException($expect, $msg);
+        }
+        System::systemMissing($msg, $condition);
+        $this->assertTrue(!is_string($expect));
+    }
+    /**
+    * Data provider for testThrowException
+    *
+    * @return array
+    */
+    public static function dataError()
+    {
+        return array(
+            array(
+                array(),
+                "Test Message",
+                Error::WARNING,
+                false,
+                false,
+                array(
+                ),
+            ),
+            array(
+                array(
+                    "Error" => array(
+                        "log" => true,
+                    ),
+                ),
+                "Test Message",
+                Error::ERROR,
+                true,
+                true,
+                array(
+                    "syslog" => array(
+                        array(
+                            "Test Message", Error::ERROR,
+                        ),
+                    ),
+                    "log" => array(
+                        array(
+                            0 => -1,
+                            1 => 'Test Message',
+                            2 => Error::ERROR,
+                            3 => 'testError',
+                            4 => 'HUGnet\SystemTest',
+                        ),
+                    ),
+                ),
+            ),
+            array(
+                array(),
+                "Test Message",
+                Error::CRITICAL,
+                true,
+                null,
+                array(
+                    "syslog" => array(
+                        array(
+                            "Test Message", Error::CRITICAL,
+                        ),
+                    ),
+                    "log" => array(
+                        array(
+                            0 => -1,
+                            1 => 'Test Message',
+                            2 => Error::CRITICAL,
+                            3 => 'testError',
+                            4 => 'HUGnet\SystemTest',
+                        ),
+                    ),
+                    "exception" => array(
+                        array(
+                            "Test Message", "Runtime"
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $mocks     The mocks to use
+    * @param string $msg       The message
+    * @param int    $type      The error code
+    * @param bool   $condition If true the exception is thrown.  On false it
+    *                          is ignored.
+    * @param string $return    The expected return
+    * @param array  $expect    The table to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataError
+    */
+    public function testError(
+        $mocks, $msg, $severity, $condition, $return, $expect
+    ) {
+        $error = new DummyBase("Error");
+        $error->resetMock($mocks);
+        $obj = System::factory(array(), null, $error);
+        $ret = $obj->error($msg, $severity, $condition);
+        $this->assertSame($return, $ret, "Return Wrong");
+        $this->assertEquals($expect, $error->retrieve("Error"), "Calls Wrong");
     }
     /**
     * Data provider for testCreate
