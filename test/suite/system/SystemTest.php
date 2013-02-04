@@ -188,6 +188,9 @@ class SystemTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Error" => array(
                         "log" => true,
+                        "get" => array(
+                            "group" => "default",
+                        ),
                     ),
                 ),
                 "Test Message",
@@ -212,11 +215,18 @@ class SystemTest extends \PHPUnit_Framework_TestCase
                 ),
             ),
             array(
-                array(),
+                array(
+                    "Error" => array(
+                        "log" => false,
+                        "get" => array(
+                            "group" => "default",
+                        ),
+                    ),
+                ),
                 "Test Message",
                 Error::CRITICAL,
                 true,
-                null,
+                false,
                 array(
                     "syslog" => array(
                         array(
@@ -282,6 +292,9 @@ class SystemTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Error" => array(
                         "log" => true,
+                        "get" => array(
+                            "group" => "default",
+                        ),
                     ),
                 ),
                 "Test Message",
@@ -311,11 +324,18 @@ class SystemTest extends \PHPUnit_Framework_TestCase
                 ),
             ),
             array(
-                array(),
+                array(
+                    "Error" => array(
+                        "log" => true,
+                        "get" => array(
+                            "group" => "default",
+                        ),
+                    ),
+                ),
                 "Test Message",
                 Error::CRITICAL,
                 true,
-                null,
+                false,
                 array(
                     "syslog" => array(
                         array(

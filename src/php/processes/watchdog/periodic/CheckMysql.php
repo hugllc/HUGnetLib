@@ -96,8 +96,7 @@ class CheckMysql extends \HUGnet\processes\watchdog\Periodic
                 "Checking DB server groups: ".implode(", ", $groups)
             );
             foreach ($groups as $group) {
-                $pdo = $this->system()->dbconnect()->getPDO($group);
-                if (!is_a($pdo, "\\PDO")) {
+                if (!$this->system()->dbconnect()->available($group)) {
                     $this->ui()->criticalError(
                         "DBServer".$group,
                         "DB Server group '$group' is not reachable"

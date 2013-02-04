@@ -383,14 +383,16 @@ class System
             return true;
         }
         $this->_error()->syslog($msg, $severity);
-        $debug = debug_backtrace();
-        $method = "unknown";
-        $class = "unknown";
-        if (isset($debug[2])) {
-            $method = $debug[2]["function"];
-            $class = $debug[2]["class"];
+        if ($this->dbconnect()->available()) {
+            $debug = debug_backtrace();
+            $method = "unknown";
+            $class = "unknown";
+            if (isset($debug[2])) {
+                $method = $debug[2]["function"];
+                $class = $debug[2]["class"];
+            }
+            $ret = $this->_error()->log(-1, $msg, $severity, $method, $class);
         }
-        $ret = $this->_error()->log(-1, $msg, $severity, $method, $class);
         return $ret;
     }
     /**
