@@ -204,7 +204,9 @@ class WatchdogTest extends \PHPUnit_Framework_TestCase
                             "fqdn" => "hugllc.com",
                             "nodename" => "asdf",
                             "phpversion" => "1.2.3",
-                            "error_email" => "asdf@asdf.com",
+                            "watchdog" => array(
+                                "email" => "asdf@asdf.com",
+                            ),
                         ),
                     ),
                     "Network" => array(
