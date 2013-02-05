@@ -57,8 +57,6 @@ class Route extends \HUGnet\ui\Daemon
     /** This is the amount of time we wait */
     const WAIT_TIME = 120;
 
-    /** This is the start time of the current run */
-    private $_mainStart;
     /** How long we should wait */
     private $_wait = 60;
     /** This is my ID */
@@ -66,7 +64,9 @@ class Route extends \HUGnet\ui\Daemon
     /** This is the device we are using */
     private $_device;
     /** This is the runtime configuration */
-    private $_runtime;
+    private $_runtime = array(
+        "route" => true,
+    );
     /**
     * Sets our configuration
     *
@@ -75,8 +75,6 @@ class Route extends \HUGnet\ui\Daemon
     protected function __construct(&$config)
     {
         parent::__construct($config);
-        /* Get our Device */
-        $this->_device = $this->system()->device();
     }
     /**
     * Creates the object
@@ -97,7 +95,6 @@ class Route extends \HUGnet\ui\Daemon
     */
     public function main()
     {
-        $this->_mainStart = time();
         $this->_runtime();
         if ($this->_runtime["route"] !== false) {
             parent::main();
@@ -117,7 +114,6 @@ class Route extends \HUGnet\ui\Daemon
     */
     private function _wait()
     {
-        parent::main(); // This should be called at least once per iteration
         if (($this->_wait > 0) && $this->loop()) {
             for (; ($this->_wait > 0) && $this->loop(); $this->_wait--) {
                 parent::main();
@@ -166,6 +162,10 @@ class Route extends \HUGnet\ui\Daemon
     */
     private function _runtime()
     {
+        if (!$this->system()->dbconnect()->available()) {
+            $this->out("No database available.  Skipping runtime config check");
+            return;
+        }
         $this->_runtime = $this->system()->runtime();
         if (!is_bool($this->_runtime["route"])) {
             $this->_runtime["route"] = true;
