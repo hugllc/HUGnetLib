@@ -103,12 +103,6 @@ class AVRBC2322640 extends \HUGnet\devices\inputTable\DriverAVR
             2.569850E-4,
             2.620131E-6,
             6.383091E-8
-            /*
-            3.354016e-3,
-            2.569355e-4,
-            2.626311e-6,
-            0.675278e-7
-            */
         );
         $T = round($T, 4);
         if (is_null($T) || ($T > 150) || ($T < -40)) {
