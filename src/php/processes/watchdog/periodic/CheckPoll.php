@@ -107,7 +107,7 @@ class CheckPoll extends \HUGnet\processes\watchdog\Periodic
                         $this->ui()->criticalError(
                             "CheckPoll".$key,
                             "Device ".sprintf("%06X", $key)." hasn't polled since "
-                                .date("Y-m-d H:i:s", $lastPoll)
+                            .date("Y-m-d H:i:s", $lastPoll)
                         );
                     } else {
                         $this->ui()->clearError("CheckPoll".$key);
