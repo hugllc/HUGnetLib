@@ -150,7 +150,6 @@ class SystemTest extends \PHPUnit_Framework_TestCase
     * This tests the object creation
     *
     * @param string $msg       The message
-    * @param int    $type      The error code
     * @param bool   $condition If true the exception is thrown.  On false it
     *                          is ignored.
     * @param array  $expect    The table to expect
@@ -251,7 +250,7 @@ class SystemTest extends \PHPUnit_Framework_TestCase
     *
     * @param array  $mocks     The mocks to use
     * @param string $msg       The message
-    * @param int    $type      The error code
+    * @param int    $severity  The severity to send the function
     * @param bool   $condition If true the exception is thrown.  On false it
     *                          is ignored.
     * @param string $return    The expected return
@@ -365,7 +364,7 @@ class SystemTest extends \PHPUnit_Framework_TestCase
     *
     * @param array  $mocks     The mocks to use
     * @param string $msg       The message
-    * @param int    $type      The error code
+    * @param int    $severity  The severity to send the function
     * @param bool   $condition If true the exception is thrown.  On false it
     *                          is ignored.
     * @param string $return    The expected return

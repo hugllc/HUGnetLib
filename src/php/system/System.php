@@ -100,6 +100,7 @@ class System
     *
     * @param array  $config    The configuration array
     * @param object $interface The user interface to use
+    * @param object $error     The error object
     *
     * @return null
     */
@@ -321,7 +322,6 @@ class System
     * Throws an exception
     *
     * @param string $msg       The message
-    * @param string $type      The type of exception to throw
     * @param bool   $condition If true the exception is thrown.  On false it
     *                 is ignored.
     *
@@ -335,12 +335,7 @@ class System
         }
     }
     /**
-    * Throws an exception
-    *
-    * @param string $msg       The message
-    * @param int    $severity  The severity of the error
-    * @param bool   $condition If true the exception is thrown.  On false it
-    *                 is ignored.
+    * Gives us our error class
     *
     * @return null
     */
@@ -399,7 +394,6 @@ class System
     * Throws an exception
     *
     * @param string $msg       The message
-    * @param int    $severity  The severity of the error
     * @param bool   $condition If true the exception is thrown.  On false it
     *                 is ignored.
     *

@@ -90,7 +90,6 @@ class DummySystem extends DummyBase
     * Throws an exception
     *
     * @param string $msg       The message
-    * @param int    $severity  The severity of the error
     * @param bool   $condition If true the exception is thrown.  On false it
     *                 is ignored.
     *
