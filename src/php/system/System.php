@@ -406,7 +406,6 @@ class System
         }
         $this->_setError($msg, Error::CRITICAL);
         $this->_error()->exception($msg, "Runtime");
-        return $ret;
     }
     /**
     * Throws an exception

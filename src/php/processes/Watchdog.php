@@ -61,8 +61,6 @@ class Watchdog extends \HUGnet\ui\Daemon
     private $_mainStart;
     /** How long we should wait */
     private $_wait;
-    /** This is my ID */
-    private $_myID;
     /** This is the start time of the current run */
     private $_plugins = array();
     /** This is where we keep the last time we did things */
@@ -179,7 +177,7 @@ class Watchdog extends \HUGnet\ui\Daemon
     */
     protected function criticalErrorMail()
     {
-        if (($this->last["criticalError"] + 1200) > time()) {
+        if (($this->_last["criticalError"] + 1200) > time()) {
             return null;
         }
         if (empty($this->_criticalError)) {
@@ -206,6 +204,7 @@ class Watchdog extends \HUGnet\ui\Daemon
         );
         if ($ret) {
             $this->_criticalError = array();
+            $this->_last["criticalError"] = $this->system()->now();
         }
         return $ret;
     }

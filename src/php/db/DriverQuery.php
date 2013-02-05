@@ -164,23 +164,21 @@ abstract class DriverQuery
     * This function deals with errors
     *
     * @param array  $errorInfo The output of any of the pdo errorInfo() functions
-    * @param string $method    The function or method the error was in
+    * @param string $method    Not used anymore
     * @param string $severity  The severity of the error.  This should be fed with
     *                          ErrorTable::SEVERITY_WARNING, et al.
     *
     * @return mixed
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     protected function errorHandler($errorInfo, $method, $severity)
     {
         if ($this->myTable->sqlTable != "errors") {
-            /*
-            $this->logError(
-                $errorInfo[0],
+            $this->system->error(
                 $this->myTable->get("group")." (".$this->myTable->sqlTable."): "
                 .$errorInfo[2],
-                $severity,
-                $method
-            );*/
+                $severity
+            );
         }
         $this->system->out(
             "With Error: ".print_r($errorInfo, true),

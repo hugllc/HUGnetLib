@@ -611,6 +611,7 @@ abstract class Driver
     * @return float The raw value
     *
     * @SuppressWarnings(PHPMD.ShortVariable)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function getRawData(&$string, $channel = 0)
     {
