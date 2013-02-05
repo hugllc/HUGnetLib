@@ -191,7 +191,7 @@ class Watchdog extends \HUGnet\ui\Daemon
         }
         $subject = "Critical Error on ".$this->system()->get("nodename");
         $message = "The following new errors have occurred:\n\n\n";
-        foreach($this->_criticalError as $text) {
+        foreach ($this->_criticalError as $text) {
             $message .= " * ".wordwrap($text)."\n";
         }
         $headers = array(
@@ -214,7 +214,7 @@ class Watchdog extends \HUGnet\ui\Daemon
     *
     * This wrapper is just for testing purposes, so I can isolate the call to 'mail'
     *
-    * @param string $to      The address to send the message to
+    * @param string $recip   The address to send the message to
     * @param string $subject The subject of the message
     * @param string $message The actual message
     * @param string $headers THe extra headers to send
@@ -224,10 +224,10 @@ class Watchdog extends \HUGnet\ui\Daemon
     * @codeCoverageIgnoreStart
     * Can't test this call
     */
-    protected function mail($to, $subject, $message, $headers, $params)
+    protected function mail($recip, $subject, $message, $headers, $params)
     {
         return mail(
-            $to,
+            $recip,
             $subject,
             $message,
             $headers,
