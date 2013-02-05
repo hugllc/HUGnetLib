@@ -178,6 +178,14 @@ class WatchdogTest extends \PHPUnit_Framework_TestCase
                         ),
                         "network" => new \HUGnet\network\DummyNetwork("Network"),
                         "device" => new \HUGnet\DummyBase("Device"),
+                        "get" => array(
+                            "fqdn" => "hugllc.com",
+                            "nodename" => "asdf",
+                            "phpversion" => "1.2.3",
+                            "watchdog" => array(
+                                "email" => "asdf@asdf.com",
+                            ),
+                        ),
                     ),
                     "Network" => array(
                         "device" => new \HUGnet\DummyBase("NetDevice"),
@@ -188,6 +196,15 @@ class WatchdogTest extends \PHPUnit_Framework_TestCase
                 ),
                 true,
                 array(
+                    'to' => "asdf@asdf.com",
+                    'subject' => 'Critical Error on asdf',
+                    'message' => "The following new errors have occurred:\n\n\n"
+                        ." * Watchdog process starting\n",
+                    'headers' => 'MIME-Version: 1.0
+Content-type: text/plain; charset=UTF-8
+From: HUGnet Admin <admin@hugllc.com>
+X-Mailer: PHP/1.2.3',
+                    'params' => ''
                 ),
             ),
             array(
@@ -222,6 +239,7 @@ class WatchdogTest extends \PHPUnit_Framework_TestCase
                     'to' => "asdf@asdf.com",
                     'subject' => 'Critical Error on asdf',
                     'message' => "The following new errors have occurred:\n\n\n"
+                        ." * Watchdog process starting\n"
                         ." * Ouch!  An error occurred!\n",
                     'headers' => 'MIME-Version: 1.0
 Content-type: text/plain; charset=UTF-8

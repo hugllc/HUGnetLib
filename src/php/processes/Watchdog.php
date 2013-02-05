@@ -85,6 +85,10 @@ class Watchdog extends \HUGnet\ui\Daemon
         $this->_config = array_merge(
             $this->_config, (array)$this->system()->get("watchdog")
         );
+        $this->criticalError(
+            "restart",
+            "Watchdog process starting"
+        );
     }
     /**
     * Creates the object
@@ -114,7 +118,6 @@ class Watchdog extends \HUGnet\ui\Daemon
     */
     public function main()
     {
-        $this->_mainStart = time();
         foreach ($this->_plugins as $obj) {
             $obj->execute();
         }
