@@ -54,8 +54,6 @@ class Watchdog extends \HUGnet\ui\Daemon
 {
     /** This is the amount of time we wait */
     const WAIT_TIME = 30;
-    /** This is the amount of time we wait to send another email */
-    const EMAIL_WAIT_TIME = 1200;
 
     /** This is the start time of the current run */
     private $_mainStart;
@@ -66,6 +64,11 @@ class Watchdog extends \HUGnet\ui\Daemon
     /** This is where we keep the last time we did things */
     private $_last = array(
         "criticalError" => 0,
+    );
+    /** This is where we keep the last time we did things */
+    private $_config = array(
+        "email" => null,
+        "email_wait" => 1200,
     );
     /** This is our critical Error locations */
     private $_criticalError = array();
@@ -79,6 +82,9 @@ class Watchdog extends \HUGnet\ui\Daemon
         parent::__construct($config);
         /* Get our Device */
         $this->_plugins = \HUGnet\processes\watchdog\Periodic::plugins($this);
+        $this->_config = array_merge(
+            $this->_config, $this->system()->get("watchdog")
+        );
     }
     /**
     * Creates the object
@@ -177,14 +183,14 @@ class Watchdog extends \HUGnet\ui\Daemon
     */
     protected function criticalErrorMail()
     {
-        if (($this->_last["criticalError"] + 1200) > time()) {
+        $last = &$this->_last["criticalError"];
+        if (($last + $this->_config["email_wait"]) > time()) {
             return null;
         }
         if (empty($this->_criticalError)) {
             return true;
         }
-        $email = $this->system()->get("error_email");
-        if (empty($email) || !is_string($email)) {
+        if (empty($this->_config["email"]) || !is_string($this->_config["email"])) {
             return false;
         }
         $subject = "Critical Error on ".$this->system()->get("nodename");
@@ -200,11 +206,15 @@ class Watchdog extends \HUGnet\ui\Daemon
         );
         $params = "";
         $ret = $this->mail(
-            $email, $subject, $message, implode("\n", $headers), $params
+            $this->_config["email"],
+            $subject,
+            $message,
+            implode("\n", $headers),
+            $params
         );
         if ($ret) {
             $this->_criticalError = array();
-            $this->_last["criticalError"] = $this->system()->now();
+            $last = $this->system()->now();
         }
         return $ret;
     }
