@@ -61,8 +61,6 @@ class Route extends \HUGnet\ui\Daemon
     private $_wait = 60;
     /** This is my ID */
     private $_myID;
-    /** This is the device we are using */
-    private $_device;
     /** This is the runtime configuration */
     private $_runtime = array(
         "route" => true,
