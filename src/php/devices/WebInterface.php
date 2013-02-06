@@ -215,19 +215,10 @@ class WebInterface
     */
     private function _loadFirmware()
     {
-        $firmware = $this->_device->system()->table("Firmware");
-        if (!$this->_device->get("bootloader")) {
-            $firmware->set("FWPartNum", $this->_device->get("FWPartNum"));
+        if ($this->_device->action()->loadFirmware()) {
+            $ret = $this->_device->toArray(true);
         } else {
-            $firmware->set("FWPartNum", "0039-38-01-C");
-        }
-        $firmware->set("HWPartNum", $this->_device->get("HWPartNum"));
-        $firmware->set("RelStatus", \HUGnet\db\tables\Firmware::DEV);
-        $ret = -1;
-        if ($firmware->getLatest()) {
-            if ($this->_device->network()->loadFirmware($firmware)) {
-                $ret = $this->_device->toArray(true);
-            }
+            $ret = -1;
         }
         return $ret;
     }
@@ -238,7 +229,7 @@ class WebInterface
     */
     private function _loadConfig()
     {
-        if ($this->_device->network()->loadConfig()) {
+        if ($this->_device->action()->loadConfig()) {
             $ret = $this->_device->toArray(true);
         } else {
             $ret = -1;

@@ -271,6 +271,9 @@ class WebInterfaceTest extends \PHPUnit_Framework_TestCase
                     "Network" => array(
                         "loadConfig" => true,
                     ),
+                    "Action" => array(
+                        "loadConfig" => true,
+                    ),
 
                 ),
                 false,
@@ -304,6 +307,9 @@ class WebInterfaceTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                     "Network" => array(
+                        "loadConfig" => true,
+                    ),
+                    "Action" => array(
                         "loadConfig" => true,
                     ),
 
