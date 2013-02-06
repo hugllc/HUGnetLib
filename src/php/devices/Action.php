@@ -348,23 +348,31 @@ class Action
         return false;
     }
     /**
-    * Uploads firmware to the device
+    * Writes the firmware into this device
     *
-    * @return string The left over string
+    * If it is not given a firmware, it finds one to load
+    *
+    * @param object $firmware The data to write
+    * @param bool   $loadData Load the data or not
+    *
+    * @return success or failure of the packet sending
     */
-    public function loadFirmware()
+    public function loadFirmware($firmware = null, $loadData = true)
     {
-        $firmware = $this->device->system()->table("Firmware");
-        if (!$this->device->get("bootloader")) {
-            $firmware->set("FWPartNum", $this->device->get("FWPartNum"));
-        } else {
-            $firmware->set("FWPartNum", "0039-38-01-C");
+        $ret = true;
+        if (!is_object($firmware)) {
+            $firmware = $this->device->system()->table("Firmware");
+            if (!$this->device->get("bootloader")) {
+                $firmware->set("FWPartNum", $this->device->get("FWPartNum"));
+            } else {
+                $firmware->set("FWPartNum", "0039-38-01-C");
+            }
+            $firmware->set("HWPartNum", $this->device->get("HWPartNum"));
+            $firmware->set("RelStatus", \HUGnet\db\tables\Firmware::DEV);
+            $ret = $firmware->getLatest();
         }
-        $firmware->set("HWPartNum", $this->device->get("HWPartNum"));
-        $firmware->set("RelStatus", \HUGnet\db\tables\Firmware::DEV);
-        $ret = false;
-        if ($firmware->getLatest() && is_int($this->programLock(true))) {
-            if ($this->device->network()->loadFirmware($firmware)) {
+        if ($ret && is_int($this->programLock(true))) {
+            if ($this->device->network()->loadFirmware($firmware, $loadData)) {
                 $ret = true;
             }
         }
