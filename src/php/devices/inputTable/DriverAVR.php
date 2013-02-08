@@ -94,6 +94,7 @@ abstract class DriverAVR extends Driver
         "50:dwyer616"                => "AVRDwyer616",
         "50:fetBoard"                => "FETBoardCurrent",
         "7E:DEFAULT"                 => "AVROnTimePulse",
+        "F8:DEFAULT"                 => "AVRAnalogTable",
     );
     /**
     * This is where the data for the driver is stored.  This array must be
