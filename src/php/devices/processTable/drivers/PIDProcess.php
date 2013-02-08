@@ -139,13 +139,13 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
         $extra[5] = $this->_getProcessIntStr($str, 2);
         $str   = substr($string, $index, 8);
         $index += 8;
-        $extra[6] = round($this->_getProcessIntStr($str, 4)/(1<<24), 6);
+        $extra[6] = round($this->_getProcessIntStr($str, 4)/(1<<16), 6);
         $str   = substr($string, $index, 8);
         $index += 8;
-        $extra[7] = round($this->_getProcessIntStr($str, 4)/(1<<24), 6);
+        $extra[7] = round($this->_getProcessIntStr($str, 4)/(1<<16), 6);
         $str   = substr($string, $index, 8);
         $index += 8;
-        $extra[8] = round($this->_getProcessIntStr($str, 4)/(1<<24), 6);
+        $extra[8] = round($this->_getProcessIntStr($str, 4)/(1<<16), 6);
         $str   = substr($string, $index, 8);
         $index += 8;
         $extra[9] = $this->_getProcessIntStr($str, 4);
@@ -168,7 +168,7 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
         $data .= substr($setpoint."00000000", 0, 8);
         $data .= $this->_getProcessStrInt($this->getExtra(5), 2);
         for ($i = 6; $i < 9; $i++) {
-            $value = $this->getExtra($i) *(0x1000000);
+            $value = $this->getExtra($i) *(0x10000);
             $str = $this->_getProcessStrInt((int)$value, 4);
             $data .= $str;
         }
