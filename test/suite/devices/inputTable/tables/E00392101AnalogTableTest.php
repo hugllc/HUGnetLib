@@ -359,7 +359,7 @@ class E00392101AnalogTableTest extends \PHPUnit_Framework_TestCase
             $obj = E00392101AnalogTable::factory($sensor, $preload);
             $this->assertTrue(
                 method_exists($obj, $param["valid"]),
-                $param["valid"]." is not a valid method of class E00392101AnalogTable"
+                $param["valid"]." is not a method of class E00392101AnalogTable"
             );
         } else {
             $this->fail(

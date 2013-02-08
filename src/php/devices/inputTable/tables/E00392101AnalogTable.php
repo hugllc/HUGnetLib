@@ -378,8 +378,6 @@ class E00392101AnalogTable
     /**
     * Gets the total gain.
     *
-    * @param int $channel The channel to get the gain for
-    *
     * @return null
     */
     public function gain()
