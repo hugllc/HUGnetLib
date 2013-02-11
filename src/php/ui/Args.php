@@ -284,7 +284,6 @@ class Args
         for ($i = 1; $i < $this->argc; $i++) {
             $arg = $this->_fixArg($this->argv[$i]);
             if (isset($this->config[$arg]["args"])
-                && (substr($this->argv[$i+1], 0, 1) != "-")
                 && (strlen($this->argv[$i+1]) > 0)
             ) {
                 $this->arguments[$arg] = $this->argv[$i+1];

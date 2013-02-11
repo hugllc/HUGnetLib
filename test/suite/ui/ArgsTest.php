@@ -340,6 +340,35 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "program" => "test",
                 ),
             ),
+            array(  // #7 // Simple example with negative numbers
+                array(
+                    "test", "-z", "-45", "-v", "-v", "-v", "-q", "-n"
+                ),
+                8,
+                array(
+                    "z" => array(
+                        "name" => "Value",
+                        "args" => true,
+                        "type" => "int",
+                        "default" => 20
+                    ),
+                ),
+                array(
+                ),
+                "",
+                array(
+                ),
+                null,
+                array(
+                    "quiet" => true,
+                    "verbose" => 3,
+                    "debug" => false,
+                    "test" => false,
+                    "file" => '',
+                    "program" => "test",
+                    "Value" => -45,
+                ),
+            ),
         );
     }
     /**
