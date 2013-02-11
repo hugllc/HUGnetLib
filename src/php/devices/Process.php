@@ -168,6 +168,25 @@ class Process extends XTableBase
         }
         return false;
     }
+    /**
+    * Encodes this driver as a setup string
+    *
+    * @return array
+    */
+    public function pull()
+    {
+        $ret = $this->device()->send(
+            array(
+                "Command" => "READPROCESSTABLERAM",
+                "Data" => sprintf("%02X", $this->get("process"))
+            )
+        );
+        if (is_object($ret)) {
+            $this->decode($ret->reply());
+            return true;
+        }
+        return false;
+    }
 }
 
 

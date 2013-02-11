@@ -341,6 +341,80 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
         $ret = $obj->push();
         $this->assertSame($expect, $ret);
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataPull()
+    {
+        return array(
+            array( // #0
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "id" => 7,
+                        ),
+                        "send" => new \HUGnet\DummyBase("Packet"),
+                    ),
+                    "Process" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Packet" => array(
+                        "reply" => "FF",
+                    ),
+                ),
+                true,
+            ),
+            array( // #1
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "id" => 7,
+                        ),
+                        "send" => "asdf",
+                    ),
+                    "Process" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                ),
+                false,
+            ),
+            array( // #2
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "id" => 7,
+                        ),
+                        "send" => "asdf",
+                    ),
+                    "Process" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                ),
+                false,
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $mocks  The value to preload into the mocks
+    * @param array $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataPull
+    */
+    public function testPull($mocks, $expect)
+    {
+        $sys = new \HUGnet\DummySystem("System");
+        $dev = new \HUGnet\DummyBase("Device");
+        $sys->resetMock($mocks);
+        $obj = Process::factory($sys, null, $class, $dev);
+        $ret = $obj->pull();
+        $this->assertSame($expect, $ret);
+    }
 
 }
 
