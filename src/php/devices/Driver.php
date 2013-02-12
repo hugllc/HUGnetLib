@@ -87,6 +87,7 @@ abstract class Driver
         "InputTables" => 9,
         "OutputTables" => 0,
         "ProcessTables" => 0,
+        "setConfig" => true,
     );
     /**
     * This is where all of the driver information is stored.
@@ -100,6 +101,7 @@ abstract class Driver
         "0039-20-15-C:DEFAULT:DEFAULT"      => "E00393802",
         "0039-20-16-C:DEFAULT:DEFAULT"      => "E00393802",
         "0039-38-02-C:DEFAULT:DEFAULT"      => "E00393802",
+        "0039-38-03-C:DEFAULT:DEFAULT"      => "E00393803",
         "DEFAULT:0039-12-00-A:DEFAULT"      => "E00391200",
         "DEFAULT:0039-12-01-A:DEFAULT"      => "E00391200",
         "DEFAULT:0039-12-02-A:DEFAULT"      => "E00391200",

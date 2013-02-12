@@ -140,6 +140,9 @@ final class Transport
                     array_merge($this->_config, (array)$config),
                     $pkt
                 );
+                $this->_system->out(
+                    count($this->_packets)." Packets queued in transport", 3
+                );
                 $return = $token;
             }
         }
@@ -166,6 +169,9 @@ final class Transport
         $reply = $this->_packets[$token]->reply();
         if (is_object($reply) || ($reply === false)) {
             unset($this->_packets[$token]);
+            $this->_system->out(
+                count($this->_packets)." Packets queued in transport", 3
+            );
         }
         return $reply;
     }

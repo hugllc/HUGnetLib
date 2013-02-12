@@ -477,6 +477,9 @@ class Network
     */
     public function loadConfig($callback = null, $config = array())
     {
+        if (!$this->_device->get("setConfig")) {
+            return true;
+        }
         $part = $this->_device->get("FWPartNum");
         if (substr($part, 0, 7) === "0039-20") {
             /* This device doesn't have loadable sensors */
