@@ -98,6 +98,23 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\Driver
         "maxDecimals" => 6,
     );
     /**
+    * This function sets up the driver object, and the database object.  The
+    * database object is taken from the driver object.
+    *
+    * @param object &$sensor The sensor in question
+    * @param array  $table   The table to use.  This forces the table, instead of
+    *                        using the database to find it
+    *
+    * @return null
+    */
+    protected function __construct(&$sensor, $table = null)
+    {
+        parent::__construct($sensor);
+        if (is_array($table)) {
+            $this->_entry($table);
+        }
+    }
+    /**
     * This is the destructor
     */
     public function __destruct()
@@ -112,13 +129,16 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\Driver
     *
     * @param object &$sensor The sensor object
     * @param string $class   The class to use
+    * @param array  $table   The table to use.  This forces the table, instead of
+    *                        using the database to find it
     *
     * @return null
     */
-    public static function &testFactory(&$sensor, $class = "InputTable")
-    {
+    public static function &testFactory(
+        &$sensor, $class = "InputTable", $table = null
+    ) {
         $obj = \HUGnet\devices\inputTable\Driver::factory(
-            "AVRAnalogTable", $sensor
+            "AVRAnalogTable", $sensor, $table
         );
         if (is_object($class)) {
             $obj->_table = $class;
@@ -138,7 +158,7 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\Driver
             $driver = explode(":", (string)$driver);
             $sensor = $this->input();
             $entry  = $this->_entry();
-            $this->_driver[$num] = \HUGnet\devices\inputTable\DriverAVR::factory(
+            $this->_driver = \HUGnet\devices\inputTable\DriverAVR::factory(
                 \HUGnet\devices\inputTable\Driver::getDriver(
                     hexdec($driver[0]), $driver[1]
                 ),
@@ -166,16 +186,21 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\Driver
     /**
     * Returns the driver object
     *
+    * @param array $table The table to use.  This only works on the first call
+    *
     * @return object The driver requested
     */
-    private function &_entry()
+    private function &_entry($table = null)
     {
         if (!is_object($this->_entry)) {
-            include_once dirname(__FILE__)."/../../tables/E00392101AnalogTable.php";
-            $extra = $this->input()->get("extra");
-            $this->_table()->getRow((int)$extra[0]);
+            if (!is_array($table)) {
+                include_once dirname(__FILE__)."/../../tables/E00392101AnalogTable.php";
+                $extra = $this->input()->get("extra");
+                $this->_table()->getRow((int)$extra[0]);
+                $table = $this->_table()->toArray();
+            }
             $entry = \HUGnet\devices\inputTable\tables\E00392101AnalogTable::factory(
-                $this, $this->_table()->toArray()
+                $this, $table
             );
             $this->_entry = &$entry;
         }
