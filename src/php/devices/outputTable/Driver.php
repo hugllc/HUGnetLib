@@ -172,10 +172,12 @@ abstract class Driver
     *
     * @param string $driver  The driver to load
     * @param object &$output The output object
+    * @param array  $table   The table to use.  This forces the table, instead of
+    *                        using the database to find it
     *
     * @return null
     */
-    public static function &factory($driver, &$output)
+    public static function &factory($driver, &$output, $table = null)
     {
         $class = '\\HUGnet\\devices\\outputTable\\drivers\\'.$driver;
         $file = dirname(__FILE__)."/drivers/".$driver.".php";
@@ -183,7 +185,7 @@ abstract class Driver
             include_once $file;
         }
         if (class_exists($class)) {
-            return new $class($output);
+            return new $class($output, $table);
         }
         include_once dirname(__FILE__)."/drivers/EmptyOutput.php";
         return new \HUGnet\devices\outputTable\drivers\EmptyOutput($output);

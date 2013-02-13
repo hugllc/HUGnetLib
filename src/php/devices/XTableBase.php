@@ -72,6 +72,10 @@ abstract class XTableBase extends \HUGnet\base\SystemTableBase
     * This is the device we rode in on
     */
     private $_device;
+    /**
+    * This is the device we rode in on
+    */
+    private $_driverTable = null;
 
     /**
     * This is the destructor
@@ -89,13 +93,14 @@ abstract class XTableBase extends \HUGnet\base\SystemTableBase
     *
     * @param mixed  &$system (object)The system object to use
     * @param mixed  $data    (int)The id of the item, (array) data info array
-    * @param string $table   The table to use
+    * @param string $dbtable The table to use
     * @param object &$device The device object to use
+    * @param array  $table   The table to use
     *
     * @return null
     */
     public static function &factory(
-        &$system, $data=null, $table=null, &$device = null
+        &$system, $data=null, $dbtable=null, &$device = null, $table = null
     ) {
         \HUGnet\System::systemMissing(
             get_class($this)." needs to be passed a system object",
@@ -105,8 +110,9 @@ abstract class XTableBase extends \HUGnet\base\SystemTableBase
             get_class($this)." needs to be passed a device object",
             !is_object($device)
         );
-        $object = parent::factory($system, $data, $table);
+        $object = parent::factory($system, $data, $dbtable);
         $object->_device = &$device;
+        $object->_driverTable = $table;
         return $object;
     }
     /**
@@ -182,7 +188,7 @@ abstract class XTableBase extends \HUGnet\base\SystemTableBase
         }
         if (!is_object($this->_driverCache[$driver])) {
             $this->_driverCache[$driver] = $class::factory(
-                $driver, $this
+                $driver, $this, $this->_driverTable
             );
         }
         return $this->_driverCache[$driver];

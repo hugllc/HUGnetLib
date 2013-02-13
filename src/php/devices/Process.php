@@ -69,18 +69,20 @@ class Process extends XTableBase
     *
     * @param mixed  &$system (object)The system object to use
     * @param mixed  $data    (int)The id of the item, (array) data info array
-    * @param string $table   The table to use
+    * @param string $dbtable The table to use
     * @param object &$device The device object to use
+    * @param array  $table   The table to use.  This forces the table, instead of
+    *                        using the database to find it
     *
     * @return null
     */
     public static function &factory(
-        &$system, $data=null, $table=null, &$device = null
+        &$system, $data=null, $dbtable=null, &$device = null, $table = null
     ) {
-        if (empty($table)) {
-            $table = "DeviceProcesses";
+        if (empty($dbtable)) {
+            $dbtable = "DeviceProcesses";
         }
-        $object = parent::factory($system, $data, $table, $device);
+        $object = parent::factory($system, $data, $dbtable, $device, $table);
         return $object;
     }
     /**

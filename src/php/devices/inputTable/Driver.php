@@ -196,6 +196,7 @@ abstract class Driver
     private $_arch = array(
         "AVR" => array(
             0x02 => "Generic Analog",
+            0xF8 => "Analog Input Table",
         ),
         "ADuC" => array(
             0x60 => "Control Value Input",
@@ -216,10 +217,13 @@ abstract class Driver
     * database object is taken from the driver object.
     *
     * @param object &$sensor The sensor in question
+    * @param array  $table   The table to use.  This forces the table, instead of
+    *                        using the database to find it
     *
     * @return null
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    protected function __construct(&$sensor)
+    protected function __construct(&$sensor, $table = null)
     {
         $this->_input = &$sensor;
     }
@@ -244,17 +248,19 @@ abstract class Driver
     *
     * @param string $driver  The driver to load
     * @param object &$sensor The sensor object
+    * @param array  $table   The table to use.  This forces the table, instead of
+    *                        using the database to find it
     *
     * @return null
     */
-    public static function &factory($driver, &$sensor)
+    public static function &factory($driver, &$sensor, $table = null)
     {
         $obj = null;
-        Driver::driverFactory($obj, $driver, $sensor);
-        DriverADuC::driverFactory($obj, $driver, $sensor);
-        DriverAVR::driverFactory($obj, $driver, $sensor);
-        DriverVirtual::driverFactory($obj, $driver, $sensor);
-        DriverLinux::driverFactory($obj, $driver, $sensor);
+        Driver::driverFactory($obj, $driver, $sensor, $table);
+        DriverADuC::driverFactory($obj, $driver, $sensor, $table);
+        DriverAVR::driverFactory($obj, $driver, $sensor, $table);
+        DriverVirtual::driverFactory($obj, $driver, $sensor, $table);
+        DriverLinux::driverFactory($obj, $driver, $sensor, $table);
         if (!is_object($obj)) {
             include_once dirname(__FILE__)."/drivers/SDEFAULT.php";
             $obj = new \HUGnet\devices\inputTable\drivers\SDEFAULT($sensor);
@@ -267,10 +273,12 @@ abstract class Driver
     * @param object &$obj    The object container to put an object in.
     * @param string $driver  The driver to load
     * @param object &$sensor The sensor object
+    * @param array  $table   The table to use.  This forces the table, instead of
+    *                        using the database to find it
     *
     * @return null
     */
-    protected static function driverFactory(&$obj, $driver, &$sensor)
+    protected static function driverFactory(&$obj, $driver, &$sensor, $table = null)
     {
         if (is_object($obj)) {
             return false;
@@ -281,7 +289,7 @@ abstract class Driver
             include_once $file;
         }
         if (class_exists($class)) {
-            $obj = new $class($sensor);
+            $obj = new $class($sensor, $table);
             return true;
         }
         return false;
@@ -322,7 +330,6 @@ abstract class Driver
     * Returns all of the parameters and defaults in an array
     *
     * @return array of data from the sensor
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function toArray()
     {

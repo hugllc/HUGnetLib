@@ -144,10 +144,12 @@ abstract class Driver
     *
     * @param string $driver   The driver to load
     * @param object &$process The process object
+    * @param array  $table   The table to use.  This forces the table, instead of
+    *                        using the database to find it
     *
     * @return null
     */
-    public static function &factory($driver, &$process)
+    public static function &factory($driver, &$process, $table = null)
     {
         $class = '\\HUGnet\\devices\\processTable\\drivers\\'.$driver;
         $file = dirname(__FILE__)."/drivers/".$driver.".php";
@@ -155,7 +157,7 @@ abstract class Driver
             include_once $file;
         }
         if (class_exists($class)) {
-            return new $class($process);
+            return new $class($process, $table);
         }
         include_once dirname(__FILE__)."/drivers/EmptyProcess.php";
         return new \HUGnet\devices\processTable\drivers\EmptyProcess($process);

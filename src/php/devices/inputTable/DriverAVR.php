@@ -162,10 +162,12 @@ abstract class DriverAVR extends Driver
     * @param object &$obj    The object container to put an object in.
     * @param string $driver  The driver to load
     * @param object &$sensor The sensor object
+    * @param array  $table   The table to use.  This forces the table, instead of
+    *                        using the database to find it
     *
     * @return null
     */
-    protected static function driverFactory(&$obj, $driver, &$sensor)
+    protected static function driverFactory(&$obj, $driver, &$sensor, $table = null)
     {
         if (is_object($obj)) {
             return false;
@@ -176,7 +178,7 @@ abstract class DriverAVR extends Driver
             include_once $file;
         }
         if (class_exists($class)) {
-            $obj = new $class($sensor);
+            $obj = new $class($sensor, $table);
             return true;
         }
         return false;
