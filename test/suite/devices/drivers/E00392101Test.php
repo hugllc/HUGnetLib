@@ -107,7 +107,7 @@ class E00392101Test extends DriverTestBase
             ),
             array(
                 "virtualSensors",
-                4,
+                2,
             ),
             array(
                 "totalSensors",
@@ -183,7 +183,13 @@ class E00392101Test extends DriverTestBase
                     "id" => 0xF8,
                     "input" => 0,
                     "dev" => 5,
-                    "type" => "DEFAULT",
+                    "type" => "AVRAnalogTable",
+                    "extra" => array(
+                        0 => 180,
+                        1 => 27,
+                        2 => 5.0,
+                    ),
+                    "location" => "HUGnet 1 Voltage High",
                 ),
             ),
             array(
@@ -201,7 +207,13 @@ class E00392101Test extends DriverTestBase
                     "id" => 0xF8,
                     "input" => 1,
                     "dev" => 5,
-                    "type" => "DEFAULT",
+                    "type" => "AVRAnalogTable",
+                    "extra" => array(
+                        0 => 180,
+                        1 => 27,
+                        2 => 5.0,
+                    ),
+                    "location" => "HUGnet 1 Voltage Low",
                 ),
             ),
             array(
@@ -219,7 +231,13 @@ class E00392101Test extends DriverTestBase
                     "id" => 0xF8,
                     "input" => 2,
                     "dev" => 5,
-                    "type" => "DEFAULT",
+                    "type" => "AVRAnalogTable",
+                    "extra" => array(
+                        0 => 0.5,
+                        1 => 7,
+                        2 => 5.0,
+                    ),
+                    "location" => "HUGnet 1 Current",
                 ),
             ),
             array(
@@ -238,7 +256,12 @@ class E00392101Test extends DriverTestBase
                     "id" => 0xF8,
                     "input" => 3,
                     "dev" => 5,
-                    "type" => "DEFAULT",
+                    "type" => "AVRAnalogTable",
+                    "extra" => array(
+                        0 => 100,
+                        1 => 10,
+                    ),
+                    "location" => "HUGnet 1 Temperature",
                 ),
             ),
             array(
@@ -256,7 +279,13 @@ class E00392101Test extends DriverTestBase
                     "id" => 0xF8,
                     "input" => 4,
                     "dev" => 5,
-                    "type" => "DEFAULT",
+                    "type" => "AVRAnalogTable",
+                    "extra" => array(
+                        0 => 180,
+                        1 => 27,
+                        2 => 5.0,
+                    ),
+                    "location" => "HUGnet 2 Voltage High",
                 ),
             ),
             array(
@@ -274,7 +303,13 @@ class E00392101Test extends DriverTestBase
                     "id" => 0xF8,
                     "input" => 5,
                     "dev" => 5,
-                    "type" => "DEFAULT",
+                    "type" => "AVRAnalogTable",
+                    "extra" => array(
+                        0 => 180,
+                        1 => 27,
+                        2 => 5.0,
+                    ),
+                    "location" => "HUGnet 2 Voltage Low",
                 ),
             ),
             array(
@@ -289,9 +324,16 @@ class E00392101Test extends DriverTestBase
                 ),
                 6,
                 array(
-                    "id" => 0xFE,
+                    "id" => 0xF8,
                     "input" => 6,
                     "dev" => 5,
+                    "type" => "AVRAnalogTable",
+                    "extra" => array(
+                        0 => 0.5,
+                        1 => 7,
+                        2 => 5.0,
+                    ),
+                    "location" => "HUGnet 2 Current",
                 ),
             ),
             array(
@@ -306,9 +348,15 @@ class E00392101Test extends DriverTestBase
                 ),
                 7,
                 array(
-                    "id" => 0xFE,
+                    "id" => 0xF8,
                     "input" => 7,
                     "dev" => 5,
+                    "type" => "AVRAnalogTable",
+                    "extra" => array(
+                        0 => 100,
+                        1 => 10,
+                    ),
+                    "location" => "HUGnet 2 Temperature",
                 ),
             ),
             array(

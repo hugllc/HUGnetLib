@@ -57,8 +57,6 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  */
 class E00392101AnalogTable
 {
-    /** This is our power calculator. */
-    const IPR_POWER = 4;
     /**
     * This is where we store our sensor object
     */
@@ -290,6 +288,17 @@ class E00392101AnalogTable
             }
         }
         return $this->_params[$param]["value"];
+    }
+    /**
+    * This gets a parameter
+    *
+    * @param string $param The parameter to set
+    *
+    * @return 16 bit integer in a hex string
+    */
+    public function get($param)
+    {
+        return $this->_params($param);
     }
     /**
     * This takes the class and makes it into a setup string

@@ -66,8 +66,8 @@ class E00392101 extends \HUGnet\devices\Driver
     */
     protected $params = array(
         "totalSensors" => 10,
-        "physicalSensors" => 6,
-        "virtualSensors" => 4,
+        "physicalSensors" => 8,
+        "virtualSensors" => 2,
         "historyTable" => "E00392100History",
         "averageTable" => "E00392100Average",
         "loadable" => true,
@@ -76,6 +76,9 @@ class E00392101 extends \HUGnet\devices\Driver
         "type" => "controller",
         "job"  => "control",
         "arch" => "AVR",
+        "InputTables" => 10,
+        "OutputTables" => 0,
+        "ProcessTables" => 0,
     );
 
     /**
@@ -118,6 +121,26 @@ class E00392101 extends \HUGnet\devices\Driver
     /**
     * This creates the sensor drivers
     *
+    * Here is the actual sensor array (actual view):
+    *    ADC 0: HUGnet2 Current
+    *    ADC 1: HUGnet2 Temp
+    *    ADC 2: HUGnet2 Voltage Low
+    *    ADC 3: HUGnet2 Voltage High
+    *    ADC 4: HUGnet1 Voltage High
+    *    ADC 5: HUGnet1 Voltage Low
+    *    ADC 6: HUGnet1 Temp
+    *    ADC 7: HUGnet1 Current
+    *
+    * Here is the actual sensor array (world view):
+    *    Input 0: HUGnet1 Voltage High
+    *    Input 1: HUGnet1 Voltage Low
+    *    Input 2: HUGnet1 Current
+    *    Input 3: HUGnet1 Temp
+    *    Input 4: HUGnet2 Voltage High
+    *    Input 5: HUGnet2 Voltage Low
+    *    Input 6: HUGnet2 Current
+    *    Input 7: HUGnet2 Temp
+    *
     * @param int $sid The sensor id to get.  They are labaled 0 to sensors
     *
     * @return null
@@ -131,21 +154,80 @@ class E00392101 extends \HUGnet\devices\Driver
             "dev" => $this->device()->id(),
         );
         $table = array(
-            "MUX" => (int)$sid,
+            "id" => 0,
             "ADLAR" => 1,
             "REFS" => 1,
         );
         $type = array(
             "id" => 0xF8,
-            "type" => "DEFAULT",
+            "type" => "AVRAnalogTable",
         );
-        if (($sid == 0) || ($sid === 3)) {
-            $table["driver"] = "40:ControllerVoltage";
-        } else if (($sid == 1) || ($sid === 4)) {
-            $table["driver"] = "50:ControllerCurrent";
-        } else if (($sid == 2) || ($sid === 5)) {
-            $table["driver"] = "02:ControllerTemp";
-        } else {
+        switch($sid) {
+        case 0:
+            // HUGnet1 Voltage High
+            $table["driver"] = "40:FETBoardVoltage";
+            $table["name"] = "Controller Board Voltage";
+            $table["MUX"] = 4;
+            $data["extra"] = array(180, 27, 5.0);
+            $data["location"] = "HUGnet 1 Voltage High";
+            break;
+        case 1:
+            // HUGnet1 Voltage Low
+            $table["driver"] = "40:FETBoardVoltage";
+            $table["name"] = "Controller Board Voltage";
+            $table["MUX"] = 5;
+            $data["extra"] = array(180, 27, 5.0);
+            $data["location"] = "HUGnet 1 Voltage Low";
+            break;
+        case 2:
+            // HUGnet1 Current
+            $table["driver"] = "50:FETBoardCurrent";
+            $table["name"] = "Controller Board Current";
+            $table["MUX"] = 7;
+            $data["extra"] = array(0.5, 7, 5.0);
+            $data["location"] = "HUGnet 1 Current";
+            break;
+        case 3:
+            // HUGnet1 Temperature
+            $table["driver"] = "02:AVRBC2322640";
+            $table["name"] = "Controller Board Temperature";
+            $table["MUX"] = 6;
+            $data["extra"] = array(100, 10);
+            $data["location"] = "HUGnet 1 Temperature";
+            break;
+        case 4:
+            // HUGnet2 Voltage High
+            $table["driver"] = "40:FETBoardVoltage";
+            $table["name"] = "Controller Board Voltage";
+            $table["MUX"] = 3;
+            $data["extra"] = array(180, 27, 5.0);
+            $data["location"] = "HUGnet 2 Voltage High";
+            break;
+        case 5:
+            // HUGnet2 Voltage Low
+            $table["driver"] = "40:FETBoardVoltage";
+            $table["name"] = "Controller Board Voltage";
+            $table["MUX"] = 2;
+            $data["extra"] = array(180, 27, 5.0);
+            $data["location"] = "HUGnet 2 Voltage Low";
+            break;
+        case 6:
+            // HUGnet2 Current
+            $table["driver"] = "50:FETBoardCurrent";
+            $table["name"] = "Controller Board Current";
+            $table["MUX"] = 0;
+            $data["extra"] = array(0.5, 7, 5.0);
+            $data["location"] = "HUGnet 2 Current";
+            break;
+        case 7:
+            // HUGnet2 Temperature
+            $table["driver"] = "02:AVRBC2322640";
+            $table["name"] = "Controller Board Temperature";
+            $table["MUX"] = 1;
+            $data["extra"] = array(100, 10);
+            $data["location"] = "HUGnet 2 Temperature";
+            break;
+        default:
             $type = array(
                 "id" => 0xFE,
             );

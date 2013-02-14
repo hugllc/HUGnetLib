@@ -38,7 +38,7 @@ namespace HUGnet\devices\inputTable\drivers\avr;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is my base class */
-require_once dirname(__FILE__)."/../../Driver.php";
+require_once dirname(__FILE__)."/../../DriverAVR.php";
 
 
 /**
@@ -57,7 +57,7 @@ require_once dirname(__FILE__)."/../../Driver.php";
  * @SuppressWarnings(PHPMD.ShortVariable)
  * @SuppressWarnings(PHPMD.UnusedPrivateField)
  */
-class AVRAnalogTable extends \HUGnet\devices\inputTable\Driver
+class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
 {
     /**
     * This is where we store the drivers
@@ -67,6 +67,10 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\Driver
     * This is where we store the InputTable
     */
     private $_table;
+    /**
+    * This is where we store the table entry
+    */
+    private $_tableEntry = null;
     /**
     * This is where we store the InputTable
     */
@@ -94,7 +98,7 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\Driver
         "extraValues" => array(
             array()
         ),
-        "extraDefault" => array(0, 0, 0),
+        "extraDefault" => array(0),
         "maxDecimals" => 6,
     );
     /**
@@ -155,16 +159,16 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\Driver
     private function &_driver()
     {
         if (!is_object($this->_driver)) {
-            $driver = explode(":", (string)$driver);
-            $sensor = $this->input();
             $entry  = $this->_entry();
+            $driver = explode(":", (string)$entry->get("driver"));
+            $sensor = $this->input();
+
             $this->_driver = \HUGnet\devices\inputTable\DriverAVR::factory(
                 \HUGnet\devices\inputTable\Driver::getDriver(
                     hexdec($driver[0]), $driver[1]
                 ),
                 $sensor,
-                $entry,
-                $num
+                $entry
             );
         }
         return $this->_driver;
@@ -193,8 +197,10 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\Driver
     private function &_entry($table = null)
     {
         if (!is_object($this->_entry)) {
-            if (!is_array($table)) {
-                include_once dirname(__FILE__)."/../../tables/E00392101AnalogTable.php";
+            include_once dirname(__FILE__)."/../../tables/E00392101AnalogTable.php";
+            if (is_array($table)) {
+                $this->_tableEntry = $table;
+            } else {
                 $extra = $this->input()->get("extra");
                 $this->_table()->getRow((int)$extra[0]);
                 $table = $this->_table()->toArray();
@@ -213,10 +219,14 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\Driver
     */
     private function _getTableEntries()
     {
-        $values = $this->_table()->select("arch = ?", array("AVR"));
         $return = array();
-        foreach ((array)$values as $val) {
-            $return[$val->get("id")] = $val->get("name");
+        if (is_array($this->_tableEntry)) {
+            $return[$this->_tableEntry["id"]] = $this->_tableEntry["name"];
+        } else {
+            $values = $this->_table()->select("arch = ?", array("AVR"));
+            foreach ((array)$values as $val) {
+                $return[$val->get("id")] = $val->get("name");
+            }
         }
         return $return;
     }
