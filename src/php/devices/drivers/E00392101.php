@@ -76,7 +76,7 @@ class E00392101 extends \HUGnet\devices\Driver
         "type" => "controller",
         "job"  => "control",
         "arch" => "AVR",
-        "InputTables" => 10,
+        "InputTables" => 8,
         "OutputTables" => 0,
         "ProcessTables" => 0,
     );
