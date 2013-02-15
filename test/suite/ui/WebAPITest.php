@@ -1817,6 +1817,54 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
+            array(  // #35
+                array(
+                    "task" => "deviceoutput",
+                    "action" => "get",
+                    "id" => "10.5",
+                    "data" => array(
+                        "a" => "b",
+                        "c" => "d",
+                    ),
+                    "format" => "DEBUG",
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "output" => new \HUGnet\DummyBase("Sensor"),
+                        "dataChannels" => new \HUGnet\DummyBase("Channels"),
+                    ),
+                    "Sensor" => array(
+                        "load" => true,
+                        "toArray" => array(
+                            "Real" => "array",
+                        ),
+                    ),
+                ),
+                false,
+                array(),
+                'array(1) {
+  \'Real\' =>
+  string(5) "array"
+}
+',
+
+                array(
+                    "Sensor" => array(
+                        "toArray" => array(
+                            array(true),
+                        ),
+                        "load" => array(
+                            array(array("dev" => 16, "output" => 5)),
+                        ),
+                    ),
+                ),
+            ),
         );
     }
     /**
