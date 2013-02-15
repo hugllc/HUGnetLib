@@ -162,7 +162,7 @@ class E00392101 extends \HUGnet\devices\Driver
         switch($sid) {
         case 0:
             // HUGnet1 Voltage High
-            $table["driver"] = "40:fetBoard";
+            $table["driver"] = "40:DEFAULT";
             $table["name"] = "Controller Board Voltage";
             $table["MUX"] = 4;
             $data["extra"] = array(180, 27, 5.0);
@@ -172,7 +172,7 @@ class E00392101 extends \HUGnet\devices\Driver
             break;
         case 1:
             // HUGnet1 Voltage Low
-            $table["driver"] = "40:fetBoard";
+            $table["driver"] = "40:DEFAULT";
             $table["name"] = "Controller Board Voltage";
             $table["MUX"] = 5;
             $data["extra"] = array(180, 27, 5.0);
@@ -181,7 +181,7 @@ class E00392101 extends \HUGnet\devices\Driver
             break;
         case 2:
             // HUGnet1 Current
-            $table["driver"] = "50:fetBoard";
+            $table["driver"] = "50:DEFAULT";
             $table["name"] = "Controller Board Current";
             $table["MUX"] = 7;
             $data["extra"] = array(0.5, 7, 5.0);
@@ -199,7 +199,7 @@ class E00392101 extends \HUGnet\devices\Driver
             break;
         case 4:
             // HUGnet2 Voltage High
-            $table["driver"] = "40:fetBoard";
+            $table["driver"] = "40:DEFAULT";
             $table["name"] = "Controller Board Voltage";
             $table["MUX"] = 3;
             $data["extra"] = array(180, 27, 5.0);
@@ -208,7 +208,7 @@ class E00392101 extends \HUGnet\devices\Driver
             break;
         case 5:
             // HUGnet2 Voltage Low
-            $table["driver"] = "40:fetBoard";
+            $table["driver"] = "40:DEFAULT";
             $table["name"] = "Controller Board Voltage";
             $table["MUX"] = 2;
             $data["extra"] = array(180, 27, 5.0);
@@ -217,7 +217,7 @@ class E00392101 extends \HUGnet\devices\Driver
             break;
         case 6:
             // HUGnet2 Current
-            $table["driver"] = "50:fetBoard";
+            $table["driver"] = "50:DEFAULT";
             $table["name"] = "Controller Board Current";
             $table["MUX"] = 0;
             $data["extra"] = array(0.5, 7, 5.0);
