@@ -115,7 +115,7 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
     {
         parent::__construct($sensor);
         if (is_array($table)) {
-            $this->_entry($table);
+            $this->_tableEntry = $table;
         }
     }
     /**
@@ -161,13 +161,12 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
         if (!is_object($this->_driver)) {
             $entry  = $this->_entry();
             $driver = explode(":", (string)$entry->get("driver"));
-            $sensor = $this->input();
-
+            $input  = $this->input();
             $this->_driver = \HUGnet\devices\inputTable\DriverAVR::factory(
                 \HUGnet\devices\inputTable\Driver::getDriver(
                     hexdec($driver[0]), $driver[1]
                 ),
-                $sensor,
+                $input,
                 $entry
             );
         }
@@ -197,21 +196,32 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
     private function &_entry($table = null)
     {
         if (!is_object($this->_entry)) {
-            include_once dirname(__FILE__)."/../../tables/E00392101AnalogTable.php";
-            if (is_array($table)) {
-                $this->_tableEntry = $table;
+            if (is_array($this->_tableEntry)) {
+                $table = $this->_tableEntry;
             } else {
                 $extra = $this->input()->get("extra");
                 $this->_table()->getRow((int)$extra[0]);
                 $table = $this->_table()->toArray();
             }
-            $entry = \HUGnet\devices\inputTable\tables\E00392101AnalogTable::factory(
+            $driver = $this->_entryDriver();
+            $entry = $driver::factory(
                 $this, $table
             );
             $this->_entry = &$entry;
         }
         return $this->_entry;
     }
+    /**
+    * Returns the driver object
+    *
+    * @return object The driver requested
+    */
+    private function _entryDriver()
+    {
+        include_once dirname(__FILE__)."/../../tables/E00392101AnalogTable.php";
+        return "\\HUGnet\\devices\\inputTable\\tables\\E00392101AnalogTable";
+    }
+
     /**
     * Returns the driver object
     *
@@ -239,7 +249,8 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
     */
     public function get($name)
     {
-        $param = parent::get($name);
+        $param = $this->_driver()->get($name);
+//        $param = parent::get($name);
         switch ($name) {
         case "extraValues":
             $param = (array)$param;
@@ -334,7 +345,7 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
     */
     public function channels()
     {
-        $ret = $this->_driver(0)->channels();
+        $ret = $this->_driver()->channels();
         if (is_array($ret[1])) {
             $ret[1]["index"] = 1;
         }

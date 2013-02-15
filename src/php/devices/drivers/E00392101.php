@@ -152,40 +152,41 @@ class E00392101 extends \HUGnet\devices\Driver
         $data = array(
             "input" => $sid,
             "dev" => $this->device()->id(),
+            "id" => 0xF8,
         );
         $table = array(
             "id" => 0,
             "ADLAR" => 1,
             "REFS" => 1,
         );
-        $type = array(
-            "id" => 0xF8,
-            "type" => "AVRAnalogTable",
-        );
         switch($sid) {
         case 0:
             // HUGnet1 Voltage High
-            $table["driver"] = "40:FETBoardVoltage";
+            $table["driver"] = "40:fetBoard";
             $table["name"] = "Controller Board Voltage";
             $table["MUX"] = 4;
             $data["extra"] = array(180, 27, 5.0);
             $data["location"] = "HUGnet 1 Voltage High";
+            $data["type"] = "AVRAnalogTable";
+
             break;
         case 1:
             // HUGnet1 Voltage Low
-            $table["driver"] = "40:FETBoardVoltage";
+            $table["driver"] = "40:fetBoard";
             $table["name"] = "Controller Board Voltage";
             $table["MUX"] = 5;
             $data["extra"] = array(180, 27, 5.0);
             $data["location"] = "HUGnet 1 Voltage Low";
+            $data["type"] = "AVRAnalogTable";
             break;
         case 2:
             // HUGnet1 Current
-            $table["driver"] = "50:FETBoardCurrent";
+            $table["driver"] = "50:fetBoard";
             $table["name"] = "Controller Board Current";
             $table["MUX"] = 7;
             $data["extra"] = array(0.5, 7, 5.0);
             $data["location"] = "HUGnet 1 Current";
+            $data["type"] = "AVRAnalogTable";
             break;
         case 3:
             // HUGnet1 Temperature
@@ -194,30 +195,34 @@ class E00392101 extends \HUGnet\devices\Driver
             $table["MUX"] = 6;
             $data["extra"] = array(100, 10);
             $data["location"] = "HUGnet 1 Temperature";
+            $data["type"] = "AVRAnalogTable";
             break;
         case 4:
             // HUGnet2 Voltage High
-            $table["driver"] = "40:FETBoardVoltage";
+            $table["driver"] = "40:fetBoard";
             $table["name"] = "Controller Board Voltage";
             $table["MUX"] = 3;
             $data["extra"] = array(180, 27, 5.0);
             $data["location"] = "HUGnet 2 Voltage High";
+            $data["type"] = "AVRAnalogTable";
             break;
         case 5:
             // HUGnet2 Voltage Low
-            $table["driver"] = "40:FETBoardVoltage";
+            $table["driver"] = "40:fetBoard";
             $table["name"] = "Controller Board Voltage";
             $table["MUX"] = 2;
             $data["extra"] = array(180, 27, 5.0);
             $data["location"] = "HUGnet 2 Voltage Low";
+            $data["type"] = "AVRAnalogTable";
             break;
         case 6:
             // HUGnet2 Current
-            $table["driver"] = "50:FETBoardCurrent";
+            $table["driver"] = "50:fetBoard";
             $table["name"] = "Controller Board Current";
             $table["MUX"] = 0;
             $data["extra"] = array(0.5, 7, 5.0);
             $data["location"] = "HUGnet 2 Current";
+            $data["type"] = "AVRAnalogTable";
             break;
         case 7:
             // HUGnet2 Temperature
@@ -226,23 +231,16 @@ class E00392101 extends \HUGnet\devices\Driver
             $table["MUX"] = 1;
             $data["extra"] = array(100, 10);
             $data["location"] = "HUGnet 2 Temperature";
+            $data["type"] = "AVRAnalogTable";
             break;
         default:
-            $type = array(
-                "id" => 0xFE,
-            );
+            $data["id"] = 0xFE;
         }
         $system = $this->device()->system();
         $device = $this->device();
         $obj = \HUGnet\devices\Input::factory(
             $system, $data, null, $device, $table
         );
-        if (is_null($obj->get("id"))
-            || ((int)$obj->get("id") !== $type["id"])
-        ) {
-            $obj->load(array_merge((array)$data, (array)$type));
-            //$obj->store();
-        }
         return $obj;
     }
 

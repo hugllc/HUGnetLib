@@ -110,9 +110,13 @@ abstract class XTableBase extends \HUGnet\base\SystemTableBase
             get_class($this)." needs to be passed a device object",
             !is_object($device)
         );
-        $object = parent::factory($system, $data, $dbtable);
-        $object->_device = &$device;
+        $class = get_called_class();
+        $object = new $class($system, $dbtable);
         $object->_driverTable = $table;
+        if (!is_null($data)) {
+            $object->load($data);
+        }
+        $object->_device = &$device;
         return $object;
     }
     /**

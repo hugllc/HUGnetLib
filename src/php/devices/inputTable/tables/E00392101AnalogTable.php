@@ -69,10 +69,10 @@ class E00392101AnalogTable
             "ControllerTemp" => 0,
         ),
         0x40 => array(
-            "ControllerVoltage" => 0,
+            "fetBoard" => 0,
         ),
         0x50 => array(
-            "ControllerVoltage" => 0,
+            "fetBoard" => 0,
         ),
     );
     /**
@@ -83,8 +83,8 @@ class E00392101AnalogTable
             "value" => "02:ControllerTemp",
             "valid" => array(
                 "02:ControllerTemp"    => "Temperature Sensor",
-                "40:ControllerVoltage" => "Voltage Sensor",
-                "50:ControllerCurrent" => "Current Sensor",
+                "40:fetBoard" => "Voltage Sensor",
+                "50:fetBoard" => "Current Sensor",
             ),
             "desc" => "Driver",
         ),

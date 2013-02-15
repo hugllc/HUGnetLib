@@ -108,6 +108,8 @@ class InputTest extends \PHPUnit_Framework_TestCase
                 new \HUGnet\DummySystem(),
                 null,
                 "DummyTable",
+                array(
+                ),
             ),
             array(
                 new \HUGnet\DummySystem(),
@@ -117,32 +119,37 @@ class InputTest extends \PHPUnit_Framework_TestCase
                     "value" => 1,
                 ),
                 "DummyTable",
+                array(
+                ),
             ),
             array(
                 new \HUGnet\DummySystem(),
                 array("dev" => 2, "input" => 0),
                 new \HUGnet\DummyTable(),
+                array(
+                ),
             ),
         );
     }
     /**
     * This tests the object creation
     *
-    * @param array $config  The configuration to use
-    * @param mixed $gateway The gateway to set
-    * @param mixed $class   This is either the name of a class or an object
+    * @param array $config The configuration to use
+    * @param mixed $data   The gateway to set
+    * @param mixed $class  This is either the name of a class or an object
+    * @param array $table  The table to use
     *
     * @return null
     *
     * @dataProvider dataCreate
     */
-    public function testCreate($config, $gateway, $class)
+    public function testCreate($config, $data, $class, $table)
     {
         $table = new \HUGnet\DummyTable();
         $dev = new \HUGnet\DummyBase("Device");
         // This just resets the mock
         $table->resetMock();
-        $obj = Input::factory($config, $gateway, $class, $dev);
+        $obj = Input::factory($config, $data, $class, $dev);
         // Make sure we have the right object
         $this->assertInstanceOf(
             "HUGnet\devices\Input", $obj, "Class wrong"

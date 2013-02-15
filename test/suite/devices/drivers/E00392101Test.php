@@ -175,6 +175,13 @@ class E00392101Test extends DriverTestBase
                         "id" => 5,
                         "get" => array(
                             "id" => 5,
+                            "arch" => "AVR",
+                        ),
+                    ),
+                    "DeviceInputs" => array(
+                        "get" => array(
+                            "id" => 0xF8,
+                            "type" => "AVRAnalogTable",
                         ),
                     ),
                 ),
@@ -191,6 +198,8 @@ class E00392101Test extends DriverTestBase
                     ),
                     "location" => "HUGnet 1 Voltage High",
                 ),
+                array(
+                )
             ),
             array(
                 array(
@@ -199,6 +208,13 @@ class E00392101Test extends DriverTestBase
                         "id" => 5,
                         "get" => array(
                             "id" => 5,
+                            "arch" => "AVR",
+                        ),
+                    ),
+                    "DeviceInputs" => array(
+                        "get" => array(
+                            "id" => 0xF8,
+                            "type" => "AVRAnalogTable",
                         ),
                     ),
                 ),
@@ -215,6 +231,8 @@ class E00392101Test extends DriverTestBase
                     ),
                     "location" => "HUGnet 1 Voltage Low",
                 ),
+                array(
+                )
             ),
             array(
                 array(
@@ -223,6 +241,13 @@ class E00392101Test extends DriverTestBase
                         "id" => 5,
                         "get" => array(
                             "id" => 5,
+                            "arch" => "AVR",
+                        ),
+                    ),
+                    "DeviceInputs" => array(
+                        "get" => array(
+                            "id" => 0xF8,
+                            "type" => "AVRAnalogTable",
                         ),
                     ),
                 ),
@@ -239,6 +264,8 @@ class E00392101Test extends DriverTestBase
                     ),
                     "location" => "HUGnet 1 Current",
                 ),
+                array(
+                )
             ),
             array(
                 array(
@@ -247,8 +274,15 @@ class E00392101Test extends DriverTestBase
                         "id" => 5,
                         "get" => array(
                             "id" => 5,
+                            "arch" => "AVR",
                         ),
 
+                    ),
+                    "DeviceInputs" => array(
+                        "get" => array(
+                            "id" => 0xF8,
+                            "type" => "AVRAnalogTable",
+                        ),
                     ),
                 ),
                 3,
@@ -263,6 +297,8 @@ class E00392101Test extends DriverTestBase
                     ),
                     "location" => "HUGnet 1 Temperature",
                 ),
+                array(
+                )
             ),
             array(
                 array(
@@ -271,6 +307,13 @@ class E00392101Test extends DriverTestBase
                         "id" => 5,
                         "get" => array(
                             "id" => 5,
+                            "arch" => "AVR",
+                        ),
+                    ),
+                    "DeviceInputs" => array(
+                        "get" => array(
+                            "id" => 0xF8,
+                            "type" => "AVRAnalogTable",
                         ),
                     ),
                 ),
@@ -287,6 +330,8 @@ class E00392101Test extends DriverTestBase
                     ),
                     "location" => "HUGnet 2 Voltage High",
                 ),
+                array(
+                )
             ),
             array(
                 array(
@@ -295,6 +340,13 @@ class E00392101Test extends DriverTestBase
                         "id" => 5,
                         "get" => array(
                             "id" => 5,
+                            "arch" => "AVR",
+                        ),
+                    ),
+                    "DeviceInputs" => array(
+                        "get" => array(
+                            "id" => 0xF8,
+                            "type" => "AVRAnalogTable",
                         ),
                     ),
                 ),
@@ -311,6 +363,8 @@ class E00392101Test extends DriverTestBase
                     ),
                     "location" => "HUGnet 2 Voltage Low",
                 ),
+                array(
+                )
             ),
             array(
                 array(
@@ -319,6 +373,13 @@ class E00392101Test extends DriverTestBase
                         "id" => 5,
                         "get" => array(
                             "id" => 5,
+                            "arch" => "AVR",
+                        ),
+                    ),
+                    "DeviceInputs" => array(
+                        "get" => array(
+                            "id" => 0xF8,
+                            "type" => "AVRAnalogTable",
                         ),
                     ),
                 ),
@@ -335,6 +396,8 @@ class E00392101Test extends DriverTestBase
                     ),
                     "location" => "HUGnet 2 Current",
                 ),
+                array(
+                )
             ),
             array(
                 array(
@@ -343,6 +406,13 @@ class E00392101Test extends DriverTestBase
                         "id" => 5,
                         "get" => array(
                             "id" => 5,
+                            "arch" => "AVR",
+                        ),
+                    ),
+                    "DeviceInputs" => array(
+                        "get" => array(
+                            "id" => 0xF8,
+                            "type" => "AVRAnalogTable",
                         ),
                     ),
                 ),
@@ -358,6 +428,8 @@ class E00392101Test extends DriverTestBase
                     ),
                     "location" => "HUGnet 2 Temperature",
                 ),
+                array(
+                )
             ),
             array(
                 array(
@@ -366,6 +438,13 @@ class E00392101Test extends DriverTestBase
                         "id" => 5,
                         "get" => array(
                             "id" => 5,
+                            "arch" => "AVR",
+                        ),
+                    ),
+                    "DeviceInputs" => array(
+                        "get" => array(
+                            "id" => 0xFE,
+                            "type" => "DEFAULT",
                         ),
                     ),
                 ),
@@ -375,6 +454,8 @@ class E00392101Test extends DriverTestBase
                     "input" => 8,
                     "dev" => 5,
                 ),
+                array(
+                )
             ),
             array(
                 array(
@@ -383,6 +464,13 @@ class E00392101Test extends DriverTestBase
                         "id" => 5,
                         "get" => array(
                             "id" => 5,
+                            "arch" => "AVR",
+                        ),
+                    ),
+                    "DeviceInputs" => array(
+                        "get" => array(
+                            "id" => 0xFE,
+                            "type" => "DEFAULT",
                         ),
                     ),
                 ),
@@ -392,6 +480,8 @@ class E00392101Test extends DriverTestBase
                     "input" => 9,
                     "dev" => 5,
                 ),
+                array(
+                )
             ),
         );
     }
@@ -401,20 +491,26 @@ class E00392101Test extends DriverTestBase
     * @param array  $mocks  The value to preload into the mocks
     * @param int    $sid    The input id to get
     * @param string $expect The expected return
+    * @param array  $check  The check from the input->toArray function
     *
     * @return null
     *
     * @dataProvider dataInput
     */
-    public function testInput($mocks, $sid, $expect)
+    public function testInput($mocks, $sid, $expect, $check)
     {
         $device  = new \HUGnet\DummyTable("Device");
         $device->resetMock($mocks);
         $input = $this->o->input($sid);
         $ret = $device->retrieve();
         $this->assertEquals(
-            $expect, $ret["DeviceInputs"]["fromAny"][1][0], "Setup is wrong"
+            $expect, $ret["DeviceInputs"]["fromAny"][0][0], "Setup is wrong"
         );
+        $values = $input->toArray(true);
+        foreach ((array)$check as $key => $value) {
+            $this->assertEquals($value, $values[$key], "$key is wrong");
+        }
+
 
         /*
         foreach ((array)$expect as $class => $calls) {
