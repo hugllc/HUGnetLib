@@ -69,6 +69,8 @@ abstract class SystemTableBase
     private $_new = false;
     /** This is our connection object */
     private $_connect = null;
+    /** These are our keys to search for.  Null means search everything given */
+    protected $keys = null;
 
     /**
     * This function sets up the driver object, and the database object.  The
@@ -79,7 +81,7 @@ abstract class SystemTableBase
     *
     * @return null
     */
-    private function __construct(&$system, $table)
+    protected function __construct(&$system, $table)
     {
         \HUGnet\System::systemMissing(
             get_class($this)." needs to be passed a system object",
@@ -186,20 +188,23 @@ abstract class SystemTableBase
             }
         } else if (is_array($data)) {
             $wdata = (array)$this->table()->sanitizeWhere($data);
+            $keys = is_array($this->keys) ? $this->keys : array_keys($wdata);
             $where = "";
             $whereData = array();
             $sep = "";
-            foreach ($wdata as $key => $value) {
+            foreach ($keys as $key) {
                 $where .= "$sep`$key` = ?";
                 $sep = " AND ";
-                $whereData[] = $value;
+                $whereData[] = $wdata[$key];
             }
             $ret = $this->table()->selectOneInto($where, $whereData);
         }
-        if (!$ret && (is_array($data) || is_object($data))) {
+        if (is_array($data) || is_object($data)) {
             $this->table()->fromAny($data);
             $this->fixTable();
-            $this->_new = true;
+            if (!$ret) {
+                $this->_new = true;
+            }
         }
         return (bool)$ret;
     }

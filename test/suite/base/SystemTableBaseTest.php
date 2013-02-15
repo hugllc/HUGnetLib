@@ -215,9 +215,11 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                             "name" => 3,
                             "value" => 1,
                         ),
+                        "selectOneInto" => false,
                     ),
                 ),
                 new \HUGnet\DummyTable(),
+                "\\HUGnet\\base\\SystemTableBaseTestStub",
                 array(
                     "id" => 5,
                     "name" => 3,
@@ -257,10 +259,61 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "Table" => array(
-                        "isEmpty" => true,
+                        "sanitizeWhere" => array(
+                            "id" => 5,
+                            "name" => 3,
+                            "value" => 1,
+                        ),
+                        "selectOneInto" => true,
                     ),
                 ),
+                new \HUGnet\DummyTable(),
+                "\\HUGnet\\base\\SystemTableBaseTestStub",
+                array(
+                    "id" => 5,
+                    "name" => 3,
+                    "value" => 1,
+                ),
+                array(
+                    "Table" => array(
+                        "fromAny" => array(
+                            array(
+                                array(
+                                    "id" => 5,
+                                    "name" => 3,
+                                    "value" => 1,
+                                ),
+                            ),
+                        ),
+                        "clearData" => array(array()),
+                        "selectOneInto" => array(
+                            array(
+                                "`id` = ? AND `name` = ? AND `value` = ?",
+                                array(5, 3, 1),
+                            ),
+                        ),
+                        "sanitizeWhere" => array(
+                            array(
+                                array(
+                                    "id" => 5,
+                                    "name" => 3,
+                                    "value" => 1,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                true,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "isEmpty" => true,
+                    ),
+                    "selectOneInto" => false,
+                ),
                 new \HUGnet\DummyTable("Table"),
+                "\\HUGnet\\base\\SystemTableBaseTestStub",
                 2,
                 array(
                     "Table" => array(
@@ -276,13 +329,63 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                 ),
                 false,
             ),
+            array(
+                array(
+                    "Table" => array(
+                        "sanitizeWhere" => array(
+                            "id" => 5,
+                            "name" => 3,
+                            "value" => 1,
+                        ),
+                        "selectOneInto" => true,
+                    ),
+                ),
+                new \HUGnet\DummyTable(),
+                "\\HUGnet\\base\\SystemTableBaseTestStub2",
+                array(
+                    "id" => 5,
+                    "name" => 3,
+                    "value" => 1,
+                ),
+                array(
+                    "Table" => array(
+                        "fromAny" => array(
+                            array(
+                                array(
+                                    "id" => 5,
+                                    "name" => 3,
+                                    "value" => 1,
+                                ),
+                            ),
+                        ),
+                        "clearData" => array(array()),
+                        "selectOneInto" => array(
+                            array(
+                                "`id` = ? AND `name` = ?",
+                                array(5, 3),
+                            ),
+                        ),
+                        "sanitizeWhere" => array(
+                            array(
+                                array(
+                                    "id" => 5,
+                                    "name" => 3,
+                                    "value" => 1,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                true,
+            ),
         );
     }
     /**
     * This tests the object creation
     *
     * @param object $config      The configuration to use
-    * @param object $class       The table class to use
+    * @param object $table       The table class to use
+    * @param string $class       The test class to use
     * @param mixed  $gateway     The gateway data to set
     * @param array  $expectTable The table to expect
     * @param bool   $return      The expected return
@@ -291,14 +394,15 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
     *
     * @dataProvider dataLoad
     */
-    public function testLoad($config, $class, $gateway, $expectTable, $return)
-    {
+    public function testLoad(
+        $config, $table, $class, $gateway, $expectTable, $return
+    ) {
         $sys = new \HUGnet\DummySystem("System");
         $sys->resetMock($config);
-        $obj = SystemTableBaseTestStub::factory($sys, null, $class);
+        $obj = $class::factory($sys, null, $table);
         $ret = $obj->load($gateway);
         $this->assertSame($return, $ret, "Return Wrong");
-        $this->assertEquals($expectTable, $class->retrieve(), "Data Wrong");
+        $this->assertEquals($expectTable, $table->retrieve(), "Data Wrong");
     }
     /**
     * Data provider for testLoad
@@ -951,5 +1055,24 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
  */
 class SystemTableBaseTestStub extends SystemTableBase
 {
+}
+/**
+ * Stub class for testing SystemTableBase
+ *
+ * @category   Libraries
+ * @package    HUGnetLibTest
+ * @subpackage SuiteBase
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2013 Hunt Utilities Group, LLC
+ * @copyright  2009 Scott Price
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.10.2
+ * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
+ */
+class SystemTableBaseTestStub2 extends SystemTableBase
+{
+    /** These are our keys to search for.  Null means search everything given */
+    protected $keys = array("id", "name");
+
 }
 ?>
