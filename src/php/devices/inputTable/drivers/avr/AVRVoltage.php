@@ -39,7 +39,7 @@ namespace HUGnet\devices\inputTable\drivers\avr;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is my base class */
-require_once dirname(__FILE__)."/AVRVoltage.php";
+require_once dirname(__FILE__)."/../../DriverAVR.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -57,14 +57,14 @@ require_once dirname(__FILE__)."/AVRVoltage.php";
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class FETBoardVoltage extends AVRVoltage
+class AVRVoltage extends \HUGnet\devices\inputTable\DriverAVR
 {
     /**
     * This is the array of sensor information.
     */
     protected $params = array(
-        "longName" => "FETBoard Voltage Sensor",
-        "shortName" => "FETBoardVoltage",
+        "longName" => "AVR Voltage Sensor",
+        "shortName" => "AVRVoltage",
         "unitType" => "Voltage",
         "storageUnit" => 'V',
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
@@ -80,6 +80,55 @@ class FETBoardVoltage extends AVRVoltage
         "extraDefault" => array(150, 10, 5.0),
         "maxDecimals" => 4,
     );
+    /**
+    * Changes a raw reading into a output value
+    *
+    * @param int   $A      Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
+    * @param array &$data  The data from the other sensors that were crunched
+    * @param mixed $prev   The previous value for this sensor
+    *
+    * @return mixed The value in whatever the units are in the sensor
+    *
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    protected function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
+    {
+        bcscale(6);
+        $R1   = $this->getExtra(0);
+        $R2   = $this->getExtra(1);
+        $Vref = $this->getExtra(2);
+        $V = $this->getDividerVoltage($A, $R1, $R2, $Vref, $data["timeConstant"]);
+        return round($V, 4);
+    }
+    /**
+    * Returns the reversed reading
+    *
+    * @param array $value   The data to use
+    * @param int   $channel The channel to get
+    * @param float $deltaT  The time delta in seconds between this record
+    * @param array &$prev   The previous reading
+    * @param array &$data   The data from the other sensors that were crunched
+    *
+    * @return string The reading as it would have come out of the endpoint
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    protected function getRaw(
+        $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
+        $R1   = $this->getExtra(0);
+        $R2   = $this->getExtra(1);
+        $Vref = $this->getExtra(2);
+        $A    = $this->revDividerVoltage(
+            $value, $R1, $R2, $Vref, $data["timeConstant"]
+        );
+        if (($A < 0) || is_null($A) || is_null($value)) {
+            return null;
+        }
+        return (int)round($A);
+    }
 
 }
 ?>

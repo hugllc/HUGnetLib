@@ -88,11 +88,13 @@ abstract class DriverAVR extends Driver
         "40:ControllerVoltage"       => "ControllerVoltage",
         "40:BARO4"                   => "AVRBAROA4V",
         "40:fetBoard"                => "FETBoardVoltage",
+        "40:AVRVoltage"              => "AVRVoltage",
         "40:GA100"                   => "AVRGA100",
         "40:HitachiVFDFan"           => "AVRHitachiVFDFan",
         "50:ControllerCurrent"       => "ControllerCurrent",
         "50:dwyer616"                => "AVRDwyer616",
         "50:fetBoard"                => "FETBoardCurrent",
+        "50:AVRCurrent"              => "AVRCurrent",
         "7E:DEFAULT"                 => "AVROnTimePulse",
         "F8:DEFAULT"                 => "AVRAnalogTable",
     );
