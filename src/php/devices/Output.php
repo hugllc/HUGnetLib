@@ -60,6 +60,8 @@ require_once dirname(__FILE__)."/XTableBase.php";
  */
 class Output extends XTableBase
 {
+    /** These are our keys to search for.  Null means search everything given */
+    protected $keys = array("dev", "output");
     /**
     * This is the cache for the drivers.
     */
