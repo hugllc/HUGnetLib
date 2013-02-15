@@ -787,6 +787,14 @@ class WebAPI extends HTML
             $this->_headerNoCache();
             $this->_headerCSV();
             print $data;
+        } else if (strtoupper($format) === "DEBUG") {
+            if (!headers_sent()) {
+                // @codeCoverageIgnoreStart
+                header('Content-type: text/plain');
+            }
+            // @codeCoverageIgnoreEnd
+            $this->_headerNoCache();
+            var_dump($data);
         } else {
             $this->_headerNoCache();
             $this->_headerJSON();
