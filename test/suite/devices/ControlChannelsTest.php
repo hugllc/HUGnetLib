@@ -385,7 +385,7 @@ class ControlChannelsTest extends \PHPUnit_Framework_TestCase
                         "label" => "Output 1",
                     ),
                     array(
-                        "label" => "PWM 2",
+                        "label" => "Control Channel 2",
                     ),
                     array(
                         "label" => "Output 3",
@@ -524,7 +524,7 @@ class ControlChannelsTest extends \PHPUnit_Framework_TestCase
                         "channel" => 1,
                     ),
                     array(
-                        "label" => "PWM 2",
+                        "label" => "Control Channel 2",
                         "index" => 0,
                         "output" => 2,
                         "min" => 0,
@@ -699,7 +699,7 @@ class ControlChannelsTest extends \PHPUnit_Framework_TestCase
                                     "label" => "Output 2",
                                 ),
                                 array(
-                                    "label" => "PWM 3",
+                                    "label" => "Control Channel 3",
                                 ),
                                 array(
                                     "label" => "Output 4",

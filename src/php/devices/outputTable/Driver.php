@@ -347,7 +347,7 @@ abstract class Driver
             array(
                 "min" => $this->get("min"),
                 "max" => $this->get("max"),
-                "label" => $this->get("shortName"),
+                "label" => (string)$this->output()->get("location"),
                 "index" => 0,
             ),
         );

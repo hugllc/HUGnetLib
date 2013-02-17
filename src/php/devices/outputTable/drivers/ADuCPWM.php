@@ -77,8 +77,8 @@ class ADuCPWM extends \HUGnet\devices\outputTable\DriverADuC
         "extraValues" => array(
         ),
         "min" => 0,
-        "max" => 4096,
-        "zero" => 1556,
+        "max" => 0xFFFF,
+        "zero" => 0,
     );
     /** This tells us our mapping from extra to entry */
     protected $entryMap = array(
@@ -155,21 +155,21 @@ class ADuCPWM extends \HUGnet\devices\outputTable\DriverADuC
     {
         return array(
             array(
-                "min" => 0,
-                "max" => 0xFFFF,
-                "label" => $this->get("shortName")."0",
+                "min" => $this->get("min"),
+                "max" => $this->get("max"),
+                "label" => (string)$this->output()->get("location")." 0",
                 "index" => 0,
             ),
             array(
-                "min" => 0,
-                "max" => 0xFFFF,
-                "label" => $this->get("shortName")."1",
+                "min" => $this->get("min"),
+                "max" => $this->get("max"),
+                "label" => (string)$this->output()->get("location")." 1",
                 "index" => 1,
             ),
             array(
-                "min" => 0,
-                "max" => 0xFFFF,
-                "label" => $this->get("shortName")."2",
+                "min" => $this->get("min"),
+                "max" => $this->get("max"),
+                "label" => (string)$this->output()->get("location")." 2",
                 "index" => 2,
             ),
         );

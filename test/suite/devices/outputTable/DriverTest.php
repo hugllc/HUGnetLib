@@ -494,6 +494,7 @@ class DriverTest extends drivers\DriverTestBase
                             "storageUnit" => "unknown",
                             "maxDecimals" => 2,
                             "unitType" => "asdf",
+                            "location" => "Hello",
                         ),
                     ),
                 ),
@@ -502,7 +503,7 @@ class DriverTest extends drivers\DriverTestBase
                     array(
                         'min' => 25,
                         'max' => 81,
-                        'label' => 'Unknown',
+                        'label' => 'Hello',
                         'index' => 0,
                     ),
                 ),

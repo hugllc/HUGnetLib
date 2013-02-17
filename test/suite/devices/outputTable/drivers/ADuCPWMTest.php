@@ -233,11 +233,12 @@ class ADuCPWMTest extends DriverTestBase
         return array(
             array(
                 array(
-                    "Sensor" => array(
+                    "Output" => array(
                         "get" => array(
                             "storageUnit" => "unknown",
                             "maxDecimals" => 2,
                             "unitType" => "asdf",
+                            "location" => "Hello",
                         ),
                     ),
                 ),
@@ -245,19 +246,19 @@ class ADuCPWMTest extends DriverTestBase
                     array(
                         'min' => 0,
                         'max' => 0xFFFF,
-                        'label' => 'PWM0',
+                        'label' => 'Hello 0',
                         'index' => 0,
                     ),
                     array(
                         'min' => 0,
                         'max' => 0xFFFF,
-                        'label' => 'PWM1',
+                        'label' => 'Hello 1',
                         'index' => 1,
                     ),
                     array(
                         'min' => 0,
                         'max' => 0xFFFF,
-                        'label' => 'PWM2',
+                        'label' => 'Hello 2',
                         'index' => 2,
                     ),
                 ),

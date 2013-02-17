@@ -106,7 +106,9 @@ class ControlChannels
             $channels = json_decode($channels, true);
         }
         foreach (array_keys($chans) as $chan) {
-            $chans[$chan]["label"] = $chans[$chan]["label"]." $chan";
+            if (!is_string($value["label"]) || empty($value["label"])) {
+                $chans[$chan]["label"] = "Control Channel $chan";
+            }
             $this->_channels[$chan] = \HUGnet\devices\ControlChan::factory(
                 $this->_device,
                 $chans[$chan],

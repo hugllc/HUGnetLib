@@ -291,7 +291,7 @@ class OutputTest extends \PHPUnit_Framework_TestCase
                         "index" => 0,
                         "min" => 1234,
                         "max" => 4321,
-                        'label' => 'SSD1'
+                        'label' => 'Test'
                     ),
                 ),
             ),
