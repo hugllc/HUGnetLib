@@ -42,6 +42,8 @@ require_once CODE_BASE.'devices/inputTable/drivers/virtual/CloneVirtual.php';
 /** This is a required class */
 require_once CODE_BASE.'devices/Input.php';
 /** This is a required class */
+require_once CODE_BASE.'devices/inputTable/tables/ADuCInputTable.php';
+/** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
@@ -117,6 +119,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "get" => array(
                             "sensor" => 1,
                             "extra" => array(1008, 1),
+                            "location" => "asdf",
                         ),
                         "system" => new \HUGnet\DummySystem("System"),
                     ),
@@ -134,6 +137,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                             "sensor" => 2,
                             "driver" => "ADuCVoltage",
                             "extra" => array(1008, 1),
+                            "location" => "asdf 1",
                         ),
                         "channels" => array(
                         ),
@@ -152,6 +156,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         'storageUnit' => 'V',
                         "unitType" => "Voltage",
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "label" => "asdf 1",
                         "index" => 0,
                         "epChannel" => false,
                     ),
@@ -164,6 +169,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "get" => array(
                             "sensor" => 1,
                             "extra" => array(1008, 1),
+                            "location" => "asdf",
                         ),
                         "system" => new \HUGnet\DummySystem("System"),
                     ),
@@ -180,6 +186,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "get" => array(
                             "driver" => "ADuCPower",
                             "sensor" => 1,
+                            "location" => "asdf1",
                         ),
                         "channelStart" => 4,
                     ),
@@ -202,6 +209,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         'storageUnit' => 'A',
                         "unitType" => "Current",
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "label" => "asdf1 0",
                         "index" => 0,
                         "epChannel" => false,
                     ),
@@ -213,6 +221,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         'storageUnit' => 'V',
                         "unitType" => "Voltage",
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "label" => "asdf1 1",
                         "index" => 1,
                         "epChannel" => false,
                     ),
@@ -224,6 +233,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         'storageUnit' => 'W',
                         "unitType" => "Power",
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "label" => "asdf1 2",
                         "index" => 2,
                         "epChannel" => false,
                     ),
@@ -235,6 +245,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         'storageUnit' => 'Ohms',
                         "unitType" => "Impedance",
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "label" => "asdf1 3",
                         "index" => 3,
                         "epChannel" => false,
                     ),
@@ -247,6 +258,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "get" => array(
                             "sensor" => 1,
                             "extra" => array(1008, 3),
+                            "location" => "asdf",
                         ),
                         "system" => new \HUGnet\DummySystem("System"),
                     ),
@@ -263,6 +275,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "get" => array(
                             "driver" => "ADuCPower",
                             "sensor" => 3,
+                            "location" => "asdf1",
                         ),
                         "channelStart" => 4,
                     ),
@@ -285,6 +298,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         'storageUnit' => 'A',
                         "unitType" => "Current",
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "label" => "asdf1 0",
                         "index" => 0,
                         "epChannel" => false,
                     ),
@@ -296,6 +310,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         'storageUnit' => 'V',
                         "unitType" => "Voltage",
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "label" => "asdf1 1",
                         "index" => 1,
                         "epChannel" => false,
                     ),
@@ -307,6 +322,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         'storageUnit' => 'W',
                         "unitType" => "Power",
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "label" => "asdf1 2",
                         "index" => 2,
                         "epChannel" => false,
                     ),
@@ -318,6 +334,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         'storageUnit' => 'Ohms',
                         "unitType" => "Impedance",
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "label" => "asdf1 3",
                         "index" => 3,
                         "epChannel" => false,
                     ),
@@ -330,6 +347,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "get" => array(
                             "sensor" => 1,
                             "extra" => array(1008, 1),
+                            "location" => "asdf",
                         ),
                         "system" => new \HUGnet\DummySystem("System"),
                     ),
@@ -346,6 +364,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "get" => array(
                             "driver" => "ADuCPower",
                             "sensor" => 1,
+                            "location" => "asdf1",
                         ),
                         "channelStart" => 4,
                     ),
@@ -371,6 +390,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         'storageUnit' => 'A',
                         "unitType" => "Current",
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "label" => "asdf1 0",
                         "index" => 0,
                         "epChannel" => false,
                     ),
@@ -382,6 +402,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         'storageUnit' => 'V',
                         "unitType" => "Voltage",
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "label" => "asdf1 1",
                         "index" => 1,
                         "epChannel" => false,
                     ),
@@ -393,6 +414,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         'storageUnit' => 'W',
                         "unitType" => "Power",
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "label" => "asdf1 2",
                         "index" => 2,
                         "epChannel" => false,
                     ),
@@ -404,6 +426,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         'storageUnit' => 'Ohms',
                         "unitType" => "Impedance",
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "label" => "asdf1 3",
                         "index" => 3,
                         "epChannel" => false,
                     ),

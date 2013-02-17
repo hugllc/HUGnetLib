@@ -344,7 +344,9 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
             (array)$this->_driver(1)->channels()
         );
         if (is_array($ret[1])) {
-            $ret[1]["index"] = 1;
+            $ret[0]["label"] .= " 0";
+            $ret[1]["label"] .= " 1";
+            $ret[1]["index"]  = 1;
         }
         return $ret;
     }

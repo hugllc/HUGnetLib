@@ -188,7 +188,13 @@ class DriverVirtualTest extends drivers\DriverTestBase
     {
         return array(
             array(
-                array(),
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "location" => "asdf",
+                        ),
+                    ),
+                ),
                 256210,
                 1,
                 array(),
@@ -202,6 +208,7 @@ class DriverVirtualTest extends drivers\DriverTestBase
                         "storageUnit" => "unknown",
                         "unitType" => "asdf",
                         "dataType" => "raw",
+                        "label" => "asdf",
                         "index" => 0,
                         "epChannel" => false,
                     ),

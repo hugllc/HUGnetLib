@@ -753,7 +753,13 @@ class DriverTest extends drivers\DriverTestBase
     {
         return array(
             array( // #0 Raw Data
-                array(),
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "location" => "asdf",
+                        ),
+                    ),
+                ),
                 "DriverTestClass",
                 "01020304050607080900",
                 1,
@@ -768,13 +774,20 @@ class DriverTest extends drivers\DriverTestBase
                         "storageUnit" => "unknown",
                         "unitType" => "asdf",
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "label" => "asdf",
                         "index" => 0,
                         "epChannel" => true,
                     ),
                 ),
             ),
             array(  // #1 Differential data
-                array(),
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "location" => "asdf",
+                        ),
+                    ),
+                ),
                 "DriverTestClassDiff",
                 "01020304050607080900",
                 1,
@@ -792,13 +805,20 @@ class DriverTest extends drivers\DriverTestBase
                         "unitType" => "unknown",
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_DIFF,
                         "raw" => 0x030201,
+                        "label" => "asdf",
                         "index" => 0,
                         "epChannel" => true,
                     ),
                 ),
             ),
             array( // #2 No data.
-                array(),
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "location" => "asdf",
+                        ),
+                    ),
+                ),
                 "DriverTestClass",
                 "",
                 1,
@@ -815,6 +835,7 @@ class DriverTest extends drivers\DriverTestBase
                         "storageUnit" => "unknown",
                         "unitType" => "asdf",
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "label" => "asdf",
                         "index" => 0,
                         "epChannel" => true,
                     ),
@@ -960,6 +981,7 @@ class DriverTest extends drivers\DriverTestBase
                             "unitType" => "asdf",
                             "storageType" =>
                                 \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                            "location" => "asdf",
                         ),
                     ),
                 ),
@@ -972,6 +994,7 @@ class DriverTest extends drivers\DriverTestBase
                         "storageUnit" => 'unknown',
                         "unitType" => 'asdf',
                         "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "label" => "asdf",
                         "index" => 0,
                         "epChannel" => true,
                     ),

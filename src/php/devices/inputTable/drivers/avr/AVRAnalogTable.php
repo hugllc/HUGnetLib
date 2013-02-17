@@ -348,9 +348,6 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
     public function channels()
     {
         $ret = $this->_driver()->channels();
-        if (is_array($ret[1])) {
-            $ret[1]["index"] = 1;
-        }
         return $ret;
     }
     /**

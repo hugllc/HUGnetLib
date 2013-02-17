@@ -110,8 +110,10 @@ class DataChannels
             $channels = json_decode($channels, true);
         }
         $epChan = 0;
-        foreach (array_keys($chans) as $chan) {
-            $chans[$chan]["label"] = "Data Channel $chan";
+        foreach ($chans as $chan => $value) {
+            if (!is_string($value["label"]) || empty($value["label"])) {
+                $chans[$chan]["label"] = "Data Channel $chan";
+            }
             $chans[$chan]["channel"] = $chan;
             if ($chans[$chan]["epChannel"] == true) {
                 $this->_epChannels[$epChan] = &$this->_channels[$chan];

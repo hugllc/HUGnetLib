@@ -188,8 +188,11 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                 array(
                     "Sensor" => array(
                         "id" => 1,
-                        "extra" => array(
-                            1,
+                        "get" => array(
+                            "extra" => array(
+                                1,
+                            ),
+                            "location" => "asdf",
                         ),
                     ),
                     "Table" => array(
@@ -208,6 +211,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                         'storageUnit' => '&#176;C',
                         'unitType' => 'Temperature',
                         'dataType' => 'raw',
+                        "label" => "asdf 0",
                         "index" => 0,
                         "epChannel" => true,
                     ),
@@ -218,6 +222,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                         'storageUnit' => 'V',
                         'unitType' => 'Voltage',
                         'dataType' => 'raw',
+                        "label" => "asdf 1",
                         "index" => 1,
                         "epChannel" => true,
                     ),
@@ -227,8 +232,11 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                 array(
                     "Sensor" => array(
                         "id" => 1,
-                        "extra" => array(
-                            1,
+                        "get" => array(
+                            "extra" => array(
+                                1,
+                            ),
+                            "location" => "asdf",
                         ),
                     ),
                     "Table" => array(
@@ -247,6 +255,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                         'storageUnit' => '&#176;C',
                         'unitType' => 'Temperature',
                         'dataType' => 'raw',
+                        "label" => "asdf",
                         "index" => 0,
                         "epChannel" => true,
                     ),
@@ -269,7 +278,8 @@ class ADuCInputTableTest extends DriverTestBaseADuC
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($mocks);
-        $this->assertSame($expect, $this->o->channels());
+        $channels = $this->o->channels();
+        $this->assertSame($expect, $channels);
     }
     /**
      * Data provider for testGetReading
@@ -288,6 +298,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                         "get" => array(
                             "sensor" => 2,
                             "extra" => array("41", 1, 0),
+                            "location" => "asdf",
                         ),
                     ),
                     "Table" => array(
@@ -309,6 +320,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                         'unitType' => 'Voltage',
                         'dataType' => 'raw',
                         'value' => 14.44816589,
+                        "label" => "asdf",
                         "index" => 0,
                         "epChannel" => true,
                     ),
@@ -323,7 +335,8 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                             "extra" => array(
                                 "44", 1, 0,
                                 0, 5, 0, 200, 1.2, 100000, 1000
-                                ),
+                            ),
+                            "location" => "asdf",
                         ),
                     ),
                     "Table" => array(
@@ -345,6 +358,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                         'unitType' => 'Pressure',
                         'dataType' => 'raw',
                         'value' => -232.8721,
+                        "label" => "asdf",
                         "index" => 0,
                         "epChannel" => true,
                     ),

@@ -709,6 +709,7 @@ abstract class Driver
                 "storageUnit" => $this->get("storageUnit"),
                 "unitType" => $this->get("unitType"),
                 "dataType" => $this->get("storageType"),
+                "label" => (string)$this->input()->get("location"),
                 "index" => 0,
                 "epChannel" => true,
             ),

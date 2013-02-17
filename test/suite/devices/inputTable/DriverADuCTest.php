@@ -760,6 +760,11 @@ class DriverADuCTest extends drivers\DriverTestBase
                             "1" => true,
                         ),
                     ),
+                    "Sensor" => array(
+                        "get" => array(
+                            "location" => "asdf",
+                        ),
+                    ),
                 ),
                 "DriverADuCTestClass",
                 new \HUGnet\DummyBase("Entry"),
@@ -780,6 +785,7 @@ class DriverADuCTest extends drivers\DriverTestBase
                         'unitType' => 'asdf',
                         'dataType' => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         'value' => 10.5,
+                        "label" => "asdf",
                         "index" => 0,
                         "epChannel" => true,
                     ),
@@ -797,6 +803,11 @@ class DriverADuCTest extends drivers\DriverTestBase
                         "enabled" => array(
                             "0" => true,
                             "1" => true,
+                        ),
+                    ),
+                    "Sensor" => array(
+                        "get" => array(
+                            "location" => "asdf",
                         ),
                     ),
                 ),
@@ -821,6 +832,7 @@ class DriverADuCTest extends drivers\DriverTestBase
                         'dataType' => \HUGnet\devices\datachan\Driver::TYPE_DIFF,
                         'value' => 5.25,
                         'raw' => 10.5,
+                        "label" => "asdf",
                         "index" => 0,
                         "epChannel" => true,
                     ),
@@ -838,6 +850,11 @@ class DriverADuCTest extends drivers\DriverTestBase
                         "enabled" => array(
                             "0" => false,
                             "1" => true,
+                        ),
+                    ),
+                    "Sensor" => array(
+                        "get" => array(
+                            "location" => "asdf",
                         ),
                     ),
                 ),
@@ -860,6 +877,7 @@ class DriverADuCTest extends drivers\DriverTestBase
                         'unitType' => 'asdf',
                         'dataType' => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                         'value' => 21.0,
+                        "label" => "asdf",
                         "index" => 0,
                         "epChannel" => true,
                     ),
