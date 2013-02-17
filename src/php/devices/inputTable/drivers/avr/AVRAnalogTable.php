@@ -281,6 +281,7 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
         &$string, $deltaT = 0, &$prev = null, &$data = array()
     ) {
         $ret = $this->_driver()->decodeData($string, $deltaT, $prev, $data);
+        return $ret;
     }
     /**
     * Gets the direction from a direction sensor made out of a POT.
@@ -298,8 +299,9 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
     public function decodeDataPoint(
         &$string, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
     ) {
-
-        $ret = $this->_driver()->decodeDataPoint($string, $channel);
+        $ret = $this->_driver()->decodeDataPoint(
+            $string, $channel, $deltaT, $prev, $data
+        );
         return $ret;
     }
     /**

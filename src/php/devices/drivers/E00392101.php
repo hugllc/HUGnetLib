@@ -79,6 +79,7 @@ class E00392101 extends \HUGnet\devices\Driver
         "InputTables" => 8,
         "OutputTables" => 0,
         "ProcessTables" => 0,
+        "TimeConstant" => 1,
     );
 
     /**

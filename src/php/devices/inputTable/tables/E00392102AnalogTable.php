@@ -66,13 +66,13 @@ class E00392102AnalogTable
     */
     private $_subdriver = array(
         0x02 => array(
-            "ControllerTemp" => 0,
+            "AVRBC2322640" => 0,
         ),
         0x40 => array(
-            "ControllerVoltage" => 0,
+            "DEFAULT" => 0,
         ),
         0x50 => array(
-            "ControllerVoltage" => 0,
+            "DEFAULT" => 0,
         ),
     );
     /**
@@ -80,11 +80,11 @@ class E00392102AnalogTable
     */
     private $_params = array(
         "driver"  => array(
-            "value" => "02:ControllerTemp",
+            "value" => "02:AVRBC2322640",
             "valid" => array(
-                "02:ControllerTemp"    => "Temperature Sensor",
-                "40:ControllerVoltage" => "Voltage Sensor",
-                "50:ControllerCurrent" => "Current Sensor",
+                "02:AVRBC2322640"    => "Temperature Sensor",
+                "40:DEFAULT" => "Voltage Sensor",
+                "50:DEFAULT" => "Current Sensor",
             ),
             "desc" => "Driver",
         ),
