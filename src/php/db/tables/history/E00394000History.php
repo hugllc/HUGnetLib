@@ -1,9 +1,9 @@
 <?php
 /**
- * Classes for dealing with devices
+ * This is the default endpoint driver and the base for all other
+ * endpoint drivers.
  *
  * PHP Version 5
- *
  * <pre>
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2013 Hunt Utilities Group, LLC
@@ -21,62 +21,49 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA  02110-1301, USA.
  * </pre>
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage Devices
+ * @subpackage PluginsAverageTable
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2013 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
- *
  */
-/** This is the HUGnet namespace */
-namespace HUGnet\devices\drivers;
+namespace HUGnet\db\tables;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 
 /**
- * Networking for devices.
- *
- * This class will do all of the networking for devices.  It will poll, get configs,
- * update software, and anything else related to talking to devices.
+ * This class has functions that relate to the manipulation of elements
+ * of the devInfo array.
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage Devices
+ * @subpackage PluginsAverageTable
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2013 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
- * @since      0.9.7
  */
-class E00394000 extends \HUGnet\devices\Driver
+class E00394000History extends \HUGnet\db\History
 {
-    /**
-    * This is where the data for the driver is stored.  This array must be
-    * put into all derivative classes, even if it is empty.
-    */
-    protected $params = array(
-        "totalSensors" => 0,
-        "physicalSensors" => 0,
-        "virtualSensors" => 0,
-        "historyTable" => "E00394000History",
-        "averageTable" => "E00394000Average",
-        "type" => "endpoint",
-        "job"  => "sense",
-        "arch" => "Linux",
-        "InputTables" => 9,
-        "OutputTables" => 5,
-        "ProcessTables" => 4,
-    );
+    /** @var string This is the table we should use */
+    public $sqlTable = "e00394000_history";
+    /** @var This is the dataset */
+    public $datacols = 13;
+
+    /******************************************************************
+     ******************************************************************
+     ********  The following are input modification functions  ********
+     ******************************************************************
+     ******************************************************************/
 
 }
-
-
 ?>
