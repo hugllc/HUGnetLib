@@ -244,6 +244,42 @@ class E00392101 extends \HUGnet\devices\Driver
         );
         return $obj;
     }
+    /**
+    * This creates the output drivers
+    *
+    * @param int $sid The output id to get
+    *
+    * @return null
+    */
+    public function &output($sid)
+    {
+        $sid = (int)$sid;
+        include_once dirname(__FILE__)."/../Output.php";
+        $data = array(
+            "output" => $sid,
+            "dev"    => $this->device()->id(),
+            "id"     => 0x30,
+            "type"   => "HUGnetPower",
+        );
+        switch($sid) {
+        case 0:
+            // HUGnet 0
+            $data["extra"] = array(0, 1);
+            $data["location"] = "HUGnet 0 Power";
+            break;
+        case 1:
+            $data["extra"] = array(1, 1);
+            $data["location"] = "HUGnet 1 Power";
+            break;
+        }
+        $system = $this->device()->system();
+        $device = $this->device();
+        $table  = array();
+        $obj    = \HUGnet\devices\Output::factory(
+            $system, $data, null, $device, $table
+        );
+        return $obj;
+    }
 
 
 }

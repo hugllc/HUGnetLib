@@ -94,6 +94,7 @@ abstract class Driver
         "01:DEFAULT"                 => "ADuCDAC",
         "02:DEFAULT"                 => "ADuCPWM",
         "03:DEFAULT"                 => "ADuCGPIO",
+        "30:DEFAULT"                 => "HUGnetPower",
         "FE:DEFAULT"                 => "NullOutput",
         "FF:DEFAULT"                 => "EmptyOutput",
     );

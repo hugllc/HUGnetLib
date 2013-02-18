@@ -522,5 +522,116 @@ class E00392101Test extends DriverTestBase
         }
         */
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataOutput()
+    {
+        return array(
+            array(
+                array(
+                    "Device" => array(
+                        "system" => new \HUGnet\DummySystem("System"),
+                        "id" => 5,
+                        "get" => array(
+                            "id" => 5,
+                            "arch" => "AVR",
+                        ),
+                    ),
+                    "DeviceInputs" => array(
+                        "get" => array(
+                            "id" => 0x30,
+                            "type" => "HUGnetPower",
+                        ),
+                    ),
+                ),
+                0,
+                array(
+                    "id" => 0x30,
+                    "output" => 0,
+                    "dev" => 5,
+                    "type" => "HUGnetPower",
+                    "extra" => array(
+                        0 => 0,
+                        1 => 1,
+                    ),
+                    "location" => "HUGnet 0 Power",
+                ),
+                array(
+                )
+            ),
+            array(
+                array(
+                    "Device" => array(
+                        "system" => new \HUGnet\DummySystem("System"),
+                        "id" => 5,
+                        "get" => array(
+                            "id" => 5,
+                            "arch" => "AVR",
+                        ),
+                    ),
+                    "DeviceInputs" => array(
+                        "get" => array(
+                            "id" => 0x30,
+                            "type" => "HUGnetPower",
+                        ),
+                    ),
+                ),
+                1,
+                array(
+                    "id" => 0x30,
+                    "output" => 1,
+                    "dev" => 5,
+                    "type" => "HUGnetPower",
+                    "extra" => array(
+                        0 => 1,
+                        1 => 1,
+                    ),
+                    "location" => "HUGnet 1 Power",
+                ),
+                array(
+                )
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $mocks  The value to preload into the mocks
+    * @param int    $sid    The input id to get
+    * @param string $expect The expected return
+    * @param array  $check  The check from the input->toArray function
+    *
+    * @return null
+    *
+    * @dataProvider dataOutput
+    */
+    public function testOutput($mocks, $sid, $expect, $check)
+    {
+        $device  = new \HUGnet\DummyTable("Device");
+        $device->resetMock($mocks);
+        $input = $this->o->output($sid);
+        $ret = $device->retrieve();
+        $this->assertEquals(
+            $expect, $ret["DeviceOutputs"]["fromAny"][0][0], "Setup is wrong"
+        );
+        $values = $input->toArray(true);
+        foreach ((array)$check as $key => $value) {
+            $this->assertEquals($value, $values[$key], "$key is wrong");
+        }
+
+
+        /*
+        foreach ((array)$expect as $class => $calls) {
+            foreach ($calls as $function => $args) {
+                $this->assertEquals(
+                    $args, $ret[$class][$function], "$key is wrong"
+                );
+            }
+        }
+        */
+    }
 }
 ?>
