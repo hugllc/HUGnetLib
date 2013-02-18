@@ -77,7 +77,7 @@ class ADuCDAC extends \HUGnet\devices\outputTable\DriverADuC
         "extraValues" => array(
         ),
         "min" => 0,
-        "max" => 4096,
+        "max" => 4095,
         "zero" => 1556,
     );
     /** This tells us our mapping from extra to entry */
