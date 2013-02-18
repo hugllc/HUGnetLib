@@ -118,6 +118,7 @@ class Watchdog extends \HUGnet\ui\Daemon
     */
     public function main()
     {
+        $this->_mainStart = time();
         foreach ($this->_plugins as $obj) {
             $obj->execute();
         }
