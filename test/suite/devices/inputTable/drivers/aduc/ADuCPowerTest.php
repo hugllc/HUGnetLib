@@ -531,7 +531,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                 array(),
                 array(
                     array(
-                        "value" => 0.314713,
+                        "value" => 0.31471252,
                         "decimals" => 6,
                         "units" => "A",
                         'maxDecimals' => 6,
@@ -543,7 +543,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "epChannel" => true,
                     ),
                     array(
-                        "value" => 14.448166,
+                        "value" => 14.44816589,
                         "decimals" => 6,
                         "units" => "V",
                         'maxDecimals' => 6,
@@ -555,7 +555,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "epChannel" => true,
                     ),
                     array(
-                        "value" => 4.547026,
+                        "value" => 4.5470187,
                         "decimals" => 6,
                         "units" => "W",
                         'maxDecimals' => 6,
@@ -567,7 +567,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "epChannel" => false,
                     ),
                     array(
-                        "value" => 45.909022,
+                        "value" => 45.90909154,
                         "decimals" => 6,
                         "units" => "Ohms",
                         'maxDecimals' => 6,
@@ -603,7 +603,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                 array(),
                 array(
                     array(
-                        "value" => 0.0,
+                        "value" => -3.1E-7,
                         "decimals" => 6,
                         "units" => "A",
                         'maxDecimals' => 6,
@@ -675,7 +675,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                 array(),
                 array(
                     array(
-                        "value" => 0.314713,
+                        "value" => 0.31471252,
                         "decimals" => 6,
                         "units" => "A",
                         'maxDecimals' => 6,
@@ -831,7 +831,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "epChannel" => true,
                     ),
                     array(
-                        "value" => 14.448166,
+                        "value" => 14.44816589,
                         "decimals" => 6,
                         "units" => "V",
                         'maxDecimals' => 6,
@@ -891,7 +891,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                 array(),
                 array(
                     array(
-                        "value" => 0.314713,
+                        "value" => 0.31471252,
                         "decimals" => 6,
                         "units" => "A",
                         'maxDecimals' => 6,
@@ -903,7 +903,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "epChannel" => true,
                     ),
                     array(
-                        "value" => -14.448166,
+                        "value" => -14.44816589,
                         "decimals" => 6,
                         "units" => "V",
                         'maxDecimals' => 6,
@@ -915,7 +915,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "epChannel" => true,
                     ),
                     array(
-                        "value" => -4.547026,
+                        "value" => -4.5470187,
                         "decimals" => 6,
                         "units" => "W",
                         'maxDecimals' => 6,
@@ -927,7 +927,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "epChannel" => false,
                     ),
                     array(
-                        "value" => 45.909022,
+                        "value" => 45.90909154,
                         "decimals" => 6,
                         "units" => "Ohms",
                         'maxDecimals' => 6,
@@ -963,7 +963,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                 array(),
                 array(
                     array(
-                        "value" => 0.000181,
+                        "value" => 0.00018127,
                         "decimals" => 6,
                         "units" => "A",
                         'maxDecimals' => 6,
@@ -975,7 +975,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "epChannel" => true,
                     ),
                     array(
-                        "value" => 0.267233,
+                        "value" => 0.26723328,
                         "decimals" => 6,
                         "units" => "V",
                         'maxDecimals' => 6,
@@ -987,7 +987,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "epChannel" => true,
                     ),
                     array(
-                        "value" => 0.000048,
+                        "value" => 0.00004844,
                         "decimals" => 6,
                         "units" => "W",
                         'maxDecimals' => 6,
@@ -999,7 +999,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "epChannel" => false,
                     ),
                     array(
-                        "value" => 1476.425414,
+                        "value" => 1474.22783693,
                         "decimals" => 6,
                         "units" => "Ohms",
                         'maxDecimals' => 6,
@@ -1036,7 +1036,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                 array(),
                 array(
                     array(
-                        "value" => 0.000181,
+                        "value" => 0.00018127,
                         "decimals" => 6,
                         "units" => "A",
                         'maxDecimals' => 6,
@@ -1048,7 +1048,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "epChannel" => true,
                     ),
                     array(
-                        "value" => 0.267233,
+                        "value" => 0.26723328,
                         "decimals" => 6,
                         "units" => "V",
                         'maxDecimals' => 6,
@@ -1060,7 +1060,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "epChannel" => true,
                     ),
                     array(
-                        "value" => 0.001308,
+                        "value" => 0.00130791,
                         "decimals" => 6,
                         "units" => "W",
                         'maxDecimals' => 6,
@@ -1072,7 +1072,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "epChannel" => true,
                     ),
                     array(
-                        "value" => 1606.818182,
+                        "value" => 1606.81671073,
                         "decimals" => 6,
                         "units" => "Ohms",
                         'maxDecimals' => 6,
@@ -1108,7 +1108,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                 array(),
                 array(
                     array(
-                        "value" => 0.000181,
+                        "value" => 0.00018127,
                         "decimals" => 6,
                         "units" => "A",
                         'maxDecimals' => 6,
@@ -1120,7 +1120,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "epChannel" => true,
                     ),
                     array(
-                        "value" => 0.267233,
+                        "value" => 0.26723328,
                         "decimals" => 6,
                         "units" => "V",
                         'maxDecimals' => 6,
@@ -1192,7 +1192,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "epChannel" => true,
                     ),
                     array(
-                        "value" => 0.267233,
+                        "value" => 0.26723328,
                         "decimals" => 6,
                         "units" => "V",
                         'maxDecimals' => 6,
@@ -1204,7 +1204,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "epChannel" => true,
                     ),
                     array(
-                        "value" => 0.0,
+                        "value" => 0.00118901,
                         "decimals" => 6,
                         "units" => "W",
                         'maxDecimals' => 6,
@@ -1216,7 +1216,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "epChannel" => true,
                     ),
                     array(
-                        "value" => null,
+                        "value" => 1767.4982301,
                         "decimals" => 6,
                         "units" => "Ohms",
                         'maxDecimals' => 6,
@@ -1229,7 +1229,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                     ),
                 ),
             ),
-            array( // #9
+            array( // #10
                 array(
                     "Sensor" => array(
                         "id" => 1,
@@ -1264,7 +1264,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "epChannel" => true,
                     ),
                     array(
-                        "value" => 0.267233,
+                        "value" => 0.26723328,
                         "decimals" => 6,
                         "units" => "V",
                         'maxDecimals' => 6,
@@ -1444,7 +1444,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "immediateProcessRoutine" => 0,
                     ),
                 ),
-                "",
+                "00000000",
                 1,
                 array(),
                 array(),
@@ -1559,7 +1559,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "immediateProcessRoutine" => 0,
                     ),
                 ),
-                "D05B2511",
+                "D25C2511",
                 1,
                 array(),
                 array(),
@@ -1582,7 +1582,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "immediateProcessRoutine" => 0,
                     ),
                 ),
-                "",
+                "00000000",
                 1,
                 array(),
                 array(),
@@ -1605,7 +1605,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "immediateProcessRoutine" => 0,
                     ),
                 ),
-                "",
+                "00000000",
                 1,
                 array(),
                 array(),
@@ -1651,7 +1651,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "immediateProcessRoutine" => 0,
                     ),
                 ),
-                "",
+                "5D3DBDC3",
                 1,
                 array(),
                 array(),
@@ -1674,7 +1674,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "immediateProcessRoutine" => 0,
                     ),
                 ),
-                "",
+                "654CDC12",
                 1,
                 array(),
                 array(),
@@ -1697,7 +1697,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "immediateProcessRoutine" => 0,
                     ),
                 ),
-                "",
+                "CF0D0000",
                 1,
                 array(),
                 array(),

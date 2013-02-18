@@ -80,7 +80,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         // Null    nothing
         "extraValues" => array(10, 10, 10, 10, 10, 10),
         "extraDefault" => array(1.2, 0.5, 100, 1, 1, 10),
-        "maxDecimals" => 6,
+        "maxDecimals" => 8,
         "inputSize" => 4,
     );
     /**
@@ -131,6 +131,9 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         $Rin   = $this->getExtra(2);
         $Rbias = $this->getExtra(3);
 
+        if ($Vref == 0) {
+            return null;
+        }
         $A = ($Va / $Vref) * $Am;
         $Amod = $this->inputBiasCompensation($A, $Rin, $Rbias);
         if ($Amod != 0) {
@@ -192,7 +195,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         $R     = $this->getExtra(1);
         $Rin   = $this->getExtra(4);
         $Rbias = $this->getExtra(5);
-        if ($R == 0) {
+        if ($Vref == 0) {
             return null;
         }
         $Va = $I * $R;
@@ -245,24 +248,13 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
             return null;
         }
         bcscale(20);
-        $Am   = pow(2, 23);
-        $Vref   = $this->getExtra(0);
-        $R      = $this->getExtra(1);
-        $Rin1   = $this->getExtra(2);
-        $Rbias1 = $this->getExtra(3);
-        $Rin2   = $this->getExtra(4);
-        $Rbias2 = $this->getExtra(5);
-
-        if ($R == 0) {
+        // This calculates what 1W would be
+        $scale = $this->getRawVoltage(1) * $this->getRawCurrent(1);
+        if ($scale == 0) {
             return null;
         }
-
-        $A = bcdiv($A, $this->gain(0));
-        $A = bcdiv($A, $this->gain(1));
-        $A = $this->inputBiasCompensation($A, $Rin1, $Rbias1);
-        $A = $this->inputBiasCompensation($A, $Rin2, $Rbias2);
-        $P = bcdiv(bcdiv(bcmul($A, bcmul($Vref, $Vref)), bcmul($Am, $Am)), $R);
-
+        // We then scale what we got against that.
+        $P = bcdiv($A, $scale);
         return round($P, $this->get("maxDecimals"));
     }
     /**
@@ -276,30 +268,14 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
     */
     protected function getRawPower($P)
     {
-        bcscale(20);
-        $Am   = pow(2, 23);
-        $Vref   = $this->getExtra(0);
-        $R      = $this->getExtra(1);
-        $Rin1   = $this->getExtra(2);
-        $Rbias1 = $this->getExtra(3);
-        $Rin2   = $this->getExtra(4);
-        $Rbias2 = $this->getExtra(5);
-
-        if (($R == 0) || ($Vref == 0) || is_null($P)) {
+        if (is_null($P)) {
             return null;
         }
-        $A = $P / (($Vref * $Vref) / ($Am * $Am) / $R);
-
-        $C1 = $this->inputBiasCompensation(1.0, $Rin1, $Rbias1);
-        $C2 = $this->inputBiasCompensation(1.0, $Rin2, $Rbias2);
-        if (($C2 == 0) || ($C1 == 0)) {
-            return null;
-        }
-        $A = $A / ($C1 * $C2);
-        $A = $A * $this->gain(0);
-        $A = $A * $this->gain(1);
-
-        return (int)round($A);
+        // This calculates what 1W would be
+        $scale = $this->getRawVoltage(1) * $this->getRawCurrent(1);
+        // We then scale what we got against that.
+        $A = bcmul($P, $scale);
+         return (int)round($A);
     }
     /**
     * Changes a raw reading into a output value
@@ -320,23 +296,16 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
             return null;
         }
         bcscale(20);
-        $R      = $this->getExtra(1);
-        $Rin1   = (float)$this->getExtra(2);
-        $Rbias1 = (float)$this->getExtra(3);
-        $Rin2   = (float)$this->getExtra(4);
-        $Rbias2 = (float)$this->getExtra(5);
-
-        $A  = bcdiv($A, $this->gain(1));
-        $A  = bcmul($A, $this->gain(0));
-        $C1 = $this->inputBiasCompensation(1.0, $Rin1, $Rbias1);
-        $C2 = $this->inputBiasCompensation(1.0, $Rin2, $Rbias2);
-        if ($C2 == 0) {
+        $I = $this->getRawCurrent(1);
+        if ($I == 0) {
             return null;
         }
-        $A = bcdiv(bcmul($A, $C1), $C2);
-        $P = bcmul($A, $R);
+        // This calculates what 1 Ohm would be
+        $scale = $this->getRawVoltage(1) / $I;
+        // We then scale what we got against that.
+        $Z = bcdiv($A, $scale);
 
-        return round($P, $this->get("maxDecimals"));
+        return round($Z, $this->get("maxDecimals"));
     }
     /**
     * Changes a raw reading into a output value
@@ -375,26 +344,14 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         if (is_null($Z)) {
             return null;
         }
-        bcscale(20);
-        $R      = $this->getExtra(1);
-        $Rin1   = (float)$this->getExtra(2);
-        $Rbias1 = (float)$this->getExtra(3);
-        $Rin2   = (float)$this->getExtra(4);
-        $Rbias2 = (float)$this->getExtra(5);
-
-        if ($R == 0) {
+        $I = $this->getRawCurrent(1);
+        if ($I == 0) {
             return null;
         }
-        $A = $Z / $R;
-        $C1 = $this->inputBiasCompensation(1.0, $Rin1, $Rbias1);
-        $C2 = $this->inputBiasCompensation(1.0, $Rin2, $Rbias2);
-        if ($C1 == 0) {
-            return null;
-        }
-        $A = ($A / $C1) * $C2;
-        $A  *= $this->gain(1);
-        $A  /= $this->gain(0);
-
+        // This calculates what 1 Ohm would be
+        $scale = $this->getRawVoltage(1) / $I;
+        // We then scale what we got against that.
+        $A = bcmul($Z, $scale);
         return (int)round($A);
     }
     /**
