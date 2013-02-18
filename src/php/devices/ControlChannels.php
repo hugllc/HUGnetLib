@@ -105,7 +105,7 @@ class ControlChannels
         if (is_string($channels)) {
             $channels = json_decode($channels, true);
         }
-        foreach (array_keys($chans) as $chan) {
+        foreach ($chans as $chan => $value) {
             if (!is_string($value["label"]) || empty($value["label"])) {
                 $chans[$chan]["label"] = "Control Channel $chan";
             }
