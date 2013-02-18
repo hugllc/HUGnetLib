@@ -204,11 +204,10 @@ class Daemon extends CLI
     */
     public function quit()
     {
-        if ($this->_loop) {
+        if (!$this->system()->quit()) {
             $this->system()->quit(true);
             $this->out("Got exit signal");
             $this->out("Closing things out.  Please be patient.");
-            $this->_loop = false;
         }
     }
     /**
@@ -218,7 +217,7 @@ class Daemon extends CLI
     */
     public function loop()
     {
-        return $this->_loop;
+        return !$this->system()->quit();
     }
     /**
     * Creates the object

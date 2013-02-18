@@ -120,7 +120,6 @@ class Gather extends \HUGnet\ui\Daemon
         if ($this->_runtime["gather"] !== false) {
             $this->_ids = $this->_device->ids(array("Active" => 1));
             foreach (array_keys((array)$this->_ids) as $key) {
-                parent::main();
                 if (!$this->loop()) {
                     break;
                 }
