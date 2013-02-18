@@ -486,11 +486,12 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
     public function channels()
     {
         $Enable = $this->_hardwareEnable();
+        $decimals = $this->get("maxDecimals");
         return array(
             array(
-                "decimals" => 6,
+                "decimals" => $decimals,
                 "units" => "A",
-                "maxDecimals" => 6,
+                "maxDecimals" => $decimals,
                 "storageUnit" => "A",
                 "unitType" => "Current",
                 "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
@@ -499,9 +500,9 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
                 "epChannel" => true,
             ),
             array(
-                "decimals" => 6,
+                "decimals" => $decimals,
                 "units" => "V",
-                "maxDecimals" => 6,
+                "maxDecimals" => $decimals,
                 "storageUnit" => "V",
                 "unitType" => "Voltage",
                 "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
@@ -510,9 +511,9 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
                 "epChannel" => true,
             ),
             array(
-                "decimals" => 6,
+                "decimals" => $decimals,
                 "units" => "W",
-                "maxDecimals" => 6,
+                "maxDecimals" => $decimals,
                 "storageUnit" => "W",
                 "unitType" => "Power",
                 "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
@@ -521,9 +522,9 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
                 "epChannel" => $Enable,
             ),
             array(
-                "decimals" => 6,
+                "decimals" => $decimals,
                 "units" => "Ohms",
-                "maxDecimals" => 6,
+                "maxDecimals" => $decimals,
                 "storageUnit" => "Ohms",
                 "unitType" => "Impedance",
                 "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
