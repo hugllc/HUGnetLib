@@ -76,6 +76,7 @@ abstract class DriverVirtual extends Driver
         "FE:DEFAULT"                 => "EmptyVirtual",
         "FE:AlarmVirtual"            => "AlarmVirtual",
         "FE:BinaryVirtual"           => "BinaryVirtual",
+        "FE:CalorimeterPower"        => "CalorimeterPower",
         "FE:CelaniPowerCalVirtual"   => "CelaniPowerCalVirtual",
         "FE:CloneVirtual"            => "CloneVirtual",
         "FE:ComputationVirtual"      => "ComputationVirtual",
