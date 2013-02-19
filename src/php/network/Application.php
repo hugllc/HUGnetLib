@@ -296,6 +296,9 @@ final class Application
             } else {
                 unset($this->_queue[$qid]);
             }
+        } else {
+            // This is dealt with, so we should erase it.
+            unset($this->_queue[$qid]);
         }
         $this->_monitor($packet);
 
