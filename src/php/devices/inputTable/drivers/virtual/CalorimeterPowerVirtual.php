@@ -72,8 +72,8 @@ class CalorimeterPowerVirtual extends \HUGnet\devices\inputTable\DriverVirtual
             array(), array(), 20, 20, 20
         ),
         "extraText" => array(
-            "Inner Tube Temp",
-            "Outer Tube Temp",
+            "Inner Tube Voltage",
+            "Outer Tube Voltage",
             "X^2 Coefficient",
             "X^1 Coefficient",
             "Constant",
