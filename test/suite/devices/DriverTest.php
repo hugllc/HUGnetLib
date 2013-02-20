@@ -235,7 +235,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                 "0039-12-02-C",
                 "0039-38-01-C",
                 "5.6.7",
-                "E00391200",
+                "E00391202",
             ),
             array(
                 "0039-11-02-C",
@@ -248,18 +248,6 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                 "0039-24-02-P",
                 "5.6.7",
                 "EVIRTUAL",
-            ),
-            array(
-                "0039-12-02-C",
-                "0039-13-01-C",
-                "5.6.7",
-                "E00391200",
-            ),
-            array(
-                "0039-12-02-C",
-                "0039-38-01-C",
-                "5.6.7",
-                "E00391200",
             ),
             array(
                 "0039-28-01-A",
