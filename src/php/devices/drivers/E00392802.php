@@ -72,8 +72,8 @@ class E00392802 extends \HUGnet\devices\Driver
         "job"  => "sense",
         "arch" => "AVR",
         "InputTables" => 16,
-        "OutputTables" => 2,
-        "ProcessTables" => 8,
+        "OutputTables" => 8,
+        "ProcessTables" => 2,
     );
 
 }
