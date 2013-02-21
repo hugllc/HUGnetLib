@@ -215,6 +215,9 @@ class Action
                 $sen = $this->device->input($i);
                 $sen->decode($ret->reply());
                 $sen->store();
+            } else {
+                // Failure.  Stop trying
+                return;
             }
         }
         $output = (int)$this->device->get("OutputTables");
@@ -227,6 +230,9 @@ class Action
                 $out = $this->device->output($i);
                 $out->decode($ret->reply());
                 $out->store();
+            } else {
+                // Failure.  Stop trying
+                return;
             }
         }
         $process = (int)$this->device->get("ProcessTables");
@@ -239,6 +245,9 @@ class Action
                 $proc = $this->device->process($i);
                 $proc->decode($ret->reply());
                 $proc->store();
+            } else {
+                // Failure.  Stop trying
+                return;
             }
         }
     }
