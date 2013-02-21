@@ -199,7 +199,7 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
             if (is_array($this->_tableEntry)) {
                 $table = $this->_tableEntry;
             } else {
-                $extra = $this->input()->get("extra");
+                $extra = $this->input()->table()->get("extra");
                 $this->_table()->getRow((int)$extra[0]);
                 $table = $this->_table()->toArray();
             }
