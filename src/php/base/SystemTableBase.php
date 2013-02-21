@@ -122,7 +122,7 @@ abstract class SystemTableBase
     *
     * @return reference to the table class object
     */
-    protected function &table()
+    public function &table()
     {
         if (!is_object($this->_table)) {
             $this->_table = $this->system()->table($this->tableClass);
