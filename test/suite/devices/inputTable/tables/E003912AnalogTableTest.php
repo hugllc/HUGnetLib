@@ -146,11 +146,11 @@ class E003912AnalogTableTest extends \PHPUnit_Framework_TestCase
                     'REFS' => 3,
                     'ADLAR' => 0,
                     'MUX' => 4,
-                    'driver' => "40:ControllerVoltage",
+                    'driver' => "40:BARO4",
                     'priority' => 16,
                     'offset' => 0x1234,
                 ),
-                "400010443412",
+                "400110443412",
             ),
         );
     }
@@ -193,7 +193,7 @@ class E003912AnalogTableTest extends \PHPUnit_Framework_TestCase
                     'REFS' => 1,
                     'ADLAR' => 0,
                     'MUX' => 4,
-                    'driver' => "40:ControllerVoltage",
+                    'driver' => "40:DEFAULT",
                     'priority' => 16,
                     'offset' => 0x1234,
                 ),

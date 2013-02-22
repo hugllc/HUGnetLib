@@ -65,14 +65,32 @@ class E003912AnalogTable
     * This is where we store our sensor object
     */
     private $_subdriver = array(
+        0x00 => array(
+            "DEFAULT"            => 0,
+        ),
         0x02 => array(
-            "ControllerTemp" => 0,
+            "DEFAULT"            => 0,
+            "AVRB57560G0103F000" => 1,
+            "imcSolar"           => 2,
+            "potDirection"       => 3,
+        ),
+        0x10 => array(
+            "DEFAULT"            => 0,
+            "chsMss"             => 0,
+        ),
+        0x30 => array(
+            "DEFAULT"            => 0,
+            "OSRAM BPW-34"       => 0,
         ),
         0x40 => array(
-            "ControllerVoltage" => 0,
+            "DEFAULT"            => 0,
+            "BARO4"              => 1,
+            "GA100"              => 2,
+            "HitachiVFDFan"      => 3,
         ),
         0x50 => array(
-            "ControllerVoltage" => 0,
+            "DEFAULT"            => 0,
+            "dwyer616"           => 1,
         ),
     );
     /**
@@ -82,9 +100,19 @@ class E003912AnalogTable
         "driver"  => array(
             "value" => "02:ControllerTemp",
             "valid" => array(
-                "02:ControllerTemp"    => "Temperature Sensor",
-                "40:ControllerVoltage" => "Voltage Sensor",
-                "50:ControllerCurrent" => "Current Sensor",
+                "00:DEFAULT"                 => "BC2322 Thermistor (Old)",
+                "02:DEFAULT"                 => "BC2322 Thermistor",
+                "02:AVRB57560G0103F000"      => "B5756 Thermistor",
+                "02:imcSolar"                => "IMC Solar Temperature",
+                "02:potDirection"            => "POT Direction",
+                "10:chsMss"                  => "CHS MSS Humidity Sensor",
+                "30:OSRAM BPW-34"            => "Diode Light Sensor",
+                "40:DEFAULT"                 => "Generic Voltage",
+                "40:BARO4"                   => "Barometric Pressure Sensor",
+                "40:GA100"                   => "GA100 Pressure Sensor",
+                "40:HitachiVFDFan"           => "VFD Fan Speed",
+                "50:DEFAULT"                 => "Generic Current",
+                "50:dwyer616"                => "Dwyer 616 Pressure Sensor",
             ),
             "desc" => "Driver",
         ),
