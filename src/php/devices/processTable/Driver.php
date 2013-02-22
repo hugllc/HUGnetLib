@@ -144,8 +144,8 @@ abstract class Driver
     *
     * @param string $driver   The driver to load
     * @param object &$process The process object
-    * @param array  $table   The table to use.  This forces the table, instead of
-    *                        using the database to find it
+    * @param array  $table    The table to use.  This forces the table, instead of
+    *                         using the database to find it
     *
     * @return null
     */
