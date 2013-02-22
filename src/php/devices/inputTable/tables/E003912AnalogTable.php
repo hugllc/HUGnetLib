@@ -87,10 +87,12 @@ class E003912AnalogTable
             "BARO4"              => 1,
             "GA100"              => 2,
             "HitachiVFDFan"      => 3,
+            "fetBoard"           => 4,
         ),
         0x50 => array(
             "DEFAULT"            => 0,
             "dwyer616"           => 1,
+            "fetBoard"           => 2,
         ),
     );
     /**
@@ -98,7 +100,7 @@ class E003912AnalogTable
     */
     private $_params = array(
         "driver"  => array(
-            "value" => "02:ControllerTemp",
+            "value" => "02:DEFAULT",
             "valid" => array(
                 "00:DEFAULT"                 => "BC2322 Thermistor (Old)",
                 "02:DEFAULT"                 => "BC2322 Thermistor",
@@ -111,8 +113,10 @@ class E003912AnalogTable
                 "40:BARO4"                   => "Barometric Pressure Sensor",
                 "40:GA100"                   => "GA100 Pressure Sensor",
                 "40:HitachiVFDFan"           => "VFD Fan Speed",
+                "40:fetBoard"                => "FET Board Voltage",
                 "50:DEFAULT"                 => "Generic Current",
                 "50:dwyer616"                => "Dwyer 616 Pressure Sensor",
+                "50:fetBoard"                => "FET Board Current",
             ),
             "desc" => "Driver",
         ),

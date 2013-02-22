@@ -160,9 +160,7 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
     {
         if (!is_object($this->_driver)) {
             $entry  = $this->_entry();
-            var_dump($entry);
             $driver = explode(":", (string)$entry->get("driver"));
-            var_dump($driver);
             $input  = $this->input();
             $this->_driver = \HUGnet\devices\inputTable\DriverAVR::factory(
                 \HUGnet\devices\inputTable\Driver::getDriver(

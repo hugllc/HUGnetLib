@@ -205,7 +205,7 @@ class E003912AnalogTableTest extends \PHPUnit_Framework_TestCase
                 "01",
                 false,
                 array(
-                    'driver' => '02:ControllerTemp',
+                    'driver' => '02:DEFAULT',
                     'priority' => 0,
                     'offset' => 0,
                     'REFS' => 1,
@@ -220,7 +220,7 @@ class E003912AnalogTableTest extends \PHPUnit_Framework_TestCase
                 "FFFFFFFFFFFFFFFF",
                 true,
                 array(
-                    'driver' => '02:ControllerTemp',
+                    'driver' => '02:DEFAULT',
                     'priority' => 255,
                     'offset' => 65535,
                     'REFS' => 1,
