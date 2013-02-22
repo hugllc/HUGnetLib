@@ -37,9 +37,6 @@
 namespace HUGnet\devices\inputTable\tables;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
-/** This is our base class */
-require_once dirname(__FILE__)."/AVRAnalogTable.php";
-
 /**
  * Base driver class for devices.
  *
@@ -58,8 +55,12 @@ require_once dirname(__FILE__)."/AVRAnalogTable.php";
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class E003912AnalogTable extends AVRAnalogTable
+class AVRAnalogTable
 {
+    /**
+    * This is where we store our sensor object
+    */
+    private $_sensor;
     /**
     * This is where we store our sensor object
     */
@@ -139,7 +140,6 @@ class E003912AnalogTable extends AVRAnalogTable
             'valid' => array(
                 0 => "AREF",
                 1 => "AVCC",
-                2 => "Internal 1.1V",
             ),
             'desc'  => "Reference",
             'register' => "ADMUX",
@@ -170,30 +170,6 @@ class E003912AnalogTable extends AVRAnalogTable
                 5  => "ADC5 Single Ended",
                 6  => "ADC6 Single Ended",
                 7  => "ADC7 Single Ended",
-                8  => "ADC8 Single Ended",
-                9  => "ADC9 Single Ended",
-                10 => "ADC10 Single Ended",
-                11 => "ADC0/ADC1 Differential 20x",
-                12 => "ADC0/ADC1 Differential 1x",
-                13 => "ADC1/ADC1 Differential 20x",
-                14 => "ADC2/ADC1 Differential 20x",
-                15 => "ADC2/ADC1 Differential 1x",
-                16 => "ADC2/ADC3 Differential 1x",
-                17 => "ADC3/ADC3 Differential 20x",
-                18 => "ADC4/ADC3 Differential 20x",
-                19 => "ADC4/ADC3 Differential 1x",
-                20 => "ADC4/ADC5 Differential 20x",
-                21 => "ADC4/ADC5 Differential 1x",
-                22 => "ADC5/ADC5 Differential 20x",
-                23 => "ADC6/ADC5 Differential 20x",
-                24 => "ADC6/ADC5 Differential 1x",
-                25 => "ADC8/ADC9 Differential 20x",
-                26 => "ADC8/ADC9 Differential 1x",
-                27 => "ADC9/ADC9 Differential 20x",
-                28 => "ADC10/ADC9 Differential 20x",
-                29 => "ADC10/ADC9 Differential 1x",
-                30 => "1.1V Single Ended",
-                31 => "0V Single Ended"
             ),
             'desc'  => "MUX Setting",
             'register' => "ADMUX",
@@ -204,13 +180,216 @@ class E003912AnalogTable extends AVRAnalogTable
     *
     * @param object $sensor The sensor object we are working with
     * @param mixed  $config This could be a string or array or null
+    */
+    protected function __construct($sensor, $config = null)
+    {
+        $this->_sensor = &$sensor;
+        if (is_string($config)) {
+            $this->decode($config);
+        } else if (is_array($config)) {
+            $this->fromArray($config);
+        }
+    }
+    /**
+    * This is the destructor
+    */
+    public function __destruct()
+    {
+        unset($this->_sensor);
+    }
+    /**
+    * This is the constructor
+    *
+    * @param object $sensor The sensor object we are working with
+    * @param mixed  $config This could be a string or array or null
     *
     * @return object The new object
     */
     public static function &factory($sensor, $config = null)
     {
-        $object = new E003912AnalogTable($sensor, $config);
+        $object = new AVRAnalogTable($sensor, $config);
         return $object;
+    }
+    /**
+    * This builds teh ADCFLT Register
+    *
+    * @param string $register The register to get
+    * @param string $set      The values to set the register to
+    *
+    * @return 16 bit integer that is the FLT setup
+    */
+    public function register($register, $set = null)
+    {
+        if (is_string($set) || is_int($set)) {
+            if (is_string($set)) {
+                $set = hexdec($set);
+            }
+            foreach ($this->params as $field => $vals) {
+                if (($vals["register"] === $register) && !isset($vals["hidden"])) {
+                    $mask = $vals["mask"] << $vals["bit"];
+                    $val = ($set & $mask) >> $vals["bit"];
+                    $this->params($field, $val);
+                }
+            }
+        }
+        $ret  = 0;
+        $bits = 0;
+        foreach ($this->params as $field => $vals) {
+            if ($vals["register"] === $register) {
+                $val = $vals["value"] & $vals["mask"];
+                $val <<= $vals["bit"];
+                $ret |= $val;
+                $bits += $vals["bits"];
+            }
+        }
+        return sprintf("%0".round($bits / 4)."X", $ret);
+    }
+    /**
+    * This builds teh ADCFLT Register
+    *
+    * @param string $set The values to set the register to
+    *
+    * @return 16 bit integer that is the FLT setup
+    */
+    public function driver($set = null)
+    {
+        if (is_string($set)) {
+            if (strpos($set, ":") === false) {
+                $driver = hexdec(substr($set, 0, 2));
+                $subdriver = hexdec(substr($set, 2, 2));
+                $array = array_flip((array)$this->subdriver[$driver]);
+                $set = sprintf("%02x:%s", $driver, $array[$subdriver]);
+            }
+        }
+        $driver = $this->params("driver", $set);
+        $drivers = explode(":", $driver);
+        $driver = hexdec($drivers[0]);
+        return sprintf(
+            "%02X%02X",
+            $driver,
+            $this->subdriver[$driver][$drivers[1]]
+        );
+    }
+    /**
+    * This builds teh ADCFLT Register
+    *
+    * @param string $param The parameter to set
+    * @param string $set   The values to set the register to
+    *
+    * @return 16 bit integer in a hex string
+    */
+    private function params($param, $set = null)
+    {
+        if (is_int($set) || is_string($set)) {
+            $par = &$this->params[$param];
+            if (is_int($set)) {
+                $set &= $par["mask"];
+            }
+            if (is_array($par["valid"]) && !isset($par["valid"][$set])) {
+                $check = false;
+            } else {
+                $check = true;
+            }
+            if ($check) {
+                $par["value"] = $set;
+            }
+        }
+        return $this->params[$param]["value"];
+    }
+    /**
+    * This gets a parameter
+    *
+    * @param string $param The parameter to set
+    *
+    * @return 16 bit integer in a hex string
+    */
+    public function get($param)
+    {
+        return $this->params($param);
+    }
+    /**
+    * This takes the class and makes it into a setup string
+    *
+    * @return string The encoded string
+    */
+    public function encode()
+    {
+        $ret  = "";
+        $ret .= $this->driver();
+        $ret .= sprintf("%02X", $this->params("priority"));
+        $ret .= $this->register("ADMUX");
+        $offset = $this->params("offset");
+        $ret .= sprintf("%02X%02X", ($offset & 0xFF), (($offset>>8) & 0xFF));
+        return $ret;
+    }
+    /**
+    * This builds the class from a setup string
+    *
+    * @param string $string The setup string to decode
+    *
+    * @return bool True on success, false on failure
+    */
+    public function decode($string)
+    {
+        if (strlen($string) >= 12) {
+            $this->driver(substr($string, 0, 4));
+            $this->params("priority", hexdec(substr($string, 4, 2)));
+            $this->register("ADMUX", hexdec(substr($string, 6, 2)));
+            $this->params(
+                "offset",
+                hexdec(substr($string, 10, 2).substr($string, 8, 2))
+            );
+            return true;
+        }
+        return false;
+    }
+    /**
+    * Returns the table as an array
+    *
+    * @param bool $default Whether or not to include the default values
+    *
+    * @return array
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function toArray($default = false)
+    {
+        $return = array();
+        foreach (array_keys($this->params) as $field) {
+            $return[$field] = $this->params($field);
+        }
+        return $return;
+    }
+    /**
+    * Returns the table as an array
+    *
+    * @param bool $default Whether or not to include the default values
+    *
+    * @return array
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function fullArray($default = false)
+    {
+        $return = array();
+        foreach ($this->params as $field => $vals) {
+            $return[$field] = $vals;
+            $return[$field]["value"] = $this->params($field);
+        }
+        return $return;
+    }
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param array $array This is an array of this class's attributes
+    *
+    * @return null
+    */
+    public function fromArray($array)
+    {
+        foreach (array_keys($this->params) as $field) {
+            if (isset($array[$field])) {
+                $this->params($field, $array[$field]);
+            }
+        }
     }
     /**
     * Gets the total gain.
@@ -219,25 +398,7 @@ class E003912AnalogTable extends AVRAnalogTable
     */
     public function gain()
     {
-        $mux  = (int)$this->params("MUX");
-        switch($mux) {
-        case 11:
-        case 13:
-        case 14:
-        case 17:
-        case 18:
-        case 22:
-        case 23:
-        case 25:
-        case 27:
-        case 28:
-            $gain = 20;
-            break;
-        default:
-            $gain = 1;
-            break;
-        }
-        return $gain;
+        return 1;
     }
 
 }

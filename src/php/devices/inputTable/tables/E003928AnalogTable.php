@@ -37,6 +37,8 @@
 namespace HUGnet\devices\inputTable\tables;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
+/** This is our base class */
+require_once dirname(__FILE__)."/AVRAnalogTable.php";
 /**
  * Base driver class for devices.
  *
@@ -55,16 +57,12 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class E003928AnalogTable
+class E003928AnalogTable extends AVRAnalogTable
 {
     /**
     * This is where we store our sensor object
     */
-    private $_sensor;
-    /**
-    * This is where we store our sensor object
-    */
-    private $_subdriver = array(
+    protected $subdriver = array(
         0x00 => array(
             "DEFAULT"            => 0,
         ),
@@ -98,7 +96,7 @@ class E003928AnalogTable
     /**
     * This is where we setup the sensor object
     */
-    private $_params = array(
+    protected $params = array(
         "driver"  => array(
             "value" => "02:DEFAULT",
             "valid" => array(
@@ -193,28 +191,6 @@ class E003928AnalogTable
     *
     * @param object $sensor The sensor object we are working with
     * @param mixed  $config This could be a string or array or null
-    */
-    private function __construct($sensor, $config = null)
-    {
-        $this->_sensor = &$sensor;
-        if (is_string($config)) {
-            $this->decode($config);
-        } else if (is_array($config)) {
-            $this->fromArray($config);
-        }
-    }
-    /**
-    * This is the destructor
-    */
-    public function __destruct()
-    {
-        unset($this->_sensor);
-    }
-    /**
-    * This is the constructor
-    *
-    * @param object $sensor The sensor object we are working with
-    * @param mixed  $config This could be a string or array or null
     *
     * @return object The new object
     */
@@ -223,215 +199,6 @@ class E003928AnalogTable
         $object = new E003928AnalogTable($sensor, $config);
         return $object;
     }
-    /**
-    * This builds teh ADCFLT Register
-    *
-    * @param string $register The register to get
-    * @param string $set      The values to set the register to
-    *
-    * @return 16 bit integer that is the FLT setup
-    */
-    public function register($register, $set = null)
-    {
-        if (is_string($set) || is_int($set)) {
-            if (is_string($set)) {
-                $set = hexdec($set);
-            }
-            foreach ($this->_params as $field => $vals) {
-                if (($vals["register"] === $register) && !isset($vals["hidden"])) {
-                    $mask = $vals["mask"] << $vals["bit"];
-                    $val = ($set & $mask) >> $vals["bit"];
-                    $this->_params($field, $val);
-                }
-            }
-        }
-        $ret  = 0;
-        $bits = 0;
-        foreach ($this->_params as $field => $vals) {
-            if ($vals["register"] === $register) {
-                $val = $vals["value"] & $vals["mask"];
-                $val <<= $vals["bit"];
-                $ret |= $val;
-                $bits += $vals["bits"];
-            }
-        }
-        return sprintf("%0".round($bits / 4)."X", $ret);
-    }
-    /**
-    * This builds teh ADCFLT Register
-    *
-    * @param string $set The values to set the register to
-    *
-    * @return 16 bit integer that is the FLT setup
-    */
-    public function driver($set = null)
-    {
-        if (is_string($set)) {
-            if (strpos($set, ":") === false) {
-                $driver = hexdec(substr($set, 0, 2));
-                $subdriver = hexdec(substr($set, 2, 2));
-                $array = array_flip((array)$this->_subdriver[$driver]);
-                $set = sprintf("%02x:%s", $driver, $array[$subdriver]);
-            }
-        }
-        $driver = $this->_params("driver", $set);
-        $drivers = explode(":", $driver);
-        $driver = hexdec($drivers[0]);
-        return sprintf(
-            "%02X%02X",
-            $driver,
-            $this->_subdriver[$driver][$drivers[1]]
-        );
-    }
-    /**
-    * This builds teh ADCFLT Register
-    *
-    * @param string $param The parameter to set
-    * @param string $set   The values to set the register to
-    *
-    * @return 16 bit integer in a hex string
-    */
-    private function _params($param, $set = null)
-    {
-        if (is_int($set) || is_string($set)) {
-            $par = &$this->_params[$param];
-            if (is_int($set)) {
-                $set &= $par["mask"];
-            }
-            if (is_array($par["valid"]) && !isset($par["valid"][$set])) {
-                $check = false;
-            } else {
-                $check = true;
-            }
-            if ($check) {
-                $par["value"] = $set;
-            }
-        }
-        return $this->_params[$param]["value"];
-    }
-    /**
-    * This gets a parameter
-    *
-    * @param string $param The parameter to set
-    *
-    * @return 16 bit integer in a hex string
-    */
-    public function get($param)
-    {
-        return $this->_params($param);
-    }
-    /**
-    * This takes the class and makes it into a setup string
-    *
-    * @return string The encoded string
-    */
-    public function encode()
-    {
-        $ret  = "";
-        $ret .= $this->driver();
-        $ret .= sprintf("%02X", $this->_params("priority"));
-        $ret .= $this->register("ADMUX");
-        $offset = $this->_params("offset");
-        $ret .= sprintf("%02X%02X", ($offset & 0xFF), (($offset>>8) & 0xFF));
-        return $ret;
-    }
-    /**
-    * This builds the class from a setup string
-    *
-    * @param string $string The setup string to decode
-    *
-    * @return bool True on success, false on failure
-    */
-    public function decode($string)
-    {
-        if (strlen($string) >= 12) {
-            $this->driver(substr($string, 0, 4));
-            $this->_params("priority", hexdec(substr($string, 4, 2)));
-            $this->register("ADMUX", hexdec(substr($string, 6, 2)));
-            $this->_params(
-                "offset",
-                hexdec(substr($string, 10, 2).substr($string, 8, 2))
-            );
-            return true;
-        }
-        return false;
-    }
-    /**
-    * Returns the table as an array
-    *
-    * @param bool $default Whether or not to include the default values
-    *
-    * @return array
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-    */
-    public function toArray($default = false)
-    {
-        $return = array();
-        foreach (array_keys($this->_params) as $field) {
-            $return[$field] = $this->_params($field);
-        }
-        return $return;
-    }
-    /**
-    * Returns the table as an array
-    *
-    * @param bool $default Whether or not to include the default values
-    *
-    * @return array
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-    */
-    public function fullArray($default = false)
-    {
-        $return = array();
-        foreach ($this->_params as $field => $vals) {
-            $return[$field] = $vals;
-            $return[$field]["value"] = $this->_params($field);
-        }
-        return $return;
-    }
-    /**
-    * Sets all of the endpoint attributes from an array
-    *
-    * @param array $array This is an array of this class's attributes
-    *
-    * @return null
-    */
-    public function fromArray($array)
-    {
-        foreach (array_keys($this->_params) as $field) {
-            if (isset($array[$field])) {
-                $this->_params($field, $array[$field]);
-            }
-        }
-    }
-    /**
-    * Gets the total gain.
-    *
-    * @return null
-    */
-    public function gain()
-    {
-        $mux  = (int)$this->_params("MUX");
-        $gain = 1;
-        switch($mux) {
-        case 8:
-        case 9:
-        case 12:
-        case 13:
-            $gain = 10;
-            break;
-        case 10:
-        case 11:
-        case 14:
-        case 15:
-            $gain = 200;
-            break;
-        default:
-            /* Do nothing */
-        }
-        return $gain;
-    }
-
 }
 
 
