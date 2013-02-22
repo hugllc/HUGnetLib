@@ -39,7 +39,7 @@ namespace HUGnet\devices;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our base class */
-require_once dirname(__FILE__)."/XTableBase.php";
+require_once dirname(__FILE__)."/../base/IOPBase.php";
 
 /**
  * Base system class.
@@ -58,7 +58,7 @@ require_once dirname(__FILE__)."/XTableBase.php";
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class Output extends XTableBase
+class Output extends \HUGnet\base\IOPBase
 {
     /** These are our keys to search for.  Null means search everything given */
     protected $keys = array("dev", "output");

@@ -34,9 +34,9 @@
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\devices;
+namespace HUGnet\base;
 /** This is a required class */
-require_once CODE_BASE.'devices/XTableBase.php';
+require_once CODE_BASE.'base/IOPBase.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is the dummy table container */
@@ -60,7 +60,7 @@ require_once CODE_BASE."devices/datachan/Driver.php";
  * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class XTableBaseTest extends \PHPUnit_Framework_TestCase
+class IOPBaseTest extends \PHPUnit_Framework_TestCase
 {
     /**
     * Sets up the fixture, for example, opens a network connection.
@@ -134,10 +134,10 @@ class XTableBaseTest extends \PHPUnit_Framework_TestCase
         $dev = new \HUGnet\DummyBase("Device");
         // This just resets the mock
         $table->resetMock();
-        $obj = XTableBaseStub::factory($config, $gateway, $class, $dev);
+        $obj = IOPBaseStub::factory($config, $gateway, $class, $dev);
         // Make sure we have the right object
         $this->assertInstanceOf(
-            "HUGnet\devices\XTableBase", $obj, "Class wrong"
+            "HUGnet\base\IOPBase", $obj, "Class wrong"
         );
     }
     /**
@@ -163,7 +163,7 @@ class XTableBaseTest extends \PHPUnit_Framework_TestCase
                 ),
                 new \HUGnet\DummyTable("Table"),
                 array(
-                    'longName' => 'Silly XTableBase Driver 1',
+                    'longName' => 'Silly IOPBase Driver 1',
                     'shortName' => 'SSD1',
                     'id' => 253,
                     'asdf' => 3,
@@ -173,7 +173,7 @@ class XTableBaseTest extends \PHPUnit_Framework_TestCase
                         2 => 3,
                         3 => 4,
                     ),
-                    'type' => 'TestXTableBaseDriver1',
+                    'type' => 'TestIOPBaseDriver1',
                     "extraText" => array(),
                     "extraDefault" => array(),
                     "extraValues" => array(),
@@ -194,7 +194,7 @@ class XTableBaseTest extends \PHPUnit_Framework_TestCase
                 ),
                 new \HUGnet\DummyTable("Table"),
                 array(
-                    'longName' => 'Silly XTableBase Driver 1',
+                    'longName' => 'Silly IOPBase Driver 1',
                     'shortName' => 'SSD1',
                     'id' => 255,
                     'asdf' => 3,
@@ -204,7 +204,7 @@ class XTableBaseTest extends \PHPUnit_Framework_TestCase
                         2 => 3,
                         3 => 4,
                     ),
-                    'type' => 'TestXTableBaseDriver1',
+                    'type' => 'TestIOPBaseDriver1',
                     "extraText" => array(),
                     "extraDefault" => array(),
                     "extraValues" => array(),
@@ -229,7 +229,7 @@ class XTableBaseTest extends \PHPUnit_Framework_TestCase
         $sys = new \HUGnet\DummySystem("System");
         $dev = new \HUGnet\DummyBase("Device");
         $sys->resetMock($config);
-        $obj = XTableBaseStub::factory($sys, null, $class, $dev);
+        $obj = IOPBaseStub::factory($sys, null, $class, $dev);
         $json = $obj->toArray();
         $this->assertEquals($expect, $json);
         unset($obj);
@@ -246,7 +246,7 @@ class XTableBaseTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Table" => array(
                         "get" => array(
-                            "driver" => "EmptyXTableBase",
+                            "driver" => "EmptyIOPBase",
                             "id" => 2,
                         ),
                     ),
@@ -266,7 +266,7 @@ class XTableBaseTest extends \PHPUnit_Framework_TestCase
                 ),
                 new \HUGnet\DummyTable("Table"),
                 "longName",
-                "Silly XTableBase Driver 1",
+                "Silly IOPBase Driver 1",
             ),
         );
     }
@@ -288,7 +288,7 @@ class XTableBaseTest extends \PHPUnit_Framework_TestCase
         $sys = new \HUGnet\DummySystem("System");
         $dev = new \HUGnet\DummyBase("Device");
         $sys->resetMock($config);
-        $obj = XTableBaseStub::factory($sys, null, $class, $dev);
+        $obj = IOPBaseStub::factory($sys, null, $class, $dev);
         $this->assertSame($expect, $obj->get($field));
         unset($obj);
     }
@@ -388,7 +388,7 @@ class XTableBaseTest extends \PHPUnit_Framework_TestCase
         $sys = new \HUGnet\DummySystem("System");
         $dev = new \HUGnet\DummyBase("Device");
         $sys->resetMock($config);
-        $obj = XTableBaseStub::factory($sys, null, $class, $dev);
+        $obj = IOPBaseStub::factory($sys, null, $class, $dev);
         $ret = $obj->load($data);
         $this->assertSame($return, $ret, "Return Wrong");
         $ret = $class->retrieve("Table");
@@ -494,7 +494,7 @@ class XTableBaseTest extends \PHPUnit_Framework_TestCase
     {
         $sys = new \HUGnet\DummySystem("System");
         $dev = new \HUGnet\DummyBase("Device");
-        $obj = XTableBaseStub::factory($sys, null, $class, $dev);
+        $obj = IOPBaseStub::factory($sys, null, $class, $dev);
         $sys->resetMock($config);
         $ret = $obj->change($data);
         $this->assertSame($return, $ret, "Return Wrong");
@@ -548,7 +548,7 @@ class XTableBaseTest extends \PHPUnit_Framework_TestCase
     ) {
         $config->resetMock($mocks);
         $dev = new \HUGnet\DummyBase("Device");
-        $obj = XTableBaseStub::factory($config, $device, $class, $dev);
+        $obj = IOPBaseStub::factory($config, $device, $class, $dev);
         $this->assertEquals(
             $expect, $obj->encode(), "Return Wrong"
         );
@@ -584,7 +584,7 @@ class XTableBaseTest extends \PHPUnit_Framework_TestCase
                 array(
                     array("id", 5),
                     array("RawSetup", "1234"),
-                    array("driver", "TestXTableBaseDriver1"),
+                    array("driver", "TestIOPBaseDriver1"),
                 ),
             ),
             array(
@@ -653,7 +653,7 @@ class XTableBaseTest extends \PHPUnit_Framework_TestCase
     ) {
         $config->resetMock($mocks);
         $dev = new \HUGnet\DummyBase("Device");
-        $obj = XTableBaseStub::factory($config, $device, $class, $dev);
+        $obj = IOPBaseStub::factory($config, $device, $class, $dev);
         $obj->decode($string);
         $ret = $config->retrieve();
         $this->assertEquals(
@@ -681,7 +681,7 @@ class XTableBaseTest extends \PHPUnit_Framework_TestCase
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class XTableBaseStub extends XTableBase
+class IOPBaseStub extends IOPBase
 {
 }
 namespace HUGnet\devices\replaceme;
@@ -732,9 +732,9 @@ abstract class Driver
     * as the driver class name.
     */
     private static $_drivers = array(
-        "FC:DEFAULT"                 => "TestXTableBaseDriver1",
-        "FD:DEFAULT"                 => "TestXTableBaseDriver2",
-        "FF:DEFAULT"                 => "TestXTableBaseDriver1",
+        "FC:DEFAULT"                 => "TestIOPBaseDriver1",
+        "FD:DEFAULT"                 => "TestIOPBaseDriver2",
+        "FF:DEFAULT"                 => "TestIOPBaseDriver1",
     );
     /**
     * This is where the correlation between the drivers and the arch is stored.
@@ -749,9 +749,9 @@ abstract class Driver
         "ADuC" => array(
         ),
         "all" => array(
-            0xFC => "TestXTableBaseDriver1",
-            0xFD => "TestXTableBaseDriver2",
-            0xFF => "TestXTableBaseDriver1"
+            0xFC => "TestIOPBaseDriver1",
+            0xFD => "TestIOPBaseDriver2",
+            0xFF => "TestIOPBaseDriver1"
         ),
     );
     /**
@@ -800,7 +800,7 @@ abstract class Driver
         if (class_exists($class)) {
             return new $class($process);
         }
-        return new \HUGnet\devices\replaceme\drivers\TestXTableBaseDriver1(
+        return new \HUGnet\devices\replaceme\drivers\TestIOPBaseDriver1(
             $process
         );
     }
@@ -871,7 +871,7 @@ abstract class Driver
                 return self::$_drivers[$mask];
             }
         }
-        return "TestXTableBaseDriver1";
+        return "TestIOPBaseDriver1";
     }
     /**
     * Returns an array of types that this process could be
@@ -968,7 +968,7 @@ namespace HUGnet\devices\replaceme\drivers;
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage XTableBases
+ * @subpackage IOPBases
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2013 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
@@ -978,20 +978,20 @@ namespace HUGnet\devices\replaceme\drivers;
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class TestXTableBaseDriver1 extends \HUGnet\devices\replaceme\Driver
+class TestIOPBaseDriver1 extends \HUGnet\devices\replaceme\Driver
 {
     /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
     protected $params = array(
-        "longName" => "Silly XTableBase Driver 1",
+        "longName" => "Silly IOPBase Driver 1",
         "shortName" => "SSD1",
     );
     /**
     * Changes a raw reading into a output value
     *
-    * @param int   $A      XTableBase of the A to D converter
+    * @param int   $A      IOPBase of the A to D converter
     * @param float $deltaT The time delta in seconds between this record
     * @param array &$data  The data from the other sensors that were crunched
     * @param mixed $prev   The previous value for this sensor
@@ -1012,7 +1012,7 @@ class TestXTableBaseDriver1 extends \HUGnet\devices\replaceme\Driver
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage XTableBases
+ * @subpackage IOPBases
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2013 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
@@ -1022,20 +1022,20 @@ class TestXTableBaseDriver1 extends \HUGnet\devices\replaceme\Driver
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class TestXTableBaseDriver2 extends \HUGnet\devices\replaceme\Driver
+class TestIOPBaseDriver2 extends \HUGnet\devices\replaceme\Driver
 {
     /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
     protected $params = array(
-        "longName" => "Silly XTableBase Driver 2",
+        "longName" => "Silly IOPBase Driver 2",
         "shortName" => "SSD2",
     );
     /**
     * Changes a raw reading into a output value
     *
-    * @param int   $A      XTableBase of the A to D converter
+    * @param int   $A      IOPBase of the A to D converter
     * @param float $deltaT The time delta in seconds between this record
     * @param array &$data  The data from the other sensors that were crunched
     * @param mixed $prev   The previous value for this sensor

@@ -35,11 +35,11 @@
  *
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\devices;
+namespace HUGnet\base;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our base class */
-require_once dirname(__FILE__)."/../base/SystemTableBase.php";
+require_once dirname(__FILE__)."/SystemTableBase.php";
 
 /**
  * Base system class.
@@ -58,7 +58,7 @@ require_once dirname(__FILE__)."/../base/SystemTableBase.php";
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-abstract class XTableBase extends \HUGnet\base\SystemTableBase
+abstract class IOPBase extends SystemTableBase
 {
     /**
     * This is the cache for the drivers.
