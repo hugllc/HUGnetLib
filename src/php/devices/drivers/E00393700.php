@@ -72,7 +72,7 @@ class E00393700 extends \HUGnet\devices\Driver
         "packetTimeout" => 2,
         "type" => "endpoint",
         "job"  => "sense",
-        "arch" => "003937",
+        "arch" => "0039-37",
         "InputTables" => 9,
         "OutputTables" => 5,
         "ProcessTables" => 4,

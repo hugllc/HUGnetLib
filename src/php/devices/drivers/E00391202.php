@@ -70,7 +70,7 @@ class E00391202 extends \HUGnet\devices\Driver
         "averageTable" => "E00391201Average",
         "type" => "endpoint",
         "job"  => "control",
-        "arch" => "003912",
+        "arch" => "0039-12",
         "InputTables" => 9,
         "OutputTables" => 0,
         "ProcessTables" => 0,

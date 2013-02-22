@@ -76,7 +76,7 @@ class E00392102 extends E00392101
         'ConfigInterval' => 600,
         "type" => "controller",
         "job"  => "control",
-        "arch" => "00392102",
+        "arch" => "0039-21-02",
         "InputTables" => 8,
         "OutputTables" => 2,
         "ProcessTables" => 2,

@@ -194,19 +194,19 @@ abstract class Driver
     *
     */
     private $_arch = array(
-        "003912" => array(
+        "0039-12" => array(
             0xF8 => "Analog Input Table",
         ),
-        "00392101" => array(
+        "0039-21-01" => array(
             0xF8 => "Analog Input Table",
         ),
-        "00392102" => array(
+        "0039-21-02" => array(
             0xF8 => "Analog Input Table",
         ),
-        "003928" => array(
+        "0039-28" => array(
             0xF8 => "Analog Input Table",
         ),
-        "003937" => array(
+        "0039-37" => array(
             0x60 => "Control Value Input",
             0xF9 => "Input Table Entry",
         ),
