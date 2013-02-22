@@ -852,6 +852,88 @@ class DriverAVRTest extends drivers\DriverTestBase
             ),
         );
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataGetExtra2()
+    {
+        return array(
+            array(
+                array(
+                ),
+                0,
+                0,
+                2
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6),
+                        ),
+                    ),
+                ),
+                0,
+                0,
+                3
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6),
+                        ),
+                    ),
+                ),
+                0,
+                1,
+                4
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6),
+                        ),
+                    ),
+                ),
+                1,
+                1,
+                5
+            ),
+            array(
+                array(
+                ),
+                1,
+                1,
+                3
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $mock   The mocks to use
+    * @param int   $index  The index to get
+    * @param int   $offset The offset to use
+    * @param array $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataGetExtra2
+    */
+    public function testGetExtra2($mock, $index, $offset, $expect)
+    {
+        unset($this->o);
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($mock);
+        $this->o = \HUGnet\devices\inputTable\DriverAVR::factory(
+            "DriverAVRTestClass", $sensor, $offset
+        );
+        $this->assertSame($expect, $this->o->getExtra($index));
+    }
 }
 /** This is the HUGnet namespace */
 namespace HUGnet\devices\inputTable\drivers;

@@ -205,7 +205,7 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
             }
             $driver = $this->_entryDriver();
             $entry = $driver::factory(
-                $this, $table
+                $this, $table, count($this->params["extraDefault"])
             );
             $this->_entry = &$entry;
         }
@@ -277,8 +277,12 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
         $param = $this->_driver()->get($name);
         switch ($name) {
         case "extraValues":
-            $param = (array)$param;
+            $param = array_merge(
+                (array)$this->params[$name],
+                (array)$param
+            );
             $param[0] = $this->_getTableEntries();
+            break;
         case "extraText":
         case "extraDefault":
             $param = array_merge(

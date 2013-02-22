@@ -68,6 +68,15 @@ abstract class DriverAVR extends Driver
     /** This is a constant */
     const D = 65535;
     /**
+    * This is where the data for the driver is stored.  This array must be
+    * put into all derivative classes, even if it is empty.
+    */
+    protected $offset = 0;
+    /**
+    * This is where our table entry is stored
+    */
+    private $_entry = null;
+    /**
     * This is where all of the driver information is stored.
     *
     * Drivers must be registered here, otherwise they will never get loaded.  The
@@ -108,6 +117,25 @@ abstract class DriverAVR extends Driver
         "Tf" => 65535,
         "D"  => 65535,
     );
+    /**
+    * This function creates the system.
+    *
+    * @param string $driver  The driver to load
+    * @param object &$sensor The sensor object
+    * @param int    $offset  The offset to use
+    * @param object $entry   The table entry
+    * @param int    $channel The channel in that entry
+    *
+    * @return null
+    */
+    public static function &factory(
+        $driver, &$sensor, $offset = 0, $entry = null, $channel = 0
+    ) {
+        $obj = parent::factory($driver, $sensor);
+        $obj->offset = (int)$offset;
+        $obj->_entry = $entry;
+        return $obj;
+    }
     /**
     * This returns the voltage on the upper side of a voltage divider if the
     * AtoD input is in the middle of the divider
@@ -512,6 +540,23 @@ abstract class DriverAVR extends Driver
         $fract = ($R - $last) / ($last - $next);
         $diff = $fract * ($table[$last] - $table[$next]);
         return (float)($T + $diff);
+    }
+    /**
+    * Gets the extra values
+    *
+    * @param int $index The extra index to use
+    *
+    * @return The extra value (or default if empty)
+    */
+    public function getExtra($index)
+    {
+        $extra = (array)$this->input()->get("extra");
+        $return = $extra[$index + $this->offset];
+        if (is_null($return)) {
+            $extra = $this->get("extraDefault");
+            $return = $extra[$index];
+        }
+        return $return;
     }
 }
 
