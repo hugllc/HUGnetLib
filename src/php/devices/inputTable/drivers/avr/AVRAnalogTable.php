@@ -160,7 +160,9 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
     {
         if (!is_object($this->_driver)) {
             $entry  = $this->_entry();
+            var_dump($entry);
             $driver = explode(":", (string)$entry->get("driver"));
+            var_dump($driver);
             $input  = $this->input();
             $this->_driver = \HUGnet\devices\inputTable\DriverAVR::factory(
                 \HUGnet\devices\inputTable\Driver::getDriver(
@@ -221,20 +223,21 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
         $dir = dirname(__FILE__)."/../../tables/";
         $namespace = "\\HUGnet\\devices\\inputTable\\tables\\";
         //$arch = $this->input()->device()->get("arch");
+        //var_dump($arch);
         switch ($arch) {
-        case "003912":
+        case "0039-12":
             include_once $dir."E003912AnalogTable.php";
             $class = $namespace."E003912AnalogTable";
             break;
-        case "00392101":
+        case "0039-21-01":
             include_once $dir."E00392101AnalogTable.php";
             $class = $namespace."E00392101AnalogTable";
             break;
-        case "00392102":
+        case "0039-21-02":
             include_once $dir."E00392102AnalogTable.php";
             $class = $namespace."E00392102AnalogTable";
             break;
-        case "003928":
+        case "0039-28":
             include_once $dir."E003928AnalogTable.php";
             $class = $namespace."E003928AnalogTable";
             break;
