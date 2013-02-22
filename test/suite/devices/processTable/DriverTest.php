@@ -268,8 +268,6 @@ class DriverTest extends drivers\DriverTestBase
                     ),
                 ),
                 array(
-                    1 => 'LevelHolderProcess',
-                    2 => 'PIDProcess',
                     255 => 'Empty Slot',
                 ),
             ),
@@ -280,7 +278,7 @@ class DriverTest extends drivers\DriverTestBase
                     ),
                     "Device" => array(
                         "get" => array(
-                            "arch" => "AVR",
+                            "arch" => "003937",
                         ),
                     ),
                 ),

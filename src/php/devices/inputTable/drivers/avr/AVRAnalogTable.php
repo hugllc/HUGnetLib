@@ -218,8 +218,32 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
     */
     private function _entryDriver()
     {
-        include_once dirname(__FILE__)."/../../tables/E00392101AnalogTable.php";
-        return "\\HUGnet\\devices\\inputTable\\tables\\E00392101AnalogTable";
+        $dir = dirname(__FILE__)."/../../tables/";
+        $namespace = "\\HUGnet\\devices\\inputTable\\tables\\";
+        //$arch = $this->input()->device()->get("arch");
+        switch ($arch) {
+        case "003912":
+            include_once $dir."E003912AnalogTable.php";
+            $class = $namespace."E003912AnalogTable";
+            break;
+        case "00392101":
+            include_once $dir."E00392101AnalogTable.php";
+            $class = $namespace."E00392101AnalogTable";
+            break;
+        case "00392102":
+            include_once $dir."E00392102AnalogTable.php";
+            $class = $namespace."E00392102AnalogTable";
+            break;
+        case "003928":
+            include_once $dir."E003928AnalogTable.php";
+            $class = $namespace."E003928AnalogTable";
+            break;
+        default:
+            include_once $dir."E003912AnalogTable.php";
+            $class = $namespace."E003912AnalogTable";
+            break;
+        }
+        return $class;
     }
 
     /**
@@ -250,7 +274,6 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
     public function get($name)
     {
         $param = $this->_driver()->get($name);
-//        $param = parent::get($name);
         switch ($name) {
         case "extraValues":
             $param = (array)$param;
@@ -258,8 +281,8 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
         case "extraText":
         case "extraDefault":
             $param = array_merge(
-                (array)$param,
-                (array)$this->_driver()->get($name)
+                (array)$this->params[$name],
+                (array)$param
             );
             break;
         }

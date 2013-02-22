@@ -112,11 +112,11 @@ abstract class XTableBase extends \HUGnet\base\SystemTableBase
         );
         $class = get_called_class();
         $object = new $class($system, $dbtable);
+        $object->_device = &$device;
         $object->_driverTable = $table;
         if (!is_null($data)) {
             $object->load($data);
         }
-        $object->_device = &$device;
         return $object;
     }
     /**

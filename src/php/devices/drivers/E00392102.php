@@ -38,7 +38,8 @@
 namespace HUGnet\devices\drivers;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
-
+/** This is our base class */
+require_once dirname(__FILE__)."/E00392101.php";
 /**
  * Networking for devices.
  *
@@ -56,26 +57,30 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class E00393700 extends \HUGnet\devices\Driver
+class E00392102 extends E00392101
 {
+    /** The placeholder for the reading the downstream units from a controller */
+    const COMMAND_READDOWNSTREAM = "56";
     /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
     protected $params = array(
-        "totalSensors" => 13,
-        "physicalSensors" => 9,
-        "virtualSensors" => 4,
-        "historyTable" => "E00393700History",
-        "averageTable" => "E00393700Average",
+        "totalSensors" => 10,
+        "physicalSensors" => 8,
+        "virtualSensors" => 2,
+        "historyTable" => "E00392100History",
+        "averageTable" => "E00392100Average",
         "loadable" => true,
         "packetTimeout" => 2,
-        "type" => "endpoint",
-        "job"  => "sense",
-        "arch" => "003937",
-        "InputTables" => 9,
-        "OutputTables" => 5,
-        "ProcessTables" => 4,
+        'ConfigInterval' => 600,
+        "type" => "controller",
+        "job"  => "control",
+        "arch" => "00392102",
+        "InputTables" => 8,
+        "OutputTables" => 2,
+        "ProcessTables" => 2,
+        "TimeConstant" => 1,
     );
 
 }

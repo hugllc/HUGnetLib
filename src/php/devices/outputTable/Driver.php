@@ -106,9 +106,15 @@ abstract class Driver
     *
     */
     private $_arch = array(
-        "AVR" => array(
+        "003912" => array(
         ),
-        "ADuC" => array(
+        "00392101" => array(
+        ),
+        "00392101" => array(
+        ),
+        "003928" => array(
+        ),
+        "003937" => array(
             0x01 => "ADuC DAC",
             0x02 => "ADuC PWM",
             0x03 => "ADuC GPIO",

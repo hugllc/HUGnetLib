@@ -186,8 +186,6 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
                         'DEFAULT' => 'TestProcessDriver1'
                     ),
                     'validIds' => Array (
-                        1 => "LevelHolderProcess",
-                        2 => "PIDProcess",
                         255 => 'Empty Slot'
                     ),
                     "extraText" => array(),
@@ -228,8 +226,6 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
                         'DEFAULT' => 'EmptyProcess'
                     ),
                     'validIds' => Array (
-                        1 => "LevelHolderProcess",
-                        2 => "PIDProcess",
                         255 => 'Empty Slot'
                     ),
                     "extraText" => array(),

@@ -70,7 +70,7 @@ class E00391200 extends \HUGnet\devices\Driver
         "averageTable" => "E00391200Average",
         "type" => "endpoint",
         "job"  => "sense",
-        "arch" => "AVR",
+        "arch" => "003912old",
     );
 
 }

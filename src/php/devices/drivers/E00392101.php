@@ -75,7 +75,7 @@ class E00392101 extends \HUGnet\devices\Driver
         'ConfigInterval' => 600,
         "type" => "controller",
         "job"  => "control",
-        "arch" => "AVR",
+        "arch" => "00392101",
         "InputTables" => 8,
         "OutputTables" => 2,
         "ProcessTables" => 2,

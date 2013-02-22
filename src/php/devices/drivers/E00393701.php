@@ -74,7 +74,7 @@ class E00393701 extends \HUGnet\devices\drivers\E00393700
         "packetTimeout" => 2,
         "type" => "endpoint",
         "job"  => "sense",
-        "arch" => "ADuC",
+        "arch" => "003937",
     );
 
 }

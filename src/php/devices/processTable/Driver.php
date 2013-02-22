@@ -101,13 +101,23 @@ abstract class Driver
     *
     */
     private $_arch = array(
-        "AVR" => array(
+        "003912" => array(
         ),
-        "ADuC" => array(
+        "00392101" => array(
         ),
-        "all" => array(
+        "00392101" => array(
+        ),
+        "003928" => array(
+        ),
+        "003937" => array(
             0x01 => "LevelHolderProcess",
             0x02 => "PIDProcess",
+        ),
+        "Linux" => array(
+            0x01 => "LevelHolderProcess",
+            0x02 => "PIDProcess",
+        ),
+        "all" => array(
             0xFF => "Empty Slot"
         ),
     );
