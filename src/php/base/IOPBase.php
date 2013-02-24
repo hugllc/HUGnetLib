@@ -178,7 +178,7 @@ abstract class IOPBase extends SystemTableBase
     */
     protected function &driver($driver = null)
     {
-        $file = dirname(__FILE__)."/".$this->driverLoc."/Driver.php";
+        $file = dirname(__FILE__)."/../devices/".$this->driverLoc."/Driver.php";
         if (file_exists($file)) {
             include_once $file;
         }
