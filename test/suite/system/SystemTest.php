@@ -799,6 +799,150 @@ class SystemTest extends \PHPUnit_Framework_TestCase
         }
         unset($obj);
     }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataInputTable()
+    {
+        return array(
+            array(
+                array(
+                    "hello" => "there",
+                    "asdf"  => array(1,2),
+                ),
+                array(
+                    "uuid"   => "310354f4-0092-4b46-a198-92dadd42efb1",
+                    "name"   => "What is in a name",
+                    "Config" => "This is a config",
+                ),
+                array(
+                    "uuid"   => "310354f4-0092-4b46-a198-92dadd42efb1",
+                    "name"   => "What is in a name",
+                    "Config" => "This is a config",
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array $config The configuration to use
+    * @param mixed $device The network application to use
+    * @param mixed $expect The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataInputTable
+    */
+    public function testInputTable(
+        $config, $device, $expect
+    ) {
+        $obj = \HUGnet\System::factory($config);
+        $dev = $obj->inputTable($device);
+        $this->assertInstanceOf("\HUGnet\InputTable", $dev, "wrong class");
+        foreach ($expect as $key => $value) {
+            $this->assertEquals($value, $dev->get($key), "$key not $value");
+        }
+        unset($obj);
+    }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataOutputTable()
+    {
+        return array(
+            array(
+                array(
+                    "hello" => "there",
+                    "asdf"  => array(1,2),
+                ),
+                array(
+                    "uuid"   => "310354f4-0092-4b46-a198-92dadd42efb1",
+                    "name"   => "What is in a name",
+                    "Config" => "This is a config",
+                ),
+                array(
+                    "uuid"   => "310354f4-0092-4b46-a198-92dadd42efb1",
+                    "name"   => "What is in a name",
+                    "Config" => "This is a config",
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array $config The configuration to use
+    * @param mixed $device The network application to use
+    * @param mixed $expect The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataOutputTable
+    */
+    public function testOutputTable(
+        $config, $device, $expect
+    ) {
+        $obj = \HUGnet\System::factory($config);
+        $dev = $obj->outputTable($device);
+        $this->assertInstanceOf("\HUGnet\OutputTable", $dev, "wrong class");
+        foreach ($expect as $key => $value) {
+            $this->assertEquals($value, $dev->get($key), "$key not $value");
+        }
+        unset($obj);
+    }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataProcessTable()
+    {
+        return array(
+            array(
+                array(
+                    "hello" => "there",
+                    "asdf"  => array(1,2),
+                ),
+                array(
+                    "uuid"   => "310354f4-0092-4b46-a198-92dadd42efb1",
+                    "name"   => "What is in a name",
+                    "Config" => "This is a config",
+                ),
+                array(
+                    "uuid"   => "310354f4-0092-4b46-a198-92dadd42efb1",
+                    "name"   => "What is in a name",
+                    "Config" => "This is a config",
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array $config The configuration to use
+    * @param mixed $device The network application to use
+    * @param mixed $expect The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataProcessTable
+    */
+    public function testProcessTable(
+        $config, $device, $expect
+    ) {
+        $obj = \HUGnet\System::factory($config);
+        $dev = $obj->processTable($device);
+        $this->assertInstanceOf("\HUGnet\ProcessTable", $dev, "wrong class");
+        foreach ($expect as $key => $value) {
+            $this->assertEquals($value, $dev->get($key), "$key not $value");
+        }
+        unset($obj);
+    }
 
 }
 

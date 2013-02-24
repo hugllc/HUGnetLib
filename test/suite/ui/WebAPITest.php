@@ -456,10 +456,10 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "config" => array(
                             "verbose" => 0,
                         ),
-                        "table" => new \HUGnet\DummyTable("Table"),
+                        "inputTable" => new \HUGnet\DummyBase("Table"),
                     ),
                     "Table" => array(
-                        "isEmpty" => false,
+                        "load" => true,
                         "toArray" => array(
                             "Real" => "array",
                         ),
@@ -467,14 +467,13 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                 ),
                 false,
                 array(),
-                json_encode(array("Real" => "array", "params" => $fullInputTable)),
+                json_encode(array("Real" => "array")),
                 array(
                     "Table" => array(
-                        "getRow" => array(
-                            array(10),
-                        ),
-                        "isEmpty" => array(array()),
                         "toArray" => array(array(true)),
+                        "load" => array(
+                            array('10'),
+                        ),
                     ),
                 ),
             ),
@@ -493,7 +492,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "config" => array(
                             "verbose" => 0,
                         ),
-                        "table" => new \HUGnet\DummyTable("Table"),
+                        "inputTable" => new \HUGnet\DummyTable("Table"),
                     ),
                     "Table" => array(
                         "isEmpty" => false,
@@ -505,30 +504,39 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                 ),
                 false,
                 array(),
-                json_encode(array("Real" => "array", "params" => $fullInputTable)),
+                json_encode(array("Real" => "array")),
                 array(
                     "Table" => array(
-                        "getRow" => array(
-                            array(10),
-                            array(10),
-                        ),
-                        "fromAny" => array(array(array("a" => "b", "c" => "d"))),
                         "toArray" => array(array(true)),
-                        "updateRow" => array(array()),
+                        "load" => array(
+                            array('10'),
+                            array(array('a' => 'b', 'c' => 'd')),
+                            array('10'),
+                        ),
+                        "store" => array(array()),
                     ),
                 ),
             ),
             array(  // #9
-                $config2,
+                array(
+                    "task" => "outputtable",
+                    "action" => "get",
+                    "id" => "10",
+                    "data" => array(
+                        "a" => "b",
+                        "c" => "d",
+                    ),
+                ),
                 array(
                     "System" => array(
                         "config" => array(
                             "verbose" => 0,
                         ),
-                        "table" => new \HUGnet\DummyTable("OutputTable"),
+                        "outputTable" => new \HUGnet\DummyBase("Table"),
                     ),
-                    "OutputTable" => array(
-                        "webAPI" => array(
+                    "Table" => array(
+                        "load" => true,
+                        "toArray" => array(
                             "Real" => "array",
                         ),
                     ),
@@ -537,12 +545,10 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                 array(),
                 json_encode(array("Real" => "array")),
                 array(
-                    "OutputTable" => array(
-                        "webAPI" => array(
-                            array(
-                                $config2,
-                                array(),
-                            ),
+                    "Table" => array(
+                        "toArray" => array(array(true)),
+                        "load" => array(
+                            array('10'),
                         ),
                     ),
                 ),
@@ -561,27 +567,14 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "config" => array(
                             "verbose" => 0,
                         ),
-                        "table" => new \HUGnet\DummyTable("Table"),
+                        "inputTable" => new \HUGnet\DummyTable("Table"),
                     ),
                     "Table" => array(
-                        "isEmpty" => false,
-                        "getRow" => true,
-                        "toArray" => array(
-                            "Real" => "array",
+                        "load" => true,
+                        "getList" => array(
+                            array("ab" => "cd", "ef" => "gh"),
+                            array("ij" => "kl", "mn" => "op"),
                         ),
-                        "sanitizeWhere" => array(
-                            "a" => "b",
-                        ),
-                        "select" => array(
-                            new \HUGnet\DummyTable("Table1"),
-                            new \HUGnet\DummyTable("Table2")
-                        ),
-                    ),
-                    "Table1" => array(
-                        "toArray" => array("ab" => "cd", "ef" => "gh"),
-                    ),
-                    "Table2" => array(
-                        "toArray" => array("ij" => "kl", "mn" => "op"),
                     ),
                 ),
                 false,
@@ -589,20 +582,20 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                 json_encode(
                     array(
                         array(
-                            "ab" => "cd", "ef" => "gh", "params" => $fullInputTable
+                            "ab" => "cd", "ef" => "gh"
                         ),
                         array(
-                            "ij" => "kl", "mn" => "op", "params" => $fullInputTable
+                            "ij" => "kl", "mn" => "op"
                         ),
                     )
                 ),
                 array(
                     "Table" => array(
-                        "sanitizeWhere" => array(
-                            array(array('a' => 'b', 'c' => 'd'))
-                        ),
-                        "select" => array(
-                            array('`a` = ?', array('b')),
+                        "getList" => array(
+                            array(
+                                array("a" => "b", "c" => "d"),
+                                true,
+                            ),
                         ),
                     ),
                 ),
@@ -621,28 +614,14 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "config" => array(
                             "verbose" => 0,
                         ),
-                        "table" => new \HUGnet\DummyTable("Table"),
+                        "outputTable" => new \HUGnet\DummyTable("Table"),
                     ),
                     "Table" => array(
-                        "isEmpty" => false,
-                        "getRow" => true,
-                        "toArray" => array(
-                            "Real" => "array",
+                        "load" => true,
+                        "getList" => array(
+                            array("ab" => "cd", "ef" => "gh"),
+                            array("ij" => "kl", "mn" => "op"),
                         ),
-                        "sanitizeWhere" => array(
-                        ),
-                        "select" => array(
-                            1 => array(
-                                new \HUGnet\DummyTable("Table1"),
-                                new \HUGnet\DummyTable("Table2")
-                            )
-                        ),
-                    ),
-                    "Table1" => array(
-                        "toArray" => array("ab" => "cd", "ef" => "gh"),
-                    ),
-                    "Table2" => array(
-                        "toArray" => array("ij" => "kl", "mn" => "op"),
                     ),
                 ),
                 false,
@@ -655,11 +634,11 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                     "Table" => array(
-                        "sanitizeWhere" => array(
-                            array(array('a' => 'b', 'c' => 'd'))
-                        ),
-                        "select" => array(
-                            array('1', array()),
+                        "getList" => array(
+                            array(
+                                array("a" => "b", "c" => "d"),
+                                true,
+                            ),
                         ),
                     ),
                 ),

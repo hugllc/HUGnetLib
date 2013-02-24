@@ -279,6 +279,45 @@ class System
         return $obj;
     }
     /**
+    * This returns a device object.
+    *
+    * @param array $data The data to send to the device object
+    *
+    * @return Reference to a device object
+    */
+    public function &inputTable($data = array())
+    {
+        include_once dirname(__FILE__)."/InputTable.php";
+        $obj = InputTable::factory($this, $data);
+        return $obj;
+    }
+    /**
+    * This returns a device object.
+    *
+    * @param array $data The data to send to the device object
+    *
+    * @return Reference to a device object
+    */
+    public function &outputTable($data = array())
+    {
+        include_once dirname(__FILE__)."/OutputTable.php";
+        $obj = OutputTable::factory($this, $data);
+        return $obj;
+    }
+    /**
+    * This returns a device object.
+    *
+    * @param array $data The data to send to the device object
+    *
+    * @return Reference to a device object
+    */
+    public function &processTable($data = array())
+    {
+        include_once dirname(__FILE__)."/ProcessTable.php";
+        $obj = ProcessTable::factory($this, $data);
+        return $obj;
+    }
+    /**
     * This returns a dataCollector object.
     *
     * @param array $string The data to send to the device object

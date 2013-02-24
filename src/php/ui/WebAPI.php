@@ -153,26 +153,9 @@ class WebAPI extends HTML
     */
     private function _executeInputtable($extra = array())
     {
-        $iid = $this->args()->get("id");
-        if (!is_null($iid)) {
-            $iid = (int)$iid;
-        }
-        $table = $this->system()->table("InputTable");
-        $ret = $this->_executeTable($iid, $table, $extra);
-        $action = strtolower(trim($this->args()->get("action")));
-        $fle = dirname(__FILE__)."/../devices/inputTable/tables/ADuCInputTable.php";
-        include_once $fle;
-        $table = \HUGnet\devices\inputTable\tables\ADuCInputTable::factory(array());
-        if ($action == "list") {
-            foreach (array_keys($ret) as $key) {
-                $table->fromArray($ret[$key]);
-                $ret[$key]["params"] = $table->fullArray();
-            }
-        } else {
-            $table->fromArray($ret);
-            $ret["params"] = $table->fullArray();
-        }
-        return $ret;
+        $iid = strtolower($this->args()->get("id"));
+        $inputTable = $this->system()->inputTable();
+        return $this->_executeSystem($iid, $inputTable, $extra);
     }
     /**
     * This function executes the api call.
@@ -184,12 +167,9 @@ class WebAPI extends HTML
     */
     private function _executeOutputtable($extra = array())
     {
-        $iid = $this->args()->get("id");
-        if (!is_null($iid)) {
-            $iid = (int)$iid;
-        }
-        $table = $this->system()->table("OutputTable");
-        return $this->_executeTable($iid, $table, $extra);
+        $iid = strtolower($this->args()->get("id"));
+        $outputTable = $this->system()->outputTable();
+        return $this->_executeSystem($iid, $outputTable, $extra);
     }
     /**
     * This function executes the api call.
@@ -201,12 +181,9 @@ class WebAPI extends HTML
     */
     private function _executeProcesstable($extra = array())
     {
-        $iid = $this->args()->get("id");
-        if (!is_null($iid)) {
-            $iid = (int)$iid;
-        }
-        $table = $this->system()->table("ProcessTable");
-        return $this->_executeTable($iid, $table, $extra);
+        $iid = strtolower($this->args()->get("id"));
+        $processTable = $this->system()->processTable();
+        return $this->_executeSystem($iid, $processTable, $extra);
     }
     /**
     * This function executes the api call.
