@@ -62,6 +62,11 @@ class OutputTable extends \HUGnet\base\XTableBase
 {
     /** This is the table we are using */
     protected $xTable = "OutputTable";
+    /** This is the type of tables we have available */
+    protected $types = array(
+        "ADuCDAC" => "0039-37 HUGnetLab Endpoint DAC",
+        "ADuCPWM" => "0039-37 HUGnetLab Endpoint PWM",
+    );
     /**
     * This function creates the system.
     *
@@ -78,6 +83,28 @@ class OutputTable extends \HUGnet\base\XTableBase
         }
         $object = parent::factory($system, $data, $dbtable);
         return $object;
+    }
+    /**
+    * Returns the driver object
+    *
+    * @return object The driver requested
+    */
+    protected function entryDriver()
+    {
+        $dir = dirname(__FILE__)."/../devices/outputTable/tables/";
+        $namespace = "\\HUGnet\\devices\\outputTable\\tables\\";
+        $arch = $this->table()->get("arch");
+        switch ($arch) {
+        case "ADuCPWM":
+            include_once $dir."ADuCPWM.php";
+            $class = $namespace."ADuCPWM";
+            break;
+        default:
+            include_once $dir."ADuCDAC.php";
+            $class = $namespace."ADuCDAC";
+            break;
+        }
+        return $class;
     }
 
 }

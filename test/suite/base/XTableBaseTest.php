@@ -172,11 +172,7 @@ class XTableBaseTest extends \PHPUnit_Framework_TestCase
                     'asdf' => 3,
                     'params' => array(1,2,3,4),
                     'archs' => array(
-                        'ADuC' => '0039-37 ADuC HUGnetLab Endpoint',
-                        '0039-12' => '0039-12 AVR Endpoint',
-                        '0039-21-01' => '0039-21-01 Old Controller Board',
-                        '0039-21-02' => '0039-21-02 Controller Board',
-                        '0039-28' => '0039-28 Enhanced AVR Endpoint',
+                        "Unknown" => "Unknown",
                     ),
                 )
             ),

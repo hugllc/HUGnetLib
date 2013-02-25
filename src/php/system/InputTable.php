@@ -62,6 +62,14 @@ class InputTable extends \HUGnet\base\XTableBase
 {
     /** This is the table we are using */
     protected $xTable = "InputTable";
+    /** This is the type of tables we have available */
+    protected $types = array(
+        "ADuC" => "0039-37 ADuC HUGnetLab Endpoint Analog",
+        "0039-12" => "0039-12 AVR Endpoint Analog",
+        "0039-21-01" => "0039-21-01 Old Controller Board Analog",
+        "0039-21-02" => "0039-21-02 Controller Board Analog",
+        "0039-28" => "0039-28 Enhanced AVR Endpoint Analog",
+    );
     /**
     * This function creates the system.
     *
@@ -78,6 +86,44 @@ class InputTable extends \HUGnet\base\XTableBase
         }
         $object = parent::factory($system, $data, $dbtable);
         return $object;
+    }
+    /**
+    * Returns the driver object
+    *
+    * @return object The driver requested
+    */
+    protected function entryDriver()
+    {
+        $dir = dirname(__FILE__)."/../devices/inputTable/tables/";
+        $namespace = "\\HUGnet\\devices\\inputTable\\tables\\";
+        $arch = $this->table()->get("arch");
+        switch ($arch) {
+        case "0039-12":
+            include_once $dir."E003912AnalogTable.php";
+            $class = $namespace."E003912AnalogTable";
+            break;
+        case "0039-21-01":
+            include_once $dir."E00392101AnalogTable.php";
+            $class = $namespace."E00392101AnalogTable";
+            break;
+        case "0039-21-02":
+            include_once $dir."E00392102AnalogTable.php";
+            $class = $namespace."E00392102AnalogTable";
+            break;
+        case "0039-28":
+            include_once $dir."E003928AnalogTable.php";
+            $class = $namespace."E003928AnalogTable";
+            break;
+        case "ADuC":
+            include_once $dir."ADuCInputTable.php";
+            $class = $namespace."ADuCInputTable";
+            break;
+        default:
+            include_once $dir."AVRAnalogTable.php";
+            $class = $namespace."AVRAnalogTable";
+            break;
+        }
+        return $class;
     }
 
 }

@@ -162,21 +162,21 @@ class InputTableTest extends \PHPUnit_Framework_TestCase
                         "toArray" => array(
                             "id" => 0xFD,
                             "asdf" => 3,
-                            "params" => array(1,2,3,4),
+                            "params" => array(
+                            ),
                         ),
                     ),
                 ),
                 new \HUGnet\DummyTable("Table"),
                 array(
-                    'id' => 0xFD,
+                    'id' => 253,
                     'asdf' => 3,
-                    'params' => array(1,2,3,4),
                     'archs' => array(
-                        'ADuC' => '0039-37 ADuC HUGnetLab Endpoint',
-                        '0039-12' => '0039-12 AVR Endpoint',
-                        '0039-21-01' => '0039-21-01 Old Controller Board',
-                        '0039-21-02' => '0039-21-02 Controller Board',
-                        '0039-28' => '0039-28 Enhanced AVR Endpoint',
+                        'ADuC' => '0039-37 ADuC HUGnetLab Endpoint Analog',
+                        '0039-12' => '0039-12 AVR Endpoint Analog',
+                        '0039-21-01' => '0039-21-01 Old Controller Board Analog',
+                        '0039-21-02' => '0039-21-02 Controller Board Analog',
+                        '0039-28' => '0039-28 Enhanced AVR Endpoint Analog',
                     ),
                 )
             ),
@@ -201,6 +201,13 @@ class InputTableTest extends \PHPUnit_Framework_TestCase
         $sys->resetMock($config);
         $obj = InputTable::factory($sys, null, $class, $dev);
         $json = $obj->toArray();
+        $this->assertInternalType(
+            "array", $json["params"], "Params is not an array"
+        );
+        $this->assertInternalType(
+            "array", $json["params"]["driver"], "Driver is not an array"
+        );
+        unset($json["params"]);
         $this->assertEquals($expect, $json);
         unset($obj);
     }

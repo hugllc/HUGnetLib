@@ -62,6 +62,10 @@ abstract class XTableBase extends SystemTableBase
 {
     /** This is the table we are using */
     protected $xTable = "Table";
+    /** This is the type of tables we have available */
+    protected $types = array(
+        "Unknown" => "Unknown",
+    );
     /**
     * Returns the table as an array
     *
@@ -73,15 +77,38 @@ abstract class XTableBase extends SystemTableBase
     {
         $return = (array)parent::toArray($default);
         if ($default) {
-            $return["archs"] = array(
-                "ADuC" => "0039-37 ADuC HUGnetLab Endpoint",
-                "0039-12" => "0039-12 AVR Endpoint",
-                "0039-21-01" => "0039-21-01 Old Controller Board",
-                "0039-21-02" => "0039-21-02 Controller Board",
-                "0039-28" => "0039-28 Enhanced AVR Endpoint",
-            );
+            $return["archs"] = $this->types;
+            $entry = $this->entry();
+            if (is_object($entry)) {
+                $return["params"] = $entry->fullArray();
+            }
         }
         return (array)$return;
+    }
+    /**
+    * Returns the driver object
+    *
+    * @param array $table The table to use.  This only works on the first call
+    *
+    * @return object The driver requested
+    */
+    protected function &entry($table = null)
+    {
+        $driver = $this->entryDriver();
+        $entry = null;
+        if (class_exists($driver)) {
+            $entry = $driver::factory($this, $this->table()->toArray());
+        }
+        return $entry;
+    }
+    /**
+    * Returns the driver object
+    *
+    * @return object The driver requested
+    */
+    protected function entryDriver()
+    {
+        return null;
     }
     /**
     * This function should be overloaded to make changes to the table based on
