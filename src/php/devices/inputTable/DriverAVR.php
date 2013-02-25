@@ -56,6 +56,7 @@ require_once dirname(__FILE__)."/Driver.php";
  * @since      0.9.8
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
+ * @SuppressWarnings(PHPMD.NumberOfChildren)
  */
 abstract class DriverAVR extends Driver
 {
@@ -75,7 +76,7 @@ abstract class DriverAVR extends Driver
     /**
     * This is where our table entry is stored
     */
-    private $_entry = null;
+    protected $entry = null;
     /**
     * This is where all of the driver information is stored.
     *
@@ -133,7 +134,7 @@ abstract class DriverAVR extends Driver
     ) {
         $obj = parent::factory($driver, $sensor);
         $obj->offset = (int)$offset;
-        $obj->_entry = $entry;
+        $obj->entry = $entry;
         return $obj;
     }
     /**

@@ -54,6 +54,8 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
+ *
+ * @SuppressWarnings(PHPMD.NumberOfChildren)
  */
 abstract class Driver
 {

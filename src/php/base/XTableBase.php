@@ -88,11 +88,9 @@ abstract class XTableBase extends SystemTableBase
     /**
     * Returns the driver object
     *
-    * @param array $table The table to use.  This only works on the first call
-    *
     * @return object The driver requested
     */
-    protected function &entry($table = null)
+    protected function &entry()
     {
         $driver = $this->entryDriver();
         $entry = null;

@@ -17,12 +17,20 @@
     <rule ref="rulesets/codesize.xml/ExcessiveMethodLength">
         <priority>1</priority>
         <properties>
-            <property name="minimum" value="50" />
+            <property name="minimum" value="75" />
+        </properties>
+    </rule>
+    <!-- I like lots of little functions vs fewer larger functions -->
+    <rule ref="rulesets/codesize.xml/ExcessiveClassComplexity">
+        <priority>1</priority>
+        <properties>
+            <property name="maximum" value="65" />
         </properties>
     </rule>
     <rule ref="rulesets/codesize.xml">
         <exclude name="TooManyMethods" />
         <exclude name="ExcessiveMethodLength" />
+        <exclude name="ExcessiveClassComplexity" />
     </rule>
     <rule ref="rulesets/naming.xml"/>
 </ruleset>

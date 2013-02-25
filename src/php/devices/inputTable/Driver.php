@@ -65,6 +65,7 @@ require_once dirname(__FILE__)."/DriverLinux.php";
  * @since      0.9.7
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
+ * @SuppressWarnings(PHPMD.NumberOfChildren)
  */
 abstract class Driver
 {

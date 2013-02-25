@@ -56,6 +56,7 @@ require_once dirname(__FILE__)."/Driver.php";
  * @since      0.9.8
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
+ * @SuppressWarnings(PHPMD.NumberOfChildren)
  */
 abstract class DriverADuC extends Driver
 {
