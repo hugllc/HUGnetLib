@@ -278,7 +278,7 @@ class AVRAnalogTable
     *
     * @return 16 bit integer in a hex string
     */
-    private function params($param, $set = null)
+    protected function params($param, $set = null)
     {
         if (is_int($set) || is_string($set)) {
             $par = &$this->params[$param];
