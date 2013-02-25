@@ -367,8 +367,8 @@ HUGnet.DataView = Backbone.View.extend({
                 data
             )
         );
-        this.$('#since').datetimepicker();
-        this.$('#until').datetimepicker();
+        this.$('input.since').datetimepicker();
+        this.$('input.until').datetimepicker();
         this.iframe = $('<iframe>', { id:'exportCSV' }).hide();
         this.$el.append(this.plot.el);
         this.$el.append(this.table.render().el);
