@@ -44,13 +44,15 @@ var InputTablePropertiesView = Backbone.View.extend({
     template: '#InputTablePropertiesTemplate',
     tTemplate: '#InputTablePropertiesTitleTemplate',
     tagName: 'div',
+    _close: false,
     events: {
-        'click .SaveInputTable': 'save',
+        'click .SaveInputTable': 'saveclose',
+        'change select.type': 'save',
     },
     initialize: function (options)
     {
+        this.model.on('change', this.render, this);
         this.model.on('savefail', this.saveFail, this);
-        this.model.on('saved', this.saveSuccess, this);
     },
     save: function (e)
     {
@@ -69,18 +71,25 @@ var InputTablePropertiesView = Backbone.View.extend({
         this.model.set(output);
         this.model.save();
     },
+    saveclose: function (e)
+    {
+        this._close = true;
+        this.save(e);
+    },
     saveFail: function ()
     {
         this.setTitle();
         //alert("Save Failed");
     },
-    saveSuccess: function ()
+    close: function ()
     {
-        this.model.off('change', this.render, this);
-        this.model.off('savefail', this.saveFail, this);
-        this.model.off('saved', this.saveSuccess, this);
-        this.remove();
-        //alert("Save Succeeded");
+        if (this._close) {
+            this.model.off('change', this.render, this);
+            this.model.off('savefail', this.saveFail, this);
+            this.model.off('saved', this.close, this);
+            this.model.off('saved', this.render, this);
+            this.remove();
+        }
     },
     setTitle: function (extra)
     {
@@ -106,6 +115,7 @@ var InputTablePropertiesView = Backbone.View.extend({
                 data
             )
         );
+        this.model.off('saved', this.render, this);
         return this;
     },
     /**
