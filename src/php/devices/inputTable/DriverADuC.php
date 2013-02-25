@@ -190,6 +190,8 @@ abstract class DriverADuC extends Driver
     * The bias and input resistance values can be in Ohms, kOhms or even MOhms.  It
     * doesn't matter as long as they are both the same units.
     *
+    * If $Rbias is not numeric, then it assumes it is infinte
+    *
     * @param float $value The incoming number
     * @param float $Rin   The input resistor.
     * @param float $Rbias The bias resistor.
@@ -198,6 +200,9 @@ abstract class DriverADuC extends Driver
     */
     protected function inputBiasCompensation($value, $Rin, $Rbias)
     {
+        if (!is_numeric($Rbias) || !is_numeric($Rin)) {
+            return $value;
+        }
         if ((float)$Rbias == 0) {
             return null;
         }

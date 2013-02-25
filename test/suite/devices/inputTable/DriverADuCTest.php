@@ -374,6 +374,24 @@ class DriverADuCTest extends drivers\DriverTestBase
                 100,
                 1010.0,
             ),
+            array(
+                123456,
+                "asdf",
+                244.252,
+                123456,
+            ),
+            array(
+                123456,
+                244.252,
+                "asdf",
+                123456,
+            ),
+            array(
+                123456,
+                "",
+                244.252,
+                123456,
+            ),
         );
     }
 
