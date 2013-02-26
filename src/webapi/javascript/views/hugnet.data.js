@@ -314,6 +314,7 @@ HUGnet.DataView = Backbone.View.extend({
         this.$('#autorefresh').prop("disabled", false);
         this.history.off("fetchfail", this._finishFetch, this);
         this.history.off("fetchdone", this._finishFetch, this);
+        this.history.off('sync', this._finishFetch, this);
         this.polling = false;
     },
     _poll: function ()
