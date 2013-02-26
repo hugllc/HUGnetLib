@@ -293,6 +293,8 @@ HUGnet.DataView = Backbone.View.extend({
         if (!this.polling) {
             this.polling = true;
             this.$('input[type="submit"]').prop('disabled', true);
+            this.$('select').prop('disabled', true);
+            this.$('input[type="text"]').prop('disabled', true);
             this.history.on("fetchfail", this._poll, this);
             this.history.on("fetchdone", this._poll, this);
             this.getLatest();
@@ -312,6 +314,8 @@ HUGnet.DataView = Backbone.View.extend({
     _finishFetch: function ()
     {
         this.$('input[type="submit"]').prop('disabled', false);
+        this.$('select').prop('disabled', false);
+        this.$('input[type="text"]').prop('disabled', false);
         this.$('#autorefresh').prop("disabled", false);
         this.history.off("fetchfail", this._finishFetch, this);
         this.history.off("fetchdone", this._finishFetch, this);
