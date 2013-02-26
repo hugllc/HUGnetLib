@@ -279,11 +279,14 @@ class DriverTest extends drivers\DriverTestBase
                     ),
                     "Device" => array(
                         "get" => array(
-                            "arch" => "AVR",
+                            "arch" => "0039-37",
                         ),
                     ),
                 ),
                 array(
+                    0x01 => "ADuC DAC",
+                    0x02 => "ADuC PWM",
+                    0x03 => "ADuC GPIO",
                     0xFE => 'Null Output',
                     0xFF => 'Empty Slot'
                 ),

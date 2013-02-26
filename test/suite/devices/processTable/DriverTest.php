@@ -278,7 +278,7 @@ class DriverTest extends drivers\DriverTestBase
                     ),
                     "Device" => array(
                         "get" => array(
-                            "arch" => "003937",
+                            "arch" => "0039-37",
                         ),
                     ),
                 ),

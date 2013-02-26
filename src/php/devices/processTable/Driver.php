@@ -101,15 +101,15 @@ abstract class Driver
     *
     */
     private $_arch = array(
-        "003912" => array(
+        "0039-12" => array(
         ),
-        "00392101" => array(
+        "0039-21-01" => array(
         ),
-        "00392101" => array(
+        "0039-21-01" => array(
         ),
-        "003928" => array(
+        "0039-28" => array(
         ),
-        "003937" => array(
+        "0039-37" => array(
             0x01 => "LevelHolderProcess",
             0x02 => "PIDProcess",
         ),
