@@ -76,11 +76,6 @@ HUGnet.DataView = Backbone.View.extend({
     {
         this.url = options.url;
         this.data = options.data;
-        this.sinceId = "since"+this.model.get("id");
-        this.untilId = "until"+this.model.get("id");
-        this.$('#since').attr("id", this.sinceId);
-        this.$('#until').attr("id", this.untilId);
-        this.sinceID
         var device;
         var i;
         this.header = {};
@@ -223,8 +218,8 @@ HUGnet.DataView = Backbone.View.extend({
         if (!this.polling) {
             this.$('#autorefresh').prop("disabled", true);
             this.$('input[type="submit"]').prop('disabled', true);
-            this.since = Date.parse(this.$('#since').val());
-            this.until = Date.parse(this.$('#until').val());
+            this.since = Date.parse(this.$('#'+this.sinceId).val());
+            this.until = Date.parse(this.$('#'+this.untilId).val());
             if (this.$('#type').val()) {
                 this.history.type = this.$('#type').val();
             }
@@ -378,6 +373,12 @@ HUGnet.DataView = Backbone.View.extend({
                 data
             )
         );
+        if (this.sinceId == "since") {
+            this.sinceId = "since"+this.model.get("id");
+            this.untilId = "until"+this.model.get("id");
+            this.$("#since").attr("id", this.sinceId);
+            this.$("#until").attr("id", this.untilId);
+        }
         this.$("#"+this.sinceId).datetimepicker();
         this.$("#"+this.untilId).datetimepicker();
         this.iframe = $('<iframe>', { id:'exportCSV' }).hide();
