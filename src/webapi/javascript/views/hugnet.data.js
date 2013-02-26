@@ -63,6 +63,8 @@ HUGnet.DataView = Backbone.View.extend({
     iframe: undefined,
     csvlimit: 40000,
     progress: undefined,
+    sinceId: "since",
+    untilId: "until",
     events: {
         'click #autorefresh': 'setRefresh',
         'submit': 'submit',
@@ -74,6 +76,11 @@ HUGnet.DataView = Backbone.View.extend({
     {
         this.url = options.url;
         this.data = options.data;
+        this.sinceId = "since"+this.model.get("id");
+        this.untilId = "until"+this.model.get("id");
+        this.$('#since').attr("id", this.sinceId);
+        this.$('#until').attr("id", this.untilId);
+        this.sinceID
         var device;
         var i;
         this.header = {};
@@ -150,8 +157,8 @@ HUGnet.DataView = Backbone.View.extend({
                 + pad(d.getMinutes())+':'
                 + pad(d.getSeconds());
         }
-        this.$("#since").val(since);
-        this.$("#until").val(until);
+        this.$("#"+this.sinceId).val(since);
+        this.$("#"+this.untilId).val(until);
     },
     exportCSV: function ()
     {
@@ -367,8 +374,8 @@ HUGnet.DataView = Backbone.View.extend({
                 data
             )
         );
-        this.$('input.since').datetimepicker();
-        this.$('input.until').datetimepicker();
+        this.$("#"+this.sinceId).datetimepicker();
+        this.$("#"+this.untilId).datetimepicker();
         this.iframe = $('<iframe>', { id:'exportCSV' }).hide();
         this.$el.append(this.plot.el);
         this.$el.append(this.table.render().el);
