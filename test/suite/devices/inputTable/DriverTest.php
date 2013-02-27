@@ -1188,6 +1188,84 @@ class DriverTest extends drivers\DriverTestBase
         $ret = $this->o->encodeDataPoint($A, $channel);
         $this->assertSame($expect, $ret);
     }
+    /**
+    * data provider for testDecodeFloat
+    *
+    * @return array
+    */
+    public static function dataDecodeFloat()
+    {
+        return array(
+            array( // #0 Comes from Wikipedia: Single_precision_floating-point_format
+                "00004641",
+                4,
+                12.375,
+            ),
+            array( // #1 Bad number of bytes
+                "00004641",
+                5,
+                null,
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $string The string to use
+    * @param int    $bytes  The number of bytes to use
+    * @param string $expect The expected float
+    *
+    * @return null
+    *
+    * @dataProvider dataDecodeFloat
+    */
+    public function testDecodeFloat($string, $bytes, $expect)
+    {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock(array());
+        $obj = Driver::factory("DriverTestClass", $sensor);
+        $ret = $obj->decodeFloat($string, $bytes);
+        $this->assertEquals($expect, $ret, "Return is wrong", 0.0001);
+    }
+    /**
+    * data provider for testEncodeFloat
+    *
+    * @return array
+    */
+    public static function dataEncodeFloat()
+    {
+        return array(
+            array( // #0 Comes from Wikipedia: Single_precision_floating-point_format
+                12.375,
+                4,
+                "00004641",
+            ),
+            array( // #1 bad number of bytes
+                12.375,
+                5,
+                "0000000000",
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $string The string to use
+    * @param int    $bytes  The number of bytes to use
+    * @param string $expect The expected float
+    *
+    * @return null
+    *
+    * @dataProvider dataEncodeFloat
+    */
+    public function testEncodeFloat($string, $bytes, $expect)
+    {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock(array());
+        $obj = Driver::factory("DriverTestClass", $sensor);
+        $ret = $obj->encodeFloat($string, $bytes);
+        $this->assertEquals($expect, $ret, "Return is wrong", 0.0001);
+    }
 }
 /** This is the HUGnet namespace */
 namespace HUGnet\devices\inputTable\drivers;
@@ -1300,6 +1378,31 @@ class DriverTestClass extends \HUGnet\devices\inputTable\Driver
     public static function getTypesTest($sid)
     {
         return static::$drivers;
+    }
+    /**
+    * This builds the string for the levelholder.
+    *
+    * @param string $val   The value to use
+    * @param int    $bytes The number of bytes to use
+    *
+    * @return string The string
+    */
+    public function encodeFloat($val, $bytes = 4)
+    {
+        return parent::encodeFloat($val, $bytes);
+
+    }
+    /**
+    * This builds the string for the levelholder.
+    *
+    * @param string $val   The value to use
+    * @param int    $bytes The number of bytes to use
+    *
+    * @return string The string
+    */
+    public function decodeFloat($val, $bytes = 4)
+    {
+        return parent::decodeFloat($val, $bytes);
     }
 }
 /**

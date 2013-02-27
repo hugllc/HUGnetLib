@@ -70,6 +70,17 @@ require_once dirname(__FILE__)."/DriverLinux.php";
 abstract class Driver
 {
     /**
+    * This is where we store our float size information
+    */
+    private $_floats = array(
+        4 => array(
+            "bits"  => 32,
+            "esize" => 8,
+            "ebias" => 127,
+            "fsize" => 23,
+        ),
+    );
+    /**
     * This is where we store the sensor.
     */
     private $_input = null;
@@ -821,6 +832,68 @@ abstract class Driver
 
         }
         return $int;
+
+    }
+    /**
+    * This builds the string for the levelholder.
+    *
+    * @param float $val   The value to use
+    * @param int   $bytes The number of bytes to use
+    *
+    * @return string The string
+    */
+    protected function encodeFloat($val, $bytes = 4)
+    {
+        if (!isset($this->_floats[(int)$bytes])) {
+            return $this->encodeInt(null, $bytes);
+        }
+        $bits  = $this->_floats[(int)$bytes]["bits"];
+        $esize = $this->_floats[(int)$bytes]["esize"];
+        $ebias = $this->_floats[(int)$bytes]["ebias"];
+        $fsize = $this->_floats[(int)$bytes]["fsize"];
+
+        $sign = ($val < 0) ? 1 : 0;
+        $val = abs($val);
+        $exp  = 0;
+        // This sections makes it a number between 1 and 2
+        while ($val >= 2) {
+            $val /= 2;
+            $exp++;
+        }
+        while ($val < 1) {
+            $val *= 2;
+            $exp--;
+        }
+        $exp += $ebias;
+        $int  = (int)(($val - 1) * pow(2, $fsize));
+        $int  = $int | ($exp << $fsize) | ($sign << ($bits - 1));
+        return $this->encodeInt($int);
+
+    }
+    /**
+    * This builds the string for the levelholder.
+    *
+    * @param string $val   The value to use
+    * @param int    $bytes The number of bytes to use
+    *
+    * @return string The string
+    */
+    protected function decodeFloat($val, $bytes = 4)
+    {
+        if (!isset($this->_floats[(int)$bytes])) {
+            return null;
+        }
+        // First, we need to get the int
+        $int   = $this->decodeInt($val, $bytes, false);
+        $bits  = $this->_floats[(int)$bytes]["bits"];
+        $esize = $this->_floats[(int)$bytes]["esize"];
+        $ebias = $this->_floats[(int)$bytes]["ebias"];
+        $fsize = $this->_floats[(int)$bytes]["fsize"];
+        $sign  = ($int & pow(2, $bits - 1)) ? -1 : 1;
+        $fract = 1 + ((float)($int & (pow(2, $fsize) - 1)) / (float)pow(2, $fsize));
+        $exp   = (($int >> $fsize) & 0xFF) - $ebias;
+        $float = $fract * pow(2, $exp) * $sign;
+        return $float;
 
     }
 }
