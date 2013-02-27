@@ -865,7 +865,7 @@ abstract class Driver
             $exp--;
         }
         $exp += $ebias;
-        $int  = (int)(($val - 1) * pow(2, $fsize));
+        $int  = round((($val - 1) * pow(2, $fsize)));
         $int  = $int | ($exp << $fsize) | ($sign << ($bits - 1));
         return $this->encodeInt($int);
 
