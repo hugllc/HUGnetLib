@@ -1265,6 +1265,11 @@ class DriverTest extends drivers\DriverTestBase
                 4,
                 "B4A291DD",
             ),
+            array( // #5 big negative int
+                0x1000001,
+                4,
+                "0100804B",
+            ),
         );
     }
     /**
