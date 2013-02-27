@@ -1245,6 +1245,26 @@ class DriverTest extends drivers\DriverTestBase
                 5,
                 "0000000000",
             ),
+            array( // #2 small int
+                0x123456,
+                4,
+                "B0A29149",
+            ),
+            array( // #3 big int
+                0x1234567812345678,
+                4,
+                "B4A2915D",
+            ),
+            array( // #4 small negative int
+                -0x123456,
+                4,
+                "B0A291C9",
+            ),
+            array( // #5 big negative int
+                -0x1234567812345678,
+                4,
+                "B4A291DD",
+            ),
         );
     }
     /**
