@@ -40,6 +40,9 @@ namespace HUGnet\devices\drivers;
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our base class */
 require_once dirname(__FILE__)."/E00392101.php";
+/** This is our interface */
+require_once dirname(__FILE__)."/DriverInterface.php";
+
 /**
  * Networking for devices.
  *
@@ -58,6 +61,7 @@ require_once dirname(__FILE__)."/E00392101.php";
  * @since      0.9.7
  */
 class E00392102 extends E00392101
+    implements \HUGnet\devices\drivers\DriverInterface
 {
     /** The placeholder for the reading the downstream units from a controller */
     const COMMAND_READDOWNSTREAM = "56";

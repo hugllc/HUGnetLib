@@ -38,6 +38,9 @@
 namespace HUGnet\devices\drivers;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
+/** This is our interface */
+require_once dirname(__FILE__)."/DriverInterface.php";
+
 
 /**
  * Networking for devices.
@@ -57,6 +60,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @since      0.9.7
  */
 class E00391202 extends \HUGnet\devices\Driver
+    implements \HUGnet\devices\drivers\DriverInterface
 {
     /**
     * This is where the data for the driver is stored.  This array must be

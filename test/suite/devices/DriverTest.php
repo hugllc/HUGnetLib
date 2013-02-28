@@ -43,6 +43,8 @@ require_once CODE_BASE.'system/System.php';
 require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
+/** This is our interface */
+require_once CODE_BASE.'devices/drivers/DriverInterface.php';
 
 /**
  * Test class for HUGnetDB.
@@ -1064,6 +1066,7 @@ namespace HUGnet\devices\drivers;
  * @since      0.9.7
  */
 class DriverTestClass extends \HUGnet\devices\Driver
+    implements \HUGnet\devices\drivers\DriverInterface
 {
     /**
     * This is where the data for the driver is stored.  This array must be
@@ -1093,6 +1096,7 @@ class DriverTestClass extends \HUGnet\devices\Driver
  * @since      0.9.7
  */
 class DriverTestClass2 extends \HUGnet\devices\Driver
+    implements \HUGnet\devices\drivers\DriverInterface
 {
     /**
     * This is where the data for the driver is stored.  This array must be

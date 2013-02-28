@@ -38,6 +38,9 @@
 namespace HUGnet\devices\drivers;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
+/** This is our interface */
+require_once dirname(__FILE__)."/DriverInterface.php";
+
 
 /**
  * Networking for devices.
@@ -57,6 +60,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @since      0.9.7
  */
 class E00392101 extends \HUGnet\devices\Driver
+    implements \HUGnet\devices\drivers\DriverInterface
 {
     /** The placeholder for the reading the downstream units from a controller */
     const COMMAND_READDOWNSTREAM = "56";

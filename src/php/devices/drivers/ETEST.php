@@ -40,6 +40,9 @@ namespace HUGnet\devices\drivers;
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our parent class */
 require_once dirname(__FILE__)."/EVIRTUAL.php";
+/** This is our interface */
+require_once dirname(__FILE__)."/DriverInterface.php";
+
 /**
  * Networking for devices.
  *
@@ -58,6 +61,7 @@ require_once dirname(__FILE__)."/EVIRTUAL.php";
  * @since      0.9.7
  */
 class ETEST extends EVIRTUAL
+    implements \HUGnet\devices\drivers\DriverInterface
 {
     /**
     * This is where the data for the driver is stored.  This array must be
