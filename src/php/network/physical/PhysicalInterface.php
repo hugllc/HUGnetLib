@@ -6,7 +6,6 @@
  * <pre>
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2013 Hunt Utilities Group, LLC
- * Copyright (C) 2009 Scott Price
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,14 +28,11 @@
  * @subpackage Network
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2013 Hunt Utilities Group, LLC
- * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
 namespace HUGnet\network\physical;
-/** This is our interface */
-require_once dirname(__FILE__)."/PhysicalInterface.php";
 /**
  * This class hands out references to the sockets that are available.
  *
@@ -45,37 +41,13 @@ require_once dirname(__FILE__)."/PhysicalInterface.php";
  * @subpackage Network
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2013 Hunt Utilities Group, LLC
- * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @since      0.10.4
  */
-final class Local implements PhysicalInterface
+interface PhysicalInterface
 {
-    /**
-     * This is the name of our socket
-     */
-    private $_name = "";
-    /**
-     * This is the system object to use
-     */
-    private $_system = "";
-    /**
-     * This our configuration resides here
-     */
-    private $_config = "";
-    /**
-    * Sets our configuration
-    *
-    * @param object &$system The system object to use
-    * @param array  $config  The configuration to use
-    */
-    private function __construct(&$system, $config)
-    {
-        $this->_system = &$system;
-        $this->_config = $config;
-        $this->_name = $this->_config["name"];
-    }
     /**
     * Creates the object
     *
@@ -84,28 +56,14 @@ final class Local implements PhysicalInterface
     *
     * @return null
     */
-    static public function &factory(&$system, $config = array())
-    {
-        return new Local($system, (array)$config);
-    }
-
-    /**
-    * Disconnects from the database
-    *
-    */
-    public function __destruct()
-    {
-    }
+    static public function &factory(&$system, $config = array());
 
     /**
     * Checks to see if this socket is available
     *
     * @return Socket object
     */
-    public function available()
-    {
-        return true;
-    }
+    public function available();
     /**
     * Writes to the socket
     *
@@ -113,22 +71,13 @@ final class Local implements PhysicalInterface
     *
     * @return int|bool # of bytes on success, False on failure
     */
-    public function write($string)
-    {
-        $this->_buffer .= (string)$string;
-        return strlen($string) / 2;
-    }
+    public function write($string);
     /**
     * Reads from the socket
     *
     * @return int|bool # of bytes on success, False on failure
     */
-    public function read()
-    {
-        $ret = $this->_buffer;
-        $this->_buffer = "";
-        return $ret;
-    }
+    public function read();
 
 }
 ?>

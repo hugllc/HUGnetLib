@@ -38,6 +38,8 @@
 namespace HUGnet\network\physical;
 /** This is our base class */
 require_once dirname(__FILE__)."/DummyBase.php";
+/** This is our interface */
+require_once CODE_BASE."/network/physical/PhysicalInterface.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -57,6 +59,7 @@ require_once dirname(__FILE__)."/DummyBase.php";
  * @SuppressWarnings(PHPMD.UnusedFormalParameter)
  */
 class DummySocket extends \HUGnet\DummyBase
+    implements \HUGnet\network\physical\PhysicalInterface
 {
     /** @var This is our returns */
     protected $class = "DummySocket";
@@ -110,6 +113,15 @@ class DummySocket extends \HUGnet\DummyBase
             return (string)$ret;
         }
         return strlen($string)/2;
+    }
+    /**
+    * Checks to see if this socket is available
+    *
+    * @return Socket object
+    */
+    public function available()
+    {
+        return parent::__call("available", func_get_args());
     }
 
 
