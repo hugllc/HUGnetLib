@@ -35,6 +35,8 @@
  */
 /** This is the HUGnet namespace */
 namespace HUGnet\network\physical;
+/** This is our interface */
+require_once dirname(__FILE__)."/PhysicalInterface.php";
 /**
  * This class hands out references to the sockets that are available.
  *
@@ -48,7 +50,7 @@ namespace HUGnet\network\physical;
  * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-final class SocketNull
+final class SocketNull implements PhysicalInterface
 {
     /**
      * This is the name of our socket
@@ -107,9 +109,12 @@ final class SocketNull
     /**
     * Writes to the socket
     *
+    * @param string $string The string to write
+    *
     * @return int|bool # of bytes on success, False on failure
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    public function write()
+    public function write($string)
     {
         $this->_system->fatalError(
             "No connection available on ".$this->_name

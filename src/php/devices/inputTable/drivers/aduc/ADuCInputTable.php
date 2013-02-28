@@ -58,6 +58,7 @@ require_once dirname(__FILE__)."/../../DriverADuC.php";
  * @SuppressWarnings(PHPMD.UnusedPrivateField)
  */
 class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
+    implements \HUGnet\devices\inputTable\DriverInterface
 {
     /**
     * This is where we store the drivers

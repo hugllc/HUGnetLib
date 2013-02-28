@@ -35,6 +35,8 @@
  */
 /** This is the HUGnet namespace */
 namespace HUGnet\network\physical;
+/** This is our interface */
+require_once dirname(__FILE__)."/PhysicalInterface.php";
 /**
  * This class implements a sever for sockets.
  *
@@ -59,7 +61,7 @@ namespace HUGnet\network\physical;
  * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-final class Serial
+final class Serial implements PhysicalInterface
 {
     /**
     * This is the maximum number of bytes that we read

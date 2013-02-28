@@ -58,6 +58,7 @@ require_once dirname(__FILE__)."/AVRVoltage.php";
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class FETBoardVoltage extends AVRVoltage
+    implements \HUGnet\devices\inputTable\DriverInterface
 {
     /**
     * This is the array of sensor information.

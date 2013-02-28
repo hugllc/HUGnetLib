@@ -106,7 +106,7 @@ class SocketNullTest extends \PHPUnit_Framework_TestCase
         $config = array();
         $sys = new \HUGnet\DummySystem("System");
         $socket = SocketNull::factory($sys, $config);
-        $socket->write();
+        $socket->write("Hello");
     }
     /**
     * This tests the exception when read is called on a null socket

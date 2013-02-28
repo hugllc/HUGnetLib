@@ -308,7 +308,8 @@ abstract class Driver
         if (file_exists($file)) {
             include_once $file;
         }
-        if (class_exists($class)) {
+        $interface = "\\HUGnet\\devices\\inputTable\\DriverInterface";
+        if (is_subclass_of($class, $interface)) {
             $obj = new $class($sensor, $table);
             return true;
         }

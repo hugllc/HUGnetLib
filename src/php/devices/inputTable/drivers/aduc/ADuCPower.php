@@ -57,6 +57,7 @@ require_once dirname(__FILE__)."/../../DriverADuC.php";
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
+    implements \HUGnet\devices\inputTable\DriverInterface
 {
     /**
     * This is where the data for the driver is stored.  This array must be

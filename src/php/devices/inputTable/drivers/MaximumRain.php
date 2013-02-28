@@ -56,6 +56,7 @@ require_once dirname(__FILE__)."/../Driver.php";
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class MaximumRain extends \HUGnet\devices\inputTable\Driver
+    implements \HUGnet\devices\inputTable\DriverInterface
 {
     /**
     * This is the array of sensor information.

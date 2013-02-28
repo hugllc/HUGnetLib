@@ -354,9 +354,9 @@ final class Network
             $this->_system->out("Opening socket ".$socket, 6);
             $class = $this->_config[$socket]["driver"];
             @include_once dirname(__FILE__)."/physical/".$class.".php";
-            $class = __NAMESPACE__."\\physical\\".$class;
-
-            if (class_exists($class)) {
+            $class = "\\".__NAMESPACE__."\\physical\\".$class;
+            $interface = "\\".__NAMESPACE__."\\physical\\PhysicalInterface";
+            if (is_subclass_of($class, $interface)) {
                 $this->_system->out("Using class ".$class, 6);
                 $this->_sockets[$socket] = $class::factory(
                     $this->_system, $this->_config[$socket]

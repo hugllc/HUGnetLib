@@ -56,6 +56,7 @@ require_once dirname(__FILE__)."/AVRBC2322640.php";
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class AVRBC2322640_0 extends AVRBC2322640
+    implements \HUGnet\devices\inputTable\DriverInterface
 {
     /**
     * This is where the data for the driver is stored.  This array must be

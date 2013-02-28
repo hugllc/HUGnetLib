@@ -56,6 +56,7 @@ require_once dirname(__FILE__)."/../../DriverAVR.php";
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class AVRB57560G0103F000 extends \HUGnet\devices\inputTable\DriverAVR
+    implements \HUGnet\devices\inputTable\DriverInterface
 {
     /**
     * This is where the data for the driver is stored.  This array must be

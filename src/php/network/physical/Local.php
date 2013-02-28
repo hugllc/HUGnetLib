@@ -35,6 +35,8 @@
  */
 /** This is the HUGnet namespace */
 namespace HUGnet\network\physical;
+/** This is our interface */
+require_once dirname(__FILE__)."/PhysicalInterface.php";
 /**
  * This class hands out references to the sockets that are available.
  *
@@ -48,7 +50,7 @@ namespace HUGnet\network\physical;
  * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-final class Local
+final class Local implements PhysicalInterface
 {
     /**
      * This is the name of our socket

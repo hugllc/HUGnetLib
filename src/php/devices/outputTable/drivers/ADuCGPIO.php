@@ -56,6 +56,7 @@ require_once dirname(__FILE__)."/../DriverADuC.php";
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class ADuCGPIO extends \HUGnet\devices\outputTable\DriverADuC
+    implements \HUGnet\devices\outputTable\DriverInterface
 {
     /**
     * This is where the data for the driver is stored.  This array must be

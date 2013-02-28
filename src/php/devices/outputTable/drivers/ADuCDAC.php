@@ -56,6 +56,7 @@ require_once dirname(__FILE__)."/../DriverADuC.php";
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class ADuCDAC extends \HUGnet\devices\outputTable\DriverADuC
+    implements \HUGnet\devices\outputTable\DriverInterface
 {
     /** This is the class for our table entry */
     protected $entryClass = "ADuCDAC";

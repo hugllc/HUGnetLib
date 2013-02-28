@@ -1,9 +1,8 @@
 <?php
 /**
- * Classes for dealing with devices
+ * This file howses the socket class
  *
  * PHP Version 5
- *
  * <pre>
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2013 Hunt Utilities Group, LLC
@@ -20,48 +19,65 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA  02110-1301, USA.
  * </pre>
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage Sensors
+ * @subpackage Network
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2013 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
- *
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\devices\outputTable;
-/** This keeps this file from being included unless HUGnetSystem.php is included */
-defined('_HUGNET') or die('HUGnetSystem not found');
-/** This is our units class */
-require_once dirname(__FILE__)."/Driver.php";
-/** This is our interface */
-require_once dirname(__FILE__)."/DriverInterface.php";
+namespace HUGnet\network\physical;
 /**
- * Base driver class for devices.
- *
- * This class deals with loading the drivers and figuring out what driver needs
- * to be loaded.
+ * This class hands out references to the sockets that are available.
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage Sensors
+ * @subpackage Network
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2013 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
- * @since      0.10.0
- *
- * @SuppressWarnings(PHPMD.ShortVariable)
+ * @since      0.10.4
  */
-abstract class DriverADuC extends Driver implements DriverInterface
+interface PhysicalInterface
 {
+    /**
+    * Creates the object
+    *
+    * @param object &$system The system object to use
+    * @param array  $config  The configuration to use
+    *
+    * @return null
+    */
+    static public function &factory(&$system, $config = array());
+
+    /**
+    * Checks to see if this socket is available
+    *
+    * @return Socket object
+    */
+    public function available();
+    /**
+    * Writes to the socket
+    *
+    * @param string $string The string to write
+    *
+    * @return int|bool # of bytes on success, False on failure
+    */
+    public function write($string);
+    /**
+    * Reads from the socket
+    *
+    * @return int|bool # of bytes on success, False on failure
+    */
+    public function read();
 
 }
-
-
 ?>

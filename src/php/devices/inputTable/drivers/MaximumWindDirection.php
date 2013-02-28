@@ -56,6 +56,7 @@ require_once dirname(__FILE__)."/../Driver.php";
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class MaximumWindDirection extends \HUGnet\devices\inputTable\Driver
+    implements \HUGnet\devices\inputTable\DriverInterface
 {
     /** @var array These our the direction masks */
     protected $directions = array(

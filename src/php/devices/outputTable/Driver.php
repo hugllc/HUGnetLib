@@ -191,7 +191,8 @@ abstract class Driver
         if (file_exists($file)) {
             include_once $file;
         }
-        if (class_exists($class)) {
+        $interface = "\\HUGnet\\devices\\outputTable\\DriverInterface";
+        if (is_subclass_of($class, $interface)) {
             return new $class($output, $table);
         }
         include_once dirname(__FILE__)."/drivers/EmptyOutput.php";
