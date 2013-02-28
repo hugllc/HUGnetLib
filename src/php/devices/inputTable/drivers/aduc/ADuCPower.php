@@ -448,7 +448,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
             $string = (string)substr($string, ($size * 2));
             $A = $this->decodeInt($work, $size);
             $return = $this->getTwosCompliment($A, $size * 8);
-            print "$channel => $size => ".str_pad($return, 15).": $str2\n";
+            //print "$channel => $size => ".str_pad($return, 15).": $str2\n";
         }
         return $return;
     }
