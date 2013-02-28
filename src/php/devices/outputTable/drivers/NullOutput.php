@@ -39,6 +39,8 @@ namespace HUGnet\devices\outputTable\drivers;
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is my base class */
 require_once dirname(__FILE__)."/../Driver.php";
+/** This is our interface */
+require_once dirname(__FILE__)."/../DriverInterface.php";
 
 /**
  * Driver for reading voltage based pressure sensors
