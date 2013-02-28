@@ -37,6 +37,8 @@
 namespace HUGnet\devices\inputTable;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
+/** This is our interface */
+require_once dirname(__FILE__)."/DriverInterface.php";
 /** This is our units class */
 require_once dirname(__FILE__)."/../datachan/Driver.php";
 /** This is our units class */

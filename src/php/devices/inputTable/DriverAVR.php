@@ -39,8 +39,6 @@ namespace HUGnet\devices\inputTable;
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our units class */
 require_once dirname(__FILE__)."/Driver.php";
-/** This is our interface */
-require_once dirname(__FILE__)."/DriverInterface.php";
 /**
  * Base driver class for devices.
  *
@@ -60,7 +58,7 @@ require_once dirname(__FILE__)."/DriverInterface.php";
  * @SuppressWarnings(PHPMD.ShortVariable)
  * @SuppressWarnings(PHPMD.NumberOfChildren)
  */
-abstract class DriverAVR extends Driver implements DriverInterface
+abstract class DriverAVR extends Driver
 {
     /** This is a constant */
     const AM = 1023;
