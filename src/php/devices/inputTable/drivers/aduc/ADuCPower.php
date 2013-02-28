@@ -434,8 +434,20 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         $return = null;
         $Enable = $this->_hardwareEnable();
         if (($channel < 2) || ($Enable && ($channel < 4))) {
-            $A = $this->strToInt($string);
-            $return = $this->getTwosCompliment($A, 32);
+            $size = $this->get("inputSize");
+            if ($channel == 2) {
+                // This is Power
+                //$size *= 2;
+            }
+            if ($size > strlen($string)) {
+                return null;
+            }
+            $work = substr($string, 0, ($size * 2));
+            $str2 = $string;
+            $string = (string)substr($string, ($size * 2));
+            $A = $this->decodeInt($work, $size);
+            $return = $this->getTwosCompliment($A, $size * 8);
+            print "$channel => $size => ".str_pad($return, 15).": $str2\n";
         }
         return $return;
     }
