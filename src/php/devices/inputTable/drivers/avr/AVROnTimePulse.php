@@ -56,6 +56,7 @@ require_once dirname(__FILE__)."/../../DriverAVR.php";
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class AVROnTimePulse extends \HUGnet\devices\inputTable\DriverAVR
+    implements \HUGnet\devices\inputTable\DriverInterface
 {
     /**
     * This is the array of sensor information.

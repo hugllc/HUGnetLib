@@ -39,6 +39,8 @@ namespace HUGnet\devices\inputTable;
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our units class */
 require_once dirname(__FILE__)."/Driver.php";
+/** This is our interface */
+require_once dirname(__FILE__)."/DriverInterface.php";
 /**
  * Base driver class for devices.
  *
@@ -58,7 +60,7 @@ require_once dirname(__FILE__)."/Driver.php";
  * @SuppressWarnings(PHPMD.ShortVariable)
  * @SuppressWarnings(PHPMD.NumberOfChildren)
  */
-abstract class DriverADuC extends Driver
+abstract class DriverADuC extends Driver implements DriverInterface
 {
     /**
     * This is where the data for the driver is stored.  This array must be
@@ -138,7 +140,8 @@ abstract class DriverADuC extends Driver
         if (file_exists($file)) {
             include_once $file;
         }
-        if (class_exists($class)) {
+        $interface = "\\HUGnet\\devices\\inputTable\\DriverInterface";
+        if (is_subclass_of($class, $interface)) {
             $obj = new $class($sensor, $table);
             return true;
         }

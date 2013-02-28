@@ -54,6 +54,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class ControlSumInput extends \HUGnet\devices\inputTable\Driver
+    implements \HUGnet\devices\inputTable\DriverInterface
 {
     /**
     * This is where the data for the driver is stored.  This array must be

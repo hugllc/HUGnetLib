@@ -7,7 +7,6 @@
  * <pre>
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2013 Hunt Utilities Group, LLC
- * Copyright (C) 2009 Scott Price
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -37,10 +36,7 @@
 namespace HUGnet\devices\inputTable;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
-/** This is our units class */
-require_once dirname(__FILE__)."/Driver.php";
-/** This is our interface */
-require_once dirname(__FILE__)."/DriverInterface.php";
+
 /**
  * Base driver class for devices.
  *
@@ -55,42 +51,19 @@ require_once dirname(__FILE__)."/DriverInterface.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
- * @since      0.9.8
- *
- * @SuppressWarnings(PHPMD.ShortVariable)
- * @SuppressWarnings(PHPMD.NumberOfChildren)
+ * @since      0.10.4
  */
-abstract class DriverVirtual extends Driver implements DriverInterface
+interface DriverInterface
 {
     /**
-    * This is where the data for the driver is stored.  This array must be
-    * put into all derivative classes, even if it is empty.
-    */
-    protected $params = array(
-    );
-    /**
-    * This is where all of the driver information is stored.
+    * Returns this input associated with this driver
     *
-    * Drivers must be registered here, otherwise they will never get loaded.  The
-    * index in the root array is the driver name.  It should be exactly the same
-    * as the driver class name.
+    * @return object
     */
-    protected static $drivers = array(
-        "FE:DEFAULT"                 => "EmptyVirtual",
-        "FE:AlarmVirtual"            => "AlarmVirtual",
-        "FE:BinaryVirtual"           => "BinaryVirtual",
-        "FE:CalorimeterPowerVirtual" => "CalorimeterPowerVirtual",
-        "FE:CelaniPowerCalVirtual"   => "CelaniPowerCalVirtual",
-        "FE:CloneVirtual"            => "CloneVirtual",
-        "FE:ComputationVirtual"      => "ComputationVirtual",
-        "FE:DewPointVirtual"         => "DewPointVirtual",
-        "FE:LinearTransformVirtual"  => "LinearTransformVirtual",
-        "FE:WindChillVirtual"        => "WindChillVirtual",
-    );
+    public function input();
     /**
-    * This function creates an object if it finds the right class
+    * This function creates the system.
     *
-    * @param object &$obj    The object container to put an object in.
     * @param string $driver  The driver to load
     * @param object &$sensor The sensor object
     * @param array  $table   The table to use.  This forces the table, instead of
@@ -98,23 +71,81 @@ abstract class DriverVirtual extends Driver implements DriverInterface
     *
     * @return null
     */
-    protected static function driverFactory(&$obj, $driver, &$sensor, $table = null)
-    {
-        if (is_object($obj)) {
-            return false;
-        }
-        $class = '\\HUGnet\\devices\\inputTable\\drivers\\virtual\\'.$driver;
-        $file = dirname(__FILE__)."/drivers/virtual/".$driver.".php";
-        if (file_exists($file)) {
-            include_once $file;
-        }
-        $interface = "\\HUGnet\\devices\\inputTable\\DriverInterface";
-        if (is_subclass_of($class, $interface)) {
-            $obj = new $class($sensor, $table);
-            return true;
-        }
-        return false;
-    }
+    public static function &factory($driver, &$sensor, $table = null);
+    /**
+    * Checks to see if a piece of data exists
+    *
+    * @param string $name The name of the property to check
+    *
+    * @return true if the property exists, false otherwise
+    */
+    public function present($name);
+    /**
+    * Gets an item
+    *
+    * @param string $name The name of the property to get
+    *
+    * @return null
+    */
+    public function get($name);
+    /**
+    * Returns all of the parameters and defaults in an array
+    *
+    * @return array of data from the sensor
+    */
+    public function toArray();
+    /**
+    * Returns the driver that should be used for a particular device
+    *
+    * @param mixed  $sid  The ID of the sensor
+    * @param string $type The type of the sensor
+    *
+    * @return string The driver to use
+    */
+    public static function getDriver($sid, $type = "DEFAULT");
+    /**
+    * Returns an array of types that this sensor could be
+    *
+    * @param int $sid The ID to check
+    *
+    * @return The extra value (or default if empty)
+    */
+    public static function getTypes($sid);
+    /**
+    * Registers an extra driver to be used by the class
+    *
+    * The new class will only be registered if it doesn't already exist
+    *
+    * @param string $key   The key to use for the class
+    * @param string $class The class to use for the key
+    *
+    * @return null
+    */
+    public static function register($key, $class);
+    /**
+    * Gets the extra values
+    *
+    * @param int $index The extra index to use
+    *
+    * @return The extra value (or default if empty)
+    */
+    public function getExtra($index);
+
+    /**
+    * Decodes the driver portion of the setup string
+    *
+    * @param string $string The string to decode
+    *
+    * @return array
+    */
+    public function decode($string);
+    /**
+    * Encodes this driver as a setup string
+    *
+    * @return array
+    */
+    public function encode();
+
     /**
     * Gets the direction from a direction sensor made out of a POT.
     *
@@ -124,18 +155,34 @@ abstract class DriverVirtual extends Driver implements DriverInterface
     * @param array  &$data   The data from the other sensors that were crunched
     *
     * @return float The direction in degrees
-    *
-    * @SuppressWarnings(PHPMD.ShortVariable)
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function decodeData(
         &$string, $deltaT = 0, &$prev = null, &$data = array()
-    ) {
-        $ret = $this->channels();
-        $A = null;
-        $ret[0]["value"] = $this->decodeDataPoint($A, 0, $deltaT, $prev, $data);
-        return $ret;
-    }
+    );
+    /**
+    * Gets the direction from a direction sensor made out of a POT.
+    *
+    * @param string &$string The data string
+    * @param int    $channel The channel to decode
+    * @param float  $deltaT  The time delta in seconds between this record
+    * @param array  &$prev   The previous reading
+    * @param array  &$data   The data from the other sensors that were crunched
+    *
+    * @return float The direction in degrees
+    */
+    public function decodeDataPoint(
+        &$string, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+    );
+    /**
+    * Gets the direction from a direction sensor made out of a POT.
+    *
+    * @param string &$string The data string
+    * @param int    $channel The channel to decode
+    *
+    * @return float The raw value
+    *
+    */
+    public function getRawData(&$string, $channel = 0);
     /**
     * Gets the direction from a direction sensor made out of a POT.
     *
@@ -146,29 +193,22 @@ abstract class DriverVirtual extends Driver implements DriverInterface
     * @param array &$data   The data from the other sensors that were crunched
     *
     * @return string The reading as it would have come out of the endpoint
-    *
-    * @SuppressWarnings(PHPMD.ShortVariable)
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function encodeDataPoint(
         $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
-    ) {
-        return "";
-    }
+    );
     /**
     * This builds the class from a setup string
     *
     * @return Array of channel information
     */
-    public function channels()
-    {
-        $ret = parent::channels();
-        foreach (array_keys((array)$ret) as $key) {
-            $ret[$key]["epChannel"] = false;
-        }
-        return $ret;
-    }
-
+    public function channels();
+    /**
+    * Returns the driver that should be used for a particular device
+    *
+    * @return array The array of drivers that will work
+    */
+    public function getDrivers();
 }
 
 

@@ -58,6 +58,7 @@ require_once dirname(__FILE__)."/../../DriverAVR.php";
  * @SuppressWarnings(PHPMD.UnusedPrivateField)
  */
 class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
+    implements \HUGnet\devices\inputTable\DriverInterface
 {
     /**
     * This is where we store the drivers

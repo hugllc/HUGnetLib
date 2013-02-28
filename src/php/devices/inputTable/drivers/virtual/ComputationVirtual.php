@@ -58,6 +58,7 @@ require_once dirname(__FILE__)."/../../../../contrib/evalmath.class.php";
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class ComputationVirtual extends \HUGnet\devices\inputTable\DriverVirtual
+    implements \HUGnet\devices\inputTable\DriverInterface
 {
     /**
     * This is where the data for the driver is stored.  This array must be

@@ -56,6 +56,7 @@ require_once dirname(__FILE__)."/../../DriverADuC.php";
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class ADuCThermocouple extends \HUGnet\devices\inputTable\DriverADuC
+    implements \HUGnet\devices\inputTable\DriverInterface
 {
     /** This is the number of decimal places we use for our *MATH*, not the output */
     const DECIMAL_PLACES = 20;

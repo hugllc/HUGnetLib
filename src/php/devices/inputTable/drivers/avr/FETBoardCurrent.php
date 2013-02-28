@@ -58,6 +58,7 @@ require_once dirname(__FILE__)."/AVRCurrent.php";
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class FETBoardCurrent extends AVRCurrent
+    implements \HUGnet\devices\inputTable\DriverInterface
 {
     /**
     * This is the array of sensor information.

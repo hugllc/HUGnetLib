@@ -56,6 +56,7 @@ require_once dirname(__FILE__)."/../../DriverVirtual.php";
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class CloneVirtual extends \HUGnet\devices\inputTable\DriverVirtual
+    implements \HUGnet\devices\inputTable\DriverInterface
 {
     /**
      * This is the sensor we are cloning

@@ -56,6 +56,7 @@ require_once dirname(__FILE__)."/../../DriverVirtual.php";
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class EmptyVirtual extends \HUGnet\devices\inputTable\DriverVirtual
+    implements \HUGnet\devices\inputTable\DriverInterface
 {
     /**
     * This is where the data for the driver is stored.  This array must be
