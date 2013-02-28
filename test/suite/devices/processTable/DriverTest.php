@@ -43,6 +43,8 @@ require_once CODE_BASE.'system/System.php';
 require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
 /** This is our base class */
 require_once dirname(__FILE__)."/drivers/DriverTestBase.php";
+/** This is our interface */
+require_once CODE_BASE."devices/processTable/DriverInterface.php";
 
 /**
  * Test class for HUGnetDB.
@@ -499,6 +501,7 @@ namespace HUGnet\devices\processTable\drivers;
  * @since      0.9.7
  */
 class DriverTestClass extends \HUGnet\devices\processTable\Driver
+    implements \HUGnet\devices\processTable\DriverInterface
 {
     /**
     * This is where the data for the driver is stored.  This array must be

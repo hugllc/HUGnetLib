@@ -47,6 +47,8 @@ require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
 require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
 /** This is our units class */
 require_once CODE_BASE."devices/datachan/Driver.php";
+/** This is our interface */
+require_once CODE_BASE."devices/processTable/DriverInterface.php";
 
 /**
  * Test class for HUGnetDB.
@@ -432,6 +434,7 @@ namespace HUGnet\devices\processTable\drivers;
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class TestProcessDriver1 extends \HUGnet\devices\processTable\Driver
+    implements \HUGnet\devices\processTable\DriverInterface
 {
     /**
     * This is where the data for the driver is stored.  This array must be
@@ -476,6 +479,7 @@ class TestProcessDriver1 extends \HUGnet\devices\processTable\Driver
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class TestProcessDriver2 extends \HUGnet\devices\processTable\Driver
+    implements \HUGnet\devices\processTable\DriverInterface
 {
     /**
     * This is where the data for the driver is stored.  This array must be

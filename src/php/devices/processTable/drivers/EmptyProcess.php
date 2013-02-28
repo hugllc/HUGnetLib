@@ -56,6 +56,7 @@ require_once dirname(__FILE__)."/../Driver.php";
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class EmptyProcess extends \HUGnet\devices\processTable\Driver
+    implements \HUGnet\devices\processTable\DriverInterface
 {
     /**
     * This is where the data for the driver is stored.  This array must be

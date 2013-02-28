@@ -56,6 +56,7 @@ require_once dirname(__FILE__)."/../Driver.php";
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
+    implements \HUGnet\devices\processTable\DriverInterface
 {
     /*
     const CGND_OFFSET = 0.95;
