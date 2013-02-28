@@ -56,6 +56,7 @@ require_once dirname(__FILE__)."/../Driver.php";
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class HUGnetPower extends \HUGnet\devices\outputTable\Driver
+    implements \HUGnet\devices\outputTable\DriverInterface
 {
     /**
     * This is where the data for the driver is stored.  This array must be
