@@ -129,9 +129,9 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
     public function decode($string)
     {
         $extra = (array)$this->process()->get("extra");
-        $extra[0] = $this->_getProcessIntStr(substr($string, 0, 2), 1);
-        $extra[1] = $this->_getProcessIntStr(substr($string, 2, 2), 1);
-        $extra[2] = $this->_getProcessIntStr(substr($string, 4, 4), 2, true);
+        $extra[0] = $this->decodeInt(substr($string, 0, 2), 1);
+        $extra[1] = $this->decodeInt(substr($string, 2, 2), 1);
+        $extra[2] = $this->decodeInt(substr($string, 4, 4), 2, true);
         // min is hard coded at substr($string, 6, 8)
         // max is hard coded at substr($string, 14, 8)
         $this->_decodeChannels(substr($string, 24), $extra);
@@ -158,7 +158,7 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
                 unset($extra[$i+2]);
                 continue;
             }
-            $epChan = $this->_getProcessIntStr($epChan, 1);
+            $epChan = $this->decodeInt($epChan, 1);
             $dataChan = $channels->epChannel($epChan);
 
             $extra[$i] = $dataChan->get("channel");
@@ -190,14 +190,14 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
     public function encode()
     {
         $data  = "";
-        $data .= $this->_getProcessStrInt($this->getExtra(0), 1);
-        $data .= $this->_getProcessStrInt($this->getExtra(1), 1);
-        $data .= $this->_getProcessStrInt($this->getExtra(2), 2);
+        $data .= $this->encodeInt($this->getExtra(0), 1);
+        $data .= $this->encodeInt($this->getExtra(1), 1);
+        $data .= $this->encodeInt($this->getExtra(2), 2);
         $output = $this->process()->device()->controlChannels()->controlChannel(
             $this->getExtra(1)
         );
-        $data .= $this->_getProcessStrInt($output->get("min"), 4);
-        $data .= $this->_getProcessStrInt($output->get("max"), 4);
+        $data .= $this->encodeInt($output->get("min"), 4);
+        $data .= $this->encodeInt($output->get("max"), 4);
         $data .= $this->_encodeChannels();
         return $data;
     }
@@ -234,59 +234,9 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
                 break;
             }
             $high = substr($high."00000000", 0, 8);
-            $data .= $this->_getProcessStrInt($epChan, 1).$low.$high;
+            $data .= $this->encodeInt($epChan, 1).$low.$high;
         }
         return $data;
-    }
-    /**
-    * This builds the string for the levelholder.
-    *
-    * @param int $val   The value to use
-    * @param int $bytes The number of bytes to set
-    *
-    * @return string The string
-    */
-    private function _getProcessStrInt($val, $bytes = 4)
-    {
-        $val = (int)$val;
-        for ($i = 0; $i < $bytes; $i++) {
-            $str .= sprintf(
-                "%02X",
-                ($val >> ($i * 8)) & 0xFF
-            );
-        }
-        return $str;
-
-    }
-    /**
-    * This builds the string for the levelholder.
-    *
-    * @param string $val    The value to use
-    * @param int    $bytes  The number of bytes to set
-    * @param bool   $signed If the number is signed or not
-    *
-    * @return string The string
-    */
-    private function _getProcessIntStr($val, $bytes = 4, $signed = false)
-    {
-        $int = 0;
-        for ($i = 0; $i < $bytes; $i++) {
-            $int += hexdec(substr($val, ($i * 2), 2))<<($i * 8);
-        }
-        $bits = $bytes * 8;
-        $int = (int)($int & (pow(2, $bits) - 1));
-        if ($signed) {
-            /* Calculate the top bit */
-            $topBit = pow(2, ($bits - 1));
-            /* Check to see if the top bit is set */
-            if (($int & $topBit) == $topBit) {
-                /* This is a negative number */
-                $int = -(pow(2, $bits) - $int);
-            }
-
-        }
-        return $int;
-
     }
 
 }

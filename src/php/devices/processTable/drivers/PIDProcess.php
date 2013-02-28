@@ -119,13 +119,13 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
         $extra = (array)$this->process()->get("extra");
         $index = 0;
         $str   = substr($string, $index, 2);
-        $extra[0] = $this->_getProcessIntStr($str, 1);
+        $extra[0] = $this->decodeInt($str, 1);
         $index += 2;
         $str   = substr($string, $index, 2);
-        $extra[1] = $this->_getProcessIntStr($str, 1);
+        $extra[1] = $this->decodeInt($str, 1);
         $index += 2;
         $str   = substr($string, $index, 2);
-        $epChan = $this->_getProcessIntStr($str, 1);
+        $epChan = $this->decodeInt($str, 1);
         $dataChan = $this->process()->device()->dataChannels()->epChannel(
             $epChan
         );
@@ -133,25 +133,25 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
         $index += 2;
         $str   = substr($string, $index, 8);
         $index += 8;
-        $extra[3] = $this->_getProcessIntStr($str, 4);
+        $extra[3] = $this->decodeInt($str, 4, true);
         $str   = substr($string, $index, 8);
         $index += 8;
         $extra[4] = $dataChan->decode($str);
         $str   = substr($string, $index, 4);
         $index += 4;
-        $extra[5] = $this->_getProcessIntStr($str, 2);
+        $extra[5] = $this->decodeInt($str, 2);
         $str   = substr($string, $index, 8);
         $index += 8;
-        $extra[6] = round($this->_getProcessIntStr($str, 4)/(1<<16), 6);
+        $extra[6] = round($this->decodeInt($str, 4, true)/(1<<16), 6);
         $str   = substr($string, $index, 8);
         $index += 8;
-        $extra[7] = round($this->_getProcessIntStr($str, 4)/(1<<16), 6);
+        $extra[7] = round($this->decodeInt($str, 4, true)/(1<<16), 6);
         $str   = substr($string, $index, 8);
         $index += 8;
-        $extra[8] = round($this->_getProcessIntStr($str, 4)/(1<<16), 6);
+        $extra[8] = round($this->decodeInt($str, 4, true)/(1<<16), 6);
         $str   = substr($string, $index, 8);
         $index += 8;
-        $extra[9] = $this->_getProcessIntStr($str, 4);
+        $extra[9] = $this->decodeInt($str, 4, true);
         $this->process()->set("extra", $extra);
     }
     /**
@@ -162,64 +162,27 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
     public function encode()
     {
         $data  = "";
-        $data .= $this->_getProcessStrInt($this->getExtra(0), 1);
-        $data .= $this->_getProcessStrInt($this->getExtra(1), 1);
+        $data .= $this->encodeInt($this->getExtra(0), 1);
+        $data .= $this->encodeInt($this->getExtra(1), 1);
         $dataChan = $this->process()->device()->dataChannel($this->getExtra(2));
-        $data .= $this->_getProcessStrInt($dataChan->get("epChannel"), 1);
-        $data .= $this->_getProcessStrInt($this->getExtra(3), 4);
+        $data .= $this->encodeInt($dataChan->get("epChannel"), 1);
+        $data .= $this->encodeInt($this->getExtra(3), 4);
         $setpoint = $dataChan->encode($this->getExtra(4));
         $data .= substr($setpoint."00000000", 0, 8);
-        $data .= $this->_getProcessStrInt($this->getExtra(5), 2);
+        $data .= $this->encodeInt($this->getExtra(5), 2);
         for ($i = 6; $i < 9; $i++) {
             $value = $this->getExtra($i) *(0x10000);
-            $str = $this->_getProcessStrInt((int)$value, 4);
+            $str = $this->encodeInt((int)$value, 4);
             $data .= $str;
         }
-        $data .= $this->_getProcessStrInt($this->getExtra(9), 4);
+        $data .= $this->encodeInt($this->getExtra(9), 4);
 
         $output = $this->process()->device()->controlChannels()->controlChannel(
             $this->getExtra(1)
         );
-        $data .= $this->_getProcessStrInt($output->get("min"), 4);
-        $data .= $this->_getProcessStrInt($output->get("max"), 4);
+        $data .= $this->encodeInt($output->get("min"), 4);
+        $data .= $this->encodeInt($output->get("max"), 4);
         return $data;
-    }
-    /**
-    * This builds the string for the levelholder.
-    *
-    * @param int $val   The value to use
-    * @param int $bytes The number of bytes to set
-    *
-    * @return string The string
-    */
-    private function _getProcessStrInt($val, $bytes = 4)
-    {
-        $val = (int)$val;
-        for ($i = 0; $i < $bytes; $i++) {
-            $str .= sprintf(
-                "%02X",
-                ($val >> ($i * 8)) & 0xFF
-            );
-        }
-        return $str;
-
-    }
-    /**
-    * This builds the string for the levelholder.
-    *
-    * @param string $val   The value to use
-    * @param int    $bytes The number of bytes to set
-    *
-    * @return string The string
-    */
-    private function _getProcessIntStr($val, $bytes = 4)
-    {
-        $int = 0;
-        for ($i = 0; $i < $bytes; $i++) {
-            $int += hexdec(substr($val, ($i * 2), 2))<<($i * 8);
-        }
-        return $int;
-
     }
 
 }

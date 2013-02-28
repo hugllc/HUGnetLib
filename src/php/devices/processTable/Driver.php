@@ -329,6 +329,56 @@ abstract class Driver
         ksort($ret);
         return $ret;
     }
+    /**
+    * This builds the string for the levelholder.
+    *
+    * @param int $val   The value to use
+    * @param int $bytes The number of bytes to set
+    *
+    * @return string The string
+    */
+    protected function encodeInt($val, $bytes = 4)
+    {
+        $val = (int)$val;
+        for ($i = 0; $i < $bytes; $i++) {
+            $str .= sprintf(
+                "%02X",
+                ($val >> ($i * 8)) & 0xFF
+            );
+        }
+        return $str;
+
+    }
+    /**
+    * This builds the string for the levelholder.
+    *
+    * @param string $val    The value to use
+    * @param int    $bytes  The number of bytes to set
+    * @param bool   $signed If the number is signed or not
+    *
+    * @return string The string
+    */
+    protected function decodeInt($val, $bytes = 4, $signed = false)
+    {
+        $int = 0;
+        for ($i = 0; $i < $bytes; $i++) {
+            $int += hexdec(substr($val, ($i * 2), 2))<<($i * 8);
+        }
+        $bits = $bytes * 8;
+        $int = (int)($int & (pow(2, $bits) - 1));
+        if ($signed) {
+            /* Calculate the top bit */
+            $topBit = pow(2, ($bits - 1));
+            /* Check to see if the top bit is set */
+            if (($int & $topBit) == $topBit) {
+                /* This is a negative number */
+                $int = -(pow(2, $bits) - $int);
+            }
+
+        }
+        return $int;
+
+    }
 
 }
 

@@ -174,7 +174,7 @@ class PIDProcessTest extends DriverTestBase
                     ),
                 ),
             ),
-            array( // #0
+            array( // #1
                 array(
                     "Process" => array(
                         "device" => new \HUGnet\DummyBase("Device"),
@@ -234,6 +234,66 @@ class PIDProcessTest extends DriverTestBase
                     ),
                 ),
             ),
+            array( // #2
+                array(
+                    "Process" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "dataChannels" => new \HUGnet\DummyBase("Channels"),
+                        "dataChannel" => array(
+                            "0" => new \HUGnet\DummyBase("DataChan0"),
+                            "1" => new \HUGnet\DummyBase("DataChan1"),
+                            "2" => new \HUGnet\DummyBase("DataChan2"),
+                            "3" => new \HUGnet\DummyBase("DataChan3"),
+                            "4" => new \HUGnet\DummyBase("DataChan4"),
+                        ),
+                    ),
+                    "Channels" => array(
+                        "dataChannel" => array(
+                            "0" => new \HUGnet\DummyBase("DataChan0"),
+                            "1" => new \HUGnet\DummyBase("DataChan1"),
+                            "2" => new \HUGnet\DummyBase("DataChan2"),
+                            "3" => new \HUGnet\DummyBase("DataChan3"),
+                            "4" => new \HUGnet\DummyBase("DataChan4"),
+                        ),
+                        "epChannel" => array(
+                            "0" => new \HUGnet\DummyBase("DataChan0"),
+                            "1" => new \HUGnet\DummyBase("DataChan1"),
+                            "2" => new \HUGnet\DummyBase("DataChan2"),
+                            "3" => new \HUGnet\DummyBase("DataChan3"),
+                            "4" => new \HUGnet\DummyBase("DataChan4"),
+                        ),
+                    ),
+                    "DataChan3" => array(
+                        "decode" => array(
+                            "05000000" => 5,
+                        ),
+                        "get" => array(
+                            "channel" => 3,
+                        ),
+                    ),
+                ),
+                "010203FFFFFFFF050000000600FFFFFFFFFFFFFFFFFFFFFFFF09000000"
+                    ."0000000000100000",
+                array(
+                    array(
+                        'extra',
+                        array(
+                            0 => 1,
+                            1 => 2,
+                            2 => 3,
+                            3 => -1,
+                            4 => 5,
+                            5 => 6,
+                            6 => -1.5E-5,
+                            7 => -1.5E-5,
+                            8 => -1.5E-5,
+                            9 => 9,
+                        )
+                    ),
+                ),
+            ),
         );
     }
     /**
@@ -252,7 +312,7 @@ class PIDProcessTest extends DriverTestBase
         $this->process->resetMock($mocks);
         $this->o->decode($string);
         $ret = $this->process->retrieve("Process");
-        $this->assertEquals($expect, $ret["set"]);
+        $this->assertEquals($expect, $ret["set"], "Return Wrong", 0.0001);
     }
     /**
     * data provider for testDeviceID
@@ -476,6 +536,60 @@ class PIDProcessTest extends DriverTestBase
                     )
                 ),
                 "0102050400000005000000060001000600100007000010080009000000"
+                    ."0000000000100000",
+            ),
+            array( // #4
+                array(
+                    "Process" => array(
+                        "get" => array(
+                            'extra' => array(
+                                0 => 1,
+                                1 => 2,
+                                2 => 3,
+                                3 => -1,
+                                4 => 5,
+                                5 => 6,
+                                6 => -1,
+                                7 => -1,
+                                8 => -1,
+                                9 => 9,
+                            )
+                        ),
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "dataChannels" => new \HUGnet\DummyBase("Channels"),
+                        "dataChannel" => array(
+                            "0" => new \HUGnet\DummyBase("DataChan0"),
+                            "1" => new \HUGnet\DummyBase("DataChan1"),
+                            "2" => new \HUGnet\DummyBase("DataChan2"),
+                            "3" => new \HUGnet\DummyBase("DataChan3"),
+                            "4" => new \HUGnet\DummyBase("DataChan4"),
+                        ),
+                        "controlChannels" => new \HUGnet\DummyBase("cChannels"),
+                    ),
+                    "Channels" => array(
+                    ),
+                    "DataChan3" => array(
+                        "encode" => array(
+                            "5" => "05000000",
+                        ),
+                        "get" => array(
+                            "channel" => 3,
+                            "epChannel" => 3,
+                        ),
+                    ),
+                    "cChannels" => array(
+                        "controlChannel" => new \HUGnet\DummyBase("cChannel"),
+                    ),
+                    "cChannel" => array(
+                        "get" => array(
+                            "min" => 0,
+                            "max" => 4096,
+                        ),
+                    )
+                ),
+                "010203FFFFFFFF0500000006000000FFFF0000FFFF0000FFFF09000000"
                     ."0000000000100000",
             ),
         );
