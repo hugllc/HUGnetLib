@@ -73,11 +73,11 @@ class E00391202 extends \HUGnet\devices\Driver
         "historyTable" => "E00391201History",
         "averageTable" => "E00391201Average",
         "type" => "endpoint",
-        "job"  => "control",
+        "job"  => "sense and control",
         "arch" => "0039-12",
         "InputTables" => 9,
-        "OutputTables" => 0,
-        "ProcessTables" => 0,
+        "OutputTables" => 4,
+        "ProcessTables" => 1,
 
     );
 
