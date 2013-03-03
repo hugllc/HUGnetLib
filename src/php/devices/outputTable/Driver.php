@@ -95,6 +95,7 @@ abstract class Driver
         "02:DEFAULT"                 => "ADuCPWM",
         "03:DEFAULT"                 => "ADuCGPIO",
         "30:DEFAULT"                 => "HUGnetPower",
+        "32:DEFAULT"                 => "GPIO003928",
         "FE:DEFAULT"                 => "NullOutput",
         "FF:DEFAULT"                 => "EmptyOutput",
     );
@@ -113,6 +114,7 @@ abstract class Driver
         "0039-21-01" => array(
         ),
         "0039-28" => array(
+            0x32 => "GPIO",
         ),
         "0039-37" => array(
             0x01 => "ADuC DAC",
