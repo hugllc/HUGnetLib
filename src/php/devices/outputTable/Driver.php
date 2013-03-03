@@ -108,6 +108,7 @@ abstract class Driver
     */
     private $_arch = array(
         "0039-12" => array(
+            0x31 => "FET",
         ),
         "0039-21-01" => array(
         ),
