@@ -43,14 +43,6 @@ require_once dirname(__FILE__)."/../../base/LoadableDriver.php";
 require_once dirname(__FILE__)."/DriverInterface.php";
 /** This is our units class */
 require_once dirname(__FILE__)."/../datachan/Driver.php";
-/** This is our units class */
-//require_once dirname(__FILE__)."/DriverADuC.php";
-/** This is our units class */
-//require_once dirname(__FILE__)."/DriverAVR.php";
-/** This is our units class */
-//require_once dirname(__FILE__)."/DriverVirtual.php";
-/** This is our units class */
-//require_once dirname(__FILE__)."/DriverLinux.php";
 
 /**
  * Base driver class for devices.
