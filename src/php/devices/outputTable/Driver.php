@@ -93,6 +93,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "02:DEFAULT"                 => "ADuCPWM",
         "03:DEFAULT"                 => "ADuCGPIO",
         "30:DEFAULT"                 => "HUGnetPower",
+        "31:DEFAULT"                 => "FET003912",
         "32:DEFAULT"                 => "GPIO003928",
         "FE:DEFAULT"                 => "NullOutput",
         "FF:DEFAULT"                 => "EmptyOutput",
