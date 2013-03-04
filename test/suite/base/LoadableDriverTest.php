@@ -71,7 +71,11 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->o = DriverTestClass::factory();
+        $extra = array(
+        );
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($extra);
+        $this->o = DriverTestClass::factory($sensor);
     }
 
     /**
@@ -162,7 +166,13 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
                 7,
             ),
             array(
-                array(0, 0, 0, 3),
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(0, 0, 0, 3),
+                        ),
+                    ),
+                ),
                 "maxDecimals",
                 3,
             ),
@@ -181,8 +191,9 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
     */
     public function testGet($mock, $name, $expect)
     {
-        $obj = DriverTestClass::factory($mock);
-        $this->assertSame($expect, $obj->get($name, 1));
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($mock);
+        $this->assertSame($expect, $this->o->get($name, 1));
     }
     /**
     * test the set routine when an extra class exists
@@ -215,7 +226,6 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
             ),
             'inputSize' => 3,
         );
-        $obj = DriverTestClass::factory($mock);
         $this->assertEquals($expect, $this->o->toArray(1));
     }
     /**
@@ -281,8 +291,7 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($mocks);
-        $obj = DriverTestClass::factory();
-        $obj->decode($string);
+        $this->o->decode($string);
         $ret = $sensor->retrieve();
         $this->assertEquals($expect, $ret);
     }
@@ -318,11 +327,99 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
     */
     public function testEncode($mocks, $expect)
     {
-        $sensor  = new \HUGnet\DummyTable("Sensor");
-        $sensor->resetMock($mocks);
-        $obj = DriverTestClass::factory();
-        $ret = $obj->encode();
+        $ret = $this->o->encode();
         $this->assertSame($expect, $ret);
+    }
+    /**
+    * data provider for testDecodeInt
+    *
+    * @return array
+    */
+    public static function dataDecodeInt()
+    {
+        return array(
+            array( // #0
+                "563412",
+                3,
+                false,
+                0x123456,
+            ),
+            array( // #1
+                "78563412",
+                4,
+                true,
+                0x12345678,
+            ),
+            array( // #2
+                "FFFFFFFF",
+                4,
+                true,
+                -1,
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $string The string to use
+    * @param int    $bytes  The number of bytes to set
+    * @param bool   $signed If the number is signed or not
+    * @param int    $expect The expected int
+    *
+    * @return null
+    *
+    * @dataProvider dataDecodeInt
+    */
+     public function testDecodeInt($string, $bytes, $signed, $expect)
+    {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock(array());
+        $ret = $this->o->decodeInt($string, $bytes, $signed);
+        $this->assertSame($expect, $ret, "Return is wrong");
+    }
+    /**
+    * data provider for testEncodeInt
+    *
+    * @return array
+    */
+    public static function dataEncodeInt()
+    {
+        return array(
+            array( // #0
+                0x123456,
+                3,
+                "563412",
+            ),
+            array( // #1
+                0x12345678,
+                4,
+                "78563412",
+            ),
+            array( // #2
+                -1,
+                4,
+                "FFFFFFFF",
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param int  $int    The string to use
+    * @param int  $bytes  The number of bytes to set
+    * @param bool $signed If the number is signed or not
+    * @param int  $expect The expected int
+    *
+    * @return null
+    *
+    * @dataProvider dataEncodeInt
+    */
+     public function testEncodeInt($int, $bytes, $expect)
+    {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock(array());
+        $ret = $this->o->encodeInt($int, $bytes);
+        $this->assertSame($expect, $ret, "Return is wrong");
     }
     /**
     * data provider for testDecodeFloat
@@ -357,10 +454,7 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
     */
     public function testDecodeFloat($string, $bytes, $expect)
     {
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock(array());
-        $obj = DriverTestClass::factory();
-        $ret = $obj->decodeFloat($string, $bytes);
+        $ret = $this->o->decodeFloat($string, $bytes);
         $this->assertEquals($expect, $ret, "Return is wrong", 0.0001);
     }
     /**
@@ -421,10 +515,7 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
     */
     public function testEncodeFloat($string, $bytes, $expect)
     {
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock(array());
-        $obj = DriverTestClass::factory();
-        $ret = $obj->encodeFloat($string, $bytes);
+        $ret = $this->o->encodeFloat($string, $bytes);
         $this->assertEquals($expect, $ret, "Return is wrong", 0.0001);
     }
 }
@@ -495,33 +586,14 @@ class DriverTestClass extends LoadableDriver
     /**
     * This function creates the system.
     *
-    * @param string $driver  The driver to load
     * @param object &$sensor The sensor object
-    * @param array  $table   The table to use.  This forces the table, instead of
-    *                        using the database to find it
     *
     * @return null
     */
-    public static function &factory($extra = array())
+    public static function &factory(&$sensor)
     {
-        $obj = new DriverTestClass();
-        $obj->extra = (array)$extra;
+        $obj = new DriverTestClass($sensor);
         return $obj;
-    }
-    /**
-    * Gets the extra values
-    *
-    * @param int $index The extra index to use
-    *
-    * @return The extra value (or default if empty)
-    */
-    public function getExtra($index)
-    {
-        if (isset($this->extra[$index])) {
-            return $this->extra[$index];
-        }
-        $default = $this->get("extraDefault");
-        return $default[$index];
     }
     /**
     * This builds the string for the levelholder.

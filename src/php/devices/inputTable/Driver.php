@@ -77,10 +77,6 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         ),
     );
     /**
-    * This is where we store the sensor.
-    */
-    private $_input = null;
-    /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
@@ -201,7 +197,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     * that can be chosen.
     *
     */
-    private $_arch = array(
+    protected $arch = array(
         "0039-12" => array(
             0xF8 => "Analog Input Table",
         ),
@@ -229,35 +225,13 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         ),
     );
     /**
-    * This function sets up the driver object, and the database object.  The
-    * database object is taken from the driver object.
-    *
-    * @param object &$sensor The sensor in question
-    * @param array  $table   The table to use.  This forces the table, instead of
-    *                        using the database to find it
-    *
-    * @return null
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-    */
-    protected function __construct(&$sensor, $table = null)
-    {
-        $this->_input = &$sensor;
-    }
-    /**
-    * This is the destructor
-    */
-    public function __destruct()
-    {
-        unset($this->_input);
-    }
-    /**
     * This is the destructor
     *
     * @return object
     */
     public function input()
     {
-        return $this->_input;
+        return parent::iopobject();
     }
     /**
     * This function creates the system.
@@ -415,21 +389,6 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         if (class_exists($driver) && !isset($driv[$key])) {
             self::$drivers[$key] = $class;
         }
-    }
-    /**
-    * Gets the extra values
-    *
-    * @param int $index The extra index to use
-    *
-    * @return The extra value (or default if empty)
-    */
-    public function getExtra($index)
-    {
-        $extra = (array)$this->input()->get("extra");
-        if (!isset($extra[$index])) {
-            $extra = $this->get("extraDefault");
-        }
-        return $extra[$index];
     }
 
     /**
@@ -669,18 +628,6 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
                 "epChannel" => true,
             ),
         );
-    }
-    /**
-    * Returns the driver that should be used for a particular device
-    *
-    * @return array The array of drivers that will work
-    */
-    public function getDrivers()
-    {
-        $ret = (array)$this->_arch[$this->input()->device()->get("arch")]
-            + (array)$this->_arch["all"];
-        ksort($ret);
-        return $ret;
     }
     /**
     * This is for a generic pulse counter

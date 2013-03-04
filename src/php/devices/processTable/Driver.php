@@ -37,6 +37,8 @@
 namespace HUGnet\devices\processTable;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
+/** This is our base class */
+require_once dirname(__FILE__)."/../../base/LoadableDriver.php";
 
 /**
  * Base driver class for devices.
@@ -56,12 +58,8 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-abstract class Driver
+abstract class Driver extends \HUGnet\base\LoadableDriver
 {
-    /**
-    * This is where we store the process.
-    */
-    private $_process = null;
     /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
@@ -71,7 +69,7 @@ abstract class Driver
     /**
     * This is where all of the defaults are stored.
     */
-    private $_default = array(
+    protected $default = array(
         "longName" => "Unknown Output",
         "shortName" => "Unknown",
         "extraText" => array(),
@@ -100,7 +98,7 @@ abstract class Driver
     * that can be chosen.
     *
     */
-    private $_arch = array(
+    protected $arch = array(
         "0039-12" => array(
         ),
         "0039-21-01" => array(
@@ -122,32 +120,13 @@ abstract class Driver
         ),
     );
     /**
-    * This function sets up the driver object, and the database object.  The
-    * database object is taken from the driver object.
-    *
-    * @param object &$process The process in question
-    *
-    * @return null
-    */
-    protected function __construct(&$process)
-    {
-        $this->_process = &$process;
-    }
-    /**
-    * This is the destructor
-    */
-    public function __destruct()
-    {
-        unset($this->_process);
-    }
-    /**
     * This is the destructor
     *
     * @return object
     */
     public function process()
     {
-        return $this->_process;
+        return parent::iopobject();
     }
     /**
     * This function creates the system.
@@ -172,53 +151,6 @@ abstract class Driver
         }
         include_once dirname(__FILE__)."/drivers/EmptyProcess.php";
         return new \HUGnet\devices\processTable\drivers\EmptyProcess($process);
-    }
-    /**
-    * Checks to see if a piece of data exists
-    *
-    * @param string $name The name of the property to check
-    *
-    * @return true if the property exists, false otherwise
-    */
-    public function present($name)
-    {
-        return !is_null($this->get($name, $this->process()));
-    }
-    /**
-    * Gets an item
-    *
-    * @param string $name The name of the property to get
-    *
-    * @return null
-    */
-    public function get($name)
-    {
-        $ret = null;
-        if (isset($this->params[$name])) {
-            $ret = $this->params[$name];
-        } else if (isset($this->_default[$name])) {
-            $ret = $this->_default[$name];
-        }
-        if (is_string($ret) && (strtolower(substr($ret, 0, 8)) === "getextra")) {
-            $key = (int)substr($ret, 8);
-            $ret = $this->getExtra($key);
-        }
-        return $ret;
-    }
-    /**
-    * Returns all of the parameters and defaults in an array
-    *
-    * @return array of data from the process
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-    */
-    public function toArray()
-    {
-        $return = array();
-        $keys = array_merge(array_keys($this->_default), array_keys($this->params));
-        foreach ($keys as $key) {
-            $return[$key] = $this->get($key);
-        }
-        return $return;
     }
     /**
     * Returns the driver that should be used for a particular device
@@ -277,107 +209,6 @@ abstract class Driver
         if (class_exists($driver) && !isset(self::$_drivers[$key])) {
             self::$_drivers[$key] = $class;
         }
-    }
-    /**
-    * Gets the extra values
-    *
-    * @param int $index The extra index to use
-    *
-    * @return The extra value (or default if empty)
-    */
-    public function getExtra($index)
-    {
-        $extra = (array)$this->process()->get("extra");
-        if (!isset($extra[$index])) {
-            $extra = $this->get("extraDefault");
-        }
-        return $extra[$index];
-    }
-
-    /**
-    * Decodes the driver portion of the setup string
-    *
-    * @param string $string The string to decode
-    *
-    * @return array
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-    */
-    public function decode($string)
-    {
-        /* Do nothing by default */
-    }
-    /**
-    * Encodes this driver as a setup string
-    *
-    * @return array
-    */
-    public function encode()
-    {
-        $string  = "";
-        return $string;
-    }
-
-    /**
-    * Returns the driver that should be used for a particular device
-    *
-    * @return array The array of drivers that will work
-    */
-    public function getDrivers()
-    {
-        $ret = (array)$this->_arch[$this->process()->device()->get("arch")]
-            + (array)$this->_arch["all"];
-        ksort($ret);
-        return $ret;
-    }
-    /**
-    * This builds the string for the levelholder.
-    *
-    * @param int $val   The value to use
-    * @param int $bytes The number of bytes to set
-    *
-    * @return string The string
-    */
-    protected function encodeInt($val, $bytes = 4)
-    {
-        $val = (int)$val;
-        for ($i = 0; $i < $bytes; $i++) {
-            $str .= sprintf(
-                "%02X",
-                ($val >> ($i * 8)) & 0xFF
-            );
-        }
-        return $str;
-
-    }
-    /**
-    * This builds the string for the levelholder.
-    *
-    * @param string $val    The value to use
-    * @param int    $bytes  The number of bytes to set
-    * @param bool   $signed If the number is signed or not
-    *
-    * @return string The string
-    */
-    protected function decodeInt($val, $bytes = 4, $signed = false)
-    {
-        $int = 0;
-        for ($i = 0; $i < $bytes; $i++) {
-            $int += hexdec(substr($val, ($i * 2), 2))<<($i * 8);
-        }
-        $bits = $bytes * 8;
-        $int = (int)($int & (pow(2, $bits) - 1));
-        if ($signed) {
-            /* Calculate the top bit */
-            $topBit = pow(2, ($bits - 1));
-            /* Check to see if the top bit is set */
-            if (($int & $topBit) == $topBit) {
-                /* This is a negative number */
-                $int = -(pow(2, $bits) - $int);
-            }
-
-        }
-        return $int;
-
     }
 
 }

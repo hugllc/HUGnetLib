@@ -60,6 +60,11 @@ defined('_HUGNET') or die('HUGnetSystem not found');
 abstract class LoadableDriver
 {
     /**
+    * This is where we store the process.
+    */
+    private $_iopobject = null;
+
+    /**
     * This is where we store our float size information
     */
     private $_floats = array(
@@ -70,6 +75,34 @@ abstract class LoadableDriver
             "fsize" => 23,
         ),
     );
+    /**
+    * This function sets up the driver object, and the database object.  The
+    * database object is taken from the driver object.
+    *
+    * @param object &$iopobject The output in question
+    *
+    * @return null
+    */
+    protected function __construct(&$iopobject)
+    {
+        $this->_iopobject = &$iopobject;
+    }
+    /**
+    * This is the destructor
+    */
+    public function __destruct()
+    {
+        unset($this->_iopobject);
+    }
+    /**
+    * This is the destructor
+    *
+    * @return object
+    */
+    protected function iopobject()
+    {
+        return $this->_iopobject;
+    }
     /**
     * Checks to see if a piece of data exists
     *
@@ -115,6 +148,34 @@ abstract class LoadableDriver
             $return[$key] = $this->get($key);
         }
         return $return;
+    }
+    /**
+    * Gets the extra values
+    *
+    * @param int $index The extra index to use
+    *
+    * @return The extra value (or default if empty)
+    */
+    public function getExtra($index)
+    {
+        $extra = (array)$this->iopobject()->get("extra");
+        if (!isset($extra[$index])) {
+            $extra = $this->get("extraDefault");
+        }
+        return $extra[$index];
+    }
+
+    /**
+    * Returns the driver that should be used for a particular device
+    *
+    * @return array The array of drivers that will work
+    */
+    public function getDrivers()
+    {
+        $ret = (array)$this->arch[$this->iopobject()->device()->get("arch")]
+            + (array)$this->arch["all"];
+        ksort($ret);
+        return $ret;
     }
     /**
     * Decodes the driver portion of the setup string

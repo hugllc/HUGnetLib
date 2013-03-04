@@ -60,10 +60,6 @@ require_once dirname(__FILE__)."/../../base/LoadableDriver.php";
 abstract class Driver extends \HUGnet\base\LoadableDriver
 {
     /**
-    * This is where we store the output.
-    */
-    private $_output = null;
-    /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
@@ -108,7 +104,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     * that can be chosen.
     *
     */
-    private $_arch = array(
+    protected $arch = array(
         "0039-12" => array(
             0x31 => "FET",
         ),
@@ -134,32 +130,13 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     */
     private $_entry;
     /**
-    * This function sets up the driver object, and the database object.  The
-    * database object is taken from the driver object.
-    *
-    * @param object &$output The output in question
-    *
-    * @return null
-    */
-    protected function __construct(&$output)
-    {
-        $this->_output = &$output;
-    }
-    /**
-    * This is the destructor
-    */
-    public function __destruct()
-    {
-        unset($this->_output);
-    }
-    /**
     * This is the destructor
     *
     * @return object
     */
     public function output()
     {
-        return $this->_output;
+        return parent::iopobject();
     }
     /**
     * Returns the driver object
@@ -261,21 +238,6 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
             self::$_drivers[$key] = $class;
         }
     }
-    /**
-    * Gets the extra values
-    *
-    * @param int $index The extra index to use
-    *
-    * @return The extra value (or default if empty)
-    */
-    public function getExtra($index)
-    {
-        $extra = (array)$this->output()->get("extra");
-        if (!isset($extra[$index])) {
-            $extra = $this->get("extraDefault");
-        }
-        return $extra[$index];
-    }
 
     /**
     * Encodes this driver as a setup string
@@ -307,18 +269,6 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         );
     }
 
-    /**
-    * Returns the driver that should be used for a particular device
-    *
-    * @return array The array of drivers that will work
-    */
-    public function getDrivers()
-    {
-        $ret = (array)$this->_arch[$this->output()->device()->get("arch")]
-            + (array)$this->_arch["all"];
-        ksort($ret);
-        return $ret;
-    }
 }
 
 
