@@ -370,7 +370,7 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
     *
     * @dataProvider dataDecodeInt
     */
-     public function testDecodeInt($string, $bytes, $signed, $expect)
+    public function testDecodeInt($string, $bytes, $signed, $expect)
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
@@ -405,16 +405,15 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param int  $int    The string to use
-    * @param int  $bytes  The number of bytes to set
-    * @param bool $signed If the number is signed or not
-    * @param int  $expect The expected int
+    * @param int $int    The string to use
+    * @param int $bytes  The number of bytes to set
+    * @param int $expect The expected int
     *
     * @return null
     *
     * @dataProvider dataEncodeInt
     */
-     public function testEncodeInt($int, $bytes, $expect)
+    public function testEncodeInt($int, $bytes, $expect)
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
