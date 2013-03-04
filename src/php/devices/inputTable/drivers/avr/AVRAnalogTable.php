@@ -258,7 +258,9 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
         if (is_array($this->_tableEntry)) {
             $return[$this->_tableEntry["id"]] = $this->_tableEntry["name"];
         } else {
-            $values = $this->_table()->select("arch = ?", array("AVR"));
+            $values = $this->_table()->select(
+                "arch = ?", array($this->input()->device()->get("arch"))
+            );
             foreach ((array)$values as $val) {
                 $return[$val->get("id")] = $val->get("name");
             }
