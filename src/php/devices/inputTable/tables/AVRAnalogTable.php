@@ -371,8 +371,10 @@ class AVRAnalogTable
     {
         $return = array();
         foreach ($this->params as $field => $vals) {
-            $return[$field] = $vals;
-            $return[$field]["value"] = $this->params($field);
+            if ($vals["hidden"] !== true) {
+                $return[$field] = $vals;
+                $return[$field]["value"] = $this->params($field);
+            }
         }
         return $return;
     }
