@@ -265,7 +265,7 @@ abstract class LoadableDriver
             return $this->encodeInt(null, $bytes);
         }
         $bits  = $this->_floats[(int)$bytes]["bits"];
-        $esize = $this->_floats[(int)$bytes]["esize"];
+        //$esize = $this->_floats[(int)$bytes]["esize"];
         $ebias = $this->_floats[(int)$bytes]["ebias"];
         $fsize = $this->_floats[(int)$bytes]["fsize"];
 
@@ -303,7 +303,7 @@ abstract class LoadableDriver
         // First, we need to get the int
         $int   = $this->decodeInt($val, $bytes, false);
         $bits  = $this->_floats[(int)$bytes]["bits"];
-        $esize = $this->_floats[(int)$bytes]["esize"];
+        //$esize = $this->_floats[(int)$bytes]["esize"];
         $ebias = $this->_floats[(int)$bytes]["ebias"];
         $fsize = $this->_floats[(int)$bytes]["fsize"];
         $sign  = ($int & pow(2, $bits - 1)) ? -1 : 1;
