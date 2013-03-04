@@ -234,14 +234,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     */
     public static function &factory($driver, &$sensor, $table = null)
     {
-        /** This is the ADuC Class */
-        include_once dirname(__FILE__)."/DriverADuC.php";
-        /** This is the AVR Class */
-        include_once dirname(__FILE__)."/DriverAVR.php";
-        /** This is the virtual driver class */
-        include_once dirname(__FILE__)."/DriverVirtual.php";
-        /** This is our Linux driver class */
-        include_once dirname(__FILE__)."/DriverLinux.php";
+        self::_includes();
         $obj = null;
         Driver::driverFactory($obj, $driver, $sensor, $table);
         DriverADuC::driverFactory($obj, $driver, $sensor, $table);
@@ -253,6 +246,27 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
             $obj = new \HUGnet\devices\inputTable\drivers\SDEFAULT($sensor);
         }
         return $obj;
+    }
+    /**
+    * This function creates the system.
+    *
+    * @param string $driver  The driver to load
+    * @param object &$sensor The sensor object
+    * @param array  $table   The table to use.  This forces the table, instead of
+    *                        using the database to find it
+    *
+    * @return null
+    */
+    private static function _includes()
+    {
+        /** This is the ADuC Class */
+        include_once dirname(__FILE__)."/DriverADuC.php";
+        /** This is the AVR Class */
+        include_once dirname(__FILE__)."/DriverAVR.php";
+        /** This is the virtual driver class */
+        include_once dirname(__FILE__)."/DriverVirtual.php";
+        /** This is our Linux driver class */
+        include_once dirname(__FILE__)."/DriverLinux.php";
     }
     /**
     * This function creates an object if it finds the right class
@@ -292,6 +306,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     */
     public static function getDriver($sid, $type = "DEFAULT")
     {
+        self::_includes();
         $driver = null;
         DriverAVR::getDriverInt($driver, $sid, $type);
         DriverADuC::getDriverInt($driver, $sid, $type);
