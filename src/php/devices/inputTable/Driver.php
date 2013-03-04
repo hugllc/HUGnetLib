@@ -66,17 +66,6 @@ require_once dirname(__FILE__)."/../datachan/Driver.php";
 abstract class Driver extends \HUGnet\base\LoadableDriver
 {
     /**
-    * This is where we store our float size information
-    */
-    private $_floats = array(
-        4 => array(
-            "bits"  => 32,
-            "esize" => 8,
-            "ebias" => 127,
-            "fsize" => 23,
-        ),
-    );
-    /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
