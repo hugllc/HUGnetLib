@@ -239,16 +239,30 @@ abstract class LoadableDriver
         $bits = $bytes * 8;
         $int = (int)($int & (pow(2, $bits) - 1));
         if ($signed) {
-            /* Calculate the top bit */
-            $topBit = pow(2, ($bits - 1));
-            /* Check to see if the top bit is set */
-            if (($int & $topBit) == $topBit) {
-                /* This is a negative number */
-                $int = -(pow(2, $bits) - $int);
-            }
-
+            $int = $this->signedInt($int, $bytes);
         }
         return $int;
+
+    }
+    /**
+    * This builds the string for the levelholder.
+    *
+    * @param int $val   The value to use
+    * @param int $bytes The number of bytes to set
+    *
+    * @return string The string
+    */
+    protected function signedInt($val, $bytes = 4)
+    {
+        $bits = $bytes * 8;
+        /* Calculate the top bit */
+        $topBit = pow(2, ($bits - 1));
+        /* Check to see if the top bit is set */
+        if (($val & $topBit) == $topBit) {
+            /* This is a negative number */
+            $val = -(pow(2, $bits) - $val);
+        }
+        return $val;
 
     }
     /**
