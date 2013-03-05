@@ -160,14 +160,17 @@ class ControlSumInputTest extends DriverTestBaseLinux
                         "sensor" => new \HUGnet\DummyBase("Output"),
                     )
                 ),
-                "132015003000000093060000E5040000",
+                "132015003000000093060000E50400000C000E00",
                 array(
                     "Input" => array(
                         "get" => array(
                             array('extra'),
                         ),
                         "set" => array(
-                            array('extra', array(19, 32, 21, 48, 1683, 1253)),
+                            array(
+                                'extra',
+                                array(19, 32, 21, 48, 1683, 1253, 12, 14)
+                            ),
                         ),
                     ),
                 ),
@@ -178,14 +181,14 @@ class ControlSumInputTest extends DriverTestBaseLinux
                         "sensor" => new \HUGnet\DummyBase("Output"),
                     )
                 ),
-                "1320FFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+                "1320FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
                 array(
                     "Input" => array(
                         "get" => array(
                             array('extra'),
                         ),
                         "set" => array(
-                            array('extra', array(19, 32, -1, -1, -1, -1)),
+                            array('extra', array(19, 32, -1, -1, -1, -1, -1, -1)),
                         ),
                     ),
                 ),
@@ -227,27 +230,27 @@ class ControlSumInputTest extends DriverTestBaseLinux
                         ),
                     ),
                 ),
-                "010001000000000000000000FFFFFF00",
+                "010001000000000000000000FFFFFF0000000000",
             ),
             array( // #1
                 array(
                     "Input" => array(
                         "get" => array(
-                            "extra" => array(19, 32, 21, 48, 1683, 1253),
+                            "extra" => array(19, 32, 21, 48, 1683, 1253, 12, 14),
                         ),
                     ),
                 ),
-                "132015003000000093060000E5040000",
+                "132015003000000093060000E50400000C000E00",
             ),
             array( // #2 Negative numbers
                 array(
                     "Input" => array(
                         "get" => array(
-                            "extra" => array(19, 32, -1, -1, -1, -1),
+                            "extra" => array(19, 32, -1, -1, -1, -1, -1, -1),
                         ),
                     ),
                 ),
-                "1320FFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+                "1320FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
             ),
         );
     }

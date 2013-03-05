@@ -73,12 +73,14 @@ class ControlSumInput extends \HUGnet\devices\inputTable\Driver
             "Offset",
             "Min",
             "Max",
+            "Noise Min",
+            "Noise Max",
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
-        "extraValues" => array(5, array(), 7, 15, 15, 15),
-        "extraDefault" => array(1, 0, 1, 0, 0, 16777215),
+        "extraValues" => array(5, array(), 7, 15, 15, 15, 6, 6),
+        "extraDefault" => array(1, 0, 1, 0, 0, 16777215, 0, 0),
         "maxDecimals" => 0,
         "inputSize" => 4,
     );
@@ -114,6 +116,8 @@ class ControlSumInput extends \HUGnet\devices\inputTable\Driver
         $extra[3] = $this->decodeInt(substr($string, 8, 8), 4, true);
         $extra[4] = $this->decodeInt(substr($string, 16, 8), 4, true);
         $extra[5] = $this->decodeInt(substr($string, 24, 8), 4, true);
+        $extra[6] = $this->decodeInt(substr($string, 32, 4), 2, true);
+        $extra[7] = $this->decodeInt(substr($string, 36, 4), 2, true);
         $this->input()->set("extra", $extra);
     }
     /**
@@ -130,6 +134,8 @@ class ControlSumInput extends \HUGnet\devices\inputTable\Driver
         $string .= $this->encodeInt($this->getExtra(3), 4);
         $string .= $this->encodeInt($this->getExtra(4), 4);
         $string .= $this->encodeInt($this->getExtra(5), 4);
+        $string .= $this->encodeInt($this->getExtra(6), 2);
+        $string .= $this->encodeInt($this->getExtra(7), 2);
         return $string;
     }
 
