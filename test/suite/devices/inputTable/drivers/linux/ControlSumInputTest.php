@@ -124,6 +124,14 @@ class ControlSumInputTest extends DriverTestBaseLinux
                 array(),
                 256210,
             ),
+            array(
+                array(),
+                0xFFFFFFFF,
+                1,
+                array(),
+                array(),
+                -1,
+            ),
         );
     }
     /**
