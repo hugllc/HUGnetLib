@@ -202,7 +202,8 @@ abstract class Driver
         $class = \HUGnet\Util::findClass(
             $driver, "devices/drivers", true, "\\HUGnet\\devices\\drivers"
         );
-        if (class_exists($class)) {
+        $interface = "\\HUGnet\\devices\\drivers\\DriverInterface";
+        if (is_subclass_of($class, $interface)) {
             return new $class($device);
         }
         include_once dirname(__FILE__)."/drivers/EDEFAULT.php";
