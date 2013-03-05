@@ -449,7 +449,11 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             "FWPartNum"    => "0039-20-03-C",
                             "FWVersion"    => "1.2.3",
                             "DeviceGroup"  => "FFFFFF",
-                            "TimeConstant" => "01",
+                            "params"       => json_encode(
+                                array(
+                                    "TimeConstant" => 1,
+                                )
+                            ),
                         ),
                     ),
                 ),
@@ -472,7 +476,11 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             "FWPartNum"    => "0039-20-03-C",
                             "FWVersion"    => "1.2.3",
                             "DeviceGroup"  => "FFFFFF",
-                            "TimeConstant" => "01",
+                            "params"       => json_encode(
+                                array(
+                                    "TimeConstant" => 1,
+                                )
+                            ),
                         ),
                     ),
                 ),
@@ -529,7 +537,11 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             "FWPartNum"    => "0039-20-03-C",
                             "FWVersion"    => "1.2.3",
                             "DeviceGroup"  => "FFFFFF",
-                            "TimeConstant" => 1,
+                            "params"       => json_encode(
+                                array(
+                                    "TimeConstant" => 1,
+                                )
+                            ),
                         ),
                         "selectOneInto" => true,
                     ),
@@ -549,7 +561,14 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         ."01000000000000000000"
                     ),
                     array("Driver", "EDEFAULT"),
-                    array("TimeConstant", 1),
+                    array(
+                        "params",
+                        json_encode(
+                            array(
+                                "TimeConstant" => 1,
+                            )
+                        ),
+                    ),
                 ),
             ),
             array(
@@ -568,7 +587,11 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             "FWPartNum"    => "0039-20-03-C",
                             "FWVersion"    => "1.2.3",
                             "DeviceGroup"  => "FFFFFF",
-                            "TimeConstant" => 1,
+                            "params"       => json_encode(
+                                array(
+                                    "TimeConstant" => 1,
+                                )
+                            ),
                         ),
                         "selectOneInto" => true,
                     ),

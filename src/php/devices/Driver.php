@@ -338,7 +338,7 @@ abstract class Driver
     */
     public function decode($string)
     {
-        $this->device()->set("TimeConstant", hexdec(substr($string, 0, 2)));
+        $this->device()->setParam("TimeConstant", hexdec(substr($string, 0, 2)));
         $sensors = $this->get("physicalSensors");
         $sensorString = substr($string, 2, $sensors * 2);
         if ($sensorString == str_repeat("F", strlen($sensorString))) {
@@ -367,7 +367,11 @@ abstract class Driver
     public function encode($showFixed = true)
     {
         $string  = "";
-        $string .= sprintf("%02X", ($this->device()->get("TimeConstant") & 0xFF));
+        $timeconstant = $this->device()->getParam("TimeConstant") & 0xFF;
+        if (empty($timeconstant)) {
+            $timeconstant = 1;
+        }
+        $string .= sprintf("%02X", $timeconstant);
         if ($showFixed) {
             $sensors = $this->get("physicalSensors");
             for ($i = 0; $i < $sensors; $i++) {

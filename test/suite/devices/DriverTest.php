@@ -629,7 +629,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                 "0102030405060708090A",
                 array(
                     "Device" => array(
-                        "set" => array(
+                        "setParam" => array(
                             array("TimeConstant", 1),
                         ),
                         "input" => array(
@@ -668,7 +668,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                 "010203040506",
                 array(
                     "Device" => array(
-                        "set" => array(
+                        "setParam" => array(
                             array("TimeConstant", 1),
                         ),
                         "input" => array(
@@ -699,7 +699,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                 "01FFFFFFFFFFFFFFFFFFFF",
                 array(
                     "Device" => array(
-                        "set" => array(
+                        "setParam" => array(
                             array("TimeConstant", 1),
                         ),
                     ),
@@ -714,7 +714,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                 "01FFFFFFFFFFFFFFFFFFFFFFFF",
                 array(
                     "Device" => array(
-                        "set" => array(
+                        "setParam" => array(
                             array("TimeConstant", 1),
                         ),
                     ),
@@ -729,7 +729,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                 "01FFFFFFFFFFFFFFFF",
                 array(
                     "Device" => array(
-                        "set" => array(
+                        "setParam" => array(
                             array("TimeConstant", 1),
                         ),
                     ),
@@ -779,7 +779,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                             7 => new \HUGnet\DummyBase("Sensor7"),
                             8 => new \HUGnet\DummyBase("Sensor8"),
                         ),
-                        "get" => array(
+                        "getParam" => array(
                             "TimeConstant" => 7,
                         ),
                     ),
@@ -846,7 +846,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                             7 => new \HUGnet\DummyBase("Sensor7"),
                             8 => new \HUGnet\DummyBase("Sensor8"),
                         ),
-                        "get" => array(
+                        "getParam" => array(
                             "TimeConstant" => 7,
                         ),
                     ),
