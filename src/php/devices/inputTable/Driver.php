@@ -110,6 +110,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     protected static $drivers = array(
         "60:DEFAULT"                 => "ControlInput",
         "62:DEFAULT"                 => "DifferenceInput",
+        "64:DEFAULT"                 => "NullInput",
         "70:bravo3motion"            => "Bravo3Motion",
         "70:DEFAULT"                 => "GenericPulse",
         "70:generic"                 => "GenericPulse",
@@ -208,6 +209,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
             0x61 => "Control Sum Input",
             0x62 => "Difference Input",
             0x63 => "Noisy Input",
+            0x64 => "Null Input",
         ),
         "all" => array(
             0xFE => "Virtual",
