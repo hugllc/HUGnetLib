@@ -69,6 +69,7 @@ abstract class DriverLinux extends Driver
     */
     protected static $drivers = array(
         "61:DEFAULT"                 => "ControlSumInput",
+        "63:DEFAULT"                 => "NoisyInput",
     );
     /**
     * This function creates an object if it finds the right class

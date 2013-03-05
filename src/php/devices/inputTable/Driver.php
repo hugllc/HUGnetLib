@@ -207,6 +207,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
             0x60 => "Control Value Input",
             0x61 => "Control Sum Input",
             0x62 => "Difference Input",
+            0x63 => "Noisy Input",
         ),
         "all" => array(
             0xFE => "Virtual",
