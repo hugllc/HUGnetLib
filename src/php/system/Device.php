@@ -42,6 +42,8 @@ defined('_HUGNET') or die('HUGnetSystem not found');
 require_once dirname(__FILE__)."/../base/SystemTableAction.php";
 /** This the driver class we use */
 require_once dirname(__FILE__)."/../devices/Driver.php";
+/** This is our base class */
+require_once dirname(__FILE__)."/../interfaces/WebAPI.php";
 
 /**
  * Base system class.
@@ -61,6 +63,7 @@ require_once dirname(__FILE__)."/../devices/Driver.php";
  * @since      0.9.7
  */
 class Device extends \HUGnet\base\SystemTableAction
+    implements \HUGnet\interfaces\WebAPI
 {
     /**
     * This is the cache for the drivers.
@@ -76,7 +79,6 @@ class Device extends \HUGnet\base\SystemTableAction
         "output" => "driver",
         "process" => "driver",
         "insertVirtual" => "table",
-        "webAPI" => "webInterface",
         "dataChannel" => "dataChannels",
         "controlChannel" => "controlChannels",
         "reboot" => "network",
@@ -247,6 +249,19 @@ class Device extends \HUGnet\base\SystemTableAction
             $this,
             $this->driver()
         );
+    }
+    /**
+    * returns a history object for this device
+    *
+    * @param object $args  The argument object
+    * @param array  $extra Extra data from the
+    *
+    * @return string
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function webAPI($args, $extra)
+    {
+        return $this->webInterface()->webAPI($args, $extra);
     }
     /**
     * This function creates the system.

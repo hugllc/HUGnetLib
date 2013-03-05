@@ -35,6 +35,8 @@
 namespace HUGnet\ui;
 /** This is our system class */
 require_once dirname(__FILE__)."/HTML.php";
+/** This is our base class */
+require_once dirname(__FILE__)."/../interfaces/WebAPI.php";
 
 /**
  * This code routes packets to their correct destinations.
@@ -323,7 +325,8 @@ class WebAPI extends HTML
             $data = $this->args()->get("data");
             $ret = $obj->getList($data, true);
         } else if ($this->_auth(true)) {
-            if (is_callable(array($obj, "webAPI"))) {
+            $interface = "\\HUGnet\\interfaces\\WebAPI";
+            if (is_subclass_of($obj, $interface)) {
                 $obj->load($ident);
                 $ret = $obj->webAPI($this->args(), $extra);
             }
