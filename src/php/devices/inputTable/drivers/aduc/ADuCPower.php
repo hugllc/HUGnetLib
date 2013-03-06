@@ -303,11 +303,12 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         if ($I == 0) {
             return null;
         }
+        // This removes the offset
+        $A = bcdiv($A, self::IMPEDANCE_OFFSET);
         // This calculates what 1 Ohm would be
         $scale = $this->getRawVoltage(1) / $I;
         // We then scale what we got against that.
         $Z = bcdiv($A, $scale);
-        $Z = bcdiv($Z, self::IMPEDANCE_OFFSET);
         return round($Z, $this->get("maxDecimals"));
     }
     /**
