@@ -59,6 +59,8 @@ require_once dirname(__FILE__)."/../../DriverADuC.php";
 class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
     implements \HUGnet\devices\inputTable\DriverInterface
 {
+    /** This is our offset for impedance */
+    const IMPEDANCE_OFFSET = 0x100000000;
     /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
@@ -305,7 +307,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         $scale = $this->getRawVoltage(1) / $I;
         // We then scale what we got against that.
         $Z = bcdiv($A, $scale);
-
+        $Z = bcdiv($Z, self::IMPEDANCE_OFFSET);
         return round($Z, $this->get("maxDecimals"));
     }
     /**
@@ -353,6 +355,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         $scale = $this->getRawVoltage(1) / $I;
         // We then scale what we got against that.
         $A = bcmul($Z, $scale);
+        $A = bcmul($A, self::IMPEDANCE_OFFSET);
         return (int)round($A);
     }
     /**
