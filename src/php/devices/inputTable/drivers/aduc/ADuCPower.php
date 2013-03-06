@@ -378,6 +378,35 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         }
         return $ret;
     }
+    /**
+    * Gets the direction from a direction sensor made out of a POT.
+    *
+    * @param array $value   The data to use
+    * @param int   $channel The channel to get
+    * @param float $deltaT  The time delta in seconds between this record
+    * @param array &$prev   The previous reading
+    * @param array &$data   The data from the other sensors that were crunched
+    *
+    * @return string The reading as it would have come out of the endpoint
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function encodeDataPoint(
+        $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
+        $val = $this->getRaw(
+            $value, $channel, $deltaT, $prev, $data
+        );
+        if (!is_null($val)) {
+            if ($channel < 2) {
+                return $this->encodeInt($val, 4);
+            } else {
+                return $this->encodeFloat($val, 4);
+            }
+        }
+        return "";
+    }
 
     /**
     * Gets the direction from a direction sensor made out of a POT.
@@ -436,18 +465,18 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         $Enable = $this->_hardwareEnable();
         if (($channel < 2) || ($Enable && ($channel < 4))) {
             $size = $this->get("inputSize");
-            if ($channel == 2) {
-                // This is Power
-                //$size *= 2;
-            }
             if ($size > strlen($string)) {
                 return null;
             }
             $work = substr($string, 0, ($size * 2));
             $str2 = $string;
             $string = (string)substr($string, ($size * 2));
-            $A = $this->decodeInt($work, $size);
-            $return = $this->getTwosCompliment($A, $size * 8);
+            if ($channel < 2) {
+                $A = $this->decodeInt($work, $size);
+                $return = $this->getTwosCompliment($A, $size * 8);
+            } else {
+                $return = $this->decodeFloat($work, $size);
+            }
             //print "$channel => $size => ".str_pad($return, 15).": $str2\n";
         }
         return $return;

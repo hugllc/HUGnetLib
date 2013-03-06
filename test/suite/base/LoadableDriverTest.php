@@ -438,6 +438,11 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
                 5,
                 null,
             ),
+            array( // #0 Comes from Wikipedia: Single_precision_floating-point_format
+                "00000000",
+                4,
+                0.0,
+            ),
         );
     }
     /**
@@ -494,10 +499,15 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
                 4,
                 "B4A291DD",
             ),
-            array( // #5 big negative int
+            array( // #6 big negative int
                 (1<<23) + 1,
                 4,
                 "0100004B",
+            ),
+            array( // #7 zero
+                0,
+                4,
+                "00000000",
             ),
         );
     }

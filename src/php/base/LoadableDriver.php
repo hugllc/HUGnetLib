@@ -278,6 +278,9 @@ abstract class LoadableDriver
         if (!isset($this->_floats[(int)$bytes])) {
             return $this->encodeInt(null, $bytes);
         }
+        if ($val == 0) {
+            return $this->encodeInt(0);
+        }
         $bits  = $this->_floats[(int)$bytes]["bits"];
         //$esize = $this->_floats[(int)$bytes]["esize"];
         $ebias = $this->_floats[(int)$bytes]["ebias"];
@@ -287,11 +290,11 @@ abstract class LoadableDriver
         $val = abs($val);
         $exp  = 0;
         // This sections makes it a number between 1 and 2
-        while ($val >= 2) {
+        for ($i = 0; ($val >= 2) && ($i < 64); $i++) {
             $val /= 2;
             $exp++;
         }
-        while ($val < 1) {
+        for ($i = 0; ($val < 1) && ($i < 64); $i++) {
             $val *= 2;
             $exp--;
         }
@@ -316,6 +319,9 @@ abstract class LoadableDriver
         }
         // First, we need to get the int
         $int   = $this->decodeInt($val, $bytes, false);
+        if ($int == 0) {
+            return 0.0;
+        }
         $bits  = $this->_floats[(int)$bytes]["bits"];
         //$esize = $this->_floats[(int)$bytes]["esize"];
         $ebias = $this->_floats[(int)$bytes]["ebias"];
@@ -323,7 +329,7 @@ abstract class LoadableDriver
         $sign  = ($int & pow(2, $bits - 1)) ? -1 : 1;
         $fract = 1 + ((float)($int & (pow(2, $fsize) - 1)) / (float)pow(2, $fsize));
         $exp   = (($int >> $fsize) & 0xFF) - $ebias;
-        $float = $fract * pow(2, $exp) * $sign;
+        $float = (float)$fract * pow(2, $exp) * $sign;
         return $float;
 
     }
