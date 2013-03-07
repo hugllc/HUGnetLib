@@ -219,7 +219,7 @@ abstract class History extends Table
         for ($i = 0; $i < $this->datacols; $i++) {
             $this->sqlColumns["Data$i"] = array(
                 "Name" => "Data$i",
-                "Type" => "float",
+                "Type" => "double",
                 "Default" => null,
                 "Null" => true,
             );
