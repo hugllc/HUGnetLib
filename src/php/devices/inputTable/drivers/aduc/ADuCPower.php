@@ -82,7 +82,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(10, 10, 10, 10, 10, 10),
-        "extraDefault" => array(1.2, 0.5, 100, 1, 1, 10),
+        "extraDefault" => array(1.2, 0.05, 100, 1, 1, 10),
         "maxDecimals" => 8,
         "inputSize" => 4,
     );
