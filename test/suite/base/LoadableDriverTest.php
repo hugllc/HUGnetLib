@@ -443,6 +443,11 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
                 4,
                 0.0,
             ),
+            array( // #0 Comes from Wikipedia: Single_precision_floating-point_format
+                0x41460000,
+                4,
+                12.375,
+            ),
         );
     }
     /**

@@ -67,20 +67,24 @@ class ControlSumInput extends \HUGnet\devices\inputTable\Driver
         "storageUnit" => 'units',
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraText" => array(
-            "Priority",
-            "Control Channel",
-            "Gain",
-            "Offset",
-            "Min",
-            "Max",
-            "Noise Min",
-            "Noise Max",
+            0 => "Priority",
+            1 => "Control Channel",
+            2 => "Gain",
+            3 => "Offset",
+            4 => "Min",
+            5 => "Max",
+            6 => "Noise Min",
+            7 => "Noise Max",
+            8 => "Mode"
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
-        "extraValues" => array(5, array(), 7, 15, 15, 15, 6, 6),
-        "extraDefault" => array(1, 0, 1, 0, 0, 16777215, 0, 0),
+        "extraValues" => array(
+            5, array(), 7, 15, 15, 15, 6, 6,
+            array(0 => "Normal", 1 => "Float")
+        ),
+        "extraDefault" => array(1, 0, 1, 0, 0, 16777215, 0, 0, 0),
         "maxDecimals" => 0,
         "inputSize" => 4,
     );
@@ -98,7 +102,42 @@ class ControlSumInput extends \HUGnet\devices\inputTable\Driver
     */
     protected function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
-        return $this->signedInt($A, 4);
+        $A = $this->signedInt($A, 4);
+        $mode = $this->getExtra(8);
+        if ($mode == 1) {
+            $A = $this->decodeFloat($A);
+        }
+        return $A;
+    }
+    /**
+    * Gets the direction from a direction sensor made out of a POT.
+    *
+    * @param array $value   The data to use
+    * @param int   $channel The channel to get
+    * @param float $deltaT  The time delta in seconds between this record
+    * @param array &$prev   The previous reading
+    * @param array &$data   The data from the other sensors that were crunched
+    *
+    * @return string The reading as it would have come out of the endpoint
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function encodeDataPoint(
+        $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+    ) {
+        $val = $this->getRaw(
+            $value, $channel, $deltaT, $prev, $data
+        );
+        if (!is_null($val)) {
+            $mode = $this->getExtra(8);
+            if ($mode == 1) {
+                return $this->encodeFloat($val);
+            } else {
+                return $this->intToStr((int)$val);
+            }
+        }
+        return "";
     }
     /**
     * Gets an item
@@ -134,6 +173,7 @@ class ControlSumInput extends \HUGnet\devices\inputTable\Driver
         $extra[5] = $this->decodeInt(substr($string, 24, 8), 4, true);
         $extra[6] = $this->decodeInt(substr($string, 32, 4), 2, true);
         $extra[7] = $this->decodeInt(substr($string, 36, 4), 2, true);
+        $extra[8] = $this->decodeInt(substr($string, 40, 2), 1, false);
         $this->input()->set("extra", $extra);
     }
     /**
@@ -152,6 +192,7 @@ class ControlSumInput extends \HUGnet\devices\inputTable\Driver
         $string .= $this->encodeInt($this->getExtra(5), 4);
         $string .= $this->encodeInt($this->getExtra(6), 2);
         $string .= $this->encodeInt($this->getExtra(7), 2);
+        $string .= $this->encodeInt($this->getExtra(8), 1);
         return $string;
     }
 

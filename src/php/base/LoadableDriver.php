@@ -318,7 +318,11 @@ abstract class LoadableDriver
             return null;
         }
         // First, we need to get the int
-        $int   = $this->decodeInt($val, $bytes, false);
+        if (is_string($val)) {
+            $int = $this->decodeInt($val, $bytes, false);
+        } else {
+            $int = (int)$val;
+        }
         if ($int == 0) {
             return 0.0;
         }

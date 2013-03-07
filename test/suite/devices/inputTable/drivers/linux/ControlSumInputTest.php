@@ -132,6 +132,20 @@ class ControlSumInputTest extends DriverTestBaseLinux
                 array(),
                 -1,
             ),
+            array(
+                array(
+                    "Input" => array(
+                        "get" => array(
+                            "extra" => array(8 => 1),
+                        ),
+                    ),
+                ),
+                0x41460000,
+                1,
+                array(),
+                array(),
+                12.375,
+            ),
         );
     }
     /**
@@ -152,6 +166,20 @@ class ControlSumInputTest extends DriverTestBaseLinux
                 array(),
                 0x03E8D2,
             ),
+            array(
+                array(
+                    "Input" => array(
+                        "get" => array(
+                            "extra" => array(8 => 1),
+                        ),
+                    ),
+                ),
+                "00004641",
+                1,
+                array(),
+                array(),
+                12.375,
+            ),
         );
     }
     /**
@@ -168,7 +196,7 @@ class ControlSumInputTest extends DriverTestBaseLinux
                         "sensor" => new \HUGnet\DummyBase("Output"),
                     )
                 ),
-                "132015003000000093060000E50400000C000E00",
+                "132015003000000093060000E50400000C000E0001",
                 array(
                     "Input" => array(
                         "get" => array(
@@ -177,7 +205,7 @@ class ControlSumInputTest extends DriverTestBaseLinux
                         "set" => array(
                             array(
                                 'extra',
-                                array(19, 32, 21, 48, 1683, 1253, 12, 14)
+                                array(19, 32, 21, 48, 1683, 1253, 12, 14, 1)
                             ),
                         ),
                     ),
@@ -189,14 +217,14 @@ class ControlSumInputTest extends DriverTestBaseLinux
                         "sensor" => new \HUGnet\DummyBase("Output"),
                     )
                 ),
-                "1320FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+                "1320FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
                 array(
                     "Input" => array(
                         "get" => array(
                             array('extra'),
                         ),
                         "set" => array(
-                            array('extra', array(19, 32, -1, -1, -1, -1, -1, -1)),
+                            array('extra', array(19, 32, -1, -1, -1, -1, -1, -1, 255)),
                         ),
                     ),
                 ),
@@ -238,27 +266,27 @@ class ControlSumInputTest extends DriverTestBaseLinux
                         ),
                     ),
                 ),
-                "010001000000000000000000FFFFFF0000000000",
+                "010001000000000000000000FFFFFF000000000000",
             ),
             array( // #1
                 array(
                     "Input" => array(
                         "get" => array(
-                            "extra" => array(19, 32, 21, 48, 1683, 1253, 12, 14),
+                            "extra" => array(19, 32, 21, 48, 1683, 1253, 12, 14, 01),
                         ),
                     ),
                 ),
-                "132015003000000093060000E50400000C000E00",
+                "132015003000000093060000E50400000C000E0001",
             ),
             array( // #2 Negative numbers
                 array(
                     "Input" => array(
                         "get" => array(
-                            "extra" => array(19, 32, -1, -1, -1, -1, -1, -1),
+                            "extra" => array(19, 32, -1, -1, -1, -1, -1, -1, 255),
                         ),
                     ),
                 ),
-                "1320FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+                "1320FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
             ),
         );
     }
