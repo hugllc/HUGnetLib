@@ -66,6 +66,8 @@ class Gather extends \HUGnet\ui\Daemon
     const FAIL_THRESHOLD = 20;
     /** This is the amount of time we wait */
     const WAIT_TIME = 60;
+    /** This is how long we wait before getting the config of a device */
+    const CONFIG_WAIT = 60;
 
     /** This is the start time of the current run */
     private $_mainStart;
@@ -263,7 +265,20 @@ class Gather extends \HUGnet\ui\Daemon
         $this->out("Got unsolicited packet from ".$pkt->from());
         $this->_unsolicited->load(array("DeviceID" => $pkt->from()));
         $this->_unsolicited->set("GatewayKey", $this->system()->get("GatewayKey"));
-        $this->_unsolicited->setParam("LastConfig", 0);
+        $LastConfig = $this->_unsolicited->getParam("LastConfig");
+        $now = $this->system()->now();
+        if (($now - $LastConfig) > self::CONFIG_WAIT) {
+            $ConfigInt = $this->_unsolicited->get("ConfigInterval");
+            if ($ConfigInt < self::CONFIG_WAIT) {
+                $ConfigInt = self::CONFIG_WAIT * 2;
+            }
+            $LastConfig = ($now - $ConfigInt) + self::CONFIG_WAIT;
+            $this->_unsolicited->setParam("LastConfig", $LastConfig);
+            $this->out(
+                "Setting next config of ".$this->_unsolicited->get("DeviceID")." to "
+                .date("Y-m-d H:i:s", $LastConfig + $ConfigInt)
+            );
+        }
         $this->_unsolicited->setParam("LastContact", time());
         $this->_unsolicited->store();
         $this->_wait = 0;
