@@ -369,10 +369,18 @@ class Network
     */
     public function runBootloader($config = array())
     {
-        $reply = $this->_sendPkt("BOOTLOADER", null, $config);
-        if (is_object($reply)) {
-            if (is_string($reply->Reply())) {
-                return true;
+        $config['tries'] = 1;
+        $config["find"] = false;
+        $fconfig = $config;
+        $fconfig["block"] = false;
+        for ($i = 0; $i < 3; $i++) {
+            $this->_sendPkt("BOOTLOADER", null, $fconfig);
+            usleep(20000);
+            $reply = $this->_sendPkt("BOOTLOADER", null, $config);
+            if (is_object($reply)) {
+                if (is_string($reply->Reply())) {
+                    return true;
+                }
             }
         }
         return false;
