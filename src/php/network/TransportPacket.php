@@ -275,7 +275,7 @@ final class TransportPacket
     */
     private function _timeout()
     {
-        return bcsub($this->_time(), $this->_time, 3) > $this->_config["timeout"];
+        return bcsub($this->_time(), $this->_time, 10) > $this->_config["timeout"];
     }
 }
 

@@ -1371,8 +1371,6 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("id"),
                             array("packetTimeout"),
-                            array("id"),
-                            array("packetTimeout"),
                         ),
                     ),
                     "Network" => array(
@@ -1385,21 +1383,6 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 null,
                                 array(
                                     "timeout" => 4,
-                                    "tries" => 1,
-                                    "find" => false,
-                                    "block" => false,
-                                ),
-                            ),
-                            array(
-                                array(
-                                    "To" => 21,
-                                    "Command" => 'BOOTLOADER',
-                                ),
-                                null,
-                                array(
-                                    "timeout" => 4,
-                                    "tries" => 1,
-                                    "find" => false,
                                 ),
                             )
                         ),
@@ -1429,16 +1412,6 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("id"),
                             array("packetTimeout"),
-                            array("id"),
-                            array("packetTimeout"),
-                            array("id"),
-                            array("packetTimeout"),
-                            array("id"),
-                            array("packetTimeout"),
-                            array("id"),
-                            array("packetTimeout"),
-                            array("id"),
-                            array("packetTimeout"),
                         ),
                     ),
                     "Network" => array(
@@ -1451,71 +1424,6 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 null,
                                 array(
                                     "timeout" => 4,
-                                    "tries" => 1,
-                                    "find" => false,
-                                    "block" => false,
-                                ),
-                            ),
-                            array(
-                                array(
-                                    "To" => 21,
-                                    "Command" => 'BOOTLOADER',
-                                ),
-                                null,
-                                array(
-                                    "timeout" => 4,
-                                    "tries" => 1,
-                                    "find" => false,
-                                ),
-                            ),
-                            array(
-                                array(
-                                    "To" => 21,
-                                    "Command" => 'BOOTLOADER',
-                                ),
-                                null,
-                                array(
-                                    "timeout" => 4,
-                                    "tries" => 1,
-                                    "find" => false,
-                                    "block" => false,
-                                ),
-                            ),
-                            array(
-                                array(
-                                    "To" => 21,
-                                    "Command" => 'BOOTLOADER',
-                                ),
-                                null,
-                                array(
-                                    "timeout" => 4,
-                                    "tries" => 1,
-                                    "find" => false,
-                                ),
-                            ),
-                            array(
-                                array(
-                                    "To" => 21,
-                                    "Command" => 'BOOTLOADER',
-                                ),
-                                null,
-                                array(
-                                    "timeout" => 4,
-                                    "tries" => 1,
-                                    "find" => false,
-                                    "block" => false,
-                                ),
-                            ),
-                            array(
-                                array(
-                                    "To" => 21,
-                                    "Command" => 'BOOTLOADER',
-                                ),
-                                null,
-                                array(
-                                    "timeout" => 4,
-                                    "tries" => 1,
-                                    "find" => false,
                                 ),
                             )
                         ),
@@ -1541,16 +1449,6 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("id"),
                             array("packetTimeout"),
-                            array("id"),
-                            array("packetTimeout"),
-                            array("id"),
-                            array("packetTimeout"),
-                            array("id"),
-                            array("packetTimeout"),
-                            array("id"),
-                            array("packetTimeout"),
-                            array("id"),
-                            array("packetTimeout"),
                         ),
                     ),
                     "Network" => array(
@@ -1563,71 +1461,6 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 null,
                                 array(
                                     "timeout" => 4,
-                                    "tries" => 1,
-                                    "find" => false,
-                                    "block" => false,
-                                ),
-                            ),
-                            array(
-                                array(
-                                    "To" => 21,
-                                    "Command" => 'BOOTLOADER',
-                                ),
-                                null,
-                                array(
-                                    "timeout" => 4,
-                                    "tries" => 1,
-                                    "find" => false,
-                                ),
-                            ),
-                            array(
-                                array(
-                                    "To" => 21,
-                                    "Command" => 'BOOTLOADER',
-                                ),
-                                null,
-                                array(
-                                    "timeout" => 4,
-                                    "tries" => 1,
-                                    "find" => false,
-                                    "block" => false,
-                                ),
-                            ),
-                            array(
-                                array(
-                                    "To" => 21,
-                                    "Command" => 'BOOTLOADER',
-                                ),
-                                null,
-                                array(
-                                    "timeout" => 4,
-                                    "tries" => 1,
-                                    "find" => false,
-                                ),
-                            ),
-                            array(
-                                array(
-                                    "To" => 21,
-                                    "Command" => 'BOOTLOADER',
-                                ),
-                                null,
-                                array(
-                                    "timeout" => 4,
-                                    "tries" => 1,
-                                    "find" => false,
-                                    "block" => false,
-                                ),
-                            ),
-                            array(
-                                array(
-                                    "To" => 21,
-                                    "Command" => 'BOOTLOADER',
-                                ),
-                                null,
-                                array(
-                                    "timeout" => 4,
-                                    "tries" => 1,
-                                    "find" => false,
                                 ),
                             )
                         ),
@@ -2946,16 +2779,6 @@ S9030000FC",
                             array("HWPartNum"),
                             array("id"),
                             array("packetTimeout"),
-                            array("id"),
-                            array("packetTimeout"),
-                            array("id"),
-                            array("packetTimeout"),
-                            array("id"),
-                            array("packetTimeout"),
-                            array("id"),
-                            array("packetTimeout"),
-                            array("id"),
-                            array("packetTimeout"),
                         ),
                     ),
                     "Network" => array(
@@ -2967,72 +2790,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "timeout" => 2,
-                                    "tries" => 1,
-                                    "find" => false,
-                                    "block" => false,
-                                ),
-                            ),
-                            array(
-                                array(
-                                    "To" => 21,
-                                    "Command" => 'BOOTLOADER',
-                                ),
-                                null,
-                                array(
-                                    "timeout" => 2,
-                                    "tries" => 1,
-                                    "find" => false,
-                                ),
-                            ),
-                            array(
-                                array(
-                                    "To" => 21,
-                                    "Command" => 'BOOTLOADER',
-                                ),
-                                null,
-                                array(
-                                    "timeout" => 2,
-                                    "tries" => 1,
-                                    "find" => false,
-                                    "block" => false,
-                                ),
-                            ),
-                            array(
-                                array(
-                                    "To" => 21,
-                                    "Command" => 'BOOTLOADER',
-                                ),
-                                null,
-                                array(
-                                    "timeout" => 2,
-                                    "tries" => 1,
-                                    "find" => false,
-                                ),
-                            ),
-                            array(
-                                array(
-                                    "To" => 21,
-                                    "Command" => 'BOOTLOADER',
-                                ),
-                                null,
-                                array(
-                                    "timeout" => 2,
-                                    "tries" => 1,
-                                    "find" => false,
-                                    "block" => false,
-                                ),
-                            ),
-                            array(
-                                array(
-                                    "To" => 21,
-                                    "Command" => 'BOOTLOADER',
-                                ),
-                                null,
-                                array(
-                                    "timeout" => 2,
-                                    "tries" => 1,
-                                    "find" => false,
+                                    'timeout' => 2,
                                 ),
                             )
                         ),
@@ -3053,12 +2811,6 @@ S9030000FC",
                     ),
                     "Network" => array(
                         "send" => array(
-                            \HUGnet\network\packets\Packet::factory(
-                                array(
-                                    "From" => 21,
-                                    "Reply" => "",
-                                )
-                            ),
                             \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
@@ -3106,8 +2858,6 @@ S9030000FC",
                             array("packetTimeout"),
                             array("id"),
                             array("packetTimeout"),
-                            array("id"),
-                            array("packetTimeout"),
                         ),
                     ),
                     "Network" => array(
@@ -3119,22 +2869,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "timeout" => 2,
-                                    "tries" => 1,
-                                    "find" => false,
-                                    "block" => false,
-                                ),
-                            ),
-                            array(
-                                array(
-                                    "To" => 21,
-                                    "Command" => 'BOOTLOADER',
-                                ),
-                                null,
-                                array(
-                                    "timeout" => 2,
-                                    "tries" => 1,
-                                    "find" => false,
+                                    'timeout' => 2,
                                 ),
                             ),
                             array(
@@ -3165,12 +2900,6 @@ S9030000FC",
                     ),
                     "Network" => array(
                         "send" => array(
-                            \HUGnet\network\packets\Packet::factory(
-                                array(
-                                    "From" => 21,
-                                    "Reply" => "",
-                                )
-                            ),
                             \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
@@ -3239,8 +2968,6 @@ S9030000FC",
                             array("packetTimeout"),
                             array("id"),
                             array("packetTimeout"),
-                            array("id"),
-                            array("packetTimeout"),
                         ),
                         "decode" => array(
                             array(
@@ -3258,22 +2985,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "timeout" => 2,
-                                    "tries" => 1,
-                                    "find" => false,
-                                    "block" => false,
-                                ),
-                            ),
-                            array(
-                                array(
-                                    "To" => 21,
-                                    "Command" => 'BOOTLOADER',
-                                ),
-                                null,
-                                array(
-                                    "timeout" => 2,
-                                    "tries" => 1,
-                                    "find" => false,
+                                    'timeout' => 2,
                                 ),
                             ),
                             array(
@@ -3322,12 +3034,6 @@ S9030000FC",
                     ),
                     "Network" => array(
                         "send" => array(
-                            \HUGnet\network\packets\Packet::factory(
-                                array(
-                                    "From" => 21,
-                                    "Reply" => "",
-                                )
-                            ),
                             \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
@@ -3424,8 +3130,6 @@ S9030000FC",
                             array("packetTimeout"),
                             array("id"),
                             array("packetTimeout"),
-                            array("id"),
-                            array("packetTimeout"),
                         ),
                         "decode" => array(
                             array(
@@ -3443,22 +3147,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "timeout" => 2,
-                                    "tries" => 1,
-                                    "find" => false,
-                                    "block" => false,
-                                ),
-                            ),
-                            array(
-                                array(
-                                    "To" => 21,
-                                    "Command" => 'BOOTLOADER',
-                                ),
-                                null,
-                                array(
-                                    "timeout" => 2,
-                                    "tries" => 1,
-                                    "find" => false,
+                                    'timeout' => 2,
                                 ),
                             ),
                             array(
@@ -3543,12 +3232,6 @@ S9030000FC",
                     ),
                     "Network" => array(
                         "send" => array(
-                            \HUGnet\network\packets\Packet::factory(
-                                array(
-                                    "From" => 21,
-                                    "Reply" => "",
-                                )
-                            ),
                             \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
@@ -3667,8 +3350,6 @@ S9030000FC",
                             array("packetTimeout"),
                             array("id"),
                             array("packetTimeout"),
-                            array("id"),
-                            array("packetTimeout"),
                         ),
                         "decode" => array(
                             array(
@@ -3686,22 +3367,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "timeout" => 2,
-                                    "tries" => 1,
-                                    "find" => false,
-                                    "block" => false,
-                                ),
-                            ),
-                            array(
-                                array(
-                                    "To" => 21,
-                                    "Command" => 'BOOTLOADER',
-                                ),
-                                null,
-                                array(
-                                    "timeout" => 2,
-                                    "tries" => 1,
-                                    "find" => false,
+                                    'timeout' => 2,
                                 ),
                             ),
                             array(
@@ -3814,12 +3480,6 @@ S9030000FC",
                     ),
                     "Network" => array(
                         "send" => array(
-                            \HUGnet\network\packets\Packet::factory(
-                                array(
-                                    "From" => 21,
-                                    "Reply" => "",
-                                )
-                            ),
                             \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
@@ -3946,8 +3606,6 @@ S9030000FC",
                             array("packetTimeout"),
                             array("id"),
                             array("packetTimeout"),
-                            array("id"),
-                            array("packetTimeout"),
                         ),
                         "decode" => array(
                             array(
@@ -3965,22 +3623,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "timeout" => 2,
-                                    "tries" => 1,
-                                    "find" => false,
-                                    "block" => false,
-                                ),
-                            ),
-                            array(
-                                array(
-                                    "To" => 21,
-                                    "Command" => 'BOOTLOADER',
-                                ),
-                                null,
-                                array(
-                                    "timeout" => 2,
-                                    "tries" => 1,
-                                    "find" => false,
+                                    'timeout' => 2,
                                 ),
                             ),
                             array(
@@ -4112,12 +3755,6 @@ S9030000FC",
                             \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
-                                    "Reply" => "",
-                                )
-                            ),
-                            \HUGnet\network\packets\Packet::factory(
-                                array(
-                                    "From" => 21,
                                     "Reply" => "00000000E800392801410039201343000009"
                                     ."FFFFFF50010202020202020202",
                                 )
@@ -4244,8 +3881,6 @@ S9030000FC",
                             array("packetTimeout"),
                             array("id"),
                             array("packetTimeout"),
-                            array("id"),
-                            array("packetTimeout"),
                             array("setConfig"),
                             array("FWPartNum"),
                         ),
@@ -4269,22 +3904,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "timeout" => 2,
-                                    "tries" => 1,
-                                    "find" => false,
-                                    "block" => false,
-                                ),
-                            ),
-                            array(
-                                array(
-                                    "To" => 21,
-                                    "Command" => 'BOOTLOADER',
-                                ),
-                                null,
-                                array(
-                                    "timeout" => 2,
-                                    "tries" => 1,
-                                    "find" => false,
+                                    'timeout' => 2,
                                 ),
                             ),
                             array(
@@ -4426,12 +4046,6 @@ S9030000FC",
                             \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
-                                    "Reply" => "",
-                                )
-                            ),
-                            \HUGnet\network\packets\Packet::factory(
-                                array(
-                                    "From" => 21,
                                     "Reply" => "00000000E800392801410039201343000009"
                                     ."FFFFFF50010202020202020202",
                                 )
@@ -4523,8 +4137,6 @@ S9030000FC",
                             array("packetTimeout"),
                             array("id"),
                             array("packetTimeout"),
-                            array("id"),
-                            array("packetTimeout"),
                             array("setConfig"),
                             array("FWPartNum"),
                         ),
@@ -4548,22 +4160,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "timeout" => 2,
-                                    "tries" => 1,
-                                    "find" => false,
-                                    "block" => false,
-                                ),
-                            ),
-                            array(
-                                array(
-                                    "To" => 21,
-                                    "Command" => 'BOOTLOADER',
-                                ),
-                                null,
-                                array(
-                                    "timeout" => 2,
-                                    "tries" => 1,
-                                    "find" => false,
+                                    'timeout' => 2,
                                 ),
                             ),
                             array(
@@ -4660,12 +4257,6 @@ S9030000FC",
                     ),
                     "Network" => array(
                         "send" => array(
-                            \HUGnet\network\packets\Packet::factory(
-                                array(
-                                    "From" => 21,
-                                    "Reply" => "",
-                                )
-                            ),
                             \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
@@ -4774,8 +4365,6 @@ S9030000FC",
                             array("packetTimeout"),
                             array("id"),
                             array("packetTimeout"),
-                            array("id"),
-                            array("packetTimeout"),
                             array("setConfig"),
                             array("FWPartNum"),
                         ),
@@ -4799,22 +4388,7 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "timeout" => 2,
-                                    "tries" => 1,
-                                    "find" => false,
-                                    "block" => false,
-                                ),
-                            ),
-                            array(
-                                array(
-                                    "To" => 21,
-                                    "Command" => 'BOOTLOADER',
-                                ),
-                                null,
-                                array(
-                                    "timeout" => 2,
-                                    "tries" => 1,
-                                    "find" => false,
+                                    'timeout' => 2,
                                 ),
                             ),
                             array(
@@ -4911,12 +4485,6 @@ S9030000FC",
                     ),
                     "Network" => array(
                         "send" => array(
-                            \HUGnet\network\packets\Packet::factory(
-                                array(
-                                    "From" => 21,
-                                    "Reply" => "",
-                                )
-                            ),
                             \HUGnet\network\packets\Packet::factory(
                                 array(
                                     "From" => 21,
@@ -5043,8 +4611,6 @@ S9030000FC",
                             array("packetTimeout"),
                             array("id"),
                             array("packetTimeout"),
-                            array("id"),
-                            array("packetTimeout"),
                         ),
                         "decode" => array(
                             array(
@@ -5063,21 +4629,6 @@ S9030000FC",
                                 null,
                                 array(
                                     "timeout" => 2,
-                                    "tries" => 1,
-                                    "find" => false,
-                                    "block" => false,
-                                ),
-                            ),
-                            array(
-                                array(
-                                    "To" => 21,
-                                    "Command" => 'BOOTLOADER',
-                                ),
-                                null,
-                                array(
-                                    "timeout" => 2,
-                                    "tries" => 1,
-                                    "find" => false,
                                 ),
                             ),
                             array(

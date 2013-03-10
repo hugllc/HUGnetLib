@@ -131,7 +131,10 @@ final class Transport
     {
         $return = false;
         if (is_object($pkt)) {
-            if (count($this->_packets) < $this->_config["channels"]) {
+            if ($config["NoReply"] === true) {
+                $this->_network->send($pkt);
+                print "HERE";
+            } else if (count($this->_packets) < $this->_config["channels"]) {
                 // Generate a unique token
                 $token = uniqid();
                 // Add in the packets special configuration
