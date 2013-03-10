@@ -224,7 +224,9 @@ class ControlSumInputTest extends DriverTestBaseLinux
                             array('extra'),
                         ),
                         "set" => array(
-                            array('extra', array(19, 32, -1, -1, -1, -1, -1, -1, 255)),
+                            array(
+                                'extra', array(19, 32, -1, -1, -1, -1, -1, -1, 255)
+                            ),
                         ),
                     ),
                 ),

@@ -251,12 +251,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         return $obj;
     }
     /**
-    * This function creates the system.
-    *
-    * @param string $driver  The driver to load
-    * @param object &$sensor The sensor object
-    * @param array  $table   The table to use.  This forces the table, instead of
-    *                        using the database to find it
+    * This function includes things that we need
     *
     * @return null
     */
