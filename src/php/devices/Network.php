@@ -369,18 +369,12 @@ class Network
     */
     public function runBootloader($config = array())
     {
-        $config['tries'] = 1;
         $config["find"] = false;
-        $fconfig = $config;
-        $fconfig["block"] = false;
-        for ($i = 0; $i < 3; $i++) {
-            $this->_sendPkt("BOOTLOADER", null, $fconfig);
-            usleep(20000);
-            $reply = $this->_sendPkt("BOOTLOADER", null, $config);
-            if (is_object($reply)) {
-                if (is_string($reply->Reply())) {
-                    return true;
-                }
+        $config["timeout"] = 0.5;
+        $reply = $this->_sendPkt("BOOTLOADER", null, $config);
+        if (is_object($reply)) {
+            if (is_string($reply->Reply())) {
+                return true;
             }
         }
         return false;
@@ -555,7 +549,7 @@ class Network
     public function reboot()
     {
         $this->_sendPkt(
-            "SETCONFIG", null, array('tries' => 1, "block" => false, "find" => false)
+            "SETCONFIG", null, array("NoReply" => true)
         );
     }
     /**
