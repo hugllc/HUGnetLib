@@ -666,7 +666,7 @@ class Network
         if (!is_array($config)) {
             $config = array();
         }
-        if (!is_int($config["timeout"])) {
+        if (!is_numeric($config["timeout"])) {
             $config["timeout"] = $this->_device->get("packetTimeout");
         }
         $ret = $this->_system->network()->send($pkt, $callback, (array)$config);

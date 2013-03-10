@@ -1370,7 +1370,6 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     "Device" => array(
                         "get" => array(
                             array("id"),
-                            array("packetTimeout"),
                         ),
                     ),
                     "Network" => array(
@@ -1382,7 +1381,8 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "timeout" => 4,
+                                    "timeout" => 0.5,
+                                    "find" => false,
                                 ),
                             )
                         ),
@@ -1411,7 +1411,6 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     "Device" => array(
                         "get" => array(
                             array("id"),
-                            array("packetTimeout"),
                         ),
                     ),
                     "Network" => array(
@@ -1423,7 +1422,8 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "timeout" => 4,
+                                    "timeout" => 0.5,
+                                    "find" => false,
                                 ),
                             )
                         ),
@@ -1448,7 +1448,6 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     "Device" => array(
                         "get" => array(
                             array("id"),
-                            array("packetTimeout"),
                         ),
                     ),
                     "Network" => array(
@@ -1460,7 +1459,8 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "timeout" => 4,
+                                    "timeout" => 0.5,
+                                    "find" => false,
                                 ),
                             )
                         ),
@@ -2778,7 +2778,6 @@ S9030000FC",
                         "get" => array(
                             array("HWPartNum"),
                             array("id"),
-                            array("packetTimeout"),
                         ),
                     ),
                     "Network" => array(
@@ -2790,7 +2789,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    'timeout' => 2,
+                                    "timeout" => 0.5,
+                                    "find" => false,
                                 ),
                             )
                         ),
@@ -2855,7 +2855,6 @@ S9030000FC",
                         "get" => array(
                             array("HWPartNum"),
                             array("id"),
-                            array("packetTimeout"),
                             array("id"),
                             array("packetTimeout"),
                         ),
@@ -2869,7 +2868,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    'timeout' => 2,
+                                    "timeout" => 0.5,
+                                    "find" => false,
                                 ),
                             ),
                             array(
@@ -2963,7 +2963,6 @@ S9030000FC",
                         "get" => array(
                             array("HWPartNum"),
                             array("id"),
-                            array("packetTimeout"),
                             array("id"),
                             array("packetTimeout"),
                             array("id"),
@@ -2985,7 +2984,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    'timeout' => 2,
+                                    "timeout" => 0.5,
+                                    "find" => false,
                                 ),
                             ),
                             array(
@@ -3121,7 +3121,6 @@ S9030000FC",
                         "get" => array(
                             array("HWPartNum"),
                             array("id"),
-                            array("packetTimeout"),
                             array("id"),
                             array("packetTimeout"),
                             array("id"),
@@ -3147,7 +3146,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    'timeout' => 2,
+                                    "timeout" => 0.5,
+                                    "find" => false,
                                 ),
                             ),
                             array(
@@ -3337,7 +3337,6 @@ S9030000FC",
                         "get" => array(
                             array("HWPartNum"),
                             array("id"),
-                            array("packetTimeout"),
                             array("id"),
                             array("packetTimeout"),
                             array("id"),
@@ -3367,7 +3366,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    'timeout' => 2,
+                                    "timeout" => 0.5,
+                                    "find" => false,
                                 ),
                             ),
                             array(
@@ -3591,7 +3591,6 @@ S9030000FC",
                         "get" => array(
                             array("HWPartNum"),
                             array("id"),
-                            array("packetTimeout"),
                             array("id"),
                             array("packetTimeout"),
                             array("id"),
@@ -3623,7 +3622,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    'timeout' => 2,
+                                    "timeout" => 0.5,
+                                    "find" => false,
                                 ),
                             ),
                             array(
@@ -3864,7 +3864,6 @@ S9030000FC",
                         "get" => array(
                             array("HWPartNum"),
                             array("id"),
-                            array("packetTimeout"),
                             array("id"),
                             array("packetTimeout"),
                             array("id"),
@@ -3904,7 +3903,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    'timeout' => 2,
+                                    "timeout" => 0.5,
+                                    "find" => false,
                                 ),
                             ),
                             array(
@@ -4124,7 +4124,6 @@ S9030000FC",
                         "get" => array(
                             array("HWPartNum"),
                             array("id"),
-                            array("packetTimeout"),
                             array("id"),
                             array("packetTimeout"),
                             array("id"),
@@ -4160,7 +4159,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    'timeout' => 2,
+                                    "timeout" => 0.5,
+                                    "find" => false,
                                 ),
                             ),
                             array(
@@ -4352,7 +4352,6 @@ S9030000FC",
                         "get" => array(
                             array("HWPartNum"),
                             array("id"),
-                            array("packetTimeout"),
                             array("id"),
                             array("packetTimeout"),
                             array("id"),
@@ -4388,7 +4387,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    'timeout' => 2,
+                                    "timeout" => 0.5,
+                                    "find" => false,
                                 ),
                             ),
                             array(
@@ -4596,7 +4596,6 @@ S9030000FC",
                         "get" => array(
                             array("HWPartNum"),
                             array("id"),
-                            array("packetTimeout"),
                             array("id"),
                             array("packetTimeout"),
                             array("id"),
@@ -4628,7 +4627,8 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "timeout" => 2,
+                                    "timeout" => 0.5,
+                                    "find" => false,
                                 ),
                             ),
                             array(
