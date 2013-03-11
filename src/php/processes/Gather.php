@@ -267,18 +267,16 @@ class Gather extends \HUGnet\ui\Daemon
         $this->_unsolicited->set("GatewayKey", $this->system()->get("GatewayKey"));
         $LastConfig = $this->_unsolicited->getParam("LastConfig");
         $now = $this->system()->now();
-        if (($now - $LastConfig) > self::CONFIG_WAIT) {
-            $ConfigInt = $this->_unsolicited->get("ConfigInterval");
-            if ($ConfigInt < self::CONFIG_WAIT) {
-                $ConfigInt = self::CONFIG_WAIT * 2;
-            }
-            $LastConfig = ($now - $ConfigInt) + self::CONFIG_WAIT;
-            $this->_unsolicited->setParam("LastConfig", $LastConfig);
-            $this->out(
-                "Setting next config of ".$this->_unsolicited->get("DeviceID")." to "
-                .date("Y-m-d H:i:s", $LastConfig + $ConfigInt)
-            );
+        $ConfigInt = $this->_unsolicited->get("ConfigInterval");
+        if ($ConfigInt < self::CONFIG_WAIT) {
+            $ConfigInt = self::CONFIG_WAIT * 2;
         }
+        $LastConfig = ($now - $ConfigInt) + self::CONFIG_WAIT;
+        $this->_unsolicited->setParam("LastConfig", $LastConfig);
+        $this->out(
+            "Setting next config of ".$this->_unsolicited->get("DeviceID")." to "
+            .date("Y-m-d H:i:s", $LastConfig + $ConfigInt)
+        );
         $this->_unsolicited->setParam("LastContact", time());
         $this->_unsolicited->store();
         $this->_wait = 0;
