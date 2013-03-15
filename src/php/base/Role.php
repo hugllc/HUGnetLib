@@ -55,7 +55,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  *
  * @SuppressWarnings(PHPMD.NumberOfChildren)
  */
-class Role
+abstract class Role
 {
     /**
     *  This is the input table data
