@@ -189,4 +189,57 @@
             2 high voltage and 6 low voltage AtoD inputs
         </Notes>
     </endpoints>
+    <endpoints>
+        <HWPartNum>0039-37-01-D</HWPartNum>
+        <Parameters>
+            ARCH: ADuC7060
+            CPU: ADuC7060
+            VCC: 2.5V
+            TestFirmware: 0039-38-05-C
+            BootFirmware: 0039-38-02-C
+            Firmware: 0039-38-01-C
+            Built: ?
+        </Parameters>
+        <Obsolete>0</Obsolete>
+        <Notes>
+            This has screw terminals for the inputs and power/rs485.  This has
+            8 low voltage AtoD inputs
+        </Notes>
+    </endpoints>
+    <endpoints>
+        <HWPartNum>0039-37-01-E</HWPartNum>
+        <Parameters>
+            ARCH: ADuC7060
+            CPU: ADuC7060
+            VCC: 2.5V
+            TestFirmware: 0039-38-05-C
+            BootFirmware: 0039-38-02-C
+            Firmware: 0039-38-01-C
+            Built: ?
+        </Parameters>
+        <Obsolete>0</Obsolete>
+        <Notes>
+            This has screw terminals for the inputs and power/rs485.  This has
+            2 high voltage and 6 low voltage AtoD inputs with only current
+            limiting resistors on the 6 low voltage inputs
+        </Notes>
+    </endpoints>
+    <endpoints>
+        <HWPartNum>0039-37-01-F</HWPartNum>
+        <Parameters>
+            ARCH: ADuC7060
+            CPU: ADuC7060
+            VCC: 2.5V
+            TestFirmware: 0039-38-05-C
+            BootFirmware: 0039-38-02-C
+            Firmware: 0039-38-01-C
+            Built: ?
+        </Parameters>
+        <Obsolete>0</Obsolete>
+        <Notes>
+            This has screw terminals for the inputs and power/rs485.  This has
+            4 high voltage and 4 low voltage AtoD inputs with only current
+            limiting resistors on the 4 low voltage inputs
+        </Notes>
+    </endpoints>
 </HUGnet>
