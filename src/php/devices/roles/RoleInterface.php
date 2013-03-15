@@ -58,27 +58,27 @@ defined('_HUGNET') or die('HUGnetSystem not found');
 interface RoleInterface
 {
     /**
-    * This creates the sensor drivers
+    * This returns the data for the give id if there is any.
     *
-    * @param int $sid The sensor id to get.  They are labaled 0 to sensors
+    * @param int $iid The sensor id to get.  They are zero based
     *
-    * @return null
+    * @return null if not found, array otherwise
     */
     public function input($iid);
     /**
-    * This creates the sensor drivers
+    * This returns the data for the give id if there is any.
     *
-    * @param int $sid The sensor id to get.  They are labaled 0 to sensors
+    * @param int $oid The sensor id to get.  They are zero based
     *
-    * @return null
+    * @return null if not found, array otherwise
     */
     public function output($oid);
     /**
-    * This creates the sensor drivers
+    * This returns the data for the give id if there is any.
     *
-    * @param int $sid The sensor id to get.  They are labaled 0 to sensors
+    * @param int $pid The sensor id to get.  They are zero based
     *
-    * @return null
+    * @return null if not found, array otherwise
     */
     public function process($pid);
 }

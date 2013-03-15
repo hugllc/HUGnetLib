@@ -33,7 +33,7 @@
  *
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\devices;
+namespace HUGnet\base;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 
@@ -57,6 +57,21 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  */
 class Role
 {
+    /**
+    *  This is the input table data
+    */
+    protected $input = array(
+    );
+    /**
+    *  This is the output table data
+    */
+    protected $output = array(
+    );
+    /**
+    *  This is the process table data
+    */
+    protected $process = array(
+    );
     /**
     * This is where the correlation between the drivers and the arch is stored.
     *
@@ -99,53 +114,50 @@ class Role
     */
     public static function &factory()
     {
-        return new Role();
+        $class = get_called_class();
+        $object = new $class();
+        return $object;
     }
     /**
-    * This creates the sensor drivers
+    * This returns the data for the give id if there is any.
     *
-    * @param string $name The name of the role
-    * @param int    $iid  The sensor id to get.  They are zero based
+    * @param int $iid The sensor id to get.  They are zero based
     *
     * @return null if not found, array otherwise
     */
-    public function input($name, $iid)
+    public function input($iid)
     {
+        if (isset($this->input[(int)$iid])) {
+            return $this->input[(int)$iid];
+        }
         return null;
     }
     /**
-    * This creates the sensor drivers
+    * This returns the data for the give id if there is any.
     *
-    * @param string $name The name of the role
-    * @param int    $oid  The sensor id to get.  They are zero based
+    * @param int $oid The sensor id to get.  They are zero based
     *
     * @return null if not found, array otherwise
     */
-    public function output($name, $oid)
+    public function output($oid)
     {
+        if (isset($this->output[(int)$oid])) {
+            return $this->output[(int)$oid];
+        }
         return null;
     }
     /**
-    * This creates the sensor drivers
+    * This returns the data for the give id if there is any.
     *
-    * @param string $name The name of the role
-    * @param int    $pid  The sensor id to get.  They are zero based
-    *
-    * @return null if not found, array otherwise
-    */
-    public function process($name, $pid)
-    {
-        return null;
-    }
-    /**
-    * This creates the sensor drivers
-    *
-    * @param string $arch The architecture to get the roles for
+    * @param int $pid The sensor id to get.  They are zero based
     *
     * @return null if not found, array otherwise
     */
-    public function get($arch)
+    public function process($pid)
     {
+        if (isset($this->process[(int)$pid])) {
+            return $this->process[(int)$pid];
+        }
         return null;
     }
 }
