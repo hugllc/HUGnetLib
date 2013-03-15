@@ -185,7 +185,7 @@
         </Parameters>
         <Obsolete>0</Obsolete>
         <Notes>
-            This has screw terminals for the inputs and power/rs485.  This has
+            This has screw terminals for the inputs and power/rs485. This has
             2 high voltage and 6 low voltage AtoD inputs
         </Notes>
     </endpoints>
@@ -202,7 +202,7 @@
         </Parameters>
         <Obsolete>0</Obsolete>
         <Notes>
-            This has screw terminals for the inputs and power/rs485.  This has
+            This has screw terminals for the inputs and power/rs485.This has
             8 low voltage AtoD inputs
         </Notes>
     </endpoints>
