@@ -169,5 +169,36 @@ class RoleTest extends \PHPUnit_Framework_TestCase
         $ret = $this->o->output($name, $sid);
         $this->assertSame($expect, $ret);
     }
+    /**
+    * data provider for testGetAll
+    *
+    * @return array
+    */
+    public static function dataGetAll()
+    {
+        return array(
+            array(
+                "BadName", null
+            ),
+            array(
+                "Linux", array()
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $arch   The name of the arch
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataGetAll
+    */
+    public function testGetAll($arch, $expect)
+    {
+        $ret = $this->o->getAll($arch);
+        $this->assertSame($expect, $ret);
+    }
 }
 ?>

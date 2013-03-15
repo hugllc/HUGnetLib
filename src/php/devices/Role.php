@@ -144,8 +144,11 @@ class Role
     *
     * @return null if not found, array otherwise
     */
-    public function get($arch)
+    public function getAll($arch)
     {
+        if (is_array($this->_arch[$arch])) {
+            return $this->_arch[$arch];
+        }
         return null;
     }
 }

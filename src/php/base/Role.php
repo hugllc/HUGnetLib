@@ -72,31 +72,6 @@ abstract class Role
     */
     protected $process = array(
     );
-    /**
-    * This is where the correlation between the drivers and the arch is stored.
-    *
-    * If a driver is not registered here, it will not be in the list of drivers
-    * that can be chosen.
-    *
-    */
-    private $_arch = array(
-        "0039-12" => array(
-        ),
-        "0039-21-01" => array(
-            "controller" => "Controller",
-        ),
-        "0039-21-02" => array(
-            "controller" => "Controller",
-        ),
-        "0039-28" => array(
-        ),
-        "0039-37" => array(
-        ),
-        "Linux" => array(
-        ),
-        "all" => array(
-        ),
-    );
 
     /**
     * This function sets up the driver object, and the database object.  The
