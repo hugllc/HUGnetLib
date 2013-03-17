@@ -213,8 +213,10 @@ class Action
             );
             if (is_string($ret->reply())) {
                 $sen = $this->device->input($i);
-                $sen->decode($ret->reply());
-                $sen->store();
+                if ($sen->get("id") == 0xFF) {
+                    $sen->decode($ret->reply());
+                    $sen->store();
+                }
             } else {
                 // Failure.  Stop trying
                 return;
@@ -228,8 +230,10 @@ class Action
             );
             if (is_string($ret->reply())) {
                 $out = $this->device->output($i);
-                $out->decode($ret->reply());
-                $out->store();
+                if ($out->get("id") == 0xFF) {
+                    $out->decode($ret->reply());
+                    $out->store();
+                }
             } else {
                 // Failure.  Stop trying
                 return;
@@ -243,8 +247,10 @@ class Action
             );
             if (is_string($ret->reply())) {
                 $proc = $this->device->process($i);
-                $proc->decode($ret->reply());
-                $proc->store();
+                if ($proc->get("id") == 0xFF) {
+                    $proc->decode($ret->reply());
+                    $proc->store();
+                }
             } else {
                 // Failure.  Stop trying
                 return;
