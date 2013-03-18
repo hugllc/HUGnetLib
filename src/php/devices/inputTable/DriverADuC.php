@@ -95,6 +95,7 @@ abstract class DriverADuC extends Driver
         "43:DEFAULT"                 => "ADuCScaledTemp",
         "44:DEFAULT"                 => "ADuCPressure",
         "45:DEFAULT"                 => "ADuCGenericLinear",
+        "46:DEFAULT"                 => "MKS901PPressure",
         "F9:DEFAULT"                 => "ADuCInputTable",
     );
     /**
