@@ -1,0 +1,1 @@
+ALTER TABLE `devices` ADD `Role` VARCHAR( 64 ) NOT NULL DEFAULT '' AFTER `DeviceJob`;

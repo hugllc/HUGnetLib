@@ -166,6 +166,11 @@ class Devices extends \HUGnet\db\Table
             "Type" => "varchar(64)",
             "Default" => '',
         ),
+        "Role" => array(
+            "Name" => "Role",
+            "Type" => "varchar(64)",
+            "Default" => '',
+        ),
         "Driver" => array(
             "Name" => "Driver",
             "Type" => "varchar(32)",
