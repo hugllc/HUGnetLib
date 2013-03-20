@@ -93,6 +93,8 @@ class Gather extends \HUGnet\ui\Daemon
         parent::__construct($config);
         /* Set up the unsolicited packets */
         $this->system()->network()->unsolicited(array($this, "unsolicited"));
+        /* Set up the matcher */
+        $this->system()->network()->match(array($this, "matcher"));
         /* Get our Device */
         $this->_device = $this->system()->device();
         $this->_unsolicited = $this->system()->device();
@@ -402,6 +404,73 @@ class Gather extends \HUGnet\ui\Daemon
             $dev->store();
             $out = sprintf("%02X", (int)$dev->store());
             $this->_reply($pkt, $out);
+        }
+    }
+    /**
+    * Deals with incoming packets
+    *
+    * @param object $pkt The packet to send out
+    *
+    * @return null
+    */
+    public function matcher($pkt)
+    {
+        switch ($pkt->type()) {
+            case "CONFIG":
+                $device = $this->system()->device(array("DeviceID" => $pkt->to()));
+                if ($device->decode($pkt->reply())) {
+                    $device->setParam("LastContact", time());
+                    $device->setParam("LastConfig", time());
+                    $device->setParam("ConfigFail", 0);
+                    $device->setParam("ContactFail", 0);
+                    $device->store();
+                    $this->out(
+                        "Saved config for device ".$device->get("DeviceID")
+                    );
+                }
+                break;
+            case "READINPUTTABLE":
+                $device = $this->system()->device(array("DeviceID" => $pkt->to()));
+                if (is_string($pkt->reply())) {
+                    $i = hexdec(substr($pkt->data(), 0, 2));
+                    $sen = $device->input($i);
+                    if ($sen->get("id") == 0xFF) {
+                        $sen->decode($pkt->reply());
+                        $sen->store();
+                    }
+                    $this->out(
+                        "Saved input $i on device ".$device->get("DeviceID")
+                    );
+                }
+                break;
+            case "READOUTPUTTABLE":
+                $device = $this->system()->device(array("DeviceID" => $pkt->to()));
+                if (is_string($pkt->reply())) {
+                    $i = hexdec(substr($pkt->data(), 0, 2));
+                    $sen = $device->output($i);
+                    if ($sen->get("id") == 0xFF) {
+                        $sen->decode($pkt->reply());
+                        $sen->store();
+                    }
+                    $this->out(
+                        "Saved output $i on device ".$device->get("DeviceID")
+                    );
+                }
+                break;
+            case "READPROCESSTABLE":
+                $device = $this->system()->device(array("DeviceID" => $pkt->to()));
+                if (is_string($pkt->reply())) {
+                    $i = hexdec(substr($pkt->data(), 0, 2));
+                    $sen = $device->process($i);
+                    if ($sen->get("id") == 0xFF) {
+                        $sen->decode($pkt->reply());
+                        $sen->store();
+                    }
+                    $this->out(
+                        "Saved process $i on device ".$device->get("DeviceID")
+                    );
+                }
+                break;
         }
     }
     /**
