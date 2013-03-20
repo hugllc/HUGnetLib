@@ -68,7 +68,9 @@ final class Application
     /** These are the monitor callbacks */
     private $_monitor = array();
     /** These are the unsolicited callbacks */
-    private $_unsolicited = array();
+    private $_unsolicited = array(
+        "any" => array(),
+    );
     /** These are the packets going out */
     private $_queue = array();
     /** This is our configuration */
@@ -176,7 +178,7 @@ final class Application
             include_once dirname(__FILE__)."/Matcher.php";
             include_once dirname(__FILE__)."/TransportPacket.php";
             $this->_matcher = Matcher::factory($this->_config, $callback);
-            $this->unsolicited(array($this->_matcher, "match"));
+            $this->unsolicited(array($this->_matcher, "match"), "any");
         }
         return (bool)$return;
     }
@@ -193,7 +195,11 @@ final class Application
             /* Monitor is first because unsolicited might print a reply packet */
             /* If this happens they come out backwards if unsolicited is first */
             $this->_monitor($packet);
-            foreach ((array)$this->_unsolicited[$packet->To()] as $callback) {
+            $functions = array_merge(
+                (array)$this->_unsolicited[$packet->To()],
+                (array)$this->_unsolicited["any"]
+            );
+            foreach ($functions as $callback) {
                 if (is_callable($callback)) {
                     call_user_func($callback, $packet);
                 }
