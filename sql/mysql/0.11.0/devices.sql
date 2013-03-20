@@ -1,1 +1,1 @@
-ALTER TABLE `devices` ADD `Role` VARCHAR( 64 ) NOT NULL DEFAULT '' AFTER `DeviceJob`;
+ALTER TABLE `devices` ADD `Role` VARCHAR( 64 ) NULL DEFAULT NULL AFTER `DeviceJob`;
