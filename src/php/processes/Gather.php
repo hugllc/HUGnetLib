@@ -416,42 +416,42 @@ class Gather extends \HUGnet\ui\Daemon
     public function matcher($pkt)
     {
         switch ($pkt->type()) {
-            case "CONFIG":
-                $device = $this->system()->device(array("DeviceID" => $pkt->to()));
-                if ($device->action()->storeConfig($pkt->reply())) {
-                    $this->out(
-                        "Saved config for device ".$device->get("DeviceID")
-                    );
-                }
-                break;
-            case "READINPUTTABLE":
-                $device = $this->system()->device(array("DeviceID" => $pkt->to()));
-                $i = hexdec(substr($pkt->data(), 0, 2));
-                if ($device->action()->storeIOP($i, $pkt->reply(), "input")) {
-                    $this->out(
-                        "Saved input $i on device ".$device->get("DeviceID")
-                    );
-                }
-                break;
-            case "READOUTPUTTABLE":
-                $device = $this->system()->device(array("DeviceID" => $pkt->to()));
-                $i = hexdec(substr($pkt->data(), 0, 2));
-                if ($device->action()->storeIOP($i, $pkt->reply(), "output")) {
-                    $this->out(
-                        "Saved output $i on device ".$device->get("DeviceID")
-                    );
-                }
-                break;
-            case "READPROCESSTABLE":
-                $device = $this->system()->device(array("DeviceID" => $pkt->to()));
-                $i = hexdec(substr($pkt->data(), 0, 2));
-                if ($device->action()->storeIOP($i, $pkt->reply(), "process")) {
-                    $this->out(
-                        "Saved process $i on device ".$device->get("DeviceID")
-                    );
-                }
-                break;
-        }
+        case "CONFIG":
+            $device = $this->system()->device(array("DeviceID" => $pkt->to()));
+            if ($device->action()->storeConfig($pkt->reply())) {
+                $this->out(
+                    "Saved config for device ".$device->get("DeviceID")
+                );
+            }
+            break;
+        case "READINPUTTABLE":
+            $device = $this->system()->device(array("DeviceID" => $pkt->to()));
+            $i = hexdec(substr($pkt->data(), 0, 2));
+            if ($device->action()->storeIOP($i, $pkt->reply(), "input")) {
+                $this->out(
+                    "Saved input $i on device ".$device->get("DeviceID")
+                );
+            }
+            break;
+        case "READOUTPUTTABLE":
+            $device = $this->system()->device(array("DeviceID" => $pkt->to()));
+            $i = hexdec(substr($pkt->data(), 0, 2));
+            if ($device->action()->storeIOP($i, $pkt->reply(), "output")) {
+                $this->out(
+                    "Saved output $i on device ".$device->get("DeviceID")
+                );
+            }
+            break;
+        case "READPROCESSTABLE":
+            $device = $this->system()->device(array("DeviceID" => $pkt->to()));
+            $i = hexdec(substr($pkt->data(), 0, 2));
+            if ($device->action()->storeIOP($i, $pkt->reply(), "process")) {
+                $this->out(
+                    "Saved process $i on device ".$device->get("DeviceID")
+                );
+            }
+            break;
+    }
     }
     /**
     * Replies to a packet
