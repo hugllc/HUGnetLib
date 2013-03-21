@@ -418,12 +418,7 @@ class Gather extends \HUGnet\ui\Daemon
         switch ($pkt->type()) {
             case "CONFIG":
                 $device = $this->system()->device(array("DeviceID" => $pkt->to()));
-                if ($device->decode($pkt->reply())) {
-                    $device->setParam("LastContact", time());
-                    $device->setParam("LastConfig", time());
-                    $device->setParam("ConfigFail", 0);
-                    $device->setParam("ContactFail", 0);
-                    $device->store();
+                if ($device->action()->storeConfig($pkt->reply())) {
                     $this->out(
                         "Saved config for device ".$device->get("DeviceID")
                     );
@@ -431,13 +426,8 @@ class Gather extends \HUGnet\ui\Daemon
                 break;
             case "READINPUTTABLE":
                 $device = $this->system()->device(array("DeviceID" => $pkt->to()));
-                if (is_string($pkt->reply())) {
-                    $i = hexdec(substr($pkt->data(), 0, 2));
-                    $sen = $device->input($i);
-                    if ($sen->get("id") == 0xFF) {
-                        $sen->decode($pkt->reply());
-                        $sen->store();
-                    }
+                $i = hexdec(substr($pkt->data(), 0, 2));
+                if ($device->action()->storeIOP($i, $pkt->reply(), "input")) {
                     $this->out(
                         "Saved input $i on device ".$device->get("DeviceID")
                     );
@@ -445,13 +435,8 @@ class Gather extends \HUGnet\ui\Daemon
                 break;
             case "READOUTPUTTABLE":
                 $device = $this->system()->device(array("DeviceID" => $pkt->to()));
-                if (is_string($pkt->reply())) {
-                    $i = hexdec(substr($pkt->data(), 0, 2));
-                    $sen = $device->output($i);
-                    if ($sen->get("id") == 0xFF) {
-                        $sen->decode($pkt->reply());
-                        $sen->store();
-                    }
+                $i = hexdec(substr($pkt->data(), 0, 2));
+                if ($device->action()->storeIOP($i, $pkt->reply(), "output")) {
                     $this->out(
                         "Saved output $i on device ".$device->get("DeviceID")
                     );
@@ -459,13 +444,8 @@ class Gather extends \HUGnet\ui\Daemon
                 break;
             case "READPROCESSTABLE":
                 $device = $this->system()->device(array("DeviceID" => $pkt->to()));
-                if (is_string($pkt->reply())) {
-                    $i = hexdec(substr($pkt->data(), 0, 2));
-                    $sen = $device->process($i);
-                    if ($sen->get("id") == 0xFF) {
-                        $sen->decode($pkt->reply());
-                        $sen->store();
-                    }
+                $i = hexdec(substr($pkt->data(), 0, 2));
+                if ($device->action()->storeIOP($i, $pkt->reply(), "process")) {
                     $this->out(
                         "Saved process $i on device ".$device->get("DeviceID")
                     );

@@ -182,16 +182,9 @@ class Action
         }
         $pkt = $this->device->network()->config();
         $this->device->load($this->device->id());
-        if (strlen($pkt->reply())) {
-            if ($this->device->decode($pkt->reply())) {
-                $this->device->setParam("LastContact", time());
-                $this->device->setParam("LastConfig", time());
-                $this->device->setParam("ConfigFail", 0);
-                $this->device->setParam("ContactFail", 0);
-                $this->device->store();
-                $this->configStuff();
-                return true;
-            }
+        if ($this->storeConfig($pkt->reply())) {
+            $this->configStuff();
+            return true;
         }
         $fail = $this->device->getParam("ConfigFail");
         $this->device->setParam("ConfigFail", $fail+1);
@@ -211,13 +204,7 @@ class Action
             $ret = $this->send(
                 "READINPUTTABLE", null, array("find" => false), sprintf("%02X", $i)
             );
-            if (is_string($ret->reply())) {
-                $sen = $this->device->input($i);
-                if ($sen->get("id") == 0xFF) {
-                    $sen->decode($ret->reply());
-                    $sen->store();
-                }
-            } else {
+            if (!$this->storeIOP($i, $ret->reply(), "input")) {
                 // Failure.  Stop trying
                 return;
             }
@@ -228,13 +215,7 @@ class Action
             $ret = $this->send(
                 "READOUTPUTTABLE", null, array("find" => false), sprintf("%02X", $i)
             );
-            if (is_string($ret->reply())) {
-                $out = $this->device->output($i);
-                if ($out->get("id") == 0xFF) {
-                    $out->decode($ret->reply());
-                    $out->store();
-                }
-            } else {
+            if (!$this->storeIOP($i, $ret->reply(), "output")) {
                 // Failure.  Stop trying
                 return;
             }
@@ -245,17 +226,65 @@ class Action
             $ret = $this->send(
                 "READPROCESSTABLE", null, array("find" => false), sprintf("%02X", $i)
             );
-            if (is_string($ret->reply())) {
-                $proc = $this->device->process($i);
-                if ($proc->get("id") == 0xFF) {
-                    $proc->decode($ret->reply());
-                    $proc->store();
-                }
-            } else {
+            if (!$this->storeIOP($i, $ret->reply(), "process")) {
                 // Failure.  Stop trying
                 return;
             }
         }
+    }
+    /**
+    * Gets the config and saves it
+    *
+    * @param string $string The string to decode
+    *
+    * @return bool True on success, false on failure
+    */
+    public function storeConfig($string)
+    {
+        if (is_string($string) && strlen($string)) {
+            if ($this->device->decode($string)) {
+                $this->device->setParam("LastContact", time());
+                $this->device->setParam("LastConfig", time());
+                $this->device->setParam("ConfigFail", 0);
+                $this->device->setParam("ContactFail", 0);
+                $this->device->store();
+                return true;
+            }
+        }
+        return false;
+    }
+    /**
+    * Gets the config and saves it
+    *
+    * @param int    $num    The number of the input to store
+    * @param string $string The string to decode
+    * @param string $type   The type to use
+    *
+    * @return bool True on success, false on failure
+    */
+    public function storeIOP($num, $string, $type)
+    {
+
+        if (!is_string($string) || !is_int($num) || !is_string($type)) {
+            return false;
+        }
+        $type = trim(strtolower($type));
+        if ($type == "input") {
+            $iop = $this->device->input($num);
+        } else if ($type == "output") {
+            $iop = $this->device->output($num);
+        } else if ($type == "process") {
+            $iop = $this->device->process($num);
+        }
+        if (is_object($iop)) {
+            $oldID = $iop->get("id");
+            $iop->decode($string);
+            if (($iop->get("id") == $oldID) || ($oldID == 0xFF)) {
+                $iop->store();
+            }
+            return true;
+        }
+        return false;
     }
     /**
     * Gets the config and saves it

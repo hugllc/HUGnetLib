@@ -428,7 +428,7 @@ abstract class Driver
             } else if (is_array($tSensors)) {
                 $obj->load((array)$tSensors[$sid]);
             } else {
-                if ($sid < $this->get("physicalSensors")) {
+                if ($sid < $this->get("InputTables")) {
                     $data["id"] = self::getSensorID(
                         $sid, $this->device()->get("RawSetup")
                     );
