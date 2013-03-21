@@ -119,6 +119,7 @@ class WebInterfaceTest extends \PHPUnit_Framework_TestCase
                             "Real" => "array",
                         ),
                         "network" => new \HUGnet\DummyBase("Network"),
+                        "store" => true,
                     ),
                     "Args" => array(
                         "get" => array(
@@ -368,6 +369,56 @@ class WebInterfaceTest extends \PHPUnit_Framework_TestCase
                             array(
                                 array('HWPartNum' => '0039-24-03-P'),
                             ),
+                        ),
+                    ),
+                ),
+            ),
+            array(  // #0
+                new \HUGnet\DummyBase("Args"),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "device" => new \HUGnet\DummyBase("Device"),
+                        "now" => 1234,
+                    ),
+                    "Device" => array(
+                        "load" => true,
+                        "toArray" => array(
+                            "Real" => "array",
+                        ),
+                        "network" => new \HUGnet\DummyBase("Network"),
+                        "store" => false,
+                    ),
+                    "Args" => array(
+                        "get" => array(
+                            "action" => "put",
+                            "data" => array(
+                                "a" => "B",
+                                "c" => "D",
+                                "params" => array(
+                                    "e" => "F",
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                false,
+                array(),
+                -1,
+                array(
+                    "Device" => array(
+                        "set" => array(
+                            array("a", "B"),
+                            array("c", "D"),
+                        ),
+                        "setParam" => array(
+                            array("e", "F"),
+                            array("LastModified", 1234),
+                        ),
+                        "store" => array(
+                            array(true),
                         ),
                     ),
                 ),

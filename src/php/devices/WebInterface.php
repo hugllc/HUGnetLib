@@ -189,8 +189,10 @@ class WebInterface
             $this->_device->setParam($key, $value);
         }
         $this->_device->setParam("LastModified", $this->_system->now());
-        $this->_device->store(true);
-        return $this->_device->toArray(true);
+        if ($this->_device->store(true)) {
+            return $this->_device->toArray(true);
+        }
+        return -1;
     }
     /**
     * returns a history object for this device
