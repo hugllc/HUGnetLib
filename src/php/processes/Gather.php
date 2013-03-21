@@ -415,9 +415,10 @@ class Gather extends \HUGnet\ui\Daemon
     */
     public function matcher($pkt)
     {
+        $device = $this->system()->device(array("DeviceID" => $pkt->to()));
+        $iop = hexdec(substr($pkt->data(), 0, 2));
         switch ($pkt->type()) {
         case "CONFIG":
-            $device = $this->system()->device(array("DeviceID" => $pkt->to()));
             if ($device->action()->storeConfig($pkt->reply())) {
                 $this->out(
                     "Saved config for device ".$device->get("DeviceID")
@@ -425,29 +426,23 @@ class Gather extends \HUGnet\ui\Daemon
             }
             break;
         case "READINPUTTABLE":
-            $device = $this->system()->device(array("DeviceID" => $pkt->to()));
-            $i = hexdec(substr($pkt->data(), 0, 2));
-            if ($device->action()->storeIOP($i, $pkt->reply(), "input")) {
+            if ($device->action()->storeIOP($iop, $pkt->reply(), "input")) {
                 $this->out(
-                    "Saved input $i on device ".$device->get("DeviceID")
+                    "Saved input $iop on device ".$device->get("DeviceID")
                 );
             }
             break;
         case "READOUTPUTTABLE":
-            $device = $this->system()->device(array("DeviceID" => $pkt->to()));
-            $i = hexdec(substr($pkt->data(), 0, 2));
-            if ($device->action()->storeIOP($i, $pkt->reply(), "output")) {
+            if ($device->action()->storeIOP($iop, $pkt->reply(), "output")) {
                 $this->out(
-                    "Saved output $i on device ".$device->get("DeviceID")
+                    "Saved output $iop on device ".$device->get("DeviceID")
                 );
             }
             break;
         case "READPROCESSTABLE":
-            $device = $this->system()->device(array("DeviceID" => $pkt->to()));
-            $i = hexdec(substr($pkt->data(), 0, 2));
-            if ($device->action()->storeIOP($i, $pkt->reply(), "process")) {
+            if ($device->action()->storeIOP($iop, $pkt->reply(), "process")) {
                 $this->out(
-                    "Saved process $i on device ".$device->get("DeviceID")
+                    "Saved process $iop on device ".$device->get("DeviceID")
                 );
             }
             break;
