@@ -189,7 +189,7 @@ class WebInterface
             $this->_device->setParam($key, $value);
         }
         $this->_device->setParam("LastModified", $this->_system->now());
-        $this->_device->store();
+        $this->_device->store(true);
         return $this->_device->toArray(true);
     }
     /**
