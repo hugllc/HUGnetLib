@@ -446,7 +446,7 @@ class Gather extends \HUGnet\ui\Daemon
                 );
             }
             break;
-    }
+        }
     }
     /**
     * Replies to a packet
