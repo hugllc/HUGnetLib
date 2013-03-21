@@ -296,7 +296,7 @@ class Devices extends \HUGnet\db\Table
         }
         if (!isset($data["id"])) {
             $data["id"] = $this->dbDriver()->getNextID(
-                "`id` >= ".self::MIN_VIRTUAL_SN." AND `id` =< ".self::MAX_VIRTUAL_SN
+                "`id` >= ".self::MIN_VIRTUAL_SN." AND `id` <= ".self::MAX_VIRTUAL_SN
             );
             if ($data["id"] < self::MIN_VIRTUAL_SN) {
                 $data["id"] = self::MIN_VIRTUAL_SN;
