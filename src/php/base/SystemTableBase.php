@@ -187,17 +187,7 @@ abstract class SystemTableBase
                 $ret = true;
             }
         } else if (is_array($data)) {
-            $wdata = (array)$this->table()->sanitizeWhere($data);
-            $keys = is_array($this->keys) ? $this->keys : array_keys($wdata);
-            $where = "";
-            $whereData = array();
-            $sep = "";
-            foreach ($keys as $key) {
-                $where .= "$sep`$key` = ?";
-                $sep = " AND ";
-                $whereData[] = $wdata[$key];
-            }
-            $ret = $this->table()->selectOneInto($where, $whereData);
+            $ret = $this->_find($data, $this->keys);
         }
         if (is_array($data) || is_object($data)) {
             $this->table()->fromAny($data);
@@ -207,6 +197,50 @@ abstract class SystemTableBase
             }
         }
         return (bool)$ret;
+    }
+    /**
+    * Loads the data into the table class
+    *
+    * @param array $data The data to create the table with
+    *
+    * @return bool Whether we found this in the db or not.
+    */
+    public function create($data)
+    {
+        if (!is_array($data)) {
+            return false;
+        }
+        $this->table()->clearData();
+        $this->table()->fromArray($data);
+        $this->fixTable();
+        $this->_new = true;
+        if ($this->store()) {
+            $this->table()->sqlOrderBy = "id desc";
+            return $this->_find($data);
+        }
+        return false;
+    }
+    /**
+    * Loads the data into the table class
+    *
+    * @param array $data The data to create the table with
+    * @param array $keys The keys to find stuff with
+    *
+    * @return bool Whether we found this in the db or not.
+    */
+    private function _find($data, $keys = null)
+    {
+        $wdata = (array)$this->table()->sanitizeWhere($data);
+        $keys = is_array($keys) ? $keys : array_keys($wdata);
+        $where = "";
+        $whereData = array();
+        $sep = "";
+        foreach ($keys as $key) {
+            $where .= "$sep`$key` = ?";
+            $sep = " AND ";
+            $whereData[] = $wdata[$key];
+        }
+        return $this->table()->selectOneInto($where, $whereData);
     }
     /**
     * Changes data that is in the table and saves it

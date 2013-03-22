@@ -155,7 +155,7 @@ class WebAPI extends HTML
     */
     private function _executeInputtable($extra = array())
     {
-        $iid = strtolower($this->args()->get("id"));
+        $iid = $this->args()->get("id");
         $inputTable = $this->system()->inputTable();
         return $this->_executeSystem($iid, $inputTable, $extra);
     }
@@ -169,7 +169,7 @@ class WebAPI extends HTML
     */
     private function _executeOutputtable($extra = array())
     {
-        $iid = strtolower($this->args()->get("id"));
+        $iid = $this->args()->get("id");
         $outputTable = $this->system()->outputTable();
         return $this->_executeSystem($iid, $outputTable, $extra);
     }
@@ -183,7 +183,7 @@ class WebAPI extends HTML
     */
     private function _executeProcesstable($extra = array())
     {
-        $iid = strtolower($this->args()->get("id"));
+        $iid = $this->args()->get("id");
         $processTable = $this->system()->processTable();
         return $this->_executeSystem($iid, $processTable, $extra);
     }
@@ -315,11 +315,13 @@ class WebAPI extends HTML
             if ($obj->load($ident)) {
                 $obj->change($data);
                 // Reload it, so that we get what is in the database
+                $obj->load($ident);
+            } else if (is_null($ident) && isset($data["name"])) {
+                $obj->create($data);
             } else {
                 $obj->load($data);
-                $obj->store();
+                $obj->store(true);
             }
-            $obj->load($ident);
             $ret = $obj->toArray(true);
         } else if ($action === "list") {
             $data = $this->args()->get("data");

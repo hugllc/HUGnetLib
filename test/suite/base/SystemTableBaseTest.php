@@ -405,6 +405,156 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectTable, $table->retrieve(), "Data Wrong");
     }
     /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataCreate()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "sanitizeWhere" => array(
+                            "id" => 5,
+                            "name" => 3,
+                            "value" => 1,
+                        ),
+                        "selectOneInto" => false,
+                    ),
+                ),
+                new \HUGnet\DummyTable(),
+                "\\HUGnet\\base\\SystemTableBaseTestStub",
+                "ThisIsNotAnArray",
+                array(
+                ),
+                false,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "sanitizeWhere" => array(
+                            "id" => 5,
+                            "name" => 3,
+                            "value" => 1,
+                        ),
+                        "selectOneInto" => true,
+                        "insertRow" => true,
+                    ),
+                ),
+                new \HUGnet\DummyTable(),
+                "\\HUGnet\\base\\SystemTableBaseTestStub",
+                array(
+                    "name" => 3,
+                    "value" => 1,
+                ),
+                array(
+                    "Table" => array(
+                        "fromArray" => array(
+                            array(
+                                array(
+                                    "name" => 3,
+                                    "value" => 1,
+                                ),
+                            ),
+                        ),
+                        "clearData" => array(array()),
+                        "selectOneInto" => array(
+                            array(
+                                "`id` = ? AND `name` = ? AND `value` = ?",
+                                array(5, 3, 1),
+                            ),
+                        ),
+                        "sanitizeWhere" => array(
+                            array(
+                                array(
+                                    "name" => 3,
+                                    "value" => 1,
+                                ),
+                            ),
+                        ),
+                        "get" => array(
+                            array(
+                               "id",
+                            ),
+                        ),
+                        "insertRow" => array(
+                            array(
+                                false,
+                            ),
+                        ),
+                    ),
+                ),
+                true,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "sanitizeWhere" => array(
+                            "id" => 5,
+                            "name" => 3,
+                            "value" => 1,
+                        ),
+                        "selectOneInto" => true,
+                        "insertRow" => false,
+                    ),
+                ),
+                new \HUGnet\DummyTable(),
+                "\\HUGnet\\base\\SystemTableBaseTestStub2",
+                array(
+                    "name" => 3,
+                    "value" => 1,
+                ),
+                array(
+                    "Table" => array(
+                        "fromArray" => array(
+                            array(
+                                array(
+                                    "name" => 3,
+                                    "value" => 1,
+                                ),
+                            ),
+                        ),
+                        "clearData" => array(array()),
+                        "insertRow" => array(
+                            array(false),
+                        ),
+                         "get" => array(
+                            array(
+                               "id",
+                            ),
+                        ),
+                   ),
+                ),
+                false,
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param object $config      The configuration to use
+    * @param object $table       The table class to use
+    * @param string $class       The test class to use
+    * @param mixed  $data        The gateway data to set
+    * @param array  $expectTable The table to expect
+    * @param bool   $return      The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataCreate
+    */
+    public function testCreate(
+        $config, $table, $class, $data, $expectTable, $return
+    ) {
+        $sys = new \HUGnet\DummySystem("System");
+        $sys->resetMock($config);
+        $obj = $class::factory($sys, null, $table);
+        $ret = $obj->create($data);
+        $this->assertSame($return, $ret, "Return Wrong");
+        $this->assertEquals($expectTable, $table->retrieve(), "Data Wrong");
+    }
+    /**
     * Data provider for testLoad
     *
     * @return array
@@ -704,7 +854,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($return, $ret, "Return Wrong");
     }
     /**
-    * Data provider for testCreate
+    * Data provider for testGet
     *
     * @return array
     */

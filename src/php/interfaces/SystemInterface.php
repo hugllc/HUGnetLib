@@ -103,6 +103,14 @@ interface SystemInterface
     */
     public function change($data);
     /**
+    * Loads the data into the table class
+    *
+    * @param array $data The data to create the table with
+    *
+    * @return bool Whether we found this in the db or not.
+    */
+    public function create($data);
+    /**
     * Changes data that is in the table and saves it
     *
     * @param array $where   The things the list should filter for

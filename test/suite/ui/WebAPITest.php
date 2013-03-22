@@ -513,9 +513,8 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "load" => array(
                             array('10'),
                             array(array('a' => 'b', 'c' => 'd')),
-                            array('10'),
                         ),
-                        "store" => array(array()),
+                        "store" => array(array(true)),
                     ),
                 ),
             ),
@@ -910,10 +909,9 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                                     "c" => "d",
                                 ),
                             ),
-                            array(10),
                         ),
                         "store" => array(
-                            array(),
+                            array(true),
                         ),
                     ),
                 ),
@@ -1842,6 +1840,50 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         ),
                         "load" => array(
                             array(array("dev" => 16, "output" => 5)),
+                        ),
+                    ),
+                ),
+            ),
+            array(  // #36
+                array(
+                    "task" => "inputtable",
+                    "action" => "put",
+                    "id" => null,
+                    "data" => array(
+                        "name" => "b",
+                        "c" => "d",
+                    ),
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "inputTable" => new \HUGnet\DummyBase("Table"),
+                    ),
+                    "Table" => array(
+                        "load" => false,
+                        "toArray" => array(
+                            "Real" => "array",
+                        ),
+                    ),
+                ),
+                false,
+                array(),
+                json_encode(array("Real" => "array")),
+                array(
+                    "Table" => array(
+                        "toArray" => array(array(true)),
+                        "load" => array(
+                            array(null),
+                        ),
+                        "create" => array(
+                            array(
+                                array(
+                                    "name" => "b",
+                                    "c" => "d",
+                                ),
+                            ),
                         ),
                     ),
                 ),
