@@ -79,7 +79,7 @@ class E00392100 extends \HUGnet\devices\Driver
         'ConfigInterval' => 600,
         "type" => "controller",
         "job"  => "control",
-        "arch" => "0039-21-01old",
+        "arch" => "old",
     );
 
     /**

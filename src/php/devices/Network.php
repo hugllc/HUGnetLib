@@ -482,8 +482,8 @@ class Network
         if (!$this->_device->get("setConfig")) {
             return true;
         }
-        $part = $this->_device->get("FWPartNum");
-        if (substr($part, 0, 7) === "0039-20") {
+        $arch = $this->_device->get("arch");
+        if ($arch === "old") {
             /* This device doesn't have loadable sensors */
             return true;
         }

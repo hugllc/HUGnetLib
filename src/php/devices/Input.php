@@ -110,11 +110,19 @@ class Input extends \HUGnet\base\IOPBase
     {
         $return = (array)parent::toArray($default);
         if ($default) {
+            $arch = $this->device()->get("arch");
+            if ($arch == "old") {
+                /* Can't change anything about the old system */
+                $return["validIds"] = array(
+                    $this->get("id") => $this->get("longName")
+                );
+            } else {
+                $return["validIds"] = $this->driver()->getDrivers();
+            }
             $return["otherTypes"] = \HUGnet\devices\inputTable\Driver::getTypes(
                 $return["id"]
             );
             $return["validUnits"] = $this->units()->getValid();
-            $return["validIds"] = $this->driver()->getDrivers();
         }
         return (array)$return;
     }
