@@ -40,6 +40,8 @@ namespace HUGnet;
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our base class */
 require_once dirname(__FILE__)."/../base/SystemTableBase.php";
+/** This is our system interface */
+require_once dirname(__FILE__)."/../interfaces/SystemInterface.php";
 
 /**
  * Base system class.
@@ -59,6 +61,7 @@ require_once dirname(__FILE__)."/../base/SystemTableBase.php";
  * @since      0.9.7
  */
 class Test extends \HUGnet\base\SystemTableBase
+    implements \HUGnet\interfaces\SystemInterface
 {
     /** This is the device we are attached to */
     private $_device = null;

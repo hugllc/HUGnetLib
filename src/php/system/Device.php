@@ -44,6 +44,8 @@ require_once dirname(__FILE__)."/../base/SystemTableAction.php";
 require_once dirname(__FILE__)."/../devices/Driver.php";
 /** This is our base class */
 require_once dirname(__FILE__)."/../interfaces/WebAPI.php";
+/** This is our system interface */
+require_once dirname(__FILE__)."/../interfaces/SystemInterface.php";
 
 /**
  * Base system class.
@@ -63,7 +65,7 @@ require_once dirname(__FILE__)."/../interfaces/WebAPI.php";
  * @since      0.9.7
  */
 class Device extends \HUGnet\base\SystemTableAction
-    implements \HUGnet\interfaces\WebAPI
+    implements \HUGnet\interfaces\WebAPI, \HUGnet\interfaces\SystemInterface
 {
     /**
     * This is the cache for the drivers.

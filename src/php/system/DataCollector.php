@@ -38,8 +38,10 @@ namespace HUGnet;
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our base class */
 require_once dirname(__FILE__)."/../base/SystemTableBase.php";
-/** This is our base class */
+/** This is our webapi interface */
 require_once dirname(__FILE__)."/../interfaces/WebAPI.php";
+/** This is our system interface */
+require_once dirname(__FILE__)."/../interfaces/SystemInterface.php";
 
 /**
  * Base system class.
@@ -58,7 +60,7 @@ require_once dirname(__FILE__)."/../interfaces/WebAPI.php";
  * @since      0.9.7
  */
 class DataCollector extends \HUGnet\base\SystemTableBase
-    implements \HUGnet\interfaces\WebAPI
+    implements \HUGnet\interfaces\WebAPI, \HUGnet\interfaces\SystemInterface
 {
     /**
     * This function creates the system.

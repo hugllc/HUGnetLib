@@ -40,6 +40,8 @@ namespace HUGnet;
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our base class */
 require_once dirname(__FILE__)."/../base/XTableBase.php";
+/** This is our system interface */
+require_once dirname(__FILE__)."/../interfaces/SystemInterface.php";
 
 /**
  * Base system class.
@@ -59,6 +61,7 @@ require_once dirname(__FILE__)."/../base/XTableBase.php";
  * @since      0.9.7
  */
 class InputTable extends \HUGnet\base\XTableBase
+    implements \HUGnet\interfaces\SystemInterface
 {
     /** This is the table we are using */
     protected $xTable = "InputTable";

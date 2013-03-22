@@ -40,6 +40,8 @@ namespace HUGnet;
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our base class */
 require_once dirname(__FILE__)."/../base/SystemTableBase.php";
+/** This is our system interface */
+require_once dirname(__FILE__)."/../interfaces/SystemInterface.php";
 
 /**
  * This class controls all error messages and exceptions
@@ -56,6 +58,7 @@ require_once dirname(__FILE__)."/../base/SystemTableBase.php";
  * @since      0.9.7
  */
 class Error extends \HUGnet\base\SystemTableBase
+    implements \HUGnet\interfaces\SystemInterface
 {
     /** notice level severity */
     const NOTICE = 1;
