@@ -40,6 +40,8 @@ namespace HUGnet\devices;
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our base class */
 require_once dirname(__FILE__)."/../base/IOPBase.php";
+/** This is our system interface */
+require_once dirname(__FILE__)."/../interfaces/SystemInterface.php";
 
 /**
  * Base system class.
@@ -59,6 +61,7 @@ require_once dirname(__FILE__)."/../base/IOPBase.php";
  * @since      0.9.7
  */
 class Input extends \HUGnet\base\IOPBase
+    implements \HUGnet\interfaces\SystemInterface
 {
     /** These are our keys to search for.  Null means search everything given */
     protected $keys = array("dev", "input");

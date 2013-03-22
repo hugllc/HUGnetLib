@@ -381,6 +381,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     */
     public static function register($key, $class)
     {
+        self::_includes();
         $driver = '\\HUGnet\\devices\\inputTable\\drivers\\'.$class;
         $driv = array_merge(
             (array)Driver::$drivers,
