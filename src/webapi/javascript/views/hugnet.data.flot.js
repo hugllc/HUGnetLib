@@ -183,6 +183,7 @@ HUGnet.DataFlot = Backbone.View.extend({
     model: HUGnet.Histories,
     tagName: 'div',
     template: '#DataPointTableTemplate',
+    parent: 'unknown',
     fields: {},
     classes: {},
     checkboxes: [],
@@ -207,6 +208,9 @@ HUGnet.DataFlot = Backbone.View.extend({
         delete options.model;
         this.fields = options.fields;
         this.classes = options.classes;
+        this.parent = options.parent;
+        // This sets the legend to the correct value for this instance
+        this.options['legend']['container'] = "#"+this.parent+" #flot-legend";
         this.points = new HUGnet.FlotPoints(null, options);
         /*
         this.model.bind('add', this.insert, this);

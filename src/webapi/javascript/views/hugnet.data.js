@@ -55,6 +55,7 @@ HUGnet.DataView = Backbone.View.extend({
     header: {},
     fields: {},
     classes: {},
+    parent: 'unknown',
     since: 0,
     until: 0,
     last: 0,
@@ -76,6 +77,7 @@ HUGnet.DataView = Backbone.View.extend({
     {
         this.url = options.url;
         this.data = options.data;
+        this.parent = options.parent;
         var device;
         var i;
         this.header = {};
@@ -195,6 +197,7 @@ HUGnet.DataView = Backbone.View.extend({
     {
         var d = new Date();
         this.plot = new HUGnet.DataFlot({
+            parent: this.parent,
             model: this.history,
             header: this.header,
             fields: this.fields,
