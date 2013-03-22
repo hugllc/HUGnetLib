@@ -198,6 +198,11 @@ class Action
     */
     protected function configStuff()
     {
+        $arch = $this->_device->get("arch");
+        if ($arch === "old") {
+            /* This device doesn't have loadable sensors */
+            return true;
+        }
         $input = (int)$this->device->get("InputTables");
         for ($i = 0; $i < $input; $i++) {
             $this->system->out("InputTables $i", 2);
