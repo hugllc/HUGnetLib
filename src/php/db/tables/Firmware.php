@@ -39,6 +39,9 @@ namespace HUGnet\db\tables;
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** We might need things from this class */
 require_once dirname(__FILE__)."/Devices.php";
+/** This is our system interface */
+require_once dirname(__FILE__)."/../../interfaces/DBTable.php";
+
 /**
  * This class has functions that relate to the manipulation of elements
  * of the devInfo array.
@@ -54,6 +57,7 @@ require_once dirname(__FILE__)."/Devices.php";
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class Firmware extends \HUGnet\db\Table
+    implements \HUGnet\interfaces\DBTable
 {
     /** These are the constants for RelStatus */
     /** @var int Released code */

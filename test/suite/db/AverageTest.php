@@ -55,6 +55,8 @@ require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
 require_once TEST_CONFIG_BASE."files/mocks/AverageMock.php";
 /** This is a required class */
 require_once TEST_CONFIG_BASE."files/mocks/HistoryMock.php";
+/** This is a required class */
+require_once CODE_BASE.'interfaces/DBTable.php';
 
 /**
  * Test class for filter.
@@ -3238,6 +3240,7 @@ namespace HUGnet\db\tables;
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class AverageTestStub extends \HUGnet\db\Average
+    implements \HUGnet\interfaces\DBTable
 {
     /** @var string This is the table we should use */
     public $sqlTable = "Average";

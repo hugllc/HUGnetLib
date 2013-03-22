@@ -39,6 +39,9 @@ namespace HUGnet\db\tables;
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** The data channels driver is necessary for a couple of constants */
 require_once dirname(__FILE__)."/../TableParams.php";
+/** This is our system interface */
+require_once dirname(__FILE__)."/../../interfaces/DBTable.php";
+
 /**
  * This class has functions that relate to the manipulation of elements
  * of the devInfo array.
@@ -54,6 +57,7 @@ require_once dirname(__FILE__)."/../TableParams.php";
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class DeviceInputs extends \HUGnet\db\TableParams
+    implements \HUGnet\interfaces\DBTable
 {
     /** @var string This is the table we should use */
     public $sqlTable = "deviceInputs";

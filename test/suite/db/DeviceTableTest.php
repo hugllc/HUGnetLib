@@ -49,6 +49,8 @@ require_once CODE_BASE.'system/System.php';
 require_once CODE_BASE.'system/Device.php';
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
+/** This is a required class */
+require_once CODE_BASE.'interfaces/DBTable.php';
 
 /**
  * Test class for filter.
@@ -479,6 +481,7 @@ namespace HUGnet\db\tables;
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class DeviceTableStub extends \HUGnet\db\DeviceTable
+    implements \HUGnet\interfaces\DBTable
 {
     /** @var string This is the table we should use */
     public $sqlTable = "deviceTable";

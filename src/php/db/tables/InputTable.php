@@ -39,6 +39,8 @@ namespace HUGnet\db\tables;
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** The data channels driver is necessary for a couple of constants */
 require_once dirname(__FILE__)."/../DeviceTable.php";
+/** This is our system interface */
+require_once dirname(__FILE__)."/../../interfaces/DBTable.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -55,6 +57,7 @@ require_once dirname(__FILE__)."/../DeviceTable.php";
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class InputTable extends \HUGnet\db\DeviceTable
+    implements \HUGnet\interfaces\DBTable
 {
     /** @var string This is the table we should use */
     public $sqlTable = "inputTable";

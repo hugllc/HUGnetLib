@@ -91,7 +91,8 @@ abstract class Table extends TableBase
         if (substr($class, 0, 17) != "HUGnet\\db\\tables\\") {
             $nclass = "HUGnet\\db\\tables\\".$class;
         }
-        if (!class_exists($nclass)) {
+        $interface = "\\HUGnet\\interfaces\\DBTable";
+        if (!is_subclass_of($nclass, $interface)) {
             include_once dirname(__FILE__)."/tables/Generic.php";
             // Assume that the class given is the table name.
             return new \HUGnet\db\tables\Generic(

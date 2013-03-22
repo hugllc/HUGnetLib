@@ -42,6 +42,8 @@ require_once CODE_BASE.'system/System.php';
 require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
 /** This is a required class */
 require_once 'PHPUnit/Extensions/Database/TestCase.php';
+/** This is a required class */
+require_once CODE_BASE.'interfaces/DBTable.php';
 
 /**
  * Test class for HUGnetDB.
@@ -1587,6 +1589,7 @@ namespace HUGnet\db\tables;
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class HUGnetDBTableTestStub extends \HUGnet\db\Table
+    implements \HUGnet\interfaces\DBTable
 {
     /** @var string This is the table we should use */
     public $sqlTable = "myTable";
@@ -1743,6 +1746,7 @@ class HUGnetDBTableTestStub extends \HUGnet\db\Table
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class HUGnetDBTableTestStub2 extends \HUGnet\db\Table
+    implements \HUGnet\interfaces\DBTable
 {
     /** @var string This is the table we should use */
     public $sqlTable = "myTable2";

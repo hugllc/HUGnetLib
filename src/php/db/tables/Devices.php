@@ -37,6 +37,8 @@
 namespace HUGnet\db\tables;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
+/** This is our system interface */
+require_once dirname(__FILE__)."/../../interfaces/DBTable.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -53,6 +55,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class Devices extends \HUGnet\db\Table
+    implements \HUGnet\interfaces\DBTable
 {
     /** This is the maximum our SN can be */
     const MAX_GROUP_SN = 0xFFFFFF;
