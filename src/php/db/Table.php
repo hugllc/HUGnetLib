@@ -80,13 +80,13 @@ abstract class Table extends TableBase
         if (file_exists(dirname(__FILE__)."/tables/".$class.".php")) {
             include_once dirname(__FILE__)."/tables/".$class.".php";
         } else if (file_exists(dirname(__FILE__)."/tables/history/".$class.".php")) {
-            include_once dirname(__FILE__)."/History.php";
-            include_once dirname(__FILE__)."/tables/history/".$class.".php";
+            return self::_historyFactory(
+                $system, $data, $class, $connect, $extra1, $extra2
+            );
         } else if (file_exists(dirname(__FILE__)."/tables/average/".$class.".php")) {
-            include_once dirname(__FILE__)."/History.php";
-            include_once dirname(__FILE__)."/Average.php";
-            include_once dirname(__FILE__)."/FastAverage.php";
-            include_once dirname(__FILE__)."/tables/average/".$class.".php";
+            return self::_averageFactory(
+                $system, $data, $class, $connect, $extra1, $extra2
+            );
         }
         if (substr($class, 0, 17) != "HUGnet\\db\\tables\\") {
             $nclass = "HUGnet\\db\\tables\\".$class;
@@ -98,6 +98,72 @@ abstract class Table extends TableBase
             return new \HUGnet\db\tables\Generic(
                 $system, $data, $connect, $class
             );
+        }
+        return new $nclass($system, $data, $connect, $extra1, $extra2);
+    }
+    /**
+    * This function creates other tables that are identical to this one, except
+    * for the data given.
+    *
+    * @param object &$system  The system object to use
+    * @param mixed  $data     This is an array or string to create the object from
+    * @param string $class    The class to use
+    * @param object &$connect The connection manager
+    * @param mixed  $extra1   Extra parameter that is just passed on
+    * @param mixed  $extra2   Extra parameter that is just passed on
+    *
+    * @return object A reference to a table object
+    */
+    static private function &_historyFactory(
+        &$system, $data, $class, &$connect, $extra1, $extra2
+    ) {
+        include_once dirname(__FILE__)."/History.php";
+        include_once dirname(__FILE__)."/tables/history/".$class.".php";
+        if (substr($class, 0, 17) != "HUGnet\\db\\tables\\") {
+            $nclass = "HUGnet\\db\\tables\\".$class;
+        }
+        $interface1 = "\\HUGnet\\interfaces\\DBTable";
+        $interface2 = "\\HUGnet\\interfaces\\DBTableHistory";
+        if (!is_subclass_of($nclass, $interface1)
+            || !is_subclass_of($nclass, $interface2)
+        ) {
+            include_once dirname(__FILE__)."/tables/history/EDEFAULTHistory.php";
+            // Assume that the class given is the table name.
+            $nclass = "\\HUGnet\\db\\tables\\EDEFAULTHistory";
+        }
+        return new $nclass($system, $data, $connect, $extra1, $extra2);
+    }
+    /**
+    * This function creates other tables that are identical to this one, except
+    * for the data given.
+    *
+    * @param object &$system  The system object to use
+    * @param mixed  $data     This is an array or string to create the object from
+    * @param string $class    The class to use
+    * @param object &$connect The connection manager
+    * @param mixed  $extra1   Extra parameter that is just passed on
+    * @param mixed  $extra2   Extra parameter that is just passed on
+    *
+    * @return object A reference to a table object
+    */
+    static private function &_averageFactory(
+        &$system, $data, $class, &$connect, $extra1, $extra2
+    ) {
+        include_once dirname(__FILE__)."/History.php";
+        include_once dirname(__FILE__)."/Average.php";
+        include_once dirname(__FILE__)."/FastAverage.php";
+        include_once dirname(__FILE__)."/tables/average/".$class.".php";
+        if (substr($class, 0, 17) != "HUGnet\\db\\tables\\") {
+            $nclass = "HUGnet\\db\\tables\\".$class;
+        }
+        $interface1 = "\\HUGnet\\interfaces\\DBTable";
+        $interface2 = "\\HUGnet\\interfaces\\DBTableAverage";
+        if (!is_subclass_of($nclass, $interface1)
+            || !is_subclass_of($nclass, $interface2)
+        ) {
+            include_once dirname(__FILE__)."/tables/average/EDEFAULTAverage.php";
+            // Assume that the class given is the table name.
+            $nclass = "\\HUGnet\\db\\tables\\EDEFAULTAverage";
         }
         return new $nclass($system, $data, $connect, $extra1, $extra2);
     }
