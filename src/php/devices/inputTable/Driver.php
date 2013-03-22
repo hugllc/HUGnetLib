@@ -232,7 +232,6 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     */
     public static function &factory($driver, &$sensor, $table = null)
     {
-        $obj = null;
         $filebase = dirname(__FILE__)."/drivers/";
         if (file_exists($filebase."aduc/".$driver.".php")) {
             $class = '\\HUGnet\\devices\\inputTable\\drivers\\aduc\\'.$driver;
