@@ -1094,7 +1094,7 @@ class DriverTest extends drivers\DriverTestBase
         $ret = array();
         $types = array();
         for ($i = 0; $i < 256; $i++) {
-            foreach((array)$obj->getTypes($i) as $sub => $type) {
+            foreach ((array)$obj->getTypes($i) as $sub => $type) {
                 $types[sprintf("%02X", $i).":".$sub] = $type;
             }
         }
@@ -1123,7 +1123,7 @@ class DriverTest extends drivers\DriverTestBase
             "linux",
             "virtual",
         );
-        foreach($files as $arch) {
+        foreach ($files as $arch) {
             if (!empty($arch)) {
                 $name = "\\HUGnet\\devices\\inputTable\\drivers\\$arch\\";
                 $file = CODE_BASE."devices/inputTable/drivers/$arch/$class.php";
