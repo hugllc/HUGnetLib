@@ -196,12 +196,12 @@ abstract class Average extends History
     * stored in the instance this is called from.  If this is fed history table
     * then it will calculate 15 minute averages.
     *
-    * @param HistoryTableBase &$data This is the data to use to calculate the average
-    * @param string           $type  The type of average to calculate
+    * @param \HUGnet\db\History &$data This is the data to use to calc the average
+    * @param string             $type  The type of average to calculate
     *
     * @return bool True on success, false on failure
     */
-    public function calcAverage(History &$data, $type)
+    public function calcAverage(\HUGnet\db\History &$data, $type)
     {
         if ($type == self::AVERAGE_15MIN) {
             return $this->calc15MinAverage($data);

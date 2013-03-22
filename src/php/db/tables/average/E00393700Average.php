@@ -39,6 +39,8 @@ namespace HUGnet\db\tables;
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our system interface */
 require_once dirname(__FILE__)."/../../../interfaces/DBTable.php";
+/** This is our system interface */
+require_once dirname(__FILE__)."/../../../interfaces/DBTableAverage.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -55,7 +57,7 @@ require_once dirname(__FILE__)."/../../../interfaces/DBTable.php";
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class E00393700Average extends \HUGnet\db\FastAverage
-    implements \HUGnet\interfaces\DBTable
+    implements \HUGnet\interfaces\DBTable, \HUGnet\interfaces\DBTableAverage
 {
     /** @var string This is the table we should use */
     public $sqlTable = "e00393700_average";

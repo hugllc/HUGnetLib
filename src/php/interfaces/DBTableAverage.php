@@ -7,7 +7,6 @@
  * <pre>
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2013 Hunt Utilities Group, LLC
- * Copyright (C) 2009 Scott Price
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,20 +26,15 @@
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage PluginsAverageTable
+ * @subpackage Tables
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2013 Hunt Utilities Group, LLC
- * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-namespace HUGnet\db\tables;
+namespace HUGnet\interfaces;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
-/** This is our system interface */
-require_once dirname(__FILE__)."/../../../interfaces/DBTable.php";
-/** This is our system interface */
-require_once dirname(__FILE__)."/../../../interfaces/DBTableAverage.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -48,27 +42,48 @@ require_once dirname(__FILE__)."/../../../interfaces/DBTableAverage.php";
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage PluginsAverageTable
+ * @subpackage Tables
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2013 Hunt Utilities Group, LLC
- * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.10.2
+ * @version    Release: 0.11.0
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @since      0.11.0
  */
-class EDEFAULTAverage extends \HUGnet\db\Average
-    implements \HUGnet\interfaces\DBTable, \HUGnet\interfaces\DBTableAverage
+interface DBTableAverage
 {
-    /** @var string This is the table we should use */
-    public $sqlTable = "eDEFAULT_average";
-    /** @var This is the dataset */
-    public $datacols = 13;
-
-    /******************************************************************
-     ******************************************************************
-     ********  The following are input modification functions  ********
-     ******************************************************************
-     ******************************************************************/
-
+    /**
+    * This calculates the averages
+    *
+    * It will return once for each average that it calculates.  The average will be
+    * stored in the instance this is called from.  If this is fed history table
+    * then it will calculate 15 minute averages.
+    *
+    * @param \HUGnet\db\History &$data This is the data to use to calc the average
+    * @param string             $type  The type of average to calculate
+    *
+    * @return bool True on success, false on failure
+    */
+    public function calcAverage(\HUGnet\db\History &$data, $type);
+    /**
+    * Sets the extra attributes field
+    *
+    * @param int    $start      The start of the time
+    * @param int    $end        The end of the time
+    * @param mixed  $devId      The ID to use.  None if null
+    * @param string $type       The type of record
+    * @param string $extraWhere Extra where clause
+    * @param array  $extraData  Data for the extraWhere clause
+    *
+    * @return mixed The value of the attribute
+    */
+    public function getPeriod(
+        $start,
+        $end = null,
+        $devId = null,
+        $type = "15MIN",
+        $extraWhere = null,
+        $extraData = null
+    );
 }
 ?>
