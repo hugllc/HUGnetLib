@@ -57,6 +57,8 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  */
 class Role
 {
+    /** This is my role */
+    private $_roles = array();
     /**
     * This is where the correlation between the drivers and the arch is stored.
     *
@@ -68,10 +70,10 @@ class Role
         "0039-12" => array(
         ),
         "0039-21-01" => array(
-            "controller" => "Controller",
+            "Controller" => "Controller",
         ),
         "0039-21-02" => array(
-            "controller" => "Controller",
+            "Controller" => "Controller",
         ),
         "0039-28" => array(
         ),
@@ -102,39 +104,78 @@ class Role
         return new Role();
     }
     /**
+    *  This builds the class
+    *
+    * @param string $role The role to use
+    *
+    * @return The class object
+    */
+    private function _getRole($role)
+    {
+        if (is_string($role)) {
+            if (!is_object($this->_roles[$role])) {
+                $file = dirname(__FILE__)."/roles/".$role.".php";
+                $class = "\\HUGnet\\devices\\roles\\".$role;
+                if (file_exists($file)) {
+                    include_once $file;
+                }
+                $interface = "\\HUGnet\\devices\\roles\\RoleInterface";
+                if (is_subclass_of($class, $interface)) {
+                    $this->_roles[$role] = $class::factory();
+                }
+            }
+            if (is_object($this->_roles[$role])) {
+                return $this->_roles[$role];
+            }
+        }
+        return null;
+    }
+    /**
     * This creates the sensor drivers
     *
-    * @param string $name The name of the role
+    * @param string $role The name of the role
     * @param int    $iid  The sensor id to get.  They are zero based
     *
     * @return null if not found, array otherwise
     */
-    public function input($name, $iid)
+    public function input($role, $iid)
     {
+        $uRole = $this->_getRole($role);
+        if (is_object($uRole)) {
+            return $uRole->input($iid);
+        }
         return null;
     }
     /**
     * This creates the sensor drivers
     *
-    * @param string $name The name of the role
+    * @param string $role The name of the role
     * @param int    $oid  The sensor id to get.  They are zero based
     *
     * @return null if not found, array otherwise
     */
-    public function output($name, $oid)
+    public function output($role, $oid)
     {
+        $uRole = $this->_getRole($role);
+        if (is_object($uRole)) {
+            return $uRole->output($iid);
+        }
         return null;
     }
     /**
     * This creates the sensor drivers
     *
-    * @param string $name The name of the role
+    * @param string $role The name of the role
     * @param int    $pid  The sensor id to get.  They are zero based
     *
     * @return null if not found, array otherwise
     */
-    public function process($name, $pid)
+    public function process($role, $pid)
     {
+        $uRole = $this->_getRole($role);
+        if (is_object($uRole)) {
+            return $uRole->process($iid);
+        }
         return null;
     }
     /**

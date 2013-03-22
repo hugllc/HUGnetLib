@@ -93,6 +93,22 @@ class RoleTest extends \PHPUnit_Framework_TestCase
             array(
                 "BadName", 0, null
             ),
+            array(
+                "Controller",
+                0,
+                array(
+                    "table" => array(
+                        'driver' => '40:DEFAULT',
+                        'name' => 'Controller Board Voltage',
+                        'MUX' => 4,
+                    ),
+                    "data" => array(
+                        "extra" => array(180, 27, 5.0),
+                        "location" => "HUGnet 1 Voltage High",
+                        "type" => "AVRAnalogTable",
+                    ),
+                ),
+            ),
         );
     }
     /**
@@ -122,6 +138,9 @@ class RoleTest extends \PHPUnit_Framework_TestCase
             array(
                 "BadName", 0, null
             ),
+            array(
+                "Controller", 0, null
+            ),
         );
     }
     /**
@@ -150,6 +169,17 @@ class RoleTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 "BadName", 0, null
+            ),
+            array(
+                "Controller",
+                0,
+                array(
+                    "table" => array(),
+                    "data" => array(
+                        "extra" => array(0, 1),
+                        "location" => "HUGnet 0 Power",
+                    ),
+                ),
             ),
         );
     }
