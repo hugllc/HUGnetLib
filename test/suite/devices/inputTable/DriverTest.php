@@ -1092,7 +1092,12 @@ class DriverTest extends drivers\DriverTestBase
         $sensor->resetMock(array());
         $obj = Driver::factory("DriverTestClass", $sensor);
         $ret = array();
-        $types = $obj->getTypesTest($i);
+        $types = array();
+        for ($i = 0; $i < 256; $i++) {
+            foreach((array)$obj->getTypes($i) as $sub => $type) {
+                $types[sprintf("%02X", $i).":".$sub] = $type;
+            }
+        }
         foreach ($types as $name => $class) {
             $ret[] = array($i, $name, $class);
         }
@@ -1111,13 +1116,28 @@ class DriverTest extends drivers\DriverTestBase
     */
     public function testDriversTest($sid, $type, $class)
     {
-        $file = CODE_BASE."devices/inputTable/drivers/$class.php";
-        $this->assertFileExists(
-            $file, "File for $sid:$type and class $class not found"
+        $files = array(
+            "",
+            "aduc",
+            "avr",
+            "linux",
+            "virtual",
         );
-        include_once CODE_BASE."devices/inputTable/drivers/$class.php";
+        foreach($files as $arch) {
+            if (!empty($arch)) {
+                $name = "\\HUGnet\\devices\\inputTable\\drivers\\$arch\\";
+                $file = CODE_BASE."devices/inputTable/drivers/$arch/$class.php";
+            } else {
+                $name = "\\HUGnet\\devices\\inputTable\\drivers\\";
+                $file = CODE_BASE."devices/inputTable/drivers/$class.php";
+            }
+            if (file_exists($file)) {
+                include_once $file;
+                break;
+            }
+        }
         $this->assertTrue(
-            class_exists("\\HUGnet\\devices\\inputTable\\drivers\\".$class),
+            class_exists($name.$class),
             "Class $class doesn't exist for type $sid:$type in file $file"
         );
     }
@@ -1395,17 +1415,6 @@ class DriverTestClass extends \HUGnet\devices\inputTable\Driver
     public function revPPM($ppm, $deltaT)
     {
         return parent::revPPM($ppm, $deltaT);
-    }
-    /**
-    * Returns an array of types that this sensor could be
-    *
-    * @param int $sid The ID to check
-    *
-    * @return The extra value (or default if empty)
-    */
-    public static function getTypesTest($sid)
-    {
-        return static::$drivers;
     }
     /**
     * This builds the string for the levelholder.

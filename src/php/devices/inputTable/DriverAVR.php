@@ -78,37 +78,6 @@ abstract class DriverAVR extends Driver
     */
     protected $entry = null;
     /**
-    * This is where all of the driver information is stored.
-    *
-    * Drivers must be registered here, otherwise they will never get loaded.  The
-    * index in the root array is the driver name.  It should be exactly the same
-    * as the driver class name.
-    */
-    protected static $drivers = array(
-        "00:DEFAULT"                 => "AVRBC2322640_0",
-        "02:DEFAULT"                 => "AVRBC2322640",
-        "02:AVRB57560G0103F000"      => "AVRB57560G0103F000",
-        "02:ControllerTemp"          => "ControllerTemp",
-        "02:imcSolar"                => "AVRIMCSolar",
-        "02:potDirection"            => "AVRPotDirection",
-        "10:DEFAULT"                 => "AVRChsMss",
-        "10:chsMss"                  => "AVRChsMss",
-        "30:DEFAULT"                 => "AVROSRAMLight",
-        "30:OSRAM BPW-34"            => "AVROSRAMLight",
-        "40:DEFAULT"                 => "AVRVoltage",
-        "40:ControllerVoltage"       => "ControllerVoltage",
-        "40:BARO4"                   => "AVRBAROA4V",
-        "40:fetBoard"                => "FETBoardVoltage",
-        "40:GA100"                   => "AVRGA100",
-        "40:HitachiVFDFan"           => "AVRHitachiVFDFan",
-        "50:DEFAULT"                 => "AVRCurrent",
-        "50:ControllerCurrent"       => "ControllerCurrent",
-        "50:dwyer616"                => "AVRDwyer616",
-        "50:fetBoard"                => "FETBoardCurrent",
-        "7E:DEFAULT"                 => "AVROnTimePulse",
-        "F8:DEFAULT"                 => "AVRAnalogTable",
-    );
-    /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
@@ -186,34 +155,6 @@ abstract class DriverAVR extends Driver
             return null;
         }
         return (int)round($Read);
-    }
-    /**
-    * This function creates an object if it finds the right class
-    *
-    * @param object &$obj    The object container to put an object in.
-    * @param string $driver  The driver to load
-    * @param object &$sensor The sensor object
-    * @param array  $table   The table to use.  This forces the table, instead of
-    *                        using the database to find it
-    *
-    * @return null
-    */
-    protected static function driverFactory(&$obj, $driver, &$sensor, $table = null)
-    {
-        if (is_object($obj)) {
-            return false;
-        }
-        $class = '\\HUGnet\\devices\\inputTable\\drivers\\avr\\'.$driver;
-        $file = dirname(__FILE__)."/drivers/avr/".$driver.".php";
-        if (file_exists($file)) {
-            include_once $file;
-        }
-        $interface = "\\HUGnet\\devices\\inputTable\\DriverInterface";
-        if (is_subclass_of($class, $interface)) {
-            $obj = new $class($sensor, $table);
-            return true;
-        }
-        return false;
     }
     /**
     * This returns the voltage that the port is seeing

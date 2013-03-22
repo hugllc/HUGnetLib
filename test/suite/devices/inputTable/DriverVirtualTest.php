@@ -244,54 +244,10 @@ class DriverVirtualTest extends drivers\DriverTestBase
         $this->assertEquals($expect, $ret, 0.00001);
     }
     /**
-    * Data provider for testDriversTest
-    *
-    * This extracts all of the drivers and puts them into an array to test.
+    * Data provider for testEncodeData
     *
     * @return array
     */
-    public static function dataDriversTest()
-    {
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock(array());
-        $obj = Driver::factory("DriverVirtualTestClass", $sensor);
-        $ret = array();
-        $types = $obj->getTypesTest($i);
-        foreach ($types as $name => $class) {
-            $ret[] = array($i, $name, $class);
-        }
-        return $ret;
-    }
-    /**
-    * test
-    *
-    * @param int    $sid   The sensor id
-    * @param string $type  The type of sensor
-    * @param string $class The driver class
-    *
-    * @return null
-    *
-    * @dataProvider dataDriversTest
-    */
-    public function testDriversTest($sid, $type, $class)
-    {
-        $file = CODE_BASE."devices/inputTable/drivers/virtual/$class.php";
-        $this->assertFileExists(
-            $file, "File for $sid:$type and class $class not found"
-        );
-        include_once CODE_BASE."devices/inputTable/drivers/virtual/$class.php";
-        $this->assertTrue(
-            class_exists(
-                "\\HUGnet\\devices\\inputTable\\drivers\\virtual\\".$class
-            ),
-            "Class $class doesn't exist for type $sid:$type in file $file"
-        );
-    }
-    /**
-     * Data provider for testEncodeData
-     *
-     * @return array
-     */
     public static function dataEncodeDataPoint()
     {
         return array(
@@ -376,17 +332,6 @@ class DriverVirtualTestClass extends \HUGnet\devices\inputTable\DriverVirtual
         $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
         return null;
-    }
-    /**
-    * Returns an array of types that this sensor could be
-    *
-    * @param int $sid The ID to check
-    *
-    * @return The extra value (or default if empty)
-    */
-    public static function getTypesTest($sid)
-    {
-        return static::$drivers;
     }
 }
 ?>

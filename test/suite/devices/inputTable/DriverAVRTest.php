@@ -784,54 +784,10 @@ class DriverAVRTest extends drivers\DriverTestBase
         $this->assertSame($expect, $this->o->tableInterpolate($R, $valueTable));
     }
     /**
-    * Data provider for testDriversTest
-    *
-    * This extracts all of the drivers and puts them into an array to test.
+    * Data provider for testEncodeData
     *
     * @return array
     */
-    public static function dataDriversTest()
-    {
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock(array());
-        $obj = Driver::factory("DriverAVRTestClass", $sensor);
-        $ret = array();
-        $types = $obj->getTypesTest($i);
-        foreach ($types as $name => $class) {
-            $ret[] = array($i, $name, $class);
-        }
-        return $ret;
-    }
-    /**
-    * test
-    *
-    * @param int    $sid   The sensor id
-    * @param string $type  The type of sensor
-    * @param string $class The driver class
-    *
-    * @return null
-    *
-    * @dataProvider dataDriversTest
-    */
-    public function testDriversTest($sid, $type, $class)
-    {
-        $file = CODE_BASE."devices/inputTable/drivers/avr/$class.php";
-        $this->assertFileExists(
-            $file, "File for $sid:$type and class $class not found"
-        );
-        include_once CODE_BASE."devices/inputTable/drivers/avr/$class.php";
-        $this->assertTrue(
-            class_exists(
-                "\\HUGnet\\devices\\inputTable\\drivers\\avr\\".$class
-            ),
-            "Class $class doesn't exist for type $sid:$type in file $file"
-        );
-    }
-    /**
-     * Data provider for testEncodeData
-     *
-     * @return array
-     */
     public static function dataEncodeDataPoint()
     {
         return array(
@@ -1222,17 +1178,6 @@ class DriverAVRTestClass extends \HUGnet\devices\inputTable\DriverAVR
     public function tableInterpolate($R, &$table)
     {
         return parent::tableInterpolate($R, $table);
-    }
-    /**
-    * Returns an array of types that this sensor could be
-    *
-    * @param int $sid The ID to check
-    *
-    * @return The extra value (or default if empty)
-    */
-    public static function getTypesTest($sid)
-    {
-        return static::$drivers;
     }
 }
 ?>

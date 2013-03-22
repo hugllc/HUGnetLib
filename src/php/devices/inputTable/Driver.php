@@ -107,7 +107,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     * index in the root array is the driver name.  It should be exactly the same
     * as the driver class name.
     */
-    protected static $drivers = array(
+    private static $_drivers = array(
         "60:DEFAULT"                 => "ControlInput",
         "62:DEFAULT"                 => "DifferenceInput",
         "64:DEFAULT"                 => "NullInput",
@@ -125,60 +125,55 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "7F:hsliquidflowmeter"       => "LiquidFlow",
         "FA:DEFAULT"                 => "SDEFAULT",
         "FF:DEFAULT"                 => "EmptySensor",
-        /*
+        // ADuC
+        "04:DEFAULT"                 => "ADuCVishayRTD",
+        "11:DEFAULT"                 => "ADuCPower",
+        "41:DEFAULT"                 => "ADuCVoltage",
+        "41:ADuCPressure"            => "ADuCPressure",
+        "42:DEFAULT"                 => "ADuCThermocouple",
+        "43:DEFAULT"                 => "ADuCScaledTemp",
+        "44:DEFAULT"                 => "ADuCPressure",
+        "45:DEFAULT"                 => "ADuCGenericLinear",
+        "46:DEFAULT"                 => "MKS901PPressure",
+        "F9:DEFAULT"                 => "ADuCInputTable",
+        // AVR
         "00:DEFAULT"                 => "AVRBC2322640_0",
         "02:DEFAULT"                 => "AVRBC2322640",
         "02:AVRB57560G0103F000"      => "AVRB57560G0103F000",
         "02:ControllerTemp"          => "ControllerTemp",
         "02:imcSolar"                => "AVRIMCSolar",
         "02:potDirection"            => "AVRPotDirection",
-        "04:DEFAULT"                 => "ADuCVishayRTD",
         "10:DEFAULT"                 => "AVRChsMss",
         "10:chsMss"                  => "AVRChsMss",
-        "11:DEFAULT"                 => "ADuCPower",
         "30:DEFAULT"                 => "AVROSRAMLight",
         "30:OSRAM BPW-34"            => "AVROSRAMLight",
+        "40:DEFAULT"                 => "AVRVoltage",
         "40:ControllerVoltage"       => "ControllerVoltage",
         "40:BARO4"                   => "AVRBAROA4V",
         "40:fetBoard"                => "FETBoardVoltage",
         "40:GA100"                   => "AVRGA100",
         "40:HitachiVFDFan"           => "AVRHitachiVFDFan",
-        "41:DEFAULT"                 => "ADuCVoltage",
-        "41:ADuCPressure"            => "ADuCPressure",
-        "42:DEFAULT"                 => "ADuCThermocouple",
-        "43:DEFAULT"                 => "ADuCVoltage",
-        "44:DEFAULT"                 => "ADuCPressure",
+        "50:DEFAULT"                 => "AVRCurrent",
         "50:ControllerCurrent"       => "ControllerCurrent",
         "50:dwyer616"                => "AVRDwyer616",
         "50:fetBoard"                => "FETBoardCurrent",
-        "6F:DEFAULT"                 => "MaximumWindDirection",
-        "6F:maximum-inc"             => "MaximumWindDirection",
-        "70:bravo3motion"            => "Bravo3Motion",
-        "70:DEFAULT"                 => "GenericPulse",
-        "70:generic"                 => "GenericPulse",
-        "70:genericRevolver"         => "GenericRevolving",
-        "70:liquidflowmeter"         => "LiquidFlow",
-        "70:maximumAnemometer"       => "MaximumAnemometer",
-        "70:maximumRainGauge"        => "MaximumRain",
-        "70:wattnode"                => "WattNode",
         "7E:DEFAULT"                 => "AVROnTimePulse",
-        "7F:DEFAULT"                 => "GenericPulse",
-        "7F:hs"                      => "GenericPulse",
-        "7F:hsRevolver"              => "GenericRevolving",
-        "7F:hsliquidflowmeter"       => "LiquidFlow",
-        "F9:DEFAULT"                 => "ADuCInputTable",
-        "FA:DEFAULT"                 => "SDEFAULT",
+        "F8:DEFAULT"                 => "AVRAnalogTable",
+        // Linux
+        "61:DEFAULT"                 => "ControlSumInput",
+        "63:DEFAULT"                 => "NoisyInput",
+        // Virtual
         "FE:DEFAULT"                 => "EmptyVirtual",
         "FE:AlarmVirtual"            => "AlarmVirtual",
         "FE:BinaryVirtual"           => "BinaryVirtual",
+        "FE:CalorimeterPowerVirtual" => "CalorimeterPowerVirtual",
         "FE:CelaniPowerCalVirtual"   => "CelaniPowerCalVirtual",
         "FE:CloneVirtual"            => "CloneVirtual",
         "FE:ComputationVirtual"      => "ComputationVirtual",
         "FE:DewPointVirtual"         => "DewPointVirtual",
         "FE:LinearTransformVirtual"  => "LinearTransformVirtual",
         "FE:WindChillVirtual"        => "WindChillVirtual",
-        "FF:DEFAULT"                 => "EmptySensor",
-        */
+
     );
     /**
     * This is where the correlation between the drivers and the arch is stored.
@@ -237,62 +232,32 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     */
     public static function &factory($driver, &$sensor, $table = null)
     {
-        self::_includes();
         $obj = null;
-        Driver::driverFactory($obj, $driver, $sensor, $table);
-        DriverADuC::driverFactory($obj, $driver, $sensor, $table);
-        DriverAVR::driverFactory($obj, $driver, $sensor, $table);
-        DriverVirtual::driverFactory($obj, $driver, $sensor, $table);
-        DriverLinux::driverFactory($obj, $driver, $sensor, $table);
-        if (!is_object($obj)) {
-            include_once dirname(__FILE__)."/drivers/SDEFAULT.php";
-            $obj = new \HUGnet\devices\inputTable\drivers\SDEFAULT($sensor);
-        }
-        return $obj;
-    }
-    /**
-    * This function includes things that we need
-    *
-    * @return null
-    */
-    private static function _includes()
-    {
-        /** This is the ADuC Class */
-        include_once dirname(__FILE__)."/DriverADuC.php";
-        /** This is the AVR Class */
-        include_once dirname(__FILE__)."/DriverAVR.php";
-        /** This is the virtual driver class */
-        include_once dirname(__FILE__)."/DriverVirtual.php";
-        /** This is our Linux driver class */
-        include_once dirname(__FILE__)."/DriverLinux.php";
-    }
-    /**
-    * This function creates an object if it finds the right class
-    *
-    * @param object &$obj    The object container to put an object in.
-    * @param string $driver  The driver to load
-    * @param object &$sensor The sensor object
-    * @param array  $table   The table to use.  This forces the table, instead of
-    *                        using the database to find it
-    *
-    * @return null
-    */
-    protected static function driverFactory(&$obj, $driver, &$sensor, $table = null)
-    {
-        if (is_object($obj)) {
-            return false;
-        }
-        $class = '\\HUGnet\\devices\\inputTable\\drivers\\'.$driver;
-        $file = dirname(__FILE__)."/drivers/".$driver.".php";
-        if (file_exists($file)) {
-            include_once $file;
+        $filebase = dirname(__FILE__)."/drivers/";
+        if (file_exists($filebase."aduc/".$driver.".php")) {
+            $class = '\\HUGnet\\devices\\inputTable\\drivers\\aduc\\'.$driver;
+            include_once $filebase."aduc/".$driver.".php";
+        } else if (file_exists($filebase."avr/".$driver.".php")) {
+            $class = '\\HUGnet\\devices\\inputTable\\drivers\\avr\\'.$driver;
+            include_once $filebase."avr/".$driver.".php";
+        } else if (file_exists($filebase."linux/".$driver.".php")) {
+            $class = '\\HUGnet\\devices\\inputTable\\drivers\\linux\\'.$driver;
+            include_once $filebase."linux/".$driver.".php";
+        } else if (file_exists($filebase."virtual/".$driver.".php")) {
+            $class = '\\HUGnet\\devices\\inputTable\\drivers\\virtual\\'.$driver;
+            include_once $filebase."virtual/".$driver.".php";
+        } else {
+            if (file_exists($filebase.$driver.".php")) {
+                include_once $filebase.$driver.".php";
+            }
+            $class = '\\HUGnet\\devices\\inputTable\\drivers\\'.$driver;
         }
         $interface = "\\HUGnet\\devices\\inputTable\\DriverInterface";
         if (is_subclass_of($class, $interface)) {
-            $obj = new $class($sensor, $table);
-            return true;
+            return new $class($sensor, $table);
         }
-        return false;
+        include_once dirname(__FILE__)."/drivers/SDEFAULT.php";
+        return new \HUGnet\devices\inputTable\drivers\SDEFAULT($sensor);
     }
     /**
     * Returns the driver that should be used for a particular device
@@ -304,44 +269,21 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     */
     public static function getDriver($sid, $type = "DEFAULT")
     {
-        self::_includes();
-        $driver = null;
-        DriverAVR::getDriverInt($driver, $sid, $type);
-        DriverADuC::getDriverInt($driver, $sid, $type);
-        DriverVirtual::getDriverInt($driver, $sid, $type);
-        DriverLinux::getDriverInt($driver, $sid, $type);
-        Driver::getDriverInt($driver, $sid, $type);
-        if (is_null($driver)) {
-            $driver = "SDEFAULT";
-        }
-        return $driver;
-    }
-    /**
-    * Returns the driver that should be used for a particular device
-    *
-    * @param string &$driver The driver to use
-    * @param mixed  $sid     The ID of the sensor
-    * @param string $type    The type of the sensor
-    *
-    * @return string The driver to use
-    */
-    protected static function getDriverInt(&$driver, $sid, $type = "DEFAULT")
-    {
-        if (is_string($driver) || !empty($driver)) {
-            return false;
-        }
         $try = array(
             sprintf("%02X", (int)$sid).":".$type,
             sprintf("%02X", (int)$sid),
             sprintf("%02X", (int)$sid).":DEFAULT",
         );
         foreach ($try as $mask) {
-            if (isset(static::$drivers[$mask])) {
-                $driver = static::$drivers[$mask];
-                return true;
+            if (isset(self::$_drivers[$mask])) {
+                $driver = self::$_drivers[$mask];
+                break;
             }
         }
-        return false;
+        if (is_null($driver)) {
+            $driver = "SDEFAULT";
+        }
+        return $driver;
     }
     /**
     * Returns an array of types that this sensor could be
@@ -354,14 +296,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     {
         $array = array();
         $sensor = sprintf("%02X", (int)$sid);
-        $drivers = array_merge(
-            (array)Driver::$drivers,
-            (array)DriverAVR::$drivers,
-            (array)DriverADuC::$drivers,
-            (array)DriverVirtual::$drivers,
-            (array)DriverLinux::$drivers
-        );
-        foreach ((array)$drivers as $key => $driver) {
+        foreach ((array)self::$_drivers as $key => $driver) {
             $k = explode(":", $key);
             if (trim(strtoupper($k[0])) == $sensor) {
                 $array[$k[1]] = $driver;
@@ -381,16 +316,9 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     */
     public static function register($key, $class)
     {
-        self::_includes();
         $driver = '\\HUGnet\\devices\\inputTable\\drivers\\'.$class;
-        $driv = array_merge(
-            (array)Driver::$drivers,
-            (array)DriverAVR::$drivers,
-            (array)DriverADuC::$drivers,
-            (array)DriverVirtual::$drivers
-        );
-        if (class_exists($driver) && !isset($driv[$key])) {
-            self::$drivers[$key] = $class;
+        if (class_exists($driver) && !isset(self::$_drivers[$key])) {
+            self::$_drivers[$key] = $class;
         }
     }
 

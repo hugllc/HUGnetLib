@@ -80,25 +80,6 @@ abstract class DriverADuC extends Driver
     */
     private $_channel = 0;
     /**
-    * This is where all of the driver information is stored.
-    *
-    * Drivers must be registered here, otherwise they will never get loaded.  The
-    * index in the root array is the driver name.  It should be exactly the same
-    * as the driver class name.
-    */
-    protected static $drivers = array(
-        "04:DEFAULT"                 => "ADuCVishayRTD",
-        "11:DEFAULT"                 => "ADuCPower",
-        "41:DEFAULT"                 => "ADuCVoltage",
-        "41:ADuCPressure"            => "ADuCPressure",
-        "42:DEFAULT"                 => "ADuCThermocouple",
-        "43:DEFAULT"                 => "ADuCScaledTemp",
-        "44:DEFAULT"                 => "ADuCPressure",
-        "45:DEFAULT"                 => "ADuCGenericLinear",
-        "46:DEFAULT"                 => "MKS901PPressure",
-        "F9:DEFAULT"                 => "ADuCInputTable",
-    );
-    /**
     * This function creates the system.
     *
     * @param string $driver  The driver to load
@@ -117,34 +98,6 @@ abstract class DriverADuC extends Driver
         $obj->_entry = $entry;
         $obj->_channel = (int)$channel;
         return $obj;
-    }
-    /**
-    * This function creates an object if it finds the right class
-    *
-    * @param object &$obj    The object container to put an object in.
-    * @param string $driver  The driver to load
-    * @param object &$sensor The sensor object
-    * @param array  $table   The table to use.  This forces the table, instead of
-    *                        using the database to find it
-    *
-    * @return null
-    */
-    protected static function driverFactory(&$obj, $driver, &$sensor, $table = null)
-    {
-        if (is_object($obj)) {
-            return false;
-        }
-        $class = '\\HUGnet\\devices\\inputTable\\drivers\\aduc\\'.$driver;
-        $file = dirname(__FILE__)."/drivers/aduc/".$driver.".php";
-        if (file_exists($file)) {
-            include_once $file;
-        }
-        $interface = "\\HUGnet\\devices\\inputTable\\DriverInterface";
-        if (is_subclass_of($class, $interface)) {
-            $obj = new $class($sensor, $table);
-            return true;
-        }
-        return false;
     }
     /**
     * Gets the extra values

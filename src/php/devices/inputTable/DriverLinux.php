@@ -61,17 +61,6 @@ require_once dirname(__FILE__)."/Driver.php";
 abstract class DriverLinux extends Driver
 {
     /**
-    * This is where all of the driver information is stored.
-    *
-    * Drivers must be registered here, otherwise they will never get loaded.  The
-    * index in the root array is the driver name.  It should be exactly the same
-    * as the driver class name.
-    */
-    protected static $drivers = array(
-        "61:DEFAULT"                 => "ControlSumInput",
-        "63:DEFAULT"                 => "NoisyInput",
-    );
-    /**
     * This function creates an object if it finds the right class
     *
     * @param object &$obj    The object container to put an object in.
