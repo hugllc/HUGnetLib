@@ -84,6 +84,7 @@ class E00392101 extends \HUGnet\devices\Driver
         "OutputTables" => 2,
         "ProcessTables" => 2,
         "TimeConstant" => 1,
+        "Role" => "Controller",
     );
 
     /**
@@ -150,6 +151,7 @@ class E00392101 extends \HUGnet\devices\Driver
     *
     * @return null
     */
+    /*
     public function &input($sid)
     {
         $sid = (int)$sid;
@@ -248,6 +250,7 @@ class E00392101 extends \HUGnet\devices\Driver
         );
         return $obj;
     }
+    */
     /**
     * This creates the output drivers
     *
@@ -255,6 +258,7 @@ class E00392101 extends \HUGnet\devices\Driver
     *
     * @return null
     */
+    /*
     public function &output($sid)
     {
         $sid = (int)$sid;
@@ -284,6 +288,7 @@ class E00392101 extends \HUGnet\devices\Driver
         );
         return $obj;
     }
+    */
 
 
 }

@@ -147,7 +147,7 @@ class RoleTestBase extends \PHPUnit_Framework_TestCase
     public function testInput($iid, $expect)
     {
         $ret = $this->o->input($iid);
-        $this->assertSame($expect, $ret);
+        $this->assertEquals($expect, $ret);
     }
     /**
     * data provider for testDeviceID
@@ -213,7 +213,7 @@ class RoleTestBase extends \PHPUnit_Framework_TestCase
     public function testProcess($pid, $expect)
     {
         $ret = $this->o->process($pid);
-        $this->assertSame($expect, $ret);
+        $this->assertEquals($expect, $ret);
     }
     /**
     * data provider for testOutputs
@@ -279,7 +279,7 @@ class RoleTestBase extends \PHPUnit_Framework_TestCase
     public function testOutput($oid, $expect)
     {
         $ret = $this->o->output($oid);
-        $this->assertSame($expect, $ret);
+        $this->assertEquals($expect, $ret);
     }
 }
 

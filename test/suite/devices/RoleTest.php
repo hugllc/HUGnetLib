@@ -101,11 +101,15 @@ class RoleTest extends \PHPUnit_Framework_TestCase
                         'driver' => '40:DEFAULT',
                         'name' => 'Controller Board Voltage',
                         'MUX' => 4,
+                        'id' => 0,
+                        'ADLAR' => 1,
+                        'REFS' => 1,
                     ),
                     "data" => array(
                         "extra" => array(180, 27, 5.0),
                         "location" => "HUGnet 1 Voltage High",
                         "type" => "AVRAnalogTable",
+                        "id" => 0xF8,
                     ),
                 ),
             ),
@@ -125,7 +129,7 @@ class RoleTest extends \PHPUnit_Framework_TestCase
     public function testInput($name, $sid, $expect)
     {
         $ret = $this->o->input($name, $sid);
-        $this->assertSame($expect, $ret);
+        $this->assertEquals($expect, $ret);
     }
     /**
     * data provider for testProcess
@@ -157,7 +161,7 @@ class RoleTest extends \PHPUnit_Framework_TestCase
     public function testProcess($name, $sid, $expect)
     {
         $ret = $this->o->process($name, $sid);
-        $this->assertSame($expect, $ret);
+        $this->assertEquals($expect, $ret);
     }
     /**
     * data provider for testDeviceID
@@ -178,6 +182,8 @@ class RoleTest extends \PHPUnit_Framework_TestCase
                     "data" => array(
                         "extra" => array(0, 1),
                         "location" => "HUGnet 0 Power",
+                        "id" => 0x30,
+                        "type" => "HUGnetPower",
                     ),
                 ),
             ),
@@ -197,7 +203,7 @@ class RoleTest extends \PHPUnit_Framework_TestCase
     public function testOutput($name, $sid, $expect)
     {
         $ret = $this->o->output($name, $sid);
-        $this->assertSame($expect, $ret);
+        $this->assertEquals($expect, $ret);
     }
     /**
     * data provider for testGetAll

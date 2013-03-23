@@ -85,6 +85,7 @@ class E00392102 extends E00392101
         "OutputTables" => 2,
         "ProcessTables" => 2,
         "TimeConstant" => 1,
+        "Role" => "Controller",
     );
 
 }

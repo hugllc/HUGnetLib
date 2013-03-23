@@ -72,14 +72,15 @@ class Device extends \HUGnet\base\SystemTableAction
     */
     private $_driverCache = array();
     /**
+    * This is the cache the roles.
+    */
+    private $_role = null;
+    /**
     * This is the firmware table
     */
     private $_firmware = null;
     /** This is where we store our objects */
     protected $functions = array(
-        "input" => "driver",
-        "output" => "driver",
-        "process" => "driver",
         "insertVirtual" => "table",
         "dataChannel" => "dataChannels",
         "controlChannel" => "controlChannels",
@@ -495,6 +496,106 @@ class Device extends \HUGnet\base\SystemTableAction
         $obj = $this->system()->table($class, $data);
         $obj->device = &$this;
         return $obj;
+    }
+    /**
+    * This gets the roles
+    *
+    * @return Object The role object
+    */
+    private function &_role()
+    {
+        if (!is_object($this->_role)) {
+            include_once dirname(__FILE__)."/../devices/Role.php";
+            $this->_role = \HUGnet\devices\Role::factory();
+        }
+        return $this->_role;
+    }
+    /**
+    * This creates the sensor drivers
+    *
+    * @param int $sid The sensor id to get.  They are labaled 0 to sensors
+    *
+    * @return null
+    */
+    public function &input($sid)
+    {
+        $role = $this->get("Role");
+        if (!empty($roll)) {
+            $info = $this->_role()->input($role, $sid);
+            if (is_array($info)) {
+                $info["data"]["dev"] = $this->id();
+                $info["data"]["input"] = $sid;
+                include_once dirname(__FILE__)."/../devices/Input.php";
+                $system = $this->system();
+                return \HUGnet\devices\Input::factory(
+                    $system,
+                    (array)$info["data"],
+                    null,
+                    $this,
+                    (array)$info["table"]
+                );
+            }
+        }
+
+        return $this->driver()->input($sid);
+    }
+    /**
+    * This creates the sensor drivers
+    *
+    * @param int $sid The sensor id to get.  They are labaled 0 to sensors
+    *
+    * @return null
+    */
+    public function &output($sid)
+    {
+        $role = $this->get("Role");
+        if (!empty($roll)) {
+            $info = $this->_role()->output($role, $sid);
+            if (is_array($info)) {
+                include_once dirname(__FILE__)."/../devices/Output.php";
+                $info["data"]["dev"] = $this->id();
+                $info["data"]["output"] = $sid;
+                $system = $this->system();
+                return \HUGnet\devices\Output::factory(
+                    $system,
+                    (array)$info["data"],
+                    null,
+                    $this,
+                    (array)$info["table"]
+                );
+            }
+        }
+
+        return $this->driver()->output($sid);
+    }
+    /**
+    * This creates the sensor drivers
+    *
+    * @param int $sid The sensor id to get.  They are labaled 0 to sensors
+    *
+    * @return null
+    */
+    public function &process($sid)
+    {
+        $role = $this->get("Role");
+        if (!empty($roll)) {
+            $info = $this->_role()->process($role, $sid);
+            if (is_array($info)) {
+                include_once dirname(__FILE__)."/../devices/Process.php";
+                $info["data"]["dev"] = $this->id();
+                $info["data"]["process"] = $sid;
+                $system = $this->system();
+                return \HUGnet\devices\Process::factory(
+                    $system,
+                    (array)$info["data"],
+                    null,
+                    $this,
+                    (array)$info["table"]
+                );
+            }
+        }
+
+        return $this->driver()->process($sid);
     }
     /**
     * Returns the devices XML file as an array

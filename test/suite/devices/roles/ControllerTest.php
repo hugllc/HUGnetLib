@@ -76,8 +76,12 @@ class ControllerTest extends RoleTestBase
                         "driver" => "40:DEFAULT",
                         "name" => "Controller Board Voltage",
                         "MUX" => 4,
+                        "id" => 0,
+                        "ADLAR" => 1,
+                        "REFS" => 1,
                     ),
                     "data" => array(
+                        "id" => 0xF8,
                         "extra" => array(180, 27, 5.0),
                         "location" => "HUGnet 1 Voltage High",
                         "type" => "AVRAnalogTable",
@@ -118,6 +122,8 @@ class ControllerTest extends RoleTestBase
                     "data" => array(
                         "extra" => array(1, 1),
                         "location" => "HUGnet 1 Power",
+                        "id"     => 0x30,
+                        "type"   => "HUGnetPower",
                     ),
                 )
             ),

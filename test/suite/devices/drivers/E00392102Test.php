@@ -497,6 +497,7 @@ class E00392102Test extends DriverTestBase
     *
     * @dataProvider dataInput
     */
+    /*
     public function testInput($mocks, $sid, $expect, $check)
     {
         $device  = new \HUGnet\DummyTable("Device");
@@ -510,18 +511,8 @@ class E00392102Test extends DriverTestBase
         foreach ((array)$check as $key => $value) {
             $this->assertEquals($value, $values[$key], "$key is wrong");
         }
-
-
-        /*
-        foreach ((array)$expect as $class => $calls) {
-            foreach ($calls as $function => $args) {
-                $this->assertEquals(
-                    $args, $ret[$class][$function], "$key is wrong"
-                );
-            }
-        }
-        */
     }
+    */
     /**
     * data provider for testDeviceID
     *
@@ -608,6 +599,7 @@ class E00392102Test extends DriverTestBase
     *
     * @dataProvider dataOutput
     */
+    /*
     public function testOutput($mocks, $sid, $expect, $check)
     {
         $device  = new \HUGnet\DummyTable("Device");
@@ -621,17 +613,7 @@ class E00392102Test extends DriverTestBase
         foreach ((array)$check as $key => $value) {
             $this->assertEquals($value, $values[$key], "$key is wrong");
         }
-
-
-        /*
-        foreach ((array)$expect as $class => $calls) {
-            foreach ($calls as $function => $args) {
-                $this->assertEquals(
-                    $args, $ret[$class][$function], "$key is wrong"
-                );
-            }
-        }
-        */
     }
+    */
 }
 ?>
