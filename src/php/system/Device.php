@@ -520,7 +520,7 @@ class Device extends \HUGnet\base\SystemTableAction
     public function &input($sid)
     {
         $role = $this->get("Role");
-        if (!empty($roll)) {
+        if (!empty($role)) {
             $info = $this->_role()->input($role, $sid);
             if (is_array($info)) {
                 $info["data"]["dev"] = $this->id();
@@ -549,7 +549,7 @@ class Device extends \HUGnet\base\SystemTableAction
     public function &output($sid)
     {
         $role = $this->get("Role");
-        if (!empty($roll)) {
+         if (!empty($role)) {
             $info = $this->_role()->output($role, $sid);
             if (is_array($info)) {
                 include_once dirname(__FILE__)."/../devices/Output.php";
@@ -578,7 +578,7 @@ class Device extends \HUGnet\base\SystemTableAction
     public function &process($sid)
     {
         $role = $this->get("Role");
-        if (!empty($roll)) {
+        if (!empty($role)) {
             $info = $this->_role()->process($role, $sid);
             if (is_array($info)) {
                 include_once dirname(__FILE__)."/../devices/Process.php";
