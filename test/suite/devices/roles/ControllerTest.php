@@ -121,7 +121,7 @@ class ControllerTest extends RoleTestBase
                     ),
                     "data" => array(
                         "extra" => array(1, 1),
-                        "location" => "HUGnet 1 Power",
+                        "location" => "HUGnet 2 Power",
                         "id"     => 0x30,
                         "type"   => "HUGnetPower",
                     ),

@@ -549,7 +549,7 @@ class Device extends \HUGnet\base\SystemTableAction
     public function &output($sid)
     {
         $role = $this->get("Role");
-         if (!empty($role)) {
+        if (!empty($role)) {
             $info = $this->_role()->output($role, $sid);
             if (is_array($info)) {
                 include_once dirname(__FILE__)."/../devices/Output.php";
