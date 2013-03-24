@@ -205,7 +205,7 @@ class Controller extends \HUGnet\base\Role
             "data" => array(
                 // HUGnet 0
                 "extra" => array(0, 1),
-                "location" => "HUGnet 0 Power",
+                "location" => "HUGnet 1 Power",
                 "id"     => 0x30,
                 "type"   => "HUGnetPower",
             ),
@@ -216,7 +216,7 @@ class Controller extends \HUGnet\base\Role
             "data" => array(
                 // HUGnet 1
                 "extra" => array(1, 1),
-                "location" => "HUGnet 1 Power",
+                "location" => "HUGnet 2 Power",
                 "id"     => 0x30,
                 "type"   => "HUGnetPower",
             ),

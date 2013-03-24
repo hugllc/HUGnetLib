@@ -94,22 +94,34 @@ class RoleTest extends \PHPUnit_Framework_TestCase
                 "BadName", 0, null
             ),
             array(
-                "Controller",
+                "RoleTestRole",
                 0,
                 array(
                     "table" => array(
-                        'driver' => '40:DEFAULT',
-                        'name' => 'Controller Board Voltage',
-                        'MUX' => 4,
-                        'id' => 0,
-                        'ADLAR' => 1,
-                        'REFS' => 1,
+                        'driver' => '41:DEFAULT',
+                        'name' => 'Intput 0',
                     ),
                     "data" => array(
-                        "extra" => array(180, 27, 5.0),
-                        "location" => "HUGnet 1 Voltage High",
-                        "type" => "AVRAnalogTable",
-                        "id" => 0xF8,
+                        "extra" => array(3, 2, 1),
+                        "location" => "Input 0",
+                        "type" => "ASDF",
+                        "id" => 0x61,
+                    ),
+                ),
+            ),
+            array(
+                "RoleTestRole",
+                1,
+                array(
+                    "table" => array(
+                        "driver" => "42:DEFAULT",
+                        "name" => "Input 1",
+                    ),
+                    "data" => array(
+                        "id" => 0x83,
+                        "extra" => array(1,2,3),
+                        "location" => "Input1",
+                        "type" => "FSDA",
                     ),
                 ),
             ),
@@ -143,7 +155,32 @@ class RoleTest extends \PHPUnit_Framework_TestCase
                 "BadName", 0, null
             ),
             array(
-                "Controller", 0, null
+                "RoleTestRole",
+                0,
+                array(
+                    "table" => array(
+                    ),
+                    "data" => array(
+                        "extra" => array(0, 1, 2),
+                        "location" => "Process 0",
+                        "id"     => 0x81,
+                        "type"   => "ASDF",
+                    ),
+                ),
+            ),
+            array(
+                "RoleTestRole",
+                1,
+                array(
+                    "table" => array(
+                    ),
+                    "data" => array(
+                        "extra" => array(2, 1, 0),
+                        "location" => "Process 1",
+                        "id"     => 0x23,
+                        "type"   => "FSDA",
+                    ),
+                ),
             ),
         );
     }
@@ -175,15 +212,28 @@ class RoleTest extends \PHPUnit_Framework_TestCase
                 "BadName", 0, null
             ),
             array(
-                "Controller",
+                "RoleTestRole",
+                1,
+                array(
+                    "table" => array(),
+                    "data" => array(
+                        "extra" => array(1, 1),
+                        "location" => "Output 1",
+                        "id"     => 0x31,
+                        "type"   => "FSDA",
+                    ),
+                ),
+            ),
+            array(
+                "RoleTestRole",
                 0,
                 array(
                     "table" => array(),
                     "data" => array(
                         "extra" => array(0, 1),
-                        "location" => "HUGnet 0 Power",
-                        "id" => 0x30,
-                        "type" => "HUGnetPower",
+                        "location" => "Output 0",
+                        "id"     => 0x32,
+                        "type"   => "ASDF",
                     ),
                 ),
             ),
@@ -237,4 +287,114 @@ class RoleTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, $ret);
     }
 }
+
+/** This is the HUGnet namespace */
+namespace HUGnet\devices\roles;
+/** This is the base of our base class */
+require_once CODE_BASE."base/Role.php";
+/** This is the base of our Interface */
+require_once CODE_BASE."devices/roles/RoleInterface.php";
+
+/**
+ * Base driver class for devices.
+ *
+ * This class deals with loading the drivers and figuring out what driver needs
+ * to be loaded.
+ *
+ * @category   Libraries
+ * @package    HUGnetLib
+ * @subpackage Devices
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2013 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.11.0
+ * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @since      0.11.0
+ *
+ * @SuppressWarnings(PHPMD.NumberOfChildren)
+ */
+class RoleTestRole extends \HUGnet\base\Role
+    implements RoleInterface
+{
+    /**
+    *  This is the input table data
+    */
+    protected $input = array(
+        0 => array(
+            "table" => array(
+                "driver" => "41:DEFAULT",
+                "name" => "Intput 0",
+            ),
+            "data" => array(
+                "id" => 0x61,
+                "extra" => array(3,2,1),
+                "location" => "Input 0",
+                "type" => "ASDF",
+            ),
+        ),
+        1 => array(
+            "table" => array(
+                "driver" => "42:DEFAULT",
+                "name" => "Input 1",
+            ),
+            "data" => array(
+                "id" => 0x83,
+                "extra" => array(1,2,3),
+                "location" => "Input1",
+                "type" => "FSDA",
+            ),
+        ),
+    );
+    /**
+    *  This is the output table data
+    */
+    protected $output = array(
+        0 => array(
+            "table" => array(
+            ),
+            "data" => array(
+                "extra" => array(0, 1),
+                "location" => "Output 0",
+                "id"     => 0x32,
+                "type"   => "ASDF",
+            ),
+        ),
+        1 => array(
+            "table" => array(
+            ),
+            "data" => array(
+                "extra" => array(1, 1),
+                "location" => "Output 1",
+                "id"     => 0x31,
+                "type"   => "FSDA",
+            ),
+        ),
+    );
+    /**
+    *  This is the process table data
+    */
+    protected $process = array(
+        0 => array(
+            "table" => array(
+            ),
+            "data" => array(
+                "extra" => array(0, 1, 2),
+                "location" => "Process 0",
+                "id"     => 0x81,
+                "type"   => "ASDF",
+            ),
+        ),
+        1 => array(
+            "table" => array(
+            ),
+            "data" => array(
+                "extra" => array(2, 1, 0),
+                "location" => "Process 1",
+                "id"     => 0x23,
+                "type"   => "FSDA",
+            ),
+        ),
+    );
+}
+
 ?>

@@ -2022,6 +2022,30 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                1,
+                "\HUGnet\devices\Output",
+                array(
+                    array(
+                        array(
+                            "output" => 1,
+                            "dev" => 5,
+                            'extra' => array(1, 1),
+                            'location' => 'Output 1',
+                            'id' => 0x31,
+                            "type" => "FSDA",
+                        ),
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    "Devices" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "Role" => "NotARole",
+                        ),
+                    ),
+                ),
                 0,
                 "\HUGnet\devices\Output",
                 array(
@@ -2029,10 +2053,6 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         array(
                             "output" => 0,
                             "dev" => 5,
-                            'extra' => array(0, 1),
-                            'location' => 'Output 0',
-                            'id' => 0x32,
-                            "type" => "ASDF",
                         ),
                     ),
                 ),
@@ -2508,7 +2528,7 @@ class DeviceTestRole extends \HUGnet\base\Role
     *  This is the input table data
     */
     protected $input = array(
-        0 => array(            // HUGnet1 Voltage High
+        0 => array(
             "table" => array(
                 "driver" => "41:DEFAULT",
                 "name" => "Intput 0",
@@ -2520,7 +2540,7 @@ class DeviceTestRole extends \HUGnet\base\Role
                 "type" => "ASDF",
             ),
         ),
-        1 => array(            // HUGnet1 Voltage Low
+        1 => array(
             "table" => array(
                 "driver" => "42:DEFAULT",
                 "name" => "Input 1",

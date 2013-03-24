@@ -158,7 +158,7 @@ class Role
     {
         $uRole = $this->_getRole($role);
         if (is_object($uRole)) {
-            return $uRole->output($iid);
+            return $uRole->output($oid);
         }
         return null;
     }
@@ -174,7 +174,7 @@ class Role
     {
         $uRole = $this->_getRole($role);
         if (is_object($uRole)) {
-            return $uRole->process($iid);
+            return $uRole->process($pid);
         }
         return null;
     }
