@@ -187,10 +187,11 @@ class Role
     */
     public function getAll($arch)
     {
+        $array = array("" => "None");
         if (is_array($this->_arch[$arch])) {
-            return $this->_arch[$arch];
+            $array = array_merge($array, $this->_arch[$arch]);
         }
-        return null;
+        return $array;
     }
 }
 

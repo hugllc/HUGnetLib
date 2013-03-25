@@ -162,6 +162,7 @@ class Device extends \HUGnet\base\SystemTableAction
     */
     private function _toArrayExtra(&$return)
     {
+        $return["Roles"] = $this->_role()->getAll($this->driver()->get("arch"));
         $return["inputs"] = array();
         for ($i = 0; $i < $return["InputTables"]; $i++) {
             $return["inputs"][$i] = $this->input($i)->toArray();

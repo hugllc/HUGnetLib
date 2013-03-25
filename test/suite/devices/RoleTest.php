@@ -264,10 +264,10 @@ class RoleTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                "BadName", null
+                "BadName", array("" => "None")
             ),
             array(
-                "Linux", array()
+                "Linux", array("" => "None")
             ),
         );
     }
