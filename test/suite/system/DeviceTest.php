@@ -1039,6 +1039,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 array(
                                 )
                             ),
+                            "Role" => "asdf",
                         ),
                         "toArray" => array(
                             "id" => 2,
@@ -1071,6 +1072,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     'job'  => 'unknown',
                     'actionClass' => 'Action',
                     'arch' => 'unknown',
+                    "Role" => "asdf",
                     'Roles' => array("" => "None"),
                     "dataChannels" => array(
                         0 => array(
@@ -1253,6 +1255,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 array(
                                 )
                             ),
+                            "Role" => "asdf",
                         ),
                         "toArray" => array(
                             "id" => 2,
@@ -1324,6 +1327,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                     "controlChannels" => array(),
+                    "Role" => "asdf",
                 )
             ),
         );

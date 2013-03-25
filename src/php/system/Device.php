@@ -143,6 +143,8 @@ class Device extends \HUGnet\base\SystemTableAction
         if ($default) {
             $return = array_merge($this->driver()->toArray(), $return);
         }
+        // This could be fixed in the driver
+        $return["Role"] = $this->get("Role");
         $return["dataChannels"] = $this->dataChannels()->toArray($default);
         $return["controlChannels"] = $this->controlChannels()->toArray($default);
         if (is_string($return["params"])) {
