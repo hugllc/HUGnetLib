@@ -188,17 +188,6 @@ HUGnet.DataFlot = Backbone.View.extend({
     classes: {},
     checkboxes: [],
     previousPoint: null,
-    options: {
-        series: { lines: { show: true }, points: { show: false} },
-        xaxis: { mode: 'time', timeformat: '%m/%d %y<br/>%H:%M' },
-        legend: {
-            position: 'nw', container: '#flot-legend', noColumns: 4
-        },
-        selection: { mode: 'x' },
-        grid: { backgroundColor: '#EEE', hoverable: true, clickable: true }
-        //zoom: { interactive: true },
-        //pan: { interactive: true }
-    },
     events: {
        'click #flot-choice input': 'render',
        'click #toggle': 'toggle'
@@ -210,7 +199,6 @@ HUGnet.DataFlot = Backbone.View.extend({
         this.classes = options.classes;
         this.parent = options.parent;
         // This sets the legend to the correct value for this instance
-        this.options['legend']['container'] = "#"+this.parent+" #flot-legend";
         this.points = new HUGnet.FlotPoints(null, options);
         /*
         this.model.bind('add', this.insert, this);
@@ -242,6 +230,18 @@ HUGnet.DataFlot = Backbone.View.extend({
     */
     render: function ()
     {
+        var options = {
+            series: { lines: { show: true }, points: { show: false} },
+            xaxis: { mode: 'time', timeformat: '%m/%d %y<br/>%H:%M' },
+            legend: {
+                position: 'nw', container: "#"+this.parent+" #flot-legend", noColumns: 4
+            },
+            selection: { mode: 'x' },
+            grid: { backgroundColor: '#EEE', hoverable: true, clickable: true }
+            //zoom: { interactive: true },
+            //pan: { interactive: true }
+        };
+
         this.points.clear();
         this.points.fromHistory(this.model);
         //$.plot(this.$graph, this.points.toJSON(), this.options);
@@ -258,7 +258,7 @@ HUGnet.DataFlot = Backbone.View.extend({
             //data = datasets;
         //}
         //if (data.length > 0) {
-        $.plot(this.$graph, data, this.options);
+        $.plot(this.$graph, data, options);
         //}
         return this;
     },
