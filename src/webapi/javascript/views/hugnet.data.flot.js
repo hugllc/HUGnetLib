@@ -188,6 +188,7 @@ HUGnet.DataFlot = Backbone.View.extend({
     classes: {},
     checkboxes: [],
     previousPoint: null,
+    hoversetup: false,
     events: {
        'click #flot-choice input': 'render',
        'click #toggle': 'toggle'
@@ -207,6 +208,7 @@ HUGnet.DataFlot = Backbone.View.extend({
         */
         this.model.bind('sync', this.render, this);
         this._setup();
+
     },
     toggle: function ()
     {
@@ -234,10 +236,10 @@ HUGnet.DataFlot = Backbone.View.extend({
             series: { lines: { show: true }, points: { show: false} },
             xaxis: { mode: 'time', timeformat: '%m/%d %y<br/>%H:%M' },
             legend: {
-                position: 'nw', container: "#"+this.parent+" #flot-legend", noColumns: 4
+                position: 'nw', container: this.$legend, noColumns: 4
             },
             selection: { mode: 'x' },
-            grid: { backgroundColor: '#EEE', hoverable: true, clickable: true }
+            grid: { backgroundColor: '#EEE', hoverable: true, clickable: false }
             //zoom: { interactive: true },
             //pan: { interactive: true }
         };
@@ -259,20 +261,21 @@ HUGnet.DataFlot = Backbone.View.extend({
         //}
         //if (data.length > 0) {
         $.plot(this.$graph, data, options);
+        this._hoversetup();
         //}
         return this;
     },
     renderTooltip: function (x, y, contents) {
-        this.$tooltip = $('<div>' + contents + '</div>').css( {
+        this.$tooltip = $('<div id="flot-tooltip">' + contents + '</div>').css( {
             position: 'absolute',
             display: 'none',
-            top: y + 10,
-            left: x + 10,
+            top: y + 5,
+            left: x + 20,
             border: '1px solid #fdd',
-            padding: '2px',
+            padding: '3px',
             'background-color': '#fee',
             opacity: 0.80
-        }).appendTo(this.el).fadeIn(200);
+        }).appendTo("body").fadeIn(200);
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -292,8 +295,6 @@ HUGnet.DataFlot = Backbone.View.extend({
             '<div id="flot-legend"></div>'
         ).appendTo(this.$el);
         this.$el.trigger('update');
-
-        this.$graph.on('update', this.hover, this);
 
         var i = 0;
         var datasets = this.points.toJSON();
@@ -318,19 +319,31 @@ HUGnet.DataFlot = Backbone.View.extend({
         );
         return this;
     },
-    hover: function (event, pos, item)
+    _hoversetup: function ()
     {
-        if (item) {
-            if (this.previousPoint !== item.datapoint) {
-                this.previousPoint = item.datapoint;
-                this.$tooltip.remove();
-                var x = item.datapoint[0].toFixed(2);
-                var text = item.datapoint[1].toFixed(2);
-                this.renderTooltip(item.pageX, item.pageY, text);
-            }
-        } else {
-            this.$tooltip.remove();
-            this.previousPoint = null;
+        var previousPoint = null;
+        var self = this;
+
+        if (!this.hoversetup) {
+            this.$graph.on("plothover", function (event, pos, item) {
+                if (item) {
+                    if (previousPoint != item.dataIndex) {
+                        previousPoint = item.dataIndex;
+
+                        $('#flot-tooltip').remove();
+console.log(item);
+                        var x = HUGnet.viewHelpers.sqlDate(item.datapoint[0]);
+
+                        var text = x + "<br />"+item.datapoint[1];
+                        self.renderTooltip(item.pageX, item.pageY, text);
+                    }
+                }
+                else {
+                    $('#flot-tooltip').remove();
+                    previousPoint = null;
+                }
+            });
+            this.hoversetup = true;
         }
     },
     insert: function (model, collection, options)

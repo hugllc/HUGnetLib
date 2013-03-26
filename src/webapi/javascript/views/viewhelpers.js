@@ -52,5 +52,33 @@ HUGnet.viewHelpers = {
             html += '>'+start+'</option>';
         }
         return html;
-    }
+    },
+    sqlDate: function (unixdate)
+    {
+        var date = new Date(unixdate);
+        var m = date.getMonth() + 1;
+        var d = date.getDate();
+        var Y = date.getFullYear();
+        var H = date.getHours();
+        var i = date.getMinutes();
+        var s = date.getSeconds();
+
+        if (H < 10) {
+            H = "0" + H;
+        }
+        if (i < 10) {
+            i = "0" + i;
+        }
+        if (s < 10) {
+            s = "0" + s;
+        }
+        if (m < 10) {
+            m = "0" + m;
+        }
+        if (d < 10) {
+            d = "0" + d;
+        }
+
+        return Y + "-" + m + "-" + d + " " + H + ":" + i + ":" + s;
+    },
 };
