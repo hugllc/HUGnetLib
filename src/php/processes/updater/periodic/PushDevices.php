@@ -142,9 +142,11 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
             $dev->load($dev->id());
             $dev->setParam("LastMasterPush", $now);
             $dev->store();
-            $this->_pushInputs($dev);
-            $this->_pushOutputs($dev);
-            $this->_pushProcesses($dev);
+            if ($dev->get("arch") !== "old") {
+                $this->_pushInputs($dev);
+                $this->_pushOutputs($dev);
+                $this->_pushProcesses($dev);
+            }
         } else {
             $this->system()->out("Failure.");
             /* Don't store it if we fail */
