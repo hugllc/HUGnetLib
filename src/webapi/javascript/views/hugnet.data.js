@@ -90,7 +90,9 @@ HUGnet.DataView = Backbone.View.extend({
         var channels = this.model.get('dataChannels');
         var index = 1;
         for (i in channels) {
-            if ((channels[i].storageType !== 'ignore') && (channels[i].dataType !== 'ignore')) {
+            if ((channels[i].dataType !== undefined)
+               && (channels[i].dataType !== 'ignore')
+            ) {
                 this.header[index] = channels[i].label + ' ('+channels[i].units+')';
                 this.fields[index] = 'Data' + i;
                 this.classes[index] = '';
