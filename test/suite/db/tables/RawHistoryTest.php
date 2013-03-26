@@ -384,6 +384,67 @@ class RawHistoryTest extends TableTestBase
         $array = $this->o->toDB();
         $this->assertEquals($expect, $array, "", 0.1);
     }
+    /**
+    * Data provider for testGetPeriod
+    *
+    * @return array
+    */
+    public static function dataGetPeriod()
+    {
+        return array(
+            array(
+                array(
+                ),
+                1292648500,
+                1292648601,
+                2,
+                array(
+                    array(
+                        "group" => "default",
+                        "id"  => 2,
+                        "Date"   => 1292648600,
+                        "packet"  => "1.3",
+                        "devicesHistoryDate"  => "1",
+                        "command"  => "2.0",
+                        "dataIndex"  => "3",
+                    ),
+                    array(
+                        "group" => "default",
+                        "id"  => 2,
+                        "Date"   => 1292648500,
+                        "packet"  => "1.3",
+                        "devicesHistoryDate"  => "1",
+                        "command"  => "2.0",
+                        "dataIndex"  => "3",
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param array $preload The array to preload into the class
+    * @param int   $start   The first date
+    * @param int   $end     The last date
+    * @param mixed $key     The key to use
+    * @param array $expect  The expected return
+    *
+    * @dataProvider dataGetPeriod
+    *
+    * @return null
+    */
+    public function testGetPeriod($preload, $start, $end, $key, $expect)
+    {
+        $ret = $this->o->getPeriod($start, $end, $key);
+        if ($ret !== false) {
+            $ret = array();
+            do {
+                $ret[] = $this->o->toArray();
+            } while ($this->o->nextInto());
+        }
+        $this->assertSame($expect, $ret);
+    }
 
 }
 

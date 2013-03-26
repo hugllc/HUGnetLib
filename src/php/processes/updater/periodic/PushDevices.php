@@ -264,13 +264,27 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
     private function _pushHistory(&$dev)
     {
         $hist = $dev->historyFactory(array(), true);
+        $this->_pushHist($dev, $hist, "LastMasterHistoryPush", "");
+        $hist = $this->system()->table("RawHistory");
+        $this->_pushHist($dev, $hist, "LastMasterRawHistoryPush", "raw");
+    }
+    /**
+     * This pushes out all of the sensors for a device
+     *
+     * @param int &$dev The device to use
+     *
+     * @return none
+     */
+    private function _pushHist(&$dev, &$hist, $param, $name)
+    {
         $hist->sqlOrderBy = "Date asc";
-        $last = (int)$dev->getParam("LastMasterHistoryPush");
+        $last = (int)$dev->getParam($param);
         $hist->sqlLimit = self::MAX_HISTORY;
         $first = time();
         $ret = $hist->getPeriod($last + 1, time(), $dev->id());
         if ($ret) {
-            $records = array();
+            $records = array("type" => $name);
+            $cnt = 0;
             while ($ret) {
                 $this->system()->main();
                 if (!$this->ui()->loop()) {
@@ -278,12 +292,13 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
                 }
                 $records[] = $hist->toArray(false);
                 $ret = $hist->nextInto();
+                $cnt++;
             }
             $ret = $this->_postHistory(null, $dev->id(), $records);
             $good = 0;
-            $bad = count($records);
+            $bad = $cnt;
             if (is_array($ret)) {
-                for ($i = 0; $i < count($records); $i++) {
+                for ($i = 0; $i < $cnt; $i++) {
                     if ($ret[$i] == 1) {
                         if ($last < $records[$i]["Date"]) {
                             $last = $records[$i]["Date"];
@@ -299,18 +314,18 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
             if ($good > 0) {
                 $this->system()->out(
                     sprintf("%06X ", $dev->id())
-                    ."Successfully pushed ".$good." history from "
+                    ."Successfully pushed $good $name history from "
                     .date("Y-m-d H:i:s", $first)." to "
                     .date("Y-m-d H:i:s", $last)
                 );
             }
             if ($bad > 0) {
                 $this->system()->out(
-                    "Failure to push out ".$bad." history records!"
+                    "Failure to push out $bad $name history records!"
                 );
             }
             $dev->load($dev->id());
-            $dev->setParam("LastMasterHistoryPush", $last);
+            $dev->setParam($param, $last);
             $dev->store();
         }
     }

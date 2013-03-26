@@ -202,6 +202,33 @@ class RawHistory extends \HUGnet\db\Table
         }
         return (array)$array;
     }
+    /**
+    * Sets the extra attributes field
+    *
+    * @param int    $start      The start of the time
+    * @param int    $end        The end of the time
+    * @param mixed  $devId      The ID to use.  None if null
+    * @param string $type       Not used here.  This is to be compatible with
+    *                              AverageTableBase::getPeriod()
+    * @param string $extraWhere Extra where clause
+    * @param array  $extraData  Data for the extraWhere clause
+    *
+    * @return mixed The value of the attribute
+    *
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function getPeriod(
+        $start,
+        $end = null,
+        $devId = null,
+        $type = null,
+        $extraWhere = null,
+        $extraData = null
+    ) {
+        return parent::getTimePeriod(
+            $start, $end, $devId, "id", $extraWhere, $extraData
+        );
+    }
     /******************************************************************
      ******************************************************************
      ********  The following are input modification functions  ********
