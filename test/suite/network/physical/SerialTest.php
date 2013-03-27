@@ -176,7 +176,14 @@ class SerialTest extends \PHPUnit_Framework_TestCase
             touch($preload["location"]);
             $this->files[] = $preload["location"];
         }
-        $sys = new \HUGnet\DummySystem("System");
+        $sys = $this->getMock(
+            "\\HUGnet\\System",
+            array("now")
+        );
+        $sys->expects($this->any())
+             ->method('now')
+             ->will($this->returnValue(123456));
+
         // This sets up the server
         $obj = Serial::factory($sys, $preload);
         $this->assertSame($available, $obj->available(), "Available Wrong");

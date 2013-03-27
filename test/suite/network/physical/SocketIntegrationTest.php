@@ -299,7 +299,13 @@ class SocketIntegrationTest extends \PHPUnit_Framework_TestCase
         if (is_string($exception)) {
             $this->setExpectedException($exception);
         }
-        $sys = new \HUGnet\DummySystem("System");
+        $sys = $this->getMock(
+            "\\HUGnet\\System",
+            array("now")
+        );
+        $sys->expects($this->any())
+             ->method('now')
+             ->will($this->returnValue(123456));
         if (!empty($server)) {
             $serv = SocketServer::factory($sys, $server);
         }
@@ -338,7 +344,13 @@ class SocketIntegrationTest extends \PHPUnit_Framework_TestCase
     public function testAvailable()
     {
         $sock = sys_get_temp_dir()."/test".md5(mt_rand());
-        $sys = new \HUGnet\DummyBase("System");
+        $sys = $this->getMock(
+            "\\HUGnet\\System",
+            array("now")
+        );
+        $sys->expects($this->any())
+             ->method('now')
+             ->will($this->returnValue(123456));
         // This sets up the server
         $obj = SocketServer::factory(
             $sys,

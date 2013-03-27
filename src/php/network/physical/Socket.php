@@ -76,6 +76,10 @@ final class Socket implements PhysicalInterface
     */
     const WAIT_USEC = 10000;
     /**
+    * This is the maximum number of bytes that we read
+    */
+    const WAIT_CONN = 5;
+    /**
     * This our configuration resides here
     */
     private $_config = array();
@@ -87,6 +91,10 @@ final class Socket implements PhysicalInterface
     * This our socket
     */
     private $_socket;
+    /**
+    * The last time we failed to connect
+    */
+    private $_lastConnectFail = 0;
     /**
     * This our configuration resides here
     */
@@ -156,6 +164,11 @@ final class Socket implements PhysicalInterface
         if (is_resource($this->_socket)) {
             return true;
         }
+        if ($this->_lastConnectFail > ($this->_system->now() - self::WAIT_CONN)) {
+            return false;
+        }
+        $this->_lastConnectFail = 0;
+
         $this->_system->out(
             $this->_config["name"]."(".$this->_config["driver"].") Opening "
             ."connection to ".$this->_config["location"],
@@ -171,7 +184,11 @@ final class Socket implements PhysicalInterface
         );
         if ((socket_last_error() > 0) && $this->_config["quiet"]) {
             socket_clear_error();
-            sleep(5);  // Wait 5 seconds to try again
+            $this->_system->out(
+                "Failed to connect to socket.  Waiting 5 seconds",
+                3
+            );
+            $this->_lastConnectFail = $this->_system->now();
             return false;
         }
         socket_set_nonblock($this->_socket);
@@ -186,7 +203,7 @@ final class Socket implements PhysicalInterface
     private function _read(&$ready)
     {
         $return = "";
-        if (in_array($this->_socket, $ready)) {
+        if (is_resource($this->_socket) && in_array($this->_socket, $ready)) {
             $return = \HUGnet\Util::hexify(
                 @socket_read($this->_socket, self::MAX_BYTES)
             );
@@ -211,6 +228,9 @@ final class Socket implements PhysicalInterface
     */
     private function _write($string)
     {
+        if (!is_resource($this->_socket)) {
+            return 0;
+        }
         $this->_system->out(
             $this->_config["name"]."(".$this->_config["driver"].") <- ".$string,
             6

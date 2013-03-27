@@ -88,6 +88,10 @@ final class Serial implements PhysicalInterface
     */
     private $_port;
     /**
+    * The last time we failed to connect
+    */
+    private $_lastConnectFail = 0;
+    /**
     * This our configuration resides here
     */
     private $_defaultConfig = array(
@@ -154,13 +158,16 @@ final class Serial implements PhysicalInterface
         }
         $port = $this->_config["location"];
         $this->_checkPort($port);
-        $this->_setupPort($port);
-        $this->_port = @fopen($port, "rn+b");
-        $this->_system->fatalError(
-            "Failed to open port:  ".$this->_config["location"],
-            !is_resource($this->_port) && !$this->_config["quiet"]
-        );
-        @stream_set_blocking($this->_port, 0);
+        if ($this->_lastConnectFail < ($this->_system->now() - 30)) {
+            $this->_lastConnectFail = 0;
+            $this->_setupPort($port);
+            $this->_port = @fopen($port, "rn+b");
+            $this->_system->fatalError(
+                "Failed to open port:  ".$this->_config["location"],
+                !is_resource($this->_port) && !$this->_config["quiet"]
+            );
+            @stream_set_blocking($this->_port, 0);
+        }
     }
     /**
     * Sets up the connection to the socket
@@ -188,7 +195,7 @@ final class Serial implements PhysicalInterface
                 $this->_system->out(
                     "Serial port disappeared.  Trying again in 30 seconds.", 1
                 );
-                sleep(30);
+                $this->_lastConnectFail = $this->_system->now();
             }
         }
         $this->_system->fatalError(

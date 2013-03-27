@@ -104,7 +104,7 @@ class System
     *
     * @return null
     */
-    private function __construct(
+    public function __construct(
         $config = array(), $interface = null, $error = null
     ) {
         if (function_exists("posix_uname")) {
