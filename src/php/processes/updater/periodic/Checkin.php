@@ -112,14 +112,22 @@ class Checkin extends \HUGnet\processes\updater\Periodic
             }
             $this->_datacollector->store();
             if ($this->hasMaster()) {
-                $this->system()->out("Checking in with the master server...");
-                $ret = $this->_datacollector->action()->checkin();
+                $this->system()->out(
+                    "Pushing datacollector to the master server..."
+                );
+                $ret = $this->_datacollector->action()->post();
                 if (is_array($ret)
                     && ($ret["uuid"] === $this->system()->get("uuid"))
                 ) {
-                    $this->success();
-                } else {
-                    $this->failure();
+                    $this->system()->out("Checking in with the master server...");
+                    $ret = $this->_datacollector->action()->checkin();
+                    if (is_array($ret)
+                        && ($ret["uuid"] === $this->system()->get("uuid"))
+                    ) {
+                        $this->success();
+                    } else {
+                        $this->failure();
+                    }
                 }
             } else {
                 $this->success();

@@ -97,6 +97,25 @@ class DataCollector extends \HUGnet\base\SystemTableBase
         );
     }
     /**
+    * Gets the config and saves it
+    *
+    * @return string The left over string
+    */
+    public function post()
+    {
+        $master = $this->system()->get("master");
+        return \HUGnet\Util::postData(
+            $master["url"],
+            array(
+                "uuid"   => urlencode($this->system()->get("uuid")),
+                "id"     => urlencode($this->system()->get("uuid")),
+                "action" => "put",
+                "task"   => "datacollector",
+                "data"   => $this->toArray(true),
+            )
+        );
+    }
+    /**
     * returns a history object for this device
     *
     * @param object $args  The argument object
@@ -176,11 +195,10 @@ class DataCollector extends \HUGnet\base\SystemTableBase
     */
     private function _checkin($args, $extra)
     {
-        $data = (array)$this->args()->get("data");
-        $this->system()->table("DataCollectorCheckin")->checkin(
-            $this->get("uuid")
+        $this->load($args->get("id"));
+        $this->system()->table("DatacollectorCheckin")->checkin(
+            $this->id()
         );
-        $this->change($data);
         return $this->toArray();
     }
 }
