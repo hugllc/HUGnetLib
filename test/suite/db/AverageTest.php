@@ -754,13 +754,12 @@ class AverageTest extends tables\TableTestBase
                             "13" => new \HUGnet\DummyBase("Sensor"),
                             "14" => new \HUGnet\DummyBase("Sensor"),
                         ),
+                        "dataChannels" => new \HUGnet\DummyBase("DataChannels"),
                     ),
                     "Sensor" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor0" => array(
@@ -785,6 +784,70 @@ class AverageTest extends tables\TableTestBase
                             "id" => 2,
                             "total" => true,
                             "maxDecimals" => 2,
+                        ),
+                    ),
+                    "DataChannels" => array(
+                        "toArray" => array(
+                            0 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            1 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            2 => array(
+                                "total" => true,
+                                "maxDecimals" => 2,
+                            ),
+                            3 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            4 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            5 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            6 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            7 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            8 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            9 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            10 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            11 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            12 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            13 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            14 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
                         ),
                     ),
                 ),
@@ -855,37 +918,94 @@ class AverageTest extends tables\TableTestBase
                             "13" => new \HUGnet\DummyBase("Sensor"),
                             "14" => new \HUGnet\DummyBase("Sensor"),
                         ),
+                        "dataChannels" => new \HUGnet\DummyBase("DataChannels"),
                     ),
                     "Sensor" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor0" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor1" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor2" => array(
                         "id" => 2,
                         "get" => array(
                             "id" => 2,
-                            "total" => true,
-                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "DataChannels" => array(
+                        "toArray" => array(
+                            0 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            1 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            2 => array(
+                                "total" => true,
+                                "maxDecimals" => 2,
+                            ),
+                            3 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            4 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            5 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            6 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            7 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            8 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            9 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            10 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            11 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            12 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            13 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            14 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
                         ),
                     ),
                 ),
@@ -956,6 +1076,7 @@ class AverageTest extends tables\TableTestBase
                             "13" => new \HUGnet\DummyBase("Sensor"),
                             "14" => new \HUGnet\DummyBase("Sensor"),
                         ),
+                        "dataChannels" => new \HUGnet\DummyBase("DataChannels"),
                     ),
                     "Sensor" => array(
                         "id" => 0,
@@ -969,24 +1090,82 @@ class AverageTest extends tables\TableTestBase
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor1" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor2" => array(
                         "id" => 2,
                         "get" => array(
                             "id" => 2,
-                            "total" => true,
-                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "DataChannels" => array(
+                        "toArray" => array(
+                            0 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            1 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            2 => array(
+                                "total" => true,
+                                "maxDecimals" => 2,
+                            ),
+                            3 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            4 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            5 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            6 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            7 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            8 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            9 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            10 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            11 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            12 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            13 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            14 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
                         ),
                     ),
                 ),
@@ -1057,37 +1236,94 @@ class AverageTest extends tables\TableTestBase
                             "13" => new \HUGnet\DummyBase("Sensor"),
                             "14" => new \HUGnet\DummyBase("Sensor"),
                         ),
+                        "dataChannels" => new \HUGnet\DummyBase("DataChannels"),
                     ),
                     "Sensor" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor0" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor1" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor2" => array(
                         "id" => 2,
                         "get" => array(
                             "id" => 2,
-                            "total" => true,
-                            "maxDecimals" => 3,
+                        ),
+                    ),
+                    "DataChannels" => array(
+                        "toArray" => array(
+                            0 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            1 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            2 => array(
+                                "total" => true,
+                                "maxDecimals" => 3,
+                            ),
+                            3 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            4 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            5 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            6 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            7 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            8 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            9 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            10 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            11 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            12 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            13 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            14 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
                         ),
                     ),
                 ),
@@ -1158,37 +1394,94 @@ class AverageTest extends tables\TableTestBase
                             "13" => new \HUGnet\DummyBase("Sensor"),
                             "14" => new \HUGnet\DummyBase("Sensor"),
                         ),
+                        "dataChannels" => new \HUGnet\DummyBase("DataChannels"),
                     ),
                     "Sensor" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor0" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor1" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor2" => array(
                         "id" => 2,
                         "get" => array(
                             "id" => 2,
-                            "total" => true,
-                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "DataChannels" => array(
+                        "toArray" => array(
+                            0 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            1 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            2 => array(
+                                "total" => true,
+                                "maxDecimals" => 2,
+                            ),
+                            3 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            4 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            5 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            6 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            7 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            8 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            9 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            10 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            11 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            12 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            13 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            14 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
                         ),
                     ),
                 ),
@@ -1259,37 +1552,94 @@ class AverageTest extends tables\TableTestBase
                             "13" => new \HUGnet\DummyBase("Sensor"),
                             "14" => new \HUGnet\DummyBase("Sensor"),
                         ),
+                        "dataChannels" => new \HUGnet\DummyBase("DataChannels"),
                     ),
                     "Sensor" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor0" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor1" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor2" => array(
                         "id" => 2,
                         "get" => array(
                             "id" => 2,
-                            "total" => true,
-                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "DataChannels" => array(
+                        "toArray" => array(
+                            0 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            1 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            2 => array(
+                                "total" => true,
+                                "maxDecimals" => 2,
+                            ),
+                            3 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            4 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            5 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            6 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            7 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            8 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            9 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            10 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            11 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            12 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            13 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            14 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
                         ),
                     ),
                 ),
@@ -1366,37 +1716,94 @@ class AverageTest extends tables\TableTestBase
                             "13" => new \HUGnet\DummyBase("Sensor"),
                             "14" => new \HUGnet\DummyBase("Sensor"),
                         ),
+                        "dataChannels" => new \HUGnet\DummyBase("DataChannels"),
                     ),
                     "Sensor" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor0" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor1" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor2" => array(
                         "id" => 2,
                         "get" => array(
                             "id" => 2,
-                            "total" => true,
-                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "DataChannels" => array(
+                        "toArray" => array(
+                            0 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            1 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            2 => array(
+                                "total" => true,
+                                "maxDecimals" => 2,
+                            ),
+                            3 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            4 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            5 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            6 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            7 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            8 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            9 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            10 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            11 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            12 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            13 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            14 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
                         ),
                     ),
                 ),
@@ -1531,37 +1938,94 @@ class AverageTest extends tables\TableTestBase
                             "13" => new \HUGnet\DummyBase("Sensor"),
                             "14" => new \HUGnet\DummyBase("Sensor"),
                         ),
+                        "dataChannels" => new \HUGnet\DummyBase("DataChannels"),
                     ),
                     "Sensor" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor0" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor1" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor2" => array(
                         "id" => 2,
                         "get" => array(
                             "id" => 2,
-                            "total" => true,
-                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "DataChannels" => array(
+                        "toArray" => array(
+                            0 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            1 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            2 => array(
+                                "total" => true,
+                                "maxDecimals" => 2,
+                            ),
+                            3 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            4 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            5 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            6 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            7 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            8 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            9 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            10 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            11 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            12 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            13 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            14 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
                         ),
                     ),
                 ),
@@ -1637,37 +2101,94 @@ class AverageTest extends tables\TableTestBase
                             "13" => new \HUGnet\DummyBase("Sensor"),
                             "14" => new \HUGnet\DummyBase("Sensor"),
                         ),
+                        "dataChannels" => new \HUGnet\DummyBase("DataChannels"),
                     ),
                     "Sensor" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor0" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor1" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor2" => array(
                         "id" => 2,
                         "get" => array(
                             "id" => 2,
-                            "total" => true,
-                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "DataChannels" => array(
+                        "toArray" => array(
+                            0 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            1 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            2 => array(
+                                "total" => true,
+                                "maxDecimals" => 2,
+                            ),
+                            3 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            4 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            5 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            6 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            7 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            8 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            9 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            10 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            11 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            12 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            13 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            14 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
                         ),
                     ),
                 ),
@@ -1752,37 +2273,94 @@ class AverageTest extends tables\TableTestBase
                             "13" => new \HUGnet\DummyBase("Sensor"),
                             "14" => new \HUGnet\DummyBase("Sensor"),
                         ),
+                        "dataChannels" => new \HUGnet\DummyBase("DataChannels"),
                     ),
                     "Sensor" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor0" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor1" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor2" => array(
                         "id" => 2,
                         "get" => array(
                             "id" => 2,
-                            "total" => true,
-                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "DataChannels" => array(
+                        "toArray" => array(
+                            0 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            1 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            2 => array(
+                                "total" => true,
+                                "maxDecimals" => 2,
+                            ),
+                            3 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            4 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            5 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            6 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            7 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            8 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            9 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            10 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            11 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            12 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            13 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            14 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
                         ),
                     ),
                 ),
@@ -1859,37 +2437,94 @@ class AverageTest extends tables\TableTestBase
                             "13" => new \HUGnet\DummyBase("Sensor"),
                             "14" => new \HUGnet\DummyBase("Sensor"),
                         ),
+                        "dataChannels" => new \HUGnet\DummyBase("DataChannels"),
                     ),
                     "Sensor" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor0" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor1" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor2" => array(
                         "id" => 2,
                         "get" => array(
                             "id" => 2,
-                            "total" => true,
-                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "DataChannels" => array(
+                        "toArray" => array(
+                            0 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            1 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            2 => array(
+                                "total" => true,
+                                "maxDecimals" => 2,
+                            ),
+                            3 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            4 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            5 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            6 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            7 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            8 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            9 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            10 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            11 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            12 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            13 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            14 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
                         ),
                     ),
                 ),
@@ -1974,37 +2609,94 @@ class AverageTest extends tables\TableTestBase
                             "13" => new \HUGnet\DummyBase("Sensor"),
                             "14" => new \HUGnet\DummyBase("Sensor"),
                         ),
+                        "dataChannels" => new \HUGnet\DummyBase("DataChannels"),
                     ),
                     "Sensor" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor0" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor1" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor2" => array(
                         "id" => 2,
                         "get" => array(
                             "id" => 2,
-                            "total" => true,
-                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "DataChannels" => array(
+                        "toArray" => array(
+                            0 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            1 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            2 => array(
+                                "total" => true,
+                                "maxDecimals" => 2,
+                            ),
+                            3 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            4 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            5 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            6 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            7 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            8 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            9 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            10 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            11 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            12 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            13 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            14 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
                         ),
                     ),
                 ),
@@ -2081,37 +2773,94 @@ class AverageTest extends tables\TableTestBase
                             "13" => new \HUGnet\DummyBase("Sensor"),
                             "14" => new \HUGnet\DummyBase("Sensor"),
                         ),
+                        "dataChannels" => new \HUGnet\DummyBase("DataChannels"),
                     ),
                     "Sensor" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor0" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor1" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor2" => array(
                         "id" => 2,
                         "get" => array(
                             "id" => 2,
-                            "total" => true,
-                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "DataChannels" => array(
+                        "toArray" => array(
+                            0 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            1 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            2 => array(
+                                "total" => true,
+                                "maxDecimals" => 2,
+                            ),
+                            3 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            4 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            5 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            6 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            7 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            8 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            9 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            10 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            11 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            12 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            13 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            14 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
                         ),
                     ),
                 ),
@@ -2188,37 +2937,94 @@ class AverageTest extends tables\TableTestBase
                             "13" => new \HUGnet\DummyBase("Sensor"),
                             "14" => new \HUGnet\DummyBase("Sensor"),
                         ),
+                        "dataChannels" => new \HUGnet\DummyBase("DataChannels"),
                     ),
                     "Sensor" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor0" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor1" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor2" => array(
                         "id" => 2,
                         "get" => array(
                             "id" => 2,
-                            "total" => true,
-                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "DataChannels" => array(
+                        "toArray" => array(
+                            0 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            1 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            2 => array(
+                                "total" => true,
+                                "maxDecimals" => 2,
+                            ),
+                            3 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            4 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            5 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            6 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            7 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            8 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            9 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            10 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            11 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            12 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            13 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            14 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
                         ),
                     ),
                 ),
@@ -2294,37 +3100,94 @@ class AverageTest extends tables\TableTestBase
                             "13" => new \HUGnet\DummyBase("Sensor"),
                             "14" => new \HUGnet\DummyBase("Sensor"),
                         ),
+                        "dataChannels" => new \HUGnet\DummyBase("DataChannels"),
                     ),
                     "Sensor" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor0" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor1" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor2" => array(
                         "id" => 2,
                         "get" => array(
                             "id" => 2,
-                            "total" => true,
-                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "DataChannels" => array(
+                        "toArray" => array(
+                            0 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            1 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            2 => array(
+                                "total" => true,
+                                "maxDecimals" => 2,
+                            ),
+                            3 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            4 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            5 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            6 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            7 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            8 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            9 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            10 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            11 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            12 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            13 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            14 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
                         ),
                     ),
                 ),
@@ -2405,37 +3268,94 @@ class AverageTest extends tables\TableTestBase
                             "13" => new \HUGnet\DummyBase("Sensor"),
                             "14" => new \HUGnet\DummyBase("Sensor"),
                         ),
+                        "dataChannels" => new \HUGnet\DummyBase("DataChannels"),
                     ),
                     "Sensor" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor0" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor1" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor2" => array(
                         "id" => 2,
                         "get" => array(
                             "id" => 2,
-                            "total" => true,
-                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "DataChannels" => array(
+                        "toArray" => array(
+                            0 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            1 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            2 => array(
+                                "total" => true,
+                                "maxDecimals" => 2,
+                            ),
+                            3 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            4 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            5 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            6 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            7 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            8 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            9 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            10 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            11 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            12 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            13 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            14 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
                         ),
                     ),
                 ),
@@ -2558,37 +3478,94 @@ class AverageTest extends tables\TableTestBase
                             "13" => new \HUGnet\DummyBase("Sensor"),
                             "14" => new \HUGnet\DummyBase("Sensor"),
                         ),
+                        "dataChannels" => new \HUGnet\DummyBase("DataChannels"),
                     ),
                     "Sensor" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor0" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor1" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor2" => array(
                         "id" => 2,
                         "get" => array(
                             "id" => 2,
-                            "total" => false,
-                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "DataChannels" => array(
+                        "toArray" => array(
+                            0 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            1 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            2 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            3 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            4 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            5 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            6 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            7 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            8 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            9 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            10 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            11 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            12 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            13 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            14 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
                         ),
                     ),
                 ),
@@ -2752,37 +3729,94 @@ class AverageTest extends tables\TableTestBase
                             "13" => new \HUGnet\DummyBase("Sensor"),
                             "14" => new \HUGnet\DummyBase("Sensor"),
                         ),
+                        "dataChannels" => new \HUGnet\DummyBase("DataChannels"),
                     ),
                     "Sensor" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor0" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor1" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor2" => array(
                         "id" => 2,
                         "get" => array(
                             "id" => 2,
-                            "total" => false,
-                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "DataChannels" => array(
+                        "toArray" => array(
+                            0 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            1 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            2 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            3 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            4 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            5 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            6 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            7 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            8 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            9 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            10 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            11 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            12 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            13 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            14 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
                         ),
                     ),
                 ),
@@ -2880,37 +3914,94 @@ class AverageTest extends tables\TableTestBase
                             "13" => new \HUGnet\DummyBase("Sensor"),
                             "14" => new \HUGnet\DummyBase("Sensor"),
                         ),
+                        "dataChannels" => new \HUGnet\DummyBase("DataChannels"),
                     ),
                     "Sensor" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor0" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor1" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor2" => array(
                         "id" => 2,
                         "get" => array(
                             "id" => 2,
-                            "total" => false,
-                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "DataChannels" => array(
+                        "toArray" => array(
+                            0 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            1 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            2 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            3 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            4 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            5 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            6 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            7 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            8 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            9 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            10 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            11 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            12 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            13 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            14 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
                         ),
                     ),
                 ),
@@ -3004,37 +4095,94 @@ class AverageTest extends tables\TableTestBase
                             "13" => new \HUGnet\DummyBase("Sensor"),
                             "14" => new \HUGnet\DummyBase("Sensor"),
                         ),
+                        "dataChannels" => new \HUGnet\DummyBase("DataChannels"),
                     ),
                     "Sensor" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor0" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor1" => array(
                         "id" => 0,
                         "get" => array(
                             "id" => 0,
-                            "total" => false,
-                            "maxDecimals" => 2,
                         ),
                     ),
                     "Sensor2" => array(
                         "id" => 2,
                         "get" => array(
                             "id" => 2,
-                            "total" => false,
-                            "maxDecimals" => 2,
+                        ),
+                    ),
+                    "DataChannels" => array(
+                        "toArray" => array(
+                            0 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            1 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            2 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            3 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            4 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            5 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            6 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            7 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            8 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            9 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            10 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            11 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            12 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            13 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
+                            14 => array(
+                                "total" => false,
+                                "maxDecimals" => 2,
+                            ),
                         ),
                     ),
                 ),

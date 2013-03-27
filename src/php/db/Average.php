@@ -284,7 +284,8 @@ abstract class Average extends History
     */
     protected function calc15MinAverageMult(History &$data, $last, $col)
     {
-        if ($this->device->input($col)->get("total")) {
+        $channels = $this->device->dataChannels()->toArray();
+        if ($channels[$col]["total"]) {
             if ($data->get("Date") > $this->endTime) {
                 $mult = ($this->endTime - $last);
                 $denom = $data->get("Date") - $last;
@@ -357,6 +358,7 @@ abstract class Average extends History
     protected function settleDivisors()
     {
         // Settle  out the multipliers
+        $channels = $this->device->dataChannels()->toArray();
         for ($i = 0; $i < $this->datacols; $i++) {
             $col = "Data".$i;
             if ($this->divisors[$col] == 0) {
@@ -364,17 +366,16 @@ abstract class Average extends History
             }
             $value = $this->get($col);
             if (!is_null($value)) {
-                if (!$this->device->input($i)->get("total")) {
+                if (!$channels[$i]["total"]) {
                     $value = $value / $this->divisors[$col];
                 }
                 $this->set(
                     $col,
                     round(
                         $value,
-                        $this->device->input($i)->get("maxDecimals")
+                        (int)$channels[$i]["maxDecimals"]
                     )
                 );
-
             }
         }
     }
