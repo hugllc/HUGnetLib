@@ -289,7 +289,7 @@ class WebAPI extends HTML
     private function _executeDatacollector($extra = array())
     {
         $uuid = strtolower($this->args()->get("id"));
-        $datacol = $this->system()->datacollector();
+        $datacol = $this->system()->datacollector($uuid);
         return $this->_executeSystem($uuid, $datacol, $extra);
     }
     /**

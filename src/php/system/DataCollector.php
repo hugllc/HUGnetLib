@@ -90,7 +90,7 @@ class DataCollector extends \HUGnet\base\SystemTableBase
             array(
                 "uuid"   => urlencode($this->system()->get("uuid")),
                 "id"     => urlencode($this->system()->get("uuid")),
-                "action" => "put",
+                "action" => "checkin",
                 "task"   => "datacollector",
                 "data"   => $this->toArray(true),
             )
@@ -113,6 +113,8 @@ class DataCollector extends \HUGnet\base\SystemTableBase
             $ret = $this->_run();
         } else if ($action === "status") {
             $ret = $this->_status();
+        } else if ($action === "checkin") {
+            $ret = $this->_checkin($args, $extra);
         }
         return $ret;
     }
@@ -163,6 +165,23 @@ class DataCollector extends \HUGnet\base\SystemTableBase
         }
         return $ret;
 
+    }
+    /**
+    * returns a history object for this device
+    *
+    * @param object $args  The argument object
+    * @param array  $extra Extra data from the
+    *
+    * @return string
+    */
+    private function _checkin($args, $extra)
+    {
+        $data = (array)$this->args()->get("data");
+        $this->system()->table("DataCollectorCheckin")->checkin(
+            $this->get("uuid")
+        );
+        $this->change($data);
+        return $this->toArray();
     }
 }
 

@@ -266,7 +266,9 @@ class DataCollectorCheckinTest extends TableTestBase
             ->will($this->returnValue($now));
         $ret = $this->o->checkin($uuid);
         $this->assertSame($return, $ret, "Return Wrong");
-        $stmt = $this->pdo->query("SELECT * FROM `datacollectorcheckin` where `uuid` = '$uuid'");
+        $stmt = $this->pdo->query(
+            "SELECT * FROM `datacollectorcheckin` where `uuid` = '$uuid'"
+        );
         $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         $this->assertEquals($expect, $rows);
     }
