@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+    <table name="datacollectorcheckin">
+        <column>uuid</column>
+        <column>Date</column>
+        <row>
+            <value>46ba8126-57a1-4038-b5e4-2e2585f9f5a5</value>
+            <value>12345678</value>
+        </row>
+        <row>
+            <value>48aa1c44-85be-4179-beab-8bbad51c1824</value>
+            <value>123456789</value>
+        </row>
+        <row>
+            <value>e11d53ce-2458-48d8-9d81-8f8def0162c5</value>
+            <value>123456789</value>
+        </row>
+    </table>
+</dataset>
