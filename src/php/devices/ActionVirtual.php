@@ -178,10 +178,12 @@ class ActionVirtual extends Action
             "TestID" => $TestID,
             "deltaT" => $time - $prev["Date"],
         );
+        $found = false;
         $sensors = $this->device->get("totalSensors");
         for ($i = 0; $i < $sensors; $i++) {
             $sen = $this->device->input($i);
             $point = $this->_getPoint($sen, $time);
+            $found |= is_object($point);
             $hist = array_merge(
                 $hist,
                 $sen->decodeData(
@@ -192,19 +194,26 @@ class ActionVirtual extends Action
                 )
             );
         }
-        $this->device->load($this->device->id());
-        $this->device->setParam("LastPollData", $hist);
-        $this->device->setParam("LastPoll", $time);
-        $this->device->setParam("LastContact", $time);
-        $this->device->setParam("PollFail", 0);
-        $this->device->setParam("ContactFail", 0);
-        $history = $this->device->historyFactory($hist);
-        if ($history->insertRow()) {
-            $this->device->setParam("LastHistory", $time);
+        if ($found) {
+            $this->device->load($this->device->id());
+            $this->device->setParam("LastPollData", $hist);
+            $this->device->setParam("LastPoll", $time);
+            $this->device->setParam("LastContact", $time);
+            $this->device->setParam("PollFail", 0);
+            $this->device->setParam("ContactFail", 0);
+            $history = $this->device->historyFactory($hist);
+            if ($history->insertRow()) {
+                $this->device->setParam("LastHistory", $time);
+            }
+            $this->device->store();
+            $this->_writeFile($history);
+            return $history;
         }
+        $this->device->load($this->device->id());
+        $fail = $this->device->getParam("PollFail");
+        $this->device->setParam("PollFail", $fail+1);
         $this->device->store();
-        $this->_writeFile($history);
-        return $history;
+        return false;
     }
     /**
     * Polls the device and saves the poll
