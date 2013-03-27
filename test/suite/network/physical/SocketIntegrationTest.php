@@ -304,8 +304,8 @@ class SocketIntegrationTest extends \PHPUnit_Framework_TestCase
             array("now")
         );
         $sys->expects($this->any())
-             ->method('now')
-             ->will($this->returnValue(123456));
+            ->method('now')
+            ->will($this->returnValue(123456));
         if (!empty($server)) {
             $serv = SocketServer::factory($sys, $server);
         }
@@ -349,8 +349,8 @@ class SocketIntegrationTest extends \PHPUnit_Framework_TestCase
             array("now")
         );
         $sys->expects($this->any())
-             ->method('now')
-             ->will($this->returnValue(123456));
+            ->method('now')
+            ->will($this->returnValue(123456));
         // This sets up the server
         $obj = SocketServer::factory(
             $sys,

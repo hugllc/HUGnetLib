@@ -181,8 +181,8 @@ class SerialTest extends \PHPUnit_Framework_TestCase
             array("now")
         );
         $sys->expects($this->any())
-             ->method('now')
-             ->will($this->returnValue(123456));
+            ->method('now')
+            ->will($this->returnValue(123456));
 
         // This sets up the server
         $obj = Serial::factory($sys, $preload);
