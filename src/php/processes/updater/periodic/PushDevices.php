@@ -271,7 +271,10 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
     /**
      * This pushes out all of the sensors for a device
      *
-     * @param int &$dev The device to use
+     * @param object &$dev  The device to use
+     * @param object &$hist The history to use
+     * @param string $param The params to set to see when we last did that
+     * @param string $name  The name to print out
      *
      * @return none
      */
