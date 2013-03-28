@@ -158,6 +158,7 @@ class TableParamsTest extends  \PHPUnit_Extensions_Database_TestCase
             array("params", "asdfasdfasdfasdf", "asdfasdfasdfasdf"),
             array("params", array(1,2,3,4), "[1,2,3,4]"),
             array("extra", array(1,2,3,4), array(1,2,3,4)),
+            array("extra", array(1,"","",4), array(0 => 1, 3 => 4)),
             array("min", 5, 5),
             array("NotAValidParam", 5, null),
         );

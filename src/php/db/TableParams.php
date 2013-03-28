@@ -103,12 +103,33 @@ abstract class TableParams extends \HUGnet\db\Table
     {
         $ret = null;
         if (in_array($name, $this->setParams) || empty($this->setParams)) {
+            $this->_fixExtra($name, $value);
             $array = (array)json_decode(parent::get("params"), true);
             $ret = $array[$name] = $value;
             parent::set("params", $array);
         }
         return $ret;
     }
+    /**
+    * Overload the set attribute
+    *
+    * @param string $name   This is the attribute to set
+    * @param mixed  &$value The value to set it to
+    *
+    * @return mixed The value of the attribute
+    */
+    private function _fixExtra($name, &$value)
+    {
+        if ($name === "extra") {
+            foreach ((array)$value as $k => $v) {
+                if ($v === "") {
+                    unset($value[$k]);
+                }
+            }
+        }
+
+    }
+
     /**
     * Overload the get attribute
     *
