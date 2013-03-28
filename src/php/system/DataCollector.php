@@ -133,7 +133,7 @@ class DataCollector extends \HUGnet\base\SystemTableBase
         } else if ($action === "status") {
             $ret = $this->_status();
         } else if ($action === "checkin") {
-            $ret = $this->_checkin($args, $extra);
+            $ret = $this->_checkin($args);
         }
         return $ret;
     }
@@ -189,11 +189,10 @@ class DataCollector extends \HUGnet\base\SystemTableBase
     * returns a history object for this device
     *
     * @param object $args  The argument object
-    * @param array  $extra Extra data from the
     *
     * @return string
     */
-    private function _checkin($args, $extra)
+    private function _checkin($args)
     {
         $this->load($args->get("id"));
         $this->system()->table("DatacollectorCheckin")->checkin(
