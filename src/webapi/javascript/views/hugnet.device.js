@@ -54,54 +54,6 @@ var DevicePropertiesView = Backbone.View.extend({
     },
     initialize: function (options)
     {
-        this.inputsmodel = new HUGnet.DeviceInputs();
-        var inputs = this.model.get('inputs');
-        this.inputsmodel.reset(inputs);
-        this.inputs = new HUGnet.DeviceInputsView({
-            model: this.inputsmodel
-        });
-        this.inputsmodel.on(
-            'change',
-            function (model, collection, view)
-            {
-                this.model.set('inputs', this.inputsmodel.toJSON());
-                this.model.fetch();
-            },
-            this
-        );
-
-        this.outputsmodel = new HUGnet.DeviceOutputs();
-        var outputs = this.model.get('outputs');
-        this.outputsmodel.reset(outputs);
-        this.outputs = new HUGnet.DeviceOutputsView({
-            model: this.outputsmodel
-        });
-        this.outputsmodel.on(
-            'change',
-            function (model, collection, view)
-            {
-                this.model.set('outputs', this.outputsmodel.toJSON());
-                this.model.fetch();
-            },
-            this
-        );
-
-        this.processesmodel = new HUGnet.DeviceProcesses();
-        var processes = this.model.get('processes');
-        this.processesmodel.reset(processes);
-        this.processes = new HUGnet.DeviceProcessesView({
-            model: this.processesmodel
-        });
-        this.processesmodel.on(
-            'change',
-            function (model, collection, view)
-            {
-                this.model.set('processes', this.processesmodel.toJSON());
-                this.model.fetch();
-            },
-            this
-        );
-
 
         this.datachannelsmodel = new HUGnet.DeviceDataChannels();
         var datachannels = this.model.get('dataChannels');
@@ -159,12 +111,6 @@ var DevicePropertiesView = Backbone.View.extend({
                 this.datachannelsmodel.reset(datachannels);
                 var controlchannels = this.model.get('controlChannels');
                 this.controlchannelsmodel.reset(controlchannels);
-                var inputs = this.model.get('inputs');
-                this.inputsmodel.update(inputs);
-                var outputs = this.model.get('outputs');
-                this.outputsmodel.update(outputs);
-                var processes = this.model.get('processes');
-                this.processesmodel.update(processes);
                 this.render();
             },
             this
@@ -175,6 +121,14 @@ var DevicePropertiesView = Backbone.View.extend({
     },
     inputList: function ()
     {
+        this.inputsmodel = new HUGnet.DeviceInputs();
+        var inputs = this.model.get('InputTables');
+        var dev = this.model.get('id');
+        for (var i = 0; i < inputs; i++) {
+            this.inputsmodel.add({dev: dev, input: i});
+        }
+        this.inputsmodel.invoke('fetch');
+
         var view = new HUGnet.DeviceInputsView({ model: this.inputsmodel });
         this.popup(
             view,
@@ -183,6 +137,14 @@ var DevicePropertiesView = Backbone.View.extend({
     },
     outputList: function ()
     {
+        this.outputsmodel = new HUGnet.DeviceOutputs();
+        var outputs = this.model.get('OutputTables');
+        var dev = this.model.get('id');
+        for (var o = 0; o < outputs; o++) {
+            this.outputsmodel.add({dev: dev, output: o});
+        }
+        this.outputsmodel.invoke('fetch');
+
         var view = new HUGnet.DeviceOutputsView({ model: this.outputsmodel });
         this.popup(
             view,
@@ -191,6 +153,13 @@ var DevicePropertiesView = Backbone.View.extend({
     },
     processList: function ()
     {
+        this.processesmodel = new HUGnet.DeviceProcesses();
+        var processes = this.model.get('ProcessTables');
+        var dev = this.model.get('id');
+        for (var p = 0; p < processes; p++) {
+            this.processesmodel.add({dev: dev, process: p});
+        }
+        this.processesmodel.invoke('fetch');
         var view = new HUGnet.DeviceProcessesView({ model: this.processesmodel });
         this.popup(
             view,

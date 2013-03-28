@@ -1016,18 +1016,6 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     */
     public static function dataToArray()
     {
-        $sensors = array();
-        $obj = \HUGnet\devices\Input::factory(
-            new DummySystem("TestStuff"),
-            array(
-            ),
-            null,
-            new DummySystem("Device")
-        );
-        $obj->change(array());
-        for ($i = 0; $i < 9; $i++) {
-            $sensors[$i] = $obj->toArray(true);
-        }
         return array(
             array(
                 array(
@@ -1067,7 +1055,6 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     'id' => 2,
                     'asdf' => 3,
                     'params' => array(1,2,3,4),
-                    'inputs' => $sensors,
                     'type' => 'unknown',
                     'job'  => 'unknown',
                     'actionClass' => 'Action',
@@ -1239,10 +1226,6 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                     "controlChannels" => array(),
-                    "outputs" => array(
-                    ),
-                    "processes" => array(
-                    ),
                 )
             ),
             array(

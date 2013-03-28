@@ -165,18 +165,6 @@ class Device extends \HUGnet\base\SystemTableAction
     private function _toArrayExtra(&$return)
     {
         $return["Roles"] = $this->_role()->getAll($this->driver()->get("arch"));
-        $return["inputs"] = array();
-        for ($i = 0; $i < $return["InputTables"]; $i++) {
-            $return["inputs"][$i] = $this->input($i)->toArray();
-        }
-        $return["outputs"] = array();
-        for ($i = 0; $i < $return["OutputTables"]; $i++) {
-            $return["outputs"][$i] = $this->output($i)->toArray();
-        }
-        $return["processes"] = array();
-        for ($i = 0; $i < $return["ProcessTables"]; $i++) {
-            $return["processes"][$i] = $this->process($i)->toArray();
-        }
         if ($return["loadable"]) {
             $this->firmware()->set("HWPartNum", $return["HWPartNum"]);
             $this->firmware()->set("FWPartNum", $return["FWPartNum"]);
