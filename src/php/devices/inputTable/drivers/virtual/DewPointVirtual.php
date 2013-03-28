@@ -76,7 +76,7 @@ class DewPointVirtual extends \HUGnet\devices\inputTable\DriverVirtual
             "Temp Input", "Humidity Input"
         ),
         "extraDefault" => array(
-            array(), array()
+            0, 1
         ),
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "storageUnit" => "&#176;C",
