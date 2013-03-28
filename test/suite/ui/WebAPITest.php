@@ -220,9 +220,6 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "toArray" => array(
                             array(true),
                         ),
-                        "load" => array(
-                            array(5),
-                        ),
                     ),
                 ),
             ),
@@ -253,9 +250,6 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     "Device" => array(
                         "toArray" => array(
                             array(true),
-                        ),
-                        "load" => array(
-                            array(5),
                         ),
                     ),
                 ),
@@ -321,11 +315,6 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     "Datacollector" => array(
                         "toArray" => array(
                             array(true),
-                        ),
-                        "load" => array(
-                            array(
-                                "e035bd03-c52b-4061-89ab-cf5b6ab8243f",
-                            ),
                         ),
                     ),
                 ),
@@ -397,9 +386,6 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     "Sensor" => array(
                         "toArray" => array(
                             array(true),
-                        ),
-                        "load" => array(
-                            array(array("dev" => 16, "input" => 5)),
                         ),
                     ),
                 ),
@@ -473,9 +459,6 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                 array(
                     "Table" => array(
                         "toArray" => array(array(true)),
-                        "load" => array(
-                            array('10'),
-                        ),
                     ),
                 ),
             ),
@@ -548,9 +531,6 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                 array(
                     "Table" => array(
                         "toArray" => array(array(true)),
-                        "load" => array(
-                            array('10'),
-                        ),
                     ),
                 ),
             ),
@@ -943,9 +923,6 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     "Test" => array(
                         "toArray" => array(
                             array(true),
-                        ),
-                        "load" => array(
-                            array(5),
                         ),
                     ),
                 ),
@@ -1439,9 +1416,6 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "toArray" => array(
                             array(true),
                         ),
-                        "load" => array(
-                            array(array("dev" => 16, "output" => 5)),
-                        ),
                     ),
                 ),
             ),
@@ -1519,9 +1493,6 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     "Sensor" => array(
                         "toArray" => array(
                             array(true),
-                        ),
-                        "load" => array(
-                            array(array("dev" => 16, "process" => 5)),
                         ),
                     ),
                 ),
@@ -1643,7 +1614,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
-            array(  // #33
+            array(  // #34
                 array(
                     "task" => "history",
                     "action" => "last",
@@ -1720,7 +1691,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
-            array(  // #34
+            array(  // #35
                 array(
                     "task" => "history",
                     "action" => "last",
@@ -1796,7 +1767,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
-            array(  // #35
+            array(  // #36
                 array(
                     "task" => "deviceoutput",
                     "action" => "get",
@@ -1838,13 +1809,10 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "toArray" => array(
                             array(true),
                         ),
-                        "load" => array(
-                            array(array("dev" => 16, "output" => 5)),
-                        ),
                     ),
                 ),
             ),
-            array(  // #36
+            array(  // #37
                 array(
                     "task" => "inputtable",
                     "action" => "put",

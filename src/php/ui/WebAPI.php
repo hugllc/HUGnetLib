@@ -136,12 +136,12 @@ class WebAPI extends HTML
     private function _executeDevice($extra = array())
     {
         $did = hexdec($this->args()->get("id"));
-        $dev = $this->system()->device();
+        $dev = $this->system()->device($did);
         $action = strtolower(trim($this->args()->get("action")));
         if (($action === "list") || ($action == "get")) {
             return $this->_executeSystem($did, $dev, $extra);
         } else if ($this->_auth(true)) {
-            $dev->load($did);
+            //$dev->load($did);
             return $dev->webAPI($this->args(), $extra);
         }
     }
@@ -156,7 +156,7 @@ class WebAPI extends HTML
     private function _executeInputtable($extra = array())
     {
         $iid = $this->args()->get("id");
-        $inputTable = $this->system()->inputTable();
+        $inputTable = $this->system()->inputTable($iid);
         return $this->_executeSystem($iid, $inputTable, $extra);
     }
     /**
@@ -170,7 +170,7 @@ class WebAPI extends HTML
     private function _executeOutputtable($extra = array())
     {
         $iid = $this->args()->get("id");
-        $outputTable = $this->system()->outputTable();
+        $outputTable = $this->system()->outputTable($iid);
         return $this->_executeSystem($iid, $outputTable, $extra);
     }
     /**
@@ -184,7 +184,7 @@ class WebAPI extends HTML
     private function _executeProcesstable($extra = array())
     {
         $iid = $this->args()->get("id");
-        $processTable = $this->system()->processTable();
+        $processTable = $this->system()->processTable($iid);
         return $this->_executeSystem($iid, $processTable, $extra);
     }
     /**
@@ -212,7 +212,7 @@ class WebAPI extends HTML
     private function _executeTests($extra = array())
     {
         $tid = (int)$this->args()->get("id");
-        $test = $this->system()->test();
+        $test = $this->system()->test($tid);
         return $this->_executeSystem($tid, $test, $extra);
     }
     /**
@@ -307,9 +307,7 @@ class WebAPI extends HTML
         $ret = null;
         $action = strtolower(trim($this->args()->get("action")));
         if ($action === "get") {
-            if ($obj->load($ident)) {
-                $ret = $obj->toArray(true);
-            }
+            $ret = $obj->toArray(true);
         } else if (($action === "put") && $this->_auth(true)) {
             $data = (array)$this->args()->get("data");
             if ($obj->load($ident)) {

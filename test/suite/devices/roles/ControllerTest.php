@@ -101,6 +101,9 @@ class ControllerTest extends RoleTestBase
             array(
                 0, null
             ),
+            array(
+                1, null
+            ),
         );
     }
     /**
