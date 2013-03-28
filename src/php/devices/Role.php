@@ -76,6 +76,7 @@ class Role
             "Controller" => "Controller",
         ),
         "0039-28" => array(
+            "SolarController" => "Solar Panel Controller",
         ),
         "0039-37" => array(
         ),
