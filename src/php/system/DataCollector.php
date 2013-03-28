@@ -188,7 +188,7 @@ class DataCollector extends \HUGnet\base\SystemTableBase
     /**
     * returns a history object for this device
     *
-    * @param object $args  The argument object
+    * @param object $args The argument object
     *
     * @return string
     */
