@@ -60,6 +60,31 @@ require_once dirname(__FILE__)."/RoleTestBase.php";
 class ControllerTest extends RoleTestBase
 {
     /**
+    * Sets up the fixture, for example, opens a network connection.
+    * This method is called before a test is executed.
+    *
+    * @access protected
+    *
+    * @return null
+    */
+    protected function setUp()
+    {
+        $this->o = Controller::factory();
+    }
+
+    /**
+    * Tears down the fixture, for example, closes a network connection.
+    * This method is called after a test is executed.
+    *
+    * @access protected
+    *
+    * @return null
+    */
+    protected function tearDown()
+    {
+        unset($this->o);
+    }
+    /**
     * data provider for testDeviceID
     *
     * @return array
