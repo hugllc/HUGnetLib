@@ -69,6 +69,7 @@ class FETBoard extends \HUGnet\base\Role
         0 => array(            // Current
             "table" => array(
                 "driver" => "50:fetBoard",
+                "name" => "FET Board Current",
                 "MUX" => 0,
                 "id" => 0,
                 "ADLAR" => 1,
@@ -84,6 +85,7 @@ class FETBoard extends \HUGnet\base\Role
         1 => array(            // Voltage
             "table" => array(
                 "driver" => "40:fetBoard",
+                "name" => "FET Board Voltage",
                 "MUX" => 1,
                 "id" => 0,
                 "ADLAR" => 1,
@@ -99,6 +101,7 @@ class FETBoard extends \HUGnet\base\Role
         2 => array(            // Current
             "table" => array(
                 "driver" => "50:fetBoard",
+                "name" => "FET Board Current",
                 "MUX" => 2,
                 "id" => 0,
                 "ADLAR" => 1,
@@ -114,6 +117,7 @@ class FETBoard extends \HUGnet\base\Role
         3 => array(            // Voltage
             "table" => array(
                 "driver" => "40:fetBoard",
+                "name" => "FET Board Voltage",
                 "MUX" => 3,
                 "id" => 0,
                 "ADLAR" => 1,
@@ -129,6 +133,7 @@ class FETBoard extends \HUGnet\base\Role
         4 => array(            // Current
             "table" => array(
                 "driver" => "50:fetBoard",
+                "name" => "FET Board Current",
                 "MUX" => 4,
                 "id" => 0,
                 "ADLAR" => 1,
@@ -144,6 +149,7 @@ class FETBoard extends \HUGnet\base\Role
         5 => array(            // Voltage
             "table" => array(
                 "driver" => "40:fetBoard",
+                "name" => "FET Board Voltage",
                 "MUX" => 5,
                 "id" => 0,
                 "ADLAR" => 1,
@@ -159,6 +165,7 @@ class FETBoard extends \HUGnet\base\Role
         6 => array(            // Current
             "table" => array(
                 "driver" => "50:fetBoard",
+                "name" => "FET Board Current",
                 "MUX" => 6,
                 "id" => 0,
                 "ADLAR" => 1,
@@ -174,6 +181,7 @@ class FETBoard extends \HUGnet\base\Role
         7 => array(            // Voltage
             "table" => array(
                 "driver" => "40:fetBoard",
+                "name" => "FET Board Voltage",
                 "MUX" => 7,
                 "id" => 0,
                 "ADLAR" => 1,
@@ -189,6 +197,7 @@ class FETBoard extends \HUGnet\base\Role
         8 => array(            // Supply Voltage
             "table" => array(
                 "driver" => "40:fetBoard",
+                "name" => "FET Board Voltage",
                 "MUX" => 8,
                 "id" => 0,
                 "ADLAR" => 1,

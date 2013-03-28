@@ -99,6 +99,7 @@ class FETBoardTest extends RoleTestBase
                 0, array(
                     "table" => array(
                         "driver" => "50:fetBoard",
+                        "name" => "FET Board Current",
                         "MUX" => 0,
                         "id" => 0,
                         "ADLAR" => 1,
