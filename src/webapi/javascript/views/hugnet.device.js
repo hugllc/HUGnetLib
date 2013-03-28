@@ -50,11 +50,11 @@ var DevicePropertiesView = Backbone.View.extend({
         'click .outputList': 'outputList',
         'click .processList': 'processList',
         'submit #inputForm': 'saveInput',
-        'change #inputForm select': 'saveInput'
+        'change #inputForm select': 'saveInput',
+        'change #deviceForm select': 'apply'
     },
     initialize: function (options)
     {
-
         this.datachannelsmodel = new HUGnet.DeviceDataChannels();
         var datachannels = this.model.get('dataChannels');
         this.datachannelsmodel.reset(datachannels);
@@ -168,12 +168,18 @@ var DevicePropertiesView = Backbone.View.extend({
     },
     save: function (e)
     {
+        this.apply(e);
+        this._close = true;
+    },
+    apply: function (e)
+    {
         this.setTitle( " [ Saving...] " );
         this.model.set({
             DeviceName: this.$(".DeviceName").val(),
             DeviceLocation: this.$(".DeviceLocation").val(),
             DeviceJob: this.$(".DeviceJob").val(),
-            PollInterval: this.$(".PollInterval").val()
+            PollInterval: this.$(".PollInterval").val(),
+            Role: this.$(".Role").val()
         });
         this.model.save();
     },
@@ -188,11 +194,13 @@ var DevicePropertiesView = Backbone.View.extend({
     },
     saveSuccess: function ()
     {
-        this.model.off('change', this.render, this);
-        this.model.off('savefail', this.saveFail, this);
-        this.model.off('saved', this.saveSuccess, this);
-        this.remove();
-        //alert("Save Succeeded");
+        this.setTitle("");
+        if (this._close) {
+            this.model.off('change', this.render, this);
+            this.model.off('savefail', this.saveFail, this);
+            this.model.off('saved', this.saveSuccess, this);
+            this.remove();
+        }
     },
     setTitle: function (extra)
     {

@@ -68,6 +68,7 @@ class Role
     */
     private $_arch = array(
         "0039-12" => array(
+            "FETBoard" => "FET Board",
         ),
         "0039-21-01" => array(
             "Controller" => "Controller",
@@ -76,6 +77,7 @@ class Role
             "Controller" => "Controller",
         ),
         "0039-28" => array(
+            "SolarController" => "Solar Panel Controller",
         ),
         "0039-37" => array(
         ),

@@ -139,6 +139,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         // AVR
         "00:DEFAULT"                 => "AVRBC2322640_0",
         "02:DEFAULT"                 => "AVRBC2322640",
+        "02:AVRBC2322640"            => "AVRBC2322640",
         "02:AVRB57560G0103F000"      => "AVRB57560G0103F000",
         "02:ControllerTemp"          => "ControllerTemp",
         "02:imcSolar"                => "AVRIMCSolar",
