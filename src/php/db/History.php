@@ -226,6 +226,35 @@ abstract class History extends Table
         }
     }
     /**
+    * Checks to see if our deviceID exists in the database
+    *
+    * @param int $period The length of time to search in
+    *
+    * @return bool True if it exists, false otherwise
+    */
+    public function exists($period = null)
+    {
+
+        $where = "id = ?";
+        $data  = array($this->get("id"));
+        if (is_null($period)) {
+            $where .= " AND Date = ?";
+            $data[] = $this->get("Date");
+        } else {
+            $where .= " AND Date >= ? AND Date <= ?";
+            $date   = $this->get("Date");
+            $data[] = $date - ($period / 2);
+            $data[] = $date + ($period / 2);
+        }
+        $ret = (bool) $this->dbDriver()->countWhere(
+            $where,
+            $data,
+            "date"
+        );
+        $this->dbDriver()->reset();
+        return (bool)$ret;
+    }
+    /**
     * Sets the extra attributes field
     *
     * @param int    $start      The start of the time

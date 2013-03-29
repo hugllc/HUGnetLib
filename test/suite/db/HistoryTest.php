@@ -806,6 +806,65 @@ class HistoryTest extends tables\TableTestBase
         }
         $this->assertSame($expect, $ret);
     }
+    /**
+    * Data provider for testExists
+    *
+    * @return array
+    */
+    public static function dataExists()
+    {
+        return array(
+            array(
+                array(
+                    "id" => 2,
+                    "Date" => 1292648500
+                ),
+                null,
+                true,
+            ),
+            array(
+                array(
+                    "id" => 2,
+                    "Date" => 1292648499
+                ),
+                null,
+                false,
+            ),
+            array(
+                array(
+                    "id" => 2,
+                    "Date" => 1292648450
+                ),
+                120,
+                true,
+            ),
+            array(
+                array(
+                    "id" => 2,
+                    "Date" => 1292648450
+                ),
+                60,
+                false,
+            ),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param array $preload The array to preload into the class
+    * @param int   $period  The period to search for a duplicate
+    * @param array $expect  The expected return
+    *
+    * @dataProvider dataExists
+    *
+    * @return null
+    */
+    public function testExists($preload, $period, $expect)
+    {
+        $this->o->fromAny($preload);
+        $ret = $this->o->exists($period);
+        $this->assertSame($expect, $ret);
+    }
 }
 
 namespace HUGnet\db\tables;
