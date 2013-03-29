@@ -235,12 +235,13 @@ abstract class History extends Table
     public function exists($period = 0)
     {
 
-        $date   = $this->get("Date");
-        $where  = "id = ? AND Date >= ? AND Date <= ?";
-        $data   = array(
+        $date  = $this->get("Date");
+        $where = "id = ? AND Date >= ? AND Date <= ?";
+        $toler = (int)((int)$period / 2);
+        $data  = array(
             $this->get("id"),
-            $date - ((int)$period / 2),
-            $date + ((int)$period / 2)
+            (int)($date - $toler),
+            (int)($date + $toler)
         );
         $ret = (bool) $this->dbDriver()->countWhere(
             $where,
