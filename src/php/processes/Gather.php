@@ -425,6 +425,13 @@ class Gather extends \HUGnet\ui\Daemon
                 );
             }
             break;
+        case "SENSORREAD":
+            if ($device->action()->storePoll($pkt)) {
+                $this->out(
+                    "Saved poll for device ".$device->get("DeviceID")
+                );
+            }
+            break;
         case "READINPUTTABLE":
             if ($device->action()->storeIOP($iop, $pkt->reply(), "input")) {
                 $this->out(

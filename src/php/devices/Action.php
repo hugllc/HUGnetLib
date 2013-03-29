@@ -345,10 +345,23 @@ class Action
         if (empty($HWPart)) {
             return false;
         }
+        $pkt = $this->device->network()->poll();
+        return $this->storePoll($pkt, $time, $TestID);
+    }
+    /**
+    * This deals with a poll
+    *
+    * @param object &$pkt   The packet from the poll
+    * @param int    $time   The time to use for the poll
+    * @param int    $TestID The test ID of this poll
+    *
+    * @return false on failure, the history object on success
+    */
+    public function storePoll(&$pkt, $time = null, $TestID = null)
+    {
         if (empty($time)) {
             $time = time();
         }
-        $pkt = $this->device->network()->poll();
         if (strlen($pkt->reply()) > 0) {
             $prev = (array)$this->device->getParam("LastPollData");
             $data = $this->device->decodeData(
