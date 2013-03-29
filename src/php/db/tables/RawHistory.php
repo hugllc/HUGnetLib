@@ -203,6 +203,32 @@ class RawHistory extends \HUGnet\db\Table
         return (array)$array;
     }
     /**
+    * Checks to see if our deviceID exists in the database
+    *
+    * @param int $period The length of time to search in
+    *
+    * @return bool True if it exists, false otherwise
+    */
+    public function exists($period = 0)
+    {
+
+        $date   = $this->get("Date");
+        $where  = "id = ? AND DataIndex = ? AND Date >= ? AND Date <= ?";
+        $data   = array(
+            $this->get("id"),
+            $this->get("dataIndex"),
+            $date - ((int)$period / 2),
+            $date + ((int)$period / 2)
+        );
+        $ret = (bool) $this->dbDriver()->countWhere(
+            $where,
+            $data,
+            "Date"
+        );
+        $this->dbDriver()->reset();
+        return (bool)$ret;
+    }
+    /**
     * Sets the extra attributes field
     *
     * @param int    $start      The start of the time

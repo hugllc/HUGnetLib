@@ -232,24 +232,20 @@ abstract class History extends Table
     *
     * @return bool True if it exists, false otherwise
     */
-    public function exists($period = null)
+    public function exists($period = 0)
     {
 
-        $where = "id = ?";
-        $data  = array($this->get("id"));
-        if (is_null($period)) {
-            $where .= " AND Date = ?";
-            $data[] = $this->get("Date");
-        } else {
-            $where .= " AND Date >= ? AND Date <= ?";
-            $date   = $this->get("Date");
-            $data[] = $date - ($period / 2);
-            $data[] = $date + ($period / 2);
-        }
+        $date   = $this->get("Date");
+        $where  = "id = ? AND Date >= ? AND Date <= ?";
+        $data   = array(
+            $this->get("id"),
+            $date - ((int)$period / 2),
+            $date + ((int)$period / 2)
+        );
         $ret = (bool) $this->dbDriver()->countWhere(
             $where,
             $data,
-            "date"
+            "Date"
         );
         $this->dbDriver()->reset();
         return (bool)$ret;

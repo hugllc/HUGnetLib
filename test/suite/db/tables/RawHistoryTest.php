@@ -445,6 +445,87 @@ class RawHistoryTest extends TableTestBase
         }
         $this->assertSame($expect, $ret);
     }
+    /**
+    * Data provider for testExists
+    *
+    * @return array
+    */
+    public static function dataExists()
+    {
+        return array(
+            array(
+                array(
+                    "id" => 2,
+                    "Date" => 1292648500,
+                    "dataIndex" => 3,
+                ),
+                null,
+                true,
+            ),
+            array(
+                array(
+                    "id" => 2,
+                    "Date" => 1292648499,
+                    "dataIndex" => 3,
+                ),
+                null,
+                false,
+            ),
+            array(
+                array(
+                    "id" => 2,
+                    "Date" => 1292648450,
+                    "dataIndex" => 3,
+                ),
+                120,
+                true,
+            ),
+            array(
+                array(
+                    "id" => 2,
+                    "Date" => 1292648450,
+                    "dataIndex" => 3,
+                ),
+                60,
+                false,
+            ),
+            array(
+                array(
+                    "id" => 2,
+                    "Date" => 1292648500,
+                    "dataIndex" => 2,
+                ),
+                null,
+                false,
+            ),
+            array(
+                array(
+                    "id" => 2,
+                    "Date" => 1292648450,
+                    "dataIndex" => 2,
+                ),
+                120,
+                false,
+            ),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param array $preload The array to preload into the class
+    * @param int   $period  The period to search for a duplicate
+    * @param array $expect  The expected return
+    *
+    * @dataProvider dataExists
+    *
+    * @return null
+    */
+    public function testExists($preload, $period, $expect)
+    {
+        $this->o->fromAny($preload);
+        $ret = $this->o->exists($period);
+        $this->assertSame($expect, $ret);
+    }
 
 }
 
