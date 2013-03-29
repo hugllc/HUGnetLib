@@ -239,6 +239,81 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
+    public static function dataMix()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "Driver" => "EDEFAULT",
+                            "extra" => array(12, 34, 56, 78, 90, 11),
+                        ),
+                    ),
+                ),
+                new \HUGnet\DummyTable("Table"),
+                "extra",
+                array(2 => 3, 5 => 6),
+                array(array("extra", array(12, 34, 3, 78, 90, 6))),
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "location" => "",
+                        ),
+                    ),
+                ),
+                new \HUGnet\DummyTable("Table"),
+                "location",
+                "Hello There",
+                array(array("location", "Hello There")),
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "location" => "asdf",
+                        ),
+                    ),
+                ),
+                new \HUGnet\DummyTable("Table"),
+                "location",
+                "Hello There",
+                null,
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config The configuration to use
+    * @param mixed  $class  This is either the name of a class or an object
+    * @param string $field  The field to get
+    * @param mixed  $value  The value to set
+    * @param mixed  $expect The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataMix
+    */
+    public function testMix(
+        $config, $class, $field, $value, $expect
+    ) {
+        $sys = new \HUGnet\DummySystem("System");
+        $dev = new \HUGnet\DummyBase("Device");
+        $sys->resetMock($config);
+        $obj = IOPBaseStub::factory($sys, null, $class, $dev);
+        $obj->mix($field, $value);
+        $ret = $sys->retrieve();
+        $this->assertSame($expect, $ret["Table"]["set"]);
+        unset($obj);
+    }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
     public static function dataGet()
     {
         return array(

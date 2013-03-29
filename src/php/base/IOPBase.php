@@ -120,6 +120,29 @@ abstract class IOPBase extends SystemTableBase
         return $object;
     }
     /**
+    * Sets a value
+    *
+    * @param string $field the field to set
+    * @param mixed  $value the value to set
+    *
+    * @return null
+    */
+    public function mix($field, $value)
+    {
+        if (is_array($value)) {
+            $old = (array)parent::get($field);
+            foreach ($value as $k => $v) {
+                $old[$k] = $v;
+            }
+            return parent::set($field, $old);
+        }
+        $old = parent::get($field);
+        if (empty($old)) {
+            return parent::set($field, $value);
+        }
+        return parent::get($field);
+    }
+    /**
     * Gets a value
     *
     * @param string $field the field to get

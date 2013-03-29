@@ -514,17 +514,19 @@ class Device extends \HUGnet\base\SystemTableAction
         if (!empty($role)) {
             $info = $this->_role()->input($role, $sid);
             if (is_array($info)) {
-                $info["data"]["dev"] = $this->id();
-                $info["data"]["input"] = $sid;
+                unset($info["data"]["dev"]);
+                unset($info["data"]["input"]);
                 include_once dirname(__FILE__)."/../devices/Input.php";
                 $system = $this->system();
-                return \HUGnet\devices\Input::factory(
+                $ret = \HUGnet\devices\Input::factory(
                     $system,
-                    (array)$info["data"],
+                    array("dev" => $this->id(), "input" => $sid),
                     null,
                     $this,
                     (array)$info["table"]
                 );
+                $this->_fixIOP($ret, $info["data"]);
+                return $ret;
             }
         }
 
@@ -544,16 +546,18 @@ class Device extends \HUGnet\base\SystemTableAction
             $info = $this->_role()->output($role, $sid);
             if (is_array($info)) {
                 include_once dirname(__FILE__)."/../devices/Output.php";
-                $info["data"]["dev"] = $this->id();
-                $info["data"]["output"] = $sid;
+                unset($info["data"]["dev"]);
+                unset($info["data"]["output"]);
                 $system = $this->system();
-                return \HUGnet\devices\Output::factory(
+                $ret = \HUGnet\devices\Output::factory(
                     $system,
-                    (array)$info["data"],
+                    array("dev" => $this->id(), "output" => $sid),
                     null,
                     $this,
                     (array)$info["table"]
                 );
+                $this->_fixIOP($ret, $info["data"]);
+                return $ret;
             }
         }
 
@@ -573,20 +577,42 @@ class Device extends \HUGnet\base\SystemTableAction
             $info = $this->_role()->process($role, $sid);
             if (is_array($info)) {
                 include_once dirname(__FILE__)."/../devices/Process.php";
-                $info["data"]["dev"] = $this->id();
-                $info["data"]["process"] = $sid;
+                unset($info["data"]["dev"]);
+                unset($info["data"]["process"]);
                 $system = $this->system();
-                return \HUGnet\devices\Process::factory(
+                $ret = \HUGnet\devices\Process::factory(
                     $system,
-                    (array)$info["data"],
+                    array("dev" => $this->id(), "process" => $sid),
                     null,
                     $this,
                     (array)$info["table"]
                 );
+                $this->_fixIOP($ret, $info["data"]);
+                return $ret;
             }
         }
 
         return $this->driver()->process($sid);
+    }
+    /**
+    * This fixes the IOP object
+    *
+    * @param object &$iop The IOP object to fix
+    * @param array  $data The data to fix the object with
+    *
+    * @return null
+    */
+    private function _fixIOP(&$iop, $data)
+    {
+        foreach (array("extra", "location") as $field) {
+            if (isset($data[$field])) {
+                $iop->mix($field, $data[$field]);
+                unset($data[$field]);
+            }
+        }
+        foreach ($data as $field => $value) {
+            $iop->set($field, $value);
+        }
     }
     /**
     * Returns the devices XML file as an array

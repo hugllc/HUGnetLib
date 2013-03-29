@@ -1757,7 +1757,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     public static function dataInput()
     {
         return array(
-            array(
+            array(      // #0
                 array(
                     "Devices" => array(
                         "get" => array(
@@ -1789,7 +1789,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
-            array(
+            array(      // #1
                 array(
                     "Devices" => array(
                         "get" => array(
@@ -1820,7 +1820,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
-            array(
+            array(      // #2
                 array(
                     "Devices" => array(
                         "get" => array(
@@ -1847,7 +1847,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
-            array(
+            array(      // #3
                 array(
                     "Devices" => array(
                         "get" => array(
@@ -1876,7 +1876,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
-            array(
+            array(      // #4
                 array(
                     "Devices" => array(
                         "get" => array(
@@ -1899,15 +1899,11 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         array(
                             "input" => 0,
                             "dev" => 5,
-                            'extra' => array(3, 2, 1),
-                            'location' => 'Input 0',
-                            'id' => 0x61,
-                            "type" => "ASDF",
                         ),
                     ),
                 ),
             ),
-            array(
+            array(      // #5
                 array(
                     "Devices" => array(
                         "get" => array(
@@ -1982,7 +1978,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     public static function dataOutput()
     {
         return array(
-            array(
+            array(      // #0
                 array(
                     "Devices" => array(
                         "get" => array(
@@ -2001,7 +1997,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
-            array(
+            array(      // #1
                 array(
                     "Devices" => array(
                         "get" => array(
@@ -2017,15 +2013,11 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         array(
                             "output" => 1,
                             "dev" => 5,
-                            'extra' => array(1, 1),
-                            'location' => 'Output 1',
-                            'id' => 0x31,
-                            "type" => "FSDA",
                         ),
                     ),
                 ),
             ),
-            array(
+            array(      // #2
                 array(
                     "Devices" => array(
                         "get" => array(
@@ -2086,7 +2078,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     public static function dataProcess()
     {
         return array(
-            array(
+            array(      // #0
                 array(
                     "Devices" => array(
                         "get" => array(
@@ -2105,7 +2097,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
-            array(
+            array(      // #1
                 array(
                     "Devices" => array(
                         "get" => array(
@@ -2121,15 +2113,11 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         array(
                             "process" => 0,
                             "dev" => 5,
-                            "extra" => array(0, 1, 2),
-                            "location" => "Process 0",
-                            "id"     => 0x81,
-                            "type"   => "ASDF",
                         ),
                     ),
                 ),
             ),
-            array(
+            array(      // #2
                 array(
                     "Devices" => array(
                         "get" => array(
