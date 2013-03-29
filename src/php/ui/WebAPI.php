@@ -215,7 +215,11 @@ class WebAPI extends HTML
     {
         $aid = (int)$this->args()->get("id");
         $table = $this->system()->table("Annotations");
-        return $this->_executeTable($aid, $table, $extra);
+        $ret = $this->_executeSystem($aid, $table, $extra);
+        if ($ret === "regen") {
+            return $this->system()->annotation($aid)->toArray(true);
+        }
+        return $ret;
     }
     /**
     * This function executes the api call.
@@ -364,52 +368,6 @@ class WebAPI extends HTML
             $interface = "\\HUGnet\\interfaces\\WebAPI";
             if (is_subclass_of($obj, $interface)) {
                 $obj->load($ident);
-                $ret = $obj->webAPI($this->args(), $extra);
-            }
-        }
-        return $ret;
-    }
-    /**
-    * This function executes the api call.
-    *
-    * @param mixed  $ident The ID to use
-    * @param object &$obj  The object to work on
-    * @param array  $extra Extra data that should be added to the HTMLArgs data
-    *
-    * @return null
-    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
-    */
-    private function _executeTable($ident, &$obj, $extra = array())
-    {
-        $ret = null;
-        $action = strtolower(trim($this->args()->get("action")));
-        if ($action === "get") {
-            $obj->getRow($ident);
-            if (!$obj->isEmpty()) {
-                $ret = $obj->toArray(true);
-            }
-        } else if (($action === "put") && $this->_auth(true)) {
-            $data = (array)$this->args()->get("data");
-            if (is_null($ident) && isset($data["name"])) {
-                $obj->clearData();
-                $obj->set("id", null);
-                $obj->set("name", $data["name"]);
-                if ($obj->insertRow()) {
-                    $obj->sqlOrderBy = "id desc";
-                    $obj->selectOneInto("name = ?", $data["name"]);
-                    $ret = $obj->toArray();
-                }
-            } else if ($obj->getRow($ident)) {
-                $obj->fromAny($data);
-                $obj->updateRow();
-                // Reload it, so that we get what is in the database
-                $obj->getRow($ident);
-                $ret = $obj->toArray(true);
-            }
-        } else if ($action === "list") {
-            $ret = $this->_executeTableList($ident, $obj);
-        } else if ($this->_auth(true)) {
-            if (is_callable(array($obj, "webAPI"))) {
                 $ret = $obj->webAPI($this->args(), $extra);
             }
         }

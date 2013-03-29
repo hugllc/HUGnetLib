@@ -956,10 +956,6 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                 json_encode(array("Real" => "array")),
                 array(
                     "Table" => array(
-                        "getRow" => array(
-                            array(10),
-                        ),
-                        "isEmpty" => array(array()),
                         "toArray" => array(array(true)),
                     ),
                 ),
