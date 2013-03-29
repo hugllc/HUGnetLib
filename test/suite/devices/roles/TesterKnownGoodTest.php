@@ -84,7 +84,7 @@ class TesterKnownGoodTest extends RoleTestBase
     {
         unset($this->o);
     }
- 
+
 
     /**
     * data provider for testDeviceID
@@ -111,7 +111,7 @@ class TesterKnownGoodTest extends RoleTestBase
                     ),
                     "data" => array(
                         "id" => 0xF9,
-                        "extra" => array(100, 1, 1.2),
+                        "extra" => array(1, 10, 1.2),
                         "location" => "HUGnetLab Known Good Voltage",
                         "type" => "ADuCInputTable",
                     ),
