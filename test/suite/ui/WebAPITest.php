@@ -727,7 +727,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                             array()
                         ),
                         "exists" => array(
-                            array(5)
+                            array(0)
                         ),
                     ),
                 ),
@@ -1881,7 +1881,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "historyFactory" => new \HUGnet\DummyTable("History"),
                         "dataChannels" => new \HUGnet\DummyBase("Channels"),
                         "get" => array(
-                            "PollInterval" => 5,
+                            "PollInterval" => 65,
                         ),
                     ),
                     "History" => array(
@@ -1909,7 +1909,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                             array()
                         ),
                         "exists" => array(
-                            array(5)
+                            array(65)
                         ),
                     ),
                 ),

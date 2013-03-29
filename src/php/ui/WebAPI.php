@@ -451,8 +451,12 @@ class WebAPI extends HTML
                 ) {
                     $hist->clearData();
                     $hist->fromArray($row);
+                    $interval = $dev->get("PollInterval");
+                    if ($interval < 60) {
+                        $interval = 0;
+                    }
                     // Only insert a row that doesn't exist
-                    if (!$hist->exists($dev->get("PollInterval"))) {
+                    if (!$hist->exists($interval)) {
                         $ret[$key] = (int)$hist->insertRow(true);
                     } else {
                         $ret[$key] = 0;
