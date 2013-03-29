@@ -53,13 +53,13 @@ defined('_HUGNET') or die('HUGnetSystem not found');
 interface DBTableHistory
 {
     /**
-    * Sets all of the endpoint attributes from an array
+    * Checks to see if our record exists in the database
     *
-    * @param array $array This is an array of this class's attributes
+    * @param int $period The length of time to search in
     *
-    * @return null
+    * @return bool True if it exists, false otherwise
     */
-    public function fromDataArray($array);
+    public function exists($period = 0);
     /**
     * Sets the extra attributes field
     *

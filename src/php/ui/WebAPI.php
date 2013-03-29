@@ -416,9 +416,10 @@ class WebAPI extends HTML
     */
     private function _executeHistory($extra = array())
     {
-        $did     = hexdec($this->args()->get("id"));
-        $data    = (array)$this->args()->get("data");
-        $type    = trim(strtoupper($data["type"]));
+        $did  = hexdec($this->args()->get("id"));
+        $data = (array)$this->args()->get("data");
+        $type = trim(strtoupper($data["type"]));
+        $dev  = $this->system()->device($did);
         switch ($type) {
         case "RAW":
             $hist = $this->system()->table("RawHistory");
@@ -432,10 +433,10 @@ class WebAPI extends HTML
         case "WEEKLY":
         case "MONTHLY":
         case "YEARLY":
-            $hist = $this->system()->device($did)->historyFactory(array(), false);
+            $hist = $dev->historyFactory(array(), false);
             break;
         default:
-            $hist = $this->system()->device($did)->historyFactory(array(), true);
+            $hist = $dev->historyFactory(array(), true);
             break;
         }
         $ret = null;
@@ -450,7 +451,12 @@ class WebAPI extends HTML
                 ) {
                     $hist->clearData();
                     $hist->fromArray($row);
-                    $ret[$key] = (int)$hist->insertRow(true);
+                    // Only insert a row that doesn't exist
+                    if (!$hist->exists($dev->get("PollInterval"))) {
+                        $ret[$key] = (int)$hist->insertRow(true);
+                    } else {
+                        $ret[$key] = 0;
+                    }
                 }
             }
         } else if ($action === "last") {

@@ -53,6 +53,14 @@ defined('_HUGNET') or die('HUGnetSystem not found');
 interface DBTableAverage
 {
     /**
+    * Checks to see if our record exists in the database
+    *
+    * @param int $period The length of time to search in
+    *
+    * @return bool True if it exists, false otherwise
+    */
+    public function exists($period = 0);
+    /**
     * This calculates the averages
     *
     * It will return once for each average that it calculates.  The average will be

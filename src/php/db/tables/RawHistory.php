@@ -39,6 +39,8 @@ namespace HUGnet\db\tables;
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our system interface */
 require_once dirname(__FILE__)."/../../interfaces/DBTable.php";
+/** This is our system interface */
+require_once dirname(__FILE__)."/../../interfaces/DBTableHistory.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -55,7 +57,7 @@ require_once dirname(__FILE__)."/../../interfaces/DBTable.php";
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class RawHistory extends \HUGnet\db\Table
-    implements \HUGnet\interfaces\DBTable
+    implements \HUGnet\interfaces\DBTable, \HUGnet\interfaces\DBTableHistory
 {
     /** @var string This is the table we should use */
     public $sqlTable = "rawHistory";
@@ -203,7 +205,7 @@ class RawHistory extends \HUGnet\db\Table
         return (array)$array;
     }
     /**
-    * Checks to see if our deviceID exists in the database
+    * Checks to see if our record exists in the database
     *
     * @param int $period The length of time to search in
     *

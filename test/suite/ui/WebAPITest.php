@@ -695,6 +695,9 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     "Device" => array(
                         "historyFactory" => new \HUGnet\DummyTable("History"),
                         "dataChannels" => new \HUGnet\DummyBase("Channels"),
+                        "get" => array(
+                            "PollInterval" => 5,
+                        ),
                     ),
                     "History" => array(
                         "isEmpty" => false,
@@ -702,6 +705,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                             "Real" => "array",
                         ),
                         "insertRow" => true,
+                        "exists" => false,
                     ),
                 ),
                 false,
@@ -721,6 +725,9 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         ),
                         "clearData" => array(
                             array()
+                        ),
+                        "exists" => array(
+                            array(5)
                         ),
                     ),
                 ),
@@ -1848,6 +1855,61 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                                     "c" => "d",
                                 ),
                             ),
+                        ),
+                    ),
+                ),
+            ),
+            array(  // #38
+                array(
+                    "task" => "history",
+                    "action" => "put",
+                    "id" => "10",
+                    "data" => array(
+                        "type" => "history",
+                        array("id" => 42, "Date" => 3214),
+                        array("id" => 16, "Date" => 1234),
+                    ),
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "device" => new \HUGnet\DummyTable("Device"),
+                    ),
+                    "Device" => array(
+                        "historyFactory" => new \HUGnet\DummyTable("History"),
+                        "dataChannels" => new \HUGnet\DummyBase("Channels"),
+                        "get" => array(
+                            "PollInterval" => 5,
+                        ),
+                    ),
+                    "History" => array(
+                        "isEmpty" => false,
+                        "toArray" => array(
+                            "Real" => "array",
+                        ),
+                        "insertRow" => true,
+                        "exists" => true,
+                    ),
+                ),
+                false,
+                array(),
+                json_encode(
+                    array(
+                        1 => 0,
+                    )
+                ),
+                array(
+                    "History" => array(
+                        "fromArray" => array(
+                            array(array("id" => 16, "Date" => 1234)),
+                        ),
+                        "clearData" => array(
+                            array()
+                        ),
+                        "exists" => array(
+                            array(5)
                         ),
                     ),
                 ),

@@ -226,7 +226,7 @@ abstract class History extends Table
         }
     }
     /**
-    * Checks to see if our deviceID exists in the database
+    * Checks to see if our record exists in the database
     *
     * @param int $period The length of time to search in
     *
