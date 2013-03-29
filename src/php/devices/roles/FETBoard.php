@@ -220,7 +220,7 @@ class FETBoard extends \HUGnet\base\Role
             ),
             "data" => array(
                 "location" => "Channel 1",
-                "extra"    => array(1),
+                "extra"    => array(1 => 0),
                 "id"       => 0x31,
                 "type"     => "FET003912",
             ),
@@ -230,7 +230,7 @@ class FETBoard extends \HUGnet\base\Role
             ),
             "data" => array(
                 "location" => "Channel 2",
-                "extra"    => array(2),
+                "extra"    => array(1 => 1),
                 "id"       => 0x31,
                 "type"     => "FET003912",
             ),
@@ -240,7 +240,7 @@ class FETBoard extends \HUGnet\base\Role
             ),
             "data" => array(
                 "location" => "Channel 3",
-                "extra"    => array(3),
+                "extra"    => array(1 => 2),
                 "id"       => 0x31,
                 "type"     => "FET003912",
             ),
@@ -250,7 +250,7 @@ class FETBoard extends \HUGnet\base\Role
             ),
             "data" => array(
                 "location" => "Channel 4",
-                "extra"    => array(4),
+                "extra"    => array(1 => 3),
                 "id"       => 0x31,
                 "type"     => "FET003912",
             ),

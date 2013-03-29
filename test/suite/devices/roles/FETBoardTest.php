@@ -149,7 +149,7 @@ class FETBoardTest extends RoleTestBase
                     ),
                     "data" => array(
                         "location" => "Channel 2",
-                        "extra"    => array(2),
+                        "extra"    => array(1 => 1),
                         "id"       => 0x31,
                         "type"     => "FET003912",
                     ),
