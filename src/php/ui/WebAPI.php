@@ -139,11 +139,15 @@ class WebAPI extends HTML
         $dev = $this->system()->device($did);
         $action = strtolower(trim($this->args()->get("action")));
         if (($action === "list") || ($action == "get")) {
-            return $this->_executeSystem($did, $dev, $extra);
+            $ret = $this->_executeSystem($did, $dev, $extra);
         } else if ($this->_auth(true)) {
             //$dev->load($did);
-            return $dev->webAPI($this->args(), $extra);
+            $ret = $dev->webAPI($this->args(), $extra);
         }
+        if ($ret === "regen") {
+            return $this->system()->device($did)->toArray(true);
+        }
+        return $ret;
     }
     /**
     * This function executes the api call.
@@ -157,7 +161,11 @@ class WebAPI extends HTML
     {
         $iid = $this->args()->get("id");
         $inputTable = $this->system()->inputTable($iid);
-        return $this->_executeSystem($iid, $inputTable, $extra);
+        $ret = $this->_executeSystem($iid, $inputTable, $extra);
+        if ($ret === "regen") {
+            return $this->system()->inputTable($iid)->toArray(true);
+        }
+        return $ret;
     }
     /**
     * This function executes the api call.
@@ -171,7 +179,11 @@ class WebAPI extends HTML
     {
         $iid = $this->args()->get("id");
         $outputTable = $this->system()->outputTable($iid);
-        return $this->_executeSystem($iid, $outputTable, $extra);
+        $ret = $this->_executeSystem($iid, $outputTable, $extra);
+        if ($ret === "regen") {
+            return $this->system()->outputTable($iid)->toArray(true);
+        }
+        return $ret;
     }
     /**
     * This function executes the api call.
@@ -185,7 +197,11 @@ class WebAPI extends HTML
     {
         $iid = $this->args()->get("id");
         $processTable = $this->system()->processTable($iid);
-        return $this->_executeSystem($iid, $processTable, $extra);
+        $ret = $this->_executeSystem($iid, $processTable, $extra);
+        if ($ret === "regen") {
+            return $this->system()->processTable($iid)->toArray(true);
+        }
+        return $ret;
     }
     /**
     * This function executes the api call.
@@ -213,7 +229,11 @@ class WebAPI extends HTML
     {
         $tid = (int)$this->args()->get("id");
         $test = $this->system()->test($tid);
-        return $this->_executeSystem($tid, $test, $extra);
+        $ret = $this->_executeSystem($tid, $test, $extra);
+        if ($ret === "regen") {
+            return $this->system()->test($tid)->toArray(true);
+        }
+        return $ret;
     }
     /**
     * This function executes the api call.
@@ -234,7 +254,11 @@ class WebAPI extends HTML
             $this->args()->set("data", array("dev" => $did));
         }
         $sen = $this->system()->device($did)->input($sid);
-        return $this->_executeSystem($ident, $sen, $extra);
+        $ret = $this->_executeSystem($ident, $sen, $extra);
+        if ($ret === "regen") {
+            return $this->system()->device($did)->input($sid)->toArray(true);
+        }
+        return $ret;
     }
     /**
     * This function executes the api call.
@@ -255,7 +279,11 @@ class WebAPI extends HTML
             $this->args()->set("data", array("dev" => $did));
         }
         $sen = $this->system()->device($did)->output($sid);
-        return $this->_executeSystem($ident, $sen, $extra);
+        $ret = $this->_executeSystem($ident, $sen, $extra);
+        if ($ret === "regen") {
+            return $this->system()->device($did)->output($sid)->toArray(true);
+        }
+        return $ret;
     }
     /**
     * This function executes the api call.
@@ -276,7 +304,11 @@ class WebAPI extends HTML
             $this->args()->set("data", array("dev" => $did));
         }
         $sen = $this->system()->device($did)->process($sid);
-        return $this->_executeSystem($ident, $sen, $extra);
+        $ret = $this->_executeSystem($ident, $sen, $extra);
+        if ($ret === "regen") {
+            return $this->system()->device($did)->process($sid)->toArray(true);
+        }
+        return $ret;
     }
     /**
     * This function executes the api call.
@@ -290,7 +322,11 @@ class WebAPI extends HTML
     {
         $uuid = strtolower($this->args()->get("id"));
         $datacol = $this->system()->datacollector($uuid);
-        return $this->_executeSystem($uuid, $datacol, $extra);
+        $ret = $this->_executeSystem($uuid, $datacol, $extra);
+        if ($ret === "regen") {
+            return $this->system()->datacollector($uuid)->toArray(true);
+        }
+        return $ret;
     }
     /**
     * This function executes the api call.
@@ -320,7 +356,7 @@ class WebAPI extends HTML
                 $obj->load($data);
                 $obj->store(true);
             }
-            $ret = $obj->toArray(true);
+            $ret = "regen";
         } else if ($action === "list") {
             $data = $this->args()->get("data");
             $ret = $obj->getList($data, true);
