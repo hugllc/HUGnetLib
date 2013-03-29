@@ -77,7 +77,7 @@ class FETBoard extends \HUGnet\base\Role
             ),
             "data" => array(
                 "id" => 0xF8,
-                "extra" => array(0.5, 1, 5.0),
+                "extra" => array(0, 0.5, 1, 5.0),
                 "location" => "Channel 1 Current",
                 "type" => "AVRAnalogTable",
             ),
@@ -93,7 +93,7 @@ class FETBoard extends \HUGnet\base\Role
             ),
             "data" => array(
                 "id" => 0xF8,
-                "extra" => array(150, 10, 5.0),
+                "extra" => array(0, 150, 10, 5.0),
                 "location" => "Channel 1 Voltage",
                 "type" => "AVRAnalogTable",
             ),
@@ -109,7 +109,7 @@ class FETBoard extends \HUGnet\base\Role
             ),
             "data" => array(
                 "id" => 0xF8,
-                "extra" => array(0.5, 1, 5.0),
+                "extra" => array(0, 0.5, 1, 5.0),
                 "location" => "Channel 2 Current",
                 "type" => "AVRAnalogTable",
             ),
@@ -125,7 +125,7 @@ class FETBoard extends \HUGnet\base\Role
             ),
             "data" => array(
                 "id" => 0xF8,
-                "extra" => array(150, 10, 5.0),
+                "extra" => array(0, 150, 10, 5.0),
                 "location" => "Channel 2 Voltage",
                 "type" => "AVRAnalogTable",
             ),
@@ -141,7 +141,7 @@ class FETBoard extends \HUGnet\base\Role
             ),
             "data" => array(
                 "id" => 0xF8,
-                "extra" => array(0.5, 1, 5.0),
+                "extra" => array(0, 0.5, 1, 5.0),
                 "location" => "Channel 3 Current",
                 "type" => "AVRAnalogTable",
             ),
@@ -157,7 +157,7 @@ class FETBoard extends \HUGnet\base\Role
             ),
             "data" => array(
                 "id" => 0xF8,
-                "extra" => array(150, 10, 5.0),
+                "extra" => array(0, 150, 10, 5.0),
                 "location" => "Channel 3 Voltage",
                 "type" => "AVRAnalogTable",
             ),
@@ -173,7 +173,7 @@ class FETBoard extends \HUGnet\base\Role
             ),
             "data" => array(
                 "id" => 0xF8,
-                "extra" => array(0.5, 1, 5.0),
+                "extra" => array(0, 0.5, 1, 5.0),
                 "location" => "Channel 4 Current",
                 "type" => "AVRAnalogTable",
             ),
@@ -189,7 +189,7 @@ class FETBoard extends \HUGnet\base\Role
             ),
             "data" => array(
                 "id" => 0xF8,
-                "extra" => array(150, 10, 5.0),
+                "extra" => array(0, 150, 10, 5.0),
                 "location" => "Channel 4 Voltage",
                 "type" => "AVRAnalogTable",
             ),
@@ -205,7 +205,7 @@ class FETBoard extends \HUGnet\base\Role
             ),
             "data" => array(
                 "id" => 0xF8,
-                "extra" => array(150, 10, 5.0),
+                "extra" => array(0, 150, 10, 5.0),
                 "location" => "Supply Voltage",
                 "type" => "AVRAnalogTable",
             ),

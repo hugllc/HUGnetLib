@@ -107,7 +107,7 @@ class ControllerTest extends RoleTestBase
                     ),
                     "data" => array(
                         "id" => 0xF8,
-                        "extra" => array(180, 27, 5.0),
+                        "extra" => array(0, 180, 27, 5.0),
                         "location" => "HUGnet 1 Voltage High",
                         "type" => "AVRAnalogTable",
                     ),

@@ -77,7 +77,7 @@ class Controller extends \HUGnet\base\Role
             ),
             "data" => array(
                 "id" => 0xF8,
-                "extra" => array(180, 27, 5.0),
+                "extra" => array(0, 180, 27, 5.0),
                 "location" => "HUGnet 1 Voltage High",
                 "type" => "AVRAnalogTable",
             ),
@@ -93,7 +93,7 @@ class Controller extends \HUGnet\base\Role
             ),
             "data" => array(
                 "id" => 0xF8,
-                "extra" => array(180, 27, 5.0),
+                "extra" => array(0, 180, 27, 5.0),
                 "location" => "HUGnet 1 Voltage Low",
                 "type" => "AVRAnalogTable",
             ),
@@ -109,7 +109,7 @@ class Controller extends \HUGnet\base\Role
             ),
             "data" => array(
                 "id" => 0xF8,
-                "extra" => array(0.5, 7, 5.0),
+                "extra" => array(0, 0.5, 7, 5.0),
                 "location" => "HUGnet 1 Current",
                 "type" => "AVRAnalogTable",
             ),
@@ -125,7 +125,7 @@ class Controller extends \HUGnet\base\Role
             ),
             "data" => array(
                 "id" => 0xF8,
-                "extra" => array(100, 10),
+                "extra" => array(0, 100, 10),
                 "location" => "HUGnet 1 Temperature",
                 "type" => "AVRAnalogTable",
             ),
@@ -141,7 +141,7 @@ class Controller extends \HUGnet\base\Role
             ),
             "data" => array(
                 "id" => 0xF8,
-                "extra" => array(180, 27, 5.0),
+                "extra" => array(0, 180, 27, 5.0),
                 "location" => "HUGnet 2 Voltage High",
                 "type" => "AVRAnalogTable",
             ),
@@ -157,7 +157,7 @@ class Controller extends \HUGnet\base\Role
             ),
             "data" => array(
                 "id" => 0xF8,
-                "extra" => array(180, 27, 5.0),
+                "extra" => array(0, 180, 27, 5.0),
                 "location" => "HUGnet 2 Voltage Low",
                 "type" => "AVRAnalogTable",
             ),
@@ -173,7 +173,7 @@ class Controller extends \HUGnet\base\Role
             ),
             "data" => array(
                 "id" => 0xF8,
-                "extra" => array(0.5, 7, 5.0),
+                "extra" => array(0, 0.5, 7, 5.0),
                 "location" => "HUGnet 2 Current",
                 "type" => "AVRAnalogTable",
             ),
@@ -189,7 +189,7 @@ class Controller extends \HUGnet\base\Role
             ),
             "data" => array(
                 "id" => 0xF8,
-                "extra" => array(100, 10),
+                "extra" => array(0, 100, 10),
                 "location" => "HUGnet 2 Temperature",
                 "type" => "AVRAnalogTable",
             ),

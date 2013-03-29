@@ -107,7 +107,7 @@ class FETBoardTest extends RoleTestBase
                     ),
                     "data" => array(
                         "id" => 0xF8,
-                        "extra" => array(0.5, 1, 5.0),
+                        "extra" => array(0, 0.5, 1, 5.0),
                         "location" => "Channel 1 Current",
                         "type" => "AVRAnalogTable",
                     ),

@@ -106,7 +106,7 @@ class SolarControllerTest extends RoleTestBase
                     ),
                     "data" => array(
                         "id" => 0xF8,
-                        "extra" => array(10, 10),
+                        "extra" => array(0, 10, 10),
                         "location" => "Channel 1 Low",
                         "type" => "AVRAnalogTable",
                     ),

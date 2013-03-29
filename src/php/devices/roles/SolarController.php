@@ -76,7 +76,7 @@ class SolarController extends \HUGnet\base\Role
             ),
             "data" => array(
                 "id" => 0xF8,
-                "extra" => array(10, 10),
+                "extra" => array(0, 10, 10),
                 "location" => "Channel 1 Low",
                 "type" => "AVRAnalogTable",
             ),
@@ -91,7 +91,7 @@ class SolarController extends \HUGnet\base\Role
             ),
             "data" => array(
                 "id" => 0xF8,
-                "extra" => array(10, 10),
+                "extra" => array(0, 10, 10),
                 "location" => "Channel 1 High",
                 "type" => "AVRAnalogTable",
             ),
@@ -106,7 +106,7 @@ class SolarController extends \HUGnet\base\Role
             ),
             "data" => array(
                 "id" => 0xF8,
-                "extra" => array(10, 10),
+                "extra" => array(0, 10, 10),
                 "location" => "Channel 2 Low",
                 "type" => "AVRAnalogTable",
             ),
@@ -121,7 +121,7 @@ class SolarController extends \HUGnet\base\Role
             ),
             "data" => array(
                 "id" => 0xF8,
-                "extra" => array(10, 10),
+                "extra" => array(0, 10, 10),
                 "location" => "Channel 2 High",
                 "type" => "AVRAnalogTable",
             ),
@@ -137,7 +137,7 @@ class SolarController extends \HUGnet\base\Role
             ),
             "data" => array(
                 "id" => 0xF8,
-                "extra" => array(10, 10),
+                "extra" => array(0, 10, 10),
                 "location" => "Channel 3 Low",
                 "type" => "AVRAnalogTable",
             ),
@@ -153,7 +153,7 @@ class SolarController extends \HUGnet\base\Role
             ),
             "data" => array(
                 "id" => 0xF8,
-                "extra" => array(10, 10),
+                "extra" => array(0, 10, 10),
                 "location" => "Channel 3 High",
                 "type" => "AVRAnalogTable",
             ),
@@ -169,7 +169,7 @@ class SolarController extends \HUGnet\base\Role
             ),
             "data" => array(
                 "id" => 0xF8,
-                "extra" => array(10, 10),
+                "extra" => array(0, 10, 10),
                 "location" => "Channel 4 Low",
                 "type" => "AVRAnalogTable",
             ),
@@ -185,7 +185,7 @@ class SolarController extends \HUGnet\base\Role
             ),
             "data" => array(
                 "id" => 0xF8,
-                "extra" => array(10, 10),
+                "extra" => array(0, 10, 10),
                 "location" => "Channel 4 High",
                 "type" => "AVRAnalogTable",
             ),
