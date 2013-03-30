@@ -195,10 +195,10 @@ class DataCollector extends \HUGnet\base\SystemTableBase
     private function _checkin($args)
     {
         $this->load($args->get("id"));
-        $this->system()->table("DatacollectorCheckin")->checkin(
+        $ret = $this->system()->table("DatacollectorCheckin")->checkin(
             $this->id()
         );
-        return $this->toArray();
+        return (int)$ret;
     }
 }
 
