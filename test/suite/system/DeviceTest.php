@@ -1034,6 +1034,10 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             "asdf" => 3,
                             "params" => json_encode(array(1,2,3,4)),
                         ),
+
+                    ),
+                    "EDEFAULTAverage" => array(
+                        "averageTypes" => array("Hello" => "There"),
                     ),
                 ),
                 new DummyTable("Table"),
@@ -1061,6 +1065,10 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     'arch' => 'unknown',
                     "Role" => "asdf",
                     'Roles' => array("" => "None"),
+                    "averageTypes" => array(
+                        "Hello" => "There",
+                        "history" => "History"
+                    ),
                     "dataChannels" => array(
                         0 => array(
                             'decimals' => 2,

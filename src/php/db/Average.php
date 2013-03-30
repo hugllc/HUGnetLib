@@ -457,6 +457,22 @@ abstract class Average extends History
         );
     }
     /**
+    * This sets the time correctly
+    *
+    * @return array The set of averages that this average supports
+    */
+    public function averageTypes()
+    {
+        return array(
+            self::AVERAGE_15MIN   => "15 Minute",
+            self::AVERAGE_HOURLY  => "Hourly",
+            self::AVERAGE_DAILY   => "Daily",
+            self::AVERAGE_WEEKLY  => "Weekly",
+            self::AVERAGE_MONTHLY => "Monthly",
+            self::AVERAGE_YEARLY  => "Yearly",
+        );
+    }
+    /**
     * By default it outputs the date in the format specified in myConfig
     *
     * This function fixes the time offset due to the time zone for

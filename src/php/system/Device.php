@@ -165,6 +165,10 @@ class Device extends \HUGnet\base\SystemTableAction
     private function _toArrayExtra(&$return)
     {
         $return["Roles"] = $this->_role()->getAll($this->driver()->get("arch"));
+        $return["averageTypes"] = array_merge(
+            (array)$this->historyFactory(array(), false)->averageTypes(),
+            array("history" => "History")
+        );
         if ($return["loadable"]) {
             $this->firmware()->set("HWPartNum", $return["HWPartNum"]);
             $this->firmware()->set("FWPartNum", $return["FWPartNum"]);

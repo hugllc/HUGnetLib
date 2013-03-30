@@ -4371,6 +4371,15 @@ class AverageTest extends tables\TableTestBase
         $this->o->fromAny($preload);
         $this->assertSame($expect, $this->o->outputDate($field));
     }
+    /**
+    * Test that averageTypes is an array
+    *
+    * @return null
+    */
+    public function testAverageTypesIsAnArray()
+    {
+        $this->assertInternalType("array", $this->o->averageTypes());
+    }
 
 }
 namespace HUGnet\db\tables;

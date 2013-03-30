@@ -347,6 +347,20 @@ abstract class FastAverage extends History
         );
     }
     /**
+    * This sets the time correctly
+    *
+    * @return array The set of averages that this average supports
+    */
+    public function averageTypes()
+    {
+        return array(
+            self::AVERAGE_30SEC   => "30 Second",
+            self::AVERAGE_1MIN   => "1 Minute",
+            self::AVERAGE_5MIN   => "5 Minute",
+            self::AVERAGE_15MIN   => "15 Minute",
+        );
+    }
+    /**
     * By default it outputs the date in the format specified in myConfig
     *
     * This function fixes the time offset due to the time zone for
