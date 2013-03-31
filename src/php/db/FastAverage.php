@@ -354,10 +354,10 @@ abstract class FastAverage extends History
     public function averageTypes()
     {
         return array(
-            self::AVERAGE_30SEC   => "30 Second",
-            self::AVERAGE_1MIN   => "1 Minute",
-            self::AVERAGE_5MIN   => "5 Minute",
-            self::AVERAGE_15MIN   => "15 Minute",
+            self::AVERAGE_30SEC   => "30 Second Average",
+            self::AVERAGE_1MIN   => "1 Minute Average",
+            self::AVERAGE_5MIN   => "5 Minute Average",
+            self::AVERAGE_15MIN   => "15 Minute Average",
         );
     }
     /**

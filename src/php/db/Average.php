@@ -464,12 +464,12 @@ abstract class Average extends History
     public function averageTypes()
     {
         return array(
-            self::AVERAGE_15MIN   => "15 Minute",
-            self::AVERAGE_HOURLY  => "Hourly",
-            self::AVERAGE_DAILY   => "Daily",
-            self::AVERAGE_WEEKLY  => "Weekly",
-            self::AVERAGE_MONTHLY => "Monthly",
-            self::AVERAGE_YEARLY  => "Yearly",
+            self::AVERAGE_15MIN   => "15 Minute Average",
+            self::AVERAGE_HOURLY  => "Hourly Average",
+            self::AVERAGE_DAILY   => "Daily Average",
+            self::AVERAGE_WEEKLY  => "Weekly Average",
+            self::AVERAGE_MONTHLY => "Monthly Average",
+            self::AVERAGE_YEARLY  => "Yearly Average",
         );
     }
     /**
