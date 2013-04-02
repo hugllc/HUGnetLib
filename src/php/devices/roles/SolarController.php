@@ -69,6 +69,7 @@ class SolarController extends \HUGnet\base\Role
         0 => array(            // HUGnet1 Voltage High
             "table" => array(
                 "driver" => "02:AVRBC2322640",
+                "name" => "Solar Controller Temp",
                 "MUX" => 0,
                 "id" => 0,
                 "ADLAR" => 1,
@@ -84,6 +85,7 @@ class SolarController extends \HUGnet\base\Role
         1 => array(            // HUGnet1 Voltage Low
             "table" => array(
                 "driver" => "02:AVRBC2322640",
+                "name" => "Solar Controller Temp",
                 "MUX" => 1,
                 "id" => 0,
                 "ADLAR" => 1,
@@ -99,6 +101,7 @@ class SolarController extends \HUGnet\base\Role
         2 => array(            // HUGnet1 Current
             "table" => array(
                 "driver" => "02:AVRBC2322640",
+                "name" => "Solar Controller Temp",
                 "MUX" => 2,
                 "id" => 0,
                 "ADLAR" => 1,
@@ -114,6 +117,7 @@ class SolarController extends \HUGnet\base\Role
         3 => array(            // HUGnet1 Temperature
             "table" => array(
                 "driver" => "02:AVRBC2322640",
+                "name" => "Solar Controller Temp",
                 "MUX" => 3,
                 "id" => 0,
                 "ADLAR" => 1,
@@ -129,7 +133,7 @@ class SolarController extends \HUGnet\base\Role
         4 => array(            // HUGnet2 Voltage High
             "table" => array(
                 "driver" => "02:AVRBC2322640",
-                "name" => "Controller Board Voltage",
+                "name" => "Solar Controller Temp",
                 "MUX" => 4,
                 "id" => 0,
                 "ADLAR" => 1,
@@ -145,7 +149,7 @@ class SolarController extends \HUGnet\base\Role
         5 => array(            // HUGnet2 Voltage Low
             "table" => array(
                 "driver" => "02:AVRBC2322640",
-                "name" => "Controller Board Voltage",
+                "name" => "Solar Controller Temp",
                 "MUX" => 5,
                 "id" => 0,
                 "ADLAR" => 1,
@@ -161,7 +165,7 @@ class SolarController extends \HUGnet\base\Role
         6 => array(            // HUGnet2 Current
             "table" => array(
                 "driver" => "02:AVRBC2322640",
-                "name" => "Controller Board Current",
+                "name" => "Solar Controller Temp",
                 "MUX" => 6,
                 "id" => 0,
                 "ADLAR" => 1,
@@ -177,7 +181,7 @@ class SolarController extends \HUGnet\base\Role
         7 => array(            // HUGnet2 Temperature
             "table" => array(
                 "driver" => "02:AVRBC2322640",
-                "name" => "Controller Board Temperature",
+                "name" => "Solar Controller Temp",
                 "MUX" => 7,
                 "id" => 0,
                 "ADLAR" => 1,

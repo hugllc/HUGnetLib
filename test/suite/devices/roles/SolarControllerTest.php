@@ -99,6 +99,7 @@ class SolarControllerTest extends RoleTestBase
                 0, array(
                     "table" => array(
                         "driver" => "02:AVRBC2322640",
+                        "name" => "Solar Controller Temp",
                         "MUX" => 0,
                         "id" => 0,
                         "ADLAR" => 1,
