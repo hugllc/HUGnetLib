@@ -124,8 +124,8 @@ abstract class Driver
         if ($from === $to) {
             return true;
         }
-        $data /= $this->prefix($data, $to);
-        $data *= $this->prefix($data, $from);
+        $data /= $this->prefix($to);
+        $data *= $this->prefix($from);
         if (isset($this->multiplier[$to]) && isset($this->multiplier[$to][$from])) {
             $data *= $this->multiplier[$to][$from];
             return true;
@@ -136,12 +136,11 @@ abstract class Driver
     /**
     * Does the actual conversion
     *
-    * @param mixed  $data  The data to convert
     * @param string &$unit The units to convert to
     *
     * @return mixed The value returned
     */
-    protected function prefix($data, &$unit)
+    protected function prefix(&$unit)
     {
         if (is_array($this->prefix[$unit])) {
             $old  = $unit;
