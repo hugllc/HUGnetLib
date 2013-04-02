@@ -70,6 +70,10 @@ final class Serial implements PhysicalInterface
     /**
     * This is the maximum number of bytes that we read
     */
+    const RETRY_TIMEOUT = 10;
+    /**
+    * This is the maximum number of bytes that we read
+    */
     const WAIT_SEC = 0;
     /**
     * This is the maximum number of bytes that we read
@@ -87,6 +91,10 @@ final class Serial implements PhysicalInterface
     * This our socket
     */
     private $_port;
+    /**
+    * This our socket
+    */
+    private $_wasConnected;
     /**
     * The last time we failed to connect
     */
@@ -143,7 +151,7 @@ final class Serial implements PhysicalInterface
     private function _disconnect()
     {
         if (is_resource($this->_port)) {
-            @fclose($this->_port);
+            fclose($this->_port);
         }
     }
     /**
@@ -158,14 +166,21 @@ final class Serial implements PhysicalInterface
         }
         $port = $this->_config["location"];
         $this->_checkPort($port);
-        if ($this->_lastConnectFail < ($this->_system->now() - 30)) {
-            $this->_lastConnectFail = 0;
+        $time = ($this->_system->now() - self::RETRY_TIMEOUT);
+        if ($this->_lastConnectFail < $time) {
             $this->_setupPort($port);
             $this->_port = @fopen($port, "rn+b");
             $this->_system->fatalError(
                 "Failed to open port:  ".$this->_config["location"],
                 !is_resource($this->_port) && !$this->_config["quiet"]
             );
+            if (is_resource($this->_port)) {
+                $this->_system->out("Using port $port", 1);
+                $this->_wasConnected = true;
+                $this->_lastConnectFail = 0;
+            } else {
+                $this->_lastConnectFail = $this->_system->now();
+            }
             @stream_set_blocking($this->_port, 0);
         }
     }
@@ -191,18 +206,19 @@ final class Serial implements PhysicalInterface
             if (!$this->_config["quiet"]) {
                 break;
             }
-            if (substr($port, strlen($port) - 3) === "USB") {
-                $this->_system->out(
-                    "Serial port disappeared.  Trying again in 30 seconds.", 1
-                );
-                $this->_lastConnectFail = $this->_system->now();
-            }
         }
         $this->_system->fatalError(
             "Serial port doesn't exist:  ".$this->_config["location"],
             !file_exists($port) && !$this->_config["quiet"]
         );
-        $this->_system->out("Using port $port", 1);
+        if ($this->_wasConnected) {
+            $this->_system->out(
+                "Serial port disappeared.  "
+                ."Trying again in ".self::RETRY_TIMEOUT." seconds.",
+                1
+            );
+            $this->_wasConnected = false;
+        }
     }
     /**
     * Sets up the connection to the socket
