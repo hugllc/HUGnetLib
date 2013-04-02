@@ -204,6 +204,48 @@ class DriverTest extends drivers\DriverTestBase
             ),
         );
     }
+    /**
+    * data provider for testGetTypes
+    *
+    * @return array
+    */
+    public static function dataConvert2()
+    {
+        return array(
+            array(
+                12.312, "Pa", "bar",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                true, 1231200
+            ),
+            array(
+                12.312, "mPa", "mbar",
+                \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                true, 1231200
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $data   The data to convert
+    * @param string $to     The unit to convert to
+    * @param string $from   The unit to convert from
+    * @param string $type   The data type
+    * @param bool   $return The expected return
+    * @param mixed  $expect The expected data after the conversion
+    *
+    * @return null
+    *
+    * @dataProvider dataConvert2
+    */
+    public function testConvert2($data, $to, $from, $type, $return, $expect)
+    {
+        $this->o = &Driver::factory("DriverTestClass2", "Pa");
+        $this->assertSame(
+            $return, $this->o->convert($data, $to, $from, $type), "Return is wrong"
+        );
+        $this->assertEquals($expect, $data, "Result is wrong", 0.000001);
+    }
 }
 /** This is the HUGnet namespace */
 namespace HUGnet\devices\datachan\drivers;
@@ -227,5 +269,46 @@ class DriverTestClass extends \HUGnet\devices\datachan\Driver
 {
     /** @var The units that are valid for conversion */
     protected $valid = array("&#176;F", "&#176;C", "&#176;R", "K");
+}
+/**
+ * Base driver class for devices.
+ *
+ * This class deals with loading the drivers and figuring out what driver needs
+ * to be loaded.
+ *
+ * @category   Libraries
+ * @package    HUGnetLib
+ * @subpackage Devices
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2013 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.10.2
+ * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @since      0.9.7
+ */
+class DriverTestClass2 extends \HUGnet\devices\datachan\Driver
+{
+    /** @var The units that are valid for conversion */
+    protected $valid = array("Pa", "bar");
+    /** @var Unit conversion multipliers */
+    protected $multiplier = array(
+        "Pa" => array(
+            "bar"  => 1E5,
+        ),
+        "bar" => array(
+            "Pa"   => 1E-5,
+        ),
+    );
+    /** @var Unit conversion prefixes */
+    protected $prefix = array(
+        "mbar" => array(
+            "base" => "bar",
+            "mult" => 1E-3,
+        ),
+        "mPa" => array(
+            "base" => "Pa",
+            "mult" => 1E-3,
+        ),
+    );
 }
 ?>

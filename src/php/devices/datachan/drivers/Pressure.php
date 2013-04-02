@@ -106,6 +106,13 @@ class Pressure extends \HUGnet\devices\datachan\Driver
             "Torr" => 19.337E-3,
         ),
     );
+    /** @var Unit conversion prefixes */
+    protected $prefix = array(
+        "mbar" => array(
+            "base" => "bar",
+            "mult" => 1E-3,
+        ),
+    );
 
 }
 ?>

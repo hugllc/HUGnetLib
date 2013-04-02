@@ -185,6 +185,14 @@ class PressureTest extends DriverTestBase
                 1.351, "bar", "atm", \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, 1.36890075
             ),
+            array(
+                1.351, "mbar", "bar", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                true, 1351.0
+            ),
+            array(
+                1.351, "mbar", "atm", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                true, 1368.90075
+            ),
         );
     }
 

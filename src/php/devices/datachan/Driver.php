@@ -68,7 +68,9 @@ abstract class Driver
     protected $valid = array();
     /** @var Unit conversion multipliers */
     protected $multiplier = array();
-
+    /** @var Unit conversion prefixes */
+    protected $prefix = array(
+    );
     /**
     * Sets everything up
     *
@@ -119,6 +121,8 @@ abstract class Driver
     public function convert(&$data, $to, $from, $type)
     {
         $ret = false;
+        $data /= $this->prefix($data, $to);
+        $data *= $this->prefix($data, $from);
         if (isset($this->multiplier[$to]) && isset($this->multiplier[$to][$from])) {
             $data *= $this->multiplier[$to][$from];
             $ret = true;
@@ -128,7 +132,26 @@ abstract class Driver
 
         return $ret;
     }
-
+    /**
+    * Does the actual conversion
+    *
+    * @param mixed  $data  The data to convert
+    * @param string &$unit The units to convert to
+    *
+    * @return mixed The value returned
+    */
+    protected function prefix($data, &$unit)
+    {
+        if (is_array($this->prefix[$unit])) {
+            $old  = $unit;
+            $unit = $this->prefix[$old]['base'];
+            $mult = $this->prefix[$old]['mult'];
+        }
+        if (empty($mult)) {
+            return 1;
+        }
+        return $mult;
+    }
     /**
     * Checks to see if units are valid
     *
@@ -138,7 +161,8 @@ abstract class Driver
     */
     public function valid($units)
     {
-        return in_array($units, (array)$this->valid);
+        return in_array($units, (array)$this->valid)
+                || is_array($this->prefix[$units]);
     }
 
     /**
@@ -165,7 +189,7 @@ abstract class Driver
     public function numeric($units)
     {
         // This only replies true for units that it knows about
-        return in_array($units, (array)$this->valid);
+        return $this->valid($units);
     }
 
 }
