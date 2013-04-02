@@ -120,17 +120,18 @@ abstract class Driver
     */
     public function convert(&$data, $to, $from, $type)
     {
-        $ret = false;
+        // Head this off quickly.
+        if ($from === $to) {
+            return true;
+        }
         $data /= $this->prefix($data, $to);
         $data *= $this->prefix($data, $from);
         if (isset($this->multiplier[$to]) && isset($this->multiplier[$to][$from])) {
             $data *= $this->multiplier[$to][$from];
-            $ret = true;
-        } else if ($from == $to) {
-            $ret = true;
+            return true;
         }
-
-        return $ret;
+        // This is in case the from and to have been changed by this->prefix()
+        return ($from === $to);
     }
     /**
     * Does the actual conversion
