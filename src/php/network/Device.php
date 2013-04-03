@@ -64,8 +64,6 @@ final class Device
     private $_device = null;
     /** This is our configuration */
     private $_system = null;
-    /** This is our configuration */
-    private $_lastContact = null;
     /** These are the packets we are sending */
     private $_defaultConfig = array(
         "HWPartNum" => "0039-26-00-P",
@@ -128,7 +126,6 @@ final class Device
     */
     public function packet($pkt)
     {
-        $this->_lastContact = time();
         if (($pkt->type() === "PING") || ($pkt->type() === "FINDPING")) {
             $this->_reply($pkt, $pkt->data());
         } else if (($pkt->type() === "CONFIG")) {
@@ -249,30 +246,16 @@ final class Device
     {
         static $lastBoredom;
 
-        $lastPkt = time() - $this->_lastContact;
         $last = time() - $this->_device->getParam("LastConfig");
-        if (($lastPkt > 3600) && ((time() - $lastBoredom) > 3600)) {
-            $newPacket = packets\Packet::factory(
-                array(
-                    "To"      => "000000",
-                    "From"    => $this->_config["id"],
-                    "Command" => "BOREDOM",
-                    "Data"    => sprintf("%08X", $last),
-                )
-            );
-            $this->_network->send(
-                $newPacket, null, array("tries" => 1, "find" => false)
-            );
-            $lastBoredom = time();
-        } else if ($last > 60) {
+        if ($last > 60) {
             /* This is so we don't get bogged down trying to find a device on this
              * computer */
             $this->_system->out(
                 "Updating my config as ".sprintf("%06X", $this->_device->id())
             );
             $this->_device->load($this->_device->id());
-            $this->_device->setParam("LastContact", time());
-            $this->_device->setParam("LastConfig", time());
+            $this->_device->setParam("LastContact", $this->_system->now());
+            $this->_device->setParam("LastConfig", $this->_system->now());
             $this->_device->setParam("ConfigFail", 0);
             $this->_device->setParam("ContactFail", 0);
             $this->_device->store();
