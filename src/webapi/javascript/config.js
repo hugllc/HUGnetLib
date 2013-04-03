@@ -43,9 +43,17 @@
 HUGnet.Config = Backbone.View.extend({
     tabs: undefined,
     url: "/HUGnetLib/HUGnetLibAPI.php",
+    id: "config-tabs",
     initialize: function (options)
     {
-        if (options.url) this.url = options.url;
+        if (options) {
+            if (options.url) {
+                this.url = options.url;
+            }
+            if (options.id) {
+                this.id = options.id;
+            }
+        }
         this.devices = new HUGnet.DevicesView({
             model: options.devices,
             url: this.url
@@ -74,29 +82,31 @@ HUGnet.Config = Backbone.View.extend({
     {
         var self = this;
         this.$el.html(
-            '<div id="config-tabs"><ul></ul></div>'
+            '<div id="'+this.id+'"><ul></ul></div>'
         );
-        this.tabs = $('#config-tabs').tabs({
+        this.tabs = $('#'+this.id).tabs({
             collapsible: false,
             cookie: {
                 // store a session cookie
                 expires: 10
             }
         });
-//        this.tabs.tabs("add", '#config-tabs-devices', 'Device Information');
-        this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#config-tabs-devices">Device Information</a></li>');
-        this.tabs.append( "<div id='config-tabs-devices'></div>" );
-        $('#config-tabs-devices').html(this.devices.render().el);
-//        this.tabs.tabs("add", '#config-tabs-inputTable', 'Input Tables');
-        this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#config-tabs-inputTable">Input Tables</a></li>');
-        this.tabs.append( "<div id='config-tabs-inputTable'></div>" );
-        $('#config-tabs-inputTable').html(this.inputTables.render().el);
+        this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+this.id+'-devices">Device Information</a></li>');
+        this.tabs.append('<div id="'+this.id+'-devices"></div>');
+        $('#'+this.id+'-devices').html(this.devices.render().el);
+        this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+this.id+'-inputTable">Input Tables</a></li>');
+        this.tabs.append('<div id="'+this.id+'-inputTable"></div>');
+        $('#'+this.id+'-inputTable').html(this.inputTables.render().el);
+
         /*
-        this.tabs.tabs("add", '#config-tabs-outputTable', 'Output Tables');
-        $('#config-tabs-outputTable').html(this.outputTables.render().el);
-        this.tabs.tabs("add", '#config-tabs-processTable', 'Process Tables');
-        $('#config-tabs-processTable').html(this.processTables.render().el);
+        this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+this.id+'-outputTable">Output Tables</a></li>');
+        this.tabs.append('<div id="'+this.id+'-outputTable"></div>');
+        $('#'+this.id+'-outputTable').html(this.outputTables.render().el);
+        this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+this.id+'-processTable">Process Tables</a></li>');
+        this.tabs.append('<div id="'+this.id+'-processTable"></div>');
+        $('#'+this.id+'-processTable').html(this.processTables.render().el);
         */
+
         this.tabs.tabs("refresh");
         this.tabs.tabs("option", "active", 0);
     }

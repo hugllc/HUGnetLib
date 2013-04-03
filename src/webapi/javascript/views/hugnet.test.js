@@ -106,6 +106,7 @@ var TestEntryView = Backbone.View.extend({
 HUGnet.TestsView = Backbone.View.extend({
     template: "#TestListTemplate",
     url: '/HUGnetLib/index.php',
+    readonly: false,
     events: {
         'click .new': 'create',
         'click .run': 'run',
@@ -114,15 +115,25 @@ HUGnet.TestsView = Backbone.View.extend({
     initialize: function (options)
     {
         if (options) {
-            if (options.url) this.url = options.url;
+            if (options.url) {
+                this.url = options.url;
+            }
+            if (options.readonly) {
+                this.readonly = options.readonly;
+            }
         }
         this.model.each(this.insert, this);
         this.model.bind('add', this.insert, this);
         this.model.bind('savefail', this.saveFail, this);
-        this.run('status');
+        if (!this.readonly) {
+            this.run('status');
+        }
     },
     create: function ()
     {
+        if (this.readonly) {
+            return;
+        }
         var self = this;
         var ret = $.ajax({
             type: 'GET',
@@ -189,7 +200,14 @@ HUGnet.TestsView = Backbone.View.extend({
                     self.trigger('testpaused');
                 }
             }
+        ).fail(
+            function ()
+            {
+                //self.statusFail();
+                self.trigger('statusfail');
+            }
         );
+;
     },
     saveFail: function (msg)
     {
@@ -212,6 +230,11 @@ HUGnet.TestsView = Backbone.View.extend({
                 data
             )
         );
+        if (this.readonly) {
+            this.$('.run').hide();
+            this.$('.stop').hide();
+            this.$('.new').hide();
+        }
         this.$('.tablesorter').tablesorter({ widgets: ['zebra'] });
         this.$el.trigger('update');
         return this;

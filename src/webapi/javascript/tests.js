@@ -42,33 +42,46 @@
 */
 HUGnet.TestSuite = Backbone.View.extend({
     tabs: undefined,
+    id: "tests-tabs",
+    readonly: false,
     data: {},
     url: '/HUGnetLib/HUGnetLibAPI.php',
     tabTemplate: '<li style="white-space: nowrap;"><a href="#{href}">#{label}</a> <span name="#{href}" class="ui-icon ui-icon-close">Remove Tab</span></li>',
     initialize: function (options)
     {
-        if (options.url) this.url = options.url;
+        if (options) {
+            if (options.url) {
+                this.url = options.url;
+            }
+            if (options.id) {
+                this.id = options.id;
+            }
+            if (options.readonly) {
+                this.readonly = options.readonly;
+            }
+        }
         this.tests = new HUGnet.TestsView({
             model: options.tests,
-            url: this.url
+            url: this.url,
+            readonly: this.readonly
         });
         this.render();
     },
     render: function ()
     {
-        this.$el.html('<div id="tests-tabs"><ul></ul></div>');
+        this.$el.html('<div id="'+this.id+'"><ul></ul></div>');
         var self = this;
-        this.tabs = $('#tests-tabs').tabs({
+        this.tabs = $('#'+this.id).tabs({
             active: 0,
             cookie: {
                 // store a session cookie
                 expires: 10
             }
         });
-        //this.tabs.tabs("add", '#tests-tabs-tests', 'Test Definitions');
-        this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#tests-tabs-tests">Test Definitions</a></li>');
-        this.tabs.append( "<div id='tests-tabs-tests'></div>" );
-        $('#tests-tabs-tests').html(this.tests.render().el);
+        var tag = this.id+'-views';
+        this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+tag+'">Test Definitions</a></li>');
+        this.tabs.append( '<div id="'+tag+'"></div>' );
+        $('#'+tag).html(this.tests.render().el);
         this.tabs.tabs("refresh");
         this.tabs.tabs("option", "active", 0);
 
@@ -76,7 +89,7 @@ HUGnet.TestSuite = Backbone.View.extend({
         //this.tabs.tabs("option", "tabTemplate", '<li style="white-space: nowrap;"><a href="#{href}">#{label}</a> <span name="#{href}" class="ui-icon ui-icon-close">Remove Tab</span></li>');
         /* close icon: removing the tab on click */
         var tabs = this.tabs;
-        $(document).on( "click", "#tests-tabs span.ui-icon-close", function(event, ui) {
+        $(document).on( "click", "#"+this.id+" span.ui-icon-close", function(event, ui) {
             var panelId = $( this ).closest( "li" ).remove().attr( "aria-controls" );
             self.data[panelId].exit();
             delete self.data[panelId];
@@ -104,7 +117,7 @@ HUGnet.TestSuite = Backbone.View.extend({
     testTab: function (test)
     {
         var self = this;
-        var tag = "tabs-test" + test.get("id");
+        var tag = this.id + test.get("id");
         if (this.data[tag] !== undefined) {
             return;
         }
