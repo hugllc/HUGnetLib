@@ -134,6 +134,29 @@ final class Device
         }
     }
     /**
+    * Overload the set attribute
+    *
+    * @param string $name  This is the attribute to set
+    * @param mixed  $value The value to set it to
+    *
+    * @return mixed The value of the attribute
+    */
+    public function set($name, $value)
+    {
+        return $this->_device->set($name, $value);
+    }
+    /**
+    * Overload the get attribute
+    *
+    * @param string $name This is the attribute to get
+    *
+    * @return mixed The value of the attribute
+    */
+    public function get($name)
+    {
+        return $this->_device->get($name);
+    }
+    /**
     * Gets the device associated with this
     *
     * @return null
@@ -227,7 +250,9 @@ final class Device
                     null,
                     array("block" => 1)
                 );
-                $reply = $ret->reply();
+                if (is_object($ret)) {
+                    $reply = $ret->reply();
+                }
             } while (!empty($reply));
             $this->_config["id"] = $did;
         }

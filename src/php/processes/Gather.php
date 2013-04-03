@@ -266,6 +266,21 @@ class Gather extends \HUGnet\ui\Daemon
     {
         $this->out("Got unsolicited packet from ".$pkt->from());
         $this->_unsolicited->load(array("DeviceID" => $pkt->from()));
+
+        // Test to see if this is a local script
+        if ($this->_unsolicited->get("id") >= 0xFD0000) {
+            $loc = $this->_unsolicited->get("DeviceLocation");
+            $myLoc = $this->device()->get("DeviceLocation");
+            if ($loc == $myLoc) {
+                // This script is local.  Don't get the config of it.
+                $this->out(
+                    printf("%06X", $this->_unsolicited->get("id"))
+                    ." is a local script.  There is no need to get the config."
+                );
+                return;
+            }
+        }
+
         $this->_unsolicited->set("GatewayKey", $this->system()->get("GatewayKey"));
         $LastConfig = $this->_unsolicited->getParam("LastConfig");
         $now = $this->system()->now();

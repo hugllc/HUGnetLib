@@ -383,5 +383,45 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expect, $ret["Network"]["send"]);
 
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataGetSet()
+    {
+        return array(
+            array("DeviceLocation", 16, 16),
+            array("DeviceName", "Hello", "Hello"),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $attrib This is the attribute to set
+    * @param mixed  $value  The value to set it to
+    * @param int    $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataGetSet
+    */
+    public function testGetSet(
+        $attrib,
+        $value,
+        $expect
+    ) {
+        $sys = $this->getMock('\HUGnet\System', array("now"));
+        // Configure the stub.
+        $sys->expects($this->any())
+             ->method('now')
+             ->will($this->returnValue(0));
+        $net = new \HUGnet\network\DummyNetwork("Network");
+        $obj = &Device::factory($net, $sys, $config);
+        $obj->set($attrib, $value);
+        $this->assertSame($expect, $obj->get($attrib));
+
+    }
 }
 ?>
