@@ -114,6 +114,9 @@ HUGnet.TestsView = Backbone.View.extend({
     },
     initialize: function (options)
     {
+        this.$('.run').hide();
+        this.$('.stop').hide();
+        this.$('.new').hide();
         if (options) {
             if (options.url) {
                 this.url = options.url;
