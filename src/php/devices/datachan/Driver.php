@@ -124,8 +124,12 @@ abstract class Driver
         if ($from === $to) {
             return true;
         }
-        $data /= $this->prefix($to);
-        $data *= $this->prefix($from);
+        if (is_array($this->prefix[$to])) {
+            $data /= $this->prefix($to);
+        }
+        if (is_array($this->prefix[$from])) {
+            $data *= $this->prefix($from);
+        }
         if (isset($this->multiplier[$to]) && isset($this->multiplier[$to][$from])) {
             $data *= $this->multiplier[$to][$from];
             return true;
