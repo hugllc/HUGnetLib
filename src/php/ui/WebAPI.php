@@ -350,17 +350,17 @@ class WebAPI extends HTML
             $ret = $obj->toArray(true);
         } else if (($action === "put") && $this->_auth(true)) {
             $data = (array)$this->args()->get("data");
+            $ret = "regen";
             if ($obj->load($ident)) {
                 $obj->change($data);
-                // Reload it, so that we get what is in the database
-                $obj->load($ident);
             } else if (is_null($ident) && isset($data["name"])) {
                 $obj->create($data);
+                // We don't want to regen this one.  $ident is wrong.
+                $ret = $obj->toArray(true);
             } else {
                 $obj->load($data);
                 $obj->store(true);
             }
-            $ret = "regen";
         } else if ($action === "list") {
             $data = $this->args()->get("data");
             $ret = $obj->getList($data, true);
