@@ -6,7 +6,9 @@ Homepage: http://dev.huglc.com/
 Version: %VERSION%
 Package: hugnetlib-rowebapi
 Architecture: all
-Depends: php5 (>= 5.3.2), php5-sqlite, hugnetlib (= %VERSION% ), php5-mysql
+Depends: php5 (>= 5.3.2), php5-sqlite, hugnetlib (= %VERSION% ), php5-mysql,
+    hugnetlib-js (= %VERSION% )
+Breaks: hugnetlib-webapi
 Recommends: apache2
 Description: This is the READ ONLY HUGnet API for accessing a HUGnet system.
  This creates an interface that web pages and scripts alike can manipulate the
