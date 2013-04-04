@@ -415,8 +415,8 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $sys = $this->getMock('\HUGnet\System', array("now"));
         // Configure the stub.
         $sys->expects($this->any())
-             ->method('now')
-             ->will($this->returnValue(0));
+            ->method('now')
+            ->will($this->returnValue(0));
         $net = new \HUGnet\network\DummyNetwork("Network");
         $obj = &Device::factory($net, $sys, $config);
         $obj->set($attrib, $value);
