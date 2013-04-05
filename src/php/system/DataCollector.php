@@ -198,6 +198,10 @@ class DataCollector extends \HUGnet\base\SystemTableBase
         $ret = $this->system()->table("DatacollectorCheckin")->checkin(
             $this->id()
         );
+        if ($ret) {
+            $this->set("LastContact", $this->system()->now());
+            $this->store();
+        }
         return (int)$ret;
     }
 }
