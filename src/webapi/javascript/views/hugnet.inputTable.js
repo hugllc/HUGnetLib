@@ -243,7 +243,7 @@ var InputTableEntryView = Backbone.View.extend({
 */
 HUGnet.InputTablesView = Backbone.View.extend({
     template: "#InputTableListTemplate",
-    url: '/HUGnetLib/index.php',
+    url: '/HUGnetLib/HUGnetLibAPI.php',
     tagName: "table",
     events: {
         'click .new': 'create'

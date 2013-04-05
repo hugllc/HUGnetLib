@@ -232,7 +232,7 @@ var OutputTableEntryView = Backbone.View.extend({
 */
 HUGnet.OutputTablesView = Backbone.View.extend({
     template: "#OutputTableListTemplate",
-    url: '/HUGnetLib/index.php',
+    url: '/HUGnetLib/HUGnetLibAPI.php',
     tagName: "table",
     events: {
         'click .new': 'create'

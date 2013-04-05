@@ -232,7 +232,7 @@ var ProcessTableEntryView = Backbone.View.extend({
 */
 HUGnet.ProcessTablesView = Backbone.View.extend({
     template: "#ProcessTableListTemplate",
-    url: '/HUGnetLib/index.php',
+    url: '/HUGnetLib/HUGnetLibAPI.php',
     tagName: "table",
     events: {
         'click .new': 'create'

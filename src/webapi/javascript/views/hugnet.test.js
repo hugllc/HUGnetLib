@@ -105,7 +105,7 @@ var TestEntryView = Backbone.View.extend({
 */
 HUGnet.TestsView = Backbone.View.extend({
     template: "#TestListTemplate",
-    url: '/HUGnetLib/index.php',
+    url: '/HUGnetLib/HUGnetLibAPI.php',
     readonly: false,
     events: {
         'click .new': 'create',

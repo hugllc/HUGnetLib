@@ -40,10 +40,10 @@
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-var DeviceListEntryView = Backbone.View.extend({
-    model: HUGnet.Device,
+var DatacollectorEntryView = Backbone.View.extend({
+    model: HUGnet.Datacollector,
     tagName: 'tr',
-    template: '#DeviceListViewEntryTemplate',
+    template: '#DatacollectorListEntryTemplate',
     parent: null,
     events: {
         'click .view': 'view',
@@ -99,20 +99,14 @@ var DeviceListEntryView = Backbone.View.extend({
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-HUGnet.DeviceListView = Backbone.View.extend({
-    template: "#DeviceListViewTemplate",
+HUGnet.DatacollectorList = Backbone.View.extend({
+    template: "#DatacollectorListTemplate",
     url: '/HUGnetLib/HUGnetLibAPI.php',
     readonly: false,
     events: {
-        'click .new': 'create',
-        'click .run': 'run',
-        'click .stop': 'run'
     },
     initialize: function (options)
     {
-        this.$('.run').hide();
-        this.$('.stop').hide();
-        this.$('.new').hide();
         if (options) {
             if (options.url) {
                 this.url = options.url;
@@ -124,89 +118,6 @@ HUGnet.DeviceListView = Backbone.View.extend({
         this.model.each(this.insert, this);
         this.model.bind('add', this.insert, this);
         this.model.bind('savefail', this.saveFail, this);
-        if (!this.readonly) {
-            this.run('status');
-        }
-    },
-    create: function ()
-    {
-        if (this.readonly) {
-            return;
-        }
-        var self = this;
-        var ret = $.ajax({
-            type: 'GET',
-            url: this.url,
-            dataType: 'json',
-            cache: false,
-            data:
-            {
-                "task": "device",
-                "action": "new",
-                "data": { type: "test" }
-            }
-        }).done(
-            function (data)
-            {
-                if (_.isObject(data)) {
-                    self.trigger('created');
-                    self.model.add(data);
-                } else {
-                    self.trigger('newfail');
-                }
-            }
-        ).fail(
-            function ()
-            {
-                self.trigger('newfail');
-            }
-        );
-    },
-    running: function ()
-    {
-        this.$('.run').hide();
-        this.$('.stop').show();
-    },
-    paused: function ()
-    {
-        this.$('.run').show();
-        this.$('.stop').hide();
-    },
-    run: function (action)
-    {
-        var self = this;
-        if (action !== "status") {
-            action = "run";
-        }
-        var ret = $.ajax({
-            type: 'GET',
-            url: this.url,
-            dataType: 'json',
-            cache: false,
-            data:
-            {
-                "task": "datacollector",
-                "action": action,
-            }
-        }).done(
-            function (data)
-            {
-                if (data == 1) {
-                    self.running();
-                    self.trigger('testrunning');
-                } else {
-                    self.paused();
-                    self.trigger('testpaused');
-                }
-            }
-        ).fail(
-            function ()
-            {
-                //self.statusFail();
-                self.trigger('statusfail');
-            }
-        );
-;
     },
     saveFail: function (msg)
     {
@@ -229,18 +140,13 @@ HUGnet.DeviceListView = Backbone.View.extend({
                 data
             )
         );
-        if (this.readonly) {
-            this.$('.run').hide();
-            this.$('.stop').hide();
-            this.$('.new').hide();
-        }
         this.$('.tablesorter').tablesorter({ widgets: ['zebra'] });
         this.$el.trigger('update');
         return this;
     },
     insert: function (model, collection, options)
     {
-        var view = new DeviceListEntryView({ model: model, parent: this });
+        var view = new DatacollectorEntryView({ model: model, parent: this });
         this.$('tbody').append(view.render().el);
         this.$el.trigger('update');
         this.$('.tablesorter').trigger('update');
