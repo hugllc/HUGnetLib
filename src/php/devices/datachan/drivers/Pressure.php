@@ -60,7 +60,9 @@ defined('_HUGNET') or die('HUGnetSystem not found');
 class Pressure extends \HUGnet\devices\datachan\Driver
 {
     /** @var The units that are valid for conversion */
-    protected $valid = array("Pa", "bar", "at", "atm", "Torr", "psi");
+    protected $valid = array(
+        "Pa", "bar", "at", "atm", "Torr", "psi", "mbar"
+    );
     /** @var Unit conversion multipliers */
     protected $multiplier = array(
         "Pa" => array(
