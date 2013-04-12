@@ -59,7 +59,9 @@ class PressureTest extends DriverTestBase
     /** This is the class we are testing */
     protected $class = "Pressure";
     /** This is the units that are valid */
-    protected static $units = array("Pa", "bar", "at", "atm", "Torr", "psi");
+    protected static $units = array(
+        "Pa", "bar", "at", "atm", "Torr", "psi", "mbar"
+    );
     /**
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
@@ -112,6 +114,7 @@ class PressureTest extends DriverTestBase
                     'atm' => 'atm',
                     'Torr' => 'Torr',
                     'psi' => 'psi',
+                    'mbar' => 'mbar',
                 ),
             ),
         );
