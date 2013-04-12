@@ -44,36 +44,14 @@ HUGnet.Datacollector = Backbone.Model.extend({
     idAttribute: 'id',
     defaults:
     {
-        id: 0,
-        DeviceID: '000000',
-        DeviceName: '',
-        HWPartNum: '',
-        FWPartNum: '',
-        FWVersion: '',
-        RawSetup: '',
-        Active: 0,
+        uuid: 0,
         GatewayKey: 0,
-        ControllerKey: 0,
-        ControllerIndex: 0,
-        DeviceLocation: '',
-        DeviceJob: '',
-        Driver: '',
-        PollInterval: 0,
-        ActiveSensors: 0,
-        DeviceGroup: 'FFFFFF',
-        inputs: {},
-        outputs: {},
-        processes: {},
-        dataChannels: {},
-        params: {},
-        InputTables: 0,
-        OutputTables: 0,
-        ProcessputTables: 0,
-
-        actions: '',
-        ViewButtonID: '',
-        RefreshButtonID: '',
-        target: '',
+        name: "",
+        ip: "",
+        LastContact: 0,
+        SetupString: {},
+        Config: {},
+        Runtime: {}
     },
     /**
     * This function initializes the object
@@ -106,7 +84,7 @@ HUGnet.Datacollector = Backbone.Model.extend({
             {
                 "task": "datacollector",
                 "action": "get",
-                "id": this.get("id"),
+                "id": this.get("uuid"),
             }
         }).done(
             function (data)
@@ -134,7 +112,7 @@ HUGnet.Datacollector = Backbone.Model.extend({
             {
                 "task": "datacollector",
                 "action": "get",
-                "id": this.get("id"),
+                "id": this.get("uuid"),
             }
         }).done(
             function (data)
@@ -248,6 +226,22 @@ HUGnet.Datacollectors = Backbone.Collection.extend({
             function (data)
             {
                 self.add(data);
+            }
+        );
+    },
+    /**
+    * Gets infomration about a device.  This is retrieved from the database only.
+    *
+    * @param id The id of the device to get
+    *
+    * @return null
+    */
+    refresh: function()
+    {
+        this.forEach(
+            function (element, index, list)
+            {
+                element.refresh();
             }
         );
     }

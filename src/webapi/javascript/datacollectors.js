@@ -103,6 +103,7 @@ HUGnet.DatacollectorList = Backbone.View.extend({
     template: "#DatacollectorListTemplate",
     url: '/HUGnetLib/HUGnetLibAPI.php',
     readonly: false,
+    refresh: 60,
     events: {
     },
     initialize: function (options)
@@ -118,6 +119,18 @@ HUGnet.DatacollectorList = Backbone.View.extend({
         this.model.each(this.insert, this);
         this.model.bind('add', this.insert, this);
         this.model.bind('savefail', this.saveFail, this);
+        this._poll();
+    },
+    _poll: function ()
+    {
+        var self = this;
+        this.model.refresh();
+        setTimeout(
+            function () {
+                self._poll();
+            },
+            (this.refresh * 1000)
+        );
     },
     saveFail: function (msg)
     {
