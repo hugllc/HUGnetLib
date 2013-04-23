@@ -134,7 +134,7 @@ abstract class History extends Table
         "DateIDIndex" => array(
             "Name" => "DateIDIndex",
             "Unique" => true,
-            "Columns" => array("Date", "id"),
+            "Columns" => array("id", "Date"),
         ),
     );
 

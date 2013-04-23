@@ -147,12 +147,12 @@ abstract class Average extends History
         "DateIDTypeIndex" => array(
             "Name" => "DateIDTypeIndex",
             "Unique" => true,
-            "Columns" => array("Date", "id", "Type"),
+            "Columns" => array("id", "Date", "Type"),
         ),
         "DateIDIndex" => array(
             "Name" => "DateIDIndex",
             "Unique" => false,
-            "Columns" => array("Date", "id"),
+            "Columns" => array("id", "Date"),
         ),
     );
 
