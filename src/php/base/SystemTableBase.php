@@ -215,7 +215,9 @@ abstract class SystemTableBase
         $this->fixTable();
         $this->_new = true;
         if ($this->store()) {
-            $this->table()->sqlOrderBy = "id desc";
+            if (!empty($this->table()->sqlId)) {
+                $this->table()->sqlOrderBy = $this->table()->sqlId." desc";
+            }
             return $this->_find($data);
         }
         return false;
@@ -272,6 +274,9 @@ abstract class SystemTableBase
     public function getList($where = null, $default = false)
     {
         $this->table()->clearData();
+        if (!empty($this->table()->sqlId)) {
+            $this->table()->sqlOrderBy = $this->table()->sqlId." asc";
+        }
         $where = $this->table()->sanitizeWhere($where);
         $whereText = "";
         $whereData = array();
