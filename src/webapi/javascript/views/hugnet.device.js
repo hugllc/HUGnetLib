@@ -403,7 +403,6 @@ HUGnet.DevicesView = Backbone.View.extend({
         var view = new DeviceEntryView({ model: model, parent: this });
         this.$('tbody').append(view.render().el);
         this.$el.trigger('update');
-        this.$('.tablesorter').trigger('update');
     },
     popup: function (view)
     {

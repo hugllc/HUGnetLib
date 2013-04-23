@@ -281,7 +281,6 @@ HUGnet.InputTablesView = Backbone.View.extend({
         var view = new InputTableEntryView({ model: model, parent: this });
         this.$('tbody').append(view.render().el);
         this.$el.trigger('update');
-        this.$('.tablesorter').trigger('update');
     },
     create: function ()
     {

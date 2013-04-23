@@ -103,16 +103,15 @@ HUGnet.DeviceListView = Backbone.View.extend({
     template: "#DeviceListViewTemplate",
     url: '/HUGnetLib/HUGnetLibAPI.php',
     readonly: false,
+    views: {},
+    filter: {},
+    sorted: false,
+    sorting: [[1,0]],
+    viewed: 0,
     events: {
-        'click .new': 'create',
-        'click .run': 'run',
-        'click .stop': 'run'
     },
     initialize: function (options)
     {
-        this.$('.run').hide();
-        this.$('.stop').hide();
-        this.$('.new').hide();
         if (options) {
             if (options.url) {
                 this.url = options.url;
@@ -120,13 +119,13 @@ HUGnet.DeviceListView = Backbone.View.extend({
             if (options.readonly) {
                 this.readonly = options.readonly;
             }
+            if (typeof options.filter === 'object') {
+                this.filter = options.filter;
+            }
         }
         this.model.each(this.insert, this);
-        this.model.bind('add', this.insert, this);
-        this.model.bind('savefail', this.saveFail, this);
-        if (!this.readonly) {
-            this.run('status');
-        }
+        this.model.on('add', this.insert, this);
+        this.model.on('savefail', this.saveFail, this);
     },
     create: function ()
     {
@@ -162,52 +161,6 @@ HUGnet.DeviceListView = Backbone.View.extend({
             }
         );
     },
-    running: function ()
-    {
-        this.$('.run').hide();
-        this.$('.stop').show();
-    },
-    paused: function ()
-    {
-        this.$('.run').show();
-        this.$('.stop').hide();
-    },
-    run: function (action)
-    {
-        var self = this;
-        if (action !== "status") {
-            action = "run";
-        }
-        var ret = $.ajax({
-            type: 'GET',
-            url: this.url,
-            dataType: 'json',
-            cache: false,
-            data:
-            {
-                "task": "datacollector",
-                "action": action,
-            }
-        }).done(
-            function (data)
-            {
-                if (data == 1) {
-                    self.running();
-                    self.trigger('testrunning');
-                } else {
-                    self.paused();
-                    self.trigger('testpaused');
-                }
-            }
-        ).fail(
-            function ()
-            {
-                //self.statusFail();
-                self.trigger('statusfail');
-            }
-        );
-;
-    },
     saveFail: function (msg)
     {
         //alert("Save Failed: " + msg);
@@ -229,20 +182,48 @@ HUGnet.DeviceListView = Backbone.View.extend({
                 data
             )
         );
-        if (this.readonly) {
-            this.$('.run').hide();
-            this.$('.stop').hide();
-            this.$('.new').hide();
-        }
-        this.$('.tablesorter').tablesorter({ widgets: ['zebra'] });
+        this.$('table').tablesorter({
+            widgets: ['zebra'],
+            widgetOptions: { zebra: [ 'even', 'odd' ] }
+        });
         this.$el.trigger('update');
+        this.trigger("update");
         return this;
     },
     insert: function (model, collection, options)
     {
-        var view = new DeviceListEntryView({ model: model, parent: this });
-        this.$('tbody').append(view.render().el);
+        var id = model.get("DeviceID");
+        this.views[id] = new DeviceListEntryView({ model: model, parent: this });
+        this.$('tbody').append(this.views[id].render().el);
+        this.setView(id);
+        this.$('table').trigger('update');
+    },
+    update: function()
+    {
+        this.viewed = 0;
+        for (var id in this.views) {
+            this.setView(id);
+        }
         this.$el.trigger('update');
-        this.$('.tablesorter').trigger('update');
+        this.$('table').trigger('update');
+    },
+    setView: function(id)
+    {
+        if (this.checkFilter(this.views[id].model)) {
+            this.views[id].$el.show();
+            this.viewed++;
+        } else {
+            this.views[id].$el.hide();
+        }
+    },
+    checkFilter: function(model)
+    {
+
+        for (var key in this.filter) {
+            if (model.get(key) !== this.filter[key]) {
+                return false;
+            }
+        }
+        return true;
     }
 });
