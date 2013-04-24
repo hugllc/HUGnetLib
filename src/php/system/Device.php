@@ -152,6 +152,15 @@ class Device extends \HUGnet\base\SystemTableAction
         }
         if ($default) {
             $this->_toArrayExtra($return);
+            $int = ($return["PollInterval"] < 30) ? 30 : $return["PollInterval"];
+            $late = $this->system()->now() - ($int * 2);
+            if (($late > $return["params"]["LastPoll"])
+                && ($return["PollInterval"] > 0)
+            ) {
+                $return["LatePoll"] = true;
+            } else {
+                $return["LatePoll"] = false;
+            }
         }
         return $return;
     }

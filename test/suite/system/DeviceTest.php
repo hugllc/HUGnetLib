@@ -1017,7 +1017,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     public static function dataToArray()
     {
         return array(
-            array(
+            array( //  #0 Everything Normal
                 array(
                     "Table" => array(
                         "get" => array(
@@ -1069,6 +1069,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "Hello" => "There",
                         "history" => "History"
                     ),
+                    "LatePoll" => false,
                     "dataChannels" => array(
                         0 => array(
                             'decimals' => 2,
@@ -1236,7 +1237,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     "controlChannels" => array(),
                 )
             ),
-            array(
+            array(   // #1 No default stuff
                 array(
                     "Table" => array(
                         "get" => array(
@@ -1319,6 +1320,231 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     ),
                     "controlChannels" => array(),
                     "Role" => "asdf",
+                )
+            ),
+            array( //  #0 Everything Normal
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "Driver" => "EDEFAULT",
+                            "id" => 2,
+                            "channels" => json_encode(
+                                array(
+                                )
+                            ),
+                            "Role" => "asdf",
+                        ),
+                        "toArray" => array(
+                            "id" => 2,
+                            "asdf" => 3,
+                            "params" => json_encode(array(1,2,3,4, "LastPoll" => 1000)),
+                            "PollInterval" => 300,
+                        ),
+
+                    ),
+                    "System" => array(
+                        "now" => 10000,
+                    ),
+                    "EDEFAULTAverage" => array(
+                        "averageTypes" => array("Hello" => "There"),
+                    ),
+                ),
+                new DummyTable("Table"),
+                true,
+                array(
+                    'packetTimeout' => 5,
+                    'totalSensors' => 13,
+                    'physicalSensors' => 9,
+                    'virtualSensors' => 4,
+                    'historyTable' => 'EDEFAULTHistory',
+                    'averageTable' => 'EDEFAULTAverage',
+                    'loadable' => false,
+                    'bootloader' => false,
+                    'InputTables' => 9,
+                    'OutputTables' => 0,
+                    'ProcessTables' => 0,
+                    'setConfig' => true,
+                    'ConfigInterval' => 43200,
+                    'id' => 2,
+                    'asdf' => 3,
+                    'params' => array(1,2,3,4, "LastPoll" => 1000),
+                    'PollInterval' => 300,
+                    'type' => 'unknown',
+                    'job'  => 'unknown',
+                    'actionClass' => 'Action',
+                    'arch' => 'unknown',
+                    "Role" => "asdf",
+                    'Roles' => array("" => "None"),
+                    "averageTypes" => array(
+                        "Hello" => "There",
+                        "history" => "History"
+                    ),
+                    "LatePoll" => true,
+                    "dataChannels" => array(
+                        0 => array(
+                            'decimals' => 2,
+                            'units' => '&#176;C',
+                            'maxDecimals' => 2,
+                            'storageUnit' => '&#176;C',
+                            'unitType' => 'Temperature',
+                            'dataType' => 'raw',
+                            'input' => null,
+                            'validUnits' => array(
+                                '&#176;F' => '&#176;F',
+                                '&#176;C' => '&#176;C',
+                                'K' => 'K'
+                            ),
+                            'channel' => 0,
+                            'label' => 'Data Channel 0',
+                            "index" => 0,
+                            "epChannel" => 0,
+                        ),
+                        1 => array(
+                            'decimals' => 2,
+                            'units' => '&#176;C',
+                            'maxDecimals' => 2,
+                            'storageUnit' => '&#176;C',
+                            'unitType' => 'Temperature',
+                            'dataType' => 'raw',
+                            'input' => null,
+                            'validUnits' => array(
+                                '&#176;F' => '&#176;F',
+                                '&#176;C' => '&#176;C',
+                                'K' => 'K'
+                            ),
+                            'channel' => 1,
+                            'label' => 'Data Channel 1',
+                            "index" => 0,
+                            "epChannel" => 1,
+                        ),
+                        2 => array(
+                            'decimals' => 2,
+                            'units' => '&#176;C',
+                            'maxDecimals' => 2,
+                            'storageUnit' => '&#176;C',
+                            'unitType' => 'Temperature',
+                            'dataType' => 'raw',
+                            'input' => null,
+                            'validUnits' => array(
+                                '&#176;F' => '&#176;F',
+                                '&#176;C' => '&#176;C',
+                                'K' => 'K'
+                            ),
+                            'channel' => 2,
+                            'label' => 'Data Channel 2',
+                            "index" => 0,
+                            "epChannel" => 2,
+                        ),
+                        3 => array(
+                            'decimals' => 2,
+                            'units' => '&#176;C',
+                            'maxDecimals' => 2,
+                            'storageUnit' => '&#176;C',
+                            'unitType' => 'Temperature',
+                            'dataType' => 'raw',
+                            'input' => null,
+                            'validUnits' => array(
+                                '&#176;F' => '&#176;F',
+                                '&#176;C' => '&#176;C',
+                                'K' => 'K'
+                            ),
+                            'channel' => 3,
+                            'label' => 'Data Channel 3',
+                            "index" => 0,
+                            "epChannel" => 3,
+                        ),
+                        4 => array(
+                            'decimals' => 2,
+                            'units' => '&#176;C',
+                            'maxDecimals' => 2,
+                            'storageUnit' => '&#176;C',
+                            'unitType' => 'Temperature',
+                            'dataType' => 'raw',
+                            'input' => null,
+                            'validUnits' => array(
+                                '&#176;F' => '&#176;F',
+                                '&#176;C' => '&#176;C',
+                                'K' => 'K'
+                            ),
+                            'channel' => 4,
+                            'label' => 'Data Channel 4',
+                            "index" => 0,
+                            "epChannel" => 4,
+                        ),
+                        5 => array(
+                            'decimals' => 2,
+                            'units' => '&#176;C',
+                            'maxDecimals' => 2,
+                            'storageUnit' => '&#176;C',
+                            'unitType' => 'Temperature',
+                            'dataType' => 'raw',
+                            'input' => null,
+                            'validUnits' => array(
+                                '&#176;F' => '&#176;F',
+                                '&#176;C' => '&#176;C',
+                                'K' => 'K'
+                            ),
+                            'channel' => 5,
+                            'label' => 'Data Channel 5',
+                            "index" => 0,
+                            "epChannel" => 5,
+                        ),
+                        6 => array(
+                            'decimals' => 2,
+                            'units' => '&#176;C',
+                            'maxDecimals' => 2,
+                            'storageUnit' => '&#176;C',
+                            'unitType' => 'Temperature',
+                            'dataType' => 'raw',
+                            'input' => null,
+                            'validUnits' => array(
+                                '&#176;F' => '&#176;F',
+                                '&#176;C' => '&#176;C',
+                                'K' => 'K'
+                            ),
+                            'channel' => 6,
+                            'label' => 'Data Channel 6',
+                            "index" => 0,
+                            "epChannel" => 6,
+                        ),
+                        7 => array(
+                            'decimals' => 2,
+                            'units' => '&#176;C',
+                            'maxDecimals' => 2,
+                            'storageUnit' => '&#176;C',
+                            'unitType' => 'Temperature',
+                            'dataType' => 'raw',
+                            'input' => null,
+                            'validUnits' => array(
+                                '&#176;F' => '&#176;F',
+                                '&#176;C' => '&#176;C',
+                                'K' => 'K'
+                            ),
+                            'channel' => 7,
+                            'label' => 'Data Channel 7',
+                            "index" => 0,
+                            "epChannel" => 7,
+                        ),
+                        8 => array(
+                            'decimals' => 2,
+                            'units' => '&#176;C',
+                            'maxDecimals' => 2,
+                            'storageUnit' => '&#176;C',
+                            'unitType' => 'Temperature',
+                            'dataType' => 'raw',
+                            'input' => null,
+                            'validUnits' => array(
+                                '&#176;F' => '&#176;F',
+                                '&#176;C' => '&#176;C',
+                                'K' => 'K'
+                            ),
+                            'channel' => 8,
+                            'label' => 'Data Channel 8',
+                            "index" => 0,
+                            "epChannel" => 8,
+                        ),
+                    ),
+                    "controlChannels" => array(),
                 )
             ),
         );
