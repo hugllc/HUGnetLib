@@ -66,6 +66,7 @@ HUGnet.Device = Backbone.Model.extend({
         processes: {},
         dataChannels: {},
         params: {},
+        setparams: {},
         InputTables: 0,
         OutputTables: 0,
         ProcessputTables: 0,
@@ -129,7 +130,8 @@ HUGnet.Device = Backbone.Model.extend({
     saveData: function()
     {
         var data = this.toJSON();
-        data.params = [];
+        data.params = this.get("setparams");
+
         return data;
     },
     /**
@@ -161,6 +163,7 @@ HUGnet.Device = Backbone.Model.extend({
                     if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
                         self.trigger('refresh');
                         self.set(data);
+                        self.set("setparams", {});
                         self.trigger('fetchdone');
                         self.trigger('sync');
                     } else {

@@ -174,12 +174,16 @@ var DevicePropertiesView = Backbone.View.extend({
     apply: function (e)
     {
         this.setTitle( " [ Saving...] " );
+        var params = {};
+        params.InfoLink = this.$(".params_InfoLink").val();
+        console.log(params);
         this.model.set({
             DeviceName: this.$(".DeviceName").val(),
             DeviceLocation: this.$(".DeviceLocation").val(),
             DeviceJob: this.$(".DeviceJob").val(),
             PollInterval: this.$(".PollInterval").val(),
-            Role: this.$(".Role").val()
+            Role: this.$(".Role").val(),
+            setparams: params
         });
         this.model.save();
     },
