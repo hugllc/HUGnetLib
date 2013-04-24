@@ -331,10 +331,10 @@ HUGnet.DataFlot = Backbone.View.extend({
                         previousPoint = item.dataIndex;
 
                         $('#flot-tooltip').remove();
-
                         var x = HUGnet.viewHelpers.sqlDate(item.datapoint[0]);
 
-                        var text = x + "<br />"+item.datapoint[1];
+                        var text = '<div class="bold">'+item.series.label+'</div>';
+                        text = text + x + "<br />"+item.datapoint[1];
                         self.renderTooltip(item.pageX, item.pageY, text);
                     }
                 }
