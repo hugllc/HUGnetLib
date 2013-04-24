@@ -51,8 +51,16 @@ var DeviceListEntryView = Backbone.View.extend({
     },
     initialize: function (options)
     {
-        this.model.bind('change', this.render, this);
-        this.model.bind('remove', this.remove, this);
+        if (options) {
+            if (options.url) {
+                this.url = options.url;
+            }
+            if (options.templatebase) {
+                this.template = '#' + options.templatebase + 'EntryTemplate';
+            }
+        }
+        this.model.on('change', this.render, this);
+        this.model.on('remove', this.remove, this);
         this.parent = options.parent;
     },
     view: function (e)
@@ -101,6 +109,7 @@ var DeviceListEntryView = Backbone.View.extend({
 */
 HUGnet.DeviceListView = Backbone.View.extend({
     template: "#DeviceListViewTemplate",
+    templatebase: 'DeviceListView',
     url: '/HUGnetLib/HUGnetLibAPI.php',
     readonly: false,
     views: {},
@@ -122,48 +131,13 @@ HUGnet.DeviceListView = Backbone.View.extend({
             if (typeof options.filter === 'object') {
                 this.filter = options.filter;
             }
+            if (options.templatebase) {
+                this.templatebase = options.templatebase;
+                this.template = '#' + this.templatebase + 'Template';
+            }
         }
         this.model.each(this.insert, this);
         this.model.on('add', this.insert, this);
-        this.model.on('savefail', this.saveFail, this);
-    },
-    create: function ()
-    {
-        if (this.readonly) {
-            return;
-        }
-        var self = this;
-        var ret = $.ajax({
-            type: 'GET',
-            url: this.url,
-            dataType: 'json',
-            cache: false,
-            data:
-            {
-                "task": "device",
-                "action": "new",
-                "data": { type: "test" }
-            }
-        }).done(
-            function (data)
-            {
-                if (_.isObject(data)) {
-                    self.trigger('created');
-                    self.model.add(data);
-                } else {
-                    self.trigger('newfail');
-                }
-            }
-        ).fail(
-            function ()
-            {
-                self.trigger('newfail');
-            }
-        );
-    },
-    saveFail: function (msg)
-    {
-        //alert("Save Failed: " + msg);
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -193,10 +167,16 @@ HUGnet.DeviceListView = Backbone.View.extend({
     insert: function (model, collection, options)
     {
         var id = model.get("DeviceID");
-        this.views[id] = new DeviceListEntryView({ model: model, parent: this });
-        this.$('tbody').append(this.views[id].render().el);
-        this.setView(id);
-        this.$('table').trigger('update');
+        if (this.checkFilter(model, this.filter)) {
+            this.views[id] = new DeviceListEntryView({
+                model: model,
+                parent: this,
+                templatebase: this.templatebase
+            });
+            this.$('tbody').append(this.views[id].render().el);
+            this.setView(id);
+            this.$('table').trigger('update');
+        }
     },
     update: function()
     {
@@ -209,14 +189,14 @@ HUGnet.DeviceListView = Backbone.View.extend({
     },
     setView: function(id)
     {
-        if (this.checkFilter(this.views[id].model)) {
+        if (this.checkFilter(this.views[id].model, this.filter)) {
             this.views[id].$el.show();
             this.viewed++;
         } else {
             this.views[id].$el.hide();
         }
     },
-    checkFilter: function(model)
+    checkFilter: function(model, filter)
     {
 
         for (var key in this.filter) {

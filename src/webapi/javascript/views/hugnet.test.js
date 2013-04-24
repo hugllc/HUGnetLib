@@ -103,9 +103,10 @@ var TestEntryView = Backbone.View.extend({
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-HUGnet.TestsView = Backbone.View.extend({
+HUGnet.TestsView = HUGnet.DeviceListView.extend({
     template: "#TestListTemplate",
-    url: '/HUGnetLib/HUGnetLibAPI.php',
+    templatebase: 'TestList',
+    filter: {type: "test"},
     readonly: false,
     events: {
         'click .new': 'create',
@@ -210,45 +211,9 @@ HUGnet.TestsView = Backbone.View.extend({
                 self.trigger('statusfail');
             }
         );
-;
     },
     saveFail: function (msg)
     {
         //alert("Save Failed: " + msg);
-    },
-    /**
-    * Gets infomration about a device.  This is retrieved directly from the device
-    *
-    * This function is for use of the device list
-    *
-    * @return null
-    */
-    render: function ()
-    {
-        var data = this.model.toJSON();
-        _.extend(data, HUGnet.viewHelpers);
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                data
-            )
-        );
-        if (this.readonly) {
-            this.$('.run').hide();
-            this.$('.stop').hide();
-            this.$('.new').hide();
-        }
-        this.$('.tablesorter').tablesorter({ widgets: ['zebra'] });
-        this.$el.trigger('update');
-        return this;
-    },
-    insert: function (model, collection, options)
-    {
-        if (model.get('type') === 'test') {
-            var view = new TestEntryView({ model: model, parent: this });
-            this.$('tbody').append(view.render().el);
-            this.$el.trigger('update');
-            this.$('.tablesorter').trigger('update');
-        }
     }
 });
