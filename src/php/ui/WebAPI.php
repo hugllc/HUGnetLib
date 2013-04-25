@@ -445,6 +445,7 @@ class WebAPI extends HTML
             $ret = $this->_executeHistoryGet($did, $hist);
         } else if (($action === "put") && $this->_auth(true)) {
             $ret = array();
+            $last = 0;
             foreach ($data as $key => $row) {
                 if (is_array($row) && ($row["id"] == $did)
                     && isset($row["Date"])
@@ -458,10 +459,20 @@ class WebAPI extends HTML
                     // Only insert a row that doesn't exist
                     if (!$hist->exists($interval)) {
                         $ret[$key] = (int)$hist->insertRow(true);
+                        if ($ret[$key]) {
+                            $date = $hist->get("Date");
+                            if ($date > $last) {
+                                $last = $date;
+                            }
+                        }
                     } else {
                         $ret[$key] = 0;
                     }
                 }
+            }
+            if ($last > 0) {
+                $dev->setParam("LastHistoryPush", $last);
+                $dev->store();
             }
         } else if ($action === "last") {
             $hist->sqlLimit = 1;

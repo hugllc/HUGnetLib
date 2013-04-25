@@ -185,6 +185,8 @@ class WebInterface
         foreach ($data as $key => $value) {
             $this->_device->set($key, $value);
         }
+        // This can't be pushed.  It can only be set locally.
+        unset($params["LastHistoryPush"]);
         foreach ($params as $key => $value) {
             $this->_device->setParam($key, $value);
         }

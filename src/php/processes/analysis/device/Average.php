@@ -64,7 +64,7 @@ class Average extends \HUGnet\processes\analysis\Device
     private $_averages = array(
         "15MIN" => array(
             "base" => null,
-            "prev" => "LastHistory",
+            "prev" => "LastHistoryPush",
             "type" => \HUGnet\db\Average::AVERAGE_15MIN,
             "history" => true,
             "time" => "Y-m-d H:i",
@@ -115,7 +115,7 @@ class Average extends \HUGnet\processes\analysis\Device
     private $_fastAverages = array(
         "30SEC" => array(
             "base" => null,
-            "prev" => "LastHistory",
+            "prev" => "LastHistoryPush",
             "type" => \HUGnet\db\FastAverage::AVERAGE_30SEC,
             "history" => true,
             "time" => "Y-m-d H:i:s",

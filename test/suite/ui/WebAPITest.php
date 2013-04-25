@@ -706,6 +706,9 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         ),
                         "insertRow" => true,
                         "exists" => false,
+                        "get" => array(
+                            "Date" => 1234,
+                        ),
                     ),
                 ),
                 false,
@@ -729,6 +732,9 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "exists" => array(
                             array(0)
                         ),
+                        "get" => array(
+                            array("Date"),
+                       ),
                     ),
                 ),
             ),
