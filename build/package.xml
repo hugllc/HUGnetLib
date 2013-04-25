@@ -12,12 +12,16 @@
             />
     </exec>
     <property name="pkg.buildname" value="HUGnetLib-${pkg.version}${pkg.release}" />
+    <property name="pkg.jsbuildname" value="HUGnetLib.js-${pkg.version}${pkg.release}" />
     <property name="pkg.staging" value="${basedir}/build/staging"/>
+    <property name="pkg.jsstaging" value="${basedir}/build/jsstaging"/>
     <property name="pkg.builddir" value="${basedir}/rel" />
     <property name="pkg.buildtarget" value="${pkg.builddir}/${pkg.buildname}" />
+    <property name="pkg.jsbuildtarget" value="${pkg.builddir}/${pkg.jsbuildname}" />
 
     <target name="clean" description="Clean up and create artifact directories">
         <delete dir="${pkg.staging}" failonerror="false"/>
+        <delete dir="${pkg.jsstaging}" failonerror="false"/>
         <delete failonerror="false">
             <fileset dir="${pkg.builddir}" includes="*.tar"/>
             <fileset dir="${pkg.builddir}" includes="*.tar.gz"/>
@@ -29,11 +33,19 @@
         <echo>Setting up for HUGnetLib 'v${pkg.version}'</echo>
         <mkdir dir="${pkg.staging}/${pkg.buildname}/include/HUGnetLib"/>
         <copy todir="${pkg.staging}/${pkg.buildname}/include/HUGnetLib">
-            <fileset dir="${pkg.source.include}"/>
+            <fileset dir="${pkg.source.include}" excludes="**/*~"/>
         </copy>
         <mkdir dir="${pkg.staging}/${pkg.buildname}/html/HUGnetLib"/>
         <copy todir="${pkg.staging}/${pkg.buildname}/html/HUGnetLib">
-            <fileset dir="${pkg.source.html}"/>
+            <fileset dir="${pkg.source.html}" excludes="**/*~"/>
+        </copy>
+    </target>
+    <target name="jssetup" description="Copy all of the files to build the deb">
+        <echo>Setting up for HUGnetLib JavaScript 'v${pkg.version}'</echo>
+        <mkdir dir="${pkg.jsstaging}"/>
+        <copy file="${pkg.source.include}/LICENSE.TXT" todir="${pkg.jsstaging}"/>
+        <copy todir="${pkg.jsstaging}">
+            <fileset dir="${pkg.source.html}" includes="*.js"/>
         </copy>
     </target>
     <target name="release" description="build the release files">
@@ -57,8 +69,29 @@
         <checksum file="${pkg.buildtarget}.zip" todir="${pkg.builddir}"
                         algorithm="md5" format="MD5SUM"/>
     </target>
+    <target name="jsrelease" description="build the release files">
+        <mkdir dir="${pkg.builddir}"/>
+        <tar destfile="${pkg.jsbuildtarget}.tar.gz"
+            basedir="${pkg.jsstaging}" compression="gzip"/>
+        <checksum file="${pkg.jsbuildtarget}.tar.gz" todir="${pkg.builddir}"
+                        algorithm="sha1" format="MD5SUM"/>
+        <checksum file="${pkg.jsbuildtarget}.tar.gz" todir="${pkg.builddir}"
+                        algorithm="md5" format="MD5SUM"/>
+        <tar destfile="${pkg.jsbuildtarget}.tar.bz2"
+            basedir="${pkg.jsstaging}" compression="bzip2"/>
+        <checksum file="${pkg.jsbuildtarget}.tar.bz2" todir="${pkg.builddir}"
+                        algorithm="sha1" format="MD5SUM"/>
+        <checksum file="${pkg.jsbuildtarget}.tar.bz2" todir="${pkg.builddir}"
+                        algorithm="md5" format="MD5SUM"/>
+        <zip destfile="${pkg.jsbuildtarget}.zip"
+            basedir="${pkg.jsstaging}"/>
+        <checksum file="${pkg.jsbuildtarget}.zip" todir="${pkg.builddir}"
+                        algorithm="sha1" format="MD5SUM"/>
+        <checksum file="${pkg.jsbuildtarget}.zip" todir="${pkg.builddir}"
+                        algorithm="md5" format="MD5SUM"/>
+    </target>
     <target name="postclean" description="build the deb">
         <delete dir="${pkg.staging}"/>
     </target>
-    <target name="build" depends="clean,setup,release,postclean"/>
+    <target name="build" depends="clean,setup,jssetup,release,jsrelease,postclean"/>
 </project>
