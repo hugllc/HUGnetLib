@@ -76,6 +76,9 @@ HUGnet.DeviceList = Backbone.View.extend({
             cookie: {
                 // store a session cookie
                 expires: 10
+            },
+            activate: function(event, ui) {
+                self.$(".tablesorter").trigger("update");
             }
         });
         var tag = this.id+'-views';

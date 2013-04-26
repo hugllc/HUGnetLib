@@ -89,6 +89,9 @@ HUGnet.Config = Backbone.View.extend({
             cookie: {
                 // store a session cookie
                 expires: 10
+            },
+            activate: function(event, ui) {
+                self.$(".tablesorter").trigger("update");
             }
         });
         this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+this.id+'-devices">Device Information</a></li>');
@@ -97,7 +100,6 @@ HUGnet.Config = Backbone.View.extend({
         this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+this.id+'-inputTable">Input Tables</a></li>');
         this.tabs.append('<div id="'+this.id+'-inputTable"></div>');
         $('#'+this.id+'-inputTable').html(this.inputTables.render().el);
-
         /*
         this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+this.id+'-outputTable">Output Tables</a></li>');
         this.tabs.append('<div id="'+this.id+'-outputTable"></div>');
