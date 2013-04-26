@@ -108,10 +108,11 @@ HUGnet.Histories = Backbone.Collection.extend({
     initialize: function (models, options)
     {
         this.reset(models, { silent: true });
-        if (options.url) this.url = options.url;
+
         this.bind('add', this.addExtra, this);
         this.bind('sync', this.trim, this);
         if (_.isObject(options)) {
+            if (options.url) this.url = options.url;
             this.id = options.id;
             this.mode = options.mode;
             this.limit = (options.limit !== undefined) ? parseInt(options.limit, 10) : this.limit;

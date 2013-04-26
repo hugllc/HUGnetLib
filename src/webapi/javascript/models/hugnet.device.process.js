@@ -44,7 +44,7 @@ HUGnet.DeviceProcess = Backbone.Model.extend({
     defaults:
     {
         dev: null,
-        input: null,
+        process: null,
         id: null,
         type: "Unknown",
         location: '',
@@ -52,7 +52,7 @@ HUGnet.DeviceProcess = Backbone.Model.extend({
         driver: 'SDEFAULT',
         params: {},
     },
-    idAttribute: 'input',
+    idAttribute: 'process',
     /**
     * This function initializes the object
     */
@@ -80,7 +80,7 @@ HUGnet.DeviceProcess = Backbone.Model.extend({
                 "task": "deviceprocess",
                 "action": "get",
                 "id": parseInt(dev, 10).toString(16)+"."+this.get("process"),
-                "sid": this.get("input")
+                "sid": this.get("process")
             }
         }).done(
             function (data)

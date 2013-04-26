@@ -44,7 +44,7 @@ HUGnet.DeviceOutput = Backbone.Model.extend({
     defaults:
     {
         dev: null,
-        input: null,
+        output: null,
         id: null,
         type: "Unknown",
         location: '',
@@ -52,7 +52,7 @@ HUGnet.DeviceOutput = Backbone.Model.extend({
         driver: 'SDEFAULT',
         params: {},
     },
-    idAttribute: 'input',
+    idAttribute: 'output',
     /**
     * This function initializes the object
     */
@@ -80,7 +80,7 @@ HUGnet.DeviceOutput = Backbone.Model.extend({
                 "task": "deviceoutput",
                 "action": "get",
                 "id": parseInt(dev, 10).toString(16)+"."+this.get("output"),
-                "sid": this.get("input")
+                "sid": this.get("output")
             }
         }).done(
             function (data)
