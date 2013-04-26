@@ -374,7 +374,6 @@ var DeviceEntryView = Backbone.View.extend({
 */
 HUGnet.DevicesView = Backbone.View.extend({
     template: "#DeviceListTemplate",
-    tagName: "table",
     events: {
     },
     initialize: function (options)
@@ -398,15 +397,15 @@ HUGnet.DevicesView = Backbone.View.extend({
             )
         );
         //this.model.each(this.renderEntry);
-        this.$el.tablesorter({ widgets: ['zebra'] });
-        this.$el.trigger('update');
+        this.$("table").tablesorter({ widgets: ['zebra'] });
+        this.$("table").trigger('update');
         return this;
     },
     insert: function (model, collection, options)
     {
         var view = new DeviceEntryView({ model: model, parent: this });
         this.$('tbody').append(view.render().el);
-        this.$el.trigger('update');
+        this.$("table").trigger('update');
     },
     popup: function (view)
     {

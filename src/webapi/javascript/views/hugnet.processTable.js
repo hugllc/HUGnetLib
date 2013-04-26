@@ -233,7 +233,6 @@ var ProcessTableEntryView = Backbone.View.extend({
 HUGnet.ProcessTablesView = Backbone.View.extend({
     template: "#ProcessTableListTemplate",
     url: '/HUGnetLib/HUGnetLibAPI.php',
-    tagName: "table",
     events: {
         'click .new': 'create'
     },
@@ -261,16 +260,15 @@ HUGnet.ProcessTablesView = Backbone.View.extend({
             )
         );
         //this.model.each(this.renderEntry);
-        this.$el.tablesorter({ widgets: ['zebra'] });
-        this.$el.trigger('update');
+        this.$("table").tablesorter({ widgets: ['zebra'] });
+        this.$("table").trigger('update');
         return this;
     },
     insert: function (model, collection, options)
     {
         var view = new ProcessTableEntryView({ model: model, parent: this });
         this.$('tbody').append(view.render().el);
-        this.$el.trigger('update');
-        this.$('.tablesorter').trigger('update');
+        this.$("table").trigger('update');
     },
     create: function ()
     {

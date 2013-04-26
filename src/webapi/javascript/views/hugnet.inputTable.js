@@ -244,7 +244,6 @@ var InputTableEntryView = Backbone.View.extend({
 HUGnet.InputTablesView = Backbone.View.extend({
     template: "#InputTableListTemplate",
     url: '/HUGnetLib/HUGnetLibAPI.php',
-    tagName: "table",
     events: {
         'click .new': 'create'
     },
@@ -272,15 +271,15 @@ HUGnet.InputTablesView = Backbone.View.extend({
             )
         );
         //this.model.each(this.renderEntry);
-        this.$el.tablesorter({ widgets: ['zebra'] });
-        this.$el.trigger('update');
+        this.$("table").tablesorter({ widgets: ['zebra'] });
+        this.$("table").trigger('update');
         return this;
     },
     insert: function (model, collection, options)
     {
         var view = new InputTableEntryView({ model: model, parent: this });
         this.$('tbody').append(view.render().el);
-        this.$el.trigger('update');
+        this.$("table").trigger('update');
     },
     create: function ()
     {
