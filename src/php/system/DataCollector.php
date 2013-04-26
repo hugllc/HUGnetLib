@@ -78,6 +78,27 @@ class DataCollector extends \HUGnet\base\SystemTableBase
         return $object;
     }
     /**
+    * Returns the table as an array
+    *
+    * @param bool $default Whether or not to include the default values
+    *
+    * @return array
+    */
+    public function toArray($default = false)
+    {
+        $return = (array)parent::toArray($default);
+        if ($default) {
+            // This is checks for it being 1 hour late
+            $late = $this->system()->now() - 3600;
+            if ($late > $return["LastContact"]) {
+                $return["LateCheckin"] = true;
+            } else {
+                $return["LateCheckin"] = false;
+            }
+        }
+        return $return;
+    }
+    /**
     * Gets the config and saves it
     *
     * @return string The left over string

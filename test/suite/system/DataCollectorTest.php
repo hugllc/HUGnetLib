@@ -192,5 +192,97 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
             );
         }
     }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataToArray()
+    {
+        return array(
+            array(
+                new DummySystem(),
+                array(
+                    "System" => array(
+                        "now" => 3700,
+                    ),
+                    "Table" => array(
+                        "toArray" => array(
+                            "to" => "array",
+                            "this" => "here",
+                            "LastContact" => 50,
+                        ),
+                    ),
+                ),
+                true,
+                array(
+                    "to" => "array",
+                    "this" => "here",
+                    "LastContact" => 50,
+                    "LateCheckin" => true,
+                ),
+            ),
+            array(
+                new DummySystem(),
+                array(
+                    "System" => array(
+                        "now" => 3700,
+                    ),
+                    "Table" => array(
+                        "toArray" => array(
+                            "to" => "array",
+                            "this" => "here",
+                            "LastContact" => 150,
+                        ),
+                    ),
+                ),
+                true,
+                array(
+                    "to" => "array",
+                    "this" => "here",
+                    "LastContact" => 150,
+                    "LateCheckin" => false,
+                ),
+            ),
+            array(
+                new DummySystem(),
+                array(
+                    "Table" => array(
+                        "toArray" => array(
+                            "to" => "array",
+                            "this" => "here",
+                        ),
+                    ),
+                ),
+                false,
+                array(
+                    "to" => "array",
+                    "this" => "here",
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array $config  The configuration to use
+    * @param array $mocks   The mocks to use
+    * @param bool  $default Whether or not to use the default values
+    * @param mixed $expect  The return to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataToArray
+    */
+    public function testToArray($config, $mocks, $default, $expect)
+    {
+        $table = new DummyTable("Table");
+        // This just resets the mock
+        $table->resetMock($mocks);
+        $obj = DataCollector::factory($config, null, $table);
+        $this->assertEquals(
+            $expect, $obj->toArray($default)
+        );
+    }
 }
 ?>

@@ -50,6 +50,7 @@ HUGnet.Datacollector = Backbone.Model.extend({
         ip: "",
         LastContact: 0,
         SetupString: {},
+        LateCheckin: false,
         Config: {},
         Runtime: {}
     },
