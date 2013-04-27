@@ -46,7 +46,8 @@ HUGnet.OutputTable = Backbone.Model.extend({
         id: null,
         name: null,
         arch: null,
-        desc: null
+        desc: "",
+        params: {},
     },
     idAttribute: 'id',
     /**
@@ -141,7 +142,7 @@ HUGnet.OutputTables = Backbone.Collection.extend({
     model: HUGnet.OutputTable,
     comparator: function (model)
     {
-        return parseInt(model.get("channel"), 10);
+        return parseInt(model.get("id"), 10);
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
