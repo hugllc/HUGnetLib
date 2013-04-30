@@ -466,7 +466,7 @@ class WebAPI extends HTML
                             }
                         }
                     } else {
-                        $ret[$key] = 0;
+                        $ret[$key] = 2;
                     }
                 }
             }

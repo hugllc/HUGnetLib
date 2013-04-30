@@ -1903,7 +1903,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                 array(),
                 json_encode(
                     array(
-                        1 => 0,
+                        1 => 2,
                     )
                 ),
                 array(
