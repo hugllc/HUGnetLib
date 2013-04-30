@@ -63,21 +63,24 @@ page.open(system.args[1], function(status){
                 console.log(document.body.querySelector('.description').innerText);
                 var list = document.body.querySelectorAll('.results > #details > .specDetail.failed');
                 if (list && list.length > 0) {
-                  console.log('');
-                  console.log(list.length + ' test(s) FAILED:');
-                  for (i = 0; i < list.length; ++i) {
-                      var el = list[i],
-                          desc = el.querySelector('.description'),
-                          msg = el.querySelector('.resultMessage.fail');
-                      console.log('');
-                      console.log(desc.innerText);
-                      console.log(msg.innerText);
-                      console.log('');
-                  }
-                  return 1;
+                    console.log('');
+                    console.log(list.length + ' test(s) FAILED:');
+                    for (i = 0; i < list.length; ++i) {
+                        var el = list[i],
+                            desc = el.querySelector('.description'),
+                            msg = el.querySelector('.resultMessage.fail');
+                        console.log('');
+                        console.log(desc.innerText);
+                        console.log(msg.innerText);
+                        console.log('');
+                    }
+                    return 1;
                 } else {
-                  console.log(document.body.querySelector('.alert > .passingAlert.bar').innerText);
-                  return 0;
+                    var query = document.body.querySelector('.alert > .passingAlert.bar');
+                    if (query) {
+                        console.log(query.innerText);
+                    }
+                    return 0;
                 }
             });
             phantom.exit(exitCode);

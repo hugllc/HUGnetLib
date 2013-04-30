@@ -1,74 +1,75 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-  "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-  <title>Jasmine Spec Runner</title>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Jasmine Spec Runner</title>
 
-  <link rel="shortcut icon" type="image/png" href="lib/jasmine-1.2.0/jasmine_favicon.png">
-  <link rel="stylesheet" type="text/css" href="lib/jasmine-1.2.0/jasmine.css">
-  <script type="text/javascript" src="lib/jasmine-1.2.0/jasmine.js"></script>
-  <script type="text/javascript" src="lib/jasmine-1.2.0/jasmine-html.js"></script>
+        <link rel="shortcut icon" type="image/png" href="lib/jasmine-1.2.0/jasmine_favicon.png">
+        <link rel="stylesheet" type="text/css" href="lib/jasmine-1.2.0/jasmine.css">
+        <script type="text/javascript" src="lib/jasmine-1.3.1/jasmine.js"></script>
+        <script type="text/javascript" src="lib/jasmine-1.3.1/jasmine-html.js"></script>
+        <script type="text/javascript" src="lib/jasmine.console_reporter.js"></script>
+        <script type="text/javascript" src="lib/jasmine.junit_reporter.js"></script>
 
-  <!-- include source files here... -->
-  <script type="text/javascript" src="../../src/webapi/html/contrib.js"></script>
-  <script type="text/javascript" src="../../src/webapi/html/hugnet.js"></script>
+        <!-- include source files here... -->
+        <script type="text/javascript" src="../../src/webapi/html/contrib.js"></script>
+        <script type="text/javascript" src="../../src/webapi/html/hugnet.js"></script>
 
-  <!-- include spec files here... -->
-  <script type="text/javascript" src="spec/SpecHelper.js"></script>
-  <script type="text/javascript" src="spec/models/HistorySpec.js"></script>
-  <script type="text/javascript" src="spec/models/HistoriesSpec.js"></script>
-  <script type="text/javascript" src="spec/models/DeviceSpec.js"></script>
-  <script type="text/javascript" src="spec/models/DevicesSpec.js"></script>
-  <script type="text/javascript" src="spec/models/DatacollectorSpec.js"></script>
-  <script type="text/javascript" src="spec/models/DatacollectorsSpec.js"></script>
-  <script type="text/javascript" src="spec/models/DeviceInputSpec.js"></script>
-  <script type="text/javascript" src="spec/models/DeviceInputsSpec.js"></script>
-  <script type="text/javascript" src="spec/models/DeviceOutputSpec.js"></script>
-  <script type="text/javascript" src="spec/models/DeviceOutputsSpec.js"></script>
-  <script type="text/javascript" src="spec/models/DeviceProcessSpec.js"></script>
-  <script type="text/javascript" src="spec/models/DeviceProcessesSpec.js"></script>
-  <script type="text/javascript" src="spec/models/DeviceDataChannelSpec.js"></script>
-  <script type="text/javascript" src="spec/models/DeviceDataChannelsSpec.js"></script>
-  <script type="text/javascript" src="spec/models/DeviceControlChannelSpec.js"></script>
-  <script type="text/javascript" src="spec/models/DeviceControlChannelsSpec.js"></script>
-  <script type="text/javascript" src="spec/models/InputTableSpec.js"></script>
-  <script type="text/javascript" src="spec/models/InputTablesSpec.js"></script>
-  <script type="text/javascript" src="spec/models/OutputTableSpec.js"></script>
-  <script type="text/javascript" src="spec/models/OutputTablesSpec.js"></script>
-  <script type="text/javascript" src="spec/models/ProcessTableSpec.js"></script>
-  <script type="text/javascript" src="spec/models/ProcessTablesSpec.js"></script>
+        <!-- include spec files here... -->
+        <script type="text/javascript" src="spec/SpecHelper.js"></script>
+        <script type="text/javascript" src="spec/models/HistorySpec.js"></script>
+        <script type="text/javascript" src="spec/models/HistoriesSpec.js"></script>
+        <script type="text/javascript" src="spec/models/DeviceSpec.js"></script>
+        <script type="text/javascript" src="spec/models/DevicesSpec.js"></script>
+        <script type="text/javascript" src="spec/models/DatacollectorSpec.js"></script>
+        <script type="text/javascript" src="spec/models/DatacollectorsSpec.js"></script>
+        <script type="text/javascript" src="spec/models/DeviceInputSpec.js"></script>
+        <script type="text/javascript" src="spec/models/DeviceInputsSpec.js"></script>
+        <script type="text/javascript" src="spec/models/DeviceOutputSpec.js"></script>
+        <script type="text/javascript" src="spec/models/DeviceOutputsSpec.js"></script>
+        <script type="text/javascript" src="spec/models/DeviceProcessSpec.js"></script>
+        <script type="text/javascript" src="spec/models/DeviceProcessesSpec.js"></script>
+        <script type="text/javascript" src="spec/models/DeviceDataChannelSpec.js"></script>
+        <script type="text/javascript" src="spec/models/DeviceDataChannelsSpec.js"></script>
+        <script type="text/javascript" src="spec/models/DeviceControlChannelSpec.js"></script>
+        <script type="text/javascript" src="spec/models/DeviceControlChannelsSpec.js"></script>
+        <script type="text/javascript" src="spec/models/InputTableSpec.js"></script>
+        <script type="text/javascript" src="spec/models/InputTablesSpec.js"></script>
+        <script type="text/javascript" src="spec/models/OutputTableSpec.js"></script>
+        <script type="text/javascript" src="spec/models/OutputTablesSpec.js"></script>
+        <script type="text/javascript" src="spec/models/ProcessTableSpec.js"></script>
+        <script type="text/javascript" src="spec/models/ProcessTablesSpec.js"></script>
 
-  <script type="text/javascript">
-    (function() {
-      var jasmineEnv = jasmine.getEnv();
-      jasmineEnv.updateInterval = 1000;
+        <script type="text/javascript">
+            (function() {
+                jasmine.getEnv().updateInterval = 1000;
 
-      var htmlReporter = new jasmine.HtmlReporter();
+                if (/PhantomJS/.test(navigator.userAgent)) {
+                    jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+                    jasmine.getEnv().addReporter(new jasmine.JUnitXmlReporter('../../build/jasmine/'));
+                    jasmine.getEnv().addReporter(new jasmine.ConsoleReporter());
+                } else {
+                    jasmine.getEnv().addReporter(new jasmine.HtmlReporter());
+                }
 
-      jasmineEnv.addReporter(htmlReporter);
+                var currentWindowOnload = window.onload;
 
-      jasmineEnv.specFilter = function(spec) {
-        return htmlReporter.specFilter(spec);
-      };
+                window.onload = function() {
+                    if (currentWindowOnload) {
+                        currentWindowOnload();
+                    }
+                    execJasmine();
+                };
 
-      var currentWindowOnload = window.onload;
+                function execJasmine() {
+                    jasmine.getEnv().execute();
+                }
 
-      window.onload = function() {
-        if (currentWindowOnload) {
-          currentWindowOnload();
-        }
-        execJasmine();
-      };
+            })();
+        </script>
 
-      function execJasmine() {
-        jasmineEnv.execute();
-      }
+    </head>
 
-    })();
-  </script>
-
-</head>
-
-<body>
-</body>
+    <body>
+    </body>
 </html>
