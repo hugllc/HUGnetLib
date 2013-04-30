@@ -39,8 +39,9 @@
 
     <target name="jasmine" depends="build" description="Run unit tests using jasmine and generates junit.xml and clover.xml">
         <delete dir="${basedir}/build/jasmine" failonerror="false"/>
-        <exec executable="node" failonerror="false" dir="${basedir}/test/jasmine">
-            <arg line="SpecRunner.js" />
+        <mkdir dir="${basedir}/build/jasmine"/>
+        <exec executable="phantomjs" failonerror="false" dir="${basedir}/test/jasmine">
+            <arg line="run-jasmine.js SpecRunner.html" />
         </exec>
     </target>
     <target name="jshint" depends="build" description="code check">

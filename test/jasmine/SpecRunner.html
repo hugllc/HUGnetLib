@@ -6,8 +6,10 @@
 
   <link rel="shortcut icon" type="image/png" href="lib/jasmine-1.2.0/jasmine_favicon.png">
   <link rel="stylesheet" type="text/css" href="lib/jasmine-1.2.0/jasmine.css">
-  <script type="text/javascript" src="lib/jasmine-1.2.0/jasmine.js"></script>
-  <script type="text/javascript" src="lib/jasmine-1.2.0/jasmine-html.js"></script>
+  <script type="text/javascript" src="lib/jasmine-1.3.1/jasmine.js"></script>
+  <script type="text/javascript" src="lib/jasmine-1.3.1/jasmine-html.js"></script>
+  <script type="text/javascript" src="lib/jasmine.console_reporter.js"></script>
+  <script type="text/javascript" src="lib/jasmine.junit_reporter.js"></script>
 
   <!-- include source files here... -->
   <script type="text/javascript" src="../../src/webapi/html/contrib.js"></script>
@@ -40,29 +42,28 @@
 
   <script type="text/javascript">
     (function() {
-      var jasmineEnv = jasmine.getEnv();
-      jasmineEnv.updateInterval = 1000;
+        jasmine.getEnv().updateInterval = 1000;
 
-      var htmlReporter = new jasmine.HtmlReporter();
-
-      jasmineEnv.addReporter(htmlReporter);
-
-      jasmineEnv.specFilter = function(spec) {
-        return htmlReporter.specFilter(spec);
-      };
-
-      var currentWindowOnload = window.onload;
-
-      window.onload = function() {
-        if (currentWindowOnload) {
-          currentWindowOnload();
+        if (/PhantomJS/.test(navigator.userAgent)) {
+            jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+            jasmine.getEnv().addReporter(new jasmine.JUnitXmlReporter('../../build/jasmine/'));
+            jasmine.getEnv().addReporter(new jasmine.ConsoleReporter());
+        } else {
+            jasmine.getEnv().addReporter(new jasmine.HtmlReporter());
         }
-        execJasmine();
-      };
 
-      function execJasmine() {
-        jasmineEnv.execute();
-      }
+        var currentWindowOnload = window.onload;
+
+        window.onload = function() {
+            if (currentWindowOnload) {
+                currentWindowOnload();
+            }
+            execJasmine();
+        };
+
+        function execJasmine() {
+            jasmine.getEnv().execute();
+        }
 
     })();
   </script>
