@@ -1337,7 +1337,9 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "toArray" => array(
                             "id" => 2,
                             "asdf" => 3,
-                            "params" => json_encode(array(1,2,3,4, "LastPoll" => 1000)),
+                            "params" => json_encode(
+                                array(1,2,3,4, "LastPoll" => 1000)
+                            ),
                             "PollInterval" => 300,
                         ),
 
