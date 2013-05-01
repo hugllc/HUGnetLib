@@ -185,7 +185,9 @@
     </target>
 
     <target name="build" depends="buildJavaScript"/>
-    <target name="test" depends="clean,setup,build,pdepend,phpmd,phpcpd,phpcs,phpdoc,phploc,phpunit,phpcb,cleanafter"/>
+    <target name="jstest" depends="jasmine"/>
+    <target name="phptest" depends="pdepend,phpmd,phpcpd,phpcs,phpdoc,phploc,phpunit,phpcb,cleanafter"/>
+    <target name="test" depends="clean,setup,build,jstest,phptest"/>
     <target name="deb" depends="build,deb.build"/>
     <target name="post" depends="deb.post"/>
     <target name="testpost" depends="clean,build,deb.testpost"/>
