@@ -299,10 +299,12 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
             }
             $ret = $this->_postHistory(null, $dev->id(), $records);
             $good = 0;
-            $bad = $cnt;
+            $bad = 0;
+            $badfirst = time();
+            $badlast = 0;
             if (is_array($ret)) {
                 for ($i = 0; $i < $cnt; $i++) {
-                    if ($ret[$i] == 1) {
+                    if ($ret[$i] != 0) {
                         if ($last < $records[$i]["Date"]) {
                             $last = $records[$i]["Date"];
                         }
@@ -310,9 +312,21 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
                             $first = $records[$i]["Date"];
                         }
                         $good++;
-                        $bad--;
+                    } else {
+                        if ($badlast < $records[$i]["Date"]) {
+                            $badlast = $records[$i]["Date"];
+                        }
+                        if ($badfirst > $records[$i]["Date"]) {
+                            $badfirst = $records[$i]["Date"];
+                        }
+                        $bad++;
                     }
                 }
+            } else {
+                $this->system()->out(
+                    sprintf("%06X ", $dev->id())
+                    ." No reply to $name history push"
+                );
             }
             if ($good > 0) {
                 $this->system()->out(
@@ -324,7 +338,10 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
             }
             if ($bad > 0) {
                 $this->system()->out(
-                    "Failure to push out $bad $name history records!"
+                    sprintf("%06X ", $dev->id())
+                    ."Failed to push $bad $name history from "
+                    .date("Y-m-d H:i:s", $badfirst)." to "
+                    .date("Y-m-d H:i:s", $badlast)
                 );
             }
             $dev->load($dev->id());
