@@ -8,9 +8,9 @@ GIT=`which git`
 all:
 
 setup:
-	sudo apt-get install php-pear npm nodejs
-	sudo npm install jshint -g
-	sudo pear update
+	sudo apt-get install php-pear npm phantomjs
+	#sudo npm install jshint -g
+	sudo pear update-channels
 	sudo pear config-set auto_discover 1
 	sudo pear install pear.phpqatools.org/phpqatools pear.netpirates.net/phpDox
 
