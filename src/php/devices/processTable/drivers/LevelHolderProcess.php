@@ -87,7 +87,7 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
             "Tolerance",
         ),
         "extraDefault" => array(
-            34, 0, 2, "", 0, 0.01, "", 0, 0.01, "", 0, 0.01,
+            34, 0, 2, 0xFF, 0, 0.01, 0xFF, 0, 0.01, 0, 0, 0.01,
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take

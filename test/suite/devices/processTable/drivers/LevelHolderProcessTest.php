@@ -319,6 +319,30 @@ class LevelHolderProcessTest extends DriverTestBase
                         "get" => array(
                             "epChannel" => 1,
                         ),
+                        "dataChannel" => array(
+                            "0" => new \HUGnet\DummyBase("DataChan0"),
+                            "1" => new \HUGnet\DummyBase("DataChan1"),
+                            "2" => new \HUGnet\DummyBase("DataChan2"),
+                            "3" => new \HUGnet\DummyBase("DataChan3"),
+                            "4" => new \HUGnet\DummyBase("DataChan4"),
+                        ),
+                    ),
+                    "DataChan0" => array(
+                    ),
+                    "DataChan1" => array(
+                    ),
+                    "DataChan2" => array(
+                        "encode" => array(
+                            "12" => "12345678",
+                            "14" => "11223344",
+                        ),
+                        "get" => array(
+                            "epChannel" => 1,
+                        ),
+                    ),
+                    "DataChan3" => array(
+                    ),
+                    "DataChan4" => array(
                     ),
                     "cChannels" => array(
                         "controlChannel" => new \HUGnet\DummyBase("cChannel"),
@@ -330,7 +354,8 @@ class LevelHolderProcessTest extends DriverTestBase
                         ),
                     )
                 ),
-                "2200020014060000C20D0000",
+                "2200020014060000C20D0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                    ."000000000000000000",
             ),
             array( // #1
                 array(
@@ -338,9 +363,9 @@ class LevelHolderProcessTest extends DriverTestBase
                         "get" => array(
                             "extra" => array(
                                 1 => 1,
-                                3 => 2,
-                                4 => 13,
-                                5 => 1,
+                                9 => 2,
+                                10 => 13,
+                                11 => 1,
                             ),
                         ),
                         "device" => new \HUGnet\DummyBase("Device"),
@@ -385,7 +410,8 @@ class LevelHolderProcessTest extends DriverTestBase
                         ),
                     )
                 ),
-                "2201020014060000C20D0000011234567811223344",
+                "2201020014060000C20D0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                    ."011234567811223344",
             ),
             array( // #2 DataChan return too big
                 array(
@@ -393,9 +419,9 @@ class LevelHolderProcessTest extends DriverTestBase
                         "get" => array(
                             "extra" => array(
                                 1 => 1,
-                                3 => 2,
-                                4 => 13,
-                                5 => 1,
+                                9 => 2,
+                                10 => 13,
+                                11 => 1,
                             ),
                         ),
                         "device" => new \HUGnet\DummyBase("Device"),
@@ -440,7 +466,8 @@ class LevelHolderProcessTest extends DriverTestBase
                         ),
                     )
                 ),
-                "2201020014060000C20D0000011234567811223344",
+                "2201020014060000C20D0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                    ."011234567811223344",
             ),
             array( // #3 DataChan return too short
                 array(
@@ -448,9 +475,9 @@ class LevelHolderProcessTest extends DriverTestBase
                         "get" => array(
                             "extra" => array(
                                 1 => 1,
-                                3 => 2,
-                                4 => 13,
-                                5 => 1,
+                                9 => 2,
+                                10 => 13,
+                                11 => 1,
                             ),
                         ),
                         "device" => new \HUGnet\DummyBase("Device"),
@@ -495,7 +522,8 @@ class LevelHolderProcessTest extends DriverTestBase
                         ),
                     )
                 ),
-                "2201020014060000C20D0000011200000011000000",
+                "2201020014060000C20D0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                    ."011200000011000000",
             ),
             array( // #4
                 array(
@@ -504,9 +532,9 @@ class LevelHolderProcessTest extends DriverTestBase
                             "extra" => array(
                                 1 => 1,
                                 2 => -1,
-                                3 => 2,
-                                4 => 13,
-                                5 => 1,
+                                9 => 2,
+                                10 => 13,
+                                11 => 1,
                             ),
                         ),
                         "device" => new \HUGnet\DummyBase("Device"),
@@ -551,7 +579,8 @@ class LevelHolderProcessTest extends DriverTestBase
                         ),
                     )
                 ),
-                "2201FFFF14060000C20D0000011234567811223344",
+                "2201FFFF14060000C20D0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                    ."011234567811223344",
             ),
         );
     }
