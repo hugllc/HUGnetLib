@@ -77,14 +77,14 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
             "Control",
             "Step",
             "Data Channel 0",
-            "Set Point 0",
-            "Tolerance 0",
+            "Range Set Point 0",
+            "Tolerance",
             "Data Channel 1",
-            "Set Point 1",
-            "Tolerance 1",
+            "Range Set Point 1",
+            "Tolerance",
             "Data Channel 2",
-            "Set Point 2",
-            "Tolerance 2",
+            "Set Point",
+            "Tolerance",
         ),
         "extraDefault" => array(
             34, 0, 2, "", 0, 0.01, "", 0, 0.01, "", 0, 0.01,
@@ -111,11 +111,11 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
                 array("" => "None")
             );
             $dataChans = $this->process()->device()->dataChannels();
-            $data = $dataChans->select(array("" => "None"), true);
+            $data = $dataChans->select(array(0xFF => "None"), true);
             $ret[1] = $control;
-            $ret[3] = $dataChans->select(array(), true);
+            $ret[3] = $data;
             $ret[6] = $data;
-            $ret[9] = $data;
+            $ret[9] = $dataChans->select(array(), true);
         }
         return $ret;
     }
@@ -212,10 +212,11 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
         $data = "";
         for ($i = 3; $i < count($this->params["extraText"]); $i += 3) {
             $chan = $this->getExtra($i);
-            if ((strlen((string)$chan) == 0) || (!is_numeric($chan))) {
-                break;
-            }
             $chan = (int)$chan;
+            if ($chan == 0xFF) {
+                $data .= "FF"."FFFFFFFF"."FFFFFFFF";
+                continue;
+            }
             $dataChan  = $channels->dataChannel($chan);
             $epChan    = (int)$dataChan->get("epChannel");
             $setpoint  = (float)$this->getExtra($i+1);
@@ -223,16 +224,10 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
             $low = $dataChan->encode(
                 $setpoint - $tolerance
             );
-            if (strlen($low) == 0) {
-                break;
-            }
             $low = substr($low."00000000", 0, 8);
             $high = $dataChan->encode(
                 $setpoint + $tolerance
             );
-            if (strlen($high) == 0) {
-                break;
-            }
             $high = substr($high."00000000", 0, 8);
             $data .= $this->encodeInt($epChan, 1).$low.$high;
         }
