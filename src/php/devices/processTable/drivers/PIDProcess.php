@@ -79,6 +79,18 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
             8 => "D",
             9 => "Output Offset",
         ),
+        "extraDesc" => array(
+            0 => "0-255 The minimum number of 1/128th of a second",
+            1 => "The control channel to use",
+            2 => "The data channel to use for the control",
+            3 => "Added to the data channel before the check",
+            4 => "(Units for data channel) The set point to use for the control",
+            5 => "Inside this limit, I and D are ignored",
+            6 => "Proportional Coefficient (Shifted down 27 bits in endpoint)",
+            7 => "Integral Coefficient (Shifted down 27 bits in endpoint)",
+            8 => "Differential Coefficient (Shifted down 16 bits in endpoint)",
+            9 => "Added to the control before the channel is set",
+        ),
         "extraDefault" => array(
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0
         ),
