@@ -16,6 +16,18 @@ describe("src/webapi/javascript/models/HUGnet.DeviceOutput", function() {
         it("type should default to Unknown", function() {
             expect(output.get('type')).toEqual('Unknown');
         });
+        it("extraDesc should default to an empty array", function() {
+            expect(output.get('extraDesc')).toEqual({});
+        });
+        it("extraDefault should default to an empty array", function() {
+            expect(output.get('extraDefault')).toEqual({});
+        });
+        it("extraText should default to an empty array", function() {
+            expect(output.get('extraText')).toEqual({});
+        });
+        it("extraValues should default to an empty array", function() {
+            expect(output.get('extraValues')).toEqual({});
+        });
 
     });
 /*

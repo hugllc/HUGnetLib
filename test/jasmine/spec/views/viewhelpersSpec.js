@@ -54,4 +54,25 @@ describe("src/webapi/javascript/views/HUGnet.viewHelpers", function() {
                 .toEqual("Not Here");
         });
     });
+    describe("when showInfo is called", function() {
+        it("it should return an empty string if the info array is undefined", function() {
+            expect(HUGnet.viewHelpers.showInfo())
+                .toEqual('');
+        });
+        it("it should return an empty string if the key is undefined", function() {
+            var info = {hello: "World!"};
+            expect(HUGnet.viewHelpers.showInfo(info))
+                .toEqual('');
+        });
+        it("it should return an empty string if the key doesn't exist", function() {
+            var info = {hello: "World!"};
+            expect(HUGnet.viewHelpers.showInfo(info, "asdf"))
+                .toEqual('');
+        });
+        it("it should return a title if it does exist", function() {
+            var info = {hello: "World!"};
+            expect(HUGnet.viewHelpers.showInfo(info, "hello"))
+                .toEqual(' title="World!" ');
+        });
+    });
 });

@@ -81,4 +81,12 @@ HUGnet.viewHelpers = {
 
         return Y + "-" + m + "-" + d + " " + H + ":" + i + ":" + s;
     },
+    showInfo: function (info, key)
+    {
+        var html = '';
+        if (info && info[key]) {
+            html = ' title="'+info[key]+'" ';
+        }
+        return html;
+    }
 };
