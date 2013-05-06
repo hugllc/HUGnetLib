@@ -72,6 +72,10 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
     */
     private $_table;
     /**
+    * This is where we store the table entry
+    */
+    private $_tableEntry = null;
+    /**
     * This is where we store the InputTable
     */
     private $_tableClass = "InputTable";
@@ -103,6 +107,23 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
         "extraDefault" => array(0, 0, 0),
         "maxDecimals" => 6,
     );
+    /**
+    * This function sets up the driver object, and the database object.  The
+    * database object is taken from the driver object.
+    *
+    * @param object &$sensor The sensor in question
+    * @param array  $table   The table to use.  This forces the table, instead of
+    *                        using the database to find it
+    *
+    * @return null
+    */
+    protected function __construct(&$sensor, $table = null)
+    {
+        parent::__construct($sensor);
+        if (is_array($table)) {
+            $this->_tableEntry = $table;
+        }
+    }
     /**
     * This is the destructor
     */
@@ -192,10 +213,15 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
     {
         if (!is_object($this->_entry)) {
             include_once dirname(__FILE__)."/../../tables/ADuCInputTable.php";
-            $extra = $this->input()->get("extra");
-            $this->_table()->getRow((int)$extra[0]);
+            if (is_array($this->_tableEntry)) {
+                $table = $this->_tableEntry;
+            } else {
+                $extra = $this->input()->get("extra");
+                $this->_table()->getRow((int)$extra[0]);
+                $table = $this->_table()->toArray();
+            }
             $entry = \HUGnet\devices\inputTable\tables\ADuCInputTable::factory(
-                $this, $this->_table()->toArray()
+                $this, $table
             );
             $this->_entry = &$entry;
         }
