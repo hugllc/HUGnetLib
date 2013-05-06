@@ -73,6 +73,7 @@ class CheckPoll extends \HUGnet\processes\watchdog\Periodic
     protected function __construct(&$gui)
     {
         parent::__construct($gui);
+        $this->oldest = (int)$this->ui()->get("max_poll_age");
     }
     /**
     * This function creates the system.

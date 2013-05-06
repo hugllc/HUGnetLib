@@ -69,6 +69,7 @@ class Watchdog extends \HUGnet\ui\Daemon
     private $_config = array(
         "email" => null,
         "email_wait" => 1800,
+        "max_poll_age" => 600,
     );
     /** This is our critical Error locations */
     private $_criticalError = array();
@@ -80,11 +81,11 @@ class Watchdog extends \HUGnet\ui\Daemon
     protected function __construct(&$config)
     {
         parent::__construct($config);
-        /* Get our Device */
-        $this->_plugins = \HUGnet\processes\watchdog\Periodic::plugins($this);
         $this->_config = array_merge(
             $this->_config, (array)$this->system()->get("watchdog")
         );
+        /* Get our Device */
+        $this->_plugins = \HUGnet\processes\watchdog\Periodic::plugins($this);
         $this->criticalError(
             "restart",
             "Watchdog process starting"
@@ -152,6 +153,20 @@ class Watchdog extends \HUGnet\ui\Daemon
     public function &device($config = array())
     {
         return false;
+    }
+    /**
+    * Gets config entries
+    *
+    * @param string $field The field to get
+    *
+    * @return mixed The value of the given field
+    */
+    public function get($field)
+    {
+        if (isset($this->_config[$field])) {
+            return $this->_config[$field];
+        }
+        return null;
     }
     /**
     * This sets a critical error
@@ -248,5 +263,6 @@ class Watchdog extends \HUGnet\ui\Daemon
         );
     }
     // @codeCoverageIgnoreEnd
+    
 }
 ?>
