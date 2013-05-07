@@ -144,18 +144,20 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         return parent::iopobject();
     }
     /**
-    * Returns the driver object
+    * Returns the table entry object
+    *
+    * @param array $table The table to use.  This only works on the first call
     *
     * @return object The driver requested
     */
-    protected function &entry()
+    public function &entry($table = null)
     {
         $file = dirname(__FILE__)."/tables/".$this->entryClass.".php";
         if (!is_object($this->_entry) && file_exists($file)) {
             include_once $file;
             $class = "\\HUGnet\\devices\\outputTable\\tables\\".$this->entryClass;
             $entry = $class::factory(
-                $this
+                $this, $table
             );
             $this->_entry = &$entry;
         }

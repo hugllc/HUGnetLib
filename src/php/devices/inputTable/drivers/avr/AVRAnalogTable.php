@@ -160,7 +160,7 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
     private function &_driver()
     {
         if (!is_object($this->_driver)) {
-            $entry  = $this->_entry();
+            $entry  = $this->entry();
             $driver = explode(":", (string)$entry->get("driver"));
             $input  = $this->input();
             $this->_driver = \HUGnet\devices\inputTable\DriverAVR::factory(
@@ -194,7 +194,7 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
     *
     * @return object The driver requested
     */
-    private function &_entry($table = null)
+    public function &entry($table = null)
     {
         if (!is_object($this->_entry)) {
             if (is_array($this->_tableEntry)) {
@@ -389,7 +389,7 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
     */
     public function decode($string)
     {
-        $this->_entry()->decode($string);
+        $this->entry()->decode($string);
     }
     /**
     * Encodes this driver as a setup string
@@ -401,7 +401,7 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
         $entry = \HUGnet\devices\inputTable\tables\AVRAnalogTable::factory(
             $this, array()
         );
-        $mine = json_encode($this->_entry()->toArray());
+        $mine = json_encode($this->entry()->toArray());
         $ret = $this->_table()->selectInto("1");
         while ($ret) {
             $entry = \HUGnet\devices\inputTable\tables\AVRAnalogTable::factory(
@@ -422,7 +422,7 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
     */
     public function encode()
     {
-        $string  = $this->_entry()->encode();
+        $string  = $this->entry()->encode();
         return $string;
     }
 

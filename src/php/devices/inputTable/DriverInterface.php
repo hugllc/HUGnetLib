@@ -73,6 +73,14 @@ interface DriverInterface
     */
     public static function &factory($driver, &$sensor, $table = null);
     /**
+    * Returns the table entry object
+    *
+    * @param array $table The table to use.  This only works on the first call
+    *
+    * @return object The driver requested
+    */
+    public function &entry($table = null);
+    /**
     * Checks to see if a piece of data exists
     *
     * @param string $name The name of the property to check

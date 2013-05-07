@@ -136,6 +136,18 @@ abstract class LoadableDriver
         return $ret;
     }
     /**
+    * Returns the driver object
+    *
+    * @param array $table The table to use.  This only works on the first call
+    *
+    * @return object The driver requested
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function &entry($table = null)
+    {
+        return null;
+    }
+    /**
     * Returns all of the parameters and defaults in an array
     *
     * @return array of data from the sensor
