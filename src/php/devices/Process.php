@@ -100,7 +100,7 @@ class Process extends \HUGnet\base\IOPBase
     public function toArray($default = true)
     {
         $return = (array)parent::toArray($default);
-        if ($default) {
+        if (($default) && ($default !== "entryonly")) {
             $return["otherTypes"] = processTable\Driver::getTypes(
                 $return["id"]
             );

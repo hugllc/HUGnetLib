@@ -112,7 +112,7 @@ class Input extends \HUGnet\base\IOPBase
     public function toArray($default = true)
     {
         $return = (array)parent::toArray($default);
-        if ($default) {
+        if (($default) && ($default !== "entryonly")) {
             $arch = $this->device()->get("arch");
             if ($arch == "old") {
                 /* Can't change anything about the old system */

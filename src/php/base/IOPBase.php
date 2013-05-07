@@ -180,8 +180,18 @@ abstract class IOPBase extends SystemTableBase
     {
         $return = (array)$this->table()->toArray($default);
         if ($default) {
-            $driver = $this->driver()->toArray();
-            $return = array_merge($driver, $return);
+            $entry = $this->driver()->entry();
+            if (is_object($entry)) {
+                $ent = $entry->toArray();
+            } else {
+                $ent = array();
+            }
+            if ($default === "entryonly") {
+                return $ent;
+            } else {
+                $driver = $this->driver()->toArray();
+                $return = array_merge($driver, $return);
+            }
         }
         $params = json_decode($return["params"], true);
         if (empty($return["type"])) {

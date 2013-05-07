@@ -162,6 +162,7 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 new \HUGnet\DummyTable("Table"),
+                true,
                 array(
                     'longName' => 'Silly IOPBase Driver 1',
                     'shortName' => 'SSD1',
@@ -193,6 +194,7 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 new \HUGnet\DummyTable("Table"),
+                true,
                 array(
                     'longName' => 'Silly IOPBase Driver 1',
                     'shortName' => 'SSD1',
@@ -210,6 +212,57 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
                     "extraValues" => array(),
                 ),
             ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 0xFF,
+                        ),
+                        "toArray" => array(
+                            "id" => 0xFF,
+                            "asdf" => 3,
+                            "params" => json_encode(array(1,2,3,4)),
+                        ),
+                    ),
+                ),
+                new \HUGnet\DummyTable("Table"),
+                false,
+                array(
+                    'id' => 255,
+                    'asdf' => 3,
+                    'params' => Array (
+                        0 => 1,
+                        1 => 2,
+                        2 => 3,
+                        3 => 4,
+                    ),
+                    'type' => 'TestIOPBaseDriver1',
+                ),
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 0xFF,
+                        ),
+                        "toArray" => array(
+                            "id" => 0xFF,
+                            "asdf" => 3,
+                            "params" => json_encode(array(1,2,3,4)),
+                        ),
+                    ),
+                    "Entry" => array(
+                        "toArray" => array(
+                            "Entry" => "toArray"
+                        ),
+                    ),
+                ),
+                new \HUGnet\DummyTable("Table"),
+                "entryonly",
+                array(
+                    "Entry" => "toArray"
+                ),
+            ),
         );
     }
     /**
@@ -224,13 +277,13 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
     * @dataProvider data2Array
     */
     public function test2Array(
-        $config, $class, $expect
+        $config, $class, $table, $expect
     ) {
         $sys = new \HUGnet\DummySystem("System");
         $dev = new \HUGnet\DummyBase("Device");
         $sys->resetMock($config);
         $obj = IOPBaseStub::factory($sys, null, $class, $dev);
-        $json = $obj->toArray();
+        $json = $obj->toArray($table);
         $this->assertEquals($expect, $json);
         unset($obj);
     }
@@ -1033,6 +1086,18 @@ abstract class Driver
     {
         return (array)$this->_arch[$this->process()->device()->get("arch")]
             + (array)$this->_arch["all"];
+    }
+    /**
+    * Returns the driver object
+    *
+    * @param array $table The table to use.  This only works on the first call
+    *
+    * @return object The driver requested
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function &entry($table = null)
+    {
+        return new \HUGnet\DummyBase("Entry");
     }
 }
 

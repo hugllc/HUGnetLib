@@ -168,16 +168,16 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
         if (!is_object($this->_driver[$num])) {
             $offset = count($this->params["extraDefault"]);
             if ($num == 0) {
-                $driver = $this->_entry()->driver0();
+                $driver = $this->entry()->driver0();
             } else if ($num == 1) {
-                $driver = $this->_entry()->driver1();
+                $driver = $this->entry()->driver1();
                 $offset += count($this->_driver(0)->get("extraDefault"));
             } else {
                 return null;
             }
             $driver = explode(":", (string)$driver);
             $sensor = $this->input();
-            $entry  = $this->_entry();
+            $entry  = $this->entry();
             $this->_driver[$num] = \HUGnet\devices\inputTable\DriverADuC::factory(
                 \HUGnet\devices\inputTable\Driver::getDriver(
                     hexdec($driver[0]), $driver[1]
@@ -207,9 +207,12 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
     /**
     * Returns the driver object
     *
+    * @param array $table The table to use.  This only works on the first call
+    *
     * @return object The driver requested
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    private function &_entry()
+    public function &entry($table = null)
     {
         if (!is_object($this->_entry)) {
             include_once dirname(__FILE__)."/../../tables/ADuCInputTable.php";
@@ -386,7 +389,7 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
     */
     public function decode($string)
     {
-        $this->_entry()->decode($string);
+        $this->entry()->decode($string);
         $extra = $this->input()->get("extra");
         $start = 22;
         $data = substr($string, $start);
@@ -416,7 +419,7 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
         $entry = \HUGnet\devices\inputTable\tables\ADuCInputTable::factory(
             $this, array()
         );
-        $mine = json_encode($this->_entry()->toArray());
+        $mine = json_encode($this->entry()->toArray());
         $ret = $this->_table()->selectInto("1");
         while ($ret) {
             $entry = \HUGnet\devices\inputTable\tables\ADuCInputTable::factory(
@@ -437,7 +440,7 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
     */
     public function encode()
     {
-        $string  = $this->_entry()->encode();
+        $string  = $this->entry()->encode();
         $string .= str_pad(
             $this->encodeDataPoint($this->getExtra(1), 0), 8, "0", STR_PAD_RIGHT
         );
