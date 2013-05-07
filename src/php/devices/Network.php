@@ -551,6 +551,8 @@ class Network
         $this->_sendPkt(
             "SETCONFIG", null, array("NoReply" => true)
         );
+        // This makes sure that we are rebooted
+        sleep(2);
     }
     /**
     * Writes a data buffer to the Flash
