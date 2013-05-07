@@ -73,35 +73,35 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
         "longName" => "LevelHolder Process",
         "shortName" => "LevelHolder",
         "extraText" => array(
-            "Priority",
-            "Control",
-            "Step",
-            "Limiter 1 Data Channel",
-            "Limiter 1 Set Point",
-            "Limiter 1 Tolerance",
-            "Limiter 2 Data Channel",
-            "Limiter 2 Set Point",
-            "Limiter 2 Tolerance",
-            "Data Channel",
-            "Set Point",
-            "Tolerance",
+            0  => "Priority",
+            1  => "Control",
+            2  => "Step",
+            3  => "Limiter 1 Data Channel",
+            4  => "Limiter 1 High",
+            5  => "Limiter 1 Low",
+            6  => "Limiter 2 High",
+            7  => "Limiter 2 Low",
+            8  => "Limiter 2 Tolerance",
+            9  => "Data Channel",
+            10 => "Set Point",
+            11 => "Tolerance",
         ),
         "extraDesc" => array(
             "0-255 The minimum number of 1/128th of a second",
             "The control channel to use",
             "-32768 to 32767 The amount added or subracted from the control channel",
             "The data channel to use for the first limiter",
-            "(Units for data channel) The set point to use for the first limiter",
-            "(Units for data channel) The tolerance to use for the first limiter",
+            "(Units for data channel) The maximum for the first limiter",
+            "(Units for data channel) The minimum for the first limiter",
             "The data channel to use for the second limiter",
-            "(Units for data channel) The set point to use for the second limiter",
-            "(Units for data channel) The tolerance to use for the second limiter",
+            "(Units for data channel) The maximum for the second limiter",
+            "(Units for data channel) The minimum for the second limiter",
             "The data channel to use for the control",
             "(Units for data channel) The set point to use for the control",
             "(Units for data channel) The tolerance to use for the control",
         ),
         "extraDefault" => array(
-            34, 0, 2, 0xFF, 0, 0.01, 0xFF, 0, 0.01, 0, 0, 0.01,
+            34, 0, 2, 0xFF, 0, 0, 0xFF, 0, 0, 0, 0, 0.01,
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
@@ -163,7 +163,7 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
     {
         $index = 0;
         $channels = $this->process()->device()->dataChannels();
-        for ($i = 3; $i < count($this->params["extraText"]); $i += 3) {
+        for ($i = 3; $i < 9; $i += 3) {
             $epChan = substr($string, $index, 2);
             if (($epChan == "FF") || ($epChan === false)) {
                 // Empty string or slot
@@ -187,14 +187,37 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
             );
             $index += 8;
             $extra[$i+1] = round(
-                ($low + $high) / 2,
+                $high,
                 $dataChan->get("decimals")
             );
             $extra[$i+2] = round(
-                abs($high - $low) / 2,
+                $low,
                 $dataChan->get("decimals")
             );
         }
+        $epChan = substr($string, $index, 2);
+        $epChan = $this->decodeInt($epChan, 1);
+        $dataChan = $channels->epChannel($epChan);
+
+        $extra[$i] = $dataChan->get("channel");
+        $index += 2;
+
+        $low = $dataChan->decode(
+            substr($string, $index, 8)
+        );
+        $index += 8;
+        $high = $dataChan->decode(
+            substr($string, $index, 8)
+        );
+        $index += 8;
+        $extra[$i+1] = round(
+            ($low + $high) / 2,
+            $dataChan->get("decimals")
+        );
+        $extra[$i+2] = round(
+            abs($high - $low) / 2,
+            $dataChan->get("decimals")
+        );
     }
     /**
     * Encodes this driver as a setup string
@@ -224,7 +247,8 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
     {
         $channels = $this->process()->device()->dataChannels();
         $data = "";
-        for ($i = 3; $i < count($this->params["extraText"]); $i += 3) {
+        // Limiters
+        for ($i = 3; $i < 9; $i += 3) {
             $chan = $this->getExtra($i);
             $chan = (int)$chan;
             if ($chan == 0xFF) {
@@ -233,18 +257,32 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
             }
             $dataChan  = $channels->dataChannel($chan);
             $epChan    = (int)$dataChan->get("epChannel");
-            $setpoint  = (float)$this->getExtra($i+1);
-            $tolerance = (float)$this->getExtra($i+2);
             $low = $dataChan->encode(
-                $setpoint - $tolerance
+                (float)$this->getExtra($i+1)
             );
             $low = substr($low."00000000", 0, 8);
             $high = $dataChan->encode(
-                $setpoint + $tolerance
+                (float)$this->getExtra($i+2)
             );
             $high = substr($high."00000000", 0, 8);
             $data .= $this->encodeInt($epChan, 1).$low.$high;
         }
+        // Setpoint
+        $chan = $this->getExtra($i);
+        $chan = (int)$chan;
+        $dataChan  = $channels->dataChannel($chan);
+        $epChan    = (int)$dataChan->get("epChannel");
+        $setpoint  = (float)$this->getExtra($i+1);
+        $tolerance = (float)$this->getExtra($i+2);
+        $low = $dataChan->encode(
+            $setpoint - $tolerance
+        );
+        $low = substr($low."00000000", 0, 8);
+        $high = $dataChan->encode(
+            $setpoint + $tolerance
+        );
+        $high = substr($high."00000000", 0, 8);
+        $data .= $this->encodeInt($epChan, 1).$low.$high;
         return $data;
     }
 
