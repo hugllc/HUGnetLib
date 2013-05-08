@@ -142,6 +142,10 @@ class LevelHolderProcessTest extends DriverTestBase
                             "channel" => 0,
                             "decimals" => 0,
                         ),
+                        "decode" => array(
+                            "12345678" => "9",
+                            "11223344" => "7",
+                        ),
                     ),
                     "DataChan1" => array(
                         "get" => array(
@@ -172,7 +176,8 @@ class LevelHolderProcessTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "2201020014060000C20D0000021234567811223344",
+                "2201020014060000C20D0000FFFFFFFFFFFFFFFFFF021234567811223344"
+                    ."001234567811223344",
                 array(
                     "get" => array(
                         array('extra'),
@@ -184,12 +189,13 @@ class LevelHolderProcessTest extends DriverTestBase
                                 0 => 34,
                                 1 => 1,
                                 2 => 2,
-                                3 => 3,
-                                4 => 14.0,
-                                5 => 12.0,
+                                3 => 0xFF,
+                                6 => 3,
+                                7 => 14.0,
+                                8 => 12.0,
                                 9 => 0,
-                                10 => 0.0,
-                                11 => 0.0,
+                                10 => 8.0,
+                                11 => 1.0,
                             )
                         ),
                     ),
@@ -232,6 +238,10 @@ class LevelHolderProcessTest extends DriverTestBase
                             "channel" => 1,
                             "decimals" => 0,
                         ),
+                        "decode" => array(
+                            "12345678" => "9",
+                            "11223344" => "7",
+                        ),
                     ),
                     "DataChan2" => array(
                         "get" => array(
@@ -256,7 +266,8 @@ class LevelHolderProcessTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "2201FFFF14060000C20D0000021234567811223344",
+                "2201FFFF14060000C20D0000021234567811223344FFFFFFFFFFFFFFFFFF"
+                    ."011234567811223344",
                 array(
                     "get" => array(
                         array('extra'),
@@ -271,9 +282,10 @@ class LevelHolderProcessTest extends DriverTestBase
                                 3 => 3,
                                 4 => 14.0,
                                 5 => 12.0,
-                                9 => 0,
-                                10 => 0.0,
-                                11 => 0.0,
+                                6 => 0xFF,
+                                9 => 1,
+                                10 => 8.0,
+                                11 => 1.0,
                             )
                         ),
                     ),

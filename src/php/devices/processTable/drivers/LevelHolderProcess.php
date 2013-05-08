@@ -122,7 +122,7 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
         $ret = parent::get($name);
         if ($name == "extraValues") {
             $control = $this->process()->device()->controlChannels()->select(
-                array("" => "None")
+                array()
             );
             $dataChans = $this->process()->device()->dataChannels();
             $data = $dataChans->select(array(0xFF => "None"), true);
@@ -167,15 +167,14 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
             $epChan = substr($string, $index, 2);
             if (($epChan == "FF") || ($epChan === false)) {
                 // Empty string or slot
-                unset($extra[$i]);
-                unset($extra[$i+1]);
-                unset($extra[$i+2]);
+                $extra[$i] = 0xFF;
+                $index += 18;
                 continue;
             }
             $epChan = $this->decodeInt($epChan, 1);
             $dataChan = $channels->epChannel($epChan);
 
-            $extra[$i] = $dataChan->get("channel");
+            $extra[$i] = (int)$dataChan->get("channel");
             $index += 2;
 
             $low = $dataChan->decode(
@@ -198,7 +197,6 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
         $epChan = substr($string, $index, 2);
         $epChan = $this->decodeInt($epChan, 1);
         $dataChan = $channels->epChannel($epChan);
-
         $extra[$i] = $dataChan->get("channel");
         $index += 2;
 
