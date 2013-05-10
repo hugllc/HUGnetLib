@@ -424,6 +424,7 @@ abstract class Driver
         $obj = Input::factory(
             $system, $data, null, $device
         );
+        $tid = $obj->get("id");
         if (is_null($tid) || ((int)$tid == 0xFF)) {
             $data["id"] = 0xFF;
             $tSensors = $this->device()->get("sensors");
