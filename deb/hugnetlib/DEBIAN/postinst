@@ -11,11 +11,9 @@ MYSQLUSER=${RET}
 db_get hugnetlib/mysql_root_pw
 MYSQLPW=${RET}
 
-mysql -f -u ${MYSQLUSER} -p"${MYSQLPW}" --database=${MYSQLDB} < /usr/share/HUGnetLib/sql/mysql/0.10.0/renamesensors.sql > /dev/null 2>&1 || true
-mysql -f -u ${MYSQLUSER} -p"${MYSQLPW}" --database=${MYSQLDB} < /usr/share/HUGnetLib/sql/mysql/0.10.0/updatehistory.sql > /dev/null 2>&1 || true
-mysql -f -u ${MYSQLUSER} -p"${MYSQLPW}" --database=${MYSQLDB} < /usr/share/HUGnetLib/sql/mysql/0.10.0/alterdevices.sql > /dev/null 2>&1 || true
 mysql -f -u ${MYSQLUSER} -p"${MYSQLPW}" --database=${MYSQLDB} < /usr/share/HUGnetLib/sql/mysql/0.10.4/fixoutputprocess.sql > /dev/null 2>&1 || true
 mysql -f -u ${MYSQLUSER} -p"${MYSQLPW}" --database=${MYSQLDB} < /usr/share/HUGnetLib/sql/mysql/0.10.4/double.sql > /dev/null 2>&1 || true
-mysql -f -u ${MYSQLUSER} -p"${MYSQLPW}" --database=${MYSQLDB} < /usr/share/HUGnetLib/sql/mysql/0.11.0/devices.sql 2>&1 || true
+mysql -f -u ${MYSQLUSER} -p"${MYSQLPW}" --database=${MYSQLDB} < /usr/share/HUGnetLib/sql/mysql/0.11.0/devices.sql > /dev/null 2>&1 || true
+mysql -f -u ${MYSQLUSER} -p"${MYSQLPW}" --database=${MYSQLDB} < /usr/share/HUGnetLib/sql/mysql/0.12.0/iopdefaultid.sql > /dev/null 2>&1 || true
 
 exit $?
