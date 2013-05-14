@@ -430,9 +430,9 @@ abstract class Driver
             $tSensors = $this->device()->get("sensors");
             if (is_string($tSensors) && !empty($tSensors)) {
                 $tSensors = unserialize(base64_decode($tSensors));
-                $obj->load((array)$tSensors[$sid]);
+                $obj->table()->fromAny((array)$tSensors[$sid]);
             } else if (is_array($tSensors) && isset($tSensors[$sid])) {
-                $obj->load((array)$tSensors[$sid]);
+                $obj->table()->fromAny((array)$tSensors[$sid]);
             } else {
                 if ($sid < $this->get("InputTables")) {
                     $data["id"] = self::getSensorID(
@@ -441,7 +441,7 @@ abstract class Driver
                 } else {
                     $data["id"] = 0xFE; // Virtual Sensor
                 }
-                $obj->load($data);
+                $obj->table()->fromArray($data);
             }
             $obj->store();
         }

@@ -1458,13 +1458,6 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             'input' => 10,
                         ),
                     ),
-                    array(
-                        array(
-                            'id' => 0xFE,
-                            'input' => 10,
-                            'dev' => 5,
-                        ),
-                    ),
                 ),
             ),
             array(      // #3
@@ -1485,13 +1478,6 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         array(
                             'dev' => 5,
                             'input' => 1,
-                        ),
-                    ),
-                    array(
-                        array(
-                            'id' => 0x42,
-                            'input' => 1,
-                            'dev' => 5,
                         ),
                     ),
                 ),
