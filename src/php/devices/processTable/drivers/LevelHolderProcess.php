@@ -208,8 +208,12 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
             substr($string, $index, 8)
         );
         $index += 8;
+        $set = $dataChan->decode(
+            substr($string, $index, 8)
+        );
+        $index += 8;
         $extra[$i+1] = round(
-            ($low + $high) / 2,
+            $set,
             $dataChan->get("decimals")
         );
         $extra[$i+2] = round(
@@ -280,7 +284,12 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
             $setpoint + $tolerance
         );
         $high = substr($high."00000000", 0, 8);
-        $data .= $this->encodeInt($epChan, 1).$low.$high;
+        $set = $dataChan->encode(
+            $setpoint
+        );
+        $set = substr($set."00000000", 0, 8);
+        
+        $data .= $this->encodeInt($epChan, 1).$low.$high.$set;
         return $data;
     }
 

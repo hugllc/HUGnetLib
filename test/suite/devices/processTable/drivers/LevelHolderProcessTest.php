@@ -145,6 +145,7 @@ class LevelHolderProcessTest extends DriverTestBase
                         "decode" => array(
                             "12345678" => "9",
                             "11223344" => "7",
+                            "87654321" => "8",
                         ),
                     ),
                     "DataChan1" => array(
@@ -163,6 +164,7 @@ class LevelHolderProcessTest extends DriverTestBase
                         "decode" => array(
                             "12345678" => "12",
                             "11223344" => "14",
+                            "87654321" => "13",
                         ),
                         "get" => array(
                             "channel" => 3,
@@ -177,7 +179,7 @@ class LevelHolderProcessTest extends DriverTestBase
                     ),
                 ),
                 "2201020014060000C20D0000FFFFFFFFFFFFFFFFFF021234567811223344"
-                    ."001234567811223344",
+                    ."00123456781122334487654321",
                 array(
                     "get" => array(
                         array('extra'),
@@ -241,6 +243,7 @@ class LevelHolderProcessTest extends DriverTestBase
                         "decode" => array(
                             "12345678" => "9",
                             "11223344" => "7",
+                            "87654321" => "8",
                         ),
                     ),
                     "DataChan2" => array(
@@ -253,6 +256,7 @@ class LevelHolderProcessTest extends DriverTestBase
                         "decode" => array(
                             "12345678" => "12",
                             "11223344" => "14",
+                            "87654321" => "13",
                         ),
                         "get" => array(
                             "channel" => 3,
@@ -267,7 +271,7 @@ class LevelHolderProcessTest extends DriverTestBase
                     ),
                 ),
                 "2201FFFF14060000C20D0000021234567811223344FFFFFFFFFFFFFFFFFF"
-                    ."011234567811223344",
+                    ."01123456781122334487654321",
                 array(
                     "get" => array(
                         array('extra'),
@@ -373,7 +377,7 @@ class LevelHolderProcessTest extends DriverTestBase
                     )
                 ),
                 "2200020014060000C20D0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
-                    ."000000000000000000",
+                    ."00000000000000000000000000",
             ),
             array( // #1
                 array(
@@ -409,6 +413,7 @@ class LevelHolderProcessTest extends DriverTestBase
                         "encode" => array(
                             "12" => "12345678",
                             "14" => "11223344",
+                            "13" => "87654321",
                         ),
                         "get" => array(
                             "epChannel" => 1,
@@ -429,7 +434,7 @@ class LevelHolderProcessTest extends DriverTestBase
                     )
                 ),
                 "2201020014060000C20D0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
-                    ."011234567811223344",
+                    ."01123456781122334487654321",
             ),
             array( // #2 DataChan return too big
                 array(
@@ -465,6 +470,7 @@ class LevelHolderProcessTest extends DriverTestBase
                         "encode" => array(
                             "12" => "1234567890",
                             "14" => "1122334412",
+                            "13" => "87654321",
                         ),
                         "get" => array(
                             "epChannel" => 1,
@@ -485,7 +491,7 @@ class LevelHolderProcessTest extends DriverTestBase
                     )
                 ),
                 "2201020014060000C20D0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
-                    ."011234567811223344",
+                    ."01123456781122334487654321",
             ),
             array( // #3 DataChan return too short
                 array(
@@ -521,6 +527,7 @@ class LevelHolderProcessTest extends DriverTestBase
                         "encode" => array(
                             "12" => "12",
                             "14" => "11",
+                            "13" => "13",
                         ),
                         "get" => array(
                             "epChannel" => 1,
@@ -541,7 +548,7 @@ class LevelHolderProcessTest extends DriverTestBase
                     )
                 ),
                 "2201020014060000C20D0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
-                    ."011200000011000000",
+                    ."01120000001100000013000000",
             ),
             array( // #4
                 array(
@@ -578,6 +585,7 @@ class LevelHolderProcessTest extends DriverTestBase
                         "encode" => array(
                             "12" => "12345678",
                             "14" => "11223344",
+                            "13" => "87654321",
                         ),
                         "get" => array(
                             "epChannel" => 1,
@@ -598,7 +606,7 @@ class LevelHolderProcessTest extends DriverTestBase
                     )
                 ),
                 "2201FFFF14060000C20D0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
-                    ."011234567811223344",
+                    ."01123456781122334487654321",
             ),
         );
     }
