@@ -175,6 +175,8 @@ abstract class Average extends History
     protected $divisors = array();
     /** @var string The base type for the averages */
     protected $baseType = "";
+    /** @var string The device channels */
+    private $_channels = null;
 
     /**
     * This is the constructor
@@ -284,8 +286,10 @@ abstract class Average extends History
     */
     protected function calc15MinAverageMult(History &$data, $last, $col)
     {
-        $channels = $this->device->dataChannels()->toArray();
-        if ($channels[$col]["total"]) {
+        if (!is_array($this->_channels)) {
+            $this->_channels = $this->device->dataChannels()->toArray();
+        }
+        if ($this->_channels[$col]["total"]) {
             if ($data->get("Date") > $this->endTime) {
                 $mult = ($this->endTime - $last);
                 $denom = $data->get("Date") - $last;
@@ -358,7 +362,9 @@ abstract class Average extends History
     protected function settleDivisors()
     {
         // Settle  out the multipliers
-        $channels = $this->device->dataChannels()->toArray();
+        if (!is_array($this->_channels)) {
+            $this->_channels = $this->device->dataChannels()->toArray();
+        }
         for ($i = 0; $i < $this->datacols; $i++) {
             $col = "Data".$i;
             if ($this->divisors[$col] == 0) {
@@ -366,14 +372,14 @@ abstract class Average extends History
             }
             $value = $this->get($col);
             if (!is_null($value)) {
-                if (!$channels[$i]["total"]) {
+                if (!$this->_channels[$i]["total"]) {
                     $value = $value / $this->divisors[$col];
                 }
                 $this->set(
                     $col,
                     round(
                         $value,
-                        (int)$channels[$i]["maxDecimals"]
+                        (int)$this->_channels[$i]["maxDecimals"]
                     )
                 );
             }

@@ -242,6 +242,9 @@ abstract class IOPBase extends SystemTableBase
     {
         $ret = parent::load($data);
         if (!$ret) {
+            if (!isset($data["id"])) {
+                $this->table()->set("id", 0xFF);
+            }
             $ret = $this->table()->insertRow();
         }
         return $ret;

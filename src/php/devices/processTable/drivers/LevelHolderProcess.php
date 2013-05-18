@@ -259,14 +259,14 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
             }
             $dataChan  = $channels->dataChannel($chan);
             $epChan    = (int)$dataChan->get("epChannel");
-            $low = $dataChan->encode(
+            $high = $dataChan->encode(
                 (float)$this->getExtra($i+1)
             );
-            $low = substr($low."00000000", 0, 8);
-            $high = $dataChan->encode(
+            $high = substr($high."00000000", 0, 8);
+            $low = $dataChan->encode(
                 (float)$this->getExtra($i+2)
             );
-            $high = substr($high."00000000", 0, 8);
+            $low = substr($low."00000000", 0, 8);
             $data .= $this->encodeInt($epChan, 1).$low.$high;
         }
         // Setpoint

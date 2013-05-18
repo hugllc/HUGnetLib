@@ -261,6 +261,10 @@ abstract class Driver
     public static function getSensorID($sensor, $RawSetup)
     {
         $sid = substr($RawSetup, 46 + ($sensor * 2), 2);
+        if ($sid === false) {
+            // If it is not valid, return an empty sensor
+            return 0xFF;
+        }
         return hexdec($sid);
     }
     /**
@@ -420,22 +424,24 @@ abstract class Driver
         $obj = Input::factory(
             $system, $data, null, $device
         );
-        if (is_null($obj->get("id"))) {
+        $tid = $obj->get("id");
+        if (is_null($tid) || ((int)$tid == 0xFF)) {
+            $data["id"] = 0xFF;
             $tSensors = $this->device()->get("sensors");
             if (is_string($tSensors) && !empty($tSensors)) {
                 $tSensors = unserialize(base64_decode($tSensors));
-                $obj->load((array)$tSensors[$sid]);
-            } else if (is_array($tSensors)) {
-                $obj->load((array)$tSensors[$sid]);
+                $obj->table()->fromAny((array)$tSensors[$sid]);
+            } else if (is_array($tSensors) && isset($tSensors[$sid])) {
+                $obj->table()->fromAny((array)$tSensors[$sid]);
             } else {
                 if ($sid < $this->get("InputTables")) {
                     $data["id"] = self::getSensorID(
-                        $sid, $this->device()->get("RawSetup")
+                        $sid, (string)$this->device()->get("RawSetup")
                     );
                 } else {
                     $data["id"] = 0xFE; // Virtual Sensor
                 }
-                $obj->load($data);
+                $obj->table()->fromArray($data);
             }
             $obj->store();
         }

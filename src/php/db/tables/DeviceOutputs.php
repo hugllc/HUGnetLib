@@ -100,6 +100,7 @@ class DeviceOutputs extends \HUGnet\db\TableParams
         "id" => array(
             "Name" => "id",
             "Type" => "INTEGER",
+            "Default" => 0xFF,
         ),
         "type" => array(
             "Name" => "type",

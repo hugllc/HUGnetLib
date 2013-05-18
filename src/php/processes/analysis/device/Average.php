@@ -68,7 +68,7 @@ class Average extends \HUGnet\processes\analysis\Device
             "type" => \HUGnet\db\Average::AVERAGE_15MIN,
             "history" => true,
             "time" => "Y-m-d H:i",
-            "timeout" => 300,
+            "timeout" => 60,
         ),
         "HOURLY" => array(
             "base" => \HUGnet\db\Average::AVERAGE_15MIN,
@@ -76,7 +76,7 @@ class Average extends \HUGnet\processes\analysis\Device
             "type" => \HUGnet\db\Average::AVERAGE_HOURLY,
             "history" => false,
             "time" => "Y-m-d H",
-            "timeout" => 3600,
+            "timeout" => 3500,
         ),
         "DAILY" => array(
             "base" => \HUGnet\db\Average::AVERAGE_HOURLY,
@@ -84,7 +84,7 @@ class Average extends \HUGnet\processes\analysis\Device
             "type" => \HUGnet\db\Average::AVERAGE_DAILY,
             "history" => false,
             "time" => "Y-m-d",
-            "timeout" => 3600,
+            "timeout" => 43200,
         ),
         "WEEKLY" => array(
             "base" => \HUGnet\db\Average::AVERAGE_DAILY,
@@ -119,7 +119,7 @@ class Average extends \HUGnet\processes\analysis\Device
             "type" => \HUGnet\db\FastAverage::AVERAGE_30SEC,
             "history" => true,
             "time" => "Y-m-d H:i:s",
-            "timeout" => 25,
+            "timeout" => 10,
         ),
         "1MIN" => array(
             "base" => \HUGnet\db\FastAverage::AVERAGE_30SEC,
@@ -196,6 +196,7 @@ class Average extends \HUGnet\processes\analysis\Device
     {
         $return = true;
         $timeout = time() - $device->getParam("LastAverage".$type."Try");
+        $old     = time() - $device->getParam("LastAverage".$type);
         if ($timeout < $param["timeout"]) {
             return;
         }
@@ -215,6 +216,10 @@ class Average extends \HUGnet\processes\analysis\Device
         $last     = (int)$device->getParam("LastAverage".$type);
         $lastTry  = (int)$device->getParam("LastAverage".$type."Try");
         $lastPrev = $device->getParam($param["prev"]);
+        if ($last == $lastPrev) {
+            // No date range.  We don't need to be here
+            return;
+        }
         $ret = $hist->getPeriod(
             (int)$last,
             (int)$lastPrev,
@@ -235,7 +240,6 @@ class Average extends \HUGnet\processes\analysis\Device
                 }
             }
         }
-
         if ($bad > 0) {
             // State we did some uploading
             $this->system()->out(
