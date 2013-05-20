@@ -71,6 +71,15 @@ class WebInterface
     */
     private $_device = null;
     /**
+     * These are params we don't want to push
+     */
+    private $_nopush = array(
+        "LastAverage15MIN", "LastAverageHOURLY", "LastAverageDAILY", "LastAverageWEEKLY",
+        "LastAverageMONTHLY", "LastAverageYEARLY", "LastAverage30SEC", "LastAverage1MIN",
+        "LastAverage5MIN", "LastHistoryPush", "LastMasterRawHistoryPush",
+        "LastMasterHistoryPush"
+    );
+    /**
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
     *
@@ -186,7 +195,9 @@ class WebInterface
             $this->_device->set($key, $value);
         }
         // This can't be pushed.  It can only be set locally.
-        unset($params["LastHistoryPush"]);
+        foreach ($this->_nopush as $key) {
+            unset($params[$key]);
+        }
         foreach ($params as $key => $value) {
             $this->_device->setParam($key, $value);
         }
