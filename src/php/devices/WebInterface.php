@@ -74,9 +74,13 @@ class WebInterface
      * These are params we don't want to push
      */
     private $_nopush = array(
-        "LastAverage15MIN", "LastAverageHOURLY", "LastAverageDAILY", "LastAverageWEEKLY",
-        "LastAverageMONTHLY", "LastAverageYEARLY", "LastAverage30SEC", "LastAverage1MIN",
-        "LastAverage5MIN", "LastHistoryPush", "LastMasterRawHistoryPush",
+        "LastAverage15MIN", "LastAverageHOURLY", "LastAverageDAILY", 
+        "LastAverageWEEKLY", "LastAverageMONTHLY", "LastAverageYEARLY", 
+        "LastAverage30SEC", "LastAverage1MIN", "LastAverage5MIN", 
+        "LastAverage15MINTry", "LastAverageHOURLYTry", "LastAverageDAILYTry", 
+        "LastAverageWEEKLYTry", "LastAverageMONTHLYTry", "LastAverageYEARLYTry", 
+        "LastAverage30SECTry", "LastAverage1MINTry", "LastAverage5MINTry", 
+        "LastHistoryPush", "LastMasterRawHistoryPush",
         "LastMasterHistoryPush"
     );
     /**
@@ -195,9 +199,7 @@ class WebInterface
             $this->_device->set($key, $value);
         }
         // This can't be pushed.  It can only be set locally.
-        foreach ($this->_nopush as $key) {
-            unset($params[$key]);
-        }
+        $params = array_diff_key($params, array_fill_keys($this->_nopush, 0));
         foreach ($params as $key => $value) {
             $this->_device->setParam($key, $value);
         }
