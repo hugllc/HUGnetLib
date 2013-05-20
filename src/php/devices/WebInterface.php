@@ -195,6 +195,7 @@ class WebInterface
         $data = (array)$args->get("data");
         $params = (array)$data["params"];
         unset($data["params"]);
+        unset($data["localParams"]);
         foreach ($data as $key => $value) {
             $this->_device->set($key, $value);
         }

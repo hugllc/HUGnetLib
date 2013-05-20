@@ -471,7 +471,7 @@ class WebAPI extends HTML
                 }
             }
             if ($last > 0) {
-                $dev->setParam("LastHistoryPush", $last);
+                $dev->setLocalParam("LastHistoryPush", $last);
                 $dev->store();
             }
         } else if ($action === "last") {

@@ -195,8 +195,8 @@ class Average extends \HUGnet\processes\analysis\Device
     private function _avg(&$device, $type, $param)
     {
         $return = true;
-        $timeout = time() - $device->getParam("LastAverage".$type."Try");
-        $old     = time() - $device->getParam("LastAverage".$type);
+        $timeout = time() - $device->getLocalParam("LastAverage".$type."Try");
+        $old     = time() - $device->getLocalParam("LastAverage".$type);
         if ($timeout < $param["timeout"]) {
             return;
         }
@@ -213,9 +213,9 @@ class Average extends \HUGnet\processes\analysis\Device
         $avg = $device->historyFactory($data, false);
 
 
-        $last     = (int)$device->getParam("LastAverage".$type);
-        $lastTry  = (int)$device->getParam("LastAverage".$type."Try");
-        $lastPrev = $device->getParam($param["prev"]);
+        $last     = (int)$device->getLocalParam("LastAverage".$type);
+        $lastTry  = (int)$device->getLocalParam("LastAverage".$type."Try");
+        $lastPrev = $device->getLocalParam($param["prev"]);
         if ($last == $lastPrev) {
             // No date range.  We don't need to be here
             return;
@@ -259,8 +259,8 @@ class Average extends \HUGnet\processes\analysis\Device
             $last = (int)$now;
         }
         $device->load($device->id());
-        $device->setParam("LastAverage".$type, $last);
-        $device->setParam("LastAverage".$type."Try", $lastTry);
+        $device->setLocalParam("LastAverage".$type, $last);
+        $device->setLocalParam("LastAverage".$type."Try", $lastTry);
         $device->store();
 
         $this->system()->out("$type average ending ", 3);
