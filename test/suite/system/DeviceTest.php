@@ -1091,6 +1091,74 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
+    public static function dataGetLocalParam()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "localParams" => json_encode(
+                                array(
+                                    "A" => 1,
+                                    "B" => 2,
+                                    "C" => 3,
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                "B",
+                2,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "localParams" => json_encode(
+                                array(
+                                    "A" => 1,
+                                    "B" => 2,
+                                    "C" => 3,
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                "Q",
+                null,
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config The configuration to use
+    * @param mixed  $class  This is either the name of a class or an object
+    * @param string $field  The field to get
+    * @param mixed  $expect The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataGetLocalParam
+    * @large
+    */
+    public function testGetLocalParam(
+        $config, $class, $field, $expect
+    ) {
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = Device::factory($sys, null, $class);
+        $this->assertSame($expect, $obj->getLocalParam($field));
+        unset($obj);
+    }
+    /**
+    * Data provider for testGetParam
+    *
+    * @return array
+    */
     public static function dataSetParam()
     {
         return array(
@@ -1112,15 +1180,10 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 "B",
                 4,
                 array(
-                    'Table' => array(
-                        'get' => array(array("params"), array("params"),),
-                        'set' => array(
-                            array(
-                                'params',
-                                json_encode(
-                                    array("A" => 1, "B" => 4, "C" => 3,)
-                                ),
-                            ),
+                    array(
+                        'params',
+                        json_encode(
+                            array("A" => 1, "B" => 4, "C" => 3,)
                         ),
                     ),
                 ),
@@ -1137,15 +1200,10 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 "B",
                 5,
                 array(
-                    'Table' => array(
-                        'get' => array(array("params"), array("params"),),
-                        'set' => array(
-                            array(
-                                'params',
-                                json_encode(
-                                    array("B" => 5,)
-                                ),
-                            ),
+                    array(
+                        'params',
+                        json_encode(
+                            array("B" => 5,)
                         ),
                     ),
                 ),
@@ -1168,15 +1226,10 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 "Q",
                 8,
                 array(
-                    'Table' => array(
-                        'get' => array(array("params"), array("params"),),
-                        'set' => array(
-                            array(
-                                'params',
-                                json_encode(
-                                    array("A" => 1, "B" => 2, "C" => 3, "Q" => 8)
-                                ),
-                            ),
+                    array(
+                        'params',
+                        json_encode(
+                            array("A" => 1, "B" => 2, "C" => 3, "Q" => 8)
                         ),
                     ),
                 ),
@@ -1203,7 +1256,94 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $sys->resetMock($config);
         $obj = Device::factory($sys, null, $class);
         $obj->setParam($field, $value);
-        $this->assertEquals($expect, $sys->retrieve());
+        $ret = $sys->retrieve("Table");
+        $this->assertEquals($expect, $ret["set"]);
+        unset($obj);
+    }
+    /**
+    * Data provider for testGetParam
+    *
+    * @return array
+    */
+    public static function dataSetLocalParam()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "localParams" => json_encode(
+                                array(
+                                    "A" => 1,
+                                    "B" => 2,
+                                    "C" => 3,
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                "B",
+                4,
+                array(
+                    array(
+                        'localParams',
+                        json_encode(
+                            array("A" => 1, "B" => 4, "C" => 3,)
+                        ),
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "localParams" => json_encode(
+                                array(
+                                    "A" => 1,
+                                    "B" => 2,
+                                    "C" => 3,
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                "Q",
+                8,
+                array(
+                    array(
+                        'localParams',
+                        json_encode(
+                            array("A" => 1, "B" => 2, "C" => 3, "Q" => 8)
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config The configuration to use
+    * @param mixed  $class  This is either the name of a class or an object
+    * @param string $field  The field to set
+    * @param mixed  $value  The value to set the field to
+    * @param mixed  $expect The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataSetLocalParam
+    */
+    public function testSetLocalParam(
+        $config, $class, $field, $value, $expect
+    ) {
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = Device::factory($sys, null, $class);
+        $obj->setLocalParam($field, $value);
+        $ret = $sys->retrieve("Table");
+        $this->assertEquals($expect, $ret["set"]);
         unset($obj);
     }
     /**

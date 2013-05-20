@@ -381,22 +381,48 @@ class Device extends \HUGnet\base\SystemTableAction
     */
     public function &getParam($field)
     {
-        $params = $this->table()->get("params");
-        $array = json_decode($params, true);
-        if (!is_array($array)) {
-            /* This converts the old system */
-            $array = unserialize(base64_decode($params));
-            /* Most of the old stuff is stored in "DriverInfo" */
-            if (is_array($array["DriverInfo"])) {
-                $array = $array["DriverInfo"];
-            }
-            /* Now re encode it properly, or return null if it is empty */
-            if (is_array($array)) {
-                $this->table()->set("params", json_encode($array));
-            } else {
-                $array = array();
-            }
+        $value = $this->_getParam("params", $field);
+        if (!is_null($value)) {
+            return $value;
         }
+        $params = $this->table()->get("params");
+        /* This converts the old system */
+        $array = unserialize(base64_decode($params));
+        /* Most of the old stuff is stored in "DriverInfo" */
+        if (is_array($array["DriverInfo"])) {
+            $array = $array["DriverInfo"];
+        }
+        /* Now re encode it properly, or return null if it is empty */
+        if (is_array($array)) {
+            $this->table()->set("params", json_encode($array));
+        } else {
+            $array = array();
+        }
+        return $array[$field];
+    }
+    /**
+    * Gets one of the parameters
+    *
+    * @param string $field The field to get
+    *
+    * @return The value of the field
+    */
+    public function &getLocalParam($field)
+    {
+        return $this->_getParam("localParams", $field);
+    }
+    /**
+    * Gets one of the parameters
+    *
+    * @param string $key   The key to use
+    * @param string $field The field to get
+    *
+    * @return The value of the field
+    */
+    private function &_getParam($key, $field)
+    {
+        $params = $this->table()->get($key);
+        $array = json_decode($params, true);
         return $array[$field];
     }
     /**
@@ -409,13 +435,38 @@ class Device extends \HUGnet\base\SystemTableAction
     */
     public function &setParam($field, $value)
     {
+        return $this->_setParam("params", $field, $value);
+    }
+    /**
+    * Sets one of the parameters
+    *
+    * @param string $field The field to set
+    * @param mixed  $value The value to set the field to
+    *
+    * @return null
+    */
+    public function &setLocalParam($field, $value)
+    {
+        return $this->_setParam("localParams", $field, $value);
+    }
+    /**
+    * Sets one of the parameters
+    *
+    * @param string $key   The key to use
+    * @param string $field The field to set
+    * @param mixed  $value The value to set the field to
+    *
+    * @return null
+    */
+    private function &_setParam($key, $field, $value)
+    {
         /* This makes sure the field is always in json format */
-        $this->getParam($field);
+        $this->_getParam($key, $field);
         /* get the fields */
-        $params = $this->table()->get("params");
+        $params = $this->table()->get($key);
         $params = json_decode($params, true);
         $params[$field] = $value;
-        return $this->table()->set("params", json_encode($params));
+        return $this->table()->set($key, json_encode($params));
     }
     /**
     * This function gives us access to the table class
