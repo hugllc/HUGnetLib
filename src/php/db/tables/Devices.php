@@ -214,6 +214,11 @@ class Devices extends \HUGnet\db\Table
             "Type" => "longtext",
             "Default" => '',
         ),
+        "localParams" => array(
+            "Name" => "localParams",
+            "Type" => "longtext",
+            "Default" => '',
+        ),
     );
     /**
     * @var array This is the definition of the indexes
@@ -503,7 +508,7 @@ class Devices extends \HUGnet\db\Table
         $this->data["HWPartNum"] = self::formatPartNum($value);
     }
     /**
-    * Sets the part number
+    * Sets the params
     *
     * @param mixed $value The value to set
     *
@@ -515,6 +520,21 @@ class Devices extends \HUGnet\db\Table
             $this->data["params"] = json_encode($value);
         } else if (is_string($value)) {
             $this->data["params"] = $value;
+        }
+    }
+    /**
+    * Sets the localParams
+    *
+    * @param mixed $value The value to set
+    *
+    * @return null
+    */
+    protected function setLocalParams($value)
+    {
+        if (is_array($value)) {
+            $this->data["localParams"] = json_encode($value);
+        } else if (is_string($value)) {
+            $this->data["localParams"] = $value;
         }
     }
     /**
