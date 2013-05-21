@@ -65,8 +65,8 @@ class ADuCMF51E extends \HUGnet\devices\inputTable\DriverADuC
     * put into all derivative classes, even if it is empty.
     */
     protected $params = array(
-        "longName" => "ADuC Scaled Temperature Input",
-        "shortName" => "ADuCScaledTemp",
+        "longName" => "ADuC MF51E Series Thermistor",
+        "shortName" => "ADuCMF51E",
         "unitType" => "Temperature",
         "storageUnit" => '&#176;C',
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,

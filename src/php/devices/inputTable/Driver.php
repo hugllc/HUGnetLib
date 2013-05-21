@@ -135,6 +135,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "44:DEFAULT"                 => "ADuCPressure",
         "45:DEFAULT"                 => "ADuCGenericLinear",
         "46:DEFAULT"                 => "MKS901PPressure",
+        "47:DEFAULT"                 => "ADuCMF51E",
         "F9:DEFAULT"                 => "ADuCInputTable",
         // AVR
         "00:DEFAULT"                 => "AVRBC2322640_0",
