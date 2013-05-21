@@ -106,27 +106,53 @@ class ADuCMF51ETest extends DriverTestBaseADuC
                         ),
                     ),
                 ),
-                0x4000,
-                1,
+                5551755,
+                0,
                 array(),
                 array(),
-                60.69711623
+                46.60335331,
             ),
             array(
                 array(
                     "Sensor" => array(
                         "get" => array(
-                            "extra" => array(
-                                4 => 21.1,
-                            ),
+                            'extra' => array(2210),
                         ),
                     ),
                 ),
-                0x4000,
-                1,
+                491755,
+                0,
                 array(),
                 array(),
-                66.10737272
+                -25.42756507,
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            'extra' => array(2210),
+                        ),
+                    ),
+                ),
+                4591755,
+                0,
+                array(),
+                array(),
+                null,
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            'extra' => array(2210),
+                        ),
+                    ),
+                ),
+                pow(2, 23),
+                0,
+                array(),
+                array(),
+                null,
             ),
         );
     }
@@ -148,7 +174,7 @@ class ADuCMF51ETest extends DriverTestBaseADuC
                         ),
                     ),
                 ),
-                "00400000",
+                "42BC8000",
                 1,
                 array(),
                 array(),
@@ -164,11 +190,27 @@ class ADuCMF51ETest extends DriverTestBaseADuC
                         ),
                     ),
                 ),
-                "00400000",
+                "9C897E00",
                 1,
                 array(),
                 array(),
-                66.10737272
+                -30.0
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(
+                                4 => 21.1,
+                            ),
+                        ),
+                    ),
+                ),
+                "",
+                1,
+                array(),
+                array(),
+                null
             ),
         );
     }

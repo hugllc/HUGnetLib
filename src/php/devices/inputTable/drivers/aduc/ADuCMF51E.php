@@ -58,6 +58,8 @@ require_once dirname(__FILE__)."/../../DriverADuC.php";
 class ADuCMF51E extends \HUGnet\devices\inputTable\DriverADuC
     implements \HUGnet\devices\inputTable\DriverInterface
 {
+    /** This is the number of decimal places we use for our *MATH*, not the output */
+    const DECIMAL_PLACES = 20;
     /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
@@ -69,19 +71,63 @@ class ADuCMF51E extends \HUGnet\devices\inputTable\DriverADuC
         "storageUnit" => '&#176;C',
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraText" => array(
-            "R1 to Source (kOhms)",
-            "R2 to Ground (kOhms)",
-            "AtoD Ref Voltage",
-            "Scale (&#176;C/mV)",
-            "Offset (mV)",
+            "Bias Resistor (kOhms)",
+            "Thermistor"
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
-        "extraValues" => array(5, 5, 5, 10, 10),
-        "extraDefault" => array(100, 1, 1.2, 0.25641026, 0),
+        "extraValues" => array(
+            10, 
+            array(
+                "10-3950" => "10k @ 25C  B=3950",
+            ),
+        ),
+        "extraDefault" => array(2.1, "10-3950"),
         "maxDecimals" => 8,
         "inputSize" => 4,
+    );
+    /** These are the coeffients of the thermocouple equasion */
+    private $_coef = array(
+        "10-3950" => array(
+            "A" => 1.224922E-3,
+            "B" => 2.3591320E-4,
+            "C" => 7.4995733E-8
+        ),
+    );
+    /** @var array The lookup table */
+    private $_valueTable = array(
+        "10-3950" => array(
+            "181.7"  => -30,
+            "133.5"  => -25,
+            "98.99"  => -20,
+            "74.06"  => -15,
+            "56.06"  => -10,
+            "42.81"  => -5,
+            "32.96"  =>  0,
+            "25.57"  =>  5,
+            "20"     =>  10,
+            "15.76"  =>  15,
+            "12.51"  =>  20,
+            "10"     =>  25,
+            "8.048"  =>  30,
+            "6.517"  =>  35,
+            "5.321"  =>  40,
+            "4.356"  =>  45,
+            "3.588"  =>  50,
+            "2.972"  =>  55,
+            "2.467"  =>  60,
+            "2.073"  =>  65,
+            "1.734"  =>  70,
+            "1.473"  =>  75,
+            "1.25"   =>  80,
+            "1.065"  =>  85,
+            "0.911"  =>  90,
+            "0.7824" =>  95,
+            "0.6744" =>  100,
+            "0.5834" =>  105,
+            "0.5066" =>  110,
+        ),
     );
     /**
     * Changes a raw reading into a output value
@@ -98,49 +144,57 @@ class ADuCMF51E extends \HUGnet\devices\inputTable\DriverADuC
     protected function getReading(
         $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
-        bcscale(20);
-        $Am     = pow(2, 23);
-        $Rin    = $this->getExtra(0);
-        $Rbias  = $this->getExtra(1);
-        $Vref   = $this->getExtra(2);
-        $scale  = $this->getExtra(3);
-        $offset = $this->getExtra(4);
+        bcscale(self::DECIMAL_PLACES);
+        $Am    = pow(2, 23);
+        $Rbias = $this->getExtra(0);
+        $P     = $this->getExtra(1);
 
-        $A = $this->inputBiasCompensation($A, $Rin, $Rbias);
-        $Va = ($A / $Am) * $Vref;
-        //$T = (($Va * 1000) / $scale) + $offset;
-        $T = (($Va * 1000) + $offset) * $scale;
+        $A = abs($A);
+        if ($A == $Am) {
+            return null;
+        }
+        $R = (float)(($A * $Rbias) / ($Am - $A));
+        $T = $this->tableInterpolate($R, $this->_valueTable[$P]);
+        if (is_null($T)) {
+            return null;
+        }
+        /*
+        $T = $this->getTemp($R, $P);
+        */
         return round($T, $this->get('maxDecimals', 1));
     }
     /**
     * Implements the formula:
     * 
-    * T = B / ((B / T1) - ln(Rt1/Rt2))
+    * T = 1 / (A + B(ln(R)) + C(ln(R)^3))
     *
-    * @param float $RT2 The resistance measured for the thermistor
-    * @param float $RT1 The base resistance of the thermistor
-    * @param int   $B   The B value for the thermistor
+    * @param float $R The resistance 
+    * @param float $P The thermistor used
     *
-    * @return float The temperature in C
+    * @return float The resistance in Ohms
+    * @SuppressWarnings(PHPMD.ShortVariable)
     */
-    protected function getTemp($RT2, $RT1, $B) 
+    protected function getTemp($R, $P) 
     {
         if ($R == 0) {
             return null;
         }
-        $T1    = 298.15;
-        $res   = log(bcdiv($RT1,$RT2));
-        $denom = bcsub(bcdiv($B, $T1), $res);
+        $A     = number_format($this->_coef[$P]["A"], self::DECIMAL_PLACES, '.', '');
+        $B     = number_format($this->_coef[$P]["B"], self::DECIMAL_PLACES, '.', '');
+        $C     = number_format($this->_coef[$P]["C"], self::DECIMAL_PLACES, '.', '');
+        $log   = log($R);
+        $denom = bcadd($A, bcadd(bcmul($B, $log), bcmul($C, pow($log, 3))));
         if ($denom == 0) {
             return null;
         }
-        $T = bcdiv($B, $denom);
-        return bcsub($T, 273.15);
+        $T = bcdiv(1, $denom);
+        
+        return (float)bcsub($T, 273.15);
     }
     /**
     * Returns the reversed reading
     *
-    * @param array $value   The data to use
+    * @param float $T       The data to use
     * @param int   $channel The channel to get
     * @param float $deltaT  The time delta in seconds between this record
     * @param array &$prev   The previous reading
@@ -152,56 +206,67 @@ class ADuCMF51E extends \HUGnet\devices\inputTable\DriverADuC
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     protected function getRaw(
-        $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
+        $T, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
     ) {
-        if (is_null($value)) {
+        bcscale(self::DECIMAL_PLACES);
+        $Am    = pow(2, 23);
+        $Rbias = $this->getExtra(0);
+        $P     = $this->getExtra(1);
+
+        if (is_null($T)) {
             return null;
         }
-        bcscale(20);
-        $Am   = pow(2, 23);
-        $Rin    = $this->getExtra(0);
-        $Rbias  = $this->getExtra(1);
-        $Vref   = $this->getExtra(2);
-        $scale  = $this->getExtra(3);
-        $offset = $this->getExtra(4);
-
-        //$Va = (($value - $offset) * $scale) / 1000;
-        $Va = (($value / $scale) - $offset) / 1000;
-        $A = ($Va / $Vref) * $Am;
-        $Amod = $this->inputBiasCompensation($A, $Rin, $Rbias);
-        if ($Amod != 0) {
-            $A = $A * ($A / $Amod);
-        }
-        //$A = $A * $this->gain(1);
+        $table = array_flip($this->_valueTable[$P]);
+        $R = $this->tableInterpolate($T, $table);
+        //$R = $this->getRes($T, $P) / 1000;
+        $A = ($R * $Am) / ($Rbias + $R);
         return (int)round($A);
     }
     /**
-    * Implements the formula:
+    * Implements the inverse Steinhart-Hart formula:
     * 
-    * R = Rt2 / e ^ ((T1/T2) / B (T2 - T1))
+    * R = exp((x-y)^1/3 - (x+y)^1/3)
+    * 
+    * y = (A - 1/T) / 2C
+    * 
+    * x = ((B/3C)^3 + y^2)^1/2
     *
-    * @param float $T   The temperature 
-    * @param float $RT1 The base resistance of the thermistor
-    * @param int   $B   The B value for the thermistor
+    * @param float $T The temperature 
+    * @param float $P The thermistor used
     *
     * @return float The resistance in Ohms
+    * @SuppressWarnings(PHPMD.ShortVariable)
     */
-    protected function getRes($T2, $RT1, $B) 
+    protected function getRes($T, $P) 
     {
-        if ($B == 0) {
+        $T    = 273.15 + $T;  // Put the temperature in K
+        $A    = number_format($this->_coef[$P]["A"], self::DECIMAL_PLACES, '.', '');
+        $B    = number_format($this->_coef[$P]["B"], self::DECIMAL_PLACES, '.', '');
+        $C    = number_format($this->_coef[$P]["C"], self::DECIMAL_PLACES, '.', '');
+        if (($C == 0) || ($T == 0)) {
             return null;
         }
-        $T2    = 273.15 + $T2;  // Put the temperature in K
-        $T1    = 298.15;
-        if ($T2 == $T1) {
-            return $RT1;
-        }
-        $exp = bcdiv(bcmul($T1, $T2), bcmul($B, bcsub($T2 - $T1)));
-        $pow = pow(M_E, $exp);
-        $RT2 = bcdiv($RT1 / $pow);
-        return $RT2;
+        $cube = bcdiv(1,3);
+        $y = bcdiv(bcsub($A, bcdiv(1, $T)), bcmul(2, $C));
+        $x = pow(bcadd(pow(bcdiv($B, bcmul(3, $C)), 3), pow($y, 2)), 0.5);
+        $e = bcsub(pow(bcsub($x, $y), $cube), pow(bcadd($x, $y), $cube));
+        $R = pow(M_E, $e);
+        return (float)$R;
     }
-
+    /**
+    * This is the Naperian Log
+    *
+    * @param float $R The resistance 
+    * @param float $P The thermistor used
+    *
+    * @return float The Naperian logrithm
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    */
+    protected function napLog($V) 
+    {
+        return (float)bcmul(23025850, bcsub(7, log($V, 10)));
+    }
+    
 }
 
 

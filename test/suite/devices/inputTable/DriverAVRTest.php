@@ -746,44 +746,6 @@ class DriverAVRTest extends drivers\DriverTestBase
         $this->assertSame($expect, $this->o->revSweep($A, $R, $Tc));
     }
     /**
-    * Data provider for testGetResistance
-    *
-    * @return array
-    */
-    public static function dataTableInterpolate()
-    {
-        return array(
-            array(array(), 1000, 40.0),
-            array(array(), 2500, 25.0),
-            array(array(), 1750, 32.5),
-            array(array(), 999, null),
-            array(array(), 4001, null),
-        );
-    }
-    /**
-    * test
-    *
-    * @param array $preload The values to preload into the object
-    * @param float $R       The bias resistance
-    * @param mixed $expect  The expected return value
-    *
-    * @return null
-    *
-    * @dataProvider dataTableInterpolate
-    */
-    public function testTableInterpolate($preload, $R, $expect)
-    {
-        $valueTable = array(
-            "4000" => 10.0,
-            "3000" => 20.0,
-            "2000" => 30.0,
-            "1000" => 40.0,
-        );
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock($preload);
-        $this->assertSame($expect, $this->o->tableInterpolate($R, $valueTable));
-    }
-    /**
     * Data provider for testEncodeData
     *
     * @return array
@@ -1165,19 +1127,6 @@ class DriverAVRTestClass extends \HUGnet\devices\inputTable\DriverAVR
     public function revSweep($Rs, $R, $Tc)
     {
         return parent::revSweep($Rs, $R, $Tc);
-    }
-    /**
-    * This function should be called with the values set for the specific
-    * thermistor that is used.
-    *
-    * @param float $R      The current resistance of the thermistor in ohms
-    * @param array &$table The table to use
-    *
-    * @return float The Temperature in degrees C
-    */
-    public function tableInterpolate($R, &$table)
-    {
-        return parent::tableInterpolate($R, $table);
     }
 }
 ?>
