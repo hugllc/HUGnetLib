@@ -110,7 +110,7 @@ class ADuCMF51ETest extends DriverTestBaseADuC
                 0,
                 array(),
                 array(),
-                46.60335331,
+                10.50693547,
             ),
             array(
                 array(
@@ -174,7 +174,7 @@ class ADuCMF51ETest extends DriverTestBaseADuC
                         ),
                     ),
                 ),
-                "42BC8000",
+                "46948300",
                 1,
                 array(),
                 array(),
@@ -190,7 +190,7 @@ class ADuCMF51ETest extends DriverTestBaseADuC
                         ),
                     ),
                 ),
-                "9C897E00",
+                "AA527900",
                 1,
                 array(),
                 array(),

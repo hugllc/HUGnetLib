@@ -83,7 +83,7 @@ class ADuCMF51E extends \HUGnet\devices\inputTable\DriverADuC
                 "10-3950" => "10k @ 25C  B=3950",
             ),
         ),
-        "extraDefault" => array(2.1, "10-3950"),
+        "extraDefault" => array(10, "10-3950"),
         "maxDecimals" => 8,
         "inputSize" => 4,
     );
