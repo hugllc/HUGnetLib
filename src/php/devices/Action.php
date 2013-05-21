@@ -395,7 +395,7 @@ class Action
             $hist = $this->device->historyFactory($data);
             if ($hist->insertRow()) {
                 $this->device->setParam("LastHistory", $time);
-                $this->device->setParam("LastHistoryPush", $time);
+                $this->device->setLocalParam("LastHistory", $time);
             }
             $this->device->setParam("LastPoll", $time);
             $this->device->setParam("LastContact", $time);

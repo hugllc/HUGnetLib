@@ -204,7 +204,7 @@ class ActionVirtual extends Action
             $history = $this->device->historyFactory($hist);
             if ($history->insertRow()) {
                 $this->device->setParam("LastHistory", $time);
-                $this->device->setParam("LastHistoryPush", $time);
+                $this->device->setLocalParam("LastHistory", $time);
             }
             $this->device->store();
             $this->_writeFile($history);
