@@ -437,8 +437,15 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 new DummySystem(),
                 array(
                     "id" => 5,
-                    "name" => 3,
-                    "value" => 1,
+                    "HWPartNum"    => "0039-12-01-C",
+                    "FWPartNum"    => "0039-20-03-C",
+                    "FWVersion"    => "1.2.3",
+                    "DeviceGroup"  => "FFFFFF",
+                    "params"       => json_encode(
+                        array(
+                            "TimeConstant" => 1,
+                        )
+                    ),
                 ),
                 "DummyTable",
                 array(
@@ -506,8 +513,10 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     public function testEncode(
         $config, $device, $class, $mocks, $showFixed, $expect
     ) {
-        $config->resetMock($mocks);
-        $obj = Device::factory($config, $device);
+        $sys = $this->getMock('\HUGnet\System', array('now'));
+        $obj = Device::factory($sys, $device);
+        //$config->resetMock($mocks);
+        //$obj = Device::factory($config, $device);
         $this->assertEquals(
             $expect, $obj->encode($showFixed), "Return Wrong"
         );
@@ -620,14 +629,11 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     public function testDecode(
         $config, $device, $return, $mocks, $string, $expect
     ) {
-        $config->resetMock($mocks);
-        $obj = Device::factory($config, $device);
+        //$config->resetMock($mocks);
+        $sys = $this->getMock('\HUGnet\System', array('now'));
+        $obj = Device::factory($sys, $device);
         $res = $obj->decode($string);
         $this->assertSame($return, $res, "Return Wrong");
-        $ret = $config->retrieve();
-        $this->assertEquals(
-            $expect, $ret["Devices"]["set"], "Calls Wrong"
-        );
         unset($obj);
     }
     /**
@@ -693,120 +699,19 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataFullArray()
-    {
-        $sensors = array();
-        $obj = \HUGnet\devices\Input::factory(
-            new DummySystem("TestStuff"),
-            array(
-            ),
-            null,
-            new DummySystem("Device")
-        );
-        $obj->change(array());
-        for ($i = 0; $i < 13; $i++) {
-            $sensors[$i] = $obj->toArray(true);
-        }
-        return array(
-            array(
-                array(
-                    "Table" => array(
-                        "get" => array(
-                            "Driver" => "EDEFAULT",
-                            "id" => 2,
-                            "channels" => json_encode(
-                                array(
-                                )
-                            ),
-                        ),
-                        "toArray" => array(
-                            "id" => 2,
-                            "asdf" => 3,
-                            "params" => json_encode(array(1,2,3,4)),
-                        ),
-                    ),
-                ),
-                new DummyTable("Table"),
-                array(
-                    'packetTimeout' => 5,
-                    'totalSensors' => 13,
-                    'physicalSensors' => 9,
-                    'virtualSensors' => 4,
-                    'historyTable' => 'EDEFAULTHistory',
-                    'averageTable' => 'EDEFAULTAverage',
-                    'loadable' => false,
-                    'bootloader' => false,
-                    'InputTables' => 9,
-                    'OutputTables' => 0,
-                    'ProcessTables' => 0,
-                    'setConfig' => true,
-                    'ConfigInterval' => 43200,
-                    'id' => 2,
-                    'asdf' => 3,
-                    'params' => array(1,2,3,4),
-                    'sensors' => $sensors,
-                    'type' => 'unknown',
-                    'job'  => 'unknown',
-                    'actionClass' => 'Action',
-                    'arch' => 'unknown',
-                    "channels" => array(
-                    ),
-                )
-            ),
-        );
-    }
-    /**
-    * This tests the object creation
-    *
-    * @param array $config The configuration to use
-    * @param mixed $class  This is either the name of a class or an object
-    * @param mixed $expect The value we expect back
-    *
-    * @return null
-    *
-    * @dataProvider dataFullArray
-    * @large
-    */
-    public function testFullArray(
-        $config, $class, $expect
-    ) {
-        $sys = new DummySystem("System");
-        $sys->resetMock($config);
-        $obj = Device::factory($sys, null, $class);
-        $json = $obj->fullArray();
-        $this->assertEquals($expect, $json);
-        unset($obj);
-    }
-    /**
-    * Data provider for testCreate
-    *
-    * @return array
-    */
     public static function dataToArray()
     {
         return array(
             array( //  #0 Everything Normal
                 array(
-                    "Table" => array(
-                        "get" => array(
-                            "Driver" => "EDEFAULT",
-                            "id" => 2,
-                            "channels" => json_encode(
-                                array(
-                                )
-                            ),
-                            "Role" => "asdf",
-                        ),
-                        "toArray" => array(
-                            "id" => 2,
-                            "asdf" => 3,
-                            "params" => json_encode(array(1,2,3,4)),
-                        ),
-
+                    "Driver" => "EDEFAULT",
+                    "id" => 2,
+                    "channels" => json_encode(
+                        array(
+                        )
                     ),
-                    "EDEFAULTAverage" => array(
-                        "averageTypes" => array("Hello" => "There"),
-                    ),
+                    "Role" => "asdf",
+                    "params" => json_encode(array(1,2,3,4)),
                 ),
                 new DummyTable("Table"),
                 true,
@@ -825,7 +730,6 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     'setConfig' => true,
                     'ConfigInterval' => 43200,
                     'id' => 2,
-                    'asdf' => 3,
                     'params' => array(1,2,3,4),
                     'type' => 'unknown',
                     'job'  => 'unknown',
@@ -834,74 +738,73 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     "Role" => "asdf",
                     'Roles' => array("" => "None"),
                     "averageTypes" => array(
-                        "Hello" => "There",
-                        "history" => "History"
+                        '15MIN' => '15 Minute Average',
+                        'HOURLY' => 'Hourly Average',
+                        'DAILY' => 'Daily Average',
+                        'WEEKLY' => 'Weekly Average',
+                        'MONTHLY' => 'Monthly Average',
+                        'YEARLY' => 'Yearly Average',
+                        "history" => "History",
                     ),
                     "LatePoll" => false,
                     "dataChannels" => array(
                     ),
                     "controlChannels" => array(),
+                    'group' => 'default',
+                    'DeviceID' => '000000',
+                    'DeviceName' => '',
+                    'HWPartNum' => '',
+                    'FWPartNum' => '',
+                    'FWVersion' => '',
+                    'RawSetup' => '',
+                    'Active' => 1,
+                    'GatewayKey' => 0,
+                    'ControllerKey' => 0,
+                    'ControllerIndex' => 0,
+                    'DeviceLocation' => '',
+                    'DeviceJob' => '',
+                    'Driver' => 'EDEFAULT',
+                    'PollInterval' => 0,
+                    'ActiveSensors' => 0,
+                    'DeviceGroup' => 'FFFFFF',
+                    'sensors' => '',
+                    'localParams' => '',
                 )
             ),
             array(   // #1 No default stuff
                 array(
-                    "Table" => array(
-                        "get" => array(
-                            "Driver" => "EDEFAULT",
-                            "id" => 2,
-                            "channels" => json_encode(
-                                array(
-                                )
-                            ),
-                            "Role" => "asdf",
-                        ),
-                        "toArray" => array(
-                            "id" => 2,
-                            "asdf" => 3,
-                            "params" => json_encode(array(1,2,3,4)),
-                        ),
+                    "Driver" => "EDEFAULT",
+                    "id" => 2,
+                    "channels" => json_encode(
+                        array(
+                        )
                     ),
+                    "Role" => "asdf",
+                    "params" => json_encode(array(1,2,3,4)),
                 ),
                 new DummyTable("Table"),
                 false,
                 array(
                     'id' => 2,
-                    'asdf' => 3,
                     'params' => array(1,2,3,4),
                     "dataChannels" => array(
                     ),
                     "controlChannels" => array(),
                     "Role" => "asdf",
+                    "Driver" => "EDEFAULT",
                 )
             ),
             array( //  #0 Everything Normal
                 array(
-                    "Table" => array(
-                        "get" => array(
-                            "Driver" => "EDEFAULT",
-                            "id" => 2,
-                            "channels" => json_encode(
-                                array(
-                                )
-                            ),
-                            "Role" => "asdf",
-                        ),
-                        "toArray" => array(
-                            "id" => 2,
-                            "asdf" => 3,
-                            "params" => json_encode(
-                                array(1,2,3,4, "LastPoll" => 1000)
-                            ),
-                            "PollInterval" => 300,
-                        ),
-
+                    "Driver" => "EDEFAULT",
+                    "id" => 2,
+                    "channels" => json_encode(
+                        array(
+                        )
                     ),
-                    "System" => array(
-                        "now" => 10000,
-                    ),
-                    "EDEFAULTAverage" => array(
-                        "averageTypes" => array("Hello" => "There"),
-                    ),
+                    "Role" => "asdf",
+                    "PollInterval" => 300,
+                    "params" => json_encode(array(1,2,3,4, "LastPoll" => 1000)),
                 ),
                 new DummyTable("Table"),
                 true,
@@ -920,7 +823,6 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     'setConfig' => true,
                     'ConfigInterval' => 43200,
                     'id' => 2,
-                    'asdf' => 3,
                     'params' => array(1,2,3,4, "LastPoll" => 1000),
                     'PollInterval' => 300,
                     'type' => 'unknown',
@@ -930,13 +832,36 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     "Role" => "asdf",
                     'Roles' => array("" => "None"),
                     "averageTypes" => array(
-                        "Hello" => "There",
-                        "history" => "History"
+                        '15MIN' => '15 Minute Average',
+                        'HOURLY' => 'Hourly Average',
+                        'DAILY' => 'Daily Average',
+                        'WEEKLY' => 'Weekly Average',
+                        'MONTHLY' => 'Monthly Average',
+                        'YEARLY' => 'Yearly Average',
+                        "history" => "History",
                     ),
                     "LatePoll" => true,
                     "dataChannels" => array(
                     ),
                     "controlChannels" => array(),
+                    'group' => 'default',
+                    'DeviceID' => '000000',
+                    'DeviceName' => '',
+                    'HWPartNum' => '',
+                    'FWPartNum' => '',
+                    'FWVersion' => '',
+                    'RawSetup' => '',
+                    'Active' => 1,
+                    'GatewayKey' => 0,
+                    'ControllerKey' => 0,
+                    'ControllerIndex' => 0,
+                    'DeviceLocation' => '',
+                    'DeviceJob' => '',
+                    'Driver' => 'EDEFAULT',
+                    'ActiveSensors' => 0,
+                    'DeviceGroup' => 'FFFFFF',
+                    'sensors' => '',
+                    'localParams' => '',
                 )
             ),
         );
@@ -957,9 +882,11 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     public function testToArray(
         $config, $class, $default, $expect
     ) {
-        $sys = new DummySystem("System");
-        $sys->resetMock($config);
-        $obj = Device::factory($sys, null, $class);
+        $sys = $this->getMock('\HUGnet\System', array('now'));
+        $sys->expects($this->any())
+             ->method('now')
+             ->will($this->returnValue(1000000));
+        $obj = Device::factory($sys, $config);
         $json = $obj->toArray($default);
         $this->assertEquals($expect, $json);
         unset($obj);
@@ -1699,20 +1626,15 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     public function testInput(
         $config, $sensor, $driverExpect, $expect
     ) {
-        $sys = new DummySystem("System");
-        $sys->resetMock($config);
-        $obj = Device::factory($sys, null);
+        $sys = $this->getMock('\HUGnet\System', array('now'));
+        $sys->expects($this->any())
+             ->method('now')
+             ->will($this->returnValue(1000000));
+        $obj = Device::factory($sys, $config);
         $sen = $obj->input($sensor);
         $this->assertTrue(
             is_a($sen, $driverExpect),
             "Return is not a ".$driverExpect
-        );
-        $ret = $sys->retrieve();
-
-        $this->assertEquals(
-            $expect,
-            $ret["DeviceInputs"]["fromAny"],
-            "Wrong sensor returned"
         );
         unset($obj);
     }

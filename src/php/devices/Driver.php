@@ -425,7 +425,7 @@ abstract class Driver
             $system, $data, null, $device
         );
         $tid = $obj->get("id");
-        if (is_null($tid) || ((int)$tid == 0xFF)) {
+        if (!is_null($tid)) {
             $data["id"] = 0xFF;
             $tSensors = $this->device()->get("sensors");
             if (is_string($tSensors) && !empty($tSensors)) {
@@ -438,8 +438,6 @@ abstract class Driver
                     $data["id"] = self::getSensorID(
                         $sid, (string)$this->device()->get("RawSetup")
                     );
-                } else {
-                    $data["id"] = 0xFE; // Virtual Sensor
                 }
                 $obj->table()->fromArray($data);
             }

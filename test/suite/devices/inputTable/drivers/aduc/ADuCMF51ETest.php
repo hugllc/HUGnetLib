@@ -106,6 +106,20 @@ class ADuCMF51ETest extends DriverTestBaseADuC
                         ),
                     ),
                 ),
+                -4841350,
+                0,
+                array(),
+                array(),
+                18.24900402,
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(),
+                        ),
+                    ),
+                ),
                 -1630178,
                 0,
                 array(),
