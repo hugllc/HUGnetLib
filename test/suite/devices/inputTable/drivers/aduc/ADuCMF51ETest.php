@@ -106,7 +106,7 @@ class ADuCMF51ETest extends DriverTestBaseADuC
                         ),
                     ),
                 ),
-                5551755,
+                0x54B68B,
                 0,
                 array(),
                 array(),
@@ -174,11 +174,25 @@ class ADuCMF51ETest extends DriverTestBaseADuC
                         ),
                     ),
                 ),
-                "46948300",
+                "E3DF1800",
                 1,
                 array(),
                 array(),
                 60.69711538
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(),
+                        ),
+                    ),
+                ),
+                "8BB65400",
+                1,
+                array(),
+                array(),
+                10.50693547
             ),
             array(
                 array(

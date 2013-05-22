@@ -216,7 +216,7 @@ class ADuCMF51E extends \HUGnet\devices\inputTable\DriverADuC
         if (is_null($T)) {
             return null;
         }
-        $table = array_flip($this->_valueTable[$P]);
+        $table = array_reverse(array_flip($this->_valueTable[$P]), true);
         $R = $this->tableInterpolate($T, $table);
         //$R = $this->getRes($T, $P) / 1000;
         $A = ($R * $Am) / ($Rbias + $R);
