@@ -220,7 +220,7 @@ class ADuCMF51E extends \HUGnet\devices\inputTable\DriverADuC
         $R = $this->tableInterpolate($T, $table);
         //$R = $this->getRes($T, $P) / 1000;
         $A = ($R * $Am) / ($Rbias + $R);
-        return (int)round($A);
+        return (int)round($A * -1);
     }
     /**
     * Implements the inverse Steinhart-Hart formula:
