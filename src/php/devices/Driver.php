@@ -424,9 +424,7 @@ abstract class Driver
         $obj = Input::factory(
             $system, $data, null, $device
         );
-        $tid = $obj->get("id");
-        if (!is_null($tid)) {
-            $data["id"] = 0xFF;
+        if ($obj->isNew()) {
             $tSensors = $this->device()->get("sensors");
             if (is_string($tSensors) && !empty($tSensors)) {
                 $tSensors = unserialize(base64_decode($tSensors));
@@ -438,6 +436,8 @@ abstract class Driver
                     $data["id"] = self::getSensorID(
                         $sid, (string)$this->device()->get("RawSetup")
                     );
+                } else {
+                    $data["id"] = 0xFF;
                 }
                 $obj->table()->fromArray($data);
             }

@@ -76,6 +76,10 @@ abstract class IOPBase extends SystemTableBase
     * This is the device we rode in on
     */
     private $_driverTable = null;
+    /**
+    * This is the device we rode in on
+    */
+    private $_new = false;
 
     /**
     * This is the destructor
@@ -242,9 +246,19 @@ abstract class IOPBase extends SystemTableBase
     {
         $ret = parent::load($data);
         if (!$ret) {
+            $this->_new = true;
             $ret = $this->table()->insertRow();
         }
         return $ret;
+    }
+    /**
+    * Loads the data into the table class
+    *
+    * @return bool true if this is a new iop.  False otherwise
+    */
+    public function isNew()
+    {
+        return $this->_new;
     }
     /**
     * This function should be overloaded to make changes to the table based on

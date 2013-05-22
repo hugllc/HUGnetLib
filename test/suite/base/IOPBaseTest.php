@@ -789,6 +789,59 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
         );
         unset($obj);
     }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config The configuration to use
+    * @param mixed  $device The device to set
+    * @param mixed  $class  This is either the name of a class or an object
+    * @param array  $mocks  The mocks to use
+    * @param string $string The string to feed into the decode
+    * @param array  $expect The expected return
+    *
+    * @return null
+    */
+    public function testIsNewTrue() 
+    {
+        $sys = $this->getMock('\HUGnet\System', array('now'));
+        $dev = new \HUGnet\DummyBase("Device");
+        $obj = IOPBaseStub2::factory(
+            $sys, array("dev" => 5, "input" => 0), null, $dev
+        );
+        $this->assertTrue(
+            $obj->isNew()
+        );
+        unset($obj);
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config The configuration to use
+    * @param mixed  $device The device to set
+    * @param mixed  $class  This is either the name of a class or an object
+    * @param array  $mocks  The mocks to use
+    * @param string $string The string to feed into the decode
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    */
+    public function testIsNewfalse() 
+    {
+        $sys = $this->getMock('\HUGnet\System', array('now'));
+        $dev = new \HUGnet\DummyBase("Device");
+        $obj = IOPBaseStub2::factory(
+            $sys, array("dev" => 5, "input" => 0), null, $dev
+        );
+        unset($obj);
+        $obj = IOPBaseStub2::factory(
+            $sys, array("dev" => 5, "input" => 0), null, $dev
+        );
+        $this->assertFalse(
+            $obj->isNew()
+        );
+        unset($obj);
+    }
 
 }
 /**
@@ -811,6 +864,55 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
  */
 class IOPBaseStub extends IOPBase
 {
+}
+/**
+ * Base driver class for devices.
+ *
+ * This class deals with loading the drivers and figuring out what driver needs
+ * to be loaded.
+ *
+ * @category   Libraries
+ * @package    HUGnetLib
+ * @subpackage Sensors
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2013 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.10.2
+ * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @since      0.9.7
+ *
+ * @SuppressWarnings(PHPMD.ShortVariable)
+ */
+class IOPBaseStub2 extends IOPBase
+{
+    /** These are our keys to search for.  Null means search everything given */
+    protected $keys = array("dev", "input");
+    /**
+    * This is the cache for the drivers.
+    */
+    protected $driverLoc = "inputTable";
+
+    /**
+    * This function creates the system.
+    *
+    * @param mixed  &$system (object)The system object to use
+    * @param mixed  $data    (int)The id of the item, (array) data info array
+    * @param string $dbtable The table to use
+    * @param object &$device The device object to use
+    * @param array  $table   The table to use.  This forces the table, instead of
+    *                        using the database to find it
+    *
+    * @return null
+    */
+    public static function &factory(
+        &$system, $data=null, $dbtable=null, &$device = null, $table = null
+    ) {
+        if (empty($dbtable)) {
+            $dbtable = "DeviceInputs";
+        }
+        $object = parent::factory($system, $data, $dbtable, $device, $table);
+        return $object;
+    }
 }
 namespace HUGnet\devices\replaceme;
 /**
