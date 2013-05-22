@@ -171,6 +171,7 @@ class Process extends \HUGnet\base\IOPBase
             )
         );
         if (is_object($ret)) {
+            $this->decode($ret->reply());
             return $ret->reply() == $encode;
         }
         return false;
