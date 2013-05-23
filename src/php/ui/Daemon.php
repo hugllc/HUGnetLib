@@ -62,7 +62,9 @@ class Daemon extends CLI
     private $_memCheck = 0;
     /** This is the max memory we can use in megabytes */
     protected $maxMemory = 50;
-
+    /** This is our program config */
+    protected $progConfig = array();
+    
     /**
     * Sets our configuration
     *
@@ -71,6 +73,10 @@ class Daemon extends CLI
     protected function __construct(&$config)
     {
         parent::__construct($config);
+        $program = str_replace("hugnet_", "", $this->system()->get("program"));
+        $this->progConfig = array_merge(
+            $this->progConfig, (array)$this->system()->get($program)
+        );
         if (function_exists("pcntl_signal")) {
             pcntl_signal(SIGINT, array($this, "quit"));
         }
@@ -102,6 +108,20 @@ class Daemon extends CLI
             return (array)$config;
         } else if (isset($config[$field])) {
             return $config[$field];
+        }
+        return null;
+    }
+    /**
+    * Gets config entries
+    *
+    * @param string $field The field to get
+    *
+    * @return mixed The value of the given field
+    */
+    public function get($field)
+    {
+        if (isset($this->progConfig[$field])) {
+            return $this->progConfig[$field];
         }
         return null;
     }

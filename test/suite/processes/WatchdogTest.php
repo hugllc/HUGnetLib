@@ -185,6 +185,7 @@ class WatchdogTest extends \PHPUnit_Framework_TestCase
                             "watchdog" => array(
                                 "email" => "asdf@asdf.com",
                             ),
+                            "program" => "hugnet_watchdog",
                         ),
                     ),
                     "Network" => array(
@@ -224,6 +225,7 @@ X-Mailer: PHP/1.2.3',
                             "watchdog" => array(
                                 "email" => "asdf@asdf.com",
                             ),
+                            "program" => "hugnet_watchdog",
                         ),
                     ),
                     "Network" => array(
@@ -263,6 +265,7 @@ X-Mailer: PHP/1.2.3',
                             "nodename" => "asdf",
                             "phpversion" => "1.2.3",
                             "error_email" => array("hello"),
+                            "program" => "hugnet_watchdog",
                         ),
                     ),
                     "Network" => array(

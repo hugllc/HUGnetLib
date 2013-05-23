@@ -66,7 +66,7 @@ class Watchdog extends \HUGnet\ui\Daemon
         "criticalError" => 0,
     );
     /** This is where we keep the last time we did things */
-    private $_config = array(
+    protected $progConfig = array(
         "email" => null,
         "email_wait" => 1800,
         "max_poll_age" => 600,
@@ -81,9 +81,6 @@ class Watchdog extends \HUGnet\ui\Daemon
     protected function __construct(&$config)
     {
         parent::__construct($config);
-        $this->_config = array_merge(
-            $this->_config, (array)$this->system()->get("watchdog")
-        );
         /* Get our Device */
         $this->_plugins = \HUGnet\processes\watchdog\Periodic::plugins($this);
         $this->criticalError(
@@ -155,20 +152,6 @@ class Watchdog extends \HUGnet\ui\Daemon
         return false;
     }
     /**
-    * Gets config entries
-    *
-    * @param string $field The field to get
-    *
-    * @return mixed The value of the given field
-    */
-    public function get($field)
-    {
-        if (isset($this->_config[$field])) {
-            return $this->_config[$field];
-        }
-        return null;
-    }
-    /**
     * This sets a critical error
     *
     * @param string $key   The key for the critical error
@@ -203,13 +186,14 @@ class Watchdog extends \HUGnet\ui\Daemon
     protected function criticalErrorMail()
     {
         $last = &$this->_last["criticalError"];
-        if (($last + $this->_config["email_wait"]) > time()) {
+        if (($last + $this->get("email_wait")) > time()) {
             return null;
         }
         if (empty($this->_criticalError)) {
             return true;
         }
-        if (empty($this->_config["email"]) || !is_string($this->_config["email"])) {
+        $email = $this->get("email");
+        if (empty($email) || !is_string($email)) {
             return false;
         }
         $subject = "Critical Error on ".$this->system()->get("nodename");
@@ -225,7 +209,7 @@ class Watchdog extends \HUGnet\ui\Daemon
         );
         $params = "";
         $ret = $this->mail(
-            $this->_config["email"],
+            $email,
             $subject,
             $message,
             implode("\n", $headers),
