@@ -265,8 +265,10 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
     {
         $hist = $dev->historyFactory(array(), true);
         $this->_pushHist($dev, $hist, "LastMasterHistoryPush", "");
-        $hist = $this->system()->table("RawHistory");
-        $this->_pushHist($dev, $hist, "LastMasterRawHistoryPush", "raw");
+        if ($this->ui()->get("push_raw_history")) {
+            $hist = $this->system()->table("RawHistory");
+            $this->_pushHist($dev, $hist, "LastMasterRawHistoryPush", "raw");
+        }
     }
     /**
      * This pushes out all of the sensors for a device

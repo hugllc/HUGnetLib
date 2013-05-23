@@ -69,6 +69,10 @@ class Update extends \HUGnet\ui\Daemon
     private $_device;
     /** This is the start time of the current run */
     private $_plugins = array();
+    /** This is where we keep the last time we did things */
+    protected $progConfig = array(
+        "push_raw_history" => true,
+    );
     /**
     * Sets our configuration
     *
