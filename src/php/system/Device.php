@@ -156,6 +156,7 @@ class Device extends \HUGnet\base\SystemTableAction
             $late = $this->system()->now() - ($int * 2);
             if (($late > $return["params"]["LastPoll"])
                 && ($return["PollInterval"] > 0)
+                && ($return["Active"] != 0)
             ) {
                 $return["LatePoll"] = true;
             } else {
