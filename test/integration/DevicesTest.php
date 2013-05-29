@@ -107,7 +107,7 @@ class DevicesTest extends \PHPUnit_Framework_TestCase
         // This fills the tables
         $sql = file_get_contents(TEST_INTEGRATION_BASE."/sql/HUGnet_1.sql");
         foreach (explode("--", $sql) as $query) {
-            $this->pdo->exec($query);
+            $this->pdo->exec(trim($query));
         }
         // This creates our device
         $dev = array(
@@ -137,10 +137,10 @@ class DevicesTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                0x1016,
+                0xFEF88E,
                 array(
-                    "id" => 0x1016,
-                    "DeviceID" => "001016",
+                    "id" => 0xFEF88E,
+                    "DeviceID" => "FEF88E",
                 ),
             ),
         );
