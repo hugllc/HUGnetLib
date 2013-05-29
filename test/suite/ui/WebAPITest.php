@@ -190,6 +190,12 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
         include_once CODE_BASE."/devices/inputTable/tables/ADuCInputTable.php";
         $table = \HUGnet\devices\inputTable\tables\ADuCInputTable::factory(array());
         $fullInputTable = $table->fullArray();
+        
+        ob_start();
+        var_dump(array("Real" => "array"));
+        $var_dump1 = ob_get_contents();
+        ob_end_clean();
+        
         return array(
             array(  // #0
                 array(
@@ -1807,12 +1813,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                 ),
                 false,
                 array(),
-                'array(1) {
-  \'Real\' =>
-  string(5) "array"
-}
-',
-
+                $var_dump1,
                 array(
                     "Sensor" => array(
                         "toArray" => array(

@@ -74,7 +74,7 @@ class NullOutput extends \HUGnet\devices\outputTable\Driver
             "Zero"
         ),
         "extraDefault" => array(
-            0, -2147483648, 2147483647, 0
+            0, -2147483647, 2147483647, 0
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
