@@ -13,6 +13,7 @@ setup:
 	sudo pear update-channels
 	sudo pear config-set auto_discover 1
 	sudo pear install pear.phpqatools.org/phpqatools pear.netpirates.net/phpDox
+	sudo pear install phpunit/DbUnit
 
 build-setup: node_modules/jasmine-node node_modules/jsdom node_modules/jquery node_modules/backbone node_modules/underscore
 

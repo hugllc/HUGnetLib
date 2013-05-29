@@ -137,12 +137,12 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         if ($Vref == 0) {
             return null;
         }
-        $A = ($Va / $Vref) * $Am;
+        $A = bcmul(bcdiv($Va, $Vref), $Am);
         $Amod = $this->inputBiasCompensation($A, $Rin, $Rbias);
         if ($Amod != 0) {
-            $A = $A * ($A / $Amod);
+            $A = bcmul($A, bcdiv($A, $Amod));
         }
-        $A = $A * $this->gain(1);
+        $A = bcmul($A, $this->gain(1));
         return round($A);
     }
     /**
@@ -201,13 +201,13 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         if ($Vref == 0) {
             return null;
         }
-        $Va = $I * $R;
-        $A = ($Va / $Vref) * $Am;
+        $Va = bcmul($I, $R);
+        $A = bcmul(bcdiv($Va, $Vref), $Am);
         $Amod = $this->inputBiasCompensation($A, $Rin, $Rbias);
         if ($Amod != 0) {
-            $A = $A * ($A / $Amod);
+            $A = bcmul($A, bcdiv($A, $Amod));
         }
-        $A = $A * $this->gain(0);
+        $A = bcmul($A, $this->gain(0));
         return round($A);
     }
     /**
@@ -252,7 +252,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         }
         bcscale(20);
         // This calculates what 1W would be
-        $scale = $this->getRawVoltage(1) * $this->getRawCurrent(1);
+        $scale = bcmul($this->getRawVoltage(1), $this->getRawCurrent(1));
         if ($scale == 0) {
             return null;
         }
@@ -274,8 +274,9 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         if (is_null($P)) {
             return null;
         }
+        bcscale(20);
         // This calculates what 1W would be
-        $scale = $this->getRawVoltage(1) * $this->getRawCurrent(1);
+        $scale = bcmul($this->getRawVoltage(1), $this->getRawCurrent(1));
         // We then scale what we got against that.
         $A = bcmul($P, $scale);
          return (int)round($A);
@@ -306,7 +307,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         // This removes the offset
         $A = bcdiv($A, self::IMPEDANCE_OFFSET);
         // This calculates what 1 Ohm would be
-        $scale = $this->getRawVoltage(1) / $I;
+        $scale = bcdiv($this->getRawVoltage(1), $I);
         // We then scale what we got against that.
         $Z = bcdiv($A, $scale);
         return round($Z, $this->get("maxDecimals"));
@@ -353,7 +354,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
             return null;
         }
         // This calculates what 1 Ohm would be
-        $scale = $this->getRawVoltage(1) / $I;
+        $scale = bcdiv($this->getRawVoltage(1), $I);
         // We then scale what we got against that.
         $A = bcmul($Z, $scale);
         $A = bcmul($A, self::IMPEDANCE_OFFSET);
