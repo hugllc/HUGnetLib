@@ -133,7 +133,6 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         $Vref  = $this->getExtra(0);
         $Rin   = $this->getExtra(2);
         $Rbias = $this->getExtra(3);
-
         if ($Vref == 0) {
             return null;
         }
@@ -279,7 +278,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         $scale = bcmul($this->getRawVoltage(1), $this->getRawCurrent(1));
         // We then scale what we got against that.
         $A = bcmul($P, $scale);
-         return (int)round($A);
+        return round($A);
     }
     /**
     * Changes a raw reading into a output value
@@ -358,7 +357,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         // We then scale what we got against that.
         $A = bcmul($Z, $scale);
         $A = bcmul($A, self::IMPEDANCE_OFFSET);
-        return (int)round($A);
+        return round($A);
     }
     /**
     * Gets the direction from a direction sensor made out of a POT.
