@@ -234,7 +234,9 @@ abstract class DriverBase extends DriverQuery
         if ($index["Unique"]) {
             $this->query .= " UNIQUE";
         }
-        $this->query .= " INDEX `".$index["Name"]."` ON ";
+        // SQLite requires the index name to be unique
+        $name = $index["Name"]."_".$this->myTable->sqlTable;
+        $this->query .= " INDEX `".$name."` ON ";
         $this->query .= $this->table();
         $this->query .= " (";
         $sep = "";

@@ -504,7 +504,7 @@ class DriverBaseTest extends \PHPUnit_Extensions_Database_TestCase
                     "Name" => "IndexName",
                     "Columns" => array("id", "name"),
                 ),
-                "CREATE INDEX `IndexName` ON `myTable` "
+                "CREATE INDEX `IndexName_myTable` ON `myTable` "
                 ."(`id`, `name`)",
             ),
             array(
@@ -513,7 +513,7 @@ class DriverBaseTest extends \PHPUnit_Extensions_Database_TestCase
                     "Unique" => true,
                     "Columns" => array("id", "value"),
                 ),
-                "CREATE UNIQUE INDEX `IndexName` ON `myTable` "
+                "CREATE UNIQUE INDEX `IndexName_myTable` ON `myTable` "
                 ."(`id`, `value`)",
             ),
         );
