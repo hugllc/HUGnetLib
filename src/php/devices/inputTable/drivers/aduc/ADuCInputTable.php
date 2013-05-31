@@ -444,11 +444,11 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
         // This calculates the offset from 0, then encodes it
         $zero = $this->_driver(0)->getRaw(0);
         $val  = $this->_driver(0)->getRaw($this->getExtra(1)) - $zero;
-        $string .= str_pad($this->intToStr((int)$val), 8, "0", STR_PAD_RIGHT);
+        $string .= $this->encodeInt($val, 4);
         // This calculates the offset from 0, then encodes it
         $zero = $this->_driver(1)->getRaw(0);
         $val  = $this->_driver(1)->getRaw($this->getExtra(2)) - $zero;
-        $string .= str_pad($this->intToStr((int)$val), 8, "0", STR_PAD_RIGHT);
+        $string .= $this->encodeInt($val, 4);
         return $string;
     }
 

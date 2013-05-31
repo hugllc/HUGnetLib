@@ -700,6 +700,24 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                 ),
                 "FF00C08000860980414100A18F0A00431F1500",
             ),
+            array( // #1
+                array(
+                    "Sensor" => array(
+                        "id" => 0xF9,
+                        "get" => array(
+                            "id" => 0xF9,
+                            "extra" => array(1 => -1, 2 => -2),
+                        ),
+                    ),
+                    "Table" => array(
+                        "toArray" => array(
+                            "driver0" => 0x41,
+                            "driver1" => 0x41,
+                        ),
+                    ),
+                ),
+                "FF00C08000860980414100A3F1FEFF46E3FDFF",
+            ),
         );
     }
     /**
