@@ -92,6 +92,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "01:DEFAULT"                 => "ADuCDAC",
         "02:DEFAULT"                 => "ADuCPWM",
         "03:DEFAULT"                 => "ADuCGPIO",
+        "20:DEFAULT"                 => "MagDir",
         "30:DEFAULT"                 => "HUGnetPower",
         "31:DEFAULT"                 => "FET003912",
         "32:DEFAULT"                 => "GPIO003928",
@@ -121,8 +122,10 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
             0x01 => "ADuC DAC",
             0x02 => "ADuC PWM",
             0x03 => "ADuC GPIO",
+            0x20 => "Magnitude/Direction",
         ),
         "Linux" => array(
+            0x20 => "Magnitude/Direction",
             0x60 => "Input Sum Control",
         ),
         "all" => array(

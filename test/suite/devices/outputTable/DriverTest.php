@@ -289,6 +289,7 @@ class DriverTest extends drivers\DriverTestBase
                     0x01 => "ADuC DAC",
                     0x02 => "ADuC PWM",
                     0x03 => "ADuC GPIO",
+                    0x20 => 'Magnitude/Direction',
                     0xFE => 'Null Output',
                     0xFF => 'Empty Slot'
                 ),
