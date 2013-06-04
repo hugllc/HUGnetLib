@@ -72,7 +72,7 @@ class ADuCDAC extends \HUGnet\devices\outputTable\DriverADuC
         "extraText" => array(
         ),
         "extraDefault" => array(
-            0, 0, 0, 0, 0, 3
+            0, 0, 0, 1, 0, 3
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
@@ -80,8 +80,8 @@ class ADuCDAC extends \HUGnet\devices\outputTable\DriverADuC
         "extraValues" => array(
         ),
         "min" => 0,
-        "max" => 4095,
-        "zero" => 1556,
+        "max" => array(0 => 4095, 1 => 65535),
+        "zero" => array(0 => 1556, 1 => 24900),
     );
     /** This tells us our mapping from extra to entry */
     protected $entryMap = array(
@@ -108,14 +108,24 @@ class ADuCDAC extends \HUGnet\devices\outputTable\DriverADuC
             }
         } else if ($name == "extraText") {
             $entry = $this->entry()->fullArray();
-            $entry = $this->entry()->fullArray();
             foreach ($this->entryMap as $key => $field) {
                 $ret[$key]  = $entry[$field]["desc"];
+            }
+        } else if ($name == "max") {
+            if ($this->getExtra(3) == 1) {
+                $ret = 65535; 
+            } else {
+                $ret = 4095;
+            }
+        } else if ($name == "zero") {
+            if ($this->getExtra(3) == 1) {
+                $ret = 24900; 
+            } else {
+                $ret = 1556;
             }
         }
         return $ret;
     }
-
     /**
     * Decodes the driver portion of the setup string
     *

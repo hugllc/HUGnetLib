@@ -279,7 +279,7 @@ class ADuCDACTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "1300",
+                "1B00",
             ),
             array( // #1
                 array(
@@ -385,6 +385,7 @@ class ADuCDACTest extends DriverTestBase
     }
     /**
     * data provider for testDeviceID
+    * public function testGet($name, $mock, $expect)
     *
     * @return array
     */
@@ -408,6 +409,42 @@ class ADuCDACTest extends DriverTestBase
                     5 => 'Output Range',
                 ),
             ),
+            array(
+                "max",
+                array(),
+                65535,
+                ),
+            array(
+                "zero",
+                array(),
+                24900,
+                ),
+            array(
+                "max",
+                array(
+                    "Output" => array(
+                        "get" => array(
+                            "extra" => array(
+                                0, 0, 0, 0, 0, 2
+                            ),
+                        ),
+                    ),
+                ),
+                4095,
+                ),
+            array(
+                "zero",
+                array(
+                    "Output" => array(
+                        "get" => array(
+                            "extra" => array(
+                                0, 0, 0, 0, 0, 2
+                            ),
+                        ),
+                    ),
+                ),
+                1556,
+                ),
         );
     }
 
