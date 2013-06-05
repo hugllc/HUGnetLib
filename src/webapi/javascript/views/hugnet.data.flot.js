@@ -238,10 +238,10 @@ HUGnet.DataFlot = Backbone.View.extend({
             legend: {
                 position: 'nw', container: this.$legend, noColumns: 4
             },
-            selection: { mode: 'x' },
-            grid: { backgroundColor: '#EEE', hoverable: true, clickable: false }
-            //zoom: { interactive: true },
-            //pan: { interactive: true }
+            // selection: { mode: 'x' },
+            grid: { backgroundColor: '#EEE', hoverable: true, clickable: false },
+            zoom: { interactive: true },
+            pan: { interactive: true }
         };
 
         this.points.clear();
