@@ -123,7 +123,7 @@ class Analysis extends \HUGnet\ui\Daemon
         $this->_mainStart = time();
         $this->_device->load($this->_myID);
         $this->_runtime();
-        if ($this->_runtime["gather"] !== false) {
+        if ($this->_runtime["analysis"] !== false) {
             $this->_ids = $this->_device->ids(array("Active" => 1));
             foreach (array_keys((array)$this->_ids) as $key) {
                 if (!$this->loop()) {
@@ -175,10 +175,8 @@ class Analysis extends \HUGnet\ui\Daemon
     private function _runtime()
     {
         $this->_runtime = $this->system()->runtime();
-        if (!is_bool($this->_runtime["gather"])) {
-            $this->_runtime["gather"] = true;
-            $this->_runtime["gatherpoll"] = true;
-            $this->_runtime["gatherconfig"] = true;
+        if (!is_bool($this->_runtime["analysis"])) {
+            $this->_runtime["analysis"] = true;
             $this->system()->runtime($this->_runtime);
         }
     }
