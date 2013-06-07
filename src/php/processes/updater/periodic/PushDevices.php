@@ -265,7 +265,8 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
     {
         $hist = $dev->historyFactory(array(), true);
         $this->_pushHist($dev, $hist, "LastMasterHistoryPush", "");
-        if ($this->ui()->get("push_raw_history")) {
+        $arch = $dev->get("arch");
+        if ($this->ui()->get("push_raw_history") && ($arch !== "virtual")) {
             $hist = $this->system()->table("RawHistory");
             $this->_pushHist($dev, $hist, "LastMasterRawHistoryPush", "raw");
         }
