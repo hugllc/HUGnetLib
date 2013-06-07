@@ -100,7 +100,6 @@ HUGnet.FlotPoints = Backbone.Collection.extend({
         var axis = {};
         var index = 1;
         this.reset();
-        console.log(options.units);
         _.each(
             options.fields,
             function (value, key, list)
