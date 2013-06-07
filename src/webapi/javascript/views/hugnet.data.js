@@ -55,6 +55,7 @@ HUGnet.DataView = Backbone.View.extend({
     header: {},
     fields: {},
     classes: {},
+    units: [],
     parent: 'unknown',
     since: 0,
     until: 0,
@@ -93,6 +94,7 @@ HUGnet.DataView = Backbone.View.extend({
             if ((channels[i].dataType !== undefined)
                && (channels[i].dataType !== 'ignore')
             ) {
+                this.units[index] = channels[i].units;
                 this.header[index] = channels[i].label + ' ('+channels[i].units+')';
                 this.fields[index] = 'Data' + i;
                 this.classes[index] = '';
@@ -204,6 +206,7 @@ HUGnet.DataView = Backbone.View.extend({
             header: this.header,
             fields: this.fields,
             classes: this.classes,
+            units: this.units,
             timeOffset: d.getTimezoneOffset() * 60000
         });
     },

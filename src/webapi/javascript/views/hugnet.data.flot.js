@@ -91,21 +91,32 @@ HUGnet.FlotPoints = Backbone.Collection.extend({
     model: FlotPoint,
     datefield: 'UnixDate',
     timeOffset: 0,
+    maxYAxis: 6,
     initialize: function (models, options)
     {
         if (options.timeOffset) {
             this.timeOffset = options.timeOffset;
         }
+        var axis = {};
+        var index = 1;
         this.reset();
+        console.log(options.units);
         _.each(
             options.fields,
             function (value, key, list)
             {
                 if ((value !== 'Date') && (value !== 'UnixDate')) {
+                    if (axis[options.units[key]] == undefined) {
+                        axis[options.units[key]] = index;
+                        index++
+                        if (index > this.maxYAxis) {
+                            index = this.maxYAxis;
+                        }
+                    }
                     this.add({
                         id: parseInt(key, 10),
                         label: options.header[key],
-                        yaxis: 1,
+                        yaxis: axis[options.units[key]],
                         color: parseInt(key, 10),
                         fieldname: value,
                         datefield: this.datefield
@@ -201,11 +212,6 @@ HUGnet.DataFlot = Backbone.View.extend({
         this.parent = options.parent;
         // This sets the legend to the correct value for this instance
         this.points = new HUGnet.FlotPoints(null, options);
-        /*
-        this.model.bind('add', this.insert, this);
-        this.model.bind('remove', this.remove, this);
-        this.model.bind('reset', this.clear, this);
-        */
         this.model.bind('sync', this.render, this);
         this._setup();
 
