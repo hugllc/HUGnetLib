@@ -134,10 +134,13 @@ class Gather extends \HUGnet\ui\Daemon
                 $this->_device->load($key);
                 if ($this->_doPing()) {
                     $this->_ping();
-                } else if ($this->_doConfig()) {
-                    $this->_config();
-                } else if ($this->_doPoll()) {
-                    $this->_poll();
+                } else {
+                    if ($this->_doConfig()) {
+                        $this->_config();
+                    }
+                    if ($this->_doPoll()) {
+                        $this->_poll();
+                    }
                 }
             }
         } else {
