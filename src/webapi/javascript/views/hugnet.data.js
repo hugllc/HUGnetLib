@@ -137,26 +137,15 @@ HUGnet.DataView = Backbone.View.extend({
         var since = this.history.since;
         var until = this.history.until;
         var d = new Date;
-        function pad(n){return n<10 ? '0'+n : n};
         if (until != 0) {
             d.setTime(until);
         } else {
             d.setTime(this.last);
         }
-        until = pad(d.getMonth()+1)+'/'
-            + pad(d.getDate())+'/'
-            + d.getFullYear()+' '
-            + pad(d.getHours())+':'
-            + pad(d.getMinutes())+':'
-            + pad(d.getSeconds());
+        until = this._formatDate(d);
         if (since != 0) {
             d.setTime(since);
-            since = pad(d.getMonth()+1)+'/'
-                + pad(d.getDate())+'/'
-                + d.getFullYear()+' '
-                + pad(d.getHours())+':'
-                + pad(d.getMinutes())+':'
-                + pad(d.getSeconds());
+            since = this._formatDate(d);
         }
         this.$("#"+this.sinceId).val(since);
         this.$("#"+this.untilId).val(until);
@@ -207,7 +196,7 @@ HUGnet.DataView = Backbone.View.extend({
             fields: this.fields,
             classes: this.classes,
             units: this.units,
-            timeOffset: d.getTimezoneOffset() * 60000
+            timeOffset: 0 //d.getTimezoneOffset() * 60000
         });
     },
     setRefresh: function ()
@@ -353,21 +342,10 @@ HUGnet.DataView = Backbone.View.extend({
             data.until = this.last;
         }
         var d = new Date;
-        function pad(n){return n<10 ? '0'+n : n};
         d.setTime(data.until);
-        data.untilDate = pad(d.getMonth()+1)+'/'
-            + pad(d.getDate())+'/'
-            + d.getFullYear()+' '
-            + pad(d.getHours())+':'
-            + pad(d.getMinutes())+':'
-            + pad(d.getSeconds());
+        data.untilDate = this._formatDate(d);
         d.setTime(data.since);
-        data.sinceDate = pad(d.getMonth()+1)+'/'
-            + pad(d.getDate())+'/'
-            + d.getFullYear()+' '
-            + pad(d.getHours())+':'
-            + pad(d.getMinutes())+':'
-            + pad(d.getSeconds());
+        data.sinceDate = this._formatDate(d);
         data.csvurl  = this.url+"?task=history&action=get&format=CSV";
         data.csvurl += "&id="+data.id.toString(16);
         data.csvurl += "&data[since]="+parseInt(data.since/1000);
@@ -399,5 +377,15 @@ HUGnet.DataView = Backbone.View.extend({
     renderEntry: function (view)
     {
         view.render();
+    },
+    _formatDate: function (d)
+    {
+        function pad(n){return n<10 ? '0'+n : n};
+        return pad(d.getUTCMonth()+1)+'/'
+            + pad(d.getUTCDate())+'/'
+            + d.getUTCFullYear()+' '
+            + pad(d.getUTCHours())+':'
+            + pad(d.getUTCMinutes())+':'
+            + pad(d.getUTCSeconds());
     }
 });

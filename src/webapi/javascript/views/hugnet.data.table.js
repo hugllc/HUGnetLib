@@ -227,12 +227,12 @@ HUGnet.DataTable = Backbone.View.extend({
     {
         Date.prototype.formatHUGnet = function()
         {
-            var m = this.getMonth() + 1;
-            var d = this.getDate();
-            var Y = this.getFullYear();
-            var H = this.getHours();
-            var i = this.getMinutes();
-            var s = this.getSeconds();
+            var m = this.getUTCMonth() + 1;
+            var d = this.getUTCDate();
+            var Y = this.getUTCFullYear();
+            var H = this.getUTCHours();
+            var i = this.getUTCMinutes();
+            var s = this.getUTCSeconds();
 
             if (H < 10) {
                 H = "0" + H;
