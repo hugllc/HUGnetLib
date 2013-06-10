@@ -336,7 +336,7 @@ HUGnet.DataFlot = Backbone.View.extend({
                         previousPoint = item.dataIndex;
 
                         $('#flot-tooltip').remove();
-                        var x = HUGnet.viewHelpers.sqlDate(item.datapoint[0]);
+                        var x = HUGnet.viewHelpers.sqlUTCDate(item.datapoint[0]);
 
                         var text = '<div class="bold">'+item.series.label+'</div>';
                         text = text + x + "<br />"+item.datapoint[1];
