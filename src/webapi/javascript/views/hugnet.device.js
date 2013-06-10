@@ -283,6 +283,7 @@ var DeviceEntryView = Backbone.View.extend({
     tagName: 'tr',
     template: '#DeviceEntryTemplate',
     parent: null,
+    progress: undefined,
     events: {
         'change .action': 'action',
         'click .refresh': 'refresh',
@@ -314,28 +315,49 @@ var DeviceEntryView = Backbone.View.extend({
     },
     refresh: function (e)
     {
-        this.$el.addClass("working");
+        this._setupProgress("Reading Config");
         this.model.config();
     },
     loadconfig: function (e)
     {
-        this.$el.addClass("working");
+        this._setupProgress("Loading Config");
         this.model.loadconfig();
     },
     loadfirmware: function (e)
     {
-        this.$el.addClass("working");
+        this._setupProgress("Loading Firmware");
         this.model.loadfirmware();
     },
     refreshFail: function ()
     {
-        this.$el.removeClass("working");
+        this._teardownProgress();
         //alert("Failed to get the configuration for the device");
     },
     properties: function (e)
     {
         var view = new DevicePropertiesView({ model: this.model });
         this.parent.popup(view);
+    },
+    _setupProgress: function(title)
+    {
+        if (typeof this.progress !== "object") {
+            this.progress = new HUGnet.Progress({
+                modal: false,
+                draggable: true,
+                width: 300,
+                title: title,
+                dialogClass: "window",
+                zIndex: 500
+            });
+        }
+    },
+    _teardownProgress: function()
+    {
+        if (this.progress !== undefined) {
+            this.progress.update(1);
+            this.progress.remove();
+            delete this.progress;
+        }
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -348,7 +370,7 @@ var DeviceEntryView = Backbone.View.extend({
     */
     render: function ()
     {
-        this.$el.removeClass("working");
+        this._teardownProgress();
         this.$el.html(
             _.template(
                 $(this.template).html(),
