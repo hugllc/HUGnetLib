@@ -49,11 +49,13 @@ HUGnet.Progress = Backbone.View.extend({
     },
     update: function (value)
     {
-        if (value < 1) {
-            value = value * 100;
-        }
-        if (value >= 100) {
-            this.remove();
+        if (value != false) {
+            if (value < 1) {
+                value = value * 100;
+            }
+            if (value >= 100) {
+                this.remove();
+            }
         }
         //if (this.$el.is(':data(dialog)')) {
             this.$bar.progressbar('option', 'value', value);

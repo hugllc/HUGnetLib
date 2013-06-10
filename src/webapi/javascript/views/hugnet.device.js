@@ -349,6 +349,7 @@ var DeviceEntryView = Backbone.View.extend({
                 dialogClass: "window no-close",
                 zIndex: 500,
             });
+            this.progress.update(false);
         }
     },
     _teardownProgress: function()
