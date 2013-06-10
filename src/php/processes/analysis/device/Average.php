@@ -68,7 +68,7 @@ class Average extends \HUGnet\processes\analysis\Device
             "type" => \HUGnet\db\Average::AVERAGE_15MIN,
             "history" => true,
             "time" => "Y-m-d H:i",
-            "timeout" => 60,
+            "timeout" => 900,
         ),
         "HOURLY" => array(
             "base" => \HUGnet\db\Average::AVERAGE_15MIN,
@@ -119,7 +119,7 @@ class Average extends \HUGnet\processes\analysis\Device
             "type" => \HUGnet\db\FastAverage::AVERAGE_30SEC,
             "history" => true,
             "time" => "Y-m-d H:i:s",
-            "timeout" => 10,
+            "timeout" => 30,
         ),
         "1MIN" => array(
             "base" => \HUGnet\db\FastAverage::AVERAGE_30SEC,
