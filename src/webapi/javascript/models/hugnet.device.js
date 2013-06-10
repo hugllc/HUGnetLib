@@ -297,6 +297,7 @@ HUGnet.Device = Backbone.Model.extend({
                     if (_.isObject(data)) {
                         self.unset('update');
                         self.set(data);
+                        self.trigger('configdone');
                     } else {
                         self.trigger('configfail');
                     }
