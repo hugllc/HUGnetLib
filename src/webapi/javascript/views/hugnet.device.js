@@ -315,17 +315,17 @@ var DeviceEntryView = Backbone.View.extend({
     },
     refresh: function (e)
     {
-        this._setupProgress("Reading Config");
+        this._setupProgress("Reading Config in "+this.model.get("DeviceID"));
         this.model.config();
     },
     loadconfig: function (e)
     {
-        this._setupProgress("Loading Config");
+        this._setupProgress("Loading Config in "+this.model.get("DeviceID"));
         this.model.loadconfig();
     },
     loadfirmware: function (e)
     {
-        this._setupProgress("Loading Firmware");
+        this._setupProgress("Loading Firmware in "+this.model.get("DeviceID"));
         this.model.loadfirmware();
     },
     refreshFail: function ()
@@ -346,8 +346,8 @@ var DeviceEntryView = Backbone.View.extend({
                 draggable: true,
                 width: 300,
                 title: title,
-                dialogClass: "window",
-                zIndex: 500
+                dialogClass: "window no-close",
+                zIndex: 500,
             });
         }
     },
