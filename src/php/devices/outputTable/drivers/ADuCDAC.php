@@ -70,14 +70,16 @@ class ADuCDAC extends \HUGnet\devices\outputTable\DriverADuC
         "longName" => "Digital to Analog Converter",
         "shortName" => "DAC",
         "extraText" => array(
+            6 => "Initial Value"
         ),
         "extraDefault" => array(
-            0, 0, 0, 1, 0, 3
+            0, 0, 0, 1, 0, 3, 0
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
+            6 => 10
         ),
         "min" => 0,
         "max" => array(0 => 4095, 1 => 65535),
@@ -141,6 +143,7 @@ class ADuCDAC extends \HUGnet\devices\outputTable\DriverADuC
         foreach ($this->entryMap as $key => $field) {
             $extra[$key] = $decode[$field];
         }
+        $extra[6] = $this->decodeInt(substr($string, 4, 4));
         $this->output()->set("extra", $extra);
     }
     /**
@@ -155,7 +158,9 @@ class ADuCDAC extends \HUGnet\devices\outputTable\DriverADuC
             $encode[$field] = $this->getExtra($key);
         }
         $this->entry()->fromArray($encode);
-        return $this->entry()->encode();
+        $string  = $this->entry()->encode();
+        $string .= $this->encodeInt($this->getExtra(6));
+        return $string;
     }
 
 }

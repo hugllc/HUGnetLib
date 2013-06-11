@@ -106,14 +106,14 @@ class ADuCDACTest extends DriverTestBase
                         "sensor" => new \HUGnet\DummyBase("Output"),
                     )
                 ),
-                "1300",
+                "130000000000",
                 array(
                     "Output" => array(
                         "get" => array(
                             array('extra'),
                         ),
                         "set" => array(
-                            array('extra', array(0, 0, 0, 0, 0, 3)),
+                            array('extra', array(0, 0, 0, 0, 0, 3, 0)),
                         ),
                     ),
                 ),
@@ -124,14 +124,14 @@ class ADuCDACTest extends DriverTestBase
                         "sensor" => new \HUGnet\DummyBase("Output"),
                     )
                 ),
-                "1001",
+                "100134120000",
                 array(
                     "Output" => array(
                         "get" => array(
                             array('extra'),
                         ),
                         "set" => array(
-                            array('extra', array(1, 0, 0, 0, 0, 0)),
+                            array('extra', array(1, 0, 0, 0, 0, 0, 0x1234)),
                         ),
                     ),
                 ),
@@ -142,14 +142,14 @@ class ADuCDACTest extends DriverTestBase
                         "sensor" => new \HUGnet\DummyBase("Output"),
                     )
                 ),
-                "9000",
+                "900000000000",
                 array(
                     "Output" => array(
                         "get" => array(
                             array('extra'),
                         ),
                         "set" => array(
-                            array('extra', array(0, 1, 0, 0, 0, 0)),
+                            array('extra', array(0, 1, 0, 0, 0, 0, 0)),
                         ),
                     ),
                 ),
@@ -160,14 +160,14 @@ class ADuCDACTest extends DriverTestBase
                         "sensor" => new \HUGnet\DummyBase("Output"),
                     )
                 ),
-                "5000",
+                "500000000000",
                 array(
                     "Output" => array(
                         "get" => array(
                             array('extra'),
                         ),
                         "set" => array(
-                            array('extra', array(0, 0, 1, 0, 0, 0)),
+                            array('extra', array(0, 0, 1, 0, 0, 0, 0)),
                         ),
                     ),
                 ),
@@ -178,14 +178,14 @@ class ADuCDACTest extends DriverTestBase
                         "sensor" => new \HUGnet\DummyBase("Output"),
                     )
                 ),
-                "1800",
+                "180000000000",
                 array(
                     "Output" => array(
                         "get" => array(
                             array('extra'),
                         ),
                         "set" => array(
-                            array('extra', array(0, 0, 0, 1, 0, 0)),
+                            array('extra', array(0, 0, 0, 1, 0, 0, 0)),
                         ),
                     ),
                 ),
@@ -196,14 +196,14 @@ class ADuCDACTest extends DriverTestBase
                         "sensor" => new \HUGnet\DummyBase("Output"),
                     )
                 ),
-                "1400",
+                "140000000000",
                 array(
                     "Output" => array(
                         "get" => array(
                             array('extra'),
                         ),
                         "set" => array(
-                            array('extra', array(0, 0, 0, 0, 1, 0)),
+                            array('extra', array(0, 0, 0, 0, 1, 0, 0)),
                         ),
                     ),
                 ),
@@ -214,14 +214,14 @@ class ADuCDACTest extends DriverTestBase
                         "sensor" => new \HUGnet\DummyBase("Output"),
                     )
                 ),
-                "1100",
+                "110000000000",
                 array(
                     "Output" => array(
                         "get" => array(
                             array('extra'),
                         ),
                         "set" => array(
-                            array('extra', array(0, 0, 0, 0, 0, 1)),
+                            array('extra', array(0, 0, 0, 0, 0, 1, 0)),
                         ),
                     ),
                 ),
@@ -232,14 +232,14 @@ class ADuCDACTest extends DriverTestBase
                         "sensor" => new \HUGnet\DummyBase("Output"),
                     )
                 ),
-                "1200",
+                "120000000000",
                 array(
                     "Output" => array(
                         "get" => array(
                             array('extra'),
                         ),
                         "set" => array(
-                            array('extra', array(0, 0, 0, 0, 0, 2)),
+                            array('extra', array(0, 0, 0, 0, 0, 2, 0)),
                         ),
                     ),
                 ),
@@ -279,91 +279,91 @@ class ADuCDACTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "1B00",
+                "1B0000000000",
             ),
             array( // #1
                 array(
                     "Output" => array(
                         "get" => array(
                             "extra" => array(
-                                1, 0, 0, 0, 0, 0
+                                1, 0, 0, 0, 0, 0, 0x1234
                             ),
                         ),
                     ),
                 ),
-                "1001",
+                "100134120000",
             ),
             array( // #2
                 array(
                     "Output" => array(
                         "get" => array(
                             "extra" => array(
-                                0, 1, 0, 0, 0, 0
+                                0, 1, 0, 0, 0, 0, 0
                             ),
                         ),
                     ),
                 ),
-                "9000",
+                "900000000000",
             ),
             array( // #3
                 array(
                     "Output" => array(
                         "get" => array(
                             "extra" => array(
-                                0, 0, 1, 0, 0, 0
+                                0, 0, 1, 0, 0, 0, 0
                             ),
                         ),
                     ),
                 ),
-                "5000",
+                "500000000000",
             ),
             array( // #4
                 array(
                     "Output" => array(
                         "get" => array(
                             "extra" => array(
-                                0, 0, 0, 1, 0, 0
+                                0, 0, 0, 1, 0, 0, 0
                             ),
                         ),
                     ),
                 ),
-                "1800",
+                "180000000000",
             ),
             array( // #5
                 array(
                     "Output" => array(
                         "get" => array(
                             "extra" => array(
-                                0, 0, 0, 0, 1, 0
+                                0, 0, 0, 0, 1, 0, 0
                             ),
                         ),
                     ),
                 ),
-                "1400",
+                "140000000000",
             ),
             array( // #6
                 array(
                     "Output" => array(
                         "get" => array(
                             "extra" => array(
-                                0, 0, 0, 0, 0, 1
+                                0, 0, 0, 0, 0, 1, 0
                             ),
                         ),
                     ),
                 ),
-                "1100",
+                "110000000000",
             ),
             array( // #7
                 array(
                     "Output" => array(
                         "get" => array(
                             "extra" => array(
-                                0, 0, 0, 0, 0, 2
+                                0, 0, 0, 0, 0, 2, 0
                             ),
                         ),
                     ),
                 ),
-                "1200",
+                "120000000000",
             ),
         );
     }
@@ -401,6 +401,7 @@ class ADuCDACTest extends DriverTestBase
                 "extraText",
                 array(),
                 array(
+                    6 => "Initial Value",
                     0 => 'Power Mode',
                     1 => 'Buffer Mode',
                     2 => 'Buffer Bypass',
