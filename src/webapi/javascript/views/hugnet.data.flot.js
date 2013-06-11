@@ -326,15 +326,16 @@ HUGnet.DataFlot = Backbone.View.extend({
     },
     _hoversetup: function ()
     {
-        var previousPoint = null;
+        var prevPoint = null;
+        var prevId = null;
         var self = this;
 
         if (!this.hoversetup) {
             this.$graph.on("plothover", function (event, pos, item) {
                 if (item) {
-                    if (previousPoint != item.dataIndex) {
-                        previousPoint = item.dataIndex;
-
+                    if ((prevPoint != item.dataIndex) || (prevId != item.series.id)) {
+                        prevPoint = item.dataIndex;
+                        prevId    = item.series.id;
                         $('#flot-tooltip').remove();
                         var x = HUGnet.viewHelpers.sqlUTCDate(item.datapoint[0]);
 
@@ -345,7 +346,8 @@ HUGnet.DataFlot = Backbone.View.extend({
                 }
                 else {
                     $('#flot-tooltip').remove();
-                    previousPoint = null;
+                    prevPoint = null;
+                    prevId    = null;
                 }
             });
             this.hoversetup = true;
