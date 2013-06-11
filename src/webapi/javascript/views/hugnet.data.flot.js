@@ -239,7 +239,7 @@ HUGnet.DataFlot = Backbone.View.extend({
     {
         var options = {
             series: { lines: { show: true }, points: { show: false} },
-            xaxis: { mode: 'time', timeformat: '%m/%d %y<br/>%H:%M' },
+            xaxis: { mode: 'time', timeformat: '%m/%d %y<br/>%H:%M:%S' },
             legend: {
                 position: 'nw', container: this.$legend, noColumns: 4
             },
