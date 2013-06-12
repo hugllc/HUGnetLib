@@ -106,7 +106,7 @@ class ADuCPWMTest extends DriverTestBase
                         "sensor" => new \HUGnet\DummyBase("Output"),
                     )
                 ),
-                "1300341278560099",
+                "1300341278560099FFFFFFFFA5A55A5A01020304",
                 array(
                     "Output" => array(
                         "get" => array(
@@ -115,7 +115,10 @@ class ADuCPWMTest extends DriverTestBase
                         "set" => array(
                             array(
                                 'extra',
-                                array(0, 0, 0, 0, 0, 1, 0, 0x1234, 0x5678, 0x9900)
+                                array(
+                                    0, 0, 0, 0, 0, 1, 0, 0x1234, 0x5678, 0x9900,
+                                    -1, 0x5A5AA5A5, 0x04030201
+                                )
                             ),
                         ),
                     ),
@@ -154,12 +157,13 @@ class ADuCPWMTest extends DriverTestBase
                     "Output" => array(
                         "get" => array(
                             "extra" => array(
-                                0, 0, 0, 0, 0, 1, 0, 0x1234, 0x5678, 0x9900
+                                0, 0, 0, 0, 0, 1, 0, 0x1234, 0x5678, 0x9900,
+                                0xABCD, 0x4321, 0x5A5AA5A5
                             ),
                         ),
                     ),
                 ),
-                "1100341278560099",
+                "1100341278560099CDAB000021430000A5A55A5A",
             ),
             array( // #1 Strings
                 array(
@@ -167,12 +171,13 @@ class ADuCPWMTest extends DriverTestBase
                         "get" => array(
                             "extra" => array(
                                 "0", "0", "0", "0", "0", "1", "0",
-                                "65535", "65535", "65535"
+                                "65535", "65535", "65535", 
+                                -1, -1, -1
                             ),
                         ),
                     ),
                 ),
-                "1100FFFFFFFFFFFF",
+                "1100FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
             ),
         );
     }
@@ -209,6 +214,9 @@ class ADuCPWMTest extends DriverTestBase
                 "extraText",
                 array(),
                 array(
+                    10 => 'Initial Value 0',
+                    11 => 'Initial Value 1',
+                    12 => 'Initial Value 2',
                     0 => 'Invert PWM5',
                     1 => 'Invert PWM3',
                     2 => 'Invert PWM1',

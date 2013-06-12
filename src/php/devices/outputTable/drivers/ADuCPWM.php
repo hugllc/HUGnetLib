@@ -70,14 +70,20 @@ class ADuCPWM extends \HUGnet\devices\outputTable\DriverADuC
         "longName" => "Pulse Width Modulator",
         "shortName" => "PWM",
         "extraText" => array(
+            10 => "Initial Value 0",
+            11 => "Initial Value 1",
+            12 => "Initial Value 2",
         ),
         "extraDefault" => array(
-            0, 0, 0, 0, 0, 0, 0, 0xFFFF, 0xFFFF, 0xFFFF
+            0, 0, 0, 0, 0, 0, 0, 0xFFFF, 0xFFFF, 0xFFFF, 0, 0, 0
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
+            10 => 7,
+            11 => 7,
+            12 => 7,
         ),
         "min" => 0,
         "max" => 0xFFFF,
@@ -133,6 +139,9 @@ class ADuCPWM extends \HUGnet\devices\outputTable\DriverADuC
         foreach ($this->entryMap as $key => $field) {
             $extra[$key] = $decode[$field];
         }
+        $extra[10] = $this->decodeInt(substr($string, 16, 8), 4, true);
+        $extra[11] = $this->decodeInt(substr($string, 24, 8), 4, true);
+        $extra[12] = $this->decodeInt(substr($string, 32, 8), 4, true);
         $this->output()->set("extra", $extra);
     }
     /**
@@ -147,7 +156,11 @@ class ADuCPWM extends \HUGnet\devices\outputTable\DriverADuC
             $encode[$field] = (int)$this->getExtra($key);
         }
         $this->entry()->fromArray($encode);
-        return $this->entry()->encode();
+        $string  = $this->entry()->encode();
+        $string .= $this->encodeInt($this->getExtra(10), 4);
+        $string .= $this->encodeInt($this->getExtra(11), 4);
+        $string .= $this->encodeInt($this->getExtra(12), 4);
+        return $string;
     }
     /**
     * This builds the class from a setup string
