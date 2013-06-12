@@ -49,7 +49,7 @@ var FlotPoint = Backbone.Model.extend({
         label: null,
         yaxis: 1,
         datefield: 'UnixDate',
-        units: null
+        units: 'Unknown'
     },
     insert: function (history, offset)
     {
@@ -262,7 +262,12 @@ HUGnet.DataFlot = Backbone.View.extend({
             var key = $(this).attr("name");
             if (key && datasets[key]) {
                 data.push(datasets[key]);
-                options.yaxes[datasets[key].yaxis - 1].axisLabel = '('+datasets[key].units+')';
+                var units = '('+datasets[key].units+')';
+                if (options.yaxes[datasets[key].yaxis - 1].axisLabel == undefined) {
+                    options.yaxes[datasets[key].yaxis - 1].axisLabel = units;
+                } else if (options.yaxes[datasets[key].yaxis - 1].axisLabel != units) {
+                    options.yaxes[datasets[key].yaxis - 1].axisLabel = 'Multiple Units';
+                }
             }
         });
         $.plot(this.$graph, data, options);
