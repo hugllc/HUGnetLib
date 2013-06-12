@@ -8,7 +8,7 @@ GIT=`which git`
 all:
 
 setup:
-	sudo apt-get install php-pear npm phantomjs
+	sudo apt-get install php-pear npm phantomjs php5-sqlite php5-mysql
 	#sudo npm install jshint -g
 	sudo pear update-channels
 	sudo pear config-set auto_discover 1

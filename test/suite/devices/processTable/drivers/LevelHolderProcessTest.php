@@ -198,6 +198,8 @@ class LevelHolderProcessTest extends DriverTestBase
                                 9 => 0,
                                 10 => 8.0,
                                 11 => 1.0,
+                                12 => 1556,
+                                13 => 3522,
                             )
                         ),
                     ),
@@ -290,6 +292,8 @@ class LevelHolderProcessTest extends DriverTestBase
                                 9 => 1,
                                 10 => 8.0,
                                 11 => 1.0,
+                                12 => 1556,
+                                13 => 3522,
                             )
                         ),
                     ),
@@ -388,6 +392,8 @@ class LevelHolderProcessTest extends DriverTestBase
                                 9 => 2,
                                 10 => 13,
                                 11 => 1,
+                                12 => 1000,
+                                13 => 4000,
                             ),
                         ),
                         "device" => new \HUGnet\DummyBase("Device"),
@@ -445,6 +451,8 @@ class LevelHolderProcessTest extends DriverTestBase
                                 9 => 2,
                                 10 => 13,
                                 11 => 1,
+                                12 => 2000,
+                                13 => 3000,
                             ),
                         ),
                         "device" => new \HUGnet\DummyBase("Device"),
@@ -490,7 +498,7 @@ class LevelHolderProcessTest extends DriverTestBase
                         ),
                     )
                 ),
-                "2201020014060000C20D0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                "22010200D0070000B80B0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                     ."01123456781122334487654321",
             ),
             array( // #3 DataChan return too short

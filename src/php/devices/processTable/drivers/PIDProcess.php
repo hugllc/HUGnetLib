@@ -78,6 +78,8 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
             7 => "I",
             8 => "D",
             9 => "Output Offset",
+            10 => "Control Chan Min",
+            11 => "Control Chan Max",
         ),
         "extraDesc" => array(
             0 => "0-255 The minimum number of 1/128th of a second",
@@ -90,15 +92,17 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
             7 => "Integral Coefficient (Shifted down 27 bits in endpoint)",
             8 => "Differential Coefficient (Shifted down 16 bits in endpoint)",
             9 => "Added to the control before the channel is set",
+            "The minimum value for the control channel.  Empty means use default",
+            "The maximum value for the control channel.  Empty means use default",
         ),
         "extraDefault" => array(
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", ""
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            4, array(), array(), 15, 15, 15, 15, 15, 15, 15
+            4, array(), array(), 15, 15, 15, 15, 15, 15, 15, 7, 7
         ),
     );
     /**
@@ -162,8 +166,11 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
         $index += 8;
         $extra[8] = round($this->decodeInt($str, 4, true)/(1<<16), 6);
         $str   = substr($string, $index, 8);
-        $index += 8;
         $extra[9] = $this->decodeInt($str, 4, true);
+        $index += 8;
+        $extra[10] = $this->decodeInt(substr($string, $index, 8), 4, true);
+        $index += 8;
+        $extra[11] = $this->decodeInt(substr($string, $index, 8), 4, true);
         $this->process()->set("extra", $extra);
     }
     /**
@@ -192,8 +199,18 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
         $output = $this->process()->device()->controlChannels()->controlChannel(
             $this->getExtra(1)
         );
-        $data .= $this->encodeInt($output->get("min"), 4);
-        $data .= $this->encodeInt($output->get("max"), 4);
+        $min  = $this->getExtra(10);
+        $oMin = $output->get("min");
+        if (($min === "") || ($min < $oMin)) {
+            $min = $oMin;
+        }
+        $data .= $this->encodeInt($min, 4);
+        $max   = $this->getExtra(11);
+        $oMax  = $output->get("max");
+        if (($max === "") || ($max > $oMax)) {
+            $max = $oMax;
+        }
+        $data .= $this->encodeInt($max, 4);
         return $data;
     }
 

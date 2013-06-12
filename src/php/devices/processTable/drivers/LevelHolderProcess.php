@@ -85,6 +85,8 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
             9  => "Data Channel",
             10 => "Set Point",
             11 => "Tolerance",
+            12 => "Control Chan Min",
+            13 => "Control Chan Max",
         ),
         "extraDesc" => array(
             "0-255 The minimum number of 1/128 second clock ticks between controls",
@@ -99,15 +101,17 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
             "The data channel to use for the control",
             "(Units for data channel) The set point to use for the control",
             "(Units for data channel) The tolerance to use for the control",
+            "The minimum value for the control channel.  Empty means use default",
+            "The maximum value for the control channel.  Empty means use default",
         ),
         "extraDefault" => array(
-            34, 0, 2, 0xFF, 0, 0, 0xFF, 0, 0, 0, 0, 0.01,
+            34, 0, 2, 0xFF, 0, 0, 0xFF, 0, 0, 0, 0, 0.01, "", ""
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            4, array(), 10, array(), 15, 15, array(), 15, 15, array(), 15, 15
+            4, array(), 10, array(), 15, 15, array(), 15, 15, array(), 15, 15, 7, 7
         ),
     );
     /**
@@ -146,8 +150,8 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
         $extra[0] = $this->decodeInt(substr($string, 0, 2), 1);
         $extra[1] = $this->decodeInt(substr($string, 2, 2), 1);
         $extra[2] = $this->decodeInt(substr($string, 4, 4), 2, true);
-        // min is hard coded at substr($string, 6, 8)
-        // max is hard coded at substr($string, 14, 8)
+        $extra[12] = $this->decodeInt(substr($string, 8, 8), 4, true);
+        $extra[13] = $this->decodeInt(substr($string, 16, 8), 4, true);
         $this->_decodeChannels(substr($string, 24), $extra);
         $this->process()->set("extra", $extra);
     }
@@ -235,8 +239,18 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
         $output = $this->process()->device()->controlChannels()->controlChannel(
             $this->getExtra(1)
         );
-        $data .= $this->encodeInt($output->get("min"), 4);
-        $data .= $this->encodeInt($output->get("max"), 4);
+        $min  = $this->getExtra(12);
+        $oMin = $output->get("min");
+        if (($min === "") || ($min < $oMin)) {
+            $min = $oMin;
+        }
+        $data .= $this->encodeInt($min, 4);
+        $max   = $this->getExtra(13);
+        $oMax  = $output->get("max");
+        if (($max === "") || ($max > $oMax)) {
+            $max = $oMax;
+        }
+        $data .= $this->encodeInt($max, 4);
         $data .= $this->_encodeChannels();
         return $data;
     }

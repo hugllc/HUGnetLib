@@ -170,6 +170,8 @@ class PIDProcessTest extends DriverTestBase
                             7 => 7.0,
                             8 => 8.0,
                             9 => 9,
+                            10 => 0,
+                            11 => 4096,
                         )
                     ),
                 ),
@@ -230,6 +232,8 @@ class PIDProcessTest extends DriverTestBase
                             7 => 7.000244,
                             8 => 8.0625,
                             9 => 9,
+                            10 => 0,
+                            11 => 4096,
                         )
                     ),
                 ),
@@ -290,6 +294,8 @@ class PIDProcessTest extends DriverTestBase
                             7 => -1.5E-5,
                             8 => -1.5E-5,
                             9 => 9,
+                            10 => 0,
+                            11 => 4096,
                         )
                     ),
                 ),
@@ -337,6 +343,8 @@ class PIDProcessTest extends DriverTestBase
                                 7 => 7,
                                 8 => 8,
                                 9 => 9,
+                                10 => -100,
+                                11 => 6000,
                             )
                         ),
                         "device" => new \HUGnet\DummyBase("Device"),
@@ -391,6 +399,8 @@ class PIDProcessTest extends DriverTestBase
                                 7 => 7.000254,
                                 8 => 8.0625,
                                 9 => 9,
+                                10 => 100,
+                                11 => 4000,
                             )
                         ),
                         "device" => new \HUGnet\DummyBase("Device"),
@@ -427,8 +437,8 @@ class PIDProcessTest extends DriverTestBase
                         ),
                     )
                 ),
-                "0102050400000005000000060001000600100007000010080009000000"
-                    ."0000000000100000",
+                "010205040000000500000006000100060010000700001008000900000064"
+                    ."000000A00F0000",
             ),
             array( // #2  DataChan return too short
                 array(
