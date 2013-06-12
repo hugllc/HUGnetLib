@@ -48,7 +48,8 @@ var FlotPoint = Backbone.Model.extend({
         data: [],
         label: null,
         yaxis: 1,
-        datefield: 'UnixDate'
+        datefield: 'UnixDate',
+        units: null
     },
     insert: function (history, offset)
     {
@@ -118,7 +119,8 @@ HUGnet.FlotPoints = Backbone.Collection.extend({
                         yaxis: axis[options.units[key]],
                         color: parseInt(key, 10),
                         fieldname: value,
-                        datefield: this.datefield
+                        datefield: this.datefield,
+                        units: options.units[key]
                     });
                 }
             },
@@ -239,7 +241,9 @@ HUGnet.DataFlot = Backbone.View.extend({
     {
         var options = {
             series: { lines: { show: true }, points: { show: false} },
-            xaxis: { mode: 'time', timeformat: '%m/%d %y<br/>%H:%M:%S' },
+            xaxis: { mode: 'time', timeformat: '%m/%d %y<br/>%H:%M:%S', axisLabel: "Time (UTC)" },
+            yaxis: { },
+            yaxes: [ {}, {}, {}, {}, {}, {} ],
             legend: {
                 position: 'nw', container: this.$legend, noColumns: 4
             },
@@ -251,23 +255,18 @@ HUGnet.DataFlot = Backbone.View.extend({
 
         this.points.clear();
         this.points.fromHistory(this.model);
-        //$.plot(this.$graph, this.points.toJSON(), this.options);
         var data = [];
-
+        
         var datasets = this.points.toJSON();
         this.$el.find("input:checked").each(function () {
             var key = $(this).attr("name");
             if (key && datasets[key]) {
                 data.push(datasets[key]);
+                options.yaxes[datasets[key].yaxis - 1].axisLabel = '('+datasets[key].units+')';
             }
         });
-        //if (data.length === 0) {
-            //data = datasets;
-        //}
-        //if (data.length > 0) {
         $.plot(this.$graph, data, options);
         this._hoversetup();
-        //}
         return this;
     },
     renderTooltip: function (x, y, contents) {

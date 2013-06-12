@@ -163,6 +163,7 @@
             <fileset file="${basedir}/src/webapi/contrib/flot/jquery.flot.navigate.js"/>
             <fileset file="${basedir}/src/webapi/contrib/flot/jquery.flot.selection.js"/>
             <fileset file="${basedir}/src/webapi/contrib/flot/jquery.flot.time.js"/>
+            <fileset file="${basedir}/src/webapi/contrib/jquery.flot.axislabels.js"/>
             <fileset file="${basedir}/src/webapi/contrib/jquery.jqplot.js"/>
             <fileset file="${basedir}/src/webapi/contrib/jqplot.canvasAxisLabelRenderer.js"/>
             <fileset file="${basedir}/src/webapi/contrib/jqplot.dateAxisRenderer.js"/>
