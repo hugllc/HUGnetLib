@@ -131,6 +131,11 @@ HUGnet.DataView = Backbone.View.extend({
             classes: this.classes
         });
         this.setupPlot();
+        this.on("update", this.update, this);
+    },
+    update: function ()
+    {
+        this.plot.update();
     },
     updateDates: function ()
     {

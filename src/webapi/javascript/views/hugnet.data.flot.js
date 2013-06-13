@@ -198,6 +198,7 @@ HUGnet.DataFlot = Backbone.View.extend({
     parent: 'unknown',
     fields: {},
     classes: {},
+    $plot: null,
     checkboxes: [],
     previousPoint: null,
     hoversetup: false,
@@ -213,9 +214,16 @@ HUGnet.DataFlot = Backbone.View.extend({
         this.parent = options.parent;
         // This sets the legend to the correct value for this instance
         this.points = new HUGnet.FlotPoints(null, options);
-        this.model.bind('sync', this.render, this);
+        this.model.on('sync', this.render, this);
         this._setup();
+        this.$graph.on('update', this.update, this);
 
+    },
+    update: function ()
+    {
+        if (this.$plot) {
+            this.$plot.draw();
+        }
     },
     toggle: function ()
     {
@@ -270,7 +278,7 @@ HUGnet.DataFlot = Backbone.View.extend({
                 }
             }
         });
-        $.plot(this.$graph, data, options);
+        this.$plot = $.plot(this.$graph, data, options);
         this._hoversetup();
         return this;
     },
