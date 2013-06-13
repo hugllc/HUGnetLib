@@ -123,9 +123,10 @@ HUGnet.Histories = Backbone.Collection.extend({
         this.reset();
         this.limit = 0;
         var date = new Date;
-        this.since = date.getTime() - (period * 60 * 1000);
+        var now = date.getTime()
+        this.since = now - (period * 60 * 1000);
         this.LastHistory = this.since;
-        this.until = date.getTime();
+        this.until = now;
         this.fetch()
     },
     comparator: function (model)

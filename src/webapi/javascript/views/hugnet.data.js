@@ -215,8 +215,8 @@ HUGnet.DataView = Backbone.View.extend({
         if (!this.polling) {
             this.$('#autorefresh').prop("disabled", true);
             this.$('input[type="submit"]').prop('disabled', true);
-            this.since = Date.parse(this.$('#'+this.sinceId).val());
-            this.until = Date.parse(this.$('#'+this.untilId).val());
+            this.since = Date.parse(this.$('#'+this.sinceId).val()+' UTC');
+            this.until = Date.parse(this.$('#'+this.untilId).val()+' UTC');
             if (this.$('#type').val()) {
                 this.history.type = this.$('#type').val();
             }
