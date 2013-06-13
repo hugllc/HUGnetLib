@@ -74,6 +74,16 @@ class Checkin extends \HUGnet\processes\updater\Periodic
     {
         parent::__construct($gui);
         $this->_datacollector = $this->system()->datacollector();
+        $this->system()->out("Updating the data collector record...");
+        $device = $this->system()->device(
+            $this->system()->network()->device()->getID()
+        );
+        $this->_datacollector->load($device);
+        if (function_exists("posix_uname")) {
+            $uname = posix_uname();
+            $this->_datacollector->set("name", trim($uname['nodename']));
+        }
+        $this->_datacollector->store(true);
     }
     /**
     * This function creates the system.
@@ -94,23 +104,10 @@ class Checkin extends \HUGnet\processes\updater\Periodic
     public function &execute()
     {
         if ($this->ready()) {
-            $this->system()->out("Updating the data collector record...");
             $this->_datacollector->load(
                 array("uuid" => $this->system()->get("uuid"))
             );
-            $setup = $this->_datacollector->get("SetupString");
-            if (empty($setup)) {
-                $device = $this->system()->device(
-                    $this->system()->network()->device()->getID()
-                );
-                $this->_datacollector->load($device);
-                $this->_datacollector->store(true);
-            }
-            if (function_exists("posix_uname")) {
-                $uname = posix_uname();
-                $this->_datacollector->set("name", trim($uname['nodename']));
-            }
-            $this->_datacollector->store();
+
             if ($this->hasMaster()) {
                 $this->system()->out(
                     "Pushing datacollector to the master server..."

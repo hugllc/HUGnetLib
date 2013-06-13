@@ -109,6 +109,7 @@ class UpdateTest extends \PHPUnit_Framework_TestCase
                         ),
                         "network" => new \HUGnet\network\DummyNetwork("Network"),
                         "device" => new \HUGnet\DummyBase("Device"),
+                        "datacollector" => new \HUGnet\DummyBase("DataCollector"),
                     ),
                     "Network" => array(
                         "device" => new \HUGnet\DummyBase("NetDevice"),
