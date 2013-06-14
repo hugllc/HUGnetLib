@@ -349,6 +349,46 @@ abstract class LoadableDriver
         return $float;
 
     }
+    /**
+    * This takes the runs/second and turns it into a priority
+    *
+    * @param int $value The value to encode
+    *
+    * @return string The priority, encoded for the device
+    */
+    protected function encodePriority($value)
+    {
+        if (($value >= 1) && ($value < 129)) {
+            $value = 129 - $value;
+        } else if (($value > 0.5) && ($value < 1)) {
+            $value = round(128 / $value);
+        } else if (round($value, 2) == 0.50) {
+            $value = 255;
+        } else {
+            $value = 0;
+        }
+        $string = $this->encodeInt($value, 1);
+        return $string;
+    }
+    /**
+    * This decodes the priority from the endoint to runs/second
+    *
+    * @param string $string The setup string to decode
+    *
+    * @return Reference to the network object
+    */
+    protected function decodePriority($string)
+    {
+        $value = $this->decodeInt($string, 1);
+        if (($value >= 0) && ($value <= 128)) {
+            $value = 129 - $value;
+        } else if (($value > 128) && ($value <= 255)) {
+            $value = round(128 / $value, 2);
+        } else {
+            $value = 129;
+        }
+        return $value;
+    }
 }
 
 

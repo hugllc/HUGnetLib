@@ -532,6 +532,100 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
         $ret = $this->o->encodeFloat($string, $bytes);
         $this->assertEquals($expect, $ret, "Return is wrong", 0.0001);
     }
+    /**
+    * data provider for testDecodeInt
+    *
+    * @return array
+    */
+    public static function dataDecodePriority()
+    {
+        return array(
+            array( // #0
+                "80",
+                1,
+            ),
+            array( // #1
+                "01",
+                128,
+            ),
+            array( // #2
+                "00",
+                129,
+            ),
+            array( // #3
+                "FF",
+                0.5,
+            ),
+            array( // #4
+                "FB",
+                0.51,
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $string The string to use
+    * @param int    $expect The expected int
+    *
+    * @return null
+    *
+    * @dataProvider dataDecodePriority
+    */
+    public function testDecodePriority($string, $expect)
+    {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock(array());
+        $ret = $this->o->decodePriority($string);
+        $this->assertSame($expect, $ret, "Return is wrong");
+    }
+    /**
+    * data provider for testEncodeInt
+    *
+    * @return array
+    */
+    public static function dataEncodePriority()
+    {
+        return array(
+            array( // #0
+                1,
+                "80",
+            ),
+            array( // #1
+                128,
+                "01",
+            ),
+            array( // #2
+                129,
+                "00",
+            ),
+            array( // #3
+                0.51,
+                "FB",
+            ),
+            array( // #4
+                0.50,
+                "FF",
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param int $int    The string to use
+    * @param int $expect The expected int
+    *
+    * @return null
+    *
+    * @dataProvider dataEncodePriority
+    */
+    public function testEncodePriority($int, $expect)
+    {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock(array());
+        $ret = $this->o->encodePriority($int);
+        $this->assertSame($expect, $ret, "Return is wrong");
+    }
 }
 /**
  * Base driver class for devices.
@@ -658,6 +752,28 @@ class DriverTestClass extends LoadableDriver
     public function decodeFloat($val, $bytes = 4)
     {
         return parent::decodeFloat($val, $bytes);
+    }
+    /**
+    * This takes the runs/second and turns it into a priority
+    *
+    * @param int $value The value to encode
+    *
+    * @return string The priority, encoded for the device
+    */
+    public function encodePriority($value)
+    {
+        return parent::encodePriority($value);
+    }
+    /**
+    * This decodes the priority from the endoint to runs/second
+    *
+    * @param string $string The setup string to decode
+    *
+    * @return Reference to the network object
+    */
+    public function decodePriority($string)
+    {
+        return parent::decodePriority($string);
     }
 }
 ?>
