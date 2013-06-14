@@ -248,6 +248,9 @@ class Action
     {
         if (is_string($string) && strlen($string)) {
             if ($this->device->decode($string)) {
+                $this->device->set(
+                    "GatewayKey", (int)$this->system->get("GatewayKey")
+                );
                 $this->device->setParam("LastContact", time());
                 $this->device->setParam("LastConfig", time());
                 $this->device->setParam("ConfigFail", 0);
