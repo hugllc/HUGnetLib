@@ -73,7 +73,7 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
         "longName" => "LevelHolder Process",
         "shortName" => "LevelHolder",
         "extraText" => array(
-            0  => "Priority",
+            0  => "Control Updates / Sec",
             1  => "Control",
             2  => "Step",
             3  => "Limiter 1 Data Channel",
@@ -89,7 +89,7 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
             13 => "Control Chan Max",
         ),
         "extraDesc" => array(
-            "0-255 The minimum number of 1/128 second clock ticks between controls",
+            "The max number of times this should run each second (0.5 - 128)",
             "The control channel to use",
             "-32768 to 32767 The amount added or subracted from the control channel",
             "The data channel to use for the first limiter",
@@ -147,7 +147,7 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
     public function decode($string)
     {
         $extra = (array)$this->process()->get("extra");
-        $extra[0] = $this->decodeInt(substr($string, 0, 2), 1);
+        $extra[0] = $this->decodePriority(substr($string, 0, 2));
         $extra[1] = $this->decodeInt(substr($string, 2, 2), 1);
         $extra[2] = $this->decodeInt(substr($string, 4, 4), 2, true);
         $extra[12] = $this->decodeInt(substr($string, 8, 8), 4, true);
@@ -233,7 +233,7 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
     public function encode()
     {
         $data  = "";
-        $data .= $this->encodeInt($this->getExtra(0), 1);
+        $data .= $this->encodePriority($this->getExtra(0));
         $data .= $this->encodeInt($this->getExtra(1), 1);
         $data .= $this->encodeInt($this->getExtra(2), 2);
         $output = $this->process()->device()->controlChannels()->controlChannel(

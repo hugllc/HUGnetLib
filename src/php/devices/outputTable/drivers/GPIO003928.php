@@ -68,11 +68,11 @@ class GPIO003928 extends \HUGnet\devices\outputTable\DriverAVR
         "longName" => "General Purpose IO",
         "shortName" => "GPIO",
         "extraText" => array(
-            "Priority",
+            "Control Updates / Sec",
             "Port"
         ),
         "extraDefault" => array(
-            1, 2
+            128, 2
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
@@ -111,7 +111,7 @@ class GPIO003928 extends \HUGnet\devices\outputTable\DriverAVR
     public function decode($string)
     {
         $extra = (array)$this->output()->get("extra");
-        $extra[0] = $this->decodeInt(substr($string, 0, 2), 1);
+        $extra[0] = $this->decodePriority(substr($string, 0, 2));
         $extra[1] = $this->decodeInt(substr($string, 2, 2), 1);
         $this->output()->set("extra", $extra);
     }
@@ -122,7 +122,7 @@ class GPIO003928 extends \HUGnet\devices\outputTable\DriverAVR
     */
     public function encode()
     {
-        $string  = $this->encodeInt($this->getExtra(0), 1);
+        $string  = $this->encodePriority($this->getExtra(0));
         $string .= $this->encodeInt($this->getExtra(1), 1);
         return $string;
     }

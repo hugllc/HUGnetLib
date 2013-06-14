@@ -68,12 +68,12 @@ class FET003912 extends \HUGnet\devices\outputTable\DriverAVR
         "longName" => "General Purpose IO",
         "shortName" => "GPIO",
         "extraText" => array(
-            "Priority",
+            "Control Updates / Sec",
             "Port",
             "Mode"
         ),
         "extraDefault" => array(
-            1, 0, 0
+            128, 0, 0
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
@@ -107,7 +107,7 @@ class FET003912 extends \HUGnet\devices\outputTable\DriverAVR
     public function decode($string)
     {
         $extra = (array)$this->output()->get("extra");
-        $extra[0] = $this->decodeInt(substr($string, 0, 2), 1);
+        $extra[0] = $this->decodePriority(substr($string, 0, 2));
         $extra[2] = $this->decodeInt(substr($string, 2, 2), 1);
         $extra[1] = $this->decodeInt(substr($string, 4, 2), 1);
         $this->output()->set("extra", $extra);
@@ -119,7 +119,7 @@ class FET003912 extends \HUGnet\devices\outputTable\DriverAVR
     */
     public function encode()
     {
-        $string  = $this->encodeInt($this->getExtra(0), 1);
+        $string  = $this->encodePriority($this->getExtra(0));
         $string .= $this->encodeInt($this->getExtra(2), 1);
         $string .= $this->encodeInt($this->getExtra(1), 1);
         return $string;

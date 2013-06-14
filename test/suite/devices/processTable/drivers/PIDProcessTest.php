@@ -160,7 +160,7 @@ class PIDProcessTest extends DriverTestBase
                     array(
                         'extra',
                         array(
-                            0 => 1,
+                            0 => 128,
                             1 => 2,
                             2 => 3,
                             3 => 4,
@@ -222,7 +222,7 @@ class PIDProcessTest extends DriverTestBase
                     array(
                         'extra',
                         array(
-                            0 => 1,
+                            0 => 128,
                             1 => 2,
                             2 => 3,
                             3 => 4,
@@ -284,7 +284,7 @@ class PIDProcessTest extends DriverTestBase
                     array(
                         'extra',
                         array(
-                            0 => 1,
+                            0 => 128,
                             1 => 2,
                             2 => 3,
                             3 => -1,
@@ -333,7 +333,7 @@ class PIDProcessTest extends DriverTestBase
                     "Process" => array(
                         "get" => array(
                             'extra' => array(
-                                0 => 1,
+                                0 => 128,
                                 1 => 2,
                                 2 => 3,
                                 3 => 4,
@@ -389,7 +389,7 @@ class PIDProcessTest extends DriverTestBase
                     "Process" => array(
                         "get" => array(
                             'extra' => array(
-                                0 => 1,
+                                0 => 128,
                                 1 => 2,
                                 2 => 3,
                                 3 => 4,
@@ -445,7 +445,7 @@ class PIDProcessTest extends DriverTestBase
                     "Process" => array(
                         "get" => array(
                             'extra' => array(
-                                0 => 1,
+                                0 => 128,
                                 1 => 2,
                                 2 => 3,
                                 3 => 4,
@@ -499,7 +499,7 @@ class PIDProcessTest extends DriverTestBase
                     "Process" => array(
                         "get" => array(
                             'extra' => array(
-                                0 => 1,
+                                0 => 128,
                                 1 => 2,
                                 2 => 3,
                                 3 => 4,
@@ -553,7 +553,7 @@ class PIDProcessTest extends DriverTestBase
                     "Process" => array(
                         "get" => array(
                             'extra' => array(
-                                0 => 1,
+                                0 => 128,
                                 1 => 2,
                                 2 => 3,
                                 3 => -1,

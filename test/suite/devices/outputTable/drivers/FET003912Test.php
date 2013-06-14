@@ -113,7 +113,7 @@ class FET003912Test extends DriverTestBase
                             array('extra'),
                         ),
                         "set" => array(
-                            array('extra', array(19, 2, 1)),
+                            array('extra', array(110, 2, 1)),
                         ),
                     ),
                 ),
@@ -131,7 +131,7 @@ class FET003912Test extends DriverTestBase
                             array('extra'),
                         ),
                         "set" => array(
-                            array('extra', array(16, 3, 1)),
+                            array('extra', array(113, 3, 1)),
                         ),
                     ),
                 ),
@@ -183,7 +183,7 @@ class FET003912Test extends DriverTestBase
                         ),
                     ),
                 ),
-                "0A0C0B",
+                "770C0B",
             ),
         );
     }

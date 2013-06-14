@@ -127,7 +127,7 @@ class MagDirTest extends DriverTestBase
                         "set" => array(
                             array(
                                 'extra',
-                                array(9, 1, 8, 0x1234)
+                                array(120, 1, 8, 0x1234)
                             ),
                         ),
                     ),
@@ -151,7 +151,7 @@ class MagDirTest extends DriverTestBase
                         "set" => array(
                             array(
                                 'extra',
-                                array(0xFF, 0xFF, 0xFF, -1)
+                                array(0.5, 0xFF, 0xFF, -1)
                             ),
                         ),
                     ),
@@ -195,7 +195,7 @@ class MagDirTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "09010834120000",
+                "78010834120000",
             ),
             array( // #1 Negative number
                 array(
@@ -207,7 +207,7 @@ class MagDirTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "FF0001FFFFFFFF",
+                "000001FFFFFFFF",
             ),
         );
     }
