@@ -191,6 +191,7 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
                         255 => 'Empty Slot'
                     ),
                     "extraText" => array(),
+                    "extraDesc" => array(),
                     "extraDefault" => array(),
                     // Integer is the size of the field needed to edit
                     // Array   is the values that the extra can take
@@ -231,6 +232,7 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
                         255 => 'Empty Slot'
                     ),
                     "extraText" => array(),
+                    "extraDesc" => array(),
                     "extraDefault" => array(),
                     // Integer is the size of the field needed to edit
                     // Array   is the values that the extra can take

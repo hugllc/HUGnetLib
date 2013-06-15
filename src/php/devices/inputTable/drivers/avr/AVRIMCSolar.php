@@ -70,6 +70,10 @@ class AVRIMCSolar extends \HUGnet\devices\inputTable\DriverAVR
         "storageUnit" => '&#176;C',
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraText" => array("Bias Resistor (kOhms)"),
+        "extraDesc" => array(
+            "The resistance connected between the thermistor and the reference
+             voltage",
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

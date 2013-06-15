@@ -74,6 +74,10 @@ class ADuCMF51E extends \HUGnet\devices\inputTable\DriverADuC
             "Bias Resistor (kOhms)",
             "Thermistor"
         ),
+        "extraDesc" => array(
+            "The other resistor in the resistor divider with the thermistor",
+            "The thermistor used",
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

@@ -75,6 +75,9 @@ class LiquidFlow extends \HUGnet\devices\inputTable\Driver
         // Null    nothing
         "extraValues" => array(10),
         "extraDefault" => array(1000),
+        "extraDesc" => array(
+            "How many gallons each count of the counter represent"
+        ),
         "maxDecimals" => 2,
         "total" => true,
     );

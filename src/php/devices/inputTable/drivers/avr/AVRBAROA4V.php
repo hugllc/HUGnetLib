@@ -76,6 +76,13 @@ class AVRBAROA4V extends \HUGnet\devices\inputTable\DriverAVR
                     "Read @ Max Voltage (mBar)",
                     "AtoD Ref Voltage (V)"
         ),
+        "extraDesc" => array(
+            "The minimum value the voltage from the pressure sensor",
+            "The maximum value the voltage from the pressure sensor",
+            "The pressure at the minimum voltage",
+            "The pressure at the maximum voltage",
+            "The reference voltage for the AtoD",
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

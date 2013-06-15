@@ -93,6 +93,9 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
         "extraText" => array(
             "Table Entry",
         ),
+        "extraDesc" => array(
+            "The InputTable entry to use for this",
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
@@ -286,6 +289,7 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
             $param[0] = $this->_getTableEntries();
             break;
         case "extraText":
+        case "extraDesc":
         case "extraDefault":
             $param = array_merge(
                 (array)$this->params[$name],

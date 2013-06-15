@@ -75,6 +75,10 @@ class ControlInput extends \HUGnet\devices\inputTable\Driver
         // Null    nothing
         "extraValues" => array(5, array()),
         "extraDefault" => array(1, 0),
+        "extraDesc" => array(
+            "How many 1/128 seconds between runs of this input",
+            "The control channel channel to read",
+        ),
         "maxDecimals" => 0,
         "inputSize" => 4,
     );

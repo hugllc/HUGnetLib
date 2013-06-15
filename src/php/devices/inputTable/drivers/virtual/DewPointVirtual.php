@@ -78,6 +78,10 @@ class DewPointVirtual extends \HUGnet\devices\inputTable\DriverVirtual
         "extraDefault" => array(
             0, 1
         ),
+        "extraDesc" => array(
+            "The input to read the temperature from",
+            "The input to read the relative humidity from",
+        ),
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "storageUnit" => "&#176;C",
         "maxDecimals" => 4,

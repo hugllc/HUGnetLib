@@ -77,6 +77,12 @@ class NoisyInput extends \HUGnet\devices\inputTable\Driver
         // Null    nothing
         "extraValues" => array(5, 15, 6, 6),
         "extraDefault" => array(16, 0, -10, 10),
+        "extraDesc" => array(
+            "The number of 1/128 seconds between runs",
+            "The initial value to set this input as",
+            "The minimum number that the incremental noise can be",
+            "The maximum number that the incremental noise can be",
+        ),
         "maxDecimals" => 0,
         "inputSize" => 4,
     );

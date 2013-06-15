@@ -75,6 +75,9 @@ class WattNode extends \HUGnet\devices\inputTable\Driver
         // Null    nothing
         "extraValues" => array(7),
         "extraDefault" => array(5),
+        "extraDesc" => array(
+            "How many watt hours are in each pulse of the WattNode?"
+        ),
         "maxDecimals" => 3,
         "total" => true,
     );

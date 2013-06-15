@@ -77,6 +77,15 @@ class ADuCPressure extends \HUGnet\devices\inputTable\DriverADuC
             "R input (kOhms)",
             "R to ground (kOhms)"
         ),
+        "extraDesc" => array(
+            "The input voltage at an arbitrary point on the transform line",
+            "The input voltage at a second arbitrary point on the transform line",
+            "The pressure reading at the first arbitrary voltage",
+            "The pressure reading at the second arbitrary voltage",
+            "The AtoD reference voltage",
+            "The input resistance to the AtoD",
+            "The resistor connecting the AtoD to ground",
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

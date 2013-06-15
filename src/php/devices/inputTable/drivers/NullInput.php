@@ -75,6 +75,10 @@ class NullInput extends \HUGnet\devices\inputTable\Driver
         // Null    nothing
         "extraValues" => array(5, 15),
         "extraDefault" => array(16, 0),
+        "extraDesc" => array(
+            "How many 1/128 s between runs.",
+            "The initial value of the data channel",
+        ),
         "maxDecimals" => 0,
         "inputSize" => 4,
     );

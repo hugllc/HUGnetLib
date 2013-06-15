@@ -211,6 +211,7 @@ class DriverTest extends drivers\DriverTestBase
             'bound' => false,
             'total' => false,
             'extraText' => Array ("a", "b", "c", "d", "e"),
+            "extraDesc" => array("A","B","C","D","E"),
             'extraDefault' => Array (2,3,5,7,11),
             'extraValues' => Array (5, 5, 5, 5, 5),
             'storageUnit' => 'unknown',
@@ -1385,6 +1386,7 @@ class DriverTestClass extends \HUGnet\devices\inputTable\Driver
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraDefault" => array(2,3,5,7,11),
         "extraText" => array("a","b","c","d","e"),
+        "extraDesc" => array("A","B","C","D","E"),
         "extraValues" => array(5, 5, 5, 5, 5),
         "maxDecimals" => "getExtra3",
     );

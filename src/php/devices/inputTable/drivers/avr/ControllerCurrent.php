@@ -73,6 +73,11 @@ class ControllerCurrent extends \HUGnet\devices\inputTable\DriverAVR
             "Gain",
             "Vcc"
         ),
+        "extraDesc" => array(
+            "The current sense resistor",
+            "Any gain between the resistor and the AtoD.",
+            "The power supply voltage for the board.  Normally 5",
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

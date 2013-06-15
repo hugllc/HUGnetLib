@@ -85,6 +85,17 @@ class ControlSumInput extends \HUGnet\devices\inputTable\Driver
             array(0 => "Normal", 1 => "Float")
         ),
         "extraDefault" => array(1, 0, 1, 0, 0, 16777215, 0, 0, 0),
+        "extraDesc" => array(
+            0 => "The number of 1/128 of a second between runs",
+            1 => "Control Channel to use for our input",
+            2 => "The input is multiplied by this",
+            3 => "This is added to the input",
+            4 => "The minimum this intput can be",
+            5 => "The maximum this input can be",
+            6 => "The minimum the added noise can be.  Set to 0 for no noise.",
+            7 => "The maximum the added noise can be.  Set to 0 for no noise.",
+            8 => "The mode the data should be set to the data channel as."
+        ),
         "maxDecimals" => 0,
         "inputSize" => 4,
     );

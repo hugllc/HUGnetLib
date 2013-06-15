@@ -73,6 +73,11 @@ class ADuCVoltage extends \HUGnet\devices\inputTable\DriverADuC
             "R2 to Ground (kOhms)",
             "AtoD Ref Voltage"
         ),
+        "extraDesc" => array(
+            "The input resistance to the AtoD",
+            "The resistor connecting the AtoD to ground",
+            "The voltage used for the AtoD reference.",
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

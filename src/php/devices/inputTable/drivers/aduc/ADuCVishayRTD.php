@@ -69,6 +69,9 @@ class ADuCVishayRTD extends \HUGnet\devices\inputTable\DriverADuC
         "storageUnit" => '&#176;C',
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraText" => array("Bias Resistor (Ohms)"),
+        "extraDesc" => array(
+            "The other resistor in the voltage divider with the RTD",
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

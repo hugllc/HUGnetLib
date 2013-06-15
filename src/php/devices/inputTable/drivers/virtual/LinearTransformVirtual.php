@@ -93,6 +93,22 @@ class LinearTransformVirtual extends \HUGnet\devices\inputTable\DriverVirtual
             "Data Type",
             "Max Decimals"
         ),
+        "extraDesc" => array(
+            "The data channel to use for the input",
+            "The value that the input takes at an arbitrary point A",
+            "The value that the input takes at an arbitrary point B",
+            "The value that the output should be at the same arbitrary point A",
+            "The value that the output should be at the same arbitrary point B",
+            "Bounded means that the two points given, A & B are the boundries of the
+             line.  Anything beyond these will be considered invalid.  Unbounded
+             will go to infinity in either direction.",
+            "The units that the output will be in",
+            "The type that the units are in.  Valid values include Pressure,
+             Temperature, Relative Humidity, Impedance, Power, Voltage, Current
+             and others.",
+            "The data type that the output will be in",
+            "The maximum number of decimals that are valid for the output",
+        ),
         "extraDefault" => array(
             "", 0, 0, 0, 0, 'unbounded', "unknown", "Generic",
             \HUGnet\devices\datachan\Driver::TYPE_RAW, 4

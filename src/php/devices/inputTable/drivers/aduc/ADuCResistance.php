@@ -69,6 +69,9 @@ class ADuCResistance extends \HUGnet\devices\inputTable\DriverADuC
         "storageUnit" => 'Ohms',
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraText" => array("Bias Resistor (Ohms)"),
+        "extraDesc" => array(
+            "The resistor connecting the AtoD to ground",
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

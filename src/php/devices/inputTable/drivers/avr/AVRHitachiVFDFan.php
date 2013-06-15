@@ -78,6 +78,15 @@ class AVRHitachiVFDFan extends \HUGnet\devices\inputTable\DriverAVR
             "Read @ Max Voltage (%)",
             "AtoD Ref Voltage (V)"
         ),
+        "extraDesc" => array(
+            "The value of the resistor connecting the AtoD and the VFD",
+            "The value of the resistor connecting the AtoD to ground",
+            "The minimum value the voltage from the VFD will be",
+            "The maximum value the voltage from the VFD will be",
+            "The speed of the motors at the minimum voltage",
+            "The speed of the motors at the maximum voltage",
+            "The reference voltage for the AtoD",
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

@@ -73,7 +73,7 @@ class CelaniPowerCalVirtual extends \HUGnet\devices\inputTable\DriverVirtual
             array(), 20, 20, 20, 20, 20
         ),
         "extraText" => array(
-            "Temperature Input",
+            "Temperature DataChan",
             "Constant A",
             "Constant B",
             "Constant C",
@@ -87,6 +87,14 @@ class CelaniPowerCalVirtual extends \HUGnet\devices\inputTable\DriverVirtual
             8.4476368057181570E-04,
             -1.2619599884486933E+01,
             4.2109260827983724E+02
+        ),
+        "extraDesc" => array(
+            "The data channel to take the temperature from",
+            "Constant A",
+            "Constant B",
+            "Constant C",
+            "Constant D",
+            "Constant E"
         ),
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "storageUnit" => "W",

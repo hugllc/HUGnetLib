@@ -77,6 +77,14 @@ class ADuCThermocouple extends \HUGnet\devices\inputTable\DriverADuC
             "Thermocouple Type",
             "Junction Temp Channel",
         ),
+        "extraDesc" => array(
+            "The input resistance to the AtoD",
+            "The resistor connecting the AtoD to ground",
+            "The voltage used for the AtoD reference.",
+            "The type of thermocouple used",
+            "The data channel to read the local junction temperature of the
+             thermocouple from",
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

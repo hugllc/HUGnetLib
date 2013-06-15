@@ -78,6 +78,14 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
             "Current Input R (kOhms)",
             "Current Bias R (kOhms)",
         ),
+        "extraDesc" => array(
+            "The AtoD reference voltage",
+            "The current sense resistor value",
+            "The input resistance to the AtoD reading the voltage",
+            "The resistor connecting the AtoD reading the voltage to ground",
+            "The input resistance to the AtoD reading the current",
+            "The resistor connecting the AtoD reading the current to ground",
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

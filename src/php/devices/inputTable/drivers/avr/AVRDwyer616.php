@@ -78,6 +78,15 @@ class AVRDwyer616 extends \HUGnet\devices\inputTable\DriverAVR
             "Gain",
             "AtoD Ref Voltage (V)"
         ),
+        "extraDesc" => array(
+            "The minimum value the current from the pressure sensor",
+            "The maximum value the current from the pressure sensor",
+            "The pressure at the minimum current",
+            "The pressure at the maximum current",
+            "The current sense resistor value",
+            "The gain on the current sense",
+            "The reference voltage for the AtoD",
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

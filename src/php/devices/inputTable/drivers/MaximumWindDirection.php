@@ -92,6 +92,7 @@ class MaximumWindDirection extends \HUGnet\devices\inputTable\Driver
         // Null    nothing
         "extraValues" => array(),
         "extraDefault" => array(),
+        "extraDesc" => array(),
         "inputSize" => 3,
         "maxDecimals" => 0,
     );

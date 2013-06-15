@@ -82,6 +82,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "virtual" => false,              // This says if we are a virtual sensor
         "total"   => false,              // Whether to total instead of average
         "extraText" => array(),
+        "extraDesc" => array(),
         "extraDefault" => array(),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take

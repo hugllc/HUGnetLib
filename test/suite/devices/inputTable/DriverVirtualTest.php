@@ -303,6 +303,7 @@ class DriverVirtualTestClass extends \HUGnet\devices\inputTable\DriverVirtual
         "testParam" => "12345", /* This is for test value only */
         "extraDefault" => array(2,3,5,7,11),
         "extraText" => array("a","b","c","d","e"),
+        "extraDesc" => array("A","B","C","D","E"),
         "extraValues" => array(5, 5, 5, 5, 5),
     );
     /**

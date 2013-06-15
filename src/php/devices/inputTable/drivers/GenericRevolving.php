@@ -75,6 +75,9 @@ class GenericRevolving extends \HUGnet\devices\inputTable\Driver
         // Null    nothing
         "extraValues" => array(5),
         "extraDefault" => array(1),
+        "extraDesc" => array(
+            "How many revolutions each count of the counter represent"
+        ),
         "maxDecimals" => 2,
     );
 

@@ -89,6 +89,20 @@ class ComputationVirtual extends \HUGnet\devices\inputTable\DriverVirtual
         "extraDefault" => array(
             "", "unknown", "Generic", \HUGnet\devices\datachan\Driver::TYPE_RAW, 4, 0
         ),
+        "extraDesc" => array(
+            "The math routine.  Most standard PHP math functions are accepted, plus
+             operators.  To put in data channels add {x} into the math, where x
+             is the number of the data channel (zero based).",
+            "The unit that the output will be in",
+            "The type that the units are in.  Valid values include Pressure,
+             Temperature, Relative Humidity, Impedance, Power, Voltage, Current
+             and others.",
+            "The data type the output are in",
+            "The maximum number of valid decimal places",
+            "If Yes, then invalid values from the data channels (null) will be 
+             treated as zero in the math.  If No, then if any of the data channels
+             referenced have invalid values this will output a null."
+        ),
         "storageType" => "getExtra3",
         "storageUnit" => "getExtra1",
         "maxDecimals" => "getExtra4",

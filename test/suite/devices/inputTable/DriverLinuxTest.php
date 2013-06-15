@@ -149,6 +149,7 @@ class DriverLinuxTest extends drivers\DriverTestBase
             'bound' => false,
             'total' => false,
             'extraText' => Array ("a", "b", "c", "d", "e"),
+            "extraDesc" => array("A","B","C","D","E"),
             'extraDefault' => Array (2,3,5,7,11),
             'extraValues' => Array (5, 5, 5, 5, 5),
             'storageUnit' => 'unknown',
@@ -247,6 +248,7 @@ class DriverLinuxTestClass extends \HUGnet\devices\inputTable\DriverLinux
         "testParam" => "12345", /* This is for test value only */
         "extraDefault" => array(2,3,5,7,11),
         "extraText" => array("a","b","c","d","e"),
+        "extraDesc" => array("A","B","C","D","E"),
         "extraValues" => array(5, 5, 5, 5, 5),
     );
     /**

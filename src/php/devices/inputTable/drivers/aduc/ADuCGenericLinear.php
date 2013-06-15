@@ -81,6 +81,21 @@ class ADuCGenericLinear extends \HUGnet\devices\inputTable\DriverADuC
             "Data Type",
             "Max Decimals"
         ),
+        "extraDesc" => array(
+            "The value that the input takes at an arbitrary point A",
+            "The value that the input takes at an arbitrary point B",
+            "The value that the output should be at the same arbitrary point A",
+            "The value that the output should be at the same arbitrary point B",
+            "The AtoD reference voltage",
+            "The input resistance to the AtoD",
+            "The resistor connecting the AtoD to ground",
+            "The units that the output will be in",
+            "The type that the units are in.  Valid values include Pressure,
+             Temperature, Relative Humidity, Impedance, Power, Voltage, Current
+             and others.",
+            "The data type that the output will be in",
+            "The maximum number of decimals that are valid for the output",
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

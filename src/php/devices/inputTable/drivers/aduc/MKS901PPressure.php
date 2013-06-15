@@ -73,6 +73,11 @@ class MKS901PPressure extends \HUGnet\devices\inputTable\DriverADuC
             "R input (kOhms)",
             "R to ground (kOhms)"
         ),
+        "extraDesc" => array(
+            "The reference voltage for the AtoD",
+            "The input resistance to the AtoD",
+            "The resistor connecting the pressure sensor to ground",
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

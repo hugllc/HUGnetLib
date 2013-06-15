@@ -192,6 +192,7 @@ class OutputTest extends \PHPUnit_Framework_TestCase
                         0xFF => 'Empty Slot'
                     ),
                     "extraText" => array(),
+                    "extraDesc" => array(),
                     "extraDefault" => array(),
                     "extraValues" => array(),
                     "min" => 1234,
@@ -233,6 +234,7 @@ class OutputTest extends \PHPUnit_Framework_TestCase
                         0xFF => 'Empty Slot'
                     ),
                     "extraText" => array(),
+                    "extraDesc" => array(),
                     "extraDefault" => array(),
                     "extraValues" => array(),
                     "min" => 0,

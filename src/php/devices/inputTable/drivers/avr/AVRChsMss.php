@@ -76,6 +76,13 @@ class AVRChsMss extends \HUGnet\devices\inputTable\DriverAVR
             "Read @ Max Voltage (%)",
             "AtoD Ref Voltage (V)"
         ),
+        "extraDesc" => array(
+            "The minimum value the voltage from the relative humidity sensor",
+            "The maximum value the voltage from the relative humidity sensor",
+            "The relative humidity at the minimum voltage",
+            "The relative humidity at the maximum voltage",
+            "The reference voltage for the AtoD",
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

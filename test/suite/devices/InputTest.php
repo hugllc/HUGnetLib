@@ -187,6 +187,7 @@ class InputTest extends \PHPUnit_Framework_TestCase
                     "virtual" => false,
                     "total" => false,
                     "extraText" => array("Silliness Factor", "Storage Unit"),
+                    "extraDesc" => array("Silliness", "Unit"),
                     "extraDefault" => array(2210, '&#176;C'),
                     "extraValues" => array(5, array('&#176;C', '&#176;F', 'K')),
                     "storageUnit" => "&#176;C",
@@ -791,6 +792,7 @@ class TestInputDriver1 extends \HUGnet\devices\inputTable\Driver
         "storageUnit" => 'getExtra1',
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraText" => array("Silliness Factor", "Storage Unit"),
+        "extraDesc" => array("Silliness", "Unit"),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
@@ -846,6 +848,7 @@ class TestInputDriver2 extends \HUGnet\devices\inputTable\Driver
         "storageUnit" => 'getExtra1',
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_DIFF,
         "extraText" => array("Silliness Factor", "Storage Unit"),
+        "extraDesc" => array("Silliness", "Unit"),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

@@ -101,6 +101,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
             array("extraText", "array"),
             array("extraValues", "array"),
             array("extraDefault", "array"),
+            array("extraDesc", "array"),
         );
     }
     /**
@@ -244,6 +245,21 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
             count($default),
             count($extra),
             "extraText needs to have the same number of entries as extraDefault"
+        );
+    }
+    /**
+    * Check the number of entries in extraText
+    *
+    * @return null
+    */
+    public function testExtraDescCount()
+    {
+        $extra   = (array)$this->o->get("extraDesc", 1);
+        $default = (array)$this->o->get("extraDefault", 1);
+        $this->assertSame(
+            count($default),
+            count($extra),
+            "extraDesc needs to have the same number of entries as extraDefault"
         );
     }
     /**

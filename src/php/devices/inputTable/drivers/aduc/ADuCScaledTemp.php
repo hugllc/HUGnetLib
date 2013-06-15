@@ -75,6 +75,13 @@ class ADuCScaledTemp extends \HUGnet\devices\inputTable\DriverADuC
             "Scale (&#176;C/mV)",
             "Offset (mV)",
         ),
+        "extraDesc" => array(
+            "The input resistance to the AtoD",
+            "The resistor connecting the AtoD to ground",
+            "The voltage used for the AtoD reference.",
+            "The scale to use to change voltage into temperature",
+            "The offset to use to change voltage into temperature",
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

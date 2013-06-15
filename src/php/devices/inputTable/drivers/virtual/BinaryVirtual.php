@@ -79,6 +79,17 @@ class BinaryVirtual extends \HUGnet\devices\inputTable\DriverVirtual
         "extraDefault" => array(
             array(), 0, 1, 1, "decimal", "Percent", 4
         ),
+        "extraDesc" => array(
+            "The data channel to use for the input",
+            "The threshold above which we can count the value as high",
+            "The threshold below which we can count the calue as low",
+            "The output scale to use.  The output will be either 0, or this number",
+            "The units that the return is in",
+            "The type that the units are in.  Valid values include Pressure,
+             Temperature, Relative Humidity, Impedance, Power, Voltage, Current
+             and others.",
+            "The maximum number of valid decimal places",
+        ),
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "storageUnit" => "decimal",
         "maxDecimals" => 4,

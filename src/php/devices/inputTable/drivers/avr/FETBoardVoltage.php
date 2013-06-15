@@ -74,6 +74,12 @@ class FETBoardVoltage extends AVRVoltage
             "R2 to Ground (kOhms)",
             "AtoD Ref Voltage (V)"
         ),
+        "extraDesc" => array(
+            "The resistor on top of the resistor divider",
+            "The resistor on the bottom of the resistor divider",
+            "The voltage used for the AtoD reference.  Usually the power supply
+             voltage",
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

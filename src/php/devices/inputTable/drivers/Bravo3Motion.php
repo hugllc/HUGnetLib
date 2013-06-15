@@ -73,6 +73,7 @@ class Bravo3Motion extends \HUGnet\devices\inputTable\Driver
         // Null    nothing
         "extraValues" => array(),
         "extraDefault" => array(),
+        "extraDesc" => array(),
         "maxDecimals" => 0,
         "total" => true,
     );

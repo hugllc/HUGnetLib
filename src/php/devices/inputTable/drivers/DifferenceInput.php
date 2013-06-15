@@ -81,6 +81,12 @@ class DifferenceInput extends \HUGnet\devices\inputTable\Driver
         "extraDefault" => array(
             1, 0, 0, 0
         ),
+        "extraDesc" => array(
+            "How many 1/128 seconds between runs of this input",
+            "The first number",
+            "The number to subtract from the first number",
+            "The offset to add to the math",
+        ),
         "maxDecimals" => 0,
         "inputSize" => 4,
     );

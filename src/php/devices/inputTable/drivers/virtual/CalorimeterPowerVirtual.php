@@ -86,6 +86,13 @@ class CalorimeterPowerVirtual extends \HUGnet\devices\inputTable\DriverVirtual
             -1657.7,
             3.3529,
         ),
+        "extraDesc" => array(
+            "The data channel where the inner tube voltage is found",
+            "The data channel where the outer tube voltage is found",
+            "X^2 Coefficient of the curve fit polynomial to use",
+            "X^1 Coefficient of the curve fit polynomial to use",
+            "Constant of the curve fit polynomial to use",
+        ),
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "storageUnit" => "W",
         "maxDecimals" => 8,

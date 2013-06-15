@@ -98,6 +98,11 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
             "Channel 0 Reading @ 0",
             "Channel 1 Reading @ 0",
         ),
+        "extraDesc" => array(
+            "The InputTable entry to use for this input",
+            "The offset for ADC0.  This is in the units of the driver used",
+            "The offset for ADC1.  This is in the units of the driver used",
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

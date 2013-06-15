@@ -76,6 +76,10 @@ class WindChillVirtual extends \HUGnet\devices\inputTable\DriverVirtual
             "Temp Input", "Wind Speed Input"
         ),
         "extraDefault" => array(0, 0),
+        "extraDesc" => array(
+            "Data channel to use for the temperature input",
+            "Data channel to use for the wind speed input",
+        ),
         "storageUnit" => "&#176;C",
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "maxDecimals" => 4,
