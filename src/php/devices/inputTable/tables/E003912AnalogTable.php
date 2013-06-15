@@ -118,17 +118,22 @@ class E003912AnalogTable extends AVRAnalogTable
                 "50:fetBoard"                => "FET Board Current",
             ),
             "desc" => "Driver",
+            'longDesc' => "The driver to use to sort out data for this ADC",
         ),
         "priority" => array(
             "value" => 0,
             'mask'  => 0xFF,
             "desc"  => "Priority",
+            'longDesc' => "(0-255) The number of 1/128 s ticks to wait before 
+                          running",
             'size'  => 4,
         ),
         "offset" => array(
             "value" => 0,
             'mask'  => 0xFFFF,
             "desc"  => "Offset",
+            'longDesc' => "This is a calibration offset.  It is in the units of
+                           the driver above.",
             'size'  => 7,
         ),
         "REFS"    => array(
@@ -142,6 +147,7 @@ class E003912AnalogTable extends AVRAnalogTable
                 2 => "Internal 1.1V",
             ),
             'desc'  => "Reference",
+            'longDesc' => "The reference to use",
             'register' => "ADMUX",
         ),
         "ADLAR"  => array(
@@ -154,6 +160,7 @@ class E003912AnalogTable extends AVRAnalogTable
                 1 => "Upper 10 bits",
             ),
             'desc'  => "Result Location",
+            'longDesc' => "How to align the result in the 16bit number returned",
             'register' => "ADMUX",
         ),
         "MUX" => array(
@@ -196,6 +203,7 @@ class E003912AnalogTable extends AVRAnalogTable
                 31 => "0V Single Ended"
             ),
             'desc'  => "MUX Setting",
+            'longDesc' => "Which port to use",
             'register' => "ADMUX",
         ),
     );

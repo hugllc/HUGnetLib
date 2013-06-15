@@ -69,18 +69,21 @@ class ADuCPWM
             "value" => 0xFFFF,
             'mask'  => 0xFFFF,
             "desc"  => "Freq Counter 0",
+            'longDesc' => "This sets the maximum frequency for PWM1",
             'size'  => 6,
         ),
         "PWM1LEN" => array(
             "value" => 0xFFFF,
             'mask'  => 0xFFFF,
             "desc"  => "Freq Counter 1",
+            'longDesc' => "This sets the maximum frequency for PWM3",
             'size'  => 6,
         ),
         "PWM2LEN" => array(
             "value" => 0xFFFF,
             'mask'  => 0xFFFF,
             "desc"  => "Freq Counter 2",
+            'longDesc' => "This sets the maximum frequency for PWM5",
             'size'  => 6,
         ),
         "SYNC"    => array(
@@ -90,6 +93,7 @@ class ADuCPWM
             'bits'  => 1,
             'valid' => array(0 => "No", 1 => "Yes"),
             'desc'  => "Enables PWM synchronization",
+            'longDesc' => "This synchronizes the PWM to something.",
             'register' => "PWMCON",
         ),
         "PWM5INV"    => array(
@@ -99,6 +103,7 @@ class ADuCPWM
             'bits'  => 1,
             'valid' => array(0 => "Normal", 1 => "Invert"),
             'desc'  => "Invert PWM5",
+            'longDesc' => "Inverts the output of PWM5",
             'register' => "PWMCON",
         ),
         "PWM3INV"    => array(
@@ -108,6 +113,7 @@ class ADuCPWM
             'bits'  => 1,
             'valid' => array(0 => "Normal", 1 => "Invert"),
             'desc'  => "Invert PWM3",
+            'longDesc' => "Inverts the output of PWM3",
             'register' => "PWMCON",
         ),
         "PWM1INV"    => array(
@@ -117,6 +123,7 @@ class ADuCPWM
             'bits'  => 1,
             'valid' => array(0 => "Normal", 1 => "Invert"),
             'desc'  => "Invert PWM1",
+            'longDesc' => "Inverts the output of PWM1",
             'register' => "PWMCON",
         ),
         "PWMTRIP"    => array(
@@ -155,6 +162,7 @@ class ADuCPWM
                 7 => "UCLK/256",
             ),
             'desc'  => "Clock Prescaler",
+            'longDesc' => "Sets the overall frequency that the PWM will run at",
             'register' => "PWMCON",
         ),
         "POINV"    => array(
@@ -164,6 +172,7 @@ class ADuCPWM
             'bits'  => 1,
             'valid' => array(0 => "Normal", 1 => "Invert"),
             'desc'  => "Invert All Channels",
+            'longDesc' => "Inverts the output of all of the PWM channels",
             'register' => "PWMCON",
         ),
         "HOFF"    => array(
@@ -176,6 +185,7 @@ class ADuCPWM
                 1 => "PWM0&2 High/PWM1&3 Low"
             ),
             'desc'  => "High Side Off",
+            'longDesc' => "",
             'register' => "PWMCON",
         ),
         "LCOMP"    => array(
@@ -198,6 +208,7 @@ class ADuCPWM
                 1 => "PWM2:3 High/PWM0:1 Low"
             ),
             'desc'  => "Direction Control",
+            'longDesc' => "Controls the direction of the PWM",
             'register' => "PWMCON",
         ),
         "HMODE"    => array(

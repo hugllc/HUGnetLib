@@ -82,6 +82,14 @@ class InputSumOutput extends \HUGnet\devices\outputTable\Driver
         "extraValues" => array(
             15, array(), 15, 15
         ),
+        "extraDesc" => array(
+            0 => "The maximum number of times per second that this should update
+                  the output.",
+            1 => "The data channel we should add input from",
+            2 => "The data channel value is multiplied by this before being added
+                  to the control channel value.",
+            3 => "This is added to the control channel value every iteration",
+        ),
     );
     /**
     * Gets an item

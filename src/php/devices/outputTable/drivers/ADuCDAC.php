@@ -81,6 +81,9 @@ class ADuCDAC extends \HUGnet\devices\outputTable\DriverADuC
         "extraValues" => array(
             6 => 10
         ),
+        "extraDesc" => array(
+            6 => "The value to initially set the control channel to"
+        ),
         "min" => 0,
         "max" => array(0 => 4095, 1 => 65535),
         "zero" => array(0 => 1556, 1 => 24900),
@@ -112,6 +115,11 @@ class ADuCDAC extends \HUGnet\devices\outputTable\DriverADuC
             $entry = $this->entry()->fullArray();
             foreach ($this->entryMap as $key => $field) {
                 $ret[$key]  = $entry[$field]["desc"];
+            }
+        } else if ($name == "extraDesc") {
+            $entry = $this->entry()->fullArray();
+            foreach ($this->entryMap as $key => $field) {
+                $ret[$key]  = $entry[$field]["longdesc"];
             }
         } else if ($name == "max") {
             if ($this->getExtra(3) == 1) {

@@ -78,7 +78,11 @@ class HUGnetPower extends \HUGnet\devices\outputTable\Driver
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            array(0 => "0", 1 => "1"), 3
+            array(0 => "0", 1 => "1"), array(1 => "On", -1 => "Off")
+        ),
+        "extraDesc" => array(
+            0 => "The HUGnet port to control.",
+            1 => "The initial value for the port",
         ),
         "min" => -1,
         "max" => 1,

@@ -92,6 +92,7 @@ class ADuCDAC
             'bits'  => 1,
             'valid' => array(0 => "Normal", 1 => "Low Power"),
             'desc'  => "Power Mode",
+            'longDesc' => "Normal or low power mode",
             'register' => "DAC0CON",
         ),
         "OPAMP"    => array(
@@ -101,6 +102,7 @@ class ADuCDAC
             'bits'  => 1,
             'valid' => array(0 => "Normal", 1 => "Op Amp Mode"),
             'desc'  => "Buffer Mode",
+            'longDesc' => "Mode to set the buffer in",
             'register' => "DAC0CON",
         ),
         "DACBUFBYPASS"    => array(
@@ -110,6 +112,8 @@ class ADuCDAC
             'bits'  => 1,
             'valid' => array(0 => "Normal", 1 => "Bypass Buffer"),
             'desc'  => "Buffer Bypass",
+            'longDesc' => "Don't bypass the buffer unless you have a true, high
+                           impedance input.  It will not work.",
             'register' => "DAC0CON",
         ),
         "DACCLK"    => array(
@@ -119,6 +123,7 @@ class ADuCDAC
             'bits'  => 1,
             'valid' => array(0 => "HCLK", 1 => "Timer1"),
             'desc'  => "Update Timer",
+            'longDesc' => "How often to update the output",
             'register' => "DAC0CON",
         ),
         "DACCLR"    => array(
@@ -138,6 +143,9 @@ class ADuCDAC
             'bits'  => 1,
             'valid' => array(0 => "12-bit", 1 => "16-bit interpolation"),
             'desc'  => "Interpolation Mode",
+            'longDesc' => "Should the DAC interpolate to get a little more 
+                           resolution?  An RC filter will be needed on the output
+                           if this is enabled.",
             'register' => "DAC0CON",
         ),
         "Rate"    => array(
@@ -147,6 +155,7 @@ class ADuCDAC
             'bits'  => 1,
             'valid' => array(0 => "UCLK/16", 1 => "UCLK/12"),
             'desc'  => "Interpolation Rate",
+            'longDesc' => "The rate at which the interpolation should be done.",
             'register' => "DAC0CON",
         ),
         "Range"    => array(
@@ -161,6 +170,7 @@ class ADuCDAC
                 3 => "0V tto AVDD",
             ),
             'desc'  => "Output Range",
+            'longDesc' => "How wide should the output be?",
             'register' => "DAC0CON",
         ),
     );

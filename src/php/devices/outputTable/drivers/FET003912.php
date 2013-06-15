@@ -92,6 +92,12 @@ class FET003912 extends \HUGnet\devices\outputTable\DriverAVR
                 2 => "High Impedance",
             ),
         ),
+        "extraDesc" => array(
+            0 => "The maximum number of times per second that this should update
+                  the output.",
+            1 => "The port we should go out",
+            2 => "The mode for the port.",
+        ),
         "min" => -256,
         "max" => +256,
         "zero" => 0,

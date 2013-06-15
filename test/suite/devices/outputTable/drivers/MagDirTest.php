@@ -77,7 +77,7 @@ class MagDirTest extends DriverTestBase
         $this->output->resetMock(
             array(
                 "Device" => array(
-                    "dataChannels" => new \HUGnet\DummyBase("dataChannels"),
+                    "controlChannels" => new \HUGnet\DummyBase("controlChannels"),
                 ),
                 "Output" => array(
                     "device" => new \HUGnet\DummyBase("Device"),
@@ -112,7 +112,9 @@ class MagDirTest extends DriverTestBase
             array( // #0
                 array(
                     "Device" => array(
-                        "dataChannels" => new \HUGnet\DummyBase("dataChannels"),
+                        "controlChannels" => new \HUGnet\DummyBase(
+                            "controlChannels"
+                        ),
                     ),
                     "Output" => array(
                         "device" => new \HUGnet\DummyBase("Device"),
@@ -136,7 +138,9 @@ class MagDirTest extends DriverTestBase
             array( // #1 Negative Numbers
                 array(
                     "Device" => array(
-                        "dataChannels" => new \HUGnet\DummyBase("dataChannels"),
+                        "controlChannels" => new \HUGnet\DummyBase(
+                            "controlChannels"
+                        ),
                     ),
                     "Output" => array(
                         "device" => new \HUGnet\DummyBase("Device"),
@@ -250,9 +254,11 @@ class MagDirTest extends DriverTestBase
                         "device" => new \HUGnet\DummyBase("Device"),
                     ),
                     "Device" => array(
-                        "dataChannels" => new \HUGnet\DummyBase("dataChannels"),
+                        "controlChannels" => new \HUGnet\DummyBase(
+                            "controlChannels"
+                        ),
                     ),
-                    "dataChannels" => array(
+                    "controlChannels" => array(
                         "select" => array(1,2,3),
                     ),
                 ),

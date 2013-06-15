@@ -259,6 +259,7 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
             $param = (array)$param;
             $param[0] = $this->_getTableEntries();
         case "extraText":
+        case "extraDesc":
         case "extraDefault":
             $param = array_merge(
                 (array)$param,

@@ -94,6 +94,11 @@ class ADuCGPIO extends \HUGnet\devices\outputTable\DriverADuC
                 11 => "2.1",
             ),
         ),
+        "extraDesc" => array(
+            0 => "The maximum number of times per second that this should update
+                  the output.",
+            1 => "The port we should go out",
+        ),
         "min" => -65535,
         "max" => 65535,
         "zero" => 0,

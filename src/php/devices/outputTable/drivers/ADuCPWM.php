@@ -85,6 +85,11 @@ class ADuCPWM extends \HUGnet\devices\outputTable\DriverADuC
             11 => 7,
             12 => 7,
         ),
+        "extraDesc" => array(
+            10 => "The value to initially set the control channel for PWM1",
+            11 => "The value to initially set the control channel for PWM3",
+            12 => "The value to initially set the control channel for PWM5",
+        ),
         "min" => 0,
         "max" => 0xFFFF,
         "zero" => 0,
@@ -119,6 +124,11 @@ class ADuCPWM extends \HUGnet\devices\outputTable\DriverADuC
             $entry = $this->entry()->fullArray();
             foreach ($this->entryMap as $key => $field) {
                 $ret[$key]  = $entry[$field]["desc"];
+            }
+        } else if ($name == "extraDesc") {
+            $entry = $this->entry()->fullArray();
+            foreach ($this->entryMap as $key => $field) {
+                $ret[$key]  = $entry[$field]["longdesc"];
             }
         }
         return $ret;
@@ -173,19 +183,19 @@ class ADuCPWM extends \HUGnet\devices\outputTable\DriverADuC
             array(
                 "min" => $this->get("min"),
                 "max" => $this->get("max"),
-                "label" => (string)$this->output()->get("location")." 0",
+                "label" => (string)$this->output()->get("location")." 1",
                 "index" => 0,
             ),
             array(
                 "min" => $this->get("min"),
                 "max" => $this->get("max"),
-                "label" => (string)$this->output()->get("location")." 1",
+                "label" => (string)$this->output()->get("location")." 3",
                 "index" => 1,
             ),
             array(
                 "min" => $this->get("min"),
                 "max" => $this->get("max"),
-                "label" => (string)$this->output()->get("location")." 2",
+                "label" => (string)$this->output()->get("location")." 5",
                 "index" => 2,
             ),
         );

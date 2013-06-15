@@ -82,6 +82,13 @@ class MagDir extends \HUGnet\devices\outputTable\Driver
         "extraValues" => array(
             5, array(), array(), 15
         ),
+        "extraDesc" => array(
+            0 => "The maximum number of times per second that this should update
+                  the output.",
+            1 => "The control channel we should output the direction to.",
+            2 => "The control channel we should output the magnitude to.",
+            3 => "The initial value of the control channel",
+        ),
     );
     /**
     * Gets an item
@@ -94,7 +101,7 @@ class MagDir extends \HUGnet\devices\outputTable\Driver
     {
         $ret = parent::get($name);
         if ($name == "extraValues") {
-            $chans = $this->output()->device()->dataChannels()->select();
+            $chans = $this->output()->device()->controlChannels()->select();
             $ret[1] = $chans;
             $ret[2] = $chans;
         }

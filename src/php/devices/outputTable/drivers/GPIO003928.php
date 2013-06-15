@@ -96,6 +96,11 @@ class GPIO003928 extends \HUGnet\devices\outputTable\DriverAVR
                 16 => "Port 16",
             ),
         ),
+        "extraDesc" => array(
+            0 => "The maximum number of times per second that this should update
+                  the output.",
+            1 => "The port we should go out",
+        ),
         "min" => -127,
         "max" => +127,
         "zero" => 0,
