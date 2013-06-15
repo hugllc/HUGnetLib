@@ -68,7 +68,7 @@ class InputSumOutput extends \HUGnet\devices\outputTable\Driver
         "longName" => "Input Sum Output Driver",
         "shortName" => "InputSumOutput",
         "extraText" => array(
-            "Priority",
+            "Control Updates / Sec",
             "Data Channel",
             "Gain",
             "Offset"
@@ -109,7 +109,7 @@ class InputSumOutput extends \HUGnet\devices\outputTable\Driver
     public function decode($string)
     {
         $extra = $this->output()->get("extra");
-        $extra[0] = $this->decodeInt(substr($string, 0, 2), 1);
+        $extra[0] = $this->decodePriority(substr($string, 0, 2));
         $extra[1] = $this->decodeInt(substr($string, 2, 2), 1);
         $extra[2] = $this->decodeInt(substr($string, 4, 4), 2, true);
         $extra[3] = $this->decodeInt(substr($string, 8, 8), 4, true);
@@ -123,7 +123,7 @@ class InputSumOutput extends \HUGnet\devices\outputTable\Driver
     */
     public function encode()
     {
-        $string  = $this->encodeInt($this->getExtra(0), 1);
+        $string  = $this->encodePriority($this->getExtra(0));
         $string .= $this->encodeInt($this->getExtra(1), 1);
         $string .= $this->encodeInt($this->getExtra(2), 2);
         $string .= $this->encodeInt($this->getExtra(3), 4);

@@ -68,7 +68,7 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
         "longName" => "PID Process",
         "shortName" => "PID",
         "extraText" => array(
-            0 => "Priority",
+            0 => "Control Updates / Sec",
             1 => "Control Channel",
             2 => "Data Channel",
             3 => "Input Offset",
@@ -82,7 +82,7 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
             11 => "Control Chan Max",
         ),
         "extraDesc" => array(
-            0 => "0-255 The minimum number of 1/128th of a second",
+            0 => "The max number of times this should run each second (0.5 - 128)",
             1 => "The control channel to use",
             2 => "The data channel to use for the control",
             3 => "Added to the data channel before the check",
@@ -135,7 +135,7 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
         $extra = (array)$this->process()->get("extra");
         $index = 0;
         $str   = substr($string, $index, 2);
-        $extra[0] = $this->decodeInt($str, 1);
+        $extra[0] = $this->decodePriority($str);
         $index += 2;
         $str   = substr($string, $index, 2);
         $extra[1] = $this->decodeInt($str, 1);
@@ -181,7 +181,7 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
     public function encode()
     {
         $data  = "";
-        $data .= $this->encodeInt($this->getExtra(0), 1);
+        $data .= $this->encodePriority($this->getExtra(0));
         $data .= $this->encodeInt($this->getExtra(1), 1);
         $dataChan = $this->process()->device()->dataChannel($this->getExtra(2));
         $data .= $this->encodeInt($dataChan->get("epChannel"), 1);

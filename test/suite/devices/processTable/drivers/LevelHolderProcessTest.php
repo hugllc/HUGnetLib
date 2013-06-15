@@ -188,7 +188,7 @@ class LevelHolderProcessTest extends DriverTestBase
                         array(
                             'extra',
                             array(
-                                0 => 34,
+                                0 => 95,
                                 1 => 1,
                                 2 => 2,
                                 3 => 0xFF,
@@ -282,7 +282,7 @@ class LevelHolderProcessTest extends DriverTestBase
                         array(
                             'extra',
                             array(
-                                0 => 34,
+                                0 => 95,
                                 1 => 1,
                                 2 => -1,
                                 3 => 3,
@@ -380,7 +380,7 @@ class LevelHolderProcessTest extends DriverTestBase
                         ),
                     )
                 ),
-                "2200020014060000C20D0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                "5F00020014060000C20D0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                     ."00000000000000000000000000",
             ),
             array( // #1
@@ -439,7 +439,7 @@ class LevelHolderProcessTest extends DriverTestBase
                         ),
                     )
                 ),
-                "2201020014060000C20D0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                "5F01020014060000C20D0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                     ."01123456781122334487654321",
             ),
             array( // #2 DataChan return too big
@@ -498,7 +498,7 @@ class LevelHolderProcessTest extends DriverTestBase
                         ),
                     )
                 ),
-                "22010200D0070000B80B0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                "5F010200D0070000B80B0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                     ."01123456781122334487654321",
             ),
             array( // #3 DataChan return too short
@@ -555,7 +555,7 @@ class LevelHolderProcessTest extends DriverTestBase
                         ),
                     )
                 ),
-                "2201020014060000C20D0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                "5F01020014060000C20D0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                     ."01120000001100000013000000",
             ),
             array( // #4
@@ -613,7 +613,7 @@ class LevelHolderProcessTest extends DriverTestBase
                         ),
                     )
                 ),
-                "2201FFFF14060000C20D0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                "5F01FFFF14060000C20D0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                     ."01123456781122334487654321",
             ),
         );

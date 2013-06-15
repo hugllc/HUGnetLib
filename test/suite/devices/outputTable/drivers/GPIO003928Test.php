@@ -113,7 +113,7 @@ class GPIO003928Test extends DriverTestBase
                             array('extra'),
                         ),
                         "set" => array(
-                            array('extra', array(19, 10)),
+                            array('extra', array(110, 10)),
                         ),
                     ),
                 ),
@@ -131,7 +131,7 @@ class GPIO003928Test extends DriverTestBase
                             array('extra'),
                         ),
                         "set" => array(
-                            array('extra', array(16, 1)),
+                            array('extra', array(113, 1)),
                         ),
                     ),
                 ),
@@ -183,7 +183,7 @@ class GPIO003928Test extends DriverTestBase
                         ),
                     ),
                 ),
-                "0A0B",
+                "770B",
             ),
         );
     }
