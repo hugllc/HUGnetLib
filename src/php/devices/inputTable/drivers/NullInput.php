@@ -74,9 +74,9 @@ class NullInput extends \HUGnet\devices\inputTable\Driver
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(5, 15),
-        "extraDefault" => array(16, 0),
+        "extraDefault" => array(113, 0),
         "extraDesc" => array(
-            "How many 1/128 s between runs.",
+            "The number of times to run per second.  0.5 to 129",
             "The initial value of the data channel",
         ),
         "maxDecimals" => 0,
@@ -109,7 +109,7 @@ class NullInput extends \HUGnet\devices\inputTable\Driver
     public function decode($string)
     {
         $extra = $this->input()->get("extra");
-        $extra[0] = $this->decodeInt(substr($string, 0, 2), 1);
+        $extra[0] = $this->decodePriority(substr($string, 0, 2));
         $extra[1] = $this->decodeInt(substr($string, 2, 8), 4, true);
         $this->input()->set("extra", $extra);
     }
@@ -121,7 +121,7 @@ class NullInput extends \HUGnet\devices\inputTable\Driver
     */
     public function encode()
     {
-        $string  = $this->encodeInt($this->getExtra(0), 1);
+        $string  = $this->encodePriority($this->getExtra(0));
         $string .= $this->encodeInt($this->getExtra(1), 4);
         return $string;
     }

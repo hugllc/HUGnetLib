@@ -76,9 +76,9 @@ class NoisyInput extends \HUGnet\devices\inputTable\Driver
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(5, 15, 6, 6),
-        "extraDefault" => array(16, 0, -10, 10),
+        "extraDefault" => array(113, 0, -10, 10),
         "extraDesc" => array(
-            "The number of 1/128 seconds between runs",
+            "The number of times to run per second.  0.5 to 129",
             "The initial value to set this input as",
             "The minimum number that the incremental noise can be",
             "The maximum number that the incremental noise can be",
@@ -113,7 +113,7 @@ class NoisyInput extends \HUGnet\devices\inputTable\Driver
     public function decode($string)
     {
         $extra = $this->input()->get("extra");
-        $extra[0] = $this->decodeInt(substr($string, 0, 2), 1);
+        $extra[0] = $this->decodePriority(substr($string, 0, 2));
         $extra[1] = $this->decodeInt(substr($string, 2, 8), 4, true);
         $extra[2] = $this->decodeInt(substr($string, 10, 4), 2, true);
         $extra[3] = $this->decodeInt(substr($string, 14, 4), 2, true);
@@ -127,7 +127,7 @@ class NoisyInput extends \HUGnet\devices\inputTable\Driver
     */
     public function encode()
     {
-        $string  = $this->encodeInt($this->getExtra(0), 1);
+        $string  = $this->encodePriority($this->getExtra(0));
         $string .= $this->encodeInt($this->getExtra(1), 4);
         $string .= $this->encodeInt($this->getExtra(2), 2);
         $string .= $this->encodeInt($this->getExtra(3), 2);

@@ -272,14 +272,14 @@ class DifferenceInputTest extends DriverTestBase
                         array('extra'),
                     ),
                     "set" => array(
-                        array('extra', array(19, 1, 4, 10)),
+                        array('extra', array(110, 1, 4, 10)),
                     ),
                     "device" => array(
                         array(),
                     ),
                 ),
             ),
-            array( // #0
+            array( // #1
                 array(
                     "Input" => array(
                         "device" => new \HUGnet\DummyBase("Device"),
@@ -371,7 +371,7 @@ class DifferenceInputTest extends DriverTestBase
                         array('extra'),
                     ),
                     "set" => array(
-                        array('extra', array(19, 1, 4, 0x12345678)),
+                        array('extra', array(110, 1, 4, 0x12345678)),
                     ),
                     "device" => array(
                         array(),
@@ -569,7 +569,7 @@ class DifferenceInputTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "130204FFFFFFFF",
+                "6E0204FFFFFFFF",
             ),
             array( // #1 Negative Offset
                 array(
@@ -637,7 +637,7 @@ class DifferenceInputTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "1302040A000000",
+                "6E02040A000000",
             ),
         );
     }

@@ -84,9 +84,9 @@ class ControlSumInput extends \HUGnet\devices\inputTable\Driver
             5, array(), 7, 15, 15, 15, 6, 6,
             array(0 => "Normal", 1 => "Float")
         ),
-        "extraDefault" => array(1, 0, 1, 0, 0, 16777215, 0, 0, 0),
+        "extraDefault" => array(128, 0, 1, 0, 0, 16777215, 0, 0, 0),
         "extraDesc" => array(
-            0 => "The number of 1/128 of a second between runs",
+            0 => "The number of times to run per second.  0.5 to 129",
             1 => "Control Channel to use for our input",
             2 => "The input is multiplied by this",
             3 => "This is added to the input",
@@ -176,7 +176,7 @@ class ControlSumInput extends \HUGnet\devices\inputTable\Driver
     public function decode($string)
     {
         $extra = $this->input()->get("extra");
-        $extra[0] = $this->decodeInt(substr($string, 0, 2), 1);
+        $extra[0] = $this->decodePriority(substr($string, 0, 2));
         $extra[1] = $this->decodeInt(substr($string, 2, 2), 1);
         $extra[2] = $this->decodeInt(substr($string, 4, 4), 2, true);
         $extra[3] = $this->decodeInt(substr($string, 8, 8), 4, true);
@@ -195,7 +195,7 @@ class ControlSumInput extends \HUGnet\devices\inputTable\Driver
     */
     public function encode()
     {
-        $string  = $this->encodeInt($this->getExtra(0), 1);
+        $string  = $this->encodePriority($this->getExtra(0));
         $string .= $this->encodeInt($this->getExtra(1), 1);
         $string .= $this->encodeInt($this->getExtra(2), 2);
         $string .= $this->encodeInt($this->getExtra(3), 4);

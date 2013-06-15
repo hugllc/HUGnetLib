@@ -165,7 +165,7 @@ class NullInputTest extends DriverTestBase
                         "sensor" => new \HUGnet\DummyBase("Output"),
                     )
                 ),
-                "132000000015003000",
+                "6E2000000015003000",
                 array(
                     "Input" => array(
                         "get" => array(
@@ -186,7 +186,7 @@ class NullInputTest extends DriverTestBase
                         "sensor" => new \HUGnet\DummyBase("Output"),
                     )
                 ),
-                "13FFFFFFFFFFFFFFFF",
+                "6EFFFFFFFFFFFFFFFF",
                 array(
                     "Input" => array(
                         "get" => array(
@@ -241,7 +241,7 @@ class NullInputTest extends DriverTestBase
                 array(
                     "Input" => array(
                         "get" => array(
-                            "extra" => array(19, 32),
+                            "extra" => array(110, 32),
                         ),
                     ),
                 ),
@@ -251,7 +251,7 @@ class NullInputTest extends DriverTestBase
                 array(
                     "Input" => array(
                         "get" => array(
-                            "extra" => array(19, -1),
+                            "extra" => array(110, -1),
                         ),
                     ),
                 ),

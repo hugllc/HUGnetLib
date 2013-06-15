@@ -79,10 +79,10 @@ class DifferenceInput extends \HUGnet\devices\inputTable\Driver
             5, array(), array(), 15
         ),
         "extraDefault" => array(
-            1, 0, 0, 0
+            128, 0, 0, 0
         ),
         "extraDesc" => array(
-            "How many 1/128 seconds between runs of this input",
+            "The number of times to run per second.  0.5 to 129",
             "The first number",
             "The number to subtract from the first number",
             "The offset to add to the math",
@@ -144,7 +144,7 @@ class DifferenceInput extends \HUGnet\devices\inputTable\Driver
     {
         $channels = $this->input()->device()->dataChannels();
         $extra    = $this->input()->get("extra");
-        $extra[0] = $this->decodeInt(substr($string, 0, 2), 1);
+        $extra[0] = $this->decodePriority(substr($string, 0, 2));
         $index    = 2;
         for ($i = 1; $i < 3; $i++) {
             $epChan   = $this->decodeInt(substr($string, $index, 2), 1);
@@ -164,7 +164,7 @@ class DifferenceInput extends \HUGnet\devices\inputTable\Driver
     public function encode()
     {
         $channels = $this->input()->device()->dataChannels();
-        $string   = $this->encodeInt($this->getExtra(0), 1);
+        $string   = $this->encodePriority($this->getExtra(0));
 
         for ($i = 1; $i < 3; $i++) {
             $chan = (int)$this->getExtra($i);

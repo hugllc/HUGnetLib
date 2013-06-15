@@ -74,9 +74,9 @@ class ControlInput extends \HUGnet\devices\inputTable\Driver
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(5, array()),
-        "extraDefault" => array(1, 0),
+        "extraDefault" => array(128, 0),
         "extraDesc" => array(
-            "How many 1/128 seconds between runs of this input",
+            "The number of times to run per second.  0.5 to 129",
             "The control channel channel to read",
         ),
         "maxDecimals" => 0,
@@ -134,8 +134,8 @@ class ControlInput extends \HUGnet\devices\inputTable\Driver
     public function decode($string)
     {
         $extra = $this->input()->get("extra");
-        $extra[0] = hexdec(substr($string, 0, 2));
-        $extra[1] = hexdec(substr($string, 2, 2));
+        $extra[0] = $this->decodePriority(substr($string, 0, 2));
+        $extra[1] = $this->decodeInt(substr($string, 2, 2), 1);
         $this->input()->set("extra", $extra);
     }
     /**
@@ -146,8 +146,8 @@ class ControlInput extends \HUGnet\devices\inputTable\Driver
     */
     public function encode()
     {
-        $string  = sprintf("%02X", $this->getExtra(0));
-        $string .= sprintf("%02X", $this->getExtra(1));
+        $string  = $this->encodePriority($this->getExtra(0));
+        $string .= $this->encodeInt($this->getExtra(1), 1);
         return $string;
     }
 

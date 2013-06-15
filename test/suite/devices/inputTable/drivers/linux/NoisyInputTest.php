@@ -177,7 +177,7 @@ class NoisyInputTest extends DriverTestBaseLinux
                         "set" => array(
                             array(
                                 'extra',
-                                array(19, 32, 21, 48)
+                                array(110, 32, 21, 48)
                             ),
                         ),
                     ),
@@ -196,7 +196,7 @@ class NoisyInputTest extends DriverTestBaseLinux
                             array('extra'),
                         ),
                         "set" => array(
-                            array('extra', array(19, -1, -1, -1)),
+                            array('extra', array(110, -1, -1, -1)),
                         ),
                     ),
                 ),
@@ -248,7 +248,7 @@ class NoisyInputTest extends DriverTestBaseLinux
                         ),
                     ),
                 ),
-                "132000000015003000",
+                "6E2000000015003000",
             ),
             array( // #2 Negative numbers
                 array(
@@ -258,7 +258,7 @@ class NoisyInputTest extends DriverTestBaseLinux
                         ),
                     ),
                 ),
-                "13FFFFFFFFFFFFFFFF",
+                "6EFFFFFFFFFFFFFFFF",
             ),
         );
     }
