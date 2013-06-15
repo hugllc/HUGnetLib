@@ -112,8 +112,14 @@ HUGnet.viewHelpers = {
     showInfo: function (info, key)
     {
         var html = '';
-        if (info && info[key]) {
-            html = ' title="'+info[key]+'" ';
+        if (info) {
+            if (typeof info == "object") {
+                if (info[key]) {
+                    html = ' title="'+info[key]+'" ';
+                }
+            } else if (typeof info == "string") {
+                html = ' title="'+info+'" ';
+            }
         }
         return html;
     }

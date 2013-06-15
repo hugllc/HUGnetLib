@@ -82,7 +82,8 @@ class ADuCInputTable
                 0x48 => "ADuC Resistance",
                 0x11 => "ADuC DC Power",
             ),
-            "desc" => "First Driver",
+            "desc"     => "First Driver",
+            "longDesc" => "The driver for the first ENABLED ADC.",
         ),
         "driver1"  => array(
             "value" => 0xFF,
@@ -99,7 +100,8 @@ class ADuCInputTable
                 0x48 => "ADuC Resistance",
                 0xFF => "None",
             ),
-            "desc" => "Second Driver",
+            "desc"     => "Second Driver",
+            "longDesc" => "The driver for the second ENABLED ADC.",
         ),
         "priority" => array(
             "value" => 0xFF,
@@ -117,7 +119,9 @@ class ADuCInputTable
                 0x03 => "Square Data",
                 self::IPR_POWER => "Calculate Power and Impedance", // 4
             ),
-            "desc"  => "Immediate Processing 0",
+            "desc"     => "Immediate Processing 0",
+            "longDesc" => "The immediate processing routine to use for ADC0 or
+                           both of the ADCs in some cases.",
         ),
         "process1"  => array(
             "value" => 0,
@@ -128,7 +132,8 @@ class ADuCInputTable
                 0x02 => "Divide by 128",
                 0x03 => "Square Data",
             ),
-            "desc"  => "Immediate Processing 1",
+            "desc"     => "Immediate Processing 1",
+            "longDesc" => "The immediate processing routine to use for ADC1"
         ),
         "ADC0EN"    => array(
             'value' => 1,
@@ -137,6 +142,7 @@ class ADuCInputTable
             'bits'  => 1,
             'valid' => array(0 => "No", 1 => "Yes"),
             'desc'  => "ADC0 Enable",
+            'longDesc' => "Enable ADC0",
             'register' => "ADC0CON",
         ),
         "ADC0DIAG"  => array(
@@ -151,6 +157,7 @@ class ADuCInputTable
                 3 => "50mA on Both",
             ),
             'desc'  => "ADC0 Diagnostic Current",
+            'longDesc' => "Set diagnostic current to test ADC0",
             'register' => "ADC0CON",
         ),
         "HIGHEXTREF0" => array(
@@ -160,6 +167,7 @@ class ADuCInputTable
             'bits'  => 1,
             'valid' => array(0 => "Ref", 1 => "Ref/2"),
             'desc'  => "ADC0 High Reference",
+            'longDesc' => "",
             'register' => "ADC0CON",
         ),
         "AMP_CM"    => array(
@@ -169,6 +177,7 @@ class ADuCInputTable
             'bits'  => 1,
             'valid' => array(0 => "Common Mode Input", 1 => "AVDD/2"),
             'desc'  => "ADC0 PGA Common Mode Voltage",
+            'longDesc' => "",
             'register' => "ADC0CON",
         ),
         "ADC0CODE"  => array(
@@ -178,6 +187,7 @@ class ADuCInputTable
             'bits'  => 1,
             'valid' => array(0 => "Two's Compliment", 1 => "Unipolar"),
             'desc'  => "ADC0 Output Coding",
+            'longDesc' => "Signed or unsigned, that is the question",
             'register' => "ADC0CON",
         ),
         "ADC0CH"    => array(
@@ -210,6 +220,7 @@ class ADuCInputTable
             ),
             */
             'desc'  => "ADC0 Channel",
+            'longDesc' => "Which input to take the signal off of",
             'register' => "ADC0CON",
         ),
         "ADC0REF"   => array(
@@ -224,6 +235,7 @@ class ADuCInputTable
                 3 => "AVDD/AGND (div/2 selected)",
             ),
             'desc'  => "ADC0 Reference",
+            'longDesc' => "The reference to use",
             'register' => "ADC0CON",
         ),
         "ADC0PGA"   => array(
@@ -244,6 +256,7 @@ class ADuCInputTable
                 9 => "512",
             ),
             'desc'  => "ADC0 Gain",
+            'longDesc' => "The gain on ADC0",
             'register' => "ADC0CON",
         ),
         "ADC1EN"      => array(
@@ -253,6 +266,7 @@ class ADuCInputTable
             'bits'  => 1,
             'valid' => array(0 => "No", 1 => "Yes"),
             'desc'  => "ADC1 Enable",
+            'longDesc' => "Enable ADC1",
             'register' => "ADC1CON",
         ),
         "ADC1DIAG"    => array(
@@ -267,6 +281,7 @@ class ADuCInputTable
                 3 => "50mA on Both",
             ),
             'desc'  => "ADC1 Diagnostic Current",
+            'longDesc' => "Diagnostic current for testing purposes",
             'register' => "ADC1CON",
         ),
         "HIGHEXTREF1" => array(
@@ -276,6 +291,7 @@ class ADuCInputTable
             'bits'  => 1,
             'valid' => array(0 => "Ref", 1 => "Ref/2"),
             'desc'  => "ADC1 High Reference",
+            'longDesc' => "",
             'register' => "ADC1CON",
         ),
         "ADC1CODE"    => array(
@@ -285,6 +301,7 @@ class ADuCInputTable
             'bits'  => 1,
             'valid' => array(0 => "Two's Compliment", 1 => "Unipolar"),
             'desc'  => "ADC1 Output Coding",
+            'longDesc' => "Signed or unsigned, that is the question",
             'register' => "ADC1CON",
         ),
         "ADC1CH"      => array(
@@ -329,6 +346,7 @@ class ADuCInputTable
             ),
             */
             'desc'  => "ADC1 Channel",
+            'longDesc' => "The channel for ADC1",
             'register' => "ADC1CON",
         ),
         "ADC1REF"     => array(
@@ -344,6 +362,7 @@ class ADuCInputTable
                 4 => "AVCC/ADC3",
             ),
             'desc'  => "ADC1 Reference",
+            'longDesc' => "Which reference would you choose?",
             'register' => "ADC1CON",
         ),
         "BUF_BYPASS"  => array(
@@ -358,6 +377,7 @@ class ADuCInputTable
                 3 => "Full buffer bypass",
             ),
             'desc'  => "ADC1 Buffer Bypass",
+            'longDesc' => "Buffer the incoming signal",
             'register' => "ADC1CON",
         ),
         "ADC1PGA"     => array(
@@ -372,6 +392,7 @@ class ADuCInputTable
                 3 => "8",
             ),
             'desc'  => "ADC1 Gain",
+            'longDesc' => "The gain on ADC1",
             'register' => "ADC1CON",
         ),
         "CHOPEN" => array(
@@ -381,6 +402,7 @@ class ADuCInputTable
             'bits'  => 1,
             'valid' => array(0 => "No", 1 => "Yes"),
             'desc'  => "Chop Enable",
+            'longDesc' => "Enable chop.  This cuts the frequency in half.",
             'register' => "ADCFLT",
         ),
         "RAVG2"  => array(
@@ -390,6 +412,7 @@ class ADuCInputTable
             'bits'  => 1,
             'valid' => array(0 => "No", 1 => "Yes"),
             'desc'  => "Running Average By 2",
+            'longDesc' => "This enables a running average and cuts the freq in half",
             'register' => "ADCFLT",
         ),
         "AF"     => array(
@@ -400,6 +423,8 @@ class ADuCInputTable
             'valid' => "_avgFilterValidate",
             'size'  => 3,
             'desc'  => "Averaging Filter Value",
+            'longDesc' => "Value to use for the averaging filter.  Some limitations
+                            apply",
             'register' => "ADCFLT",
         ),
         "NOTCH2" => array(
@@ -409,6 +434,7 @@ class ADuCInputTable
             'bits'  => 1,
             'valid' => array(0 => "No", 1 => "Yes"),
             'desc'  => "Sinc Notch Filter Enable",
+            'longDesc' => "Enable the notch filter",
             'register' => "ADCFLT",
         ),
         "SF"     => array(
@@ -419,6 +445,8 @@ class ADuCInputTable
             'valid' => "_sinc3Validate",
             'size'  => 3,
             'desc'  => "Sinc3 Filter Value",
+            'longDesc' => "Value to use for the sinc3 filter.  Some limitations
+                          apply",
             'register' => "ADCFLT",
         ),
 
