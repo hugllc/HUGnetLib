@@ -114,6 +114,7 @@ HUGnet.Histories = Backbone.Collection.extend({
         if (_.isObject(options)) {
             if (options.url) this.url = options.url;
             this.id = options.id;
+            this.type = (options.type !== undefined) ? options.type : this.type;
             this.mode = options.mode;
             this.limit = (options.limit !== undefined) ? parseInt(options.limit, 10) : this.limit;
         }

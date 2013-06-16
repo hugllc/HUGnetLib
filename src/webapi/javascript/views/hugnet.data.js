@@ -51,7 +51,6 @@ HUGnet.DataView = Backbone.View.extend({
     table: undefined,
     plot: undefined,
     data: {},
-    device: {},
     header: {},
     fields: {},
     classes: {},
@@ -62,6 +61,7 @@ HUGnet.DataView = Backbone.View.extend({
     last: 0,
     period: 30,
     polling: false,
+    type: '30SEC',
     iframe: undefined,
     csvlimit: 40000,
     progress: undefined,
@@ -81,10 +81,6 @@ HUGnet.DataView = Backbone.View.extend({
         this.parent = options.parent;
         var device;
         var i;
-        this.header = {};
-        this.fields = {};
-        this.device = {};
-        this.classes = {};
         this.header[0] = 'Date';
         this.fields[0] = 'Date';
         this.classes[0] = '';
@@ -102,11 +98,16 @@ HUGnet.DataView = Backbone.View.extend({
             }
         }
         this.pause = (options.pause !== undefined) ? parseInt(options.pause, 10) : this.pause;
+        var avgTypes = this.model.get("averageTypes");
+        if (avgTypes["30SEC"]) {
+            this.type = "30SEC";
+        } else {
+            this.type = "15MIN";
+        }
         this.type = (options.type !== undefined) ? options.type : this.type;
         this.history = new HUGnet.Histories(
             null,
             {
-                device: this.device,
                 id: this.model.get('id'),
                 mode: this.mode,
                 type: this.type,
