@@ -115,7 +115,6 @@ HUGnet.DataView = Backbone.View.extend({
             }
         );
         this._setupProgress();
-        this.getLatest();
         this.history.on(
             'sync',
             function ()
