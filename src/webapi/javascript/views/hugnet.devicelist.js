@@ -138,6 +138,7 @@ HUGnet.DeviceListView = Backbone.View.extend({
         }
         this.model.each(this.insert, this);
         this.model.on('add', this.insert, this);
+        this.model.on('sync', this.sync, this);
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -167,7 +168,7 @@ HUGnet.DeviceListView = Backbone.View.extend({
     insert: function (model, collection, options)
     {
         var id = model.get("DeviceID");
-        if (this.checkFilter(model, this.filter)) {
+        if (this.checkFilter(model, this.filter) && (this.views[id] == undefined)) {
             this.views[id] = new DeviceListEntryView({
                 model: model,
                 parent: this,
@@ -199,8 +200,8 @@ HUGnet.DeviceListView = Backbone.View.extend({
     checkFilter: function(model, filter)
     {
 
-        for (var key in this.filter) {
-            if (model.get(key) !== this.filter[key]) {
+        for (var key in filter) {
+            if (model.get(key) !== filter[key]) {
                 return false;
             }
         }

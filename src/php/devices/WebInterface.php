@@ -149,6 +149,8 @@ class WebInterface
         $ret = null;
         if ($action === "put") {
             $ret = $this->_put($args);
+        } else if ($action === "list") {
+            $ret = $this->_list($args);
         } else if ($action === "new") {
             $ret = $this->_new($args);
         } else if ($action === "config") {
@@ -160,6 +162,19 @@ class WebInterface
         } else if ($action === "getraw") {
             $ret = $this->_getRaw($args);
         }
+        return $ret;
+    }
+    /**
+    * returns a history object for this device
+    *
+    * @param object $args The argument object
+    *
+    * @return string
+    */
+    private function _list($args)
+    {
+        $data = $args->get("data");
+        $ret = $this->_device->getList($data, false);
         return $ret;
     }
     /**

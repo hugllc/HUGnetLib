@@ -138,7 +138,7 @@ class WebAPI extends HTML
         $did = hexdec($this->args()->get("id"));
         $dev = $this->system()->device($did);
         $action = strtolower(trim($this->args()->get("action")));
-        if (($action === "list") || ($action == "get")) {
+        if ($action == "get") {
             $ret = $this->_executeSystem($did, $dev, $extra);
         } else if ($this->_auth(true)) {
             //$dev->load($did);

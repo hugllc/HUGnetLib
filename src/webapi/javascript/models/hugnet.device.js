@@ -71,7 +71,8 @@ HUGnet.Device = Backbone.Model.extend({
         OutputTables: 0,
         ProcessputTables: 0,
         LatePoll: false,
-
+        type: 'unknown',
+        
         actions: '',
         ViewButtonID: '',
         RefreshButtonID: '',
@@ -166,7 +167,7 @@ HUGnet.Device = Backbone.Model.extend({
                         self.set(data);
                         self.set("setparams", {});
                         self.trigger('fetchdone');
-                        self.trigger('sync');
+                        self.trigger('sync', self);
                     } else {
                         self.trigger('refreshfail', "saved failed on server");
                     }
@@ -405,7 +406,18 @@ HUGnet.Devices = Backbone.Collection.extend({
             function (data)
             {
                 self.add(data);
+                self.update();
             }
+        );
+    },
+    update: function ()
+    {
+        this.each(
+            function(value, key, list)
+            {
+                value.refresh();
+            },
+            this
         );
     }
 });

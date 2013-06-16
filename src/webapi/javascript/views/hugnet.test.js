@@ -106,7 +106,12 @@ var TestEntryView = Backbone.View.extend({
 HUGnet.TestsView = HUGnet.DeviceListView.extend({
     template: "#TestListTemplate",
     templatebase: 'TestList',
+    url: '/HUGnetLib/HUGnetLibAPI.php',
     filter: {type: "test"},
+    views: {},
+    sorted: false,
+    sorting: [[1,0]],
+    viewed: 0,
     readonly: false,
     events: {
         'click .new': 'create',
@@ -127,8 +132,9 @@ HUGnet.TestsView = HUGnet.DeviceListView.extend({
             }
         }
         this.model.each(this.insert, this);
-        this.model.bind('add', this.insert, this);
-        this.model.bind('savefail', this.saveFail, this);
+        this.model.on('add', this.insert, this);
+        this.model.on('sync', this.insert, this);
+        this.model.on('savefail', this.saveFail, this);
         if (!this.readonly) {
             this.run('status');
         }
