@@ -75,7 +75,7 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
         "extraText" => array(
             0  => "Control Updates / Sec",
             1  => "Control",
-            2  => "Step",
+            2  => "Step (%)",
             3  => "Limiter 1 Data Channel",
             4  => "Limiter 1 High",
             5  => "Limiter 1 Low",
@@ -91,7 +91,8 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
         "extraDesc" => array(
             "The max number of times this should run each second (0.5 - 128)",
             "The control channel to use",
-            "-32768 to 32767 The amount added or subracted from the control channel",
+            "The amount added or subracted from the control channel.  % of the
+             full scale of the output selected.",
             "The data channel to use for the first limiter",
             "(Units for data channel) The maximum for the first limiter",
             "(Units for data channel) The minimum for the first limiter",
@@ -149,7 +150,12 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
         $extra = (array)$this->process()->get("extra");
         $extra[0] = $this->decodePriority(substr($string, 0, 2));
         $extra[1] = $this->decodeInt(substr($string, 2, 2), 1);
-        $extra[2] = $this->decodeInt(substr($string, 4, 4), 2, true);
+        $step = $this->decodeInt(substr($string, 4, 4), 2, true);
+        $output = $this->process()->device()->controlChannels()->controlChannel(
+            $this->getExtra(1)
+        );
+        $split = $output->get("max") - $output->get("min");
+        $extra[2]  = 100.0 * round($step / $split, 5);
         $extra[12] = $this->decodeInt(substr($string, 8, 8), 4, true);
         $extra[13] = $this->decodeInt(substr($string, 16, 8), 4, true);
         $this->_decodeChannels(substr($string, 24), $extra);
@@ -233,20 +239,32 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
     public function encode()
     {
         $data  = "";
-        $data .= $this->encodePriority($this->getExtra(0));
-        $data .= $this->encodeInt($this->getExtra(1), 1);
-        $data .= $this->encodeInt($this->getExtra(2), 2);
         $output = $this->process()->device()->controlChannels()->controlChannel(
             $this->getExtra(1)
         );
-        $min  = $this->getExtra(12);
         $oMin = $output->get("min");
+        $oMax  = $output->get("max");
+        $data .= $this->encodePriority($this->getExtra(0));
+        $data .= $this->encodeInt($this->getExtra(1), 1);
+        $perc  = $this->getExtra(2);
+        if ($perc > 50) {
+            $perc = 50;
+        } else if ($perc < -50) {
+            $perc = -50;
+        }
+        $step  = ($perc / 100) * ($oMax - $oMin);
+        if ($step > 32767) {
+            $step = 32767;
+        } else if ($step < -32767) {
+            $step = -32767;
+        }
+        $data .= $this->encodeInt($step, 2);
+        $min   = $this->getExtra(12);
         if (($min === "") || ($min < $oMin)) {
             $min = $oMin;
         }
         $data .= $this->encodeInt($min, 4);
         $max   = $this->getExtra(13);
-        $oMax  = $output->get("max");
         if (($max === "") || ($max > $oMax)) {
             $max = $oMax;
         }

@@ -121,6 +121,7 @@ class LevelHolderProcessTest extends DriverTestBase
                     ),
                     "Device" => array(
                         "dataChannels" => new \HUGnet\DummyBase("Channels"),
+                        "controlChannels" => new \HUGnet\DummyBase("cChannels"),
                     ),
                     "Channels" => array(
                         "dataChannel" => array(
@@ -177,11 +178,21 @@ class LevelHolderProcessTest extends DriverTestBase
                             "decimals" => 0,
                         ),
                     ),
+                    "cChannels" => array(
+                        "controlChannel" => new \HUGnet\DummyBase("cChannel"),
+                    ),
+                    "cChannel" => array(
+                        "get" => array(
+                            "min" => 0,
+                            "max" => 100,
+                        ),
+                    )
                 ),
                 "2201020014060000C20D0000FFFFFFFFFFFFFFFFFF021234567811223344"
                     ."00123456781122334487654321",
                 array(
                     "get" => array(
+                        array('extra'),
                         array('extra'),
                     ),
                     "set" => array(
@@ -190,7 +201,7 @@ class LevelHolderProcessTest extends DriverTestBase
                             array(
                                 0 => 95,
                                 1 => 1,
-                                2 => 2,
+                                2 => 2.0,
                                 3 => 0xFF,
                                 6 => 3,
                                 7 => 14.0,
@@ -205,6 +216,7 @@ class LevelHolderProcessTest extends DriverTestBase
                     ),
                     "device" => array(
                         array(),
+                        array(),
                     ),
                 ),
             ),
@@ -215,6 +227,7 @@ class LevelHolderProcessTest extends DriverTestBase
                     ),
                     "Device" => array(
                         "dataChannels" => new \HUGnet\DummyBase("Channels"),
+                        "controlChannels" => new \HUGnet\DummyBase("cChannels"),
                     ),
                     "Channels" => array(
                         "dataChannel" => array(
@@ -271,11 +284,21 @@ class LevelHolderProcessTest extends DriverTestBase
                             "decimals" => 0,
                         ),
                     ),
+                    "cChannels" => array(
+                        "controlChannel" => new \HUGnet\DummyBase("cChannel"),
+                    ),
+                    "cChannel" => array(
+                        "get" => array(
+                            "min" => 0,
+                            "max" => 1000,
+                        ),
+                    )
                 ),
                 "2201FFFF14060000C20D0000021234567811223344FFFFFFFFFFFFFFFFFF"
                     ."01123456781122334487654321",
                 array(
                     "get" => array(
+                        array('extra'),
                         array('extra'),
                     ),
                     "set" => array(
@@ -284,7 +307,7 @@ class LevelHolderProcessTest extends DriverTestBase
                             array(
                                 0 => 95,
                                 1 => 1,
-                                2 => -1,
+                                2 => -0.1,
                                 3 => 3,
                                 4 => 14.0,
                                 5 => 12.0,
@@ -298,6 +321,7 @@ class LevelHolderProcessTest extends DriverTestBase
                         ),
                     ),
                     "device" => array(
+                        array(),
                         array(),
                     ),
                 ),
@@ -375,12 +399,12 @@ class LevelHolderProcessTest extends DriverTestBase
                     ),
                     "cChannel" => array(
                         "get" => array(
-                            "min" => 1556,
-                            "max" => 3522,
+                            "min" => 0,
+                            "max" => 100,
                         ),
                     )
                 ),
-                "5F00020014060000C20D0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                "5F0002000000000064000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                     ."00000000000000000000000000",
             ),
             array( // #1
@@ -439,7 +463,7 @@ class LevelHolderProcessTest extends DriverTestBase
                         ),
                     )
                 ),
-                "5F01020014060000C20D0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                "5F01270014060000C20D0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                     ."01123456781122334487654321",
             ),
             array( // #2 DataChan return too big
@@ -498,7 +522,7 @@ class LevelHolderProcessTest extends DriverTestBase
                         ),
                     )
                 ),
-                "5F010200D0070000B80B0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                "5F012700D0070000B80B0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                     ."01123456781122334487654321",
             ),
             array( // #3 DataChan return too short
@@ -555,7 +579,7 @@ class LevelHolderProcessTest extends DriverTestBase
                         ),
                     )
                 ),
-                "5F01020014060000C20D0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                "5F01270014060000C20D0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                     ."01120000001100000013000000",
             ),
             array( // #4
@@ -613,7 +637,7 @@ class LevelHolderProcessTest extends DriverTestBase
                         ),
                     )
                 ),
-                "5F01FFFF14060000C20D0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                "5F01EDFF14060000C20D0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                     ."01123456781122334487654321",
             ),
         );
