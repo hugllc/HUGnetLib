@@ -103,7 +103,7 @@ HUGnet.DataView = Backbone.View.extend({
             this.type = "30SEC";
         } else {
             this.type   = "15MIN";
-            this.period = 86400;
+            this.period = 1440;
         }
         this.type = (options.type !== undefined) ? options.type : this.type;
         this.history = new HUGnet.Histories(
