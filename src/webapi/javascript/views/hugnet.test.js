@@ -114,7 +114,6 @@ HUGnet.TestsView = HUGnet.DeviceListView.extend({
     viewed: 0,
     readonly: false,
     events: {
-        'click .new': 'create',
         'click .run': 'run',
         'click .stop': 'run'
     },
@@ -138,40 +137,6 @@ HUGnet.TestsView = HUGnet.DeviceListView.extend({
         if (!this.readonly) {
             this.run('status');
         }
-    },
-    create: function ()
-    {
-        if (this.readonly) {
-            return;
-        }
-        var self = this;
-        var ret = $.ajax({
-            type: 'GET',
-            url: this.url,
-            dataType: 'json',
-            cache: false,
-            data:
-            {
-                "task": "device",
-                "action": "new",
-                "data": { type: "test" }
-            }
-        }).done(
-            function (data)
-            {
-                if (_.isObject(data)) {
-                    self.trigger('created');
-                    self.model.add(data);
-                } else {
-                    self.trigger('newfail');
-                }
-            }
-        ).fail(
-            function ()
-            {
-                self.trigger('newfail');
-            }
-        );
     },
     running: function ()
     {

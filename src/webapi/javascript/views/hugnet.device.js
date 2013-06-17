@@ -396,13 +396,15 @@ var DeviceEntryView = Backbone.View.extend({
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 HUGnet.DevicesView = Backbone.View.extend({
+    url: '/HUGnetLib/HUGnetLibAPI.php',
     template: "#DeviceListTemplate",
     events: {
+        'click .newtest': 'createTest',
     },
     initialize: function (options)
     {
         this.model.each(this.insert, this);
-        this.model.bind('add', this.insert, this);
+        this.model.on('add', this.insert, this);
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -429,6 +431,37 @@ HUGnet.DevicesView = Backbone.View.extend({
         var view = new DeviceEntryView({ model: model, parent: this });
         this.$('tbody').append(view.render().el);
         this.$("table").trigger('update');
+    },
+    createTest: function ()
+    {
+        var self = this;
+        var ret = $.ajax({
+            type: 'GET',
+            url: this.url,
+            dataType: 'json',
+            cache: false,
+            data:
+            {
+                "task": "device",
+                "action": "new",
+                "data": { type: "test" }
+            }
+        }).done(
+            function (data)
+            {
+                if (_.isObject(data)) {
+                    self.trigger('created');
+                    self.model.add(data);
+                } else {
+                    self.trigger('newfail');
+                }
+            }
+        ).fail(
+            function (data)
+            {
+                self.trigger('newfail');
+            }
+        );
     },
     popup: function (view)
     {
