@@ -55,10 +55,6 @@ var TestEntryView = Backbone.View.extend({
         this.model.bind('remove', this.remove, this);
         this.parent = options.parent;
     },
-    run: function (e)
-    {
-        this.parent.trigger("run", this.model);
-    },
     view: function (e)
     {
         this.parent.trigger("view", this.model);
@@ -114,14 +110,9 @@ HUGnet.TestsView = HUGnet.DeviceListView.extend({
     viewed: 0,
     readonly: false,
     events: {
-        'click .run': 'run',
-        'click .stop': 'run'
     },
     initialize: function (options)
     {
-        this.$('.run').hide();
-        this.$('.stop').hide();
-        this.$('.new').hide();
         if (options) {
             if (options.url) {
                 this.url = options.url;
@@ -133,55 +124,6 @@ HUGnet.TestsView = HUGnet.DeviceListView.extend({
         this.model.each(this.insert, this);
         this.model.on('add', this.insert, this);
         this.model.on('sync', this.insert, this);
-        this.model.on('savefail', this.saveFail, this);
-        if (!this.readonly) {
-            this.run('status');
-        }
-    },
-    running: function ()
-    {
-        this.$('.run').hide();
-        this.$('.stop').show();
-    },
-    paused: function ()
-    {
-        this.$('.run').show();
-        this.$('.stop').hide();
-    },
-    run: function (action)
-    {
-        var self = this;
-        if (action !== "status") {
-            action = "run";
-        }
-        var ret = $.ajax({
-            type: 'GET',
-            url: this.url,
-            dataType: 'json',
-            cache: false,
-            data:
-            {
-                "task": "datacollector",
-                "action": action,
-            }
-        }).done(
-            function (data)
-            {
-                if (data == 1) {
-                    self.running();
-                    self.trigger('testrunning');
-                } else {
-                    self.paused();
-                    self.trigger('testpaused');
-                }
-            }
-        ).fail(
-            function ()
-            {
-                //self.statusFail();
-                self.trigger('statusfail');
-            }
-        );
     },
     saveFail: function (msg)
     {

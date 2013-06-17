@@ -76,6 +76,9 @@ HUGnet.Config = Backbone.View.extend({
             model: ptables,
             url: this.url
         });
+        this.runtime = new HUGnet.RuntimeView({
+            url: this.url
+        });
         this.render();
     },
     render: function ()
@@ -100,6 +103,9 @@ HUGnet.Config = Backbone.View.extend({
         this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+this.id+'-inputTable">Input Tables</a></li>');
         this.tabs.append('<div id="'+this.id+'-inputTable"></div>');
         $('#'+this.id+'-inputTable').html(this.inputTables.render().el);
+        this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+this.id+'-inputTable">Runtime Config</a></li>');
+        this.tabs.append('<div id="'+this.id+'-inputTable"></div>');
+        $('#'+this.id+'-inputTable').html(this.runtime.render().el);
         /*
         this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+this.id+'-outputTable">Output Tables</a></li>');
         this.tabs.append('<div id="'+this.id+'-outputTable"></div>');
