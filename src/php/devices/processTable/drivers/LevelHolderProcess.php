@@ -155,7 +155,7 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
             $this->getExtra(1)
         );
         $split = $output->get("max") - $output->get("min");
-        $extra[2]  = 100.0 * round($step / $split, 5);
+        $extra[2]  = 100.0 * round($step / $split, 8);
         $extra[12] = $this->decodeInt(substr($string, 8, 8), 4, true);
         $extra[13] = $this->decodeInt(substr($string, 16, 8), 4, true);
         $this->_decodeChannels(substr($string, 24), $extra);
