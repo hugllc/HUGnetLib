@@ -446,6 +446,30 @@ class ComputationVirtualTest extends DriverTestBaseVirtual
                 0,
                 0.0043,
             ),
+            array( // #15 field test
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(
+                                "{21}+{39}",
+                                "W",
+                                "Power",
+                                \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "4",
+                                0
+                            ),
+                        ),
+                    ),
+                ),
+                0,
+                0,
+                array(
+                    21 => array("value" => 0.004278),
+                    39 => array("value" => 0.000011),
+                ),
+                0,
+                0.0043,
+            ),
         );
     }
 

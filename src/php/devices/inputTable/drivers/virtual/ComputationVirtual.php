@@ -155,7 +155,7 @@ class ComputationVirtual extends \HUGnet\devices\inputTable\DriverVirtual
     {
         $zero = (bool)$this->getExtra(5);
         $mathCode = $math;
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 40; $i++) {
             $mathCode = str_ireplace(
                 '{'.$i.'}',
                 sprintf("%f", (float)$data[$i]["value"]),
