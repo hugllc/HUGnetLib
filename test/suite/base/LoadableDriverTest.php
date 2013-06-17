@@ -542,21 +542,25 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
         return array(
             array( // #0
                 "80",
-                1,
+                1.0,
             ),
             array( // #1
                 "01",
-                128,
+                128.0,
             ),
             array( // #2
+                "0D",
+                9.85,
+            ),
+            array( // #3
                 "00",
                 129,
             ),
-            array( // #3
+            array( // #4
                 "FF",
                 0.5,
             ),
-            array( // #4
+            array( // #5
                 "FB",
                 0.51,
             ),
@@ -600,10 +604,14 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
                 "00",
             ),
             array( // #3
+                10,
+                "0D",
+            ),
+            array( // #4
                 0.51,
                 "FB",
             ),
-            array( // #4
+            array( // #5
                 0.50,
                 "FF",
             ),

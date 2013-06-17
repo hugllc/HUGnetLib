@@ -175,7 +175,7 @@ class ControlInputTest extends DriverTestBase
                             array('extra'),
                         ),
                         "set" => array(
-                            array('extra', array(110, 32)),
+                            array('extra', array(6.74, 32)),
                         ),
                     ),
                 ),
@@ -227,7 +227,7 @@ class ControlInputTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "6E20",
+                "0720",
             ),
         );
     }

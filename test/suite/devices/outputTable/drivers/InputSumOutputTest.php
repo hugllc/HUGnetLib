@@ -127,7 +127,7 @@ class InputSumOutputTest extends DriverTestBase
                         "set" => array(
                             array(
                                 'extra',
-                                array(120, 1, 8, 32)
+                                array(14.22, 1, 8, 32)
                             ),
                         ),
                     ),
@@ -195,7 +195,7 @@ class InputSumOutputTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "7801080020000000",
+                "0E01080020000000",
             ),
             array( // #1 Negative number
                 array(

@@ -174,7 +174,7 @@ class NullInputTest extends DriverTestBase
                         "set" => array(
                             array(
                                 'extra',
-                                array(19, 32)
+                                array(1.16, 32)
                             ),
                         ),
                     ),
@@ -193,7 +193,7 @@ class NullInputTest extends DriverTestBase
                             array('extra'),
                         ),
                         "set" => array(
-                            array('extra', array(19, -1)),
+                            array('extra', array(1.16, -1)),
                         ),
                     ),
                 ),
@@ -235,7 +235,7 @@ class NullInputTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "1000000000",
+                "0100000000",
             ),
             array( // #1
                 array(
@@ -245,7 +245,7 @@ class NullInputTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "1320000000",
+                "0120000000",
             ),
             array( // #2 Negative numbers
                 array(
@@ -255,7 +255,7 @@ class NullInputTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "13FFFFFFFF",
+                "01FFFFFFFF",
             ),
         );
     }

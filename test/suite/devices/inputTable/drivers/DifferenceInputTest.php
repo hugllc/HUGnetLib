@@ -272,7 +272,7 @@ class DifferenceInputTest extends DriverTestBase
                         array('extra'),
                     ),
                     "set" => array(
-                        array('extra', array(110, 1, 4, 10)),
+                        array('extra', array(6.74, 1, 4, 10)),
                     ),
                     "device" => array(
                         array(),
@@ -371,7 +371,7 @@ class DifferenceInputTest extends DriverTestBase
                         array('extra'),
                     ),
                     "set" => array(
-                        array('extra', array(110, 1, 4, 0x12345678)),
+                        array('extra', array(6.74, 1, 4, 0x12345678)),
                     ),
                     "device" => array(
                         array(),
@@ -569,7 +569,7 @@ class DifferenceInputTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "6E0204FFFFFFFF",
+                "070204FFFFFFFF",
             ),
             array( // #1 Negative Offset
                 array(
@@ -637,7 +637,7 @@ class DifferenceInputTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "6E02040A000000",
+                "0702040A000000",
             ),
         );
     }

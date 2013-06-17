@@ -358,9 +358,7 @@ abstract class LoadableDriver
     */
     protected function encodePriority($value)
     {
-        if (($value >= 1) && ($value < 129)) {
-            $value = 129 - $value;
-        } else if (($value > 0.5) && ($value < 1)) {
+        if (($value > 0.5) && ($value < 129)) {
             $value = round(128 / $value);
         } else if (round($value, 2) == 0.50) {
             $value = 255;
@@ -380,9 +378,7 @@ abstract class LoadableDriver
     protected function decodePriority($string)
     {
         $value = $this->decodeInt($string, 1);
-        if (($value >= 0) && ($value <= 128)) {
-            $value = 129 - $value;
-        } else if (($value > 128) && ($value <= 255)) {
+        if (($value > 0) && ($value <= 255)) {
             $value = round(128 / $value, 2);
         } else {
             $value = 129;

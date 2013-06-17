@@ -113,7 +113,7 @@ class ADuCGPIOTest extends DriverTestBase
                             array('extra'),
                         ),
                         "set" => array(
-                            array('extra', array(110, 10)),
+                            array('extra', array(6.74, 10)),
                         ),
                     ),
                 ),
@@ -131,7 +131,7 @@ class ADuCGPIOTest extends DriverTestBase
                             array('extra'),
                         ),
                         "set" => array(
-                            array('extra', array(113, 1)),
+                            array('extra', array(8.0, 1)),
                         ),
                     ),
                 ),
@@ -183,7 +183,7 @@ class ADuCGPIOTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "770B",
+                "0D0B",
             ),
         );
     }

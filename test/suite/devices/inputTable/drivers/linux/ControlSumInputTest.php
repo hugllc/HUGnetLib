@@ -205,7 +205,7 @@ class ControlSumInputTest extends DriverTestBaseLinux
                         "set" => array(
                             array(
                                 'extra',
-                                array(110, 32, 21, 48, 1683, 1253, 12, 14, 1)
+                                array(6.74, 32, 21, 48, 1683, 1253, 12, 14, 1)
                             ),
                         ),
                     ),
@@ -225,7 +225,7 @@ class ControlSumInputTest extends DriverTestBaseLinux
                         ),
                         "set" => array(
                             array(
-                                'extra', array(110, 32, -1, -1, -1, -1, -1, -1, 255)
+                                'extra', array(6.74, 32, -1, -1, -1, -1, -1, -1, 255)
                             ),
                         ),
                     ),
@@ -278,7 +278,7 @@ class ControlSumInputTest extends DriverTestBaseLinux
                         ),
                     ),
                 ),
-                "6E2015003000000093060000E50400000C000E0001",
+                "072015003000000093060000E50400000C000E0001",
             ),
             array( // #2 Negative numbers
                 array(
@@ -288,7 +288,7 @@ class ControlSumInputTest extends DriverTestBaseLinux
                         ),
                     ),
                 ),
-                "6E20FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+                "0720FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
             ),
         );
     }
