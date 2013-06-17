@@ -211,7 +211,7 @@ HUGnet.Device = Backbone.Model.extend({
                         self.trigger('saved');
                         self.set(data);
                         self.trigger('fetchdone');
-                        self.trigger('sync');
+                        self.trigger('sync', self);
                     } else {
                         self.trigger('savefail', "saved failed on server");
                     }
@@ -255,7 +255,7 @@ HUGnet.Device = Backbone.Model.extend({
                         self.unset('update');
                         self.set(data);
                         self.trigger('configdone');
-                        self.trigger('sync');
+                        self.trigger('sync', self);
                     } else {
                         self.trigger('configfail');
                     }
