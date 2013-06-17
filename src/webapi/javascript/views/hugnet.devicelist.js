@@ -118,6 +118,7 @@ HUGnet.DeviceListView = Backbone.View.extend({
     sorting: [[1,0]],
     viewed: 0,
     events: {
+        'click .goFilter': 'goFilter'
     },
     initialize: function (options)
     {
@@ -138,7 +139,7 @@ HUGnet.DeviceListView = Backbone.View.extend({
         }
         this.model.each(this.insert, this);
         this.model.on('add', this.insert, this);
-        this.model.on('sync', this.sync, this);
+        this.model.on('sync', this.insert, this);
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -175,7 +176,7 @@ HUGnet.DeviceListView = Backbone.View.extend({
                 templatebase: this.templatebase
             });
             this.$('tbody').append(this.views[id].render().el);
-            this.setView(id);
+            this.setView(id, true);
             this.$('table').trigger('update');
         }
     },
@@ -188,9 +189,9 @@ HUGnet.DeviceListView = Backbone.View.extend({
         this.$el.trigger('update');
         this.$('table').trigger('update');
     },
-    setView: function(id)
+    setView: function(id, show)
     {
-        if (this.checkFilter(this.views[id].model, this.filter)) {
+        if (show) {
             this.views[id].$el.show();
             this.viewed++;
         } else {
@@ -201,10 +202,39 @@ HUGnet.DeviceListView = Backbone.View.extend({
     {
 
         for (var key in filter) {
-            if (model.get(key) !== filter[key]) {
+            var value = model.get(key);
+            if (typeof filter[key] === 'string') {
+                if (value.toString().indexOf(filter[key]) === -1) {
+                    return false;
+                }
+            } else if (value != filter[key]) {
                 return false;
             }
         }
         return true;
+    },
+    goFilter: function()
+    {
+        var activeFilter = this.$(".activeFilter").val();
+        var fieldFilter = this.$(".fieldFilter").val();
+        var searchFilter = this.$(".searchFilter").val();
+        var filter = {};
+        if (activeFilter === "1") {
+            filter.Active = 1;
+        } else if (activeFilter === "0") {
+            filter.Active = 0;
+        }
+        if ((searchFilter !== "") && (fieldFilter !== "")) {
+            filter[fieldFilter] = searchFilter;
+        }
+        for (var view in this.views) {
+            var show = true;
+            for (var key in filter) {
+                if (!this.checkFilter(this.views[view].model, filter)) {
+                    show = false;
+                }
+            }
+            this.setView(view, show);
+        }
     }
 });
