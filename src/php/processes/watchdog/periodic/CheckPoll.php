@@ -73,7 +73,7 @@ class CheckPoll extends \HUGnet\processes\watchdog\Periodic
     protected function __construct(&$gui)
     {
         parent::__construct($gui);
-        $this->oldest = (int)$this->ui()->get("max_poll_age");
+        $this->oldest = (int)$this->ui()->get("max_history_age");
     }
     /**
     * This function creates the system.
@@ -103,15 +103,15 @@ class CheckPoll extends \HUGnet\processes\watchdog\Periodic
                 }
                 $device->load($key);
                 if ($device->get("PollInterval") > 0) {
-                    $lastPoll = $device->getParam("LastPoll");
-                    if ($lastPoll < $oldest) {
+                    $lastHistory = $device->getParam("LastHistoryPush");
+                    if ($lastHistory < $oldest) {
                         $this->ui()->criticalError(
-                            "CheckPoll".$key,
-                            "Device ".sprintf("%06X", $key)." hasn't polled since "
-                            .date("Y-m-d H:i:s", $lastPoll)
+                            "CheckHistory".$key,
+                            "Device ".sprintf("%06X", $key)." hasn't shown history"
+                            ." since ".date("Y-m-d H:i:s", $lastHistory)
                         );
                     } else {
-                        $this->ui()->clearError("CheckPoll".$key);
+                        $this->ui()->clearError("CheckHistory".$key);
                     }
                 }
             }
