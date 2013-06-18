@@ -66,6 +66,7 @@ HUGnet.Device = Backbone.Model.extend({
         processes: {},
         dataChannels: {},
         params: {},
+        localParams: {},
         setparams: {},
         InputTables: 0,
         OutputTables: 0,

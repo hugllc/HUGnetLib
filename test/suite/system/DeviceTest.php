@@ -768,7 +768,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     'ActiveSensors' => 0,
                     'DeviceGroup' => 'FFFFFF',
                     'sensors' => '',
-                    'localParams' => '',
+                    'localParams' => array(),
                 )
             ),
             array(   // #1 No default stuff
@@ -861,7 +861,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     'ActiveSensors' => 0,
                     'DeviceGroup' => 'FFFFFF',
                     'sensors' => '',
-                    'localParams' => '',
+                    'localParams' => array(),
                 )
             ),
             array( //  #3 Not a Late Poll
@@ -932,7 +932,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     'ActiveSensors' => 0,
                     'DeviceGroup' => 'FFFFFF',
                     'sensors' => '',
-                    'localParams' => '',
+                    'localParams' => array(),
                 )
             ),
         );

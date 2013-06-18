@@ -150,6 +150,11 @@ class Device extends \HUGnet\base\SystemTableAction
         if (is_string($return["params"])) {
             $return["params"] = (array)json_decode($return["params"], true);
         }
+        if (is_string($return["localParams"])) {
+            $return["localParams"] = (array)json_decode(
+                $return["localParams"], true
+            );
+        }
         if ($default) {
             $this->_toArrayExtra($return);
             $int = ($return["PollInterval"] < 30) ? 30 : $return["PollInterval"];
