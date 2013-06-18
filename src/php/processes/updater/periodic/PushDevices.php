@@ -59,7 +59,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
 class PushDevices extends \HUGnet\processes\updater\Periodic
 {
     /** This is the maximum number of history records to get */
-    const MAX_HISTORY = 500;
+    const MAX_HISTORY = 1000;
     /** This is the period */
     protected $period = 30;
     /** This is the object we use */
