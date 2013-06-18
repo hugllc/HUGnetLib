@@ -50,10 +50,10 @@ HUGnet.DataView = Backbone.View.extend({
     id: undefined,
     table: undefined,
     plot: undefined,
-    data: {},
-    header: {},
-    fields: {},
-    classes: {},
+    data: [],
+    header: [],
+    fields: [],
+    classes: [],
     units: [],
     parent: 'unknown',
     since: 0,
@@ -81,6 +81,10 @@ HUGnet.DataView = Backbone.View.extend({
         this.parent = options.parent;
         var device;
         var i;
+        this.header = [];
+        this.fields = [];
+        this.classes = [];
+        this.units = [];
         this.header[0] = 'Date';
         this.fields[0] = 'Date';
         this.classes[0] = '';
