@@ -74,16 +74,6 @@ class Checkin extends \HUGnet\processes\updater\Periodic
     {
         parent::__construct($gui);
         $this->_datacollector = $this->system()->datacollector();
-        $this->system()->out("Updating the data collector record...");
-        $device = $this->system()->device(
-            $this->system()->network()->device()->getID()
-        );
-        $this->_datacollector->load($device);
-        if (function_exists("posix_uname")) {
-            $uname = posix_uname();
-            $this->_datacollector->set("name", trim($uname['nodename']));
-        }
-        $this->_datacollector->store(true);
     }
     /**
     * This function creates the system.
@@ -104,10 +94,7 @@ class Checkin extends \HUGnet\processes\updater\Periodic
     public function &execute()
     {
         if ($this->ready()) {
-            $this->_datacollector->load(
-                array("uuid" => $this->system()->get("uuid"))
-            );
-
+            $this->_updateDC();
             if ($this->hasMaster()) {
                 $this->system()->out(
                     "Pushing datacollector to the master server..."
@@ -128,6 +115,28 @@ class Checkin extends \HUGnet\processes\updater\Periodic
                 $this->success();
             }
         }
+    }
+    /**
+    * This function creates the system.
+    *
+    * @return null
+    */
+    private function _updateDC()
+    {
+        $this->system()->out("Updating the data collector record...");
+        $device = $this->system()->device(
+            $this->system()->network()->device()->getID()
+        );
+        $this->_datacollector->load($device);
+        if (function_exists("posix_uname")) {
+            $uname = posix_uname();
+            $this->_datacollector->set("name", trim($uname['nodename']));
+        }
+        $this->_datacollector->set("LastContact", $this->system()->now());
+        $this->_datacollector->store(true);
+        $this->_datacollector->load(
+            array("uuid" => $this->system()->get("uuid"))
+        );
     }
 }
 
