@@ -107,6 +107,9 @@ class ActionVirtual extends Action
             "RawSetup",
             $this->device->encode()
         );
+        $this->device->set(
+            "GatewayKey", (int)$this->system->get("GatewayKey")
+        );
         $this->device->setParam("LastContact", time());
         $this->device->setParam("LastConfig", time());
         $this->device->setParam("ConfigFail", 0);
