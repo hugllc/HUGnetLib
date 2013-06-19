@@ -140,7 +140,7 @@ class WebAPI extends HTML
         $action = strtolower(trim($this->args()->get("action")));
         if ($action == "get") {
             $ret = $this->_executeSystem($did, $dev, $extra);
-        } else if ($this->_auth(true)) {
+        } else if ($this->_auth(true) || ($action == "list")) {
             //$dev->load($did);
             $ret = $dev->webAPI($this->args(), $extra);
         }
