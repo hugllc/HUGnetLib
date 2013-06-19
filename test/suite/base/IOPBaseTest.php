@@ -268,9 +268,10 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
     /**
     * This tests the object creation
     *
-    * @param array $config The configuration to use
-    * @param mixed $class  This is either the name of a class or an object
-    * @param mixed $expect The value we expect back
+    * @param array  $config The configuration to use
+    * @param mixed  $class  This is either the name of a class or an object
+    * @param string $table  The table to use
+    * @param mixed  $expect The value we expect back
     *
     * @return null
     *
@@ -792,13 +793,6 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
     /**
     * This tests the object creation
     *
-    * @param array  $config The configuration to use
-    * @param mixed  $device The device to set
-    * @param mixed  $class  This is either the name of a class or an object
-    * @param array  $mocks  The mocks to use
-    * @param string $string The string to feed into the decode
-    * @param array  $expect The expected return
-    *
     * @return null
     */
     public function testIsNewTrue() 
@@ -815,13 +809,6 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
     }
     /**
     * This tests the object creation
-    *
-    * @param array  $config The configuration to use
-    * @param mixed  $device The device to set
-    * @param mixed  $class  This is either the name of a class or an object
-    * @param array  $mocks  The mocks to use
-    * @param string $string The string to feed into the decode
-    * @param array  $expect The expected return
     *
     * @return null
     *

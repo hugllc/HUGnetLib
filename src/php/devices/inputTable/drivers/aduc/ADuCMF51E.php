@@ -250,27 +250,13 @@ class ADuCMF51E extends \HUGnet\devices\inputTable\DriverADuC
         if (($C == 0) || ($T == 0)) {
             return null;
         }
-        $cube = bcdiv(1,3);
+        $cube = bcdiv(1, 3);
         $y = bcdiv(bcsub($A, bcdiv(1, $T)), bcmul(2, $C));
         $x = pow(bcadd(pow(bcdiv($B, bcmul(3, $C)), 3), pow($y, 2)), 0.5);
         $e = bcsub(pow(bcsub($x, $y), $cube), pow(bcadd($x, $y), $cube));
         $R = pow(M_E, $e);
         return (float)$R;
     }
-    /**
-    * This is the Naperian Log
-    *
-    * @param float $R The resistance 
-    * @param float $P The thermistor used
-    *
-    * @return float The Naperian logrithm
-    * @SuppressWarnings(PHPMD.ShortVariable)
-    */
-    protected function napLog($V) 
-    {
-        return (float)bcmul(23025850, bcsub(7, log($V, 10)));
-    }
-    
 }
 
 

@@ -955,8 +955,8 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     ) {
         $sys = $this->getMock('\HUGnet\System', array('now'));
         $sys->expects($this->any())
-             ->method('now')
-             ->will($this->returnValue(1000000));
+            ->method('now')
+            ->will($this->returnValue(1000000));
         $obj = Device::factory($sys, $config);
         $json = $obj->toArray($default);
         $this->assertEquals($expect, $json);
@@ -1355,7 +1355,8 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     "id" => 5,
-                    "RawSetup" => "000000000500391201430039200343010203FFFFFFFF01000000000000000000",
+                    "RawSetup" => "000000000500391201430039200343010203FFFFFFFF"
+                        ."01000000000000000000",
                 ),
                 "010001100D00200C00300B00400A00500900600800700700800600900500",
                 0x55,
@@ -1699,8 +1700,8 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     ) {
         $sys = $this->getMock('\HUGnet\System', array('now'));
         $sys->expects($this->any())
-             ->method('now')
-             ->will($this->returnValue(1000000));
+            ->method('now')
+            ->will($this->returnValue(1000000));
         $obj = Device::factory($sys, $config);
         $sen = $obj->input($sensor);
         $this->assertTrue(
