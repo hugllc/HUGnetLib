@@ -61,6 +61,8 @@ class ActionVirtual extends Action
 {
     /** This is a cache of history records */
     private $_histCache = array();
+    /** This is a cache of history records */
+    private $_pingCache = array();
     /**
     * This function creates the system.
     *
@@ -84,11 +86,51 @@ class ActionVirtual extends Action
     */
     public function ping($find = false)
     {
-        $this->device->load($this->device->id());
-        $this->device->setParam("LastContact", time());
-        $this->device->setParam("ContactFail", 0);
-        $this->device->store();
-        return true;
+        $time = $this-
+        $sensors = $this->device->get("totalSensors");
+        $ret = false;
+        for ($i = 0; $i < $sensors; $i++) {
+            $sen = $this->device->input($i);
+            $ret = $this->_getPing($sen, $time);
+            if ($ret) {
+                $this->device->load($this->device->id());
+                $this->device->setParam("LastContact", time());
+                $this->device->setParam("ContactFail", 0);
+                $this->device->store();
+                break;
+            }
+        }
+        return $ret;
+    }
+    /**
+    * Polls the device and saves the poll
+    *
+    * @param object &$sensor The sensor to use
+    * @param int    $time    The time to use
+    *
+    * @return false on failure, the history object on success
+    */
+    private function _getPing(&$sensor, $time)
+    {
+        if ($sensor->get("driver") !== "CloneVirtual") {
+             // Only get clone virtual points.
+             return false;
+        }
+        $extra = $sensor->get("extra");
+        $dev = hexdec($extra[0]);
+        if (empty($dev)) {
+            return false;
+        }
+        if ($this->_pingCache[$dev] != $time) {
+            $device = $this->system->device($dev);
+            $ret = $device->action()->ping();
+            if (!$ret) {
+                $this->_pingCache[$dev] = $time;
+            } else {
+                return true;
+            }
+        }
+        return false;
     }
     /**
     * Gets the config and saves it
