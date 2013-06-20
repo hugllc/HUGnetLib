@@ -75,7 +75,7 @@ class ETEST extends EVIRTUAL
         "averageTable" => "ETESTAverage",
         "type" => "test",
         "job"  => "sense",
-        "actionClass" => "ActionVirtual",
+        "actionClass" => "ActionTest",
         "arch" => "virtual",
         "InputTables" => 20,
         "OutputTables" => 0,
