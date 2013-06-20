@@ -96,10 +96,15 @@ class ActionVirtual extends Action
                 $this->device->load($this->device->id());
                 $this->device->setParam("LastContact", time());
                 $this->device->setParam("ContactFail", 0);
-                $this->device->store();
                 break;
             }
         }
+        if (!$ret) {
+            $fail = $this->device->getParam("ContactFail");
+            $this->device->setParam("ContactFail", $fail+1);
+            $ret = false;
+        }
+        $this->device->store();
         return $ret;
     }
     /**
