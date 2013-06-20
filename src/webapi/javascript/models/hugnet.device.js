@@ -79,6 +79,7 @@ HUGnet.Device = Backbone.Model.extend({
         RefreshButtonID: '',
         target: '',
     },
+    lock: false,
     /**
     * This function initializes the object
     */
@@ -104,7 +105,7 @@ HUGnet.Device = Backbone.Model.extend({
     fetch: function()
     {
         var id = this.get('id');
-        if (id !== 0) {
+        if ((id !== 0) && !this.lock) {
             var myself = this;
             $.ajax({
                 type: 'GET',
@@ -147,7 +148,7 @@ HUGnet.Device = Backbone.Model.extend({
     refresh: function()
     {
         var id = this.get('id');
-        if (id !== 0) {
+        if ((id !== 0) && !this.lock) {
             var self = this;
             $.ajax({
                 type: 'GET',
@@ -372,7 +373,7 @@ HUGnet.Device = Backbone.Model.extend({
 HUGnet.Devices = Backbone.Collection.extend({
     url: '/HUGnetLib/HUGnetLibAPI.php',
     model: HUGnet.Device,
-    refresh: 0,
+    refresh: 300,
     timer: null,
     initialize: function (options)
     {
@@ -384,24 +385,23 @@ HUGnet.Devices = Backbone.Collection.extend({
     {
         return parseInt(model.get("id"), 10);
     },
-    setRefresh: function (refresh)
+    startRefresh: function (refresh)
     {
-        refresh || (refresh = 300);
-        if (this.refresh <= 0) {
-            this.refresh = refresh;
+        if (this.timer == null) {
+            refresh && (this.refresh = refresh);
             this._refreshSetTimeout();
         }
     },
     stopRefresh: function ()
     {
-        if (this.refresh > 0) {
-            this.refresh = 0;
+        if (this.timer != null) {
             clearTimeout(this.timer);
+            this.timer = null;
         }
     },
     _refresh: function ()
     {
-        if (this.refresh > 0) {
+        if (this.timer != null) {
             this.update();
             this._refreshSetTimeout();
         }
