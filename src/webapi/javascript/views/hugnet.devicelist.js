@@ -140,6 +140,7 @@ HUGnet.DeviceListView = Backbone.View.extend({
         this.model.each(this.insert, this);
         this.model.on('add', this.insert, this);
         this.model.on('sync', this.insert, this);
+        this.model.setRefresh();
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device

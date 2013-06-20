@@ -372,6 +372,8 @@ HUGnet.Device = Backbone.Model.extend({
 HUGnet.Devices = Backbone.Collection.extend({
     url: '/HUGnetLib/HUGnetLibAPI.php',
     model: HUGnet.Device,
+    refresh: 0,
+    timer: null,
     initialize: function (options)
     {
         if (options) {
@@ -382,8 +384,40 @@ HUGnet.Devices = Backbone.Collection.extend({
     {
         return parseInt(model.get("id"), 10);
     },
+    setRefresh: function (refresh)
+    {
+        refresh || (refresh = 300);
+        if (this.refresh <= 0) {
+            this.refresh = refresh;
+            this._refreshSetTimeout();
+        }
+    },
+    stopRefresh: function ()
+    {
+        if (this.refresh > 0) {
+            this.refresh = 0;
+            clearTimeout(this.timer);
+        }
+    },
+    _refresh: function ()
+    {
+        if (this.refresh > 0) {
+            this.update();
+            this._refreshSetTimeout();
+        }
+    },
+    _refreshSetTimeout: function ()
+    {
+        var self = this;
+        this.timer = setTimeout(
+            function () {
+                self._refresh();
+            },
+            (this.refresh * 1000)
+        );
+    },
     /**
-    * Gets infomration about a device.  This is retrieved directly from the device
+    * Gets information about a device.  This is retrieved directly from the device
     *
     * This function is for use of the device list
     *
