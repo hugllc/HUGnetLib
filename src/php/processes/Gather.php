@@ -167,6 +167,9 @@ class Gather extends \HUGnet\ui\Daemon
             $lastContact = time() - $this->_device->getParam("LastContactTry");
         } else {
             $lastContact = time() - $this->_device->getParam("LastContact");
+            if ((time() - $this->_device->getParam("LastContactTry")) < 30) {
+                $lastContact = 0; // Don't try more than once per 30 seconds
+            }
         }
         $ret = $lastContact > self::PING_TIME;
         if ($ret) {
