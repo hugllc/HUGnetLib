@@ -167,21 +167,19 @@ abstract class BaseChan
         $this->check();
     }
     /**
-     * Returns the table as an array
-     *
-     * @param array $array The array to use
-     *
-     * @return array
-     */
+    * Returns the table as an array
+    *
+    * @return array
+    */
     public function device()
     {
         return $this->_device;
     }
     /**
-     * Checks for consistancy
-     *
-     * @return object
-     */
+    * Checks for consistancy
+    *
+    * @return object
+    */
     protected function check()
     {
     }

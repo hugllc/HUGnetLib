@@ -189,12 +189,12 @@ class BaseChanTest extends \PHPUnit_Framework_TestCase
      */
     public function testdevice()
     {
-            $dev = new \HUGnet\DummyBase("Device");
-            $dev->resetMock($mocks);
-            $obj = TestChan::factory($dev, $driver, $data);
-            $this->assertSame($dev, $obj->device());
-            unset($obj);
-        }
+        $dev = new \HUGnet\DummyBase("Device");
+        $dev->resetMock($mocks);
+        $obj = TestChan::factory($dev, $driver, $data);
+        $this->assertSame($dev, $obj->device());
+        unset($obj);
+    }
 }
 
 /**
