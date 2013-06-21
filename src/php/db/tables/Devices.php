@@ -144,6 +144,11 @@ class Devices extends \HUGnet\db\Table
             "Type" => "tinyint(4)",
             "Default" => 1,
         ),
+        "Publish" => array(
+            "Name" => "Publish",
+            "Type" => "tinyint(4)",
+            "Default" => 1,
+        ),
         "GatewayKey" => array(
             "Name" => "GatewayKey",
             "Type" => "int(11)",
