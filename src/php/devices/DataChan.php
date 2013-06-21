@@ -38,6 +38,8 @@
 namespace HUGnet\devices;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
+/** This is our base class */
+require_once dirname(__FILE__)."/../base/BaseChan.php";
 
 /**
  * Base system class.
@@ -56,119 +58,15 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class DataChan
+class DataChan extends \HUGnet\base\BaseChan
 {
-    /**
-    * This is the device we rode in on
-    */
-    private $_device;
     /**
     * This is our units object
     */
     private $_units;
     /** @var array The configuration that we are going to use */
-    private $_setable = array("units", "label", "decimals", "dataType");
-    /**
-    * This is the device we rode in on
-    */
-    private $_data = array();
+    protected $setable = array("units", "label", "decimals", "dataType");
 
-    /**
-    * This function sets up the driver object, and the database object.  The
-    * database object is taken from the driver object.
-    *
-    * @param object $device The device object to use
-    * @param array  $driver The driver information
-    *
-    * @return null
-    */
-    protected function __construct($device, $driver)
-    {
-        \HUGnet\System::systemMissing(
-            get_class($this)." needs to be passed a device object",
-            !is_object($device)
-        );
-        $this->_device = &$device;
-        $this->_data = (array)$driver;
-    }
-
-    /**
-    * This is the destructor
-    */
-    public function __destruct()
-    {
-        unset($this->_device);
-    }
-    /**
-    * This function creates the system.
-    *
-    * @param object $device The device object to use
-    * @param array  $driver The driver information
-    * @param mixed  $data   (array) data info array
-    *
-    * @return null
-    */
-    public static function &factory($device, $driver, $data)
-    {
-        $object = new DataChan($device, $driver);
-        $object->fromArray($data);
-        return $object;
-    }
-    /**
-    * Gets a value
-    *
-    * @param string $field the field to get
-    *
-    * @return null
-    */
-    public function get($field)
-    {
-        return $this->_data[$field];
-    }
-    /**
-    * Gets a value
-    *
-    * @param string $field the field to get
-    * @param mixed  $value The value to set it to
-    *
-    * @return null
-    */
-    private function _set($field, $value)
-    {
-        if (in_array($field, $this->_setable)) {
-            $this->_data[$field] = $value;
-        }
-        return $this->get($field);
-    }
-    /**
-    * Returns the table as an array
-    *
-    * @param bool $default Whether to include the default params or not
-    *
-    * @return array
-    */
-    public function toArray($default = true)
-    {
-        $data = (array)$this->_data;
-        if (!$default) {
-            $data = array_intersect_key($data, array_flip($this->_setable));
-        }
-        return $data;
-    }
-    /**
-    * Returns the table as an array
-    *
-    * @param array $array The array to use
-    *
-    * @return array
-    */
-    public function fromArray($array)
-    {
-        foreach ((array)$array as $field => $value) {
-            $this->_set($field, $value);
-        }
-        $this->_check();
-    }
     /**
     * Returns an array of valid units
     *
@@ -247,20 +145,20 @@ class DataChan
     */
     public function input()
     {
-        return $this->_device->input($this->get("input"));
+        return $this->device()->input($this->get("input"));
     }
     /**
     * Checks for consistancy
     *
     * @return object
     */
-    private function _check()
+    protected function check()
     {
         if (!$this->_units()->valid($this->get("units"))) {
-            $this->_set("units", $this->get("storageUnit"));
+            $this->set("units", $this->get("storageUnit"));
         }
         if ($this->get("decimals") > $this->get("maxDecimals")) {
-            $this->_set("decimals", $this->get("maxDecimals"));
+            $this->set("decimals", $this->get("maxDecimals"));
         }
     }
     /**

@@ -38,6 +38,8 @@
 namespace HUGnet\devices;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
+/** This is our base class */
+require_once dirname(__FILE__)."/../base/BaseChan.php";
 
 /**
  * Base system class.
@@ -56,115 +58,10 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class ControlChan
+class ControlChan extends \HUGnet\base\BaseChan
 {
-    /**
-    * This is the device we rode in on
-    */
-    private $_device;
     /** @var array The configuration that we are going to use */
-    private $_setable = array("label");
-    /**
-    * This is the device we rode in on
-    */
-    private $_data = array();
-
-    /**
-    * This function sets up the driver object, and the database object.  The
-    * database object is taken from the driver object.
-    *
-    * @param object $device The device object to use
-    * @param array  $driver The driver information
-    *
-    * @return null
-    */
-    protected function __construct($device, $driver)
-    {
-        \HUGnet\System::systemMissing(
-            get_class($this)." needs to be passed a device object",
-            !is_object($device)
-        );
-        $this->_device = &$device;
-        $this->_data = (array)$driver;
-    }
-
-    /**
-    * This is the destructor
-    */
-    public function __destruct()
-    {
-        unset($this->_device);
-    }
-    /**
-    * This function creates the system.
-    *
-    * @param object $device The device object to use
-    * @param array  $driver The driver information
-    * @param mixed  $data   (array) data info array
-    *
-    * @return null
-    */
-    public static function &factory($device, $driver, $data)
-    {
-        $object = new ControlChan($device, $driver);
-        $object->fromArray($data);
-        return $object;
-    }
-    /**
-    * Gets a value
-    *
-    * @param string $field the field to get
-    *
-    * @return null
-    */
-    public function get($field)
-    {
-        return $this->_data[$field];
-    }
-    /**
-    * Gets a value
-    *
-    * @param string $field the field to get
-    * @param mixed  $value The value to set it to
-    *
-    * @return null
-    */
-    private function _set($field, $value)
-    {
-        if (in_array($field, $this->_setable)) {
-            $this->_data[$field] = $value;
-        }
-        return $this->get($field);
-    }
-    /**
-    * Returns the table as an array
-    *
-    * @param bool $default Whether to include the default params or not
-    *
-    * @return array
-    */
-    public function toArray($default = true)
-    {
-        $data = (array)$this->_data;
-        if (!$default) {
-            $data = array_intersect_key($data, array_flip($this->_setable));
-        }
-        return $data;
-    }
-    /**
-    * Returns the table as an array
-    *
-    * @param array $array The array to use
-    *
-    * @return array
-    */
-    public function fromArray($array)
-    {
-        foreach ((array)$array as $field => $value) {
-            $this->_set($field, $value);
-        }
-        $this->_check();
-    }
+    protected $setable = array("label");
     /**
     * Returns the input object associated with this channel
     *
@@ -172,15 +69,7 @@ class ControlChan
     */
     public function output()
     {
-        return $this->_device->output($this->get("output"));
-    }
-    /**
-    * Checks for consistancy
-    *
-    * @return object
-    */
-    private function _check()
-    {
+        return $this->device()->output($this->get("output"));
     }
 }
 
