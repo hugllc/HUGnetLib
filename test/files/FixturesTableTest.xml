@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+    <table name="fixtures">
+        <column>id</column>
+        <column>dev</column>
+        <column>fixture</column>
+        <column>created</column>
+        <column>modified</column>
+    </table>
+</dataset>
