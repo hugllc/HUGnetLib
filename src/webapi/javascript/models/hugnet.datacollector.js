@@ -192,6 +192,8 @@ HUGnet.Datacollector = Backbone.Model.extend({
 HUGnet.Datacollectors = Backbone.Collection.extend({
     url: '/HUGnetLib/HUGnetLibAPI.php',
     model: HUGnet.Datacollector,
+    refresh: 300,
+    timer: null,
     initialize: function (options)
     {
         if (options) {
@@ -201,6 +203,37 @@ HUGnet.Datacollectors = Backbone.Collection.extend({
     comparator: function (model)
     {
         return parseInt(model.get("id"), 10);
+    },
+    startRefresh: function (refresh)
+    {
+        if (this.timer == null) {
+            refresh && (this.refresh = refresh);
+            this._refreshSetTimeout();
+        }
+    },
+    stopRefresh: function ()
+    {
+        if (this.timer != null) {
+            clearTimeout(this.timer);
+            this.timer = null;
+        }
+    },
+    _refresh: function ()
+    {
+        if (this.timer != null) {
+            this.update();
+            this._refreshSetTimeout();
+        }
+    },
+    _refreshSetTimeout: function ()
+    {
+        var self = this;
+        this.timer = setTimeout(
+            function () {
+                self._refresh();
+            },
+            (this.refresh * 1000)
+        );
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -237,7 +270,7 @@ HUGnet.Datacollectors = Backbone.Collection.extend({
     *
     * @return null
     */
-    refresh: function()
+    update: function()
     {
         this.forEach(
             function (element, index, list)
