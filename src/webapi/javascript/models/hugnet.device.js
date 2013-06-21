@@ -52,7 +52,6 @@ HUGnet.Device = Backbone.Model.extend({
         FWVersion: '',
         RawSetup: '',
         Active: 0,
-        Publish: 1,
         GatewayKey: 0,
         ControllerKey: 0,
         ControllerIndex: 0,
