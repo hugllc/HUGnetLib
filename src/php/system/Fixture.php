@@ -94,6 +94,70 @@ class Fixture extends \HUGnet\Device
     */
     public function get($field)
     {
+        $fixture = json_decode($this->table()->get('fixture'), true);
+        return $fixture[$field];
+    }
+    /**
+    * Gets one of the parameters
+    *
+    * @param string $field The field to get
+    *
+    * @return The value of the field
+    */
+    public function &getParam($field)
+    {
+        $params = $this->get("params");
+        return $params[$field];
+    }
+    /**
+    * Gets one of the parameters
+    *
+    * @param string $field The field to get
+    *
+    * @return The value of the field
+    */
+    public function &getLocalParam($field)
+    {
+        // There are no local parameters 
+        return null;
+    }
+    /**
+    * Sets a value
+    *
+    * @param string $field the field to set
+    * @param mixed  $value the value to set
+    *
+    * @return null
+    */
+    public function set($field, $value)
+    {
+        return $value;
+    }
+    /**
+    * Sets one of the parameters
+    *
+    * @param string $field The field to set
+    * @param mixed  $value The value to set the field to
+    *
+    * @return null
+    */
+    public function &setParam($field, $value)
+    {
+        // There is no setting of parameters
+        return $value;
+    }
+    /**
+    * Sets one of the parameters
+    *
+    * @param string $field The field to set
+    * @param mixed  $value The value to set the field to
+    *
+    * @return null
+    */
+    public function &setLocalParam($field, $value)
+    {
+        // There is no setting of parameters
+        return $value;
     }
     /**
     * Returns the table as an array
@@ -104,25 +168,57 @@ class Fixture extends \HUGnet\Device
     */
     public function toArray($default = false)
     {
+        return json_decode($this->table()->get('fixture'), true);
     }
     /**
     * This takes the class and makes it into a setup string
     *
-    * @param bool $showFixed Show the fixed portion of the data
-    *
     * @return string The encoded string
     */
-    public function export($showFixed = true)
+    public function export()
     {
+        return $this->table()->get('fixture');
     }
     /**
     * This builds the class from a setup string
     *
-    * @param string $string The setup string to decode
+    * @param mixed $data This could be a string, or a device record.
     *
     * @return bool True on success, false on failure
     */
-    public function import($string)
+    public function import($data)
+    {
+        if (is_object($data) && is_a($data, "\HUGnet\Device")) {
+            $data = $this->_importDevice($data);
+        }
+        if (is_string($data)) {
+            $this->table()->set("fixture", $data);
+            $now = $this->system()->now();
+            $this->table()->set("created", $now);
+            $this->table()->set("modified", $now);
+        }
+        return parent::store();
+    }
+     /**
+    * Stores data into the database
+    *
+    * @param bool $replace Replace any record that is in the way
+    *
+    * @return null
+    */
+    public function store($replace = false)
+    {
+        // Doesn't actually save anything.
+        return true;
+    }
+   /**
+    * This builds the class from a setup string
+    *
+    * @param mixed $data This could be a string, or a device record.
+    *
+    * @return bool True on success, false on failure
+    */
+    private function _importDevice($data)
     {
     }
     /**

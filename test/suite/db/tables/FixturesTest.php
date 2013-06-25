@@ -184,7 +184,10 @@ class FixturesTest extends TableTestBase
     public static function dataSet()
     {
         return array(
-            array("id", 1, 1),
+            array("id", "1", 1),
+            array("id",  1, 1),
+            array("fixture", array(1, 2, 3, 4), "[1,2,3,4]"),
+            array("fixture", "[1,2,3,4]", "[1,2,3,4]"),
         );
     }
 

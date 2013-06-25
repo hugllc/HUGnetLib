@@ -176,7 +176,7 @@ class Fixtures extends \HUGnet\db\Table
      ******************************************************************
      ******************************************************************/
     /**
-    * function to set DeviceID
+    * function to set id
     *
     * @param string $value The value to set
     *
@@ -185,6 +185,22 @@ class Fixtures extends \HUGnet\db\Table
     protected function setId($value)
     {
         $this->data["id"] = (int) $value;
+    }
+    /**
+    * function to set the fixture
+    *
+    * @param string $value The value to set
+    *
+    * @return null
+    */
+    protected function setFixture($value)
+    {
+        if (is_array($value)) {
+            $value = json_encode($value);
+        }
+        if (is_string($value)) {
+            $this->data["fixture"] = $value;
+        }
     }
 }
 ?>

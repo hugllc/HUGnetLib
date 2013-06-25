@@ -92,109 +92,329 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
         parent::tearDown();
     }
     /**
-    * Data provider for testCreate
+    * Data provider for testGet
     *
     * @return array
     */
-    public static function dataCreate()
+    public static function dataGet()
     {
         return array(
             array(
-                new DummySystem(),
-                array(),
-                null,
-                "DummyTable",
                 array(
+                ),
+                array(
+                    "id" => 1,
+                    "dev" => 0x123456,
+                    "fixture" => json_encode(
+                        array(
+                            "DeviceName" => "Hello There",
+                        )
+                    ),
+                    "created" => 1234,
+                    "modified" => 1234,
+                ),
+                "DeviceName",
+                "Hello There"
+            ),
+        );
+    }
+    /**
+    * This tests the get function
+    *
+    * @param array  $config The configuration to use
+    * @param array  $data   The data to feed the object
+    * @param string $key    The key to check
+    * @param array  $expect The table to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataGet
+    */
+    public function testGet($config, $data, $key, $expect)
+    {
+        $sys = $this->getMock('\HUGnet\System', array('now'));
+        $sys->config($config);
+        $obj = Fixture::factory($sys, $data);
+        $this->assertSame($expect, $obj->get($key));
+    }
+    /**
+    * Data provider for testGet
+    *
+    * @return array
+    */
+    public static function dataGetParam()
+    {
+        return array(
+            array(
+                array(
+                ),
+                array(
+                    "id" => 1,
+                    "dev" => 0x123456,
+                    "fixture" => json_encode(
+                        array(
+                            "params" => array(
+                                "LastModified" => 0x12345678,
+                            ),
+                        )
+                    ),
+                    "created" => 1234,
+                    "modified" => 1234,
+                ),
+                "LastModified",
+                0x12345678
+            ),
+        );
+    }
+    /**
+    * This tests the getParam function
+    *
+    * @param array  $config The configuration to use
+    * @param array  $data   The data to feed the object
+    * @param string $key    The key to check
+    * @param array  $expect The table to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataGetParam
+    */
+    public function testGetParam($config, $data, $key, $expect)
+    {
+        $sys = $this->getMock('\HUGnet\System', array('now'));
+        $sys->config($config);
+        $obj = Fixture::factory($sys, $data);
+        $this->assertSame($expect, $obj->getParam($key));
+    }
+    /**
+    * This tests the getLocalParam function.  This function should ALWAYS return null
+    *
+    * @param array  $config The configuration to use
+    * @param array  $data   The data to feed the object
+    * @param string $key    The key to check
+    * @param array  $expect The table to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataGetParam
+    */
+    public function testGetLocalParam($config, $data, $key, $expect)
+    {
+        $sys = $this->getMock('\HUGnet\System', array('now'));
+        $sys->config($config);
+        $obj = Fixture::factory($sys, $data);
+        $this->assertSame(null, $obj->getLocalParam($key));
+    }
+    /**
+    * Data provider for testSet
+    *
+    * @return array
+    */
+    public static function dataSet()
+    {
+        return array(
+            array(
+                array(
+                ),
+                array(
+                    "id" => 1,
+                    "dev" => 0x123456,
+                    "fixture" => json_encode(
+                        array(
+                            "params" => array(
+                                "LastModified" => 0x12345678,
+                            ),
+                        )
+                    ),
+                    "created" => 1234,
+                    "modified" => 1234,
+                ),
+                "LastModified",
+                0x12345678
+            ),
+        );
+    }
+    /**
+    * This tests the set function
+    *
+    * @param array  $config The configuration to use
+    * @param array  $data   The data to feed the object
+    * @param string $key    The key to check
+    * @param array  $expect The table to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataSet
+    */
+    public function testSet($config, $data, $key, $expect)
+    {
+        $sys = $this->getMock('\HUGnet\System', array('now'));
+        $sys->config($config);
+        $obj = Fixture::factory($sys, $data);
+        $this->assertSame($expect, $obj->set($key, $expect));
+    }
+    /**
+    * This tests the set function
+    *
+    * @param array  $config The configuration to use
+    * @param array  $data   The data to feed the object
+    * @param string $key    The key to check
+    * @param array  $expect The table to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataSet
+    */
+    public function testSetParam($config, $data, $key, $expect)
+    {
+        $sys = $this->getMock('\HUGnet\System', array('now'));
+        $sys->config($config);
+        $obj = Fixture::factory($sys, $data);
+        $this->assertSame($expect, $obj->setParam($key, $expect));
+    }
+    /**
+    * This tests the set function
+    *
+    * @param array  $config The configuration to use
+    * @param array  $data   The data to feed the object
+    * @param string $key    The key to check
+    * @param array  $expect The table to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataSet
+    */
+    public function testSetLocalParam($config, $data, $key, $expect)
+    {
+        $sys = $this->getMock('\HUGnet\System', array('now'));
+        $sys->config($config);
+        $obj = Fixture::factory($sys, $data);
+        $this->assertSame($expect, $obj->setLocalParam($key, $expect));
+    }
+    /**
+    * Data provider for testSet
+    *
+    * @return array
+    */
+    public static function dataToArray()
+    {
+        return array(
+            array(
+                array(
+                ),
+                array(
+                    "id" => 1,
+                    "dev" => 0x123456,
+                    "fixture" => json_encode(
+                        array(
+                            "DeviceName" => "Hello",
+                            "params" => array(
+                                "LastModified" => 0x12345678,
+                            ),
+                        )
+                    ),
+                    "created" => 1234,
+                    "modified" => 1234,
+                ),
+                true,
+                array(
+                    "DeviceName" => "Hello",
+                    "params" => array(
+                        "LastModified" => 0x12345678,
+                    ),
                 ),
             ),
             array(
-                new DummySystem(),
                 array(
-                    "Devices" => array(
-                        "sanitizeWhere" => array(
-                            "id" => 5,
-                            "name" => 3,
-                            "value" => 1,
-                        ),
-                        "selectOneInto" => false,
-                    ),
                 ),
                 array(
-                    "id" => 5,
-                    "name" => 3,
-                    "value" => 1,
-                ),
-                "DummyTable",
-                array(
-                    "fromAny" => array(
+                    "id" => 1,
+                    "dev" => 0x123456,
+                    "fixture" => json_encode(
                         array(
-                            array(
-                                "id" => 5,
-                                "name" => 3,
-                                "value" => 1,
+                            "DeviceName" => "Hello",
+                            "params" => array(
+                                "LastModified" => 0x12345678,
                             ),
-                        ),
+                        )
                     ),
-                    "clearData" => array(array()),
-                    "selectOneInto" => array(
-                        array(
-                            "`id` = ? AND `name` = ? AND `value` = ?",
-                            array(5, 3, 1),
-                        ),
-                    ),
-                    "sanitizeWhere" => array(
-                        array(
-                            array(
-                                "id" => 5,
-                                "name" => 3,
-                                "value" => 1,
-                            ),
-                        ),
-                    ),
+                    "created" => 1234,
+                    "modified" => 1234,
                 ),
-            ),
-            array(
-                new DummySystem(),
-                array(),
-                2,
-                new DummyTable(),
+                false,
                 array(
-                    "getRow" => array(
-                        array(0 => 2),
-                    ),
-                    "set" => array(
-                        array("Driver", "EDEFAULT"),
-                    ),
-                    "clearData" => array(array()),
-                    "isEmpty" => array(array()),
-                    "get" => array(
-                        array("HWPartNum"),
-                        array("FWPartNum"),
-                        array("FWVersion"),
+                    "DeviceName" => "Hello",
+                    "params" => array(
+                        "LastModified" => 0x12345678,
                     ),
                 ),
             ),
         );
     }
     /**
-    * This tests the object creation
+    * This tests the set function
     *
-    * @param array $config      The configuration to use
-    * @param array $mocks       The mocks to use
-    * @param mixed $device      The gateway to set
-    * @param mixed $class       This is either the name of a class or an object
-    * @param array $expectTable The table to expect
+    * @param array $config  The configuration to use
+    * @param array $data    The data to feed the object
+    * @param bool  $default This does nothing, but we have to prove that.
+    * @param array $expect  The table to expect
     *
     * @return null
     *
-    * @dataProvider dataCreate
+    * @dataProvider dataToArray
     */
-    public function testCreate($config, $mocks, $device, $class, $expectTable)
+    public function testToArray($config, $data, $default, $expect)
     {
         $sys = $this->getMock('\HUGnet\System', array('now'));
         $sys->config($config);
-        $obj = Fixture::factory($sys, $device);
-        // Make sure we have the right object
+        $obj = Fixture::factory($sys, $data);
+        $this->assertSame($expect, $obj->toArray($default));
+    }
+
+    /**
+    * Data provider for testSet
+    *
+    * @return array
+    */
+    public static function dataStore()
+    {
+        return array(
+            array(
+                array(
+                ),
+                array(
+                    "id" => 1,
+                    "dev" => 0x123456,
+                    "fixture" => json_encode(
+                        array(
+                            "params" => array(
+                                "LastModified" => 0x12345678,
+                            ),
+                        )
+                    ),
+                    "created" => 1234,
+                    "modified" => 1234,
+                ),
+                true
+            ),
+        );
+    }
+    /**
+    * This tests the set function
+    *
+    * @param array $config  The configuration to use
+    * @param array $data    The data to feed the object
+    * @param array $expect  The table to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataStore
+    */
+    public function testStore($config, $data, $expect)
+    {
+        $sys = $this->getMock('\HUGnet\System', array('now'));
+        $sys->config($config);
+        $obj = Fixture::factory($sys, $data);
+        $this->assertSame($expect, $obj->store());
     }
 
 }
