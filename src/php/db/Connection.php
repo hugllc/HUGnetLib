@@ -122,14 +122,23 @@ class Connection implements \ConnectionManager
     */
     private function &_driverFactory($group)
     {
+        $ret = false;
         if (is_array($this->_servers[$group])) {
-            include_once dirname(__FILE__)."/connections/PDO.php";
-            $this->_server[$group] = \HUGnet\db\connections\PDO::factory(
-                $this->_system, $this->_servers[$group]
-            );
-            return true;
+            if ($this->_drivers[$group] === "mongodb") {
+                include_once dirname(__FILE__)."/connections/MongoDB.php";
+                $this->_server[$group] = \HUGnet\db\connections\MongoDB::factory(
+                    $this->_system, $this->_servers[$group]
+                );
+                $ret = true;
+            } else {
+                include_once dirname(__FILE__)."/connections/PDO.php";
+                $this->_server[$group] = \HUGnet\db\connections\PDO::factory(
+                    $this->_system, $this->_servers[$group]
+                );
+                $ret = true;
+            }
         }
-        return false;
+        return $ret;
     }
     /**
     * Destroys the object
