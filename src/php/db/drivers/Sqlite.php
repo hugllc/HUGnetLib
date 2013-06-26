@@ -37,6 +37,8 @@
 namespace HUGnet\db\drivers;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
+/** This is for the base class */
+require_once dirname(__FILE__)."/../../interfaces/DBDriver.php";
 /**
  * This class implements photo sensors.
  *
@@ -50,7 +52,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Sqlite extends \HUGnet\db\Driver
+class Sqlite extends \HUGnet\db\Driver implements \HUGnet\interfaces\DBDriver
 {
 
     /**
