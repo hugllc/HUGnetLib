@@ -38,7 +38,7 @@ namespace HUGnet\db;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** require our base class */
-require_once dirname(__FILE__)."/Connection.php";
+require_once dirname(__FILE__)."/connections/PDO.php";
 /** require our base class */
 require_once dirname(__FILE__)."/DriverBase.php";
 /**
