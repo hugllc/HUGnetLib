@@ -37,6 +37,8 @@
 namespace HUGnet\db;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
+/** This is for the base class */
+require_once dirname(__FILE__)."/../interfaces/ConnectionManager.php";
 
 
 /**
@@ -53,22 +55,205 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-abstract class Connection
+class Connection implements \ConnectionManager
 {
+    /** @var array This is where our system object is kept */
+    private $_system = null;
+    /** @var array This is where the server information is stored */
+    private $_servers = array();
+    /** @var array This is where the server objects are stored */
+    private $_server = array();
+    /** @var array This is where the server drivers are stored */
+    private $_drivers = array();
+    /** @var array This is where the groups are stored */
+    private $_groups = array();
+    /**
+    * Creates the object
+    *
+    * @param object &$system The system object to use
+    */
+    private function __construct(&$system)
+    {
+        \HUGnet\System::systemMissing(
+            get_class($this)." needs to be passed a system object",
+            !is_object($system)
+        );
+        $this->_system = &$system;
+        $servers = (array)$system->get("servers");
+        foreach ($servers as $key => $val) {
+            $group = $val["group"];
+            if (empty($group)) {
+                $group = "default";
+            }
+            $this->_servers[$group][$key] = $val;
+            $this->_drivers[$group] = $val["driver"];
+            $this->_groups[$group] = $group;
+        }
+        if (empty($this->_servers)) {
+            $this->_servers = array(
+                "default" => array(
+                    array(
+                        "group" => "default",
+                        "driver" => "sqlite",
+                    )
+                )
+            );
+        }
+    }
     /**
     * This function creates the system.
     *
     * @param object &$system The system object to use
-    * @param string $type    PDO is the default.  Give it a type.
     *
     * @return null
     */
-    public static function &factory(&$system, $type = "PDO")
+    public static function &factory(&$system)
     {
         /** This is for the base class */
-        include_once dirname(__FILE__)."/connections/PDO.php";
-        $obj = \HUGnet\db\connections\PDO::factory($system);
+        $obj = new Connection($system);
         return $obj;
+    }
+    /**
+    * This function creates the system.
+    *
+    * @param string $group   The group to use
+    *
+    * @return null
+    */
+    private function &_driverFactory($group)
+    {
+        if (is_array($this->_servers[$group])) {
+            include_once dirname(__FILE__)."/connections/PDO.php";
+            $this->_server[$group] = \HUGnet\db\connections\PDO::factory(
+                $this->_system, $this->_servers[$group]
+            );
+            return true;
+        }
+        return false;
+    }
+    /**
+    * Destroys the object
+    *
+    */
+    public function __destruct()
+    {
+        foreach (array_keys((array)$this->_server) as $group) {
+            unset($this->_server[$group]);
+        }
+    }
+
+    /**
+    * Checks to see if we are connected to a database
+    *
+    * @param string $group The group to check
+    *
+    * @return object PDO object, null on failure
+    */
+    public function connected($group = "default")
+    {
+        return is_object($this->_server[$group])
+            && (is_a($this->_server[$group], "\HUGnet\interfaces\DBConnection"))
+            && $this->_server[$group]->connected();
+    }
+    /**
+    * Checks to see if we are connected to a database
+    *
+    * @param string $group The group to check
+    *
+    * @return object PDO object, null on failure
+    */
+    public function driver($group = "default")
+    {
+        $this->connect($group);
+        if ($this->connected($group)) {
+            return $this->_server[$group]->driver();
+        }
+        return "sqlite";
+    }
+    /**
+    * Tries to connect to a database servers
+    *
+    * @param string $group The group to get the config of
+    *
+    * @return bool True on success, false on failure
+    */
+    public function config($group = "default")
+    {
+        $this->connect($group);
+        if ($this->connected($group)) {
+            return $this->_server[$group]->config();
+        }
+        return array();
+    }
+    /**
+    * Connects to a database group
+    *
+    * @param string $group The group to check
+    *
+    * @return bool True on success, false on failure
+    */
+    public function connect($group = "default")
+    {
+        if ($this->connected($group)) {
+            return true;
+        }
+        if (!is_object($this->_server[$group])
+            || (!is_a($this->_server[$group], "\HUGnet\interfaces\DBConnection"))
+        ) {
+            if (!$this->_driverFactory($group)) {
+                return false;
+            }
+        }
+        $this->_server[$group]->connect();
+        return $this->connected($group);
+    }
+
+    /**
+    * Returns a database object
+    *
+    * @param string $group The group to check
+    *
+    * @return object The database object
+    */
+    public function &getDBO($group = "default")
+    {
+        $this->connect($group);
+        if ($this->connected($group)) {
+            return $this->_server[$group]->getDBO();
+        }
+        return null;
+    }
+    /**
+    * Disconnects from the database
+    *
+    * @param string $group The group to check
+    *
+    * @return null
+    */
+    public function disconnect($group = "default")
+    {
+        unset($this->_server[$group]);
+    }
+
+    /**
+    * Return an array of the groups currently registered
+    *
+    * @return null
+    */
+    public function groups()
+    {
+        return (array)$this->_groups;
+    }
+    /**
+    * Group Exists
+    *
+    * @param string $group The group to check
+    *
+    * @return bool True if group exists and connection is made, false otherwise
+    */
+    public function available($group = "default")
+    {
+        return $this->connect($group);
     }
 
 }

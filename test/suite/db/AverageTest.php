@@ -102,7 +102,7 @@ class AverageTest extends tables\TableTestBase
         $this->system = new \HUGnet\DummySystem("System");
         $this->system->resetMock($this->config);
         $this->connect = \HUGnet\db\Connection::factory($this->system);
-        $this->pdo = &$this->connect->getPDO("default");
+        $this->pdo = &$this->connect->getDBO("default");
         $data = array(
         );
         $this->o = \HUGnet\db\Table::factory(

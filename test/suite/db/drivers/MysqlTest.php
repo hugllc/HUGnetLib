@@ -116,7 +116,7 @@ class MysqlTest extends \PHPUnit_Extensions_Database_TestCase
         $this->system = new \HUGnet\DummySystem("System");
         $this->system->resetMock($this->config);
         $this->connect = \HUGnet\db\Connection::factory($this->system);
-        $this->pdo = &$this->connect->getPDO("default");
+        $this->pdo = &$this->connect->getDBO("default");
         if (is_a($this->pdo, "PDO")) {
             $this->pdo->query("DROP TABLE IF EXISTS `myTable`");
             $this->pdo->query(
@@ -138,7 +138,7 @@ class MysqlTest extends \PHPUnit_Extensions_Database_TestCase
             $this->system = new \HUGnet\DummySystem("System");
             $this->system->resetMock($this->config);
             $this->connect = \HUGnet\db\Connection::factory($this->system);
-            $this->pdo = &$this->connect->getPDO("default");
+            $this->pdo = &$this->connect->getDBO("default");
             $this->pdo->query("DROP TABLE IF EXISTS `myTable`");
             $this->pdo->query(
                 "CREATE TABLE `myTable` ("

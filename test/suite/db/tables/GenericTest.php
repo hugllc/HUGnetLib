@@ -93,7 +93,7 @@ class GenericTableTest extends TableTestBase
         $this->system = new \HUGnet\DummySystem("System");
         $this->system->resetMock($this->config);
         $this->connect = \HUGnet\db\Connection::factory($this->system);
-        $this->pdo = &$this->connect->getPDO("default");
+        $this->pdo = &$this->connect->getDBO("default");
         $this->pdo->query("DROP TABLE IF EXISTS `myTable`");
         $this->pdo->query(
             "CREATE TABLE `myTable` ("
@@ -146,7 +146,7 @@ class GenericTableTest extends TableTestBase
     {
         $system = new \HUGnet\DummySystem("System");
         $connect = \HUGnet\db\Connection::factory($system);
-        $pdo = &$connect->getPDO("default");
+        $pdo = &$connect->getDBO("default");
         $pdo->query("DROP TABLE IF EXISTS `myTable`");
         $pdo->query(
             "CREATE TABLE `myTable` ("
@@ -169,7 +169,7 @@ class GenericTableTest extends TableTestBase
     {
         $system = new \HUGnet\DummySystem("System");
         $connect = \HUGnet\db\Connection::factory($system);
-        $pdo = &$connect->getPDO("default");
+        $pdo = &$connect->getDBO("default");
         $pdo->query("DROP TABLE IF EXISTS `myTable`");
         $pdo->query(
             "CREATE TABLE `myTable` ("
@@ -192,7 +192,7 @@ class GenericTableTest extends TableTestBase
     {
         $system = new \HUGnet\DummySystem("System");
         $connect = \HUGnet\db\Connection::factory($system);
-        $pdo = &$connect->getPDO("default");
+        $pdo = &$connect->getDBO("default");
         $pdo->query("DROP TABLE IF EXISTS `myTable`");
         $pdo->query(
             "CREATE TABLE `myTable` ("

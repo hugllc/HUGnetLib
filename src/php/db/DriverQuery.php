@@ -118,7 +118,7 @@ abstract class DriverQuery
     protected function &pdo()
     {
         $group = $this->myTable->get("group");
-        return $this->connect->getPDO($group);
+        return $this->connect->getDBO($group);
     }
     /**
     * This gets a new PDO object

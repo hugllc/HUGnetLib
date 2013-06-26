@@ -94,7 +94,7 @@ class DevicesTest extends \PHPUnit_Framework_TestCase
         );
         $this->ui     = \HUGnet\ui\CLI::factory($this->config);
         $this->system = $this->ui->system();
-        $this->pdo    = $this->system->dbconnect()->getPDO("default");
+        $this->pdo    = $this->system->dbconnect()->getDBO("default");
         // Create tables to be filled
         $tables = array(
             "Datacollectors", "DeviceInputs", "DeviceOutputs", "DeviceProcesses",

@@ -38,7 +38,7 @@ namespace HUGnet\db\connections;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is for the base class */
-require_once dirname(__FILE__)."/../../interfaces/ConnectionManager.php";
+require_once dirname(__FILE__)."/../../interfaces/DBConnection.php";
 
 
 /**
@@ -55,7 +55,7 @@ require_once dirname(__FILE__)."/../../interfaces/ConnectionManager.php";
  * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class PDO  implements \ConnectionManager
+class PDO  implements \HUGnet\interfaces\DBConnection
 {
     private $_default = array(
         "group"  => "default",       // This is the name of the database group
@@ -79,46 +79,26 @@ class PDO  implements \ConnectionManager
     private $_pdo = null;
     /** @var object This is a link to the connected server */
     private $_server = null;
-    /** @var object These are the server groups we know */
-    private $_groups = null;
 
     /**
     * Creates the object
     *
     * @param object &$system The system object to use
+    * @param array  $config  The config to use
     */
-    private function __construct(&$system)
+    private function __construct(&$system, $config)
     {
         \HUGnet\System::systemMissing(
             get_class($this)." needs to be passed a system object",
             !is_object($system)
         );
         $this->_system = &$system;
-        $servers = (array)$system->get("servers");
-        //$this->_servers["default"] = $this->_default;
-        foreach ($servers as $key => $val) {
+        foreach ((array)$config as $key => $val) {
             $this->_servers[$key] = array_merge($this->_default, $val);
-            $group = $this->_servers[$key]["group"];
-            $this->_groups[$group] = $group;
         }
         if (empty($this->_servers)) {
             $this->_servers["default"] = $this->_default;
         }
-        /*
-        if ($this->findClass("DBServerContainer")) {
-            if (empty($servers)) {
-                $servers = array(array());
-            }
-            foreach ((array)$servers as $key => $serv) {
-                $this->data["servers"][$key] =& self::factory(
-                    $serv,
-                    "DBServerContainer"
-                );
-                // Define this group;
-                $this->groups[$this->data["servers"][$key]->group]
-                    = $this->data["servers"][$key]->group;
-            }
-        }*/
     }
     /**
     * This function creates the system.
@@ -127,9 +107,9 @@ class PDO  implements \ConnectionManager
     *
     * @return null
     */
-    public static function &factory(&$system)
+    public static function &factory(&$system, $config)
     {
-        $obj = new PDO($system);
+        $obj = new PDO($system, $config);
         return $obj;
     }
 
@@ -139,34 +119,28 @@ class PDO  implements \ConnectionManager
     */
     public function __destruct()
     {
-        foreach (array_keys((array)$this->_pdo) as $group) {
-            $this->disconnect($group);
-        }
+        $this->disconnect();
     }
 
     /**
     * Checks to see if we are connected to a database
     *
-    * @param string $group The group to check
-    *
     * @return object PDO object, null on failure
     */
-    public function connected($group = "default")
+    public function connected()
     {
-        return is_object($this->_pdo[$group])
-            && (is_a($this->_pdo[$group], "PDO"));
+        return is_object($this->_pdo)
+            && (is_a($this->_pdo, "PDO"));
     }
     /**
     * Checks to see if we are connected to a database
     *
-    * @param string $group The group to check
-    *
     * @return object PDO object, null on failure
     */
-    public function driver($group = "default")
+    public function driver()
     {
         $this->connect();
-        $ret = strtolower($this->_servers[$this->_server[$group]]["driver"]);
+        $ret = strtolower($this->_servers[$this->_server]["driver"]);
         if (empty($ret)) {
             $ret = "sqlite";
         }
@@ -175,34 +149,26 @@ class PDO  implements \ConnectionManager
     /**
     * Tries to connect to a database servers
     *
-    * @param string $group The group to get the config of
-    *
     * @return bool True on success, false on failure
     */
-    public function config($group = "default")
+    public function config()
     {
-        return $this->_servers[$this->_server[$group]];
+        return $this->_servers[$this->_server];
     }
     /**
     * Connects to a database group
     *
-    * @param string $group The group to check
-    *
     * @return bool True on success, false on failure
     */
-    public function connect($group = "default")
+    public function connect()
     {
-        if ($this->connected($group)) {
+        if ($this->connected()) {
             return true;
         }
         foreach (array_keys($this->_servers) as $key) {
-            if ($this->_servers[$key]["group"] !== $group) {
-                continue;
-            }
             if ($this->_connect($key)) {
                 return true;
             }
-
         }
         return false;
     }
@@ -216,13 +182,12 @@ class PDO  implements \ConnectionManager
     private function _connect($server = "default")
     {
         $dsn = $this->_getDSN($server);
-        $group = $this->_servers[$server]["group"];
         $this->_system->out(
             "Trying ".$dsn,
             3
         );
         try {
-            $this->_pdo[$group] = new \PDO(
+            $this->_pdo = new \PDO(
                 $dsn,
                 (string)$this->_servers[$server]["user"],
                 (string)$this->_servers[$server]["password"],
@@ -235,11 +200,11 @@ class PDO  implements \ConnectionManager
                 2
             );
             // Just to be sure
-            $this->disconnect($group);
+            $this->disconnect();
             // Return failure
             return false;
         }
-        $this->_server[$group] = $server;
+        $this->_server = $server;
         $this->_system->out(
             "Connected to ".$dsn,
             3
@@ -277,49 +242,36 @@ class PDO  implements \ConnectionManager
     }
 
     /**
-    * Returns a PDO object
+    * Returns a database object
     *
-    * @param string $group The group to check
-    *
-    * @return object PDO object, null on failure
+    * @return object The database object
     */
-    public function &getPDO($group = "default")
+    public function &getDBO()
     {
-        $this->connect($group);
-        return $this->_pdo[$group];
+        $this->connect();
+        return $this->_pdo;
     }
     /**
     * Disconnects from the database
     *
-    * @param string $group The group to check
-    *
     * @return null
     */
-    public function disconnect($group = "default")
+    public function disconnect()
     {
-        unset($this->_server[$group]);
-        unset($this->_pdo[$group]);
+        unset($this->_server);
+        unset($this->_pdo);
+        $this->_server = null;
+        $this->_pdo = null;
     }
 
     /**
-    * Return an array of the groups currently registered
-    *
-    * @return null
-    */
-    public function groups()
-    {
-        return (array)$this->_groups;
-    }
-    /**
     * Group Exists
-    *
-    * @param string $group The group to check
     *
     * @return bool True if group exists and connection is made, false otherwise
     */
-    public function available($group = "default")
+    public function available()
     {
-        return $this->connect($group);
+        return $this->connect();
     }
 }
 ?>

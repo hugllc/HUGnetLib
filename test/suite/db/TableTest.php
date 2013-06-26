@@ -104,7 +104,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
         $this->system = new \HUGnet\DummySystem("System");
         $this->system->resetMock($this->config);
         $this->connect = Connection::factory($this->system);
-        $this->pdo = &$this->connect->getPDO("default");
+        $this->pdo = &$this->connect->getDBO("default");
         $this->pdo->query("DROP TABLE IF EXISTS `myTable`");
         $this->pdo->query("DROP TABLE IF EXISTS `myTable2`");
         $this->pdo->query(
