@@ -7,7 +7,6 @@
  * <pre>
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2013 Hunt Utilities Group, LLC
- * Copyright (C) 2009 Scott Price
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,7 +28,6 @@
  * @subpackage PluginsDatabase
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2013 Hunt Utilities Group, LLC
- * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  *
@@ -65,6 +63,10 @@ class MongoDB implements \HUGnet\interfaces\DBDriver
     protected $dbo = null;
     /** @var object This is where we store our collection */
     protected $collection = null;
+    /** @var object This is where we store our cursor */
+    protected $cursor = null;
+    /** @var object This is our flag for autoincrementing */
+    protected $autoIncrement = false;
     /**
     * Register this database object
     *
@@ -91,6 +93,8 @@ class MongoDB implements \HUGnet\interfaces\DBDriver
         $this->myTable    = &$table;
         $this->dbo        = $connect->getDBO($this->myTable->get("group"));
         $this->collection = $this->dbo->selectCollection($this->myTable->sqlTable);
+        // This sets our autoincrement flag
+        $this->autoIncrement();
     }
     /**
     * Register this database object
@@ -122,7 +126,7 @@ class MongoDB implements \HUGnet\interfaces\DBDriver
             !is_object($table)
         );
         if (!is_a($connect, "ConnectionManager")) {
-            $connect = Connection::factory($system);
+            $connect = \HUGnet\db\Connection::factory($system);
         }
         $obj = new MongoDB($system, $table, $connect);
         return $obj;
@@ -157,14 +161,97 @@ class MongoDB implements \HUGnet\interfaces\DBDriver
     */
     public function insert($data = array(), $columns = array(), $replace = false)
     {
-        $ret = false;
+        $ret = true;
         if (!empty($data) && is_array($data)) {
-            $insert = $this->collection->insert($data);
+            $this->dataColumns($columns);
+            if ($this->autoIncrement && is_null($data[$this->myTable->sqlId])) {
+                $data[$this->myTable->sqlId] = $this->getNextID();
+                $this->columns[$this->myTable->sqlId] = $this->myTable->sqlId;
+            }
+            $data = array_intersect_key($data, $this->columns);
+            $options = array();
+            if (!$replace) {
+                try {
+                    $insert = $this->collection->insert($data);
+                } catch (\MongoCursorException $e) {
+                    return false;
+                }
+            } else {
+                $insert = $this->collection->update(
+                    $this->idWhere($data),
+                    $data, 
+                    array(
+                        "upsert"   => true,
+                        "multiple" => false,
+                        "w" => 1,
+                    )
+                );
+            }
             if (is_array($insert)) {
                 $ret = ($insert["ok"] == 1);
             }
         }
         return $ret;
+    }
+    /**
+    * Sets the columns to use
+    *
+    * @param array $columns An array of columns to use
+    *
+    * @return null
+    */
+    protected function dataColumns($columns = array())
+    {
+        if (empty($columns)) {
+            $columns = array_keys((array)$this->myTable->sqlColumns);
+        }
+        $this->columns = array();
+        foreach (array_keys((array)$this->myTable->sqlColumns) as $column) {
+            if (!is_bool(array_search($column, (array)$columns))) {
+                $this->columns[$column] = $column;
+            }
+        }
+        if (empty($this->columns) && !empty($this->myTable->sqlColumns)) {
+            $this->dataColumns();
+        }
+    }
+    /**
+    * This gets either a key or a unique index and returns it as a where.
+    *
+    * This sets $this->idWhere, which is used by prepareData() to add the stuff
+    * from here into the data array.  That way multiple records can be updated
+    * with the same query.
+    *
+    * @param array $data The data to use in the where
+    *
+    * @return array The where array to use
+    */
+    protected function idWhere($data)
+    {
+        $where = array();
+        if (!empty($this->myTable->sqlId)) {
+            // Use the table id field
+            $this->idWhere[] = $this->myTable->sqlId;
+            $where[$this->myTable->sqlId] = $data[$this->myTable->sqlId];
+        } else {
+            // Check for a unique index to use
+            $indexes = &$this->myTable->sqlIndexes;
+            foreach ((array)$indexes as $ind) {
+                if (!$ind["Unique"]) {
+                    continue;
+                }
+                $nWhere = array();
+                foreach ($ind["Columns"] as $col) {
+                    if (stripos($col, ",") === false) {
+                        $nWhere[$col] = $data[$col];
+                    }
+                }
+                if (count($nWhere) > 0) {
+                    $where['$and'][] = $nWhere;
+                }
+            }
+        }
+        return $where;
     }
     /**
     * Returns the column list required to make autoincrement happen.
@@ -173,6 +260,13 @@ class MongoDB implements \HUGnet\interfaces\DBDriver
     */
     public function autoIncrement()
     {
+        $cols = array();
+        foreach ((array)$this->myTable->sqlColumns as $col) {
+            if (!$col["AutoIncrement"]) {
+                $cols[$col["Name"]] = $col["Name"];
+            }
+        }
+        return (array)$cols;
     }
     /**
     * Inserts a record into the database.  This one cleans up after itsef and
@@ -238,8 +332,25 @@ class MongoDB implements \HUGnet\interfaces\DBDriver
         $data,
         $where = "",
         $whereData = array(),
-                            $columns = array()
+        $columns = array()
     ) {
+        $ret = true;
+        if (!empty($data)) {
+            $this->dataColumns($columns);
+            $insert = $this->collection->update(
+                $this->idWhere($data),
+                $data, 
+                array(
+                    "upsert"   => false,
+                    "multiple" => false,
+                    "w" => 1,
+                )
+            );
+        }
+        if (is_array($insert)) {
+            $ret = ($insert["ok"] == 1);
+        }
+        return $ret;
     }
     /**
     * Updates a row in the database.
@@ -255,8 +366,9 @@ class MongoDB implements \HUGnet\interfaces\DBDriver
         $data,
         $where = "",
         $whereData = array(),
-                                $columns = array()
+        $columns = array()
     ) {
+        return $this->update($data, $where, $whereData, $columns);
     }
     /**
     * Gets all rows from the database
@@ -270,8 +382,58 @@ class MongoDB implements \HUGnet\interfaces\DBDriver
     public function selectWhere(
         $where,
         $whereData = array(),
-                                $columns = array()
+        $columns = array()
     ) {
+        $show = array();
+        $show["_id"] = 0;
+        foreach ((array)$columns as $col) {
+            if (!empty($col)) {
+                $show[$col] = 1;
+            }
+        }
+        $where = (is_array($where)) ? $where : array();
+        $this->cursor = $this->collection->find((array)$where, $show);
+        $this->limit();
+        $this->orderby();
+        return $this->cursor->hasNext();
+    }
+    /**
+    * Gets all rows from the database
+    *
+    * @return array
+    */
+    protected function orderby()
+    {
+        if (empty($this->myTable->sqlOrderBy) && is_object($this->cursor)) {
+            return;
+        }
+        $sort = array();
+        $orderby = explode(",", $this->myTable->sqlOrderBy);
+        foreach ($orderby as $order) {
+            $order = trim($order);
+            $ord = explode(" ", $order);
+            if (!empty($ord[0])) {
+                $dir = substr(trim(strtolower($ord[1])), 0, 1);
+                $sort[trim($ord[0])] = ($dir == "d") ? -1 : 1;
+            }
+        }
+        $this->cursor->sort($sort);
+    }
+
+    /**
+    * Return the ORDER BY clause
+    *
+    * @return string
+    */
+    protected function limit()
+    {
+        if (empty($this->myTable->sqlLimit) && is_object($this->cursor)) {
+            return;
+        }
+        if ((int)$this->myTable->sqlStart > 0) {
+            $this->cursor->skip((int)$this->myTable->sqlStart);
+        }
+        $this->cursor->limit((int)$this->myTable->sqlLimit);
     }
     
     /**
@@ -286,8 +448,12 @@ class MongoDB implements \HUGnet\interfaces\DBDriver
     public function countWhere(
         $where,
         $whereData = array(),
-                                $column = ""
+        $column = ""
     ) {
+        if ($this->selectWhere($where, $whereData, $column)) {
+            return $this->cursor->count();
+        }
+        return false;
     }
     
     /**
@@ -299,8 +465,13 @@ class MongoDB implements \HUGnet\interfaces\DBDriver
     *
     * @return int
     */
-    public function getNextID($where = "")
+    public function getNextID($where = array())
     {
+        $rid = $this->myTable->sqlId;
+        $where["_id"] = array('$ne' => $rid);
+        $rec = $this->collection->find((array)$where)->sort(array($rid => -1));
+        $rec = $rec->getNext();
+        return $rec[$rid] + 1;
     }
     
     /**
@@ -312,8 +483,13 @@ class MongoDB implements \HUGnet\interfaces\DBDriver
     *
     * @return int
     */
-    public function getPrevID($where = "")
+    public function getPrevID($where = array())
     {
+        $rid = $this->myTable->sqlId;
+        $where["_id"] = array('$ne' => $rid);
+        $rec = $this->collection->find((array)$where)->sort(array($rid => 1));
+        $rec = $rec->getNext();
+        return $rec[$rid] - 1;
     }
     /**
     * Removes rows from the database
@@ -330,6 +506,17 @@ class MongoDB implements \HUGnet\interfaces\DBDriver
     */
     public function deleteWhere($where, $whereData = array())
     {
+        if (empty($where)) {
+            $ret = false;
+        } else if ($where == 1) {
+            $ret = $this->collection->remove();
+        } else {
+            $ret = $this->collection->remove($where);
+        }
+        if (is_array($ret)) {
+            $ret = ($ret["ok"] == 1);
+        }
+        return $ret;
     }
     /**
     *  Adds a field to the devices table for cache information
@@ -351,6 +538,21 @@ class MongoDB implements \HUGnet\interfaces\DBDriver
     */
     public function createTable($columns = null)
     {
+        if (!$this->tableExists()) {
+            $this->dbo->createCollection($this->myTable->sqlTable);
+            foreach ((array)$this->myTable->sqlColumns as $col) {
+                if ($col["AutoIncrement"]) {
+                    $this->autoIncrement = true;
+                    $this->addIndex(
+                        array(
+                            "Unique" => true,
+                            "Columns" => array($col["Name"])
+                        )
+                    );
+                }
+            }
+        }
+        
     }
     /**
     *  Adds a field to the devices table for cache information
@@ -366,6 +568,18 @@ class MongoDB implements \HUGnet\interfaces\DBDriver
     */
     public function addIndex($index)
     {
+        $keys    = array();
+        $options = array();
+        // Build the query
+        if ($index["Unique"]) {
+            $options["unique"] = true;
+        }
+        // SQLite requires the index name to be unique
+        foreach ((array)$index["Columns"] as $col) {
+            $c = explode(",", $col);
+            $keys[$c[0]] = 1;
+        }
+        $this->collection->ensureIndex($keys, $options);
     }
     /**
     * Checks to see if a table exists
@@ -374,6 +588,8 @@ class MongoDB implements \HUGnet\interfaces\DBDriver
     */
     public function tableExists()
     {
+        $names = $this->dbo->getCollectionNames();
+        return in_array($this->myTable->sqlTable, $names);
     }
     /**
     * Gets all rows from the database
@@ -386,6 +602,18 @@ class MongoDB implements \HUGnet\interfaces\DBDriver
     */
     public function &fetchAll($style = \PDO::FETCH_CLASS)
     {
+        $ret = array();
+        while (is_object($this->cursor) && $this->cursor->hasNext()) {
+            $res = $this->cursor->getNext();
+            if (is_array($res)) {
+                if ($style == \PDO::FETCH_CLASS) {
+                    $ret[] = $this->myTable->duplicate($res);
+                } else {
+                    $ret[] = $res;
+                }
+            }
+        };
+        return $ret;
     }
     /**
     * Gets one row from the database and puts it into $this->myTable
@@ -394,6 +622,16 @@ class MongoDB implements \HUGnet\interfaces\DBDriver
     */
     public function fetchInto()
     {
+        if (!is_object($this->cursor) || !$this->cursor->hasNext()) {
+            return false;
+        }
+        $res = $this->cursor->getNext();
+        $ret = false;
+        if (is_array($res)) {
+            $this->myTable->fromArray($res);
+            $ret = true;
+        }
+        return $ret;
     }
     /**
     * Resets all internal variables to be ready for the next query
@@ -402,16 +640,7 @@ class MongoDB implements \HUGnet\interfaces\DBDriver
     */
     public function reset()
     {
-    }
-    /**
-    * Gets an attribute from the \PDO object
-    *
-    * @param string $attrib The attribute to get.
-    *
-    * @return mixed
-    */
-    public function getAttribute($attrib)
-    {
+        $this->cursor = null;
     }
     /**
      * Gets columns from a SQLite server

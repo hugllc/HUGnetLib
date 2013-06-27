@@ -290,16 +290,6 @@ interface DBDriver
     * @return null
     */
     public function reset();
-    /**
-    * Gets an attribute from the \PDO object
-    *
-    * @param string $attrib The attribute to get.
-    *
-    * @return mixed
-    */
-    public function getAttribute($attrib);
-
-    
     
 }
 
