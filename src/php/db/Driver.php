@@ -276,6 +276,22 @@ abstract class Driver extends DriverBase
         }
         $this->where($where);
     }
+    /**
+    * This gets either a key or a unique index and returns it as a where.
+    *
+    * This sets $this->idWhere, which is used by prepareData() to add the stuff
+    * from here into the data array.  That way multiple records can be updated
+    * with the same query.
+    *
+    * @return null
+    */
+    protected function arrayWhere($array)
+    {
+        if (!is_array($array)) {
+            return;
+        }
+        
+    }
 
     /**
     * Updates a row in the database.

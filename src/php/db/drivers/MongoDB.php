@@ -643,7 +643,7 @@ class MongoDB implements \HUGnet\interfaces\DBDriver
         $this->cursor = null;
     }
     /**
-     * Gets columns from a SQLite server
+     * Columns are irrelevant in MongoDB
      *
      * @return null
      */
