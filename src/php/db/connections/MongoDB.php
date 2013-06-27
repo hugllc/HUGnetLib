@@ -190,7 +190,6 @@ class MongoDB  implements \HUGnet\interfaces\DBConnection
             // Return failure
             return false;
         }
-        $this->_server = $server;
         $this->_system->out(
             "Connected to ".$dsn,
             3
@@ -211,20 +210,20 @@ class MongoDB  implements \HUGnet\interfaces\DBConnection
         $dsn = "mongodb://";
         $sep = "";
         $servers = "";
-        $index = null;
+        $this->_server = null;
         foreach ($this->_servers as $key => $serv) {
-            if (is_null($index)) {
-                $index = $key;
+            if (is_null($this->_server)) {
+                $this->_server = $key;
             }
             $servers .= $sep.$serv["host"].":".$serv["port"];
             $sep = ",";
         }
-        if (!empty($this->_servers[$index]["user"])) {
-            $dsn .= $this->_servers[$index]["user"].":";
-            $dsn .= $this->_servers[$index]["password"]."@";
+        if (!empty($this->_servers[$this->_server]["user"])) {
+            $dsn .= $this->_servers[$this->_server]["user"].":";
+            $dsn .= $this->_servers[$this->_server]["password"]."@";
         }
         $dsn .= $servers;
-        $dsn .= "/".$this->_servers[$index]["db"];
+        $dsn .= "/".$this->_servers[$this->_server]["db"];
         return (string)$dsn;
     }
 
@@ -235,8 +234,10 @@ class MongoDB  implements \HUGnet\interfaces\DBConnection
     */
     public function &getDBO()
     {
-        $this->connect();
-        return $this->_client;
+        if ($this->connect()) {
+            return $this->_client->selectDB($this->_servers[$this->_server]["db"]);
+        }
+        return null;
     }
     /**
     * Disconnects from the database

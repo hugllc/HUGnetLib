@@ -99,7 +99,7 @@ class MongoDBTest extends \PHPUnit_Framework_TestCase
             array( // #0
                 array(
                 ),
-                "MongoClient",
+                "MongoDB",
             ),
             array( // #1
                 array(
@@ -108,7 +108,7 @@ class MongoDBTest extends \PHPUnit_Framework_TestCase
                         "file" => ":memory:"
                     ),
                 ),
-                "MongoClient",
+                "MongoDB",
             ),
             array( // #2
                 array(
@@ -117,7 +117,7 @@ class MongoDBTest extends \PHPUnit_Framework_TestCase
                         "file" => ":memory:"
                     )
                 ),
-                "MongoClient",
+                "MongoDB",
             ),
             array( // #3
                 array(
