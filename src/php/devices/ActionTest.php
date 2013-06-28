@@ -86,7 +86,7 @@ class ActionTest extends ActionVirtual
     */
     public function ping($find = false)
     {
-        $time = $this-
+        $time = $this->system->now();
         $sensors = $this->device->get("totalSensors");
         $ret = false;
         for ($i = 0; $i < $sensors; $i++) {
