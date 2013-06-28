@@ -176,7 +176,7 @@ class DeviceProcesses extends \HUGnet\db\TableParams
 
         $ret = (bool) $this->dbDriver()->countWhere(
             "dev = ? AND process = ?",
-            array($this->get("dev"), $this->get("process")), "dev"
+            array((int)$this->get("dev"), (int)$this->get("process")), "dev"
         );
         $this->dbDriver()->reset();
         return $ret;
@@ -187,6 +187,39 @@ class DeviceProcesses extends \HUGnet\db\TableParams
      ********  The following are input modification functions  ********
      ******************************************************************
      ******************************************************************/
+    /**
+    * function to set dev
+    *
+    * @param string $value The value to set
+    *
+    * @return null
+    */
+    protected function setDev($value)
+    {
+        $this->data["dev"] = (int) $value;
+    }
+    /**
+    * function to set process
+    *
+    * @param string $value The value to set
+    *
+    * @return null
+    */
+    protected function setProcess($value)
+    {
+        $this->data["process"] = (int) $value;
+    }    
+    /**
+    * function to set id
+    *
+    * @param string $value The value to set
+    *
+    * @return null
+    */
+    protected function setId($value)
+    {
+        $this->data["id"] = (int) $value;
+    }
 
 }
 ?>

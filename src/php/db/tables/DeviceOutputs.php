@@ -186,5 +186,38 @@ class DeviceOutputs extends \HUGnet\db\TableParams
      ********  The following are input modification functions  ********
      ******************************************************************
      ******************************************************************/
+    /**
+    * function to set dev
+    *
+    * @param string $value The value to set
+    *
+    * @return null
+    */
+    protected function setDev($value)
+    {
+        $this->data["dev"] = (int) $value;
+    }
+    /**
+    * function to set output
+    *
+    * @param string $value The value to set
+    *
+    * @return null
+    */
+    protected function setOutput($value)
+    {
+        $this->data["output"] = (int) $value;
+    }    
+    /**
+    * function to set id
+    *
+    * @param string $value The value to set
+    *
+    * @return null
+    */
+    protected function setId($value)
+    {
+        $this->data["id"] = (int) $value;
+    }
 }
 ?>
