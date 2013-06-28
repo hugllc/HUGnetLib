@@ -573,7 +573,8 @@ class WebAPI extends HTML
     {
         if (!headers_sent()) {
             // @codeCoverageIgnoreStart
-            header('Content-type: text/csv');
+            header('Content-Encoding: UTF-8');
+            header('Content-type: text/csv; charset=UTF-8');
             header(
                 'Content-disposition: attachment;'
                 .'filename=HUGnet.'.$this->args()->get("id").'.csv'
@@ -647,7 +648,7 @@ class WebAPI extends HTML
             }
             $out .= "\r\n";
         }
-        return $out;
+        return utf8_encode($out);
     }
     /**
     * Sends the headers out
