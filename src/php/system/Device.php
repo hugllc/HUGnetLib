@@ -586,6 +586,7 @@ class Device extends \HUGnet\base\SystemTableAction
             if (is_array($info)) {
                 unset($info["data"]["dev"]);
                 unset($info["data"]["input"]);
+                $info["group"] = $this->table()->get("group");
                 include_once dirname(__FILE__)."/../devices/Input.php";
                 $system = $this->system();
                 $ret = \HUGnet\devices\Input::factory(

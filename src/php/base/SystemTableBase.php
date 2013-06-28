@@ -232,6 +232,9 @@ abstract class SystemTableBase
     */
     private function _find($data, $keys = null)
     {
+        if (isset($data["group"])) {
+            $this->table()->set("group", $data["group"]);
+        }
         $wdata = (array)$this->table()->sanitizeWhere($data);
         return $this->table()->selectOneInto($wdata);
     }
