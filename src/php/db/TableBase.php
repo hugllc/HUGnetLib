@@ -124,8 +124,6 @@ abstract class TableBase extends \HUGnet\base\Container
     private $_driver = null;
     /** @var object This is where we store our connection object */
     private $_connect = null;
-    /** @var object This is where we store our group */
-    private $_group = null;
     /** @var object This is where we store our configuration object */
     protected $myConfig = null;
     /** @var array This is the default values for the data */
@@ -182,11 +180,11 @@ abstract class TableBase extends \HUGnet\base\Container
     protected function &dbDriver()
     {
         $group = $this->get("group");
-        if (!is_object($this->_driver) || ($this->_group != $group)) {
+        if (!is_object($this->_driver) || ($this->default["group"] != $group)) {
             $this->_driver = Driver::factory(
                 $this->system(), $this, $this->_connect
             );
-            $this->_group = $group;
+            $this->default["group"] = $group;
         }
         return $this->_driver;
     }
