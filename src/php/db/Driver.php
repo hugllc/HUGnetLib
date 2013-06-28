@@ -303,39 +303,61 @@ abstract class Driver extends DriverBase
             return;
         }
         $string = "";
+        $data = array();
         foreach ((array)$array as $name => $value) {
-            if (isset($this->gates[$name])) {
-                $string .= $sep.$this->arrayWhereLogic($name, $value);
-            } else if (isset($this->conditionals[$name])) {
-                $string .= $sep.$this->arrayWhereComparison($name, $value);
-            } else {
-                $string .= $sep."`".$name."` = ".$value;
-            }
+            $string .= $sep.$this->arrayWhereDoStuff($name, $value, $data);
             $sep = $this->gates['$and'];
         }
-        $this->where("(".$string.")");
+        $this->where("(".$string.")", $data);
+    }
+    /**
+     * This converts a single set of Comparison operators
+     * 
+     * @param string $name  The name of the column
+     * @param array  $value The array to convert
+     * @param array  &$data The data array to use
+     *
+     * @return null
+     */
+    protected function arrayWhereDoStuff($name, $value, &$data)
+    {
+        $string = "";
+        if (isset($this->gates[$name])) {
+            $string .= $this->arrayWhereLogic($name, $value, $data);
+        } else if (isset($this->conditionals[$name])) {
+            $string .= $this->arrayWhereComparison($name, $value, $data);
+        } else if (isset($this->myTable->sqlColumns[$name])) {
+            $string .= "`".$name."` = ? ";
+            $data[] = $value;
+        } else {
+            $string = "0";
+        }
+        return $string;
     }
     /**
      * This converts a single set of Comparison operators
      * 
      * @param string $name  The name of the column
      * @param array  $array The array to convert
+     * @param array  &$data The data array to use
      *
      * @return null
      */
-    protected function arrayWhereComparison($name, $array)
+    protected function arrayWhereComparison($name, $array, &$data)
     {
         $string = "";
         $sep = "";
         if (is_array($array)) {
             foreach ($this->conditionals as $cond => $op) {
                 if (isset($array[$cond])) {
-                    $string .= $sep."`".$name."` $op ".$array[$cond]; 
+                    $string .= $sep."`".$name."` $op ? ";
+                    $data[] = $array[$cond]; 
                     $sep = " AND ";
                 }
             }
         } else {
-            $string = "`".$name."` = ".$array;
+            $string = "`".$name."` = ? ";
+            $data[] = $array;
         }
         return "(".$string.")";
     }
@@ -344,22 +366,17 @@ abstract class Driver extends DriverBase
      * 
      * @param string $gate  The logic gate to use
      * @param array  $array The array to convert
+     * @param array  &$data The data array to use
      *
      * @return null
      */
-    protected function arrayWhereLogic($gate, $array)
+    protected function arrayWhereLogic($gate, $array, &$data)
     {
         $string = "";
         $sep = "";
         foreach ((array)$array as $bit) {
             foreach ((array)$bit as $name => $value) {
-                if (isset($this->gates[$name])) {
-                    $string .= $sep.$this->arrayWhereLogic($name, $value);
-                } else if (isset($this->conditionals[$name])) {
-                    $string .= $sep.$this->arrayWhereComparison($name, $value);
-                } else {
-                    $string .= $sep."`".$name."` = ".$value;
-                }
+                $string .= $sep.$this->arrayWhereDoStuff($name, $value, $data);
                 $sep = $this->gates[$gate];
             }
         }
