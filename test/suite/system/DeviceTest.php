@@ -1525,6 +1525,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 5,
                             "sensors" => array(array("id" => 0x15)),
+                            "group" => "hello",
                         ),
                     ),
                     "Inputs" => array(
@@ -1563,6 +1564,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                     )
                                 )
                             ),
+                            "group" => "hello",
                         ),
                     ),
                 ),
@@ -1588,6 +1590,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 5,
                             "sensors" => true,
+                            "group" => "hello",
                         ),
                     ),
                 ),
@@ -1609,7 +1612,8 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             "id" => 5,
                             "sensors" => true,
                             "RawSetup" => "000000100800393701410039380143000004"
-                            ."FFFFFFFF01044242424241414141"
+                            ."FFFFFFFF01044242424241414141",
+                            "group" => "hello",
                         ),
                     ),
                 ),
@@ -1630,6 +1634,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 5,
                             "Role" => "DeviceTestRole",
+                            "group" => "hello",
                         ),
                     ),
                     "Inputs" => array(
@@ -1658,6 +1663,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             "id" => 5,
                             "sensors" => array(array("id" => 0x15)),
                             "Role" => "ThisIsABadRole",
+                            "group" => "hello",
                         ),
                     ),
                     "Inputs" => array(
@@ -1726,6 +1732,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     "Devices" => array(
                         "get" => array(
                             "id" => 5,
+                            "group" => "hello",
                         ),
                     ),
                 ),
@@ -1736,6 +1743,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         array(
                             "output" => 0,
                             "dev" => 5,
+                            "group" => "hello",
                         ),
                     ),
                 ),
@@ -1746,6 +1754,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 5,
                             "Role" => "DeviceTestRole",
+                            "group" => "hello",
                         ),
                     ),
                 ),
@@ -1766,6 +1775,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 5,
                             "Role" => "NotARole",
+                            "group" => "hello",
                         ),
                     ),
                 ),
@@ -1776,6 +1786,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         array(
                             "output" => 0,
                             "dev" => 5,
+                            "group" => "hello",
                         ),
                     ),
                 ),
@@ -1826,6 +1837,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     "Devices" => array(
                         "get" => array(
                             "id" => 5,
+                            "group" => "hello",
                         ),
                     ),
                 ),
@@ -1836,6 +1848,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         array(
                             "process" => 0,
                             "dev" => 5,
+                            "group" => "hello",
                         ),
                     ),
                 ),
@@ -1846,6 +1859,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 5,
                             "Role" => "DeviceTestRole",
+                            "group" => "hello",
                         ),
                     ),
                 ),
@@ -1866,6 +1880,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 5,
                             "Role" => "ThisIsNotAProperRole",
+                            "group" => "hello",
                         ),
                     ),
                 ),
@@ -1876,6 +1891,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         array(
                             "process" => 0,
                             "dev" => 5,
+                            "group" => "hello",
                         ),
                     ),
                 ),

@@ -418,7 +418,7 @@ abstract class Driver
         $data = array(
             "input" => $sid,
             "dev" => $this->device()->id(),
-            "group" => $this->device()->table()->get("group"),
+            "group" => $this->device()->get("group"),
         );
         $system = $this->device()->system();
         $device = $this->device();
@@ -459,7 +459,7 @@ abstract class Driver
         $data = array(
             "output" => $sid,
             "dev" => $this->device()->id(),
-            "group" => $this->device()->table()->get("group"),
+            "group" => $this->device()->get("group"),
         );
         $system = $this->device()->system();
         $device = $this->device();
@@ -481,7 +481,7 @@ abstract class Driver
         $data = array(
             "process" => $sid,
             "dev" => $this->device()->id(),
-            "group" => $this->device()->table()->get("group"),
+            "group" => $this->device()->get("group"),
         );
         $system = $this->device()->system();
         $device = $this->device();

@@ -933,6 +933,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                     "Device" => array(
                         "get" => array(
                             "id" => 5,
+                            "group" => "hello",
                         ),
                         "id" => 5,
                         "system" => new \HUGnet\DummySystem("System"),
@@ -945,6 +946,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                         array(
                             "output" => 0,
                             "dev" => 5,
+                            "group" => "hello",
                         ),
                     ),
                 ),
@@ -995,6 +997,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                     "Device" => array(
                         "get" => array(
                             "id" => 5,
+                            "group" => "hello",
                         ),
                         "id" => 5,
                         "system" => new \HUGnet\DummySystem("System"),
@@ -1007,6 +1010,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                         array(
                             "process" => 0,
                             "dev" => 5,
+                            "group" => "hello",
                         ),
                     ),
                 ),

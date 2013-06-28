@@ -176,7 +176,7 @@ interface DBTable
     *
     * @return array Array of objects
     */
-    public function &select($where, $data = array());
+    public function &select($where, $data = array(), $style = \PDO::FETCH_CLASS);
     /**
     * Returns the number of records this query would return
     *
