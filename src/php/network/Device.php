@@ -167,7 +167,7 @@ final class Device
         $this->_device = \HUGnet\Device::factory($this->_system);
         $config = array(
             "DeviceName" => $this->_system->get("uuid"),
-            "GatewayKey" => $this->_system->get("GatewayKey"),
+            "GatewayKey" => (int)$this->_system->get("GatewayKey"),
             "HWPartNum" => $this->_config["HWPartNum"],
             "FWPartNum" => $this->_config["FWPartNum"],
         );
