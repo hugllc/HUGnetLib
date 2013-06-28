@@ -359,13 +359,14 @@ abstract class TableBase extends \HUGnet\base\Container
     *
     * @param string $where The where clause
     * @param array  $data  The data to use with the where clause
+    * @param int    $style The style of the return
     *
     * @return array Array of objects
     */
-    public function &select($where, $data = array())
+    public function &select($where, $data = array(), $style = \PDO::FETCH_CLASS)
     {
         $this->dbDriver()->selectWhere($where, $data);
-        $ret = $this->dbDriver()->fetchAll();
+        $ret = $this->dbDriver()->fetchAll($style);
         $this->dbDriver()->reset();
         return $ret;
     }
