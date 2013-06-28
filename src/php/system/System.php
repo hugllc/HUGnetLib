@@ -82,6 +82,8 @@ class System
     private $_quit = false;
     /** @var object This is our user interface */
     private $_error = null;
+    /** @var bool This says if a fatal error has happened */
+    private $_fatalError = false;
     /** @var array This is our static things that get might want to retrieve */
     private $_fixed = array(
         "nodename" => "unknown",
@@ -469,7 +471,10 @@ class System
         if (!(boolean)$condition) {
             return false;
         }
-        $this->_setError($msg, Error::CRITICAL);
+        if (!$this->_fatalError) {
+            $this->_fatalError = true;
+            $this->_setError($msg, Error::CRITICAL);
+        }
         $this->_error()->exception($msg, "Runtime");
     }
     /**
