@@ -444,8 +444,7 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
                 array(
                     "selectOneInto" => array(
                         array(
-                            "`dev` = ? AND `sensor` = ?",
-                            array(2, 0),
+                            array("dev" => 2, "sensor" => 0),
                         ),
                     ),
                     "clearData" => array(array()),
@@ -490,8 +489,7 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
                     ),
                     "selectOneInto" => array(
                         array(
-                            "`dev` = ? AND `sensor` = ?",
-                            array(2, 0),
+                            array("dev" => 2, "sensor" => 0),
                         ),
                     ),
                 ),

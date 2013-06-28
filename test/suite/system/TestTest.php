@@ -135,8 +135,11 @@ class TestTest extends \PHPUnit_Framework_TestCase
                     "clearData" => array(array()),
                     "selectOneInto" => array(
                         array(
-                            "`id` = ? AND `name` = ? AND `value` = ?",
-                            array(5, 3, 1),
+                            array(
+                                "id" => 5,
+                                "name" => 3,
+                                "value" => 1,
+                            ),
                         ),
                     ),
                     "sanitizeWhere" => array(

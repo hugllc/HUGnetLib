@@ -1483,8 +1483,8 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
                         "value" => "25.0",
                     ),
                 ),
-                "value = ?",
-                array(25.0),
+                array("value" => 25.0),
+                array(),
             ),
         );
     }

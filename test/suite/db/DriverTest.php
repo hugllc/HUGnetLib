@@ -1314,6 +1314,38 @@ class DriverTest extends \PHPUnit_Extensions_Database_TestCase
                 ),
                 true,
             ),
+            // #9 MongoDB Test #3
+            array(
+                array(
+                    '$or' => array(
+                        array("id" => 32), 
+                        array("id" => array('$lt' => 0, '$gt' => -100)),
+                    )
+                ),  // where
+                array(), // data
+                array("id", "value", "name"), // keys
+                array(
+                    array(
+                        'id' => '32',
+                        'name' => 'A way up here thing',
+                        'value' => '23.0'
+                    ),
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                ), // expect
+                array(
+                    "sqlId" => null,
+                    "sqlIndexes" => array(
+                    ),
+                    "sqlOrderBy" => "value DESC", // Orderby
+                    "sqlLimit" => 0, // limit
+                    "sqlStart" => 0, // start
+                ),
+                true,
+            ),
         );
     }
     /**
@@ -1433,46 +1465,83 @@ class DriverTest extends \PHPUnit_Extensions_Database_TestCase
     {
         return array(
             // Selects everything
-            array(
+            array( // #0
                 "",  // where
                 array(), // data
                 "", // keys
                 4, // expect
             ),
             // Selects everything, key specified
-            array(
+            array( // #1
                 "",  // where
                 array(), // data
                 "id", // keys
                 4, // expect
             ),
             // Selects only one
-            array(
+            array( // #2
                 "id = ?",  // where
                 array(32), // data
                 "id", // keys
                 1, // expect
             ),
             // Selects only one
-            array(
+            array( // #3
                 "id = 32",  // where
                 array(), // data
                 "id", // keys
                 1, // expect
             ),
             // Selects only one that is not there
-            array(
+            array( // #4
                 "idasd = 6472",  // where
                 array(), // data
                 "id", // keys
                 false, // expect
             ),
             // Selects only one using the 'idwhere'
-            array(
+            array( // #5
                 array("id" => 32),  // where
                 array(), // data
                 "", // keys
                 1, // expect
+            ),
+            // #6 MongoDB Test
+            array(
+                array(
+                    '$or' => array(
+                        array("id" => 32), 
+                        array("id" => 2)
+                    )
+                ),  // where
+                array(), // data
+                "id", // keys
+                2, // expect
+            ),
+            // #7 MongoDB Test #2
+            array(
+                array(
+                    '$or' => array(
+                        array("id" => 32), 
+                        array("id" => 2),
+                        array('$or' => array(array("id" => 1))),
+                    )
+                ),  // where
+                array(), // data
+                array(), // keys
+                3, // expect
+            ),
+            // #8 MongoDB Test #3
+            array(
+                array(
+                    '$or' => array(
+                        array("id" => 32), 
+                        array("id" => array('$lt' => 0, '$gt' => -100)),
+                    )
+                ),  // where
+                array(), // data
+                array(), // keys
+                2, // expect
             ),
         );
     }

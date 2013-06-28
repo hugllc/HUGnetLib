@@ -308,7 +308,10 @@ abstract class Driver extends DriverBase
             $string .= $sep.$this->arrayWhereDoStuff($name, $value, $data);
             $sep = $this->gates['$and'];
         }
-        $this->where("(".$string.")", $data);
+        if (!empty($string)) {
+            $string = "(".$string.")";
+        }
+        $this->where($string, $data);
     }
     /**
      * This converts a single set of Comparison operators
@@ -327,8 +330,12 @@ abstract class Driver extends DriverBase
         } else if (isset($this->conditionals[$name])) {
             $string .= $this->arrayWhereComparison($name, $value, $data);
         } else if (isset($this->myTable->sqlColumns[$name])) {
-            $string .= "`".$name."` = ? ";
-            $data[] = $value;
+            if (is_array($value)) {
+                $string .= $this->arrayWhereComparison($name, $value, $data);
+            } else {
+                $string .= "`".$name."` = ? ";
+                $data[] = $value;
+            }
         } else {
             $string = "0";
         }
@@ -497,8 +504,8 @@ abstract class Driver extends DriverBase
             // This selects by id.  If we are here, we are only getting one record
             // as it searches for unique values.  That is why we are not adding
             // orderby or limit.  Both are meaningless when getting only one value.
-            $this->idWhere($where);
-            $ret = $this->execute($this->prepareIdData($where));
+            $this->arrayWhere($where);
+            $ret = $this->executeData();
         } else {
             $this->where($where, $whereData);
             $ret = $this->executeData();

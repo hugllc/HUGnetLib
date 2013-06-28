@@ -459,7 +459,7 @@ abstract class Average extends History
         $extraData = null
     ) {
         return parent::getTimePeriod(
-            $start, $end, $devId, "id", "Type = ?", array($type)
+            $start, $end, $devId, "id", array("Type" => $type)
         );
     }
     /**

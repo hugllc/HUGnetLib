@@ -233,16 +233,7 @@ abstract class SystemTableBase
     private function _find($data, $keys = null)
     {
         $wdata = (array)$this->table()->sanitizeWhere($data);
-        $keys = is_array($keys) ? $keys : array_keys($wdata);
-        $where = "";
-        $whereData = array();
-        $sep = "";
-        foreach ($keys as $key) {
-            $where .= "$sep`$key` = ?";
-            $sep = " AND ";
-            $whereData[] = $wdata[$key];
-        }
-        return $this->table()->selectOneInto($where, $whereData);
+        return $this->table()->selectOneInto($wdata);
     }
     /**
     * Changes data that is in the table and saves it
@@ -277,20 +268,8 @@ abstract class SystemTableBase
         if (!empty($this->table()->sqlId)) {
             $this->table()->sqlOrderBy = $this->table()->sqlId." asc";
         }
-        $where = $this->table()->sanitizeWhere($where);
-        $whereText = "";
-        $whereData = array();
-        if (is_array($where)) {
-            $sep       = "";
-            foreach ($where as $key => $value) {
-                $whereText .= $sep."`$key` = ?";
-                $sep = " AND ";
-                $whereData[] = $value;
-            }
-        } else {
-            $whereText = "1";
-        }
-        $ret = $this->table()->selectInto($whereText, $whereData);
+        $where = (array)$this->table()->sanitizeWhere($where);
+        $ret = $this->table()->selectInto($where);
         $return = array();
         while ($ret) {
             $return[] = $this->toArray($default);
@@ -369,13 +348,8 @@ abstract class SystemTableBase
     */
     public function ids($data = array())
     {
-        $where = "1";
-        $whereData = array();
-        foreach ((array)$data as $key => $value) {
-            $where .= " AND `$key` = ?";
-            $whereData[] = $value;
-        }
-        return $this->table()->selectIDs($where, $whereData);
+        $where = (array)$this->table()->sanitizeWhere((array)$data);
+        return $this->table()->selectIDs($where);
     }
     /**
     * Lists the ids of the table values

@@ -233,20 +233,18 @@ class Firmware extends \HUGnet\db\Table
     */
     public function getLatest()
     {
-        $data   = array($this->get("FWPartNum"), $this->get("RelStatus"), 0);
-        $where  = " FWPartNum = ? AND RelStatus <= ?";
-        $where .= " AND Active <> ?";
+        $where["FWPartNum"] = $this->get("FWPartNum");
+        $where["RelStatus"] = array('$lte' => $this->get("RelStatus"));
+        $where["Active"]    = array('$ne' => 0);
         $HWPartNum = $this->get("HWPartNum");
         if (!empty($HWPartNum)) {
-            $where .= " AND HWPartNum = ?";
-            $data[] = $HWPartNum;
+            $where["HWPartNum"] = $HWPartNum;
         }
         $version = $this->get("Version");
         if (!empty($version)) {
-            $where .= " AND Version = ?";
-            $data[] = $version;
+            $where["Version"] = $version;
         }
-        $ret = $this->selectInto($where, $data);
+        $ret = $this->selectInto($where);
         // This makes sure we are getting a good one if there is one, instead
         // of a bad one.
         $highest = array("Version" => "0.0.0");
@@ -395,18 +393,16 @@ class Firmware extends \HUGnet\db\Table
         $this->set("HWPartNum", $fname[0]);
         $this->set("FWPartNum", $fname[1]);
         $this->set("Version", $fname[2]);
-        $where = "`HWPartNum` = ? AND `FWPartNum` = ? AND `Version` = ?";
-        $data = array(
-            $this->get("HWPartNum"),
-            $this->get("FWPartNum"),
-            $this->get("Version")
+        $where = array(
+            "HWPartNum" => $this->get("HWPartNum"),
+            "FWPartNum" => $this->get("FWPartNum"),
+            "Version"   => $this->get("Version")
         );
         $md5 = $this->get("md5");
         if (!empty($md5)) {
-            $where .= " AND `md5` = ?";
-            $data[] = $md5;
+            $where["md5"] = $md5;
         }
-        $this->dbDriver()->selectWhere($where, $data);
+        $this->dbDriver()->selectWhere($where);
         $this->dbDriver()->fetchInto();
         return  !is_null($this->get("id"));
     }
@@ -419,8 +415,11 @@ class Firmware extends \HUGnet\db\Table
     {
 
         return (bool) $this->dbDriver()->countWhere(
-            "FWPartNum = ? AND Version = ?",
-            array($this->get("FWPartNum"), $this->get("Version")),
+            array(
+                "FWPartNum" => $this->get("FWPartNum"), 
+                "Version"   => $this->get("Version"),
+            ),
+            array(),
             "id"
         );
     }

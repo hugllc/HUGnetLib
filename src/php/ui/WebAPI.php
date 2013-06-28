@@ -387,20 +387,11 @@ class WebAPI extends HTML
     {
         $data = (array)$this->args()->get("data");
         $where = $obj->sanitizeWhere($data);
-        $whereText = "";
-        $whereData = array();
-        if (is_array($where) && !empty($where)) {
-            $sep       = "";
-            foreach ($where as $key => $value) {
-                $whereText .= $sep."`$key` = ?";
-                $sep = " AND ";
-                $whereData[] = $value;
-            }
-        } else {
-            $whereText = "1";
+        if (!is_array($where) || empty($where)) {
+            $where = array();
         }
         $ret = array();
-        foreach ((array)$obj->select($whereText, $whereData) as $row) {
+        foreach ((array)$obj->select($where) as $row) {
             $ret[] = $row->toArray(true);
         }
         return $ret;
@@ -478,13 +469,11 @@ class WebAPI extends HTML
             $hist->sqlLimit = 1;
             $hist->sqlStart = 0;
             $hist->sqlOrderBy = "Date desc";
-            $whereText = "`id` = ?";
-            $whereData = array($did);
+            $where = array("id" => $did);
             if (!is_null($hist->get("Type"))) {
-                $whereText .= " AND Type = ?";
-                $whereData[] = $type;
+                $where["Type"] = $type;
             }
-            $hist->selectOneInto($whereText, $whereData);
+            $hist->selectOneInto($where);
             $ret = array();
             if (!$hist->isEmpty()) {
                 $channels = $this->system()->device($did)->dataChannels();

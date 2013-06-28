@@ -669,7 +669,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                             array()
                         ),
                         "selectOneInto" => array(
-                            array('`id` = ?', array(16)),
+                            array(array("id" => 16)),
                         ),
                         "toArray" => array(
                             array(true)
@@ -1695,7 +1695,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                             array(true),
                         ),
                         "selectOneInto" => array(
-                            array("`id` = ?", array(16))
+                            array(array("id" => 16))
                         ),
                         "isEmpty" => array(
                             array(),
@@ -1771,7 +1771,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                             array(true),
                         ),
                         "selectOneInto" => array(
-                            array("`id` = ?", array(16))
+                            array(array("id" => 16))
                         ),
                         "isEmpty" => array(
                             array(),

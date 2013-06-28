@@ -144,8 +144,11 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                     "clearData" => array(array()),
                     "selectOneInto" => array(
                         array(
-                            "`id` = ? AND `name` = ? AND `value` = ?",
-                            array(5, 3, 1),
+                            array(
+                                "id" => 5,
+                                "name" => 3,
+                                "value" => 1,
+                            ),
                         ),
                     ),
                     "sanitizeWhere" => array(
@@ -239,8 +242,11 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                         "clearData" => array(array()),
                         "selectOneInto" => array(
                             array(
-                                "`id` = ? AND `name` = ? AND `value` = ?",
-                                array(5, 3, 1),
+                                array(
+                                    "id" => 5,
+                                    "name" => 3,
+                                    "value" => 1,
+                                ),
                             ),
                         ),
                         "sanitizeWhere" => array(
@@ -288,8 +294,11 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                         "clearData" => array(array()),
                         "selectOneInto" => array(
                             array(
-                                "`id` = ? AND `name` = ? AND `value` = ?",
-                                array(5, 3, 1),
+                                array(
+                                    "id" => 5,
+                                    "name" => 3,
+                                    "value" => 1,
+                                ),
                             ),
                         ),
                         "sanitizeWhere" => array(
@@ -361,8 +370,11 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                         "clearData" => array(array()),
                         "selectOneInto" => array(
                             array(
-                                "`id` = ? AND `name` = ?",
-                                array(5, 3),
+                                array(
+                                    "id" => 5,
+                                    "name" => 3,
+                                    "value" => 1,
+                                ),
                             ),
                         ),
                         "sanitizeWhere" => array(
@@ -461,8 +473,11 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                         "clearData" => array(array()),
                         "selectOneInto" => array(
                             array(
-                                "`id` = ? AND `name` = ? AND `value` = ?",
-                                array(5, 3, 1),
+                                array(
+                                    "id" => 5,
+                                    "name" => 3,
+                                    "value" => 1,
+                                ),
                             ),
                         ),
                         "sanitizeWhere" => array(
@@ -593,8 +608,11 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                     "Table" => array(
                         "selectInto" => array(
                             array(
-                                "`id` = ? AND `name` = ? AND `value` = ?",
-                                array(5, 3, 1),
+                                array(
+                                    "id" => 5,
+                                    "name" => 3,
+                                    "value" => 1,
+                                ),
                             ),
                         ),
                         "clearData" => array(array()),
@@ -626,7 +644,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                     "Table" => array(
                         "selectInto" => array(
                             array(
-                                "1", array(),
+                                array(),
                             ),
                         ),
                         "clearData" => array(array()),
@@ -820,7 +838,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                         "get" => array(array("id")),
                         "insertRow" => array(array(false)),
                         "clearData" => array(array()),
-                        "selectOneInto" => array(array("", array())),
+                        "selectOneInto" => array(array(array())),
                         "fromAny" => array(array(array("1" => "2"))),
                         "sanitizeWhere" => array(array(array("1" => "2"))),
                     ),
@@ -1083,7 +1101,17 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                 array("A", "B", "C"),
                 array(
                     "selectIDs" => array(
-                        array("1 AND `id` = ? AND `beer` = ?", array(2, "none")),
+                        array(
+                            array(),
+                        ),
+                    ),
+                    "sanitizeWhere" => array(
+                        array(
+                            array(
+                                'id' => 2,
+                                'beer' => 'none',
+                            ),
+                        ),
                     ),
                 ),
             ),
@@ -1101,7 +1129,12 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                 array("a" => "A", "b" => "B", "c" => "C"),
                 array(
                     "selectIDs" => array(
-                        array("1", array()),
+                        array(array()),
+                    ),
+                    "sanitizeWhere" => array(
+                        array(
+                            array(),
+                        ),
                     ),
                 ),
             ),

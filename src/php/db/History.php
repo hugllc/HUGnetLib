@@ -236,16 +236,17 @@ abstract class History extends Table
     {
 
         $date  = $this->get("Date");
-        $where = "id = ? AND Date >= ? AND Date <= ?";
         $toler = (int)((int)$period / 2);
-        $data  = array(
-            $this->get("id"),
-            (int)($date - $toler),
-            (int)($date + $toler)
+        $where = array(
+            "id" => $this->get("id"),
+            "Date" => array(
+                '$gte' => (int)($date - $toler),
+                '$lte' => (int)($date + $toler)
+            ),
         );
         $ret = (bool) $this->dbDriver()->countWhere(
             $where,
-            $data,
+            array(),
             "Date"
         );
         $this->dbDriver()->reset();

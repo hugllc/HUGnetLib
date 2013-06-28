@@ -315,21 +315,21 @@ abstract class Table extends TableBase
         }
         $end = self::unixDate($end);
         // Set up the where and data fields
-        $where = "`".$this->dateField."` >= ? AND `".$this->dateField."` <= ?";
-        $data = array($start, $end);
+        $where = array(
+            $this->dateField => array(
+                '$gte' => $start,
+                '$lte' => $end
+            )
+        );
         if (!is_null($rid)) {
-            $where .= " AND `".$idField."` = ?";
-            $data[] = $rid;
+            $where[$idField] = $rid;
         }
-        if (!empty($extraWhere)) {
-            $where .= " AND ".$extraWhere;
-        }
-        if (is_array($extraData)) {
-            $data = array_merge($data, $extraData);
+        if (!empty($extraWhere) && is_array($extraWhere)) {
+            $where = array_merge($where, $extraWhere);
         }
         return $this->selectInto(
             $where,
-            $data
+            array()
         );
     }
 
