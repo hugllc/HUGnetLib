@@ -460,6 +460,39 @@ class Devices extends \HUGnet\db\Table
         $this->data["id"] = (int) $value;
     }
     /**
+    * function to set Active Flag
+    *
+    * @param string $value The value to set
+    *
+    * @return null
+    */
+    protected function setActive($value)
+    {
+        $this->data["Active"] = (int) ($value <> 0);
+    }
+    /**
+    * function to set Active Flag
+    *
+    * @param string $value The value to set
+    *
+    * @return null
+    */
+    protected function setGatewayKey($value)
+    {
+        $this->data["GatewayKey"] = (int) $value;
+    }
+    /**
+    * function to set Active Flag
+    *
+    * @param string $value The value to set
+    *
+    * @return null
+    */
+    protected function setPollInterval($value)
+    {
+        $this->data["PollInterval"] = (int) $value;
+    }
+    /**
     * function to set DeviceGroup
     *
     * @param string $value The value to set
