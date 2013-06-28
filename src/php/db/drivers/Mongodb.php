@@ -36,6 +36,8 @@ namespace HUGnet\db\drivers;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is for the base class */
+require_once dirname(__FILE__)."/../Driver.php";
+/** This is for the interface */
 require_once dirname(__FILE__)."/../../interfaces/DBDriver.php";
 /**
  * This class implements photo sensors.
@@ -50,7 +52,7 @@ require_once dirname(__FILE__)."/../../interfaces/DBDriver.php";
  * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class MongoDB implements \HUGnet\interfaces\DBDriver
+class Mongodb extends \HUGnet\db\Driver implements \HUGnet\interfaces\DBDriver
 {
     /** @var object This is where we store our system object */
     protected $system = null;
@@ -128,7 +130,7 @@ class MongoDB implements \HUGnet\interfaces\DBDriver
         if (!is_a($connect, "ConnectionManager")) {
             $connect = \HUGnet\db\Connection::factory($system);
         }
-        $obj = new MongoDB($system, $table, $connect);
+        $obj = new Mongodb($system, $table, $connect);
         return $obj;
     }
         
@@ -226,7 +228,7 @@ class MongoDB implements \HUGnet\interfaces\DBDriver
     *
     * @return array The where array to use
     */
-    protected function idWhere($data)
+    protected function idWhere($data = array())
     {
         $where = array();
         if (!empty($this->myTable->sqlId)) {
@@ -425,7 +427,7 @@ class MongoDB implements \HUGnet\interfaces\DBDriver
     *
     * @return string
     */
-    protected function limit()
+    protected function limit($start = true)
     {
         if (empty($this->myTable->sqlLimit) && is_object($this->cursor)) {
             return;
@@ -643,7 +645,7 @@ class MongoDB implements \HUGnet\interfaces\DBDriver
         $this->cursor = null;
     }
     /**
-     * Columns are irrelevant in MongoDB
+     * Columns are irrelevant in Mongodb
      *
      * @return null
      */

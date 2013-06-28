@@ -35,7 +35,7 @@
  */
 namespace HUGnet\db\drivers;
 /** This is a required class */
-require_once CODE_BASE.'db/drivers/MongoDB.php';
+require_once CODE_BASE.'db/drivers/Mongodb.php';
 /** This is a required class */
 require_once CODE_BASE.'db/Table.php';
 /** This is a required class */
@@ -63,7 +63,7 @@ require_once 'PHPUnit/Extensions/Database/TestCase.php';
  * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class MongoDBTest extends \PHPUnit_Framework_TestCase
+class MongodbTest extends \PHPUnit_Framework_TestCase
 {
     /** @var object This is our database object */
     protected $dbo;
@@ -86,7 +86,7 @@ class MongoDBTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         if (!class_exists("\MongoClient")) {
-            $this->markTestSkipped("No MongoDB server available");
+            $this->markTestSkipped("No Mongodb server available");
         }
         $this->config = array(
             "System" => array(
@@ -134,8 +134,8 @@ class MongoDBTest extends \PHPUnit_Framework_TestCase
             )
             
         );
-        $this->o = MongoDB::factory(
-            $this->system, $this->table, $this->connect, "MongoDB"
+        $this->o = Mongodb::factory(
+            $this->system, $this->table, $this->connect, "Mongodb"
         );
         $this->o->createTable();
     }
@@ -187,7 +187,7 @@ class MongoDBTest extends \PHPUnit_Framework_TestCase
     */
     public function testConstructTableExec()
     {
-        $obj = MongoDB::factory($empty, $this->table);
+        $obj = Mongodb::factory($empty, $this->table);
     }
     /**
     * Tests for exceptions
@@ -199,7 +199,7 @@ class MongoDBTest extends \PHPUnit_Framework_TestCase
     public function testConstructTableExec2()
     {
         $system = \HUGnet\System::factory();
-        $obj = MongoDB::factory($system, $empty);
+        $obj = Mongodb::factory($system, $empty);
     }
 
     /**
@@ -210,8 +210,8 @@ class MongoDBTest extends \PHPUnit_Framework_TestCase
     public static function dataFactory()
     {
         return array(
-            array("mongodb", "HUGnet\\db\\drivers\\MongoDB"),
-            array("VeryBadDriver", "HUGnet\\db\\drivers\\MongoDB"),
+            array("mongodb", "HUGnet\\db\\drivers\\Mongodb"),
+            array("VeryBadDriver", "HUGnet\\db\\drivers\\Mongodb"),
         );
     }
     /**
@@ -229,7 +229,7 @@ class MongoDBTest extends \PHPUnit_Framework_TestCase
         $this->config["System"]["get"]["verbose"] = $verbose;
         $this->system->resetMock($this->config);
         $empty = null;
-        $obj = MongoDB::factory(
+        $obj = Mongodb::factory(
             $this->system, $this->table, $empty, $driver
         );;
         $this->assertSame($expect, get_class($obj));

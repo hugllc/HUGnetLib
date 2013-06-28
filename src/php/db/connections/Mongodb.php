@@ -55,7 +55,7 @@ require_once dirname(__FILE__)."/../../interfaces/DBConnection.php";
  * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class MongoDB  implements \HUGnet\interfaces\DBConnection
+class Mongodb  implements \HUGnet\interfaces\DBConnection
 {
     private $_default = array(
         "group"  => "default",       // This is the name of the database group
@@ -109,7 +109,7 @@ class MongoDB  implements \HUGnet\interfaces\DBConnection
     */
     public static function &factory(&$system, $config)
     {
-        $obj = new MongoDB($system, $config);
+        $obj = new Mongodb($system, $config);
         return $obj;
     }
 

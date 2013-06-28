@@ -61,7 +61,7 @@ require_once dirname(__FILE__)."/DriverBase.php";
  */
 abstract class Driver extends DriverBase
 {
-    /** These are the MongoDB conditionals we support */
+    /** These are the Mongodb conditionals we support */
     protected $conditionals = array(
         '$gt' => ">",
         '$gte' => ">=",
@@ -69,7 +69,7 @@ abstract class Driver extends DriverBase
         '$lte' => "<=",
         '$ne' => "<>",
     );
-    /** These are the MongoDB logic gates we support */
+    /** These are the Mongodb logic gates we support */
     protected $gates = array(
         '$or' => " OR ",
         '$and' => " AND ",
@@ -252,9 +252,11 @@ abstract class Driver extends DriverBase
     * from here into the data array.  That way multiple records can be updated
     * with the same query.
     *
+    * @param array $data The data to use in the where
+    *
     * @return null
     */
-    protected function idWhere()
+    protected function idWhere($data = array())
     {
         $where = "";
         if (!empty($this->myTable->sqlId)) {
@@ -291,7 +293,7 @@ abstract class Driver extends DriverBase
         $this->where($where);
     }
     /**
-    * This converts a MongoDB style array where into an SQL where statement
+    * This converts a Mongodb style array where into an SQL where statement
     * 
     * @param array $array The array to convert
     *

@@ -36,7 +36,7 @@
  */
 namespace HUGnet\db\connections;
 /** This is a required class */
-require_once CODE_BASE.'db/connections/MongoDB.php';
+require_once CODE_BASE.'db/connections/Mongodb.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
@@ -58,7 +58,7 @@ require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
  * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class MongoDBTest extends \PHPUnit_Framework_TestCase
+class MongodbTest extends \PHPUnit_Framework_TestCase
 {
     /**
     * Sets up the fixture, for example, open a network connection.
@@ -71,7 +71,7 @@ class MongoDBTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         if (!class_exists("\MongoClient")) {
-            $this->markTestSkipped("No MongoDB server available");
+            $this->markTestSkipped("No Mongodb server available");
         }
     }
 
@@ -89,7 +89,7 @@ class MongoDBTest extends \PHPUnit_Framework_TestCase
 
 
     /**
-    * Data provider for testCreateMongoDB
+    * Data provider for testCreateMongodb
     *
     * @return array
     */
@@ -113,7 +113,7 @@ class MongoDBTest extends \PHPUnit_Framework_TestCase
             array( // #2
                 array(
                     array(
-                        "driver" => "badMongoDBDriver",
+                        "driver" => "badMongodbDriver",
                         "file" => ":memory:"
                     )
                 ),
@@ -160,7 +160,7 @@ class MongoDBTest extends \PHPUnit_Framework_TestCase
     public function testgetDBO($preload, $expect)
     {
         $system = $this->getMock("\HUGnet\System", array("now"));
-        $obj = MongoDB::factory($system, $preload);
+        $obj = Mongodb::factory($system, $preload);
         $pdo = $obj->getDBO();
         if ($expect === false) {
             $this->assertFalse($pdo);
@@ -172,7 +172,7 @@ class MongoDBTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
-    * Data provider for testCreateMongoDB
+    * Data provider for testCreateMongodb
     *
     * @return array
     */
@@ -201,7 +201,7 @@ class MongoDBTest extends \PHPUnit_Framework_TestCase
     public function testDriver($preload, $expect)
     {
         $system = $this->getMock("\HUGnet\System", array("now"));
-        $obj = MongoDB::factory($system, $preload);
+        $obj = Mongodb::factory($system, $preload);
         $driver = $obj->driver();
         $this->assertSame($expect, $driver);
     }
@@ -294,7 +294,7 @@ class MongoDBTest extends \PHPUnit_Framework_TestCase
     public function testConnect($preload, $preconnect, $expect)
     {
         $system = $this->getMock("\HUGnet\System", array("now"));
-        $obj = MongoDB::factory($system, $preload);
+        $obj = Mongodb::factory($system, $preload);
         if ($preconnect) {
             $obj->connect();
         }
@@ -325,7 +325,7 @@ class MongoDBTest extends \PHPUnit_Framework_TestCase
     public function testAvailable($preload, $preconnect, $expect)
     {
         $system = $this->getMock("\HUGnet\System", array("now"));
-        $obj = MongoDB::factory($system, $preload);
+        $obj = Mongodb::factory($system, $preload);
         if ($preconnect) {
             $obj->connect();
         }
@@ -369,7 +369,7 @@ class MongoDBTest extends \PHPUnit_Framework_TestCase
     public function testDisconnect($preload, $expect)
     {
         $system = $this->getMock("\HUGnet\System", array("now"));
-        $obj = MongoDB::factory($system, $preload);
+        $obj = Mongodb::factory($system, $preload);
         $ret = $obj->connect();
         $obj->disconnect();
         $check = $this->readAttribute($obj, "_client");
@@ -428,7 +428,7 @@ class MongoDBTest extends \PHPUnit_Framework_TestCase
     public function testConnected($preload, $connect, $expect)
     {
         $system = $this->getMock("\HUGnet\System", array("now"));
-        $obj = MongoDB::factory($system, $preload);
+        $obj = Mongodb::factory($system, $preload);
         if ($connect) {
             $obj->connect();
         }

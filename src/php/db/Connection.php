@@ -125,8 +125,8 @@ class Connection implements \ConnectionManager
         $ret = false;
         if (is_array($this->_servers[$group])) {
             if ($this->_drivers[$group] === "mongodb") {
-                include_once dirname(__FILE__)."/connections/MongoDB.php";
-                $this->_server[$group] = \HUGnet\db\connections\MongoDB::factory(
+                include_once dirname(__FILE__)."/connections/Mongodb.php";
+                $this->_server[$group] = \HUGnet\db\connections\Mongodb::factory(
                     $this->_system, $this->_servers[$group]
                 );
                 $ret = true;
