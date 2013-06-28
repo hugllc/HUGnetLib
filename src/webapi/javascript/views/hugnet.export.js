@@ -86,8 +86,8 @@ HUGnet.ExportView = Backbone.View.extend({
     },
     exportCSV: function ()
     {
-        this.since = Date.parse(this.$('#since').val());
-        this.until = Date.parse(this.$('#until').val());
+        this.since = Date.parse(this.$('#since').val()+' UTC');
+        this.until = Date.parse(this.$('#until').val()+' UTC');
         if (parseInt(this.$('#order').val(), 10) == 0) {
             this.order = "asc";
         } else {
@@ -115,19 +115,9 @@ HUGnet.ExportView = Backbone.View.extend({
         if (this.until != 0) {
             d.setTime(this.until);
         }
-        this.untilDate = pad(d.getMonth()+1)+'/'
-            + pad(d.getDate())+'/'
-            + d.getFullYear()+' '
-            + pad(d.getHours())+':'
-            + pad(d.getMinutes())+':'
-            + pad(d.getSeconds());
+        this.untilDate = this._formatDate(d);
         d.setTime(this.since);
-        this.sinceDate = pad(d.getMonth()+1)+'/'
-            + pad(d.getDate())+'/'
-            + d.getFullYear()+' '
-            + pad(d.getHours())+':'
-            + pad(d.getMinutes())+':'
-            + pad(d.getSeconds());
+        this.sinceDate = this._formatDate(d);
         this.$("#since").val(this.sinceDate);
         this.$("#until").val(this.untilDate);
     },
@@ -173,5 +163,15 @@ HUGnet.ExportView = Backbone.View.extend({
     renderEntry: function (view)
     {
         view.render();
+    },
+    _formatDate: function (d)
+    {
+        function pad(n){return n<10 ? '0'+n : n};
+        return pad(d.getUTCMonth()+1)+'/'
+            + pad(d.getUTCDate())+'/'
+            + d.getUTCFullYear()+' '
+            + pad(d.getUTCHours())+':'
+            + pad(d.getUTCMinutes())+':'
+            + pad(d.getUTCSeconds());
     }
 });
