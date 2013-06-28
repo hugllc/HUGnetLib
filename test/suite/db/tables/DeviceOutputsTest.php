@@ -186,6 +186,9 @@ class DeviceOutputsTest extends TableTestBase
             array("params", "asdfasdfasdfasdf", "asdfasdfasdfasdf"),
             array("params", array(1,2,3,4), "[1,2,3,4]"),
             array("extra", array(1,2,3,4), array(1,2,3,4)),
+            array("id", "123", 123),
+            array("dev", "123", 123),
+            array("output", "123", 123),
         );
     }
 

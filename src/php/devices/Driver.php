@@ -416,8 +416,8 @@ abstract class Driver
     {
         include_once dirname(__FILE__)."/Input.php";
         $data = array(
-            "input" => $sid,
-            "dev" => $this->device()->id(),
+            "input" => (int)$sid,
+            "dev" => (int)$this->device()->id(),
             "group" => $this->device()->get("group"),
         );
         $system = $this->device()->system();
@@ -457,8 +457,8 @@ abstract class Driver
     {
         include_once dirname(__FILE__)."/Output.php";
         $data = array(
-            "output" => $sid,
-            "dev" => $this->device()->id(),
+            "output" => (int)$sid,
+            "dev" => (int)$this->device()->id(),
             "group" => $this->device()->get("group"),
         );
         $system = $this->device()->system();
@@ -479,8 +479,8 @@ abstract class Driver
     {
         include_once dirname(__FILE__)."/Process.php";
         $data = array(
-            "process" => $sid,
-            "dev" => $this->device()->id(),
+            "process" => (int)$sid,
+            "dev" => (int)$this->device()->id(),
             "group" => $this->device()->get("group"),
         );
         $system = $this->device()->system();
