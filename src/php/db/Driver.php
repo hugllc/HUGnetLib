@@ -61,7 +61,21 @@ require_once dirname(__FILE__)."/DriverBase.php";
  */
 abstract class Driver extends DriverBase
 {
-
+    /** These are the MongoDB conditionals we support */
+    protected $conditionals = array(
+        '$gt' => ">",
+        '$gte' => ">=",
+        '$lt' => "<",
+        '$lte' => "<=",
+        '$ne' => "<>",
+    );
+    /** These are the MongoDB logic gates we support */
+    protected $gates = array(
+        '$or' => " OR ",
+        '$and' => " AND ",
+        '$not' => " NOT ",
+    );
+    
     /**
     * Create the object
     *
@@ -277,11 +291,9 @@ abstract class Driver extends DriverBase
         $this->where($where);
     }
     /**
-    * This gets either a key or a unique index and returns it as a where.
-    *
-    * This sets $this->idWhere, which is used by prepareData() to add the stuff
-    * from here into the data array.  That way multiple records can be updated
-    * with the same query.
+    * This converts a MongoDB style array where into an SQL where statement
+    * 
+    * @param array $array The array to convert
     *
     * @return null
     */
@@ -290,9 +302,69 @@ abstract class Driver extends DriverBase
         if (!is_array($array)) {
             return;
         }
-        
+        $string = "";
+        foreach ((array)$array as $name => $value) {
+            if (isset($this->gates[$name])) {
+                $string .= $sep.$this->arrayWhereLogic($name, $value);
+            } else if (isset($this->conditionals[$name])) {
+                $string .= $sep.$this->arrayWhereComparison($name, $value);
+            } else {
+                $string .= $sep."`".$name."` = ".$value;
+            }
+            $sep = $this->gates['$and'];
+        }
+        $this->where("(".$string.")");
     }
-
+    /**
+     * This converts a single set of Comparison operators
+     * 
+     * @param string $name  The name of the column
+     * @param array  $array The array to convert
+     *
+     * @return null
+     */
+    protected function arrayWhereComparison($name, $array)
+    {
+        $string = "";
+        $sep = "";
+        if (is_array($array)) {
+            foreach ($this->conditionals as $cond => $op) {
+                if (isset($array[$cond])) {
+                    $string .= $sep."`".$name."` $op ".$array[$cond]; 
+                    $sep = " AND ";
+                }
+            }
+        } else {
+            $string = "`".$name."` = ".$array;
+        }
+        return "(".$string.")";
+    }
+    /**
+     * This converts a single set of Comparison operators
+     * 
+     * @param string $gate  The logic gate to use
+     * @param array  $array The array to convert
+     *
+     * @return null
+     */
+    protected function arrayWhereLogic($gate, $array)
+    {
+        $string = "";
+        $sep = "";
+        foreach ((array)$array as $bit) {
+            foreach ((array)$bit as $name => $value) {
+                if (isset($this->gates[$name])) {
+                    $string .= $sep.$this->arrayWhereLogic($name, $value);
+                } else if (isset($this->conditionals[$name])) {
+                    $string .= $sep.$this->arrayWhereComparison($name, $value);
+                } else {
+                    $string .= $sep."`".$name."` = ".$value;
+                }
+                $sep = $this->gates[$gate];
+            }
+        }
+        return "(".$string.")";
+    }
     /**
     * Updates a row in the database.
     *
@@ -317,6 +389,8 @@ abstract class Driver extends DriverBase
             $this->query  = " UPDATE ".$this->table()." SET ".$values;
             if (!empty($where)) {
                 $this->where($where, $whereData);
+            } else if (is_array($where)) {
+                $this->arrayWhere($where);
             } else {
                 $this->idWhere();
             }
@@ -369,11 +443,10 @@ abstract class Driver extends DriverBase
         $this->query .= "`".implode("`, `", $this->columns)."`";
         $this->query .= " FROM ".$this->table();
         if (is_array($where)) {
-            // This selects by id.  If we are here, we are only getting one record
-            // as it searches for unique values.  That is why we are not adding
-            // orderby or limit.  Both are meaningless when getting only one value.
-            $this->idWhere($where);
-            $ret = $this->execute($this->prepareIdData($where));
+            $this->arrayWhere($where);
+            $this->orderby();
+            $this->limit();
+            $ret = $this->executeData();
         } else {
             $this->where($where, $whereData);
             $this->orderby();

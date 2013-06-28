@@ -1222,12 +1222,88 @@ class DriverTest extends \PHPUnit_Extensions_Database_TestCase
                 ),
                 true,
             ),
-            // #8 Ends up with an empty where
+            // #8 Same as above, with different setup
             array(
                 array("id" => 32, "value" => 23.0),  // where
                 array(), // data
                 array("id", "value", "name"), // keys
-                null, // expect
+                array(
+                    array(
+                        'id' => '32',
+                        'name' => 'A way up here thing',
+                        'value' => '23.0'
+                    ),
+                ), // expect
+                array(
+                    "sqlId" => null,
+                    "sqlIndexes" => array(
+                    ),
+                    "sqlOrderBy" => "value DESC", // Orderby
+                    "sqlLimit" => 0, // limit
+                    "sqlStart" => 0, // start
+                ),
+                true,
+            ),
+            // #9 MongoDB Test
+            array(
+                array(
+                    '$or' => array(
+                        array("id" => 32), 
+                        array("id" => 2)
+                    )
+                ),  // where
+                array(), // data
+                array("id", "value", "name"), // keys
+                array(
+                    array(
+                        'id' => '32',
+                        'name' => 'A way up here thing',
+                        'value' => '23.0'
+                    ),
+                    array(
+                        'id' => '2',
+                        'name' => 'Another THing',
+                        'value' => '22.0',
+                    )
+                ), // expect
+                array(
+                    "sqlId" => null,
+                    "sqlIndexes" => array(
+                    ),
+                    "sqlOrderBy" => "value DESC", // Orderby
+                    "sqlLimit" => 0, // limit
+                    "sqlStart" => 0, // start
+                ),
+                true,
+            ),
+            // #9 MongoDB Test #2
+            array(
+                array(
+                    '$or' => array(
+                        array("id" => 32), 
+                        array("id" => 2),
+                        array('$or' => array(array("id" => 1))),
+                    )
+                ),  // where
+                array(), // data
+                array("id", "value", "name"), // keys
+                array(
+                    array(
+                        'id' => '1',
+                        'name' => 'Something Here',
+                        'value' => '25.0',
+                    ),
+                    array(
+                        'id' => '32',
+                        'name' => 'A way up here thing',
+                        'value' => '23.0'
+                    ),
+                    array(
+                        'id' => '2',
+                        'name' => 'Another THing',
+                        'value' => '22.0',
+                    )
+                ), // expect
                 array(
                     "sqlId" => null,
                     "sqlIndexes" => array(
