@@ -86,13 +86,121 @@ class MaximumWindDirection extends \HUGnet\devices\inputTable\Driver
         "unitType" => "Direction",
         "storageUnit" => '&#176;',
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
-        "extraText" => array(),
+        "extraText" => array(
+            "Priority",
+            "Terminal 1",
+            "Terminal 2",
+            "Terminal 3",
+            "Terminal 4",
+            "Terminal 5",
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
-        "extraValues" => array(),
-        "extraDefault" => array(),
-        "extraDesc" => array(),
+        "extraValues" => array(
+            5,
+            array(
+                1  => "Port 1",
+                2  => "Port 2",
+                3  => "Port 3",
+                4  => "Port 4",
+                5  => "Port 5",
+                6  => "Port 6",
+                7  => "Port 7",
+                8  => "Port 8",
+                9  => "Port 9",
+                10 => "Port 10",
+                11 => "Port 11",
+                12 => "Port 12",
+                13 => "Port 13",
+                14 => "Port 14",
+                15 => "Port 15",
+                16 => "Port 16",
+            ),
+            array(
+                1  => "Port 1",
+                2  => "Port 2",
+                3  => "Port 3",
+                4  => "Port 4",
+                5  => "Port 5",
+                6  => "Port 6",
+                7  => "Port 7",
+                8  => "Port 8",
+                9  => "Port 9",
+                10 => "Port 10",
+                11 => "Port 11",
+                12 => "Port 12",
+                13 => "Port 13",
+                14 => "Port 14",
+                15 => "Port 15",
+                16 => "Port 16",
+            ),
+            array(
+                1  => "Port 1",
+                2  => "Port 2",
+                3  => "Port 3",
+                4  => "Port 4",
+                5  => "Port 5",
+                6  => "Port 6",
+                7  => "Port 7",
+                8  => "Port 8",
+                9  => "Port 9",
+                10 => "Port 10",
+                11 => "Port 11",
+                12 => "Port 12",
+                13 => "Port 13",
+                14 => "Port 14",
+                15 => "Port 15",
+                16 => "Port 16",
+            ),
+            array(
+                1  => "Port 1",
+                2  => "Port 2",
+                3  => "Port 3",
+                4  => "Port 4",
+                5  => "Port 5",
+                6  => "Port 6",
+                7  => "Port 7",
+                8  => "Port 8",
+                9  => "Port 9",
+                10 => "Port 10",
+                11 => "Port 11",
+                12 => "Port 12",
+                13 => "Port 13",
+                14 => "Port 14",
+                15 => "Port 15",
+                16 => "Port 16",
+            ),
+            array(
+                1  => "Port 1",
+                2  => "Port 2",
+                3  => "Port 3",
+                4  => "Port 4",
+                5  => "Port 5",
+                6  => "Port 6",
+                7  => "Port 7",
+                8  => "Port 8",
+                9  => "Port 9",
+                10 => "Port 10",
+                11 => "Port 11",
+                12 => "Port 12",
+                13 => "Port 13",
+                14 => "Port 14",
+                15 => "Port 15",
+                16 => "Port 16",
+            ),
+        ),
+        "extraDefault" => array(
+            128, 8, 9, 12, 10, 11
+        ),
+        "extraDesc" => array(
+            "The number of times to run per second.  0.5 to 129",
+            "The port that terminal 1 of the sensor is tied to",
+            "The port that terminal 2 of the sensor is tied to",
+            "The port that terminal 3 of the sensor is tied to",
+            "The port that terminal 4 of the sensor is tied to",
+            "The port that terminal 5 of the sensor is tied to",
+        ),
         "inputSize" => 3,
         "maxDecimals" => 0,
     );
@@ -156,6 +264,41 @@ class MaximumWindDirection extends \HUGnet\devices\inputTable\Driver
             }
         }
         return null;
+    }
+    /**
+    * Decodes the driver portion of the setup string
+    *
+    * @param string $string The string to decode
+    *
+    * @return array
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function decode($string)
+    {
+        $extra    = $this->input()->get("extra");
+        $extra[0] = $this->decodePriority(substr($string, 0, 2));
+        $extra[1] = $this->decodeInt(substr($string, 2, 2), 1);
+        $extra[2] = $this->decodeInt(substr($string, 4, 2), 1);
+        $extra[3] = $this->decodeInt(substr($string, 6, 2), 1);
+        $extra[4] = $this->decodeInt(substr($string, 8, 2), 1);
+        $extra[5] = $this->decodeInt(substr($string, 10, 2), 1);
+        $this->input()->set("extra", $extra);
+    }
+    /**
+    * Encodes this driver as a setup string
+    *
+    * @return array
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function encode()
+    {
+        $string   = $this->encodePriority($this->getExtra(0));
+        $string  .= $this->encodeInt($this->getExtra(1), 1);
+        $string  .= $this->encodeInt($this->getExtra(2), 1);
+        $string  .= $this->encodeInt($this->getExtra(3), 1);
+        $string  .= $this->encodeInt($this->getExtra(4), 1);
+        $string  .= $this->encodeInt($this->getExtra(5), 1);
+        return $string;
     }
 }
 

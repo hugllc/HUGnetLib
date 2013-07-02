@@ -112,6 +112,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "60:DEFAULT"                 => "ControlInput",
         "62:DEFAULT"                 => "DifferenceInput",
         "64:DEFAULT"                 => "NullInput",
+        "6F:DEFAULT"                 => "MaximumWindDirection",
         "70:bravo3motion"            => "Bravo3Motion",
         "70:DEFAULT"                 => "GenericPulse",
         "70:generic"                 => "GenericPulse",
@@ -197,6 +198,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
             0xF8 => "Analog Input Table",
         ),
         "0039-28" => array(
+            0x6F => "Maximum Inc. Wind Direction Sensor",
             0xF8 => "Analog Input Table",
         ),
         "0039-37" => array(

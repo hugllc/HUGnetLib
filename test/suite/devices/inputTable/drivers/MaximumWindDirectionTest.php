@@ -73,10 +73,32 @@ class MaximumWindDirectionTest extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock(array());
+        $this->input = new \HUGnet\DummyBase("Input");
+        $this->input->resetMock(
+            array(
+                "Input" => array(
+                    "device" => new \HUGnet\DummyBase("Device"),
+                ),
+                "Device" => array(
+                    "dataChannels" => new \HUGnet\DummyBase("dataChannels"),
+                    "controlChannels" => new \HUGnet\DummyBase("controlChannels"),
+                    "dataChannel" => new \HUGnet\DummyBase("dataChannel"),
+                ),
+                "dataChannels" => array(
+                    "select" => array(),
+                ),
+                "controlChannels" => array(
+                    "select" => array(),
+                ),
+                "dataChannel" => array(
+                    "get" => array(
+                        "storageUnit" => "asdf",
+                    ),
+                ),
+            )
+        );
         $this->o = \HUGnet\devices\inputTable\Driver::factory(
-            "MaximumWindDirection", $sensor
+            "MaximumWindDirection", $this->input
         );
     }
 
@@ -747,6 +769,118 @@ class MaximumWindDirectionTest extends DriverTestBase
             ),
         );
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataDecode()
+    {
+        return array(
+            array( // #0
+                array(
+                    "Input" => array(
+                        "get" => array(
+                            "extra" => array(),
+                        ),
+                    ),
+                ),
+                "130102030405",
+                array(
+                    "get" => array(
+                        array('extra'),
+                    ),
+                    "set" => array(
+                        array('extra', array(6.74, 1, 2, 3, 4, 5)),
+                    ),
+                ),
+            ),
+            array( // #1
+                array(
+                    "Input" => array(
+                        "get" => array(
+                            "extra" => array(),
+                        ),
+                    ),
+                ),
+                "011112131415",
+                array(
+                    "get" => array(
+                        array('extra'),
+                    ),
+                    "set" => array(
+                        array('extra', array(128.0, 0x11, 0x12, 0x13, 0x14, 0x15)),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $mocks  The value to preload into the mocks
+    * @param string $string The setup string to test
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataDecode
+    */
+    public function testDecode($mocks, $string, $expect)
+    {
+        $this->input->resetMock($mocks);
+        $this->o->decode($string);
+        $ret = $this->input->retrieve("Input");
+        $this->assertEquals($expect, $ret);
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataEncode()
+    {
+        return array(
+            array( // #0
+                array(
+                    "Input" => array(
+                        "get" => array(
+                            "extra" => array(
+                            ),
+                        ),
+                    ),
+                ),
+                "0108090C0A0B",
+            ),
+            array( // #1 Negative Offset
+                array(
+                    "Input" => array(
+                        "get" => array(
+                            "extra" => array(19, 1, 3, 5, 7, 9),
+                        ),
+                    ),
+                ),
+                "070103050709",
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $mocks  The value to preload into the mocks
+    * @param array $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataEncode
+    */
+    public function testEncode($mocks, $expect)
+    {
+        $this->input->resetMock($mocks);
+        $ret = $this->o->encode();
+        $this->assertSame($expect, $ret);
+    }
+
 }
 
 ?>
