@@ -401,9 +401,9 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
     /**
     * This tests the set function
     *
-    * @param array $config  The configuration to use
-    * @param array $data    The data to feed the object
-    * @param array $expect  The table to expect
+    * @param array $config The configuration to use
+    * @param array $data   The data to feed the object
+    * @param array $expect The table to expect
     *
     * @return null
     *

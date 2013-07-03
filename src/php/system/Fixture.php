@@ -205,7 +205,7 @@ class Fixture extends \HUGnet\Device
         }
         return parent::store();
     }
-     /**
+    /**
     * Stores data into the database
     *
     * @param bool $replace Replace any record that is in the way
@@ -217,10 +217,10 @@ class Fixture extends \HUGnet\Device
         // Doesn't actually save anything.
         return true;
     }
-   /**
+    /**
     * This builds the class from a setup string
     *
-    * @param mixed $dev This a device record
+    * @param mixed &$dev This a device record
     *
     * @return bool True on success, false on failure
     */
@@ -243,10 +243,10 @@ class Fixture extends \HUGnet\Device
         }
         return json_encode($import);
     }
-   /**
+    /**
     * This builds the class from a setup string
     *
-    * @param mixed $dev This a device record
+    * @param mixed $iop This an input, output, or process record
     *
     * @return bool True on success, false on failure
     */
