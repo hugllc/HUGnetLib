@@ -417,6 +417,830 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, $obj->store());
     }
 
+    /**
+    * Data provider for testSet
+    *
+    * @return array
+    */
+    public static function dataInput()
+    {
+        return array(
+            array(  // #0 Everything normal
+                array(
+                ),
+                array(
+                    "id" => 1,
+                    "dev" => 0x123456,
+                    "fixture" => json_encode(
+                        array(
+                            "DeviceName" => "Hello",
+                            "params" => array(
+                                "LastModified" => 0x12345678,
+                            ),
+                            "inputs" => array(
+                                0 => array(
+                                    "data" => array(
+                                        "id" => 0xF8,
+                                        'dev' => 0x123456,
+                                        'input' => 0,
+                                        'type' => "Virtual Sensor",
+                                    ),
+                                    "table" => array(
+                                        "driver" => "40:DEFAULT",
+                                        "name" => "Controller Board Voltage",
+                                        "MUX" => 4,
+                                        "id" => 0,
+                                        "ADLAR" => 1,
+                                        "REFS" => 1,
+                                        'priority' => 5,
+                                    ),
+                                ),
+                            ),
+                        )
+                    ),
+                    "created" => 1234,
+                    "modified" => 1234,
+                ),
+                0,
+                array(
+                    "id" => 0xF8,
+                    'dev' => 0x123456,
+                    'input' => 0,
+                    'type' => "Virtual Sensor",
+                    'params' => array(),
+                    'driver' => 'AVRAnalogTable',
+                ),
+                array(
+                    "driver" => "40:DEFAULT",
+                    "MUX" => 4,
+                    "ADLAR" => 1,
+                    "REFS" => 1,
+                    'priority' => 5,
+                    'offset' => 0,
+                ),
+            ),
+            array(  // #1 Input doesn't exist
+                array(
+                ),
+                array(
+                    "id" => 1,
+                    "dev" => 0x123456,
+                    "fixture" => json_encode(
+                        array(
+                            "DeviceName" => "Hello",
+                            "params" => array(
+                                "LastModified" => 0x12345678,
+                            ),
+                            "inputs" => array(
+                                0 => array(
+                                    "data" => array(
+                                        "id" => 0xFC,
+                                        'dev' => 0x123456,
+                                        'input' => 0,
+                                        'type' => "Virtual Sensor",
+                                    ),
+                                    "table" => array(
+                                    ),
+                                ),
+                            ),
+                        )
+                    ),
+                    "created" => 1234,
+                    "modified" => 1234,
+                ),
+                1,
+                array(
+                    'type' => "EmptySensor",
+                    'params' => array(),
+                    'driver' => "EmptySensor",
+                ),
+                array(
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the set function
+    *
+    * @param array $config The configuration to use
+    * @param array $data   The data to feed the object
+    * @param bool  $sid    This does nothing, but we have to prove that.
+    * @param array $expect The data to expect
+    * @param array $entry  The table entry to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataInput
+    */
+    public function testInput($config, $data, $sid, $expect, $entry)
+    {
+        $sys = $this->getMock('\HUGnet\System', array('now'));
+        $sys->config($config);
+        $obj = Fixture::factory($sys, $data);
+        $ret = $obj->input($sid);
+        $this->assertInternalType("object", $ret, "Return is not an object");
+        $this->assertTrue(
+            is_a($ret, '\HUGnet\devices\Input'), 
+            "Return is not an input"
+        );
+        $this->assertEquals(
+            $expect, $ret->toArray(false), "Return setup is wrong"
+        );
+        $this->assertEquals(
+            $entry, $ret->toArray('entryonly'), "Return table entry is wrong"
+        );
+    }
+    /**
+    * Data provider for testSet
+    *
+    * @return array
+    */
+    public static function dataOutput()
+    {
+        return array(
+            array(  // #0 Everything normal
+                array(
+                ),
+                array(
+                    "id" => 1,
+                    "dev" => 0x123456,
+                    "fixture" => json_encode(
+                        array(
+                            "DeviceName" => "Hello",
+                            "params" => array(
+                                "LastModified" => 0x12345678,
+                            ),
+                            "outputs" => array(
+                                0 => array(
+                                    "data" => array(
+                                        "id" => 0x01,
+                                        'dev' => 0x123456,
+                                        'output' => 0,
+                                        'type' => "Stuff Here",
+                                    ),
+                                    "table" => array(
+                                        'DACBUFLP' => 1,
+                                        'OPAMP' => 1,
+                                        'DACBUFBYPASS' => 1,
+                                        'DACCLK' => 0,
+                                        'DACMODE' => 0,
+                                        'Rate' => 1,
+                                        'Range' => 3,
+                                    ),
+                                ),
+                            ),
+                        )
+                    ),
+                    "created" => 1234,
+                    "modified" => 1234,
+                ),
+                0,
+                array(
+                    "id" => 0x01,
+                    'dev' => 0x123456,
+                    'output' => 0,
+                    'type' => "Stuff Here",
+                    'params' => array(),
+                ),
+                array(
+                    'DACBUFLP' => 1,
+                    'OPAMP' => 1,
+                    'DACBUFBYPASS' => 1,
+                    'DACCLK' => 0,
+                    'DACMODE' => 0,
+                    'Rate' => 1,
+                    'Range' => 3,
+                ),
+            ),
+            array(  // #1 Output doesn't exist
+                array(
+                ),
+                array(
+                    "id" => 1,
+                    "dev" => 0x123456,
+                    "fixture" => json_encode(
+                        array(
+                            "DeviceName" => "Hello",
+                            "params" => array(
+                                "LastModified" => 0x12345678,
+                            ),
+                            "outputs" => array(
+                                0 => array(
+                                    "data" => array(
+                                        "id" => 0xFC,
+                                        'dev' => 0x123456,
+                                        'input' => 0,
+                                        'type' => "Virtual Sensor",
+                                    ),
+                                    "table" => array(
+                                    ),
+                                ),
+                            ),
+                        )
+                    ),
+                    "created" => 1234,
+                    "modified" => 1234,
+                ),
+                1,
+                array(
+                    'type' => "EmptyOutput",
+                    'params' => array(),
+                ),
+                array(
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the set function
+    *
+    * @param array $config The configuration to use
+    * @param array $data   The data to feed the object
+    * @param bool  $sid    This does nothing, but we have to prove that.
+    * @param array $expect The data to expect
+    * @param array $entry  The table entry to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataOutput
+    */
+    public function testOutput($config, $data, $sid, $expect, $entry)
+    {
+        $sys = $this->getMock('\HUGnet\System', array('now'));
+        $sys->config($config);
+        $obj = Fixture::factory($sys, $data);
+        $ret = $obj->output($sid);
+        $this->assertInternalType("object", $ret, "Return is not an object");
+        $this->assertTrue(
+            is_a($ret, '\HUGnet\devices\Output'), 
+            "Return is not an input"
+        );
+        $this->assertEquals(
+            $expect, $ret->toArray(false), "Return setup is wrong"
+        );
+        $this->assertEquals(
+            $entry, $ret->toArray('entryonly'), "Return table entry is wrong"
+        );
+    }
+    /**
+    * Data provider for testProcess
+    *
+    * @return array
+    */
+    public static function dataProcess()
+    {
+        return array(
+            array(  // #0 Everything normal
+                array(
+                ),
+                array(
+                    "id" => 1,
+                    "dev" => 0x123456,
+                    "fixture" => json_encode(
+                        array(
+                            "DeviceName" => "Hello",
+                            "params" => array(
+                                "LastModified" => 0x12345678,
+                            ),
+                            "processes" => array(
+                                0 => array(
+                                    "data" => array(
+                                        "id" => 0x01,
+                                        'dev' => 0x123456,
+                                        'process' => 0,
+                                        'type' => "Stuff Here",
+                                    ),
+                                    "table" => array(
+                                    ),
+                                ),
+                            ),
+                        )
+                    ),
+                    "created" => 1234,
+                    "modified" => 1234,
+                ),
+                0,
+                array(
+                    "id" => 0x01,
+                    'dev' => 0x123456,
+                    'process' => 0,
+                    'type' => "Stuff Here",
+                    'params' => array(),
+                ),
+                array(
+                ),
+            ),
+            array(  // #1 Output doesn't exist
+                array(
+                ),
+                array(
+                    "id" => 1,
+                    "dev" => 0x123456,
+                    "fixture" => json_encode(
+                        array(
+                            "DeviceName" => "Hello",
+                            "params" => array(
+                                "LastModified" => 0x12345678,
+                            ),
+                            "processes" => array(
+                                0 => array(
+                                    "data" => array(
+                                        "id" => 0xFC,
+                                        'dev' => 0x123456,
+                                        'process' => 0,
+                                        'type' => "Virtual Sensor",
+                                    ),
+                                    "table" => array(
+                                    ),
+                                ),
+                            ),
+                        )
+                    ),
+                    "created" => 1234,
+                    "modified" => 1234,
+                ),
+                1,
+                array(
+                    'type' => "EmptyProcess",
+                    'params' => array(),
+                ),
+                array(
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the set function
+    *
+    * @param array $config The configuration to use
+    * @param array $data   The data to feed the object
+    * @param bool  $sid    This does nothing, but we have to prove that.
+    * @param array $expect The data to expect
+    * @param array $entry  The table entry to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataProcess
+    */
+    public function testProcess($config, $data, $sid, $expect, $entry)
+    {
+        $sys = $this->getMock('\HUGnet\System', array('now'));
+        $sys->config($config);
+        $obj = Fixture::factory($sys, $data);
+        $ret = $obj->process($sid);
+        $this->assertInternalType("object", $ret, "Return is not an object");
+        $this->assertTrue(
+            is_a($ret, '\HUGnet\devices\Process'), 
+            "Return is not an input"
+        );
+        $this->assertEquals(
+            $expect, $ret->toArray(false), "Return setup is wrong"
+        );
+        $this->assertEquals(
+            $entry, $ret->toArray('entryonly'), "Return table entry is wrong"
+        );
+    }
+    /**
+    * Data provider for testSet
+    *
+    * @return array
+    */
+    public static function dataExport()
+    {
+        return array(
+            array(  // #0 Everything normal
+                array(
+                ),
+                array(
+                    "id" => 1,
+                    "dev" => 0x123456,
+                    "fixture" => json_encode(
+                        array(
+                            "DeviceName" => "Hello",
+                            "params" => array(
+                                "LastModified" => 0x12345678,
+                            ),
+                            "outputs" => array(
+                                0 => array(
+                                    "data" => array(
+                                        "id" => 0x01,
+                                        'dev' => 0x123456,
+                                        'output' => 0,
+                                        'type' => "Stuff Here",
+                                    ),
+                                    "table" => array(
+                                        'DACBUFLP' => 1,
+                                        'OPAMP' => 1,
+                                        'DACBUFBYPASS' => 1,
+                                        'DACCLK' => 0,
+                                        'DACMODE' => 0,
+                                        'Rate' => 1,
+                                        'Range' => 3,
+                                    ),
+                                ),
+                            ),
+                        )
+                    ),
+                    "created" => 1234,
+                    "modified" => 1234,
+                ),
+                json_encode(
+                    array(
+                        "DeviceName" => "Hello",
+                        "params" => array(
+                            "LastModified" => 0x12345678,
+                        ),
+                        "outputs" => array(
+                            0 => array(
+                                "data" => array(
+                                    "id" => 0x01,
+                                    'dev' => 0x123456,
+                                    'output' => 0,
+                                    'type' => "Stuff Here",
+                                ),
+                                "table" => array(
+                                    'DACBUFLP' => 1,
+                                    'OPAMP' => 1,
+                                    'DACBUFBYPASS' => 1,
+                                    'DACCLK' => 0,
+                                    'DACMODE' => 0,
+                                    'Rate' => 1,
+                                    'Range' => 3,
+                                ),
+                            ),
+                        ),
+                    )
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the set function
+    *
+    * @param array $config The configuration to use
+    * @param array $data   The data to feed the object
+    * @param array $expect The data to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataExport
+    */
+    public function testExport($config, $data, $expect)
+    {
+        $sys = $this->getMock('\HUGnet\System', array('now'));
+        $sys->config($config);
+        $obj = Fixture::factory($sys, $data);
+        $ret = $obj->export();
+        $this->assertEquals(
+            $expect, $ret, "Export wrong"
+        );
+    }
+    /**
+    * Data provider for testSet
+    *
+    * @return array
+    */
+    public static function dataImport()
+    {
+        return array(
+            array(  // #0 Everything normal
+                array(
+                ),
+                array(
+                ),
+                json_encode(
+                    array(
+                        "id" => 0x123456,
+                        "DeviceName" => "Hello",
+                        "params" => array(
+                            "LastModified" => 0x12345678,
+                        ),
+                        "outputs" => array(
+                            0 => array(
+                                "data" => array(
+                                    "id" => 0x01,
+                                    'dev' => 0x123456,
+                                    'output' => 0,
+                                    'type' => "Stuff Here",
+                                ),
+                                "table" => array(
+                                    'DACBUFLP' => 1,
+                                    'OPAMP' => 1,
+                                    'DACBUFBYPASS' => 1,
+                                    'DACCLK' => 0,
+                                    'DACMODE' => 0,
+                                    'Rate' => 1,
+                                    'Range' => 3,
+                                ),
+                            ),
+                        ),
+                    )
+                ),
+                true,
+                array(
+                    "dev" => 0x123456,
+                    "created" => 1000000,
+                    "modified" => 1000000,
+                    "fixture" => json_encode(
+                        array(
+                            "id" => 0x123456,
+                            "DeviceName" => "Hello",
+                            "params" => array(
+                                "LastModified" => 0x12345678,
+                            ),
+                            "outputs" => array(
+                                0 => array(
+                                    "data" => array(
+                                        "id" => 0x01,
+                                        'dev' => 0x123456,
+                                        'output' => 0,
+                                        'type' => "Stuff Here",
+                                    ),
+                                    "table" => array(
+                                        'DACBUFLP' => 1,
+                                        'OPAMP' => 1,
+                                        'DACBUFBYPASS' => 1,
+                                        'DACCLK' => 0,
+                                        'DACMODE' => 0,
+                                        'Rate' => 1,
+                                        'Range' => 3,
+                                    ),
+                                ),
+                            ),
+                        )
+                    ),
+                ),
+            ),
+            array(  // #1 Bad Fixture (no id)
+                array(
+                ),
+                array(
+                ),
+                json_encode(
+                    array(
+                        "DeviceName" => "Hello",
+                        "params" => array(
+                            "LastModified" => 0x12345678,
+                        ),
+                        "outputs" => array(
+                            0 => array(
+                                "data" => array(
+                                    "id" => 0x01,
+                                    'dev' => 0x123456,
+                                    'output' => 0,
+                                    'type' => "Stuff Here",
+                                ),
+                                "table" => array(
+                                    'DACBUFLP' => 1,
+                                    'OPAMP' => 1,
+                                    'DACBUFBYPASS' => 1,
+                                    'DACCLK' => 0,
+                                    'DACMODE' => 0,
+                                    'Rate' => 1,
+                                    'Range' => 3,
+                                ),
+                            ),
+                        ),
+                    )
+                ),
+                false,
+                array(
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the set function
+    *
+    * @param array $config The configuration to use
+    * @param array $data   The data to feed the object
+    * @param mixed $import The data to import
+    * @param mixed $return The return expected
+    * @param array $expect The data to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataImport
+    */
+    public function testImport($config, $data, $import, $return, $expect)
+    {
+        $sys = $this->getMock('\HUGnet\System', array('now'));
+        $sys->expects($this->any())
+            ->method('now')
+            ->will($this->returnValue(1000000));
+        $sys->config($config);
+        $obj = Fixture::factory($sys, $data);
+        $ret = $obj->import($import);
+        $this->assertEquals($return, $ret, "Return wrong");
+        $this->assertEquals($expect, $obj->table()->toArray(false), "Setup wrong");
+    }
+    /**
+    * Data provider for testDeviceImport
+    *
+    * @return array
+    */
+    public static function dataDeviceImport()
+    {
+        return array(
+            array(
+                array(
+                ), // Config
+                array(
+                ), // Data
+                array(
+                    "id" => 0x12,
+                    "DeviceID" => "000012",
+                    "HWPartNum" => "0039-40-01-C",
+                    "FWPartNum" => "0039-40-01-C",
+                    "FWVersion" => "0.1.0",
+                    'Driver' => 'e00394000',
+                ), // Device
+                array(
+                    array("id" => 0x70, "input" => 0, "dev" => 0x12),
+                ), // Inputs
+                array(
+                ), // Outputs
+                array(
+                ), // Processes
+                true, // Return
+                array(
+                    "dev" => 0x12,
+                    'created' => 1000000,
+                    'modified' => 1000000,
+                    'fixture' => json_encode(
+                        array(
+                            'id' => 18,
+                            'DeviceID' => '000012',
+                            "HWPartNum" => "0039-40-01-C",
+                            "FWPartNum" => "0039-40-01-C",
+                            "FWVersion" => "0.1.0",
+                            'Driver' => 'e00394000',
+                            'Role' => '',
+                            'dataChannels' => array(
+                                array(
+                                    "decimals" => 0,
+                                    "units" => "Pulses",
+                                    "dataType" => "raw",
+                                    "label" => "Data Channel 0",
+                                ),
+                            ),
+                            'controlChannels' => array(
+                            ),
+                            'inputs' => array(
+                                0 => array(
+                                    'data' => array(
+                                        'dev' => 18,
+                                        'input' => 0,
+                                        'id' => 112,
+                                        'driver' => 'GenericPulse',
+                                        'type' => 'GenericPulse',
+                                        'params' => array(
+                                        ),
+                                    ),
+                                    'table' => array(),
+                                ),
+                                1 => array(
+                                    'data' => array(
+                                        'id' => 255,
+                                    ),
+                                ),
+                                2 => array(
+                                    'data' => array(
+                                        'id' => 255,
+                                    ),
+                                ),
+                                3 => array(
+                                    'data' => array(
+                                        'id' => 255,
+                                    ),
+                                ),
+                                4 => array(
+                                    'data' => array(
+                                        'id' => 255,
+                                    ),
+                                ),
+                                5 => array(
+                                    'data' => array(
+                                        'id' => 255,
+                                    ),
+                                ),
+                                6 => array(
+                                    'data' => array(
+                                        'id' => 255,
+                                    ),
+                                ),
+                                7 => array(
+                                    'data' => array(
+                                        'id' => 255,
+                                    ),
+                                ),
+                                8 => array(
+                                    'data' => array(
+                                        'id' => 255,
+                                    ),
+                                ),
+                            ),
+                            'outputs' => array(
+                                0 => array(
+                                    'data' => array(
+                                        'id' => 255,
+                                    ),
+                                ),
+                                1 => array(
+                                    'data' => array(
+                                        'id' => 255,
+                                    ),
+                                ),
+                                2 => array(
+                                    'data' => array(
+                                        'id' => 255,
+                                    ),
+                                ),
+                                3 => array(
+                                    'data' => array(
+                                        'id' => 255,
+                                    ),
+                                ),
+                                4 => array(
+                                    'data' => array(
+                                        'id' => 255,
+                                    ),
+                                ),
+                            ),
+                            'processes' => array(
+                                0 => array(
+                                    'data' => array(
+                                        'id' => 255,
+                                    ),
+                                ),
+                                1 => array(
+                                    'data' => array(
+                                        'id' => 255,
+                                    ),
+                                ),
+                                2 => array(
+                                    'data' => array(
+                                        'id' => 255,
+                                    ),
+                                ),
+                                3 => array(
+                                    'data' => array(
+                                        'id' => 255,
+                                    ),
+                                ),
+                            ),
+                        )
+                    ),
+                ), // Expect
+            ),
+        );
+    }
+    /**
+    * This tests the set function
+    *
+    * @param array $config    The configuration to use
+    * @param array $data      The data to feed the object
+    * @param array $device    The device information
+    * @param array $inputs    The inputs to load
+    * @param array $outputs   The outputs to load
+    * @param array $processes The processes to load
+    * @param mixed $return    The return expected
+    * @param array $expect    The data to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataDeviceImport
+    */
+    public function testDeviceImport(
+        $config, $data, $device, $inputs, $outputs, $processes, $return, $expect
+    ) {
+        $sys = $this->getMock('\HUGnet\System', array('now'));
+        $sys->expects($this->any())
+            ->method('now')
+            ->will($this->returnValue(1000000));
+        $sys->config($config);
+        $obj = Fixture::factory($sys, $data);
+        $dev = $sys->device($device);
+        $input = $dev->input(0);
+        foreach ((array)$inputs as $key => $value) {
+            $input->table()->fromAny($value);
+            $input->store();
+        }
+        $output = $dev->output(0);
+        foreach ((array)$outputs as $key => $value) {
+            $output->table()->fromAny($value);
+            $output->store();
+        }
+        $process = $dev->process(0);
+        foreach ((array)$processes as $key => $value) {
+            $process->table()->fromAny($value);
+            $process->store();
+        }
+        $ret = $obj->import($dev);
+        $this->assertEquals($return, $ret, "Return wrong");
+        $this->assertEquals($expect, $obj->table()->toArray(false), "Setup wrong");
+    }
+
 }
 
 ?>

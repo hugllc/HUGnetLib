@@ -192,10 +192,16 @@ class Fixture extends \HUGnet\Device
             $data = $this->_importDevice($data);
         }
         if (is_string($data)) {
-            $this->table()->set("fixture", $data);
-            $now = $this->system()->now();
-            $this->table()->set("created", $now);
-            $this->table()->set("modified", $now);
+            $fixture = json_decode($data, true);
+            if (isset($fixture["id"])) {
+                $this->table()->set("dev", $fixture["id"]);
+                $this->table()->set("fixture", $data);
+                $now = $this->system()->now();
+                $this->table()->set("created", $now);
+                $this->table()->set("modified", $now);
+            } else {
+                return false;
+            }
         }
         return parent::store();
     }
@@ -214,12 +220,51 @@ class Fixture extends \HUGnet\Device
    /**
     * This builds the class from a setup string
     *
-    * @param mixed $data This could be a string, or a device record.
+    * @param mixed $dev This a device record
     *
     * @return bool True on success, false on failure
     */
-    private function _importDevice($data)
+    private function _importDevice(&$dev)
     {
+        $import = $dev->toArray(false);
+        unset($import["localParams"]);
+        unset($import["group"]);
+        $import["inputs"] = array();
+        for ($i = 0; $i < $dev->get("InputTables"); $i++) {
+            $import["inputs"][$i] = $this->_importIOP($dev->input($i));
+        }
+        $import["outputs"] = array();
+        for ($i = 0; $i < $dev->get("OutputTables"); $i++) {
+            $import["outputs"][$i] = $this->_importIOP($dev->output($i));
+        }
+        $import["processes"] = array();
+        for ($i = 0; $i < $dev->get("ProcessTables"); $i++) {
+            $import["processes"][$i] = $this->_importIOP($dev->process($i));
+        }
+        return json_encode($import);
+    }
+   /**
+    * This builds the class from a setup string
+    *
+    * @param mixed $dev This a device record
+    *
+    * @return bool True on success, false on failure
+    */
+    private function _importIOP(&$iop)
+    {
+        $import = array();
+        $data = $iop->toArray(false);
+        $import = array();
+        if (isset($data["id"])) {
+            unset($data["RawSetup"]);
+            unset($data["group"]);
+            $import["data"] = $data;
+            $import["table"] = $iop->toArray("entryonly");
+        } else {
+            $import["data"] = array("id" => 0xFF);
+        }
+        return $import;
+        
     }
     /**
     * This creates the sensor drivers
@@ -272,20 +317,17 @@ class Fixture extends \HUGnet\Device
     */
     public function &input($sid)
     {
-        unset($info["data"]["dev"]);
-        unset($info["data"]["input"]);
+        $input = $this->get("inputs");
         include_once dirname(__FILE__)."/../devices/Input.php";
         $system = $this->system();
         $ret = \HUGnet\devices\Input::factory(
             $system,
-            array("dev" => $this->id(), "input" => $sid),
+            (array)$input[$sid]["data"],
             null,
             $this,
-            (array)$info["table"]
+            (array)$input[$sid]["table"]
         );
         return $ret;
-
-        return $this->driver()->input($sid);
     }
     /**
     * This creates the sensor drivers
@@ -296,19 +338,17 @@ class Fixture extends \HUGnet\Device
     */
     public function &output($sid)
     {
-        unset($info["data"]["dev"]);
-        unset($info["data"]["output"]);
+        $output = $this->get("outputs");
+        include_once dirname(__FILE__)."/../devices/Output.php";
         $system = $this->system();
         $ret = \HUGnet\devices\Output::factory(
             $system,
-            array("dev" => $this->id(), "output" => $sid),
+            (array)$output[$sid]["data"],
             null,
             $this,
-            (array)$info["table"]
+            (array)$output[$sid]["table"]
         );
         return $ret;
-
-        return $this->driver()->output($sid);
     }
     /**
     * This creates the sensor drivers
@@ -319,16 +359,15 @@ class Fixture extends \HUGnet\Device
     */
     public function &process($sid)
     {
+        $proc = $this->get("processes");
         include_once dirname(__FILE__)."/../devices/Process.php";
-        unset($info["data"]["dev"]);
-        unset($info["data"]["process"]);
         $system = $this->system();
         $ret = \HUGnet\devices\Process::factory(
             $system,
-            array("dev" => $this->id(), "process" => $sid),
+            $proc[$sid]["data"],
             null,
             $this,
-            (array)$info["table"]
+            (array)$proc[$sid]["table"]
         );
         return $ret;
     }
