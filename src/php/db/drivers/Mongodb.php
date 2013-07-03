@@ -424,8 +424,11 @@ class Mongodb extends \HUGnet\db\Driver implements \HUGnet\interfaces\DBDriver
 
     /**
     * Return the ORDER BY clause
+    * 
+    * @param bool $start Not used here.
     *
     * @return string
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     protected function limit($start = true)
     {

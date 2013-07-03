@@ -150,8 +150,8 @@ class MongodbTest extends \PHPUnit_Framework_TestCase
     * someone tries to make a cache from a memory
     * mongodb instance.
     *
-    * @param string $preload      The configuration to use
-    * @param mixed  $expect       The expected value.  Set to FALSE or the class name
+    * @param string $preload The configuration to use
+    * @param mixed  $expect  The expected value.  Set to FALSE or the class name
     *
     * @return null
     *
@@ -314,7 +314,6 @@ class MongodbTest extends \PHPUnit_Framework_TestCase
     * mongodb instance.
     *
     * @param string $preload    The configuration to use
-    * @param string $group      The group to check
     * @param mixed  $preconnect Connect before the test connect
     * @param bool   $expect     The expected return
     *
@@ -358,9 +357,8 @@ class MongodbTest extends \PHPUnit_Framework_TestCase
     * someone tries to make a cache from a memory
     * mongodb instance.
     *
-    * @param string $preload   The configuration to use
-    * @param bool   $expectDis The expected return
-    * @param bool   $expectCon The expected return
+    * @param string $preload The configuration to use
+    * @param bool   $expect  The expected return
     *
     * @return null
     *
@@ -418,8 +416,9 @@ class MongodbTest extends \PHPUnit_Framework_TestCase
     * someone tries to make a cache from a memory
     * mongodb instance.
     *
-    * @param string $preload  The configuration to use
-    * @param bool   $expect   The expected return
+    * @param string $preload The configuration to use
+    * @param bool   $connect Whether to preconnect or not
+    * @param bool   $expect  The expected return
     *
     * @return null
     *

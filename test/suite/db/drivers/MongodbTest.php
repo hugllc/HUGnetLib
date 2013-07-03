@@ -901,8 +901,9 @@ class MongodbTest extends \PHPUnit_Framework_TestCase
     *
     * @dataProvider dataInsert
     */
-    public function testInsert($preload, $data, $keys, $replace, $expect, $ret2, $ret)
-    {
+    public function testInsert(
+        $preload, $data, $keys, $replace, $expect, $ret2, $ret
+    ) {
         $this->dbo->myTable->batchinsert($preload);
         if (is_null($keys)) {
             $keys = $this->o->autoIncrement();
@@ -932,8 +933,9 @@ class MongodbTest extends \PHPUnit_Framework_TestCase
     *
     * @dataProvider dataInsert
     */
-    public function testReplace($preload, $data, $keys, $replace, $expect, $ret2, $ret)
-    {
+    public function testReplace(
+        $preload, $data, $keys, $replace, $expect, $ret2, $ret
+    ) {
         if ($replace) {
             $this->dbo->myTable->batchinsert($preload);
             $res = $this->o->replace(array(), $keys);
@@ -2298,8 +2300,8 @@ class MongodbTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests galtol
      *
-     * @param array  $preload The query to preload the database with
-     * @param array  $expect  The expeced return array
+     * @param array $preload The query to preload the database with
+     * @param array $expect  The expeced return array
      *
      * @return null
      *

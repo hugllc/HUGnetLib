@@ -104,6 +104,7 @@ class Mongodb  implements \HUGnet\interfaces\DBConnection
     * This function creates the system.
     *
     * @param object &$system The system object to use
+    * @param array  $config  The config to use
     *
     * @return null
     */
@@ -154,8 +155,6 @@ class Mongodb  implements \HUGnet\interfaces\DBConnection
     /**
     * Tries to connect to a database servers
     *
-    * @param string $server The server to check
-    *
     * @return bool True on success, false on failure
     */
     public function connect()
@@ -198,8 +197,6 @@ class Mongodb  implements \HUGnet\interfaces\DBConnection
     }
     /**
     * creates a dsn for the PDO stuff.  The DSNs apper in the $servers array
-    *
-    * @param string $server The server to check
     *
     * @return null
     */

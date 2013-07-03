@@ -173,6 +173,7 @@ interface DBTable
     *
     * @param string $where The where clause
     * @param array  $data  The data to use with the where clause
+    * @param int    $style The style of the return
     *
     * @return array Array of objects
     */

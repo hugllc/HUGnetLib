@@ -104,6 +104,7 @@ class PDO  implements \HUGnet\interfaces\DBConnection
     * This function creates the system.
     *
     * @param object &$system The system object to use
+    * @param array  $config  The config to use
     *
     * @return null
     */

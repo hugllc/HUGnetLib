@@ -116,7 +116,7 @@ class Connection implements \ConnectionManager
     /**
     * This function creates the system.
     *
-    * @param string $group   The group to use
+    * @param string $group The group to use
     *
     * @return null
     */

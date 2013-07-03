@@ -460,7 +460,6 @@ class PDOTest extends \PHPUnit_Framework_TestCase
     * sqlite instance.
     *
     * @param string $preload    The configuration to use
-    * @param string $group      The group to check
     * @param mixed  $preconnect Connect before the test connect
     * @param bool   $expect     The expected return
     *
@@ -504,9 +503,8 @@ class PDOTest extends \PHPUnit_Framework_TestCase
     * someone tries to make a cache from a memory
     * sqlite instance.
     *
-    * @param string $preload   The configuration to use
-    * @param bool   $expectDis The expected return
-    * @param bool   $expectCon The expected return
+    * @param string $preload The configuration to use
+    * @param bool   $expect  The expected return
     *
     * @return null
     *
@@ -564,8 +562,9 @@ class PDOTest extends \PHPUnit_Framework_TestCase
     * someone tries to make a cache from a memory
     * sqlite instance.
     *
-    * @param string $preload  The configuration to use
-    * @param bool   $expect   The expected return
+    * @param string $preload The configuration to use
+    * @param bool   $connect Whether to preconnect or not
+    * @param bool   $expect  The expected return
     *
     * @return null
     *
