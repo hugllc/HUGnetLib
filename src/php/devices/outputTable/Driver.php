@@ -66,6 +66,11 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     protected $params = array(
     );
     /**
+    * This is where the data for the driver is stored.  This array must be
+    * put into all derivative classes, even if it is empty.
+    */
+    protected $tableEntry = array();
+    /**
     * This is where all of the defaults are stored.
     */
     protected $default = array(
@@ -139,6 +144,23 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     */
     private $_entry;
     /**
+    * This function sets up the driver object, and the database object.  The
+    * database object is taken from the driver object.
+    *
+    * @param object &$sensor The sensor in question
+    * @param array  $table   The table to use.  This forces the table, instead of
+    *                        using the database to find it
+    *
+    * @return null
+    */
+    protected function __construct(&$sensor, $table = null)
+    {
+        parent::__construct($sensor);
+        if (is_array($table)) {
+            $this->tableEntry = $table;
+        }
+    }
+    /**
     * This is the destructor
     *
     * @return object
@@ -159,6 +181,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         $file = dirname(__FILE__)."/tables/".$this->entryClass.".php";
         if (!is_object($this->_entry) && file_exists($file)) {
             include_once $file;
+            $table = is_null($table) ? (array)$this->tableEntry : (array)$table;
             $class = "\\HUGnet\\devices\\outputTable\\tables\\".$this->entryClass;
             $entry = $class::factory(
                 $this, $table
