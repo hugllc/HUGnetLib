@@ -214,7 +214,7 @@ class DriverTest extends drivers\DriverTestBase
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($extra);
-        $o = Driver::factory($name, $sensor);
+        $o = Driver::factory($name, $sensor, $table);
         $this->assertSame($expect, get_class($o));
     }
     /**
