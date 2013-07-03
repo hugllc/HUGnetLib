@@ -189,10 +189,12 @@ class DriverTest extends drivers\DriverTestBase
         return array(
             array(
                 "asdf",
+                array(),
                 "HUGnet\devices\outputTable\drivers\EmptyOutput",
             ),
             array(
                 "EmptyOutput",
+                array(),
                 "HUGnet\devices\outputTable\drivers\EmptyOutput",
             ),
         );
@@ -201,13 +203,14 @@ class DriverTest extends drivers\DriverTestBase
     * test the set routine when an extra class exists
     *
     * @param string $name   The name of the variable to test.
+    * @param array  $table  The table info to give the class
     * @param array  $expect The expected return
     *
     * @return null
     *
     * @dataProvider dataFactory
     */
-    public function testFactory($name, $expect)
+    public function testFactory($name, $table, $expect)
     {
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($extra);
