@@ -785,7 +785,7 @@ class MaximumWindDirectionTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "130102030405",
+                "00130102030405",
                 array(
                     "get" => array(
                         array('extra'),
@@ -803,7 +803,7 @@ class MaximumWindDirectionTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "011112131415",
+                "00011112131415",
                 array(
                     "get" => array(
                         array('extra'),
@@ -850,7 +850,7 @@ class MaximumWindDirectionTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "0108090C0A0B",
+                "000108090C0A0B",
             ),
             array( // #1 Negative Offset
                 array(
@@ -860,7 +860,7 @@ class MaximumWindDirectionTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "070103050709",
+                "00070103050709",
             ),
         );
     }

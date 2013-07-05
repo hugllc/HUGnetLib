@@ -276,12 +276,12 @@ class MaximumWindDirection extends \HUGnet\devices\inputTable\Driver
     public function decode($string)
     {
         $extra    = $this->input()->get("extra");
-        $extra[0] = $this->decodePriority(substr($string, 0, 2));
-        $extra[1] = $this->decodeInt(substr($string, 2, 2), 1);
-        $extra[2] = $this->decodeInt(substr($string, 4, 2), 1);
-        $extra[3] = $this->decodeInt(substr($string, 6, 2), 1);
-        $extra[4] = $this->decodeInt(substr($string, 8, 2), 1);
-        $extra[5] = $this->decodeInt(substr($string, 10, 2), 1);
+        $extra[0] = $this->decodePriority(substr($string, 2, 2));
+        $extra[1] = $this->decodeInt(substr($string, 4, 2), 1);
+        $extra[2] = $this->decodeInt(substr($string, 6, 2), 1);
+        $extra[3] = $this->decodeInt(substr($string, 8, 2), 1);
+        $extra[4] = $this->decodeInt(substr($string, 10, 2), 1);
+        $extra[5] = $this->decodeInt(substr($string, 12, 2), 1);
         $this->input()->set("extra", $extra);
     }
     /**
@@ -292,12 +292,13 @@ class MaximumWindDirection extends \HUGnet\devices\inputTable\Driver
     */
     public function encode()
     {
-        $string   = $this->encodePriority($this->getExtra(0));
-        $string  .= $this->encodeInt($this->getExtra(1), 1);
-        $string  .= $this->encodeInt($this->getExtra(2), 1);
-        $string  .= $this->encodeInt($this->getExtra(3), 1);
-        $string  .= $this->encodeInt($this->getExtra(4), 1);
-        $string  .= $this->encodeInt($this->getExtra(5), 1);
+        $string  = "00";  // Subdriver is always 0
+        $string .= $this->encodePriority($this->getExtra(0));
+        $string .= $this->encodeInt($this->getExtra(1), 1);
+        $string .= $this->encodeInt($this->getExtra(2), 1);
+        $string .= $this->encodeInt($this->getExtra(3), 1);
+        $string .= $this->encodeInt($this->getExtra(4), 1);
+        $string .= $this->encodeInt($this->getExtra(5), 1);
         return $string;
     }
 }
