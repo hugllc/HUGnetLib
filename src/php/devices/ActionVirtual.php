@@ -59,10 +59,6 @@ require_once dirname(__FILE__)."/Action.php";
  */
 class ActionVirtual extends Action
 {
-    /** This is a cache of history records */
-    private $_histCache = array();
-    /** This is a cache of history records */
-    private $_pingCache = array();
     /**
     * This function creates the system.
     *

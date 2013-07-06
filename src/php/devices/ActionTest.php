@@ -64,6 +64,17 @@ class ActionTest extends ActionVirtual
     /** This is a cache of history records */
     private $_pingCache = array();
     /**
+    * This is the destructor
+    */
+    public function __destruct()
+    {
+        foreach (array_keys((array)$this->_histCache) as $key) {
+            unset($this->_histCache[$key]);
+        }
+        unset($this->_pingCache);
+        parent::__destruct();
+    }
+    /**
     * This function creates the system.
     *
     * @param mixed  &$network (object)The system object to use
