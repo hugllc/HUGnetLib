@@ -246,7 +246,7 @@ class Fixture extends \HUGnet\Device
     /**
     * This builds the class from a setup string
     *
-    * @param mixed $iop This an input, output, or process record
+    * @param mixed &$iop This an input, output, or process record
     *
     * @return bool True on success, false on failure
     */
