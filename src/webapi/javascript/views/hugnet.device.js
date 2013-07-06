@@ -177,6 +177,8 @@ var DevicePropertiesView = Backbone.View.extend({
         this.setTitle( " [ Saving...] " );
         var params = {};
         params.InfoLink = this.$(".params_InfoLink").val();
+        params.ImageURL = this.$(".params_ImageURL").val();
+        params.LogURL = this.$(".params_LogURL").val();
         params.PushHistory = this.$(".params_PushHistory").val();
         this.model.set({
             DeviceName: this.$(".DeviceName").val(),
