@@ -149,6 +149,9 @@ class Connection implements \ConnectionManager
         foreach (array_keys((array)$this->_server) as $group) {
             unset($this->_server[$group]);
         }
+        unset($this->_drivers);
+        unset($this->_servers);
+        unset($this->_groups);
     }
 
     /**

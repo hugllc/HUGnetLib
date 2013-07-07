@@ -121,6 +121,8 @@ class PDO  implements \HUGnet\interfaces\DBConnection
     public function __destruct()
     {
         $this->disconnect();
+        unset($this->_system);
+        unset($this->_servers);
     }
 
     /**

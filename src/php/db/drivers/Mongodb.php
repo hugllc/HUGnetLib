@@ -104,6 +104,11 @@ class Mongodb extends \HUGnet\db\Driver implements \HUGnet\interfaces\DBDriver
     public function __destruct()
     {
         $this->reset();
+        unset($this->collection);
+        unset($this->dbo);
+        unset($this->connect);
+        unset($this->system);
+        unset($this->cursor);
     }
     /**
     * Create the object
