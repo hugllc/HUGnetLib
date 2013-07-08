@@ -114,7 +114,7 @@ class CheckStartup extends \HUGnet\processes\watchdog\Periodic
                         $this->ui()->criticalError(
                             "CheckStartup".$key,
                             "Device $name restarted"
-                            ." ".$uptime."s ago"
+                            ." at ".date("Y-m-d H:i:s", $uptime)
                         );
                     } else {
                         $this->ui()->clearError("CheckStartup".$key);
