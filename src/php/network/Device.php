@@ -279,9 +279,12 @@ final class Device
              * computer */
             $now = $this->_system->now();
             $uptime = $now - $this->_device->getParam("Startup");
+            $days = (int)($uptime / 86400);
+            $sec  = $uptime % 86400;
+            $time = gmdate("H:i:s", $sec);
             $this->_system->out(
                 "Updating my config as ".sprintf("%06X", $this->_device->id())
-                ." uptime ".$uptime."s"
+                ." uptime $days days, $time"
             );
             $this->_device->load($this->_device->id());
             $this->_device->setParam("LastContact", $now);
