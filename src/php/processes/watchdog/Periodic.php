@@ -77,7 +77,7 @@ abstract class Periodic
     * as the driver class name.
     */
     private static $_drivers = array(
-        "CheckMysql", "CheckPoll"
+        "CheckMysql", "CheckPoll", "CheckStartup"
     );
     /**
     * This function sets up the driver object, and the database object.  The

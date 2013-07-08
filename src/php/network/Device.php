@@ -180,7 +180,7 @@ final class Device
                 $this->_device->set("DeviceID", $this->_config["id"]);
             }
             $this->_device->set("Active", 1);
-            $this->_device->store(true);
+            //$this->_device->store(true);
         } else {
             $this->_config["id"] = $this->_device->get("id");
         }
@@ -188,6 +188,8 @@ final class Device
         $this->_device->set("FWVersion", $this->_config["FWVersion"]);
         $this->_device->set("RawSetup", $this->_device->encode());
         $ret = $this->_device->change($this->_config);
+        $this->_device->setParam("Startup", $this->_system->now());
+        $this->_device->store(true);
         return $ret;
     }
     /**
@@ -275,12 +277,15 @@ final class Device
         if ($last > 60) {
             /* This is so we don't get bogged down trying to find a device on this
              * computer */
+            $now = $this->_system->now();
+            $uptime = $now - $this->_device->getParam("Startup");
             $this->_system->out(
                 "Updating my config as ".sprintf("%06X", $this->_device->id())
+                ." uptime ".$uptime."s"
             );
             $this->_device->load($this->_device->id());
-            $this->_device->setParam("LastContact", $this->_system->now());
-            $this->_device->setParam("LastConfig", $this->_system->now());
+            $this->_device->setParam("LastContact", $now);
+            $this->_device->setParam("LastConfig", $now);
             $this->_device->setParam("ConfigFail", 0);
             $this->_device->setParam("ContactFail", 0);
             $this->_device->store();
