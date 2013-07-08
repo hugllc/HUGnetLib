@@ -96,6 +96,8 @@ class E00392600 extends \HUGnet\devices\Driver
             );
             $this->device()->delete();
             $this->device()->load(null);
+        } else {
+            $this->_updateJob();
         }
     }
     /**
@@ -162,6 +164,15 @@ class E00392600 extends \HUGnet\devices\Driver
             "Enable", hexdec(substr((string)$string, $index, 2))
         );
         $index += 2;
+        $this->_updateJob();
+    }
+    /**
+    * Sets the Job
+    *
+    * @return array
+    */
+    private function _updateJob()
+    {
         switch ($this->device()->get("HWPartNum")) {
         case "0039-26-02-P":
             $this->device()->set("DeviceJob", "Updater");
