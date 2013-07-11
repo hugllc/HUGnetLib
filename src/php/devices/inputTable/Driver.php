@@ -167,6 +167,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         // Linux
         "61:DEFAULT"                 => "ControlSumInput",
         "63:DEFAULT"                 => "NoisyInput",
+        "65:DEFAULT"                 => "MemInput",
         // Virtual
         "FE:DEFAULT"                 => "EmptyVirtual",
         "FE:AlarmVirtual"            => "AlarmVirtual",
@@ -211,6 +212,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
             0x62 => "Difference Input",
             0x63 => "Noisy Input",
             0x64 => "Null Input",
+            0x65 => "Memory Input",
         ),
         "all" => array(
             0xFE => "Virtual",
