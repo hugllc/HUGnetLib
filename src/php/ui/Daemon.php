@@ -64,6 +64,8 @@ class Daemon extends CLI
     protected $maxMemory = 50;
     /** This is our program config */
     protected $progConfig = array();
+    /** This is our PID file */
+    protected $pidfile = null;
     
     /**
     * Sets our configuration
@@ -73,12 +75,25 @@ class Daemon extends CLI
     protected function __construct(&$config)
     {
         parent::__construct($config);
+        $this->register();
         $program = str_replace("hugnet_", "", $this->system()->get("program"));
         $this->progConfig = array_merge(
             $this->progConfig, (array)$this->system()->get($program)
         );
         if (function_exists("pcntl_signal")) {
             pcntl_signal(SIGINT, array($this, "quit"));
+        }
+    }
+    /**
+    * Sets our configuration
+    *
+    * @param mixed &$config The configuration to use
+    */
+    public function __destruct()
+    {
+        if (is_string($this->pidfile)) {
+            @unlink($this->pidfile);
+            $this->pidfile = null;
         }
     }
     /**
@@ -263,7 +278,50 @@ class Daemon extends CLI
         );
         return $ret;
     }
-
-
+    /**
+    * This sets us up on the OS
+    *
+    * @return null
+    */
+    protected function register()
+    {
+        $dir = $this->_setupVarRun();
+        if (is_string($dir) && is_writable($dir)) {
+            $program = (string)$this->system()->get("program");
+            if (function_exists("posix_getpid") && (strlen($program) > 0)) {
+                $fname = $dir.$program.".pid";
+                $file  = fopen($fname, "w");
+                if ($file) {
+                    $this->pidfile = $fname;
+                    fwrite($file, (string)posix_getpid());
+                    fclose($file);
+                }
+            }
+        }
+    }
+    /**
+    * This sets up /var/run/hugnet
+    *
+    * @return true if successful, false otherwise
+    */
+    private function _setupVarRun()
+    {
+        $basedir = "/var/run";
+        if (is_dir($basedir)) {
+            $dir = $basedir."/hugnet/";
+        } else {
+            return false;
+        }
+        if (!is_dir($dir)) {
+            $ret = is_writable($basedir);
+            if ($ret) {
+                $ret = @mkdir($dir);
+            }
+            if (!$ret) {
+                return false;
+            }
+        }
+        return $dir;
+    }
 }
 ?>
