@@ -86,9 +86,9 @@ class EVIRTUALAverage extends \HUGnet\db\Average
     protected function calc15MinAverage(\HUGnet\db\History &$data)
     {
         if ($this->done) {
+            $this->_clearHistCache();
             return false;
         }
-        $this->_clearHistCache();
         $this->sqlLimit = $data->sqlLimit;
         $now = $this->system()->now();
         $this->device->setParam("LastPoll", $now);
@@ -102,6 +102,7 @@ class EVIRTUALAverage extends \HUGnet\db\Average
             $this->device->setLocalParam("LastHistory", $this->get("Date"));
             return true;
         }
+        $this->_clearHistCache();
         return false;
     }
     /**
@@ -127,6 +128,7 @@ class EVIRTUALAverage extends \HUGnet\db\Average
             $device = $this->system()->device($dev);
             $this->_histCache[$dev] = $device->historyFactory(array(), false);
             $this->_histCache[$dev]->sqlOrderBy = "Date ASC";
+            $this->_histCache[$dev]->sqlLimit = $this->sqlLimit;
             $query = array(
                 "id" => $dev,
                 "Type" => \HUGnet\db\Average::AVERAGE_15MIN,
@@ -136,6 +138,8 @@ class EVIRTUALAverage extends \HUGnet\db\Average
             if (!empty($lastAve)) {
                 $query["Date"]['$lte'] = (int)$lastAve;
             }
+            //var_dump($device->toArray(false));
+            //var_dump($query);
             $this->_histCache[$dev]->selectInto($query);
         }
         return $this->_histCache[$dev];
@@ -199,7 +203,8 @@ class EVIRTUALAverage extends \HUGnet\db\Average
     */
     private function _next($date)
     {
-        for ($i = 0; $i < $this->device->get("InputTables"); $i++) {
+        $tables = $this->device->get("InputTables");
+        for ($i = 0; ($i < $tables) && !$this->done; $i++) {
             $input = $this->device->input($i);
             $table = $this->_getPoint($input);
             while (is_object($table) && $table->get("Date") <= $date) {
@@ -223,7 +228,10 @@ class EVIRTUALAverage extends \HUGnet\db\Average
             $input = $this->device->input($i);
             $table = $this->_getPoint($input);
             if (is_object($table)) {
-                $date = $table->get("Date");
+                $newdate = $table->get("Date");
+                if (is_null($date) || ($newdate < $date)) {
+                    $date = $newdate;
+                }
             }
         }
         return (int)$date;

@@ -84,12 +84,19 @@ class EVIRTUALAverageTest extends AverageTestBase
         $this->system = $this->getMock("\HUGnet\System", array('now'));
         $this->system->config(
             array(
+                "servers" => array(
+                    "default" => array(
+                        "driver" => "sqlite",
+                        "file" => ":memory:",
+                        "group" => "default",
+                    ),
+                ),
             )
         );
         $this->system->expects($this->any())
             ->method('now')
             ->will($this->returnValue(1000000));
-        $this->connect = \HUGnet\db\Connection::factory($this->system);
+        $this->connect = $this->system->dbconnect();
         $this->pdo = &$this->connect->getDBO("default");
         $data = array(
         );
@@ -109,7 +116,11 @@ class EVIRTUALAverageTest extends AverageTestBase
     */
     protected function tearDown()
     {
+        $this->connect->disconnect("default");
         unset($this->o);
+        unset($this->pdo);
+        unset($this->connect);
+        unset($this->system);
     }
 
     /**
@@ -746,7 +757,6 @@ class EVIRTUALAverageTest extends AverageTestBase
         $ret = $this->o->calcAverage($data, \HUGnet\db\Average::AVERAGE_15MIN);
         $this->assertSame($expectRet, $ret, "Return Wrong");
         $this->assertSame($expect, $this->o->toArray(false));
-
     }
     /**
     * data provider for testCalcAverage
@@ -762,9 +772,6 @@ class EVIRTUALAverageTest extends AverageTestBase
                         "id" => 0xE10,
                         "DeviceID" => "000E10",
                         "inputs" => array(
-                            "Sensors" => 3,
-                            "PhysicalSensors" => 2,
-                            "VirtualSensors" => 1,
                             array("id" => 0x02),
                             array("id" => 0x02),
                             array(
@@ -788,9 +795,6 @@ class EVIRTUALAverageTest extends AverageTestBase
                         "id" => 0xE20,
                         "DeviceID" => "000E20",
                         "inputs" => array(
-                            "Sensors" => 3,
-                            "PhysicalSensors" => 2,
-                            "VirtualSensors" => 1,
                             array("id" => 0x02),
                             array("id" => 0x02),
                             array(
@@ -872,18 +876,15 @@ class EVIRTUALAverageTest extends AverageTestBase
                     "DeviceID" => "001000",
                     "HWPartNum" => "0039-24-02-P",
                     "inputs" => array(
-                        "Sensors" => 3,
-                        "PhysicalSensors" => 0,
-                        "VirtualSensors" => 3,
                         array(
                             "id" => 0xFE,
                             "type" => "CloneVirtual",
-                            "extra" => array("000E20", 1),
+                            "extra" => array("000E20", 0),
                         ),
                         array(
                             "id" => 0xFE,
                             "type" => "CloneVirtual",
-                            "extra" => array("000E10", 1),
+                            "extra" => array("000E10", 0),
                         ),
                         array(
                             "id" => 0xFE,
@@ -921,7 +922,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                     ),
                 ),
                 gmmktime(15, 30, 00, 1, 22, 2009),
-                time(),
+                1000000,
             ),
             array(  // #1 Gaps in the source averages
                 array(
@@ -1045,12 +1046,12 @@ class EVIRTUALAverageTest extends AverageTestBase
                         array(
                             "id" => 0xFE,
                             "type" => "CloneVirtual",
-                            "extra" => array("000E20", 1),
+                            "extra" => array("000E20", 0),
                         ),
                         array(
                             "id" => 0xFE,
                             "type" => "CloneVirtual",
-                            "extra" => array("000E10", 1),
+                            "extra" => array("000E10", 0),
                         ),
                         array(
                             "id" => 0xFE,
@@ -1086,7 +1087,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                     ),
                 ),
                 gmmktime(15, 45, 00, 1, 22, 2009),
-                time(),
+                1000000,
             ),
             array(  // #2 Starting in the middle
                 array(
@@ -1234,12 +1235,12 @@ class EVIRTUALAverageTest extends AverageTestBase
                         array(
                             "id" => 0xFE,
                             "type" => "CloneVirtual",
-                            "extra" => array("000E20", 1),
+                            "extra" => array("000E20", 0),
                         ),
                         array(
                             "id" => 0xFE,
                             "type" => "CloneVirtual",
-                            "extra" => array("000E10", 1),
+                            "extra" => array("000E10", 0),
                         ),
                         array(
                             "id" => 0xFE,
@@ -1277,7 +1278,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                     ),
                 ),
                 gmmktime(15, 45, 00, 1, 22, 2009),
-                time(),
+                1000000,
             ),
             array(  // #3 Nothing to do
                 array(
@@ -1369,12 +1370,12 @@ class EVIRTUALAverageTest extends AverageTestBase
                         array(
                             "id" => 0xFE,
                             "type" => "CloneVirtual",
-                            "extra" => array("000E20", 1),
+                            "extra" => array("000E20", 0),
                         ),
                         array(
                             "id" => 0xFE,
                             "type" => "CloneVirtual",
-                            "extra" => array("000E10", 1),
+                            "extra" => array("000E10", 0),
                         ),
                         array(
                             "id" => 0xFE,
@@ -1397,7 +1398,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                 array(
                 ),
                 null,
-                time(),
+                1000000,
             ),
             array(  // #4 BIG Gaps in the source averages
                 array(
@@ -1521,12 +1522,12 @@ class EVIRTUALAverageTest extends AverageTestBase
                         array(
                             "id" => 0xFE,
                             "type" => "CloneVirtual",
-                            "extra" => array("000E20", 1),
+                            "extra" => array("000E20", 0),
                         ),
                         array(
                             "id" => 0xFE,
                             "type" => "CloneVirtual",
-                            "extra" => array("000E10", 1),
+                            "extra" => array("000E10", 0),
                         ),
                         array(
                             "id" => 0xFE,
@@ -1562,7 +1563,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                     ),
                 ),
                 gmmktime(15, 45, 00, 1, 31, 2009),
-                time(),
+                1000000,
             ),
             array(  // #5 Limiting to 2 records
                 array(
@@ -1686,12 +1687,12 @@ class EVIRTUALAverageTest extends AverageTestBase
                         array(
                             "id" => 0xFE,
                             "type" => "CloneVirtual",
-                            "extra" => array("000E20", 1),
+                            "extra" => array("000E20", 0),
                         ),
                         array(
                             "id" => 0xFE,
                             "type" => "CloneVirtual",
-                            "extra" => array("000E10", 1),
+                            "extra" => array("000E10", 0),
                         ),
                         array(
                             "id" => 0xFE,
@@ -1723,7 +1724,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                     ),
                 ),
                 gmmktime(15, 15, 00, 1, 22, 2009),
-                time(),
+                1000000,
             ),
             array(  // #6 No data
                 array(
@@ -1781,12 +1782,12 @@ class EVIRTUALAverageTest extends AverageTestBase
                         array(
                             "id" => 0xFE,
                             "type" => "CloneVirtual",
-                            "extra" => array("000E20", 1),
+                            "extra" => array("000E20", 0),
                         ),
                         array(
                             "id" => 0xFE,
                             "type" => "CloneVirtual",
-                            "extra" => array("000E10", 1),
+                            "extra" => array("000E10", 0),
                         ),
                         array(
                             "id" => 0xFE,
@@ -1804,7 +1805,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                 array(
                 ),
                 null,
-                time(),
+                1000000,
             ),
             array(  // #7 basic input.  One source device is virtual
                 array(
@@ -1812,9 +1813,6 @@ class EVIRTUALAverageTest extends AverageTestBase
                         "id" => 0xE10,
                         "DeviceID" => "000E10",
                         "inputs" => array(
-                            "Sensors" => 3,
-                            "PhysicalSensors" => 2,
-                            "VirtualSensors" => 1,
                             array("id" => 0x02),
                             array("id" => 0x02),
                             array(
@@ -1838,9 +1836,6 @@ class EVIRTUALAverageTest extends AverageTestBase
                         "id" => 0xE20,
                         "DeviceID" => "000E20",
                         "inputs" => array(
-                            "Sensors" => 3,
-                            "PhysicalSensors" => 2,
-                            "VirtualSensors" => 1,
                             array("id" => 0x02),
                             array("id" => 0x02),
                             array(
@@ -1870,12 +1865,12 @@ class EVIRTUALAverageTest extends AverageTestBase
                             array(
                                 "id" => 0xFE,
                                 "type" => "CloneVirtual",
-                                "extra" => array("E10", 1),
+                                "extra" => array("E10", 0),
                             ),
                             array(
                                 "id" => 0xFE,
                                 "type" => "CloneVirtual",
-                                "extra" => array("E20", 2),
+                                "extra" => array("E20", 1),
                             ),
                             array(
                                 "id" => 0xFE,
@@ -1956,18 +1951,15 @@ class EVIRTUALAverageTest extends AverageTestBase
                     "DeviceID" => "001000",
                     "HWPartNum" => "0039-24-02-P",
                     "inputs" => array(
-                        "Sensors" => 3,
-                        "PhysicalSensors" => 0,
-                        "VirtualSensors" => 3,
                         array(
                             "id" => 0xFE,
                             "type" => "CloneVirtual",
-                            "extra" => array("000E20", 1),
+                            "extra" => array("000E20", 0),
                         ),
                         array(
                             "id" => 0xFE,
                             "type" => "CloneVirtual",
-                            "extra" => array("000E30", 3),
+                            "extra" => array("000E30", 2),
                         ),
                         array(
                             "id" => 0xFE,
@@ -2005,7 +1997,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                     ),
                 ),
                 gmmktime(15, 30, 00, 1, 22, 2009),
-                time(),
+                1000000,
             ),
             array(  // #8 basic input.  First record bad.  Middle record bad
                 array(
@@ -2139,12 +2131,12 @@ class EVIRTUALAverageTest extends AverageTestBase
                         array(
                             "id" => 0xFE,
                             "type" => "CloneVirtual",
-                            "extra" => array("000E20", 1),
+                            "extra" => array("000E20", 0),
                         ),
                         array(
                             "id" => 0xFE,
                             "type" => "CloneVirtual",
-                            "extra" => array("000E10", 1),
+                            "extra" => array("000E10", 0),
                         ),
                         array(
                             "id" => 0xFE,
@@ -2175,7 +2167,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                     ),
                 ),
                 gmmktime(15, 45, 00, 1, 22, 2009),
-                time(),
+                1000000,
             ),
             array(  // #9 basic input.  One source device is virtual
                 array(
@@ -2183,9 +2175,6 @@ class EVIRTUALAverageTest extends AverageTestBase
                         "id" => 0xE10,
                         "DeviceID" => "000E10",
                         "inputs" => array(
-                            "Sensors" => 3,
-                            "PhysicalSensors" => 2,
-                            "VirtualSensors" => 1,
                             array("id" => 0x02),
                             array("id" => 0x02),
                             array(
@@ -2209,9 +2198,6 @@ class EVIRTUALAverageTest extends AverageTestBase
                         "id" => 0xE20,
                         "DeviceID" => "000E20",
                         "inputs" => array(
-                            "Sensors" => 3,
-                            "PhysicalSensors" => 2,
-                            "VirtualSensors" => 1,
                             array("id" => 0x02),
                             array("id" => 0x02),
                             array(
@@ -2235,9 +2221,6 @@ class EVIRTUALAverageTest extends AverageTestBase
                         "id" => 0xE30,
                         "DeviceID" => "000E30",
                         "inputs" => array(
-                            "Sensors" => 3,
-                            "PhysicalSensors" => 2,
-                            "VirtualSensors" => 1,
                             array(
                                 "id" => 0xFE,
                                 "type" => "CloneVirtual",
@@ -2333,22 +2316,22 @@ class EVIRTUALAverageTest extends AverageTestBase
                         array(
                             "id" => 0xFE,
                             "type" => "CloneVirtual",
+                            "extra" => array("000E20", 0),
+                        ),
+                        array(
+                            "id" => 0xFE,
+                            "type" => "CloneVirtual",
+                            "extra" => array("000E30", 2),
+                        ),
+                        array(
+                            "id" => 0xFE,
+                            "type" => "CloneVirtual",
                             "extra" => array("000E20", 1),
                         ),
                         array(
                             "id" => 0xFE,
                             "type" => "CloneVirtual",
-                            "extra" => array("000E30", 3),
-                        ),
-                        array(
-                            "id" => 0xFE,
-                            "type" => "CloneVirtual",
-                            "extra" => array("000E20", 2),
-                        ),
-                        array(
-                            "id" => 0xFE,
-                            "type" => "CloneVirtual",
-                            "extra" => array("E30", 1),
+                            "extra" => array("E30", 0),
                         ),
                         array(
                             "id" => 0xFE,
@@ -2392,7 +2375,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                     ),
                 ),
                 gmmktime(15, 30, 00, 1, 22, 2009),
-                time(),
+                1000000,
             ),
             array(  // #10 basic input.  One source device rebuilding
                 array(
@@ -2400,9 +2383,6 @@ class EVIRTUALAverageTest extends AverageTestBase
                         "id" => 0xE10,
                         "DeviceID" => "000E10",
                         "inputs" => array(
-                            "Sensors" => 3,
-                            "PhysicalSensors" => 2,
-                            "VirtualSensors" => 1,
                             array("id" => 0x02),
                             array("id" => 0x02),
                             array(
@@ -2426,9 +2406,6 @@ class EVIRTUALAverageTest extends AverageTestBase
                         "id" => 0xE20,
                         "DeviceID" => "000E20",
                         "inputs" => array(
-                            "Sensors" => 3,
-                            "PhysicalSensors" => 2,
-                            "VirtualSensors" => 1,
                             array("id" => 0x02),
                             array("id" => 0x02),
                             array(
@@ -2452,9 +2429,6 @@ class EVIRTUALAverageTest extends AverageTestBase
                         "id" => 0xE30,
                         "DeviceID" => "000E30",
                         "inputs" => array(
-                            "Sensors" => 3,
-                            "PhysicalSensors" => 2,
-                            "VirtualSensors" => 1,
                             array(
                                 "id" => 0xFE,
                                 "type" => "CloneVirtual",
@@ -2544,9 +2518,16 @@ class EVIRTUALAverageTest extends AverageTestBase
                     "DeviceID" => "001000",
                     "HWPartNum" => "0039-24-02-P",
                     "inputs" => array(
-                        "Sensors" => 5,
-                        "PhysicalSensors" => 0,
-                        "VirtualSensors" => 5,
+                        array(
+                            "id" => 0xFE,
+                            "type" => "CloneVirtual",
+                            "extra" => array("000E20", 0),
+                        ),
+                        array(
+                            "id" => 0xFE,
+                            "type" => "CloneVirtual",
+                            "extra" => array("000E30", 2),
+                        ),
                         array(
                             "id" => 0xFE,
                             "type" => "CloneVirtual",
@@ -2555,17 +2536,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                         array(
                             "id" => 0xFE,
                             "type" => "CloneVirtual",
-                            "extra" => array("000E30", 3),
-                        ),
-                        array(
-                            "id" => 0xFE,
-                            "type" => "CloneVirtual",
-                            "extra" => array("000E20", 2),
-                        ),
-                        array(
-                            "id" => 0xFE,
-                            "type" => "CloneVirtual",
-                            "extra" => array("E30", 1),
+                            "extra" => array("E30", 0),
                         ),
                         array(
                             "id" => 0xFE,
@@ -2591,7 +2562,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                     ),
                 ),
                 gmmktime(15, 00, 00, 1, 22, 2009),
-                time(),
+                1000000,
             ),
         );
     }
@@ -2612,48 +2583,56 @@ class EVIRTUALAverageTest extends AverageTestBase
     *
     * @dataProvider dataCalc15MinAverageMulti
     */
-    /*
     public function testCalc15MinAverageMulti(
         $devs, $preload, $preloadData, $device,
         $mockData, $expect, $lastHist, $lastPoll
     ) {
-        $this->markTestIncomplete("Fix Me");
-        $dev = \HUGnet\Device::factory($this->system);
+        $dev = $this->system->device();
         foreach ((array)$devs as $d) {
-            $dev->load($d);
-            $dev->store();
+            $dev->table()->fromAny($d);
+            $dev->table()->insertRow(true);
+            foreach((array)$d["inputs"] as $key => $inp) {
+                $input = $dev->input($key);
+                $input->table()->fromArray($inp);
+                $input->table()->insertRow(true);
+            }
             $avg = &$dev->historyFactory(array(), false);
-            foreach ((array) $preloadData[$dev->id] as $pd) {
+            foreach ((array) $preloadData[$dev->get("id")] as $pd) {
                 $avg->clearData();
                 $avg->fromAny($pd);
-                $avg->insertRow();
+                $avg->insertRow(true);
             }
         }
         $this->o->clearData();
         $this->o->fromAny($preload);
         $this->o->device = null;
         if (!is_null($device)) {
-            $this->o->device = new \HUGnet\DummyBase("Device");
-            $this->o->device->resetMock($device);
+            $this->o->device = $this->system->device($device);
+            $this->o->device->store();
+            foreach((array)$device["inputs"] as $key => $inp) {
+                $input = $this->o->device->input($key);
+                $input->table()->fromArray($inp);
+                $input->store();
+            }
         }
         $data = new \HUGnet\db\HistoryMock($this->system, $mockData);
         $ret = array();
+        $count = 0;
         while ($this->o->calcAverage($data, \HUGnet\db\Average::AVERAGE_15MIN)) {
             $ret[] = $this->o->toArray(false);
         }
         $this->assertSame($expect, $ret, "Data Wrong");
         $this->assertSame(
             $lastHist,
-            $this->o->device->params->DriverInfo["LastHistory"],
+            $this->o->device->getParam("LastHistory"),
             "LastHistory wrong"
         );
-        $this->assertGreaterThan(
+        $this->assertEquals(
             $lastPoll,
-            $this->o->device->params->DriverInfo["LastPoll"],
+            $this->o->device->getParam("LastPoll"),
             "LastPoll wrong"
         );
     }
-    */
 }
 
 ?>
