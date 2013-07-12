@@ -188,7 +188,9 @@ class ActionTest extends ActionVirtual
     */
     private function _clearHistCache()
     {
-        $this->_histCache = array();
+        foreach (array_keys((array)$this->_histCache) as $key) {
+            unset($this->_histCache[$key]);
+        }
     }
     /**
     * Polls the device and saves the poll
