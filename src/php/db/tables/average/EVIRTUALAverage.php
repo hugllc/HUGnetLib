@@ -67,6 +67,8 @@ class EVIRTUALAverage extends \HUGnet\db\Average
     public $done = false;
     /** @var This is how many averages we have done */
     public $averages = array();
+    /** @var This is our cache of averageTable objects */
+    private $_histCache = array();
 
     /**
     * This calculates the averages
@@ -81,71 +83,74 @@ class EVIRTUALAverage extends \HUGnet\db\Average
     *
     * @return bool True on success, false on failure
     */
-    /*
     protected function calc15MinAverage(\HUGnet\db\History &$data)
     {
         if ($this->done) {
             return false;
         }
+        $this->_clearHistCache();
         $this->sqlLimit = $data->sqlLimit;
-        $this->_setAverageTables();
-        $this->device->params->DriverInfo["LastPoll"] = time();
+        $now = $this->system()->now();
+        $this->device->setParam("LastPoll", $now);
+        $this->device->setLocalParam("LastPoll", $now);
         do {
             $ret = $this->_get15MinAverage($rec);
         } while (($ret === false) && !$this->done);
         if ($ret) {
             $this->fromDataArray($rec);
-            $this->device->params->DriverInfo["LastHistory"] = $this->Date;
+            $this->device->setParam("LastHistory", $this->get("Date"));
+            $this->device->setLocalParam("LastHistory", $this->get("Date"));
             return true;
         }
         return false;
     }
-    */
     /**
-    * This returns the first average from this device
+    * Polls the device and saves the poll
     *
-    * @return null
+    * @param object &$sensor The sensor to use
+    *
+    * @return false on failure, the history object on success
     */
-    /*
-    private function _setAverageTables()
+    private function _getPoint(&$sensor)
     {
-        $start = (int)$this->device->params->DriverInfo["LastAverage15MIN"];
-        $aSen = &$this->averages["sensors"];
-        $aDev = &$this->averages["DeviceID"];
-        for ($i = 0; $i < $this->device->sensors->Sensors; $i++) {
-            $sensor = $this->device->input($i);
-            if (method_exists($sensor, "getAverageTable")) {
-                if (!is_a($aSen[$i], "AverageTableBase")) {
-                    $devId = $sensor->getDeviceID();
-                    if (!is_object($aDev[$devId])) {
-                        $aDev[$devId] = $sensor->getAverageTable();
-                        $aDev[$devId]->sqlLimit = $this->sqlLimit;
-                        $aDev[$devId]->sqlOrderBy = "Date ASC";
-                        $query = "`id` = ? AND `Type`=? AND `Date` > ?";
-                        $data = array(
-                            $devId,
-                            AverageTableBase::AVERAGE_15MIN,
-                            (int)$start
-                        );
-                        $lastAve = $aDev[$devId]->device
-                            ->params->DriverInfo["LastAverage15MIN"];
-                        if (!empty($lastAve)) {
-                            $query .= " AND `Date` <= ?";
-                            $data[] = $lastAve;
-                        }
-                        $aDev[$devId]->selectInto($query, $data);
-                    }
-                    $aSen[$i] = &$aDev[$devId];
-                }
-            }
+        if ($sensor->get("driver") !== "CloneVirtual") {
+             // Only get clone virtual points.
+             return null;
         }
-        // Nothing to do.  Exit
-        if (empty($aDev)) {
-            $this->done = true;
-            return;
+        $extra = $sensor->get("extra");
+        $dev = hexdec($extra[0]);
+        if (empty($dev)) {
+            return null;
+        }
+        if (!is_object($this->_histCache[$dev])) {
+            $start = (int)$this->device->getParam("LastAverage15MIN");
+            $device = $this->system()->device($dev);
+            $this->_histCache[$dev] = $device->historyFactory(array(), false);
+            $this->_histCache[$dev]->sqlOrderBy = "Date ASC";
+            $query = array(
+                "id" => $dev,
+                "Type" => \HUGnet\db\Average::AVERAGE_15MIN,
+                "Date" =>array('$gt' => (int)$start)
+            );
+            $lastAve = $device->getParam("LastAverage15MIN");
+            if (!empty($lastAve)) {
+                $query["Date"]['$lte'] = (int)$lastAve;
+            }
+            $this->_histCache[$dev]->selectInto($query);
+        }
+        return $this->_histCache[$dev];
+    }
+    /**
+    * Polls the device and saves the poll
+    *
+    * @return false on failure, the history object on success
+    */
+    private function _clearHistCache()
+    {
+        foreach (array_keys((array)$this->_histCache) as $key) {
+            unset($this->_histCache[$key]);
         }
     }
-    */
     /**
     * This returns the first average from this device
     *
@@ -153,7 +158,6 @@ class EVIRTUALAverage extends \HUGnet\db\Average
     *
     * @return null
     */
-    /*
     private function _get15MinAverage(&$rec)
     {
         $date = $this->getNextAverageDate();
@@ -161,29 +165,31 @@ class EVIRTUALAverage extends \HUGnet\db\Average
             $this->done = true;
             return false;
         }
-        $rec = array("id" => $this->device->id, "Date" => $date);
+        $rec = array("id" => $this->device->get("id"), "Date" => $date);
         $this->Type = self::AVERAGE_15MIN;
         $notEmpty = false;
-        for ($i = 0; $i < $this->device->sensors->Sensors; $i++) {
-            $sensor = $this->device->input($i);
-            if (is_a($this->averages["sensors"][$i], "AverageTableBase")) {
-                if ($this->averages["sensors"][$i]->Date == $date) {
-                    $data = $this->averages["sensors"][$i]->toArray();
-                } else {
-                    $data = array();
+        for ($i = 0; $i < $this->device->get("InputTables"); $i++) {
+            $input = $this->device->input($i);
+            $table = $this->_getPoint($input);
+            if (is_object($table)) {
+                $val = $input->channels();
+                if ($table->get("Date") == $date) {
+                    $extra = $input->get("extra");
+                    $field = "Data".(int)$extra[1];
+                    $val[0]["value"] = $table->get($field);
                 }
-                $rec[$i] = $sensor->getUnits($A, $deltaT, $prev, $data);
             } else {
-                $rec[$i] = $sensor->getUnits($A, $deltaT, $prev, $rec);
+                $A = null;
+                $val = $input->decodeData($A, 900, $prev, $rec);
             }
-            if (!is_null($rec[$i]["value"])) {
+            $rec[$i] = $val[0];
+            if (!is_null($val[0]["value"])) {
                 $notEmpty = true;
             }
         }
         $this->_next($date);
         return $notEmpty;
     }
-    */
     /**
     * This returns the first average from this device
     *
@@ -191,39 +197,37 @@ class EVIRTUALAverage extends \HUGnet\db\Average
     *
     * @return null
     */
-    /*
     private function _next($date)
     {
-        $averages = &$this->averages["DeviceID"];
-        foreach (array_keys((array)$averages) as $key) {
-            while ($averages[$key]->Date <= $date) {
-                $ret = $averages[$key]->nextInto();
+        for ($i = 0; $i < $this->device->get("InputTables"); $i++) {
+            $input = $this->device->input($i);
+            $table = $this->_getPoint($input);
+            while (is_object($table) && $table->get("Date") <= $date) {
+                $ret = $table->nextInto();
                 if ($ret === false) {
                     $this->done = true;
-                    return;
+                    break;
                 }
             }
         }
     }
-    */
     /**
     * This returns the first average from this device
     *
     * @return null
     */
-    /*
     protected function getNextAverageDate()
     {
         $date = null;
-        $averages = &$this->averages["DeviceID"];
-        foreach (array_keys((array)$averages) as $key) {
-            if (is_null($date) || ($averages[$key]->Date < $date)) {
-                $date = $averages[$key]->Date;
+        for ($i = 0; $i < $this->device->get("InputTables"); $i++) {
+            $input = $this->device->input($i);
+            $table = $this->_getPoint($input);
+            if (is_object($table)) {
+                $date = $table->get("Date");
             }
         }
         return (int)$date;
     }
-    */
     /******************************************************************
      ******************************************************************
      ********  The following are input modification functions  ********

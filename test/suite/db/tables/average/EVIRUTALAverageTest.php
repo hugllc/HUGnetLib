@@ -81,22 +81,14 @@ class EVIRTUALAverageTest extends AverageTestBase
     */
     protected function setUp()
     {
-        $this->config = array(
-            "System" => array(
-                "get" => array(
-                    "servers" => array(
-                        array(
-                            "driver" => "sqlite",
-                            "file" => ":memory:",
-                            "group" => "default",
-                        ),
-                    ),
-                    "verbose" => 0,
-                ),
-            ),
+        $this->system = $this->getMock("\HUGnet\System", array('now'));
+        $this->system->config(
+            array(
+            )
         );
-        $this->system = new \HUGnet\DummySystem("System");
-        $this->system->resetMock($this->config);
+        $this->system->expects($this->any())
+            ->method('now')
+            ->will($this->returnValue(1000000));
         $this->connect = \HUGnet\db\Connection::factory($this->system);
         $this->pdo = &$this->connect->getDBO("default");
         $data = array(
@@ -161,59 +153,52 @@ class EVIRTUALAverageTest extends AverageTestBase
     public static function dataCalc15MinAverage()
     {
         return array(
-            /*
             array(  // #0 basic input.  LastAverage15MIN not set
                 array(
                     array(
                         "id" => 0xE10,
                         "DeviceID" => "000E10",
-                        "sensors" => array(
-                            "Sensors" => 3,
-                            "PhysicalSensors" => 2,
-                            "VirtualSensors" => 1,
+                        "inputs" => array(
                             array("id" => 0x02),
                             array("id" => 0x02),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
+                        "params" => json_encode(
+                            array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 00, 00, 1, 22, 2009
                                 ),
-                            ),
+                            )
                         ),
                     ),
                     array(
                         "id" => 0xE20,
                         "DeviceID" => "000E20",
-                        "sensors" => array(
-                            "Sensors" => 3,
-                            "PhysicalSensors" => 2,
-                            "VirtualSensors" => 1,
+                        "inputs" => array(
                             array("id" => 0x02),
                             array("id" => 0x02),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
+                        "params" => json_encode(
+                            array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 00, 00, 1, 22, 2009
                                 ),
-                            ),
+                            )
                         ),
                     ),
                 ),
@@ -245,25 +230,22 @@ class EVIRTUALAverageTest extends AverageTestBase
                     "id" => 0x1000,
                     "DeviceID" => "001000",
                     "HWPartNum" => "0039-24-02-P",
-                    "sensors" => array(
-                        "Sensors" => 3,
-                        "PhysicalSensors" => 0,
-                        "VirtualSensors" => 3,
+                    "inputs" => array(
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
-                            "extra" => array("000E20", 1),
+                            "type" => "CloneVirtual",
+                            "extra" => array("000E20", 0),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
-                            "extra" => array("000E10", 1),
+                            "type" => "CloneVirtual",
+                            "extra" => array("000E10", 0),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "computation",
+                            "type" => "ComputationVirtual",
                             "extra" => array(
-                                "{2} - {1}", "&#176;C", "Temperature",
+                                "{1} - {0}", "&#176;C", "Temperature",
                                 \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
@@ -285,33 +267,30 @@ class EVIRTUALAverageTest extends AverageTestBase
                     array(
                         "id" => 0xE10,
                         "DeviceID" => "000E10",
-                        "sensors" => array(
-                            "Sensors" => 3,
-                            "PhysicalSensors" => 2,
-                            "VirtualSensors" => 1,
+                        "inputs" => array(
                             array("id" => 0x02),
                             array("id" => 0x02),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
+                        "params" => json_encode(
+                            array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 00, 00, 1, 22, 2009
                                 ),
-                            ),
+                            )
                         ),
                     ),
                     array(
                         "id" => 0xE20,
                         "DeviceID" => "000E20",
-                        "sensors" => array(
+                        "inputs" => array(
                             "Sensors" => 3,
                             "PhysicalSensors" => 2,
                             "VirtualSensors" => 1,
@@ -319,19 +298,19 @@ class EVIRTUALAverageTest extends AverageTestBase
                             array("id" => 0x02),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
+                        "params" => json_encode(
+                            array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 00, 00, 1, 22, 2009
                                 ),
-                            ),
+                            )
                         ),
                     ),
                 ),
@@ -363,33 +342,30 @@ class EVIRTUALAverageTest extends AverageTestBase
                     "id" => 0x1000,
                     "DeviceID" => "001000",
                     "HWPartNum" => "0039-24-02-P",
-                    "sensors" => array(
-                        "Sensors" => 3,
-                        "PhysicalSensors" => 0,
-                        "VirtualSensors" => 3,
+                    "inputs" => array(
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
-                            "extra" => array("000E20", 1),
+                            "type" => "CloneVirtual",
+                            "extra" => array("000E20", 0),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
-                            "extra" => array("000E10", 1),
+                            "type" => "CloneVirtual",
+                            "extra" => array("000E10", 0),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "computation",
+                            "type" => "ComputationVirtual",
                             "extra" => array(
-                                "{2} - {1}", "&#176;C", "Temperature",
+                                "{1} - {0}", "&#176;C", "Temperature",
                                 \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
                     ),
-                    "params" => array(
-                        "DriverInfo" => array(
+                    "params" => json_encode(
+                        array(
                             "LastAverage15MIN" => gmmktime(15, 00, 00, 1, 22, 2009),
-                        ),
+                        )
                     ),
                 ),
                 array(
@@ -404,7 +380,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                     array(
                         "id" => 0xE10,
                         "DeviceID" => "000E10",
-                        "sensors" => array(
+                        "inputs" => array(
                             "Sensors" => 3,
                             "PhysicalSensors" => 2,
                             "VirtualSensors" => 1,
@@ -412,22 +388,22 @@ class EVIRTUALAverageTest extends AverageTestBase
                             array("id" => 0x02),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
-                            ),
+                        "params" => json_encode(
+                            array(
+                            )
                         ),
                     ),
                     array(
                         "id" => 0xE20,
                         "DeviceID" => "000E20",
-                        "sensors" => array(
+                        "inputs" => array(
                             "Sensors" => 3,
                             "PhysicalSensors" => 2,
                             "VirtualSensors" => 1,
@@ -435,16 +411,16 @@ class EVIRTUALAverageTest extends AverageTestBase
                             array("id" => 0x02),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
-                            ),
+                        "params" => json_encode(
+                            array(
+                            )
                         ),
                     ),
                 ),
@@ -476,25 +452,25 @@ class EVIRTUALAverageTest extends AverageTestBase
                     "id" => 0x1000,
                     "DeviceID" => "001000",
                     "HWPartNum" => "0039-24-02-P",
-                    "sensors" => array(
+                    "inputs" => array(
                         "Sensors" => 3,
                         "PhysicalSensors" => 0,
                         "VirtualSensors" => 3,
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
-                            "extra" => array("000E20", 1),
+                            "type" => "CloneVirtual",
+                            "extra" => array("000E20", 0),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
-                            "extra" => array("000E10", 1),
+                            "type" => "CloneVirtual",
+                            "extra" => array("000E10", 0),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "computation",
+                            "type" => "ComputationVirtual",
                             "extra" => array(
-                                "{2} - {1}", "&#176;C", "Temperature",
+                                "{1} - {0}", "&#176;C", "Temperature",
                                 \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
@@ -516,7 +492,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                     array(
                         "id" => 0xE10,
                         "DeviceID" => "000E10",
-                        "sensors" => array(
+                        "inputs" => array(
                             "Sensors" => 3,
                             "PhysicalSensors" => 2,
                             "VirtualSensors" => 1,
@@ -524,19 +500,19 @@ class EVIRTUALAverageTest extends AverageTestBase
                             array("id" => 0x02),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
+                        "params" => json_encode(
+                            array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 00, 00, 1, 22, 2009
                                 ),
-                            ),
+                            )
                         ),
                     ),
                 ),
@@ -568,25 +544,22 @@ class EVIRTUALAverageTest extends AverageTestBase
                     "id" => 0x1000,
                     "DeviceID" => "001000",
                     "HWPartNum" => "0039-24-02-P",
-                    "sensors" => array(
-                        "Sensors" => 3,
-                        "PhysicalSensors" => 0,
-                        "VirtualSensors" => 3,
+                    "inputs" => array(
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
-                            "extra" => array("000E20", 1),
+                            "type" => "CloneVirtual",
+                            "extra" => array("", 0),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
-                            "extra" => array("000E10", 1),
+                            "type" => "CloneVirtual",
+                            "extra" => array("000E10", 0),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "computation",
+                            "type" => "ComputationVirtual",
                             "extra" => array(
-                                "{2} - {1}", "&#176;C", "Temperature",
+                                "{1} - {0}", "&#176;C", "Temperature",
                                 \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
@@ -595,15 +568,18 @@ class EVIRTUALAverageTest extends AverageTestBase
                 array(
                 ),
                 array(
+                    "id" => 0x1000,
+                    "Date" => gmmktime(15, 00, 00, 1, 22, 2009),
+                    "Data1" => "4.0",
                 ),
-                false,
+                true,
             ),
             array(  // #4 No PhysicalPointVirtualSensors in virtual endpoint
                 array(
                     array(
                         "id" => 0xE10,
                         "DeviceID" => "000E10",
-                        "sensors" => array(
+                        "inputs" => array(
                             "Sensors" => 3,
                             "PhysicalSensors" => 2,
                             "VirtualSensors" => 1,
@@ -611,25 +587,25 @@ class EVIRTUALAverageTest extends AverageTestBase
                             array("id" => 0x02),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
+                        "params" => json_encode(
+                            array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 00, 00, 1, 22, 2009
                                 ),
-                            ),
+                            )
                         ),
                     ),
                     array(
                         "id" => 0xE20,
                         "DeviceID" => "000E20",
-                        "sensors" => array(
+                        "inputs" => array(
                             "Sensors" => 3,
                             "PhysicalSensors" => 2,
                             "VirtualSensors" => 1,
@@ -637,19 +613,19 @@ class EVIRTUALAverageTest extends AverageTestBase
                             array("id" => 0x02),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
+                        "params" => json_encode(
+                            array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 00, 00, 1, 22, 2009
                                 ),
-                            ),
+                            )
                         ),
                     ),
                 ),
@@ -681,13 +657,13 @@ class EVIRTUALAverageTest extends AverageTestBase
                     "id" => 0x1000,
                     "DeviceID" => "001000",
                     "HWPartNum" => "0039-24-02-P",
-                    "sensors" => array(
+                    "inputs" => array(
                         "Sensors" => 3,
                         "PhysicalSensors" => 0,
                         "VirtualSensors" => 3,
                         array(
                             "id" => 0xFE,
-                            "type" => "computation",
+                            "type" => "ComputationVirtual",
                             "extra" => array(
                                 "1 + 1", "&#176;C", "Temperature",
                                 \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
@@ -695,7 +671,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "computation",
+                            "type" => "ComputationVirtual",
                             "extra" => array(
                                 "1 + 2", "&#176;C", "Temperature",
                                 \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
@@ -703,7 +679,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "computation",
+                            "type" => "ComputationVirtual",
                             "extra" => array(
                                 "1 + 3", "&#176;C", "Temperature",
                                 \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
@@ -717,7 +693,6 @@ class EVIRTUALAverageTest extends AverageTestBase
                 ),
                 false,
             ),
-            */
         );
     }
 
@@ -736,28 +711,36 @@ class EVIRTUALAverageTest extends AverageTestBase
     *
     * @dataProvider dataCalc15MinAverage
     */
-    /*
     public function testCalc15MinAverage(
         $devs, $preload, $preloadData, $device, $mockData, $expect, $expectRet
     ) {
-        $this->markTestIncomplete("Fix Me");
-        $dev = \HUGnet\Device::factory($this->system);
+        $dev = $this->system->device();
         foreach ((array)$devs as $d) {
-            $dev->load($d);
+            $dev->table()->fromAny($d);
             $dev->store();
+            foreach((array)$d["inputs"] as $key => $inp) {
+                $input = $dev->input($key);
+                $input->table()->fromArray($inp);
+                $input->store();
+            }
             $avg = &$dev->historyFactory(array(), false);
-            foreach ((array) $preloadData[$dev->id] as $pd) {
+            foreach ((array) $preloadData[$dev->get("id")] as $pd) {
                 $avg->clearData();
                 $avg->fromAny($pd);
-                $avg->insertRow();
+                $avg->insertRow(true);
             }
         }
         $this->o->clearData();
         $this->o->fromAny($preload);
         $this->o->device = null;
         if (!is_null($device)) {
-            $this->o->device = new \HUGnet\DummyBase("Device");
-            $this->o->device->resetMock($device);
+            $this->o->device = $this->system->device($device);
+            $this->o->device->store();
+            foreach((array)$device["inputs"] as $key => $inp) {
+                $input = $this->o->device->input($key);
+                $input->table()->fromArray($inp);
+                $input->store();
+            }
         }
         $data = new \HUGnet\db\HistoryMock($this->system, array($mockData));
         $ret = $this->o->calcAverage($data, \HUGnet\db\Average::AVERAGE_15MIN);
@@ -765,7 +748,6 @@ class EVIRTUALAverageTest extends AverageTestBase
         $this->assertSame($expect, $this->o->toArray(false));
 
     }
-    */
     /**
     * data provider for testCalcAverage
     *
@@ -774,13 +756,12 @@ class EVIRTUALAverageTest extends AverageTestBase
     public static function dataCalc15MinAverageMulti()
     {
         return array(
-            /*
             array(  // #0 basic input.  LastAverage15MIN not set
                 array(
                     array(
                         "id" => 0xE10,
                         "DeviceID" => "000E10",
-                        "sensors" => array(
+                        "inputs" => array(
                             "Sensors" => 3,
                             "PhysicalSensors" => 2,
                             "VirtualSensors" => 1,
@@ -788,25 +769,25 @@ class EVIRTUALAverageTest extends AverageTestBase
                             array("id" => 0x02),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
+                        "params" => json_encode(
+                            array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 30, 00, 1, 22, 2009
                                 ),
-                            ),
+                            )
                         ),
                     ),
                     array(
                         "id" => 0xE20,
                         "DeviceID" => "000E20",
-                        "sensors" => array(
+                        "inputs" => array(
                             "Sensors" => 3,
                             "PhysicalSensors" => 2,
                             "VirtualSensors" => 1,
@@ -814,19 +795,19 @@ class EVIRTUALAverageTest extends AverageTestBase
                             array("id" => 0x02),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
+                        "params" => json_encode(
+                            array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 30, 00, 1, 22, 2009
                                 ),
-                            ),
+                            )
                         ),
                     ),
                 ),
@@ -890,25 +871,25 @@ class EVIRTUALAverageTest extends AverageTestBase
                     "id" => 0x1000,
                     "DeviceID" => "001000",
                     "HWPartNum" => "0039-24-02-P",
-                    "sensors" => array(
+                    "inputs" => array(
                         "Sensors" => 3,
                         "PhysicalSensors" => 0,
                         "VirtualSensors" => 3,
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
+                            "type" => "CloneVirtual",
                             "extra" => array("000E20", 1),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
+                            "type" => "CloneVirtual",
                             "extra" => array("000E10", 1),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "computation",
+                            "type" => "ComputationVirtual",
                             "extra" => array(
-                                "{2} - {1}", "&#176;C", "Temperature",
+                                "{1} - {0}", "&#176;C", "Temperature",
                                 \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
@@ -947,7 +928,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                     array(
                         "id" => 0xE10,
                         "DeviceID" => "000E10",
-                        "sensors" => array(
+                        "inputs" => array(
                             "Sensors" => 3,
                             "PhysicalSensors" => 2,
                             "VirtualSensors" => 1,
@@ -955,25 +936,25 @@ class EVIRTUALAverageTest extends AverageTestBase
                             array("id" => 0x02),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
+                        "params" => json_encode(
+                            array(
                                 "LastAverage15MIN" => gmmktime(
                                     16, 00, 00, 1, 22, 2009
                                 ),
-                            ),
+                            )
                         ),
                     ),
                     array(
                         "id" => 0xE20,
                         "DeviceID" => "000E20",
-                        "sensors" => array(
+                        "inputs" => array(
                             "Sensors" => 3,
                             "PhysicalSensors" => 2,
                             "VirtualSensors" => 1,
@@ -981,19 +962,19 @@ class EVIRTUALAverageTest extends AverageTestBase
                             array("id" => 0x02),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
+                        "params" => json_encode(
+                            array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 45, 00, 1, 22, 2009
                                 ),
-                            ),
+                            )
                         ),
                     ),
                 ),
@@ -1057,25 +1038,25 @@ class EVIRTUALAverageTest extends AverageTestBase
                     "id" => 0x1000,
                     "DeviceID" => "001000",
                     "HWPartNum" => "0039-24-02-P",
-                    "sensors" => array(
+                    "inputs" => array(
                         "Sensors" => 3,
                         "PhysicalSensors" => 0,
                         "VirtualSensors" => 3,
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
+                            "type" => "CloneVirtual",
                             "extra" => array("000E20", 1),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
+                            "type" => "CloneVirtual",
                             "extra" => array("000E10", 1),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "computation",
+                            "type" => "ComputationVirtual",
                             "extra" => array(
-                                "{2} - {1}", "&#176;C", "Temperature",
+                                "{1} - {0}", "&#176;C", "Temperature",
                                 \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
@@ -1112,7 +1093,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                     array(
                         "id" => 0xE10,
                         "DeviceID" => "000E10",
-                        "sensors" => array(
+                        "inputs" => array(
                             "Sensors" => 3,
                             "PhysicalSensors" => 2,
                             "VirtualSensors" => 1,
@@ -1120,25 +1101,25 @@ class EVIRTUALAverageTest extends AverageTestBase
                             array("id" => 0x02),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
+                        "params" => json_encode(
+                            array(
                                 "LastAverage15MIN" => gmmktime(
                                     16, 00, 00, 1, 22, 2009
                                 ),
-                            ),
+                            )
                         ),
                     ),
                     array(
                         "id" => 0xE20,
                         "DeviceID" => "000E20",
-                        "sensors" => array(
+                        "inputs" => array(
                             "Sensors" => 3,
                             "PhysicalSensors" => 2,
                             "VirtualSensors" => 1,
@@ -1146,19 +1127,19 @@ class EVIRTUALAverageTest extends AverageTestBase
                             array("id" => 0x02),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
+                        "params" => json_encode(
+                            array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 45, 00, 1, 22, 2009
                                 ),
-                            ),
+                            )
                         ),
                     ),
                 ),
@@ -1246,35 +1227,35 @@ class EVIRTUALAverageTest extends AverageTestBase
                     "id" => 0x1000,
                     "DeviceID" => "001000",
                     "HWPartNum" => "0039-24-02-P",
-                    "sensors" => array(
+                    "inputs" => array(
                         "Sensors" => 3,
                         "PhysicalSensors" => 0,
                         "VirtualSensors" => 3,
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
+                            "type" => "CloneVirtual",
                             "extra" => array("000E20", 1),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
+                            "type" => "CloneVirtual",
                             "extra" => array("000E10", 1),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "computation",
+                            "type" => "ComputationVirtual",
                             "extra" => array(
-                                "{2} - {1}", "&#176;C", "Temperature",
+                                "{1} - {0}", "&#176;C", "Temperature",
                                 \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
                     ),
-                    "params" => array(
-                        "DriverInfo" => array(
+                    "params" => json_encode(
+                        array(
                             "LastAverage15MIN" => gmmktime(
                                 15, 15, 00, 1, 22, 2009
                             ),
-                        ),
+                        )
                     ),
                 ),
                 array(
@@ -1303,7 +1284,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                     array(
                         "id" => 0xE10,
                         "DeviceID" => "000E10",
-                        "sensors" => array(
+                        "inputs" => array(
                             "Sensors" => 3,
                             "PhysicalSensors" => 2,
                             "VirtualSensors" => 1,
@@ -1311,25 +1292,25 @@ class EVIRTUALAverageTest extends AverageTestBase
                             array("id" => 0x02),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
+                        "params" => json_encode(
+                            array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 00, 00, 1, 22, 2009
                                 ),
-                            ),
+                            )
                         ),
                     ),
                     array(
                         "id" => 0xE20,
                         "DeviceID" => "000E20",
-                        "sensors" => array(
+                        "inputs" => array(
                             "Sensors" => 3,
                             "PhysicalSensors" => 2,
                             "VirtualSensors" => 1,
@@ -1337,19 +1318,19 @@ class EVIRTUALAverageTest extends AverageTestBase
                             array("id" => 0x02),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
+                        "params" => json_encode(
+                            array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 00, 00, 1, 22, 2009
                                 ),
-                            ),
+                            )
                         ),
                     ),
                 ),
@@ -1381,33 +1362,33 @@ class EVIRTUALAverageTest extends AverageTestBase
                     "id" => 0x1000,
                     "DeviceID" => "001000",
                     "HWPartNum" => "0039-24-02-P",
-                    "sensors" => array(
+                    "inputs" => array(
                         "Sensors" => 3,
                         "PhysicalSensors" => 0,
                         "VirtualSensors" => 3,
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
+                            "type" => "CloneVirtual",
                             "extra" => array("000E20", 1),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
+                            "type" => "CloneVirtual",
                             "extra" => array("000E10", 1),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "computation",
+                            "type" => "ComputationVirtual",
                             "extra" => array(
-                                "{2} - {1}", "&#176;C", "Temperature",
+                                "{1} - {0}", "&#176;C", "Temperature",
                                 \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
                     ),
-                    "params" => array(
-                        "DriverInfo" => array(
+                    "params" => json_encode(
+                        array(
                             "LastAverage15MIN" => gmmktime(15, 00, 00, 1, 22, 2009),
-                        ),
+                        )
                     ),
                 ),
                 array(
@@ -1423,7 +1404,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                     array(
                         "id" => 0xE10,
                         "DeviceID" => "000E10",
-                        "sensors" => array(
+                        "inputs" => array(
                             "Sensors" => 3,
                             "PhysicalSensors" => 2,
                             "VirtualSensors" => 1,
@@ -1431,25 +1412,25 @@ class EVIRTUALAverageTest extends AverageTestBase
                             array("id" => 0x02),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
+                        "params" => json_encode(
+                            array(
                                 "LastAverage15MIN" => gmmktime(
                                     16, 00, 00, 1, 31, 2009
                                 ),
-                            ),
+                            )
                         ),
                     ),
                     array(
                         "id" => 0xE20,
                         "DeviceID" => "000E20",
-                        "sensors" => array(
+                        "inputs" => array(
                             "Sensors" => 3,
                             "PhysicalSensors" => 2,
                             "VirtualSensors" => 1,
@@ -1457,19 +1438,19 @@ class EVIRTUALAverageTest extends AverageTestBase
                             array("id" => 0x02),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
+                        "params" => json_encode(
+                            array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 45, 00, 1, 31, 2009
                                 ),
-                            ),
+                            )
                         ),
                     ),
                 ),
@@ -1533,25 +1514,25 @@ class EVIRTUALAverageTest extends AverageTestBase
                     "id" => 0x1000,
                     "DeviceID" => "001000",
                     "HWPartNum" => "0039-24-02-P",
-                    "sensors" => array(
+                    "inputs" => array(
                         "Sensors" => 3,
                         "PhysicalSensors" => 0,
                         "VirtualSensors" => 3,
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
+                            "type" => "CloneVirtual",
                             "extra" => array("000E20", 1),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
+                            "type" => "CloneVirtual",
                             "extra" => array("000E10", 1),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "computation",
+                            "type" => "ComputationVirtual",
                             "extra" => array(
-                                "{2} - {1}", "&#176;C", "Temperature",
+                                "{1} - {0}", "&#176;C", "Temperature",
                                 \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
@@ -1588,7 +1569,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                     array(
                         "id" => 0xE10,
                         "DeviceID" => "000E10",
-                        "sensors" => array(
+                        "inputs" => array(
                             "Sensors" => 3,
                             "PhysicalSensors" => 2,
                             "VirtualSensors" => 1,
@@ -1596,25 +1577,25 @@ class EVIRTUALAverageTest extends AverageTestBase
                             array("id" => 0x02),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
+                        "params" => json_encode(
+                            array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 30, 00, 1, 22, 2009
                                 ),
-                            ),
+                            )
                         ),
                     ),
                     array(
                         "id" => 0xE20,
                         "DeviceID" => "000E20",
-                        "sensors" => array(
+                        "inputs" => array(
                             "Sensors" => 3,
                             "PhysicalSensors" => 2,
                             "VirtualSensors" => 1,
@@ -1622,19 +1603,19 @@ class EVIRTUALAverageTest extends AverageTestBase
                             array("id" => 0x02),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
+                        "params" => json_encode(
+                            array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 30, 00, 1, 22, 2009
                                 ),
-                            ),
+                            )
                         ),
                     ),
                 ),
@@ -1698,25 +1679,25 @@ class EVIRTUALAverageTest extends AverageTestBase
                     "id" => 0x1000,
                     "DeviceID" => "001000",
                     "HWPartNum" => "0039-24-02-P",
-                    "sensors" => array(
+                    "inputs" => array(
                         "Sensors" => 3,
                         "PhysicalSensors" => 0,
                         "VirtualSensors" => 3,
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
+                            "type" => "CloneVirtual",
                             "extra" => array("000E20", 1),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
+                            "type" => "CloneVirtual",
                             "extra" => array("000E10", 1),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "computation",
+                            "type" => "ComputationVirtual",
                             "extra" => array(
-                                "{2} - {1}", "&#176;C", "Temperature",
+                                "{1} - {0}", "&#176;C", "Temperature",
                                 \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
@@ -1749,7 +1730,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                     array(
                         "id" => 0xE10,
                         "DeviceID" => "000E10",
-                        "sensors" => array(
+                        "inputs" => array(
                             "Sensors" => 3,
                             "PhysicalSensors" => 2,
                             "VirtualSensors" => 1,
@@ -1757,9 +1738,9 @@ class EVIRTUALAverageTest extends AverageTestBase
                             array("id" => 0x02),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
@@ -1768,7 +1749,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                     array(
                         "id" => 0xE20,
                         "DeviceID" => "000E20",
-                        "sensors" => array(
+                        "inputs" => array(
                             "Sensors" => 3,
                             "PhysicalSensors" => 2,
                             "VirtualSensors" => 1,
@@ -1776,9 +1757,9 @@ class EVIRTUALAverageTest extends AverageTestBase
                             array("id" => 0x02),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
@@ -1793,25 +1774,25 @@ class EVIRTUALAverageTest extends AverageTestBase
                     "id" => 0x1000,
                     "DeviceID" => "001000",
                     "HWPartNum" => "0039-24-02-P",
-                    "sensors" => array(
+                    "inputs" => array(
                         "Sensors" => 3,
                         "PhysicalSensors" => 0,
                         "VirtualSensors" => 3,
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
+                            "type" => "CloneVirtual",
                             "extra" => array("000E20", 1),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
+                            "type" => "CloneVirtual",
                             "extra" => array("000E10", 1),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "computation",
+                            "type" => "ComputationVirtual",
                             "extra" => array(
-                                "{2} - {1}", "&#176;C", "Temperature",
+                                "{1} - {0}", "&#176;C", "Temperature",
                                 \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
@@ -1830,7 +1811,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                     array(
                         "id" => 0xE10,
                         "DeviceID" => "000E10",
-                        "sensors" => array(
+                        "inputs" => array(
                             "Sensors" => 3,
                             "PhysicalSensors" => 2,
                             "VirtualSensors" => 1,
@@ -1838,25 +1819,25 @@ class EVIRTUALAverageTest extends AverageTestBase
                             array("id" => 0x02),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
+                        "params" => json_encode(
+                            array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 30, 00, 1, 22, 2009
                                 ),
-                            ),
+                            )
                         ),
                     ),
                     array(
                         "id" => 0xE20,
                         "DeviceID" => "000E20",
-                        "sensors" => array(
+                        "inputs" => array(
                             "Sensors" => 3,
                             "PhysicalSensors" => 2,
                             "VirtualSensors" => 1,
@@ -1864,53 +1845,53 @@ class EVIRTUALAverageTest extends AverageTestBase
                             array("id" => 0x02),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
+                        "params" => json_encode(
+                            array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 30, 00, 1, 22, 2009
                                 ),
-                            ),
+                            )
                         ),
                     ),
                     array(
                         "id" => 0xE30,
                         "DeviceID" => "000E30",
-                        "sensors" => array(
+                        "inputs" => array(
                             "Sensors" => 3,
                             "PhysicalSensors" => 2,
                             "VirtualSensors" => 1,
                             array(
                                 "id" => 0xFE,
-                                "type" => "physicalpoint",
+                                "type" => "CloneVirtual",
                                 "extra" => array("E10", 1),
                             ),
                             array(
                                 "id" => 0xFE,
-                                "type" => "physicalpoint",
+                                "type" => "CloneVirtual",
                                 "extra" => array("E20", 2),
                             ),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
+                        "params" => json_encode(
+                            array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 30, 00, 1, 22, 2009
                                 ),
-                            ),
+                            )
                         ),
                     ),
                 ),
@@ -1974,25 +1955,25 @@ class EVIRTUALAverageTest extends AverageTestBase
                     "id" => 0x1000,
                     "DeviceID" => "001000",
                     "HWPartNum" => "0039-24-02-P",
-                    "sensors" => array(
+                    "inputs" => array(
                         "Sensors" => 3,
                         "PhysicalSensors" => 0,
                         "VirtualSensors" => 3,
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
+                            "type" => "CloneVirtual",
                             "extra" => array("000E20", 1),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
+                            "type" => "CloneVirtual",
                             "extra" => array("000E30", 3),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "computation",
+                            "type" => "ComputationVirtual",
                             "extra" => array(
-                                "{2} - {1}", "&#176;C", "Temperature",
+                                "{1} - {0}", "&#176;C", "Temperature",
                                 \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
@@ -2031,7 +2012,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                     array(
                         "id" => 0xE10,
                         "DeviceID" => "000E10",
-                        "sensors" => array(
+                        "inputs" => array(
                             "Sensors" => 3,
                             "PhysicalSensors" => 2,
                             "VirtualSensors" => 1,
@@ -2039,22 +2020,22 @@ class EVIRTUALAverageTest extends AverageTestBase
                             array("id" => 0x02),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
-                            ),
+                        "params" => json_encode(
+                            array(
+                            )
                         ),
                     ),
                     array(
                         "id" => 0xE20,
                         "DeviceID" => "000E20",
-                        "sensors" => array(
+                        "inputs" => array(
                             "Sensors" => 3,
                             "PhysicalSensors" => 2,
                             "VirtualSensors" => 1,
@@ -2062,16 +2043,16 @@ class EVIRTUALAverageTest extends AverageTestBase
                             array("id" => 0x02),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
-                            ),
+                        "params" => json_encode(
+                            array(
+                            )
                         ),
                     ),
                 ),
@@ -2151,25 +2132,25 @@ class EVIRTUALAverageTest extends AverageTestBase
                     "id" => 0x1000,
                     "DeviceID" => "001000",
                     "HWPartNum" => "0039-24-02-P",
-                    "sensors" => array(
+                    "inputs" => array(
                         "Sensors" => 3,
                         "PhysicalSensors" => 0,
                         "VirtualSensors" => 3,
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
+                            "type" => "CloneVirtual",
                             "extra" => array("000E20", 1),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
+                            "type" => "CloneVirtual",
                             "extra" => array("000E10", 1),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "computation",
+                            "type" => "ComputationVirtual",
                             "extra" => array(
-                                "{2} - {1}", "&#176;C", "Temperature",
+                                "{1} - {0}", "&#176;C", "Temperature",
                                 \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
@@ -2201,7 +2182,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                     array(
                         "id" => 0xE10,
                         "DeviceID" => "000E10",
-                        "sensors" => array(
+                        "inputs" => array(
                             "Sensors" => 3,
                             "PhysicalSensors" => 2,
                             "VirtualSensors" => 1,
@@ -2209,25 +2190,25 @@ class EVIRTUALAverageTest extends AverageTestBase
                             array("id" => 0x02),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
+                        "params" => json_encode(
+                            array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 30, 00, 1, 22, 2009
                                 ),
-                            ),
+                            )
                         ),
                     ),
                     array(
                         "id" => 0xE20,
                         "DeviceID" => "000E20",
-                        "sensors" => array(
+                        "inputs" => array(
                             "Sensors" => 3,
                             "PhysicalSensors" => 2,
                             "VirtualSensors" => 1,
@@ -2235,53 +2216,53 @@ class EVIRTUALAverageTest extends AverageTestBase
                             array("id" => 0x02),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
+                        "params" => json_encode(
+                            array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 30, 00, 1, 22, 2009
                                 ),
-                            ),
+                            )
                         ),
                     ),
                     array(
                         "id" => 0xE30,
                         "DeviceID" => "000E30",
-                        "sensors" => array(
+                        "inputs" => array(
                             "Sensors" => 3,
                             "PhysicalSensors" => 2,
                             "VirtualSensors" => 1,
                             array(
                                 "id" => 0xFE,
-                                "type" => "physicalpoint",
+                                "type" => "CloneVirtual",
                                 "extra" => array("E10", 1),
                             ),
                             array(
                                 "id" => 0xFE,
-                                "type" => "physicalpoint",
+                                "type" => "CloneVirtual",
                                 "extra" => array("E20", 2),
                             ),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
+                        "params" => json_encode(
+                            array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 30, 00, 1, 22, 2009
                                 ),
-                            ),
+                            )
                         ),
                     ),
                 ),
@@ -2345,35 +2326,35 @@ class EVIRTUALAverageTest extends AverageTestBase
                     "id" => 0x1000,
                     "DeviceID" => "001000",
                     "HWPartNum" => "0039-24-02-P",
-                    "sensors" => array(
+                    "inputs" => array(
                         "Sensors" => 5,
                         "PhysicalSensors" => 0,
                         "VirtualSensors" => 5,
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
+                            "type" => "CloneVirtual",
                             "extra" => array("000E20", 1),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
+                            "type" => "CloneVirtual",
                             "extra" => array("000E30", 3),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
+                            "type" => "CloneVirtual",
                             "extra" => array("000E20", 2),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
+                            "type" => "CloneVirtual",
                             "extra" => array("E30", 1),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "computation",
+                            "type" => "ComputationVirtual",
                             "extra" => array(
-                                "{2} - {1}", "&#176;C", "Temperature",
+                                "{1} - {0}", "&#176;C", "Temperature",
                                 \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
@@ -2418,7 +2399,7 @@ class EVIRTUALAverageTest extends AverageTestBase
                     array(
                         "id" => 0xE10,
                         "DeviceID" => "000E10",
-                        "sensors" => array(
+                        "inputs" => array(
                             "Sensors" => 3,
                             "PhysicalSensors" => 2,
                             "VirtualSensors" => 1,
@@ -2426,25 +2407,25 @@ class EVIRTUALAverageTest extends AverageTestBase
                             array("id" => 0x02),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
+                        "params" => json_encode(
+                            array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 30, 00, 1, 22, 2009
                                 ),
-                            ),
+                            )
                         ),
                     ),
                     array(
                         "id" => 0xE20,
                         "DeviceID" => "000E20",
-                        "sensors" => array(
+                        "inputs" => array(
                             "Sensors" => 3,
                             "PhysicalSensors" => 2,
                             "VirtualSensors" => 1,
@@ -2452,53 +2433,53 @@ class EVIRTUALAverageTest extends AverageTestBase
                             array("id" => 0x02),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
+                        "params" => json_encode(
+                            array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 30, 00, 1, 22, 2009
                                 ),
-                            ),
+                            )
                         ),
                     ),
                     array(
                         "id" => 0xE30,
                         "DeviceID" => "000E30",
-                        "sensors" => array(
+                        "inputs" => array(
                             "Sensors" => 3,
                             "PhysicalSensors" => 2,
                             "VirtualSensors" => 1,
                             array(
                                 "id" => 0xFE,
-                                "type" => "physicalpoint",
+                                "type" => "CloneVirtual",
                                 "extra" => array("E10", 1),
                             ),
                             array(
                                 "id" => 0xFE,
-                                "type" => "physicalpoint",
+                                "type" => "CloneVirtual",
                                 "extra" => array("E20", 2),
                             ),
                             array(
                                 "id" => 0xFE,
-                                "type" => "computation",
+                                "type" => "ComputationVirtual",
                                 "extra" => array(
-                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    "{1} - {0}", "&#176;C", "Temperature",
                                     \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                                 ),
                             ),
                         ),
-                        "params" => array(
-                            "DriverInfo" => array(
+                        "params" => json_encode(
+                            array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 00, 00, 1, 22, 2009
                                 ),
-                            ),
+                            )
                         ),
                     ),
                 ),
@@ -2562,35 +2543,35 @@ class EVIRTUALAverageTest extends AverageTestBase
                     "id" => 0x1000,
                     "DeviceID" => "001000",
                     "HWPartNum" => "0039-24-02-P",
-                    "sensors" => array(
+                    "inputs" => array(
                         "Sensors" => 5,
                         "PhysicalSensors" => 0,
                         "VirtualSensors" => 5,
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
+                            "type" => "CloneVirtual",
                             "extra" => array("000E20", 1),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
+                            "type" => "CloneVirtual",
                             "extra" => array("000E30", 3),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
+                            "type" => "CloneVirtual",
                             "extra" => array("000E20", 2),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "physicalpoint",
+                            "type" => "CloneVirtual",
                             "extra" => array("E30", 1),
                         ),
                         array(
                             "id" => 0xFE,
-                            "type" => "computation",
+                            "type" => "ComputationVirtual",
                             "extra" => array(
-                                "{2} - {1}", "&#176;C", "Temperature",
+                                "{1} - {0}", "&#176;C", "Temperature",
                                 \HUGnet\devices\datachan\Driver::TYPE_DIFF, 4
                             ),
                         ),
@@ -2612,7 +2593,6 @@ class EVIRTUALAverageTest extends AverageTestBase
                 gmmktime(15, 00, 00, 1, 22, 2009),
                 time(),
             ),
-            */
         );
     }
 
@@ -2674,7 +2654,6 @@ class EVIRTUALAverageTest extends AverageTestBase
         );
     }
     */
-
 }
 
 ?>
