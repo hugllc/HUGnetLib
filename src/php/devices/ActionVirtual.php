@@ -40,6 +40,10 @@ namespace HUGnet\devices;
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our base class */
 require_once dirname(__FILE__)."/Action.php";
+/** This is the average classes */
+require_once dirname(__FILE__)."/../db/FastAverage.php";
+/** This is the average classes */
+require_once dirname(__FILE__)."/../db/Average.php";
 /**
  * Networking for devices.
  *
@@ -59,6 +63,8 @@ require_once dirname(__FILE__)."/Action.php";
  */
 class ActionVirtual extends Action
 {
+    /** @var The type of average we are doing */
+    private $_avgType = \HUGnet\db\Average::AVERAGE_15MIN;
     /**
     * This function creates the system.
     *
@@ -98,7 +104,7 @@ class ActionVirtual extends Action
         $this->device->load($this->device->id());
         $this->device->set(
             "FWVersion",
-            $this->device->system()->get("version")
+            $this->device->system->get("version")
         );
         $this->device->set(
             "RawSetup",
@@ -126,6 +132,204 @@ class ActionVirtual extends Action
     {
         // No polling a virtual device.
         return false;
+    }
+    /**
+    * This calculates the averages
+    *
+    * It will return once for each average that it calculates.  The average will be
+    * stored in the instance this is called from.  If this is fed history table
+    * then it will calculate 15 minute averages.
+    *
+    * @param \HUGnet\db\History &$data This is the data to use to calc the average
+    * @param string             $type  The type of average to calculate
+    *
+    * @return bool True on success, false on failure
+    */
+    public function calcAverage(\HUGnet\db\History &$data, $type)
+    {
+        $hist = false;
+        if ($type == \HUGnet\db\FastAverage::AVERAGE_30SEC) {
+            $this->_avgType = $type;
+            $this->_avgName = "30SEC";
+        }
+        $ret = $this->_calcAverage($data);
+        $this->device->load($this->device->id());
+        $now = $this->system->now();
+        $this->device->setParam("LastPoll", $now);
+        $this->device->setLocalParam("LastPoll", $now);
+        if (is_array($ret)) {
+            $hist = $this->device->historyFactory($ret, false);
+            $this->device->setParam("LastHistory", $hist->get("Date"));
+            $this->device->setLocalParam("LastHistory", $hist->get("Date"));
+        }
+        $this->device->store();
+        return $hist;
+        //return $this->calcOtherAverage($data, $type);
+    }
+    /**
+    * This calculates the averages
+    *
+    * It will return once for each average that it calculates.  The average will be
+    * stored in the instance this is called from.  If this is fed history table
+    * then it will calculate 15 minute averages.
+    *
+    * @param HistoryTableBase &$data This is the data to use to calculate the average
+    *                                This is not used here, but it is required to
+    *                                match the main implementation.
+    *
+    * @return bool array on success, false on failure
+    */
+    protected function _calcAverage(\HUGnet\db\History &$data)
+    {
+        if ($this->done) {
+            $this->_clearHistCache();
+            return false;
+        }
+        $this->sqlLimit = $data->sqlLimit;
+        do {
+            $ret = $this->_get15MinAverage($rec);
+        } while (($ret === false) && !$this->done);
+        if ($ret) {
+            return $rec;
+        }
+        $this->_clearHistCache();
+        return false;
+    }
+    /**
+    * Polls the device and saves the poll
+    *
+    * @param object &$sensor The sensor to use
+    *
+    * @return false on failure, the history object on success
+    */
+    private function _getPoint(&$sensor)
+    {
+        if ($sensor->get("driver") !== "CloneVirtual") {
+             // Only get clone virtual points.
+             return null;
+        }
+        $extra = $sensor->get("extra");
+        $dev = hexdec($extra[0]);
+        if (empty($dev)) {
+            return null;
+        }
+        if (!is_object($this->_histCache[$dev])) {
+            $start = (int)$this->device->getParam("LastAverage".$this->_avgType);
+            $device = $this->system->device($dev);
+            $this->_histCache[$dev] = $device->historyFactory(array(), false);
+            $this->_histCache[$dev]->sqlOrderBy = "Date ASC";
+            $this->_histCache[$dev]->sqlLimit = $this->sqlLimit;
+            $query = array(
+                "id" => $dev,
+                "Type" => $this->_avgType,
+                "Date" =>array('$gt' => (int)$start)
+            );
+            $lastAve = $device->getParam("LastAverage".$this->_avgType);
+            if (!empty($lastAve)) {
+                $query["Date"]['$lte'] = (int)$lastAve;
+            }
+            //var_dump($device->toArray(false));
+            //var_dump($query);
+            $this->_histCache[$dev]->selectInto($query);
+        }
+        return $this->_histCache[$dev];
+    }
+    /**
+    * Polls the device and saves the poll
+    *
+    * @return false on failure, the history object on success
+    */
+    private function _clearHistCache()
+    {
+        foreach (array_keys((array)$this->_histCache) as $key) {
+            unset($this->_histCache[$key]);
+        }
+    }
+    /**
+    * This returns the first average from this device
+    *
+    * @param array &$rec The record to modify
+    *
+    * @return null
+    */
+    private function _get15MinAverage(&$rec)
+    {
+        $date = $this->getNextAverageDate();
+        if (empty($date)) {
+            $this->done = true;
+            return false;
+        }
+        $rec = array(
+            "id" => $this->device->get("id"), 
+            "Date" => $date,
+            "Type" => $this->_avgType
+        );
+        $notEmpty = false;
+        for ($i = 0; $i < $this->device->get("InputTables"); $i++) {
+            $input = $this->device->input($i);
+            $table = $this->_getPoint($input);
+            if (is_object($table)) {
+                $val = $input->channels();
+                if ($table->get("Date") == $date) {
+                    $extra = $input->get("extra");
+                    $field = "Data".(int)$extra[1];
+                    $val[0]["value"] = $table->get($field);
+                }
+            } else {
+                $A = null;
+                $val = $input->decodeData($A, 900, $prev, $rec);
+            }
+            if (is_array($val) && is_array($val[0])) {
+                $rec[$i] = $val[0];
+                if (!is_null($val[0]["value"])) {
+                    $notEmpty = true;
+                }
+            }
+        }
+        $this->_next($date);
+        return $notEmpty;
+    }
+    /**
+    * This returns the first average from this device
+    *
+    * @param int $date The date to check for
+    *
+    * @return null
+    */
+    private function _next($date)
+    {
+        $tables = $this->device->get("InputTables");
+        for ($i = 0; ($i < $tables) && !$this->done; $i++) {
+            $input = $this->device->input($i);
+            $table = $this->_getPoint($input);
+            while (is_object($table) && $table->get("Date") <= $date) {
+                $ret = $table->nextInto();
+                if ($ret === false) {
+                    $this->done = true;
+                    break;
+                }
+            }
+        }
+    }
+    /**
+    * This returns the first average from this device
+    *
+    * @return null
+    */
+    protected function getNextAverageDate()
+    {
+        $date = null;
+        for ($i = 0; $i < $this->device->get("InputTables"); $i++) {
+            $input = $this->device->input($i);
+            $table = $this->_getPoint($input);
+            if (is_object($table)) {
+                $newdate = $table->get("Date");
+                if (is_null($date) || ($newdate < $date)) {
+                    $date = $newdate;
+                }
+            }
+        }
+        return (int)$date;
     }
 }
 
