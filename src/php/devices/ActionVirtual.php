@@ -65,6 +65,8 @@ class ActionVirtual extends Action
 {
     /** @var The type of average we are doing */
     private $_avgType = \HUGnet\db\Average::AVERAGE_15MIN;
+    /** @var The type of average we are doing */
+    protected $avg = null;
     /**
     * This function creates the system.
     *
@@ -141,33 +143,28 @@ class ActionVirtual extends Action
     * then it will calculate 15 minute averages.
     *
     * @param \HUGnet\db\History &$data This is the data to use to calc the average
-    * @param string             $type  The type of average to calculate
-    * @param \HUGnet\db\Average $avg   The table to put it in, if provided
     *
     * @return bool True on success, false on failure
     */
-    public function calcAverage(
-        \HUGnet\db\History &$data, $type, &$avg
-    ) {
+    public function &calcAverage(\HUGnet\db\History &$data) 
+    {
         $return = false;
-        if ($type == \HUGnet\db\FastAverage::AVERAGE_30SEC) {
-            $this->_avgType = $type;
+        if (!is_object($this->avg)) {
+            $this->avg = $this->device->historyFactory(array(), false);
         }
+        $this->_avgType = $this->avg->baseType();
         $ret = $this->_calcAverage($data);
         $this->device->load($this->device->id());
         $now = $this->system->now();
         $this->device->setParam("LastPoll", $now);
         $this->device->setLocalParam("LastPoll", $now);
         if (is_array($ret)) {
-            if (!is_object($avg) || !method_exists($avg, "fromDataArray")) {
-                $avg = $this->device->historyFactory($ret, false);
-            } else {
-                $avg->clearData();
-                $avg->fromDataArray($ret);
-            }
-            $this->device->setParam("LastHistory", $avg->get("Date"));
-            $this->device->setLocalParam("LastHistory", $avg->get("Date"));
-            $return = true;
+            $this->avg->clearData();
+            $this->avg->fromDataArray($ret);
+            $this->device->setParam("LastHistory", $this->avg->get("Date"));
+            $this->device->setLocalParam("LastHistory", $this->avg->get("Date"));
+            $this->device->store();
+            return $this->avg;
         }
         $this->device->store();
         return $return;

@@ -502,5 +502,14 @@ abstract class Average extends History
         }
         return $date - $tzoffset;
     }
+    /**
+    * This says what the base average is
+    *
+|    * @return string the type
+    */
+    public function baseType()
+    {
+        return self::AVERAGE_15MIN;
+    }
 }
 ?>

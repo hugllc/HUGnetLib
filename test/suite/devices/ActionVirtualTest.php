@@ -230,7 +230,6 @@ class ActionVirtualTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                 ),
-                \HUGnet\db\Average::AVERAGE_15MIN,
                 array(
                     "id" => 0x1000,
                     "Date" => gmmktime(15, 00, 00, 1, 22, 2009),
@@ -348,7 +347,6 @@ class ActionVirtualTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Date" => gmmktime(15, 00, 00, 1, 22, 2009),
                 ),
-                \HUGnet\db\Average::AVERAGE_15MIN,
                 false,
             ),
             array(  // #2 Missing device information
@@ -454,7 +452,6 @@ class ActionVirtualTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                 ),
-                \HUGnet\db\Average::AVERAGE_15MIN,
                 array(
                     "id" => 0x1000,
                     "Date" => gmmktime(15, 00, 00, 1, 22, 2009),
@@ -543,7 +540,6 @@ class ActionVirtualTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                 ),
-                \HUGnet\db\Average::AVERAGE_15MIN,
                 array(
                     "id" => 0x1000,
                     "Date" => gmmktime(15, 00, 00, 1, 22, 2009),
@@ -665,7 +661,6 @@ class ActionVirtualTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                 ),
-                \HUGnet\db\Average::AVERAGE_15MIN,
                 false,
             ),
             array(  // #5 basic input.  30SEC average
@@ -744,7 +739,7 @@ class ActionVirtualTest extends \PHPUnit_Framework_TestCase
                 array(
                     "id" => 0x1000,
                     "DeviceID" => "001000",
-                    "HWPartNum" => "0039-24-02-P",
+                    "HWPartNum" => "0039-24-04-P",
                     "inputs" => array(
                         array(
                             "id" => 0xFE,
@@ -768,11 +763,9 @@ class ActionVirtualTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                 ),
-                \HUGnet\db\FastAverage::AVERAGE_30SEC,
                 array(
                     "id" => 0x1000,
                     "Date" => gmmktime(15, 00, 00, 1, 22, 2009),
-                    "Type" => \HUGnet\db\FastAverage::AVERAGE_30SEC,
                     "Data0" => "1.0",
                     "Data1" => "4.0",
                     "Data2" => 3.0,
@@ -789,7 +782,6 @@ class ActionVirtualTest extends \PHPUnit_Framework_TestCase
     * @param mixed $preloadData The data to feed the data object
     * @param array $device      The device to do the averages with
     * @param array $mockData    Mock data to use
-    * @param int   $type        The type of average
     * @param array $expect      The expected average (from toArray())
     *
     * @return null
@@ -797,7 +789,7 @@ class ActionVirtualTest extends \PHPUnit_Framework_TestCase
     * @dataProvider dataCalc15MinAverage
     */
     public function testCalc15MinAverage(
-        $devs, $preload, $preloadData, $device, $mockData, $type, $expect
+        $devs, $preload, $preloadData, $device, $mockData, $expect
     ) {
         $dev = $this->system->device();
         foreach ((array)$devs as $d) {
@@ -825,10 +817,9 @@ class ActionVirtualTest extends \PHPUnit_Framework_TestCase
             }
         }
         $data = new \HUGnet\db\HistoryMock($this->system, array($mockData));
-        $avg = null;
-        $ret = $this->o->calcAverage($data, $type, $avg);
-        if (is_object($avg)) {
-            $ret = $avg->toArray(false);
+        $ret = $this->o->calcAverage($data);
+        if (is_object($ret)) {
+            $ret = $ret->toArray(false);
         }
         $this->assertSame($expect, $ret);
     }
@@ -2689,15 +2680,12 @@ class ActionVirtualTest extends \PHPUnit_Framework_TestCase
         $data = new \HUGnet\db\HistoryMock($this->system, $mockData);
         $ret = array();
         $count = 0;
-        $avg = $this->device->historyFactory(array(), false);
         do {
-            $res = $this->o->calcAverage(
-                $data, \HUGnet\db\Average::AVERAGE_15MIN, $avg
-            );
-            if ($res) {
-                $ret[] = $avg->toArray(false);
+            $res = $this->o->calcAverage($data);
+            if (is_object($res)) {
+                $ret[] = $res->toArray(false);
             }
-        } while ($res);
+        } while (is_object($res));
         $this->assertSame($expect, $ret, "Data Wrong");
         $this->assertSame(
             $lastHist,

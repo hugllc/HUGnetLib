@@ -379,5 +379,14 @@ abstract class FastAverage extends History
         $date = $this->get($field);
         return $date;
     }
+    /**
+    * This says what the base average is
+    *
+|    * @return string the type
+    */
+    public function baseType()
+    {
+        return self::AVERAGE_30SEC;
+    }
 }
 ?>
