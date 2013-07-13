@@ -42,7 +42,7 @@ require_once CODE_BASE.'db/Table.php';
 /** This is a required class */
 require_once CODE_BASE.'db/Connection.php';
 /** This is a required class */
-require_once CODE_BASE.'db/tables/average/EVIRTUALAverage.php';
+require_once CODE_BASE.'db/tables/average/E00392400Average.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
@@ -68,7 +68,7 @@ require_once TEST_CONFIG_BASE."files/mocks/HistoryMock.php";
  * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class EVIRTUALAverageTest extends AverageTestBase
+class E00392400AverageTest extends AverageTestBase
 {
 
     /**
@@ -101,7 +101,7 @@ class EVIRTUALAverageTest extends AverageTestBase
         $data = array(
         );
         $this->o = \HUGnet\db\Table::factory(
-            $this->system, $data, "EVIRTUALAverage", $this->connect
+            $this->system, $data, "E00392400Average", $this->connect
         );
         parent::Setup();
     }
@@ -131,7 +131,7 @@ class EVIRTUALAverageTest extends AverageTestBase
     public static function dataClassName()
     {
         return array(
-            array("EVIRTUALAverage"),
+            array("E00392400Average"),
         );
     }
     /**
@@ -143,7 +143,7 @@ class EVIRTUALAverageTest extends AverageTestBase
     */
     public function testSqlTable()
     {
-        $this->assertSame("eVIRTUAL_average", $this->o->sqlTable);
+        $this->assertSame("e00392400_average", $this->o->sqlTable);
     }
     /**
     * Generic function for testing sensor routines

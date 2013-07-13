@@ -38,7 +38,7 @@ namespace HUGnet\devices\drivers;
 /** This is the base class */
 require_once dirname(__FILE__)."/DriverTestBase.php";
 /** This is a required class */
-require_once CODE_BASE.'devices/drivers/EVIRTUAL.php';
+require_once CODE_BASE.'devices/drivers/E00392402.php';
 
 /**
  * Test class for HUGnetDB.
@@ -54,10 +54,10 @@ require_once CODE_BASE.'devices/drivers/EVIRTUAL.php';
  * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class EVIRTUALTest extends DriverTestBase
+class E00392402Test extends DriverTestBase
 {
     /** This is the class we are testing */
-    protected $class = "EVIRTUAL";
+    protected $class = "E00392402";
     /**
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
@@ -71,7 +71,7 @@ class EVIRTUALTest extends DriverTestBase
         parent::setUp();
         $device  = new \HUGnet\DummyTable("Device");
         $device->resetMock(array());
-        $this->o = \HUGnet\devices\Driver::factory("EVIRTUAL", $device);
+        $this->o = \HUGnet\devices\Driver::factory("E00392402", $device);
     }
 
     /**

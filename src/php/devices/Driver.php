@@ -149,8 +149,8 @@ abstract class Driver
         "0039-38-04-C:0039-37-01-B:DEFAULT" => "E00393701",
         "DEFAULT:0039-40-01-C:DEFAULT"      => "E00394000",
         "DEFAULT:0039-41-01-C:DEFAULT"      => "E00394100",
-        "DEFAULT:VIRTUAL:DEFAULT"           => "EVIRTUAL",
-        "DEFAULT:0039-24-02-P:DEFAULT"      => "EVIRTUAL",
+        "DEFAULT:VIRTUAL:DEFAULT"           => "E00392402",
+        "DEFAULT:0039-24-02-P:DEFAULT"      => "E00392402",
         "DEFAULT:0039-24-03-P:DEFAULT"      => "ETEST",
     );
     /**

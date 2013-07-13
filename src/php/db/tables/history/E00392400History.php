@@ -56,11 +56,11 @@ require_once dirname(__FILE__)."/../../../interfaces/DBTableHistory.php";
  * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class EVIRTUALHistory extends \HUGnet\db\History
+class E00392400History extends \HUGnet\db\History
     implements \HUGnet\interfaces\DBTable, \HUGnet\interfaces\DBTableHistory
 {
     /** @var string This is the table we should use */
-    public $sqlTable = "eVIRTUAL_history";
+    public $sqlTable = "e00392400_history";
     /** @var This is the dataset */
     public $datacols = 20;
     /**

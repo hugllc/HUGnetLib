@@ -202,8 +202,8 @@ class DriverTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(),
-                "EVIRTUAL",
-                "HUGnet\devices\drivers\EVIRTUAL",
+                "E00392402",
+                "HUGnet\devices\drivers\E00392402",
             ),
         );
     }
@@ -249,7 +249,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                 "0039-24-02-P",
                 "0039-24-02-P",
                 "5.6.7",
-                "EVIRTUAL",
+                "E00392402",
             ),
             array(
                 "0039-28-01-A",

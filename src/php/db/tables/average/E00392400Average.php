@@ -56,11 +56,11 @@ require_once dirname(__FILE__)."/../../../interfaces/DBTableAverage.php";
  * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class EVIRTUALAverage extends \HUGnet\db\Average
+class E00392400Average extends \HUGnet\db\Average
     implements \HUGnet\interfaces\DBTable, \HUGnet\interfaces\DBTableAverage
 {
     /** @var string This is the table we should use */
-    public $sqlTable = "eVIRTUAL_average";
+    public $sqlTable = "e00392400_average";
     /** @var This is the dataset */
     public $datacols = 20;
 

@@ -59,7 +59,7 @@ require_once dirname(__FILE__)."/DriverInterface.php";
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class EVIRTUAL extends \HUGnet\devices\Driver
+class E00392402 extends \HUGnet\devices\Driver
     implements \HUGnet\devices\drivers\DriverInterface
 {
     /**
@@ -70,8 +70,8 @@ class EVIRTUAL extends \HUGnet\devices\Driver
         "totalSensors" => 20,
         "physicalSensors" => 0,
         "virtualSensors" => 20,
-        "historyTable" => "EVIRTUALHistory",
-        "averageTable" => "EVIRTUALAverage",
+        "historyTable" => "E00392400History",
+        "averageTable" => "E00392400Average",
         "type" => "virtual",
         "job"  => "calculate",
         "actionClass" => "ActionVirtual",

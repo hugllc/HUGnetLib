@@ -43,7 +43,7 @@ require_once CODE_BASE.'db/Table.php';
 /** This is a required class */
 require_once CODE_BASE.'db/Connection.php';
 /** This is a required class */
-require_once CODE_BASE.'db/tables/history/EVIRTUALHistory.php';
+require_once CODE_BASE.'db/tables/history/E00392400History.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
@@ -65,7 +65,7 @@ require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
  * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class EVIRTUALHistoryTest extends HistoryTestBase
+class E00392400HistoryTest extends HistoryTestBase
 {
 
     /**
@@ -99,7 +99,7 @@ class EVIRTUALHistoryTest extends HistoryTestBase
         $data = array(
         );
         $this->o = \HUGnet\db\Table::factory(
-            $this->system, $data, "EVIRTUALHistory", $this->connect
+            $this->system, $data, "E00392400History", $this->connect
         );
         parent::Setup();
     }
@@ -125,7 +125,7 @@ class EVIRTUALHistoryTest extends HistoryTestBase
     public static function dataClassName()
     {
         return array(
-            array("EVIRTUALHistory"),
+            array("E00392400History"),
         );
     }
     /**
@@ -137,7 +137,7 @@ class EVIRTUALHistoryTest extends HistoryTestBase
     */
     public function testSqlTable()
     {
-        $this->assertSame("eVIRTUAL_history", $this->o->sqlTable);
+        $this->assertSame("e00392400_history", $this->o->sqlTable);
     }
     /**
     * Generic function for testing sensor routines

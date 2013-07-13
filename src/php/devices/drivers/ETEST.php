@@ -39,7 +39,7 @@ namespace HUGnet\devices\drivers;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our parent class */
-require_once dirname(__FILE__)."/EVIRTUAL.php";
+require_once dirname(__FILE__)."/E00392402.php";
 /** This is our interface */
 require_once dirname(__FILE__)."/DriverInterface.php";
 
@@ -60,7 +60,7 @@ require_once dirname(__FILE__)."/DriverInterface.php";
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class ETEST extends EVIRTUAL
+class ETEST extends E00392402
     implements \HUGnet\devices\drivers\DriverInterface
 {
     /**
