@@ -4380,6 +4380,18 @@ class AverageTest extends tables\TableTestBase
     {
         $this->assertInternalType("array", $this->o->averageTypes());
     }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @return null
+    */
+    public function testBaseType()
+    {
+        $obj = \HUGnet\db\Table::factory(
+            $this->system, $preload, "AverageTestStub", $this->connect
+        );
+        $this->assertEquals(Average::AVERAGE_15MIN, $obj->baseType());
+    }
 
 }
 namespace HUGnet\db\tables;

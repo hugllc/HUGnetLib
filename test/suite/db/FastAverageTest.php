@@ -1433,6 +1433,18 @@ class FastAverageTest extends tables\TableTestBase
     {
         $this->assertInternalType("array", $this->o->averageTypes());
     }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @return null
+    */
+    public function testBaseType()
+    {
+        $obj = \HUGnet\db\Table::factory(
+            $this->system, $preload, "FastAverageTestStub", $this->connect
+        );
+        $this->assertEquals(FastAverage::AVERAGE_30SEC, $obj->baseType());
+    }
 
 }
 namespace HUGnet\db\tables;
