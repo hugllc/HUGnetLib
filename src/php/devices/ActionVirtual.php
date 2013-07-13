@@ -142,15 +142,16 @@ class ActionVirtual extends Action
     *
     * @param \HUGnet\db\History &$data This is the data to use to calc the average
     * @param string             $type  The type of average to calculate
+    * @param \HUGnet\db\Average $avg   The table to put it in, if provided
     *
     * @return bool True on success, false on failure
     */
-    public function calcAverage(\HUGnet\db\History &$data, $type)
-    {
-        $hist = false;
+    public function calcAverage(
+        \HUGnet\db\History &$data, $type, &$avg
+    ) {
+        $return = false;
         if ($type == \HUGnet\db\FastAverage::AVERAGE_30SEC) {
             $this->_avgType = $type;
-            $this->_avgName = "30SEC";
         }
         $ret = $this->_calcAverage($data);
         $this->device->load($this->device->id());
@@ -158,13 +159,18 @@ class ActionVirtual extends Action
         $this->device->setParam("LastPoll", $now);
         $this->device->setLocalParam("LastPoll", $now);
         if (is_array($ret)) {
-            $hist = $this->device->historyFactory($ret, false);
-            $this->device->setParam("LastHistory", $hist->get("Date"));
-            $this->device->setLocalParam("LastHistory", $hist->get("Date"));
+            if (!is_object($avg) || !method_exists($avg, "fromDataArray")) {
+                $avg = $this->device->historyFactory($ret, false);
+            } else {
+                $avg->clearData();
+                $avg->fromDataArray($ret);
+            }
+            $this->device->setParam("LastHistory", $avg->get("Date"));
+            $this->device->setLocalParam("LastHistory", $avg->get("Date"));
+            $return = true;
         }
         $this->device->store();
-        return $hist;
-        //return $this->calcOtherAverage($data, $type);
+        return $return;
     }
     /**
     * This calculates the averages

@@ -825,9 +825,10 @@ class ActionVirtualTest extends \PHPUnit_Framework_TestCase
             }
         }
         $data = new \HUGnet\db\HistoryMock($this->system, array($mockData));
-        $ret = $this->o->calcAverage($data, $type);
-        if (is_object($ret)) {
-            $ret = $ret->toArray(false);
+        $avg = null;
+        $ret = $this->o->calcAverage($data, $type, $avg);
+        if (is_object($avg)) {
+            $ret = $avg->toArray(false);
         }
         $this->assertSame($expect, $ret);
     }
@@ -2688,12 +2689,15 @@ class ActionVirtualTest extends \PHPUnit_Framework_TestCase
         $data = new \HUGnet\db\HistoryMock($this->system, $mockData);
         $ret = array();
         $count = 0;
+        $avg = $this->device->historyFactory(array(), false);
         do {
-            $res = $this->o->calcAverage($data, \HUGnet\db\Average::AVERAGE_15MIN);
-            if (is_object($res)) {
-                $ret[] = $res->toArray(false);
+            $res = $this->o->calcAverage(
+                $data, \HUGnet\db\Average::AVERAGE_15MIN, $avg
+            );
+            if ($res) {
+                $ret[] = $avg->toArray(false);
             }
-        } while (is_object($res));
+        } while ($res);
         $this->assertSame($expect, $ret, "Data Wrong");
         $this->assertSame(
             $lastHist,
