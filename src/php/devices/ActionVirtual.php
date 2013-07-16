@@ -106,7 +106,7 @@ class ActionVirtual extends Action
         $this->device->load($this->device->id());
         $this->device->set(
             "FWVersion",
-            $this->device->system->get("version")
+            $this->system->get("version")
         );
         $this->device->set(
             "RawSetup",
