@@ -102,7 +102,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "30:DEFAULT"                 => "HUGnetPower",
         "31:DEFAULT"                 => "FET003912",
         "32:DEFAULT"                 => "GPIO003928",
-        "60:DEFAULT"                 => "InputSumControl",
+        "60:DEFAULT"                 => "InputSumOutput",
         "FE:DEFAULT"                 => "NullOutput",
         "FF:DEFAULT"                 => "EmptyOutput",
     );
@@ -180,12 +180,35 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     {
         $file = dirname(__FILE__)."/tables/".$this->entryClass.".php";
         if (!is_object($this->_entry) && file_exists($file)) {
+            $found = true;
             include_once $file;
             $table = is_null($table) ? (array)$this->tableEntry : (array)$table;
+            if (empty($table)) {
+                $table = json_decode(
+                    (string)$this->output()->get("tableEntry"), true
+                );
+                if (empty($table)) {
+                    $found = false;
+                    if (is_array($this->entryMap)) {
+                        // Get the really old system
+                        $extra = $this->output()->table()->get("extra");
+                        $table = array();
+                        foreach ($this->entryMap as $key => $field) {
+                            if (!is_null($extra[$key])) {
+                                $table[$field] = $extra[$key];
+                            }
+                        }
+                    }
+                }
+            }
             $class = "\\HUGnet\\devices\\outputTable\\tables\\".$this->entryClass;
             $entry = $class::factory(
                 $this, $table
             );
+            if (!$found) {
+                $this->output()->table()->set("tableEntry", $entry->toArray());
+                $this->output()->table()->updateRow();
+            }
             $this->_entry = &$entry;
         }
         return $this->_entry;

@@ -55,6 +55,10 @@ require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
  */
 class ADuCDACTest extends \PHPUnit_Framework_TestCase
 {
+    /** This is our system object */
+    protected $system;
+    /** This is our output object */
+    protected $output;
     /**
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
@@ -66,6 +70,11 @@ class ADuCDACTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
+        $this->system = $this->getMock("\HUGnet\System", array("now"));
+        $this->system->expects($this->any())
+            ->method('now')
+            ->will($this->returnValue(123456));
+        $this->output = $this->system->device()->output(0);
     }
 
     /**
@@ -79,6 +88,8 @@ class ADuCDACTest extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         parent::tearDown();
+        unset($this->system);
+        unset($this->output);
     }
 
     /**
@@ -95,7 +106,7 @@ class ADuCDACTest extends \PHPUnit_Framework_TestCase
                 null,
                 "DAC0CON",
                 null,
-                "0013",
+                "001B",
             ),
             array(
                 array(
@@ -122,9 +133,8 @@ class ADuCDACTest extends \PHPUnit_Framework_TestCase
     */
     public function testRegister($mock, $preload, $reg, $set, $expect)
     {
-        $sensor = new \HUGnet\DummyTable("Sensor");
-        $sensor->resetMock($mock);
-        $obj = ADuCDAC::factory($sensor, $preload);
+        $this->output->load($mock);
+        $obj = ADuCDAC::factory($this->output, $preload);
         $ret = $obj->register($reg, $set);
         $this->assertSame($expect, $ret);
     }
@@ -147,11 +157,11 @@ class ADuCDACTest extends \PHPUnit_Framework_TestCase
                     'OPAMP' => 1,
                     'DACBUFBYPASS' => 1,
                     'DACCLK' => 0,
-                    'DACMODE' => 0,
+                    'DACMODE' => 1,
                     'Rate' => 0,
                     'Range' => 3,
                 ),
-                "D301",
+                "DB01",
             ),
         );
     }
@@ -169,9 +179,8 @@ class ADuCDACTest extends \PHPUnit_Framework_TestCase
     */
     public function testEncode($mock, $preload, $array, $expect)
     {
-        $sensor = new \HUGnet\DummyTable("Sensor");
-        $sensor->resetMock($mock);
-        $obj = ADuCDAC::factory($sensor, $preload);
+        $this->output->load($mock);
+        $obj = ADuCDAC::factory($this->output, $preload);
         $obj->fromArray($array);
         $ret = $obj->encode();
         $this->assertSame($expect, $ret);
@@ -211,7 +220,7 @@ class ADuCDACTest extends \PHPUnit_Framework_TestCase
                     'OPAMP' => 0,
                     'DACBUFBYPASS' => 0,
                     'DACCLK' => 0,
-                    'DACMODE' => 0,
+                    'DACMODE' => 1,
                     'Rate' => 0,
                     'Range' => 3,
                 ),
@@ -249,9 +258,8 @@ class ADuCDACTest extends \PHPUnit_Framework_TestCase
     */
     public function testDecode($mock, $preload, $string, $expect, $array)
     {
-        $sensor = new \HUGnet\DummyTable("Sensor");
-        $sensor->resetMock($mock);
-        $obj = ADuCDAC::factory($sensor, $preload);
+        $this->output->load($mock);
+        $obj = ADuCDAC::factory($this->output, $preload);
         $ret = $obj->decode($string);
         $this->assertSame($expect, $ret);
         $this->assertSame($array, $obj->toArray());
@@ -354,9 +362,7 @@ class ADuCDACTest extends \PHPUnit_Framework_TestCase
                 $param["mask"], "If valid is null, mask can't be"
             );
         } else if (is_string($param["valid"])) {
-            $sensor = new \HUGnet\DummyTable("Sensor");
-            $sensor->resetMock(array());
-            $obj = ADuCDAC::factory($sensor, $preload);
+            $obj = ADuCDAC::factory($this->output, $preload);
             $this->assertTrue(
                 method_exists($obj, $param["valid"]),
                 $param["valid"]." is not a valid method of class ADuCDAC"

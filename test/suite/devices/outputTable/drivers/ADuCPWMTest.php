@@ -73,8 +73,6 @@ class ADuCPWMTest extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->output = new \HUGnet\DummyBase("Output");
-        $this->output->resetMock(array());
         $this->o = \HUGnet\devices\outputTable\Driver::factory(
             "ADuCPWM", $this->output
         );
@@ -102,26 +100,48 @@ class ADuCPWMTest extends DriverTestBase
         return array(
             array( // #0
                 array(
-                    "Device" => array(
-                        "sensor" => new \HUGnet\DummyBase("Output"),
-                    )
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 2,
                 ),
                 "1300341278560099FFFFFFFFA5A55A5A01020304",
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            array('extra'),
-                        ),
-                        "set" => array(
-                            array(
-                                'extra',
-                                array(
-                                    0, 0, 0, 0, 0, 1, 0, 0x1234, 0x5678, 0x9900,
-                                    -1, 0x5A5AA5A5, 0x04030201
-                                )
-                            ),
-                        ),
+                    'extra' => array(
+                        0 => 0,
+                        1 => 0,
+                        2 => 0,
+                        3 => 0,
+                        4 => 0,
+                        5 => 1,
+                        6 => 0,
+                        7 => 4660,
+                        8 => 22136,
+                        9 => 39168,
+                        10 => -1,
+                        11 => 1515890085,
+                        12 => 67305985,
                     ),
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 2,
+                    'driver' => 'ADuCPWM',
+                    'tableEntry' => json_encode(
+                        array(
+                            "PWM0LEN" => 4660,
+                            "PWM1LEN" => 22136,
+                            "PWM2LEN" => 39168,
+                            "SYNC" => 0,
+                            "PWM5INV" => 0,
+                            "PWM3INV" => 0,
+                            "PWM1INV" => 0,
+                            "PWMCP" => 0,
+                            "POINV" => 0,
+                            "HOFF" => 1,
+                            "DIR" =>0 
+                        )
+                    ),
+                    'type' => 'ADuCPWM',
+                    'params' => array()
                 ),
             ),
         );
@@ -139,10 +159,9 @@ class ADuCPWMTest extends DriverTestBase
     */
     public function testDecode($mocks, $string, $expect)
     {
-        $this->output->resetMock($mocks);
+        $this->output->load($mocks);
         $this->o->decode($string);
-        $ret = $this->output->retrieve();
-        $this->assertEquals($expect, $ret);
+        $this->assertEquals($expect, $this->output->toArray(false));
     }
     /**
     * data provider for testDeviceID
@@ -154,27 +173,19 @@ class ADuCPWMTest extends DriverTestBase
         return array(
             array( // #0
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            "extra" => array(
-                                0, 0, 0, 0, 0, 1, 0, 0x1234, 0x5678, 0x9900,
-                                0xABCD, 0x4321, 0x5A5AA5A5
-                            ),
-                        ),
+                    "extra" => array(
+                        0, 0, 0, 0, 0, 1, 0, 0x1234, 0x5678, 0x9900,
+                        0xABCD, 0x4321, 0x5A5AA5A5
                     ),
                 ),
                 "1100341278560099CDAB000021430000A5A55A5A",
             ),
             array( // #1 Strings
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            "extra" => array(
-                                "0", "0", "0", "0", "0", "1", "0",
-                                "65535", "65535", "65535", 
-                                -1, -1, -1
-                            ),
-                        ),
+                    "extra" => array(
+                        "0", "0", "0", "0", "0", "1", "0",
+                        "65535", "65535", "65535", 
+                        -1, -1, -1
                     ),
                 ),
                 "1100FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
@@ -193,7 +204,7 @@ class ADuCPWMTest extends DriverTestBase
     */
     public function testEncode($mocks, $expect)
     {
-        $this->output->resetMock($mocks);
+        $this->output->load($mocks);
         $ret = $this->o->encode();
         $this->assertSame($expect, $ret);
     }
@@ -241,14 +252,10 @@ class ADuCPWMTest extends DriverTestBase
         return array(
             array(
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            "storageUnit" => "unknown",
-                            "maxDecimals" => 2,
-                            "unitType" => "asdf",
-                            "location" => "Hello",
-                        ),
-                    ),
+                    "storageUnit" => "unknown",
+                    "maxDecimals" => 2,
+                    "unitType" => "asdf",
+                    "location" => "Hello",
                 ),
                 array(
                     array(
@@ -285,8 +292,7 @@ class ADuCPWMTest extends DriverTestBase
     */
     public function testChannels($mocks, $expect)
     {
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock($mocks);
+        $this->output->load($mocks);
         $this->assertSame($expect, $this->o->channels());
     }
 

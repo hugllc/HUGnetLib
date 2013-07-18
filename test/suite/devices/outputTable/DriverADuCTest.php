@@ -72,10 +72,9 @@ class DriverADuCTest extends drivers\DriverTestBase
     */
     protected function setUp()
     {
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock(array());
+        parent::setUp();
         $this->o = \HUGnet\devices\outputTable\Driver::factory(
-            "DriverADuCTestClass", $sensor
+            "DriverADuCTestClass", $this->output
         );
     }
 
@@ -89,6 +88,7 @@ class DriverADuCTest extends drivers\DriverTestBase
     */
     protected function tearDown()
     {
+        parent::tearDown();
         unset($this->o);
     }
 

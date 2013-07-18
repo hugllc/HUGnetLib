@@ -137,7 +137,7 @@ class ADuCDAC
             'hidden' => true,
         ),
         "DACMODE"    => array(
-            'value' => 0,
+            'value' => 1,
             'bit'   => 3,
             'mask'  => 0x1,
             'bits'  => 1,

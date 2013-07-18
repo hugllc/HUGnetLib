@@ -73,8 +73,6 @@ class FET003912Test extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->output = new \HUGnet\DummyBase("Output");
-        $this->output->resetMock(array());
         $this->o = \HUGnet\devices\outputTable\Driver::factory(
             "FET003912", $this->output
         );
@@ -102,38 +100,36 @@ class FET003912Test extends DriverTestBase
         return array(
             array( // #0
                 array(
-                    "Device" => array(
-                        "sensor" => new \HUGnet\DummyBase("Output"),
-                    )
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 0x31,
                 ),
                 "130102",
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            array('extra'),
-                        ),
-                        "set" => array(
-                            array('extra', array(6.74, 2, 1)),
-                        ),
-                    ),
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 0x31,
+                    'extra' => array(6.74, 2, 1),
+                    'driver' => "FET003912",
+                    'type' => "FET003912",
+                    'params' => array(),
                 ),
             ),
             array( // #1
                 array(
-                    "Device" => array(
-                        "sensor" => new \HUGnet\DummyBase("Output"),
-                    )
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 0x31,
                 ),
                 "100103",
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            array('extra'),
-                        ),
-                        "set" => array(
-                            array('extra', array(8.0, 3, 1)),
-                        ),
-                    ),
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 0x31,
+                    'extra' => array(8.0, 3, 1),
+                    'driver' => "FET003912",
+                    'type' => "FET003912",
+                    'params' => array(),
                 ),
             ),
         );
@@ -151,10 +147,9 @@ class FET003912Test extends DriverTestBase
     */
     public function testDecode($mocks, $string, $expect)
     {
-        $this->output->resetMock($mocks);
+        $this->output->load($mocks);
         $this->o->decode($string);
-        $ret = $this->output->retrieve();
-        $this->assertEquals($expect, $ret);
+        $this->assertEquals($expect, $this->output->toArray(false));
     }
     /**
     * data provider for testDeviceID
@@ -166,21 +161,13 @@ class FET003912Test extends DriverTestBase
         return array(
             array( // #0
                 array(
-                    "Output" => array(
-                        "getExtra" => array(
-                        ),
-                    ),
                 ),
                 "010000",
             ),
             array( // #1
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            "extra" => array(
-                                10, 11, 12
-                            ),
-                        ),
+                    "extra" => array(
+                        10, 11, 12
                     ),
                 ),
                 "0D0C0B",
@@ -199,7 +186,7 @@ class FET003912Test extends DriverTestBase
     */
     public function testEncode($mocks, $expect)
     {
-        $this->output->resetMock($mocks);
+        $this->output->load($mocks);
         $ret = $this->o->encode();
         $this->assertSame($expect, $ret);
     }

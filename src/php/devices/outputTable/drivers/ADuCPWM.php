@@ -143,6 +143,8 @@ class ADuCPWM extends \HUGnet\devices\outputTable\DriverADuC
     */
     public function decode($string)
     {
+        $this->entry()->decode($string);
+        $this->output()->set("tableEntry", $this->entry()->toArray());
         $extra = (array)$this->output()->get("extra");
         $this->entry()->decode($string);
         $decode = $this->entry()->toArray();
@@ -166,6 +168,7 @@ class ADuCPWM extends \HUGnet\devices\outputTable\DriverADuC
             $encode[$field] = (int)$this->getExtra($key);
         }
         $this->entry()->fromArray($encode);
+        $this->output()->set("tableEntry", $this->entry()->toArray());
         $string  = $this->entry()->encode();
         $string .= $this->encodeInt($this->getExtra(10), 4);
         $string .= $this->encodeInt($this->getExtra(11), 4);

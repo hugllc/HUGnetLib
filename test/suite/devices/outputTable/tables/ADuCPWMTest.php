@@ -55,6 +55,10 @@ require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
  */
 class ADuCPWMTest extends \PHPUnit_Framework_TestCase
 {
+    /** This is our system object */
+    protected $system;
+    /** This is our output object */
+    protected $output;
     /**
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
@@ -66,6 +70,11 @@ class ADuCPWMTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
+        $this->system = $this->getMock("\HUGnet\System", array("now"));
+        $this->system->expects($this->any())
+            ->method('now')
+            ->will($this->returnValue(123456));
+        $this->output = $this->system->device()->output(0);
     }
 
     /**
@@ -79,6 +88,8 @@ class ADuCPWMTest extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         parent::tearDown();
+        unset($this->system);
+        unset($this->output);
     }
     /**
     * Data provider for testRemove
@@ -121,9 +132,8 @@ class ADuCPWMTest extends \PHPUnit_Framework_TestCase
     */
     public function testRegister($mock, $preload, $reg, $set, $expect)
     {
-        $sensor = new \HUGnet\DummyTable("Sensor");
-        $sensor->resetMock($mock);
-        $obj = ADuCPWM::factory($sensor, $preload);
+        $this->output->load($mock);
+        $obj = ADuCPWM::factory($this->output, $preload);
         $ret = $obj->register($reg, $set);
         $this->assertSame($expect, $ret);
     }
@@ -177,9 +187,8 @@ class ADuCPWMTest extends \PHPUnit_Framework_TestCase
     */
     public function testEncode($mock, $preload, $array, $expect)
     {
-        $sensor = new \HUGnet\DummyTable("Sensor");
-        $sensor->resetMock($mock);
-        $obj = ADuCPWM::factory($sensor, $preload);
+        $this->output->load($mock);
+        $obj = ADuCPWM::factory($this->output, $preload);
         $obj->fromArray($array);
         $ret = $obj->encode();
         $this->assertSame($expect, $ret);
@@ -269,9 +278,8 @@ class ADuCPWMTest extends \PHPUnit_Framework_TestCase
     */
     public function testDecode($mock, $preload, $string, $expect, $array)
     {
-        $sensor = new \HUGnet\DummyTable("Sensor");
-        $sensor->resetMock($mock);
-        $obj = ADuCPWM::factory($sensor, $preload);
+        $this->output->load($mock);
+        $obj = ADuCPWM::factory($this->output, $preload);
         $ret = $obj->decode($string);
         $this->assertSame($expect, $ret);
         $this->assertSame($array, $obj->toArray());
@@ -374,9 +382,7 @@ class ADuCPWMTest extends \PHPUnit_Framework_TestCase
                 $param["mask"], "If valid is null, mask can't be"
             );
         } else if (is_string($param["valid"])) {
-            $sensor = new \HUGnet\DummyTable("Sensor");
-            $sensor->resetMock(array());
-            $obj = ADuCPWM::factory($sensor, $preload);
+            $obj = ADuCPWM::factory($this->output, $preload);
             $this->assertTrue(
                 method_exists($obj, $param["valid"]),
                 $param["valid"]." is not a valid method of class ADuCPWM"

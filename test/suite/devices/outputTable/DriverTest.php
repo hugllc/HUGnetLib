@@ -72,9 +72,8 @@ class DriverTest extends drivers\DriverTestBase
     */
     protected function setUp()
     {
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock($extra);
-        $this->o = Driver::factory("DriverTestClass", $sensor);
+        parent::setUp();
+        $this->o = Driver::factory("DriverTestClass", $this->output);
     }
 
     /**
@@ -87,6 +86,7 @@ class DriverTest extends drivers\DriverTestBase
     */
     protected function tearDown()
     {
+        parent::tearDown();
         unset($this->o);
     }
 
@@ -264,14 +264,6 @@ class DriverTest extends drivers\DriverTestBase
         return array(
             array(
                 array(
-                    "Sensor" => array(
-                        "device" => new \HUGnet\DummyBase("Device"),
-                    ),
-                    "Device" => array(
-                        "get" => array(
-                            "arch" => "1",
-                        ),
-                    ),
                 ),
                 array(
                     0xFE => 'Null Output',
@@ -280,14 +272,7 @@ class DriverTest extends drivers\DriverTestBase
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "device" => new \HUGnet\DummyBase("Device"),
-                    ),
-                    "Device" => array(
-                        "get" => array(
-                            "arch" => "0039-37",
-                        ),
-                    ),
+                    "HWPartNum" => "0039-37-01-A",
                 ),
                 array(
                     0x01 => "ADuC DAC",
@@ -312,8 +297,7 @@ class DriverTest extends drivers\DriverTestBase
     */
     public function testGetDrivers($mocks, $expect)
     {
-        $dev = new \HUGnet\DummyBase("Sensor");
-        $dev->resetMock($mocks);
+        $this->output->device()->load($mocks);
         $this->assertSame(
             $expect, $this->o->getDrivers()
         );
@@ -328,18 +312,14 @@ class DriverTest extends drivers\DriverTestBase
         return array(
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array("sensor" => 1, "extra" => array(6,5,4)),
-                    ),
+                    "extra" => array(6,5,4),
                 ),
                 1,
                 5
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array("sensor" => 1, "extra" => array(6,5,4)),
-                    ),
+                    "extra" => array(6,5,4),
                 ),
                 100,
                 null
@@ -365,8 +345,7 @@ class DriverTest extends drivers\DriverTestBase
     */
     public function testGetExtra($extra, $index, $expect)
     {
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock($extra);
+        $this->output->load($extra);
         $this->assertSame($expect, $this->o->getExtra($index));
     }
     /**

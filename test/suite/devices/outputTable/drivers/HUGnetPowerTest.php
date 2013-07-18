@@ -70,8 +70,6 @@ class HUGnetPowerTest extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->output = new \HUGnet\DummyBase("Output");
-        $this->output->resetMock(array());
         $this->o = \HUGnet\devices\outputTable\Driver::factory(
             "HUGnetPower", $this->output
         );
@@ -99,44 +97,36 @@ class HUGnetPowerTest extends DriverTestBase
         return array(
             array( // #0
                 array(
-                    "Device" => array(
-                        "sensor" => new \HUGnet\DummyBase("Output"),
-                    )
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 0x30,
                 ),
                 "0078563412",
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            array('extra'),
-                        ),
-                        "set" => array(
-                            array(
-                                'extra',
-                                array(0, 0x12345678)
-                            ),
-                        ),
-                    ),
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 0x30,
+                    'extra' => array(0, 0x12345678),
+                    'driver' => "HUGnetPower",
+                    'type' => "HUGnetPower",
+                    'params' => array(),
                 ),
             ),
             array( // #1 Negative Numbers
                 array(
-                    "Device" => array(
-                        "sensor" => new \HUGnet\DummyBase("Output"),
-                    )
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 0x30,
                 ),
                 "01FFFFFFFF",
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            array('extra'),
-                        ),
-                        "set" => array(
-                            array(
-                                'extra',
-                                array(1, -1)
-                            ),
-                        ),
-                    ),
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 0x30,
+                    'extra' => array(1, -1),
+                    'driver' => "HUGnetPower",
+                    'type' => "HUGnetPower",
+                    'params' => array(),
                 ),
             ),
         );
@@ -154,10 +144,9 @@ class HUGnetPowerTest extends DriverTestBase
     */
     public function testDecode($mocks, $string, $expect)
     {
-        $this->output->resetMock($mocks);
+        $this->output->load($mocks);
         $this->o->decode($string);
-        $ret = $this->output->retrieve();
-        $this->assertEquals($expect, $ret);
+        $this->assertEquals($expect, $this->output->toArray(false));
     }
     /**
     * data provider for testDeviceID
@@ -169,25 +158,17 @@ class HUGnetPowerTest extends DriverTestBase
         return array(
             array( // #0
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            "extra" => array(
-                                0,
-                                0x12345678
-                            ),
-                        ),
+                    "extra" => array(
+                        0,
+                        0x12345678
                     ),
                 ),
                 "0078563412",
             ),
             array( // #1 Negative number
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            "extra" => array(
-                                1, -1
-                            ),
-                        ),
+                    "extra" => array(
+                        1, -1
                     ),
                 ),
                 "01FFFFFFFF",
@@ -206,7 +187,7 @@ class HUGnetPowerTest extends DriverTestBase
     */
     public function testEncode($mocks, $expect)
     {
-        $this->output->resetMock($mocks);
+        $this->output->load($mocks);
         $ret = $this->o->encode();
         $this->assertSame($expect, $ret);
     }
@@ -226,33 +207,21 @@ class HUGnetPowerTest extends DriverTestBase
             array(
                 "max",
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            "extra" => array(0, 1, 2, 3)
-                        ),
-                    ),
+                    "extra" => array(0, 1, 2, 3)
                 ),
                 1,
             ),
             array(
                 "min",
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            "extra" => array(0, 1, 2, 3)
-                        ),
-                    ),
+                    "extra" => array(0, 1, 2, 3)
                 ),
                 -1,
             ),
             array(
                 "zero",
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            "extra" => array(0, 1, 2, 3)
-                        ),
-                    ),
+                    "extra" => array(0, 1, 2, 3)
                 ),
                 0,
             ),

@@ -73,17 +73,6 @@ class MagDirTest extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->output = new \HUGnet\DummyBase("Output");
-        $this->output->resetMock(
-            array(
-                "Device" => array(
-                    "controlChannels" => new \HUGnet\DummyBase("controlChannels"),
-                ),
-                "Output" => array(
-                    "device" => new \HUGnet\DummyBase("Device"),
-                )
-            )
-        );
         $this->o = \HUGnet\devices\outputTable\Driver::factory(
             "MagDir", $this->output
         );
@@ -111,54 +100,36 @@ class MagDirTest extends DriverTestBase
         return array(
             array( // #0
                 array(
-                    "Device" => array(
-                        "controlChannels" => new \HUGnet\DummyBase(
-                            "controlChannels"
-                        ),
-                    ),
-                    "Output" => array(
-                        "device" => new \HUGnet\DummyBase("Device"),
-                    )
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 0x20,
                 ),
                 "09010834120000",
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            array('extra'),
-                        ),
-                        "set" => array(
-                            array(
-                                'extra',
-                                array(14.22, 1, 8, 0x1234)
-                            ),
-                        ),
-                    ),
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 0x20,
+                    'extra' => array(14.22, 1, 8, 4660),
+                    'driver' => "MagDir",
+                    'type' => "MagDir",
+                    'params' => array(),
                 ),
             ),
             array( // #1 Negative Numbers
                 array(
-                    "Device" => array(
-                        "controlChannels" => new \HUGnet\DummyBase(
-                            "controlChannels"
-                        ),
-                    ),
-                    "Output" => array(
-                        "device" => new \HUGnet\DummyBase("Device"),
-                    )
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 0x20,
                 ),
                 "FFFFFFFFFFFFFFFF",
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            array('extra'),
-                        ),
-                        "set" => array(
-                            array(
-                                'extra',
-                                array(0.5, 0xFF, 0xFF, -1)
-                            ),
-                        ),
-                    ),
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 0x20,
+                    'extra' => array(0.5, 0xFF, 0xFF, -1),
+                    'driver' => "MagDir",
+                    'type' => "MagDir",
+                    'params' => array(),
                 ),
             ),
         );
@@ -176,10 +147,9 @@ class MagDirTest extends DriverTestBase
     */
     public function testDecode($mocks, $string, $expect)
     {
-        $this->output->resetMock($mocks);
+        $this->output->load($mocks);
         $this->o->decode($string);
-        $ret = $this->output->retrieve();
-        $this->assertEquals($expect, $ret);
+        $this->assertEquals($expect, $this->output->toArray(false));
     }
     /**
     * data provider for testDeviceID
@@ -191,24 +161,16 @@ class MagDirTest extends DriverTestBase
         return array(
             array( // #0
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            "extra" => array(
-                                9, 1, 8, 0x1234
-                            ),
-                        ),
+                    "extra" => array(
+                        9, 1, 8, 0x1234
                     ),
                 ),
                 "0E010834120000",
             ),
             array( // #1 Negative number
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            "extra" => array(
-                                -1, 0, 1, -1
-                            ),
-                        ),
+                    "extra" => array(
+                        -1, 0, 1, -1
                     ),
                 ),
                 "000001FFFFFFFF",
@@ -227,7 +189,7 @@ class MagDirTest extends DriverTestBase
     */
     public function testEncode($mocks, $expect)
     {
-        $this->output->resetMock($mocks);
+        $this->output->load($mocks);
         $ret = $this->o->encode();
         $this->assertSame($expect, $ret);
     }
@@ -247,23 +209,10 @@ class MagDirTest extends DriverTestBase
             array(
                 "extraValues",
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            "extra" => array(0, 1, 2, 3)
-                        ),
-                        "device" => new \HUGnet\DummyBase("Device"),
-                    ),
-                    "Device" => array(
-                        "controlChannels" => new \HUGnet\DummyBase(
-                            "controlChannels"
-                        ),
-                    ),
-                    "controlChannels" => array(
-                        "select" => array(1,2,3),
-                    ),
+                    "extra" => array(0, 1, 2, 3)
                 ),
                 array(
-                    5, array(1,2,3), array(1,2,3), 15
+                    5, array(), array(), 15
                 ),
             ),
         );

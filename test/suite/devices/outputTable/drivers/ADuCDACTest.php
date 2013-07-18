@@ -73,8 +73,6 @@ class ADuCDACTest extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->output = new \HUGnet\DummyBase("Output");
-        $this->output->resetMock(array());
         $this->o = \HUGnet\devices\outputTable\Driver::factory(
             "ADuCDAC", $this->output
         );
@@ -90,6 +88,7 @@ class ADuCDACTest extends DriverTestBase
     */
     protected function tearDown()
     {
+        unset($this->system);
         parent::tearDown();
     }
     /**
@@ -102,146 +101,226 @@ class ADuCDACTest extends DriverTestBase
         return array(
             array( // #0
                 array(
-                    "Device" => array(
-                        "sensor" => new \HUGnet\DummyBase("Output"),
-                    )
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 1,
                 ),
                 "130000000000",
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            array('extra'),
-                        ),
-                        "set" => array(
-                            array('extra', array(0, 0, 0, 0, 0, 3, 0)),
-                        ),
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 1,
+                    'tableEntry' => json_encode(
+                        array(
+                            'DACBUFLP' => 0,
+                            'OPAMP' => 0,
+                            'DACBUFBYPASS' => 0,
+                            "DACCLK" => 0,
+                            'DACMODE' => 0,
+                            'Rate' => 0,
+                            'Range' => 3,
+                        )
                     ),
+                    'extra' => array(0, 0, 0, 0, 0, 3, 0),
+                    'driver' => "ADuCDAC",
+                    'type' => "ADuCDAC",
+                    'params' => array(),
                 ),
             ),
             array( // #1
                 array(
-                    "Device" => array(
-                        "sensor" => new \HUGnet\DummyBase("Output"),
-                    )
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 1,
                 ),
                 "100134120000",
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            array('extra'),
-                        ),
-                        "set" => array(
-                            array('extra', array(1, 0, 0, 0, 0, 0, 0x1234)),
-                        ),
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 1,
+                    'tableEntry' => json_encode(
+                        array(
+                            'DACBUFLP' => 1,
+                            'OPAMP' => 0,
+                            'DACBUFBYPASS' => 0,
+                            "DACCLK" => 0,
+                            'DACMODE' => 0,
+                            'Rate' => 0,
+                            'Range' => 0,
+                        )
                     ),
+                    'extra' => array(1, 0, 0, 0, 0, 0, 0x1234),
+                    'driver' => "ADuCDAC",
+                    'type' => "ADuCDAC",
+                    'params' => array(),
                 ),
             ),
             array( // #2
                 array(
-                    "Device" => array(
-                        "sensor" => new \HUGnet\DummyBase("Output"),
-                    )
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 1,
                 ),
                 "900000000000",
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            array('extra'),
-                        ),
-                        "set" => array(
-                            array('extra', array(0, 1, 0, 0, 0, 0, 0)),
-                        ),
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 1,
+                    'tableEntry' => json_encode(
+                        array(
+                            'DACBUFLP' => 0,
+                            'OPAMP' => 1,
+                            'DACBUFBYPASS' => 0,
+                            "DACCLK" => 0,
+                            'DACMODE' => 0,
+                            'Rate' => 0,
+                            'Range' => 0,
+                        )
                     ),
+                    'extra' => array(0, 1, 0, 0, 0, 0, 0),
+                    'driver' => "ADuCDAC",
+                    'type' => "ADuCDAC",
+                    'params' => array(),
                 ),
             ),
             array( // #3
                 array(
-                    "Device" => array(
-                        "sensor" => new \HUGnet\DummyBase("Output"),
-                    )
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 1,
                 ),
                 "500000000000",
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            array('extra'),
-                        ),
-                        "set" => array(
-                            array('extra', array(0, 0, 1, 0, 0, 0, 0)),
-                        ),
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 1,
+                    'tableEntry' => json_encode(
+                        array(
+                            'DACBUFLP' => 0,
+                            'OPAMP' => 0,
+                            'DACBUFBYPASS' => 1,
+                            "DACCLK" => 0,
+                            'DACMODE' => 0,
+                            'Rate' => 0,
+                            'Range' => 0,
+                        )
                     ),
+                    'extra' => array(0, 0, 1, 0, 0, 0, 0),
+                    'driver' => "ADuCDAC",
+                    'type' => "ADuCDAC",
+                    'params' => array(),
                 ),
             ),
             array( // #4
                 array(
-                    "Device" => array(
-                        "sensor" => new \HUGnet\DummyBase("Output"),
-                    )
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 1,
                 ),
                 "180000000000",
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            array('extra'),
-                        ),
-                        "set" => array(
-                            array('extra', array(0, 0, 0, 1, 0, 0, 0)),
-                        ),
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 1,
+                    'tableEntry' => json_encode(
+                        array(
+                            'DACBUFLP' => 0,
+                            'OPAMP' => 0,
+                            'DACBUFBYPASS' => 0,
+                            "DACCLK" => 0,
+                            'DACMODE' => 1,
+                            'Rate' => 0,
+                            'Range' => 0,
+                        )
                     ),
+                    'extra' => array(0, 0, 0, 1, 0, 0, 0),
+                    'driver' => "ADuCDAC",
+                    'type' => "ADuCDAC",
+                    'params' => array(),
                 ),
             ),
             array( // #5
                 array(
-                    "Device" => array(
-                        "sensor" => new \HUGnet\DummyBase("Output"),
-                    )
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 1,
                 ),
                 "140000000000",
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            array('extra'),
-                        ),
-                        "set" => array(
-                            array('extra', array(0, 0, 0, 0, 1, 0, 0)),
-                        ),
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 1,
+                    'tableEntry' => json_encode(
+                        array(
+                            'DACBUFLP' => 0,
+                            'OPAMP' => 0,
+                            'DACBUFBYPASS' => 0,
+                            "DACCLK" => 0,
+                            'DACMODE' => 0,
+                            'Rate' => 1,
+                            'Range' => 0,
+                        )
                     ),
+                    'extra' => array(0, 0, 0, 0, 1, 0, 0),
+                    'driver' => "ADuCDAC",
+                    'type' => "ADuCDAC",
+                    'params' => array(),
                 ),
             ),
             array( // #6
                 array(
-                    "Device" => array(
-                        "sensor" => new \HUGnet\DummyBase("Output"),
-                    )
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 1,
                 ),
                 "110000000000",
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            array('extra'),
-                        ),
-                        "set" => array(
-                            array('extra', array(0, 0, 0, 0, 0, 1, 0)),
-                        ),
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 1,
+                    'tableEntry' => json_encode(
+                        array(
+                            'DACBUFLP' => 0,
+                            'OPAMP' => 0,
+                            'DACBUFBYPASS' => 0,
+                            "DACCLK" => 0,
+                            'DACMODE' => 0,
+                            'Rate' => 0,
+                            'Range' => 1,
+                        )
                     ),
+                    'extra' => array(0, 0, 0, 0, 0, 1, 0),
+                    'driver' => "ADuCDAC",
+                    'type' => "ADuCDAC",
+                    'params' => array(),
                 ),
             ),
             array( // #7
                 array(
-                    "Device" => array(
-                        "sensor" => new \HUGnet\DummyBase("Output"),
-                    )
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 1,
                 ),
                 "120000000000",
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            array('extra'),
-                        ),
-                        "set" => array(
-                            array('extra', array(0, 0, 0, 0, 0, 2, 0)),
-                        ),
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 1,
+                    'tableEntry' => json_encode(
+                        array(
+                            'DACBUFLP' => 0,
+                            'OPAMP' => 0,
+                            'DACBUFBYPASS' => 0,
+                            "DACCLK" => 0,
+                            'DACMODE' => 0,
+                            'Rate' => 0,
+                            'Range' => 2,
+                        )
                     ),
+                    'extra' => array(0, 0, 0, 0, 0, 2, 0),
+                    'driver' => "ADuCDAC",
+                    'type' => "ADuCDAC",
+                    'params' => array(),
                 ),
             ),
         );
@@ -259,10 +338,9 @@ class ADuCDACTest extends DriverTestBase
     */
     public function testDecode($mocks, $string, $expect)
     {
-        $this->output->resetMock($mocks);
+        $this->output->load($mocks);
         $this->o->decode($string);
-        $ret = $this->output->retrieve();
-        $this->assertEquals($expect, $ret);
+        $this->assertEquals($expect, $this->output->toArray(false));
     }
     /**
     * data provider for testDeviceID
@@ -274,93 +352,61 @@ class ADuCDACTest extends DriverTestBase
         return array(
             array( // #0
                 array(
-                    "Output" => array(
-                        "getExtra" => array(
-                        ),
-                    ),
                 ),
                 "1B0000000000",
             ),
             array( // #1
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            "extra" => array(
-                                1, 0, 0, 0, 0, 0, 0x1234
-                            ),
-                        ),
+                    "extra" => array(
+                        1, 0, 0, 0, 0, 0, 0x1234
                     ),
                 ),
                 "100134120000",
             ),
             array( // #2
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            "extra" => array(
-                                0, 1, 0, 0, 0, 0, 0
-                            ),
-                        ),
+                    "extra" => array(
+                        0, 1, 0, 0, 0, 0, 0
                     ),
                 ),
                 "900000000000",
             ),
             array( // #3
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            "extra" => array(
-                                0, 0, 1, 0, 0, 0, 0
-                            ),
-                        ),
+                    "extra" => array(
+                        0, 0, 1, 0, 0, 0, 0
                     ),
                 ),
                 "500000000000",
             ),
             array( // #4
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            "extra" => array(
-                                0, 0, 0, 1, 0, 0, 0
-                            ),
-                        ),
+                    "extra" => array(
+                        0, 0, 0, 1, 0, 0, 0
                     ),
                 ),
                 "180000000000",
             ),
             array( // #5
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            "extra" => array(
-                                0, 0, 0, 0, 1, 0, 0
-                            ),
-                        ),
+                    "extra" => array(
+                        0, 0, 0, 0, 1, 0, 0
                     ),
                 ),
                 "140000000000",
             ),
             array( // #6
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            "extra" => array(
-                                0, 0, 0, 0, 0, 1, 0
-                            ),
-                        ),
+                    "extra" => array(
+                        0, 0, 0, 0, 0, 1, 0
                     ),
                 ),
                 "110000000000",
             ),
             array( // #7
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            "extra" => array(
-                                0, 0, 0, 0, 0, 2, 0
-                            ),
-                        ),
+                    "extra" => array(
+                        0, 0, 0, 0, 0, 2, 0
                     ),
                 ),
                 "120000000000",
@@ -379,7 +425,7 @@ class ADuCDACTest extends DriverTestBase
     */
     public function testEncode($mocks, $expect)
     {
-        $this->output->resetMock($mocks);
+        $this->output->load($mocks);
         $ret = $this->o->encode();
         $this->assertSame($expect, $ret);
     }
@@ -414,38 +460,48 @@ class ADuCDACTest extends DriverTestBase
                 "max",
                 array(),
                 65535,
-                ),
+            ),
             array(
                 "zero",
                 array(),
                 24900,
-                ),
+            ),
             array(
                 "max",
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            "extra" => array(
-                                0, 0, 0, 0, 0, 2
-                            ),
-                        ),
+                    "extra" => array(
+                        0, 0, 0, 0, 0, 2
                     ),
                 ),
                 4095,
-                ),
+            ),
             array(
                 "zero",
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            "extra" => array(
-                                0, 0, 0, 0, 0, 2
-                            ),
-                        ),
+                    "extra" => array(
+                        0, 0, 0, 0, 0, 2
                     ),
                 ),
                 1556,
+            ),
+            array(
+                "max",
+                array(
+                    "tableEntry" => array(
+                        "DACMODE" => 0,
+                    ),
                 ),
+                4095,
+            ),
+            array(
+                "zero",
+                array(
+                    "tableEntry" => array(
+                        "DACMODE" => 0,
+                    ),
+                ),
+                1556,
+            ),
         );
     }
 

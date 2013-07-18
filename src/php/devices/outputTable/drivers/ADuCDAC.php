@@ -122,13 +122,15 @@ class ADuCDAC extends \HUGnet\devices\outputTable\DriverADuC
                 $ret[$key]  = $entry[$field]["longdesc"];
             }
         } else if ($name == "max") {
-            if ($this->getExtra(3) == 1) {
+            $entry = $this->entry()->toArray();
+            if ($entry["DACMODE"] == 1) {
                 $ret = 65535; 
             } else {
                 $ret = 4095;
             }
         } else if ($name == "zero") {
-            if ($this->getExtra(3) == 1) {
+            $entry = $this->entry()->toArray();
+            if ($entry["DACMODE"] == 1) {
                 $ret = 24900; 
             } else {
                 $ret = 1556;
@@ -145,8 +147,9 @@ class ADuCDAC extends \HUGnet\devices\outputTable\DriverADuC
     */
     public function decode($string)
     {
-        $extra = (array)$this->output()->get("extra");
         $this->entry()->decode($string);
+        $this->output()->set("tableEntry", $this->entry()->toArray());
+        $extra = (array)$this->output()->get("extra");
         $decode = $this->entry()->toArray();
         foreach ($this->entryMap as $key => $field) {
             $extra[$key] = $decode[$field];
@@ -166,6 +169,7 @@ class ADuCDAC extends \HUGnet\devices\outputTable\DriverADuC
             $encode[$field] = $this->getExtra($key);
         }
         $this->entry()->fromArray($encode);
+        $this->output()->set("tableEntry", $this->entry()->toArray());
         $string  = $this->entry()->encode();
         $string .= $this->encodeInt($this->getExtra(6));
         return $string;

@@ -73,8 +73,6 @@ class ADuCGPIOTest extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->output = new \HUGnet\DummyBase("Output");
-        $this->output->resetMock(array());
         $this->o = \HUGnet\devices\outputTable\Driver::factory(
             "ADuCGPIO", $this->output
         );
@@ -102,38 +100,36 @@ class ADuCGPIOTest extends DriverTestBase
         return array(
             array( // #0
                 array(
-                    "Device" => array(
-                        "sensor" => new \HUGnet\DummyBase("Output"),
-                    )
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 3,
                 ),
                 "130A",
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            array('extra'),
-                        ),
-                        "set" => array(
-                            array('extra', array(6.74, 10)),
-                        ),
-                    ),
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 3,
+                    'extra' => array(6.74, 10),
+                    'driver' => "ADuCGPIO",
+                    'type' => "ADuCGPIO",
+                    'params' => array(),
                 ),
             ),
             array( // #1
                 array(
-                    "Device" => array(
-                        "sensor" => new \HUGnet\DummyBase("Output"),
-                    )
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 3,
                 ),
                 "1001",
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            array('extra'),
-                        ),
-                        "set" => array(
-                            array('extra', array(8.0, 1)),
-                        ),
-                    ),
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 3,
+                    'extra' => array(8, 1),
+                    'driver' => "ADuCGPIO",
+                    'type' => "ADuCGPIO",
+                    'params' => array(),
                 ),
             ),
         );
@@ -151,10 +147,9 @@ class ADuCGPIOTest extends DriverTestBase
     */
     public function testDecode($mocks, $string, $expect)
     {
-        $this->output->resetMock($mocks);
+        $this->output->load($mocks);
         $this->o->decode($string);
-        $ret = $this->output->retrieve();
-        $this->assertEquals($expect, $ret);
+        $this->assertEquals($expect, $this->output->toArray(false));
     }
     /**
     * data provider for testDeviceID
@@ -166,21 +161,13 @@ class ADuCGPIOTest extends DriverTestBase
         return array(
             array( // #0
                 array(
-                    "Output" => array(
-                        "getExtra" => array(
-                        ),
-                    ),
                 ),
                 "0102",
             ),
             array( // #1
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            "extra" => array(
-                                10, 11
-                            ),
-                        ),
+                    "extra" => array(
+                        10, 11
                     ),
                 ),
                 "0D0B",
@@ -199,7 +186,7 @@ class ADuCGPIOTest extends DriverTestBase
     */
     public function testEncode($mocks, $expect)
     {
-        $this->output->resetMock($mocks);
+        $this->output->load($mocks);
         $ret = $this->o->encode();
         $this->assertSame($expect, $ret);
     }

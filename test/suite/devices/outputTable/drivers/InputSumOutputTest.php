@@ -73,17 +73,6 @@ class InputSumOutputTest extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->output = new \HUGnet\DummyBase("Output");
-        $this->output->resetMock(
-            array(
-                "Device" => array(
-                    "dataChannels" => new \HUGnet\DummyBase("dataChannels"),
-                ),
-                "Output" => array(
-                    "device" => new \HUGnet\DummyBase("Device"),
-                )
-            )
-        );
         $this->o = \HUGnet\devices\outputTable\Driver::factory(
             "InputSumOutput", $this->output
         );
@@ -111,50 +100,36 @@ class InputSumOutputTest extends DriverTestBase
         return array(
             array( // #0
                 array(
-                    "Device" => array(
-                        "dataChannels" => new \HUGnet\DummyBase("dataChannels"),
-                    ),
-                    "Output" => array(
-                        "device" => new \HUGnet\DummyBase("Device"),
-                    )
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 0x60,
                 ),
                 "0901080020000000",
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            array('extra'),
-                        ),
-                        "set" => array(
-                            array(
-                                'extra',
-                                array(14.22, 1, 8, 32)
-                            ),
-                        ),
-                    ),
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 0x60,
+                    'extra' => array(14.22, 1, 8, 32),
+                    'driver' => "InputSumOutput",
+                    'type' => "InputSumOutput",
+                    'params' => array(),
                 ),
             ),
             array( // #1 Negative Numbers
                 array(
-                    "Device" => array(
-                        "dataChannels" => new \HUGnet\DummyBase("dataChannels"),
-                    ),
-                    "Output" => array(
-                        "device" => new \HUGnet\DummyBase("Device"),
-                    )
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 0x60,
                 ),
                 "FFFFFFFFFFFFFFFF",
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            array('extra'),
-                        ),
-                        "set" => array(
-                            array(
-                                'extra',
-                                array(0.5, 0xFF, -1, -1)
-                            ),
-                        ),
-                    ),
+                    'dev' => 1,
+                    'output' => 1,
+                    'id' => 0x60,
+                    'extra' => array(0.5, 255, -1, -1),
+                    'driver' => "InputSumOutput",
+                    'type' => "InputSumOutput",
+                    'params' => array(),
                 ),
             ),
         );
@@ -172,10 +147,9 @@ class InputSumOutputTest extends DriverTestBase
     */
     public function testDecode($mocks, $string, $expect)
     {
-        $this->output->resetMock($mocks);
+        $this->output->load($mocks);
         $this->o->decode($string);
-        $ret = $this->output->retrieve();
-        $this->assertEquals($expect, $ret);
+        $this->assertEquals($expect, $this->output->toArray(false));
     }
     /**
     * data provider for testDeviceID
@@ -187,24 +161,16 @@ class InputSumOutputTest extends DriverTestBase
         return array(
             array( // #0
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            "extra" => array(
-                                9, 1, 8, 32
-                            ),
-                        ),
+                    "extra" => array(
+                        9, 1, 8, 32
                     ),
                 ),
                 "0E01080020000000",
             ),
             array( // #1 Negative number
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            "extra" => array(
-                                -1, 0, -1, -1
-                            ),
-                        ),
+                    "extra" => array(
+                        -1, 0, -1, -1
                     ),
                 ),
                 "0000FFFFFFFFFFFF",
@@ -223,7 +189,7 @@ class InputSumOutputTest extends DriverTestBase
     */
     public function testEncode($mocks, $expect)
     {
-        $this->output->resetMock($mocks);
+        $this->output->load($mocks);
         $ret = $this->o->encode();
         $this->assertSame($expect, $ret);
     }
@@ -243,21 +209,10 @@ class InputSumOutputTest extends DriverTestBase
             array(
                 "extraValues",
                 array(
-                    "Output" => array(
-                        "get" => array(
-                            "extra" => array(0, 1, 2, 3)
-                        ),
-                        "device" => new \HUGnet\DummyBase("Device"),
-                    ),
-                    "Device" => array(
-                        "dataChannels" => new \HUGnet\DummyBase("dataChannels"),
-                    ),
-                    "dataChannels" => array(
-                        "select" => array(1,2,3),
-                    ),
+                    "extra" => array(0, 1, 2, 3)
                 ),
                 array(
-                    15, array(1,2,3), 15, 15
+                    15, array(), 15, 15
                 ),
             ),
         );

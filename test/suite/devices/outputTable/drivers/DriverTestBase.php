@@ -62,6 +62,10 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     protected $class = "";
     /** This is the object we are testing */
     protected $o = null;
+    /** This is our system object */
+    protected $system;
+    /** This is our output object */
+    protected $output;
 
     /**
     * Sets up the fixture, for example, opens a network connection.
@@ -73,6 +77,11 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
+        $this->system = $this->getMock("\HUGnet\System", array("now"));
+        $this->system->expects($this->any())
+            ->method('now')
+            ->will($this->returnValue(123456));
+        $this->output = $this->system->device()->output(0);
     }
 
     /**
@@ -85,6 +94,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     */
     protected function tearDown()
     {
+        unset($this->system);
         unset($this->o);
     }
 
@@ -281,8 +291,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     */
     public function testGet($name, $mock, $expect)
     {
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock($mock);
+        $this->output->table()->fromArray($mock);
         $this->assertSame($expect, $this->o->get($name));
     }
     /**
