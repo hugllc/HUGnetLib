@@ -185,6 +185,8 @@ class DeviceProcessesTest extends TableTestBase
         return array(
             array("params", "asdfasdfasdfasdf", "asdfasdfasdfasdf"),
             array("params", array(1,2,3,4), "[1,2,3,4]"),
+            array("tableEntry", "asdfasdfasdfasdf", "asdfasdfasdfasdf"),
+            array("tableEntry", array(1,2,3,4), "[1,2,3,4]"),
             array("extra", array(1,2,3,4), array(1,2,3,4)),
             array("id", "123", 123),
             array("dev", "123", 123),
@@ -316,6 +318,7 @@ class DeviceProcessesTest extends TableTestBase
                     "params" => json_encode(
                         array("extra" => array())
                     ),
+                    'tableEntry' => '',
                 ),
             ),
             array(
@@ -338,6 +341,7 @@ class DeviceProcessesTest extends TableTestBase
                     "location" => "HERE",
                     "driver"  => "EmptyProcess",
                     "params" => '{"storageUnits":"&deg;C","unitType":"Temperature"}',
+                    'tableEntry' => '',
                 ),
             ),
             array(
@@ -362,6 +366,7 @@ class DeviceProcessesTest extends TableTestBase
                     "location" => "HERE",
                     "driver"  => "EmptyProcess",
                     "params" => '{"extra":[1,2,3,4]}',
+                    'tableEntry' => '',
                 ),
             ),
         );
@@ -415,6 +420,7 @@ class DeviceProcessesTest extends TableTestBase
                     "storageUnits" => "&deg;C",
                     "driver"  => "EmptyProcess",
                     "unitType" => "Temperature",
+                    'tableEntry' => '',
                 ),
             ),
         );

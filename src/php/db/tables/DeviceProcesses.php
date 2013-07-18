@@ -117,6 +117,11 @@ class DeviceProcesses extends \HUGnet\db\TableParams
             "Type" => "varchar(32)",
             "Default" => 'EmptyProcess',
         ),
+        "tableEntry" => array(
+            "Name" => "tableEntry",
+            "Type" => "text",
+            "Default" => "",
+        ),
         "params" => array(
             "Name" => "params",
             "Type" => "longtext",
@@ -219,6 +224,21 @@ class DeviceProcesses extends \HUGnet\db\TableParams
     protected function setId($value)
     {
         $this->data["id"] = (int) $value;
+    }
+    /**
+    * function to set tableEntry
+    *
+    * @param string $value The value to set
+    *
+    * @return null
+    */
+    protected function setTableEntry($value)
+    {
+        if (is_array($value)) {
+            $this->data["tableEntry"] = json_encode($value);
+        } else if (is_string($value)) {
+            $this->data["tableEntry"] = $value;
+        }
     }
 
 }

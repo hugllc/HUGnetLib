@@ -185,6 +185,8 @@ class DeviceInputsTest extends TableTestBase
         return array(
             array("params", "asdfasdfasdfasdf", "asdfasdfasdfasdf"),
             array("params", array(1,2,3,4), "[1,2,3,4]"),
+            array("tableEntry", "asdfasdfasdfasdf", "asdfasdfasdfasdf"),
+            array("tableEntry", array(1,2,3,4), "[1,2,3,4]"),
             array("extra", array(1,2,3,4), array(1,2,3,4)),
             array("id", "123", 123),
             array("dev", "123", 123),
@@ -317,6 +319,7 @@ class DeviceInputsTest extends TableTestBase
                         array("min" => 5, "max" => 15, "extra" => array())
                     ),
                     'calibration' => '',
+                    'tableEntry' => '',
                 ),
             ),
             array(
@@ -340,6 +343,7 @@ class DeviceInputsTest extends TableTestBase
                     "driver"  => "SDEFAULT",
                     "params" => '{"storageUnits":"&deg;C","unitType":"Temperature"}',
                     'calibration' => '',
+                    'tableEntry' => '',
                 ),
             ),
             array(
@@ -365,6 +369,7 @@ class DeviceInputsTest extends TableTestBase
                     "driver"  => "SDEFAULT",
                     "params" => '{"extra":[1,2,3,4]}',
                     'calibration' => '',
+                    'tableEntry' => '',
                 ),
             ),
         );
@@ -419,6 +424,7 @@ class DeviceInputsTest extends TableTestBase
                     "driver"  => "SDEFAULT",
                     "unitType" => "Temperature",
                     'calibration' => '',
+                    'tableEntry' => '',
                 ),
             ),
         );
