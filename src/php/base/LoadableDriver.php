@@ -154,7 +154,13 @@ abstract class LoadableDriver
     */
     protected function entryClass()
     {
-        return $this->entryClass;
+        $file  = dirname(__FILE__)."/../devices/".$this->tableLoc;
+        $file .= "/tables/".$this->entryClass.".php";
+        if (file_exists($file)) {
+            include_once($file);
+        }
+        $ret = "\\HUGnet\\devices\\".$this->tableLoc."\\tables\\".$this->entryClass;
+        return $ret;
     }
     /**
     * Returns the converted table entry
@@ -179,14 +185,11 @@ abstract class LoadableDriver
         if (!is_string($entryClass)) {
             return null;
         }
-        $file  = dirname(__FILE__)."/../devices/".$this->tableLoc;
-        $file .= "/tables/".$entryClass.".php";
-        if (!is_object($this->_entry) && file_exists($file)) {
+        if (!is_object($this->_entry) && class_exists($entryClass)) {
             $found = true;
-            include_once $file;
             if (empty($table)) {
                 $table = json_decode(
-                    (string)$this->output()->get("tableEntry"), true
+                    (string)$this->iopobject()->table()->get("tableEntry"), true
                 );
                 if (empty($table) || !is_array($table)) {
                     $newTable = $this->convertOldEntry();
@@ -196,13 +199,12 @@ abstract class LoadableDriver
                     }
                 }
             }
-            $class = "\\HUGnet\\devices\\outputTable\\tables\\".$entryClass;
-            $entry = $class::factory(
+            $entry = $entryClass::factory(
                 $this, $table
             );
             if (!$found || empty($table)) {
-                $this->output()->table()->set("tableEntry", $entry->toArray());
-                $this->output()->table()->updateRow();
+                $this->iopobject()->table()->set("tableEntry", $entry->toArray());
+                $this->iopobject()->table()->updateRow();
             }
             $this->_entry = &$entry;
         }

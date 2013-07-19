@@ -191,36 +191,23 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
         return $this->_table;
     }
     /**
-    * Returns the driver object
+    * Returns the converted table entry
     *
-    * @param array $table The table to use.  This only works on the first call
-    *
-    * @return object The driver requested
+    * @return bool The table to use
     */
-    public function &entry($table = null)
+    protected function convertOldEntry()
     {
-        if (!is_object($this->_entry)) {
-            if (is_array($this->_tableEntry)) {
-                $table = $this->_tableEntry;
-            } else {
-                $extra = $this->input()->table()->get("extra");
-                $this->_table()->getRow((int)$extra[0]);
-                $table = $this->_table()->toArray();
-            }
-            $driver = $this->_entryDriver();
-            $entry = $driver::factory(
-                $this, $table, count($this->params["extraDefault"])
-            );
-            $this->_entry = &$entry;
-        }
-        return $this->_entry;
+        $extra = $this->input()->table()->get("extra");
+        $this->_table()->getRow((int)$extra[0]);
+        $table = $this->_table()->toArray();
+        return $table;
     }
     /**
     * Returns the driver object
     *
     * @return object The driver requested
     */
-    private function _entryDriver()
+    protected function entryClass()
     {
         $dir = dirname(__FILE__)."/../../tables/";
         $namespace = "\\HUGnet\\devices\\inputTable\\tables\\";

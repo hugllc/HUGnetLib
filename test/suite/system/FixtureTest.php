@@ -425,6 +425,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
     public static function dataInput()
     {
         return array(
+            /*
             array(  // #0 Everything normal
                 array(
                 ),
@@ -479,6 +480,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                     'offset' => 0,
                 ),
             ),
+            */
             array(  // #1 Input doesn't exist
                 array(
                 ),
