@@ -80,9 +80,9 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
     */
     private $_tableClass = "InputTable";
     /**
-    * This is where we store our entry in the input table
+    * This is the class to use for our entry object.
     */
-    private $_entry;
+    protected $entryClass = "ADuCInputTable";
     /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
@@ -210,30 +210,16 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
         return $this->_table;
     }
     /**
-    * Returns the driver object
+    * Returns the converted table entry
     *
-    * @param array $table The table to use.  This only works on the first call
-    *
-    * @return object The driver requested
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    * @return bool The table to use
     */
-    public function &entry($table = null)
+    protected function convertOldEntry()
     {
-        if (!is_object($this->_entry)) {
-            include_once dirname(__FILE__)."/../../tables/ADuCInputTable.php";
-            if (is_array($this->_tableEntry)) {
-                $table = $this->_tableEntry;
-            } else {
-                $extra = $this->input()->get("extra");
-                $this->_table()->getRow((int)$extra[0]);
-                $table = $this->_table()->toArray();
-            }
-            $entry = \HUGnet\devices\inputTable\tables\ADuCInputTable::factory(
-                $this, $table
-            );
-            $this->_entry = &$entry;
-        }
-        return $this->_entry;
+        $extra = $this->input()->table()->get("extra");
+        $this->_table()->getRow((int)$extra[0]);
+        $table = $this->_table()->toArray();
+        return $table;
     }
     /**
     * Returns the driver object
@@ -396,6 +382,7 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
     public function decode($string)
     {
         $this->entry()->decode($string);
+        $this->input()->table()->set("tableEntry", $this->entry()->toArray());
         $extra = $this->input()->get("extra");
         $start = 22;
         $data = substr($string, $start);

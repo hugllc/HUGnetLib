@@ -64,6 +64,10 @@ class ADuCInputTableTest extends DriverTestBaseADuC
 {
     /** This is the class we are testing */
     protected $class = "ADuCInputTable";
+    /** This is our system object */
+    protected $system;
+    /** This is our output object */
+    protected $input;
     /**
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
@@ -75,10 +79,12 @@ class ADuCInputTableTest extends DriverTestBaseADuC
     protected function setUp()
     {
         parent::setUp();
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $table = new \HUGnet\DummyBase("Table");
-        $sensor->resetMock(array());
-        $this->o = ADuCInputTable::testFactory($sensor, $table);
+        $this->system = $this->getMock("\HUGnet\System", array("now"));
+        $this->system->expects($this->any())
+            ->method('now')
+            ->will($this->returnValue(123456));
+        $this->input = $this->system->device()->input(0);
+        $this->o = ADuCInputTable::testFactory($this->input);
     }
 
     /**
@@ -186,20 +192,14 @@ class ADuCInputTableTest extends DriverTestBaseADuC
         return array(
             array(
                 array(
-                    "Sensor" => array(
-                        "id" => 1,
-                        "get" => array(
-                            "extra" => array(
-                                1,
-                            ),
-                            "location" => "asdf",
-                        ),
-                    ),
-                    "Table" => array(
-                        "toArray" => array(
+                    "id" => 1,
+                    "extra" => array(1),
+                    "location" => "asdf",
+                    "tableEntry" => json_encode(
+                        array(
                             "driver0" => 0x04,
                             "driver1" => 0x41,
-                        ),
+                        )
                     ),
                 ),
                 "\HUGnet\devices\inputTable\drivers\ADuCInputTable",
@@ -230,20 +230,14 @@ class ADuCInputTableTest extends DriverTestBaseADuC
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "id" => 1,
-                        "get" => array(
-                            "extra" => array(
-                                1,
-                            ),
-                            "location" => "asdf",
-                        ),
-                    ),
-                    "Table" => array(
-                        "toArray" => array(
+                    "id" => 1,
+                    "extra" => array(1),
+                    "location" => "asdf",
+                    "tableEntry" => json_encode(
+                        array(
                             "driver0" => 0x04,
                             "driver1" => 0xFF,
-                        ),
+                        )
                     ),
                 ),
                 "\HUGnet\devices\inputTable\drivers\ADuCInputTable",
@@ -276,8 +270,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
     */
     public function testChannels($mocks, $name, $expect)
     {
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock($mocks);
+        $this->input->load($mocks);
         $channels = $this->o->channels();
         $this->assertSame($expect, $channels);
     }
@@ -293,18 +286,14 @@ class ADuCInputTableTest extends DriverTestBaseADuC
         return array(
             array( // #0
                 array(
-                    "Sensor" => array(
-                        "id" => 1,
-                        "get" => array(
-                            "sensor" => 2,
-                            "extra" => array("41", 1, 0),
-                            "location" => "asdf",
-                        ),
-                    ),
-                    "Table" => array(
-                        "toArray" => array(
+                    "id" => 1,
+                    "input" => 2,
+                    "extra" => array("41", 1, 0),
+                    "location" => "asdf",
+                    "tableEntry" => json_encode(
+                        array(
                             "driver0" => 0x41,
-                        ),
+                        )
                     ),
                 ),
                 "40420F0040420F00",
@@ -328,21 +317,14 @@ class ADuCInputTableTest extends DriverTestBaseADuC
             ),
             array( // #1
                 array(
-                    "Sensor" => array(
-                        "id" => 1,
-                        "get" => array(
-                            "sensor" => 2,
-                            "extra" => array(
-                                "44", 1, 0,
-                                0, 5, 0, 200, 1.2, 100000, 1000
-                            ),
-                            "location" => "asdf",
-                        ),
-                    ),
-                    "Table" => array(
-                        "toArray" => array(
+                    "id" => 1,
+                    "input" => 2,
+                    "extra" => array("44", 1, 0, 0, 5, 0, 200, 1.2, 100000, 1000),
+                    "location" => "asdf",
+                    "tableEntry" => json_encode(
+                        array(
                             "driver0" => 0x44,
-                        ),
+                        )
                     ),
                 ),
                 "00DAF9FF",
@@ -386,8 +368,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
     public function testGetReading(
         $sensor, $A, $deltaT, $data, $prev, $expect, $channel = 0
     ) {
-        $sen = new \HUGnet\DummyBase("Sensor");
-        $sen->resetMock($sensor);
+        $this->input->load($sensor);
         $ret = $this->o->decodeData($A, $deltaT, $data, $prev);
         $this->assertEquals($expect, $ret, 0.00001);
     }
@@ -403,17 +384,15 @@ class ADuCInputTableTest extends DriverTestBaseADuC
         return array(
             array( // #0
                 array(
-                    "Sensor" => array(
-                        "id" => 1,
-                        "get" => array(
-                            "sensor" => 2,
-                            "extra" => array("41", 1, 0),
-                        ),
+                    "id" => 0xF9,
+                    "extra" => array(
+                        "41", 1, 0
                     ),
-                    "Table" => array(
-                        "toArray" => array(
+                    "location" => "asdf",
+                    "tableEntry" => json_encode(
+                        array(
                             "driver0" => 0x41,
-                        ),
+                        )
                     ),
                 ),
                 "40420F00",
@@ -424,20 +403,16 @@ class ADuCInputTableTest extends DriverTestBaseADuC
             ),
             array( // #1
                 array(
-                    "Sensor" => array(
-                        "id" => 1,
-                        "get" => array(
-                            "sensor" => 2,
-                            "extra" => array(
-                                "44", 1, 0,
-                                0, 5, 0, 200, 1.2, 100000, 1000
-                                ),
-                        ),
+                    "id" => 0xF9,
+                    "extra" => array(
+                        "44", 1, 0,
+                        0, 5, 0, 200, 1.2, 100000, 1000
                     ),
-                    "Table" => array(
-                        "toArray" => array(
+                    "location" => "asdf",
+                    "tableEntry" => json_encode(
+                        array(
                             "driver0" => 0x44,
-                        ),
+                        )
                     ),
                 ),
                 "00DAF9FF",
@@ -447,6 +422,30 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                 -232.8721,
             ),
         );
+    }
+    /**
+    * Generic function for testing sensor routines
+    *
+    * This is called by using parent::sensorTest()
+    *
+    * @param array $sensor  The sensor data array
+    * @param mixed $expect  Data for the sensor to work on
+    * @param float $deltaT  The time differenct
+    * @param array $data    The data array being built
+    * @param array $prev    The previous record
+    * @param mixed $A       The return data to expect
+    * @param int   $channel The channel to test
+    *
+    * @return null
+    *
+    * @dataProvider dataEncodeDataPoint()
+    */
+    public function testEncodeDataPoint(
+        $sensor, $expect, $deltaT, $data, $prev, $A, $channel = 0
+    ) {
+        $this->input->load($sensor);
+        $ret = $this->o->encodeDataPoint($A, $channel, $deltaT, $prev, $data);
+        $this->assertSame($expect, $ret);
     }
     /**
     * data provider for testDeviceID
@@ -466,46 +465,44 @@ class ADuCInputTableTest extends DriverTestBaseADuC
             array(
                 "maxDecimals",
                 array(
-                    "Sensor" => array(
-                        "id" => 5,
-                    ),
+                    "id" => 5,
                 ),
                 6,
             ),
             array(
                 "extraValues",
                 array(
-                    "Sensor" => array(
-                        "id" => 5,
-                    ),
-                    "Table" => array(
-                        "toArray" => array(
+                    "id" => 0xF9,
+                    "extra" => array(1, 2, 3),
+                    "location" => "asdf",
+                    "tableEntry" => json_encode(
+                        array(
                             "driver0" => 0x41,
-                        ),
-                        "select" => array(
-                            1 => new \HUGnet\DummyBase("Table1"),
-                            2 => new \HUGnet\DummyBase("Table2"),
-                        ),
-                    ),
-                    "Table1" => array(
-                        "get" => array(
-                            "id" => 1,
-                            "name" => "Hello",
-                        ),
-                    ),
-                    "Table2" => array(
-                        "get" => array(
-                            "id" => 2,
-                            "name" => "Again",
-                        ),
+                        )
                     ),
                 ),
                 array(
-                    array(1 => "Hello", 2 => "Again"),
+                    array(),
                     10, 10, 5, 5, 5
                 ),
             ),
         );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $name   The name of the variable to test.
+    * @param array  $mock   The mocks to set up
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataGet
+    */
+    public function testGet($name, $mock, $expect)
+    {
+        $this->input->load($mock);
+        $this->assertSame($expect, $this->o->get($name));
     }
     /**
     * data provider for testDeviceID
@@ -536,35 +533,30 @@ class ADuCInputTableTest extends DriverTestBaseADuC
         return array(
             array( // #0 Test no drivers
                 array(
-                    "Device" => array(
-                        "sensor" => new \HUGnet\DummyBase("Sensor"),
-                    ),
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(1, 2, 3),
-                        ),
+                    "id" => 0xF9,
+                    "extra" => array(1, 2, 3),
+                    "location" => "asdf",
+                    "tableEntry" => json_encode(
+                        array(
+                        )
                     ),
                 ),
                 "FF00C0800086098041FF000102030405060708",
                 array(
-                    array(
-                        "extra",
-                        array(1, 2, 3)
-                    ),
+                    "extra" => array(1, 2, 3),
+                    "id" => 0xF9,
+                    "location" => "asdf",
+                    'driver' => 'ADuCInputTable',
+
                 ),
             ),
             array( // #1 Test extra[0] not set, but found
                 array(
-                    "Device" => array(
-                        "sensor" => new \HUGnet\DummyBase("Sensor"),
-                    ),
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(1 => 2, 2 => 3),
-                        ),
-                    ),
-                    "Table" => array(
-                        "toArray" => array(
+                    "id" => 0xF9,
+                    "extra" => array(1, 2, 3),
+                    "location" => "asdf",
+                    "tableEntry" => json_encode(
+                        array(
                             'driver0' => 0x41,
                             'driver1' => 255,
                             'priority' => 0,
@@ -591,50 +583,35 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                             'AF' => 0,
                             'NOTCH2' => 0,
                             'SF' => 9,
-                        ),
-                        "selectInto" => true,
-                        "nextInto" => false,
-                        "get" => array(
-                            "id" => 5,
-                        ),
+                        )
                     ),
                 ),
                 "FF00C0800086098041FF010102030405060708",
                 array(
-                    array(
-                        "extra",
-                        array(0 => 5, 1 => 972.44803691, 2 => 3)
-                    ),
+                    "id" => 0xF9,
+                    "location" => "asdf",
+                    'driver' => 'ADuCInputTable',
+                    "extra" => array(0 => 1, 1 => 972.44803691, 2 => 3),
                 ),
             ),
             array( // #2 Test Voltages
                 array(
-                    "Device" => array(
-                        "sensor" => new \HUGnet\DummyBase("Sensor"),
-                    ),
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(1 => 2, 2 => 3),
-                        ),
-                    ),
-                    "Table" => array(
-                        "toArray" => array(
+                    "id" => 0xF9,
+                    "extra" => array(1 => 2, 2 => 3),
+                    "location" => "asdf",
+                    "tableEntry" => json_encode(
+                        array(
                             "driver0" => 0x41,
                             "driver1" => 0x41,
-                        ),
-                        "selectInto" => true,
-                        "nextInto" => false,
-                        "get" => array(
-                            "id" => 5,
-                        ),
+                        )
                     ),
                 ),
                 "FF00C08000860980414100A18F0A00431F1500",
                 array(
-                    array(
-                        "extra",
-                        array(1 => 9.99999461, 2 => 20.00000367)
-                    ),
+                    "id" => 0xF9,
+                    "location" => "asdf",
+                    'driver' => 'ADuCInputTable',
+                    "extra" => array(1 => 9.99999461, 2 => 20.00000367),
                 ),
             ),
         );
@@ -652,11 +629,11 @@ class ADuCInputTableTest extends DriverTestBaseADuC
     */
     public function testDecode($mocks, $string, $expect)
     {
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock($mocks);
+        $this->input->load($mocks);
         $this->o->decode($string);
-        $ret = $sensor->retrieve("Sensor");
-        $this->assertEquals($expect, $ret["set"]);
+        $ret = $this->input->table()->toArray(false);
+        unset($ret["tableEntry"]);
+        $this->assertEquals($expect, $ret);
     }
     /**
     * data provider for testDeviceID
@@ -668,52 +645,41 @@ class ADuCInputTableTest extends DriverTestBaseADuC
         return array(
             array( // #0
                 array(
-                    "Sensor" => array(
-                        "id" => 0xF9,
-                        "get" => array(
-                            "id" => 0xF9,
-                        ),
-                    ),
-                    "Table" => array(
-                        "toArray" => array(
+                    "id" => 0xF9,
+                    "extra" => array(),
+                    "location" => "asdf",
+                    "tableEntry" => json_encode(
+                        array(
                             "driver0" => 0x41,
-                        ),
+                        )
                     ),
                 ),
                 "FF00C0800086098041FF000000000000000000",
             ),
             array( // #1
                 array(
-                    "Sensor" => array(
-                        "id" => 0xF9,
-                        "get" => array(
-                            "id" => 0xF9,
-                            "extra" => array(1 => 10, 2 => 20),
-                        ),
-                    ),
-                    "Table" => array(
-                        "toArray" => array(
+                    "id" => 0xF9,
+                    "extra" => array(1 => 10, 2 => 20),
+                    "location" => "asdf",
+                    "tableEntry" => json_encode(
+                        array(
                             "driver0" => 0x41,
                             "driver1" => 0x41,
-                        ),
+                        )
                     ),
                 ),
                 "FF00C08000860980414100A18F0A00431F1500",
             ),
             array( // #1
                 array(
-                    "Sensor" => array(
-                        "id" => 0xF9,
-                        "get" => array(
-                            "id" => 0xF9,
-                            "extra" => array(1 => -1, 2 => -2),
-                        ),
-                    ),
-                    "Table" => array(
-                        "toArray" => array(
+                    "id" => 0xF9,
+                    "extra" => array(1 => -1, 2 => -2),
+                    "location" => "asdf",
+                    "tableEntry" => json_encode(
+                        array(
                             "driver0" => 0x41,
                             "driver1" => 0x41,
-                        ),
+                        )
                     ),
                 ),
                 "FF00C08000860980414100A3F1FEFF46E3FDFF",
@@ -732,8 +698,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
     */
     public function testEncode($mocks, $expect)
     {
-        $sensor  = new \HUGnet\DummyTable("Sensor");
-        $sensor->resetMock($mocks);
+        $this->input->load($mocks);
         $ret = $this->o->encode();
         $this->assertSame($expect, $ret);
     }
