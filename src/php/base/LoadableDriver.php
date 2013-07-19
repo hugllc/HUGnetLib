@@ -63,6 +63,18 @@ abstract class LoadableDriver
     * This is where we store the process.
     */
     private $_iopobject = null;
+    /**
+    * This is our entry object
+    */
+    private $_entry = null;
+    /**
+    * This is the class to use for our entry object.
+    */
+    protected $entryClass = null;
+    /**
+    * The location of our tables.
+    */
+    protected $tableLoc = "";
 
     /**
     * This is where we store our float size information
@@ -136,6 +148,24 @@ abstract class LoadableDriver
         return $ret;
     }
     /**
+    * Returns the name of the class to use for the table entry
+    *
+    * @return string The name of the class to use
+    */
+    protected function entryClass()
+    {
+        return $this->entryClass;
+    }
+    /**
+    * Returns the converted table entry
+    *
+    * @return bool The table to use
+    */
+    protected function convertOldEntry()
+    {
+        return null;
+    }
+    /**
     * Returns the driver object
     *
     * @param array $table The table to use.  This only works on the first call
@@ -145,7 +175,38 @@ abstract class LoadableDriver
     */
     public function &entry($table = null)
     {
-        return null;
+        $entryClass = $this->entryClass();
+        if (!is_string($entryClass)) {
+            return null;
+        }
+        $file  = dirname(__FILE__)."/../devices/".$this->tableLoc;
+        $file .= "/tables/".$entryClass.".php";
+        if (!is_object($this->_entry) && file_exists($file)) {
+            $found = true;
+            include_once $file;
+            if (empty($table)) {
+                $table = json_decode(
+                    (string)$this->output()->get("tableEntry"), true
+                );
+                if (empty($table) || !is_array($table)) {
+                    $newTable = $this->convertOldEntry();
+                    if (is_array($newTable)) {
+                        $table = $newTable;
+                        $found = false;
+                    }
+                }
+            }
+            $class = "\\HUGnet\\devices\\outputTable\\tables\\".$entryClass;
+            $entry = $class::factory(
+                $this, $table
+            );
+            if (!$found || empty($table)) {
+                $this->output()->table()->set("tableEntry", $entry->toArray());
+                $this->output()->table()->updateRow();
+            }
+            $this->_entry = &$entry;
+        }
+        return $this->_entry;
     }
     /**
     * Returns all of the parameters and defaults in an array

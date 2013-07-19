@@ -61,6 +61,12 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
 {
     /** This is the class we are testing */
     protected $class = "DriverTestClass";
+    /** This is the object we are testing */
+    protected $o = null;
+    /** This is our system object */
+    protected $system;
+    /** This is our output object */
+    protected $output;
     /**
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
@@ -71,11 +77,12 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $extra = array(
-        );
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock($extra);
-        $this->o = DriverTestClass::factory($sensor);
+        $this->system = $this->getMock("\HUGnet\System", array("now"));
+        $this->system->expects($this->any())
+            ->method('now')
+            ->will($this->returnValue(123456));
+        $this->output = $this->system->device()->output(0);
+        $this->o = DriverTestClass::factory($this->output);
     }
 
     /**
@@ -88,6 +95,8 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
     */
     protected function tearDown()
     {
+        unset($this->system);
+        unset($this->output);
         unset($this->o);
     }
 
@@ -167,12 +176,8 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(0, 0, 0, 3),
-                        ),
-                    ),
-                ),
+                    "extra" => array(0, 0, 0, 3),
+            ),
                 "maxDecimals",
                 3,
             ),
@@ -191,8 +196,7 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
     */
     public function testGet($mock, $name, $expect)
     {
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock($mock);
+        $this->output->load($mock);
         $this->assertSame($expect, $this->o->get($name, 1));
     }
     /**
@@ -634,6 +638,100 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
         $ret = $this->o->encodePriority($int);
         $this->assertSame($expect, $ret, "Return is wrong");
     }
+    /**
+    * data provider for testEncodeInt
+    *
+    * @return array
+    */
+    public static function dataEntry()
+    {
+        return array(
+            array( // #0 No setup given
+                array(
+                    "dev" => 1,
+                    "output" => 2,
+                ),
+                "ADuCDAC",
+                array(
+                    'DACBUFLP' => 0,
+                    'OPAMP' => 0,
+                    'DACBUFBYPASS' => 0,
+                    'DACCLK' => 0,
+                    'DACMODE' => 1,
+                    'Rate' => 0,
+                    'Range' => 3,
+                ),
+            ),
+            array( // #1  Bad Class name
+                array(
+                    "dev" => 1,
+                    "output" => 2,
+                ),
+                "ThisIsABadName",
+                null,
+            ),
+            array( // #2 Class is not a string
+                array(
+                    "dev" => 1,
+                    "output" => 2,
+                ),
+                null, // This should be a string.  ;)
+                null,
+            ),
+            array( // #3 This one is good
+                array(
+                    "dev" => 1,
+                    "output" => 2,
+                    "tableEntry" => json_encode(
+                        array(
+                            'DACBUFLP' => 1,
+                            'OPAMP' => 1,
+                            'DACBUFBYPASS' => 1,
+                            'DACCLK' => 1,
+                            'DACMODE' => 0,
+                            'Rate' => 1,
+                            'Range' => 1,
+                        )
+                    )
+                ),
+                "ADuCDAC",
+                array(
+                    'DACBUFLP' => 1,
+                    'OPAMP' => 1,
+                    'DACBUFBYPASS' => 1,
+                    'DACCLK' => 1,
+                    'DACMODE' => 0,
+                    'Rate' => 1,
+                    'Range' => 1,
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $preload The data to preload into the output
+    * @param array $class   The table entry class to use
+    * @param misc  $expect  The expected int
+    *
+    * @return null
+    *
+    * @dataProvider dataEntry
+    */
+    public function testEntry($preload, $class, $expect)
+    {
+        $this->output->load($preload);
+        $this->o->entryClass = $class;
+        $ret = $this->o->entry();
+        $output = $this->output->toArray(false);
+        if (is_null($expect)) {
+            $this->assertNull($ret);
+            $this->assertNull($output["tableEntry"]);
+        } else {
+            $this->assertEquals($expect, $ret->toArray(false));
+            $this->assertInternalType("string", $output["tableEntry"]);
+        }
+    }
 }
 /**
  * Base driver class for devices.
@@ -655,6 +753,14 @@ class DriverTestClass extends LoadableDriver
 {
     /** This is our extra data */
     protected $extra = array();
+    /**
+    * This is the class to use for our entry object.
+    */
+    public $entryClass = "";
+    /**
+    * The location of our tables.
+    */
+    public $tableLoc = "outputTable";
     /**
     * This is where all of the defaults are stored.
     */
@@ -782,6 +888,15 @@ class DriverTestClass extends LoadableDriver
     public function decodePriority($string)
     {
         return parent::decodePriority($string);
+    }
+    /**
+    * This is the destructor
+    *
+    * @return object
+    */
+    public function output()
+    {
+        return $this->iopobject();
     }
 }
 ?>
