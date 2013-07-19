@@ -67,6 +67,10 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     protected $params = array(
     );
     /**
+    * The location of our tables.
+    */
+    protected $tableLoc = "processTable";
+    /**
     * This is where all of the defaults are stored.
     */
     protected $default = array(

@@ -65,7 +65,11 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     */
     protected $params = array(
     );
-    /**
+     /**
+    * The location of our tables.
+    */
+    protected $tableLoc = "outputTable";
+   /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
@@ -170,48 +174,23 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         return parent::iopobject();
     }
     /**
-    * Returns the table entry object
+    * Returns the converted table entry
     *
-    * @param array $table The table to use.  This only works on the first call
-    *
-    * @return object The driver requested
+    * @return bool The table to use
     */
-    public function &entry($table = null)
+    protected function convertOldEntry()
     {
-        $file = dirname(__FILE__)."/tables/".$this->entryClass.".php";
-        if (!is_object($this->_entry) && file_exists($file)) {
-            $found = true;
-            include_once $file;
-            $table = is_null($table) ? (array)$this->tableEntry : (array)$table;
-            if (empty($table)) {
-                $table = json_decode(
-                    (string)$this->output()->get("tableEntry"), true
-                );
-                if (empty($table)) {
-                    $found = false;
-                    if (is_array($this->entryMap)) {
-                        // Get the really old system
-                        $extra = $this->output()->table()->get("extra");
-                        $table = array();
-                        foreach ($this->entryMap as $key => $field) {
-                            if (!is_null($extra[$key])) {
-                                $table[$field] = $extra[$key];
-                            }
-                        }
-                    }
+        $table = array();
+        if (is_array($this->entryMap)) {
+            // Get the really old system
+            $extra = $this->output()->table()->get("extra");
+            foreach ($this->entryMap as $key => $field) {
+                if (!is_null($extra[$key])) {
+                    $table[$field] = $extra[$key];
                 }
             }
-            $class = "\\HUGnet\\devices\\outputTable\\tables\\".$this->entryClass;
-            $entry = $class::factory(
-                $this, $table
-            );
-            if (!$found) {
-                $this->output()->table()->set("tableEntry", $entry->toArray());
-                $this->output()->table()->updateRow();
-            }
-            $this->_entry = &$entry;
         }
-        return $this->_entry;
+        return $table;
     }
     /**
     * This function creates the system.

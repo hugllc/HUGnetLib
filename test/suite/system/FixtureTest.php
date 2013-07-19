@@ -558,6 +558,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
     public static function dataOutput()
     {
         return array(
+            /*
             array(  // #0 Everything normal
                 array(
                 ),
@@ -612,6 +613,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                     'Range' => 3,
                 ),
             ),
+            */
             array(  // #1 Output doesn't exist
                 array(
                 ),
