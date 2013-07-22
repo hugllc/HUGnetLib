@@ -160,6 +160,11 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
                             "params" => json_encode(array(1,2,3,4)),
                         ),
                     ),
+                    "Entry" => array(
+                        "fullArray" => array(
+                            "a" => "b",
+                        ),
+                    ),
                 ),
                 new \HUGnet\DummyTable("Table"),
                 true,
@@ -178,6 +183,7 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
                     "extraText" => array(),
                     "extraDefault" => array(),
                     "extraValues" => array(),
+                    "tableEntry" => array("a" => "b"),
                 ),
             ),
             array(
@@ -190,6 +196,11 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
                             "id" => 0xFF,
                             "asdf" => 3,
                             "params" => json_encode(array(1,2,3,4)),
+                        ),
+                    ),
+                    "Entry" => array(
+                        "fullArray" => array(
+                            "a" => "b",
                         ),
                     ),
                 ),
@@ -210,33 +221,7 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
                     "extraText" => array(),
                     "extraDefault" => array(),
                     "extraValues" => array(),
-                ),
-            ),
-            array(
-                array(
-                    "Table" => array(
-                        "get" => array(
-                            "id" => 0xFF,
-                        ),
-                        "toArray" => array(
-                            "id" => 0xFF,
-                            "asdf" => 3,
-                            "params" => json_encode(array(1,2,3,4)),
-                        ),
-                    ),
-                ),
-                new \HUGnet\DummyTable("Table"),
-                false,
-                array(
-                    'id' => 255,
-                    'asdf' => 3,
-                    'params' => Array (
-                        0 => 1,
-                        1 => 2,
-                        2 => 3,
-                        3 => 4,
-                    ),
-                    'type' => 'TestIOPBaseDriver1',
+                    "tableEntry" => array("a" => "b"),
                 ),
             ),
             array(
@@ -252,15 +237,23 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                     "Entry" => array(
-                        "toArray" => array(
-                            "Entry" => "toArray"
+                        "fullArray" => array(
+                            "a" => "b",
                         ),
                     ),
                 ),
                 new \HUGnet\DummyTable("Table"),
-                "entryonly",
+                false,
                 array(
-                    "Entry" => "toArray"
+                    'id' => 255,
+                    'asdf' => 3,
+                    'params' => Array (
+                        0 => 1,
+                        1 => 2,
+                        2 => 3,
+                        3 => 4,
+                    ),
+                    'type' => 'TestIOPBaseDriver1',
                 ),
             ),
         );

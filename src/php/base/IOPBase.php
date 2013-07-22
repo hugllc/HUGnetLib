@@ -186,16 +186,10 @@ abstract class IOPBase extends SystemTableBase
         if ($default) {
             $entry = $this->driver()->entry();
             if (is_object($entry)) {
-                $ent = $entry->toArray();
-            } else {
-                $ent = array();
+                $return["tableEntry"] = $entry->fullArray();
             }
-            if ($default === "entryonly") {
-                return $ent;
-            } else {
-                $driver = $this->driver()->toArray();
-                $return = array_merge($driver, $return);
-            }
+            $driver = $this->driver()->toArray();
+            $return = array_merge($driver, $return);
         }
         $params = json_decode($return["params"], true);
         if (empty($return["type"])) {
