@@ -164,6 +164,7 @@ class DeviceInputs extends \HUGnet\db\TableParams
         "min",
         "max",
         "extra",
+        "lastTable",
     );
     /**
     * This is the constructor

@@ -254,10 +254,12 @@ class WebAPI extends HTML
         $sid = (int)$ids[1];
         $ident = array("dev" => $did, "input" => $sid);
         $action = strtolower(trim($this->args()->get("action")));
+        $sen = $this->system()->device($did)->input($sid);
         if ($action === "list") {
             $this->args()->set("data", array("dev" => $did));
+        } else if ($action == "put") {
+            $ret = $sen->webAPI($this->args(), $extra);
         }
-        $sen = $this->system()->device($did)->input($sid);
         $ret = $this->_executeSystem($ident, $sen, $extra);
         if ($ret === "regen") {
             return $this->system()->device($did)->input($sid)->toArray(true);
@@ -279,10 +281,12 @@ class WebAPI extends HTML
         $sid = (int)$ids[1];
         $ident = array("dev" => $did, "output" => $sid);
         $action = strtolower(trim($this->args()->get("action")));
+        $sen = $this->system()->device($did)->output($sid);
         if ($action === "list") {
             $this->args()->set("data", array("dev" => $did));
+        } else if ($action == "put") {
+            $ret = $sen->webAPI($this->args(), $extra);
         }
-        $sen = $this->system()->device($did)->output($sid);
         $ret = $this->_executeSystem($ident, $sen, $extra);
         if ($ret === "regen") {
             return $this->system()->device($did)->output($sid)->toArray(true);
@@ -304,10 +308,12 @@ class WebAPI extends HTML
         $sid = (int)$ids[1];
         $ident = array("dev" => $did, "process" => $sid);
         $action = strtolower(trim($this->args()->get("action")));
+        $sen = $this->system()->device($did)->process($sid);
         if ($action === "list") {
             $this->args()->set("data", array("dev" => $did));
+        } else if ($action == "put") {
+            $ret = $sen->webAPI($this->args(), $extra);
         }
-        $sen = $this->system()->device($did)->process($sid);
         $ret = $this->_executeSystem($ident, $sen, $extra);
         if ($ret === "regen") {
             return $this->system()->device($did)->process($sid)->toArray(true);

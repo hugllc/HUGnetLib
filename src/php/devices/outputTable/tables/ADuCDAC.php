@@ -221,7 +221,7 @@ class ADuCDAC
     {
         if (is_string($set) || is_int($set)) {
             if (is_string($set)) {
-                $set = hexdec($set);
+                $set = (int)$set;
             }
             foreach ($this->_params as $field => $vals) {
                 if (($vals["register"] === $register) && !isset($vals["hidden"])) {
@@ -254,7 +254,7 @@ class ADuCDAC
     private function _params($param, $set = null)
     {
         if (is_string($set)) {
-            $set = (int)hexdec($set);
+            $set = (int)$set;
         }
         if (is_int($set)) {
             $par = &$this->_params[$param];
@@ -296,7 +296,10 @@ class ADuCDAC
     public function decode($string)
     {
         if (strlen($string) >= 4) {
-            $this->register("DAC0CON", substr($string, 2, 2).substr($string, 0, 2));
+            $this->register(
+                "DAC0CON", 
+                hexdec(substr($string, 2, 2).substr($string, 0, 2))
+            );
             return true;
         }
         return false;

@@ -112,7 +112,7 @@ class ADuCPWMTest extends \PHPUnit_Framework_TestCase
                 ),
                 null,
                 "PWMCON",
-                "FFFF",
+                hexdec("FFFF"),
                 "79F5",
             ),
         );

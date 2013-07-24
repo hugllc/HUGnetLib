@@ -91,16 +91,16 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
         "storageUnit" => "Unknown",
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraText" => array(
-            "Table Entry",
+            "Reserved",
         ),
         "extraDesc" => array(
-            "The InputTable entry to use for this",
+            "Not used",
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            array()
+            -1
         ),
         "extraDefault" => array(0),
         "maxDecimals" => 6,
@@ -273,7 +273,7 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
                 (array)$this->params[$name],
                 (array)$param
             );
-            $param[0] = $this->_getTableEntries();
+            //$param[0] = $this->_getTableEntries();
             break;
         case "extraText":
         case "extraDesc":

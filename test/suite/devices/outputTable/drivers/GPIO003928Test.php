@@ -113,6 +113,7 @@ class GPIO003928Test extends DriverTestBase
                     'driver' => "GPIO003928",
                     'type' => "GPIO003928",
                     'params' => array(),
+                    'tableEntry' => array(),
                 ),
             ),
             array( // #1
@@ -130,6 +131,7 @@ class GPIO003928Test extends DriverTestBase
                     'driver' => "GPIO003928",
                     'type' => "GPIO003928",
                     'params' => array(),
+                    'tableEntry' => array(),
                 ),
             ),
         );

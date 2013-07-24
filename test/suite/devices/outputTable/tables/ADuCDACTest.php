@@ -113,7 +113,7 @@ class ADuCDACTest extends \PHPUnit_Framework_TestCase
                 ),
                 null,
                 "DAC0CON",
-                "FFFF",
+                hexdec("FFFF"),
                 "01FF",
             ),
         );

@@ -113,6 +113,7 @@ class FET003912Test extends DriverTestBase
                     'driver' => "FET003912",
                     'type' => "FET003912",
                     'params' => array(),
+                    'tableEntry' => array(),
                 ),
             ),
             array( // #1
@@ -130,6 +131,7 @@ class FET003912Test extends DriverTestBase
                     'driver' => "FET003912",
                     'type' => "FET003912",
                     'params' => array(),
+                    'tableEntry' => array(),
                 ),
             ),
         );

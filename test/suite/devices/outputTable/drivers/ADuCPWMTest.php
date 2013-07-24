@@ -107,16 +107,6 @@ class ADuCPWMTest extends DriverTestBase
                 "1300341278560099FFFFFFFFA5A55A5A01020304",
                 array(
                     'extra' => array(
-                        0 => 0,
-                        1 => 0,
-                        2 => 0,
-                        3 => 0,
-                        4 => 0,
-                        5 => 1,
-                        6 => 0,
-                        7 => 4660,
-                        8 => 22136,
-                        9 => 39168,
                         10 => -1,
                         11 => 1515890085,
                         12 => 67305985,
@@ -125,20 +115,18 @@ class ADuCPWMTest extends DriverTestBase
                     'output' => 1,
                     'id' => 2,
                     'driver' => 'ADuCPWM',
-                    'tableEntry' => json_encode(
-                        array(
-                            "PWM0LEN" => 4660,
-                            "PWM1LEN" => 22136,
-                            "PWM2LEN" => 39168,
-                            "SYNC" => 0,
-                            "PWM5INV" => 0,
-                            "PWM3INV" => 0,
-                            "PWM1INV" => 0,
-                            "PWMCP" => 0,
-                            "POINV" => 0,
-                            "HOFF" => 1,
-                            "DIR" =>0 
-                        )
+                    'tableEntry' => array(
+                        "PWM0LEN" => 4660,
+                        "PWM1LEN" => 22136,
+                        "PWM2LEN" => 39168,
+                        "SYNC" => 0,
+                        "PWM5INV" => 0,
+                        "PWM3INV" => 0,
+                        "PWM1INV" => 0,
+                        "PWMCP" => 0,
+                        "POINV" => 0,
+                        "HOFF" => 1,
+                        "DIR" =>0 
                     ),
                     'type' => 'ADuCPWM',
                     'params' => array()

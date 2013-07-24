@@ -197,6 +197,8 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
                     // Array   is the values that the extra can take
                     // Null    nothing
                     "extraValues" => array(),
+                    "otherTables" => array(),
+                    "tableEntry" => array(),
                 ),
             ),
             array(
@@ -238,6 +240,8 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
                     // Array   is the values that the extra can take
                     // Null    nothing
                     "extraValues" => array(),
+                    "otherTables" => array(),
+                    "tableEntry" => array(),
                 ),
             ),
         );

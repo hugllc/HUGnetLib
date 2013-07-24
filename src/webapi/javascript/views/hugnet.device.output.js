@@ -48,7 +48,8 @@ var DeviceOutputPropertiesView = Backbone.View.extend({
     events: {
         'click .save': 'saveclose',
         'change select.type': 'save',
-        'change select.id': 'save'
+        'change select.id': 'save',
+        'change #setTable': 'settable'
     },
     initialize: function (options)
     {
@@ -70,6 +71,13 @@ var DeviceOutputPropertiesView = Backbone.View.extend({
         this.setTitle("");
         //alert("Input Faled: " + msg);
     },
+    settable: function (e)
+    {
+        var value = this.$("#setTable").val();
+        this.$("#setTable").val(0);
+        console.log(value);
+        this.model.settable(value);
+    },
     saveclose: function (e)
     {
         this._close = true;
@@ -78,18 +86,10 @@ var DeviceOutputPropertiesView = Backbone.View.extend({
     save: function (e)
     {
         this.setTitle( " [ Saving...] " );
-        var i, output = {};
-        var data = this.$('form').serializeArray();
-        for (i in data) {
-            output[data[i].name] = data[i].value;
-        }
-        var extra = this.model.get('extraDefault');
-        output.extra = {};
-        for (i in extra) {
-            output.extra[i] = output['extra['+i+']'];
-            delete output['extra['+i+']'];
-        }
-        this.model.set(output);
+        var data = this.$('form').serializeObject();
+        
+        console.log(data);
+        this.model.set(data);
         this.model.save();
     },
     setTitle: function (extra)
@@ -111,6 +111,7 @@ var DeviceOutputPropertiesView = Backbone.View.extend({
     render: function ()
     {
         var data = this.model.toJSON();
+        console.log(data);
         _.extend(data, HUGnet.viewHelpers);
         var i;
         this.$el.html(
@@ -246,7 +247,7 @@ HUGnet.DeviceOutputsView = Backbone.View.extend({
         view.$el.dialog({
             modal: true,
             draggable: true,
-            width: 300,
+            width: 500,
             resizable: false,
             title: view.title(),
             dialogClass: "window",

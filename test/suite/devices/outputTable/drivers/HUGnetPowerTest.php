@@ -110,6 +110,7 @@ class HUGnetPowerTest extends DriverTestBase
                     'driver' => "HUGnetPower",
                     'type' => "HUGnetPower",
                     'params' => array(),
+                    'tableEntry' => array(),
                 ),
             ),
             array( // #1 Negative Numbers
@@ -127,6 +128,7 @@ class HUGnetPowerTest extends DriverTestBase
                     'driver' => "HUGnetPower",
                     'type' => "HUGnetPower",
                     'params' => array(),
+                    'tableEntry' => array(),
                 ),
             ),
         );

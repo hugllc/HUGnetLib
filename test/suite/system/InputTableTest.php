@@ -172,7 +172,7 @@ class InputTableTest extends \PHPUnit_Framework_TestCase
                     'id' => 253,
                     'asdf' => 3,
                     'archs' => array(
-                        'ADuC' => '0039-37 ADuC HUGnetLab Endpoint Analog',
+                        '0039-37' => '0039-37 ADuC HUGnetLab Endpoint Analog',
                         '0039-12' => '0039-12 AVR Endpoint Analog',
                         '0039-21-01' => '0039-21-01 Old Controller Board Analog',
                         '0039-21-02' => '0039-21-02 Controller Board Analog',

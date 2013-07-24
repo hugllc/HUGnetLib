@@ -48,13 +48,15 @@ var DeviceInputPropertiesView = Backbone.View.extend({
     events: {
         'click .save': 'saveclose',
         'change select.type': 'save',
-        'change select.id': 'save'
+        'change select.id': 'save',
+        'change #setTable': 'settable'
     },
     initialize: function (options)
     {
         this.model.on('change', this.render, this);
         this.model.on('saved', this.saveSuccess, this);
         this.model.on('savefail', this.saveFail, this);
+        this.model.on('sync', this.render, this);
     },
     saveSuccess: function (e)
     {
@@ -62,6 +64,7 @@ var DeviceInputPropertiesView = Backbone.View.extend({
             this.model.off('change', this.render, this);
             this.model.off('saved', this.saveSuccess, this);
             this.model.off('savefail', this.saveFail, this);
+            this.model.off('sync', this.render, this);
             this.remove();
         }
     },
@@ -75,21 +78,20 @@ var DeviceInputPropertiesView = Backbone.View.extend({
         this._close = true;
         this.save(e);
     },
+    settable: function (e)
+    {
+        var value = this.$("#setTable").val();
+        this.$("#setTable").val(0);
+        console.log(value);
+        this.model.settable(value);
+    },
     save: function (e)
     {
         this.setTitle( " [ Saving...] " );
-        var i, output = {};
-        var data = this.$('form').serializeArray();
-        for (i in data) {
-            output[data[i].name] = data[i].value;
-        }
-        var extra = this.model.get('extraDefault');
-        output.extra = {};
-        for (i in extra) {
-            output.extra[i] = output['extra['+i+']'];
-            delete output['extra['+i+']'];
-        }
-        this.model.set(output);
+        var data = this.$('form').serializeObject();
+        console.log("input");
+        console.log(data);
+        this.model.set(data);
         this.model.save();
     },
     setTitle: function (extra)
@@ -246,7 +248,7 @@ HUGnet.DeviceInputsView = Backbone.View.extend({
         view.$el.dialog({
             modal: true,
             draggable: true,
-            width: 300,
+            width: 500,
             resizable: false,
             title: view.title(),
             dialogClass: "window",

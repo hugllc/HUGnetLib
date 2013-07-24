@@ -156,7 +156,7 @@ class DeviceProcesses extends \HUGnet\db\TableParams
     );
     /** @var array These are reserved names that shouldn't be set */
     protected $setParams = array(
-        "RawSetup", "extra"
+        "RawSetup", "extra", "lastTable",
     );
     /**
     * This is the constructor

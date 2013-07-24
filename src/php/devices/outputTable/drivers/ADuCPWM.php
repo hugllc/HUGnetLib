@@ -114,11 +114,7 @@ class ADuCPWM extends \HUGnet\devices\outputTable\DriverADuC
         if ($name == "extraValues") {
             $entry = $this->entry()->fullArray();
             foreach ($this->entryMap as $key => $field) {
-                if (is_array($entry[$field]["valid"])) {
-                    $ret[$key]  = $entry[$field]["valid"];
-                } else {
-                    $ret[$key]  = $entry[$field]["size"];
-                }
+                $ret[$key]  = -1;
             }
         } else if ($name == "extraText") {
             $entry = $this->entry()->fullArray();
@@ -146,11 +142,6 @@ class ADuCPWM extends \HUGnet\devices\outputTable\DriverADuC
         $this->entry()->decode($string);
         $this->output()->set("tableEntry", $this->entry()->toArray());
         $extra = (array)$this->output()->get("extra");
-        $this->entry()->decode($string);
-        $decode = $this->entry()->toArray();
-        foreach ($this->entryMap as $key => $field) {
-            $extra[$key] = $decode[$field];
-        }
         $extra[10] = $this->decodeInt(substr($string, 16, 8), 4, true);
         $extra[11] = $this->decodeInt(substr($string, 24, 8), 4, true);
         $extra[12] = $this->decodeInt(substr($string, 32, 8), 4, true);

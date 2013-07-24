@@ -113,6 +113,7 @@ class ADuCGPIOTest extends DriverTestBase
                     'driver' => "ADuCGPIO",
                     'type' => "ADuCGPIO",
                     'params' => array(),
+                    'tableEntry' => array(),
                 ),
             ),
             array( // #1
@@ -130,6 +131,7 @@ class ADuCGPIOTest extends DriverTestBase
                     'driver' => "ADuCGPIO",
                     'type' => "ADuCGPIO",
                     'params' => array(),
+                    'tableEntry' => array(),
                 ),
             ),
         );

@@ -493,9 +493,7 @@ class AVRAnalogTableTest extends DriverTestBaseAVR
                        ),
                     ),
                 ),
-                array(
-                    array(1 => "Hello", 2 => "Again"), 5, 5, 5
-                ),
+                array(-1, 5, 5, 5),
             ),
         );
     }

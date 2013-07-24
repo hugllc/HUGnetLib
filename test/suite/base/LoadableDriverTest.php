@@ -726,10 +726,10 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
         $output = $this->output->toArray(false);
         if (is_null($expect)) {
             $this->assertNull($ret);
-            $this->assertNull($output["tableEntry"]);
+            $this->assertInternalType("array", $output["tableEntry"]);
         } else {
             $this->assertEquals($expect, $ret->toArray(false));
-            $this->assertInternalType("string", $output["tableEntry"]);
+            $this->assertInternalType("array", $output["tableEntry"]);
         }
     }
 }

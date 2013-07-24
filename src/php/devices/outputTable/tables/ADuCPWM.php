@@ -279,7 +279,7 @@ class ADuCPWM
     {
         if (is_string($set) || is_int($set)) {
             if (is_string($set)) {
-                $set = hexdec($set);
+                $set = (int)$set;
             }
             foreach ($this->_params as $field => $vals) {
                 if (($vals["register"] === $register) && !isset($vals["hidden"])) {
@@ -325,7 +325,7 @@ class ADuCPWM
     private function _params($param, $set = null)
     {
         if (is_string($set)) {
-            $set = (int)hexdec($set);
+            $set = (int)$set;
         }
         if (is_int($set)) {
             $par = &$this->_params[$param];
@@ -372,10 +372,18 @@ class ADuCPWM
     public function decode($string)
     {
         if (strlen($string) >= 16) {
-            $this->register("PWMCON", substr($string, 2, 2).substr($string, 0, 2));
-            $this->length(0, substr($string, 6, 2).substr($string, 4, 2));
-            $this->length(1, substr($string, 10, 2).substr($string, 8, 2));
-            $this->length(2, substr($string, 14, 2).substr($string, 12, 2));
+            $this->register(
+                "PWMCON", hexdec(substr($string, 2, 2).substr($string, 0, 2))
+            );
+            $this->length(
+                0, hexdec(substr($string, 6, 2).substr($string, 4, 2))
+            );
+            $this->length(
+                1, hexdec(substr($string, 10, 2).substr($string, 8, 2))
+            );
+            $this->length(
+                2, hexdec(substr($string, 14, 2).substr($string, 12, 2))
+            );
             return true;
         }
         return false;

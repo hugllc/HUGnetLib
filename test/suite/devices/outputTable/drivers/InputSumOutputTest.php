@@ -113,6 +113,7 @@ class InputSumOutputTest extends DriverTestBase
                     'driver' => "InputSumOutput",
                     'type' => "InputSumOutput",
                     'params' => array(),
+                    'tableEntry' => array(),
                 ),
             ),
             array( // #1 Negative Numbers
@@ -130,6 +131,7 @@ class InputSumOutputTest extends DriverTestBase
                     'driver' => "InputSumOutput",
                     'type' => "InputSumOutput",
                     'params' => array(),
+                    'tableEntry' => array(),
                 ),
             ),
         );

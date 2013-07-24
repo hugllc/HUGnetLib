@@ -94,12 +94,12 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
         "storageUnit" => "Unknown",
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraText" => array(
-            "Table Entry",
+            "Reserved",
             "Channel 0 Reading @ 0",
             "Channel 1 Reading @ 0",
         ),
         "extraDesc" => array(
-            "The InputTable entry to use for this input",
+            "Not used",
             "The offset for ADC0.  This is in the units of the driver used",
             "The offset for ADC1.  This is in the units of the driver used",
         ),
@@ -107,7 +107,7 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            array(), 10, 10
+            -1, 10, 10
         ),
         "extraDefault" => array(0, 0, 0),
         "maxDecimals" => 6,
@@ -228,7 +228,7 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
     */
     private function _getTableEntries()
     {
-        $values = $this->_table()->select("arch = ?", array("ADuC"));
+        $values = $this->_table()->select("arch = ?", array("0039-37"));
         $return = array();
         foreach ((array)$values as $val) {
             $return[$val->get("id")] = $val->get("name");
@@ -247,8 +247,8 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
         $param = parent::get($name);
         switch ($name) {
         case "extraValues":
-            $param = (array)$param;
-            $param[0] = $this->_getTableEntries();
+            //$param = (array)$param;
+            //$param[0] = $this->_getTableEntries();
         case "extraText":
         case "extraDesc":
         case "extraDefault":

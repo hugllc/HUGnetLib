@@ -48,7 +48,8 @@ var DeviceProcessPropertiesView = Backbone.View.extend({
     events: {
         'click .save': 'saveclose',
         'change select.type': 'save',
-        'change select.id': 'save'
+        'change select.id': 'save',
+        'change #setTable': 'settable'
     },
     initialize: function (options)
     {
@@ -75,21 +76,20 @@ var DeviceProcessPropertiesView = Backbone.View.extend({
         this._close = true;
         this.save(e);
     },
+    settable: function (e)
+    {
+        var value = this.$("#setTable").val();
+        this.$("#setTable").val(0);
+        console.log(value);
+        this.model.settable(value);
+    },
     save: function (e)
     {
         this.setTitle( " [ Saving...] " );
-        var i, process = {};
-        var data = this.$('form').serializeArray();
-        for (i in data) {
-            process[data[i].name] = data[i].value;
-        }
-        var extra = this.model.get('extraDefault');
-        process.extra = {};
-        for (i in extra) {
-            process.extra[i] = process['extra['+i+']'];
-            delete process['extra['+i+']'];
-        }
-        this.model.set(process);
+        var data = this.$('form').serializeObject();
+        console.log("process");
+        console.log(data);
+        this.model.set(data);
         this.model.save();
     },
     setTitle: function (extra)
@@ -246,7 +246,7 @@ HUGnet.DeviceProcessesView = Backbone.View.extend({
         view.$el.dialog({
             modal: true,
             draggable: true,
-            width: 300,
+            width: 500,
             resizable: false,
             title: view.title(),
             dialogClass: "window",

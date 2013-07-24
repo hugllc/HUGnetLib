@@ -67,7 +67,7 @@ class InputTable extends \HUGnet\base\XTableBase
     protected $xTable = "InputTable";
     /** This is the type of tables we have available */
     protected $types = array(
-        "ADuC" => "0039-37 ADuC HUGnetLab Endpoint Analog",
+        "0039-37" => "0039-37 ADuC HUGnetLab Endpoint Analog",
         "0039-12" => "0039-12 AVR Endpoint Analog",
         "0039-21-01" => "0039-21-01 Old Controller Board Analog",
         "0039-21-02" => "0039-21-02 Controller Board Analog",

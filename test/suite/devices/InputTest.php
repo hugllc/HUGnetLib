@@ -217,6 +217,8 @@ class InputTest extends \PHPUnit_Framework_TestCase
                     'validIds' => array(
                         254 => "Virtual", 255 => "Empty Slot",
                     ),
+                    "otherTables" => array(),
+                    "tableEntry" => array(),
                 )
             ),
         );

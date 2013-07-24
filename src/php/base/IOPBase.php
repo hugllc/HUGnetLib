@@ -40,6 +40,8 @@ namespace HUGnet\base;
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our base class */
 require_once dirname(__FILE__)."/SystemTableBase.php";
+/** This is our base class */
+require_once dirname(__FILE__)."/../interfaces/WebAPI.php";
 
 /**
  * Base system class.
@@ -59,6 +61,7 @@ require_once dirname(__FILE__)."/SystemTableBase.php";
  * @since      0.9.7
  */
 abstract class IOPBase extends SystemTableBase
+    implements \HUGnet\interfaces\WebAPI
 {
     /**
     * This is the cache for the drivers.
@@ -174,6 +177,24 @@ abstract class IOPBase extends SystemTableBase
         return $ret;
     }
     /**
+    * Returns the driver object
+    *
+    * @return object The driver requested
+    */
+    private function _getTableEntries()
+    {
+        $entry = $this->system()->table(ucfirst($this->driverLoc));
+        $return = array();
+        $arch = $this->device()->get("arch");
+        $values = $entry->select(
+            array("arch" => $arch)
+        );
+        foreach ((array)$values as $val) {
+            $return[$val->get("id")] = $val->get("name");
+        }
+        return $return;
+    }
+    /**
     * Returns the table as an array
     *
     * @param bool $default Whether to include the default params or not
@@ -186,10 +207,13 @@ abstract class IOPBase extends SystemTableBase
         if ($default) {
             $entry = $this->driver()->entry();
             if (is_object($entry)) {
-                $return["tableEntry"] = $entry->fullArray();
+                $return["fullEntry"] = $entry->fullArray();
+            } else {
+                unset($return["fullEntry"]);
             }
             $driver = $this->driver()->toArray();
             $return = array_merge($driver, $return);
+            $return["otherTables"] = $this->_getTableEntries();
         }
         $params = json_decode($return["params"], true);
         if (empty($return["type"])) {
@@ -198,6 +222,9 @@ abstract class IOPBase extends SystemTableBase
             );
         }
         $return["params"] = (array)$params;
+        if (!is_array($return["tableEntry"])) {
+            $return["tableEntry"] = (array)json_decode($return["tableEntry"], true);
+        }
         return (array)$return;
     }
     /**
@@ -316,6 +343,85 @@ abstract class IOPBase extends SystemTableBase
     public function store($replace = true)
     {
         return parent::store($replace);
+    }
+    /**
+    * returns a history object for this device
+    *
+    * @param object $args  The argument object
+    * @param array  $extra Extra data from the
+    *
+    * @return boolean True on success, false on failure
+    */
+    public function setEntry($id)
+    {
+        $entry = $this->system()->table(ucfirst($this->driverLoc));
+        $arch = $this->device()->get("arch");
+        $ret = $entry->selectOneInto(
+            array("arch" => $arch, "id" => (int)$id)
+        );
+        if ($ret) {
+            $this->set("tableEntry", $entry->get("params"));
+            $this->set(
+                "lastTable", 
+                $entry->get("id").": ".$entry->get("name")
+            );
+        }
+        return (bool)$ret;
+    }
+    /**
+    * returns a history object for this device
+    *
+    * @param object $args  The argument object
+    * @param array  $extra Extra data from the
+    *
+    * @return string
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function webAPI($args, $extra)
+    {
+        $action = trim(strtolower($args->get("action")));
+        $ret = null;
+        if ($action === "put") {
+            $ret = $this->_put($args);
+        } else if ($action === "settable") {
+            $ret = $this->_settable($args);
+        }
+        return $ret;
+    }
+    /**
+    * returns a history object for this device
+    *
+    * @param object $args The argument object
+    *
+    * @return string
+    */
+    private function _settable($args)
+    {
+        $data = (array)$args->get("data");
+        $ret = $this->setEntry((int)$data["id"]);
+        if ($ret) {
+            $this->store();
+            return "regen";
+        }
+        return -1;
+    }
+    /**
+    * returns a history object for this device
+    *
+    * @param object $args The argument object
+    *
+    * @return string
+    */
+    private function _put($args)
+    {
+        $data = (array)$args->get("data");
+        $entry = $this->driver()->entry($data["tableEntry"]);
+        $data["tableEntry"] = $entry->toArray();
+        $ret = $this->change($data);
+        if ($ret) {
+            return "regen";
+        }
+        return -1;
     }
 }
 

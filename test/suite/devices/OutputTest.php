@@ -198,6 +198,8 @@ class OutputTest extends \PHPUnit_Framework_TestCase
                     "min" => 1234,
                     "max" => 4321,
                     "zero" => 0,
+                    "otherTables" => array(),
+                    "tableEntry" => array(),
                 ),
             ),
             array(
@@ -240,6 +242,8 @@ class OutputTest extends \PHPUnit_Framework_TestCase
                     "min" => 0,
                     "max" => 0,
                     "zero" => 0,
+                    "otherTables" => array(),
+                    "tableEntry" => array(),
                 ),
             ),
         );

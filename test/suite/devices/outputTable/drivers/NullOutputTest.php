@@ -113,6 +113,7 @@ class NullOutputTest extends DriverTestBase
                     'driver' => "NullOutput",
                     'type' => "NullOutput",
                     'params' => array(),
+                    'tableEntry' => array(),
                 ),
             ),
             array( // #1 Negative Numbers
@@ -130,6 +131,7 @@ class NullOutputTest extends DriverTestBase
                     'driver' => "NullOutput",
                     'type' => "NullOutput",
                     'params' => array(),
+                    'tableEntry' => array(),
                 ),
             ),
         );

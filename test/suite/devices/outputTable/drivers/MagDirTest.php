@@ -113,6 +113,7 @@ class MagDirTest extends DriverTestBase
                     'driver' => "MagDir",
                     'type' => "MagDir",
                     'params' => array(),
+                    'tableEntry' => array(),
                 ),
             ),
             array( // #1 Negative Numbers
@@ -130,6 +131,7 @@ class MagDirTest extends DriverTestBase
                     'driver' => "MagDir",
                     'type' => "MagDir",
                     'params' => array(),
+                    'tableEntry' => array(),
                 ),
             ),
         );

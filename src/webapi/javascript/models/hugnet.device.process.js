@@ -53,6 +53,10 @@ HUGnet.DeviceProcess = Backbone.Model.extend({
         extraText: {},
         extraDefault: {},
         extraValues: {},
+        tableEntry: {},
+        fullEntry: {},
+        otherTables: {},
+        lastTable: "None",
         driver: 'SDEFAULT',
         params: {},
     },
@@ -138,6 +142,47 @@ HUGnet.DeviceProcess = Backbone.Model.extend({
                     self.trigger('sync');
                 } else {
                     self.trigger('savefail', "save failed on server");
+                }
+            }
+        ).fail(
+            function ()
+            {
+                self.trigger('savefail', "failed to contact server");
+            }
+        );
+    },
+    /**
+    * Gets infomration about a device.  This is retrieved from the database only.
+    *
+    * @param id The id of the device to get
+    *
+    * @return null
+    */
+    settable: function(table)
+    {
+        var self = this;
+        var dev = this.get('dev');
+        $.ajax({
+            type: 'POST',
+            url: this.url(),
+            cache: false,
+            dataType: 'json',
+            data: {
+                "task": "deviceprocess",
+                "action": "settable",
+                "id": parseInt(dev, 10).toString(16)+"."+this.get("process"),
+                "data": { id: parseInt(table) }
+            }
+        }).done(
+            function (data)
+            {
+                if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
+                    self.trigger('saved');
+                    self.set(data);
+                    self.trigger('fetchdone');
+                    self.trigger('sync');
+                } else {
+                    self.trigger('savefail', "set table failed on server");
                 }
             }
         ).fail(

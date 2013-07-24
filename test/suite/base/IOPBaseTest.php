@@ -183,7 +183,9 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
                     "extraText" => array(),
                     "extraDefault" => array(),
                     "extraValues" => array(),
-                    "tableEntry" => array("a" => "b"),
+                    "fullEntry" => array("a" => "b"),
+                    "tableEntry" => array(),
+                    "otherTables" => array(),
                 ),
             ),
             array(
@@ -221,7 +223,9 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
                     "extraText" => array(),
                     "extraDefault" => array(),
                     "extraValues" => array(),
-                    "tableEntry" => array("a" => "b"),
+                    "fullEntry" => array("a" => "b"),
+                    "tableEntry" => array(),
+                    "otherTables" => array(),
                 ),
             ),
             array(
@@ -254,6 +258,7 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
                         3 => 4,
                     ),
                     'type' => 'TestIOPBaseDriver1',
+                    'tableEntry' => array(),
                 ),
             ),
         );
