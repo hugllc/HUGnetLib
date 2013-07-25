@@ -580,9 +580,7 @@ class Device extends \HUGnet\base\SystemTableAction
     */
     public function &input($sid)
     {
-        $role = $this->get("Role");
-        $info = $this->_role()->input($role, $sid);
-        return $this->driver()->input($sid, $info);
+        return $this->_getIOP($sid, "input");
     }
     /**
     * This creates the sensor drivers
@@ -593,9 +591,7 @@ class Device extends \HUGnet\base\SystemTableAction
     */
     public function &output($sid)
     {
-        $role = $this->get("Role");
-        $info = $this->_role()->output($role, $sid);
-        return $this->driver()->output($sid, $info);
+        return $this->_getIOP($sid, "output");
     }
     /**
     * This creates the sensor drivers
@@ -606,29 +602,32 @@ class Device extends \HUGnet\base\SystemTableAction
     */
     public function &process($sid)
     {
-        $role = $this->get("Role");
-        $info = (array)$this->_role()->process($role, $sid);
-        return $this->driver()->process($sid, $info);
+        return $this->_getIOP($sid, "process");
     }
     /**
     * This fixes the IOP object
     *
-    * @param object &$iop The IOP object to fix
-    * @param array  $data The data to fix the object with
+    * @param int    $sid  The sensor id to get.  They are labaled 0 to sensors
+    * @param string $type The type of iop to get (input, output, process)
     *
     * @return null
     */
-    private function _fixIOP(&$iop, $data)
+    private function &_getIOP($sid, $type)
     {
-        foreach (array("extra", "location") as $field) {
-            if (isset($data[$field])) {
-                $iop->mix($field, $data[$field]);
-                unset($data[$field]);
-            }
+        $role  = $this->get("Role");
+        $info  = (array)$this->_role()->$type($role, $sid);
+        if (!empty($info)) {
+            $extra = (array)$info["extra"];
+            unset($info["extra"]);
+            $location = $info["location"];
+            unset($info["location"]);
         }
-        foreach ($data as $field => $value) {
-            $iop->set($field, $value);
+        $iop = $this->driver()->$type($sid, $info);
+        if (!empty($info)) {
+            $iop->mix("extra", $extra);
+            $iop->mix("location", $location);
         }
+        return $iop;
     }
     /**
     * Returns the devices XML file as an array

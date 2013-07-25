@@ -409,7 +409,7 @@ abstract class Driver
     /**
     * This creates the sensor drivers
     *
-    * @param int   $sid  The sensor id to get.  They are labaled 0 to sensors
+    * @param int   $sid  The sensor id to get.  They are labeled 0 to sensors
     * @param array $data The data to use for a role
     *
     * @return null
