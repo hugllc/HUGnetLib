@@ -581,27 +581,8 @@ class Device extends \HUGnet\base\SystemTableAction
     public function &input($sid)
     {
         $role = $this->get("Role");
-        if (!empty($role)) {
-            $info = $this->_role()->input($role, $sid);
-            if (is_array($info)) {
-                unset($info["data"]["dev"]);
-                unset($info["data"]["input"]);
-                $info["group"] = $this->table()->get("group");
-                include_once dirname(__FILE__)."/../devices/Input.php";
-                $system = $this->system();
-                $ret = \HUGnet\devices\Input::factory(
-                    $system,
-                    array("dev" => $this->id(), "input" => $sid),
-                    null,
-                    $this,
-                    (array)$info["table"]
-                );
-                $this->_fixIOP($ret, $info["data"]);
-                return $ret;
-            }
-        }
-
-        return $this->driver()->input($sid);
+        $info = $this->_role()->input($role, $sid);
+        return $this->driver()->input($sid, $info);
     }
     /**
     * This creates the sensor drivers
@@ -613,26 +594,8 @@ class Device extends \HUGnet\base\SystemTableAction
     public function &output($sid)
     {
         $role = $this->get("Role");
-        if (!empty($role)) {
-            $info = $this->_role()->output($role, $sid);
-            if (is_array($info)) {
-                include_once dirname(__FILE__)."/../devices/Output.php";
-                unset($info["data"]["dev"]);
-                unset($info["data"]["output"]);
-                $system = $this->system();
-                $ret = \HUGnet\devices\Output::factory(
-                    $system,
-                    array("dev" => $this->id(), "output" => $sid),
-                    null,
-                    $this,
-                    (array)$info["table"]
-                );
-                $this->_fixIOP($ret, $info["data"]);
-                return $ret;
-            }
-        }
-
-        return $this->driver()->output($sid);
+        $info = $this->_role()->output($role, $sid);
+        return $this->driver()->output($sid, $info);
     }
     /**
     * This creates the sensor drivers
@@ -644,26 +607,8 @@ class Device extends \HUGnet\base\SystemTableAction
     public function &process($sid)
     {
         $role = $this->get("Role");
-        if (!empty($role)) {
-            $info = $this->_role()->process($role, $sid);
-            if (is_array($info)) {
-                include_once dirname(__FILE__)."/../devices/Process.php";
-                unset($info["data"]["dev"]);
-                unset($info["data"]["process"]);
-                $system = $this->system();
-                $ret = \HUGnet\devices\Process::factory(
-                    $system,
-                    array("dev" => $this->id(), "process" => $sid),
-                    null,
-                    $this,
-                    (array)$info["table"]
-                );
-                $this->_fixIOP($ret, $info["data"]);
-                return $ret;
-            }
-        }
-
-        return $this->driver()->process($sid);
+        $info = (array)$this->_role()->process($role, $sid);
+        return $this->driver()->process($sid, $info);
     }
     /**
     * This fixes the IOP object

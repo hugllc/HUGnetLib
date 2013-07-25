@@ -1503,8 +1503,6 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     public function testDecodeData(
         $preload, $data, $command, $deltaT, $prev, $expect
     ) {
-        //$sys = new DummySystem("System");
-        //$sys->resetMock($config);
         $sys = $this->getMock('\HUGnet\System', array('now'));
         $obj = Device::factory($sys, $preload);
         $data = $obj->decodeData($data, $command, $deltaT, $prev);
@@ -1765,6 +1763,12 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         array(
                             "output" => 1,
                             "dev" => 5,
+                            'extra' => array(1, 1),
+                            'location' => 'Output 1',
+                            'id' => 49,
+                            'type' => 'FSDA',
+                            'tableEntry' => array(),
+                            'group' => 'hello',
                         ),
                     ),
                 ),
@@ -1870,6 +1874,12 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         array(
                             "process" => 0,
                             "dev" => 5,
+                            'extra' => array(0, 1, 2),
+                            'location' => 'Process 0',
+                            'id' => 129,
+                            'type' => 'ASDF',
+                            'tableEntry' => array(),
+                            'group' => 'hello',
                         ),
                     ),
                 ),
@@ -2264,27 +2274,23 @@ class DeviceTestRole extends \HUGnet\base\Role
     */
     protected $input = array(
         0 => array(
-            "table" => array(
+            "id" => 0x61,
+            "extra" => array(3,2,1),
+            "location" => "Input 0",
+            "type" => "ASDF",
+            "tableEntry" => array(
                 "driver" => "41:DEFAULT",
                 "name" => "Intput 0",
             ),
-            "data" => array(
-                "id" => 0x61,
-                "extra" => array(3,2,1),
-                "location" => "Input 0",
-                "type" => "ASDF",
-            ),
         ),
         1 => array(
-            "table" => array(
+            "id" => 0x83,
+            "extra" => array(1,2,3),
+            "location" => "Input1",
+            "type" => "FSDA",
+            "tableEntry" => array(
                 "driver" => "42:DEFAULT",
                 "name" => "Input 1",
-            ),
-            "data" => array(
-                "id" => 0x83,
-                "extra" => array(1,2,3),
-                "location" => "Input1",
-                "type" => "FSDA",
             ),
         ),
     );
@@ -2293,23 +2299,19 @@ class DeviceTestRole extends \HUGnet\base\Role
     */
     protected $output = array(
         0 => array(
-            "table" => array(
-            ),
-            "data" => array(
-                "extra" => array(0, 1),
-                "location" => "Output 0",
-                "id"     => 0x32,
-                "type"   => "ASDF",
+            "extra" => array(0, 1),
+            "location" => "Output 0",
+            "id"     => 0x32,
+            "type"   => "ASDF",
+            "tableEntry" => array(
             ),
         ),
         1 => array(
-            "table" => array(
-            ),
-            "data" => array(
-                "extra" => array(1, 1),
-                "location" => "Output 1",
-                "id"     => 0x31,
-                "type"   => "FSDA",
+            "extra" => array(1, 1),
+            "location" => "Output 1",
+            "id"     => 0x31,
+            "type"   => "FSDA",
+            "tableEntry" => array(
             ),
         ),
     );
@@ -2318,23 +2320,19 @@ class DeviceTestRole extends \HUGnet\base\Role
     */
     protected $process = array(
         0 => array(
-            "table" => array(
-            ),
-            "data" => array(
-                "extra" => array(0, 1, 2),
-                "location" => "Process 0",
-                "id"     => 0x81,
-                "type"   => "ASDF",
+            "extra" => array(0, 1, 2),
+            "location" => "Process 0",
+            "id"     => 0x81,
+            "type"   => "ASDF",
+            "tableEntry" => array(
             ),
         ),
         1 => array(
-            "table" => array(
-            ),
-            "data" => array(
-                "extra" => array(2, 1, 0),
-                "location" => "Process 1",
-                "id"     => 0x23,
-                "type"   => "FSDA",
+            "extra" => array(2, 1, 0),
+            "location" => "Process 1",
+            "id"     => 0x23,
+            "type"   => "FSDA",
+            "tableEntry" => array(
             ),
         ),
     );

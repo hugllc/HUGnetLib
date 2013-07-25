@@ -138,7 +138,7 @@ class Role
     * @param string $role The name of the role
     * @param int    $iid  The sensor id to get.  They are zero based
     *
-    * @return null if not found, array otherwise
+    * @return array
     */
     public function input($role, $iid)
     {
@@ -146,7 +146,7 @@ class Role
         if (is_object($uRole)) {
             return $uRole->input($iid);
         }
-        return null;
+        return array();
     }
     /**
     * This creates the sensor drivers
@@ -154,7 +154,7 @@ class Role
     * @param string $role The name of the role
     * @param int    $oid  The sensor id to get.  They are zero based
     *
-    * @return null if not found, array otherwise
+    * @return array
     */
     public function output($role, $oid)
     {
@@ -162,7 +162,7 @@ class Role
         if (is_object($uRole)) {
             return $uRole->output($oid);
         }
-        return null;
+        return array();
     }
     /**
     * This creates the sensor drivers
@@ -170,7 +170,7 @@ class Role
     * @param string $role The name of the role
     * @param int    $pid  The sensor id to get.  They are zero based
     *
-    * @return null if not found, array otherwise
+    * @return array
     */
     public function process($role, $pid)
     {
@@ -178,7 +178,7 @@ class Role
         if (is_object($uRole)) {
             return $uRole->process($pid);
         }
-        return null;
+        return array();
     }
     /**
     * This creates the sensor drivers

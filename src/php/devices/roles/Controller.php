@@ -67,7 +67,11 @@ class Controller extends \HUGnet\base\Role
     */
     protected $input = array(
         0 => array(            // HUGnet1 Voltage High
-            "table" => array(
+            "id" => 0xF8,
+            "extra" => array(0, 180, 27, 5.0),
+            "location" => "HUGnet 1 Voltage High",
+            "type" => "AVRAnalogTable",
+            "tableEntry" => array(
                 "driver" => "40:DEFAULT",
                 "name" => "Controller Board Voltage",
                 "MUX" => 4,
@@ -75,15 +79,13 @@ class Controller extends \HUGnet\base\Role
                 "ADLAR" => 1,
                 "REFS" => 1,
             ),
-            "data" => array(
-                "id" => 0xF8,
-                "extra" => array(0, 180, 27, 5.0),
-                "location" => "HUGnet 1 Voltage High",
-                "type" => "AVRAnalogTable",
-            ),
         ),
         1 => array(            // HUGnet1 Voltage Low
-            "table" => array(
+            "id" => 0xF8,
+            "extra" => array(0, 180, 27, 5.0),
+            "location" => "HUGnet 1 Voltage Low",
+            "type" => "AVRAnalogTable",
+            "tableEntry" => array(
                 "driver" => "40:DEFAULT",
                 "name" => "Controller Board Voltage",
                 "MUX" => 5,
@@ -91,15 +93,13 @@ class Controller extends \HUGnet\base\Role
                 "ADLAR" => 1,
                 "REFS" => 1,
             ),
-            "data" => array(
-                "id" => 0xF8,
-                "extra" => array(0, 180, 27, 5.0),
-                "location" => "HUGnet 1 Voltage Low",
-                "type" => "AVRAnalogTable",
-            ),
         ),
         2 => array(            // HUGnet1 Current
-            "table" => array(
+            "id" => 0xF8,
+            "extra" => array(0, 0.5, 7, 5.0),
+            "location" => "HUGnet 1 Current",
+            "type" => "AVRAnalogTable",
+            "tableEntry" => array(
                 "driver" => "50:DEFAULT",
                 "name" => "Controller Board Current",
                 "MUX" => 7,
@@ -107,15 +107,13 @@ class Controller extends \HUGnet\base\Role
                 "ADLAR" => 1,
                 "REFS" => 1,
             ),
-            "data" => array(
-                "id" => 0xF8,
-                "extra" => array(0, 0.5, 7, 5.0),
-                "location" => "HUGnet 1 Current",
-                "type" => "AVRAnalogTable",
-            ),
         ),
         3 => array(            // HUGnet1 Temperature
-            "table" => array(
+            "id" => 0xF8,
+            "extra" => array(0, 100, 10),
+            "location" => "HUGnet 1 Temperature",
+            "type" => "AVRAnalogTable",
+            "tableEntry" => array(
                 "driver" => "02:AVRBC2322640",
                 "name" => "Controller Board Temperature",
                 "MUX" => 6,
@@ -123,15 +121,13 @@ class Controller extends \HUGnet\base\Role
                 "ADLAR" => 1,
                 "REFS" => 1,
             ),
-            "data" => array(
-                "id" => 0xF8,
-                "extra" => array(0, 100, 10),
-                "location" => "HUGnet 1 Temperature",
-                "type" => "AVRAnalogTable",
-            ),
         ),
         4 => array(            // HUGnet2 Voltage High
-            "table" => array(
+            "id" => 0xF8,
+            "extra" => array(0, 180, 27, 5.0),
+            "location" => "HUGnet 2 Voltage High",
+            "type" => "AVRAnalogTable",
+            "tableEntry" => array(
                 "driver" => "40:DEFAULT",
                 "name" => "Controller Board Voltage",
                 "MUX" => 3,
@@ -139,15 +135,13 @@ class Controller extends \HUGnet\base\Role
                 "ADLAR" => 1,
                 "REFS" => 1,
             ),
-            "data" => array(
-                "id" => 0xF8,
-                "extra" => array(0, 180, 27, 5.0),
-                "location" => "HUGnet 2 Voltage High",
-                "type" => "AVRAnalogTable",
-            ),
         ),
         5 => array(            // HUGnet2 Voltage Low
-            "table" => array(
+            "id" => 0xF8,
+            "extra" => array(0, 180, 27, 5.0),
+            "location" => "HUGnet 2 Voltage Low",
+            "type" => "AVRAnalogTable",
+            "tableEntry" => array(
                 "driver" => "40:DEFAULT",
                 "name" => "Controller Board Voltage",
                 "MUX" => 2,
@@ -155,15 +149,13 @@ class Controller extends \HUGnet\base\Role
                 "ADLAR" => 1,
                 "REFS" => 1,
             ),
-            "data" => array(
-                "id" => 0xF8,
-                "extra" => array(0, 180, 27, 5.0),
-                "location" => "HUGnet 2 Voltage Low",
-                "type" => "AVRAnalogTable",
-            ),
         ),
         6 => array(            // HUGnet2 Current
-            "table" => array(
+            "id" => 0xF8,
+            "extra" => array(0, 0.5, 7, 5.0),
+            "location" => "HUGnet 2 Current",
+            "type" => "AVRAnalogTable",
+            "tableEntry" => array(
                 "driver" => "50:DEFAULT",
                 "name" => "Controller Board Current",
                 "MUX" => 0,
@@ -171,27 +163,19 @@ class Controller extends \HUGnet\base\Role
                 "ADLAR" => 1,
                 "REFS" => 1,
             ),
-            "data" => array(
-                "id" => 0xF8,
-                "extra" => array(0, 0.5, 7, 5.0),
-                "location" => "HUGnet 2 Current",
-                "type" => "AVRAnalogTable",
-            ),
         ),
         7 => array(            // HUGnet2 Temperature
-            "table" => array(
+            "id" => 0xF8,
+            "extra" => array(0, 100, 10),
+            "location" => "HUGnet 2 Temperature",
+            "type" => "AVRAnalogTable",
+            "tableEntry" => array(
                 "driver" => "02:AVRBC2322640",
                 "name" => "Controller Board Temperature",
                 "MUX" => 1,
                 "id" => 0,
                 "ADLAR" => 1,
                 "REFS" => 1,
-            ),
-            "data" => array(
-                "id" => 0xF8,
-                "extra" => array(0, 100, 10),
-                "location" => "HUGnet 2 Temperature",
-                "type" => "AVRAnalogTable",
             ),
         ),
     );
@@ -200,26 +184,20 @@ class Controller extends \HUGnet\base\Role
     */
     protected $output = array(
         0 => array(
-            "table" => array(
-            ),
-            "data" => array(
-                // HUGnet 0
-                "extra" => array(0, 1),
-                "location" => "HUGnet 1 Power",
-                "id"     => 0x30,
-                "type"   => "HUGnetPower",
-            ),
+            // HUGnet 0
+            "extra" => array(0, 1),
+            "location" => "HUGnet 1 Power",
+            "id"     => 0x30,
+            "type"   => "HUGnetPower",
+            "tableEntry" => array(),
         ),
         1 => array(
-            "table" => array(
-            ),
-            "data" => array(
-                // HUGnet 1
-                "extra" => array(1, 1),
-                "location" => "HUGnet 2 Power",
-                "id"     => 0x30,
-                "type"   => "HUGnetPower",
-            ),
+            // HUGnet 1
+            "extra" => array(1, 1),
+            "location" => "HUGnet 2 Power",
+            "id"     => 0x30,
+            "type"   => "HUGnetPower",
+            "tableEntry" => array(),
         ),
     );
     /**

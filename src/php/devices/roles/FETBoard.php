@@ -67,7 +67,11 @@ class FETBoard extends \HUGnet\base\Role
     */
     protected $input = array(
         0 => array(            // Current
-            "table" => array(
+            "id" => 0xF8,
+            "extra" => array(0, 0.5, 1, 5.0),
+            "location" => "Channel 1 Current",
+            "type" => "AVRAnalogTable",
+            "tableEntry" => array(
                 "driver" => "50:fetBoard",
                 "name" => "FET Board Current",
                 "MUX" => 0,
@@ -75,15 +79,13 @@ class FETBoard extends \HUGnet\base\Role
                 "ADLAR" => 1,
                 "REFS" => 1,
             ),
-            "data" => array(
-                "id" => 0xF8,
-                "extra" => array(0, 0.5, 1, 5.0),
-                "location" => "Channel 1 Current",
-                "type" => "AVRAnalogTable",
-            ),
         ),
         1 => array(            // Voltage
-            "table" => array(
+            "id" => 0xF8,
+            "extra" => array(0, 150, 10, 5.0),
+            "location" => "Channel 1 Voltage",
+            "type" => "AVRAnalogTable",
+            "tableEntry" => array(
                 "driver" => "40:fetBoard",
                 "name" => "FET Board Voltage",
                 "MUX" => 1,
@@ -91,15 +93,13 @@ class FETBoard extends \HUGnet\base\Role
                 "ADLAR" => 1,
                 "REFS" => 1,
             ),
-            "data" => array(
-                "id" => 0xF8,
-                "extra" => array(0, 150, 10, 5.0),
-                "location" => "Channel 1 Voltage",
-                "type" => "AVRAnalogTable",
-            ),
         ),
         2 => array(            // Current
-            "table" => array(
+            "id" => 0xF8,
+            "extra" => array(0, 0.5, 1, 5.0),
+            "location" => "Channel 2 Current",
+            "type" => "AVRAnalogTable",
+            "tableEntry" => array(
                 "driver" => "50:fetBoard",
                 "name" => "FET Board Current",
                 "MUX" => 2,
@@ -107,15 +107,13 @@ class FETBoard extends \HUGnet\base\Role
                 "ADLAR" => 1,
                 "REFS" => 1,
             ),
-            "data" => array(
-                "id" => 0xF8,
-                "extra" => array(0, 0.5, 1, 5.0),
-                "location" => "Channel 2 Current",
-                "type" => "AVRAnalogTable",
-            ),
         ),
         3 => array(            // Voltage
-            "table" => array(
+            "id" => 0xF8,
+            "extra" => array(0, 150, 10, 5.0),
+            "location" => "Channel 2 Voltage",
+            "type" => "AVRAnalogTable",
+            "tableEntry" => array(
                 "driver" => "40:fetBoard",
                 "name" => "FET Board Voltage",
                 "MUX" => 3,
@@ -123,15 +121,13 @@ class FETBoard extends \HUGnet\base\Role
                 "ADLAR" => 1,
                 "REFS" => 1,
             ),
-            "data" => array(
-                "id" => 0xF8,
-                "extra" => array(0, 150, 10, 5.0),
-                "location" => "Channel 2 Voltage",
-                "type" => "AVRAnalogTable",
-            ),
         ),
         4 => array(            // Current
-            "table" => array(
+            "id" => 0xF8,
+            "extra" => array(0, 0.5, 1, 5.0),
+            "location" => "Channel 3 Current",
+            "type" => "AVRAnalogTable",
+            "tableEntry" => array(
                 "driver" => "50:fetBoard",
                 "name" => "FET Board Current",
                 "MUX" => 4,
@@ -139,15 +135,13 @@ class FETBoard extends \HUGnet\base\Role
                 "ADLAR" => 1,
                 "REFS" => 1,
             ),
-            "data" => array(
-                "id" => 0xF8,
-                "extra" => array(0, 0.5, 1, 5.0),
-                "location" => "Channel 3 Current",
-                "type" => "AVRAnalogTable",
-            ),
         ),
         5 => array(            // Voltage
-            "table" => array(
+            "id" => 0xF8,
+            "extra" => array(0, 150, 10, 5.0),
+            "location" => "Channel 3 Voltage",
+            "type" => "AVRAnalogTable",
+            "tableEntry" => array(
                 "driver" => "40:fetBoard",
                 "name" => "FET Board Voltage",
                 "MUX" => 5,
@@ -155,15 +149,13 @@ class FETBoard extends \HUGnet\base\Role
                 "ADLAR" => 1,
                 "REFS" => 1,
             ),
-            "data" => array(
-                "id" => 0xF8,
-                "extra" => array(0, 150, 10, 5.0),
-                "location" => "Channel 3 Voltage",
-                "type" => "AVRAnalogTable",
-            ),
         ),
         6 => array(            // Current
-            "table" => array(
+            "id" => 0xF8,
+            "extra" => array(0, 0.5, 1, 5.0),
+            "location" => "Channel 4 Current",
+            "type" => "AVRAnalogTable",
+            "tableEntry" => array(
                 "driver" => "50:fetBoard",
                 "name" => "FET Board Current",
                 "MUX" => 6,
@@ -171,15 +163,13 @@ class FETBoard extends \HUGnet\base\Role
                 "ADLAR" => 1,
                 "REFS" => 1,
             ),
-            "data" => array(
-                "id" => 0xF8,
-                "extra" => array(0, 0.5, 1, 5.0),
-                "location" => "Channel 4 Current",
-                "type" => "AVRAnalogTable",
-            ),
         ),
         7 => array(            // Voltage
-            "table" => array(
+            "id" => 0xF8,
+            "extra" => array(0, 150, 10, 5.0),
+            "location" => "Channel 4 Voltage",
+            "type" => "AVRAnalogTable",
+            "tableEntry" => array(
                 "driver" => "40:fetBoard",
                 "name" => "FET Board Voltage",
                 "MUX" => 7,
@@ -187,27 +177,19 @@ class FETBoard extends \HUGnet\base\Role
                 "ADLAR" => 1,
                 "REFS" => 1,
             ),
-            "data" => array(
-                "id" => 0xF8,
-                "extra" => array(0, 150, 10, 5.0),
-                "location" => "Channel 4 Voltage",
-                "type" => "AVRAnalogTable",
-            ),
         ),
         8 => array(            // Supply Voltage
-            "table" => array(
+            "id" => 0xF8,
+            "extra" => array(0, 150, 10, 5.0),
+            "location" => "Supply Voltage",
+            "type" => "AVRAnalogTable",
+            "tableEntry" => array(
                 "driver" => "40:fetBoard",
                 "name" => "FET Board Voltage",
                 "MUX" => 8,
                 "id" => 0,
                 "ADLAR" => 1,
                 "REFS" => 1,
-            ),
-            "data" => array(
-                "id" => 0xF8,
-                "extra" => array(0, 150, 10, 5.0),
-                "location" => "Supply Voltage",
-                "type" => "AVRAnalogTable",
             ),
         ),
     );
@@ -216,43 +198,35 @@ class FETBoard extends \HUGnet\base\Role
     */
     protected $output = array(
         0 => array(
-            "table" => array(
-            ),
-            "data" => array(
-                "location" => "Channel 1",
-                "extra"    => array(1 => 0),
-                "id"       => 0x31,
-                "type"     => "FET003912",
+            "location" => "Channel 1",
+            "extra"    => array(1 => 0),
+            "id"       => 0x31,
+            "type"     => "FET003912",
+            "tableEntry" => array(
             ),
         ),
         1 => array(
-            "table" => array(
-            ),
-            "data" => array(
-                "location" => "Channel 2",
-                "extra"    => array(1 => 1),
-                "id"       => 0x31,
-                "type"     => "FET003912",
+            "location" => "Channel 2",
+            "extra"    => array(1 => 1),
+            "id"       => 0x31,
+            "type"     => "FET003912",
+            "tableEntry" => array(
             ),
         ),
         2 => array(
-            "table" => array(
-            ),
-            "data" => array(
-                "location" => "Channel 3",
-                "extra"    => array(1 => 2),
-                "id"       => 0x31,
-                "type"     => "FET003912",
+            "location" => "Channel 3",
+            "extra"    => array(1 => 2),
+            "id"       => 0x31,
+            "type"     => "FET003912",
+            "tableEntry" => array(
             ),
         ),
         3 => array(
-            "table" => array(
-            ),
-            "data" => array(
-                "location" => "Channel 4",
-                "extra"    => array(1 => 3),
-                "id"       => 0x31,
-                "type"     => "FET003912",
+            "location" => "Channel 4",
+            "extra"    => array(1 => 3),
+            "id"       => 0x31,
+            "type"     => "FET003912",
+            "tableEntry" => array(
             ),
         ),
     );

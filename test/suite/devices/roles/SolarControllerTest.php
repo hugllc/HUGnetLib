@@ -97,19 +97,17 @@ class SolarControllerTest extends RoleTestBase
             ),
             array(
                 0, array(
-                    "table" => array(
+                    "id" => 0xF8,
+                    "extra" => array(0, 10, 10),
+                    "location" => "Channel 1 Low",
+                    "type" => "AVRAnalogTable",
+                    "tableEntry" => array(
                         "driver" => "02:AVRBC2322640",
                         "name" => "Solar Controller Temp",
                         "MUX" => 0,
                         "id" => 0,
                         "ADLAR" => 1,
                         "REFS" => 1,
-                    ),
-                    "data" => array(
-                        "id" => 0xF8,
-                        "extra" => array(0, 10, 10),
-                        "location" => "Channel 1 Low",
-                        "type" => "AVRAnalogTable",
                     ),
                 )
             ),
@@ -145,14 +143,12 @@ class SolarControllerTest extends RoleTestBase
             array(
                 1,
                 array(
-                    "table" => array(
-                    ),
-                    "data" => array(
-                        // HUGnet 0
-                        "extra" => array(0, 10),
-                        "location" => "Channel 2 Output",
-                        "id"     => 0x32,
-                        "type"   => "GPIO003928",
+                    // HUGnet 0
+                    "extra" => array(0, 10),
+                    "location" => "Channel 2 Output",
+                    "id"     => 0x32,
+                    "type"   => "GPIO003928",
+                    "tableEntry" => array(
                     ),
                 )
             ),

@@ -99,7 +99,11 @@ class TesterKnownGoodTest extends RoleTestBase
             ),
             array(
                 0, array(
-                    "table" => array(
+                    "id" => 0xF9,
+                    "extra" => array(1, 10, 1.2),
+                    "location" => "HUGnetLab Known Good Voltage",
+                    "type" => "ADuCInputTable",
+                    "tableEntry" => array(
                         "driver0" => 0x41,
                         "name" => "ADuC Input Voltage",
                         "priority" => 0x01,
@@ -108,12 +112,6 @@ class TesterKnownGoodTest extends RoleTestBase
                         "ADC1EN" => 0,
                         "AF" => 0,
                         "SF" => 9,
-                    ),
-                    "data" => array(
-                        "id" => 0xF9,
-                        "extra" => array(1, 10, 1.2),
-                        "location" => "HUGnetLab Known Good Voltage",
-                        "type" => "ADuCInputTable",
                     ),
                 )
             ),

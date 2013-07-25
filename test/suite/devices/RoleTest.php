@@ -91,21 +91,19 @@ class RoleTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                "BadName", 0, null
+                "BadName", 0, array()
             ),
             array(
                 "RoleTestRole",
                 0,
                 array(
-                    "table" => array(
+                    "extra" => array(3, 2, 1),
+                    "location" => "Input 0",
+                    "type" => "ASDF",
+                    "id" => 0x61,
+                    "tableEntry" => array(
                         'driver' => '41:DEFAULT',
                         'name' => 'Intput 0',
-                    ),
-                    "data" => array(
-                        "extra" => array(3, 2, 1),
-                        "location" => "Input 0",
-                        "type" => "ASDF",
-                        "id" => 0x61,
                     ),
                 ),
             ),
@@ -113,15 +111,13 @@ class RoleTest extends \PHPUnit_Framework_TestCase
                 "RoleTestRole",
                 1,
                 array(
-                    "table" => array(
+                    "id" => 0x83,
+                    "extra" => array(1,2,3),
+                    "location" => "Input1",
+                    "type" => "FSDA",
+                    "tableEntry" => array(
                         "driver" => "42:DEFAULT",
                         "name" => "Input 1",
-                    ),
-                    "data" => array(
-                        "id" => 0x83,
-                        "extra" => array(1,2,3),
-                        "location" => "Input1",
-                        "type" => "FSDA",
                     ),
                 ),
             ),
@@ -152,34 +148,28 @@ class RoleTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                "BadName", 0, null
+                "BadName", 0, array()
             ),
             array(
                 "RoleTestRole",
                 0,
                 array(
-                    "table" => array(
-                    ),
-                    "data" => array(
-                        "extra" => array(0, 1, 2),
-                        "location" => "Process 0",
-                        "id"     => 0x81,
-                        "type"   => "ASDF",
-                    ),
+                    "extra" => array(0, 1, 2),
+                    "location" => "Process 0",
+                    "id"     => 0x81,
+                    "type"   => "ASDF",
+                    "tableEntry" => array(),
                 ),
             ),
             array(
                 "RoleTestRole",
                 1,
                 array(
-                    "table" => array(
-                    ),
-                    "data" => array(
-                        "extra" => array(2, 1, 0),
-                        "location" => "Process 1",
-                        "id"     => 0x23,
-                        "type"   => "FSDA",
-                    ),
+                    "extra" => array(2, 1, 0),
+                    "location" => "Process 1",
+                    "id"     => 0x23,
+                    "type"   => "FSDA",
+                    "tableEntry" => array(),
                 ),
             ),
         );
@@ -209,32 +199,28 @@ class RoleTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                "BadName", 0, null
+                "BadName", 0, array()
             ),
             array(
                 "RoleTestRole",
                 1,
                 array(
-                    "table" => array(),
-                    "data" => array(
-                        "extra" => array(1, 1),
-                        "location" => "Output 1",
-                        "id"     => 0x31,
-                        "type"   => "FSDA",
-                    ),
+                    "extra" => array(1, 1),
+                    "location" => "Output 1",
+                    "id"     => 0x31,
+                    "type"   => "FSDA",
+                    "tableEntry" => array(),
                 ),
             ),
             array(
                 "RoleTestRole",
                 0,
                 array(
-                    "table" => array(),
-                    "data" => array(
-                        "extra" => array(0, 1),
-                        "location" => "Output 0",
-                        "id"     => 0x32,
-                        "type"   => "ASDF",
-                    ),
+                    "extra" => array(0, 1),
+                    "location" => "Output 0",
+                    "id"     => 0x32,
+                    "type"   => "ASDF",
+                    "tableEntry" => array(),
                 ),
             ),
         );
@@ -321,27 +307,23 @@ class RoleTestRole extends \HUGnet\base\Role
     */
     protected $input = array(
         0 => array(
-            "table" => array(
+            "id" => 0x61,
+            "extra" => array(3,2,1),
+            "location" => "Input 0",
+            "type" => "ASDF",
+            "tableEntry" => array(
                 "driver" => "41:DEFAULT",
                 "name" => "Intput 0",
             ),
-            "data" => array(
-                "id" => 0x61,
-                "extra" => array(3,2,1),
-                "location" => "Input 0",
-                "type" => "ASDF",
-            ),
         ),
         1 => array(
-            "table" => array(
+            "id" => 0x83,
+            "extra" => array(1,2,3),
+            "location" => "Input1",
+            "type" => "FSDA",
+            "tableEntry" => array(
                 "driver" => "42:DEFAULT",
                 "name" => "Input 1",
-            ),
-            "data" => array(
-                "id" => 0x83,
-                "extra" => array(1,2,3),
-                "location" => "Input1",
-                "type" => "FSDA",
             ),
         ),
     );
@@ -350,24 +332,18 @@ class RoleTestRole extends \HUGnet\base\Role
     */
     protected $output = array(
         0 => array(
-            "table" => array(
-            ),
-            "data" => array(
-                "extra" => array(0, 1),
-                "location" => "Output 0",
-                "id"     => 0x32,
-                "type"   => "ASDF",
-            ),
+            "extra" => array(0, 1),
+            "location" => "Output 0",
+            "id"     => 0x32,
+            "type"   => "ASDF",
+            "tableEntry" => array(),
         ),
         1 => array(
-            "table" => array(
-            ),
-            "data" => array(
-                "extra" => array(1, 1),
-                "location" => "Output 1",
-                "id"     => 0x31,
-                "type"   => "FSDA",
-            ),
+            "extra" => array(1, 1),
+            "location" => "Output 1",
+            "id"     => 0x31,
+            "type"   => "FSDA",
+            "tableEntry" => array(),
         ),
     );
     /**
@@ -375,24 +351,18 @@ class RoleTestRole extends \HUGnet\base\Role
     */
     protected $process = array(
         0 => array(
-            "table" => array(
-            ),
-            "data" => array(
-                "extra" => array(0, 1, 2),
-                "location" => "Process 0",
-                "id"     => 0x81,
-                "type"   => "ASDF",
-            ),
+            "extra" => array(0, 1, 2),
+            "location" => "Process 0",
+            "id"     => 0x81,
+            "type"   => "ASDF",
+            "tableEntry" => array(),
         ),
         1 => array(
-            "table" => array(
-            ),
-            "data" => array(
-                "extra" => array(2, 1, 0),
-                "location" => "Process 1",
-                "id"     => 0x23,
-                "type"   => "FSDA",
-            ),
+            "extra" => array(2, 1, 0),
+            "location" => "Process 1",
+            "id"     => 0x23,
+            "type"   => "FSDA",
+            "tableEntry" => array(),
         ),
     );
 }

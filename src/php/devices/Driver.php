@@ -409,24 +409,29 @@ abstract class Driver
     /**
     * This creates the sensor drivers
     *
-    * @param int $sid The sensor id to get.  They are labaled 0 to sensors
+    * @param int   $sid  The sensor id to get.  They are labaled 0 to sensors
+    * @param array $data The data to use for a role
     *
     * @return null
     */
-    public function &input($sid)
+    public function &input($sid, $data = null)
     {
+        if (!is_array($data) || empty($data)) {
+            $data = array();
+            $role = false;
+        } else {
+            $role = true;
+        }
         include_once dirname(__FILE__)."/Input.php";
-        $data = array(
-            "input" => (int)$sid,
-            "dev" => (int)$this->device()->id(),
-            "group" => $this->device()->get("group"),
-        );
+        $data["input"] = (int)$sid;
+        $data["dev"]   = (int)$this->device()->id();
+        $data["group"] = $this->device()->get("group");
         $system = $this->device()->system();
         $device = $this->device();
         $obj = Input::factory(
             $system, $data, null, $device
         );
-        if ($obj->isNew()) {
+        if ($obj->isNew() && !$role) {
             $tSensors = $this->device()->get("sensors");
             if (is_string($tSensors) && !empty($tSensors)) {
                 $tSensors = unserialize(base64_decode($tSensors));
@@ -450,18 +455,20 @@ abstract class Driver
     /**
     * This creates the sensor drivers
     *
-    * @param int $sid The sensor id to get.  They are labaled 0 to sensors
+    * @param int   $sid  The sensor id to get.  They are labaled 0 to sensors
+    * @param array $data The data to use for a role
     *
     * @return null
     */
-    public function &output($sid)
+    public function &output($sid, $data = null)
     {
+        if (!is_array($data)) {
+            $data = array();
+        }
         include_once dirname(__FILE__)."/Output.php";
-        $data = array(
-            "output" => (int)$sid,
-            "dev" => (int)$this->device()->id(),
-            "group" => $this->device()->get("group"),
-        );
+        $data["output"] = (int)$sid;
+        $data["dev"]    = (int)$this->device()->id();
+        $data["group"]  = $this->device()->get("group");
         $system = $this->device()->system();
         $device = $this->device();
         $obj = \HUGnet\devices\Output::factory(
@@ -472,18 +479,20 @@ abstract class Driver
     /**
     * This creates the sensor drivers
     *
-    * @param int $sid The sensor id to get.  They are labaled 0 to sensors
+    * @param int   $sid  The sensor id to get.  They are labaled 0 to sensors
+    * @param array $data The data to use for a role
     *
     * @return null
     */
-    public function &process($sid)
+    public function &process($sid, $data = null)
     {
+        if (!is_array($data)) {
+            $data = array();
+        }
         include_once dirname(__FILE__)."/Process.php";
-        $data = array(
-            "process" => (int)$sid,
-            "dev" => (int)$this->device()->id(),
-            "group" => $this->device()->get("group"),
-        );
+        $data["process"] = (int)$sid;
+        $data["dev"]     = (int)$this->device()->id();
+        $data["group"]   = $this->device()->get("group");
         $system = $this->device()->system();
         $device = $this->device();
         $obj = \HUGnet\devices\Process::factory(

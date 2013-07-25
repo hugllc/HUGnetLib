@@ -67,7 +67,11 @@ class SolarController extends \HUGnet\base\Role
     */
     protected $input = array(
         0 => array(            // HUGnet1 Voltage High
-            "table" => array(
+            "id" => 0xF8,
+            "extra" => array(0, 10, 10),
+            "location" => "Channel 1 Low",
+            "type" => "AVRAnalogTable",
+            "tableEntry" => array(
                 "driver" => "02:AVRBC2322640",
                 "name" => "Solar Controller Temp",
                 "MUX" => 0,
@@ -75,15 +79,13 @@ class SolarController extends \HUGnet\base\Role
                 "ADLAR" => 1,
                 "REFS" => 1,
             ),
-            "data" => array(
-                "id" => 0xF8,
-                "extra" => array(0, 10, 10),
-                "location" => "Channel 1 Low",
-                "type" => "AVRAnalogTable",
-            ),
         ),
         1 => array(            // HUGnet1 Voltage Low
-            "table" => array(
+            "id" => 0xF8,
+            "extra" => array(0, 10, 10),
+            "location" => "Channel 1 High",
+            "type" => "AVRAnalogTable",
+            "tableEntry" => array(
                 "driver" => "02:AVRBC2322640",
                 "name" => "Solar Controller Temp",
                 "MUX" => 1,
@@ -91,15 +93,13 @@ class SolarController extends \HUGnet\base\Role
                 "ADLAR" => 1,
                 "REFS" => 1,
             ),
-            "data" => array(
-                "id" => 0xF8,
-                "extra" => array(0, 10, 10),
-                "location" => "Channel 1 High",
-                "type" => "AVRAnalogTable",
-            ),
         ),
         2 => array(            // HUGnet1 Current
-            "table" => array(
+            "id" => 0xF8,
+            "extra" => array(0, 10, 10),
+            "location" => "Channel 2 Low",
+            "type" => "AVRAnalogTable",
+            "tableEntry" => array(
                 "driver" => "02:AVRBC2322640",
                 "name" => "Solar Controller Temp",
                 "MUX" => 2,
@@ -107,15 +107,13 @@ class SolarController extends \HUGnet\base\Role
                 "ADLAR" => 1,
                 "REFS" => 1,
             ),
-            "data" => array(
-                "id" => 0xF8,
-                "extra" => array(0, 10, 10),
-                "location" => "Channel 2 Low",
-                "type" => "AVRAnalogTable",
-            ),
         ),
         3 => array(            // HUGnet1 Temperature
-            "table" => array(
+            "id" => 0xF8,
+            "extra" => array(0, 10, 10),
+            "location" => "Channel 2 High",
+            "type" => "AVRAnalogTable",
+            "tableEntry" => array(
                 "driver" => "02:AVRBC2322640",
                 "name" => "Solar Controller Temp",
                 "MUX" => 3,
@@ -123,15 +121,13 @@ class SolarController extends \HUGnet\base\Role
                 "ADLAR" => 1,
                 "REFS" => 1,
             ),
-            "data" => array(
-                "id" => 0xF8,
-                "extra" => array(0, 10, 10),
-                "location" => "Channel 2 High",
-                "type" => "AVRAnalogTable",
-            ),
         ),
         4 => array(            // HUGnet2 Voltage High
-            "table" => array(
+            "id" => 0xF8,
+            "extra" => array(0, 10, 10),
+            "location" => "Channel 3 Low",
+            "type" => "AVRAnalogTable",
+            "tableEntry" => array(
                 "driver" => "02:AVRBC2322640",
                 "name" => "Solar Controller Temp",
                 "MUX" => 4,
@@ -139,15 +135,13 @@ class SolarController extends \HUGnet\base\Role
                 "ADLAR" => 1,
                 "REFS" => 1,
             ),
-            "data" => array(
-                "id" => 0xF8,
-                "extra" => array(0, 10, 10),
-                "location" => "Channel 3 Low",
-                "type" => "AVRAnalogTable",
-            ),
         ),
         5 => array(            // HUGnet2 Voltage Low
-            "table" => array(
+            "id" => 0xF8,
+            "extra" => array(0, 10, 10),
+            "location" => "Channel 3 High",
+            "type" => "AVRAnalogTable",
+            "tableEntry" => array(
                 "driver" => "02:AVRBC2322640",
                 "name" => "Solar Controller Temp",
                 "MUX" => 5,
@@ -155,15 +149,13 @@ class SolarController extends \HUGnet\base\Role
                 "ADLAR" => 1,
                 "REFS" => 1,
             ),
-            "data" => array(
-                "id" => 0xF8,
-                "extra" => array(0, 10, 10),
-                "location" => "Channel 3 High",
-                "type" => "AVRAnalogTable",
-            ),
         ),
         6 => array(            // HUGnet2 Current
-            "table" => array(
+            "id" => 0xF8,
+            "extra" => array(0, 10, 10),
+            "location" => "Channel 4 Low",
+            "type" => "AVRAnalogTable",
+            "tableEntry" => array(
                 "driver" => "02:AVRBC2322640",
                 "name" => "Solar Controller Temp",
                 "MUX" => 6,
@@ -171,27 +163,19 @@ class SolarController extends \HUGnet\base\Role
                 "ADLAR" => 1,
                 "REFS" => 1,
             ),
-            "data" => array(
-                "id" => 0xF8,
-                "extra" => array(0, 10, 10),
-                "location" => "Channel 4 Low",
-                "type" => "AVRAnalogTable",
-            ),
         ),
         7 => array(            // HUGnet2 Temperature
-            "table" => array(
+            "id" => 0xF8,
+            "extra" => array(0, 10, 10),
+            "location" => "Channel 4 High",
+            "type" => "AVRAnalogTable",
+            "tableEntry" => array(
                 "driver" => "02:AVRBC2322640",
                 "name" => "Solar Controller Temp",
                 "MUX" => 7,
                 "id" => 0,
                 "ADLAR" => 1,
                 "REFS" => 1,
-            ),
-            "data" => array(
-                "id" => 0xF8,
-                "extra" => array(0, 10, 10),
-                "location" => "Channel 4 High",
-                "type" => "AVRAnalogTable",
             ),
         ),
     );
@@ -200,91 +184,75 @@ class SolarController extends \HUGnet\base\Role
     */
     protected $output = array(
         0 => array(
-            "table" => array(
-            ),
-            "data" => array(
-                // HUGnet 0
-                "extra" => array(0, 9),
-                "location" => "Channel 1 Output",
-                "id"     => 0x32,
-                "type"   => "GPIO003928",
+            // HUGnet 0
+            "extra" => array(0, 9),
+            "location" => "Channel 1 Output",
+            "id"     => 0x32,
+            "type"   => "GPIO003928",
+            "tableEntry" => array(
             ),
         ),
         1 => array(
-            "table" => array(
-            ),
-            "data" => array(
-                // HUGnet 0
-                "extra" => array(0, 10),
-                "location" => "Channel 2 Output",
-                "id"     => 0x32,
-                "type"   => "GPIO003928",
+            // HUGnet 0
+            "extra" => array(0, 10),
+            "location" => "Channel 2 Output",
+            "id"     => 0x32,
+            "type"   => "GPIO003928",
+            "tableEntry" => array(
             ),
         ),
         2 => array(
-            "table" => array(
-            ),
-            "data" => array(
-                // HUGnet 0
-                "extra" => array(0, 11),
-                "location" => "Channel 3 Output",
-                "id"     => 0x32,
-                "type"   => "GPIO003928",
+            // HUGnet 0
+            "extra" => array(0, 11),
+            "location" => "Channel 3 Output",
+            "id"     => 0x32,
+            "type"   => "GPIO003928",
+            "tableEntry" => array(
             ),
         ),
         3 => array(
-            "table" => array(
-            ),
-            "data" => array(
-                // HUGnet 0
-                "extra" => array(0, 12),
-                "location" => "Channel 4 Output",
-                "id"     => 0x32,
-                "type"   => "GPIO003928",
+            // HUGnet 0
+            "extra" => array(0, 12),
+            "location" => "Channel 4 Output",
+            "id"     => 0x32,
+            "type"   => "GPIO003928",
+            "tableEntry" => array(
             ),
         ),
         4 => array(
-            "table" => array(
-            ),
-            "data" => array(
-                // HUGnet 0
-                "extra" => array(0, 13),
-                "location" => "Channel 1 Alarm",
-                "id"     => 0x32,
-                "type"   => "GPIO003928",
+            // HUGnet 0
+            "extra" => array(0, 13),
+            "location" => "Channel 1 Alarm",
+            "id"     => 0x32,
+            "type"   => "GPIO003928",
+            "tableEntry" => array(
             ),
         ),
         5 => array(
-            "table" => array(
-            ),
-            "data" => array(
-                // HUGnet 0
-                "extra" => array(0, 14),
-                "location" => "Channel 2 Alarm",
-                "id"     => 0x32,
-                "type"   => "GPIO003928",
+            // HUGnet 0
+            "extra" => array(0, 14),
+            "location" => "Channel 2 Alarm",
+            "id"     => 0x32,
+            "type"   => "GPIO003928",
+            "tableEntry" => array(
             ),
         ),
         6 => array(
-            "table" => array(
-            ),
-            "data" => array(
-                // HUGnet 0
-                "extra" => array(0, 15),
-                "location" => "Channel 3 Alarm",
-                "id"     => 0x32,
-                "type"   => "GPIO003928",
+            // HUGnet 0
+            "extra" => array(0, 15),
+            "location" => "Channel 3 Alarm",
+            "id"     => 0x32,
+            "type"   => "GPIO003928",
+            "tableEntry" => array(
             ),
         ),
         7 => array(
-            "table" => array(
-            ),
-            "data" => array(
-                // HUGnet 0
-                "extra" => array(0, 16),
-                "location" => "Channel 4 Alarm",
-                "id"     => 0x32,
-                "type"   => "GPIO003928",
+            // HUGnet 0
+            "extra" => array(0, 16),
+            "location" => "Channel 4 Alarm",
+            "id"     => 0x32,
+            "type"   => "GPIO003928",
+            "tableEntry" => array(
             ),
         ),
     );

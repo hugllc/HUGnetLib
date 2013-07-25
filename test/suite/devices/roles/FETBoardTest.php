@@ -97,19 +97,17 @@ class FETBoardTest extends RoleTestBase
             ),
             array(
                 0, array(
-                    "table" => array(
+                    "id" => 0xF8,
+                    "extra" => array(0, 0.5, 1, 5.0),
+                    "location" => "Channel 1 Current",
+                    "type" => "AVRAnalogTable",
+                    "tableEntry" => array(
                         "driver" => "50:fetBoard",
                         "name" => "FET Board Current",
                         "MUX" => 0,
                         "id" => 0,
                         "ADLAR" => 1,
                         "REFS" => 1,
-                    ),
-                    "data" => array(
-                        "id" => 0xF8,
-                        "extra" => array(0, 0.5, 1, 5.0),
-                        "location" => "Channel 1 Current",
-                        "type" => "AVRAnalogTable",
                     ),
                 )
             ),
@@ -145,13 +143,11 @@ class FETBoardTest extends RoleTestBase
             array(
                 1,
                 array(
-                    "table" => array(
-                    ),
-                    "data" => array(
-                        "location" => "Channel 2",
-                        "extra"    => array(1 => 1),
-                        "id"       => 0x31,
-                        "type"     => "FET003912",
+                    "location" => "Channel 2",
+                    "extra"    => array(1 => 1),
+                    "id"       => 0x31,
+                    "type"     => "FET003912",
+                    "tableEntry" => array(
                     ),
                 )
             ),

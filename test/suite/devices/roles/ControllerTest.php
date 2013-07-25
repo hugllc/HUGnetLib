@@ -97,19 +97,17 @@ class ControllerTest extends RoleTestBase
             ),
             array(
                 0, array(
-                    "table" => array(
+                    "id" => 0xF8,
+                    "extra" => array(0, 180, 27, 5.0),
+                    "location" => "HUGnet 1 Voltage High",
+                    "type" => "AVRAnalogTable",
+                    "tableEntry" => array(
                         "driver" => "40:DEFAULT",
                         "name" => "Controller Board Voltage",
                         "MUX" => 4,
                         "id" => 0,
                         "ADLAR" => 1,
                         "REFS" => 1,
-                    ),
-                    "data" => array(
-                        "id" => 0xF8,
-                        "extra" => array(0, 180, 27, 5.0),
-                        "location" => "HUGnet 1 Voltage High",
-                        "type" => "AVRAnalogTable",
                     ),
                 )
             ),
@@ -145,13 +143,11 @@ class ControllerTest extends RoleTestBase
             array(
                 1,
                 array(
-                    "table" => array(
-                    ),
-                    "data" => array(
-                        "extra" => array(1, 1),
-                        "location" => "HUGnet 2 Power",
-                        "id"     => 0x30,
-                        "type"   => "HUGnetPower",
+                    "extra" => array(1, 1),
+                    "location" => "HUGnet 2 Power",
+                    "id"     => 0x30,
+                    "type"   => "HUGnetPower",
+                    "tableEntry" => array(
                     ),
                 )
             ),

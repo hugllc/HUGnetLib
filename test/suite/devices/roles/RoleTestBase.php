@@ -89,8 +89,8 @@ class RoleTestBase extends \PHPUnit_Framework_TestCase
     final public function testInputs($input)
     {
         if (is_array($input)) {
-            $this->assertInternalType("array", $input["data"]);
-            $this->assertInternalType("array", $input["table"]);
+            $this->assertInternalType("array", $input);
+            $this->assertInternalType("array", $input["tableEntry"]);
         } else if (!is_null($input)) {
             $this->assertInternalType("array", $input);
         }
@@ -156,8 +156,8 @@ class RoleTestBase extends \PHPUnit_Framework_TestCase
     final public function testProcesses($process)
     {
         if (is_array($process)) {
-            $this->assertInternalType("array", $process["data"]);
-            $this->assertInternalType("array", $process["table"]);
+            $this->assertInternalType("array", $process);
+            $this->assertInternalType("array", $process["tableEntry"]);
         } else if (!is_null($process)) {
             $this->assertInternalType("array", $process);
         }
@@ -222,8 +222,8 @@ class RoleTestBase extends \PHPUnit_Framework_TestCase
     final public function testOutputs($output)
     {
         if (is_array($output)) {
-            $this->assertInternalType("array", $output["data"]);
-            $this->assertInternalType("array", $output["table"]);
+            $this->assertInternalType("array", $output);
+            $this->assertInternalType("array", $output["tableEntry"]);
         } else if (!is_null($output)) {
             $this->assertInternalType("array", $output);
         }

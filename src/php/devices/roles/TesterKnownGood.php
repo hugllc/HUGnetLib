@@ -67,7 +67,11 @@ class TesterKnownGood extends \HUGnet\base\Role
     */
     protected $input = array(
         0 => array(            // HUGnetLab Input 1 Voltage
-            "table" => array(
+            "id" => 0xF9,
+            "extra" => array(1, 10, 1.2),
+            "location" => "HUGnetLab Known Good Voltage",
+            "type" => "ADuCInputTable",
+            "tableEntry" => array(
                 "driver0" => 0x41,
                 "name" => "ADuC Input Voltage",
                 "priority" => 0x01,
@@ -77,15 +81,13 @@ class TesterKnownGood extends \HUGnet\base\Role
                 "AF" => 0,
                 "SF" => 9,
             ),
-            "data" => array(
-                "id" => 0xF9,
-                "extra" => array(1, 10, 1.2),
-                "location" => "HUGnetLab Known Good Voltage",
-                "type" => "ADuCInputTable",
-            ),
         ),
         1 => array(            // HUGnetLab Input 2 Voltage
-            "table" => array(
+            "id" => 0xF9,
+            "extra" => array(1, 10, 1.2),
+            "location" => "HUGnetLab Known Good Voltage",
+            "type" => "ADuCInputTable",
+            "tableEntry" => array(
                 "driver0" => 0x41,
                 "name" => "ADuC Input Voltage",
                 "priority" => 0x01,
@@ -95,15 +97,13 @@ class TesterKnownGood extends \HUGnet\base\Role
                 "AF" => 0,
                 "SF" => 9,
             ),
-            "data" => array(
-                "id" => 0xF9,
-                "extra" => array(1, 10, 1.2),
-                "location" => "HUGnetLab Known Good Voltage",
-                "type" => "ADuCInputTable",
-            ),
         ),
         2 => array(            // HUGnetLab Input 3 Voltage
-            "table" => array(
+            "id" => 0xF9,
+            "extra" => array(1, 10, 1.2),
+            "location" => "HUGnetLab Known Good Voltage",
+            "type" => "ADuCInputTable",
+            "tableEntry" => array(
                 "driver0" => 0x41,
                 "name" => "ADuC Input Voltage",
                 "priority" => 0x01,
@@ -113,15 +113,13 @@ class TesterKnownGood extends \HUGnet\base\Role
                 "AF" => 0,
                 "SF" => 9,
             ),
-            "data" => array(
-                "id" => 0xF9,
-                "extra" => array(1, 10, 1.2),
-                "location" => "HUGnetLab Known Good Voltage",
-                "type" => "ADuCInputTable",
-            ),
         ),
         3 => array(            // HUGnetLab Input 4 Voltage
-            "table" => array(
+            "id" => 0xF9,
+            "extra" => array(1, 10, 1.2),
+            "location" => "HUGnetLab Known Good Voltage",
+            "type" => "ADuCInputTable",
+            "tableEntry" => array(
                 "driver0" => 0x41,
                 "name" => "ADuC Input Voltage",
                 "priority" => 0x01,
@@ -131,15 +129,13 @@ class TesterKnownGood extends \HUGnet\base\Role
                 "AF" => 0,
                 "SF" => 9,
             ),
-            "data" => array(
-                "id" => 0xF9,
-                "extra" => array(1, 10, 1.2),
-                "location" => "HUGnetLab Known Good Voltage",
-                "type" => "ADuCInputTable",
-            ),
         ),
         4 => array(            // HUGnetLab Input 5 Voltage
-            "table" => array(
+            "id" => 0xF9,
+            "extra" => array(100, 1, 1.2),
+            "location" => "HUGnetLab Known Good Voltage",
+            "type" => "ADuCInputTable",
+            "tableEntry" => array(
                 "driver0" => 0x41,
                 "name" => "ADuC Input Voltage",
                 "priority" => 0x01,
@@ -149,15 +145,13 @@ class TesterKnownGood extends \HUGnet\base\Role
                 "AF" => 0,
                 "SF" => 9,
             ),
-            "data" => array(
-                "id" => 0xF9,
-                "extra" => array(100, 1, 1.2),
-                "location" => "HUGnetLab Known Good Voltage",
-                "type" => "ADuCInputTable",
-            ),
         ),
         5 => array(            // HUGnetLab Input 6 Voltage
-            "table" => array(
+            "id" => 0xF9,
+            "extra" => array(100, 1, 1.2),
+            "location" => "HUGnetLab Known Good Voltage",
+            "type" => "ADuCInputTable",
+            "tableEntry" => array(
                 "driver0" => 0x41,
                 "name" => "ADuC Input Voltage",
                 "priority" => 0x01,
@@ -167,15 +161,13 @@ class TesterKnownGood extends \HUGnet\base\Role
                 "AF" => 0,
                 "SF" => 9,
             ),
-            "data" => array(
-                "id" => 0xF9,
-                "extra" => array(100, 1, 1.2),
-                "location" => "HUGnetLab Known Good Voltage",
-                "type" => "ADuCInputTable",
-            ),
         ),
         6 => array(            // HUGnetLab Input 7 Voltage
-            "table" => array(
+            "id" => 0xF9,
+            "extra" => array(100, 1, 1.2),
+            "location" => "HUGnetLab Known Good Voltage",
+            "type" => "ADuCInputTable",
+            "tableEntry" => array(
                 "driver0" => 0x41,
                 "name" => "ADuC Input Voltage",
                 "priority" => 0x01,
@@ -185,15 +177,13 @@ class TesterKnownGood extends \HUGnet\base\Role
                 "AF" => 0,
                 "SF" => 9,
             ),
-            "data" => array(
-                "id" => 0xF9,
-                "extra" => array(100, 1, 1.2),
-                "location" => "HUGnetLab Known Good Voltage",
-                "type" => "ADuCInputTable",
-            ),
         ),
         7 => array(            // HUGnetLab Input 8 Voltage
-            "table" => array(
+            "id" => 0xF9,
+            "extra" => array(100, 1, 1.2),
+            "location" => "HUGnetLab Known Good Voltage",
+            "type" => "ADuCInputTable",
+            "tableEntry" => array(
                 "driver0" => 0x41,
                 "name" => "ADuC Input Voltage",
                 "priority" => 0x01,
@@ -202,12 +192,6 @@ class TesterKnownGood extends \HUGnet\base\Role
                 "ADC1EN" => 1,
                 "AF" => 0,
                 "SF" => 9,
-            ),
-            "data" => array(
-                "id" => 0xF9,
-                "extra" => array(100, 1, 1.2),
-                "location" => "HUGnetLab Known Good Voltage",
-                "type" => "ADuCInputTable",
             ),
         ),
     );
