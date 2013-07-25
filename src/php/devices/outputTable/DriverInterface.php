@@ -77,11 +77,9 @@ interface DriverInterface
     /**
     * Returns the table entry object
     *
-    * @param array $table The table to use.  This only works on the first call
-    *
     * @return object The driver requested
     */
-    public function &entry($table = null);
+    public function &entry();
     /**
     * Checks to see if a piece of data exists
     *

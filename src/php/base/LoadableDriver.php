@@ -174,29 +174,24 @@ abstract class LoadableDriver
     /**
     * Returns the driver object
     *
-    * @param array $table The table to use.  This only works on the first call
-    *
     * @return object The driver requested
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    public function &entry($table = null)
+    public function &entry()
     {
         $entryClass = $this->entryClass();
         if (!is_string($entryClass)) {
             return null;
         }
         if (!is_object($this->_entry) && class_exists($entryClass)) {
-            $found = true;
-            if (empty($table)) {
-                $table = json_decode(
-                    (string)$this->iopobject()->table()->get("tableEntry"), true
-                );
-                if (empty($table) || !is_array($table)) {
-                    $newTable = $this->convertOldEntry();
-                    if (is_array($newTable)) {
-                        $table = $newTable;
-                        $found = false;
-                    }
+            $table = json_decode(
+                (string)$this->iopobject()->table()->get("tableEntry"), true
+            );
+            if (empty($table) || !is_array($table)) {
+                $newTable = $this->convertOldEntry();
+                if (is_array($newTable)) {
+                    $table = $newTable;
+                    $found = false;
                 }
             }
             $entry = $entryClass::factory(
