@@ -1705,7 +1705,26 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     public function testInput(
         $config, $sensor, $driverExpect, $expect
     ) {
-        $sys = $this->getMock('\HUGnet\System', array('now'));
+        $sys = $this->getMock(
+            '\HUGnet\System', 
+            array('now'),
+            array(
+                array(
+                    "servers" => array(
+                        "hello" => array(
+                            "driver" => "sqlite",
+                            "file" => ":memory:",
+                            "group" => "hello",
+                        ),
+                        "default" => array(
+                            "driver" => "sqlite",
+                            "file" => ":memory:",
+                            "group" => "default",
+                        ),
+                    ),
+                ),
+            )
+        );
         $sys->expects($this->any())
             ->method('now')
             ->will($this->returnValue(1000000));
@@ -1727,72 +1746,55 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         return array(
             array(      // #0
                 array(
-                    "Devices" => array(
-                        "get" => array(
-                            "id" => 5,
-                            "group" => "hello",
-                        ),
-                    ),
+                    "id" => 5,
+                    "group" => "hello",
                 ),
                 0,
                 "\HUGnet\devices\Output",
                 array(
-                    array(
-                        array(
-                            "output" => 0,
-                            "dev" => 5,
-                            "group" => "hello",
-                        ),
-                    ),
+                    "output" => 0,
+                    "dev" => 5,
+                    //"group" => "hello",
+                    'type' => 'EmptyOutput',
+                    'params' => array(),
+                    'tableEntry' => array(),
                 ),
             ),
             array(      // #1
                 array(
-                    "Devices" => array(
-                        "get" => array(
-                            "id" => 5,
-                            "Role" => "DeviceTestRole",
-                            "group" => "hello",
-                        ),
-                    ),
+                    "id" => 5,
+                    "Role" => "DeviceTestRole",
+                    "group" => "hello",
                 ),
                 1,
                 "\HUGnet\devices\Output",
                 array(
-                    array(
-                        array(
-                            "output" => 1,
-                            "dev" => 5,
-                            'extra' => array(1, 1),
-                            'location' => 'Output 1',
-                            'id' => 49,
-                            'type' => 'FSDA',
-                            'tableEntry' => array(),
-                            'group' => 'hello',
-                        ),
-                    ),
+                    "output" => 1,
+                    "dev" => 5,
+                    'extra' => array(1, 1),
+                    'location' => 'Output 1',
+                    'id' => 49,
+                    'type' => 'FSDA',
+                    'tableEntry' => array(),
+                    //'group' => 'hello',
+                    'params' => array(),
                 ),
             ),
             array(      // #2
                 array(
-                    "Devices" => array(
-                        "get" => array(
-                            "id" => 5,
-                            "Role" => "NotARole",
-                            "group" => "hello",
-                        ),
-                    ),
+                    "id" => 5,
+                    "Role" => "NotARole",
+                    "group" => "default",
                 ),
                 0,
                 "\HUGnet\devices\Output",
                 array(
-                    array(
-                        array(
-                            "output" => 0,
-                            "dev" => 5,
-                            "group" => "hello",
-                        ),
-                    ),
+                    "output" => 0,
+                    "dev" => 5,
+                    //"group" => "default",
+                    'type' => 'EmptyOutput',
+                    'params' => array(),
+                    'tableEntry' => array(),
                 ),
             ),
         );
@@ -1812,18 +1814,38 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     public function testOutput(
         $config, $sensor, $driverExpect, $expect
     ) {
-        $sys = new DummySystem("System");
-        $sys->resetMock($config);
-        $obj = Device::factory($sys, null);
+        $sys = $this->getMock(
+            '\HUGnet\System', 
+            array('now'),
+            array(
+                array(
+                    "servers" => array(
+                        "hello" => array(
+                            "driver" => "sqlite",
+                            "file" => ":memory:",
+                            "group" => "hello",
+                        ),
+                        "default" => array(
+                            "driver" => "sqlite",
+                            "file" => ":memory:",
+                            "group" => "default",
+                        ),
+                    ),
+                ),
+            )
+        );
+        $sys->expects($this->any())
+            ->method('now')
+            ->will($this->returnValue(1000000));
+        $obj = Device::factory($sys, $config);
         $sen = $obj->output($sensor);
         $this->assertTrue(
             is_a($sen, $driverExpect),
             "Return is not a ".$driverExpect
         );
-        $ret = $sys->retrieve();
         $this->assertEquals(
             $expect,
-            $ret["DeviceOutputs"]["fromAny"],
+            $sen->toArray(false),
             "Wrong sensor returned"
         );
         unset($obj);
@@ -1838,72 +1860,55 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         return array(
             array(      // #0
                 array(
-                    "Devices" => array(
-                        "get" => array(
-                            "id" => 5,
-                            "group" => "hello",
-                        ),
-                    ),
+                    "id" => 5,
+                    "group" => "hello",
                 ),
                 0,
                 "\HUGnet\devices\Process",
                 array(
-                    array(
-                        array(
-                            "process" => 0,
-                            "dev" => 5,
-                            "group" => "hello",
-                        ),
-                    ),
+                    "process" => 0,
+                    "dev" => 5,
+                    //"group" => "hello",
+                    'type' => 'EmptyProcess',
+                    'params' => array(),
+                    'tableEntry' => array(),
                 ),
             ),
             array(      // #1
                 array(
-                    "Devices" => array(
-                        "get" => array(
-                            "id" => 5,
-                            "Role" => "DeviceTestRole",
-                            "group" => "hello",
-                        ),
-                    ),
+                    "id" => 5,
+                    "Role" => "DeviceTestRole",
+                    "group" => "hello",
                 ),
                 0,
                 "\HUGnet\devices\Process",
                 array(
-                    array(
-                        array(
-                            "process" => 0,
-                            "dev" => 5,
-                            'extra' => array(0, 1, 2),
-                            'location' => 'Process 0',
-                            'id' => 129,
-                            'type' => 'ASDF',
-                            'tableEntry' => array(),
-                            'group' => 'hello',
-                        ),
-                    ),
+                    "process" => 0,
+                    "dev" => 5,
+                    'extra' => array(0, 1, 2),
+                    'location' => 'Process 0',
+                    'id' => 129,
+                    'type' => 'ASDF',
+                    'tableEntry' => array(),
+                    //'group' => 'hello',
+                    'params' => array(),
                 ),
             ),
             array(      // #2
                 array(
-                    "Devices" => array(
-                        "get" => array(
-                            "id" => 5,
-                            "Role" => "ThisIsNotAProperRole",
-                            "group" => "hello",
-                        ),
-                    ),
+                    "id" => 5,
+                    "Role" => "ThisIsNotAProperRole",
+                    "group" => "hello",
                 ),
                 0,
                 "\HUGnet\devices\Process",
                 array(
-                    array(
-                        array(
-                            "process" => 0,
-                            "dev" => 5,
-                            "group" => "hello",
-                        ),
-                    ),
+                    "process" => 0,
+                    "dev" => 5,
+                    //"group" => "hello",
+                    'type' => 'EmptyProcess',
+                    'params' => array(),
+                    'tableEntry' => array(),
                 ),
             ),
         );
@@ -1923,18 +1928,38 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     public function testProcess(
         $config, $sensor, $driverExpect, $expect
     ) {
-        $sys = new DummySystem("System");
-        $sys->resetMock($config);
-        $obj = Device::factory($sys, null);
+        $sys = $this->getMock(
+            '\HUGnet\System', 
+            array('now'),
+            array(
+                array(
+                    "servers" => array(
+                        "hello" => array(
+                            "driver" => "sqlite",
+                            "file" => ":memory:",
+                            "group" => "hello",
+                        ),
+                        "default" => array(
+                            "driver" => "sqlite",
+                            "file" => ":memory:",
+                            "group" => "default",
+                        ),
+                    ),
+                ),
+            )
+        );
+        $sys->expects($this->any())
+            ->method('now')
+            ->will($this->returnValue(1000000));
+        $obj = Device::factory($sys, $config);
         $sen = $obj->process($sensor);
         $this->assertTrue(
             is_a($sen, $driverExpect),
             "Return is not a ".$driverExpect
         );
-        $ret = $sys->retrieve();
         $this->assertEquals(
             $expect,
-            $ret["DeviceProcesses"]["fromAny"],
+            $sen->toArray(false),
             "Wrong sensor returned"
         );
         unset($obj);
