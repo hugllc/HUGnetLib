@@ -266,48 +266,6 @@ class Fixture extends \HUGnet\Device
         
     }
     /**
-    * This creates the sensor drivers
-    *
-    * @param mixed $chans Channel information
-    *
-    * @return null
-    */
-    public function &dataChannels($chans = null)
-    {
-        include_once dirname(__FILE__)."/../devices/DataChannels.php";
-        return \HUGnet\devices\DataChannels::factory($this->system(), $this, $chans);
-    }
-    /**
-    * This creates the sensor drivers
-    *
-    * @param mixed $chans Channel information
-    *
-    * @return null
-    */
-    public function &controlChannels($chans = null)
-    {
-        include_once dirname(__FILE__)."/../devices/ControlChannels.php";
-        return \HUGnet\devices\ControlChannels::factory(
-            $this->system(), $this, $chans
-        );
-    }
-
-    /**
-    * returns a history object for this device
-    *
-    * @param array $data    The data to build the history record with.
-    * @param bool  $history History if true, average if false
-    *
-    * @return string
-    */
-    public function &historyFactory($data = array(), $history = true)
-    {
-        $class = $this->driver()->historyTable($history);
-        $obj = $this->system()->table($class, $data);
-        $obj->device = &$this;
-        return $obj;
-    }
-    /**
     * This creates the input object
     *
     * @param int $sid The input id to get.  They are labeled 0 to InputTables

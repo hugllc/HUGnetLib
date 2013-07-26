@@ -1052,105 +1052,69 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                             ),
                             'inputs' => array(
                                 0 => array(
-                                    'data' => array(
-                                        'dev' => 18,
-                                        'input' => 0,
-                                        'id' => 112,
-                                        'driver' => 'GenericPulse',
-                                        'type' => 'GenericPulse',
-                                        'params' => array(
-                                        ),
+                                    'dev' => 18,
+                                    'input' => 0,
+                                    'id' => 112,
+                                    'driver' => 'GenericPulse',
+                                    'type' => 'GenericPulse',
+                                    'params' => array(
                                     ),
-                                    'table' => array(),
+                                    'tableEntry' => array(),
                                 ),
                                 1 => array(
-                                    'data' => array(
-                                        'id' => 255,
-                                    ),
+                                    'id' => 255,
                                 ),
                                 2 => array(
-                                    'data' => array(
-                                        'id' => 255,
-                                    ),
+                                    'id' => 255,
                                 ),
                                 3 => array(
-                                    'data' => array(
-                                        'id' => 255,
-                                    ),
+                                    'id' => 255,
                                 ),
                                 4 => array(
-                                    'data' => array(
-                                        'id' => 255,
-                                    ),
+                                    'id' => 255,
                                 ),
                                 5 => array(
-                                    'data' => array(
-                                        'id' => 255,
-                                    ),
+                                    'id' => 255,
                                 ),
                                 6 => array(
-                                    'data' => array(
-                                        'id' => 255,
-                                    ),
+                                    'id' => 255,
                                 ),
                                 7 => array(
-                                    'data' => array(
-                                        'id' => 255,
-                                    ),
+                                    'id' => 255,
                                 ),
                                 8 => array(
-                                    'data' => array(
-                                        'id' => 255,
-                                    ),
+                                    'id' => 255,
                                 ),
                             ),
                             'outputs' => array(
                                 0 => array(
-                                    'data' => array(
-                                        'id' => 255,
-                                    ),
+                                    'id' => 255,
                                 ),
                                 1 => array(
-                                    'data' => array(
-                                        'id' => 255,
-                                    ),
+                                    'id' => 255,
                                 ),
                                 2 => array(
-                                    'data' => array(
-                                        'id' => 255,
-                                    ),
+                                    'id' => 255,
                                 ),
                                 3 => array(
-                                    'data' => array(
-                                        'id' => 255,
-                                    ),
+                                    'id' => 255,
                                 ),
                                 4 => array(
-                                    'data' => array(
-                                        'id' => 255,
-                                    ),
+                                    'id' => 255,
                                 ),
                             ),
                             'processes' => array(
                                 0 => array(
-                                    'data' => array(
-                                        'id' => 255,
-                                    ),
+                                    'id' => 255,
                                 ),
                                 1 => array(
-                                    'data' => array(
-                                        'id' => 255,
-                                    ),
+                                    'id' => 255,
                                 ),
                                 2 => array(
-                                    'data' => array(
-                                        'id' => 255,
-                                    ),
+                                    'id' => 255,
                                 ),
                                 3 => array(
-                                    'data' => array(
-                                        'id' => 255,
-                                    ),
+                                    'id' => 255,
                                 ),
                             ),
                         )
@@ -1178,7 +1142,6 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
     public function testDeviceImport(
         $config, $data, $device, $inputs, $outputs, $processes, $return, $expect
     ) {
-        /*
         $sys = $this->getMock('\HUGnet\System', array('now'), array($config));
         $sys->expects($this->any())
             ->method('now')
@@ -1203,7 +1166,6 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
         $ret = $obj->import($dev);
         $this->assertEquals($return, $ret, "Return wrong");
         $this->assertEquals($expect, $obj->table()->toArray(false), "Setup wrong");
-        */
     }
 
 }
