@@ -296,6 +296,7 @@ class Gather extends \HUGnet\ui\Daemon
         }
         $LastConfig = ($now - $ConfigInt) + self::CONFIG_WAIT;
         $this->_unsolicited->setParam("LastConfig", $LastConfig);
+        $this->_unsolicited->setParam("Startup", $now);
         $this->out(
             "Setting next config of ".$this->_unsolicited->get("DeviceID")." to "
             .date("Y-m-d H:i:s", $LastConfig + $ConfigInt)
