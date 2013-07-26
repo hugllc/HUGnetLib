@@ -122,6 +122,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                             "location" => "asdf",
                         ),
                         "system" => new \HUGnet\DummySystem("System"),
+                        "table" =>  new \HUGnet\DummyTable("InputTable")
                     ),
                     "System" => array(
                         "device" => array(
@@ -140,6 +141,17 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                             "location" => "asdf 1",
                         ),
                         "channels" => array(
+                        ),
+                        "table" =>  new \HUGnet\DummyTable("Input1Table")
+                    ),
+                    "Input1Table" => array(
+                        "get" => array(
+                            "tableEntry" => array(),
+                        ),
+                    ),
+                    "InputTable" => array(
+                        "get" => array(
+                            "tableEntry" => array(),
                         ),
                     ),
                 ),
@@ -172,6 +184,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                             "location" => "asdf",
                         ),
                         "system" => new \HUGnet\DummySystem("System"),
+                        "table" =>  new \HUGnet\DummyTable("InputTable")
                     ),
                     "System" => array(
                         "device" => array(
@@ -189,6 +202,17 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                             "location" => "asdf1",
                         ),
                         "channelStart" => 4,
+                        "table" =>  new \HUGnet\DummyTable("Input1Table")
+                    ),
+                    "Input1Table" => array(
+                        "get" => array(
+                            "tableEntry" => array(),
+                        ),
+                    ),
+                    "InputTable" => array(
+                        "get" => array(
+                            "tableEntry" => array(),
+                        ),
                     ),
                 ),
                 array(
@@ -261,6 +285,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                             "location" => "asdf",
                         ),
                         "system" => new \HUGnet\DummySystem("System"),
+                        "table" =>  new \HUGnet\DummyTable("InputTable"),
                     ),
                     "System" => array(
                         "device" => array(
@@ -278,6 +303,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                             "location" => "asdf1",
                         ),
                         "channelStart" => 4,
+                        "table" =>  new \HUGnet\DummyTable("Input1Table"),
                     ),
                 ),
                 array(
@@ -350,6 +376,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                             "location" => "asdf",
                         ),
                         "system" => new \HUGnet\DummySystem("System"),
+                        "table" =>  new \HUGnet\DummyTable("InputTable"),
                     ),
                     "System" => array(
                         "device" => array(
@@ -367,6 +394,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                             "location" => "asdf1",
                         ),
                         "channelStart" => 4,
+                        "table" =>  new \HUGnet\DummyTable("Input1Table"),
                     ),
                     "History" => array(
                         "get" => array(

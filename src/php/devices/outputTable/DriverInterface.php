@@ -68,12 +68,10 @@ interface DriverInterface
     *
     * @param string $driver  The driver to load
     * @param object &$output The output object
-    * @param array  $table   The table to use.  This forces the table, instead of
-    *                        using the database to find it
     *
     * @return null
     */
-    public static function &factory($driver, &$output, $table = null);
+    public static function &factory($driver, &$output);
     /**
     * Returns the table entry object
     *

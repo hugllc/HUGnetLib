@@ -237,12 +237,10 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     *
     * @param string $driver  The driver to load
     * @param object &$sensor The sensor object
-    * @param array  $table   The table to use.  This forces the table, instead of
-    *                        using the database to find it
     *
     * @return null
     */
-    public static function &factory($driver, &$sensor, $table = null)
+    public static function &factory($driver, &$sensor)
     {
         $filebase = dirname(__FILE__)."/drivers/";
         if (file_exists($filebase."aduc/".$driver.".php")) {
@@ -265,7 +263,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         }
         $interface = "\\HUGnet\\devices\\inputTable\\DriverInterface";
         if (is_subclass_of($class, $interface)) {
-            return new $class($sensor, $table);
+            return new $class($sensor);
         }
         include_once dirname(__FILE__)."/drivers/SDEFAULT.php";
         return new \HUGnet\devices\inputTable\drivers\SDEFAULT($sensor);

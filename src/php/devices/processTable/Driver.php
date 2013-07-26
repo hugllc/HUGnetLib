@@ -138,12 +138,10 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     *
     * @param string $driver   The driver to load
     * @param object &$process The process object
-    * @param array  $table    The table to use.  This forces the table, instead of
-    *                         using the database to find it
     *
     * @return null
     */
-    public static function &factory($driver, &$process, $table = null)
+    public static function &factory($driver, &$process)
     {
         $class = '\\HUGnet\\devices\\processTable\\drivers\\'.$driver;
         $file = dirname(__FILE__)."/drivers/".$driver.".php";
@@ -152,7 +150,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         }
         $interface = "\\HUGnet\\devices\\processTable\\DriverInterface";
         if (is_subclass_of($class, $interface)) {
-            return new $class($process, $table);
+            return new $class($process);
         }
         include_once dirname(__FILE__)."/drivers/EmptyProcess.php";
         return new \HUGnet\devices\processTable\drivers\EmptyProcess($process);

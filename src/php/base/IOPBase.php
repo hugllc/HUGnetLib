@@ -102,12 +102,11 @@ abstract class IOPBase extends SystemTableBase
     * @param mixed  $data    (int)The id of the item, (array) data info array
     * @param string $dbtable The table to use
     * @param object &$device The device object to use
-    * @param array  $table   The table to use
     *
     * @return null
     */
     public static function &factory(
-        &$system, $data=null, $dbtable=null, &$device = null, $table = null
+        &$system, $data=null, $dbtable=null, &$device = null
     ) {
         \HUGnet\System::systemMissing(
             get_class($this)." needs to be passed a system object",
@@ -120,7 +119,6 @@ abstract class IOPBase extends SystemTableBase
         $class = get_called_class();
         $object = new $class($system, $dbtable);
         $object->_device = &$device;
-        $object->_driverTable = $table;
         if (!is_null($data)) {
             $object->load($data);
         }
@@ -250,7 +248,7 @@ abstract class IOPBase extends SystemTableBase
         }
         if (!is_object($this->_driverCache[$driver])) {
             $this->_driverCache[$driver] = $class::factory(
-                $driver, $this, $this->_driverTable
+                $driver, $this
             );
         }
         return $this->_driverCache[$driver];

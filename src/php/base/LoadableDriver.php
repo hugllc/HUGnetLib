@@ -173,7 +173,7 @@ abstract class LoadableDriver
     }
     /**
     * Returns the driver object
-    *
+    * 
     * @return object The driver requested
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
@@ -183,7 +183,7 @@ abstract class LoadableDriver
         if (!is_string($entryClass)) {
             return null;
         }
-        if (!is_object($this->_entry) && class_exists($entryClass)) {
+        if (!is_object($this->_entry)  && class_exists($entryClass)) {
             $table = json_decode(
                 (string)$this->iopobject()->table()->get("tableEntry"), true
             );

@@ -66,12 +66,10 @@ interface DriverInterface
     *
     * @param string $driver  The driver to load
     * @param object &$sensor The sensor object
-    * @param array  $table   The table to use.  This forces the table, instead of
-    *                        using the database to find it
     *
     * @return null
     */
-    public static function &factory($driver, &$sensor, $table = null);
+    public static function &factory($driver, &$sensor);
     /**
     * Returns the table entry object
     *

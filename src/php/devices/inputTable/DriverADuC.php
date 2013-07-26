@@ -72,13 +72,13 @@ abstract class DriverADuC extends Driver
     */
     protected $offset = 0;
     /**
-    * This is where our table entry is stored
-    */
-    private $_entry = null;
-    /**
     * This is where our channel
     */
     private $_channel = 0;
+    /**
+    * This is the class to use for our entry object.
+    */
+    protected $entryClass = "ADuCInputTable";
     /**
     * This function creates the system.
     *
@@ -95,7 +95,7 @@ abstract class DriverADuC extends Driver
     ) {
         $obj = parent::factory($driver, $sensor);
         $obj->offset = (int)$offset;
-        $obj->_entry = $entry;
+        $obj->entry = $entry;
         $obj->_channel = (int)$channel;
         return $obj;
     }
@@ -164,21 +164,6 @@ abstract class DriverADuC extends Driver
         return (float)bcdiv(bcmul($value, bcadd($Rin, $Rbias)), (float)$Rbias);
     }
     /**
-    * Returns the driver object
-    *
-    * @return object The driver requested
-    */
-    private function &_entry()
-    {
-        if (!is_object($this->_entry)) {
-            $entry = \HUGnet\devices\inputTable\tables\ADuCInputTable::factory(
-                $this, array()
-            );
-            $this->_entry = &$entry;
-        }
-        return $this->_entry;
-    }
-    /**
     * Gets the total gain.
     *
     * @param int $channel The channel to get the gain for
@@ -195,7 +180,7 @@ abstract class DriverADuC extends Driver
             // If channel 0 is off, get the gain from channel 1
             $channel = 1;
         }
-        return (float)$this->_entry()->gain($channel);
+        return (float)$this->entry()->gain($channel);
     }
     /**
     * Gets the total gain.
@@ -210,7 +195,7 @@ abstract class DriverADuC extends Driver
             $channel = $this->_channel;
         }
         $channel = (int)$channel;
-        return hexdec($this->_entry()->immediateProcessRoutine($channel));
+        return hexdec($this->entry()->immediateProcessRoutine($channel));
     }
     /**
     * Gets the total gain.
@@ -227,9 +212,9 @@ abstract class DriverADuC extends Driver
         $channel = (int)$channel;
         if (($channel != 0) || !$this->adcOn(0)) {
             // If channel 0 is off, get the gain from channel 1
-            return $this->_entry()->twosComplimentEnabled(1);
+            return $this->entry()->twosComplimentEnabled(1);
         }
-        return $this->_entry()->twosComplimentEnabled(0);
+        return $this->entry()->twosComplimentEnabled(0);
     }
     /**
     * Gets the total gain.
@@ -241,9 +226,9 @@ abstract class DriverADuC extends Driver
     protected function adcOn($channel)
     {
         if ($channel == 0) {
-            return (bool)$this->_entry()->enabled(0);
+            return (bool)$this->entry()->enabled(0);
         } else if ($channel == 1) {
-            return (bool)$this->_entry()->enabled(1);
+            return (bool)$this->entry()->enabled(1);
         }
         return false;
     }

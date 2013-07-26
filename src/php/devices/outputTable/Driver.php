@@ -144,25 +144,16 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         ),
     );
     /**
-    * This is where we store our entry in the input table
-    */
-    private $_entry;
-    /**
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
     *
     * @param object &$sensor The sensor in question
-    * @param array  $table   The table to use.  This forces the table, instead of
-    *                        using the database to find it
     *
     * @return null
     */
-    protected function __construct(&$sensor, $table = null)
+    protected function __construct(&$sensor)
     {
         parent::__construct($sensor);
-        if (is_array($table)) {
-            $this->tableEntry = $table;
-        }
     }
     /**
     * This is the destructor

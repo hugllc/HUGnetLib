@@ -57,6 +57,10 @@ abstract class DriverTestBaseADuC extends
 {
     /** This is the class we are testing */
     protected $class = "";
+    /** This is our system object */
+    protected $system = null;
+    /** This is our input object */
+    protected $input = null;
     /** This is the object we are testing */
     protected $o = null;
 
@@ -71,6 +75,30 @@ abstract class DriverTestBaseADuC extends
     protected function setUp()
     {
         parent::setUp();
+        $this->system = $this->getMock(
+            '\HUGnet\System', 
+            array('now'),
+            array(
+                array(
+                    "servers" => array(
+                        "hello" => array(
+                            "driver" => "sqlite",
+                            "file" => ":memory:",
+                            "group" => "hello",
+                        ),
+                        "default" => array(
+                            "driver" => "sqlite",
+                            "file" => ":memory:",
+                            "group" => "default",
+                        ),
+                    ),
+                ),
+            )
+        );
+        $this->system->expects($this->any())
+            ->method('now')
+            ->will($this->returnValue(1000000));
+        $this->input = $this->system->device()->input(0);
     }
 
     /**
@@ -83,9 +111,10 @@ abstract class DriverTestBaseADuC extends
     */
     protected function tearDown()
     {
+        unset($this->system);
+        unset($this->input);
         parent::tearDown();
     }
-
     /**
     * test the set routine when an extra class exists
     *

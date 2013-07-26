@@ -77,10 +77,6 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
     */
     private $_tableClass = "InputTable";
     /**
-    * This is where we store our entry in the input table
-    */
-    private $_entry;
-    /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
@@ -110,17 +106,12 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
     * database object is taken from the driver object.
     *
     * @param object &$sensor The sensor in question
-    * @param array  $table   The table to use.  This forces the table, instead of
-    *                        using the database to find it
     *
     * @return null
     */
-    protected function __construct(&$sensor, $table = null)
+    protected function __construct(&$sensor)
     {
         parent::__construct($sensor);
-        if (is_array($table)) {
-            $this->_tableEntry = $table;
-        }
     }
     /**
     * This is the destructor
@@ -129,7 +120,6 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
     {
         unset($this->_driver);
         unset($this->_table);
-        unset($this->_entry);
         parent::__destruct();
     }
     /**
@@ -245,15 +235,11 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
     private function _getTableEntries()
     {
         $return = array();
-        if (is_array($this->_tableEntry)) {
-            $return[$this->_tableEntry["id"]] = $this->_tableEntry["name"];
-        } else {
-            $values = $this->_table()->select(
-                "arch = ?", array($this->input()->device()->get("arch"))
-            );
-            foreach ((array)$values as $val) {
-                $return[$val->get("id")] = $val->get("name");
-            }
+        $values = $this->_table()->select(
+            "arch = ?", array($this->input()->device()->get("arch"))
+        );
+        foreach ((array)$values as $val) {
+            $return[$val->get("id")] = $val->get("name");
         }
         return $return;
     }

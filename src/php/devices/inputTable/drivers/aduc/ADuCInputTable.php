@@ -72,10 +72,6 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
     */
     private $_table;
     /**
-    * This is where we store the table entry
-    */
-    private $_tableEntry = null;
-    /**
     * This is where we store the InputTable
     */
     private $_tableClass = "InputTable";
@@ -117,17 +113,12 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
     * database object is taken from the driver object.
     *
     * @param object &$sensor The sensor in question
-    * @param array  $table   The table to use.  This forces the table, instead of
-    *                        using the database to find it
     *
     * @return null
     */
-    protected function __construct(&$sensor, $table = null)
+    protected function __construct(&$sensor)
     {
         parent::__construct($sensor);
-        if (is_array($table)) {
-            $this->_tableEntry = $table;
-        }
     }
     /**
     * This is the destructor
@@ -138,7 +129,6 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
             unset($this->_driver[$key]);
         }
         unset($this->_table);
-        unset($this->_entry);
         parent::__destruct();
     }
     /**
