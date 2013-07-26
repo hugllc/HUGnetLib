@@ -317,7 +317,7 @@ class Fixture extends \HUGnet\Device
     public function &input($sid)
     {
         $inputs = $this->get("inputs");
-        include_once dirname(__FILE__)."/../devices/input.php";
+        include_once dirname(__FILE__)."/../devices/Input.php";
         $input  = (array)$inputs[$sid];
         $input["group"] = "null";
         $system = $this->system();
@@ -333,7 +333,7 @@ class Fixture extends \HUGnet\Device
     */
     public function &output($sid)
     {
-        $output = $this->get("outputs");
+        $outputs = $this->get("outputs");
         include_once dirname(__FILE__)."/../devices/Output.php";
         $output  = (array)$outputs[$sid];
         $output["group"] = "null";
@@ -352,7 +352,7 @@ class Fixture extends \HUGnet\Device
     {
         $procs = $this->get("processes");
         include_once dirname(__FILE__)."/../devices/Process.php";
-        $proc  = (array)$procss[$sid];
+        $proc  = (array)$procs[$sid];
         $proc["group"] = "null";
         $system = $this->system();
         $ret = \HUGnet\devices\Process::factory($system, $proc, null, $this);

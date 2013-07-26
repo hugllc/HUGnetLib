@@ -180,8 +180,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
     */
     public function testGetParam($config, $data, $key, $expect)
     {
-        $sys = $this->getMock('\HUGnet\System', array('now'));
-        $sys->config($config);
+        $sys = $this->getMock('\HUGnet\System', array('now'), array($config));
         $obj = Fixture::factory($sys, $data);
         $this->assertSame($expect, $obj->getParam($key));
     }
@@ -199,8 +198,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
     */
     public function testGetLocalParam($config, $data, $key, $expect)
     {
-        $sys = $this->getMock('\HUGnet\System', array('now'));
-        $sys->config($config);
+        $sys = $this->getMock('\HUGnet\System', array('now'), array($config));
         $obj = Fixture::factory($sys, $data);
         $this->assertSame(null, $obj->getLocalParam($key));
     }
@@ -247,8 +245,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
     */
     public function testSet($config, $data, $key, $expect)
     {
-        $sys = $this->getMock('\HUGnet\System', array('now'));
-        $sys->config($config);
+        $sys = $this->getMock('\HUGnet\System', array('now'), array($config));
         $obj = Fixture::factory($sys, $data);
         $this->assertSame($expect, $obj->set($key, $expect));
     }
@@ -266,8 +263,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
     */
     public function testSetParam($config, $data, $key, $expect)
     {
-        $sys = $this->getMock('\HUGnet\System', array('now'));
-        $sys->config($config);
+        $sys = $this->getMock('\HUGnet\System', array('now'), array($config));
         $obj = Fixture::factory($sys, $data);
         $this->assertSame($expect, $obj->setParam($key, $expect));
     }
@@ -285,8 +281,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
     */
     public function testSetLocalParam($config, $data, $key, $expect)
     {
-        $sys = $this->getMock('\HUGnet\System', array('now'));
-        $sys->config($config);
+        $sys = $this->getMock('\HUGnet\System', array('now'), array($config));
         $obj = Fixture::factory($sys, $data);
         $this->assertSame($expect, $obj->setLocalParam($key, $expect));
     }
@@ -364,8 +359,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
     */
     public function testToArray($config, $data, $default, $expect)
     {
-        $sys = $this->getMock('\HUGnet\System', array('now'));
-        $sys->config($config);
+        $sys = $this->getMock('\HUGnet\System', array('now'), array($config));
         $obj = Fixture::factory($sys, $data);
         $this->assertSame($expect, $obj->toArray($default));
     }
@@ -411,8 +405,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
     */
     public function testStore($config, $data, $expect)
     {
-        $sys = $this->getMock('\HUGnet\System', array('now'));
-        $sys->config($config);
+        $sys = $this->getMock('\HUGnet\System', array('now'), array($config));
         $obj = Fixture::factory($sys, $data);
         $this->assertSame($expect, $obj->store());
     }
@@ -425,7 +418,6 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
     public static function dataInput()
     {
         return array(
-            /*
             array(  // #0 Everything normal
                 array(
                 ),
@@ -440,13 +432,11 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                             ),
                             "inputs" => array(
                                 0 => array(
-                                    "data" => array(
-                                        "id" => 0xF8,
-                                        'dev' => 0x123456,
-                                        'input' => 0,
-                                        'type' => "Virtual Sensor",
-                                    ),
-                                    "table" => array(
+                                    "id" => 0xF8,
+                                    'dev' => 0x123456,
+                                    'input' => 0,
+                                    'type' => "Virtual Sensor",
+                                    "tableEntry" => array(
                                         "driver" => "40:DEFAULT",
                                         "name" => "Controller Board Voltage",
                                         "MUX" => 4,
@@ -470,17 +460,16 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                     'type' => "Virtual Sensor",
                     'params' => array(),
                     'driver' => 'AVRAnalogTable',
-                ),
-                array(
-                    "driver" => "40:DEFAULT",
-                    "MUX" => 4,
-                    "ADLAR" => 1,
-                    "REFS" => 1,
-                    'priority' => 5,
-                    'offset' => 0,
+                    'tableEntry' => array(
+                        "driver" => "40:DEFAULT",
+                        "MUX" => 4,
+                        "ADLAR" => 1,
+                        "REFS" => 1,
+                        'priority' => 5,
+                        'offset' => 0,
+                    ),
                 ),
             ),
-            */
             array(  // #1 Input doesn't exist
                 array(
                 ),
@@ -515,8 +504,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                     'type' => "EmptySensor",
                     'params' => array(),
                     'driver' => "EmptySensor",
-                ),
-                array(
+                    'tableEntry' => array(),
                 ),
             ),
         );
@@ -528,17 +516,14 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
     * @param array $data   The data to feed the object
     * @param bool  $sid    This does nothing, but we have to prove that.
     * @param array $expect The data to expect
-    * @param array $entry  The table entry to expect
     *
     * @return null
     *
     * @dataProvider dataInput
     */
-    public function testInput($config, $data, $sid, $expect, $entry)
+    public function testInput($config, $data, $sid, $expect)
     {
-        /*
-        $sys = $this->getMock('\HUGnet\System', array('now'));
-        $sys->config($config);
+        $sys = $this->getMock('\HUGnet\System', array('now'), array($config));
         $obj = Fixture::factory($sys, $data);
         $ret = $obj->input($sid);
         $this->assertInternalType("object", $ret, "Return is not an object");
@@ -549,10 +534,6 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             $expect, $ret->toArray(false), "Return setup is wrong"
         );
-        $this->assertEquals(
-            $entry, $ret->toArray('entryonly'), "Return table entry is wrong"
-        );
-        */
     }
     /**
     * Data provider for testSet
@@ -562,7 +543,6 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
     public static function dataOutput()
     {
         return array(
-            /*
             array(  // #0 Everything normal
                 array(
                 ),
@@ -577,13 +557,11 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                             ),
                             "outputs" => array(
                                 0 => array(
-                                    "data" => array(
-                                        "id" => 0x01,
-                                        'dev' => 0x123456,
-                                        'output' => 0,
-                                        'type' => "Stuff Here",
-                                    ),
-                                    "table" => array(
+                                    "id" => 0x01,
+                                    'dev' => 0x123456,
+                                    'output' => 0,
+                                    'type' => "Stuff Here",
+                                    "tableEntry" => array(
                                         'DACBUFLP' => 1,
                                         'OPAMP' => 1,
                                         'DACBUFBYPASS' => 1,
@@ -606,18 +584,17 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                     'output' => 0,
                     'type' => "Stuff Here",
                     'params' => array(),
-                ),
-                array(
-                    'DACBUFLP' => 1,
-                    'OPAMP' => 1,
-                    'DACBUFBYPASS' => 1,
-                    'DACCLK' => 0,
-                    'DACMODE' => 0,
-                    'Rate' => 1,
-                    'Range' => 3,
+                    'tableEntry' => array(
+                        'DACBUFLP' => 1,
+                        'OPAMP' => 1,
+                        'DACBUFBYPASS' => 1,
+                        'DACCLK' => 0,
+                        'DACMODE' => 0,
+                        'Rate' => 1,
+                        'Range' => 3,
+                    ),
                 ),
             ),
-            */
             array(  // #1 Output doesn't exist
                 array(
                 ),
@@ -651,8 +628,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                 array(
                     'type' => "EmptyOutput",
                     'params' => array(),
-                ),
-                array(
+                    'tableEntry' => array(),
                 ),
             ),
         );
@@ -664,17 +640,14 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
     * @param array $data   The data to feed the object
     * @param bool  $sid    This does nothing, but we have to prove that.
     * @param array $expect The data to expect
-    * @param array $entry  The table entry to expect
     *
     * @return null
     *
     * @dataProvider dataOutput
     */
-    public function testOutput($config, $data, $sid, $expect, $entry)
+    public function testOutput($config, $data, $sid, $expect)
     {
-        /*
-        $sys = $this->getMock('\HUGnet\System', array('now'));
-        $sys->config($config);
+        $sys = $this->getMock('\HUGnet\System', array('now'), array($config));
         $obj = Fixture::factory($sys, $data);
         $ret = $obj->output($sid);
         $this->assertInternalType("object", $ret, "Return is not an object");
@@ -685,10 +658,6 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             $expect, $ret->toArray(false), "Return setup is wrong"
         );
-        $this->assertEquals(
-            $entry, $ret->toArray('entryonly'), "Return table entry is wrong"
-        );
-        */
     }
     /**
     * Data provider for testProcess
@@ -712,13 +681,11 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                             ),
                             "processes" => array(
                                 0 => array(
-                                    "data" => array(
-                                        "id" => 0x01,
-                                        'dev' => 0x123456,
-                                        'process' => 0,
-                                        'type' => "Stuff Here",
-                                    ),
-                                    "table" => array(
+                                    "id" => 0x01,
+                                    'dev' => 0x123456,
+                                    'process' => 0,
+                                    'type' => "Stuff Here",
+                                    "tableEntry" => array(
                                     ),
                                 ),
                             ),
@@ -734,8 +701,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                     'process' => 0,
                     'type' => "Stuff Here",
                     'params' => array(),
-                ),
-                array(
+                    'tableEntry' => array(),
                 ),
             ),
             array(  // #1 Output doesn't exist
@@ -752,13 +718,11 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                             ),
                             "processes" => array(
                                 0 => array(
-                                    "data" => array(
-                                        "id" => 0xFC,
-                                        'dev' => 0x123456,
-                                        'process' => 0,
-                                        'type' => "Virtual Sensor",
-                                    ),
-                                    "table" => array(
+                                    "id" => 0xFC,
+                                    'dev' => 0x123456,
+                                    'process' => 0,
+                                    'type' => "Virtual Sensor",
+                                    "tableEntry" => array(
                                     ),
                                 ),
                             ),
@@ -771,8 +735,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                 array(
                     'type' => "EmptyProcess",
                     'params' => array(),
-                ),
-                array(
+                    'tableEntry' => array(),
                 ),
             ),
         );
@@ -784,17 +747,14 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
     * @param array $data   The data to feed the object
     * @param bool  $sid    This does nothing, but we have to prove that.
     * @param array $expect The data to expect
-    * @param array $entry  The table entry to expect
     *
     * @return null
     *
     * @dataProvider dataProcess
     */
-    public function testProcess($config, $data, $sid, $expect, $entry)
+    public function testProcess($config, $data, $sid, $expect)
     {
-        /*
-        $sys = $this->getMock('\HUGnet\System', array('now'));
-        $sys->config($config);
+        $sys = $this->getMock('\HUGnet\System', array('now'), array($config));
         $obj = Fixture::factory($sys, $data);
         $ret = $obj->process($sid);
         $this->assertInternalType("object", $ret, "Return is not an object");
@@ -805,10 +765,6 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             $expect, $ret->toArray(false), "Return setup is wrong"
         );
-        $this->assertEquals(
-            $entry, $ret->toArray('entryonly'), "Return table entry is wrong"
-        );
-        */
     }
     /**
     * Data provider for testSet
@@ -897,8 +853,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
     */
     public function testExport($config, $data, $expect)
     {
-        $sys = $this->getMock('\HUGnet\System', array('now'));
-        $sys->config($config);
+        $sys = $this->getMock('\HUGnet\System', array('now'), array($config));
         $obj = Fixture::factory($sys, $data);
         $ret = $obj->export();
         $this->assertEquals(
@@ -1034,11 +989,10 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
     */
     public function testImport($config, $data, $import, $return, $expect)
     {
-        $sys = $this->getMock('\HUGnet\System', array('now'));
+        $sys = $this->getMock('\HUGnet\System', array('now'), array($config));
         $sys->expects($this->any())
             ->method('now')
             ->will($this->returnValue(1000000));
-        $sys->config($config);
         $obj = Fixture::factory($sys, $data);
         $ret = $obj->import($import);
         $this->assertEquals($return, $ret, "Return wrong");
@@ -1225,11 +1179,10 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
         $config, $data, $device, $inputs, $outputs, $processes, $return, $expect
     ) {
         /*
-        $sys = $this->getMock('\HUGnet\System', array('now'));
+        $sys = $this->getMock('\HUGnet\System', array('now'), array($config));
         $sys->expects($this->any())
             ->method('now')
             ->will($this->returnValue(1000000));
-        $sys->config($config);
         $obj = Fixture::factory($sys, $data);
         $dev = $sys->device($device);
         $input = $dev->input(0);
