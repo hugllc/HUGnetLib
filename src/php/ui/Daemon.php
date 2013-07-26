@@ -87,7 +87,7 @@ class Daemon extends CLI
     /**
     * Sets our configuration
     *
-    * @param mixed &$config The configuration to use
+    * @return null
     */
     public function __destruct()
     {
