@@ -94,7 +94,9 @@ class Nulldb  implements \HUGnet\interfaces\DBConnection
         );
         $this->_system = &$system;
         foreach ((array)$config as $key => $val) {
-            $this->_servers[$key] = array_merge($this->_default, $val);
+            if (is_array($val)) {
+                $this->_servers[$key] = array_merge($this->_default, $val);
+            }
         }
         if (empty($this->_servers)) {
             $this->_servers["default"] = $this->_default;
