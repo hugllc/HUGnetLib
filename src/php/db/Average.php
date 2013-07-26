@@ -503,9 +503,9 @@ abstract class Average extends History
         return $date - $tzoffset;
     }
     /**
-    * This says what the base average is
-    *
-|    * @return string the type
+    * This is the base type of this kind of average
+    * 
+    * @return string
     */
     public function baseType()
     {
