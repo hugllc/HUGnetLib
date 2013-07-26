@@ -343,10 +343,9 @@ abstract class IOPBase extends SystemTableBase
         return parent::store($replace);
     }
     /**
-    * returns a history object for this device
+    * Sets the table entry, based on the given ID
     *
-    * @param object $args  The argument object
-    * @param array  $extra Extra data from the
+    * @param int $id The id of the entry to set this input to
     *
     * @return boolean True on success, false on failure
     */
