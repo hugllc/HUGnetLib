@@ -258,10 +258,9 @@ class Fixture extends \HUGnet\Device
         if (isset($data["id"])) {
             unset($data["RawSetup"]);
             unset($data["group"]);
-            $import["data"] = $data;
-            $import["table"] = $iop->toArray("entryonly");
+            $import = $data;
         } else {
-            $import["data"] = array("id" => 0xFF);
+            $import = array("id" => 0xFF);
         }
         return $import;
         
@@ -317,16 +316,12 @@ class Fixture extends \HUGnet\Device
     */
     public function &input($sid)
     {
-        $input = $this->get("inputs");
-        include_once dirname(__FILE__)."/../devices/Input.php";
+        $inputs = $this->get("inputs");
+        include_once dirname(__FILE__)."/../devices/input.php";
+        $input  = (array)$inputs[$sid];
+        $input["group"] = "null";
         $system = $this->system();
-        $ret = \HUGnet\devices\Input::factory(
-            $system,
-            (array)$input[$sid]["data"],
-            null,
-            $this,
-            (array)$input[$sid]["table"]
-        );
+        $ret = \HUGnet\devices\Input::factory($system, $input, null, $this);
         return $ret;
     }
     /**
@@ -340,14 +335,10 @@ class Fixture extends \HUGnet\Device
     {
         $output = $this->get("outputs");
         include_once dirname(__FILE__)."/../devices/Output.php";
+        $output  = (array)$outputs[$sid];
+        $output["group"] = "null";
         $system = $this->system();
-        $ret = \HUGnet\devices\Output::factory(
-            $system,
-            (array)$output[$sid]["data"],
-            null,
-            $this,
-            (array)$output[$sid]["table"]
-        );
+        $ret = \HUGnet\devices\Output::factory($system, $output, null, $this);
         return $ret;
     }
     /**
@@ -359,16 +350,12 @@ class Fixture extends \HUGnet\Device
     */
     public function &process($sid)
     {
-        $proc = $this->get("processes");
+        $procs = $this->get("processes");
         include_once dirname(__FILE__)."/../devices/Process.php";
+        $proc  = (array)$procss[$sid];
+        $proc["group"] = "null";
         $system = $this->system();
-        $ret = \HUGnet\devices\Process::factory(
-            $system,
-            $proc[$sid]["data"],
-            null,
-            $this,
-            (array)$proc[$sid]["table"]
-        );
+        $ret = \HUGnet\devices\Process::factory($system, $proc, null, $this);
         return $ret;
     }
 
