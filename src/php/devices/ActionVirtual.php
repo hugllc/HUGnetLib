@@ -182,7 +182,7 @@ class ActionVirtual extends Action
     *
     * @return bool array on success, false on failure
     */
-    protected function _calcAverage(\HUGnet\db\History &$data)
+    private function _calcAverage(\HUGnet\db\History &$data)
     {
         if ($this->done) {
             $this->_clearHistCache();

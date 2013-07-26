@@ -795,7 +795,7 @@ class ActionVirtualTest extends \PHPUnit_Framework_TestCase
         foreach ((array)$devs as $d) {
             $dev->table()->fromAny($d);
             $dev->store();
-            foreach((array)$d["inputs"] as $key => $inp) {
+            foreach ((array)$d["inputs"] as $key => $inp) {
                 $input = $dev->input($key);
                 $input->table()->fromArray($inp);
                 $input->store();
@@ -810,7 +810,7 @@ class ActionVirtualTest extends \PHPUnit_Framework_TestCase
         if (!is_null($device)) {
             $this->device = $this->system->device($device);
             $this->device->store();
-            foreach((array)$device["inputs"] as $key => $inp) {
+            foreach ((array)$device["inputs"] as $key => $inp) {
                 $input = $this->device->input($key);
                 $input->table()->fromArray($inp);
                 $input->store();
@@ -2656,7 +2656,7 @@ class ActionVirtualTest extends \PHPUnit_Framework_TestCase
         foreach ((array)$devs as $d) {
             $dev->table()->fromAny($d);
             $dev->table()->insertRow(true);
-            foreach((array)$d["inputs"] as $key => $inp) {
+            foreach ((array)$d["inputs"] as $key => $inp) {
                 $input = $dev->input($key);
                 $input->table()->fromArray($inp);
                 $input->table()->insertRow(true);
@@ -2671,7 +2671,7 @@ class ActionVirtualTest extends \PHPUnit_Framework_TestCase
         if (!is_null($device)) {
             $this->device = $this->system->device($device);
             $this->device->store();
-            foreach((array)$device["inputs"] as $key => $inp) {
+            foreach ((array)$device["inputs"] as $key => $inp) {
                 $input = $this->device->input($key);
                 $input->table()->fromArray($inp);
                 $input->store();
