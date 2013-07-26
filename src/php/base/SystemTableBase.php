@@ -178,6 +178,10 @@ abstract class SystemTableBase
     {
         $ret = false;
         $this->table()->clearData();
+        if (isset($data["group"])) {
+            // This needs to get set before we search the DB
+            $this->table()->set("group", $data["group"]);
+        }
         if (is_int($data) || is_string($data)) {
             $this->table()->getRow($data);
             if ($this->table()->isEmpty()) {

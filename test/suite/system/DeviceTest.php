@@ -1747,18 +1747,18 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
             array(      // #0
                 array(
                     "id" => 5,
-                    "group" => "hello",
+                    "group" => "null",
                 ),
                 0,
                 "\HUGnet\devices\Output",
                 array(
                     "output" => 0,
                     "dev" => 5,
-                    //"group" => "hello",
                     'type' => 'EmptyOutput',
                     'params' => array(),
                     'tableEntry' => array(),
                 ),
+                "null",
             ),
             array(      // #1
                 array(
@@ -1776,9 +1776,9 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     'id' => 49,
                     'type' => 'FSDA',
                     'tableEntry' => array(),
-                    //'group' => 'hello',
                     'params' => array(),
                 ),
+                "hello",
             ),
             array(      // #2
                 array(
@@ -1791,11 +1791,11 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 array(
                     "output" => 0,
                     "dev" => 5,
-                    //"group" => "default",
                     'type' => 'EmptyOutput',
                     'params' => array(),
                     'tableEntry' => array(),
                 ),
+                "default",
             ),
         );
     }
@@ -1806,13 +1806,14 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     * @param string $sensor       The driver to tell it to load
     * @param string $driverExpect The driver we expect to be loaded
     * @param int    $expect       The expected sensor id
+    * @param string $group        The group to expect
     *
     * @return null
     *
     * @dataProvider dataOutput
     */
     public function testOutput(
-        $config, $sensor, $driverExpect, $expect
+        $config, $sensor, $driverExpect, $expect, $group
     ) {
         $sys = $this->getMock(
             '\HUGnet\System', 
@@ -1847,6 +1848,11 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
             $expect,
             $sen->toArray(false),
             "Wrong sensor returned"
+        );
+        $this->assertEquals(
+            $group,
+            $sen->get("group"),
+            "Wrong group returned"
         );
         unset($obj);
     }
