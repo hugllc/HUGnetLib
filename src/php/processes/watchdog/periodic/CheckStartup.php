@@ -104,7 +104,8 @@ class CheckStartup extends \HUGnet\processes\watchdog\Periodic
                 }
                 if ($key >= 0xFE0000) {
                     $device->load($key);
-                    $uptime = $now - $device->getParam("Startup");
+                    $start = $device->getParam("Startup");
+                    $uptime = $now - $startup;
                     if ($uptime < $this->period) {
                         $name = sprintf("%06X", $key);
                         $job  = $device->get("DeviceJob");
@@ -114,7 +115,7 @@ class CheckStartup extends \HUGnet\processes\watchdog\Periodic
                         $this->ui()->criticalError(
                             "CheckStartup".$key,
                             "Device $name restarted"
-                            ." at ".date("Y-m-d H:i:s", $uptime)
+                            ." at ".date("Y-m-d H:i:s", $startup)
                         );
                     } else {
                         $this->ui()->clearError("CheckStartup".$key);
