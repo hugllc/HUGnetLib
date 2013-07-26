@@ -69,7 +69,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     * The location of our tables.
     */
     protected $tableLoc = "outputTable";
-   /**
+    /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
