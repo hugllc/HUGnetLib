@@ -157,7 +157,7 @@ abstract class LoadableDriver
         $file  = dirname(__FILE__)."/../devices/".$this->tableLoc;
         $file .= "/tables/".$this->entryClass.".php";
         if (file_exists($file)) {
-            include_once($file);
+            include_once $file;
         }
         $ret = "\\HUGnet\\devices\\".$this->tableLoc."\\tables\\".$this->entryClass;
         return $ret;
