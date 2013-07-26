@@ -469,7 +469,8 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                     "somegroup" => "somegroup",
-                    "someothergroup" => "someothergroup"
+                    "someothergroup" => "someothergroup",
+                    "null" => "null",
                 ),
             ),
             // Non default group name with group in call
@@ -495,7 +496,8 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                     "somegroup" => "somegroup",
-                    "default" => "default"
+                    "default" => "default",
+                    "null" => "null",
                 ),
             ),
         );

@@ -100,7 +100,9 @@ class Connection implements \ConnectionManager
             );
         }
         // Always have the null driver
-        $this->_servers["null"] = array("group" => "null", "driver" => "nulldb");
+        $this->_servers["null"] = array(array("group" => "null", "driver" => "nulldb"));
+        $this->_drivers["null"] = "nulldb";
+        $this->_groups["null"] = "null";
     }
     /**
     * This function creates the system.
