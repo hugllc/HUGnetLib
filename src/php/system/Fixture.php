@@ -308,11 +308,11 @@ class Fixture extends \HUGnet\Device
         return $obj;
     }
     /**
-    * This creates the sensor drivers
+    * This creates the input object
     *
-    * @param int $sid The sensor id to get.  They are labaled 0 to sensors
+    * @param int $sid The input id to get.  They are labeled 0 to InputTables
     *
-    * @return null
+    * @return object The input object
     */
     public function &input($sid)
     {
@@ -325,11 +325,11 @@ class Fixture extends \HUGnet\Device
         return $ret;
     }
     /**
-    * This creates the sensor drivers
+    * This creates the output object
     *
-    * @param int $sid The sensor id to get.  They are labaled 0 to sensors
+    * @param int $sid The output id to get.  They are labeled 0 to OutputTables
     *
-    * @return null
+    * @return object The output object
     */
     public function &output($sid)
     {
@@ -342,11 +342,11 @@ class Fixture extends \HUGnet\Device
         return $ret;
     }
     /**
-    * This creates the sensor drivers
+    * This creates the process object
     *
-    * @param int $sid The sensor id to get.  They are labaled 0 to sensors
+    * @param int $sid The process id to get.  They are labeled 0 to ProcessTables
     *
-    * @return null
+    * @return object The process object
     */
     public function &process($sid)
     {
