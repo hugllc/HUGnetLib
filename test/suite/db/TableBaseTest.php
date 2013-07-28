@@ -554,6 +554,7 @@ class TableBaseTest extends \PHPUnit_Extensions_Database_TestCase
                     "name" => "Update Test",
                     "value" => "100.0",
                 ),
+                false,
                 array(
                     array(
                         "id" => "-5",
@@ -580,6 +581,39 @@ class TableBaseTest extends \PHPUnit_Extensions_Database_TestCase
             array(
                 array(
                 ),
+                false,
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "2",
+                        "name" => "Another THing",
+                        "value" => "22.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    "fluff" => "things",
+                    "other" => "nStuff",
+                    "id" => "2",
+                    "name" => "Update Test",
+                    "value" => "100.0",
+                ),
+                true,
                 array(
                     array(
                         "id" => "-5",
@@ -608,18 +642,20 @@ class TableBaseTest extends \PHPUnit_Extensions_Database_TestCase
     /**
     * Tests for verbosity
     *
-    * @param array $preload The array to preload into the class
-    * @param array $expect  The expected return
+    * @param array $preload  The array to preload into the class
+    * @param bool  $readonly Read only mode to use
+    * @param array $expect   The expected return
     *
     * @dataProvider dataUpdateRow
     *
     * @return null
     */
-    public function testUpdateRow($preload, $expect)
+    public function testUpdateRow($preload, $readonly, $expect)
     {
         $obj = \HUGnet\db\tables\HUGnetDBTableBaseTestStub::factory(
             $this->system, $preload, "HUGnetDBTableBaseTestStub", $this->connect
         );
+        $obj->readonly($readonly);
         $obj->updateRow();
         $stmt = $this->pdo->query("SELECT * FROM `myTable`");
         $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -641,6 +677,7 @@ class TableBaseTest extends \PHPUnit_Extensions_Database_TestCase
                     "name" => "Insert Test",
                     "value" => "101.0",
                 ),
+                false,
                 false,
                 array(
                     array(
@@ -674,6 +711,39 @@ class TableBaseTest extends \PHPUnit_Extensions_Database_TestCase
                 array(
                 ),
                 true,
+                false,
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "2",
+                        "name" => "Another THing",
+                        "value" => "22.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    "fluff" => "things",
+                    "other" => "nStuff",
+                    "name" => "Insert Test",
+                    "value" => "101.0",
+                ),
+                false,
+                true,
                 array(
                     array(
                         "id" => "-5",
@@ -702,19 +772,21 @@ class TableBaseTest extends \PHPUnit_Extensions_Database_TestCase
     /**
     * Tests for verbosity
     *
-    * @param array $preload The array to preload into the class
-    * @param bool  $replace Replace any records that collide with this one.
-    * @param array $expect  The expected return
+    * @param array $preload  The array to preload into the class
+    * @param bool  $replace  Replace any records that collide with this one.
+    * @param bool  $readonly Read only mode to use
+    * @param array $expect   The expected return
     *
     * @dataProvider dataInsertRow
     *
     * @return null
     */
-    public function testInsertRow($preload, $replace, $expect)
+    public function testInsertRow($preload, $replace, $readonly, $expect)
     {
         $obj = \HUGnet\db\tables\HUGnetDBTableBaseTestStub::factory(
             $this->system, $preload, "HUGnetDBTableBaseTestStub", $this->connect
         );
+        $obj->readonly($readonly);
         $obj->insertRow($replace);
         $stmt = $this->pdo->query("SELECT * FROM `myTable`");
         $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -737,6 +809,7 @@ class TableBaseTest extends \PHPUnit_Extensions_Database_TestCase
                     "name" => "Insert Test",
                     "value" => "101.0",
                 ),
+                false,
                 array(
                     array(
                         "id" => "-5",
@@ -758,6 +831,39 @@ class TableBaseTest extends \PHPUnit_Extensions_Database_TestCase
             array(
                 array(
                 ),
+                false,
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "2",
+                        "name" => "Another THing",
+                        "value" => "22.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    "fluff" => "things",
+                    "other" => "nStuff",
+                    "id" => 2,
+                    "name" => "Insert Test",
+                    "value" => "101.0",
+                ),
+                true,
                 array(
                     array(
                         "id" => "-5",
@@ -786,18 +892,20 @@ class TableBaseTest extends \PHPUnit_Extensions_Database_TestCase
     /**
     * Tests for verbosity
     *
-    * @param array $preload The array to preload into the class
-    * @param array $expect  The expected return
+    * @param array $preload  The array to preload into the class
+    * @param bool  $readonly Read only mode to use
+    * @param array $expect   The expected return
     *
     * @dataProvider dataDeleteRow
     *
     * @return null
     */
-    public function testDeleteRow($preload, $expect)
+    public function testDeleteRow($preload, $readonly, $expect)
     {
         $obj = \HUGnet\db\tables\HUGnetDBTableBaseTestStub::factory(
             $this->system, $preload, "HUGnetDBTableBaseTestStub", $this->connect
         );
+        $obj->readonly($readonly);
         $obj->deleteRow();
         $stmt = $this->pdo->query("SELECT * FROM `myTable`");
         $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -896,6 +1004,36 @@ class TableBaseTest extends \PHPUnit_Extensions_Database_TestCase
         $this->o->set($var, $value);
         $data = $this->readAttribute($this->o, "data");
         $this->assertSame($expect, $data[$var]);
+    }
+    /**
+    * data provider for testSet
+    *
+    * @return array
+    */
+    public static function dataReadonly()
+    {
+        return array(
+            array(true, true),
+            array(false, false),
+            array("asdf", false),
+            array(1, true),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $value  The value to set
+    * @param mixed  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataReadonly
+    */
+    public function testReadonly($value, $expect)
+    {
+        $this->o->readonly($value);
+        $this->assertSame($expect, $this->o->readonly());
     }
 }
 namespace HUGnet\db\tables;

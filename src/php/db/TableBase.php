@@ -130,6 +130,8 @@ abstract class TableBase extends \HUGnet\base\Container
     protected $default = array(
         "group" => "default",    // Server group to use
     );
+    /** @var object This is where we store our connection object */
+    private $_readonly = false;
 
     /**
     * This is the constructor
@@ -204,6 +206,21 @@ abstract class TableBase extends \HUGnet\base\Container
         return $obj;
     }
     /**
+    * This function creates other tables that are identical to this one, except
+    * for the data given.
+    *
+    * @param mixed $data This is an array or string to create the object from
+    *
+    * @return bool The read only flag
+    */
+    public function readonly($flag = null)
+    {
+        if (is_bool($flag) || is_numeric($flag)) {
+            $this->_readonly = (bool)$flag;
+        }
+        return $this->_readonly;
+    }
+    /**
     * Clears out the data
     *
     * @return null
@@ -273,7 +290,7 @@ abstract class TableBase extends \HUGnet\base\Container
     */
     public function updateRow($columns = array())
     {
-        if ($this->isEmpty()) {
+        if ($this->isEmpty() || $this->readonly()) {
             return false;
         }
         $ret = $this->dbDriver()->updateOnce($this->toDB(), "", array(), $columns);
@@ -289,7 +306,7 @@ abstract class TableBase extends \HUGnet\base\Container
     */
     public function insert($replace = false)
     {
-        if ($this->isEmpty()) {
+        if ($this->isEmpty() || $this->readonly()) {
             return false;
         }
         $sqlId = $this->sqlId;
@@ -330,7 +347,7 @@ abstract class TableBase extends \HUGnet\base\Container
     */
     public function deleteRow()
     {
-        if ($this->isEmpty()) {
+        if ($this->isEmpty() || $this->readonly()) {
             return false;
         }
         $ret = $this->dbDriver()->deleteWhere($this->toDB());
