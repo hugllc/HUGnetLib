@@ -274,13 +274,7 @@ class Fixture extends \HUGnet\Device
     */
     public function &input($sid)
     {
-        $inputs = $this->get("inputs");
-        include_once dirname(__FILE__)."/../devices/Input.php";
-        $input  = (array)$inputs[$sid];
-        $input["group"] = "null";
-        $system = $this->system();
-        $ret = \HUGnet\devices\Input::factory($system, $input, null, $this);
-        return $ret;
+        return $this->_iop($sid, "input", "inputs");
     }
     /**
     * This creates the output object
@@ -291,13 +285,7 @@ class Fixture extends \HUGnet\Device
     */
     public function &output($sid)
     {
-        $outputs = $this->get("outputs");
-        include_once dirname(__FILE__)."/../devices/Output.php";
-        $output  = (array)$outputs[$sid];
-        $output["group"] = "null";
-        $system = $this->system();
-        $ret = \HUGnet\devices\Output::factory($system, $output, null, $this);
-        return $ret;
+        return $this->_iop($sid, "output", "outputs");
     }
     /**
     * This creates the process object
@@ -308,12 +296,28 @@ class Fixture extends \HUGnet\Device
     */
     public function &process($sid)
     {
-        $procs = $this->get("processes");
-        include_once dirname(__FILE__)."/../devices/Process.php";
-        $proc  = (array)$procs[$sid];
-        $proc["group"] = "null";
+        return $this->_iop($sid, "process", "processes");
+    }
+    /**
+    * This creates the process object
+    *
+    * @param int    $sid  The process id to get.  They are labeled 0 to xTables
+    * @param string $type The type of iop to get
+    * @param string $log  The location in the fixture to get information
+    *
+    * @return object The process object
+    */
+    private function &_iop($sid, $type, $loc)
+    {
+        $iops = $this->get($loc);
+        $class = ucfirst($type);
+        include_once dirname(__FILE__)."/../devices/".$class.".php";
+        $iop  = (array)$iops[$sid];
+        $iop["group"] = "null";
         $system = $this->system();
-        $ret = \HUGnet\devices\Process::factory($system, $proc, null, $this);
+        $class = "\\HUGnet\\devices\\".$class;
+        $ret = $class::factory($system, $iop, null, $this);
+        $ret->table()->readonly();
         return $ret;
     }
 
