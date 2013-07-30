@@ -252,10 +252,10 @@ class Fixture extends \HUGnet\Device
     {
         $dev = $this->system()->device();
         $data = json_decode($this->table()->get('fixture'), true);
-        $dev->load($data);
-        $dev->store();
+        $dev->table()->fromArray($data);
+        $dev->table()->insertRow(true);
         /* Now do the iopTables */
-        $input = $dev->input($i);
+        $input = $dev->input(0);
         for ($i = 0; $i < $dev->get("InputTables"); $i++) {
             $input->table()->clearData();
             $input->table()->fromArray($data["inputs"][$i]);
@@ -263,7 +263,7 @@ class Fixture extends \HUGnet\Device
             $input->table()->set("input", $i);
             $input->table()->insertRow(true);
         }
-        $output = $dev->output($i);
+        $output = $dev->output(0);
         for ($i = 0; $i < $dev->get("OutputTables"); $i++) {
             $output->table()->clearData();
             $output->table()->fromArray($data["outputs"][$i]);
@@ -271,7 +271,7 @@ class Fixture extends \HUGnet\Device
             $output->table()->set("output", $i);
             $output->table()->insertRow(true);
         }
-        $proc = $dev->process($i);
+        $proc = $dev->process(0);
         for ($i = 0; $i < $dev->get("ProcessTables"); $i++) {
             $proc->table()->clearData();
             $proc->table()->fromArray($data["processes"][$i]);
