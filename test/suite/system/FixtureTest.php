@@ -430,7 +430,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                             "params" => array(
                                 "LastModified" => 0x12345678,
                             ),
-                            "inputs" => array(
+                            "input" => array(
                                 0 => array(
                                     "id" => 0xF8,
                                     'dev' => 0x123456,
@@ -482,7 +482,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                             "params" => array(
                                 "LastModified" => 0x12345678,
                             ),
-                            "inputs" => array(
+                            "input" => array(
                                 0 => array(
                                     "data" => array(
                                         "id" => 0xFC,
@@ -555,7 +555,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                             "params" => array(
                                 "LastModified" => 0x12345678,
                             ),
-                            "outputs" => array(
+                            "output" => array(
                                 0 => array(
                                     "id" => 0x01,
                                     'dev' => 0x123456,
@@ -607,7 +607,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                             "params" => array(
                                 "LastModified" => 0x12345678,
                             ),
-                            "outputs" => array(
+                            "output" => array(
                                 0 => array(
                                     "data" => array(
                                         "id" => 0xFC,
@@ -679,7 +679,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                             "params" => array(
                                 "LastModified" => 0x12345678,
                             ),
-                            "processes" => array(
+                            "process" => array(
                                 0 => array(
                                     "id" => 0x01,
                                     'dev' => 0x123456,
@@ -716,7 +716,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                             "params" => array(
                                 "LastModified" => 0x12345678,
                             ),
-                            "processes" => array(
+                            "process" => array(
                                 0 => array(
                                     "id" => 0xFC,
                                     'dev' => 0x123456,
@@ -786,7 +786,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                             "params" => array(
                                 "LastModified" => 0x12345678,
                             ),
-                            "outputs" => array(
+                            "output" => array(
                                 0 => array(
                                     "data" => array(
                                         "id" => 0x01,
@@ -816,7 +816,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                         "params" => array(
                             "LastModified" => 0x12345678,
                         ),
-                        "outputs" => array(
+                        "output" => array(
                             0 => array(
                                 "data" => array(
                                     "id" => 0x01,
@@ -880,7 +880,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                         "params" => array(
                             "LastModified" => 0x12345678,
                         ),
-                        "outputs" => array(
+                        "output" => array(
                             0 => array(
                                 "data" => array(
                                     "id" => 0x01,
@@ -913,7 +913,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                             "params" => array(
                                 "LastModified" => 0x12345678,
                             ),
-                            "outputs" => array(
+                            "output" => array(
                                 0 => array(
                                     "data" => array(
                                         "id" => 0x01,
@@ -947,7 +947,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                         "params" => array(
                             "LastModified" => 0x12345678,
                         ),
-                        "outputs" => array(
+                        "output" => array(
                             0 => array(
                                 "data" => array(
                                     "id" => 0x01,
@@ -1050,7 +1050,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                             ),
                             'controlChannels' => array(
                             ),
-                            'inputs' => array(
+                            'input' => array(
                                 0 => array(
                                     'dev' => 18,
                                     'input' => 0,
@@ -1086,7 +1086,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                                     'id' => 255,
                                 ),
                             ),
-                            'outputs' => array(
+                            'output' => array(
                                 0 => array(
                                     'id' => 255,
                                 ),
@@ -1103,7 +1103,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                                     'id' => 255,
                                 ),
                             ),
-                            'processes' => array(
+                            'process' => array(
                                 0 => array(
                                     'id' => 255,
                                 ),
@@ -1129,9 +1129,9 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
     * @param array $config    The configuration to use
     * @param array $data      The data to feed the object
     * @param array $device    The device information
-    * @param array $inputs    The inputs to load
-    * @param array $outputs   The outputs to load
-    * @param array $processes The processes to load
+    * @param array $inputs    The input to load
+    * @param array $outputs   The output to load
+    * @param array $processes The process to load
     * @param mixed $return    The return expected
     * @param array $expect    The data to expect
     *
@@ -1151,17 +1151,17 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
         $input = $dev->input(0);
         foreach ((array)$inputs as $key => $value) {
             $input->table()->fromAny($value);
-            $input->store();
+            $input->table()->insertRow(true);
         }
         $output = $dev->output(0);
         foreach ((array)$outputs as $key => $value) {
             $output->table()->fromAny($value);
-            $output->store();
+            $output->table()->insertRow(true);
         }
         $process = $dev->process(0);
         foreach ((array)$processes as $key => $value) {
             $process->table()->fromAny($value);
-            $process->store();
+            $process->table()->insertRow(true);
         }
         $ret = $obj->import($dev);
         $this->assertEquals($return, $ret, "Return wrong");
@@ -1209,7 +1209,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                                 array("label" => "3"),
                                 array("label" => "4"),
                             ),
-                            'inputs' => array(
+                            'input' => array(
                                 0 => array(
                                     'dev' => 18,
                                     'input' => 0,
@@ -1265,7 +1265,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                                     'location' => "8",
                                 ),
                             ),
-                            'outputs' => array(
+                            'output' => array(
                                 0 => array(
                                     'id' => 0xFE,
                                     'output' => 0,
@@ -1292,7 +1292,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                                     'location' => "4",
                                 ),
                             ),
-                            'processes' => array(
+                            'process' => array(
                                 0 => array(
                                     'id' => 1,
                                     'process' => 0,
@@ -1586,16 +1586,16 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
     * @param array $config    The configuration to use
     * @param array $data      The data to feed the object
     * @param array $device    The device information
-    * @param array $inputs    The inputs to load
-    * @param array $outputs   The outputs to load
-    * @param array $processes The processes to load
+    * @param array $input    The input to load
+    * @param array $output   The output to load
+    * @param array $process The process to load
     *
     * @return null
     *
     * @dataProvider dataDeviceExport
     */
     public function testDeviceExport(
-        $config, $data, $device, $inputs, $outputs, $processes
+        $config, $data, $device, $input, $output, $process
     ) {
         $sys = $this->getMock('\HUGnet\System', array('now'), array($config));
         $sys->expects($this->any())
@@ -1606,23 +1606,23 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
         $dev = $obj->exportDevice();
         $this->assertEquals($device, $dev->toArray(false));
 
-        foreach ((array)$inputs as $key => $value) {
+        foreach ((array)$input as $key => $value) {
             $this->assertEquals(
-                $inputs[$key], 
+                $input[$key], 
                 $dev->input($key)->toArray(false),
                 "Input $key is wrong"
             );
         }
-        foreach ((array)$outputs as $key => $value) {
+        foreach ((array)$output as $key => $value) {
             $this->assertEquals(
-                $outputs[$key], 
+                $output[$key], 
                 $dev->output($key)->toArray(false),
                 "Output $key is wrong"
             );
         }
-        foreach ((array)$processes as $key => $value) {
+        foreach ((array)$process as $key => $value) {
             $this->assertEquals(
-                $processes[$key], 
+                $process[$key], 
                 $dev->process($key)->toArray(false),
                 "Process $key is wrong"
             );

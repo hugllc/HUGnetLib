@@ -42,7 +42,7 @@ require_once dirname(__FILE__)."/Device.php";
 require_once dirname(__FILE__)."/../interfaces/WebAPI.php";
 /** This is our system interface */
 require_once dirname(__FILE__)."/../interfaces/SystemInterface.php";
-/* THis is our outputs */
+/* THis is our output */
 require_once dirname(__FILE__)."/../devices/Output.php";
 
 /**
@@ -229,17 +229,17 @@ class Fixture extends \HUGnet\Device
         $import = $dev->toArray(false);
         unset($import["localParams"]);
         unset($import["group"]);
-        $import["inputs"] = array();
+        $import["input"] = array();
         for ($i = 0; $i < $dev->get("InputTables"); $i++) {
-            $import["inputs"][$i] = $this->_importIOP($dev->input($i));
+            $import["input"][$i] = $this->_importIOP($dev->input($i));
         }
-        $import["outputs"] = array();
+        $import["output"] = array();
         for ($i = 0; $i < $dev->get("OutputTables"); $i++) {
-            $import["outputs"][$i] = $this->_importIOP($dev->output($i));
+            $import["output"][$i] = $this->_importIOP($dev->output($i));
         }
-        $import["processes"] = array();
+        $import["process"] = array();
         for ($i = 0; $i < $dev->get("ProcessTables"); $i++) {
-            $import["processes"][$i] = $this->_importIOP($dev->process($i));
+            $import["process"][$i] = $this->_importIOP($dev->process($i));
         }
         return json_encode($import);
     }
@@ -258,7 +258,7 @@ class Fixture extends \HUGnet\Device
         $input = $dev->input(0);
         for ($i = 0; $i < $dev->get("InputTables"); $i++) {
             $input->table()->clearData();
-            $input->table()->fromArray($data["inputs"][$i]);
+            $input->table()->fromArray($data["input"][$i]);
             $input->table()->set("dev", $dev->get("id"));
             $input->table()->set("input", $i);
             $input->table()->insertRow(true);
@@ -266,7 +266,7 @@ class Fixture extends \HUGnet\Device
         $output = $dev->output(0);
         for ($i = 0; $i < $dev->get("OutputTables"); $i++) {
             $output->table()->clearData();
-            $output->table()->fromArray($data["outputs"][$i]);
+            $output->table()->fromArray($data["output"][$i]);
             $output->table()->set("dev", $dev->get("id"));
             $output->table()->set("output", $i);
             $output->table()->insertRow(true);
@@ -274,7 +274,7 @@ class Fixture extends \HUGnet\Device
         $proc = $dev->process(0);
         for ($i = 0; $i < $dev->get("ProcessTables"); $i++) {
             $proc->table()->clearData();
-            $proc->table()->fromArray($data["processes"][$i]);
+            $proc->table()->fromArray($data["process"][$i]);
             $proc->table()->set("dev", $dev->get("id"));
             $proc->table()->set("process", $i);
             $proc->table()->insertRow(true);
@@ -312,7 +312,7 @@ class Fixture extends \HUGnet\Device
     */
     public function &input($sid)
     {
-        return $this->_iop($sid, "input", "inputs");
+        return $this->_iop($sid, "input");
     }
     /**
     * This creates the output object
@@ -323,7 +323,7 @@ class Fixture extends \HUGnet\Device
     */
     public function &output($sid)
     {
-        return $this->_iop($sid, "output", "outputs");
+        return $this->_iop($sid, "output");
     }
     /**
     * This creates the process object
@@ -334,20 +334,19 @@ class Fixture extends \HUGnet\Device
     */
     public function &process($sid)
     {
-        return $this->_iop($sid, "process", "processes");
+        return $this->_iop($sid, "process");
     }
     /**
     * This creates the process object
     *
     * @param int    $sid  The process id to get.  They are labeled 0 to xTables
     * @param string $type The type of iop to get
-    * @param string $log  The location in the fixture to get information
     *
     * @return object The process object
     */
-    private function &_iop($sid, $type, $loc)
+    private function &_iop($sid, $type)
     {
-        $iops = $this->get($loc);
+        $iops = $this->get($type);
         $class = ucfirst($type);
         include_once dirname(__FILE__)."/../devices/".$class.".php";
         $iop  = (array)$iops[$sid];
