@@ -244,6 +244,44 @@ class Fixture extends \HUGnet\Device
         return json_encode($import);
     }
     /**
+    * This builds and stores an actual device from the fixture
+    *
+    * @return object The device that I am exporting
+    */
+    public function &exportDevice()
+    {
+        $dev = $this->system()->device();
+        $data = json_decode($this->table()->get('fixture'), true);
+        $dev->load($data);
+        $dev->store();
+        /* Now do the iopTables */
+        $input = $dev->input($i);
+        for ($i = 0; $i < $dev->get("InputTables"); $i++) {
+            $input->table()->clearData();
+            $input->table()->fromArray($data["inputs"][$i]);
+            $input->table()->set("dev", $dev->get("id"));
+            $input->table()->set("input", $i);
+            $input->table()->insertRow(true);
+        }
+        $output = $dev->output($i);
+        for ($i = 0; $i < $dev->get("OutputTables"); $i++) {
+            $output->table()->clearData();
+            $output->table()->fromArray($data["outputs"][$i]);
+            $output->table()->set("dev", $dev->get("id"));
+            $output->table()->set("output", $i);
+            $output->table()->insertRow(true);
+        }
+        $proc = $dev->process($i);
+        for ($i = 0; $i < $dev->get("ProcessTables"); $i++) {
+            $proc->table()->clearData();
+            $proc->table()->fromArray($data["processes"][$i]);
+            $proc->table()->set("dev", $dev->get("id"));
+            $proc->table()->set("process", $i);
+            $proc->table()->insertRow(true);
+        }
+        return $dev;
+    }
+    /**
     * This builds the class from a setup string
     *
     * @param mixed &$iop This an input, output, or process record

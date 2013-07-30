@@ -1167,6 +1167,467 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($return, $ret, "Return wrong");
         $this->assertEquals($expect, $obj->table()->toArray(false), "Setup wrong");
     }
+    /**
+    * Data provider for testDeviceImport
+    *
+    * @return array
+    */
+    public static function dataDeviceExport()
+    {
+        return array(
+            array(
+                array(
+                ), // Config
+                array(
+                    "dev" => 0x12,
+                    'created' => 1000000,
+                    'modified' => 1000000,
+                    'fixture' => json_encode(
+                        array(
+                            'id' => 18,
+                            'DeviceID' => '000012',
+                            "HWPartNum" => "0039-40-01-C",
+                            "FWPartNum" => "0039-40-01-C",
+                            "FWVersion" => "0.1.0",
+                            'Driver' => 'e00394000',
+                            'Role' => '',
+                            'dataChannels' => array(
+                                array("label" => "0"),
+                                array("label" => "1"),
+                                array("label" => "2"),
+                                array("label" => "3"),
+                                array("label" => "4"),
+                                array("label" => "5"),
+                                array("label" => "6"),
+                                array("label" => "7"),
+                                array("label" => "8"),
+                            ),
+                            'controlChannels' => array(
+                                array("label" => "0"),
+                                array("label" => "1"),
+                                array("label" => "2"),
+                                array("label" => "3"),
+                                array("label" => "4"),
+                            ),
+                            'inputs' => array(
+                                0 => array(
+                                    'dev' => 18,
+                                    'input' => 0,
+                                    'id' => 112,
+                                    'location' => "0",
+                                ),
+                                1 => array(
+                                    'dev' => 18,
+                                    'input' => 1,
+                                    'id' => 112,
+                                    'location' => "1",
+                                ),
+                                2 => array(
+                                    'dev' => 18,
+                                    'input' => 2,
+                                    'id' => 112,
+                                    'location' => "2",
+                                ),
+                                3 => array(
+                                    'dev' => 18,
+                                    'input' => 3,
+                                    'id' => 112,
+                                    'location' => "3",
+                                ),
+                                4 => array(
+                                    'dev' => 18,
+                                    'input' => 4,
+                                    'id' => 112,
+                                    'location' => "4",
+                                ),
+                                5 => array(
+                                    'dev' => 18,
+                                    'input' => 5,
+                                    'id' => 112,
+                                    'location' => "5",
+                                ),
+                                6 => array(
+                                    'dev' => 18,
+                                    'input' => 6,
+                                    'id' => 112,
+                                    'location' => "6",
+                                ),
+                                7 => array(
+                                    'dev' => 18,
+                                    'input' => 7,
+                                    'id' => 112,
+                                    'location' => "7",
+                                ),
+                                8 => array(
+                                    'dev' => 18,
+                                    'input' => 8,
+                                    'id' => 112,
+                                    'location' => "8",
+                                ),
+                            ),
+                            'outputs' => array(
+                                0 => array(
+                                    'id' => 0xFE,
+                                    'output' => 0,
+                                    'location' => "0",
+                                ),
+                                1 => array(
+                                    'id' => 0xFE,
+                                    'output' => 1,
+                                    'location' => "1",
+                                ),
+                                2 => array(
+                                    'id' => 0xFE,
+                                    'output' => 2,
+                                    'location' => "2",
+                                ),
+                                3 => array(
+                                    'id' => 0xFE,
+                                    'output' => 3,
+                                    'location' => "3",
+                                ),
+                                4 => array(
+                                    'id' => 0xFE,
+                                    'output' => 4,
+                                    'location' => "4",
+                                ),
+                            ),
+                            'processes' => array(
+                                0 => array(
+                                    'id' => 1,
+                                    'process' => 0,
+                                    'location' => "0",
+                                ),
+                                1 => array(
+                                    'id' => 1,
+                                    'process' => 1,
+                                    'location' => "1",
+                                ),
+                                2 => array(
+                                    'id' => 1,
+                                    'process' => 2,
+                                    'location' => "2",
+                                ),
+                                3 => array(
+                                    'id' => 1,
+                                    'process' => 3,
+                                    'location' => "3",
+                                ),
+                            ),
+                        )
+                    ),
+                ), // Data
+                array(
+                    "id" => 0x12,
+                    "DeviceID" => "000012",
+                    "HWPartNum" => "0039-40-01-C",
+                    "FWPartNum" => "0039-40-01-C",
+                    "FWVersion" => "0.1.0",
+                    'Driver' => 'e00394000',
+                    'dataChannels' => array(
+                        array(
+                            'decimals' => 0,
+                            'units' => 'Pulses',
+                            'dataType' => 'raw',
+                            'label' => '0',
+                        ),
+                        array(
+                            'decimals' => 0,
+                            'units' => 'Pulses',
+                            'dataType' => 'raw',
+                            'label' => '1',
+                        ),
+                        array(
+                            'decimals' => 0,
+                            'units' => 'Pulses',
+                            'dataType' => 'raw',
+                            'label' => '2',
+                        ),
+                        array(
+                            'decimals' => 0,
+                            'units' => 'Pulses',
+                            'dataType' => 'raw',
+                            'label' => '3',
+                        ),
+                        array(
+                            'decimals' => 0,
+                            'units' => 'Pulses',
+                            'dataType' => 'raw',
+                            'label' => '4',
+                        ),
+                        array(
+                            'decimals' => 0,
+                            'units' => 'Pulses',
+                            'dataType' => 'raw',
+                            'label' => '5',
+                        ),
+                        array(
+                            'decimals' => 0,
+                            'units' => 'Pulses',
+                            'dataType' => 'raw',
+                            'label' => '6',
+                        ),
+                        array(
+                            'decimals' => 0,
+                            'units' => 'Pulses',
+                            'dataType' => 'raw',
+                            'label' => '7',
+                        ),
+                        array(
+                            'decimals' => 0,
+                            'units' => 'Pulses',
+                            'dataType' => 'raw',
+                            'label' => '8',
+                        ),
+                    ),
+                    'controlChannels' => array(
+                        array(
+                            'label' => '0',
+                        ),
+                        array(
+                            'label' => '1',
+                        ),
+                        array(
+                            'label' => '2',
+                        ),
+                        array(
+                            'label' => '3',
+                        ),
+                        array(
+                            'label' => '4',
+                        ),
+                    ),
+                    'Role' => '',
+                ), // Device
+                array(
+                    array(
+                        "id" => 0x70, 
+                        "input" => 0, 
+                        'location' => "0",
+                        "dev" => 0x12,
+                        'driver' => 'GenericPulse',
+                        'type' => 'GenericPulse',
+                        'params' => array(
+                        ),
+                        'tableEntry' => array(),
+                    ),
+                    array(
+                        "id" => 0x70, 
+                        'dev' => 18,
+                        'input' => 1,
+                        'location' => "1",
+                        'driver' => 'GenericPulse',
+                        'type' => 'GenericPulse',
+                        'params' => array(),
+                        'tableEntry' => array(),
+                    ),
+                    array(
+                        "id" => 0x70, 
+                        'dev' => 18,
+                        'input' => 2,
+                        'location' => "2",
+                        'driver' => 'GenericPulse',
+                        'type' => 'GenericPulse',
+                        'params' => array(),
+                        'tableEntry' => array(),
+                    ),
+                    array(
+                        "id" => 0x70, 
+                        'dev' => 18,
+                        'input' => 3,
+                        'location' => "3",
+                        'driver' => 'GenericPulse',
+                        'type' => 'GenericPulse',
+                        'params' => array(),
+                        'tableEntry' => array(),
+                    ),
+                    array(
+                        "id" => 0x70, 
+                        'dev' => 18,
+                        'input' => 4,
+                        'location' => "4",
+                        'driver' => 'GenericPulse',
+                        'type' => 'GenericPulse',
+                        'params' => array(),
+                        'tableEntry' => array(),
+                    ),
+                    array(
+                        "id" => 0x70, 
+                        'dev' => 18,
+                        'input' => 5,
+                        'location' => "5",
+                        'driver' => 'GenericPulse',
+                        'type' => 'GenericPulse',
+                        'params' => array(),
+                        'tableEntry' => array(),
+                    ),
+                    array(
+                        "id" => 0x70, 
+                        'dev' => 18,
+                        'input' => 6,
+                        'location' => "6",
+                        'driver' => 'GenericPulse',
+                        'type' => 'GenericPulse',
+                        'params' => array(),
+                        'tableEntry' => array(),
+                    ),
+                    array(
+                        "id" => 0x70, 
+                        'dev' => 18,
+                        'input' => 7,
+                        'location' => "7",
+                        'driver' => 'GenericPulse',
+                        'type' => 'GenericPulse',
+                        'params' => array(),
+                        'tableEntry' => array(),
+                    ),
+                    array(
+                        "id" => 0x70, 
+                        'dev' => 18,
+                        'input' => 8,
+                        'location' => "8",
+                        'driver' => 'GenericPulse',
+                        'type' => 'GenericPulse',
+                        'params' => array(),
+                        'tableEntry' => array(),
+                    ),
+                ), // Inputs
+                array(
+                    array(
+                        'id' => 0xFE,
+                        'dev' => 18,
+                        'output' => 0,
+                        'location' => "0",
+                        'type' => 'NullOutput',
+                        'params' => array(),
+                        'tableEntry' => array(),
+                    ),
+                    array(
+                        'id' => 0xFE,
+                        'dev' => 18,
+                        'output' => 1,
+                        'location' => "1",
+                        'type' => 'NullOutput',
+                        'params' => array(),
+                        'tableEntry' => array(),
+                    ),
+                    array(
+                        'id' => 0xFE,
+                        'dev' => 18,
+                        'output' => 2,
+                        'location' => "2",
+                        'type' => 'NullOutput',
+                        'params' => array(),
+                        'tableEntry' => array(),
+                    ),
+                    array(
+                        'id' => 0xFE,
+                        'dev' => 18,
+                        'output' => 3,
+                        'location' => "3",
+                        'type' => 'NullOutput',
+                        'params' => array(),
+                        'tableEntry' => array(),
+                    ),
+                    array(
+                        'id' => 0xFE,
+                        'dev' => 18,
+                        'output' => 4,
+                        'location' => "4",
+                        'type' => 'NullOutput',
+                        'params' => array(),
+                        'tableEntry' => array(),
+                    ),
+                ), // Outputs
+                array(
+                    array(
+                        'id' => 1,
+                        'dev' => 18,
+                        'process' => 0,
+                        'location' => "0",
+                        'type' => 'LevelHolderProcess',
+                        'params' => array(),
+                        'tableEntry' => array(),
+                    ),
+                    array(
+                        'id' => 1,
+                        'dev' => 18,
+                        'process' => 1,
+                        'location' => "1",
+                        'type' => 'LevelHolderProcess',
+                        'params' => array(),
+                        'tableEntry' => array(),
+                    ),
+                    array(
+                        'id' => 1,
+                        'dev' => 18,
+                        'process' => 2,
+                        'location' => "2",
+                        'type' => 'LevelHolderProcess',
+                        'params' => array(),
+                        'tableEntry' => array(),
+                    ),
+                    array(
+                        'id' => 1,
+                        'dev' => 18,
+                        'process' => 3,
+                        'location' => "3",
+                        'type' => 'LevelHolderProcess',
+                        'params' => array(),
+                        'tableEntry' => array(),
+                    ),
+                ), // Processes
+            ),
+        );
+    }
+    /**
+    * This tests the set function
+    *
+    * @param array $config    The configuration to use
+    * @param array $data      The data to feed the object
+    * @param array $device    The device information
+    * @param array $inputs    The inputs to load
+    * @param array $outputs   The outputs to load
+    * @param array $processes The processes to load
+    *
+    * @return null
+    *
+    * @dataProvider dataDeviceExport
+    */
+    public function testDeviceExport(
+        $config, $data, $device, $inputs, $outputs, $processes
+    ) {
+        $sys = $this->getMock('\HUGnet\System', array('now'), array($config));
+        $sys->expects($this->any())
+            ->method('now')
+            ->will($this->returnValue(1000000));
+        $obj = Fixture::factory($sys, $data);
+        
+        $dev = $obj->exportDevice();
+        $this->assertEquals($device, $dev->toArray(false));
+
+        foreach ((array)$inputs as $key => $value) {
+            $this->assertEquals(
+                $inputs[$key], 
+                $dev->input($key)->toArray(false),
+                "Input $key is wrong"
+            );
+        }
+        foreach ((array)$outputs as $key => $value) {
+            $this->assertEquals(
+                $outputs[$key], 
+                $dev->output($key)->toArray(false),
+                "Output $key is wrong"
+            );
+        }
+        foreach ((array)$processes as $key => $value) {
+            $this->assertEquals(
+                $processes[$key], 
+                $dev->process($key)->toArray(false),
+                "Process $key is wrong"
+            );
+        }
+    }
 
 }
 
