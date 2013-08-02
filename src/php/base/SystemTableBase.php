@@ -178,7 +178,7 @@ abstract class SystemTableBase
     {
         $ret = false;
         $this->table()->clearData();
-        if (isset($data["group"])) {
+        if (is_array($data) && isset($data["group"])) {
             // This needs to get set before we search the DB
             $this->table()->set("group", $data["group"]);
         }
