@@ -116,6 +116,40 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                 "DeviceName",
                 "Hello There"
             ),
+            array(
+                array(
+                ),
+                array(
+                    "id" => 1,
+                    "dev" => 0x123456,
+                    "fixture" => json_encode(
+                        array(
+                            "DeviceName" => "Hello There",
+                        )
+                    ),
+                    "created" => 1234,
+                    "modified" => 1234,
+                ),
+                "DeviceID",
+                "123456"
+            ),
+            array(
+                array(
+                ),
+                array(
+                    "id" => 1,
+                    "dev" => 0x123456,
+                    "fixture" => json_encode(
+                        array(
+                            "DeviceName" => "Hello There",
+                        )
+                    ),
+                    "created" => 1234,
+                    "modified" => 1234,
+                ),
+                "id",
+                0x123456
+            ),
         );
     }
     /**
@@ -433,8 +467,6 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                             "input" => array(
                                 0 => array(
                                     "id" => 0xF8,
-                                    'dev' => 0x123456,
-                                    'input' => 0,
                                     'type' => "Virtual Sensor",
                                     "tableEntry" => array(
                                         "driver" => "40:DEFAULT",
@@ -486,8 +518,6 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                                 0 => array(
                                     "data" => array(
                                         "id" => 0xFC,
-                                        'dev' => 0x123456,
-                                        'input' => 0,
                                         'type' => "Virtual Sensor",
                                     ),
                                     "table" => array(
@@ -501,6 +531,8 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                 ),
                 1,
                 array(
+                    'dev' => 1193046,
+                    'input' => 1,
                     'type' => "EmptySensor",
                     'params' => array(),
                     'driver' => "EmptySensor",
@@ -558,8 +590,6 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                             "output" => array(
                                 0 => array(
                                     "id" => 0x01,
-                                    'dev' => 0x123456,
-                                    'output' => 0,
                                     'type' => "Stuff Here",
                                     "tableEntry" => array(
                                         'DACBUFLP' => 1,
@@ -611,8 +641,6 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                                 0 => array(
                                     "data" => array(
                                         "id" => 0xFC,
-                                        'dev' => 0x123456,
-                                        'input' => 0,
                                         'type' => "Virtual Sensor",
                                     ),
                                     "table" => array(
@@ -626,6 +654,8 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                 ),
                 1,
                 array(
+                    'dev' => 1193046,
+                    'output' => 1,
                     'type' => "EmptyOutput",
                     'params' => array(),
                     'tableEntry' => array(),
@@ -682,8 +712,6 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                             "process" => array(
                                 0 => array(
                                     "id" => 0x01,
-                                    'dev' => 0x123456,
-                                    'process' => 0,
                                     'type' => "Stuff Here",
                                     "tableEntry" => array(
                                     ),
@@ -719,8 +747,6 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                             "process" => array(
                                 0 => array(
                                     "id" => 0xFC,
-                                    'dev' => 0x123456,
-                                    'process' => 0,
                                     'type' => "Virtual Sensor",
                                     "tableEntry" => array(
                                     ),
@@ -733,6 +759,8 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                 ),
                 1,
                 array(
+                    'dev' => 1193046,
+                    'process' => 1,
                     'type' => "EmptyProcess",
                     'params' => array(),
                     'tableEntry' => array(),
@@ -835,6 +863,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
+                        'id' => 0x123456,
                     )
                 ),
             ),
@@ -908,7 +937,6 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                     "modified" => 1000000,
                     "fixture" => json_encode(
                         array(
-                            "id" => 0x123456,
                             "DeviceName" => "Hello",
                             "params" => array(
                                 "LastModified" => 0x12345678,
@@ -1033,8 +1061,6 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                     'modified' => 1000000,
                     'fixture' => json_encode(
                         array(
-                            'id' => 18,
-                            'DeviceID' => '000012',
                             "HWPartNum" => "0039-40-01-C",
                             "FWPartNum" => "0039-40-01-C",
                             "FWVersion" => "0.1.0",
@@ -1052,8 +1078,6 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                             ),
                             'input' => array(
                                 0 => array(
-                                    'dev' => 18,
-                                    'input' => 0,
                                     'id' => 112,
                                     'driver' => 'GenericPulse',
                                     'type' => 'GenericPulse',

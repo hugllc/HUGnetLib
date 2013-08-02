@@ -95,6 +95,11 @@ class Fixture extends \HUGnet\Device
     public function get($field)
     {
         $fixture = json_decode($this->table()->get('fixture'), true);
+        if ($field == "id") {
+            $fixture["id"] = $this->table()->get("dev");
+        } else if ($field == "DeviceID") {
+            $fixture["DeviceID"] = sprintf("%06X", $this->table()->get("dev"));
+        }
         return $fixture[$field];
     }
     /**
@@ -177,7 +182,9 @@ class Fixture extends \HUGnet\Device
     */
     public function export()
     {
-        return $this->table()->get('fixture');
+        $fixture = (array)json_decode($this->table()->get('fixture'), true);
+        $fixture["id"] = $this->table()->get("dev");
+        return json_encode($fixture);
     }
     /**
     * This builds the class from a setup string
@@ -192,18 +199,19 @@ class Fixture extends \HUGnet\Device
             $data = $this->_importDevice($data);
         }
         if (is_string($data)) {
-            $fixture = json_decode($data, true);
-            if (isset($fixture["id"])) {
-                $this->table()->set("dev", $fixture["id"]);
-                $this->table()->set("fixture", $data);
-                $now = $this->system()->now();
-                $this->table()->set("created", $now);
-                $this->table()->set("modified", $now);
-            } else {
-                return false;
-            }
+            $data = json_decode($data, true);
         }
-        return parent::store();
+        if (is_array($data) && isset($data["id"])) {
+            $this->table()->set("dev", $data["id"]);
+            unset($data["id"]);
+            unset($data["DeviceID"]);
+            $this->table()->set("fixture", json_encode($data));
+            $now = $this->system()->now();
+            $this->table()->set("created", $now);
+            $this->table()->set("modified", $now);
+            return true;
+        }
+        return false;
     }
     /**
     * Stores data into the database
@@ -241,7 +249,7 @@ class Fixture extends \HUGnet\Device
         for ($i = 0; $i < $dev->get("ProcessTables"); $i++) {
             $import["process"][$i] = $this->_importIOP($dev->process($i));
         }
-        return json_encode($import);
+        return $import;
     }
     /**
     * This builds and stores an actual device from the fixture
@@ -252,6 +260,8 @@ class Fixture extends \HUGnet\Device
     {
         $dev = $this->system()->device();
         $data = json_decode($this->table()->get('fixture'), true);
+        $data["id"] = $this->table()->get("dev");
+        $data["DeviceID"] = sprintf("%06X", $this->table()->get("dev"));
         $dev->table()->fromArray($data);
         $dev->table()->insertRow(true);
         /* Now do the iopTables */
@@ -296,6 +306,10 @@ class Fixture extends \HUGnet\Device
         if (isset($data["id"])) {
             unset($data["RawSetup"]);
             unset($data["group"]);
+            unset($data["dev"]);
+            unset($data["input"]);
+            unset($data["output"]);
+            unset($data["process"]);
             $import = $data;
         } else {
             $import = array("id" => 0xFF);
@@ -351,6 +365,8 @@ class Fixture extends \HUGnet\Device
         include_once dirname(__FILE__)."/../devices/".$class.".php";
         $iop  = (array)$iops[$sid];
         $iop["group"] = "null";
+        $iop["dev"] = $this->table()->get("dev");
+        $iop[$type] = $sid;
         $system = $this->system();
         $class = "\\HUGnet\\devices\\".$class;
         $ret = $class::factory($system, $iop, null, $this);
