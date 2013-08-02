@@ -176,6 +176,50 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
+    public static function dataId()
+    {
+        return array(
+            array(
+                array(
+                ),
+                array(
+                    "id" => 1,
+                    "dev" => 0x123456,
+                    "fixture" => json_encode(
+                        array(
+                            "DeviceName" => "Hello There",
+                        )
+                    ),
+                    "created" => 1234,
+                    "modified" => 1234,
+                ),
+                0x123456
+            ),
+        );
+    }
+    /**
+    * This tests the get function
+    *
+    * @param array  $config The configuration to use
+    * @param array  $data   The data to feed the object
+    * @param array  $expect The table to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataId
+    */
+    public function testId($config, $data, $expect)
+    {
+        $sys = $this->getMock('\HUGnet\System', array('now'));
+        $sys->config($config);
+        $obj = Fixture::factory($sys, $data);
+        $this->assertSame($expect, $obj->id());
+    }
+    /**
+    * Data provider for testGet
+    *
+    * @return array
+    */
     public static function dataGetParam()
     {
         return array(

@@ -86,6 +86,17 @@ class Fixture extends \HUGnet\Device
         return $object;
     }
     /**
+    * Lists the ids of the table values
+    *
+    * @return int The ID of this device
+    *
+    * @SuppressWarnings(PHPMD.ShortMethodName)
+    */
+    public function id()
+    {
+        return $this->table()->get("dev");
+    }
+    /**
     * Gets a value
     *
     * @param string $field the field to get
