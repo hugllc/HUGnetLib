@@ -285,6 +285,7 @@ var DevicePropertiesView = Backbone.View.extend({
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 var DeviceEntryView = Backbone.View.extend({
+    url: '/HUGnetLib/HUGnetLibAPI.php',
     tagName: 'tr',
     template: '#DeviceEntryTemplate',
     parent: null,
@@ -301,6 +302,9 @@ var DeviceEntryView = Backbone.View.extend({
         this.model.bind('remove', this.remove, this);
         this.model.bind('configfail', this.refreshFail, this);
         this.parent = options.parent;
+        if (options.url) {
+            this.url = options.url;
+        }
     },
     action: function (e)
     {
@@ -316,12 +320,21 @@ var DeviceEntryView = Backbone.View.extend({
             this.loadfirmware(e);
         } else if (action === 'loadconfig') {
             this.loadconfig(e);
+        } else if (action === 'export') {
+            this.export(e);
         }
     },
     refresh: function (e)
     {
         this._setupProgress("Reading Config in "+this.model.get("DeviceID"));
         this.model.config();
+    },
+    export: function (e)
+    {
+        var url = this.url+"?task=device&action=export";
+        url += "&id="+this.model.get("id").toString(16);
+        console.log(url);
+        this.parent.iframe.attr('src', url);
     },
     loadconfig: function (e)
     {
@@ -403,6 +416,7 @@ var DeviceEntryView = Backbone.View.extend({
 HUGnet.DevicesView = Backbone.View.extend({
     url: '/HUGnetLib/HUGnetLibAPI.php',
     template: "#DeviceListTemplate",
+    iframe: undefined,
     events: {
         'click .newtest': 'createTest',
     },
@@ -429,11 +443,13 @@ HUGnet.DevicesView = Backbone.View.extend({
         //this.model.each(this.renderEntry);
         this.$("table").tablesorter({ widgets: ['zebra'] });
         this.$("table").trigger('update');
+        this.iframe = $('<iframe>', { id:'exportDevice' }).hide();
+        this.$el.append(this.iframe);
         return this;
     },
     insert: function (model, collection, options)
     {
-        var view = new DeviceEntryView({ model: model, parent: this });
+        var view = new DeviceEntryView({ model: model, parent: this, url: this.url });
         this.$('tbody').append(view.render().el);
         this.$("table").trigger('update');
     },

@@ -161,6 +161,10 @@ class WebInterface
             $ret = $this->_loadconfig($args);
         } else if ($action === "getraw") {
             $ret = $this->_getRaw($args);
+        } else if ($action === "export") {
+            $ret = $this->_export($args);
+        } else if ($action === "import") {
+            $ret = $this->_import($args);
         }
         return $ret;
     }
@@ -285,6 +289,41 @@ class WebInterface
             $ret = $this->_device->dataChannels()->decodeRaw($string);
         }
         return $ret;
+    }
+    /**
+    * Export the device
+    *
+    * @param object $args The argument object
+    *
+    * @return string
+    */
+    private function _export($args)
+    {
+        if (!headers_sent()) {
+            // @codeCoverageIgnoreStart
+            header('Content-type: application/json');
+            header(
+                'Content-disposition: attachment;'
+                .'filename='.$this->_device->get("DeviceID").'.json'
+            );
+        }
+        // @codeCoverageIgnoreEnd
+        $fixture = $this->_device->fixture();
+        $data = json_decode($fixture->export());
+        print json_encode($data, JSON_PRETTY_PRINT);
+        return null;
+
+    }
+    /**
+    * Import the device
+    *
+    * @param object $args The argument object
+    *
+    * @return string
+    */
+    private function _import($args)
+    {
+        $data = (array)$args->get("data");
     }
 }
 

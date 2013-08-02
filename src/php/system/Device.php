@@ -630,6 +630,18 @@ class Device extends \HUGnet\base\SystemTableAction
         return $iop;
     }
     /**
+    * This creates the sensor drivers
+    *
+    * @return The fixture object
+    */
+    public function &fixture()
+    {
+        include_once dirname(__FILE__)."/Fixture.php";
+        $fixture = Fixture::factory($this->system());
+        $fixture->import($this);
+        return $fixture;
+    }
+    /**
     * Returns the devices XML file as an array
     *
     * @param mixed $obsolete Bool true for yes, bool false for no, anything
