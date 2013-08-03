@@ -184,7 +184,13 @@ class Fixture extends \HUGnet\Device
     */
     public function toArray($default = false)
     {
-        return json_decode($this->table()->get('fixture'), true);
+        $fixture = (array)json_decode($this->table()->get('fixture'), true);
+        $id = array(
+            "id" => $this->table()->get("dev"),
+            "DeviceID" => sprintf("%06X", $this->table()->get("dev"))
+        );
+        $fixture = $id + $fixture;
+        return $fixture;
     }
     /**
     * This takes the class and makes it into a setup string

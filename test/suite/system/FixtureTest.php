@@ -390,6 +390,8 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                 ),
                 true,
                 array(
+                    'id' => 0x123456,
+                    'DeviceID' => '123456',
                     "DeviceName" => "Hello",
                     "params" => array(
                         "LastModified" => 0x12345678,
@@ -415,6 +417,8 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                 ),
                 false,
                 array(
+                    'id' => 0x123456,
+                    'DeviceID' => '123456',
                     "DeviceName" => "Hello",
                     "params" => array(
                         "LastModified" => 0x12345678,
