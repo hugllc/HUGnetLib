@@ -884,6 +884,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                 ),
                 json_encode(
                     array(
+                        'id' => 0x123456,
                         "DeviceName" => "Hello",
                         "params" => array(
                             "LastModified" => 0x12345678,
@@ -907,7 +908,6 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        'id' => 0x123456,
                     )
                 ),
             ),
