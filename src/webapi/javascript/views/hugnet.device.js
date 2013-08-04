@@ -187,6 +187,7 @@ var DevicePropertiesView = Backbone.View.extend({
             PollInterval: this.$(".PollInterval").val(),
             Role: this.$(".Role").val(),
             Active: (this.$(".Active")) ? this.$(".Active").val() : 1,
+            Publish: (this.$(".Publish")) ? this.$(".Publish").val() : 1,
             setparams: params
         });
         this.model.save();

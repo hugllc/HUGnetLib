@@ -103,7 +103,7 @@ HUGnet.TestsView = HUGnet.DeviceListView.extend({
     template: "#TestListTemplate",
     templatebase: 'TestList',
     url: '/HUGnetLib/HUGnetLibAPI.php',
-    filter: {type: "test"},
+    filter: {type: "test", Publish: 1},
     views: {},
     sorted: false,
     sorting: [[1,0]],

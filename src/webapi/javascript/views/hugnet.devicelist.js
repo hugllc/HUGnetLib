@@ -113,7 +113,7 @@ HUGnet.DeviceListView = Backbone.View.extend({
     url: '/HUGnetLib/HUGnetLibAPI.php',
     readonly: false,
     views: {},
-    filter: {},
+    filter: {Publish: 1},
     sorted: false,
     sorting: [[1,0]],
     viewed: 0,
