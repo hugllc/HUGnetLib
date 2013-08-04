@@ -199,8 +199,8 @@ class Fixture extends \HUGnet\Device
     */
     public function export()
     {
-        $fixture = (array)json_decode($this->table()->get('fixture'), true);
-        $fixture = array("id" => $this->table()->get("dev")) + $fixture;
+        $fixture = $this->toArray();
+        unset($fixture["DeviceID"]);
         return json_encode($fixture);
     }
     /**
