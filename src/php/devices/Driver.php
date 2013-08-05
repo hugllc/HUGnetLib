@@ -89,6 +89,8 @@ abstract class Driver
         "InputTables" => 9,
         "OutputTables" => 0,
         "ProcessTables" => 0,
+        "DigitalInputs" => array(),
+        "DigitalOutputs" => array(),
         "setConfig" => true,
     );
     /**
