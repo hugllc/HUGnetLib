@@ -566,6 +566,8 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                     'OutputTables' => 0,
                     'ProcessTables' => 0,
                     'setConfig' => true,
+                    'DigitalInputs' => array(),
+                    'DigitalOutputs' => array(),
                 ),
             ),
             array(
@@ -590,6 +592,8 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                     'OutputTables' => 0,
                     'ProcessTables' => 0,
                     'setConfig' => true,
+                    'DigitalInputs' => array(),
+                    'DigitalOutputs' => array(),
                 ),
             ),
         );

@@ -772,6 +772,8 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     'ActiveSensors' => 0,
                     'DeviceGroup' => 'FFFFFF',
                     'sensors' => '',
+                    "DigitalInputs" => array(),
+                    "DigitalOutputs" => array(),
                     'localParams' => array(),
                 )
             ),
@@ -866,6 +868,8 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     'ActiveSensors' => 0,
                     'DeviceGroup' => 'FFFFFF',
                     'sensors' => '',
+                    "DigitalInputs" => array(),
+                    "DigitalOutputs" => array(),
                     'localParams' => array(),
                 )
             ),
@@ -938,6 +942,8 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     'ActiveSensors' => 0,
                     'DeviceGroup' => 'FFFFFF',
                     'sensors' => '',
+                    "DigitalInputs" => array(),
+                    "DigitalOutputs" => array(),
                     'localParams' => array(),
                 )
             ),
