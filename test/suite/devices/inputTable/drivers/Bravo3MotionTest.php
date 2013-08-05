@@ -74,7 +74,21 @@ class Bravo3MotionTest extends DriverTestBase
     {
         parent::setUp();
         $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock(array());
+        $sensor->resetMock(
+            array(
+                "Input" => array(
+                    "device" => new \HUGnet\DummyBase("Device"),
+                ),
+                "Sensor" => array(
+                    "device" => new \HUGnet\DummyBase("Device"),
+                ),
+                "Device" => array(
+                    "get" => array(
+                        "DigitalInputs" => array(1, 2, 3),
+                    ),
+                ),
+            )
+        );
         $this->o = \HUGnet\devices\inputTable\Driver::factory(
             "Bravo3Motion", $sensor
         );

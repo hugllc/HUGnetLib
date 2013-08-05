@@ -76,7 +76,21 @@ class WattNodeTest extends DriverTestBase
     {
         parent::setUp();
         $this->input = new \HUGnet\DummyBase("Input");
-        $this->input->resetMock(array());
+        $this->input->resetMock(
+            array(
+                "Input" => array(
+                    "device" => new \HUGnet\DummyBase("Device"),
+                ),
+                "Sensor" => array(
+                    "device" => new \HUGnet\DummyBase("Device"),
+                ),
+                "Device" => array(
+                    "get" => array(
+                        "DigitalInputs" => array(1, 2, 3),
+                    ),
+                ),
+            )
+        );
         $this->o = \HUGnet\devices\inputTable\Driver::factory(
             "WattNode", $this->input
         );
@@ -93,6 +107,47 @@ class WattNodeTest extends DriverTestBase
     protected function tearDown()
     {
         unset($this->o);
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataGet()
+    {
+        return array(
+            array(
+                "ThisIsABadName",
+                array(
+                    "Sensor" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "get" => array(
+                            "DigitalInputs" => array(1, 2, 3),
+                        ),
+                    ),
+                ),
+                null,
+            ),
+            array(
+                "extraValues",
+                array(
+                    "Sensor" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Input" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "get" => array(
+                            "DigitalInputs" => array(1, 2, 3),
+                        ),
+                    ),
+                ),
+                array(7, array(0 => "Counter"), array(1, 2, 3), 2),
+            ),
+        );
     }
 
     /**

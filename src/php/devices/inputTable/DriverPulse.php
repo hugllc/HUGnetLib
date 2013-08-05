@@ -60,6 +60,27 @@ require_once dirname(__FILE__)."/Driver.php";
  */
 abstract class DriverPulse extends Driver
 {
+    /** This is where our port is stored */
+    protected $portExtra = 1;
+    /**
+    * Gets an item
+    *
+    * @param string $name The name of the property to get
+    *
+    * @return null
+    */
+    public function get($name)
+    {
+        $param = parent::get($name);
+        switch ($name) {
+        case "extraValues":
+            $param = (array)$param;
+            $param[$this->portExtra] = $this->input()->device()->get(
+                "DigitalInputs"
+            );
+        }
+        return $param;
+    }
     /**
     * Decodes the driver portion of the setup string
     *

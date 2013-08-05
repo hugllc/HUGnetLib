@@ -58,6 +58,8 @@ require_once dirname(__FILE__)."/../DriverPulse.php";
 class GenericRevolving extends \HUGnet\devices\inputTable\DriverPulse
     implements \HUGnet\devices\inputTable\DriverInterface
 {
+    /** This is where our port is stored */
+    protected $portExtra = 2;
     /**
     * This is the array of sensor information.
     */
@@ -77,10 +79,10 @@ class GenericRevolving extends \HUGnet\devices\inputTable\DriverPulse
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            2,
             5,
             array(0 => "Counter"),
             array(),
+            2,
         ),
         "extraDefault" => array(1, 0, 0, 3),
         "extraDesc" => array(

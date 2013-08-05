@@ -116,6 +116,8 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
             array("averageTable", "string"),
             array("loadable", "boolean"),
             array("bootloader", "boolean"),
+            array("DigitalInputs", "array"),
+            array("DigitalOutputs", "array"),
         );
     }
     /**

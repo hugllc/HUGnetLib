@@ -58,6 +58,8 @@ require_once dirname(__FILE__)."/../DriverPulse.php";
 class LiquidFlow extends \HUGnet\devices\inputTable\DriverPulse
     implements \HUGnet\devices\inputTable\DriverInterface
 {
+    /** This is where our port is stored */
+    protected $portExtra = 2;
     /**
     * This is the array of sensor information.
     */

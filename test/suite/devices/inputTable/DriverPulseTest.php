@@ -77,7 +77,21 @@ class DriverPulseTest extends drivers\DriverTestBase
     protected function setUp()
     {
         $this->input = new \HUGnet\DummyBase("Input");
-        $this->input->resetMock(array());
+        $this->input->resetMock(
+            array(
+                "Input" => array(
+                    "device" => new \HUGnet\DummyBase("Device"),
+                ),
+                "Sensor" => array(
+                    "device" => new \HUGnet\DummyBase("Device"),
+                ),
+                "Device" => array(
+                    "get" => array(
+                        "DigitalInputs" => array(1, 2, 3),
+                    ),
+                ),
+            )
+        );
         $this->o = \HUGnet\devices\inputTable\DriverPulse::factory(
             "DriverPulseTestClass", $this->input
         );
@@ -94,6 +108,47 @@ class DriverPulseTest extends drivers\DriverTestBase
     protected function tearDown()
     {
         unset($this->o);
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataGet()
+    {
+        return array(
+            array(
+                "ThisIsABadName",
+                array(
+                    "Sensor" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "get" => array(
+                            "DigitalInputs" => array(1, 2, 3),
+                        ),
+                    ),
+                ),
+                null,
+            ),
+            array(
+                "extraValues",
+                array(
+                    "Sensor" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Input" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "get" => array(
+                            "DigitalInputs" => array(1, 2, 3),
+                        ),
+                    ),
+                ),
+                array(5, array(1, 2, 3), 5, 5, 5),
+            ),
+        );
     }
 
     /**
@@ -150,10 +205,10 @@ class DriverPulseTest extends drivers\DriverTestBase
             'virtual' => false,
             'bound' => false,
             'total' => false,
-            'extraText' => Array ("a", "b", "c", "d", "e"),
+            'extraText' => array ("a", "b", "c", "d", "e"),
             "extraDesc" => array("A","B","C","D","E"),
-            'extraDefault' => Array (2,3,5,7,11),
-            'extraValues' => Array (5, 5, 5, 5, 5),
+            'extraDefault' => array(2, 3, 5, 7, 11),
+            'extraValues' => array(5, array(1, 2, 3), 5, 5, 5),
             'storageUnit' => 'unknown',
             'storageType' => 'raw',
             'maxDecimals' => 2,
