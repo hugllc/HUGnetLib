@@ -287,7 +287,6 @@ class Gather extends \HUGnet\ui\Daemon
             }
         }
 
-        $this->_unsolicited->set("GatewayKey", $this->system()->get("GatewayKey"));
         $LastConfig = $this->_unsolicited->getParam("LastConfig");
         $now = $this->system()->now();
         $ConfigInt = $this->_unsolicited->get("ConfigInterval");
@@ -295,14 +294,17 @@ class Gather extends \HUGnet\ui\Daemon
             $ConfigInt = self::CONFIG_WAIT * 2;
         }
         $LastConfig = ($now - $ConfigInt) + self::CONFIG_WAIT;
+
+        $this->_unsolicited->load($this->_unsolicited->id());
+        $this->_unsolicited->set("GatewayKey", $this->system()->get("GatewayKey"));
         $this->_unsolicited->setParam("LastConfig", $LastConfig);
         $this->_unsolicited->setParam("Startup", $now);
+        $this->_unsolicited->setParam("LastContact", time());
+        $this->_unsolicited->store();
         $this->out(
             "Setting next config of ".$this->_unsolicited->get("DeviceID")." to "
             .date("Y-m-d H:i:s", $LastConfig + $ConfigInt)
         );
-        $this->_unsolicited->setParam("LastContact", time());
-        $this->_unsolicited->store();
         $this->_wait = 0;
     }
     /**
@@ -423,8 +425,8 @@ class Gather extends \HUGnet\ui\Daemon
                 }
                 $index++;
             }
-            $dev->store();
-            $out = sprintf("%02X", (int)$dev->store());
+            $ret = (int)$dev->store();
+            $out = sprintf("%02X", $ret);
             $this->_reply($pkt, $out);
         }
     }
