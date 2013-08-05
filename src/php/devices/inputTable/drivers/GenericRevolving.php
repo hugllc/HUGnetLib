@@ -39,7 +39,7 @@ namespace HUGnet\devices\inputTable\drivers;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is my base class */
-require_once dirname(__FILE__)."/../Driver.php";
+require_once dirname(__FILE__)."/../DriverPulse.php";
 /**
  * This class deals with wind direction sensors.
  *
@@ -55,7 +55,7 @@ require_once dirname(__FILE__)."/../Driver.php";
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class GenericRevolving extends \HUGnet\devices\inputTable\Driver
+class GenericRevolving extends \HUGnet\devices\inputTable\DriverPulse
     implements \HUGnet\devices\inputTable\DriverInterface
 {
     /**
@@ -69,14 +69,25 @@ class GenericRevolving extends \HUGnet\devices\inputTable\Driver
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_DIFF,
         "extraText" => array(
             "Counts Per Revolution",
+            "Clock Base",
+            "Port",
+            "Debounce"
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
-        "extraValues" => array(5),
-        "extraDefault" => array(1),
+        "extraValues" => array(
+            2,
+            5,
+            array(0 => "Counter"),
+            array(),
+        ),
+        "extraDefault" => array(1, 0, 0, 3),
         "extraDesc" => array(
-            "How many revolutions each count of the counter represent"
+            "How many revolutions each count of the counter represent",
+            "The clock base to use to do the pulse counting",
+            "The port to count pulses on",
+            "The number of matching samples to count as a pulse.",
         ),
         "maxDecimals" => 2,
     );
@@ -131,6 +142,30 @@ class GenericRevolving extends \HUGnet\devices\inputTable\Driver
             return null;
         }
         return (int)($val * $extra);
+    }
+    /**
+    * Decodes the driver portion of the setup string
+    *
+    * @param string $string The string to decode
+    *
+    * @return array
+    */
+    public function decode($string)
+    {
+        $extra = $this->pDecode($string, 1);
+        $extra[0] = $this->decodeInt(substr($string, 0, 4), 2);
+        $this->input()->set("extra", $extra);
+    }
+    /**
+    * Encodes this driver as a setup string
+    *
+    * @return array
+    */
+    public function encode()
+    {
+        $string  = $this->pEncode(1);
+        $string .= $this->encodeInt($this->getExtra(0), 2);
+        return $string;
     }
 
 }

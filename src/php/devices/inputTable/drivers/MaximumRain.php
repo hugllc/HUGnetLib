@@ -39,7 +39,7 @@ namespace HUGnet\devices\inputTable\drivers;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is my base class */
-require_once dirname(__FILE__)."/../Driver.php";
+require_once dirname(__FILE__)."/../DriverPulse.php";
 /**
  * This class deals with wind direction sensors.
  *
@@ -55,7 +55,7 @@ require_once dirname(__FILE__)."/../Driver.php";
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class MaximumRain extends \HUGnet\devices\inputTable\Driver
+class MaximumRain extends \HUGnet\devices\inputTable\DriverPulse
     implements \HUGnet\devices\inputTable\DriverInterface
 {
     /**
@@ -67,13 +67,25 @@ class MaximumRain extends \HUGnet\devices\inputTable\Driver
         "unitType" => "Length",
         "storageUnit" => "inches",
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_DIFF,
-        "extraText" => array(),
+        "extraText" => array(
+            "Clock Base",
+            "Port",
+            "Debounce"
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
-        "extraValues" => array(),
-        "extraDefault" => array(),
-        "extraDesc" => array(),
+        "extraValues" => array(
+            array(0 => "Counter"),
+            array(),
+            2,
+        ),
+        "extraDefault" => array(0, 0, 3),
+        "extraDesc" => array(
+            "The clock base to use to do the pulse counting",
+            "The port to count pulses on",
+            "The number of matching samples to count as a pulse.",
+        ),
         "maxDecimals" => 2,
         "total" => true,
     );

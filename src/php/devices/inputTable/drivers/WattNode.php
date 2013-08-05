@@ -39,7 +39,7 @@ namespace HUGnet\devices\inputTable\drivers;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is my base class */
-require_once dirname(__FILE__)."/../Driver.php";
+require_once dirname(__FILE__)."/../DriverPulse.php";
 /**
  * This class deals with wind direction sensors.
  *
@@ -55,7 +55,7 @@ require_once dirname(__FILE__)."/../Driver.php";
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class WattNode extends \HUGnet\devices\inputTable\Driver
+class WattNode extends \HUGnet\devices\inputTable\DriverPulse
     implements \HUGnet\devices\inputTable\DriverInterface
 {
     /**
@@ -69,14 +69,25 @@ class WattNode extends \HUGnet\devices\inputTable\Driver
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraText" => array(
             "Watt Hours / Pulse",
+            "Clock Base",
+            "Port",
+            "Debounce"
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
-        "extraValues" => array(7),
-        "extraDefault" => array(5),
+        "extraValues" => array(
+            7,
+            array(0 => "Counter"),
+            array(),
+            2,
+        ),
+        "extraDefault" => array(5, 0, 0, 3),
         "extraDesc" => array(
-            "How many watt hours are in each pulse of the WattNode?"
+            "The number of matching samples to count as a pulse.",
+            "How many watt hours are in each pulse of the WattNode?",
+            "The clock base to use to do the pulse counting",
+            "The port to count pulses on",
         ),
         "maxDecimals" => 3,
         "total" => true,
@@ -128,6 +139,30 @@ class WattNode extends \HUGnet\devices\inputTable\Driver
         $A = $Wh / $extra;
         return round($A);
 
+    }
+    /**
+    * Decodes the driver portion of the setup string
+    *
+    * @param string $string The string to decode
+    *
+    * @return array
+    */
+    public function decode($string)
+    {
+        $extra    = $this->pDecode($string, 1);
+        $extra[0] = $this->decodeInt(substr($string, 0, 4), 2);
+        $this->input()->set("extra", $extra);
+    }
+    /**
+    * Encodes this driver as a setup string
+    *
+    * @return array
+    */
+    public function encode()
+    {
+        $string  = $this->pEncode(1);
+        $string .= $this->encodeInt($this->getExtra(0), 2);
+        return $string;
     }
 }
 
