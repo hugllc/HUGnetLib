@@ -170,7 +170,9 @@ HUGnet.DeviceListView = Backbone.View.extend({
     insert: function (model, collection, options)
     {
         var id = model.get("DeviceID");
-        if (this.checkFilter(model, this.filter) && (this.views[id] == undefined)) {
+        
+        var show = this.checkFilter(model, this.filter);
+        if (show && (this.views[id] == undefined)) {
             this.views[id] = new DeviceListEntryView({
                 model: model,
                 parent: this,
@@ -179,6 +181,9 @@ HUGnet.DeviceListView = Backbone.View.extend({
             this.$('tbody').append(this.views[id].render().el);
             this.setView(id, true);
             this.$('table').trigger('update');
+        } else if ((this.views[id] != undefined) && !show) {
+            // This one has been updated to be filtered out, so hide it
+            this.setView(id, false);
         }
     },
     update: function()
@@ -229,12 +234,7 @@ HUGnet.DeviceListView = Backbone.View.extend({
             filter[fieldFilter] = searchFilter;
         }
         for (var view in this.views) {
-            var show = true;
-            for (var key in filter) {
-                if (!this.checkFilter(this.views[view].model, filter)) {
-                    show = false;
-                }
-            }
+            var show = this.checkFilter(this.views[view].model, filter);
             this.setView(view, show);
         }
     }
