@@ -413,7 +413,11 @@ abstract class IOPBase extends SystemTableBase
     {
         $data = (array)$args->get("data");
         $entry = $this->driver()->entry($data["tableEntry"]);
-        $data["tableEntry"] = $entry->toArray();
+        if (is_object($entry)) {
+            $data["tableEntry"] = $entry->toArray();
+        } else {
+            $data["tableEntry"] = array();
+        }
         $ret = $this->change($data);
         if ($ret) {
             return "regen";
