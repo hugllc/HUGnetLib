@@ -310,7 +310,11 @@ class WebInterface
         // @codeCoverageIgnoreEnd
         $fixture = $this->_device->fixture();
         $data = json_decode($fixture->export());
-        print json_encode($data, JSON_PRETTY_PRINT);
+        $options = 0;
+        if (defined("JSON_PRETTY_PRINT")) {
+            $options = JSON_PRETTY_PRINT;
+        }
+        print json_encode($data, $options);
         return null;
 
     }
