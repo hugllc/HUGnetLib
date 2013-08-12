@@ -92,31 +92,20 @@ HUGnet.FlotPoints = Backbone.Collection.extend({
     model: FlotPoint,
     datefield: 'UnixDate',
     timeOffset: 0,
-    maxYAxis: 6,
     initialize: function (models, options)
     {
         if (options.timeOffset) {
             this.timeOffset = options.timeOffset;
         }
-        var axis = {};
-        var index = 1;
         this.reset();
         _.each(
             options.fields,
             function (value, key, list)
             {
                 if ((value !== 'Date') && (value !== 'UnixDate')) {
-                    if (axis[options.units[key]] == undefined) {
-                        axis[options.units[key]] = index;
-                        index++
-                        if (index > this.maxYAxis) {
-                            index = this.maxYAxis;
-                        }
-                    }
                     this.add({
                         id: parseInt(key, 10),
                         label: options.header[key],
-                        yaxis: axis[options.units[key]],
                         color: parseInt(key, 10),
                         fieldname: value,
                         datefield: this.datefield,
@@ -264,17 +253,30 @@ HUGnet.DataFlot = Backbone.View.extend({
         this.points.clear();
         this.points.fromHistory(this.model);
         var data = [];
-        
+        var index = 0;
+        var max = options.yaxes.length;
+        var axis = {};
+        var self = this;
         var datasets = this.points.toJSON();
         this.$el.find("input:checked").each(function () {
             var key = $(this).attr("name");
             if (key && datasets[key]) {
+                if (axis[datasets[key].units] == undefined) {
+                    axis[datasets[key].units] = index;
+                    index++
+                    if (index >= max) {
+                        index = max - 1;
+                    }
+                }
+                var yaxis = axis[datasets[key].units];
+                // The plus 1 is because the axes are 1 based, while the config is 0 based
+                datasets[key].yaxis = yaxis + 1;
                 data.push(datasets[key]);
                 var units = '('+datasets[key].units+')';
-                if (options.yaxes[datasets[key].yaxis - 1].axisLabel == undefined) {
-                    options.yaxes[datasets[key].yaxis - 1].axisLabel = units;
-                } else if (options.yaxes[datasets[key].yaxis - 1].axisLabel != units) {
-                    options.yaxes[datasets[key].yaxis - 1].axisLabel = 'Multiple Units';
+                if (options.yaxes[yaxis].axisLabel == undefined) {
+                    options.yaxes[yaxis].axisLabel = units;
+                } else if (options.yaxes[yaxis].axisLabel != units) {
+                    options.yaxes[yaxis].axisLabel = 'Multiple Units';
                 }
             }
         });
