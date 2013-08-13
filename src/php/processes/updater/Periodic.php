@@ -77,8 +77,7 @@ abstract class Periodic
     * as the driver class name.
     */
     private static $_drivers = array(
-        "Checkin", "PushDevices", "GetFirmware",
-        //"PushHistory"
+        "Checkin", "PushDevices", "GetFirmware", "SyncTables"
     );
     /**
     * This function sets up the driver object, and the database object.  The
@@ -187,7 +186,7 @@ abstract class Periodic
     */
     protected function success()
     {
-        $this->last = time();
+        $this->last = $this->system()->now();
         $this->system()->out(
             "Success.  Next run ".date("Y-m-d H:i:s", $this->last + $this->period)
         );
