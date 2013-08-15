@@ -912,6 +912,132 @@ class TableBaseTest extends \PHPUnit_Extensions_Database_TestCase
         $this->assertSame($expect, $rows);
     }
     /**
+    * Data provider for testDelete
+    *
+    * @return array
+    */
+    public static function dataDelete()
+    {
+        return array(
+            // Auto increment
+            array(
+                array(
+                    "fluff" => "things",
+                    "other" => "nStuff",
+                    "id" => 2,
+                    "name" => "Insert Test",
+                    "value" => "101.0",
+                ),
+                array(
+                    "id" => 2,
+                ),
+                false,
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ),
+            ),
+            array( // It won't delete anything with an empty where
+                array(
+                ),
+                array(
+                ),
+                false,
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "2",
+                        "name" => "Another THing",
+                        "value" => "22.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    "fluff" => "things",
+                    "other" => "nStuff",
+                    "id" => 2,
+                    "name" => "Insert Test",
+                    "value" => "101.0",
+                ),
+                array("id" => 2),
+                true,
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "2",
+                        "name" => "Another THing",
+                        "value" => "22.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param array $preload  The array to preload into the class
+    * @param array $where    The where data to use
+    * @param bool  $readonly Read only mode to use
+    * @param array $expect   The expected return
+    *
+    * @dataProvider dataDelete
+    *
+    * @return null
+    */
+    public function testDelete($preload, $where, $readonly, $expect)
+    {
+        $obj = \HUGnet\db\tables\HUGnetDBTableBaseTestStub::factory(
+            $this->system, $preload, "HUGnetDBTableBaseTestStub", $this->connect
+        );
+        $obj->readonly($readonly);
+        $obj->delete($where);
+        $stmt = $this->pdo->query("SELECT * FROM `myTable`");
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $this->assertSame($expect, $rows);
+    }
+    /**
     * data provider for testToDB
     *
     * @return array

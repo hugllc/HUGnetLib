@@ -347,10 +347,21 @@ abstract class TableBase extends \HUGnet\base\Container
     */
     public function deleteRow()
     {
-        if ($this->isEmpty() || $this->readonly()) {
+        return $this->delete($this->toDB());
+    }
+    /**
+    * This function gets a record with the given key
+    *
+    * @param mixed $where The where clause
+    *
+    * @return array Array of objects
+    */
+    public function &delete($where)
+    {
+        if ($this->readonly()) {
             return false;
         }
-        $ret = $this->dbDriver()->deleteWhere($this->toDB());
+        $ret = $this->dbDriver()->deleteWhere($where);
         $this->dbDriver()->reset();
         return $ret;
     }
