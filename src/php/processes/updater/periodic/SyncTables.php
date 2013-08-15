@@ -116,12 +116,18 @@ class SyncTables extends \HUGnet\processes\updater\Periodic
                 );
                 $ret = json_decode(@file_get_contents($url));
                 if (is_array($ret)) {
+                    $max = 0;
                     foreach ($ret as $array) {
                         if (is_array($array)) {
                             $obj->table()->fromArray($array);
                             $obj->table()->insertRow(true);
+                            $id = $obj->table()->get("id");
+                            if ($max < $id) {
+                                $max = $id;
+                            }
                         }
                     }
+                    $this->table()->delete(array("id" => array('$gt' => $max)));
                     $this->success();
                 } else {
                     $this->failure();
