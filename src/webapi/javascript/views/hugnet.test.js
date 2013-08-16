@@ -120,6 +120,9 @@ HUGnet.TestsView = HUGnet.DeviceListView.extend({
             if (options.readonly) {
                 this.readonly = options.readonly;
             }
+            if (options.filter) {
+                this.filter = options.filter;
+            }
         }
         this.model.startRefresh();
         this.model.each(this.insert, this);

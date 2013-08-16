@@ -334,7 +334,6 @@ var DeviceEntryView = Backbone.View.extend({
     {
         var url = this.url+"?task=device&action=export";
         url += "&id="+this.model.get("id").toString(16);
-        console.log(url);
         this.parent.iframe.attr('src', url);
     },
     loadconfig: function (e)

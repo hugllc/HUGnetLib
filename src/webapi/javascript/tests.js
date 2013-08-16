@@ -44,6 +44,7 @@ HUGnet.TestSuite = Backbone.View.extend({
     tabs: undefined,
     id: "tests-tabs",
     readonly: false,
+    filter: {type: "test", Publish: 1},
     data: {},
     url: '/HUGnetLib/HUGnetLibAPI.php',
     tabTemplate: '<li style="white-space: nowrap;"><a href="#{href}">#{label}</a> <span name="#{href}" class="ui-icon ui-icon-close">Remove Tab</span></li>',
@@ -59,11 +60,15 @@ HUGnet.TestSuite = Backbone.View.extend({
             if (options.readonly) {
                 this.readonly = options.readonly;
             }
+            if (options.filter) {
+                this.filter = options.filter;
+            }
         }
         this.tests = new HUGnet.TestsView({
             model: options.tests,
             url: this.url,
-            readonly: this.readonly
+            readonly: this.readonly,
+            filter: this.filter
         });
         this.render();
     },
