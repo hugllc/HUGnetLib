@@ -67,7 +67,8 @@ HUGnet.DeviceList = Backbone.View.extend({
         this.devices = new HUGnet.DeviceListView({
             model: options.devices,
             url: this.url,
-            readonly: this.readonly
+            readonly: this.readonly,
+            filter: this.filter
         });
         this.render();
     },
