@@ -418,13 +418,76 @@ HUGnet.DevicesView = Backbone.View.extend({
     url: '/HUGnetLib/HUGnetLibAPI.php',
     template: "#DeviceListTemplate",
     iframe: undefined,
+    progress: undefined,
+    timer: null,
     events: {
         'click .newtest': 'createTest',
+        'click .importDevice': '_importDevice',
     },
     initialize: function (options)
     {
         this.model.each(this.insert, this);
         this.model.on('add', this.insert, this);
+    },
+    _importProgress: function(title)
+    {
+        if (typeof this.progress !== "object") {
+            this.progress = new HUGnet.Progress({
+                modal: false,
+                draggable: true,
+                width: 300,
+                title: title,
+                dialogClass: "window no-close",
+                zIndex: 500,
+            });
+            this.progress.update(false);
+        }
+    },
+    _teardownProgress: function()
+    {
+        if (this.progress !== undefined) {
+            this.progress.update(1);
+            this.progress.remove();
+            delete this.progress;
+        }
+    },
+    _importDevice: function ()
+    {
+        if (this.$("#importDevice input[type=file]").val() == "") {
+            return;
+        }
+        var url = this.url+"?task=device&action=import";
+        var form = $("#importDevice");
+        form.attr({
+            action: url,
+            method: 'post',
+            enctype: 'multipart/form-data',
+            encoding: 'multipart/form-data',
+            target: "exportDevice"
+        });
+        form.submit();
+        this._importProgress("Importing the device");
+        this._importWait();
+    },
+    _importWait: function ()
+    {
+        var text = this.iframe.contents().text();
+        var self = this;
+        if (text != "") {
+            self._teardownProgress();
+            self.timer = null;
+            self.$("#importDevice input[type=file]").val("");
+            var id = parseInt(text, 16);
+            this.model.add({id: id});
+            this.model.get(id).refresh();
+        } else {
+            self.timer = setTimeout(
+                function () {
+                    self._importWait();
+                },
+                500
+            );
+        }
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -435,16 +498,18 @@ HUGnet.DevicesView = Backbone.View.extend({
     */
     render: function ()
     {
+        var data = this.model.toJSON();
+        data.url = this.url;
         this.$el.html(
             _.template(
                 $(this.template).html(),
-                this.model.toJSON()
+                data
             )
         );
         //this.model.each(this.renderEntry);
         this.$("table").tablesorter({ widgets: ['zebra'] });
         this.$("table").trigger('update');
-        this.iframe = $('<iframe>', { id:'exportDevice' }).hide();
+        this.iframe = $('<iframe>', { name: 'exportDevice', id:'exportDevice' }).hide();
         this.$el.append(this.iframe);
         return this;
     },

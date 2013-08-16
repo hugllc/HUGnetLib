@@ -142,6 +142,13 @@ class WebAPI extends HTML
             $ret = $this->_executeSystem($did, $dev, $extra);
         } else if ($this->_auth(true) || ($action == "list")) {
             //$dev->load($did);
+            if ($action == "import") {
+                $data = json_decode(
+                    file_get_contents($_FILES["import"]["tmp_name"]),
+                    true
+                );
+                $this->args()->set("data", $data);
+            }
             $ret = $dev->webAPI($this->args(), $extra);
         }
         if ($ret === "regen") {
@@ -781,7 +788,7 @@ class WebAPI extends HTML
         } else if (strtoupper($format) === "DEBUG") {
             if (!headers_sent()) {
                 // @codeCoverageIgnoreStart
-                header('Content-type: text/plain');
+                header('Content-type: text/plain; charset=UTF-8');
             }
             // @codeCoverageIgnoreEnd
             $this->_headerNoCache();

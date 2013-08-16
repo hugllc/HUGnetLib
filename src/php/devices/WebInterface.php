@@ -327,7 +327,17 @@ class WebInterface
     */
     private function _import($args)
     {
+        header('Content-type: text/plain; charset=UTF-8');
         $data = (array)$args->get("data");
+        if (is_array($data)) {
+            $fixture = $this->_system->device()->fixture();
+            $fixture->import($data);
+            $dev = $fixture->exportDevice();
+            print $dev->get("DeviceID");
+        } else {
+            print "0";
+        }
+        return null;
     }
 }
 

@@ -219,6 +219,7 @@ class Fixture extends \HUGnet\Device
             $data = json_decode($data, true);
         }
         if (is_array($data) && isset($data["id"])) {
+            $this->table()->clearData();
             $this->table()->set("dev", $data["id"]);
             unset($data["id"]);
             unset($data["DeviceID"]);
@@ -276,6 +277,7 @@ class Fixture extends \HUGnet\Device
     public function &exportDevice()
     {
         $dev = $this->system()->device();
+        $dev->table()->clearData();
         $data = json_decode($this->table()->get('fixture'), true);
         $data["id"] = $this->table()->get("dev");
         $data["DeviceID"] = sprintf("%06X", $this->table()->get("dev"));
