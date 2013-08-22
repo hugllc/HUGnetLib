@@ -75,7 +75,6 @@ class SyncTables extends \HUGnet\processes\updater\Periodic
     protected function __construct(&$gui)
     {
         parent::__construct($gui);
-        var_dump($this->ui()->get("sync_tables"));
         $this->_enable = (bool)$this->ui()->get("sync_tables");
 
         $this->_tables["InputTable"] = $this->system()->InputTable();
@@ -114,20 +113,23 @@ class SyncTables extends \HUGnet\processes\updater\Periodic
                 $this->system()->out(
                     "Syncing $table "
                 );
-                $ret = json_decode(@file_get_contents($url));
+                $ret = json_decode(@file_get_contents($url), true);
                 if (is_array($ret)) {
                     $max = 0;
-                    foreach ($ret as $array) {
+                    foreach ($ret as $key => $array) {
                         if (is_array($array)) {
                             $obj->table()->fromArray($array);
                             $obj->table()->insertRow(true);
+                            if ($ret) {
+                                $this->system()->out("Updated $key");
+                            }
                             $id = $obj->table()->get("id");
                             if ($max < $id) {
                                 $max = $id;
                             }
                         }
                     }
-                    $this->table()->delete(array("id" => array('$gt' => $max)));
+                    $obj->table()->delete(array("id" => array('$gt' => $max)));
                     $this->success();
                 } else {
                     $this->failure();
