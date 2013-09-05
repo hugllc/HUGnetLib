@@ -148,7 +148,7 @@ class E00393700AverageTest extends FastAverageTestBase
     */
     public function testDatacols()
     {
-        $this->assertSame(13, $this->o->datacols);
+        $this->assertSame(20, $this->o->datacols);
     }
 
 }

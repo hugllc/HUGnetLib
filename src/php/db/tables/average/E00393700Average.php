@@ -62,7 +62,7 @@ class E00393700Average extends \HUGnet\db\FastAverage
     /** @var string This is the table we should use */
     public $sqlTable = "e00393700_average";
     /** @var This is the dataset */
-    public $datacols = 13;
+    public $datacols = 20;
 
     /******************************************************************
      ******************************************************************

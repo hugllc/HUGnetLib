@@ -105,7 +105,7 @@ class E00393700Test extends DriverTestBase
             ),
             array(
                 "virtualSensors",
-                4,
+                11,
             ),
             array(
                 "physicalSensors",
@@ -113,7 +113,7 @@ class E00393700Test extends DriverTestBase
             ),
             array(
                  "totalSensors",
-                13,
+                20,
             ),
         );
     }

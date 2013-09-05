@@ -51,6 +51,7 @@ var InputTablePropertiesView = Backbone.View.extend({
     },
     initialize: function (options)
     {
+        console.log("init");
         this.model.on('change', this.render, this);
         this.model.on('savefail', this.saveFail, this);
     },
@@ -155,7 +156,6 @@ var InputTableEntryView = Backbone.View.extend({
     parent: null,
     events: {
         'change .action': 'action',
-        'click .refresh': 'refresh',
         'click .properties': 'properties'
     },
     initialize: function (options)
@@ -168,41 +168,18 @@ var InputTableEntryView = Backbone.View.extend({
     },
     action: function (e)
     {
+        console.log("ASDF");
         var action = this.$('.action').val();
         this.$('.action').val('option:first');
+        console.log(action);
         //this.$('.action')[0].selectedIndex = 0;
-        if (action === 'refresh') {
-            this.refresh(e);
-        } else if (action === 'properties') {
+        if (action === 'properties') {
             this.properties(e);
-        } else if (action === 'loadfirmware') {
-            this.loadfirmware(e);
-        } else if (action === 'loadconfig') {
-            this.loadconfig(e);
         }
-    },
-    refresh: function (e)
-    {
-        this.$el.addClass("working");
-        this.model.config();
-    },
-    loadconfig: function (e)
-    {
-        this.$el.addClass("working");
-        this.model.loadconfig();
-    },
-    loadfirmware: function (e)
-    {
-        this.$el.addClass("working");
-        this.model.loadfirmware();
-    },
-    refreshFail: function ()
-    {
-        this.$el.removeClass("working");
-        //alert("Failed to get the configuration for the device");
     },
     properties: function (e)
     {
+        console.log("here");
         var view = new InputTablePropertiesView({ model: this.model });
         this.parent.popup(view);
     },

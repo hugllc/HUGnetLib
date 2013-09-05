@@ -62,7 +62,7 @@ class E00393700History extends \HUGnet\db\History
     /** @var string This is the table we should use */
     public $sqlTable = "e00393700_history";
     /** @var This is the dataset */
-    public $datacols = 13;
+    public $datacols = 20;
 
     /******************************************************************
      ******************************************************************
