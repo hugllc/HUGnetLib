@@ -43,7 +43,7 @@
 HUGnet.ServerConfig = Backbone.View.extend({
     tabs: undefined,
     url: "/HUGnetLib/HUGnetLibAPI.php",
-    id: "serverconfig-tabs",
+    id: "tabs-serverconfig",
     itables: null,
     initialize: function (options)
     {
@@ -55,10 +55,6 @@ HUGnet.ServerConfig = Backbone.View.extend({
                 this.id = options.id;
             }
         }
-        this.devices = new HUGnet.DevicesView({
-            model: options.devices,
-            url: this.url
-        });
         this.itables = new HUGnet.InputTables();
         this.itables.fetch();
         this.inputTables = new HUGnet.InputTablesView({
@@ -100,7 +96,6 @@ HUGnet.ServerConfig = Backbone.View.extend({
         this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+this.id+'-inputTable">Input Tables</a></li>');
         this.tabs.append('<div id="'+this.id+'-inputTable"></div>');
         $('#'+this.id+'-inputTable').html(this.inputTables.render().el);
-        console.log(this.id);
         /*
         this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+this.id+'-outputTable">Output Tables</a></li>');
         this.tabs.append('<div id="'+this.id+'-outputTable"></div>');

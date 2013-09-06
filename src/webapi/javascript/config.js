@@ -43,7 +43,7 @@
 HUGnet.Config = Backbone.View.extend({
     tabs: undefined,
     url: "/HUGnetLib/HUGnetLibAPI.php",
-    id: "config-tabs",
+    id: "tabs-config",
     initialize: function (options)
     {
         if (options) {
@@ -56,24 +56,6 @@ HUGnet.Config = Backbone.View.extend({
         }
         this.devices = new HUGnet.DevicesView({
             model: options.devices,
-            url: this.url
-        });
-        var itables = new HUGnet.InputTables();
-        itables.fetch();
-        this.inputTables = new HUGnet.InputTablesView({
-            model: itables,
-            url: this.url
-        });
-        var otables = new HUGnet.OutputTables();
-        otables.fetch();
-        this.outputTables = new HUGnet.OutputTablesView({
-            model: otables,
-            url: this.url
-        });
-        var ptables = new HUGnet.ProcessTables();
-        ptables.fetch();
-        this.processTables = new HUGnet.ProcessTablesView({
-            model: ptables,
             url: this.url
         });
         this.runtime = new HUGnet.RuntimeView({
@@ -103,14 +85,6 @@ HUGnet.Config = Backbone.View.extend({
         this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+this.id+'-Runtime">Runtime Config</a></li>');
         this.tabs.append('<div id="'+this.id+'-Runtime"></div>');
         $('#'+this.id+'-Runtime').html(this.runtime.render().el);
-        /*
-        this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+this.id+'-outputTable">Output Tables</a></li>');
-        this.tabs.append('<div id="'+this.id+'-outputTable"></div>');
-        $('#'+this.id+'-outputTable').html(this.outputTables.render().el);
-        this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+this.id+'-processTable">Process Tables</a></li>');
-        this.tabs.append('<div id="'+this.id+'-processTable"></div>');
-        $('#'+this.id+'-processTable').html(this.processTables.render().el);
-        */
 
         this.tabs.tabs("refresh");
         this.tabs.tabs("option", "active", 0);
