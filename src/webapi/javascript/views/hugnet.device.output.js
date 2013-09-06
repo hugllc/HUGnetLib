@@ -75,7 +75,6 @@ var DeviceOutputPropertiesView = Backbone.View.extend({
     {
         var value = this.$("#setTable").val();
         this.$("#setTable").val(0);
-        console.log(value);
         this.model.settable(value);
     },
     saveclose: function (e)
@@ -88,7 +87,6 @@ var DeviceOutputPropertiesView = Backbone.View.extend({
         this.setTitle( " [ Saving...] " );
         var data = this.$('form').serializeObject();
         
-        console.log(data);
         this.model.set(data);
         this.model.save();
     },
@@ -111,7 +109,6 @@ var DeviceOutputPropertiesView = Backbone.View.extend({
     render: function ()
     {
         var data = this.model.toJSON();
-        console.log(data);
         _.extend(data, HUGnet.viewHelpers);
         var i;
         this.$el.html(

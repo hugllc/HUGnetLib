@@ -80,15 +80,12 @@ var DeviceProcessPropertiesView = Backbone.View.extend({
     {
         var value = this.$("#setTable").val();
         this.$("#setTable").val(0);
-        console.log(value);
         this.model.settable(value);
     },
     save: function (e)
     {
         this.setTitle( " [ Saving...] " );
         var data = this.$('form').serializeObject();
-        console.log("process");
-        console.log(data);
         this.model.set(data);
         this.model.save();
     },

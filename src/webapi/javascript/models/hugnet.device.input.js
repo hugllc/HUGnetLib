@@ -176,7 +176,6 @@ HUGnet.DeviceInput = Backbone.Model.extend({
         }).done(
             function (data)
             {
-                console.log(data);
                 if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
                     self.trigger('saved');
                     self.set(data);

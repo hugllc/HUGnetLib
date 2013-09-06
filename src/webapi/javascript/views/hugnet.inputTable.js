@@ -51,7 +51,6 @@ var InputTablePropertiesView = Backbone.View.extend({
     },
     initialize: function (options)
     {
-        console.log("init");
         this.model.on('change', this.render, this);
         this.model.on('savefail', this.saveFail, this);
     },
@@ -108,7 +107,6 @@ var InputTablePropertiesView = Backbone.View.extend({
     */
     render: function ()
     {
-
         var data = this.model.toJSON();
         _.extend(data, HUGnet.viewHelpers);
         this.$el.html(
@@ -156,7 +154,7 @@ var InputTableEntryView = Backbone.View.extend({
     parent: null,
     events: {
         'change .action': 'action',
-        'click .properties': 'properties'
+        //'click .properties': 'properties'
     },
     initialize: function (options)
     {
@@ -168,10 +166,8 @@ var InputTableEntryView = Backbone.View.extend({
     },
     action: function (e)
     {
-        console.log("ASDF");
         var action = this.$('.action').val();
         this.$('.action').val('option:first');
-        console.log(action);
         //this.$('.action')[0].selectedIndex = 0;
         if (action === 'properties') {
             this.properties(e);
@@ -179,7 +175,6 @@ var InputTableEntryView = Backbone.View.extend({
     },
     properties: function (e)
     {
-        console.log("here");
         var view = new InputTablePropertiesView({ model: this.model });
         this.parent.popup(view);
     },
@@ -229,7 +224,7 @@ HUGnet.InputTablesView = Backbone.View.extend({
         if (options) {
             if (options.url) this.url = options.url;
         }
-        this.model.each(this.insert, this);
+        //this.model.each(this.insert, this);
         this.model.bind('add', this.insert, this);
     },
     /**
