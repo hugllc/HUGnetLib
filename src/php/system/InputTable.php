@@ -117,7 +117,7 @@ class InputTable extends \HUGnet\base\XTableBase
             include_once $dir."E003928AnalogTable.php";
             $class = $namespace."E003928AnalogTable";
             break;
-        case "ADuC":
+        case "0039-37":
             include_once $dir."ADuCInputTable.php";
             $class = $namespace."ADuCInputTable";
             break;
