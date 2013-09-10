@@ -99,18 +99,44 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
             $now = $this->system()->now();
             $ids = $this->_device->ids();
             foreach (array_keys($ids) as $key) {
+                $this->system()->out("Working on ".sprintf("%06X", $key), 2);
                 $this->system()->main();
                 if (!$this->ui()->loop()) {
                     break;
                 }
-
                 $this->_device->load($key);
-                $this->_pushDevice($this->_device, $now);
-                $this->_pushHistory($this->_device);
+                if ($this->_checkDevice($this->_device, $now)) {
+                    $this->_pushDevice($this->_device, $now);
+                    $this->_pushHistory($this->_device);
+                }
             }
             $this->last = $now;
         }
     }
+    /**
+     * This checks to see if a device should be pushed...
+     *
+     * @param int &$dev The device to use
+     * @param int $now  The time to use
+     *
+     * @return true if it should be pushed, false otherwise
+     */
+    private function _checkDevice(&$dev, $now)
+    {
+        /* Let's just push the regular devices */
+        if ($dev->id() >= 0xFD0000) {
+            $this->system()->out("DeviceID > FD0000", 2);
+            return false;
+        }
+        $lastContact = $dev->getParam("LastContact");
+        /* Only push it if we have changed it since the last push */
+        if ($lastContact < $dev->getParam("LastMasterPush")) {
+            $this->system()->out("Device not updated", 2);
+            return false;
+        }
+        return true;
+    }
+    
     /**
      * This pushes out all of the sensors for a device
      *
@@ -121,15 +147,6 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
      */
     private function _pushDevice(&$dev, $now)
     {
-        /* Let's just push the regular devices */
-        if ($dev->id() >= 0xFE0000) {
-            return;
-        }
-        $lastContact = $dev->getParam("LastContact");
-        /* Only push it if we have changed it since the last push */
-        if ($lastContact < $dev->getParam("LastMasterPush")) {
-            return;
-        }
         $this->system()->out(
             "Pushing ".sprintf("%06X", $dev->id())." to master server..."
         );
