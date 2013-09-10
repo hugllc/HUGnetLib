@@ -29,7 +29,6 @@
  * @subpackage Devices
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2013 Hunt Utilities Group, LLC
- * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  *
@@ -50,7 +49,6 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @subpackage Devices
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2013 Hunt Utilities Group, LLC
- * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
@@ -128,9 +126,11 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
             $this->system()->out("DeviceID > FD0000", 2);
             return false;
         }
-        $lastContact = $dev->getParam("LastContact");
+        $contact  = $dev->getParam("LastContact");
+        $modified = $dev->getParam("Modified");
+        $push     = $dev->getParam("LastMasterPush");
         /* Only push it if we have changed it since the last push */
-        if ($lastContact < $dev->getParam("LastMasterPush")) {
+        if (($contact < $push) && ($modified < $push)) {
             $this->system()->out("Device not updated", 2);
             return false;
         }
@@ -163,108 +163,6 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
         } else {
             $this->system()->out("Failure.");
             /* Don't store it if we fail */
-        }
-    }
-    /**
-     * This pushes out all of the sensors for a device
-     *
-     * @param int &$dev The device to use
-     *
-     * @return none
-     */
-    private function _pushInputs(&$dev)
-    {
-        $sens = $dev->get("InputTables");
-        $good = 0;
-        $bad  = 0;
-        for ($i = 0; $i < $sens; $i++) {
-            $this->system()->main();
-            if (!$this->ui()->loop()) {
-                break;
-            }
-            $ret = $dev->input($i)->action()->post();
-            if (is_array($ret)
-                && ($ret["dev"] == $dev->id())
-                && ($ret["input"] == $i)
-            ) {
-                $good++;
-            } else {
-                $bad++;
-            }
-        }
-        if ($good > 0) {
-            $this->system()->out("Successfully pushed ".$good." device inputs");
-        }
-        if ($bad > 0) {
-            $this->system()->out("Failure to push out ".$bad." device inputs!");
-        }
-    }
-    /**
-     * This pushes out all of the sensors for a device
-     *
-     * @param int &$dev The device to use
-     *
-     * @return none
-     */
-    private function _pushOutputs(&$dev)
-    {
-        $sens = $dev->get("OutputTables");
-        $good = 0;
-        $bad  = 0;
-        for ($i = 0; $i < $sens; $i++) {
-            $this->system()->main();
-            if (!$this->ui()->loop()) {
-                break;
-            }
-            $ret = $dev->output($i)->action()->post();
-            if (is_array($ret)
-                && ($ret["dev"] == $dev->id())
-                && ($ret["output"] == $i)
-            ) {
-                $good++;
-            } else {
-                $bad++;
-            }
-        }
-        if ($good > 0) {
-            $this->system()->out("Successfully pushed ".$good." device output");
-        }
-        if ($bad > 0) {
-            $this->system()->out("Failure to push out ".$bad." device outputs!");
-        }
-    }
-    /**
-     * This pushes out all of the sensors for a device
-     *
-     * @param int &$dev The device to use
-     *
-     * @return none
-     */
-    private function _pushProcesses(&$dev)
-    {
-        $sens = $dev->get("ProcessTables");
-        $good = 0;
-        $bad  = 0;
-        for ($i = 0; $i < $sens; $i++) {
-            $this->system()->main();
-            if (!$this->ui()->loop()) {
-                break;
-            }
-            $ret = $dev->process($i)->action()->post();
-            if (is_array($ret)
-                && ($ret["dev"] == $dev->id())
-                && ($ret["process"] == $i)
-            ) {
-                $good++;
-            } else {
-                $bad++;
-            }
-        }
-        if ($good > 0) {
-            $this->system()->out("Successfully pushed ".$good." device processes");
-        }
-        if ($bad > 0) {
-            $this->system()->out("Failure to push out ".$bad." device processes!");
         }
     }
     /**
