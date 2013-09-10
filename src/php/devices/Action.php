@@ -481,13 +481,13 @@ class Action
             $master = $this->device->system()->get("master");
             $url = $master["url"];
         }
-        $device  = $this->device->toArray(false);
+        $device  = $this->device->fixture()->export();
         return \HUGnet\Util::postData(
             $url,
             array(
                 "uuid"    => urlencode($this->device->system()->get("uuid")),
-                "id"      => sprintf("%06X", $device["id"]),
-                "action"  => "put",
+                "id"      => sprintf("%06X", $this->device->get("id")),
+                "action"  => "import",
                 "task"    => "device",
                 "data"    => $device,
             )

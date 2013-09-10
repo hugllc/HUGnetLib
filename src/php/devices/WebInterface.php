@@ -328,7 +328,10 @@ class WebInterface
     private function _import($args)
     {
         header('Content-type: text/plain; charset=UTF-8');
-        $data = (array)$args->get("data");
+        $data = $args->get("data");
+        if (is_string($data)) {
+            $data = json_decode($data, true);
+        }
         if (is_array($data)) {
             $fixture = $this->_system->device()->fixture();
             $fixture->import($data);

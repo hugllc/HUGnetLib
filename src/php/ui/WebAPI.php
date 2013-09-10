@@ -143,11 +143,13 @@ class WebAPI extends HTML
         } else if ($this->_auth(true) || ($action == "list")) {
             //$dev->load($did);
             if ($action == "import") {
-                $data = json_decode(
-                    file_get_contents($_FILES["import"]["tmp_name"]),
-                    true
-                );
-                $this->args()->set("data", $data);
+                if (file_exists($_FILES["import"]["tmp_name"])) {
+                    $data = json_decode(
+                        file_get_contents($_FILES["import"]["tmp_name"]),
+                        true
+                    );
+                    $this->args()->set("data", $data);
+                }
             }
             $ret = $dev->webAPI($this->args(), $extra);
         }
