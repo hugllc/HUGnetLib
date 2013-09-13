@@ -1,0 +1,10 @@
+--- my.cnf.orig 2013-09-13 11:52:29.927759755 -0500
++++ my.cnf      2013-09-12 19:58:04.607507972 -0500
+@@ -41,6 +41,7 @@
+ tmpdir         = /tmp
+ lc-messages-dir        = /usr/share/mysql
+ skip-external-locking
++default-storage-engine = MYISAM
+ #
+ # Instead of skip-networking the default is now to listen only on
+ # localhost which is more compatible and is not less secure.
