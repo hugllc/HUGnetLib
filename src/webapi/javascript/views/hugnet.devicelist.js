@@ -1,4 +1,4 @@
-/**
+f/**
  * hugnet.device.js
  *
  * <pre>
@@ -209,7 +209,9 @@ HUGnet.DeviceListView = Backbone.View.extend({
 
         for (var key in filter) {
             var value = model.get(key);
-            if (typeof filter[key] === 'string') {
+            if (value == undefined) {
+                return true;
+            } else if (typeof filter[key] === 'string') {
                 if (value.toString().indexOf(filter[key]) === -1) {
                     return false;
                 }
