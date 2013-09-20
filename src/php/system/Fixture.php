@@ -276,12 +276,36 @@ class Fixture extends \HUGnet\Device
     */
     public function &exportDevice()
     {
+        return $this->mergeDevice(true);
+    }
+    /**
+    * This builds and stores an actual device from the fixture
+    *
+    * @param bool $replace If true, this totally replaces the old device
+    *
+    * @return object The device that I am exporting
+    */
+    public function &mergeDevice($replace = false)
+    {
         $dev = $this->system()->device();
         $dev->table()->clearData();
+        $id = $this->table()->get("dev");
+        if (!$replace) {
+            $dev->table()->get($id);
+        }
         $data = json_decode($this->table()->get('fixture'), true);
-        $data["id"] = $this->table()->get("dev");
-        $data["DeviceID"] = sprintf("%06X", $this->table()->get("dev"));
-        $dev->table()->fromArray($data);
+        $dev->set("id", $id);
+        $dev->set("DeviceID", sprintf("%06X", $id));
+        $params = (array)$data["params"];
+        unset($data["params"]);
+        unset($data["localParams"]);
+        foreach ($data as $key => $value) {
+            $dev->set($key, $value);
+        }
+        foreach ($params as $key => $value) {
+            $dev->setParam($key, $value);
+        }
+//        $dev->table()->fromArray($data);
         $dev->table()->insertRow(true);
         /* Now do the iopTables */
         $input = $dev->input(0);
