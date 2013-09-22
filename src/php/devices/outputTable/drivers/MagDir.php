@@ -69,25 +69,27 @@ class MagDir extends \HUGnet\devices\outputTable\Driver
         "shortName" => "MagDir",
         "extraText" => array(
             "Control Updates / Sec",
+            "Mode",
             "Direction Channel",
             "Magnitude Channel",
             "Initial Value"
         ),
         "extraDefault" => array(
-            16, 0, 1, 0
+            16, 0, 0, 1, 0
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            5, array(), array(), 15
+            5, array(0 => "Normal", 1 => "Invert Sign Output"), array(), array(), 15
         ),
         "extraDesc" => array(
             0 => "The maximum number of times per second that this should update
                   the output.",
-            1 => "The control channel we should output the direction to.",
-            2 => "The control channel we should output the magnitude to.",
-            3 => "The initial value of the control channel",
+            1 => "The mode to use",
+            2 => "The control channel we should output the direction to.",
+            3 => "The control channel we should output the magnitude to.",
+            4 => "The initial value of the control channel",
         ),
     );
     /**
@@ -102,8 +104,8 @@ class MagDir extends \HUGnet\devices\outputTable\Driver
         $ret = parent::get($name);
         if ($name == "extraValues") {
             $chans = $this->output()->device()->controlChannels()->select();
-            $ret[1] = $chans;
             $ret[2] = $chans;
+            $ret[3] = $chans;
         }
         return $ret;
     }
@@ -121,7 +123,8 @@ class MagDir extends \HUGnet\devices\outputTable\Driver
         $extra[0] = $this->decodePriority(substr($string, 0, 2));
         $extra[1] = $this->decodeInt(substr($string, 2, 2), 1);
         $extra[2] = $this->decodeInt(substr($string, 4, 2), 1);
-        $extra[3] = $this->decodeInt(substr($string, 6, 8), 4, true);
+        $extra[3] = $this->decodeInt(substr($string, 6, 2), 1);
+        $extra[4] = $this->decodeInt(substr($string, 8, 8), 4, true);
         $this->output()->set("extra", $extra);
     }
     /**
@@ -135,7 +138,8 @@ class MagDir extends \HUGnet\devices\outputTable\Driver
         $string  = $this->encodePriority($this->getExtra(0));
         $string .= $this->encodeInt($this->getExtra(1), 1);
         $string .= $this->encodeInt($this->getExtra(2), 1);
-        $string .= $this->encodeInt($this->getExtra(3), 4);
+        $string .= $this->encodeInt($this->getExtra(3), 1);
+        $string .= $this->encodeInt($this->getExtra(4), 4);
         return $string;
     }
 

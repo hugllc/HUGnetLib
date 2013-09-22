@@ -104,12 +104,12 @@ class MagDirTest extends DriverTestBase
                     'output' => 1,
                     'id' => 0x20,
                 ),
-                "09010834120000",
+                "0900010834120000",
                 array(
                     'dev' => 1,
                     'output' => 1,
                     'id' => 0x20,
-                    'extra' => array(14.22, 1, 8, 4660),
+                    'extra' => array(14.22, 0, 1, 8, 4660),
                     'driver' => "MagDir",
                     'type' => "MagDir",
                     'params' => array(),
@@ -127,7 +127,7 @@ class MagDirTest extends DriverTestBase
                     'dev' => 1,
                     'output' => 1,
                     'id' => 0x20,
-                    'extra' => array(0.5, 0xFF, 0xFF, -1),
+                    'extra' => array(0.5, 0xFF, 0xFF, 0xFF, -1),
                     'driver' => "MagDir",
                     'type' => "MagDir",
                     'params' => array(),
@@ -164,18 +164,18 @@ class MagDirTest extends DriverTestBase
             array( // #0
                 array(
                     "extra" => array(
-                        9, 1, 8, 0x1234
+                        9, 1, 1, 8, 0x1234
                     ),
                 ),
-                "0E010834120000",
+                "0E01010834120000",
             ),
             array( // #1 Negative number
                 array(
                     "extra" => array(
-                        -1, 0, 1, -1
+                        -1, 0, 0, 1, -1
                     ),
                 ),
-                "000001FFFFFFFF",
+                "00000001FFFFFFFF",
             ),
         );
     }
@@ -214,7 +214,11 @@ class MagDirTest extends DriverTestBase
                     "extra" => array(0, 1, 2, 3)
                 ),
                 array(
-                    5, array(), array(), 15
+                    5, 
+                    array(0 => "Normal", 1 => "Invert Sign Output"), 
+                    array(), 
+                    array(), 
+                    15
                 ),
             ),
         );
