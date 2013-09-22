@@ -291,7 +291,7 @@ class Fixture extends \HUGnet\Device
         $dev->table()->clearData();
         $id = $this->table()->get("dev");
         if (!$replace) {
-            $dev->table()->get($id);
+            $dev->table()->getRow($id);
         }
         $data = json_decode($this->table()->get('fixture'), true);
         $dev->set("id", $id);
@@ -299,9 +299,7 @@ class Fixture extends \HUGnet\Device
         $params = (array)$data["params"];
         unset($data["params"]);
         unset($data["localParams"]);
-        foreach ($data as $key => $value) {
-            $dev->set($key, $value);
-        }
+        $dev->table()->fromArray($data);
         foreach ($params as $key => $value) {
             $dev->setParam($key, $value);
         }
