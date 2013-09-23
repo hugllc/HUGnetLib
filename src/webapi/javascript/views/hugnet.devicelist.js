@@ -1,4 +1,4 @@
-f/**
+/**
  * hugnet.device.js
  *
  * <pre>
