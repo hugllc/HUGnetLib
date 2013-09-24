@@ -335,7 +335,7 @@ class WebInterface
         if (is_array($data)) {
             $fixture = $this->_system->device()->fixture();
             $fixture->import($data);
-            $dev = $fixture->exportDevice();
+            $dev = $fixture->mergeDevice(false);
             print $dev->get("DeviceID");
         } else {
             print "0";
