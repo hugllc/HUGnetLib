@@ -80,6 +80,8 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
             9 => "Output Offset",
             10 => "Control Chan Min",
             11 => "Control Chan Max",
+            12 => "Sign Control Channel",
+            13 => "Sign Bit Sense",
         ),
         "extraDesc" => array(
             0 => "The max number of times this should run each second (0.5 - 128)",
@@ -94,15 +96,18 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
             9 => "Added to the control before the channel is set",
             "The minimum value for the control channel.  Empty means use default",
             "The maximum value for the control channel.  Empty means use default",
+            12 => "The control channel to put the sign bit into",
+            13 => "Normal means the sign bit output as is.  Inverted inverts it",
         ),
         "extraDefault" => array(
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", ""
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "", 0, 0xFF
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            4, array(), array(), 15, 15, 15, 15, 15, 15, 15, 7, 7
+            4, array(), array(), 15, 15, 15, 15, 15, 15, 15, 7, 7, array(), 
+            array(0xFF => "No sign bit output", 1 => "Normal", 2 => "Inverted")
         ),
     );
     /**
@@ -116,10 +121,12 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
     {
         $ret = parent::get($name);
         if ($name == "extraValues") {
-            $ret[1] = $this->process()->device()->controlChannels()->select();
+            $cchans = $this->process()->device()->controlChannels()->select();
+            $ret[1] = $cchans;
             $ret[2] = $this->process()->device()->dataChannels()->select(
                 array(), true
             );
+            $ret[12] = $cchans;
         }
         return $ret;
     }
@@ -171,6 +178,10 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
         $extra[10] = $this->decodeInt(substr($string, $index, 8), 4, true);
         $index += 8;
         $extra[11] = $this->decodeInt(substr($string, $index, 8), 4, true);
+        $index += 8;
+        $extra[12] = $this->decodeInt(substr($string, $index, 2), 1);
+        $index += 2;
+        $extra[13] = $this->decodeInt(substr($string, $index, 2), 1);
         $this->process()->set("extra", $extra);
     }
     /**
@@ -199,18 +210,20 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
         $output = $this->process()->device()->controlChannels()->controlChannel(
             $this->getExtra(1)
         );
-        $min  = $this->getExtra(10);
         $oMin = $output->get("min");
-        if (($min === "") || ($min < $oMin)) {
+        $oMax = $output->get("max");
+        $min  = $this->getExtra(10);
+        if (($min === "") || ($min < $oMin) || ($min > $oMax)) {
             $min = $oMin;
         }
         $data .= $this->encodeInt($min, 4);
         $max   = $this->getExtra(11);
-        $oMax  = $output->get("max");
-        if (($max === "") || ($max > $oMax)) {
+        if (($max === "") || ($max > $oMax) || ($max < $oMin)) {
             $max = $oMax;
         }
         $data .= $this->encodeInt($max, 4);
+        $data .= $this->encodeInt($this->getExtra(12), 1);
+        $data .= $this->encodeInt($this->getExtra(13), 1);
         return $data;
     }
 

@@ -155,7 +155,7 @@ class PIDProcessTest extends DriverTestBase
                     ),
                 ),
                 "0102030400000005000000060000000600000007000000080009000000"
-                    ."0000000000100000",
+                    ."000000000010000000FF",
                 array(
                     array(
                         'extra',
@@ -172,6 +172,8 @@ class PIDProcessTest extends DriverTestBase
                             9 => 9,
                             10 => 0,
                             11 => 4096,
+                            12 => 0,
+                            13 => 0xFF,
                         )
                     ),
                 ),
@@ -217,7 +219,7 @@ class PIDProcessTest extends DriverTestBase
                     ),
                 ),
                 "0102030400000005000000060001000600100007000010080009000000"
-                    ."0000000000100000",
+                    ."00000000001000000102",
                 array(
                     array(
                         'extra',
@@ -234,6 +236,8 @@ class PIDProcessTest extends DriverTestBase
                             9 => 9,
                             10 => 0,
                             11 => 4096,
+                            12 => 1,
+                            13 => 2,
                         )
                     ),
                 ),
@@ -279,7 +283,7 @@ class PIDProcessTest extends DriverTestBase
                     ),
                 ),
                 "010203FFFFFFFF050000000600FFFFFFFFFFFFFFFFFFFFFFFF09000000"
-                    ."0000000000100000",
+                    ."000000000010000000FF",
                 array(
                     array(
                         'extra',
@@ -296,6 +300,8 @@ class PIDProcessTest extends DriverTestBase
                             9 => 9,
                             10 => 0,
                             11 => 4096,
+                            12 => 0,
+                            13 => 0xFF,
                         )
                     ),
                 ),
@@ -343,8 +349,8 @@ class PIDProcessTest extends DriverTestBase
                                 7 => 7,
                                 8 => 8,
                                 9 => 9,
-                                10 => -100,
-                                11 => 6000,
+                                10 => -16,
+                                11 => -1,
                             )
                         ),
                         "device" => new \HUGnet\DummyBase("Device"),
@@ -376,13 +382,13 @@ class PIDProcessTest extends DriverTestBase
                     ),
                     "cChannel" => array(
                         "get" => array(
-                            "min" => 0,
-                            "max" => 4096,
+                            "min" => -16,
+                            "max" => -1,
                         ),
                     )
                 ),
                 "0102030400000005000000060000000600000007000000080009000000"
-                    ."0000000000100000",
+                    ."F0FFFFFFFFFFFFFF00FF",
             ),
             array( // #1
                 array(
@@ -401,6 +407,8 @@ class PIDProcessTest extends DriverTestBase
                                 9 => 9,
                                 10 => 100,
                                 11 => 4000,
+                                12 => 1,
+                                13 => 2,
                             )
                         ),
                         "device" => new \HUGnet\DummyBase("Device"),
@@ -438,7 +446,7 @@ class PIDProcessTest extends DriverTestBase
                     )
                 ),
                 "010205040000000500000006000100060010000700001008000900000064"
-                    ."000000A00F0000",
+                    ."000000A00F00000102",
             ),
             array( // #2  DataChan return too short
                 array(
@@ -492,7 +500,7 @@ class PIDProcessTest extends DriverTestBase
                     )
                 ),
                 "0102050400000005000000060001000600100007000010080009000000"
-                    ."0000000000100000",
+                    ."000000000010000000FF",
             ),
             array( // #3  DataChan return too long
                 array(
@@ -546,7 +554,7 @@ class PIDProcessTest extends DriverTestBase
                     )
                 ),
                 "0102050400000005000000060001000600100007000010080009000000"
-                    ."0000000000100000",
+                    ."000000000010000000FF",
             ),
             array( // #4
                 array(
@@ -600,7 +608,7 @@ class PIDProcessTest extends DriverTestBase
                     )
                 ),
                 "010203FFFFFFFF0500000006000000FFFF0000FFFF0000FFFF09000000"
-                    ."0000000000100000",
+                    ."000000000010000000FF",
             ),
         );
     }
