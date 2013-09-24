@@ -90,8 +90,8 @@ class ADuCPWM extends \HUGnet\devices\outputTable\DriverADuC
             11 => "The value to initially set the control channel for PWM3",
             12 => "The value to initially set the control channel for PWM5",
         ),
-        "min" => 0,
-        "max" => 0xFFFF,
+        "min" => -65535,
+        "max" => 65535,
         "zero" => 0,
     );
     /** This tells us our mapping from extra to entry */

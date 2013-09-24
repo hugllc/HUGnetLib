@@ -247,19 +247,19 @@ class ADuCPWMTest extends DriverTestBase
                 ),
                 array(
                     array(
-                        'min' => 0,
+                        'min' => -65535,
                         'max' => 0xFFFF,
                         'label' => 'Hello 1',
                         'index' => 0,
                     ),
                     array(
-                        'min' => 0,
+                        'min' => -65535,
                         'max' => 0xFFFF,
                         'label' => 'Hello 3',
                         'index' => 1,
                     ),
                     array(
-                        'min' => 0,
+                        'min' => -65535,
                         'max' => 0xFFFF,
                         'label' => 'Hello 5',
                         'index' => 2,
