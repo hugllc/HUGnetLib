@@ -195,11 +195,13 @@ class Fixture extends \HUGnet\Device
     /**
     * This takes the class and makes it into a setup string
     *
+    * @param bool $default Whether or not to push out the default values
+    *
     * @return string The encoded string
     */
-    public function export()
+    public function export($default = false)
     {
-        $fixture = $this->toArray();
+        $fixture = $this->toArray($default);
         unset($fixture["DeviceID"]);
         return json_encode($fixture);
     }
@@ -252,9 +254,16 @@ class Fixture extends \HUGnet\Device
     */
     private function _importDevice(&$dev)
     {
-        $import = $dev->toArray(false);
+        $import = $dev->table()->toArray(true);
         unset($import["localParams"]);
         unset($import["group"]);
+        $arrays = array("params", "dataChannels", "controlChannels");
+        foreach ($arrays as $key) {
+            if (is_string($import[$key])) {
+                $import[$key] = (array)json_decode($import[$key], true);
+            }
+        }
+        
         $import["input"] = array();
         for ($i = 0; $i < $dev->get("InputTables"); $i++) {
             $import["input"][$i] = $this->_importIOP($dev->input($i));
@@ -342,15 +351,21 @@ class Fixture extends \HUGnet\Device
     private function _importIOP(&$iop)
     {
         $import = array();
-        $data = $iop->toArray(false);
+        $data = $iop->table()->toArray(true);
         $import = array();
-        if (isset($data["id"])) {
+        if ($data["id"] != 0xFF) {
             unset($data["RawSetup"]);
             unset($data["group"]);
             unset($data["dev"]);
             unset($data["input"]);
             unset($data["output"]);
             unset($data["process"]);
+            $arrays = array("params", "tableEntry");
+            foreach ($arrays as $key) {
+                if (is_string($data[$key])) {
+                    $data[$key] = (array)json_decode($data[$key], true);
+                }
+            }
             $import = $data;
         } else {
             $import = array("id" => 0xFF);

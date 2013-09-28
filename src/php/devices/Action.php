@@ -481,7 +481,7 @@ class Action
             $master = $this->device->system()->get("master");
             $url = $master["url"];
         }
-        $device  = $this->device->fixture()->export();
+        $device  = $this->device->fixture()->export(true);
         return \HUGnet\Util::postData(
             $url,
             array(

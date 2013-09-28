@@ -1109,29 +1109,35 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                     'modified' => 1000000,
                     'fixture' => json_encode(
                         array(
-                            "HWPartNum" => "0039-40-01-C",
-                            "FWPartNum" => "0039-40-01-C",
-                            "FWVersion" => "0.1.0",
-                            'Driver' => 'e00394000',
+                            'DeviceName' => '',
+                            'HWPartNum' => '0039-40-01-C',
+                            'FWPartNum' => '0039-40-01-C',
+                            'FWVersion' => '0.1.0',
+                            'RawSetup' => '',
+                            'Active' => 1,
+                            'Publish' => 1,
+                            'GatewayKey' => 0,
+                            'ControllerKey' => 0,
+                            'ControllerIndex' => 0,
+                            'DeviceLocation' => '',
+                            'DeviceJob' => '',
                             'Role' => '',
-                            'dataChannels' => array(
-                                array(
-                                    "decimals" => 0,
-                                    "units" => "Pulses",
-                                    "dataType" => "raw",
-                                    "label" => "Data Channel 0",
-                                ),
-                            ),
-                            'controlChannels' => array(
-                            ),
+                            'Driver' => 'e00394000',
+                            'PollInterval' => 0,
+                            'ActiveSensors' => 0,
+                            'DeviceGroup' => 'FFFFFF',
+                            'dataChannels' => array(),
+                            'controlChannels' => array(),
+                            'sensors' => '',
+                            'params' => array(),
                             'input' => array(
                                 0 => array(
                                     'id' => 112,
+                                    'type' => '',
+                                    'location' => '',
                                     'driver' => 'GenericPulse',
-                                    'type' => 'GenericPulse',
-                                    'params' => array(
-                                    ),
-                                    'tableEntry' => array(),
+                                    'calibration' => '',
+                                    'tableEntry' =>  array(),
                                 ),
                                 1 => array(
                                     'id' => 255,
