@@ -178,6 +178,28 @@ class ADuCPWMTest extends DriverTestBase
                 ),
                 "1100FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
             ),
+            array( // #2
+                array(
+                    "tableEntry" => array(
+                        "PWM5INV" => 0, 
+                        "PWM3INV" => 0, 
+                        "PWM1INV" => 0, 
+                        "PWMCP" => 0, 
+                        "POINV" => 0, 
+                        "HOFF" => 1, 
+                        "DIR" => 0, 
+                        "PWM0LEN" => 0x1234, 
+                        "PWM1LEN" => 0x5678, 
+                        "PWM2LEN" => 0x9900,
+                    ),
+                    "extra" => array(
+                        10 => 0xABCD, 
+                        11 => 0x4321, 
+                        12 => 0x5A5AA5A5
+                    ),
+                ),
+                "1100341278560099CDAB000021430000A5A55A5A",
+            ),
         );
     }
     /**

@@ -395,6 +395,33 @@ class ADuCDACTest extends DriverTestBase
                 ),
                 "120000000000",
             ),
+            array( // #8
+                array(
+                    "tableEntry" => array(
+                        "DACBUFLP" => 0, 
+                        "OPAMP" => 0, 
+                        "DACBUFBYPASS" => 0, 
+                        "DACMODE" => 0, 
+                        "Rate" => 0, 
+                        "Range" => 2,
+                    ),
+                ),
+                "120000000000",
+            ),
+            array( // #9
+                array(
+                    "tableEntry" => array(
+                        "DACBUFLP" => 0, 
+                        "OPAMP" => 0, 
+                        "DACBUFBYPASS" => 0, 
+                        "DACMODE" => 0, 
+                        "Rate" => 1, 
+                        "Range" => 0,
+                    ),
+                ),
+                "140000000000",
+            ),
+            
         );
     }
     /**

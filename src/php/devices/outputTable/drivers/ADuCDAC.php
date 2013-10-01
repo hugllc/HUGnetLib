@@ -156,12 +156,6 @@ class ADuCDAC extends \HUGnet\devices\outputTable\DriverADuC
     */
     public function encode()
     {
-        $encode = array();
-        foreach ($this->entryMap as $key => $field) {
-            $encode[$field] = $this->getExtra($key);
-        }
-        $this->entry()->fromArray($encode);
-        $this->output()->set("tableEntry", $this->entry()->toArray());
         $string  = $this->entry()->encode();
         $string .= $this->encodeInt($this->getExtra(6));
         return $string;
