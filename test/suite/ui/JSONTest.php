@@ -116,11 +116,11 @@ class JSONTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "verbose" => 5,
+                    "verbose" => 2,
                 ),
                 null,
                 array(
-                    "verbose" => 5,
+                    "verbose" => 2,
                     "html" => true,
                     "min_log" => \HUGnet\Error::ERROR,
                 )

@@ -106,13 +106,13 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                 array(
                     "System" => array(
                         "config" => array(
-                            "verbose" => 5,
+                            "verbose" => 2,
                             "other" => "stuff",
                         ),
                     ),
                 ),
                 array(
-                    "verbose" => 5,
+                    "verbose" => 2,
                     "other" => "stuff",
                     "html" => true,
                     "min_log" => \HUGnet\Error::ERROR,
@@ -120,11 +120,11 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "verbose" => 5,
+                    "verbose" => 2,
                 ),
                 null,
                 array(
-                    "verbose" => 5,
+                    "verbose" => 2,
                     "html" => true,
                     "min_log" => \HUGnet\Error::ERROR,
                 )
