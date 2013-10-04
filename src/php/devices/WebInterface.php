@@ -337,7 +337,7 @@ class WebInterface
             $fixture = $this->_system->device()->fixture();
             $fixture->import($data);
             $dev = $fixture->mergeDevice(false);
-            print $dev->get("DeviceID");
+            print json_encode($dev->get("DeviceID"));
         } else {
             print "0";
         }
