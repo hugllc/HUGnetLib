@@ -179,6 +179,7 @@ class HTML
     {
         if ($this->_verbose >= $level) {
             $this->_debug[] = $string;
+            error_log($string);
         }
     }
     /**
