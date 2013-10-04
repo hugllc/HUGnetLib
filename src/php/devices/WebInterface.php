@@ -330,6 +330,7 @@ class WebInterface
         header('Content-type: text/plain; charset=UTF-8');
         $data = $args->get("data");
         if (is_string($data)) {
+            $data = stripcslashes($data);
             $data = json_decode($data, true);
         }
         if (is_array($data)) {
