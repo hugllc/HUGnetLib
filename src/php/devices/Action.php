@@ -482,6 +482,9 @@ class Action
             $url = $master["url"];
         }
         $device  = $this->device->fixture()->export(true);
+        if (is_string($device)) {
+            $device = json_decode($device, true);
+        }
         return \HUGnet\Util::postData(
             $url,
             array(
