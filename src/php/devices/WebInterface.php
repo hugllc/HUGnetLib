@@ -339,7 +339,7 @@ class WebInterface
             $dev = $fixture->mergeDevice(false);
             print json_encode($dev->get("DeviceID"));
         } else {
-            print "0";
+            print json_encode("0");
         }
         return null;
     }
