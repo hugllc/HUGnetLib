@@ -330,15 +330,16 @@ class WebInterface
         header('Content-type: text/plain; charset=UTF-8');
         $data = $args->get("data");
         if (is_string($data)) {
+            $data = stripcslashes($data);
             $data = json_decode($data, true);
         }
         if (is_array($data)) {
             $fixture = $this->_system->device()->fixture();
             $fixture->import($data);
             $dev = $fixture->mergeDevice(false);
-            print $dev->get("DeviceID");
+            print json_encode($dev->get("DeviceID"));
         } else {
-            print "0";
+            print json_encode("0");
         }
         return null;
     }
