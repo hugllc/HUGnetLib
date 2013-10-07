@@ -57,6 +57,10 @@ HUGnet.ServerConfig = Backbone.View.extend({
         }
         this.itables = new HUGnet.InputTables();
         this.itables.fetch();
+        this.devices = new HUGnet.DevicesView({
+            model: options.devices,
+            url: this.url
+        });
         this.inputTables = new HUGnet.InputTablesView({
             model: this.itables,
             url: this.url
@@ -93,6 +97,10 @@ HUGnet.ServerConfig = Backbone.View.extend({
                 self.$(".tablesorter").trigger("update");
             }
         });
+        this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+this.id+'-devices">Device Information</a></li>');
+        this.tabs.append('<div id="'+this.id+'-devices"></div>');
+        $('#'+this.id+'-devices').html(this.devices.render().el);
+
         this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+this.id+'-inputTable">Input Tables</a></li>');
         this.tabs.append('<div id="'+this.id+'-inputTable"></div>');
         $('#'+this.id+'-inputTable').html(this.inputTables.render().el);
