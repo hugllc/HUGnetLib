@@ -1630,7 +1630,7 @@ class ActionVirtualTest extends \PHPUnit_Framework_TestCase
                 gmmktime(15, 45, 00, 1, 31, 2009),
                 1000000,
             ),
-            array(  // #5 Limiting to 2 records
+            array(  // #5 Time limit
                 array(
                     array(
                         "id" => 0xE10,
@@ -1770,7 +1770,7 @@ class ActionVirtualTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(
-                    "sqlLimit" => 2,
+                    "end" => gmmktime(15, 16, 00, 1, 22, 2009),
                 ),
                 array(
                     array(
@@ -2639,7 +2639,7 @@ class ActionVirtualTest extends \PHPUnit_Framework_TestCase
     * @param mixed $preload     The data to preload into the object
     * @param mixed $preloadData The data to feed the data object
     * @param array $device      The device to do the averages with
-    * @param array $mockData    Mock data to use
+    * @param array $params      Function parameters
     * @param array $expect      The expected average (from toArray())
     * @param int   $lastHist    The expected last history date
     * @param int   $lastPoll    The expected last poll date
@@ -2650,7 +2650,7 @@ class ActionVirtualTest extends \PHPUnit_Framework_TestCase
     */
     public function testCalc15MinAverageMulti(
         $devs, $preload, $preloadData, $device,
-        $mockData, $expect, $lastHist, $lastPoll
+        $params, $expect, $lastHist, $lastPoll
     ) {
         $dev = $this->system->device();
         foreach ((array)$devs as $d) {
@@ -2677,11 +2677,12 @@ class ActionVirtualTest extends \PHPUnit_Framework_TestCase
                 $input->store();
             }
         }
-        $data = new \HUGnet\db\HistoryMock($this->system, $mockData);
         $ret = array();
         $count = 0;
         do {
-            $res = $this->o->calcAverage($data);
+            $res = $this->o->calcAverage(
+                $params["type"], $params["start"], $params["end"]
+            );
             if (is_object($res)) {
                 $ret[] = $res->toArray(false);
             }

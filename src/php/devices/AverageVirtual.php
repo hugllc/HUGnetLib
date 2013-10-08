@@ -39,11 +39,7 @@ namespace HUGnet\devices;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our base class */
-require_once dirname(__FILE__)."/Action.php";
-/** This is the average classes */
-require_once dirname(__FILE__)."/../db/FastAverage.php";
-/** This is the average classes */
-require_once dirname(__FILE__)."/../db/Average.php";
+require_once "Average.php";
 /**
  * Networking for devices.
  *
@@ -59,77 +55,132 @@ require_once dirname(__FILE__)."/../db/Average.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
- * @since      0.9.8
+ * @since      0.9.7
  */
-class ActionVirtual extends Action
+class AverageVirtual extends Average
 {
     /**
     * This function creates the system.
     *
     * @param mixed  &$network (object)The system object to use
     * @param string &$device  (object)The device to use
-    * @param object &$driver  The device driver object
     *
     * @return null
     */
-    public static function &factory(&$network, &$device, &$driver)
+    public static function &factory(&$network, &$device)
     {
-        $object = new ActionVirtual($network, $device, $driver);
+        $object = new AverageVirtual($network, $device);
         return $object;
     }
+
     /**
-    * Pings the device and sets the LastContact if it is successful
+    * This returns the first average from this device
     *
-    * @param bool $find Whether or not to use a find ping
+    * @param array &$rec  The record to modify
+    * @param array $param The parameters to use
     *
-    * @return string The left over string
+    * @return null
     */
-    public function ping($find = false)
+    public function get30SECAverage(&$rec, $param)
     {
-        $this->device->load($this->device->id());
-        $this->device->setParam("LastContact", time());
-        $this->device->setParam("ContactFail", 0);
-        return true;
+        return $this->get15MINAverage($rec, $param);
     }
     /**
-    * Gets the config and saves it
+    * This returns the first average from this device
     *
-    * @return string The left over string
+    * @param array &$rec  The record to modify
+    * @param array $param The parameters to use
+    *
+    * @return null
     */
-    public function config()
+    public function get15MINAverage(&$rec, $param)
     {
-        $this->checkRecord();
-        $this->device->load($this->device->id());
-        $this->device->set(
-            "FWVersion",
-            $this->system->get("version")
+        $return = false;
+        $now = $this->system->now();
+        $this->device->setParam("LastPoll", $now);
+        $this->device->setLocalParam("LastPoll", $now);
+        $date = $this->getNextAverageDate();
+        if (empty($date) || ($date > $this->end)) {
+            $this->done = true;
+            $this->_clearHistCache();
+            $this->device->store();
+            return false;
+        }
+        $rec = array(
+            "id" => $this->device->get("id"), 
+            "Date" => $date,
+            "Type" => $this->avgType
         );
-        $this->device->set(
-            "RawSetup",
-            $this->device->encode()
-        );
-        $this->device->set(
-            "GatewayKey", (int)$this->system->get("GatewayKey")
-        );
-        $this->device->setParam("LastContact", time());
-        $this->device->setParam("LastConfig", time());
-        $this->device->setParam("ConfigFail", 0);
-        $this->device->setParam("ContactFail", 0);
-        $this->device->store();
-        return true;
+        $notEmpty = false;
+        for ($i = 0; $i < $this->device->get("InputTables"); $i++) {
+            $input = $this->device->input($i);
+            $table = $this->_getPoint($input);
+            if (is_object($table)) {
+                $val = $input->channels();
+                if ($table->get("Date") == $date) {
+                    $extra = $input->get("extra");
+                    $field = "Data".(int)$extra[1];
+                    $val[0]["value"] = $table->get($field);
+                }
+            } else {
+                $A = null;
+                $val = $input->decodeData($A, 900, $prev, $rec);
+            }
+            if (is_array($val) && is_array($val[0])) {
+                $rec[$i] = $val[0];
+                if (!is_null($val[0]["value"])) {
+                    $notEmpty = true;
+                }
+            }
+        }
+        $this->_next($date);
+        if ($notEmpty) {
+            $this->device->setParam("LastHistory", $rec["Date"]);
+            $this->device->setLocalParam("LastHistory", $rec["Date"]);
+        }
+        return $notEmpty;
     }
     /**
-    * Polls the device and saves the poll
+    * This returns the first average from this device
     *
-    * @param int $TestID The test ID of this poll
-    * @param int $time   The time to use for the poll
+    * @param int $date The date to check for
     *
-    * @return false on failure, the history object on success
+    * @return null
     */
-    public function poll($TestID = null, $time = null)
+    private function _next($date)
     {
-        // No polling a virtual device.
-        return false;
+        $tables = $this->device->get("InputTables");
+        for ($i = 0; ($i < $tables) && !$this->done; $i++) {
+            $input = $this->device->input($i);
+            $table = $this->_getPoint($input);
+            while (is_object($table) && $table->get("Date") <= $date) {
+                $ret = $table->nextInto();
+                if ($ret === false) {
+                    $this->done = true;
+                    break;
+                }
+            }
+        }
+    }
+    /**
+    * This returns the first average from this device
+    *
+    * @return null
+    */
+    protected function getNextAverageDate()
+    {
+        $date = null;
+        for ($i = 0; $i < $this->device->get("InputTables"); $i++) {
+            $input = $this->device->input($i);
+            $table = $this->_getPoint($input);
+            if (is_object($table)) {
+                $newdate = $table->get("Date");
+                if (is_null($date) || ($newdate < $date)) {
+                    $date = $newdate;
+                }
+            }
+        }
+        return (int)$date;
     }
     /**
     * Polls the device and saves the poll
@@ -181,33 +232,8 @@ class ActionVirtual extends Action
             unset($this->_histCache[$key]);
         }
     }
-    /**
-    * This calculates the averages
-    *
-    * It will return once for each average that it calculates.  The average will be
-    * stored in the instance this is called from.  If this is fed history table
-    * then it will calculate 15 minute averages.
-    *
-    * @param string $avgType The type of average to do
-    * @param int    $start   The start of the time period to do
-    * @param int    $end     The end of the time period to do
-    *
-    * @return bool True on success, false on failure
-    */
-    public function &calcAverage($avgType, $start = null, $end = null) 
-    {
-        if (!is_object($this->average)) {
-            include_once "AverageVirtual.php";
-            $this->average = AverageVirtual::factory($this->system, $this->device);
-        }
-        $return = false;
-        $avg = parent::calcAverage($avgType, $start, $end);
-        if (is_object($avg)) {
-            return $avg;
-        }
-        $this->device->store();
-        return $return;
-    }
+
+    
 }
 
 

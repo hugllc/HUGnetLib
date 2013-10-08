@@ -69,6 +69,28 @@ class E00392401Average extends \HUGnet\db\FastAverage
      ********  The following are input modification functions  ********
      ******************************************************************
      ******************************************************************/
+    /**
+    * This calculates the averages
+    *
+    * It will return once for each average that it calculates.  The average will be
+    * stored in the instance this is called from.  If this is fed history table
+    * then it will calculate 15 minute averages.
+    *
+    * @param \HUGnet\db\History &$data This is the data to use to calc the average
+    * @param string             $type  The type of average to calculate
+    *
+    * @return bool True on success, false on failure
+    */
+    public function calcAverage(\HUGnet\db\History &$data, $type)
+    {
+        var_dump(get_class($this));
+ /*
+        if ($type == self::AVERAGE_15MIN) {
+            return $this->calc15MinAverage($data);
+        }
+        return $this->calcOtherAverage($data, $type);
+*/
+    }
 
 }
 ?>

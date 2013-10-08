@@ -71,6 +71,10 @@ class Action
     */
     protected $device = null;
     /**
+    * This is the table object
+    */
+    protected $average = null;
+    /**
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
     *
@@ -496,7 +500,27 @@ class Action
             )
         );
     }
-
+    /**
+    * This calculates the averages
+    *
+    * It will return once for each average that it calculates.  The average will be
+    * stored in the instance this is called from.  If this is fed history table
+    * then it will calculate 15 minute averages.
+    *
+    * @param string $avgType The type of average to do
+    * @param int    $start   The start of the time period to do
+    * @param int    $end     The end of the time period to do
+    *
+    * @return bool True on success, false on failure
+    */
+    public function &calcAverage($avgType, $start = null, $end = null) 
+    {
+        if (!is_object($this->average)) {
+            include_once "Average.php";
+            $this->average = Average::factory($this->system, $this->device);
+        }
+        return $this->average->get($avgType, $start, $end);
+    }
 
 }
 
