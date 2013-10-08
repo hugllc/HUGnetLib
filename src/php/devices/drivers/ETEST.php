@@ -80,6 +80,7 @@ class ETEST extends E00392402
         "InputTables" => 20,
         "OutputTables" => 0,
         "ProcessTables" => 0,
+        "DataChannels" => 30,
     );
 
 }

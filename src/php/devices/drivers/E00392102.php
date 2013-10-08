@@ -84,6 +84,7 @@ class E00392102 extends E00392101
         "InputTables" => 8,
         "OutputTables" => 2,
         "ProcessTables" => 2,
+        "DataChannels" => 10,
         "TimeConstant" => 1,
         "Role" => "Controller",
     );

@@ -79,6 +79,7 @@ class E00393700 extends \HUGnet\devices\Driver
         "arch" => "0039-37",
         "InputTables" => 9,
         "OutputTables" => 5,
+        "DataChannels" => 20,
         "DigitalInputs" => array(
                 2 => "0.0",
                 3 => "0.1",

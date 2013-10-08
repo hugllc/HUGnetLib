@@ -80,6 +80,7 @@ class E00393803 extends \HUGnet\devices\Driver
         "InputTables" => 0,
         "OutputTables" => 0,
         "ProcessTables" => 0,
+        "DataChannels" => 0,
         "setConfig" => false,
     );
 }

@@ -78,6 +78,7 @@ class E00392802 extends \HUGnet\devices\Driver
         "InputTables" => 16,
         "OutputTables" => 8,
         "ProcessTables" => 2,
+        "DataChannels" => 20,
         "DigitalInputs" => array(
                 1  => "Port 1",
                 2  => "Port 2",

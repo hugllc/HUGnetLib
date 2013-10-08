@@ -80,6 +80,7 @@ class E00392604 extends E00392600
         "InputTables" => 0,
         "OutputTables" => 0,
         "ProcessTables" => 0,
+        "DataChannels" => 0,
     );
 
 }

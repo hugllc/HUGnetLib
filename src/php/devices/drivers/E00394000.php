@@ -78,6 +78,7 @@ class E00394000 extends \HUGnet\devices\Driver
         "InputTables" => 9,
         "OutputTables" => 5,
         "ProcessTables" => 4,
+        "DataChannels" => 13,
     );
 
 }

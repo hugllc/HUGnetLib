@@ -79,6 +79,7 @@ class E00392402 extends \HUGnet\devices\Driver
         "InputTables" => 20,
         "OutputTables" => 0,
         "ProcessTables" => 0,
+        "DataChannels" => 20,
     );
     /**
     * Checks a record to see if it needs fixing

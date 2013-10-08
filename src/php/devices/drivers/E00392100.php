@@ -80,6 +80,7 @@ class E00392100 extends \HUGnet\devices\Driver
         "type" => "controller",
         "job"  => "control",
         "arch" => "old",
+        "DataChannels" => 10,
     );
 
     /**

@@ -118,6 +118,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
             array("bootloader", "boolean"),
             array("DigitalInputs", "array"),
             array("DigitalOutputs", "array"),
+            array("DataChannels", "int"),
         );
     }
     /**
@@ -195,6 +196,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
             array("totalSensors", 30, 0),
             array("physicalSensors", 20, 0),
             array("virtualSensors", 30, 0),
+            array("DataChannels", 50, 0),
         );
     }
     /**

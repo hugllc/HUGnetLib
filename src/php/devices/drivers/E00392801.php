@@ -75,6 +75,7 @@ class E00392801 extends \HUGnet\devices\Driver
         "type" => "endpoint",
         "job"  => "sense",
         "arch" => "old",
+        "DataChannels" => 20,
     );
 
 }

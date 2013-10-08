@@ -64,8 +64,14 @@ class Average
     protected $device = null;
     /** @var The type of average we are doing */
     protected $avgType = \HUGnet\db\Average::AVERAGE_15MIN;
-    /** @var The type of average we are doing */
+    /** @var The average object */
     protected $avg = null;
+    /** @var The data object */
+    protected $hist = null;
+    /** @var string The start time for the average */
+    protected $startTime = null;
+    /** @var string The end time for the average */
+    protected $endTime = null;
     /** This is the period */
     private $_averages = array(
         "15MIN" => array(
@@ -230,10 +236,83 @@ class Average
     */
     protected function getAverage(&$rec, $param)
     {
-        
-        
-        
-        /*
+        if (empty($date) || ($date > $this->end)) {
+            $this->done = true;
+            $this->hist = null;
+            $this->device->store();
+            return false;
+        }
+        $ret = $this->_getTimePeriod($this->hist->get("Date"), $type);
+        if (!$ret) {
+            return false;
+        }
+        $rec = array(
+            "id" => $this->device->get("id"), 
+            "Date" => $this->endTime,
+            "Type" => $this->avgType
+        );
+        $this->divisors = array();
+        $ret = true;
+        while (($rec["Date"] < $this->endTime) && $ret) {
+            if ($rec["Type"] == $param["base"]) {
+                for ($i = 0; $i < $this->avg->datacols; $i++) {
+                    $col = "Data".$i;
+                    $value = $data->get($col);
+                    if (!is_null($value)) {
+                        $mine = $this->get($col);
+                        $mine += $value;
+                        $this->set($col, $mine);
+                        $this->divisors[$col]++;
+                    }
+                }
+            }
+            $ret = $data->nextInto();
+        }
+        $this->settleDivisors();
+        if ($data->get("Date") >= $this->endTime) {
+            // We passed our time, so this is a complete record
+            return true;
+        }
+        // Not enough records to make this complete
+        $this->clearData();
+        return false;
+/*
+        $return = false;
+        $rec = array(
+            "id" => $this->device->get("id"), 
+            "Date" => $date,
+            "Type" => $this->avgType
+        );
+        $notEmpty = false;
+        for ($i = 0; $i < $this->device->get("InputTables"); $i++) {
+            $input = $this->device->input($i);
+            $table = $this->_getPoint($input);
+            if (is_object($table)) {
+                $val = $input->channels();
+                if ($table->get("Date") == $date) {
+                    $extra = $input->get("extra");
+                    $field = "Data".(int)$extra[1];
+                    $val[0]["value"] = $table->get($field);
+                }
+            } else {
+                $A = null;
+                $val = $input->decodeData($A, 900, $prev, $rec);
+            }
+            if (is_array($val) && is_array($val[0])) {
+                $rec[$i] = $val[0];
+                if (!is_null($val[0]["value"])) {
+                    $notEmpty = true;
+                }
+            }
+        }
+        $this->_next($date);
+        if ($notEmpty) {
+            $this->device->setParam("LastHistory", $rec["Date"]);
+            $this->device->setLocalParam("LastHistory", $rec["Date"]);
+        }
+        return $notEmpty;
+*/
+/*
         $return = true;
         $timeout = time() - $this->device->getLocalParam("LastAverage".$type."Try");
         $old     = time() - $this->device->getLocalParam("LastAverage".$type);
@@ -302,6 +381,91 @@ class Average
         $this->system()->out("$type average ending ", 3);
         return $return;
         */
+    }
+    /**
+    * This settles the averages
+    *
+    * @return none
+    */
+    protected function settleDivisors()
+    {
+        // Settle  out the multipliers
+        if (!is_array($this->_channels)) {
+            $this->_channels = $this->device->dataChannels()->toArray();
+        }
+        for ($i = 0; $i < $this->datacols; $i++) {
+            $col = "Data".$i;
+            if ($this->divisors[$col] == 0) {
+                $this->divisors[$col] = 1;
+            }
+            $value = $this->get($col);
+            if (!is_null($value)) {
+                if (!$this->_channels[$i]["total"]) {
+                    $value = $value / $this->divisors[$col];
+                }
+
+                $this->set(
+                    $col,
+                    round(
+                        $value,
+                        $this->_channels[$i]["maxDecimals"]
+                    )
+                );
+            }
+        }
+    }
+
+    /**
+    * This sets the time correctly
+    *
+    * @param int    $time The time we are currently at
+    * @param string $type The type of average to calculate
+    *
+    * @return bool True on success, false on failure
+    */
+    private function _getTimePeriod($time, $type)
+    {
+        $Hour = gmdate("H", $time);
+        $min = gmdate("i", $time);
+        $mon = gmdate("m", $time);
+        $day = gmdate("d", $time);
+        $Year = gmdate("Y", $time);
+        if ($type == self::AVERAGE_30SEC) {
+            $sec = gmdate("s", $time);
+            if ($sec >= 30) {
+                $sec = 30;
+            } else {
+                $sec = 0;
+            }
+            $this->startTime = gmmktime($Hour, $min, $sec, $mon, $day, $Year);
+            $this->endTime = gmmktime($Hour, $min, $sec + 30, $mon, $day, $Year);
+            return true;
+        } else if ($type == self::AVERAGE_1MIN) {
+            $this->startTime = gmmktime($Hour, $min, 0, $mon, $day, $Year);
+            $this->endTime = gmmktime($Hour, $min + 1, 0, $mon, $day, $Year);
+            return true;
+        } else if ($type == self::AVERAGE_5MIN) {
+            for ($base = 55; $base >= 0; $base -= 5) {
+                if ($min >= $base) {
+                    $min = $base;
+                    break;
+                }
+            }
+            $this->startTime = gmmktime($Hour, $min, 0, $mon, $day, $Year);
+            $this->endTime = gmmktime($Hour, $min + 5, 0, $mon, $day, $Year);
+            return true;
+        } else if ($type == self::AVERAGE_15MIN) {
+            for ($base = 45; $base >= 0; $base -= 15) {
+                if ($min >= $base) {
+                    $min = $base;
+                    break;
+                }
+            }
+            $this->startTime = gmmktime($Hour, $min, 0, $mon, $day, $Year);
+            $this->endTime = gmmktime($Hour, $min + 15, 0, $mon, $day, $Year);
+            return true;
+        }
+        return false;
     }
     /**
     * This function does the stuff in the class.
