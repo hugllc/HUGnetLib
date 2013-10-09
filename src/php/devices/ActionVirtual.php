@@ -201,6 +201,8 @@ class ActionVirtual extends Action
             include_once "AverageVirtual.php";
             $this->average = AverageVirtual::factory($this->system, $this->device);
         }
+        // Make sure we try to do the averages
+        $this->device->setLocalParam("LastHistory", $this->system->now());
         return parent::calcAverage($data, $avgType);
     }
 }

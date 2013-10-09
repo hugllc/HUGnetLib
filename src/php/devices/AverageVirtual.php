@@ -137,7 +137,6 @@ class AverageVirtual extends Average
         $this->_next($date);
         if ($notEmpty) {
             $this->device->setParam("LastHistory", $rec["Date"]);
-            $this->device->setLocalParam("LastHistory", $rec["Date"]);
         }
         return $notEmpty;
     }
