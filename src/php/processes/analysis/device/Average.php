@@ -210,13 +210,10 @@ class Average extends \HUGnet\processes\analysis\Device
         }
         $hist->sqlOrderBy = "Date asc";
 
-        $avg = $device->historyFactory($data, false);
-
-
         $last     = (int)$device->getLocalParam("LastAverage".$type);
         $lastTry  = (int)$device->getLocalParam("LastAverage".$type."Try");
         $lastPrev = $device->getLocalParam($param["prev"]);
-        if ($last == $lastPrev) {
+        if (!is_null($lastPrev) && ($last == $lastPrev) && ($last != 0)) {
             // No date range.  We don't need to be here
             return;
         }
@@ -228,9 +225,10 @@ class Average extends \HUGnet\processes\analysis\Device
         );
         $bad = 0;
         $local = 0;
+        $devAverage = $device->action();
         if ($ret) {
             // Go through the records
-            while ($avg->calcAverage($hist, $param["type"])) {
+            while ($avg = $devAverage->calcAverage($hist, $param["type"])) {
                 if ($avg->insertRow(true)) {
                     $now = $avg->get("Date");
                     $local++;

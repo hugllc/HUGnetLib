@@ -100,9 +100,10 @@ class AverageVirtual extends Average
         $this->device->setParam("LastPoll", $now);
         $this->device->setLocalParam("LastPoll", $now);
         $date = $this->getNextAverageDate();
-        if (empty($date) || ($date > $this->end)) {
+        if (empty($date)) {
             $this->done = true;
             $this->_clearHistCache();
+            $this->hist = null;
             $this->device->store();
             return false;
         }

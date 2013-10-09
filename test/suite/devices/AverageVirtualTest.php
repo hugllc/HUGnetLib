@@ -40,11 +40,13 @@ require_once CODE_BASE.'db/Table.php';
 /** This is a required class */
 require_once CODE_BASE.'db/Connection.php';
 /** This is a required class */
-require_once CODE_BASE.'devices/ActionVirtual.php';
+require_once CODE_BASE.'devices/AverageVirtual.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
 require_once CODE_BASE.'system/Device.php';
+/** This is a required class */
+require_once CODE_BASE.'db/FastAverage.php';
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
 /** This is a required class */
@@ -66,7 +68,7 @@ require_once TEST_CONFIG_BASE."files/mocks/HistoryMock.php";
  * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class ActionVirtualTest extends \PHPUnit_Framework_TestCase
+class AverageVirtualTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
@@ -99,8 +101,8 @@ class ActionVirtualTest extends \PHPUnit_Framework_TestCase
         $data = array(
         );
         $this->device = $this->system->device();
-        $this->o = \HUGnet\devices\ActionVirtual::factory(
-            $this->system, $this->device, new \HUGnet\DummyBase("Driver")
+        $this->o = \HUGnet\devices\AverageVirtual::factory(
+            $this->system, $this->device
         );
         parent::Setup();
     }
@@ -817,7 +819,7 @@ class ActionVirtualTest extends \PHPUnit_Framework_TestCase
             }
         }
         $data = new \HUGnet\db\HistoryMock($this->system, array($mockData));
-        $ret = $this->o->calcAverage($data, null);
+        $ret = $this->o->get($data, null);
         if (is_object($ret)) {
             $ret = $ret->toArray(false);
         }
@@ -2519,9 +2521,7 @@ class ActionVirtualTest extends \PHPUnit_Framework_TestCase
         $ret = array();
         $count = 0;
         do {
-            $res = $this->o->calcAverage(
-                $params["type"], $params["start"], $params["end"]
-            );
+            $res = $this->o->get($data, $type);
             if (is_object($res)) {
                 $ret[] = $res->toArray(false);
             }

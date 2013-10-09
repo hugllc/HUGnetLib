@@ -507,19 +507,20 @@ class Action
     * stored in the instance this is called from.  If this is fed history table
     * then it will calculate 15 minute averages.
     *
+    * @param object &$data   This is the data to use to calculate the average
+    *                        This is not used here, but it is required to
+    *                        match the main implementation.
     * @param string $avgType The type of average to do
-    * @param int    $start   The start of the time period to do
-    * @param int    $end     The end of the time period to do
     *
-    * @return bool True on success, false on failure
+    * @return null
     */
-    public function &calcAverage($avgType, $start = null, $end = null) 
+    public function &calcAverage(&$data, $avgType)
     {
         if (!is_object($this->average)) {
             include_once "Average.php";
             $this->average = Average::factory($this->system, $this->device);
         }
-        return $this->average->get($avgType, $start, $end);
+        return $this->average->get($data, $avgType);
     }
 
 }
