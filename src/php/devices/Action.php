@@ -517,7 +517,7 @@ class Action
     public function &calcAverage(&$data, $avgType)
     {
         if (!is_object($this->average)) {
-            include_once "Average.php";
+            include_once dirname(__FILE__)."/Average.php";
             $this->average = Average::factory($this->system, $this->device);
         }
         return $this->average->get($data, $avgType);

@@ -198,7 +198,7 @@ class ActionVirtual extends Action
     public function &calcAverage(&$data, $avgType)
     {
         if (!is_object($this->average)) {
-            include_once "AverageVirtual.php";
+            include_once dirname(__FILE__)."/AverageVirtual.php";
             $this->average = AverageVirtual::factory($this->system, $this->device);
         }
         // Make sure we try to do the averages

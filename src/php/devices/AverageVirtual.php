@@ -39,7 +39,7 @@ namespace HUGnet\devices;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our base class */
-require_once "Average.php";
+require_once dirname(__FILE__)."/Average.php";
 /**
  * Networking for devices.
  *
