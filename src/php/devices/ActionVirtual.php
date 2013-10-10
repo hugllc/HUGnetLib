@@ -150,7 +150,7 @@ class ActionVirtual extends Action
             return null;
         }
         if (!is_object($this->_histCache[$dev])) {
-            $start = (int)$this->device->getParam("LastAverage".$this->avgType);
+            $start = (int)$this->device->getLocalParam("LastAverage".$this->avgType);
             $device = $this->system->device($dev);
             $this->_histCache[$dev] = $device->historyFactory(array(), false);
             $this->_histCache[$dev]->sqlOrderBy = "Date ASC";
@@ -160,7 +160,7 @@ class ActionVirtual extends Action
                 "Type" => $this->avgType,
                 "Date" =>array('$gt' => (int)$start)
             );
-            $lastAve = $device->getParam("LastAverage".$this->avgType);
+            $lastAve = $device->getLocalParam("LastAverage".$this->avgType);
             if (!empty($lastAve)) {
                 $query["Date"]['$lte'] = (int)$lastAve;
             }
