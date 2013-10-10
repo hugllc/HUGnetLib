@@ -213,5 +213,21 @@ class CLI
         } while (($local + $netmask) > 0);
         return $ret;
     }
+    /**
+    * Set the verbosity level
+    *
+    * @param mixed $set (null) set the default value, otherwise set the value given
+    *
+    * @return null
+    */
+    public function verbose($set = null)
+    {
+        if (is_null($set)) {
+            $this->_verbose = $this->_config["verbose"];
+        } else if (is_int($set)) {
+            $this->_verbose = $set;
+        }
+        return $this->_verbose;
+    }
 }
 ?>
