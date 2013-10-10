@@ -110,6 +110,7 @@ class CLI
             } else {
                 // Whatever it is, use it as our system object
                 $this->_system = &$config;
+                $this->_config = $this->_system->config();
             }
         } else if (is_array($config)) {
             $this->_config = $config;
