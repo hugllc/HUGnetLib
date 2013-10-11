@@ -65,6 +65,10 @@ class AverageVirtual extends Average
     private $_channels = array();
     /** @var This is where we store which inputs are clones */
     private $_inputs = array();
+    /** @var This is where we store which inputs are clones */
+    private $_start = null;
+    /** @var This is where we store which inputs are clones */
+    private $_end = array();
     /**
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
@@ -135,15 +139,14 @@ class AverageVirtual extends Average
         for ($i = 0; $i < $this->device->get("InputTables"); $i++) {
             $input = $this->_input($i);
             if (isset($this->_clones[$i])) {
-                $table = $this->_getPoint($i);
                 $val = $input->channels();
-                if (is_object($table) && ($table->get("Date") == $date)) {
-                    $point = $this->_getPointChan($i);
-                    foreach ($val as $key => $dp) {
-                        $field = "Data".(int)$point;
-                        $val[$key]["value"] = $table->get($field);
-                        $point++;
-                    }
+                $extra = $input->get("extra");
+                $dev = hexdec($extra[0]);
+                $point = $this->_getPointChan($i);
+                foreach ($val as $key => $dp) {
+                    $field = "Data".(int)$point;
+                    $val[$key]["value"] = $this->_histCache[$dev][$date][$field];
+                    $point++;
                 }
             } else {
                 $A = null;
@@ -151,13 +154,11 @@ class AverageVirtual extends Average
             }
             if (is_array($val) && is_array($val[0])) {
                 $rec = array_merge($rec, $val);
-                //$rec[$i] = $val[0];
                 if (!is_null($val[0]["value"])) {
                     $notEmpty = true;
                 }
             }
         }
-        $this->_next($date);
         if ($notEmpty) {
             $this->device->setParam("LastHistory", $rec["Date"]);
         }
@@ -166,40 +167,23 @@ class AverageVirtual extends Average
     /**
     * This returns the first average from this device
     *
-    * @param int $date The date to check for
-    *
-    * @return null
-    */
-    private function _next($date)
-    {
-        $tables = $this->device->get("InputTables");
-        foreach ($this->_clones() as $i) {
-            $table = $this->_getPoint($i);
-            while (is_object($table) && $table->get("Date") <= $date) {
-                $ret = $table->nextInto();
-                if ($ret === false) {
-                    $this->done = true;
-                    break;
-                }
-            }
-        }
-    }
-    /**
-    * This returns the first average from this device
-    *
     * @return null
     */
     protected function getNextAverageDate()
     {
-        $time = microtime(true);
-        $date = null;
-        foreach ($this->_clones() as $i) {
-            $table = $this->_getPoint($i);
-            if (is_object($table)) {
-                $newdate = $table->get("Date");
-                if (is_null($date) || ($newdate < $date)) {
-                    $date = $newdate;
-                }
+        $this->_clones();
+        if (is_null($this->_start)) {
+            return null;
+        }
+        $date = $this->_start;
+        if ($this->avgType == \HUGnet\db\FastAverage::AVERAGE_30SEC) {
+            $this->_start += 30;
+        } else {
+            $this->_start += 900;
+        }
+        foreach ($this->_end as $dev => $d) {
+            if ($d < $date) {
+                return null;
             }
         }
         return (int)$date;
@@ -216,6 +200,7 @@ class AverageVirtual extends Average
             for ($i = 0; $i < $tables; $i++) {
                 if ($this->_input($i)->get("driver") === "CloneVirtual") {
                     $this->_clones[$i] = $i;
+                    $this->_setupPoint($i);
                 }
             }
         }
@@ -242,25 +227,26 @@ class AverageVirtual extends Average
     *
     * @return false on failure, the history object on success
     */
-    private function _getPoint($key)
+    private function _setupPoint($key)
     {
-        
         $input = $this->_input($key);
         if ($input->get("driver") !== "CloneVirtual") {
              // Only get clone virtual points.
              return null;
         }
         $extra = $input->get("extra");
+        $dev = $extra[0];
         $dev = hexdec($extra[0]);
         if (empty($dev)) {
             return null;
         }
-        if (!is_object($this->_histCache[$dev])) {
+        if (!is_array($this->_histCache[$dev])) {
+            $this->_histCache[$dev] = array();
             $start = (int)$this->device->getLocalParam("LastAverage".$this->avgType);
             $device = $this->system->device($dev);
-            $this->_histCache[$dev] = $device->historyFactory(array(), false);
-            $this->_histCache[$dev]->sqlOrderBy = "Date ASC";
-            $this->_histCache[$dev]->sqlLimit = $this->sqlLimit;
+            $hist = $device->historyFactory(array(), false);
+            $hist->sqlOrderBy = "Date ASC";
+            $hist->sqlLimit = $this->sqlLimit;
             $query = array(
                 "id" => $dev,
                 "Type" => $this->avgType,
@@ -272,12 +258,24 @@ class AverageVirtual extends Average
             }
             //var_dump($device->toArray(false));
             //var_dump($query);
-            $this->_histCache[$dev]->selectInto($query);
+            $ret = $hist->selectInto($query);
+            $cnt = 0;
+            while ($ret) {
+                $cnt++;
+                $date = $hist->get("Date");
+                $this->_histCache[$dev][$date] = $hist->toArray(false);
+                if (is_null($this->_start) || ($date < $this->_start)) {
+                    $this->_start = $date;
+                }
+                if (is_null($this->_end[$dev]) || ($date > $this->_end[$dev])) {
+                    $this->_end[$dev] = $date;
+                }
+                $ret = $hist->nextInto();
+            }
             for ($i = 0; $i < $device->get("InputTables"); $i++) {
                 $this->_channels[$extra[0]][$i] = $device->input($i)->channelStart();
             }
         }
-        return $this->_histCache[$dev];
     }
     /**
     * Polls the device and saves the poll
@@ -301,6 +299,8 @@ class AverageVirtual extends Average
         foreach (array_keys((array)$this->_histCache) as $key) {
             unset($this->_histCache[$key]);
         }
+        $this->_start = null;
+        $this->_end = array();
     }
 
     
