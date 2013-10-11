@@ -59,6 +59,25 @@ require_once dirname(__FILE__)."/Average.php";
  */
 class AverageVirtual extends Average
 {
+    /** @var This is where we store which inputs are clones */
+    private $_clones = array();
+    /** @var This is where we store which inputs are clones */
+    private $_channels = array();
+    /** @var This is where we store which inputs are clones */
+    private $_inputs = array();
+    /**
+    * This function sets up the driver object, and the database object.  The
+    * database object is taken from the driver object.
+    *
+    * @param object &$system The network application object
+    * @param object &$device The device device object
+    *
+    * @return null
+    */
+    protected function __construct(&$system, &$device)
+    {
+        parent::__construct($system, $device);
+    }
     /**
     * This function creates the system.
     *
@@ -114,21 +133,25 @@ class AverageVirtual extends Average
         );
         $notEmpty = false;
         for ($i = 0; $i < $this->device->get("InputTables"); $i++) {
-            $input = $this->device->input($i);
-            $table = $this->_getPoint($input);
-            if (is_object($table)) {
+            $input = $this->_input($i);
+            if (isset($this->_clones[$i])) {
+                $table = $this->_getPoint($i);
                 $val = $input->channels();
-                if ($table->get("Date") == $date) {
-                    $extra = $input->get("extra");
-                    $field = "Data".(int)$extra[1];
-                    $val[0]["value"] = $table->get($field);
+                if (is_object($table) && ($table->get("Date") == $date)) {
+                    $point = $this->_getPointChan($i);
+                    foreach ($val as $key => $dp) {
+                        $field = "Data".(int)$point;
+                        $val[$key]["value"] = $table->get($field);
+                        $point++;
+                    }
                 }
             } else {
                 $A = null;
                 $val = $input->decodeData($A, 900, $prev, $rec);
             }
             if (is_array($val) && is_array($val[0])) {
-                $rec[$i] = $val[0];
+                $rec = array_merge($rec, $val);
+                //$rec[$i] = $val[0];
                 if (!is_null($val[0]["value"])) {
                     $notEmpty = true;
                 }
@@ -150,9 +173,8 @@ class AverageVirtual extends Average
     private function _next($date)
     {
         $tables = $this->device->get("InputTables");
-        for ($i = 0; ($i < $tables) && !$this->done; $i++) {
-            $input = $this->device->input($i);
-            $table = $this->_getPoint($input);
+        foreach ($this->_clones() as $i) {
+            $table = $this->_getPoint($i);
             while (is_object($table) && $table->get("Date") <= $date) {
                 $ret = $table->nextInto();
                 if ($ret === false) {
@@ -169,10 +191,10 @@ class AverageVirtual extends Average
     */
     protected function getNextAverageDate()
     {
+        $time = microtime(true);
         $date = null;
-        for ($i = 0; $i < $this->device->get("InputTables"); $i++) {
-            $input = $this->device->input($i);
-            $table = $this->_getPoint($input);
+        foreach ($this->_clones() as $i) {
+            $table = $this->_getPoint($i);
             if (is_object($table)) {
                 $newdate = $table->get("Date");
                 if (is_null($date) || ($newdate < $date)) {
@@ -183,25 +205,58 @@ class AverageVirtual extends Average
         return (int)$date;
     }
     /**
+    * Gets an array composed of the inputs that are clones
+    *
+    * @return array Returns an array of the input numbers for clone virtuals
+    */
+    private function _clones()
+    {
+        if (empty($this->_clones) || !is_array($this->_clones)) {
+            $tables = $this->device->get("InputTables");
+            for ($i = 0; $i < $tables; $i++) {
+                if ($this->_input($i)->get("driver") === "CloneVirtual") {
+                    $this->_clones[$i] = $i;
+                }
+            }
+        }
+        return (array)$this->_clones;
+    }
+    /**
     * Polls the device and saves the poll
     *
-    * @param object &$sensor The sensor to use
+    * @param int $key The input to get
     *
     * @return false on failure, the history object on success
     */
-    private function _getPoint(&$sensor)
+    private function &_input($key)
     {
-        if ($sensor->get("driver") !== "CloneVirtual") {
+        if (!is_object($this->_input[$key])) {
+            $this->_input[$key] = $this->device->input($key);
+        }
+        return $this->_input[$key];
+    }
+    /**
+    * Polls the device and saves the poll
+    *
+    * @param int $key The input key to use
+    *
+    * @return false on failure, the history object on success
+    */
+    private function _getPoint($key)
+    {
+        
+        $input = $this->_input($key);
+        if ($input->get("driver") !== "CloneVirtual") {
              // Only get clone virtual points.
              return null;
         }
-        $extra = $sensor->get("extra");
+        $extra = $input->get("extra");
         $dev = hexdec($extra[0]);
         if (empty($dev)) {
             return null;
         }
         if (!is_object($this->_histCache[$dev])) {
-            $start = (int)$this->device->getParam("LastAverage".$this->avgType);
+            $start = (int)$this->device->getLocalParam("LastAverage".$this->avgType);
             $device = $this->system->device($dev);
             $this->_histCache[$dev] = $device->historyFactory(array(), false);
             $this->_histCache[$dev]->sqlOrderBy = "Date ASC";
@@ -211,15 +266,30 @@ class AverageVirtual extends Average
                 "Type" => $this->avgType,
                 "Date" =>array('$gt' => (int)$start)
             );
-            $lastAve = $device->getParam("LastAverage".$this->avgType);
+            $lastAve = $device->getLocalParam("LastAverage".$this->avgType);
             if (!empty($lastAve)) {
                 $query["Date"]['$lte'] = (int)$lastAve;
             }
             //var_dump($device->toArray(false));
             //var_dump($query);
             $this->_histCache[$dev]->selectInto($query);
+            for ($i = 0; $i < $device->get("InputTables"); $i++) {
+                $this->_channels[$extra[0]][$i] = $device->input($i)->channelStart();
+            }
         }
         return $this->_histCache[$dev];
+    }
+    /**
+    * Polls the device and saves the poll
+    *
+    * @param int $key The input key to use
+    *
+    * @return Returns the datachannel that corresponds to this point
+    */
+    private function _getPointChan($key)
+    {
+        $extra = $this->_input($key)->get("extra");
+        return (int)$this->_channels[$extra[0]][$extra[1]];
     }
     /**
     * Polls the device and saves the poll

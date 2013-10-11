@@ -149,7 +149,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 00, 00, 1, 22, 2009
@@ -172,7 +172,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 00, 00, 1, 22, 2009
@@ -257,7 +257,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 00, 00, 1, 22, 2009
@@ -283,7 +283,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 00, 00, 1, 22, 2009
@@ -340,7 +340,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                             ),
                         ),
                     ),
-                    "params" => json_encode(
+                    "localParams" => json_encode(
                         array(
                             "LastAverage15MIN" => gmmktime(15, 00, 00, 1, 22, 2009),
                         )
@@ -371,7 +371,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                             )
                         ),
@@ -394,7 +394,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                             )
                         ),
@@ -482,7 +482,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 00, 00, 1, 22, 2009
@@ -568,7 +568,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 00, 00, 1, 22, 2009
@@ -594,7 +594,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 00, 00, 1, 22, 2009
@@ -682,7 +682,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                                 "LastAverage30SEC" => gmmktime(
                                     15, 00, 00, 1, 22, 2009
@@ -705,7 +705,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                                 "LastAverage30SEC" => gmmktime(
                                     15, 00, 00, 1, 22, 2009
@@ -850,7 +850,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 30, 00, 1, 22, 2009
@@ -873,7 +873,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 30, 00, 1, 22, 2009
@@ -1011,7 +1011,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                                 "LastAverage15MIN" => gmmktime(
                                     16, 00, 00, 1, 22, 2009
@@ -1037,7 +1037,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 45, 00, 1, 22, 2009
@@ -1176,7 +1176,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                                 "LastAverage15MIN" => gmmktime(
                                     16, 00, 00, 1, 22, 2009
@@ -1202,7 +1202,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 45, 00, 1, 22, 2009
@@ -1318,7 +1318,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                             ),
                         ),
                     ),
-                    "params" => json_encode(
+                    "localParams" => json_encode(
                         array(
                             "LastAverage15MIN" => gmmktime(
                                 15, 15, 00, 1, 22, 2009
@@ -1367,7 +1367,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 00, 00, 1, 22, 2009
@@ -1393,7 +1393,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 00, 00, 1, 22, 2009
@@ -1453,7 +1453,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                             ),
                         ),
                     ),
-                    "params" => json_encode(
+                    "localParams" => json_encode(
                         array(
                             "LastAverage15MIN" => gmmktime(15, 00, 00, 1, 22, 2009),
                         )
@@ -1487,7 +1487,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                                 "LastAverage15MIN" => gmmktime(
                                     16, 00, 00, 1, 31, 2009
@@ -1513,7 +1513,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 45, 00, 1, 31, 2009
@@ -1730,7 +1730,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 30, 00, 1, 22, 2009
@@ -1753,7 +1753,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 30, 00, 1, 22, 2009
@@ -1787,7 +1787,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 30, 00, 1, 22, 2009
@@ -1925,7 +1925,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                             )
                         ),
@@ -1948,7 +1948,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                             )
                         ),
@@ -2092,7 +2092,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 30, 00, 1, 22, 2009
@@ -2115,7 +2115,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 30, 00, 1, 22, 2009
@@ -2146,7 +2146,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 30, 00, 1, 22, 2009
@@ -2300,7 +2300,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 30, 00, 1, 22, 2009
@@ -2323,7 +2323,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 30, 00, 1, 22, 2009
@@ -2354,7 +2354,7 @@ class AverageVirtualTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
-                        "params" => json_encode(
+                        "localParams" => json_encode(
                             array(
                                 "LastAverage15MIN" => gmmktime(
                                     15, 00, 00, 1, 22, 2009
