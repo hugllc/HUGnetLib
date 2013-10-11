@@ -61,6 +61,8 @@ class HTMLTest extends \PHPUnit_Framework_TestCase
 {
     /** Files that have been created */
     private $_files = array();
+    /** This is the system object */
+    protected $system;
     /**
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
@@ -71,6 +73,21 @@ class HTMLTest extends \PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
+        $this->system = $this->getMock("\HUGnet\System", array('now'));
+        $this->system->config(
+            array(
+                "servers" => array(
+                    "default" => array(
+                        "driver" => "sqlite",
+                        "file" => ":memory:",
+                        "group" => "default",
+                    ),
+                ),
+            )
+        );
+        $this->system->expects($this->any())
+            ->method('now')
+            ->will($this->returnValue(1000000));
     }
 
     /**
@@ -86,6 +103,7 @@ class HTMLTest extends \PHPUnit_Framework_TestCase
         foreach ($this->_files as $file) {
             unlink($file);
         }
+        unset($this->system);
     }
     /**
     * Data provider for testRemove
@@ -159,6 +177,53 @@ class HTMLTest extends \PHPUnit_Framework_TestCase
         $conf = $obj->system()->config();
         unset($conf["IPAddr"]);
         $this->assertEquals($expect, $conf);
+    }
+    /**
+    * Data provider for testVerbose
+    *
+    * @return array
+    */
+    public static function dataVerbose()
+    {
+        return array(
+            array(
+                array(
+                ),
+                2,
+                2
+            ),
+            array(
+                array(
+                    "verbose" => 2,
+                ),
+                null,
+                2
+            ),
+            array(
+                array(
+                    "verbose" => 2,
+                ),
+                "asdf",
+                2
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param mixed $config The config to use
+    * @param mixed $value  The value to set it at
+    * @param int   $expect The return we are expecting
+    *
+    * @return null
+    *
+    * @dataProvider dataVerbose()
+    */
+    public function testVerbose($config, $value, $expect)
+    {
+        $this->system->config($config);
+        $obj = HTML::factory($this->system);
+        $this->assertEquals($expect, $obj->verbose($value));
     }
 
 }

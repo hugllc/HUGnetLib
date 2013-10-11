@@ -110,6 +110,7 @@ class CLI
             } else {
                 // Whatever it is, use it as our system object
                 $this->_system = &$config;
+                $this->_config = $this->_system->config();
             }
         } else if (is_array($config)) {
             $this->_config = $config;
@@ -212,6 +213,22 @@ class CLI
             $netmask = preg_match("/255/", $ret);
         } while (($local + $netmask) > 0);
         return $ret;
+    }
+    /**
+    * Set the verbosity level
+    *
+    * @param mixed $set (null) set the default value, otherwise set the value given
+    *
+    * @return null
+    */
+    public function verbose($set = null)
+    {
+        if (is_null($set)) {
+            $this->_verbose = $this->_config["verbose"];
+        } else if (is_int($set)) {
+            $this->_verbose = $set;
+        }
+        return $this->_verbose;
     }
 }
 ?>

@@ -510,7 +510,17 @@ class System
         }
         return $this->_quit;
     }
-
+    /**
+    * Set the verbosity level
+    *
+    * @param mixed $set (null) set the default value, otherwise set the value given
+    *
+    * @return null
+    */
+    public function verbose($set = null)
+    {
+        return $this->_ui->verbose($set);
+    }
 }
 
 
