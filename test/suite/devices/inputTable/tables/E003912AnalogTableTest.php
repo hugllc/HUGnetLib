@@ -95,7 +95,7 @@ class E003912AnalogTableTest extends \PHPUnit_Framework_TestCase
                 null,
                 "ADMUX",
                 null,
-                "60",
+                "20",
             ),
             array(
                 array(
@@ -103,7 +103,7 @@ class E003912AnalogTableTest extends \PHPUnit_Framework_TestCase
                 null,
                 "ADMUX",
                 "FF",
-                "7F",
+                "3F",
             ),
         );
     }
@@ -150,7 +150,7 @@ class E003912AnalogTableTest extends \PHPUnit_Framework_TestCase
                     'priority' => 16,
                     'offset' => 0x1234,
                 ),
-                "400110443412",
+                "400110043412",
             ),
         );
     }
@@ -190,7 +190,7 @@ class E003912AnalogTableTest extends \PHPUnit_Framework_TestCase
                 "400010C43412",
                 true,
                 array(
-                    'REFS' => 1,
+                    'REFS' => 0,
                     'ADLAR' => 0,
                     'MUX' => 4,
                     'driver' => "40:DEFAULT",
@@ -208,7 +208,7 @@ class E003912AnalogTableTest extends \PHPUnit_Framework_TestCase
                     'driver' => '02:DEFAULT',
                     'priority' => 0,
                     'offset' => 0,
-                    'REFS' => 1,
+                    'REFS' => 0,
                     'ADLAR' => 1,
                     'MUX' => 0,
                 ),
@@ -223,7 +223,7 @@ class E003912AnalogTableTest extends \PHPUnit_Framework_TestCase
                     'driver' => '02:DEFAULT',
                     'priority' => 255,
                     'offset' => 65535,
-                    'REFS' => 1,
+                    'REFS' => 0,
                     'ADLAR' => 1,
                     'MUX' => 31,
                 ),

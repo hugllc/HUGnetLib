@@ -137,13 +137,13 @@ class E003912AnalogTable extends AVRAnalogTable
             'size'  => 7,
         ),
         "REFS"    => array(
-            'value' => 1,
+            'value' => 0,
             'bit'   => 6,
             'mask'  => 0x3,
             'bits'  => 2,
             'valid' => array(
-                0 => "AREF",
-                1 => "AVCC",
+                0 => "AVCC",
+                1 => "AREF",
                 2 => "Internal 1.1V",
             ),
             'desc'  => "Reference",
