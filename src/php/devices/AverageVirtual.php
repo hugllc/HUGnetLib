@@ -60,15 +60,19 @@ require_once dirname(__FILE__)."/Average.php";
 class AverageVirtual extends Average
 {
     /** @var This is where we store which inputs are clones */
+    private $_histCache = array();
+    /** @var This is where we store which inputs are clones */
     private $_clones = array();
     /** @var This is where we store which inputs are clones */
     private $_channels = array();
     /** @var This is where we store which inputs are clones */
     private $_inputs = array();
     /** @var This is where we store which inputs are clones */
-    private $_start = null;
+    private $_dates = null;
     /** @var This is where we store which inputs are clones */
-    private $_end = array();
+    private $_end = null;
+    /** @var This is where we store which inputs are clones */
+    private $_done = array();
     /**
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
@@ -145,7 +149,7 @@ class AverageVirtual extends Average
                 $point = $this->_getPointChan($i);
                 foreach ($val as $key => $dp) {
                     $field = "Data".(int)$point;
-                    $val[$key]["value"] = $this->_histCache[$dev][$date][$field];
+                    $val[$key]["value"] = $this->_histCache[$date][$dev][$field];
                     $point++;
                 }
             } else {
@@ -172,19 +176,15 @@ class AverageVirtual extends Average
     protected function getNextAverageDate()
     {
         $this->_clones();
-        if (is_null($this->_start)) {
+        if (is_null($this->_dates)) {
+            $this->_dates = array_keys((array)$this->_histCache);
+        }
+        if (empty($this->_dates)) {
             return null;
         }
-        $date = $this->_start;
-        if ($this->avgType == \HUGnet\db\FastAverage::AVERAGE_30SEC) {
-            $this->_start += 30;
-        } else {
-            $this->_start += 900;
-        }
-        foreach ($this->_end as $dev => $d) {
-            if ($d < $date) {
-                return null;
-            }
+        $date = array_shift($this->_dates);
+        if ($this->_end < $date) {
+            return null;
         }
         return (int)$date;
     }
@@ -240,7 +240,7 @@ class AverageVirtual extends Average
         if (empty($dev)) {
             return null;
         }
-        if (!is_array($this->_histCache[$dev])) {
+        if (!isset($this->_done[$dev])) {
             $this->_histCache[$dev] = array();
             $start = (int)$this->device->getLocalParam("LastAverage".$this->avgType);
             $device = $this->system->device($dev);
@@ -260,18 +260,20 @@ class AverageVirtual extends Average
             //var_dump($query);
             $ret = $hist->selectInto($query);
             $cnt = 0;
+            $end = $hist->get("Date");
             while ($ret) {
                 $cnt++;
                 $date = $hist->get("Date");
-                $this->_histCache[$dev][$date] = $hist->toArray(false);
-                if (is_null($this->_start) || ($date < $this->_start)) {
-                    $this->_start = $date;
-                }
-                if (is_null($this->_end[$dev]) || ($date > $this->_end[$dev])) {
-                    $this->_end[$dev] = $date;
+                $this->_histCache[$date][$dev] = $hist->toArray(false);
+                if ($date > $end) {
+                    $end = $date;
                 }
                 $ret = $hist->nextInto();
             }
+            if (($end < $this->_end) || is_null($this->_end)) {
+                $this->_end = $end;
+            }
+            $this->_done[$dev] = $dev;
             for ($i = 0; $i < $device->get("InputTables"); $i++) {
                 $this->_channels[$extra[0]][$i] = $device->input($i)->channelStart();
             }
@@ -296,11 +298,16 @@ class AverageVirtual extends Average
     */
     private function _clearHistCache()
     {
-        foreach (array_keys((array)$this->_histCache) as $key) {
-            unset($this->_histCache[$key]);
+        foreach (array_keys((array)$this->_inputs) as $key) {
+            unset($this->_inputs[$key]);
         }
-        $this->_start = null;
-        $this->_end = array();
+        $this->_histCache = array();
+        $this->_clones    = array();
+        $this->_channels  = array();
+        $this->_inputs    = array();
+        $this->_dates     = null;
+        $this->_end       = null;
+        $this->_done      = array();
     }
 
     
