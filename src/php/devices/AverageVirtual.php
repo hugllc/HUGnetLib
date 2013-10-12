@@ -178,6 +178,7 @@ class AverageVirtual extends Average
         $this->_clones();
         if (is_null($this->_dates)) {
             $this->_dates = array_keys((array)$this->_histCache);
+            sort($this->_dates);
         }
         if (empty($this->_dates)) {
             return null;
@@ -241,7 +242,6 @@ class AverageVirtual extends Average
             return null;
         }
         if (!isset($this->_done[$dev])) {
-            $this->_histCache[$dev] = array();
             $start = (int)$this->device->getLocalParam("LastAverage".$this->avgType);
             $device = $this->system->device($dev);
             $hist = $device->historyFactory(array(), false);
@@ -264,6 +264,9 @@ class AverageVirtual extends Average
             while ($ret) {
                 $cnt++;
                 $date = $hist->get("Date");
+                if (!is_array($this->_histCache[$date])) {
+                    $this->_histCache[$date] = array();
+                }
                 $this->_histCache[$date][$dev] = $hist->toArray(false);
                 if ($date > $end) {
                     $end = $date;
