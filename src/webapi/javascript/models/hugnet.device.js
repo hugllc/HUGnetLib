@@ -374,12 +374,15 @@ HUGnet.Devices = Backbone.Collection.extend({
     url: '/HUGnetLib/HUGnetLibAPI.php',
     model: HUGnet.Device,
     refresh: 300,
+    start: 0,
+    limit: 20,
     timer: null,
     initialize: function (options)
     {
         if (options) {
             if (options.url) this.url = options.url;
         }
+        this.on('add', this.update, this);
     },
     comparator: function (model)
     {
@@ -434,25 +437,29 @@ HUGnet.Devices = Backbone.Collection.extend({
             dataType: 'json',
             cache: false,
             data: {
-                "task": "device", "action": "list"
+                "task": "device", 
+                "action": "list", 
+                "data": {
+                    "limit": self.limit,
+                    "start": self.start
+                }
             }
         });
         ret.done(
             function (data)
             {
                 self.add(data);
-                self.update();
+                if (data.length < self.limit) {
+                    self.start = 0;
+                } else {
+                    self.start += data.length;
+                    self.fetch();
+                }
             }
         );
     },
-    update: function ()
+    update: function (model, collection, options)
     {
-        this.each(
-            function(value, key, list)
-            {
-                value.refresh();
-            },
-            this
-        );
+        model.refresh();
     }
 });
