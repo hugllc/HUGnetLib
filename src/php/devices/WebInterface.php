@@ -178,6 +178,14 @@ class WebInterface
     private function _list($args)
     {
         $data = $args->get("data");
+        if (isset($data["limit"]) && is_numeric($data["limit"])) {
+            $this->_device->table()->sqlLimit = (int)$data["limit"];
+            unset($data["limit"]);
+        }
+        if (isset($data["start"]) && is_numeric($data["start"])) {
+            $this->_device->table()->sqlStart = (int)$data["start"];
+            unset($data["start"]);
+        }
         $ret = $this->_device->getList($data, false);
         return $ret;
     }
