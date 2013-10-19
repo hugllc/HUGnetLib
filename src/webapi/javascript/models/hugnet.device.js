@@ -375,7 +375,7 @@ HUGnet.Devices = Backbone.Collection.extend({
     model: HUGnet.Device,
     refresh: 300,
     start: 0,
-    limit: 5,
+    limit: 20,
     timer: null,
     initialize: function (options)
     {
