@@ -48,6 +48,7 @@ HUGnet.DeviceControlChannel = Backbone.Model.extend({
         dev: null,
         type: "Unknown",
         label: 'No Name',
+        value: null,
     },
     idAttribute: 'channel',
 });
