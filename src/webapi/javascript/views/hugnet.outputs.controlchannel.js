@@ -46,17 +46,24 @@ var OutputsControlChannelEntryView = Backbone.View.extend({
     template: '#OutputsControlChannelEntryTemplate',
     parent: null,
     events: {
-        'change [name="label"]': 'changeLabel',
+        'click .getValue': 'getValue',
+        'click .setValue': 'setValue'
     },
     initialize: function (options)
     {
+        this.model.getValue();
         this.model.bind('change', this.render, this);
         this.model.bind('remove', this.remove, this);
         this.parent = options.parent;
     },
-    changeLabel: function ()
+    getValue: function (e)
     {
-        this.model.set("label", this.$('[name="label"]').val());
+        this.model.getValue();
+    },
+    setValue: function (e)
+    {
+        var value = this.$("#setValue").val();
+        this.model.setValue(value);
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device

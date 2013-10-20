@@ -48,11 +48,16 @@ var OutputsViewData = Backbone.View.extend({
     fields: {},
     classes: {},
     events: {
+        'click .refresh': 'refresh',
     },
     initialize: function (options)
     {
         this.model.bind('update', this.render, this);
         this.model.bind('remove', this.remove, this);
+    },
+    refresh: function (e)
+    {
+        this.model.refresh();
     },
     /**
      * Gets infomration about a device.  This is retrieved directly from the device
@@ -112,38 +117,18 @@ HUGnet.OutputsView = Backbone.View.extend({
         });
         var device;
         var i;
-        this.header = [];
-        this.fields = [];
-        this.classes = [];
-        this.units = [];
-        this.header[0] = 'Date';
-        this.fields[0] = 'Date';
-        this.classes[0] = '';
-        var channels = this.model.get('dataChannels');
-        var index = 1;
-        for (i in channels) {
-            if ((channels[i].dataType !== undefined)
-               && (channels[i].dataType !== 'ignore')
-            ) {
-                this.units[index] = channels[i].units;
-                this.header[index] = channels[i].label + ' ('+channels[i].units+')';
-                this.fields[index] = 'Data' + i;
-                this.classes[index] = '';
-                index++;
-            }
-        }
-        this.pause = (options.pause !== undefined) ? parseInt(options.pause, 10) : this.pause;
-        var avgTypes = this.model.get("averageTypes");
-        if (avgTypes["30SEC"]) {
-            this.type = "30SEC";
-        } else {
-            this.type   = "15MIN";
-            this.period = 1440;
-        }
-        this.type = (options.type !== undefined) ? options.type : this.type;
         
         this.controlchannelsmodel = new HUGnet.DeviceControlChannels();
         var controlchannels = this.model.get('controlChannels');
+        var dev = this.model.get('id');
+        _.each(
+            controlchannels,
+            function (value, key, list)
+            {
+                controlchannels[key].dev = dev;
+            }, 
+            this
+        );
         this.controlchannelsmodel.reset(controlchannels);
         this.controlchannels = new HUGnet.OutputsControlChannelsView({
             model: this.controlchannelsmodel,
