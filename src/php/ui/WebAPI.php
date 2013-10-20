@@ -283,6 +283,53 @@ class WebAPI extends HTML
     * @return null
     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
     */
+    private function _executeDeviceControlChan($extra = array())
+    {
+        $ids = explode(".", $this->args()->get("id"));
+        $did = hexdec($ids[0]);
+        $chan = (int)$ids[1];
+        $action = strtolower(trim($this->args()->get("action")));
+        if ($action == "get") {
+            $pkt = $this->system()->device($did)->action()->send(
+                array(
+                    "Command" => '0x65',
+                    "Data" => sprintf("%02X", $chan),
+                )
+            );
+            if (is_object($pkt)) {
+                $reply = $pkt->reply();
+                $data = 0;
+                for ($i = 0; $i < 4; $i++) {
+                    $data += hexdec(substr($reply, ($i * 2), 2))<<($i * 8);
+                }
+                return $data;
+            }
+        } else if ($action == "set") {
+            $data = (int)$this->args()->get("data");
+            $datastr = sprintf("%08X", $data);
+            for ($i = 6; $i >= 0; $i-=2) {
+                $value .= substr($datastr, $i, 2);
+            }
+            $pkt = $this->system()->device($did)->action()->send(
+                array(
+                    "Command" => '0x64',
+                    "Data" => sprintf("%02X", $chan).$value,
+                )
+            );
+            if ($pkt->reply() == $value) {
+                return $data;
+            }
+        }
+        return null;
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+    */
     private function _executeDeviceOutput($extra = array())
     {
         $ids = explode(".", $this->args()->get("id"));
