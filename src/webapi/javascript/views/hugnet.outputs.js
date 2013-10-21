@@ -138,8 +138,6 @@ HUGnet.OutputsView = Backbone.View.extend({
     },
     exit: function()
     {
-        this.reset();
-        this.stopPoll();
         this.remove();
     },
     /**
