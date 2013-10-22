@@ -48,8 +48,74 @@ HUGnet.DeviceControlChannel = Backbone.Model.extend({
         dev: null,
         type: "Unknown",
         label: 'No Name',
+        value: null,
     },
     idAttribute: 'channel',
+    getValue: function()
+    {
+        var dev = this.get('dev');
+        var self = this;
+        $.ajax({
+            type: 'GET',
+            url: this.url(),
+            cache: false,
+            dataType: 'json',
+            data:
+            {
+                "task": "devicecontrolchan",
+                "action": "get",
+                "id": parseInt(dev, 10).toString(16)+"."+this.get("channel")
+            }
+        }).done(
+            function (data)
+            {
+                if ((data !== undefined) && (data !== null)) {
+                    self.set('value', data);
+                    self.trigger('sync');
+                } else {
+                    self.trigger('fetchfail');
+                }
+            }
+        ).fail(
+            function (data)
+            {
+                self.trigger('fetchfail');
+            }
+        );
+    },
+    setValue: function(value)
+    {
+        var dev = this.get('dev');
+        var self = this;
+        $.ajax({
+            type: 'GET',
+            url: this.url(),
+            cache: false,
+            dataType: 'json',
+            data:
+            {
+                "task": "devicecontrolchan",
+                "action": "set",
+                "id": parseInt(dev, 10).toString(16)+"."+this.get("channel"),
+                "data": parseInt(value, 10)
+            }
+        }).done(
+            function (data)
+            {
+                if ((data !== undefined) && (data !== null)) {
+                    self.set('value', data);
+                    self.trigger('sync');
+                } else {
+                    self.trigger('fetchfail');
+                }
+            }
+        ).fail(
+            function (data)
+            {
+                self.trigger('fetchfail');
+            }
+        );
+    },
 });
 
 /**
