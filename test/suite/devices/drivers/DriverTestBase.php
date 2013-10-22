@@ -250,7 +250,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
             array(
                 "type", array(
                     'unknown', 'script', 'bootloader', 'endpoint', 'controller',
-                    'virtual', 'test'
+                    'fastvirtual', 'slowvirtual', 'test'
                 ),
             ),
         );

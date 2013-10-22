@@ -72,7 +72,7 @@ class E00392402 extends \HUGnet\devices\Driver
         "virtualSensors" => 20,
         "historyTable" => "E00392400History",
         "averageTable" => "E00392400Average",
-        "type" => "virtual",
+        "type" => "slowvirtual",
         "job"  => "calculate",
         "actionClass" => "ActionVirtual",
         "arch" => "virtual",

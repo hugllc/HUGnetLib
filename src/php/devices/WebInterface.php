@@ -202,6 +202,10 @@ class WebInterface
         $dev  = array();
         if (trim(strtolower($data["type"])) == "test") {
             $dev["HWPartNum"] = "0039-24-03-P";
+        } else if (trim(strtolower($data["type"])) == "fastaverage") {
+            $dev["HWPartNum"] = "0039-24-04-P";
+        } else if (trim(strtolower($data["type"])) == "slowaverage") {
+            $dev["HWPartNum"] = "0039-24-02-P";
         }
         if ($this->_device->insertVirtual($dev)) {
             $this->_device->setParam("Created", $this->_system->now());

@@ -421,6 +421,8 @@ HUGnet.DevicesView = Backbone.View.extend({
     timer: null,
     events: {
         'click .newtest': 'createTest',
+        'click .newfastvirtual': 'createFastVirtual',
+        'click .newslowvirtual': 'createSlowVirtual',
         'click .importDevice': '_importDevice',
     },
     initialize: function (options)
@@ -520,6 +522,18 @@ HUGnet.DevicesView = Backbone.View.extend({
     },
     createTest: function ()
     {
+        this.createVirtual("test");
+    },
+    createFastVirtual: function ()
+    {
+        this.createVirtual("fastaverage");
+    },
+    createSlowVirtual: function ()
+    {
+        this.createVirtual("slowaverage");
+    },
+    createVirtual: function (type)
+    {
         var self = this;
         var ret = $.ajax({
             type: 'GET',
@@ -530,7 +544,7 @@ HUGnet.DevicesView = Backbone.View.extend({
             {
                 "task": "device",
                 "action": "new",
-                "data": { type: "test" }
+                "data": { type: type }
             }
         }).done(
             function (data)
