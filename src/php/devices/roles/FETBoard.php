@@ -77,7 +77,7 @@ class FETBoard extends \HUGnet\base\Role
                 "MUX" => 0,
                 "id" => 0,
                 "ADLAR" => 1,
-                "REFS" => 1,
+                "REFS" => 0,
             ),
         ),
         1 => array(            // Voltage
@@ -91,7 +91,7 @@ class FETBoard extends \HUGnet\base\Role
                 "MUX" => 1,
                 "id" => 0,
                 "ADLAR" => 1,
-                "REFS" => 1,
+                "REFS" => 0,
             ),
         ),
         2 => array(            // Current
@@ -105,7 +105,7 @@ class FETBoard extends \HUGnet\base\Role
                 "MUX" => 2,
                 "id" => 0,
                 "ADLAR" => 1,
-                "REFS" => 1,
+                "REFS" => 0,
             ),
         ),
         3 => array(            // Voltage
@@ -119,7 +119,7 @@ class FETBoard extends \HUGnet\base\Role
                 "MUX" => 3,
                 "id" => 0,
                 "ADLAR" => 1,
-                "REFS" => 1,
+                "REFS" => 0,
             ),
         ),
         4 => array(            // Current
@@ -133,7 +133,7 @@ class FETBoard extends \HUGnet\base\Role
                 "MUX" => 4,
                 "id" => 0,
                 "ADLAR" => 1,
-                "REFS" => 1,
+                "REFS" => 0,
             ),
         ),
         5 => array(            // Voltage
@@ -147,7 +147,7 @@ class FETBoard extends \HUGnet\base\Role
                 "MUX" => 5,
                 "id" => 0,
                 "ADLAR" => 1,
-                "REFS" => 1,
+                "REFS" => 0,
             ),
         ),
         6 => array(            // Current
@@ -161,7 +161,7 @@ class FETBoard extends \HUGnet\base\Role
                 "MUX" => 6,
                 "id" => 0,
                 "ADLAR" => 1,
-                "REFS" => 1,
+                "REFS" => 0,
             ),
         ),
         7 => array(            // Voltage
@@ -175,7 +175,7 @@ class FETBoard extends \HUGnet\base\Role
                 "MUX" => 7,
                 "id" => 0,
                 "ADLAR" => 1,
-                "REFS" => 1,
+                "REFS" => 0,
             ),
         ),
         8 => array(            // Supply Voltage
@@ -189,7 +189,7 @@ class FETBoard extends \HUGnet\base\Role
                 "MUX" => 8,
                 "id" => 0,
                 "ADLAR" => 1,
-                "REFS" => 1,
+                "REFS" => 0,
             ),
         ),
     );
