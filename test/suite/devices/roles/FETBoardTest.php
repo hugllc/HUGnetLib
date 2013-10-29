@@ -107,7 +107,7 @@ class FETBoardTest extends RoleTestBase
                         "MUX" => 0,
                         "id" => 0,
                         "ADLAR" => 1,
-                        "REFS" => 1,
+                        "REFS" => 0,
                     ),
                 )
             ),
