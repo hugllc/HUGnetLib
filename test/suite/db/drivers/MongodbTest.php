@@ -150,7 +150,9 @@ class MongodbTest extends \PHPUnit_Framework_TestCase
     */
     protected function tearDown()
     {
-        $this->dbo->myTable->drop();
+        if (is_object($this->dbo)) {
+            $this->dbo->myTable->drop();
+        }
         unset($this->o);
         unset($this->dbo);
     }
