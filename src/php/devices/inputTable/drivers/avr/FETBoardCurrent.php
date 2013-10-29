@@ -70,7 +70,7 @@ class FETBoardCurrent extends AVRCurrent
         "storageUnit" => 'mA',
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraText" => array(
-            "Sense Resistor (kOhms)",
+            "Sense Resistor",
             "Gain",
             "AtoD Ref Voltage (V)"
         ),
