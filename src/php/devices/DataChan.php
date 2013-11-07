@@ -65,7 +65,7 @@ class DataChan extends \HUGnet\base\BaseChan
     */
     private $_units;
     /** @var array The configuration that we are going to use */
-    protected $setable = array("units", "label", "decimals", "dataType");
+    protected $setable = array("units", "decimals", "dataType");
 
     /**
     * Returns an array of valid units

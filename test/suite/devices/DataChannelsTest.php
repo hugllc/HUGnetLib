@@ -864,7 +864,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
     public static function dataDataChannel()
     {
         return array(
-            array(
+            array(   // #0
                 array(
                     "Device" => array(
                         "get" => array(
@@ -936,7 +936,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                     'decimals' => null,
                 )
             ),
-            array(
+            array( // #1
                 array(
                     "Device" => array(
                         "get" => array(
@@ -1008,7 +1008,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                     'decimals' => null,
                 )
             ),
-            array(
+            array(  // # 2
                 array(
                     "Device" => array(
                         "get" => array(
@@ -1254,6 +1254,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                                 "storageUnit" => "&#176;C",
                                 "units" => "&#176;C",
                                 "unitType" => "Temperature",
+                                "label" => "Output 0",
                             ),
                         ),
                     ),
@@ -1263,6 +1264,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                                 "storageUnit" => "&#176;C",
                                 "units" => "&#176;C",
                                 "unitType" => "Temperature",
+                                "label" => "Output 1",
                             ),
                         ),
                     ),
@@ -1272,6 +1274,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                                 "storageUnit" => "&#176;C",
                                 "units" => "&#176;C",
                                 "unitType" => "Temperature",
+                                "label" => "Output 2",
                             ),
                         ),
                     ),
@@ -1281,6 +1284,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                                 "storageUnit" => "&#176;C",
                                 "units" => "&#176;C",
                                 "unitType" => "Temperature",
+                                "label" => "Output 3",
                             ),
                         ),
                     ),
@@ -1290,6 +1294,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                                 "storageUnit" => "&#176;C",
                                 "units" => "&#176;C",
                                 "unitType" => "Temperature",
+                                "label" => "Output 4",
                             ),
                         ),
                     ),
@@ -1299,23 +1304,18 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                 array(
                     array(
                         "units" => "&#176;C",
-                        "label" => "Output 0",
                     ),
                     array(
                         "units" => "&#176;C",
-                        "label" => "Output 1",
                     ),
                     array(
                         "units" => "&#176;C",
-                        "label" => "Output 2",
                     ),
                     array(
                         "units" => "&#176;C",
-                        "label" => "Output 3",
                     ),
                     array(
                         "units" => "&#176;C",
-                        "label" => "Output 4",
                     ),
                 ),
             ),
@@ -1327,19 +1327,19 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                             "dataChannels" => json_encode(
                                 array(
                                     array(
-                                        "label" => "Output 0",
+                                        "label" => "Output 10",
                                     ),
                                     array(
-                                        "label" => "Output 1",
+                                        "label" => "Output 11",
                                     ),
                                     array(
-                                        "label" => "Output 2",
+                                        "label" => "Output 12",
                                     ),
                                     array(
-                                        "label" => "Output 3",
+                                        "label" => "Output 13",
                                     ),
                                     array(
-                                        "label" => "Output 4",
+                                        "label" => "Output 14",
                                     ),
                                 )
                             ),
@@ -1366,6 +1366,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                                 "index" => 0,
                                 "input" => 0,
                                 "epChannel" => true,
+                                "label" => "Output 0",
                             ),
                         ),
                     ),
@@ -1382,6 +1383,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                                 "index" => 0,
                                 "input" => 1,
                                 "epChannel" => false,
+                                "label" => "Output 1",
                             ),
                         ),
                     ),
@@ -1398,6 +1400,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                                 "index" => 0,
                                 "input" => 2,
                                 "epChannel" => true,
+                                "label" => "Output 2",
                             ),
                         ),
                     ),
@@ -1414,6 +1417,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                                 "index" => 0,
                                 "input" => 3,
                                 "epChannel" => true,
+                                "label" => "Output 3",
                             ),
                         ),
                     ),
@@ -1430,6 +1434,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                                 "index" => 0,
                                 "input" => 4,
                                 "epChannel" => true,
+                                "label" => "Output 4",
                             ),
                         ),
                     ),
@@ -1477,7 +1482,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                         "storageUnit" => "&#176;C",
                         "units" => "&#176;C",
                         "unitType" => "Temperature",
-                        "label" => "Test Label",
+                        "label" => "Output 0",
                         "maxDecimals" => 4,
                         "decimals" => 4,
                         "dataType"
@@ -1496,7 +1501,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                         "storageUnit" => "&#176;C",
                         "units" => "&#176;C",
                         "unitType" => "Temperature",
-                        "label" => "Data Channel 1",
+                        "label" => "Output 1",
                         "maxDecimals" => 4,
                         "decimals" => 4,
                         "dataType"
@@ -1623,19 +1628,19 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                             "dataChannels" => json_encode(
                                 array(
                                     array(
-                                        "label" => "Output 0",
+                                        "label" => "Output 10",
                                     ),
                                     array(
-                                        "label" => "Output 1",
+                                        "label" => "Output 11",
                                     ),
                                     array(
-                                        "label" => "Output 2",
+                                        "label" => "Output 12",
                                     ),
                                     array(
-                                        "label" => "Output 3",
+                                        "label" => "Output 13",
                                     ),
                                     array(
-                                        "label" => "Output 4",
+                                        "label" => "Output 14",
                                     ),
                                 )
                             ),
@@ -1655,6 +1660,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                                 "storageUnit" => "&#176;C",
                                 "units" => "&#176;C",
                                 "unitType" => "Temperature",
+                                "label" => "Output 0",
                             ),
                         ),
                     ),
@@ -1664,6 +1670,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                                 "storageUnit" => "&#176;C",
                                 "units" => "&#176;C",
                                 "unitType" => "Temperature",
+                                "label" => "Output 1",
                             ),
                         ),
                     ),
@@ -1673,6 +1680,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                                 "storageUnit" => "&#176;C",
                                 "units" => "&#176;C",
                                 "unitType" => "Temperature",
+                                "label" => "Output 2",
                             ),
                         ),
                     ),
@@ -1682,6 +1690,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                                 "storageUnit" => "&#176;C",
                                 "units" => "&#176;C",
                                 "unitType" => "Temperature",
+                                "label" => "Output 3",
                             ),
                         ),
                     ),
@@ -1691,6 +1700,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                                 "storageUnit" => "&#176;C",
                                 "units" => "&#176;C",
                                 "unitType" => "Temperature",
+                                "label" => "Output 4",
                             ),
                         ),
                     ),
@@ -1703,23 +1713,18 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                             array(
                                 array(
                                     "units" => "&#176;C",
-                                    "label" => "Output 0",
                                 ),
                                 array(
                                     "units" => "&#176;C",
-                                    "label" => "Output 1",
                                 ),
                                 array(
                                     "units" => "&#176;C",
-                                    "label" => "Output 2",
                                 ),
                                 array(
                                     "units" => "&#176;C",
-                                    "label" => "Output 3",
                                 ),
                                 array(
                                     "units" => "&#176;C",
-                                    "label" => "Output 4",
                                 ),
                             )
                         ),

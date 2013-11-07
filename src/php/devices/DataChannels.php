@@ -114,6 +114,8 @@ class DataChannels
             if (!is_string($value["label"]) || empty($value["label"])) {
                 $chans[$chan]["label"] = "Data Channel $chan";
             }
+            // Make sure the label is deleted if it exists
+            unset($channels[$chan]["label"]);
             $chans[$chan]["channel"] = $chan;
             if ($chans[$chan]["epChannel"] == true) {
                 $this->_epChannels[$epChan] = &$this->_channels[$chan];
