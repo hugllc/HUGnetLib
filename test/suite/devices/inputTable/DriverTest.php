@@ -370,6 +370,7 @@ class DriverTest extends drivers\DriverTestBase
                     ),
                 ),
                 array(
+                    0x70 => 'Digital Input',
                     0xF8 => "Analog Input Table",
                     0xFE => 'Virtual',
                     0xFF => 'Empty Slot'
