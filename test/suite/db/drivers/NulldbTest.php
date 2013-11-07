@@ -85,9 +85,6 @@ class NulldbTest extends \PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        if (!class_exists("\MongoClient")) {
-            $this->markTestSkipped("No Nulldb server available");
-        }
         $this->config = array(
             "System" => array(
                 "get" => array(
