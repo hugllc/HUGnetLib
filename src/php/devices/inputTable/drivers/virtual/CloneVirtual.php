@@ -97,6 +97,10 @@ class CloneVirtual extends \HUGnet\devices\inputTable\DriverVirtual
                 $this->_clone = parent::factory("SDEFAULT", $sensor);
             } else {
                 $sensor = $this->input()->system()->device($did)->input($sen);
+                // Set our location the same as the other sensors and lock it there
+                $this->params["location"] = $sensor->get("location");
+                $this->input()->set("location", $this->params["location"]);
+                // Create our clone.
                 $this->_clone = parent::factory(
                     $sensor->get("driver"),
                     $sensor

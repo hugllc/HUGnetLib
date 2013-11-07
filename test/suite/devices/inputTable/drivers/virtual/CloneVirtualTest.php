@@ -586,6 +586,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                     "Input2" => array(
                         "get" => array(
                             "driver" => "AVRBC2322640",
+                            "location" => "Well hello there!",
                         ),
                     ),
                 ),
@@ -612,6 +613,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         'ignore' => 'ignore',
                     ),
                     'inputSize'    => 3,
+                    'location'     => 'Well hello there!',
                 ),
             ),
         );
