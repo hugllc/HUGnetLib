@@ -61,7 +61,7 @@ require_once dirname(__FILE__)."/../base/BaseChan.php";
 class ControlChan extends \HUGnet\base\BaseChan
 {
     /** @var array The configuration that we are going to use */
-    protected $setable = array("label");
+    protected $setable = array();
     /**
     * Returns the input object associated with this channel
     *

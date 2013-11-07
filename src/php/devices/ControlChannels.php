@@ -109,6 +109,8 @@ class ControlChannels
             if (!is_string($value["label"]) || empty($value["label"])) {
                 $chans[$chan]["label"] = "Control Channel $chan";
             }
+            // Make sure the label is deleted if it exists
+            unset($channels[$chan]["label"]);
             $this->_channels[$chan] = \HUGnet\devices\ControlChan::factory(
                 $this->_device,
                 $chans[$chan],

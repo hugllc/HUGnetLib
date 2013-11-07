@@ -379,19 +379,14 @@ class ControlChannelsTest extends \PHPUnit_Framework_TestCase
                 false,
                 array(
                     array(
-                        "label" => "Output 0",
                     ),
                     array(
-                        "label" => "Output 1",
                     ),
                     array(
-                        "label" => "PWM",
                     ),
                     array(
-                        "label" => "Output 3",
                     ),
                     array(
-                        "label" => "Output 4",
                     ),
                 ),
             ),
@@ -491,24 +486,24 @@ class ControlChannelsTest extends \PHPUnit_Framework_TestCase
                         "output" => 4,
                         "min" => 8,
                         "max" => 8150,
-                        "label" => "here",
+                        "label" => "PWM",
                     ),
                     array(
-                        "label" => "Output 1",
+                        "label" => "PWM",
                     ),
                     array(
                     ),
                     array(
-                        "label" => "Output 3",
+                        "label" => "PWM",
                     ),
                     array(
-                        "label" => "Output 4",
+                        "label" => "PWM",
                     ),
                 ),
                 true,
                 array(
                     array(
-                        "label" => "here",
+                        "label" => "PWM",
                         "index" => 0,
                         "output" => 0,
                         "min" => 0,
@@ -516,7 +511,7 @@ class ControlChannelsTest extends \PHPUnit_Framework_TestCase
                         "channel" => 0,
                     ),
                     array(
-                        "label" => "Output 1",
+                        "label" => "PWM",
                         "index" => 0,
                         "output" => 1,
                         "min" => 0,
@@ -532,7 +527,7 @@ class ControlChannelsTest extends \PHPUnit_Framework_TestCase
                         "channel" => 2,
                     ),
                     array(
-                        "label" => "Output 3",
+                        "label" => "PWM",
                         "index" => 0,
                         "output" => 3,
                         "min" => 0,
@@ -540,7 +535,7 @@ class ControlChannelsTest extends \PHPUnit_Framework_TestCase
                         "channel" => 3,
                     ),
                     array(
-                        "label" => "Output 4",
+                        "label" => "PWM",
                         "index" => 0,
                         "output" => 4,
                         "min" => 0,
@@ -690,19 +685,14 @@ class ControlChannelsTest extends \PHPUnit_Framework_TestCase
                         json_encode(
                             array(
                                 array(
-                                    "label" => "Output 0",
                                 ),
                                 array(
-                                    "label" => "Output 1",
                                 ),
                                 array(
-                                    "label" => "Output 2",
                                 ),
                                 array(
-                                    "label" => "PWM",
                                 ),
                                 array(
-                                    "label" => "Output 4",
                                 ),
                             )
                         ),
@@ -749,13 +739,10 @@ class ControlChannelsTest extends \PHPUnit_Framework_TestCase
                             "OutputTables" => 3,
                             "controlChannels" => array(
                                 array(
-                                    "label" => "Here",
                                 ),
                                 array(
-                                    "label" => "I",
                                 ),
                                 array(
-                                    "label" => "Come",
                                 ),
                             ),
                         ),
@@ -772,6 +759,7 @@ class ControlChannelsTest extends \PHPUnit_Framework_TestCase
                                 "storageUnit" => "psi",
                                 "storageType" =>
                                     \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "label" => "Here",
                             ),
                         ),
                     ),
@@ -782,6 +770,7 @@ class ControlChannelsTest extends \PHPUnit_Framework_TestCase
                                 "storageUnit" => "decimal",
                                 "storageType" =>
                                     \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "label" => "I",
                             ),
                         ),
                     ),
@@ -792,6 +781,7 @@ class ControlChannelsTest extends \PHPUnit_Framework_TestCase
                                 "storageUnit" => "decimal",
                                 "storageType" =>
                                     \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "label" => "Come",
                             ),
                         ),
                     ),

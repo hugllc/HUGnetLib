@@ -98,11 +98,11 @@ class ControlChanTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                     "asdf" => "here",
-                    "label" => "Empty",
+                    "label" => "This is a label",
                 ),
                 array(
                     "asdf" => "qewerty",
-                    "label" => "This is a label",
+                    "label" => "Empty",
                 ),
                 true,
                 array(

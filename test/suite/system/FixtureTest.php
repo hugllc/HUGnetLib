@@ -1451,19 +1451,14 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                     ),
                     'controlChannels' => array(
                         array(
-                            'label' => '0',
                         ),
                         array(
-                            'label' => '1',
                         ),
                         array(
-                            'label' => '2',
                         ),
                         array(
-                            'label' => '3',
                         ),
                         array(
-                            'label' => '4',
                         ),
                     ),
                     'Role' => '',
@@ -1913,19 +1908,14 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                     ),
                     'controlChannels' => array(
                         array(
-                            'label' => '0',
                         ),
                         array(
-                            'label' => '1',
                         ),
                         array(
-                            'label' => '2',
                         ),
                         array(
-                            'label' => '3',
                         ),
                         array(
-                            'label' => '4',
                         ),
                     ),
                     'Role' => '',
@@ -2328,19 +2318,14 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                     ),
                     'controlChannels' => array(
                         array(
-                            'label' => '0',
                         ),
                         array(
-                            'label' => '1',
                         ),
                         array(
-                            'label' => '2',
                         ),
                         array(
-                            'label' => '3',
                         ),
                         array(
-                            'label' => '4',
                         ),
                     ),
                     'Role' => '',
