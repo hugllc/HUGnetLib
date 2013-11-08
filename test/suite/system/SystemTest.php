@@ -421,6 +421,21 @@ class SystemTest extends \PHPUnit_Framework_TestCase
                 "badIdea",
                 null,
             ),
+            array( // A normal file argument
+                array(
+                    "hello" => "there",
+                    "file" => '/var/lib/hugnet/config.ini',
+                ),
+                "confdir",
+                '/var/lib/hugnet',
+            ),
+            array(  // No file argument
+                array(
+                    "hello" => "there",
+                ),
+                "confdir",
+                '/etc/hugnet',
+            ),
             array(
                 array(),
                 "version",

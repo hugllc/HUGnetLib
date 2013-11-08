@@ -151,6 +151,8 @@ class System
             $this->_fixed["version"] = trim(
                 file_get_contents(dirname(__FILE__)."/../VERSION.TXT")
             );
+            $confdir = dirname((string)$config['file']);
+            $this->_fixed["confdir"] = (empty($confdir)) ? '/etc/hugnet' : $confdir;
         }
         // Return the configuration
         return $this->_config;
