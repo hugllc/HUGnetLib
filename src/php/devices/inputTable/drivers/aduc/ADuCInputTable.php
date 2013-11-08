@@ -90,12 +90,12 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
         "storageUnit" => "Unknown",
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraText" => array(
-            "Reserved",
+            "Label Suffix",
             "Channel 0 Reading @ 0",
             "Channel 1 Reading @ 0",
         ),
         "extraDesc" => array(
-            "Not used",
+            "A comma delimited list of suffixes to add to the datachannel labels",
             "The offset for ADC0.  This is in the units of the driver used",
             "The offset for ADC1.  This is in the units of the driver used",
         ),
@@ -103,9 +103,9 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            -1, 10, 10
+            50, 10, 10
         ),
-        "extraDefault" => array(0, 0, 0),
+        "extraDefault" => array("", 0, 0),
         "maxDecimals" => 6,
     );
     /**
@@ -351,14 +351,18 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
     */
     public function channels()
     {
-        $ret = array_merge(
-            (array)$this->_driver(0)->channels(),
-            (array)$this->_driver(1)->channels()
+        $ret = array();
+        $suffixes = explode(",", (string)$this->getExtra(0));
+        $chan = array(
+            0 => (array)$this->_driver(0)->channels(),
+            1 => (array)$this->_driver(1)->channels(),
         );
-        if (is_array($ret[1])) {
-            $ret[0]["label"] .= " 0";
-            $ret[1]["label"] .= " 1";
-            $ret[1]["index"]  = 1;
+        foreach ($chan as $k => $c) {
+            foreach ($c as $d) {
+               $d["index"] = $k;
+               $d["label"] = trim($d["label"]." ".trim((string)$suffixes[$k]));
+               $ret[] = $d;
+            }
         }
         return $ret;
     }

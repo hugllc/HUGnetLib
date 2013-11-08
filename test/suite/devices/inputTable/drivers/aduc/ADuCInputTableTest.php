@@ -193,7 +193,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
             array(
                 array(
                     "id" => 1,
-                    "extra" => array(1),
+                    "extra" => array("0, 1"),
                     "location" => "asdf",
                     "tableEntry" => json_encode(
                         array(
@@ -231,7 +231,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
             array(
                 array(
                     "id" => 1,
-                    "extra" => array(1),
+                    "extra" => array(""),
                     "location" => "asdf",
                     "tableEntry" => json_encode(
                         array(
@@ -482,7 +482,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                     ),
                 ),
                 array(
-                    -1,
+                    50,
                     10, 10, 5, 5, 5
                 ),
             ),
@@ -519,7 +519,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                         "id" => 5,
                     ),
                 ),
-                0,
+                "",
             ),
         );
     }
