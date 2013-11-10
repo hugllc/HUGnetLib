@@ -311,7 +311,9 @@ class WebInterface
     */
     private function _export($args)
     {
-        if (!headers_sent()) {
+        $format = $args->get("format");
+        if (!headers_sent() && ($format != "inline")) {
+error_log("here");
             // @codeCoverageIgnoreStart
             header('Content-type: application/json');
             header(

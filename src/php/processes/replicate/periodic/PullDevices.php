@@ -62,6 +62,8 @@ class PullDevices extends \HUGnet\processes\replicate\Periodic
     protected $period = 30;
     /** This is the object we use */
     private $_device;
+    /** This is the url to get stuff from */
+    private $_url;
     /**
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
@@ -93,9 +95,8 @@ class PullDevices extends \HUGnet\processes\replicate\Periodic
     */
     public function &execute()
     {
-    print "HERE\n";
-        /*
-        if ($this->ready() && $this->hasMaster()) {
+        $this->_url = $this->ui()->get("url");
+        if ($this->ready() && !empty($this->_url)) {
             $now = $this->system()->now();
             $ids = $this->_device->ids();
             foreach (array_keys($ids) as $key) {
@@ -106,62 +107,51 @@ class PullDevices extends \HUGnet\processes\replicate\Periodic
                 }
                 $this->_device->load($key);
                 if ($this->_checkDevice($this->_device, $now)) {
-                    $this->_pushDevice($this->_device, $now);
-                    $this->_pushHistory($this->_device);
+                    $this->_pullDevice($this->_device, $now);
+                    $this->_pullHistory($this->_device);
                 }
             }
             $this->last = $now;
         }
-        */
     }
     /**
-     * This checks to see if a device should be pushed...
+     * This checks to see if a device should be pulled...
      *
      * @param int &$dev The device to use
      * @param int $now  The time to use
      *
-     * @return true if it should be pushed, false otherwise
+     * @return true if it should be pulled, false otherwise
      */
     private function _checkDevice(&$dev, $now)
     {
-        /* Let's just push the regular devices */
+        /* Let's just pull the regular devices */
         if ($dev->id() >= 0xFD0000) {
             $this->system()->out("DeviceID > FD0000", 2);
-            return false;
-        }
-        $contact  = $dev->getParam("LastContact");
-        $modified = $dev->getParam("Modified");
-        $push     = $dev->getParam("LastMasterPush");
-        /* Only push it if we have changed it since the last push */
-        if (($contact < $push) && ($modified < $push)) {
-            $this->system()->out("Device not updated", 2);
             return false;
         }
         return true;
     }
     
     /**
-     * This pushes out all of the sensors for a device
+     * This pulles out all of the sensors for a device
      *
      * @param int &$dev The device to use
      * @param int $now  The time to use
      *
      * @return none
      */
-    private function _pushDevice(&$dev, $now)
+    private function _pullDevice(&$dev, $now)
     {
         $this->system()->out(
-            "Pushing ".sprintf("%06X", $dev->id())." to master server..."
+            "Pulling ".sprintf("%06X", $dev->id())." from master server..."
         );
-        $dev->setParam("LastMasterPush", $now);
-        $ret = $dev->action()->post();
-        $devid = hexdec($ret);
-        if ($devid == $dev->id()) {
+        $ret = $dev->action()->pull($this->_url);
+        if ($ret) {
             $this->system()->out(
-                "Successfully pushed ".sprintf("%06X", $dev->id())."."
+                "Successfully pulled ".sprintf("%06X", $dev->id())."."
             );
             $dev->load($dev->id());
-            $dev->setParam("LastMasterPush", $now);
+            $dev->setParam("LastMasterPull", $now);
             $dev->store();
         } else {
             $this->system()->out("Failure.");
@@ -169,27 +159,27 @@ class PullDevices extends \HUGnet\processes\replicate\Periodic
         }
     }
     /**
-     * This pushes out all of the sensors for a device
+     * This pulles out all of the sensors for a device
      *
      * @param int &$dev The device to use
      *
      * @return none
      */
-    private function _pushHistory(&$dev)
+    private function _pullHistory(&$dev)
     {
-        $push = $dev->getParam("PushHistory");
-        if (is_null($push) || ($push != 0)) {
+        $pull = $dev->getParam("PullHistory");
+        if (is_null($pull) || ($pull != 0)) {
             $hist = $dev->historyFactory(array(), true);
-            $this->_pushHist($dev, $hist, "LastMasterHistoryPush", "");
+            $this->_pullHist($dev, $hist, "LastMasterHistoryPull", "");
             $arch = $dev->get("arch");
-            if ($this->ui()->get("push_raw_history") && ($arch !== "virtual")) {
-                $hist = $this->system()->table("RawHistory");
-                $this->_pushHist($dev, $hist, "LastMasterRawHistoryPush", "raw");
-            }
+            //if ($this->ui()->get("pull_raw_history") && ($arch !== "virtual")) {
+            //    $hist = $this->system()->table("RawHistory");
+            //    $this->_pullHist($dev, $hist, "LastMasterRawHistoryPull", "raw");
+            //}
         }
     }
     /**
-     * This pushes out all of the sensors for a device
+     * This pulles out all of the sensors for a device
      *
      * @param object &$dev  The device to use
      * @param object &$hist The history to use
@@ -198,46 +188,34 @@ class PullDevices extends \HUGnet\processes\replicate\Periodic
      *
      * @return none
      */
-    private function _pushHist(&$dev, &$hist, $param, $name)
+    private function _pullHist(&$dev, &$hist, $param, $name)
     {
-        $hist->sqlOrderBy = "Date asc";
         $last = (int)$dev->getParam($param);
-        $hist->sqlLimit = self::MAX_HISTORY;
         $first = time();
-        $ret = $hist->getPeriod($last + 1, time(), $dev->id());
+        $ret = $this->_getHistory(null, $dev->id(), $last);
         if ($ret) {
-            $records = array("type" => $name);
-            $cnt = 0;
-            while ($ret) {
-                $this->system()->main();
-                if (!$this->ui()->loop()) {
-                    break;
-                }
-                $records[] = $hist->toArray(false);
-                $ret = $hist->nextInto();
-                $cnt++;
-            }
-            $ret = $this->_postHistory(null, $dev->id(), $records);
             $good = 0;
             $bad = 0;
             $badfirst = time();
             $badlast = 0;
             if (is_array($ret)) {
-                for ($i = 0; $i < $cnt; $i++) {
-                    if ($ret[$i] != 0) {
-                        if ($last < $records[$i]["Date"]) {
-                            $last = $records[$i]["Date"];
+                foreach ($ret as $record) {
+                    $hist->clearData();
+                    $hist->fromAny($record);
+                    if ($hist->insertRow(true)) {
+                        if ($last < $record["Date"]) {
+                            $last = $record["Date"];
                         }
-                        if ($first > $records[$i]["Date"]) {
-                            $first = $records[$i]["Date"];
+                        if ($first > $record["Date"]) {
+                            $first = $record["Date"];
                         }
                         $good++;
                     } else {
-                        if ($badlast < $records[$i]["Date"]) {
-                            $badlast = $records[$i]["Date"];
+                        if ($badlast < $record["Date"]) {
+                            $badlast = $record["Date"];
                         }
-                        if ($badfirst > $records[$i]["Date"]) {
-                            $badfirst = $records[$i]["Date"];
+                        if ($badfirst > $record["Date"]) {
+                            $badfirst = $record["Date"];
                         }
                         $bad++;
                     }
@@ -245,13 +223,13 @@ class PullDevices extends \HUGnet\processes\replicate\Periodic
             } else {
                 $this->system()->out(
                     sprintf("%06X ", $dev->id())
-                    ." No reply to $name history push"
+                    ." No reply to $name history pull"
                 );
             }
             if ($good > 0) {
                 $this->system()->out(
                     sprintf("%06X ", $dev->id())
-                    ."Successfully pushed $good $name history from "
+                    ."Successfully pulled $good $name history from "
                     .date("Y-m-d H:i:s", $first)." to "
                     .date("Y-m-d H:i:s", $last)
                 );
@@ -259,13 +237,15 @@ class PullDevices extends \HUGnet\processes\replicate\Periodic
             if ($bad > 0) {
                 $this->system()->out(
                     sprintf("%06X ", $dev->id())
-                    ."Failed to push $bad $name history from "
+                    ."Failed to pull $bad $name history from "
                     .date("Y-m-d H:i:s", $badfirst)." to "
                     .date("Y-m-d H:i:s", $badlast)
                 );
             }
             $dev->load($dev->id());
             $dev->setParam($param, $last);
+            // This sets the last history date.
+            $dev->setLocalParam("Last".$name."History", $last);
             $dev->store();
         }
     }
@@ -278,21 +258,22 @@ class PullDevices extends \HUGnet\processes\replicate\Periodic
     *
     * @return string The left over string
     */
-    private function _postHistory($url, $did, $records)
+    private function _getHistory($url, $did, $start)
     {
-        if (!is_string($url) || (strlen($url) == 0)) {
-            $master = $this->system()->get("master");
-            $url = $master["url"];
-        }
-
         return \HUGnet\Util::postData(
-            $url,
+            $this->_url,
             array(
                 "uuid"   => urlencode($this->system()->get("uuid")),
-                "action" => "put",
+                "action" => "get",
                 "task"   => "history",
                 "id"     => sprintf("%06X", $did),
-                "data"   => $records,
+                "data"   => array(
+                    "since" => $start,
+                    "until" => time(),
+                    "limit" => 1000,
+                    "order" => "asc",
+                    "type"  => "history",
+                ),
             ),
             120
         );

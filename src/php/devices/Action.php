@@ -501,6 +501,34 @@ class Action
         );
     }
     /**
+    * Pulls the record from the given URL
+    *
+    * @param string $url The url to post to
+    *
+    * @return string The left over string
+    */
+    public function pull($url)
+    {
+        if (!is_string($url) || (strlen($url) == 0)) {
+            return false;
+        }
+        $ret = \HUGnet\Util::postData(
+            $url,
+            array(
+                "uuid"    => urlencode($this->device->system()->get("uuid")),
+                "id"      => sprintf("%06X", $this->device->get("id")),
+                "action"  => "export",
+                "task"    => "device",
+                "format"  => "inline",
+            )
+        );
+        $fixture = $this->device->fixture();
+        $fixture->import($ret);
+        $fixture->exportDevice();
+        return $this->device->load($this->device->id());
+        
+    }
+    /**
     * This calculates the averages
     *
     * It will return once for each average that it calculates.  The average will be
