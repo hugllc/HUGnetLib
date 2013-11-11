@@ -159,6 +159,7 @@ class CloneVirtual extends \HUGnet\devices\inputTable\DriverVirtual
                     "unitType" => "Unknown",
                     "dataType" => \HUGnet\devices\datachan\Driver::TYPE_IGNORE,
                     "index" => 0,
+                    "error" => "Input Not Found",
                 )
             );
         } else {

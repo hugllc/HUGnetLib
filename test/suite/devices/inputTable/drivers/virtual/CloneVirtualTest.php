@@ -800,6 +800,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         'unitType' => 'Unknown',
                         'dataType' => 'ignore',
                         'index' => 0,
+                        'error' => 'Input Not Found',
                     ),
                 ),
             ),
