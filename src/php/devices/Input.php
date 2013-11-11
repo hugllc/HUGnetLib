@@ -268,9 +268,11 @@ class Input extends \HUGnet\base\IOPBase
     public function channels()
     {
         $channels = (array)$this->driver()->channels();
-        $sid = $this->id();
+        $sid      = $this->id();
+        $loc      = explode(",", (string)$this->get("location"));
         foreach (array_keys($channels) as $key) {
-            $channels[$key]['label'] = $this->get("location");
+            $label = (isset($loc[$key])) ? $loc[$key] : $loc[0];
+            $channels[$key]['label'] = $label;
             $channels[$key]["input"] = $sid;
         }
         return $channels;

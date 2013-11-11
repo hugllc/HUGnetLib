@@ -90,12 +90,12 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
         "storageUnit" => "Unknown",
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraText" => array(
-            "Label Suffix",
+            "Reserved",
             "Channel 0 Reading @ 0",
             "Channel 1 Reading @ 0",
         ),
         "extraDesc" => array(
-            "A comma delimited list of suffixes to add to the datachannel labels",
+            "Reserved",
             "The offset for ADC0.  This is in the units of the driver used",
             "The offset for ADC1.  This is in the units of the driver used",
         ),
@@ -103,7 +103,7 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            50, 10, 10
+            -1, 10, 10
         ),
         "extraDefault" => array("", 0, 0),
         "maxDecimals" => 6,
@@ -360,7 +360,6 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
         foreach ($chan as $k => $c) {
             foreach ($c as $d) {
                $d["index"] = $k;
-               $d["label"] = trim($d["label"]." ".trim((string)$suffixes[$k]));
                $ret[] = $d;
             }
         }

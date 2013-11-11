@@ -637,12 +637,37 @@ class InputTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 5,
                             "input" => 4,
-                            "HWPartNum"    => "0039-12-01-C",
-                            "FWPartNum"    => "0039-20-03-C",
-                            "FWVersion"    => "1.2.3",
-                            "DeviceGroup"  => "FFFFFF",
-                            "TimeConstant" => "01",
                             "location" => "Test",
+                        ),
+                    ),
+                ),
+                array(
+                    array(
+                        "decimals" => 2,
+                        "units"    => 'unknown',
+                        "unitType" => 'unknown',
+                        'maxDecimals' => 2,
+                        'storageUnit' => 'unknown',
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "input"   => 4,
+                        "label" => "Test",
+                        "index" => 0,
+                        "epChannel" => true,
+                    ),
+                ),
+            ),
+            array(
+                new \HUGnet\DummySystem(),
+                null,
+                array(
+                    "id" => 5,
+                ),
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "input" => 4,
+                            "location" => "Test,Test2",
                         ),
                     ),
                 ),

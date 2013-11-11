@@ -193,7 +193,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
             array(
                 array(
                     "id" => 1,
-                    "extra" => array("0, 1"),
+                    "extra" => array(),
                     "location" => "asdf",
                     "tableEntry" => json_encode(
                         array(
@@ -211,7 +211,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                         'storageUnit' => '&#176;C',
                         'unitType' => 'Temperature',
                         'dataType' => 'raw',
-                        "label" => "asdf 0",
+                        "label" => "asdf",
                         "index" => 0,
                         "epChannel" => true,
                     ),
@@ -222,7 +222,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                         'storageUnit' => 'V',
                         'unitType' => 'Voltage',
                         'dataType' => 'raw',
-                        "label" => "asdf 1",
+                        "label" => "asdf",
                         "index" => 1,
                         "epChannel" => true,
                     ),
@@ -482,7 +482,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                     ),
                 ),
                 array(
-                    50,
+                    -1,
                     10, 10, 5, 5, 5
                 ),
             ),

@@ -303,6 +303,31 @@ class OutputTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
+            array(
+                new \HUGnet\DummySystem(),
+                null,
+                array(
+                    "id" => 5,
+                ),
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 0xFD,
+                            "output" => 4,
+                            "location" => "Test,Test2",
+                        ),
+                    ),
+                ),
+                array(
+                    array(
+                        "output"   => 4,
+                        "index" => 0,
+                        "min" => 1234,
+                        "max" => 4321,
+                        'label' => 'Test'
+                    ),
+                ),
+            ),
         );
     }
     /**
