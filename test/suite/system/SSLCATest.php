@@ -104,12 +104,12 @@ class SSLCATest extends \PHPUnit_Framework_TestCase
         parent::tearDown();
         unset($this->o);
         unset($this->sys);
-        //$this->unlinkSSL(sys_get_temp_dir()."/ssl");
+        $this->unlinkSSL(sys_get_temp_dir()."/ssl");
     }
     /**
     * This removes the directory everything is built in
     *
-    * @access protected
+    * @param string $dir The directory to unlink
     *
     * @return null
     */
@@ -127,6 +127,24 @@ class SSLCATest extends \PHPUnit_Framework_TestCase
             return rmdir($dir);
         }
         return true;
+    }
+    /**
+    * This sets up a consistant CA
+    *
+    * @access protected
+    *
+    * @return null
+    */
+    protected function setupCA() 
+    {
+        $olddir = TEST_CONFIG_BASE.'files/ssl/ca';
+        $newdir = sys_get_temp_dir()."/ssl/ca";
+        if (!file_exists($newdir)) {
+            mkdir($newdir, 0750, true);
+        }
+        foreach (array("ca.crt", "ca.key") as $file) {
+            copy($olddir."/".$file, $newdir."/".$file);
+        }
     }
     /**
     * This tests the object creation
@@ -241,7 +259,7 @@ D0GLsehMLJWYzZUtesEnMnwUIotwpXoCS2GRd1i58tYrHYgxjfRVP7CyogqIlm46
 LBHmNeqszqaHI6cj32FOzGL+0ERI4x47+gR/DjqHEUn6WJmpBr5NihozgTcjdcjd
 DJfUfE8zCqDyBXM+WRQerND7k/XDBg8dK/IrWXuUXUMHg86TBgk0
 -----END CERTIFICATE REQUEST-----
-", true, "localhost.csr"
+", true, "localhost"
             ),
             array(
                 "-----BEGIN CERTIFICATE REQUEST-----
@@ -261,12 +279,15 @@ gkvcEoDRtIgaaYU8qbCnhRlgX0FIiyTE78WBM90I/F2dvuroB3C557m51qi1FQiw
 P6Q1Y2FxA8kW7uBdLfgu0nCcXHQsimXuLQar7OLedIHBZmbJcMEOF51u2A+VSXoM
 NVgXKWgeID8xgZ30JtXYwfvETeRZTr4QlIYCZN+p8kM/udsxGvqkrirrWcbhtzQ=
 -----END CERTIFICATE REQUEST-----
-", true, "me.and.my.shadow.csr"
+", true, "me.and.my.shadow"
             ),
             array(
                 "-----BEGIN CERTIFICATE REQUEST-----
 -----END CERTIFICATE REQUEST-----
 ", false, ""
+            ),
+            array(
+                null, false, ""
             ),
         );
     }
@@ -283,13 +304,292 @@ NVgXKWgeID8xgZ30JtXYwfvETeRZTr4QlIYCZN+p8kM/udsxGvqkrirrWcbhtzQ=
     */
     public function testSaveCSR($csr, $expect, $file)
     {
-        $ret = $this->o->saveCSR($csr);
+        $ret = $this->o->saveCSR($csr, $file);
         $this->assertSame($expect, $ret, "Return Wrong");
         if ($ret) {
             $file = file_get_contents(
-                $this->sys->get("confdir")."/ssl/ca/requests/".$file
+                $this->sys->get("confdir")."/ssl/ca/requests/".$file.".csr"
             );
             $this->assertSame(trim($csr), trim($file), "File contents wrong");
+        }
+    }
+    /**
+    * Data provider for testSignCSR
+    *
+    * @return array
+    */
+    public static function dataSignCSR()
+    {
+        return array(
+            array(
+                "Certificate Request:
+    Data:
+        Version: 0 (0x0)
+        Subject: C=US, ST=Minnesota, L=Pine River, O=Hunt Utilities Group LLC, OU=HUGnet, CN=localhost
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit)
+                Modulus:
+                    00:cf:ff:57:e5:41:98:ab:00:bd:2a:78:76:7d:08:
+                    d0:13:02:2c:63:f4:a0:75:92:6b:18:c0:a3:76:b7:
+                    7b:e9:72:39:98:80:21:ca:9a:f6:17:07:5b:51:87:
+                    b4:ba:6b:b4:a1:25:db:3f:01:bb:e4:87:94:d2:b2:
+                    65:fe:3d:fc:c4:88:54:55:00:46:e1:9e:50:97:cb:
+                    a2:b2:15:d2:49:0e:f5:d5:2c:24:08:ad:61:82:4f:
+                    fb:47:18:97:dd:89:74:9b:8d:98:6d:de:5b:81:d4:
+                    68:37:8e:82:10:f6:0b:23:8d:98:8e:24:10:4b:7b:
+                    d4:03:3e:54:6b:0e:09:8a:23:07:f2:6b:6b:48:54:
+                    ad:5e:17:55:cc:aa:93:e1:4a:38:bc:dd:b2:30:b9:
+                    90:97:4e:62:dc:52:0a:a7:d2:15:d1:32:d9:fd:54:
+                    e5:e8:39:71:23:82:04:db:92:38:b9:0f:bb:c6:10:
+                    13:ef:41:4e:9b:43:73:36:6c:84:5d:23:45:a2:03:
+                    93:ca:f2:6e:53:08:8f:c5:4e:db:cb:01:d3:52:af:
+                    39:fc:52:05:7f:7e:22:28:cd:a2:d1:f8:dc:da:9d:
+                    56:cf:2e:8d:76:74:5e:23:0c:52:0b:c7:5b:27:05:
+                    dd:22:ef:91:52:ce:20:63:63:69:39:3a:50:ed:69:
+                    a2:5d
+                Exponent: 65537 (0x10001)
+        Attributes:
+            a0:00
+    Signature Algorithm: md5WithRSAEncryption
+         5b:3b:59:a5:27:d5:14:4d:7f:85:e8:95:02:fb:76:67:c2:e5:
+         88:b8:03:1b:fe:23:c4:5e:03:82:3e:27:14:46:5e:ce:80:2d:
+         ab:71:21:e8:fc:0a:34:83:1b:f4:3f:1f:aa:d7:9a:88:e7:e4:
+         5e:d9:ea:12:1d:d8:9b:a1:2c:64:32:42:39:9a:85:b0:9a:fd:
+         ea:d2:4d:99:69:d6:46:3a:be:36:d2:cc:1e:d4:b3:80:96:b4:
+         e2:0a:cf:28:a4:07:8a:ab:ae:79:3c:6c:69:0b:43:05:ee:75:
+         6a:70:93:b9:78:2e:2c:89:10:27:7b:0a:a6:0f:41:8b:b1:e8:
+         4c:2c:95:98:cd:95:2d:7a:c1:27:32:7c:14:22:8b:70:a5:7a:
+         02:4b:61:91:77:58:b9:f2:d6:2b:1d:88:31:8d:f4:55:3f:b0:
+         b2:a2:0a:88:96:6e:3a:2c:11:e6:35:ea:ac:ce:a6:87:23:a7:
+         23:df:61:4e:cc:62:fe:d0:44:48:e3:1e:3b:fa:04:7f:0e:3a:
+         87:11:49:fa:58:99:a9:06:be:4d:8a:1a:33:81:37:23:75:c8:
+         dd:0c:97:d4:7c:4f:33:0a:a0:f2:05:73:3e:59:14:1e:ac:d0:
+         fb:93:f5:c3:06:0f:1d:2b:f2:2b:59:7b:94:5d:43:07:83:ce:
+         93:06:09:34
+-----BEGIN CERTIFICATE REQUEST-----
+MIICwzCCAasCAQAwfjELMAkGA1UEBhMCVVMxEjAQBgNVBAgMCU1pbm5lc290YTET
+MBEGA1UEBwwKUGluZSBSaXZlcjEhMB8GA1UECgwYSHVudCBVdGlsaXRpZXMgR3Jv
+dXAgTExDMQ8wDQYDVQQLDAZIVUduZXQxEjAQBgNVBAMMCWxvY2FsaG9zdDCCASIw
+DQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAM//V+VBmKsAvSp4dn0I0BMCLGP0
+oHWSaxjAo3a3e+lyOZiAIcqa9hcHW1GHtLprtKEl2z8Bu+SHlNKyZf49/MSIVFUA
+RuGeUJfLorIV0kkO9dUsJAitYYJP+0cYl92JdJuNmG3eW4HUaDeOghD2CyONmI4k
+EEt71AM+VGsOCYojB/Jra0hUrV4XVcyqk+FKOLzdsjC5kJdOYtxSCqfSFdEy2f1U
+5eg5cSOCBNuSOLkPu8YQE+9BTptDczZshF0jRaIDk8ryblMIj8VO28sB01KvOfxS
+BX9+IijNotH43NqdVs8ujXZ0XiMMUgvHWycF3SLvkVLOIGNjaTk6UO1pol0CAwEA
+AaAAMA0GCSqGSIb3DQEBBAUAA4IBAQBbO1mlJ9UUTX+F6JUC+3ZnwuWIuAMb/iPE
+XgOCPicURl7OgC2rcSHo/Ao0gxv0Px+q15qI5+Re2eoSHdiboSxkMkI5moWwmv3q
+0k2ZadZGOr420swe1LOAlrTiCs8opAeKq655PGxpC0MF7nVqcJO5eC4siRAnewqm
+D0GLsehMLJWYzZUtesEnMnwUIotwpXoCS2GRd1i58tYrHYgxjfRVP7CyogqIlm46
+LBHmNeqszqaHI6cj32FOzGL+0ERI4x47+gR/DjqHEUn6WJmpBr5NihozgTcjdcjd
+DJfUfE8zCqDyBXM+WRQerND7k/XDBg8dK/IrWXuUXUMHg86TBgk0
+-----END CERTIFICATE REQUEST-----
+", true, "localhost"
+            ),
+            array(
+                "-----BEGIN CERTIFICATE REQUEST-----
+MIICyzCCAbMCAQAwgYUxCzAJBgNVBAYTAlVTMRIwEAYDVQQIDAlNaW5uZXNvdGEx
+EzARBgNVBAcMClBpbmUgUml2ZXIxITAfBgNVBAoMGEh1bnQgVXRpbGl0aWVzIEdy
+b3VwIExMQzEPMA0GA1UECwwGSFVHbmV0MRkwFwYDVQQDDBBtZS5hbmQubXkuc2hh
+ZG93MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4WLbid2KNrOURcJr
+/s2mPX/XJuw6snybEBZ0YEq5RDVW0ee+K0duScbon3Fz4iLnS7kT4JZxz9NoYhbg
+eZDP+17aXtDA/S85/Ilv3flStFMGHyXfrZ+LwZ3kDpxoNa23hEJsIO7SQ+Cl+uJv
+xlCXe+9AAPi+mR6vwrMT/UTkeaJogqcSXV8IlCSdzy1dxR/l0H1YBTZaSi77HlpN
+d/vaNVvZ3nWc0K4lEJxz6cREnmcWjUNYocgobjHa9xE8t50KkwUPz+6K7snN8MNl
+i5blpNfvov+a6CRMKPtJZscDYiCjqpPhoepfju2xGE7kwswuzgFcywiGeDKbD5ld
+CmiSYQIDAQABoAAwDQYJKoZIhvcNAQEEBQADggEBAKrIzFcye3oEddP5iwsYVKfJ
+CXMnIy49PosMlRDUSd3vTJLMiy7q+4arecEJkRAY6NGmvzMc9QL1Vb4nIVbQf7sZ
+YCb41LX0JjubfsKiLVe4cX98n3AzTOvbfLrLQ2tEuT+yM6FIrilMYdmmcF/f3MFU
+gkvcEoDRtIgaaYU8qbCnhRlgX0FIiyTE78WBM90I/F2dvuroB3C557m51qi1FQiw
+P6Q1Y2FxA8kW7uBdLfgu0nCcXHQsimXuLQar7OLedIHBZmbJcMEOF51u2A+VSXoM
+NVgXKWgeID8xgZ30JtXYwfvETeRZTr4QlIYCZN+p8kM/udsxGvqkrirrWcbhtzQ=
+-----END CERTIFICATE REQUEST-----
+", true, "me.and.my.shadow"
+            ),
+            array(
+                "-----BEGIN CERTIFICATE REQUEST-----
+-----END CERTIFICATE REQUEST-----
+", false, ""
+            ),
+            array(
+                null, false, ""
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $csr    The signing request
+    * @param bool   $expect The expected return
+    * @param string $file   The filename to read the csr out of
+    *
+    * @return null
+    *
+    * @dataProvider dataSignCSR
+    */
+    public function testSignCSR($csr, $expect, $file)
+    {
+        $this->setupCA();
+        if (is_string($csr)) {
+            $fd = fopen(
+                $this->sys->get("confdir")."/ssl/ca/requests/".$file.".csr", "w"
+            );
+            if ($fd) {
+                fwrite($fd, $csr);
+                fclose($fd);
+            }
+        }
+        $ret = $this->o->signCSR($file);
+        $this->assertSame($expect, $ret, "Return Wrong");
+        if ($ret) {
+            $cert = file_get_contents(
+                $this->sys->get("confdir")."/ssl/ca/signed/".$file.".crt"
+            );
+            $this->assertInternalType(
+                "int", 
+                strpos($cert, "-----BEGIN CERTIFICATE-----"), 
+                "File contents wrong"
+            );
+            $this->assertInternalType(
+                "int", 
+                strpos($cert, "-----END CERTIFICATE-----"), 
+                "File contents wrong"
+            );
+        }
+    }
+    /**
+    * Data provider for testRevoke
+    *
+    * @return array
+    */
+    public static function dataRevoke()
+    {
+        return array(
+            array(
+                "Certificate Request:
+    Data:
+        Version: 0 (0x0)
+        Subject: C=US, ST=Minnesota, L=Pine River, O=Hunt Utilities Group LLC, OU=HUGnet, CN=localhost
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit)
+                Modulus:
+                    00:cf:ff:57:e5:41:98:ab:00:bd:2a:78:76:7d:08:
+                    d0:13:02:2c:63:f4:a0:75:92:6b:18:c0:a3:76:b7:
+                    7b:e9:72:39:98:80:21:ca:9a:f6:17:07:5b:51:87:
+                    b4:ba:6b:b4:a1:25:db:3f:01:bb:e4:87:94:d2:b2:
+                    65:fe:3d:fc:c4:88:54:55:00:46:e1:9e:50:97:cb:
+                    a2:b2:15:d2:49:0e:f5:d5:2c:24:08:ad:61:82:4f:
+                    fb:47:18:97:dd:89:74:9b:8d:98:6d:de:5b:81:d4:
+                    68:37:8e:82:10:f6:0b:23:8d:98:8e:24:10:4b:7b:
+                    d4:03:3e:54:6b:0e:09:8a:23:07:f2:6b:6b:48:54:
+                    ad:5e:17:55:cc:aa:93:e1:4a:38:bc:dd:b2:30:b9:
+                    90:97:4e:62:dc:52:0a:a7:d2:15:d1:32:d9:fd:54:
+                    e5:e8:39:71:23:82:04:db:92:38:b9:0f:bb:c6:10:
+                    13:ef:41:4e:9b:43:73:36:6c:84:5d:23:45:a2:03:
+                    93:ca:f2:6e:53:08:8f:c5:4e:db:cb:01:d3:52:af:
+                    39:fc:52:05:7f:7e:22:28:cd:a2:d1:f8:dc:da:9d:
+                    56:cf:2e:8d:76:74:5e:23:0c:52:0b:c7:5b:27:05:
+                    dd:22:ef:91:52:ce:20:63:63:69:39:3a:50:ed:69:
+                    a2:5d
+                Exponent: 65537 (0x10001)
+        Attributes:
+            a0:00
+    Signature Algorithm: md5WithRSAEncryption
+         5b:3b:59:a5:27:d5:14:4d:7f:85:e8:95:02:fb:76:67:c2:e5:
+         88:b8:03:1b:fe:23:c4:5e:03:82:3e:27:14:46:5e:ce:80:2d:
+         ab:71:21:e8:fc:0a:34:83:1b:f4:3f:1f:aa:d7:9a:88:e7:e4:
+         5e:d9:ea:12:1d:d8:9b:a1:2c:64:32:42:39:9a:85:b0:9a:fd:
+         ea:d2:4d:99:69:d6:46:3a:be:36:d2:cc:1e:d4:b3:80:96:b4:
+         e2:0a:cf:28:a4:07:8a:ab:ae:79:3c:6c:69:0b:43:05:ee:75:
+         6a:70:93:b9:78:2e:2c:89:10:27:7b:0a:a6:0f:41:8b:b1:e8:
+         4c:2c:95:98:cd:95:2d:7a:c1:27:32:7c:14:22:8b:70:a5:7a:
+         02:4b:61:91:77:58:b9:f2:d6:2b:1d:88:31:8d:f4:55:3f:b0:
+         b2:a2:0a:88:96:6e:3a:2c:11:e6:35:ea:ac:ce:a6:87:23:a7:
+         23:df:61:4e:cc:62:fe:d0:44:48:e3:1e:3b:fa:04:7f:0e:3a:
+         87:11:49:fa:58:99:a9:06:be:4d:8a:1a:33:81:37:23:75:c8:
+         dd:0c:97:d4:7c:4f:33:0a:a0:f2:05:73:3e:59:14:1e:ac:d0:
+         fb:93:f5:c3:06:0f:1d:2b:f2:2b:59:7b:94:5d:43:07:83:ce:
+         93:06:09:34
+-----BEGIN CERTIFICATE REQUEST-----
+MIICwzCCAasCAQAwfjELMAkGA1UEBhMCVVMxEjAQBgNVBAgMCU1pbm5lc290YTET
+MBEGA1UEBwwKUGluZSBSaXZlcjEhMB8GA1UECgwYSHVudCBVdGlsaXRpZXMgR3Jv
+dXAgTExDMQ8wDQYDVQQLDAZIVUduZXQxEjAQBgNVBAMMCWxvY2FsaG9zdDCCASIw
+DQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAM//V+VBmKsAvSp4dn0I0BMCLGP0
+oHWSaxjAo3a3e+lyOZiAIcqa9hcHW1GHtLprtKEl2z8Bu+SHlNKyZf49/MSIVFUA
+RuGeUJfLorIV0kkO9dUsJAitYYJP+0cYl92JdJuNmG3eW4HUaDeOghD2CyONmI4k
+EEt71AM+VGsOCYojB/Jra0hUrV4XVcyqk+FKOLzdsjC5kJdOYtxSCqfSFdEy2f1U
+5eg5cSOCBNuSOLkPu8YQE+9BTptDczZshF0jRaIDk8ryblMIj8VO28sB01KvOfxS
+BX9+IijNotH43NqdVs8ujXZ0XiMMUgvHWycF3SLvkVLOIGNjaTk6UO1pol0CAwEA
+AaAAMA0GCSqGSIb3DQEBBAUAA4IBAQBbO1mlJ9UUTX+F6JUC+3ZnwuWIuAMb/iPE
+XgOCPicURl7OgC2rcSHo/Ao0gxv0Px+q15qI5+Re2eoSHdiboSxkMkI5moWwmv3q
+0k2ZadZGOr420swe1LOAlrTiCs8opAeKq655PGxpC0MF7nVqcJO5eC4siRAnewqm
+D0GLsehMLJWYzZUtesEnMnwUIotwpXoCS2GRd1i58tYrHYgxjfRVP7CyogqIlm46
+LBHmNeqszqaHI6cj32FOzGL+0ERI4x47+gR/DjqHEUn6WJmpBr5NihozgTcjdcjd
+DJfUfE8zCqDyBXM+WRQerND7k/XDBg8dK/IrWXuUXUMHg86TBgk0
+-----END CERTIFICATE REQUEST-----
+", true, "localhost"
+            ),
+            array(
+                "-----BEGIN CERTIFICATE REQUEST-----
+MIICyzCCAbMCAQAwgYUxCzAJBgNVBAYTAlVTMRIwEAYDVQQIDAlNaW5uZXNvdGEx
+EzARBgNVBAcMClBpbmUgUml2ZXIxITAfBgNVBAoMGEh1bnQgVXRpbGl0aWVzIEdy
+b3VwIExMQzEPMA0GA1UECwwGSFVHbmV0MRkwFwYDVQQDDBBtZS5hbmQubXkuc2hh
+ZG93MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4WLbid2KNrOURcJr
+/s2mPX/XJuw6snybEBZ0YEq5RDVW0ee+K0duScbon3Fz4iLnS7kT4JZxz9NoYhbg
+eZDP+17aXtDA/S85/Ilv3flStFMGHyXfrZ+LwZ3kDpxoNa23hEJsIO7SQ+Cl+uJv
+xlCXe+9AAPi+mR6vwrMT/UTkeaJogqcSXV8IlCSdzy1dxR/l0H1YBTZaSi77HlpN
+d/vaNVvZ3nWc0K4lEJxz6cREnmcWjUNYocgobjHa9xE8t50KkwUPz+6K7snN8MNl
+i5blpNfvov+a6CRMKPtJZscDYiCjqpPhoepfju2xGE7kwswuzgFcywiGeDKbD5ld
+CmiSYQIDAQABoAAwDQYJKoZIhvcNAQEEBQADggEBAKrIzFcye3oEddP5iwsYVKfJ
+CXMnIy49PosMlRDUSd3vTJLMiy7q+4arecEJkRAY6NGmvzMc9QL1Vb4nIVbQf7sZ
+YCb41LX0JjubfsKiLVe4cX98n3AzTOvbfLrLQ2tEuT+yM6FIrilMYdmmcF/f3MFU
+gkvcEoDRtIgaaYU8qbCnhRlgX0FIiyTE78WBM90I/F2dvuroB3C557m51qi1FQiw
+P6Q1Y2FxA8kW7uBdLfgu0nCcXHQsimXuLQar7OLedIHBZmbJcMEOF51u2A+VSXoM
+NVgXKWgeID8xgZ30JtXYwfvETeRZTr4QlIYCZN+p8kM/udsxGvqkrirrWcbhtzQ=
+-----END CERTIFICATE REQUEST-----
+", true, "me.and.my.shadow"
+            ),
+            array(
+                "-----BEGIN CERTIFICATE REQUEST-----
+-----END CERTIFICATE REQUEST-----
+", true, ""
+            ),
+            array(
+                null, false, ""
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $crt    The signing request
+    * @param bool   $expect The expected return
+    * @param string $file   The filename to read the csr out of
+    *
+    * @return null
+    *
+    * @dataProvider dataRevoke
+    */
+    public function testRevoke($crt, $expect, $file)
+    {
+        $this->setupCA();
+        if (is_string($crt)) {
+            $fd = fopen(
+                $this->sys->get("confdir")."/ssl/ca/signed/".$file.".crt", "w"
+            );
+            if ($fd) {
+                fwrite($fd, $csr);
+                fclose($fd);
+            }
+        }
+        $ret = $this->o->revoke($file);
+        $this->assertSame($expect, $ret, "Return Wrong");
+        if ($ret) {
+            $confdir = $this->sys->get("confdir");
+            $this->assertFileExists(
+                $confdir."/ssl/ca/revoked/".$file.".crt", "Revoked cert missing"
+            );
         }
     }
 

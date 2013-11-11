@@ -1,0 +1,80 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 0 (0x0)
+    Signature Algorithm: md5WithRSAEncryption
+        Issuer: C=US, ST=Minnesota, L=Pine River, O=Hunt Utilities Group LLC, OU=HUGnet, CN=Array
+        Validity
+            Not Before: Nov 10 15:54:47 2013 GMT
+            Not After : Nov  8 15:54:47 2023 GMT
+        Subject: C=US, ST=Minnesota, L=Pine River, O=Hunt Utilities Group LLC, OU=HUGnet, CN=Array
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit)
+                Modulus:
+                    00:c1:ed:45:60:47:6f:e9:85:8a:b3:cb:0f:00:76:
+                    bc:70:c8:6c:b0:cc:a8:c9:3f:c7:62:1e:7d:c6:5b:
+                    d6:21:f0:6c:19:ea:f0:a0:c3:48:96:1b:9e:e4:f5:
+                    ca:28:b0:53:0f:11:d9:13:9f:f9:e4:1d:a8:4b:54:
+                    fc:9f:18:d0:20:1a:29:27:b5:5f:08:1e:b8:b9:65:
+                    b6:6c:03:c9:7b:14:d4:7b:ab:40:11:7a:3c:40:f7:
+                    c5:00:12:f4:28:3c:e8:a1:62:2a:53:3e:60:7c:14:
+                    f4:e0:d4:ac:c0:44:59:12:47:ba:42:57:30:2c:87:
+                    b1:be:18:87:78:20:69:3e:55:f9:eb:e2:5d:a5:53:
+                    90:0f:08:3f:b6:c6:88:43:48:28:e8:2e:2b:cb:6c:
+                    1f:c5:d9:42:08:dc:b1:bf:be:9f:02:05:7e:5c:c1:
+                    9d:38:59:38:5a:d8:9d:01:a4:66:3e:1d:92:fe:43:
+                    16:c8:16:0b:6c:21:84:b5:cc:af:0d:c5:7c:d0:3b:
+                    5d:4b:f2:d5:f5:34:51:98:86:da:87:e3:58:b3:23:
+                    e3:99:51:98:4a:cd:2d:54:bf:89:63:ee:dc:27:9a:
+                    27:b2:c6:57:53:61:d4:22:ca:8f:2a:f7:34:d5:81:
+                    75:a3:a8:c4:f9:90:8b:0b:31:d6:b6:42:60:a1:e4:
+                    02:73
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Subject Key Identifier: 
+                97:F1:FA:90:63:CB:0F:BE:FD:5B:4C:B9:55:82:54:3E:94:C3:B9:F1
+            X509v3 Authority Key Identifier: 
+                keyid:97:F1:FA:90:63:CB:0F:BE:FD:5B:4C:B9:55:82:54:3E:94:C3:B9:F1
+
+            X509v3 Basic Constraints: 
+                CA:TRUE
+    Signature Algorithm: md5WithRSAEncryption
+         18:65:2e:ca:d9:71:2e:c4:d9:da:be:13:93:cf:cd:3a:d4:10:
+         a8:50:1b:a6:fd:22:12:9c:08:07:1c:4d:ba:35:be:a6:d9:97:
+         c9:03:72:df:45:68:34:2a:d6:e6:42:59:ae:21:0e:27:db:5e:
+         54:20:b8:39:78:c1:25:96:bd:b4:49:76:37:25:df:ca:fa:2e:
+         ab:67:1f:5f:3f:c0:42:75:f9:49:cf:7a:26:f6:09:5c:59:ce:
+         12:7e:4a:73:f2:20:ca:2b:f4:bf:04:14:fd:be:cd:58:78:ec:
+         10:d7:a6:3e:49:35:e5:30:cf:b6:dd:e9:67:44:3e:b2:bc:66:
+         9d:43:4b:d2:7e:05:b6:8f:55:b0:7d:a9:9b:02:55:56:0d:6b:
+         09:7d:67:53:2d:66:fb:93:51:dd:43:77:66:9f:ac:ff:e7:49:
+         5a:75:30:06:3e:f3:4b:f6:7e:52:93:20:bf:8e:f9:db:6b:e8:
+         03:d5:0e:36:be:49:2d:30:eb:56:cf:19:ca:0e:f6:5f:52:2c:
+         01:1d:5a:c5:b3:88:a9:1a:e8:ce:89:ab:d7:fa:35:ce:e1:2c:
+         81:c8:f4:92:86:57:d9:3f:e9:c8:d6:59:00:ef:c5:c4:6b:1f:
+         c3:1c:2e:b3:9f:c2:2f:7c:0b:2b:97:1f:bb:43:b4:7a:f1:22:
+         1a:eb:44:d8
+-----BEGIN CERTIFICATE-----
+MIIDvzCCAqegAwIBAgIBADANBgkqhkiG9w0BAQQFADB6MQswCQYDVQQGEwJVUzES
+MBAGA1UECAwJTWlubmVzb3RhMRMwEQYDVQQHDApQaW5lIFJpdmVyMSEwHwYDVQQK
+DBhIdW50IFV0aWxpdGllcyBHcm91cCBMTEMxDzANBgNVBAsMBkhVR25ldDEOMAwG
+A1UEAwwFQXJyYXkwHhcNMTMxMTEwMTU1NDQ3WhcNMjMxMTA4MTU1NDQ3WjB6MQsw
+CQYDVQQGEwJVUzESMBAGA1UECAwJTWlubmVzb3RhMRMwEQYDVQQHDApQaW5lIFJp
+dmVyMSEwHwYDVQQKDBhIdW50IFV0aWxpdGllcyBHcm91cCBMTEMxDzANBgNVBAsM
+BkhVR25ldDEOMAwGA1UEAwwFQXJyYXkwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAw
+ggEKAoIBAQDB7UVgR2/phYqzyw8AdrxwyGywzKjJP8diHn3GW9Yh8GwZ6vCgw0iW
+G57k9coosFMPEdkTn/nkHahLVPyfGNAgGikntV8IHri5ZbZsA8l7FNR7q0ARejxA
+98UAEvQoPOihYipTPmB8FPTg1KzARFkSR7pCVzAsh7G+GId4IGk+Vfnr4l2lU5AP
+CD+2xohDSCjoLivLbB/F2UII3LG/vp8CBX5cwZ04WTha2J0BpGY+HZL+QxbIFgts
+IYS1zK8NxXzQO11L8tX1NFGYhtqH41izI+OZUZhKzS1Uv4lj7twnmieyxldTYdQi
+yo8q9zTVgXWjqMT5kIsLMda2QmCh5AJzAgMBAAGjUDBOMB0GA1UdDgQWBBSX8fqQ
+Y8sPvv1bTLlVglQ+lMO58TAfBgNVHSMEGDAWgBSX8fqQY8sPvv1bTLlVglQ+lMO5
+8TAMBgNVHRMEBTADAQH/MA0GCSqGSIb3DQEBBAUAA4IBAQAYZS7K2XEuxNnavhOT
+z8061BCoUBum/SISnAgHHE26Nb6m2ZfJA3LfRWg0KtbmQlmuIQ4n215UILg5eMEl
+lr20SXY3Jd/K+i6rZx9fP8BCdflJz3om9glcWc4Sfkpz8iDKK/S/BBT9vs1YeOwQ
+16Y+STXlMM+23elnRD6yvGadQ0vSfgW2j1WwfambAlVWDWsJfWdTLWb7k1HdQ3dm
+n6z/50ladTAGPvNL9n5SkyC/jvnba+gD1Q42vkktMOtWzxnKDvZfUiwBHVrFs4ip
+GujOiavX+jXO4SyByPSShlfZP+nI1lkA78XEax/DHC6zn8IvfAsrlx+7Q7R68SIa
+60TY
+-----END CERTIFICATE-----

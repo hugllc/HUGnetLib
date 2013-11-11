@@ -1,0 +1,62 @@
+Certificate Request:
+    Data:
+        Version: 0 (0x0)
+        Subject: C=US, ST=Minnesota, L=Pine River, O=Hunt Utilities Group LLC, OU=HUGnet, CN=Array
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit)
+                Modulus:
+                    00:c1:ed:45:60:47:6f:e9:85:8a:b3:cb:0f:00:76:
+                    bc:70:c8:6c:b0:cc:a8:c9:3f:c7:62:1e:7d:c6:5b:
+                    d6:21:f0:6c:19:ea:f0:a0:c3:48:96:1b:9e:e4:f5:
+                    ca:28:b0:53:0f:11:d9:13:9f:f9:e4:1d:a8:4b:54:
+                    fc:9f:18:d0:20:1a:29:27:b5:5f:08:1e:b8:b9:65:
+                    b6:6c:03:c9:7b:14:d4:7b:ab:40:11:7a:3c:40:f7:
+                    c5:00:12:f4:28:3c:e8:a1:62:2a:53:3e:60:7c:14:
+                    f4:e0:d4:ac:c0:44:59:12:47:ba:42:57:30:2c:87:
+                    b1:be:18:87:78:20:69:3e:55:f9:eb:e2:5d:a5:53:
+                    90:0f:08:3f:b6:c6:88:43:48:28:e8:2e:2b:cb:6c:
+                    1f:c5:d9:42:08:dc:b1:bf:be:9f:02:05:7e:5c:c1:
+                    9d:38:59:38:5a:d8:9d:01:a4:66:3e:1d:92:fe:43:
+                    16:c8:16:0b:6c:21:84:b5:cc:af:0d:c5:7c:d0:3b:
+                    5d:4b:f2:d5:f5:34:51:98:86:da:87:e3:58:b3:23:
+                    e3:99:51:98:4a:cd:2d:54:bf:89:63:ee:dc:27:9a:
+                    27:b2:c6:57:53:61:d4:22:ca:8f:2a:f7:34:d5:81:
+                    75:a3:a8:c4:f9:90:8b:0b:31:d6:b6:42:60:a1:e4:
+                    02:73
+                Exponent: 65537 (0x10001)
+        Attributes:
+            a0:00
+    Signature Algorithm: md5WithRSAEncryption
+         68:c5:aa:4a:7c:3e:c1:39:e1:6a:88:dc:57:3d:3c:ec:ac:d8:
+         b8:65:ef:65:5a:39:40:5c:63:5e:8c:13:41:e8:34:ad:d1:96:
+         8f:44:b7:df:d2:54:28:7f:b0:c1:28:73:5f:26:08:dd:c8:b8:
+         48:f7:d1:04:40:18:d4:a5:f8:75:b1:12:15:56:91:d1:15:42:
+         cd:96:bc:12:71:06:84:b5:bc:34:b1:bd:4e:2f:82:3f:6b:07:
+         81:66:7d:cf:6f:1b:bd:a4:82:92:c9:79:75:54:c1:37:f2:62:
+         9c:fc:c3:8e:42:0c:d8:82:3c:bb:85:0b:e0:6a:a6:fd:8c:38:
+         03:3f:39:ef:a7:94:59:1c:f4:bb:52:ad:f5:12:39:b6:52:7c:
+         f3:8c:a4:1f:a9:de:de:ee:62:70:e3:c7:43:65:57:2d:dc:ae:
+         48:5a:4f:e6:48:a5:a1:d6:70:da:8d:46:50:99:4f:d1:44:5e:
+         05:d2:02:88:8b:e4:9f:44:0e:ed:b9:fe:3e:13:14:9e:dc:e2:
+         98:ad:79:9b:f0:20:e2:ad:d1:4d:ef:3b:ca:ca:d8:59:19:48:
+         e9:a3:77:cf:68:3e:02:57:a6:21:5d:a0:2c:c3:05:28:e4:a4:
+         91:f3:a5:1f:6f:87:8e:45:5a:f7:da:85:25:66:2c:c8:f2:aa:
+         0e:58:3f:4e
+-----BEGIN CERTIFICATE REQUEST-----
+MIICvzCCAacCAQAwejELMAkGA1UEBhMCVVMxEjAQBgNVBAgMCU1pbm5lc290YTET
+MBEGA1UEBwwKUGluZSBSaXZlcjEhMB8GA1UECgwYSHVudCBVdGlsaXRpZXMgR3Jv
+dXAgTExDMQ8wDQYDVQQLDAZIVUduZXQxDjAMBgNVBAMMBUFycmF5MIIBIjANBgkq
+hkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwe1FYEdv6YWKs8sPAHa8cMhssMyoyT/H
+Yh59xlvWIfBsGerwoMNIlhue5PXKKLBTDxHZE5/55B2oS1T8nxjQIBopJ7VfCB64
+uWW2bAPJexTUe6tAEXo8QPfFABL0KDzooWIqUz5gfBT04NSswERZEke6QlcwLIex
+vhiHeCBpPlX56+JdpVOQDwg/tsaIQ0go6C4ry2wfxdlCCNyxv76fAgV+XMGdOFk4
+WtidAaRmPh2S/kMWyBYLbCGEtcyvDcV80DtdS/LV9TRRmIbah+NYsyPjmVGYSs0t
+VL+JY+7cJ5onssZXU2HUIsqPKvc01YF1o6jE+ZCLCzHWtkJgoeQCcwIDAQABoAAw
+DQYJKoZIhvcNAQEEBQADggEBAGjFqkp8PsE54WqI3Fc9POys2Lhl72VaOUBcY16M
+E0HoNK3Rlo9Et9/SVCh/sMEoc18mCN3IuEj30QRAGNSl+HWxEhVWkdEVQs2WvBJx
+BoS1vDSxvU4vgj9rB4Fmfc9vG72kgpLJeXVUwTfyYpz8w45CDNiCPLuFC+Bqpv2M
+OAM/Oe+nlFkc9LtSrfUSObZSfPOMpB+p3t7uYnDjx0NlVy3crkhaT+ZIpaHWcNqN
+RlCZT9FEXgXSAoiL5J9EDu25/j4TFJ7c4piteZvwIOKt0U3vO8rK2FkZSOmjd89o
+PgJXpiFdoCzDBSjkpJHzpR9vh45FWvfahSVmLMjyqg5YP04=
+-----END CERTIFICATE REQUEST-----

@@ -90,7 +90,7 @@ class SSLCA
             !is_object($system)
         );
         $this->_system = $system;
-        $this->_certdata["commonName"] = (string)$system->get('fqdn');
+        $this->_certdata["commonName"] = (string)$system->get('uuid');
         $this->_ssldir = $this->system()->get("confdir")."/ssl/ca";
         $this->_setup();
     }
@@ -131,7 +131,7 @@ class SSLCA
     */
     private function _setup()
     {
-        $dirs = array("", "/private", "/requests", "/signed");
+        $dirs = array("", "/private", "/requests", "/signed", "/revoked");
         foreach($dirs as $dir) {
             if (!file_exists($this->_ssldir.$dir)) {
                 mkdir($this->_ssldir.$dir, 0750, true);
@@ -165,22 +165,31 @@ class SSLCA
             chmod($this->_ssldir."/".self::FILE_CSR, 0640);
             // Set strict permissions on th ekey
             chmod($this->_ssldir."/".self::FILE_KEY, 0600);
-
+            // Free the keys
+            openssl_pkey_free($privkey);
+            openssl_x509_free($sscert);
         }
+        $this->_pkey = openssl_pkey_get_private(
+            file_get_contents($this->_ssldir."/".self::FILE_KEY)
+        );
+        $this->_cert = openssl_x509_read(
+            file_get_contents($this->_ssldir."/".self::FILE_CERT)
+        );
     }
     /**
     * Imports a CSR
     *
-    * @param string $csr The csr to import
+    * @param string $csr  The csr to import
+    * @param string $uuid The uuid of the system this csr belongs to.
     *
     * @return bool True on success, false on failure
     */
-    public function saveCSR($csr)
+    public function saveCSR($csr, $uuid)
     {
         $data = openssl_csr_get_subject($csr, false);
         $ret = false;
-        if (is_array($data) && !empty($data["commonName"])) {
-            $file = $this->_ssldir."/requests/".$data["commonName"].".csr";
+        if (is_array($data) && ($data["commonName"] == $uuid)) {
+            $file = $this->_ssldir."/requests/".$uuid.".csr";
             $fd = fopen($file, "w");
             if ($fd) {
                 $ret = fwrite($fd, $csr);
@@ -188,6 +197,88 @@ class SSLCA
             }
         }
         return (bool)$ret;
+    }
+    /**
+    * Signs a CSR
+    *
+    * The CSR should already be put in place by saveCSR()
+    *
+    * @param string $uuid The uuid of the system this csr belongs to.
+    *
+    * @return bool True on success, false on failure
+    */
+    public function signCSR($uuid)
+    {
+        $csrfile = $this->_ssldir."/requests/".$uuid.".csr";
+        if (!file_exists($csrfile)) {
+            return false;
+        }
+        $csr  = file_get_contents($csrfile);
+        $data = openssl_csr_get_subject($csr, false);
+        $ret  = false;
+        if (is_array($data) && ($data["commonName"] == $uuid)) {
+            $file = $this->_ssldir."/signed/".$uuid.".crt";
+            if (!file_exists($file)) {
+                $sscert = openssl_csr_sign(
+                    $csr, $this->_cert, $this->_pkey, self::CERT_VALID
+                );
+                // Export the Cert
+                $ret = openssl_x509_export_to_file(
+                    $sscert, $file, false
+                );
+                openssl_x509_free($sscert);
+            }
+            unlink($csrfile);
+        }
+        return (bool)$ret;
+    }
+    /**
+    * Signs a CSR
+    *
+    * The CSR should already be put in place by saveCSR()
+    *
+    * @param string $uuid The uuid of the system this csr belongs to.  'ca' for the
+    *                     certficate of the CA.  
+    *
+    * @return string certificate in PEM format.  NULL if certificate not found.
+    */
+    public function cert($uuid)
+    {
+        $uuid = trim($uuid);
+        if (strtolower($uuid) == "ca") {
+            $file = $this->_ssldir."/ca.crt";
+            if (file_exists($file)) {
+                $ret = file_get_contents($file);
+            }
+        } else {
+            $file = $this->_ssldir."/signed/".$uuid.".crt";
+            if (file_exists($file)) {
+                $ret = file_get_contents($file);
+            }
+        }
+        return $ret;
+    }
+    /**
+    * Revokes a certificate
+    *
+    * The CSR should already be put in place by saveCSR()
+    *
+    * @param string $uuid The uuid of the system this csr belongs to.  'ca' for the
+    *                     certficate of the CA.  
+    *
+    * @return string certificate in PEM format.  NULL if certificate not found.
+    */
+    public function revoke($uuid)
+    {
+        $uuid = trim($uuid);
+        $file = $this->_ssldir."/signed/".$uuid.".crt";
+        $ret = false;
+        if (file_exists($file)) {
+            copy($file, $this->_ssldir."/revoked/".$uuid.".crt");
+            unlink($file);
+            $ret = true;
+        }
+        return $ret;
     }
 }
 
