@@ -64,6 +64,10 @@ class SDEFAULT extends \HUGnet\devices\inputTable\Driver
         "longName" => "Unknown Input",
         "shortName" => "Unknown",
         "unitType" => "unknown",
+        "dataTypes" => array(
+            \HUGnet\devices\datachan\Driver::TYPE_IGNORE
+                => \HUGnet\devices\datachan\Driver::TYPE_IGNORE,
+        ),
     );
     /**
     * Changes a raw reading into a output value

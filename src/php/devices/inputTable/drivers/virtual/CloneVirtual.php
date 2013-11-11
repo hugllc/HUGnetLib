@@ -98,8 +98,16 @@ class CloneVirtual extends \HUGnet\devices\inputTable\DriverVirtual
             } else {
                 $sensor = $this->input()->system()->device($did)->input($sen);
                 // Set our location the same as the other sensors and lock it there
-                $this->params["location"] = $sensor->get("location");
-                $this->input()->set("location", $this->params["location"]);
+                if ($sensor->get("driver") == "EmptySensor") {
+                    $loc = sprintf("(Input %06X.%d does not exist)", $did, $sen);
+                } else {
+                    $loc = $sensor->get("location");
+                    if (empty($loc)) {
+                        $loc = "(No Input Label)";
+                    }
+                }
+                $this->params["location"] = $loc;
+                $this->input()->set("location", $loc);
                 // Create our clone.
                 $this->_clone = parent::factory(
                     $sensor->get("driver"),
@@ -143,8 +151,20 @@ class CloneVirtual extends \HUGnet\devices\inputTable\DriverVirtual
     public function channels()
     {
         $ret = $this->_clone()->channels();
-        foreach (array_keys((array)$ret) as $key) {
-            $ret[$key]["epChannel"] = false;
+        if (empty($ret)) {
+            $input = $this->getExtra(0).".".$this->getExtra(1);
+            $ret = array(
+                array(
+                    "units" => "Unknown",
+                    "unitType" => "Unknown",
+                    "dataType" => \HUGnet\devices\datachan\Driver::TYPE_IGNORE,
+                    "index" => 0,
+                )
+            );
+        } else {
+            foreach (array_keys((array)$ret) as $key) {
+                $ret[$key]["epChannel"] = false;
+            }
         }
         return $ret;
     }

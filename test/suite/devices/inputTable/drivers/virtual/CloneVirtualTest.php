@@ -616,6 +616,91 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                     'location'     => 'Well hello there!',
                 ),
             ),
+            array(
+                array(
+                    "Input" => array(
+                        "system" => new \HUGnet\DummySystem("System"),
+                        "get" => array(
+                            "extra" => array("000AAC", 8),
+                        ),
+                    ),
+                    "System" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "input" => new \HUGnet\DummyBase("Input2"),
+                    ),
+                ),
+                array(
+                    'longName'     => 'Unknown Input',
+                    'shortName'    => 'CloneVirtual',
+                    'unitType'     => 'unknown',
+                    'bound'        => false,
+                    'virtual'      => true,
+                    'total'        => false,
+                    'extraText'    => array('Device ID', 'Input'),
+                    'extraDefault' => array('', ''),
+                    'extraValues'  => array(8, 3),
+                    "extraDesc"    => array(
+                        "The DeviceID of the board (in hexidecimal)",
+                        "The INPUT to clone.  Zero based."
+                    ),
+                    'storageUnit'  => 'unknown',
+                    'storageType'  => 'raw',
+                    'maxDecimals'  => 2,
+                    'dataTypes'    => array(
+                        'ignore' => 'ignore',
+                    ),
+                    'inputSize'    => 3,
+                    'location'     => '(No Input Label)',
+                ),
+            ),
+            array(
+                array(
+                    "Input" => array(
+                        "system" => new \HUGnet\DummySystem("System"),
+                        "get" => array(
+                            "extra" => array("0000AC", 3),
+                        ),
+                    ),
+                    "System" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "input" => new \HUGnet\DummyBase("Input2"),
+                    ),
+                    "Input2" => array(
+                        "get" => array(
+                            "driver"   => "EmptySensor",
+                            "location" => "",
+                        ),
+                    ),
+                ),
+                array(
+                    'longName'     => 'Empty Sensor',
+                    'shortName'    => 'CloneVirtual',
+                    'unitType'     => 'None',
+                    'bound'        => false,
+                    'virtual'      => true,
+                    'total'        => false,
+                    'extraText'    => array('Device ID', 'Input'),
+                    'extraDefault' => array('', ''),
+                    'extraValues'  => array(8, 3),
+                    "extraDesc"    => array(
+                        "The DeviceID of the board (in hexidecimal)",
+                        "The INPUT to clone.  Zero based."
+                    ),
+                    'storageUnit'  => 'none',
+                    'storageType'  => 'ignore',
+                    'maxDecimals'  => 0,
+                    'dataTypes'    => array(
+                        'ignore' => 'ignore',
+                    ),
+                    'inputSize'    => 3,
+                    'location'     => '(Input 0000AC.3 does not exist)',
+                    'id'           => 255,
+                ),
+            ),
         );
     }
     /**
@@ -633,6 +718,109 @@ class CloneVirtualTest extends DriverTestBaseVirtual
         $sens = new \HUGnet\DummyTable("Input");
         $sens->resetMock($mocks);
         $this->assertEquals($expect, $this->o->toArray());
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataChannels()
+    {
+        return array(
+            array(
+                array(
+                    "Input" => array(
+                        "system" => new \HUGnet\DummySystem("System"),
+                        "get" => array(
+                            "extra" => array("0000AC", 3),
+                        ),
+                    ),
+                    "System" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "input" => new \HUGnet\DummyBase("Input2"),
+                    ),
+                    "Input2" => array(
+                        "get" => array(
+                            "driver" => "AVRBC2322640",
+                            "location" => "Well hello there!",
+                        ),
+                        'channels' => array(
+                            array(
+                                "storageUnit" => "unknown",
+                                "maxDecimals" => 2,
+                                "unitType" => "asdf",
+                                "storageType" =>
+                                    \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                                "location" => "asdf",
+                            ),
+                        ),
+                    ),
+                ),
+                "DriverTestClass",
+                array(
+                    array(
+                        "decimals" => 2,
+                        "units" => '&#176;C',
+                        "maxDecimals" => 2,
+                        "storageUnit" => '&#176;C',
+                        "unitType" => 'Temperature',
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                        "label" => "Well hello there!",
+                        "index" => 0,
+                        "epChannel" => false,
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    "Input" => array(
+                        "system" => new \HUGnet\DummySystem("System"),
+                        "get" => array(
+                            "extra" => array("0000AC", 3),
+                        ),
+                    ),
+                    "System" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "input" => new \HUGnet\DummyBase("Input2"),
+                    ),
+                    "Input2" => array(
+                        "get" => array(
+                            "driver" => "EmptySensor",
+                        ),
+                    ),
+                ),
+                "DriverTestClass",
+                array(
+                    array(
+                        'units' => 'Unknown',
+                        'unitType' => 'Unknown',
+                        'dataType' => 'ignore',
+                        'index' => 0,
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $mocks  The mocks to use
+    * @param string $name   The name of the variable to test.
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataChannels
+    */
+    public function testChannels($mocks, $name, $expect)
+    {
+        $sensor = new \HUGnet\DummyBase("Input");
+        $sensor->resetMock($mocks);
+        $this->assertSame($expect, $this->o->channels());
     }
 
 }
