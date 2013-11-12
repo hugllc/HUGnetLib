@@ -100,7 +100,6 @@ class PullHistory extends \HUGnet\processes\replicate\Periodic
             $now = $this->system()->now();
             $ids = $this->_device->ids();
             foreach (array_keys($ids) as $key) {
-                $this->system()->out("Pulling History for ".sprintf("%06X", $key));
                 $this->system()->main();
                 if (!$this->ui()->loop()) {
                     break;
@@ -109,7 +108,6 @@ class PullHistory extends \HUGnet\processes\replicate\Periodic
                 if ($this->_checkDevice($this->_device, $now)) {
                     $this->_pullHistory($this->_device);
                 }
-                $this->system()->out("Done");
             }
             $this->last = $now;
         }
@@ -143,6 +141,7 @@ class PullHistory extends \HUGnet\processes\replicate\Periodic
     {
         $pull = $dev->getParam("PullHistory");
         if (is_null($pull) || ($pull != 0)) {
+            $this->system()->out("Pulling History for ".sprintf("%06X", $key));
             $hist = $dev->historyFactory(array(), true);
             $cnt = 0;
             do {
@@ -152,7 +151,7 @@ class PullHistory extends \HUGnet\processes\replicate\Periodic
                     break;
                 }
             } while (($ret == self::MAX_HISTORY) && ($cnt < 10));
-            $arch = $dev->get("arch");
+            $this->system()->out("Done");
         }
     }
     /**
