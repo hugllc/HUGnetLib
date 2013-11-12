@@ -197,7 +197,7 @@ class PullHistory extends \HUGnet\processes\replicate\Periodic
                         $bad++;
                     }
                 }
-                $ount = count($ret);
+                $count = count($ret);
             } else {
                 $this->system()->out(
                     sprintf("%06X ", $dev->id())
