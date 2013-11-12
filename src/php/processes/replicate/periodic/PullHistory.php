@@ -224,7 +224,7 @@ class PullHistory extends \HUGnet\processes\replicate\Periodic
             $dev->setLocalParam($param, $last);
             // This sets the last history date.
             $dev->setLocalParam("Last".$name."History", $last);
-            var_dump($dev->store());
+            $dev->store();
         }
         return $count;
     }
