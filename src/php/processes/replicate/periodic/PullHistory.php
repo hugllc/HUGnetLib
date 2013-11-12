@@ -59,7 +59,7 @@ class PullHistory extends \HUGnet\processes\replicate\Periodic
     /** This is the maximum number of history records to get */
     const MAX_HISTORY = 1000;
     /** This is the period */
-    protected $period = 30;
+    protected $period = 10;
     /** This is the object we use */
     private $_device;
     /** This is the url to get stuff from */
@@ -143,7 +143,11 @@ class PullHistory extends \HUGnet\processes\replicate\Periodic
         $pull = $dev->getParam("PullHistory");
         if (is_null($pull) || ($pull != 0)) {
             $hist = $dev->historyFactory(array(), true);
-            $this->_pullHist($dev, $hist, "LastMasterHistoryPull", "");
+            $cnt = 0;
+            do {
+                $ret = $this->_pullHist($dev, $hist, "LastMasterHistoryPull", "");
+                $cnt++;
+            } while (($ret == self::MAX_HISTORY) && ($cnt < 10));
             $arch = $dev->get("arch");
             //if ($this->ui()->get("pull_raw_history") && ($arch !== "virtual")) {
             //    $hist = $this->system()->table("RawHistory");
@@ -193,6 +197,7 @@ class PullHistory extends \HUGnet\processes\replicate\Periodic
                         $bad++;
                     }
                 }
+                $ount = count($ret);
             } else {
                 $this->system()->out(
                     sprintf("%06X ", $dev->id())
@@ -221,6 +226,7 @@ class PullHistory extends \HUGnet\processes\replicate\Periodic
             $dev->setLocalParam("Last".$name."History", $last);
             $dev->store();
         }
+        return $count;
     }
     /**
     * Gets the config and saves it
@@ -243,7 +249,7 @@ class PullHistory extends \HUGnet\processes\replicate\Periodic
                 "data"   => array(
                     "since" => $start,
                     "until" => time(),
-                    "limit" => 1000,
+                    "limit" => self::MAX_HISTORY,
                     "order" => "asc",
                     "type"  => "history",
                 ),
