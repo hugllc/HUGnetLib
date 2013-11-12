@@ -307,8 +307,11 @@ abstract class Driver extends DriverBase
         $string = "";
         $data = array();
         foreach ((array)$array as $name => $value) {
-            $string .= $sep.$this->arrayWhereDoStuff($name, $value, $data);
-            $sep = $this->gates['$and'];
+            $str = $this->arrayWhereDoStuff($name, $value, $data);
+            if (!empty($str)) {
+                $string .= $sep.$str;
+                $sep = $this->gates['$and'];
+            }
         }
         if (!empty($string)) {
             $string = "(".$string.")";
@@ -368,7 +371,10 @@ abstract class Driver extends DriverBase
             $string = "`".$name."` = ? ";
             $data[] = $array;
         }
-        return "(".$string.")";
+        if (!empty($string)) {
+            $string = "(".$string.")";
+        }
+        return $string;
     }
     /**
      * This converts a single set of Comparison operators
@@ -385,11 +391,17 @@ abstract class Driver extends DriverBase
         $sep = "";
         foreach ((array)$array as $bit) {
             foreach ((array)$bit as $name => $value) {
-                $string .= $sep.$this->arrayWhereDoStuff($name, $value, $data);
-                $sep = $this->gates[$gate];
+                $str = $this->arrayWhereDoStuff($name, $value, $data);
+                if (!empty($str)) {
+                    $string .= $sep.$str;
+                    $sep = $this->gates[$gate];
+                }
             }
         }
-        return "(".$string.")";
+        if (!empty($string)) {
+            $string = "(".$string.")";
+        }
+        return $string;
     }
     /**
     * Updates a row in the database.

@@ -1566,6 +1566,61 @@ class DriverTest extends \PHPUnit_Extensions_Database_TestCase
         $res = $this->o->countWhere($where, $whereData, $column);
         $this->assertSame($expect, $res);
     }
+    /**
+    * Data provider for testCountWhere
+    *
+    * @return array
+    */
+    public static function dataArrayWhere()
+    {
+        return array(
+            array( // #0
+                array(
+                    "id" => 5,
+                ),  // array
+                " WHERE (`id` = ? )", // expect
+                array(5), // data
+            ),
+            array( // #1 Got an array
+                array(
+                    "id" => 5,
+                    "hello" => array(1,2,3,4),
+                ),  // array
+                " WHERE (`id` = ? )", // expect
+                array(5), // data
+            ),
+            array( // #2 Complicated stuff
+                array(
+                    "id" => array(
+                        '$gt' => 5,
+                        '$lt' => 3,
+                    ),
+                ),  // array
+                " WHERE ((`id` > ?  AND `id` < ? ))", // expect
+                array(5, 3), // data
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param array  $array  The array where clause
+    * @param string $expect The where clause expected
+    * @param array  $data   The data we expect
+    *
+    * @return null
+    *
+    * @dataProvider dataArrayWhere
+    */
+    public function testArrayWhere(
+        $array,
+        $expect,
+        $data
+    ) {
+        $this->o->arrayWhere($array);
+        $this->assertAttributeSame($expect, "query", $this->o);
+        $this->assertAttributeSame($data, "whereData", $this->o);
+    }
 
 }
 
@@ -1660,6 +1715,17 @@ class HUGnetDBDriverTestStub extends \HUGnet\db\Driver
     public function tables()
     {
         return array();
+    }
+    /**
+    * This converts a Mongodb style array where into an SQL where statement
+    * 
+    * @param array $array The array to convert
+    *
+    * @return null
+    */
+    public function arrayWhere($array)
+    {
+        return parent::arrayWhere($array);
     }
 }
 ?>
