@@ -524,7 +524,7 @@ class Action
         );
         $fixture = $this->device->fixture();
         $fixture->import($ret);
-        $fixture->exportDevice();
+        $fixture->mergeDevice();
         return $this->device->load($this->device->id());
         
     }

@@ -100,7 +100,7 @@ class PullHistory extends \HUGnet\processes\replicate\Periodic
             $now = $this->system()->now();
             $ids = $this->_device->ids();
             foreach (array_keys($ids) as $key) {
-                $this->system()->out("Working on ".sprintf("%06X", $key), 2);
+                $this->system()->out("Pulling History for ".sprintf("%06X", $key));
                 $this->system()->main();
                 if (!$this->ui()->loop()) {
                     break;
@@ -109,6 +109,7 @@ class PullHistory extends \HUGnet\processes\replicate\Periodic
                 if ($this->_checkDevice($this->_device, $now)) {
                     $this->_pullHistory($this->_device);
                 }
+                $this->system()->out("Done");
             }
             $this->last = $now;
         }
@@ -147,12 +148,11 @@ class PullHistory extends \HUGnet\processes\replicate\Periodic
             do {
                 $ret = $this->_pullHist($dev, $hist, "LastMasterHistoryPull", "");
                 $cnt++;
+                if (!$this->ui()->loop()) {
+                    break;
+                }
             } while (($ret == self::MAX_HISTORY) && ($cnt < 10));
             $arch = $dev->get("arch");
-            //if ($this->ui()->get("pull_raw_history") && ($arch !== "virtual")) {
-            //    $hist = $this->system()->table("RawHistory");
-            //    $this->_pullHist($dev, $hist, "LastMasterRawHistoryPull", "raw");
-            //}
         }
     }
     /**
@@ -167,9 +167,9 @@ class PullHistory extends \HUGnet\processes\replicate\Periodic
      */
     private function _pullHist(&$dev, &$hist, $param, $name)
     {
-        $last = (int)$dev->getParam($param);
+        $last = (int)$dev->getLocalParam($param);
         $first = time();
-        $ret = $this->_getHistory(null, $dev->id(), $last);
+        $ret = $this->_getHistory($dev->id(), $last);
         if ($ret) {
             $good = 0;
             $bad = 0;
@@ -221,10 +221,10 @@ class PullHistory extends \HUGnet\processes\replicate\Periodic
                 );
             }
             $dev->load($dev->id());
-            $dev->setParam($param, $last);
+            $dev->setLocalParam($param, $last);
             // This sets the last history date.
             $dev->setLocalParam("Last".$name."History", $last);
-            $dev->store();
+            var_dump($dev->store());
         }
         return $count;
     }
@@ -237,7 +237,7 @@ class PullHistory extends \HUGnet\processes\replicate\Periodic
     *
     * @return string The left over string
     */
-    private function _getHistory($url, $did, $start)
+    private function _getHistory($did, $start)
     {
         return \HUGnet\Util::postData(
             $this->_url,
