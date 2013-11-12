@@ -54,12 +54,12 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class PullDevices extends \HUGnet\processes\replicate\Periodic
+class PullHistory extends \HUGnet\processes\replicate\Periodic
 {
     /** This is the maximum number of history records to get */
-    const MAX_DEVICES = 20;
+    const MAX_HISTORY = 1000;
     /** This is the period */
-    protected $period = 3600;
+    protected $period = 30;
     /** This is the object we use */
     private $_device;
     /** This is the url to get stuff from */
@@ -97,7 +97,6 @@ class PullDevices extends \HUGnet\processes\replicate\Periodic
     {
         $this->_url = $this->ui()->get("url");
         if ($this->ready() && !empty($this->_url)) {
-            $this->_pullDevices();
             $now = $this->system()->now();
             $ids = $this->_device->ids();
             foreach (array_keys($ids) as $key) {
@@ -108,7 +107,7 @@ class PullDevices extends \HUGnet\processes\replicate\Periodic
                 }
                 $this->_device->load($key);
                 if ($this->_checkDevice($this->_device, $now)) {
-                    $this->_pullDevice($this->_device, $now);
+                    $this->_pullHistory($this->_device);
                 }
             }
             $this->last = $now;
@@ -136,68 +135,123 @@ class PullDevices extends \HUGnet\processes\replicate\Periodic
      * This pulles out all of the sensors for a device
      *
      * @param int &$dev The device to use
-     * @param int $now  The time to use
      *
      * @return none
      */
-    private function _pullDevice(&$dev, $now)
+    private function _pullHistory(&$dev)
     {
-        $this->system()->out(
-            "Pulling ".sprintf("%06X", $dev->id())." from master server..."
-        );
-        $ret = $dev->action()->pull($this->_url);
-        if ($ret) {
-            $this->system()->out(
-                "Successfully pulled ".sprintf("%06X", $dev->id())."."
-            );
-            $dev->load($dev->id());
-            $dev->setParam("LastMasterPull", $now);
-            $dev->store();
-        } else {
-            $this->system()->out("Failure.");
-            /* Don't store it if we fail */
+        $pull = $dev->getParam("PullHistory");
+        if (is_null($pull) || ($pull != 0)) {
+            $hist = $dev->historyFactory(array(), true);
+            $this->_pullHist($dev, $hist, "LastMasterHistoryPull", "");
+            $arch = $dev->get("arch");
+            //if ($this->ui()->get("pull_raw_history") && ($arch !== "virtual")) {
+            //    $hist = $this->system()->table("RawHistory");
+            //    $this->_pullHist($dev, $hist, "LastMasterRawHistoryPull", "raw");
+            //}
         }
     }
     /**
      * This pulles out all of the sensors for a device
      *
-     * @return array of devices
+     * @param object &$dev  The device to use
+     * @param object &$hist The history to use
+     * @param string $param The params to set to see when we last did that
+     * @param string $name  The name to print out
+     *
+     * @return none
      */
-    private function _pullDevices()
+    private function _pullHist(&$dev, &$hist, $param, $name)
     {
-        $start = 0;
-        do {
-            $ret = \HUGnet\Util::postData(
-                $this->_url,
-                array(
-                    "uuid"   => urlencode($this->system()->get("uuid")),
-                    "action" => "list",
-                    "task"   => "device",
-                    "id"     => sprintf("%06X", $did),
-                    "data"   => array(
-                        "limit" => self::MAX_DEVICES,
-                        "start" => $start,
-                    ),
-                ),
-                120
-            );
-            if (!is_array($ret) || !$this->ui()->loop()) {
-                break;
-            }
-            $this->system()->out(
-                "Checking devices $start to ".($start + count($ret))
-            );
-            foreach ($ret as $dev) {
-                // Insert any unknown devices
-                if (!$this->_device->load($dev["id"])) {
-                    $this->_device->table()->clearData();
-                    $this->_device->table()->fromArray($dev);
-                    $this->_device->table()->insertRow(true);
+        $last = (int)$dev->getParam($param);
+        $first = time();
+        $ret = $this->_getHistory(null, $dev->id(), $last);
+        if ($ret) {
+            $good = 0;
+            $bad = 0;
+            $badfirst = time();
+            $badlast = 0;
+            if (is_array($ret)) {
+                foreach ($ret as $record) {
+                    $hist->clearData();
+                    $hist->fromAny($record);
+                    if ($hist->insertRow(true)) {
+                        if ($last < $record["Date"]) {
+                            $last = $record["Date"];
+                        }
+                        if ($first > $record["Date"]) {
+                            $first = $record["Date"];
+                        }
+                        $good++;
+                    } else {
+                        if ($badlast < $record["Date"]) {
+                            $badlast = $record["Date"];
+                        }
+                        if ($badfirst > $record["Date"]) {
+                            $badfirst = $record["Date"];
+                        }
+                        $bad++;
+                    }
                 }
+            } else {
+                $this->system()->out(
+                    sprintf("%06X ", $dev->id())
+                    ." No reply to $name history pull"
+                );
             }
-            $start += self::MAX_DEVICES;
-        } while (count($ret) == self::MAX_DEVICES);
+            if ($good > 0) {
+                $this->system()->out(
+                    sprintf("%06X ", $dev->id())
+                    ."Successfully pulled $good $name history from "
+                    .date("Y-m-d H:i:s", $first)." to "
+                    .date("Y-m-d H:i:s", $last)
+                );
+            }
+            if ($bad > 0) {
+                $this->system()->out(
+                    sprintf("%06X ", $dev->id())
+                    ."Failed to pull $bad $name history from "
+                    .date("Y-m-d H:i:s", $badfirst)." to "
+                    .date("Y-m-d H:i:s", $badlast)
+                );
+            }
+            $dev->load($dev->id());
+            $dev->setParam($param, $last);
+            // This sets the last history date.
+            $dev->setLocalParam("Last".$name."History", $last);
+            $dev->store();
+        }
     }
+    /**
+    * Gets the config and saves it
+    *
+    * @param string $url     The url to post to
+    * @param string $did     The device id to use
+    * @param array  $records The records to send
+    *
+    * @return string The left over string
+    */
+    private function _getHistory($url, $did, $start)
+    {
+        return \HUGnet\Util::postData(
+            $this->_url,
+            array(
+                "uuid"   => urlencode($this->system()->get("uuid")),
+                "action" => "get",
+                "task"   => "history",
+                "id"     => sprintf("%06X", $did),
+                "data"   => array(
+                    "since" => $start,
+                    "until" => time(),
+                    "limit" => 1000,
+                    "order" => "asc",
+                    "type"  => "history",
+                ),
+            ),
+            120
+        );
+    }
+
 }
 
 
