@@ -473,15 +473,15 @@ class WebAPI extends HTML
         $data = (array)$this->args()->get("data");
         $type = trim(strtoupper($data["type"]));
         if (!isset($data["convert"])) {
-            $convert = true;
+            $convert = 1;
         } else {
-            $convert = (bool)$data["convert"];
+            $convert = (int)$data["convert"];
         }
         $dev  = $this->system()->device($did);
         switch ($type) {
         case "RAW":
             $hist = $this->system()->table("RawHistory");
-            $convert = false;
+            $convert = 0;
             break;
         case "30SEC":
         case "1MIN":
