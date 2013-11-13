@@ -59,7 +59,7 @@ class PullHistory extends \HUGnet\processes\replicate\Periodic
     /** This is the maximum number of history records to get */
     const MAX_HISTORY = 1000;
     /** This is the period */
-    protected $period = 10;
+    protected $period = 30;
     /** This is the object we use */
     private $_device;
     /** This is the url to get stuff from */
