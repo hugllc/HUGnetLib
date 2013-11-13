@@ -168,7 +168,7 @@ class PullHistory extends \HUGnet\processes\replicate\Periodic
     {
         $last = (int)$dev->getLocalParam($param);
         $first = time();
-        $ret = $this->_getHistory($dev->id(), $last);
+        $ret = $this->_getHistory($dev->id(), $last + 1);
         if ($ret) {
             $good = 0;
             $bad = 0;
