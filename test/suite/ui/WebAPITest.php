@@ -1921,6 +1921,64 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
+            array(  // #39
+                array(
+                    "task" => "history",
+                    "action" => "get",
+                    "id" => "10",
+                    "data" => array(
+                        "since"   => 1234,
+                        "until"   => 4321,
+                        "limit"   => 1,
+                        "start"   => 0,
+                        "order"   => "desc",
+                        "convert" => 0,
+                    ),
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "device" => new \HUGnet\DummyTable("Device"),
+                    ),
+                    "Device" => array(
+                        "dataChannels" => new \HUGnet\DummyBase("Channels"),
+                        "historyFactory" => new \HUGnet\DummyTable("History"),
+                    ),
+                    "History" => array(
+                        "isEmpty" => false,
+                        "toArray" => array(
+                            "Real" => "array",
+                        ),
+                        "insertRow" => true,
+                        "getPeriod" => true,
+                        "nextInto" => false,
+                    ),
+                    "Channels" => array(
+                    ),
+                ),
+                false,
+                array(),
+                json_encode(
+                    array(
+                        array("Real" => "array"),
+                    )
+                ),
+                array(
+                    "History" => array(
+                        "getPeriod" => array(
+                            array(1234, 4321, 16, 'history', '', array())
+                        ),
+                        "toArray" => array(
+                            array(true),
+                        ),
+                        "nextInto" => array(
+                            array(null)
+                        ),
+                    ),
+                ),
+            ),
         );
     }
     /**

@@ -246,11 +246,12 @@ class PullHistory extends \HUGnet\processes\replicate\Periodic
                 "task"   => "history",
                 "id"     => sprintf("%06X", $did),
                 "data"   => array(
-                    "since" => $start,
-                    "until" => time(),
-                    "limit" => self::MAX_HISTORY,
-                    "order" => "asc",
-                    "type"  => "history",
+                    "since"   => $start,
+                    "until"   => time(),
+                    "limit"   => self::MAX_HISTORY,
+                    "order"   => "asc",
+                    "type"    => "history",
+                    "convert" => 0,  // No unit conversions in this record.
                 ),
             ),
             120
