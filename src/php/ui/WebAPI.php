@@ -472,10 +472,16 @@ class WebAPI extends HTML
         $did  = hexdec($this->args()->get("id"));
         $data = (array)$this->args()->get("data");
         $type = trim(strtoupper($data["type"]));
+        if (!isset($data["convert"])) {
+            $convert = true;
+        } else {
+            $convert = (bool)$data["convert"];
+        }
         $dev  = $this->system()->device($did);
         switch ($type) {
         case "RAW":
             $hist = $this->system()->table("RawHistory");
+            $convert = false;
             break;
         case "30SEC":
         case "1MIN":
@@ -495,7 +501,7 @@ class WebAPI extends HTML
         $ret = null;
         $action = strtolower(trim($this->args()->get("action")));
         if ($action === "get") {
-            $ret = $this->_executeHistoryGet($did, $hist);
+            $ret = $this->_executeHistoryGet($did, $hist, $convert);
         } else if (($action === "put") && $this->_auth(true)) {
             $ret = array();
             $last = 0;
@@ -540,7 +546,7 @@ class WebAPI extends HTML
             if (!$hist->isEmpty()) {
                 $channels = $this->system()->device($did)->dataChannels();
                 $stuff = $hist->toArray(true);
-                if (trim(strtolower($data["type"])) != "raw") {
+                if ($convert) {
                     $channels->convert($stuff);
                 }
                 $ret[] = $stuff;
@@ -557,20 +563,16 @@ class WebAPI extends HTML
     /**
     * This function executes the api call.
     *
-    * @param int    $did   The deviceID to use
-    * @param object &$hist The history to use
+    * @param int    $did     The deviceID to use
+    * @param object &$hist   The history to use
+    * @param bool   $convert Whether to convert the records or not
     *
     * @return null
     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
     */
-    private function _executeHistoryGet($did, &$hist)
+    private function _executeHistoryGet($did, &$hist, $convert)
     {
         $data = (array)$this->args()->get("data");
-        if (!isset($data["convert"])) {
-            $data["convert"] = true;
-        } if (trim(strtolower($data["type"])) == "raw") {
-            $data["convert"] = false;
-        }
         $extraWhere = "";
         if (isset($data["limit"]) && is_numeric($data["limit"])) {
             $hist->sqlLimit = (int)$data["limit"];
@@ -598,7 +600,7 @@ class WebAPI extends HTML
         $channels = $this->system()->device($did)->dataChannels();
         while ($res) {
             $stuff = $hist->toArray(true);
-            if ((bool)$data["convert"]) {
+            if ($convert) {
                 $channels->convert($stuff);
             }
             $ret[] = $stuff;
