@@ -566,6 +566,11 @@ class WebAPI extends HTML
     private function _executeHistoryGet($did, &$hist)
     {
         $data = (array)$this->args()->get("data");
+        if (!isset($data["convert"])) {
+            $data["convert"] = true;
+        } if (trim(strtolower($data["type"])) == "raw") {
+            $data["convert"] = false;
+        }
         $extraWhere = "";
         if (isset($data["limit"]) && is_numeric($data["limit"])) {
             $hist->sqlLimit = (int)$data["limit"];
@@ -593,7 +598,7 @@ class WebAPI extends HTML
         $channels = $this->system()->device($did)->dataChannels();
         while ($res) {
             $stuff = $hist->toArray(true);
-            if (trim(strtolower($data["type"])) != "raw") {
+            if ((bool)$data["convert"]) {
                 $channels->convert($stuff);
             }
             $ret[] = $stuff;
