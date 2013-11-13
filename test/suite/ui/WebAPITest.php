@@ -1932,7 +1932,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "limit"   => 1,
                         "start"   => 0,
                         "order"   => "desc",
-                        "convert" => 0,
+                        "convert" => "0",
                     ),
                 ),
                 array(
