@@ -139,7 +139,7 @@ class PullHistory extends \HUGnet\processes\replicate\Periodic
      */
     private function _pullHistory(&$dev)
     {
-        $pull = $dev->getParam("PullHistory");
+        $pull = $dev->getParam("PushHistory");
         if (is_null($pull) || ($pull != 0)) {
             $this->system()->out("Pulling History for ".sprintf("%06X", $dev->id()));
             $hist = $dev->historyFactory(array(), true);
