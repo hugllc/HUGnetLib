@@ -80,18 +80,18 @@ class ADuCGPIO extends \HUGnet\devices\outputTable\DriverADuC
         "extraValues" => array(
             4,
             array(
-                0 => "Red LED",
-                1 => "Blue LED",
-                2 => "0.0",
-                3 => "0.1",
-                4 => "0.2",
-                5 => "0.3",
-                6 => "0.4",
-                7 => "1.4",
-                8 => "1.5",
-                9 => "1.6",
-                10 => "2.0",
-                11 => "2.1",
+                0 => "P1.2",
+                1 => "P1.3",
+                2 => "P0.0",
+                3 => "P0.1",
+                4 => "P0.2",
+                5 => "P0.3",
+                6 => "P0.4",
+                7 => "P1.4",
+                8 => "P1.5",
+                9 => "P1.6",
+                10 => "P2.0",
+                11 => "P2.1",
             ),
         ),
         "extraDesc" => array(
@@ -128,6 +128,17 @@ class ADuCGPIO extends \HUGnet\devices\outputTable\DriverADuC
         $string  = $this->encodePriority($this->getExtra(0));
         $string .= $this->encodeInt($this->getExtra(1), 1);
         return $string;
+    }
+    /**
+    * Returns the port this data channel is attached to
+    *
+    * @return array
+    */
+    protected function port()
+    {
+        $extra = 1;
+        $value = $this->getExtra($extra);
+        return $this->params["extraValues"][$extra][$value];
     }
 
 }

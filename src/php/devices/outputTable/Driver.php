@@ -284,7 +284,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     *
     * @return array
     */
-    public function port()
+    protected function port()
     {
         return $this->get("port");
     }

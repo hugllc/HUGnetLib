@@ -198,6 +198,7 @@ class OutputTest extends \PHPUnit_Framework_TestCase
                     "min" => 1234,
                     "max" => 4321,
                     "zero" => 0,
+                    'port' => '10B',
                     "otherTables" => array(),
                     "tableEntry" => array(),
                 ),
@@ -299,7 +300,8 @@ class OutputTest extends \PHPUnit_Framework_TestCase
                         "index" => 0,
                         "min" => 1234,
                         "max" => 4321,
-                        'label' => 'Test'
+                        'label' => 'Test',
+                        'port' => '10B',
                     ),
                 ),
             ),
@@ -324,7 +326,8 @@ class OutputTest extends \PHPUnit_Framework_TestCase
                         "index" => 0,
                         "min" => 1234,
                         "max" => 4321,
-                        'label' => 'Test'
+                        'label' => 'Test',
+                        'port' => '10B',
                     ),
                 ),
             ),
@@ -385,6 +388,7 @@ class TestOutputDriver1 extends \HUGnet\devices\outputTable\Driver
         "shortName" => "SSD1",
         "min" => 1234,
         "max" => 4321,
+        "port" => "10B",
     );
     /**
     * Changes a raw reading into a output value
