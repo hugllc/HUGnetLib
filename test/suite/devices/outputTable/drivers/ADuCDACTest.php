@@ -515,6 +515,48 @@ class ADuCDACTest extends DriverTestBase
             ),
         );
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataChannels()
+    {
+        return array(
+            array(
+                array(
+                    "storageUnit" => "unknown",
+                    "maxDecimals" => 2,
+                    "unitType" => "asdf",
+                    "location" => "Hello",
+                ),
+                array(
+                    array(
+                        'min' => 0,
+                        'max' => 0xFFFF,
+                        'label' => 'Hello',
+                        'index' => 0,
+                        'port' => 'DAC0',
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $mocks  The mocks to use
+    * @param array $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataChannels
+    */
+    public function testChannels($mocks, $expect)
+    {
+        $this->output->load($mocks);
+        $this->assertSame($expect, $this->o->channels());
+    }
 
 }
 ?>

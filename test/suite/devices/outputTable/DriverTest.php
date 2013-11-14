@@ -176,6 +176,7 @@ class DriverTest extends drivers\DriverTestBase
             "min" => 25,
             "max" => 81,
             "zero" => 0,
+            'port' => '2Z',
         );
         $this->assertEquals($expect, $this->o->toArray(1));
     }
@@ -494,6 +495,7 @@ class DriverTest extends drivers\DriverTestBase
                         'max' => 81,
                         'label' => 'Hello',
                         'index' => 0,
+                        'port' => '2Z',
                     ),
                 ),
             ),
@@ -546,6 +548,7 @@ class DriverTestClass extends \HUGnet\devices\outputTable\Driver
     protected $params = array(
         "min" => 25,
         "max" => 81,
+        "port" => "2Z",
     );
     /**
     * Gets the extra values

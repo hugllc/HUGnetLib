@@ -173,18 +173,21 @@ class ADuCPWM extends \HUGnet\devices\outputTable\DriverADuC
                 "max" => $this->get("max"),
                 "label" => (string)$this->output()->get("location")." 1",
                 "index" => 0,
+                "port" => "PWM1",
             ),
             array(
                 "min" => $this->get("min"),
                 "max" => $this->get("max"),
                 "label" => (string)$this->output()->get("location")." 3",
                 "index" => 1,
+                "port" => "PWM3",
             ),
             array(
                 "min" => $this->get("min"),
                 "max" => $this->get("max"),
                 "label" => (string)$this->output()->get("location")." 5",
                 "index" => 2,
+                "port" => "PWM5",
             ),
         );
     }

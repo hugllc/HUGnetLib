@@ -280,6 +280,15 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         return $string;
     }
     /**
+    * Returns the port this data channel is attached to
+    *
+    * @return array
+    */
+    public function port()
+    {
+        return $this->get("port");
+    }
+    /**
     * This builds the class from a setup string
     *
     * @return Array of channel information
@@ -292,6 +301,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
                 "max" => $this->get("max"),
                 "label" => (string)$this->output()->get("location"),
                 "index" => 0,
+                "port" => $this->port(),
             ),
         );
     }

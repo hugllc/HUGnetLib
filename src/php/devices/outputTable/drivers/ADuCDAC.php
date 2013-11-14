@@ -87,6 +87,7 @@ class ADuCDAC extends \HUGnet\devices\outputTable\DriverADuC
         "min" => 0,
         "max" => array(0 => 4095, 1 => 65535),
         "zero" => array(0 => 1556, 1 => 24900),
+        "port" => "DAC0",
     );
     /** This tells us our mapping from extra to entry */
     protected $entryMap = array(
