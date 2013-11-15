@@ -359,7 +359,6 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
         );
         foreach ($chan as $k => $c) {
             foreach ($c as $d) {
-               $d["index"] = $k;
                $ret[] = $d;
             }
         }
