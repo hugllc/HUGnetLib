@@ -357,8 +357,10 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
             0 => (array)$this->_driver(0)->channels(),
             1 => (array)$this->_driver(1)->channels(),
         );
+        $index = 0;
         foreach ($chan as $k => $c) {
             foreach ($c as $d) {
+               $d["index"] = $index++;
                $ret[] = $d;
             }
         }
