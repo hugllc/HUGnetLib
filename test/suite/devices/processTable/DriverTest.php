@@ -288,6 +288,7 @@ class DriverTest extends drivers\DriverTestBase
                 array(
                     1 => 'LevelHolderProcess',
                     2 => 'PIDProcess',
+                    4 => 'WaveGenProcess',
                     255 => 'Empty Slot',
                 ),
             ),

@@ -94,6 +94,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     private static $_drivers = array(
         "01:DEFAULT"                 => "LevelHolderProcess",
         "02:DEFAULT"                 => "PIDProcess",
+        "04:DEFAULT"                 => "WaveGenProcess",
         "FF:DEFAULT"                 => "EmptyProcess",
     );
     /**
@@ -115,6 +116,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "0039-37" => array(
             0x01 => "LevelHolderProcess",
             0x02 => "PIDProcess",
+            0x04 => "WaveGenProcess",
         ),
         "Linux" => array(
             0x01 => "LevelHolderProcess",
