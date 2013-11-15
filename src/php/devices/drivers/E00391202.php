@@ -79,6 +79,32 @@ class E00391202 extends \HUGnet\devices\Driver
         "OutputTables" => 4,
         "ProcessTables" => 1,
         "DataChannels" => 13,
+        "DigitalInputs" => array(
+                1  => "Port 1",
+                2  => "Port 2",
+                3  => "Port 3",
+                4  => "Port 4",
+                5  => "Port 5",
+                6  => "Port 6",
+                7  => "Port 7",
+                8  => "Port 8",
+                9  => "Port 9",
+                11 => "SV1 Pin3",
+                12 => "SV1 Pin4",
+        ),
+        "DigitalOutputs" => array(
+                1  => "Port 1",
+                2  => "Port 2",
+                3  => "Port 3",
+                4  => "Port 4",
+                5  => "Port 5",
+                6  => "Port 6",
+                7  => "Port 7",
+                8  => "Port 8",
+                9  => "Port 9",
+                11 => "SV1 Pin3",
+                12 => "SV1 Pin4",
+        ),
     );
 
 }
