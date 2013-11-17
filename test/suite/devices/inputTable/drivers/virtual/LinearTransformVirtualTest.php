@@ -206,6 +206,34 @@ class LinearTransformVirtualTest extends DriverTestBaseVirtual
             ),
         );
     }
+    /**
+    * data provider for testChannels
+    *
+    * @return array
+    */
+    public static function dataChannels()
+    {
+        return array(
+            array(
+                array(
+                ),
+                array(
+                    array(
+                        'decimals' => 4,
+                        'units' => 'unknown',
+                        'maxDecimals' => 4,
+                        'storageUnit' => 'unknown',
+                        'unitType' => 'Generic',
+                        'dataType' => 'raw',
+                        'label' => '',
+                        'index' => 0,
+                        'epChannel' => false,
+                        'port' => null,
+                    ),
+                ),
+            ),
+        );
+    }
 
 }
 ?>

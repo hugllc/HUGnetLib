@@ -171,6 +171,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "label" => "asdf 1",
                         "index" => 0,
                         "epChannel" => false,
+                        "port" => null,
                     ),
                 ),
             ),
@@ -236,6 +237,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "label" => "asdf1 0",
                         "index" => 0,
                         "epChannel" => false,
+                        "port" => null,
                     ),
                     array(
                         "value" => 14.448166,
@@ -248,6 +250,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "label" => "asdf1 1",
                         "index" => 1,
                         "epChannel" => false,
+                        "port" => null,
                     ),
                     array(
                         "value" => 4.547026,
@@ -260,6 +263,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "label" => "asdf1 2",
                         "index" => 2,
                         "epChannel" => false,
+                        "port" => null,
                     ),
                     array(
                         "value" => 45.909022,
@@ -272,6 +276,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "label" => "asdf1 3",
                         "index" => 3,
                         "epChannel" => false,
+                        "port" => null,
                     ),
                 ),
             ),
@@ -327,6 +332,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "label" => "asdf1 0",
                         "index" => 0,
                         "epChannel" => false,
+                        "port" => null,
                     ),
                     array(
                         "value" => 14.448166,
@@ -339,6 +345,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "label" => "asdf1 1",
                         "index" => 1,
                         "epChannel" => false,
+                        "port" => null,
                     ),
                     array(
                         "value" => 4.547026,
@@ -351,6 +358,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "label" => "asdf1 2",
                         "index" => 2,
                         "epChannel" => false,
+                        "port" => null,
                     ),
                     array(
                         "value" => 45.909022,
@@ -363,6 +371,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "label" => "asdf1 3",
                         "index" => 3,
                         "epChannel" => false,
+                        "port" => null,
                     ),
                 ),
             ),
@@ -421,6 +430,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "label" => "asdf1 0",
                         "index" => 0,
                         "epChannel" => false,
+                        "port" => null,
                     ),
                     array(
                         "value" => 14.448166,
@@ -433,6 +443,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "label" => "asdf1 1",
                         "index" => 1,
                         "epChannel" => false,
+                        "port" => null,
                     ),
                     array(
                         "value" => 4.547026,
@@ -445,6 +456,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "label" => "asdf1 2",
                         "index" => 2,
                         "epChannel" => false,
+                        "port" => null,
                     ),
                     array(
                         "value" => 45.909022,
@@ -457,6 +469,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "label" => "asdf1 3",
                         "index" => 3,
                         "epChannel" => false,
+                        "port" => null,
                     ),
                 ),
             ),
@@ -770,6 +783,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "label" => "Well hello there!",
                         "index" => 0,
                         "epChannel" => false,
+                        "port" => null,
                     ),
                 ),
             ),

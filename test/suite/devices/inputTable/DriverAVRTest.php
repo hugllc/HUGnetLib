@@ -855,6 +855,34 @@ class DriverAVRTest extends drivers\DriverTestBase
         );
         $this->assertSame($expect, $this->o->getExtra($index));
     }
+    /**
+    * data provider for testChannels
+    *
+    * @return array
+    */
+    public static function dataChannels()
+    {
+        return array(
+            array(
+                array(
+                ),
+                array(
+                    array(
+                        'decimals' => 2,
+                        'units' => 'unknown',
+                        'maxDecimals' => 2,
+                        'storageUnit' => 'unknown',
+                        'unitType' => 'asdf',
+                        'dataType' => 'raw',
+                        'label' => '',
+                        'index' => 0,
+                        'epChannel' => true,
+                        'port' => null,
+                    ),
+                ),
+            ),
+        );
+    }
 }
 /** This is the HUGnet namespace */
 namespace HUGnet\devices\inputTable\drivers;

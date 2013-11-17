@@ -146,6 +146,34 @@ class Bravo3MotionTest extends DriverTestBase
             array(array("extra" => array(1)), "E80300", 300, array(), array(), 1000),
         );
     }
+    /**
+    * data provider for testChannels
+    *
+    * @return array
+    */
+    public static function dataChannels()
+    {
+        return array(
+            array(
+                array(
+                ),
+                array(
+                    array(
+                        'decimals' => 0,
+                        'units' => 'counts',
+                        'maxDecimals' => 0,
+                        'storageUnit' => 'counts',
+                        'unitType' => 'Frequency',
+                        'dataType' => 'diff',
+                        'label' => '',
+                        'index' => 0,
+                        'epChannel' => true,
+                        'port' => '1',
+                    ),
+                ),
+            ),
+        );
+    }
 
 }
 

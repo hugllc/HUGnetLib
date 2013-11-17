@@ -437,6 +437,34 @@ class LiquidFlowTest extends DriverTestBase
         $ret = $this->o->encode();
         $this->assertSame($expect, $ret);
     }
+    /**
+    * data provider for testChannels
+    *
+    * @return array
+    */
+    public static function dataChannels()
+    {
+        return array(
+            array(
+                array(
+                ),
+                array(
+                    array(
+                        'decimals' => 2,
+                        'units' => 'gal',
+                        'maxDecimals' => 2,
+                        'storageUnit' => 'gal',
+                        'unitType' => 'Volume',
+                        'dataType' => 'raw',
+                        'label' => '',
+                        'index' => 0,
+                        'epChannel' => true,
+                        'port' => '1',
+                    ),
+                ),
+            ),
+        );
+    }
 
 }
 

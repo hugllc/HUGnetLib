@@ -83,6 +83,24 @@ class MaximumWindDirectionTest extends DriverTestBase
                     "dataChannels" => new \HUGnet\DummyBase("dataChannels"),
                     "controlChannels" => new \HUGnet\DummyBase("controlChannels"),
                     "dataChannel" => new \HUGnet\DummyBase("dataChannel"),
+                    "get" => array(
+                        "DigitalInputs" => array(
+                            1  => "Port 1",
+                            2  => "Port 2",
+                            3  => "Port 3",
+                            4  => "Port 4",
+                            5  => "Port 5",
+                            6  => "Port 6",
+                            9  => "Port 9",
+                            10 => "Port 10",
+                            11 => "Port 11",
+                            12 => "Port 12",
+                            13 => "Port 13",
+                            14 => "Port 14",
+                            15 => "Port 15",
+                            16 => "Port 16",
+                        ),
+                    ),
                 ),
                 "dataChannels" => array(
                     "select" => array(),
@@ -927,6 +945,34 @@ class MaximumWindDirectionTest extends DriverTestBase
         $this->input->resetMock($mocks);
         $ret = $this->o->encode();
         $this->assertSame($expect, $ret);
+    }
+    /**
+    * data provider for testChannels
+    *
+    * @return array
+    */
+    public static function dataChannels()
+    {
+        return array(
+            array(
+                array(
+                ),
+                array(
+                    array(
+                        'decimals' => 0,
+                        'units' => '&#176;',
+                        'maxDecimals' => 0,
+                        'storageUnit' => '&#176;',
+                        'unitType' => 'Direction',
+                        'dataType' => 'raw',
+                        'label' => '',
+                        'index' => 0,
+                        'epChannel' => true,
+                        'port' => 'Port1,Port2,Port3,Port4,Port5',
+                    ),
+                ),
+            ),
+        );
     }
 
 }

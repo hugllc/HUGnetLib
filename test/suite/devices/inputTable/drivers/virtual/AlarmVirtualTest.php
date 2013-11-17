@@ -324,6 +324,34 @@ class AlarmVirtualTest extends DriverTestBaseVirtual
 
         );
     }
+    /**
+    * data provider for testChannels
+    *
+    * @return array
+    */
+    public static function dataChannels()
+    {
+        return array(
+            array(
+                array(
+                ),
+                array(
+                    array(
+                        'decimals' => 4,
+                        'units' => 'decimal',
+                        'maxDecimals' => 4,
+                        'storageUnit' => 'decimal',
+                        'unitType' => 'Percent',
+                        'dataType' => 'raw',
+                        'label' => '',
+                        'index' => 0,
+                        'epChannel' => false,
+                        'port' => null,
+                    ),
+                ),
+            ),
+        );
+    }
 
 }
 ?>

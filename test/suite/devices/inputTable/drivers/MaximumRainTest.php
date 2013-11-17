@@ -197,6 +197,34 @@ class MaximumRainTest extends DriverTestBase
 
         );
     }
+    /**
+    * data provider for testChannels
+    *
+    * @return array
+    */
+    public static function dataChannels()
+    {
+        return array(
+            array(
+                array(
+                ),
+                array(
+                    array(
+                        'decimals' => 2,
+                        'units' => 'inches',
+                        'maxDecimals' => 2,
+                        'storageUnit' => 'inches',
+                        'unitType' => 'Length',
+                        'dataType' => 'diff',
+                        'label' => '',
+                        'index' => 0,
+                        'epChannel' => true,
+                        'port' => '1',
+                    ),
+                ),
+            ),
+        );
+    }
 
 }
 

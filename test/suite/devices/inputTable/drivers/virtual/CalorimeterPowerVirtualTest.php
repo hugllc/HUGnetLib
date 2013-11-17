@@ -248,6 +248,34 @@ class CalorimeterPowerVirtualTest extends DriverTestBaseVirtual
             ),
         );
     }
+    /**
+    * data provider for testChannels
+    *
+    * @return array
+    */
+    public static function dataChannels()
+    {
+        return array(
+            array(
+                array(
+                ),
+                array(
+                    array(
+                        'decimals' => 8,
+                        'units' => 'W',
+                        'maxDecimals' => 8,
+                        'storageUnit' => 'W',
+                        'unitType' => 'Power',
+                        'dataType' => 'raw',
+                        'label' => '',
+                        'index' => 0,
+                        'epChannel' => false,
+                        'port' => null,
+                    ),
+                ),
+            ),
+        );
+    }
 
 }
 ?>

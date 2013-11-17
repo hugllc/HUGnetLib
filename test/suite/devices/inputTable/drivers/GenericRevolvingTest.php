@@ -422,6 +422,34 @@ class GenericRevolvingTest extends DriverTestBase
         $ret = $this->o->encode();
         $this->assertSame($expect, $ret);
     }
+    /**
+    * data provider for testChannels
+    *
+    * @return array
+    */
+    public static function dataChannels()
+    {
+        return array(
+            array(
+                array(
+                ),
+                array(
+                    array(
+                        'decimals' => 2,
+                        'units' => 'RPM',
+                        'maxDecimals' => 2,
+                        'storageUnit' => 'RPM',
+                        'unitType' => 'Frequency',
+                        'dataType' => 'diff',
+                        'label' => '',
+                        'index' => 0,
+                        'epChannel' => true,
+                        'port' => '1',
+                    ),
+                ),
+            ),
+        );
+    }
 
 }
 

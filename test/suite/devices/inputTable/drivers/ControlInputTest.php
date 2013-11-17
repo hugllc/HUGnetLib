@@ -247,6 +247,34 @@ class ControlInputTest extends DriverTestBase
         $ret = $this->o->encode();
         $this->assertSame($expect, $ret);
     }
+    /**
+    * data provider for testChannels
+    *
+    * @return array
+    */
+    public static function dataChannels()
+    {
+        return array(
+            array(
+                array(
+                ),
+                array(
+                    array(
+                        'decimals' => 0,
+                        'units' => 'units',
+                        'maxDecimals' => 0,
+                        'storageUnit' => 'units',
+                        'unitType' => 'Units',
+                        'dataType' => 'raw',
+                        'label' => '',
+                        'index' => 0,
+                        'epChannel' => true,
+                        'port' => null,
+                    ),
+                ),
+            ),
+        );
+    }
 
 }
 ?>

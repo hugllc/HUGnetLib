@@ -116,6 +116,7 @@ abstract class DriverVirtual extends Driver
         $ret = parent::channels();
         foreach (array_keys((array)$ret) as $key) {
             $ret[$key]["epChannel"] = false;
+            $ret[$key]["port"]      = null;
         }
         return $ret;
     }

@@ -393,5 +393,54 @@ class AVRAnalogTableTest extends \PHPUnit_Framework_TestCase
             $this->assertNull($param["bits"]);
         }
     }
+    /**
+    * Data provider for testRemove
+    *
+    * @return array
+    */
+    public static function dataPort()
+    {
+        return array(
+            array( 
+                array(
+                ),
+                array(
+                    'REFS' => 1,
+                    'ADLAR' => 0,
+                    'MUX' => 4,
+                    'driver' => "40:DEFAULT",
+                    'priority' => 16,
+                    'offset' => 0x1234,
+                ),
+                "ADC4",
+            ),
+            array( 
+                array(
+                ),
+                array(
+                ),
+                "ADC0",
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param array  $mock    The mocks to preload
+    * @param string $preload The string to give to the class
+    * @param array  $expect  The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataPort
+    */
+    public function testPort($mock, $preload, $expect)
+    {
+        $sensor = new \HUGnet\DummyTable("Sensor");
+        $sensor->resetMock($mock);
+        $obj = AVRAnalogTable::factory($sensor, $preload);
+        $ret = $obj->port();
+        $this->assertSame($expect, $ret);
+    }
 }
 ?>

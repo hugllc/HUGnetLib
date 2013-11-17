@@ -568,8 +568,18 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
                 "label" => (string)$this->input()->get("location"),
                 "index" => 0,
                 "epChannel" => true,
+                "port" => $this->port(),
             ),
         );
+    }
+    /**
+    * Returns the port this data channel is attached to
+    *
+    * @return array
+    */
+    protected function port()
+    {
+        return $this->get("port");
     }
     /**
     * This is for a generic pulse counter

@@ -247,6 +247,34 @@ class GenericPulseTest extends DriverTestBase
             ),
         );
     }
+    /**
+    * data provider for testChannels
+    *
+    * @return array
+    */
+    public static function dataChannels()
+    {
+        return array(
+            array(
+                array(
+                ),
+                array(
+                    array(
+                        'decimals' => 0,
+                        'units' => 'Pulses',
+                        'maxDecimals' => 0,
+                        'storageUnit' => 'Pulses',
+                        'unitType' => 'Frequency',
+                        'dataType' => 'raw',
+                        'label' => '',
+                        'index' => 0,
+                        'epChannel' => true,
+                        'port' => '1',
+                    ),
+                ),
+            ),
+        );
+    }
 
 }
 

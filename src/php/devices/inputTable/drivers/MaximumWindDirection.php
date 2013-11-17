@@ -243,6 +243,26 @@ class MaximumWindDirection extends \HUGnet\devices\inputTable\Driver
         $string .= $this->encodeInt($this->getExtra(5), 1);
         return $string;
     }
+    /**
+    * Returns the port this data channel is attached to
+    *
+    * @return array
+    */
+    protected function port()
+    {
+        $port  = $this->getExtra($this->portExtra);
+        $ports = (array)$this->input()->device()->get("DigitalInputs");
+        $ret = "";
+        $sep = "";
+        for ($i = 1; $i < 6; $i++) {
+            $val = str_replace(" ", "", (string)$ports[$i]);
+            if ($val != "") {
+                $ret .= $sep.$val;
+                $sep = ",";
+            }
+        }
+        return $ret;
+    }
 }
 
 ?>

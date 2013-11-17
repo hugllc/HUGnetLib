@@ -208,6 +208,35 @@ class E003912AnalogTable extends AVRAnalogTable
         ),
     );
     /**
+    * This is where we store our sensor object
+    */
+    protected $ports = array(
+        0 => "Port1",
+        1 => "Port2",
+        2 => "Port3",
+        3 => "Port4",
+        4 => "Port5",
+        5 => "Port6",
+        6 => "Port7",
+        7 => "Port8",
+        8 => "Port9",
+        10 => "Port10",
+        11 => "Port1/Port2",
+        12 => "Port1/Port2",
+        13 => "Port2/Port2",
+        14 => "Port3/Port2",
+        15 => "Port3/Port2",
+        16 => "Port3/Port4",
+        17 => "Port4/Port4",
+        18 => "Port5/Port4",
+        19 => "Port5/Port4",
+        20 => "Port5/Port6",
+        21 => "Port5/Port6",
+        22 => "Port6/Port6",
+        23 => "Port7/Port6",
+        24 => "Port7/Port6",
+    );
+    /**
     * This is the constructor
     *
     * @param object $sensor The sensor object we are working with

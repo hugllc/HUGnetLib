@@ -128,6 +128,34 @@ class SDEFAULTTest extends DriverTestBase
             ),
         );
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataChannels()
+    {
+        return array(
+            array(
+                array(
+                ),
+                array(
+                    array(
+                        'decimals' => 2,
+                        'units' => 'unknown',
+                        'maxDecimals' => 2,
+                        'storageUnit' => 'unknown',
+                        'unitType' => 'unknown',
+                        'dataType' => 'raw',
+                        'label' => '',
+                        'index' => 0,
+                        'epChannel' => true,
+                        'port' => null,
+                    ),
+                ),
+            ),
+        );
+    }
 
 }
 ?>

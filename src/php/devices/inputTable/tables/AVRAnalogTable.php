@@ -184,6 +184,19 @@ class AVRAnalogTable
         ),
     );
     /**
+    * This is where we store our sensor object
+    */
+    protected $ports = array(
+        0 => "ADC0",
+        1 => "ADC1",
+        2 => "ADC2",
+        3 => "ADC3",
+        4 => "ADC4",
+        5 => "ADC5",
+        6 => "ADC6",
+        7 => "ADC7",
+    );
+    /**
     * This is the constructor
     *
     * @param object $sensor The sensor object we are working with
@@ -409,6 +422,16 @@ class AVRAnalogTable
     public function gain()
     {
         return 1;
+    }
+    /**
+    * Gets the total gain.
+    *
+    * @return null
+    */
+    public function port()
+    {
+        $mux = $this->params("MUX");
+        return $this->ports[$mux];
     }
 
 }

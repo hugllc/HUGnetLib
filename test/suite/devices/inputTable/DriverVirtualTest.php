@@ -213,6 +213,7 @@ class DriverVirtualTest extends drivers\DriverTestBase
                         "label" => "asdf",
                         "index" => 0,
                         "epChannel" => false,
+                        "port" => null,
                     ),
                 ),
             ),
@@ -267,6 +268,34 @@ class DriverVirtualTest extends drivers\DriverTestBase
                 array(),
                 14.314713,
                 0,
+            ),
+        );
+    }
+    /**
+    * data provider for testChannels
+    *
+    * @return array
+    */
+    public static function dataChannels()
+    {
+        return array(
+            array(
+                array(
+                ),
+                array(
+                    array(
+                        'decimals' => 2,
+                        'units' => 'unknown',
+                        'maxDecimals' => 2,
+                        'storageUnit' => 'unknown',
+                        'unitType' => 'asdf',
+                        'dataType' => 'raw',
+                        'label' => '',
+                        'index' => 0,
+                        'epChannel' => false,
+                        'port' => null,
+                    ),
+                ),
             ),
         );
     }

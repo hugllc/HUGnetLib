@@ -282,6 +282,34 @@ class MaximumAnemometerTest extends DriverTestBase
 
         );
     }
+    /**
+    * data provider for testChannels
+    *
+    * @return array
+    */
+    public static function dataChannels()
+    {
+        return array(
+            array(
+                array(
+                ),
+                array(
+                    array(
+                        'decimals' => 2,
+                        'units' => 'MPH',
+                        'maxDecimals' => 2,
+                        'storageUnit' => 'MPH',
+                        'unitType' => 'Speed',
+                        'dataType' => 'diff',
+                        'label' => '',
+                        'index' => 0,
+                        'epChannel' => true,
+                        'port' => '1',
+                    ),
+                ),
+            ),
+        );
+    }
 }
 
 ?>

@@ -142,6 +142,17 @@ abstract class DriverPulse extends Driver
         $string .= $this->encodeInt($this->getExtra($index), 1);
         return $string;
     }
+    /**
+    * Returns the port this data channel is attached to
+    *
+    * @return array
+    */
+    protected function port()
+    {
+        $port  = $this->getExtra($this->portExtra);
+        $ports = (array)$this->input()->device()->get("DigitalInputs");
+        return str_replace(" ", "", (string)$ports[$port]);
+    }
 }
 
 
