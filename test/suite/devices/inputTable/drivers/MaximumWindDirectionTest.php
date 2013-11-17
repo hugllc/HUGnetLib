@@ -101,6 +101,54 @@ class MaximumWindDirectionTest extends DriverTestBase
             "MaximumWindDirection", $this->input
         );
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataGet()
+    {
+        return array(
+            array(
+                "ThisIsABadName",
+                array(
+                    "Sensor" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "get" => array(
+                            "DigitalInputs" => array(1, 2, 3),
+                        ),
+                    ),
+                ),
+                null,
+            ),
+            array(
+                "extraValues",
+                array(
+                    "Sensor" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Input" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "get" => array(
+                            "DigitalInputs" => array(1, 2, 3),
+                        ),
+                    ),
+                ),
+                array(
+                    5, 
+                    array(1, 2, 3), 
+                    array(1, 2, 3), 
+                    array(1, 2, 3),
+                    array(1, 2, 3), 
+                    array(1, 2, 3), 
+                ),
+            ),
+        );
+    }
 
     /**
     * Tears down the fixture, for example, close a network connection.

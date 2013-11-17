@@ -100,94 +100,14 @@ class MaximumWindDirection extends \HUGnet\devices\inputTable\Driver
         "extraValues" => array(
             5,
             array(
-                1  => "Port 1",
-                2  => "Port 2",
-                3  => "Port 3",
-                4  => "Port 4",
-                5  => "Port 5",
-                6  => "Port 6",
-                7  => "Port 7",
-                8  => "Port 8",
-                9  => "Port 9",
-                10 => "Port 10",
-                11 => "Port 11",
-                12 => "Port 12",
-                13 => "Port 13",
-                14 => "Port 14",
-                15 => "Port 15",
-                16 => "Port 16",
             ),
             array(
-                1  => "Port 1",
-                2  => "Port 2",
-                3  => "Port 3",
-                4  => "Port 4",
-                5  => "Port 5",
-                6  => "Port 6",
-                7  => "Port 7",
-                8  => "Port 8",
-                9  => "Port 9",
-                10 => "Port 10",
-                11 => "Port 11",
-                12 => "Port 12",
-                13 => "Port 13",
-                14 => "Port 14",
-                15 => "Port 15",
-                16 => "Port 16",
             ),
             array(
-                1  => "Port 1",
-                2  => "Port 2",
-                3  => "Port 3",
-                4  => "Port 4",
-                5  => "Port 5",
-                6  => "Port 6",
-                7  => "Port 7",
-                8  => "Port 8",
-                9  => "Port 9",
-                10 => "Port 10",
-                11 => "Port 11",
-                12 => "Port 12",
-                13 => "Port 13",
-                14 => "Port 14",
-                15 => "Port 15",
-                16 => "Port 16",
             ),
             array(
-                1  => "Port 1",
-                2  => "Port 2",
-                3  => "Port 3",
-                4  => "Port 4",
-                5  => "Port 5",
-                6  => "Port 6",
-                7  => "Port 7",
-                8  => "Port 8",
-                9  => "Port 9",
-                10 => "Port 10",
-                11 => "Port 11",
-                12 => "Port 12",
-                13 => "Port 13",
-                14 => "Port 14",
-                15 => "Port 15",
-                16 => "Port 16",
             ),
             array(
-                1  => "Port 1",
-                2  => "Port 2",
-                3  => "Port 3",
-                4  => "Port 4",
-                5  => "Port 5",
-                6  => "Port 6",
-                7  => "Port 7",
-                8  => "Port 8",
-                9  => "Port 9",
-                10 => "Port 10",
-                11 => "Port 11",
-                12 => "Port 12",
-                13 => "Port 13",
-                14 => "Port 14",
-                15 => "Port 15",
-                16 => "Port 16",
             ),
         ),
         "extraDefault" => array(
@@ -204,6 +124,28 @@ class MaximumWindDirection extends \HUGnet\devices\inputTable\Driver
         "inputSize" => 3,
         "maxDecimals" => 0,
     );
+    /**
+    * Gets an item
+    *
+    * @param string $name The name of the property to get
+    *
+    * @return null
+    */
+    public function get($name)
+    {
+        $param = parent::get($name);
+        switch ($name) {
+        case "extraValues":
+            $param = (array)$param;
+            $ports = $this->input()->device()->get("DigitalInputs");
+            $param[1] = $ports;
+            $param[2] = $ports;
+            $param[3] = $ports;
+            $param[4] = $ports;
+            $param[5] = $ports;
+        }
+        return $param;
+    }
     /**
     * Returns a numeric direction in degrees from the numeric bit
     * field that is returned by the Maximum Inc wind direction sensor.
