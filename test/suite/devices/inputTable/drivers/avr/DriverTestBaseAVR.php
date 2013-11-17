@@ -98,6 +98,34 @@ abstract class DriverTestBaseAVR extends
             $this->o
         );
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataChannels()
+    {
+        return array(
+            array(null, null),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $mocks  The mocks to use
+    * @param array $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataChannels
+    */
+    public function testChannels($mocks, $expect)
+    {
+        if (!empty($mocks)) {
+            $this->input->resetMock($mocks);
+        }
+        $this->assertInternalType("array", $this->o->channels());
+    }
 
 }
 ?>

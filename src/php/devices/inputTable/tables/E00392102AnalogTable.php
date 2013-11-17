@@ -176,6 +176,11 @@ class E00392102AnalogTable extends AVRAnalogTable
         ),
     );
     /**
+    * This is where we store our sensor object
+    */
+    protected $ports = array(
+    );
+    /**
     * This is the constructor
     *
     * @param object $sensor The sensor object we are working with
