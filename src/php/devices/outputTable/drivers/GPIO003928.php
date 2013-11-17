@@ -131,6 +131,16 @@ class GPIO003928 extends \HUGnet\devices\outputTable\DriverAVR
         $string .= $this->encodeInt($this->getExtra(1), 1);
         return $string;
     }
+    /**
+    * Returns the port this data channel is attached to
+    *
+    * @return array
+    */
+    protected function port()
+    {
+        $value = $this->getExtra(1);
+        return "Port".$value;
+    }
 
 }
 

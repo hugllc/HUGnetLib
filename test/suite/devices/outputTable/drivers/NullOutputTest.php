@@ -231,6 +231,34 @@ class NullOutputTest extends DriverTestBase
             ),
         );
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataChannels()
+    {
+        return array(
+            array(
+                array(
+                    "storageUnit" => "unknown",
+                    "maxDecimals" => 2,
+                    "unitType" => "asdf",
+                    "location" => "Hello",
+                    "extra"    => array(1, 5),
+                ),
+                array(
+                    array(
+                        'min' => 5,
+                        'max' => 2147483647,
+                        'label' => 'Hello',
+                        'index' => 0,
+                        'port' => null,
+                    ),
+                ),
+            ),
+        );
+    }
 
 }
 ?>

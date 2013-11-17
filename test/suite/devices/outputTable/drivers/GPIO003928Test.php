@@ -192,6 +192,34 @@ class GPIO003928Test extends DriverTestBase
         $ret = $this->o->encode();
         $this->assertSame($expect, $ret);
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataChannels()
+    {
+        return array(
+            array(
+                array(
+                    "storageUnit" => "unknown",
+                    "maxDecimals" => 2,
+                    "unitType" => "asdf",
+                    "location" => "Hello",
+                    "extra"    => array(1, 5),
+                ),
+                array(
+                    array(
+                        'min' => -127,
+                        'max' => 127,
+                        'label' => 'Hello',
+                        'index' => 0,
+                        'port' => 'Port5',
+                    ),
+                ),
+            ),
+        );
+    }
 
 }
 ?>

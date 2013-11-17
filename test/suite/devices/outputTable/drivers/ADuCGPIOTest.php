@@ -220,21 +220,6 @@ class ADuCGPIOTest extends DriverTestBase
             ),
         );
     }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array $mocks  The mocks to use
-    * @param array $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataChannels
-    */
-    public function testChannels($mocks, $expect)
-    {
-        $this->output->load($mocks);
-        $this->assertSame($expect, $this->o->channels());
-    }
 
 }
 ?>

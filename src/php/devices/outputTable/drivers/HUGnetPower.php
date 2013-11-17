@@ -115,6 +115,16 @@ class HUGnetPower extends \HUGnet\devices\outputTable\Driver
         $string .= $this->encodeInt($this->getExtra(1), 4);
         return $string;
     }
+    /**
+    * Returns the port this data channel is attached to
+    *
+    * @return array
+    */
+    protected function port()
+    {
+        $value = $this->getExtra(1);
+        return "Port".$value;
+    }
 
 }
 

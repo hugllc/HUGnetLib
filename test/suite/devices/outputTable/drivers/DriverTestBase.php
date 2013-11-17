@@ -326,5 +326,30 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
         $sensor->resetMock($mock);
         $this->assertSame($expect, $this->o->getExtra($extra));
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataChannels()
+    {
+        return array(
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $mocks  The mocks to use
+    * @param array $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataChannels
+    */
+    public function testChannels($mocks, $expect)
+    {
+        $this->output->load($mocks);
+        $this->assertSame($expect, $this->o->channels());
+    }
 }
 ?>
