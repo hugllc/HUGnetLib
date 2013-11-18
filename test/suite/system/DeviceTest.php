@@ -1396,6 +1396,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "label" => "",
                         "index" => 0,
                         "epChannel" => true,
+                        "port" => null,
                     ),
                     array(
                         "value" => 41.7162,
@@ -1408,6 +1409,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "label" => "",
                         "index" => 0,
                         "epChannel" => true,
+                        "port" => null,
                     ),
                     array(
                         "value" => 43.8471,
@@ -1420,6 +1422,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "label" => "",
                         "index" => 0,
                         "epChannel" => true,
+                        "port" => null,
                     ),
                     array(
                         "value" => 46.1845,
@@ -1432,6 +1435,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "label" => "",
                         "index" => 0,
                         "epChannel" => true,
+                        "port" => null,
                     ),
                     array(
                         "value" => 48.7713,
@@ -1444,6 +1448,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "label" => "",
                         "index" => 0,
                         "epChannel" => true,
+                        "port" => null,
                     ),
                     array(
                         "value" => 51.665,
@@ -1456,6 +1461,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "label" => "",
                         "index" => 0,
                         "epChannel" => true,
+                        "port" => null,
                     ),
                     array(
                         "value" => 54.9448,
@@ -1468,6 +1474,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "label" => "",
                         "index" => 0,
                         "epChannel" => true,
+                        "port" => null,
                     ),
                     array(
                         "value" => 58.7243,
@@ -1480,6 +1487,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "label" => "",
                         "index" => 0,
                         "epChannel" => true,
+                        "port" => null,
                     ),
                     array(
                         "value" => 63.1738,
@@ -1492,6 +1500,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "label" => "",
                         "index" => 0,
                         "epChannel" => true,
+                        "port" => null,
                     ),
                 ),
             ),
