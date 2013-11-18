@@ -199,6 +199,8 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                         array(
                             "driver0" => 0x04,
                             "driver1" => 0x41,
+                            "ADC0CH"  => 1,
+                            "ADC1CH"  => 5,
                         )
                     ),
                 ),
@@ -214,6 +216,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                         "label" => "asdf",
                         "index" => 0,
                         "epChannel" => true,
+                        "port" => "Port4",
                     ),
                     1 => Array (
                         'decimals' => 8,
@@ -225,6 +228,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                         "label" => "asdf",
                         "index" => 1,
                         "epChannel" => true,
+                        "port" => "Port1",
                     ),
                 ),
             ),
@@ -237,6 +241,8 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                         array(
                             "driver0" => 0x04,
                             "driver1" => 0xFF,
+                            "ADC0CH"  => 1,
+                            "ADC1CH"  => 5,
                         )
                     ),
                 ),
@@ -252,6 +258,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                         "label" => "asdf",
                         "index" => 0,
                         "epChannel" => true,
+                        "port" => "Port4",
                     ),
                 ),
             ),
@@ -293,6 +300,8 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                     "tableEntry" => json_encode(
                         array(
                             "driver0" => 0x41,
+                            "ADC0CH" => 1,
+                            "ADC1CH" => 1,
                         )
                     ),
                 ),
@@ -312,6 +321,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                         "label" => "asdf",
                         "index" => 0,
                         "epChannel" => true,
+                        "port" => "Port4",
                     ),
                 ),
             ),
@@ -343,6 +353,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                         "label" => "asdf",
                         "index" => 0,
                         "epChannel" => true,
+                        "port" => null,
                     ),
                 ),
             ),

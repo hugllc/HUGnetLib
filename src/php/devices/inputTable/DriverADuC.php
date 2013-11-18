@@ -74,7 +74,7 @@ abstract class DriverADuC extends Driver
     /**
     * This is where our channel
     */
-    private $_channel = 0;
+    protected $channel = 0;
     /**
     * This is the class to use for our entry object.
     */
@@ -95,8 +95,7 @@ abstract class DriverADuC extends Driver
     ) {
         $obj = parent::factory($driver, $sensor);
         $obj->offset = (int)$offset;
-        $obj->entry = $entry;
-        $obj->_channel = (int)$channel;
+        $obj->channel = (int)$channel;
         return $obj;
     }
     /**
@@ -173,7 +172,7 @@ abstract class DriverADuC extends Driver
     protected function gain($channel = null)
     {
         if (is_null($channel)) {
-            $channel = $this->_channel;
+            $channel = $this->channel;
         }
         $channel = (int)$channel;
         if (($channel == 0) && !$this->adcOn($channel)) {
@@ -192,7 +191,7 @@ abstract class DriverADuC extends Driver
     protected function ipRoutine($channel = null)
     {
         if (is_null($channel)) {
-            $channel = $this->_channel;
+            $channel = $this->channel;
         }
         $channel = (int)$channel;
         return hexdec($this->entry()->immediateProcessRoutine($channel));
@@ -207,7 +206,7 @@ abstract class DriverADuC extends Driver
     protected function twosComplimentEnabled($channel = null)
     {
         if (is_null($channel)) {
-            $channel = $this->_channel;
+            $channel = $this->channel;
         }
         $channel = (int)$channel;
         if (($channel != 0) || !$this->adcOn(0)) {
@@ -281,6 +280,19 @@ abstract class DriverADuC extends Driver
             $A = (int)$string;
         }
         return $A;
+    }
+    /**
+    * This builds the class from a setup string
+    *
+    * @return Array of channel information
+    */
+    public function channels()
+    {
+        $ret = parent::channels();
+        if (is_array($ret) && isset($ret[0])) {
+            $ret[0]["port"] = $this->entry()->port($this->channel);
+        }
+        return $ret;
     }
 
 

@@ -69,10 +69,8 @@ class MKS901PPressureTest extends DriverTestBaseADuC
     protected function setUp()
     {
         parent::setUp();
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock(array());
         $this->o = \HUGnet\devices\inputTable\Driver::factory(
-            "MKS901PPressure", $sensor, 0
+            "MKS901PPressure", $this->input, 0
         );
     }
 
@@ -100,11 +98,7 @@ class MKS901PPressureTest extends DriverTestBaseADuC
         return array(
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array()
-                        ),
-                    ),
+                    "extra" => array()
                 ),
                 8 * 69213,
                 1,
@@ -114,11 +108,7 @@ class MKS901PPressureTest extends DriverTestBaseADuC
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array()
-                        ),
-                    ),
+                    "extra" => array()
                 ),
                 69213,
                 1,
@@ -141,11 +131,7 @@ class MKS901PPressureTest extends DriverTestBaseADuC
         return array(
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array()
-                        ),
-                    ),
+                    "extra" => array()
                 ),
                 "5D0E0100",
                 1,
@@ -155,11 +141,7 @@ class MKS901PPressureTest extends DriverTestBaseADuC
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array()
-                        ),
-                    ),
+                    "extra" => array()
                 ),
                 "E8720800",
                 1,

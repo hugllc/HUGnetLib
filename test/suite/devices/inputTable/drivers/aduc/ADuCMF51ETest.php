@@ -69,10 +69,8 @@ class ADuCMF51ETest extends DriverTestBaseADuC
     protected function setUp()
     {
         parent::setUp();
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock(array());
         $this->o = \HUGnet\devices\inputTable\Driver::factory(
-            "ADuCMF51E", $sensor, 0
+            "ADuCMF51E", $this->input, 0
         );
     }
 
@@ -100,11 +98,7 @@ class ADuCMF51ETest extends DriverTestBaseADuC
         return array(
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(),
-                        ),
-                    ),
+                    "extra" => array(),
                 ),
                 -4841350,
                 0,
@@ -114,11 +108,7 @@ class ADuCMF51ETest extends DriverTestBaseADuC
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(),
-                        ),
-                    ),
+                    "extra" => array(),
                 ),
                 -1630178,
                 0,
@@ -128,11 +118,7 @@ class ADuCMF51ETest extends DriverTestBaseADuC
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(),
-                        ),
-                    ),
+                    "extra" => array(),
                 ),
                 (0 - 0x54B68B),
                 0,
@@ -142,11 +128,7 @@ class ADuCMF51ETest extends DriverTestBaseADuC
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            'extra' => array(2210),
-                        ),
-                    ),
+                    'extra' => array(2210),
                 ),
                 491755,
                 0,
@@ -156,11 +138,7 @@ class ADuCMF51ETest extends DriverTestBaseADuC
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            'extra' => array(2210),
-                        ),
-                    ),
+                    'extra' => array(2210),
                 ),
                 4591755,
                 0,
@@ -170,11 +148,7 @@ class ADuCMF51ETest extends DriverTestBaseADuC
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            'extra' => array(2210),
-                        ),
-                    ),
+                    'extra' => array(2210),
                 ),
                 pow(2, 23),
                 0,
@@ -196,11 +170,7 @@ class ADuCMF51ETest extends DriverTestBaseADuC
         return array(
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(),
-                        ),
-                    ),
+                    "extra" => array(),
                 ),
                 "1D20E7FF",
                 1,
@@ -210,11 +180,7 @@ class ADuCMF51ETest extends DriverTestBaseADuC
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(),
-                        ),
-                    ),
+                    "extra" => array(),
                 ),
                 "7549ABFF",
                 1,
@@ -224,12 +190,8 @@ class ADuCMF51ETest extends DriverTestBaseADuC
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(
-                                4 => 21.1,
-                            ),
-                        ),
+                    "extra" => array(
+                        4 => 21.1,
                     ),
                 ),
                 "56AD86FF",
@@ -240,12 +202,8 @@ class ADuCMF51ETest extends DriverTestBaseADuC
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(
-                                4 => 21.1,
-                            ),
-                        ),
+                    "extra" => array(
+                        4 => 21.1,
                     ),
                 ),
                 "",

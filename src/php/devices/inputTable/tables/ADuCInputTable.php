@@ -449,8 +449,32 @@ class ADuCInputTable
                           apply",
             'register' => "ADCFLT",
         ),
-
-
+    );
+    /**
+    * This is where we store our sensor object
+    */
+    protected $ports = array(
+        0 => array(
+            0 => "Port4,Port3",
+            1 => "Port4",
+            2 => "Port3",
+            5 => "Port2,Port1",
+            6 => "Port2",
+            7 => "Port1",
+        ),
+        1 => array(
+            0  => "Port2,Port1",
+            1  => "ADC4,ADC5",
+            2  => "Port5,Port6",
+            3  => "Port7,Port8",
+            4  => "Port2",
+            5  => "Port1",
+            6  => "ADC4",
+            7  => "Port5",
+            8  => "Port6",
+            9  => "Port7",
+            10 => "Port8",
+        ),
     );
     /**
     * This is the constructor
@@ -826,6 +850,25 @@ class ADuCInputTable
             $gain *= pow(2, $this->_params("ADC0PGA"));
         }
         return $gain;
+    }
+    /**
+    * Gets the total gain.
+    *
+    * @param int $channel The channel to get the port for
+    
+    * @return null
+    */
+    public function port($channel = 0)
+    {
+        if (!$this->enabled($channel)) {
+            return null;
+        } else if ($channel == 1) {
+            $mux = $this->_params("ADC1CH");
+        } else {
+            $mux     = $this->_params("ADC0CH");
+            $channel = 0;
+        }
+        return $this->ports[$channel][$mux];
     }
 
 }

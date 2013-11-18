@@ -1154,5 +1154,71 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
             "fullArray must return an array"
         );
     }
+    /**
+    * Data provider for testRemove
+    *
+    * @return array
+    */
+    public static function dataPort()
+    {
+        return array(
+            array( 
+                array(
+                ),
+                array(
+                    'ADC1CH' => 4,
+                ),
+                1,
+                "Port2",
+            ),
+            array( 
+                array(
+                ),
+                array(
+                    'ADC0CH' => 5,
+                ),
+                15,
+                "Port2,Port1",
+            ),
+            array( 
+                array(
+                ),
+                array(
+                    'ADC0EN' => 0,
+                    'ADC0CH' => 5,
+                ),
+                0,
+                null,
+            ),
+            array( 
+                array(
+                ),
+                array(
+                ),
+                15,
+                null,
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param array  $mock    The mocks to preload
+    * @param string $preload The string to give to the class
+    * @param int    $channel The channel to get the port for
+    * @param array  $expect  The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataPort
+    */
+    public function testPort($mock, $preload, $channel, $expect)
+    {
+        $sensor = new \HUGnet\DummyTable("Sensor");
+        $sensor->resetMock($mock);
+        $obj = ADuCInputTable::factory($sensor, $preload);
+        $ret = $obj->port($channel);
+        $this->assertSame($expect, $ret);
+    }
 }
 ?>

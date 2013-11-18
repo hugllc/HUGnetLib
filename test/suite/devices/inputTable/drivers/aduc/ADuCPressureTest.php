@@ -69,10 +69,8 @@ class ADuCPressureTest extends DriverTestBaseADuC
     protected function setUp()
     {
         parent::setUp();
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock(array());
         $this->o = \HUGnet\devices\inputTable\Driver::factory(
-            "ADuCPressure", $sensor, 0
+            "ADuCPressure", $this->input, 0
         );
     }
 
@@ -100,11 +98,7 @@ class ADuCPressureTest extends DriverTestBaseADuC
         return array(
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array()
-                        ),
-                    ),
+                    "extra" => array()
                 ),
                 256210,
                 1,
@@ -114,11 +108,7 @@ class ADuCPressureTest extends DriverTestBaseADuC
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array()
-                        ),
-                    ),
+                    "extra" => array()
                 ),
                 100000,
                 1,
@@ -128,11 +118,7 @@ class ADuCPressureTest extends DriverTestBaseADuC
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(0, 5, 0, 1000, 1.2, 100, 1)
-                        ),
-                    ),
+                    "extra" => array(0, 5, 0, 1000, 1.2, 100, 1)
                 ),
                 83055,
                 1,
@@ -142,11 +128,7 @@ class ADuCPressureTest extends DriverTestBaseADuC
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(0, 5, 0, 150, 1.2, 100, 1)
-                        ),
-                    ),
+                    "extra" => array(0, 5, 0, 150, 1.2, 100, 1)
                 ),
                 83055,
                 1,
@@ -156,11 +138,7 @@ class ADuCPressureTest extends DriverTestBaseADuC
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(0, 5, 0, 150, 1.2, 100, 1)
-                        ),
-                    ),
+                    "extra" => array(0, 5, 0, 150, 1.2, 100, 1)
                 ),
                 88072,
                 1,
@@ -183,11 +161,7 @@ class ADuCPressureTest extends DriverTestBaseADuC
         return array(
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array()
-                        ),
-                    ),
+                    "extra" => array()
                 ),
                 "D2E80300",
                 1,
@@ -197,11 +171,7 @@ class ADuCPressureTest extends DriverTestBaseADuC
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array()
-                        ),
-                    ),
+                    "extra" => array()
                 ),
                 "A0860100",
                 1,
@@ -211,11 +181,7 @@ class ADuCPressureTest extends DriverTestBaseADuC
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(0, 5, 0, 1000, 1.2, 100, 1)
-                        ),
-                    ),
+                    "extra" => array(0, 5, 0, 1000, 1.2, 100, 1)
                 ),
                 "6F440100",
                 1,
@@ -225,11 +191,7 @@ class ADuCPressureTest extends DriverTestBaseADuC
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(0, 5, 0, 150, 1.2, 100, 1)
-                        ),
-                    ),
+                    "extra" => array(0, 5, 0, 150, 1.2, 100, 1)
                 ),
                 "6F440100",
                 1,
@@ -239,11 +201,7 @@ class ADuCPressureTest extends DriverTestBaseADuC
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(0, 5, 0, 150, 1.2, 100, 1)
-                        ),
-                    ),
+                    "extra" => array(0, 5, 0, 150, 1.2, 100, 1)
                 ),
                 "08580100",
                 1,
@@ -253,11 +211,7 @@ class ADuCPressureTest extends DriverTestBaseADuC
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(0, 5, 0, 150, 0, 100, 1)
-                        ),
-                    ),
+                    "extra" => array(0, 5, 0, 150, 0, 100, 1)
                 ),
                 "",
                 1,

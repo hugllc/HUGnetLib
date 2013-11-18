@@ -69,10 +69,8 @@ class ADuCScaledTempTest extends DriverTestBaseADuC
     protected function setUp()
     {
         parent::setUp();
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock(array());
         $this->o = \HUGnet\devices\inputTable\Driver::factory(
-            "ADuCScaledTemp", $sensor, 0
+            "ADuCScaledTemp", $this->input, 0
         );
     }
 
@@ -100,11 +98,7 @@ class ADuCScaledTempTest extends DriverTestBaseADuC
         return array(
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(),
-                        ),
-                    ),
+                    "extra" => array(),
                 ),
                 0x4000,
                 1,
@@ -114,12 +108,8 @@ class ADuCScaledTempTest extends DriverTestBaseADuC
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(
-                                4 => 21.1,
-                            ),
-                        ),
+                    "extra" => array(
+                        4 => 21.1,
                     ),
                 ),
                 0x4000,
@@ -142,11 +132,7 @@ class ADuCScaledTempTest extends DriverTestBaseADuC
         return array(
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(),
-                        ),
-                    ),
+                    "extra" => array(),
                 ),
                 "00400000",
                 1,
@@ -156,12 +142,8 @@ class ADuCScaledTempTest extends DriverTestBaseADuC
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(
-                                4 => 21.1,
-                            ),
-                        ),
+                    "extra" => array(
+                        4 => 21.1,
                     ),
                 ),
                 "00400000",

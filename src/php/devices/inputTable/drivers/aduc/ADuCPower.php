@@ -552,6 +552,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
                 "label" => $this->input()->get("location")." 0",
                 "index" => 0,
                 "epChannel" => true,
+                "port" => $this->entry()->port(0),
             ),
             array(
                 "decimals" => $decimals,
@@ -563,6 +564,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
                 "label" => $this->input()->get("location")." 1",
                 "index" => 1,
                 "epChannel" => true,
+                "port" => $this->entry()->port(1),
             ),
             array(
                 "decimals" => $decimals,
@@ -574,6 +576,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
                 "label" => $this->input()->get("location")." 2",
                 "index" => 2,
                 "epChannel" => $Enable,
+                "port" => null,
             ),
             array(
                 "decimals" => $decimals,
@@ -585,6 +588,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
                 "label" => $this->input()->get("location")." 3",
                 "index" => 3,
                 "epChannel" => $Enable,
+                "port" => null,
             )
         );
     }

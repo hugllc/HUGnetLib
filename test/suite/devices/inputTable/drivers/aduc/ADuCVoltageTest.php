@@ -69,10 +69,8 @@ class ADuCVoltageTest extends DriverTestBaseADuC
     protected function setUp()
     {
         parent::setUp();
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock(array());
         $this->o = \HUGnet\devices\inputTable\Driver::factory(
-            "ADuCVoltage", $sensor, 0
+            "ADuCVoltage", $this->input, 0
         );
     }
 
@@ -100,11 +98,7 @@ class ADuCVoltageTest extends DriverTestBaseADuC
         return array(
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(),
-                        ),
-                    ),
+                    "extra" => array(),
                 ),
                 -8388608,
                 1,
@@ -114,11 +108,7 @@ class ADuCVoltageTest extends DriverTestBaseADuC
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(),
-                        ),
-                    ),
+                    "extra" => array(),
                 ),
                 -1,
                 1,
@@ -140,11 +130,7 @@ class ADuCVoltageTest extends DriverTestBaseADuC
         return array(
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(),
-                        ),
-                    ),
+                    "extra" => array(),
                 ),
                 "000080FF",
                 1,
@@ -154,11 +140,7 @@ class ADuCVoltageTest extends DriverTestBaseADuC
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(),
-                        ),
-                    ),
+                    "extra" => array(),
                 ),
                 "FFFFFFFF",
                 1,

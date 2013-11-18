@@ -360,8 +360,8 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
         $index = 0;
         foreach ($chan as $k => $c) {
             foreach ($c as $d) {
-               $d["index"] = $index++;
-               $ret[] = $d;
+                $d["index"] = $index++;
+                $ret[] = $d;
             }
         }
         return $ret;

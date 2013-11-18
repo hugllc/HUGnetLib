@@ -69,10 +69,8 @@ class ADuCResistanceTest extends DriverTestBaseADuC
     protected function setUp()
     {
         parent::setUp();
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock(array());
         $this->o = \HUGnet\devices\inputTable\Driver::factory(
-            "ADuCResistance", $sensor, 0
+            "ADuCResistance", $this->input, 0
         );
     }
 
@@ -100,11 +98,7 @@ class ADuCResistanceTest extends DriverTestBaseADuC
         return array(
             array(   // #0
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array()
-                        ),
-                    ),
+                    "extra" => array()
                 ),
                 -291755,
                 0,
@@ -114,11 +108,7 @@ class ADuCResistanceTest extends DriverTestBaseADuC
             ),
             array(   // #1
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(),
-                        ),
-                    ),
+                    "extra" => array(),
                 ),
                 -391755,
                 0,
@@ -128,11 +118,7 @@ class ADuCResistanceTest extends DriverTestBaseADuC
             ),
             array(   // #2
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            'extra' => array(2210),
-                        ),
-                    ),
+                    'extra' => array(2210),
                 ),
                 -491755,
                 0,
@@ -142,11 +128,7 @@ class ADuCResistanceTest extends DriverTestBaseADuC
             ),
             array(   // #3
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            'extra' => array(2210),
-                        ),
-                    ),
+                    'extra' => array(2210),
                 ),
                 -8388608,
                 0,
@@ -156,11 +138,7 @@ class ADuCResistanceTest extends DriverTestBaseADuC
             ),
             array(   // #4
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            'extra' => array(2210),
-                        ),
-                    ),
+                    'extra' => array(2210),
                 ),
                 pow(2, 23) - 1,
                 0,
@@ -170,11 +148,7 @@ class ADuCResistanceTest extends DriverTestBaseADuC
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            'extra' => array(2210),
-                        ),
-                    ),
+                    'extra' => array(2210),
                 ),
                 pow(2, 23) + 1,
                 0,
@@ -184,11 +158,7 @@ class ADuCResistanceTest extends DriverTestBaseADuC
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            'extra' => array(2210),
-                        ),
-                    ),
+                    'extra' => array(2210),
                 ),
                 0,
                 0,
@@ -210,11 +180,7 @@ class ADuCResistanceTest extends DriverTestBaseADuC
         return array(
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array()
-                        ),
-                    ),
+                    "extra" => array()
                 ),
                 "7657FFFF",
                 0,
@@ -224,11 +190,7 @@ class ADuCResistanceTest extends DriverTestBaseADuC
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(),
-                        ),
-                    ),
+                    "extra" => array(),
                 ),
                 "9ABAFFFF",
                 0,
@@ -238,11 +200,7 @@ class ADuCResistanceTest extends DriverTestBaseADuC
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            'extra' => array(2210),
-                        ),
-                    ),
+                    'extra' => array(2210),
                 ),
                 "3A95FAFF",
                 0,
@@ -252,11 +210,7 @@ class ADuCResistanceTest extends DriverTestBaseADuC
             ),
             array(
                 array(
-                    "Sensor" => array(
-                        "get" => array(
-                            'extra' => array(2210),
-                        ),
-                    ),
+                    'extra' => array(2210),
                 ),
                 "",
                 0,
