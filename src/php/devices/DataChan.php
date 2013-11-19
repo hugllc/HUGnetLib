@@ -94,7 +94,7 @@ class DataChan extends \HUGnet\base\BaseChan
             $this->get("storageUnit"),
             $this->get("storageType")
         );
-        $data = round($data, $this->get('decimals'));
+        $data = round($data, (int)$this->get('decimals'));
     }
     /**
     * Encodes data for this channel
