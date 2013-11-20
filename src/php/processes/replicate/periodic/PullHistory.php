@@ -151,7 +151,13 @@ class PullHistory extends \HUGnet\processes\replicate\Periodic
                     break;
                 }
             } while (($ret == self::MAX_HISTORY) && ($cnt < 10));
-            $this->system()->out("Done");
+            if ($ret === false) {
+                $this->system()->out("Failed to contact server");
+            } else if (($ret > 0) || ($cnt > 1)) {
+                $this->system()->out("Done");
+            } else {
+                $this->system()->out("No new records");
+            }
         }
     }
     /**
@@ -224,15 +230,17 @@ class PullHistory extends \HUGnet\processes\replicate\Periodic
             // This sets the last history date.
             $dev->setLocalParam("Last".$name."History", $last);
             $dev->store();
+        } else {
+            return false;
         }
         return $count;
     }
     /**
     * Gets the config and saves it
     *
-    * @param string $url     The url to post to
-    * @param string $did     The device id to use
-    * @param array  $records The records to send
+    * @param string $did   The device id to use
+    * @param int    $start The start date (early date)
+    * @param int    $end   The end date (later date)
     *
     * @return string The left over string
     */
