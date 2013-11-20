@@ -69,7 +69,7 @@ class Watchdog extends \HUGnet\ui\Daemon
     protected $progConfig = array(
         "email" => null,
         "email_wait" => 1800,
-        "max_poll_age" => 600,
+        "max_history_age" => 600,
     );
     /** This is our critical Error locations */
     private $_criticalError = array();
