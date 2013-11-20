@@ -167,12 +167,12 @@ class PullHistory extends \HUGnet\processes\replicate\Periodic
     private function _pullHist(&$dev, &$hist, $param, $name)
     {
         $last = (int)$dev->getLocalParam($param);
-        $first = time();
-        $ret = $this->_getHistory($dev->id(), $last + 1);
+        $first = $this->system()->now();
+        $ret = $this->_getHistory($dev->id(), $last + 1, $first);
         if ($ret) {
             $good = 0;
             $bad = 0;
-            $badfirst = time();
+            $badfirst = $this->system()->now();
             $badlast = 0;
             if (is_array($ret)) {
                 foreach ($ret as $record) {
@@ -236,7 +236,7 @@ class PullHistory extends \HUGnet\processes\replicate\Periodic
     *
     * @return string The left over string
     */
-    private function _getHistory($did, $start)
+    private function _getHistory($did, $start, $end)
     {
         return \HUGnet\Util::postData(
             $this->_url,
@@ -247,7 +247,7 @@ class PullHistory extends \HUGnet\processes\replicate\Periodic
                 "id"     => sprintf("%06X", $did),
                 "data"   => array(
                     "since"   => $start,
-                    "until"   => time(),
+                    "until"   => $end,
                     "limit"   => self::MAX_HISTORY,
                     "order"   => "asc",
                     "type"    => "history",
