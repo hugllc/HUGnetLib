@@ -35,8 +35,10 @@
 namespace HUGnet\processes;
 /** This is our base class */
 require_once dirname(__FILE__)."/../ui/Daemon.php";
-/** This is our base class */
+/** This is our device based plugins */
 require_once dirname(__FILE__)."/analysis/Device.php";
+/** This is our periodic plugins */
+require_once dirname(__FILE__)."/analysis/Periodic.php";
 
 /**
  * This code routes packets to their correct destinations.
@@ -98,7 +100,10 @@ class Analysis extends \HUGnet\ui\Daemon
         /* Get our Device */
         $this->_device = $this->system()->device();
         $this->_dev = $this->system()->device();
-        $this->_plugins = \HUGnet\processes\analysis\Device::plugins($this);
+        $this->_plugins = array(
+            "periodic" => \HUGnet\processes\analysis\Periodic::plugins($this),
+            "device"   => \HUGnet\processes\analysis\Device::plugins($this)
+        );
 
     }
     /**
@@ -124,6 +129,9 @@ class Analysis extends \HUGnet\ui\Daemon
         $this->_device->load($this->_myID);
         $this->_runtime();
         if ($this->_runtime["analysis"] !== false) {
+            foreach ($this->_plugins['periodic'] as $obj) {
+                $obj->execute();
+            }
             $this->_ids = $this->_device->ids(array("Active" => 1));
             foreach (array_keys((array)$this->_ids) as $key) {
                 if (!$this->loop()) {
@@ -135,7 +143,7 @@ class Analysis extends \HUGnet\ui\Daemon
                 }
                 $this->_dev->load($key);
                 $this->out($this->_dev->get("DeviceID"));
-                foreach ($this->_plugins as $key => $obj) {
+                foreach ($this->_plugins['device'] as $key => $obj) {
                     $obj->execute($this->_dev);
                 }
                 $this->_dev->store();

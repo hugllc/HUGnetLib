@@ -169,7 +169,13 @@ class Generic extends \HUGnet\db\Table
         }
         $oldTable = $this->sqlTable;
         foreach ($tables as $table) {
-            $this->checkTable($table);
+            $this->system()->out("Checking table $table", 1);
+            $ret = $this->checkTable($table);
+            if ($ret) {
+                $this->system()->out("Finished", 1);
+            } else {
+                $this->system()->out("Failed", 1);
+            }
         }
         $this->forceTable($oldTable);
     }
