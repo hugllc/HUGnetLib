@@ -294,7 +294,8 @@ var DeviceEntryView = Backbone.View.extend({
     events: {
         'change .action': 'action',
         'click .refresh': 'refresh',
-        'click .properties': 'properties'
+        'click .properties': 'properties',
+        'click .configview': 'configview'
     },
     initialize: function (options)
     {
@@ -317,6 +318,9 @@ var DeviceEntryView = Backbone.View.extend({
         } else if (action === 'properties') {
             this.model.refresh();
             this.properties(e);
+        } else if (action === 'configview') {
+            this.model.refresh();
+            this.configview(e);
         } else if (action === 'loadfirmware') {
             this.loadfirmware(e);
         } else if (action === 'loadconfig') {
@@ -354,6 +358,11 @@ var DeviceEntryView = Backbone.View.extend({
     properties: function (e)
     {
         var view = new DevicePropertiesView({ model: this.model });
+        this.parent.popup(view);
+    },
+    configview: function (e)
+    {
+        var view = new DeviceConfigView({ model: this.model });
         this.parent.popup(view);
     },
     _setupProgress: function(title)
@@ -569,7 +578,7 @@ HUGnet.DevicesView = Backbone.View.extend({
         view.$el.dialog({
             modal: true,
             draggable: true,
-            width: 700,
+            width: 800,
             resizable: false,
             title: view.title(),
             dialogClass: "window",
