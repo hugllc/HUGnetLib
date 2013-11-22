@@ -53,21 +53,31 @@ var DeviceConfigImageView = Backbone.View.extend({
             this.url,
             function ()
             {
-                var datachannels = myself.model.get("dataChannels");
-                _.each(
-                    datachannels,
-                    function (chan, key)
-                    {
-                        if (typeof chan.port == "string") {
-                            console.log('#'+chan.port);
-                            $('text#'+chan.port+" tspan").text(chan.label);
-                        }
-                    },
-                    this
-                );
+                myself.renderChannels(myself.model.get("dataChannels"), "datachan");
+                myself.renderChannels(myself.model.get("controlChannels"), "controlchan");
             }
         );
         return this;
+    },
+    renderChannels: function (channels, addClass)
+    {
+        _.each(
+            channels,
+            function (chan, key)
+            {
+                if (typeof chan.port == "string") {
+                    var ports = chan.port.split(",");
+                    _.each(
+                        ports,
+                        function (port, key)
+                        {
+                            $('text#'+$.trim(port)+" tspan").text(chan.label);
+                        }
+                    );
+                }
+            },
+            this
+        );
     }
 });
 /**
