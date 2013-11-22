@@ -45,11 +45,28 @@ var DeviceConfigImageView = Backbone.View.extend({
     url: '/HUGnetLib/images/config/00393701.svg',
     initialize: function (options)
     {
-       
     },
     render: function ()
     {
-        this.$el.load(this.url);
+        var myself = this;
+        this.$el.load(
+            this.url,
+            function ()
+            {
+                var datachannels = myself.model.get("dataChannels");
+                _.each(
+                    datachannels,
+                    function (chan, key)
+                    {
+                        if (typeof chan.port == "string") {
+                            console.log('#'+chan.port);
+                            $('text#'+chan.port+" tspan").text(chan.label);
+                        }
+                    },
+                    this
+                );
+            }
+        );
         return this;
     }
 });
@@ -96,8 +113,6 @@ var DeviceConfigView = Backbone.View.extend({
         this.devImage = new DeviceConfigImageView({
             model: this.model
         });
-        console.log(this.devImage);
-
     },
     channelRegen: function (model, collection, view)
     {
