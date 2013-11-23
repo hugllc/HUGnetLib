@@ -50,6 +50,9 @@ var DeviceControlChannelEntryView = Backbone.View.extend({
     },
     initialize: function (options)
     {
+        if (options.template) {
+            this.template = options.template;
+        }
         this.model.bind('change', this.render, this);
         this.model.bind('remove', this.remove, this);
         this.parent = options.parent;
@@ -70,6 +73,9 @@ var DeviceControlChannelEntryView = Backbone.View.extend({
     render: function ()
     {
         var data = this.model.toJSON();
+        if (typeof data.port != "string") {
+            data.port = " - ";
+        }
         _.extend(data, HUGnet.viewHelpers);
         this.$el.html(
             _.template(
@@ -96,11 +102,18 @@ var DeviceControlChannelEntryView = Backbone.View.extend({
 HUGnet.DeviceControlChannelsView = Backbone.View.extend({
     model: HUGnet.DeviceControlChannels,
     template: "#DeviceControlChannelListTemplate",
+    rowTemplate: "#DeviceControlChannelEntryTemplate",
     rows: 0,
     events: {
     },
     initialize: function (options)
     {
+        if (options.template) {
+            this.template = options.template;
+        }
+        if (options.rowTemplate) {
+            this.rowTemplate = options.rowTemplate;
+        }
         //this.model.bind('add', this.insert, this);
     },
     /**
@@ -129,7 +142,11 @@ HUGnet.DeviceControlChannelsView = Backbone.View.extend({
     },
     insert: function (model, key)
     {
-        var view = new DeviceControlChannelEntryView({ model: model, parent: this });
+        var view = new DeviceControlChannelEntryView({
+            model: model, 
+            parent: this,
+            template: this.rowTemplate
+        });
         this.$('tbody').append(view.render().el);
     },
     popup: function (view)
