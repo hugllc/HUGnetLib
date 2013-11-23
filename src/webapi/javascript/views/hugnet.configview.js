@@ -53,13 +53,13 @@ var DeviceConfigImageView = Backbone.View.extend({
             this.url,
             function ()
             {
-                myself.renderChannels(myself.model.get("dataChannels"), "datachan");
-                myself.renderChannels(myself.model.get("controlChannels"), "controlchan");
+                myself.renderChannels(myself.model.get("dataChannels"), "blue");
+                myself.renderChannels(myself.model.get("controlChannels"), "red");
             }
         );
         return this;
     },
-    renderChannels: function (channels, addClass)
+    renderChannels: function (channels, color)
     {
         _.each(
             channels,
@@ -67,11 +67,17 @@ var DeviceConfigImageView = Backbone.View.extend({
             {
                 if (typeof chan.port == "string") {
                     var ports = chan.port.split(",");
+                    var label = chan.label;
+                    if (typeof chan.units == "string") {
+                        label = label + ' (' + chan.units + ')';
+                    }
                     _.each(
                         ports,
                         function (port, key)
                         {
-                            $('text#'+$.trim(port)+" tspan").text(chan.label);
+                            var el = $('text#'+$.trim(port)+' tspan');
+                            el.text(label);
+                            el.attr('fill', color);
                         }
                     );
                 }
