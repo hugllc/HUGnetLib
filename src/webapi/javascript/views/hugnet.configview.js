@@ -68,16 +68,30 @@ var DeviceConfigImageView = Backbone.View.extend({
                 if (typeof chan.port == "string") {
                     var ports = chan.port.split(",");
                     var label = chan.label;
+                    var units = "";
                     if (typeof chan.units == "string") {
-                        label = label + ' (' + chan.units + ')';
+                        units = '(' + chan.units + ')';
+                    }
+                    var index = false;
+                    if (ports.length > 1) {
+                        index = true;
                     }
                     _.each(
                         ports,
                         function (port, key)
                         {
                             var el = $('text#'+$.trim(port)+' tspan');
-                            el.text(label);
+                            var text = label;
+                            if (index) {
+                                var ind = key + 1;
+                                text = text + " " + ind;
+                            }
+                            text = text + " " + units;
+                            el.text(text);
                             el.attr('fill', color);
+                            if (typeof index == "number") {
+                                index++;
+                            }
                         }
                     );
                 }
