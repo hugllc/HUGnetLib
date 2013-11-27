@@ -401,7 +401,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "label" => "asdf 1",
                         "index" => 1,
                         "epChannel" => true,
-                        "port" => "Port7,Port8",
+                        "port" => "Port7 -,Port8 +",
                     ),
                     array(
                         "decimals" => 8,
@@ -681,7 +681,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "label" => "asdf 1",
                         "index" => 1,
                         "epChannel" => true,
-                        "port" => "Port7,Port8",
+                        "port" => "Port7 -,Port8 +",
                     ),
                     array(
                         "value" => 45.47018754,
@@ -775,7 +775,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "label" => "asdf 1",
                         "index" => 1,
                         "epChannel" => true,
-                         "port" => "Port7,Port8",
+                         "port" => "Port7 -,Port8 +",
                     ),
                     array(
                         "value" => 0.0,
@@ -869,7 +869,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "label" => "asdf 1",
                         "index" => 1,
                         "epChannel" => true,
-                        "port" => "Port7,Port8",
+                        "port" => "Port7 -,Port8 +",
                     ),
                     array(
                         "value" => null,
@@ -963,7 +963,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "label" => "asdf 1",
                         "index" => 1,
                         "epChannel" => true,
-                        "port" => "Port7,Port8",
+                        "port" => "Port7 -,Port8 +",
                     ),
                     array(
                         "value" => null,
@@ -1057,7 +1057,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "label" => "asdf 1",
                         "index" => 1,
                         "epChannel" => true,
-                        "port" => "Port7,Port8",
+                        "port" => "Port7 -,Port8 +",
                     ),
                     array(
                         "value" => null,
@@ -1151,7 +1151,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "label" => "asdf 1",
                         "index" => 1,
                         "epChannel" => true,
-                        "port" => "Port7,Port8",
+                        "port" => "Port7 -,Port8 +",
                     ),
                     array(
                         "value" => -45.47018754,
@@ -1245,7 +1245,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "label" => "asdf 1",
                         "index" => 1,
                         "epChannel" => true,
-                        "port" => "Port7,Port8",
+                        "port" => "Port7 -,Port8 +",
                     ),
                     array(
                         "value" => 0.00048442,
@@ -1340,7 +1340,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "label" => "asdf 1",
                         "index" => 1,
                         "epChannel" => true,
-                        "port" => "Port7,Port8",
+                        "port" => "Port7 -,Port8 +",
                     ),
                     array(
                         "value" => 0.01308001,
@@ -1434,7 +1434,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "label" => "asdf 1",
                         "index" => 1,
                         "epChannel" => true,
-                        "port" => "Port7,Port8",
+                        "port" => "Port7 -,Port8 +",
                     ),
                     array(
                         "value" => null,
@@ -1528,7 +1528,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "label" => "asdf 1",
                         "index" => 1,
                         "epChannel" => true,
-                        "port" => "Port7,Port8",
+                        "port" => "Port7 -,Port8 +",
                     ),
                     array(
                         "value" => 0.01189011,
@@ -1622,7 +1622,7 @@ class ADuCPowerTest extends DriverTestBaseADuC
                         "label" => "asdf 1",
                         "index" => 1,
                         "epChannel" => true,
-                        "port" => "Port7,Port8",
+                        "port" => "Port7 -,Port8 +",
                     ),
                     array(
                         "value" => 0.0,

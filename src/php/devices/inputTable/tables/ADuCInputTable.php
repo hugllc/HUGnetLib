@@ -455,18 +455,19 @@ class ADuCInputTable
     */
     protected $ports = array(
         0 => array(
-            0 => "Port4,Port3",
+            0 => "Port4 -,Port3 +",
             1 => "Port4",
             2 => "Port3",
-            5 => "Port2,Port1",
+            3 => "VREF+,VREF-",
+            5 => "Port2 -,Port1 +",
             6 => "Port2",
             7 => "Port1",
         ),
         1 => array(
-            0  => "Port2,Port1",
+            0  => "Port2 -,Port1 +",
             1  => "ADC4,ADC5",
-            2  => "Port5,Port6",
-            3  => "Port7,Port8",
+            2  => "Port5 -,Port6 +",
+            3  => "Port7 -,Port8 +",
             4  => "Port2",
             5  => "Port1",
             6  => "ADC4",

@@ -257,7 +257,7 @@ class MaximumWindDirection extends \HUGnet\devices\inputTable\Driver
         for ($i = 1; $i < 6; $i++) {
             $val = str_replace(" ", "", (string)$ports[$i]);
             if ($val != "") {
-                $ret .= $sep.$val;
+                $ret .= $sep.$val." Term_".$i;
                 $sep = ",";
             }
         }

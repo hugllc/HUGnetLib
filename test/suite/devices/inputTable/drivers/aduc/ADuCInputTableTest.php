@@ -353,7 +353,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                         "label" => "asdf",
                         "index" => 0,
                         "epChannel" => true,
-                        "port" => null,
+                        "port" => 'VREF+,VREF-',
                     ),
                 ),
             ),

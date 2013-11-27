@@ -1178,7 +1178,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                     'ADC0CH' => 5,
                 ),
                 15,
-                "Port2,Port1",
+                "Port2 -,Port1 +",
             ),
             array( 
                 array(
@@ -1196,7 +1196,7 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 array(
                 ),
                 15,
-                null,
+                'VREF+,VREF-',
             ),
         );
     }

@@ -171,7 +171,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "label" => "asdf 1",
                         "index" => 0,
                         "epChannel" => false,
-                        "port" => null,
+                        "port" => 'VREF+,VREF-',
                     ),
                 ),
             ),
@@ -237,7 +237,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "label" => "asdf1 0",
                         "index" => 0,
                         "epChannel" => false,
-                        "port" => null,
+                        "port" => 'VREF+,VREF-',
                     ),
                     array(
                         "value" => 14.448166,
@@ -280,7 +280,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                     ),
                 ),
             ),
-            array( // #1
+            array( // #2
                 array(
                     "Input" => array(
                         "id" => 1,
@@ -332,7 +332,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "label" => "asdf1 0",
                         "index" => 0,
                         "epChannel" => false,
-                        "port" => null,
+                        "port" => 'VREF+,VREF-',
                     ),
                     array(
                         "value" => 14.448166,
@@ -375,7 +375,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                     ),
                 ),
             ),
-            array( // #1
+            array( // #3
                 array(
                     "Input" => array(
                         "id" => 1,
@@ -430,7 +430,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "label" => "asdf1 0",
                         "index" => 0,
                         "epChannel" => false,
-                        "port" => null,
+                        "port" => 'VREF+,VREF-',
                     ),
                     array(
                         "value" => 14.448166,

@@ -968,7 +968,8 @@ class MaximumWindDirectionTest extends DriverTestBase
                         'label' => '',
                         'index' => 0,
                         'epChannel' => true,
-                        'port' => 'Port1,Port2,Port3,Port4,Port5',
+                        'port' => 'Port1 Term_1,Port2 Term_2,'
+                            .'Port3 Term_3,Port4 Term_4,Port5 Term_5',
                     ),
                 ),
             ),
