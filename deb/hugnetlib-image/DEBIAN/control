@@ -1,0 +1,12 @@
+Source: hugnetapi
+Section: hugnet
+Priority: optional
+Maintainer: Scott Price <prices@hugllc.com>
+Homepage: http://dev.huglc.com/
+Version: %VERSION%
+Package: hugnetlib-image
+Architecture: all
+Recommends: apache2
+Description: This is the HUGnet API for accessing a HUGnet system.
+ This creates an interface that web pages and scripts alike can manipulate the
+ system.

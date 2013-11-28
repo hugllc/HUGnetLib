@@ -42,21 +42,30 @@
 */
 var DeviceConfigImageView = Backbone.View.extend({
     tagName: 'div',
-    url: '/HUGnetLib/images/config/00393701.svg',
+    url: null,
+    urlbase: '/HUGnetLib/images/config/',
     initialize: function (options)
     {
+        var img = this.model.get("configImage");
+        if (typeof img == "string") {
+            this.url = this.urlbase + img;
+        }
     },
     render: function ()
     {
-        var myself = this;
-        this.$el.load(
-            this.url,
-            function ()
-            {
-                myself.renderChannels(myself.model.get("dataChannels"), "blue");
-                myself.renderChannels(myself.model.get("controlChannels"), "red");
-            }
-        );
+        if (typeof this.url == "string") {
+            var myself = this;
+            this.$el.load(
+                this.url,
+                function ()
+                {
+                    myself.renderChannels(myself.model.get("dataChannels"), "blue");
+                    myself.renderChannels(myself.model.get("controlChannels"), "red");
+                }
+            );
+        } else {
+            this.$el.html("No Image Available");
+        }
         return this;
     },
     renderChannels: function (channels, color)

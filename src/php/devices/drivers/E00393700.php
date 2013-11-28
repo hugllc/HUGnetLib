@@ -107,6 +107,7 @@ class E00393700 extends \HUGnet\devices\Driver
                 11 => "P2.1",
         ),
         "ProcessTables" => 4,
+        "configImage" => "00393701.svg",
     );
 
 }

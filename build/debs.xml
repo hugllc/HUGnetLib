@@ -6,12 +6,14 @@
     <property name="deb.webapisetup" value="${basedir}/deb/hugnetlib-webapi"/>
     <property name="deb.webapirosetup" value="${basedir}/deb/hugnetlib-rowebapi"/>
     <property name="deb.jssetup" value="${basedir}/deb/hugnetlib-js"/>
+    <property name="deb.imagesetup" value="${basedir}/deb/hugnetlib-image"/>
     <property name="deb.phpsrc" value="${basedir}/src/php"/>
     <property name="deb.webapisrc" value="${basedir}/src/webapi/html"/>
     <property name="deb.phpstaging" value="${basedir}/build/debphp"/>
     <property name="deb.webapistaging" value="${basedir}/build/debwebapi"/>
     <property name="deb.webapirostaging" value="${basedir}/build/debrowebapi"/>
     <property name="deb.jsstaging" value="${basedir}/build/debjs"/>
+    <property name="deb.imagestaging" value="${basedir}/build/debimage"/>
     <property name="deb.release" value="" />
     <property name="deb.versionfile" value="${basedir}/src/php/VERSION.TXT" />
 
@@ -25,6 +27,7 @@
     <property name="deb.webapioutputfile" value="${deb.builddir}/HUGnetLib-webapi_${deb.version}${deb.release}_all.deb" />
     <property name="deb.webapirooutputfile" value="${deb.builddir}/HUGnetLib-rowebapi_${deb.version}${deb.release}_all.deb" />
     <property name="deb.jsoutputfile" value="${deb.builddir}/HUGnetLib-js_${deb.version}${deb.release}_all.deb" />
+    <property name="deb.imageoutputfile" value="${deb.builddir}/HUGnetLib-image_${deb.version}${deb.release}_all.deb" />
     <property name="deb.postloc" value="hugnet.int.hugllc.com:/home/reprepro/incoming/" />
 
     <target name="clean" description="Clean up and create artifact directories">
@@ -32,6 +35,7 @@
         <delete dir="${deb.webapistaging}" failonerror="false"/>
         <delete dir="${deb.webapirostaging}" failonerror="false"/>
         <delete dir="${deb.jsstaging}" failonerror="false"/>
+        <delete dir="${deb.imagestaging}" failonerror="false"/>
         <delete failonerror="false">
             <fileset dir="${deb.builddir}" includes="*.deb"/>
         </delete>
@@ -129,6 +133,25 @@
         />
         <delete file="${deb.jsstaging}/var/www/HUGnetLib/HUGnetLibAPI_RO.php" />
     </target>
+    <target name="imagesetup" description="Copy all of the files to build the deb">
+        <echo>Setting up for HUGnetLib-image 'v${deb.version}'</echo>
+
+        <mkdir dir="${deb.imagestaging}"/>
+        <copy todir="${deb.imagestaging}">
+            <fileset dir="${deb.imagesetup}" excludes="**/*~"/>
+        </copy>
+        <mkdir dir="${deb.imagestaging}/var/www/HUGnetLib"/>
+        <mkdir dir="${deb.imagestaging}/var/www/HUGnetLib/images"/>
+        <copy todir="${deb.imagestaging}/var/www/HUGnetLib/images">
+            <fileset dir="${deb.webapisrc}/images" />
+        </copy>
+        <chmod file="${deb.imagestaging}/DEBIAN/postinst" perm="0755"/>
+        <chmod file="${deb.imagestaging}/DEBIAN/prerm" perm="0755"/>
+        <replaceregexp file="${deb.imagestaging}/DEBIAN/control" byline="yes"
+                    match="%VERSION%"
+                    replace="${deb.version}"
+        />
+    </target>
     <target name="webapideb" description="build the deb">
         <mkdir dir="${deb.builddir}"/>
         <exec executable="fakeroot" failonerror="true">
@@ -148,6 +171,13 @@
         <exec executable="fakeroot" failonerror="true">
             <arg line="dpkg-deb --build ${deb.jsstaging}
                        ${deb.jsoutputfile}"/>
+        </exec>
+    </target>
+    <target name="imagedeb" description="build the deb">
+        <mkdir dir="${deb.builddir}"/>
+        <exec executable="fakeroot" failonerror="true">
+            <arg line="dpkg-deb --build ${deb.imagestaging}
+                 ${deb.imageoutputfile}"/>
         </exec>
     </target>
     <target name="sign" description="sign the deb">
@@ -173,6 +203,10 @@
             <arg line="-av ${deb.jsoutputfile}
                         ${deb.postloc}main/"/>
         </exec>
+        <exec executable="rsync" failonerror="true" dir="${deb.builddir}">
+            <arg line="-av ${deb.imageoutputfile}
+                        ${deb.postloc}main/"/>
+        </exec>
     </target>
     <target name="testpost" description="post the deb" depends="build">
         <exec executable="rsync" failonerror="true" dir="${deb.builddir}">
@@ -189,6 +223,10 @@
         </exec>
         <exec executable="rsync" failonerror="true" dir="${deb.builddir}">
             <arg line="-av ${deb.jsoutputfile}
+                        ${deb.postloc}testing/"/>
+        </exec>
+        <exec executable="rsync" failonerror="true" dir="${deb.builddir}">
+            <arg line="-av ${deb.imageoutputfile}
                         ${deb.postloc}testing/"/>
         </exec>
     </target>
@@ -209,11 +247,15 @@
             <arg line="-av ${deb.jsoutputfile}
                         ${deb.postloc}rc/"/>
         </exec>
+        <exec executable="rsync" failonerror="true" dir="${deb.builddir}">
+            <arg line="-av ${deb.imageoutputfile}
+                        ${deb.postloc}rc/"/>
+        </exec>
     </target>
     <target name="postclean" description="build the deb">
         <delete dir="${deb.phpstaging}"/>
         <delete dir="${deb.webapistaging}"/>
     </target>
-    <target name="build" depends="clean,phpsetup,webapisetup,webapirosetup,jssetup,phpdeb,webapideb,webapirodeb,jsdeb"/>
+    <target name="build" depends="clean,phpsetup,webapisetup,webapirosetup,jssetup,imagesetup,phpdeb,webapideb,webapirodeb,jsdeb,webapideb,imagedeb"/>
 
 </project>

@@ -1194,6 +1194,18 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 array(
                 ),
                 array(
+                    'ADC0EN' => 0,
+                    'ADC0CH' => 5,
+                    'ADC1EN' => 1,
+                    'ADC1CH' => 6,
+                ),
+                0,
+                'ADC4',
+            ),
+            array( 
+                array(
+                ),
+                array(
                 ),
                 15,
                 'VREF+,VREF-',

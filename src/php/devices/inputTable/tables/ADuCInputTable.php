@@ -862,7 +862,14 @@ class ADuCInputTable
     public function port($channel = 0)
     {
         if (!$this->enabled($channel)) {
-            return null;
+            // If we are given channel 0, but channel 0 isn't enabled, check
+            // channel 1.
+            if (($channel == 0) && $this->enabled(1)){
+                $mux = $this->_params("ADC1CH");
+                $channel = 1;
+            } else {
+                return null;
+            }
         } else if ($channel == 1) {
             $mux = $this->_params("ADC1CH");
         } else {
