@@ -194,7 +194,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     */
     protected $arch = array(
         "0039-12" => array(
-            0x70 => "Digital Input",
+            0x70 => "Pulse Counter",
             0xF8 => "Analog Input Table",
         ),
         "0039-21-01" => array(
@@ -205,11 +205,12 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         ),
         "0039-28" => array(
             0x6F => "Maximum Inc. Wind Direction Sensor",
-            0x70 => "Digital Input",
+            0x70 => "Pulse Counter",
             0xF8 => "Analog Input Table",
         ),
         "0039-37" => array(
             0x60 => "Control Value Input",
+            0x70 => "Pulse Counter",
             0xF9 => "Input Table Entry",
         ),
         "Linux" => array(
