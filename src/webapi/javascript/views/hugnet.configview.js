@@ -70,7 +70,7 @@ var DeviceConfigImageView = Backbone.View.extend({
     },
     renderChannels: function (channels, colorKey)
     {
-        var color = $('text#'+colorKey).attr('fill');
+        var color = $('text#'+colorKey).css('fill');
         _.each(
             channels,
             function (chan, key)
@@ -83,13 +83,16 @@ var DeviceConfigImageView = Backbone.View.extend({
                         function (port, key)
                         {
                             var pval = port.split(" ");
-                            var el = $('text#'+$.trim(pval[0])+' tspan');
+                            var id = $.trim(pval[0]);
+                            // This escapes these characters correctly for the selector
+                            id = id.replace(/([ #;?&,.+*~\':"!^$[\]()=>|\/@])/g,'\\$1');
+                            var el = $('text#'+id+' tspan');
                             var text = label;
                             if (pval[1] != undefined) {
                                 text = text + " " + pval[1];
                             }
                             el.text(text);
-                            el.attr('fill', color);
+                            el.css('fill', color);
                             if (typeof index == "number") {
                                 index++;
                             }
