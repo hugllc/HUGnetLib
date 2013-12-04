@@ -14,7 +14,7 @@
    height="400"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.3.1 r9886"
+   inkscape:version="0.48.4 r9939"
    sodipodi:docname="00393701.svg"
    inkscape:export-filename="/home/jeffl/Documents/InkScape/HUGnetLab/HUGnetLabBoardPicture2.png"
    inkscape:export-xdpi="90"
@@ -1135,15 +1135,15 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.5975"
-     inkscape:cx="400"
-     inkscape:cy="200"
+     inkscape:zoom="2.2592062"
+     inkscape:cx="486.20816"
+     inkscape:cy="103.44759"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1440"
-     inkscape:window-height="845"
-     inkscape:window-x="-2"
+     inkscape:window-width="1680"
+     inkscape:window-height="995"
+     inkscape:window-x="-3"
      inkscape:window-y="-3"
      inkscape:window-maximized="1"
      inkscape:snap-global="false"
@@ -2708,5 +2708,66 @@
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan5980">Power Supply +9V</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text3918"
+       y="990.4588"
+       x="56.081001"
+       style="font-size:8.62263298px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       xml:space="preserve"><tspan
+         y="990.4588"
+         x="56.081001"
+         id="tspan3920"
+         sodipodi:role="line">Key:</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:8.62263298px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#0000ff;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       x="42.935463"
+       y="1010.49"
+       id="InputKey"
+       sodipodi:linespacing="125%"
+       inkscape:label="InputKey"><tspan
+         sodipodi:role="line"
+         id="tspan3924"
+         x="42.935463"
+         y="1010.49">Input</tspan></text>
+    <text
+       inkscape:label="OutputKey"
+       sodipodi:linespacing="125%"
+       id="OutputKey"
+       y="1021.1316"
+       x="42.935463"
+       style="font-size:8.62263298px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ff0000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       xml:space="preserve"><tspan
+         y="1021.1316"
+         x="42.935463"
+         id="tspan5170"
+         sodipodi:role="line">Output</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:1.24950075;stroke-opacity:1"
+       id="rect5172"
+       width="81.127647"
+       height="60.470371"
+       x="33.30159"
+       y="982.37738" />
+    <text
+       xml:space="preserve"
+       style="font-size:8.62263298px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       x="42.935463"
+       y="1032.3992"
+       id="UnusedKey"
+       sodipodi:linespacing="125%"
+       inkscape:label="UnusedKey"><tspan
+         sodipodi:role="line"
+         id="tspan5178"
+         x="42.935463"
+         y="1032.3992">Unused</tspan></text>
+    <rect
+       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.99774754;stroke-opacity:1"
+       id="rect5186"
+       width="81.341431"
+       height="0.62823057"
+       x="33.175713"
+       y="994.77106" />
   </g>
 </svg>

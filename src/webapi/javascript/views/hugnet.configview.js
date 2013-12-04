@@ -59,8 +59,8 @@ var DeviceConfigImageView = Backbone.View.extend({
                 this.url,
                 function ()
                 {
-                    myself.renderChannels(myself.model.get("dataChannels"), "blue");
-                    myself.renderChannels(myself.model.get("controlChannels"), "red");
+                    myself.renderChannels(myself.model.get("dataChannels"), "InputKey");
+                    myself.renderChannels(myself.model.get("controlChannels"), "OutputKey");
                 }
             );
         } else {
@@ -68,8 +68,9 @@ var DeviceConfigImageView = Backbone.View.extend({
         }
         return this;
     },
-    renderChannels: function (channels, color)
+    renderChannels: function (channels, colorKey)
     {
+        var color = $('text#'+colorKey).attr('fill');
         _.each(
             channels,
             function (chan, key)
