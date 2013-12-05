@@ -173,6 +173,10 @@ class PullHistory extends \HUGnet\processes\replicate\Periodic
     private function _pullHist(&$dev, &$hist, $param, $name)
     {
         $last = (int)$dev->getLocalParam($param);
+        if ($last == 0) {
+            // If we don't have a last history date, use the created date.
+            $last = (int)$dev->getParam("Created");
+        }
         $first = $this->system()->now();
         $ret = $this->_getHistory($dev->id(), $last + 1, $first);
         if ($ret) {
