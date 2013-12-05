@@ -119,7 +119,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "6F:DEFAULT"                 => "MaximumWindDirection",
         "70:bravo3motion"            => "Bravo3Motion",
         "70:DEFAULT"                 => "GenericPulse",
-        "70:generic"                 => "GenericPulse",
+        //"70:generic"                 => "GenericPulse",
         "70:genericRevolver"         => "GenericRevolving",
         "70:liquidflowmeter"         => "LiquidFlow",
         "70:maximumAnemometer"       => "MaximumAnemometer",
