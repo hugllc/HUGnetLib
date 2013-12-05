@@ -707,6 +707,15 @@ class Mongodb extends \HUGnet\db\Driver implements \HUGnet\interfaces\DBDriver
         }
         return $ret;
     }
+    /**
+    * Times out long running select queriess
+    *
+    * @return int Count of the number of processes killed
+    */
+    public function selectTimeout()
+    {
+        return 0;
+    }
     
 }
 

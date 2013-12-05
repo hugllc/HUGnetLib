@@ -290,6 +290,12 @@ interface DBDriver
     * @return null
     */
     public function reset();
+    /**
+    * Times out long running select queriess
+    *
+    * @return int Count of the number of processes killed
+    */
+    public function selectTimeout();
     
 }
 

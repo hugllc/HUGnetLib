@@ -202,6 +202,15 @@ class Generic extends \HUGnet\db\Table
         return $this->dbDriver()->tables();
     }
     /**
+    * Times out long running select queriess
+    *
+    * @return null
+    */
+    public function selectTimeout()
+    {
+        return $this->dbDriver()->selectTimeout();
+    }
+    /**
     * Updates a row in the database.
     *
     * @param array  $data      The data to update
