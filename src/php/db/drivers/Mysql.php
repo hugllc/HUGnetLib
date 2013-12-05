@@ -149,8 +149,10 @@ class Mysql extends \HUGnet\db\Driver implements \HUGnet\interfaces\DBDriver
         $error = "";
         $this->lock();
         $ret = $this->query("FLUSH TABLES ".$this->table());
+        $this->system->out("Checking table ".$this->table(), 1);
         $ret = $this->query("CHECK TABLE ".$this->table());
         if (($ret[count($ret)-1]["Msg_text"] != "OK") || $force) {
+            $this->system->out("Repairing table ".$this->table(), 1);
             $ret = $this->query("REPAIR TABLE ".$this->table());
             $errText = $ret[count($ret)-1]["Msg_text"];
             if (($errText != "OK")
@@ -165,6 +167,7 @@ class Mysql extends \HUGnet\db\Driver implements \HUGnet\interfaces\DBDriver
             }
             // @codeCoverageIgnoreEnd
         }
+        $this->system->out("Optimizing table ".$this->table(), 1);
         $ret = $this->query("OPTIMIZE TABLE ".$this->table());
         $this->unlock();
         // This must be done after the unlock
@@ -172,9 +175,11 @@ class Mysql extends \HUGnet\db\Driver implements \HUGnet\interfaces\DBDriver
             // @codeCoverageIgnoreStart
             // It is impossible to make this run, since it only runs when the
             // table is corrupt and not fixable
+            $this->system->out($error, 1);
             $this->logError(-99, $error, ErrorTable::SEVERITY_CRITICAL, "check");
         }
         // @codeCoverageIgnoreEnd
+        $this->system->out("Done", 1);
         return $return;
     }
     /**
