@@ -76,6 +76,14 @@ class E00391201 extends \HUGnet\devices\Driver
         "job"  => "control",
         "arch" => "old",
         "DataChannels" => 13,
+        "DaughterBoards" => array(
+            "0039-15-01-A" => "0039-15-01-A Generic Input",
+            "0039-15-01-C" => "0039-15-01-C Light Sensor",
+            "0039-16-01-A" => "0039-16-01-A FET Board",
+            "0039-23-01-A" => "0039-23-01-A Weather Station",
+            "0039-23-01-C" => "0039-23-01-C Relay Driver",
+            "0039-23-01-C" => "0039-23-01-C Generic Input",
+        ),
     );
 
 }

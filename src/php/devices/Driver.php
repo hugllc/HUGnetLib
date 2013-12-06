@@ -92,6 +92,7 @@ abstract class Driver
         "DataChannels"  => 0,
         "DigitalInputs" => array(),
         "DigitalOutputs" => array(),
+        "DaughterBoards" => array("" => "None"),
         "setConfig" => true,
     );
     /**

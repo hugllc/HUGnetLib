@@ -105,6 +105,14 @@ class E00391202 extends \HUGnet\devices\Driver
                 11 => "SV1 Pin3",
                 12 => "SV1 Pin4",
         ),
+        "DaughterBoards" => array(
+            "0039-15-01-A" => "0039-15-01-A Generic Input",
+            "0039-15-01-C" => "0039-15-01-C Light Sensor",
+            "0039-16-01-A" => "0039-16-01-A FET Board",
+            "0039-23-01-A" => "0039-23-01-A Weather Station",
+            "0039-23-01-C" => "0039-23-01-C Relay Driver",
+            "0039-23-01-C" => "0039-23-01-C Generic Input",
+        ),
     );
 
 }

@@ -569,6 +569,9 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                     'DigitalInputs' => array(),
                     'DigitalOutputs' => array(),
                     "DataChannels" => 0,
+                    "DaughterBoards" => array(
+                        "" => "None",
+                    ),
                 ),
             ),
             array(
@@ -596,6 +599,9 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                     'DigitalInputs' => array(),
                     'DigitalOutputs' => array(),
                     "DataChannels" => 0,
+                    "DaughterBoards" => array(
+                        "" => "None",
+                    ),
                 ),
             ),
         );

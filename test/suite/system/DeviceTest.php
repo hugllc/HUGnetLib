@@ -731,6 +731,9 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     'OutputTables' => 0,
                     'ProcessTables' => 0,
                     "DataChannels" => 0,
+                    "DaughterBoards" => array(
+                        "" => "None",
+                    ),
                     'setConfig' => true,
                     'ConfigInterval' => 43200,
                     'id' => 2,
@@ -828,6 +831,9 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     'OutputTables' => 0,
                     'ProcessTables' => 0,
                     "DataChannels" => 0,
+                    "DaughterBoards" => array(
+                        "" => "None",
+                    ),
                     'setConfig' => true,
                     'ConfigInterval' => 43200,
                     'id' => 2,
@@ -903,6 +909,9 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     'OutputTables' => 0,
                     'ProcessTables' => 0,
                     "DataChannels" => 0,
+                    "DaughterBoards" => array(
+                        "" => "None",
+                    ),
                     'setConfig' => true,
                     'ConfigInterval' => 43200,
                     'id' => 2,
