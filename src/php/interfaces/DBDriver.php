@@ -295,7 +295,7 @@ interface DBDriver
     *
     * @return int Count of the number of processes killed
     */
-    public function selectTimeout();
+    public function selectTimeout($timeout);
     
 }
 

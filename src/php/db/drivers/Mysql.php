@@ -54,8 +54,6 @@ require_once dirname(__FILE__)."/../../interfaces/DBDriver.php";
  */
 class Mysql extends \HUGnet\db\Driver implements \HUGnet\interfaces\DBDriver
 {
-    /** Timeout for select queries */
-    const SELECT_TIMEOUT = 600;
     /** @var bool Does this driver support auto_increment? */
     protected $AutoIncrement = "AUTO_INCREMENT";
 
@@ -244,10 +242,12 @@ class Mysql extends \HUGnet\db\Driver implements \HUGnet\interfaces\DBDriver
     }
     /**
     * Times out long running select queriess
+    * 
+    * @param int $timeout The timeout period to use
     *
     * @return int Count of the number of processes killed
     */
-    public function selectTimeout()
+    public function selectTimeout($timeout = 120)
     {
         $ret = $this->query("SHOW FULL PROCESSLIST");
         $count = 0;
@@ -257,7 +257,7 @@ class Mysql extends \HUGnet\db\Driver implements \HUGnet\interfaces\DBDriver
                 continue;
             }
             // Kill anything running longer than our timeout
-            if ($field['Time'] > self::SELECT_TIMEOUT) {
+            if ($field['Time'] > $timeout) {
                 $this->query("KILL ".$field['Id']);
                 $this->logError(
                     -10, 
