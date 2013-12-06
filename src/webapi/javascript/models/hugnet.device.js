@@ -71,6 +71,7 @@ HUGnet.Device = Backbone.Model.extend({
         InputTables: 0,
         OutputTables: 0,
         ProcessputTables: 0,
+        DaughterBoards: {"": "None"},
         LatePoll: false,
         type: 'unknown',
         

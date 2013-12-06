@@ -180,6 +180,7 @@ var DevicePropertiesView = Backbone.View.extend({
         params.ImageURL = this.$(".params_ImageURL").val();
         params.LogURL = this.$(".params_LogURL").val();
         params.PushHistory = this.$(".params_PushHistory").val();
+        params.DaughterBoard = this.$(".params_DaughterBoard").val();
         this.model.set({
             DeviceName: this.$(".DeviceName").val(),
             DeviceLocation: this.$(".DeviceLocation").val(),
