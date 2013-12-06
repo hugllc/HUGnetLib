@@ -293,6 +293,8 @@ interface DBDriver
     /**
     * Times out long running select queriess
     *
+    * @param int $timeout The timeout period to use
+    *
     * @return int Count of the number of processes killed
     */
     public function selectTimeout($timeout);
