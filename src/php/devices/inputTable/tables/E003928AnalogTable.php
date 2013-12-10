@@ -91,6 +91,7 @@ class E003928AnalogTable extends AVRAnalogTable
             "DEFAULT"            => 0,
             "dwyer616"           => 1,
             "fetBoard"           => 2,
+            "DwyerAirVel"        => 3,
         ),
     );
     /**
@@ -114,6 +115,7 @@ class E003928AnalogTable extends AVRAnalogTable
                 "40:fetBoard"                => "FET Board Voltage",
                 "50:DEFAULT"                 => "Generic Current",
                 "50:dwyer616"                => "Dwyer 616 Pressure Sensor",
+                "50:DwyerAirVel"             => "Dwyer Air Velocity Sensor",
                 "50:fetBoard"                => "FET Board Current",
             ),
             "desc" => "Driver",
