@@ -165,6 +165,8 @@ class WebInterface
             $ret = $this->_export($args);
         } else if ($action === "import") {
             $ret = $this->_import($args);
+        } else if ($action === "lastdata") {
+            $ret = $this->_lastdata($args);
         }
         return $ret;
     }
@@ -313,7 +315,6 @@ class WebInterface
     {
         $format = $args->get("format");
         if (!headers_sent() && ($format != "inline")) {
-error_log("here");
             // @codeCoverageIgnoreStart
             header('Content-type: application/json');
             header(
@@ -356,6 +357,25 @@ error_log("here");
             print json_encode("0");
         }
         return null;
+    }
+    /**
+    * Export the device
+    *
+    * @param object $args The argument object
+    *
+    * @return string
+    */
+    private function _lastdata($args)
+    {
+        $poll = $this->_device->getParam("LastPollData");
+        $data = $args->get("data");
+        if (isset($data["channel"]) && isset($poll[$data["channel"]])) {
+            print $poll[$data["channel"]]['value'];
+            print " ".$poll[$data["channel"]]['units'];
+            print "\n";
+        }
+        return null;
+
     }
 }
 
