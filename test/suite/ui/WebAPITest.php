@@ -1039,7 +1039,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                 false,
                 array(),
                 "Date,Channel1 (Dallas),Channel3 (hello)\r\n"
-                    ."2012-11-11 21:05:31,1,3\r\n",
+                    ."2012-11-12 03:05:31,1,3\r\n",
                 array(
                     "History" => array(
                         "getPeriod" => array(
@@ -1115,7 +1115,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                 false,
                 array(),
                 "Date,Channel1 (Dallas),Channel3 (hello)\r\n"
-                    ."2012-11-11 21:05:31,1,3\r\n",
+                    ."2012-11-12 03:05:31,1,3\r\n",
                 array(
                     "History" => array(
                         "getPeriod" => array(

@@ -707,7 +707,7 @@ class WebAPI extends HTML
         $out .= "\r\n";
         $sep  = ",";
         foreach ($records as $hist) {
-            $out .= date("Y-m-d H:i:s", $hist["Date"]);
+            $out .= gmdate("Y-m-d H:i:s", $hist["Date"]);
             for ($i = 0; $i < count($chan); $i++) {
                 if ($chan[$i]["dataType"] !== 'ignore') {
                     $data = $hist["Data".$i];
