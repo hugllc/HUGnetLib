@@ -370,11 +370,12 @@ class WebInterface
         $poll = $this->_device->getParam("LastPollData");
         $data = $args->get("data");
         if (isset($data["channel"]) && isset($poll[$data["channel"]])) {
-            $this->_device->dataChannels()->dataChannel($data["channel"])->convert(
+            $chan = $this->_device->dataChannels()->dataChannel($data["channel"]);
+            $chan->convert(
                 $poll[$data["channel"]]['value'] 
             );
             print $poll[$data["channel"]]['value'];
-            print " ".html_entity_decode($poll[$data["channel"]]['units']);
+            print " ".html_entity_decode($chan->get("units"));
             print "\n";
         }
         return null;
