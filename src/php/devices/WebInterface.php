@@ -164,7 +164,9 @@ class WebInterface
         } else if ($action === "export") {
             $ret = $this->_export($args);
         } else if ($action === "import") {
-            $ret = $this->_import($args);
+            $ret = $this->_import($args, false);
+        } else if ($action === "sync") {
+            $ret = $this->_import($args, true);
         } else if ($action === "lastdata") {
             $ret = $this->_lastdata($args);
         }
@@ -340,7 +342,7 @@ class WebInterface
     *
     * @return string
     */
-    private function _import($args)
+    private function _import($args, $checkdate = false)
     {
         header('Content-type: text/plain; charset=UTF-8');
         $data = $args->get("data");
@@ -351,7 +353,11 @@ class WebInterface
         if (is_array($data)) {
             $fixture = $this->_system->device()->fixture();
             $fixture->import($data);
-            $dev = $fixture->mergeDevice(false);
+            $new = (int)$fixture->getParam("LastModified");
+            $me  = (int)$this->_device->getParam("LastModified");
+            if (($checkdate == false) || ($new > $me)) {
+                $dev = $fixture->mergeDevice(false);
+            }
             print json_encode($dev->get("DeviceID"));
         } else {
             print json_encode("0");

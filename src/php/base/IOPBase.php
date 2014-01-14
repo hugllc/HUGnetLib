@@ -420,6 +420,8 @@ abstract class IOPBase extends SystemTableBase
         }
         $ret = $this->change($data);
         if ($ret) {
+            $this->device()->setParam("LastModified", $this->system()->now());
+            $this->device()->store();
             return "regen";
         }
         return -1;

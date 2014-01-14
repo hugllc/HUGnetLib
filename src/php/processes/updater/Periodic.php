@@ -77,7 +77,7 @@ abstract class Periodic
     * as the driver class name.
     */
     private static $_drivers = array(
-        "Checkin", "PushDevices", "GetFirmware", "SyncTables"
+        "Checkin", "PushDevices", "GetFirmware", "SyncTables", "SyncDevices"
     );
     /**
     * This function sets up the driver object, and the database object.  The
@@ -211,6 +211,16 @@ abstract class Periodic
     protected function hasMaster()
     {
         $master = $this->system()->get("master");
+        return is_array($master) && (count($master) > 0);
+    }
+    /**
+    * This says if we are ready to run
+    *
+    * @return bool
+    */
+    protected function hasPartner()
+    {
+        $master = $this->system()->get("partner");
         return is_array($master) && (count($master) > 0);
     }
 }

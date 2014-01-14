@@ -501,6 +501,34 @@ class Action
         );
     }
     /**
+    * Gets the config and saves it
+    *
+    * @param string $url The url to post to
+    *
+    * @return string The left over string
+    */
+    public function sync($url = null)
+    {
+        if (!is_string($url) || (strlen($url) == 0)) {
+            $partner = $this->device->system()->get("partner");
+            $url = $partner["url"];
+        }
+        $device  = $this->device->fixture()->export(true);
+        if (is_string($device)) {
+            $device = json_decode($device, true);
+        }
+        return \HUGnet\Util::postData(
+            $url,
+            array(
+                "uuid"    => urlencode($this->device->system()->get("uuid")),
+                "id"      => sprintf("%06X", $this->device->get("id")),
+                "action"  => "sync",
+                "task"    => "device",
+                "data"    => $device,
+            )
+        );
+    }
+    /**
     * Pulls the record from the given URL
     *
     * @param string $url The url to post to
