@@ -91,7 +91,7 @@ class SyncDevices extends \HUGnet\processes\updater\Periodic
     */
     public function &execute()
     {
-        if ($this->ready() && $this->hasMaster()) {
+        if ($this->ready() && $this->hasPartner()) {
             $now = $this->system()->now();
             $ids = $this->_device->ids();
             foreach (array_keys($ids) as $key) {
