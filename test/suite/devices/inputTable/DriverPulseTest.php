@@ -120,7 +120,7 @@ class DriverPulseTest extends drivers\DriverTestBase
             array(
                 "ThisIsABadName",
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "device" => new \HUGnet\DummyBase("Device"),
                     ),
                     "Device" => array(
@@ -148,7 +148,44 @@ class DriverPulseTest extends drivers\DriverTestBase
                 ),
                 array(5, array(1, 2, 3), 5, 5, 5),
             ),
+            array(
+                "inputSize",
+                array(
+                    "Input" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Sensor" => array(
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "get" => array(
+                            "DigitalInputs" => array(1, 2, 3),
+                            "inputSize" => 12,
+                        ),
+                    ),
+                ),
+                12,
+            ),
         );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $name   The name of the variable to test.
+    * @param array  $mock   The mocks to set up
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataGet
+    */
+    public function testGet($name, $mock, $expect)
+    {
+        $this->input->resetMock($mock);
+        $this->o = \HUGnet\devices\inputTable\DriverPulse::factory(
+            "DriverPulseTestClass", $this->input
+        );
+        $this->assertSame($expect, $this->o->get($name));
     }
 
     /**

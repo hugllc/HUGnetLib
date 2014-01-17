@@ -108,6 +108,7 @@ class E00393700 extends \HUGnet\devices\Driver
         ),
         "ProcessTables" => 4,
         "configImage" => "00393701.svg",
+        "inputSize" => 4,
     );
 
 }

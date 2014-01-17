@@ -63,6 +63,22 @@ abstract class DriverPulse extends Driver
     /** This is where our port is stored */
     protected $portExtra = 1;
     /**
+    * This function sets up the driver object, and the database object.  The
+    * database object is taken from the driver object.
+    *
+    * @param object &$iopobject The output in question
+    *
+    * @return null
+    */
+    protected function __construct(&$iopobject)
+    {
+        parent::__construct($iopobject);
+        $size = $this->input()->device()->get("inputSize");
+        if (is_int($size) && ($size > 0)) {
+            $this->default["inputSize"] = $size;
+        }
+    }
+    /**
     * Gets an item
     *
     * @param string $name The name of the property to get
