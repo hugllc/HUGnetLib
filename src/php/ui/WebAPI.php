@@ -397,6 +397,24 @@ class WebAPI extends HTML
     /**
     * This function executes the api call.
     *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+    */
+    private function _executeGateway($extra = array())
+    {
+        $gid     = strtolower($this->args()->get("id"));
+        $gateway = $this->system()->gateway($gid);
+        $ret     = $this->_executeSystem($gid, $gateway, $extra);
+        if ($ret === "regen") {
+            return $this->system()->gateway($gid)->toArray(true);
+        }
+        return $ret;
+    }
+    /**
+    * This function executes the api call.
+    *
     * @param mixed  $ident The ID to use
     * @param object $obj   The object to work on
     * @param array  $extra Extra data that should be added to the HTMLArgs data

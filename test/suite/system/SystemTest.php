@@ -907,6 +907,54 @@ class SystemTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
+    public static function dataGateway()
+    {
+        return array(
+            array(
+                array(
+                    "hello" => "there",
+                    "asdf"  => array(1,2),
+                ),
+                array(
+                    "id"          => 1,
+                    "name"        => "What is in a name",
+                    "description" => "This is a config",
+                ),
+                array(
+                    "id"          => 1,
+                    "name"        => "What is in a name",
+                    "description" => "This is a config",
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array $config The configuration to use
+    * @param mixed $device The network application to use
+    * @param mixed $expect The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataGateway
+    */
+    public function testGateway(
+        $config, $device, $expect
+    ) {
+        $obj = \HUGnet\System::factory($config);
+        $dev = $obj->gateway($device);
+        $this->assertSame("HUGnet\Gateway", get_class($dev), "wrong class");
+        foreach ($expect as $key => $value) {
+            $this->assertEquals($value, $dev->get($key), "$key not $value");
+        }
+        unset($obj);
+    }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
     public static function dataInputTable()
     {
         return array(

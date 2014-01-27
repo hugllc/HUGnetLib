@@ -309,6 +309,19 @@ class System
         return $obj;
     }
     /**
+    * This returns a gateway object.
+    *
+    * @param array $data The data to send to the device object
+    *
+    * @return Reference to a device object
+    */
+    public function &gateway($data = array())
+    {
+        include_once dirname(__FILE__)."/Gateway.php";
+        $obj = Gateway::factory($this, $data);
+        return $obj;
+    }
+    /**
     * This returns a device object.
     *
     * @param array $data The data to send to the device object

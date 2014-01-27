@@ -57,8 +57,13 @@ HUGnet.ServerConfig = Backbone.View.extend({
         }
         this.itables = new HUGnet.InputTables();
         this.itables.fetch();
+        
         this.devices = new HUGnet.DevicesView({
             model: options.devices,
+            url: this.url
+        });
+        this.gateways = new HUGnet.GatewaysView({
+            model: options.gateways,
             url: this.url
         });
         this.inputTables = new HUGnet.InputTablesView({
@@ -100,6 +105,10 @@ HUGnet.ServerConfig = Backbone.View.extend({
         this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+this.id+'-devices">Device Information</a></li>');
         this.tabs.append('<div id="'+this.id+'-devices"></div>');
         $('#'+this.id+'-devices').html(this.devices.render().el);
+
+        this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+this.id+'-gateways">Gateway Information</a></li>');
+        this.tabs.append('<div id="'+this.id+'-gateways"></div>');
+        $('#'+this.id+'-gateways').html(this.gateways.render().el);
 
         this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+this.id+'-inputTable">Input Tables</a></li>');
         this.tabs.append('<div id="'+this.id+'-inputTable"></div>');
