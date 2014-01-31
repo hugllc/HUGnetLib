@@ -429,9 +429,14 @@ HUGnet.Devices = Backbone.Collection.extend({
     *
     * @return null
     */
-    fetch: function ()
+    fetch: function (filter)
     {
         var self = this;
+        if (typeof filter != "object") {
+            var filter = {};
+        }
+        filter.limit = self.limit;
+        filter.start = self.start;
         var ret = $.ajax({
             type: 'GET',
             url: this.url,
@@ -440,10 +445,7 @@ HUGnet.Devices = Backbone.Collection.extend({
             data: {
                 "task": "device", 
                 "action": "list", 
-                "data": {
-                    "limit": self.limit,
-                    "start": self.start
-                }
+                "data": filter
             }
         });
         ret.done(

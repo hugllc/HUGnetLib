@@ -277,7 +277,7 @@ var GatewayEntryView = Backbone.View.extend({
 */
 HUGnet.GatewaysView = Backbone.View.extend({
     url: '/HUGnetLib/HUGnetLibAPI.php',
-    template: "#GatewayListTemplate",
+    template: "#GatewaysTemplate",
     iframe: undefined,
     progress: undefined,
     timer: null,
