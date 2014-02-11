@@ -430,6 +430,7 @@ HUGnet.DevicesView = Backbone.View.extend({
     progress: undefined,
     timer: null,
     events: {
+        'click .loadall': 'loadAll',
         'click .newtest': 'createTest',
         'click .newfastvirtual': 'createFastVirtual',
         'click .newslowvirtual': 'createSlowVirtual',
@@ -529,6 +530,10 @@ HUGnet.DevicesView = Backbone.View.extend({
         var view = new DeviceEntryView({ model: model, parent: this, url: this.url });
         this.$('tbody').append(view.render().el);
         this.$("table").trigger('update');
+    },
+    loadAll: function ()
+    {
+        this.model.fetch();
     },
     createTest: function ()
     {
