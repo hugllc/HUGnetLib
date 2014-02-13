@@ -40,28 +40,15 @@
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-var GatewayEntryView = Backbone.View.extend({
+var GatewayListEntryView = Backbone.View.extend({
     model: HUGnet.Gateway,
-    tagName: 'tr',
-    template: '#GatewayListEntryTemplate',
+    template: '#GatewayDeviceListHeaderTemplate',
     parent: null,
-    events: {
-        'click .view': 'view',
-        'click .export': 'export'
-    },
     initialize: function (options)
     {
         this.model.bind('change', this.render, this);
         this.model.bind('remove', this.remove, this);
         this.parent = options.parent;
-    },
-    view: function (e)
-    {
-        this.parent.trigger("view", this.model);
-    },
-    export: function (e)
-    {
-        this.parent.trigger("export", this.model);
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -76,9 +63,10 @@ var GatewayEntryView = Backbone.View.extend({
     {
         var data = this.model.toJSON();
         _.extend(data, HUGnet.viewHelpers);
+        var template = '<h3 data-gatewaykey="<%= id %>">'+$(this.template).html()+'</h3><div></div>';
         this.$el.html(
             _.template(
-                $(this.template).html(),
+                template,
                 data
             )
         );
@@ -99,11 +87,14 @@ var GatewayEntryView = Backbone.View.extend({
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-HUGnet.GatewayList = Backbone.View.extend({
-    template: "#GatewayListTemplate",
+HUGnet.GatewayDevListView = Backbone.View.extend({
+    template: "#GatewayDeviceListTemplate",
     url: '/HUGnetLib/HUGnetLibAPI.php',
     readonly: false,
+    devices: null,
+    devlist: null,
     refresh: 60,
+    GatewayKeys: {},
     events: {
     },
     initialize: function (options)
@@ -115,11 +106,37 @@ HUGnet.GatewayList = Backbone.View.extend({
             if (options.readonly) {
                 this.readonly = options.readonly;
             }
+            if (options.devices) {
+                this.devices = options.devices;
+            }
         }
         this.model.each(this.insert, this);
         this.model.bind('add', this.insert, this);
         this.model.bind('savefail', this.saveFail, this);
         this.model.startRefresh();
+        this.devices.on("change", function() {
+            this.$("#gatewaydevicelist" ).accordion("refresh");
+        }, this);
+        
+        this.devlist = new HUGnet.DeviceTableView({
+            model: this.devices,
+            url: this.url,
+            template: "#GatewayListDeviceViewEntryTemplate",
+            header: "#GatewayListDeviceHeaderTemplate",
+            parent: this
+        });
+        this.devlist.render();
+    },
+    activate: function (event, ui, self)
+    {
+        var GatewayKey = parseInt(ui.newHeader.attr("data-gatewaykey"), 10);
+        if (ui.newHeader.attr("id") != undefined) {
+            var filter = {Publish: 1, GatewayKey: GatewayKey};
+            self.devices.fetch(filter);
+            self.devlist.filter(filter);
+            ui.newPanel.html(self.devlist.el);
+            this.$("#gatewaydevicelist" ).accordion("refresh");
+        }
     },
     saveFail: function (msg)
     {
@@ -135,6 +152,7 @@ HUGnet.GatewayList = Backbone.View.extend({
     render: function ()
     {
         var data = this.model.toJSON();
+        var self = this;
         _.extend(data, HUGnet.viewHelpers);
         this.$el.html(
             _.template(
@@ -142,15 +160,18 @@ HUGnet.GatewayList = Backbone.View.extend({
                 data
             )
         );
-        this.$('.tablesorter').tablesorter({ widgets: ['zebra'] });
-        this.$el.trigger('update');
+        this.$( "#gatewaydevicelist" ).accordion({
+            header: "h3",
+            collapsible: true,
+            active: false,
+            activate: function (event, ui) {self.activate(event, ui, self)}
+        });
         return this;
     },
     insert: function (model, collection, options)
     {
-        var view = new GatewayEntryView({ model: model, parent: this });
-        this.$('tbody').append(view.render().el);
-        this.$el.trigger('update');
-        this.$('.tablesorter').trigger('update');
+        var view = new GatewayListEntryView({ model: model, parent: this });
+        this.$('#gatewaydevicelist').append(view.render().el);
+        this.$("#gatewaydevicelist" ).accordion("refresh");
     }
 });

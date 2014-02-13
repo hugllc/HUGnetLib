@@ -66,12 +66,10 @@ var DeviceTableEntryView = Backbone.View.extend({
     view: function (e)
     {
         this.parent.trigger("view", this.model);
-        console.log("view");
     },
     export: function (e)
     {
         this.parent.trigger("export", this.model);
-        console.log("view");
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -119,6 +117,7 @@ HUGnet.DeviceTableView = Backbone.View.extend({
     sorted: false,
     sorting: [[1,0]],
     viewed: 0,
+    parent: null,
     initialize: function (options)
     {
         if (options) {
@@ -134,11 +133,24 @@ HUGnet.DeviceTableView = Backbone.View.extend({
             if (options.header) {
                 this.header = options.header;
             }
+            if (options.parent) {
+                this.parent = options.parent;
+            }
         }
         this.model.each(this.insert, this);
         this.model.on('add', this.insert, this);
         this.model.on('sync', this.insert, this);
+        this.on('view', this.view, this);
+        this.on('export', this.export, this);
         //this.model.startRefresh();
+    },
+    view: function (model)
+    {
+        this.parent.trigger("view", model);
+    },
+    export: function (model)
+    {
+        this.parent.trigger("export", model);
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -172,7 +184,7 @@ HUGnet.DeviceTableView = Backbone.View.extend({
         
         var show = this.checkFilter(model, this.useFilter);
         if (this.views[id] == undefined) {
-            this.views[id] = new DeviceListEntryView({
+            this.views[id] = new DeviceTableEntryView({
                 model: model,
                 parent: this,
                 templatebase: this.templatebase
