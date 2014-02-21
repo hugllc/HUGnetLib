@@ -114,11 +114,14 @@ HUGnet.DeviceListView = Backbone.View.extend({
     readonly: false,
     views: {},
     filter: {Publish: 1},
+    gateways: {},
     sorted: false,
     sorting: [[1,0]],
     viewed: 0,
     events: {
-        'click .goFilter': 'goFilter'
+        'click .goFilter': 'goFilter',
+        'change .gatewayFilter': 'goFilter',
+        'change .activeFilter': 'goFilter'
     },
     initialize: function (options)
     {
@@ -131,6 +134,11 @@ HUGnet.DeviceListView = Backbone.View.extend({
             }
             if (typeof options.filter === 'object') {
                 this.filter = options.filter;
+            }
+            if (typeof options.gateways === 'object') {
+                this.gateways = options.gateways;
+                this.gateways.on('change', this.render, this);
+                this.gateways.on('add', this.render, this);
             }
             if (options.templatebase) {
                 this.templatebase = options.templatebase;
@@ -151,7 +159,11 @@ HUGnet.DeviceListView = Backbone.View.extend({
     */
     render: function ()
     {
-        var data = this.model.toJSON();
+        //var data = this.model.toJSON();
+        var data = {
+            gateways: this.gateways.toJSON()
+        };
+        console.log(data);
         _.extend(data, HUGnet.viewHelpers);
         this.$el.html(
             _.template(
@@ -165,6 +177,7 @@ HUGnet.DeviceListView = Backbone.View.extend({
         });
         this.$el.trigger('update');
         this.trigger("update");
+        this.goFilter();
         return this;
     },
     insert: function (model, collection, options)
@@ -226,7 +239,8 @@ HUGnet.DeviceListView = Backbone.View.extend({
         var activeFilter = this.$(".activeFilter").val();
         var fieldFilter = this.$(".fieldFilter").val();
         var searchFilter = this.$(".searchFilter").val();
-        var filter = {};
+        var gatewayFilter = this.$(".gatewayFilter").val();
+        var filter = this.filter;
         if (activeFilter === "1") {
             filter.Active = 1;
         } else if (activeFilter === "0") {
@@ -234,6 +248,17 @@ HUGnet.DeviceListView = Backbone.View.extend({
         }
         if ((searchFilter !== "") && (fieldFilter !== "")) {
             filter[fieldFilter] = searchFilter;
+        }
+        if ((gatewayFilter !== "") && (gatewayFilter != undefined)) {
+            if (gatewayFilter == "any") {
+                /* Do Nothing */
+            } else if (gatewayFilter == "all") {
+                this.model.fetch();
+            } else {
+                filter[gatewayFilter] = parseInt(gatewayFilter, 10);
+                this.model.fetch({ GatewayKey: filter[gatewayFilter] });
+            }
+            this.$(".gatewayFilter").val(gatewayFilter);
         }
         for (var view in this.views) {
             var show = this.checkFilter(this.views[view].model, filter);

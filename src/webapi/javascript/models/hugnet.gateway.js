@@ -285,6 +285,8 @@ HUGnet.Gateways = Backbone.Collection.extend({
     },
     update: function (model, collection, options)
     {
-        model.refresh();
+        if (typeof model == "object") {
+            model.refresh();
+        }
     }
 });

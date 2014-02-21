@@ -456,13 +456,15 @@ HUGnet.Devices = Backbone.Collection.extend({
                     self.start = 0;
                 } else {
                     self.start += data.length;
-                    self.fetch();
+                    self.fetch(filter);
                 }
             }
         );
     },
     update: function (model, collection, options)
     {
-        model.refresh();
+        if (typeof model == "object") {
+            model.refresh();
+        }
     }
 });

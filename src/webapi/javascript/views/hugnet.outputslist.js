@@ -99,6 +99,7 @@ HUGnet.OutputsListView = HUGnet.DeviceListView.extend({
     templatebase: 'OutputsList',
     url: '/HUGnetLib/HUGnetLibAPI.php',
     filter: {type: "endpoint"},
+    gateways: {},
     views: {},
     sorted: false,
     sorting: [[1,0]],
@@ -117,6 +118,9 @@ HUGnet.OutputsListView = HUGnet.DeviceListView.extend({
             }
             if (options.filter) {
                 this.filter = options.filter;
+            }
+            if (typeof options.gateways === 'object') {
+                this.gateways = options.gateways;
             }
         }
         this.model.startRefresh();

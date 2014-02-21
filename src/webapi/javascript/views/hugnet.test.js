@@ -105,6 +105,7 @@ HUGnet.TestsView = HUGnet.DeviceListView.extend({
     url: '/HUGnetLib/HUGnetLibAPI.php',
     filter: {type: "test", Publish: 1},
     views: {},
+    gateways: {},
     sorted: false,
     sorting: [[1,0]],
     viewed: 0,
@@ -122,6 +123,9 @@ HUGnet.TestsView = HUGnet.DeviceListView.extend({
             }
             if (options.filter) {
                 this.filter = options.filter;
+            }
+            if (typeof options.gateways === 'object') {
+                this.gateways = options.gateways;
             }
         }
         this.model.startRefresh();

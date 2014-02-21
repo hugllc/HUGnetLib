@@ -66,6 +66,7 @@ HUGnet.OutputsList = Backbone.View.extend({
         }
         this.devices = new HUGnet.OutputsListView({
             model: options.devices,
+            gateways: options.gateways,
             url: this.url,
             readonly: this.readonly,
             filter: this.filter

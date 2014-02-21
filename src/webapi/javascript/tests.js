@@ -66,6 +66,7 @@ HUGnet.TestSuite = Backbone.View.extend({
         }
         this.tests = new HUGnet.TestsView({
             model: options.tests,
+            gateways: options.gateways,
             url: this.url,
             readonly: this.readonly,
             filter: this.filter
