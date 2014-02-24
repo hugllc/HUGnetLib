@@ -160,9 +160,12 @@ HUGnet.DeviceListView = Backbone.View.extend({
     render: function ()
     {
         //var data = this.model.toJSON();
-        var data = {
-            gateways: this.gateways.toJSON()
-        };
+        var data = {};
+        if (typeof this.gateways == "object") {
+            data.gateways = this.gateways.toJSON();
+        } else {
+            data.gateways = [];
+        }
         console.log(data);
         _.extend(data, HUGnet.viewHelpers);
         this.$el.html(
