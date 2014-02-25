@@ -81,6 +81,7 @@ class ADuCInputTable
                 0x47 => "MF51E Series Thermistor",
                 0x48 => "ADuC Resistance",
                 0x49 => "Omega Alpha pH",
+                0x4A => "ADuC AC Resistance",
                 0x11 => "ADuC DC Power",
             ),
             "desc"     => "First Driver",
