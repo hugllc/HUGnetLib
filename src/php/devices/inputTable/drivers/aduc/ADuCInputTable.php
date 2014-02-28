@@ -436,6 +436,8 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
         $zero = $this->_driver(1)->getRaw(0);
         $val  = $this->_driver(1)->getRaw($this->getExtra(2)) - $zero;
         $string .= $this->encodeInt($val, 4);
+        $string .= $this->_driver(0)->encode();
+        $string .= $this->_driver(1)->encode();
         return $string;
     }
 

@@ -332,6 +332,17 @@ class ADuCACResistance extends \HUGnet\devices\inputTable\DriverADuC
             ),
         );
     }
+    /**
+    * Encodes this driver as a setup string
+    *
+    * @return string
+    */
+    public function encode()
+    {
+        $val  = (int)$this->getExtra(4);
+        $string .= $this->encodeInt($val, 1);
+        return $string;
+    }
 
     
 }

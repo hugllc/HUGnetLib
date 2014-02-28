@@ -681,7 +681,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                 ),
                 "FF00C08000860980414100A18F0A00431F1500",
             ),
-            array( // #1
+            array( // #2
                 array(
                     "id" => 0xF9,
                     "extra" => array(1 => -1, 2 => -2),
@@ -694,6 +694,19 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                     ),
                 ),
                 "FF00C08000860980414100A3F1FEFF46E3FDFF",
+            ),
+            array( // #3
+                array(
+                    "id" => 0xF9,
+                    "extra" => array(),
+                    "location" => "asdf",
+                    "tableEntry" => json_encode(
+                        array(
+                            "driver0" => 0x4A,
+                        )
+                    ),
+                ),
+                "FF00C080008609804AFF00000000000000000000",
             ),
         );
     }
