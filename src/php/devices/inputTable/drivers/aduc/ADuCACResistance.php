@@ -71,22 +71,43 @@ class ADuCACResistance extends \HUGnet\devices\inputTable\DriverADuC
             "R to Source (Ohms)",
             "R to Ground (Ohms)",
             "Fixed Resistance (Ohms)",
-            "AtoD Ref Voltage"
+            "AtoD Ref Voltage",
+            "Digital Control Port"
         ),
         "extraDesc" => array(
             "The input resistance to the AtoD",
             "The resistor connecting the AtoD to ground",
             "The fixed resistor in the resistor divider",
             "The voltage used for the AtoD reference.",
+            "The port to use for the digital reference"
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
-        "extraValues" => array(5, 5, 5, 5),
-        "extraDefault" => array(0, "Infinite", 1.0, 1.2),
+        "extraValues" => array(5, 5, 5, 5, array()),
+        "extraDefault" => array(0, "Infinite", 1.0, 1.2, 0),
         "maxDecimals" => 8,
         "inputSize" => 4,
     );
+    /**
+    * Gets an item
+    *
+    * @param string $name The name of the property to get
+    *
+    * @return null
+    */
+    public function get($name)
+    {
+        $param = parent::get($name);
+        switch ($name) {
+        case "extraValues":
+            $param = (array)$param;
+            $param[4] = $this->input()->device()->get(
+                "DigitalInputs"
+            );
+        }
+        return $param;
+    }
     /**
     * Changes a raw reading into a output value
     *
