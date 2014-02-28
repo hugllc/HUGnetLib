@@ -58,7 +58,9 @@ defined('_HUGNET') or die('HUGnetSystem not found');
 class ADuCInputTable
 {
     /** This is our power calculator. */
-    const IPR_POWER = 4;
+    const IPR_POWER = 0x04;
+    /** This is our power calculator. */
+    const IPR_ACRES = 0x05;
     /**
     * This is where we store our sensor object
     */
@@ -121,6 +123,7 @@ class ADuCInputTable
                 0x02 => "Divide by 128",
                 0x03 => "Square Data",
                 self::IPR_POWER => "Calculate Power and Impedance", // 4
+                self::IPR_ACRES => "AC Resistance", // 5
             ),
             "desc"     => "Immediate Processing 0",
             "longDesc" => "The immediate processing routine to use for ADC0 or
