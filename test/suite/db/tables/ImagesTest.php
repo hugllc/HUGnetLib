@@ -40,7 +40,7 @@ require_once CODE_BASE.'db/Table.php';
 /** This is a required class */
 require_once CODE_BASE.'db/Connection.php';
 /** This is a required class */
-require_once CODE_BASE.'db/tables/ImagesTable.php';
+require_once CODE_BASE.'db/tables/Images.php';
 /** This is a required class */
 require_once TEST_BASE."db/tables/TableTestBase.php";
 /** This is a required class */
@@ -66,7 +66,7 @@ require_once CODE_BASE.'interfaces/DBTable.php';
  * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class ImagesTableTest extends TableTestBase
+class ImagesTest extends TableTestBase
 {
 
     /**
@@ -100,7 +100,7 @@ class ImagesTableTest extends TableTestBase
         $data = array(
         );
         $this->o = \HUGnet\db\Table::factory(
-            $this->system, $data, "ImagesTable", $this->connect
+            $this->system, $data, "Images", $this->connect
         );
         parent::Setup();
     }
@@ -128,7 +128,7 @@ class ImagesTableTest extends TableTestBase
     protected function getDataSet()
     {
         return $this->createXMLDataSet(
-            TEST_CONFIG_BASE.'files/ImagesTableTableTest.xml'
+            TEST_CONFIG_BASE.'files/ImagesTableTest.xml'
         );
     }
     /**
@@ -141,7 +141,7 @@ class ImagesTableTest extends TableTestBase
         $system = new \HUGnet\DummySystem("System");
         $connect = \HUGnet\db\Connection::factory($system);
         $obj = \HUGnet\db\Table::factory(
-            $system, $data, "ImagesTable", $connect
+            $system, $data, "Images", $connect
         );
         return TableTestBase::splitObject($obj, "sqlColumns");
     }
@@ -155,7 +155,7 @@ class ImagesTableTest extends TableTestBase
         $system = new \HUGnet\DummySystem("System");
         $connect = \HUGnet\db\Connection::factory($system);
         $obj = \HUGnet\db\Table::factory(
-            $system, $data, "ImagesTable", $connect
+            $system, $data, "Images", $connect
         );
         return TableTestBase::splitObject($obj, "sqlIndexes");
     }
@@ -171,7 +171,7 @@ class ImagesTableTest extends TableTestBase
         return array(
             array(
                 \HUGnet\db\Table::factory(
-                    $system, $data, "ImagesTable", $connect
+                    $system, $data, "Images", $connect
                 )
             ),
         );

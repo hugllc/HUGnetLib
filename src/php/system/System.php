@@ -322,6 +322,19 @@ class System
         return $obj;
     }
     /**
+    * This returns an image object.
+    *
+    * @param array $data The data to send to the object
+    *
+    * @return Reference to an image object
+    */
+    public function &image($data = array())
+    {
+        include_once dirname(__FILE__)."/Image.php";
+        $obj = Image::factory($this, $data);
+        return $obj;
+    }
+    /**
     * This returns a device object.
     *
     * @param array $data The data to send to the device object

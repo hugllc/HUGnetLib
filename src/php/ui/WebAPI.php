@@ -415,6 +415,24 @@ class WebAPI extends HTML
     /**
     * This function executes the api call.
     *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+    */
+    private function _executeImage($extra = array())
+    {
+        $iid   = strtolower($this->args()->get("id"));
+        $image = $this->system()->image($iid);
+        $ret   = $this->_executeSystem($iid, $image, $extra);
+        if ($ret === "regen") {
+            return $this->system()->image($iid)->toArray(true);
+        }
+        return $ret;
+    }
+    /**
+    * This function executes the api call.
+    *
     * @param mixed  $ident The ID to use
     * @param object $obj   The object to work on
     * @param array  $extra Extra data that should be added to the HTMLArgs data

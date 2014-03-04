@@ -54,7 +54,7 @@ require_once dirname(__FILE__)."/../../interfaces/DBTable.php";
  * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class ImagesTable extends \HUGnet\db\Table implements \HUGnet\interfaces\DBTable
+class Images extends \HUGnet\db\Table implements \HUGnet\interfaces\DBTable
 {
     /** @var string This is the table we should use */
     public $sqlTable = "images";
