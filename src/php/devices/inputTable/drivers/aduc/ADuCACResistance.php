@@ -84,7 +84,7 @@ class ADuCACResistance extends \HUGnet\devices\inputTable\DriverADuC
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
-        "extraValues" => array(5, 5, 5, 5, array()),
+        "extraValues" => array(20, 20, 20, 10, array()),
         "extraDefault" => array(0, "Infinite", 1.0, 1.2, 0),
         "maxDecimals" => 8,
         "inputSize" => 4,
