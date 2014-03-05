@@ -102,6 +102,21 @@ class Images extends \HUGnet\db\Table implements \HUGnet\interfaces\DBTable
             "Type" => "longblob",
             "Default" => '',
         ),
+        "mimetype" => array(
+            "Name" => "mimetype",
+            "Type" => "varchar(64)",
+            "Default" => "",
+        ),
+        "height" => array(
+            "Name" => "height",
+            "Type" => "int",
+            "Default" => 0,
+        ),
+        "width" => array(
+            "Name" => "width",
+            "Type" => "int",
+            "Default" => 0,
+        ),
         "desc" => array(
             "Name" => "desc",
             "Type" => "text",
