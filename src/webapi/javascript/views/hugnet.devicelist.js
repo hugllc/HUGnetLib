@@ -121,6 +121,7 @@ HUGnet.DeviceListView = Backbone.View.extend({
     viewed: 0,
     events: {
         'click .goFilter': 'goFilter',
+        'click .resetFilter': 'resetFilter',
         'change .gatewayFilter': 'goFilter',
         'change .activeFilter': 'goFilter'
     },
@@ -246,7 +247,7 @@ HUGnet.DeviceListView = Backbone.View.extend({
         var fieldFilter = this.$(".fieldFilter").val();
         var searchFilter = this.$(".searchFilter").val();
         var gatewayFilter = this.$(".gatewayFilter").val();
-        var filter = this.filter;
+        var filter = $.extend({}, this.filter);
         if (activeFilter === "1") {
             filter.Active = 1;
         } else if (activeFilter === "0") {
@@ -273,5 +274,13 @@ HUGnet.DeviceListView = Backbone.View.extend({
             var show = this.checkFilter(this.views[view].model, filter);
             this.setView(view, show);
         }
+    },
+    resetFilter: function()
+    {
+        this.$(".activeFilter").val("");
+        this.$(".fieldFilter").val("");
+        this.$(".searchFilter").val("");
+        this.$(".gatewayFilter").val(this.filter.GatewayKey);
+        this.goFilter();
     }
 });
