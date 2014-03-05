@@ -115,6 +115,7 @@ HUGnet.DeviceListView = Backbone.View.extend({
     views: {},
     filter: {Publish: 1},
     gateways: {},
+    GatewayKey: null,
     sorted: false,
     sorting: [[1,0]],
     viewed: 0,
@@ -145,6 +146,7 @@ HUGnet.DeviceListView = Backbone.View.extend({
                 this.template = '#' + this.templatebase + 'Template';
             }
         }
+        this.GatewayKey = this.filter.GatewayKey;
         this.model.each(this.insert, this);
         this.model.on('add', this.insert, this);
         this.model.on('sync', this.insert, this);
@@ -160,13 +162,14 @@ HUGnet.DeviceListView = Backbone.View.extend({
     render: function ()
     {
         //var data = this.model.toJSON();
-        var data = {};
+        var data = {
+            GatewayKey: this.GatewayKey
+        };
         if (typeof this.gateways == "object") {
             data.gateways = this.gateways.toJSON();
         } else {
             data.gateways = [];
         }
-        console.log(data);
         _.extend(data, HUGnet.viewHelpers);
         this.$el.html(
             _.template(
@@ -254,14 +257,17 @@ HUGnet.DeviceListView = Backbone.View.extend({
         }
         if ((gatewayFilter !== "") && (gatewayFilter != undefined)) {
             if (gatewayFilter == "any") {
-                /* Do Nothing */
+                delete filter.GatewayKey;
             } else if (gatewayFilter == "all") {
+                delete filter.GatewayKey;
                 this.model.fetch();
             } else {
-                filter[gatewayFilter] = parseInt(gatewayFilter, 10);
-                this.model.fetch({ GatewayKey: filter[gatewayFilter] });
+                filter.GatewayKey = parseInt(gatewayFilter, 10);
             }
             this.$(".gatewayFilter").val(gatewayFilter);
+        }
+        if (filter.GatewayKey != undefined) {
+            this.model.fetch({ GatewayKey: filter.GatewayKey });
         }
         for (var view in this.views) {
             var show = this.checkFilter(this.views[view].model, filter);

@@ -46,6 +46,7 @@ HUGnet.DeviceList = Backbone.View.extend({
     readonly: false,
     data: {},
     filter: {publish: 1},
+    GatewayKey: null,
     url: '/HUGnetLib/HUGnetLibAPI.php',
     tabTemplate: '<li style="white-space: nowrap;"><a href="#{href}">#{label}</a> <span name="#{href}" class="ui-icon ui-icon-close">Remove Tab</span></li>',
     initialize: function (options)
@@ -69,7 +70,7 @@ HUGnet.DeviceList = Backbone.View.extend({
             gateways: options.gateways,
             url: this.url,
             readonly: this.readonly,
-            filter: this.filter
+            filter: this.filter,
         });
         this.render();
     },
