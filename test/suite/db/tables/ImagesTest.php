@@ -309,7 +309,7 @@ class ImagesTest extends TableTestBase
                     "points" => "",
                     'height' => 0,
                     'width' => 0,
-                    'mimetype' => "",
+                    'imagetype' => "",
                 ),
             ),
             array(
@@ -329,7 +329,7 @@ class ImagesTest extends TableTestBase
                     "points" => '{"storageUnits":"&deg;C","unitType":"Temperature"}',
                     'height' => 0,
                     'width' => 0,
-                    'mimetype' => "",
+                    'imagetype' => "",
                 ),
             ),
             array(
@@ -350,7 +350,7 @@ class ImagesTest extends TableTestBase
                     "points" => json_encode(array(1,2,3,4)),
                     'height' => 0,
                     'width' => 0,
-                    'mimetype' => "",
+                    'imagetype' => "",
                 ),
             ),
         );
@@ -402,7 +402,7 @@ class ImagesTest extends TableTestBase
                     ),
                     'height' => 0,
                     'width' => 0,
-                    'mimetype' => "",
+                    'imagetype' => "",
                 ),
             ),
             array(
@@ -456,7 +456,7 @@ class ImagesTest extends TableTestBase
                     ),
                     'height' => 0,
                     'width' => 0,
-                    'mimetype' => "",
+                    'imagetype' => "",
                 ),
             ),
         );
