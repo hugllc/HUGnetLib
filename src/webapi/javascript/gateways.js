@@ -40,7 +40,7 @@
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-var GatewayEntryView = Backbone.View.extend({
+var GatewayListEntryView = Backbone.View.extend({
     model: HUGnet.Gateway,
     tagName: 'tr',
     template: '#GatewayListEntryTemplate',
@@ -148,7 +148,7 @@ HUGnet.GatewayList = Backbone.View.extend({
     },
     insert: function (model, collection, options)
     {
-        var view = new GatewayEntryView({ model: model, parent: this });
+        var view = new GatewayListEntryView({ model: model, parent: this });
         this.$('tbody').append(view.render().el);
         this.$el.trigger('update');
         this.$('.tablesorter').trigger('update');
