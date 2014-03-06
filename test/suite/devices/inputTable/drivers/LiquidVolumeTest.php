@@ -39,7 +39,7 @@ namespace HUGnet\devices\inputTable\drivers;
 /** This is the base class */
 require_once dirname(__FILE__)."/DriverTestBase.php";
 /** This is a required class */
-require_once CODE_BASE.'devices/inputTable/drivers/LiquidFlow.php';
+require_once CODE_BASE.'devices/inputTable/drivers/LiquidVolume.php';
 
 /**
  * Test class for filter.
@@ -57,10 +57,10 @@ require_once CODE_BASE.'devices/inputTable/drivers/LiquidFlow.php';
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class LiquidFlowTest extends DriverTestBase
+class LiquidVolumeTest extends DriverTestBase
 {
     /** This is the class we are testing */
-    protected $class = "LiquidFlow";
+    protected $class = "LiquidVolume";
     /** This is the class we are testing */
     protected $input;
 
@@ -92,7 +92,7 @@ class LiquidFlowTest extends DriverTestBase
             )
         );
         $this->o = \HUGnet\devices\inputTable\Driver::factory(
-            "LiquidFlow", $this->input
+            "LiquidVolume", $this->input
         );
     }
 
@@ -173,7 +173,7 @@ class LiquidFlowTest extends DriverTestBase
                     "timeConstant" => 1,
                 ),
                 array(),
-                0.10
+                0.50
             ),
             array(
                 array(
@@ -191,7 +191,7 @@ class LiquidFlowTest extends DriverTestBase
                     "timeConstant" => 1,
                 ),
                 array(),
-                10.0
+                50.0
             ),
             array(
                 array(
@@ -209,41 +209,7 @@ class LiquidFlowTest extends DriverTestBase
                     "timeConstant" => 1,
                 ),
                 array(),
-                1000.0
-            ),
-            array(
-                array(
-                    "Input" => array(
-                        "get" => array(
-                            "id" => 0x70,
-                            "type" => "liquidflowmeter",
-                        ),
-                    ),
-                ),
-                500,
-                0,
-                array(
-                    "timeConstant" => 1,
-                ),
-                array(),
-                null
-            ),
-            array(
-                array(
-                    "Input" => array(
-                        "get" => array(
-                            "id" => 0x70,
-                            "type" => "liquidflowmeter",
-                        ),
-                    ),
-                ),
-                500,
-                -1,
-                array(
-                    "timeConstant" => 1,
-                ),
-                array(),
-                null
+                5000.0
             ),
             array(
                 array(
@@ -281,7 +247,7 @@ class LiquidFlowTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "000000",
+                "640000",
                 300,
                 array(
                     "timeConstant" => 1,
@@ -299,7 +265,7 @@ class LiquidFlowTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "881300",
+                "E80300",
                 300,
                 array(
                     "timeConstant" => 1,
@@ -317,7 +283,7 @@ class LiquidFlowTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "881300",
+                "E80300",
                 300,
                 array(
                     "timeConstant" => 1,
@@ -451,10 +417,10 @@ class LiquidFlowTest extends DriverTestBase
                 array(
                     array(
                         'decimals' => 2,
-                        'units' => 'gal/m',
+                        'units' => 'gal',
                         'maxDecimals' => 2,
-                        'storageUnit' => 'gal/m',
-                        'unitType' => 'Flow Rate',
+                        'storageUnit' => 'gal',
+                        'unitType' => 'Volume',
                         'dataType' => 'raw',
                         'label' => '',
                         'index' => 0,

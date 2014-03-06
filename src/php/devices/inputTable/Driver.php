@@ -122,6 +122,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         //"70:generic"                 => "GenericPulse",
         "70:GenericRevolving"        => "GenericRevolving",
         "70:LiquidFlow"              => "LiquidFlow",
+        "70:LiquidVolume"            => "LiquidVolume",
         "70:MaximumAnemometer"       => "MaximumAnemometer",
         "70:MaximumRain"             => "MaximumRain",
         "70:WattNode"                => "WattNode",

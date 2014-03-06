@@ -55,7 +55,7 @@ require_once dirname(__FILE__)."/../DriverPulse.php";
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class LiquidFlow extends \HUGnet\devices\inputTable\DriverPulse
+class LiquidVolume extends \HUGnet\devices\inputTable\DriverPulse
     implements \HUGnet\devices\inputTable\DriverInterface
 {
     /** This is where our port is stored */
@@ -64,10 +64,10 @@ class LiquidFlow extends \HUGnet\devices\inputTable\DriverPulse
     * This is the array of sensor information.
     */
     protected $params = array(
-        "longName" => "Liquid Flow Meter",
-        "shortName" => "LiquidFlow",
-        "unitType" => "Flow Rate",
-        "storageUnit" => 'gal/m',
+        "longName" => "Liquid Volume Meter",
+        "shortName" => "LiquidVolume",
+        "unitType" => "Volume",
+        "storageUnit" => 'gal',
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraText" => array(
             "Gallons / Pulse",
@@ -112,11 +112,10 @@ class LiquidFlow extends \HUGnet\devices\inputTable\DriverPulse
         if (empty($extra)) {
             $extra = 1;
         }
-        $ppm = $this->getPPM($A, $deltaT);
-        if (is_null($ppm)) {
+        if (is_null($A)) {
             return null;
         }
-        return round($ppm/$extra, $this->get("maxDecimals"));
+        return round($A/$extra, $this->get("maxDecimals"));
     }
     /**
     * Returns the reversed reading
@@ -139,11 +138,10 @@ class LiquidFlow extends \HUGnet\devices\inputTable\DriverPulse
         if (empty($extra)) {
             $extra = 1;
         }
-        $val = $this->revPPM($value, $deltaT);
-        if (is_null($val)) {
+        if (is_null($value)) {
             return null;
         }
-        return (int)($val * $extra);
+        return (int)($value * $extra);
     }
     /**
     * Decodes the driver portion of the setup string
