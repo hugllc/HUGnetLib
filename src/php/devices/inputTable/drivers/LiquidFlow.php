@@ -67,7 +67,7 @@ class LiquidFlow extends \HUGnet\devices\inputTable\DriverPulse
         "longName" => "Liquid Flow Meter",
         "shortName" => "LiquidFlow",
         "unitType" => "Flow Rate",
-        "storageUnit" => 'gal/m',
+        "storageUnit" => 'gal/min',
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraText" => array(
             "Gallons / Pulse",
