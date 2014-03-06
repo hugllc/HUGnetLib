@@ -94,6 +94,7 @@ abstract class Driver
     */
     public static function &factory($unitType, $units)
     {
+        $unitType = str_replace(" ", "", $unitType);
         $class = '\\HUGnet\\devices\\datachan\\drivers\\'.$unitType;
         $file = dirname(__FILE__)."/drivers/".$unitType.".php";
         if (file_exists($file)) {

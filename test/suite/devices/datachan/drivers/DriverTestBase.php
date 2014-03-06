@@ -253,10 +253,13 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     */
     public function testConvert($data, $to, $from, $type, $return, $expect)
     {
+        $orig = $data;
         $this->assertSame(
             $return, $this->o->convert($data, $to, $from, $type), "Return is wrong"
         );
-        $this->assertEquals($expect, $data, "Result is wrong", 0.000001);
+        $this->assertEquals(
+            $expect, $data, "$orig $from to $to: Result is wrong", 0.000001
+        );
     }
 
 }
