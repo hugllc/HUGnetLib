@@ -62,6 +62,17 @@ abstract class DriverPulse extends Driver
 {
     /** This is where our port is stored */
     protected $portExtra = 1;
+    /** This is the list of our subdrivers */
+    private $_subdrivers = array(
+        "DEFAULT"                 => 0,
+        "Bravo3Motion"            => 1,
+        "GenericRevolving"        => 2,
+        "LiquidFlow"              => 3,
+        "LiquidVolume"            => 4,
+        "MaximumAnemometer"       => 5,
+        "MaximumRain"             => 6,
+        "WattNode"                => 7,
+    );
     /**
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
@@ -130,6 +141,7 @@ abstract class DriverPulse extends Driver
     protected function pDecode(&$string, $index)
     {
         $extra = $this->input()->get("extra");
+        $this->subdriver($this->decodeInt(substr($string, 0, 2), 1));
         $extra[$index] = $this->decodeInt(substr($string, 2, 2), 1);
         $index++;
         $extra[$index] = $this->decodeInt(substr($string, 4, 2), 1);
@@ -150,13 +162,30 @@ abstract class DriverPulse extends Driver
         $string = sprintf("%02X",  $driver,
             $this->subdriver[$driver][$drivers[1]]
         );
-        $string  = $this->encodeInt(0, 1); // This is a placeholder for subdriver
+        $string  = $this->encodeInt((int)$this->subdriver(), 1);
         $string .= $this->encodeInt($this->getExtra($index), 1);
         $index++;
         $string .= $this->encodeInt($this->getExtra($index), 1);
         $index++;
         $string .= $this->encodeInt($this->getExtra($index), 1);
         return $string;
+    }
+    /**
+    * Returns the port this data channel is attached to
+    *
+    * @return array
+    */
+    protected function subdriver($driver = null)
+    {
+        if (!is_null($driver)) {
+            $subd = array_flip((array)$this->_subdrivers);
+            $name = $subd[$driver];
+            if (empty($name)) {
+                $name = "DEFAULT";
+            }
+            $this->input()->set("type", $name);
+        }
+        return $this->_subdrivers[$this->input()->get("type")];
     }
     /**
     * Returns the port this data channel is attached to

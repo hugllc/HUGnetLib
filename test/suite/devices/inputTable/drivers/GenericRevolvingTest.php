@@ -343,13 +343,15 @@ class GenericRevolvingTest extends DriverTestBase
                         "input" => new \HUGnet\DummyBase("Input"),
                     )
                 ),
-                "001320100001",
+                "021320100001",
                 array(
                     "Input" => array(
                         "get" => array(
                             array('extra'),
+                            array('type'),
                         ),
                         "set" => array(
+                            array('type', "GenericRevolving"),
                             array('extra', array(0x100, 19, 32, 16)),
                         ),
                     ),
@@ -389,20 +391,22 @@ class GenericRevolvingTest extends DriverTestBase
                         "get" => array(
                             "extra" => array(
                             ),
+                            "type" => "GenericRevolving",
                         ),
                     ),
                 ),
-                "000000030100",
+                "020000030100",
             ),
             array( // #1
                 array(
                     "Input" => array(
                         "get" => array(
                             "extra" => array(0x100, 1, 2, 3),
+                            "type" => "GenericRevolving",
                         ),
                     ),
                 ),
-                "000102030001",
+                "020102030001",
             ),
         );
     }

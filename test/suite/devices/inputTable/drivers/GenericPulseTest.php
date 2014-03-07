@@ -61,6 +61,8 @@ class GenericPulseTest extends DriverTestBase
 {
     /** This is the class we are testing */
     protected $class = "GenericPulse";
+    /** This is our input */
+    protected $input;
 
     /**
     * Sets up the fixture, for example, open a network connection.
@@ -73,13 +75,10 @@ class GenericPulseTest extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock(
+        $this->input = new \HUGnet\DummyBase("Input");
+        $this->input->resetMock(
             array(
                 "Input" => array(
-                    "device" => new \HUGnet\DummyBase("Device"),
-                ),
-                "Sensor" => array(
                     "device" => new \HUGnet\DummyBase("Device"),
                 ),
                 "Device" => array(
@@ -90,7 +89,7 @@ class GenericPulseTest extends DriverTestBase
             )
         );
         $this->o = \HUGnet\devices\inputTable\Driver::factory(
-            "GenericPulse", $sensor
+            "GenericPulse", $this->input
         );
     }
 
@@ -117,7 +116,7 @@ class GenericPulseTest extends DriverTestBase
         return array(
             array(
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "id" => 0x70,
                             "type" => "GenericPulse",
@@ -134,7 +133,7 @@ class GenericPulseTest extends DriverTestBase
             ),
             array(
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "id" => 0x70,
                             "type" => "GenericPulse",
@@ -151,7 +150,7 @@ class GenericPulseTest extends DriverTestBase
             ),
             array(
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "id" => 0x70,
                             "type" => "GenericPulse",
@@ -168,7 +167,7 @@ class GenericPulseTest extends DriverTestBase
             ),
             array(
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "id" => 0x70,
                             "type" => "GenericPulse",
@@ -195,7 +194,7 @@ class GenericPulseTest extends DriverTestBase
         return array(
             array(
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "id" => 0x70,
                             "type" => "GenericPulse",
@@ -212,7 +211,7 @@ class GenericPulseTest extends DriverTestBase
             ),
             array(
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "id" => 0x70,
                             "type" => "GenericPulse",
@@ -230,7 +229,7 @@ class GenericPulseTest extends DriverTestBase
             ),
             array(
                 array(
-                    "Sensor" => array(
+                    "Input" => array(
                         "get" => array(
                             "id" => 0x70,
                             "type" => "GenericPulse",
@@ -274,6 +273,103 @@ class GenericPulseTest extends DriverTestBase
                 ),
             ),
         );
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataDecode()
+    {
+        return array(
+            array( // #0
+                array(
+                    "Device" => array(
+                        "input" => new \HUGnet\DummyBase("Input"),
+                    )
+                ),
+                "001320100001",
+                array(
+                    "Input" => array(
+                        "get" => array(
+                            array('extra'),
+                            array('type'),
+                        ),
+                        "set" => array(
+                            array('type', "DEFAULT"),
+                            array('extra', array(19, 32, 16)),
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $mocks  The value to preload into the mocks
+    * @param string $string The setup string to test
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataDecode
+    */
+    public function testDecode($mocks, $string, $expect)
+    {
+        $this->input->resetMock($mocks);
+        $this->o->decode($string);
+        $ret = $this->input->retrieve();
+        $this->assertEquals($expect, $ret);
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataEncode()
+    {
+        return array(
+            array( // #0
+                array(
+                    "Input" => array(
+                        "get" => array(
+                            "extra" => array(
+                            ),
+                            "type" => "GenericPulse",
+                        ),
+                    ),
+                ),
+                "00000003",
+            ),
+            array( // #1
+                array(
+                    "Input" => array(
+                        "get" => array(
+                            "extra" => array(0x100, 1, 2, 3),
+                            "type" => "GenericPulse",
+                        ),
+                    ),
+                ),
+                "00000102",
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $mocks  The value to preload into the mocks
+    * @param array $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataEncode
+    */
+    public function testEncode($mocks, $expect)
+    {
+        $this->input->resetMock($mocks);
+        $ret = $this->o->encode();
+        $this->assertSame($expect, $ret);
     }
 
 }

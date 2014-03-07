@@ -323,13 +323,35 @@ class DriverPulseTest extends drivers\DriverTestBase
                         "input" => new \HUGnet\DummyBase("Input"),
                     )
                 ),
-                "00132010",
+                "03132010",
                 array(
                     "Input" => array(
                         "get" => array(
                             array('extra'),
+                            array('type'),
                         ),
                         "set" => array(
+                            array('type', 'LiquidFlow'),
+                            array('extra', array(19, 32, 16)),
+                        ),
+                    ),
+                ),
+            ),
+            array( // #1
+                array(
+                    "Device" => array(
+                        "input" => new \HUGnet\DummyBase("Input"),
+                    )
+                ),
+                "FF132010",
+                array(
+                    "Input" => array(
+                        "get" => array(
+                            array('extra'),
+                            array('type'),
+                        ),
+                        "set" => array(
+                            array('type', 'DEFAULT'),
                             array('extra', array(19, 32, 16)),
                         ),
                     ),
@@ -369,6 +391,7 @@ class DriverPulseTest extends drivers\DriverTestBase
                         "get" => array(
                             "extra" => array(
                             ),
+                            "type" => "DEFAULT",
                         ),
                     ),
                 ),
@@ -379,10 +402,11 @@ class DriverPulseTest extends drivers\DriverTestBase
                     "Input" => array(
                         "get" => array(
                             "extra" => array(1, 2, 3),
+                            "type" => "LiquidFlow",
                         ),
                     ),
                 ),
-                "00010203",
+                "03010203",
             ),
         );
     }

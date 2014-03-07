@@ -358,13 +358,15 @@ class LiquidFlowTest extends DriverTestBase
                         "input" => new \HUGnet\DummyBase("Input"),
                     )
                 ),
-                "001320100001",
+                "031320100001",
                 array(
                     "Input" => array(
                         "get" => array(
                             array('extra'),
+                            array('type'),
                         ),
                         "set" => array(
+                            array('type', "LiquidFlow"),
                             array('extra', array(0x100, 19, 32, 16)),
                         ),
                     ),
@@ -404,20 +406,22 @@ class LiquidFlowTest extends DriverTestBase
                         "get" => array(
                             "extra" => array(
                             ),
+                            "type" => "LiquidFlow",
                         ),
                     ),
                 ),
-                "00000003E803",
+                "03000003E803",
             ),
             array( // #1
                 array(
                     "Input" => array(
                         "get" => array(
                             "extra" => array(0x100, 1, 2, 3),
+                            "type" => "LiquidFlow",
                         ),
                     ),
                 ),
-                "000102030001",
+                "030102030001",
             ),
         );
     }

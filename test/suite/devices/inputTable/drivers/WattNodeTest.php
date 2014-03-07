@@ -294,13 +294,15 @@ class WattNodeTest extends DriverTestBase
                         "input" => new \HUGnet\DummyBase("Input"),
                     )
                 ),
-                "001320100001",
+                "071320100001",
                 array(
                     "Input" => array(
                         "get" => array(
                             array('extra'),
+                            array('type'),
                         ),
                         "set" => array(
+                            array('type', "WattNode"),
                             array('extra', array(0x100, 19, 32, 16)),
                         ),
                     ),
@@ -340,20 +342,22 @@ class WattNodeTest extends DriverTestBase
                         "get" => array(
                             "extra" => array(
                             ),
+                            "type" => "WattNode",
                         ),
                     ),
                 ),
-                "000000030500",
+                "070000030500",
             ),
             array( // #1
                 array(
                     "Input" => array(
                         "get" => array(
                             "extra" => array(0x100, 1, 2, 3),
+                            "type" => "WattNode",
                         ),
                     ),
                 ),
-                "000102030001",
+                "070102030001",
             ),
         );
     }
