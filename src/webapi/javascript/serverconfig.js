@@ -70,6 +70,10 @@ HUGnet.ServerConfig = Backbone.View.extend({
             model: this.itables,
             url: this.url
         });
+        this.imageConfig = new HUGnet.ImageConfigView({
+            model: options.images,
+            url: this.url
+        });
         /*
         var otables = new HUGnet.OutputTables();
         otables.fetch();
@@ -109,7 +113,11 @@ HUGnet.ServerConfig = Backbone.View.extend({
         this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+this.id+'-gateways">Gateway Information</a></li>');
         this.tabs.append('<div id="'+this.id+'-gateways"></div>');
         $('#'+this.id+'-gateways').html(this.gateways.render().el);
-
+        
+        this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+this.id+'-imageConfig">Images</a></li>');
+        this.tabs.append('<div id="'+this.id+'-imageConfig"></div>');
+        $('#'+this.id+'-imageConfig').html(this.imageConfig.render().el);
+        
         this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+this.id+'-inputTable">Input Tables</a></li>');
         this.tabs.append('<div id="'+this.id+'-inputTable"></div>');
         $('#'+this.id+'-inputTable').html(this.inputTables.render().el);

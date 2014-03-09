@@ -422,7 +422,7 @@ class WebAPI extends HTML
     */
     private function _executeImage($extra = array())
     {
-        $iid   = strtolower($this->args()->get("id"));
+        $iid   = $this->args()->get("id");
         $image = $this->system()->image($iid);
         $ret   = $this->_executeSystem($iid, $image, $extra);
         if ($ret === "regen") {
