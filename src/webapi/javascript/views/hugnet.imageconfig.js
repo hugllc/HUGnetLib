@@ -41,16 +41,23 @@
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 var ImageConfigPropertiesView = Backbone.View.extend({
+    url: '/HUGnetLib/HUGnetLibAPI.php',
     template: '#ImageConfigPropertiesTemplate',
     tTemplate: '#ImageConfigPropertiesTitleTemplate',
     tagName: 'div',
     _close: false,
+    progress: undefined,
+    iframe: undefined,
     events: {
         'click .SaveImageConfig': 'saveclose',
         'change select.type': 'save',
+        'click .insertImage': '_insertImage',
     },
     initialize: function (options)
     {
+        if (options) {
+            if (options.url) this.url = options.url;
+        }
         this.model.on('change', this.render, this);
         this.model.on('savefail', this.saveFail, this);
     },
@@ -115,6 +122,8 @@ var ImageConfigPropertiesView = Backbone.View.extend({
                 data
             )
         );
+        this.iframe = $('<iframe>', { name: 'insertImageFrame', id: 'insertImageFrame', content: "text/plain;charset=UTF-8" }).hide();
+        this.$el.append(this.iframe);
         this.model.off('saved', this.render, this);
         return this;
     },
@@ -134,10 +143,69 @@ var ImageConfigPropertiesView = Backbone.View.extend({
             this.model.toJSON()
         );
     },
+    _insertImage: function ()
+    {
+        if (this.$("#insertImage input[type=file]").val() == "") {
+            return;
+        }
+        var id = parseInt(this.model.get("id"), 10);
+        var url = this.url+"?task=image&action=insert&id="+id;
+        var form = $("#insertImage");
+        form.attr({
+            action: url,
+            method: 'post',
+            enctype: 'multipart/form-data',
+            encoding: 'multipart/form-data',
+            target: "insertImageFrame"
+        });
+        form.submit();
+        this._insertProgress("Inserting the image");
+        this._insertWait(this);
+    },
+    _insertWait: function (self)
+    {
+        var text = self.iframe.contents().text();
+        if (text != "") {
+            self._teardownProgress();
+            self.timer = null;
+            self.$("#insertImage input[type=file]").val("");
+            var id = parseInt(text, 16);
+            this.model.get(id).refresh();
+        } else {
+            self.timer = setTimeout(
+                function () {
+                    self._insertWait(self);
+                },
+                500
+            );
+        }
+    },
+    _insertProgress: function(title)
+    {
+        if (typeof this.progress !== "object") {
+            this.progress = new HUGnet.Progress({
+                modal: false,
+                draggable: true,
+                width: 300,
+                title: title,
+                dialogClass: "window no-close",
+                zIndex: 500,
+            });
+            this.progress.update(false);
+        }
+    },
+    _teardownProgress: function()
+    {
+        if (this.progress !== undefined) {
+            this.progress.update(1);
+            this.progress.remove();
+            delete this.progress;
+        }
+    },
 });
 
 /**
-* This is the model that stores the devices.
+* This is our entry view for the images
 *
 * @category   JavaScript
 * @package    HUGnetLib
@@ -149,6 +217,7 @@ var ImageConfigPropertiesView = Backbone.View.extend({
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 var ImageConfigEntryView = Backbone.View.extend({
+    url: '/HUGnetLib/HUGnetLibAPI.php',
     tagName: 'tr',
     template: '#ImageConfigEntryTemplate',
     parent: null,
@@ -158,6 +227,9 @@ var ImageConfigEntryView = Backbone.View.extend({
     },
     initialize: function (options)
     {
+        if (options) {
+            if (options.url) this.url = options.url;
+        }
         this.model.bind('change', this.render, this);
         this.model.bind('sync', this.render, this);
         this.model.bind('remove', this.remove, this);
@@ -175,7 +247,7 @@ var ImageConfigEntryView = Backbone.View.extend({
     },
     properties: function (e)
     {
-        var view = new ImageConfigPropertiesView({ model: this.model });
+        var view = new ImageConfigPropertiesView({ model: this.model, url: this.url });
         this.parent.popup(view);
     },
     /**
@@ -249,7 +321,7 @@ HUGnet.ImageConfigView = Backbone.View.extend({
     },
     insert: function (model, collection, options)
     {
-        var view = new ImageConfigEntryView({ model: model, parent: this });
+        var view = new ImageConfigEntryView({ model: model, parent: this, url: this.url });
         this.$('tbody').append(view.render().el);
         this.$("table").trigger('update');
     },

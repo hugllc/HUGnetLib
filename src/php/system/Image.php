@@ -59,7 +59,7 @@ require_once dirname(__FILE__)."/../interfaces/SystemInterface.php";
  * @since      0.9.7
  */
 class Image extends \HUGnet\base\SystemTableBase
-    implements \HUGnet\interfaces\SystemInterface
+    implements \HUGnet\interfaces\WebAPI, \HUGnet\interfaces\SystemInterface
 {
     /**
     * This function creates the system.
@@ -90,8 +90,8 @@ class Image extends \HUGnet\base\SystemTableBase
         $ret = null;
         if ($action === "list") {
             $ret = $this->_list($args);
-        } else if ($action === "new") {
-            $ret = $this->_new($args);
+        } else if ($action === "insert") {
+            $ret = $this->_insert($args);
         }
         return $ret;
     }
@@ -115,6 +115,47 @@ class Image extends \HUGnet\base\SystemTableBase
         }
         $ret = $this->getList($data, false);
         return $ret;
+    }
+    /**
+    * Insert a background image
+    *
+    * @param object $args The argument object
+    *
+    * @return string
+    */
+    private function _insert($args)
+    {
+        header('Content-type: text/plain; charset=UTF-8');
+        if (file_exists($_FILES["import"]["tmp_name"])) {
+            $finfo = new \finfo(FILEINFO_MIME_TYPE);
+            $mimetype = $finfo->file($_FILES['import']['tmp_name']);
+            if (false === $ext = array_search(
+                $mimetype,
+                array(
+                    'jpg' => 'image/jpeg',
+                    'png' => 'image/png',
+                    'gif' => 'image/gif',
+                ),
+                true
+            )) {
+                $data = file_get_contents($_FILES["import"]["tmp_name"]);
+            }
+        } else {
+            $data = $args->get("data");
+        }
+        if (is_string($data) && (strlen($data) > 0)) {
+            $this->load($args->get("id"));
+            $this->table()->set("image", $data);
+            $this->table()->set("imagetype", $mimetype);
+            $img = imagecreatefromstring($data);
+            $this->table()->set("height", imagesy($img));
+            $this->table()->set("width", imagesx($img));
+            imagedestroy($img);
+            print json_encode((string)((int)$this->table()->updateRow()));
+        } else {
+            print json_encode("0");
+        }
+        return null;
     }
 
 }

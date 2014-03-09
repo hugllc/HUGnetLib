@@ -218,5 +218,18 @@ class Images extends \HUGnet\db\Table implements \HUGnet\interfaces\DBTable
             $this->data["points"] = $value;
         }
     }
+    /**
+    * function to set LastHistory
+    *
+    * @param string $value The value to set
+    *
+    * @return null
+    */
+    protected function setImage($value)
+    {
+        if (is_string($value)) {
+            $this->data["image"] = base64_encode($value);
+        }
+    }
 }
 ?>
