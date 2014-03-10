@@ -185,12 +185,12 @@ class LiquidFlowTest extends DriverTestBase
                         ),
                     ),
                 ),
-                5000,
+                10000,
                 300,
                 array(
                     "timeConstant" => 1,
                 ),
-                array(),
+                array("value" => 5000),
                 10.0
             ),
             array(

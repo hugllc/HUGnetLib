@@ -112,7 +112,8 @@ class LiquidFlow extends \HUGnet\devices\inputTable\DriverPulse
         if (empty($extra)) {
             $extra = 1;
         }
-        $ppm = $this->getPPM($A, $deltaT);
+        $value = $A - ((float)$prev["value"]);
+        $ppm = $this->getPPM($value, $deltaT);
         if (is_null($ppm)) {
             return null;
         }
