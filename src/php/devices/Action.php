@@ -370,11 +370,12 @@ class Action
             $time = time();
         }
         if (strlen($pkt->reply()) > 0) {
-            $prev = (array)$this->device->getParam("LastPollData");
-            $data = $this->device->decodeData(
+            $prev   = (array)$this->device->getParam("LastPollData");
+            $deltaT = $time - $prev["Date"];
+            $data   = $this->device->decodeData(
                 $pkt->Reply(),
                 $pkt->Command(),
-                0,
+                $deltaT,
                 $prev
             );
             $raw = $this->system->table(
@@ -396,7 +397,7 @@ class Action
             $data["id"]     = $this->device->get("id");
             $data["Date"]   = $time;
             $data["TestID"] = $TestID;
-            $data["deltaT"] = $time - $prev["Date"];
+            $data["deltaT"] = $deltaT;
             $this->device->load($this->device->id());
             $this->device->setParam("LastPollData", $data);
             $hist = $this->device->historyFactory($data);
