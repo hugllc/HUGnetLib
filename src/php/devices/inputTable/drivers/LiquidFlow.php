@@ -68,7 +68,7 @@ class LiquidFlow extends \HUGnet\devices\inputTable\DriverPulse
         "shortName" => "LiquidFlow",
         "unitType" => "Flow Rate",
         "storageUnit" => 'gal/min',
-        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_DIFF,
         "extraText" => array(
             "Gallons / Pulse",
             "Clock Base",
@@ -112,8 +112,7 @@ class LiquidFlow extends \HUGnet\devices\inputTable\DriverPulse
         if (empty($extra)) {
             $extra = 1;
         }
-        $value = $A - ((float)$prev["value"]);
-        $ppm = $this->getPPM($value, $deltaT);
+        $ppm = $this->getPPM($A, $deltaT);
         if (is_null($ppm)) {
             return null;
         }

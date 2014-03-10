@@ -190,7 +190,7 @@ class LiquidFlowTest extends DriverTestBase
                 array(
                     "timeConstant" => 1,
                 ),
-                array("value" => 5000),
+                array("raw" => 5000),
                 10.0
             ),
             array(
@@ -459,7 +459,7 @@ class LiquidFlowTest extends DriverTestBase
                         'maxDecimals' => 2,
                         'storageUnit' => 'gal/min',
                         'unitType' => 'Flow Rate',
-                        'dataType' => 'raw',
+                        'dataType' => 'diff',
                         'label' => '',
                         'index' => 0,
                         'epChannel' => true,
