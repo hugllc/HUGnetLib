@@ -1369,6 +1369,9 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                                 "label" => "Output 0",
                             ),
                         ),
+                        "get" => array(
+                            "dataTypes" => 0,
+                        ),
                     ),
                     "Sensor1" => array(
                         "channels" => array(
@@ -1385,6 +1388,9 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                                 "epChannel" => false,
                                 "label" => "Output 1",
                             ),
+                        ),
+                        "get" => array(
+                            "dataTypes" => 1,
                         ),
                     ),
                     "Sensor2" => array(
@@ -1403,6 +1409,9 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                                 "label" => "Output 2",
                             ),
                         ),
+                        "get" => array(
+                            "dataTypes" => 2,
+                        ),
                     ),
                     "Sensor3" => array(
                         "channels" => array(
@@ -1420,6 +1429,9 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                                 "label" => "Output 3",
                             ),
                         ),
+                        "get" => array(
+                            "dataTypes" => 3,
+                        ),
                     ),
                     "Sensor4" => array(
                         "channels" => array(
@@ -1436,6 +1448,9 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                                 "epChannel" => true,
                                 "label" => "Output 4",
                             ),
+                        ),
+                        "get" => array(
+                            "dataTypes" => 4,
                         ),
                     ),
                 ),
@@ -1496,6 +1511,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                            'K' => 'K',
                         ),
                         "epChannel" => 0,
+                        "validTypes" => 0,
                     ),
                     array(
                         "storageUnit" => "&#176;C",
@@ -1515,6 +1531,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                            'K' => 'K',
                         ),
                         "epChannel" => null,
+                        "validTypes" => 1,
                     ),
                     array(
                         "storageUnit" => "&#176;C",
@@ -1534,6 +1551,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                            'K' => 'K',
                         ),
                         "epChannel" => 1,
+                        "validTypes" => 2,
                     ),
                     array(
                         "storageUnit" => "&#176;C",
@@ -1553,6 +1571,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                            'K' => 'K',
                         ),
                         "epChannel" => 2,
+                        "validTypes" => 3,
                     ),
                     array(
                         "storageUnit" => "&#176;C",
@@ -1572,6 +1591,7 @@ class DataChannelsTest extends \PHPUnit_Framework_TestCase
                            'K' => 'K',
                         ),
                         "epChannel" => 3,
+                        "validTypes" => 4,
                     ),
                 ),
             ),

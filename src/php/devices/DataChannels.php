@@ -245,6 +245,9 @@ class DataChannels
             $ret[$key] = $this->dataChannel($key)->toArray($default);
             if ($default) {
                 $ret[$key]["validUnits"] = $this->dataChannel($key)->validUnits();
+                $ret[$key]["validTypes"] = $this->dataChannel($key)->input()->get(
+                    "dataTypes"
+                );
             }
         }
         return $ret;
