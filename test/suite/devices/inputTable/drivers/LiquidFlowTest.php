@@ -173,7 +173,7 @@ class LiquidFlowTest extends DriverTestBase
                     "timeConstant" => 1,
                 ),
                 array(),
-                0.10
+                10.0
             ),
             array(
                 array(
@@ -191,7 +191,7 @@ class LiquidFlowTest extends DriverTestBase
                     "timeConstant" => 1,
                 ),
                 array("raw" => 5000),
-                10.0
+                100000.0
             ),
             array(
                 array(
@@ -305,7 +305,7 @@ class LiquidFlowTest extends DriverTestBase
                     "timeConstant" => 1,
                 ),
                 array(),
-                10.0
+                100000.0
             ),
             array(
                 array(
@@ -358,7 +358,7 @@ class LiquidFlowTest extends DriverTestBase
                         "input" => new \HUGnet\DummyBase("Input"),
                     )
                 ),
-                "031320100001",
+                "0313201000008043",
                 array(
                     "Input" => array(
                         "get" => array(
@@ -367,7 +367,7 @@ class LiquidFlowTest extends DriverTestBase
                         ),
                         "set" => array(
                             array('type', "LiquidFlow"),
-                            array('extra', array(0x100, 19, 32, 16)),
+                            array('extra', array(256.0, 19, 32, 16)),
                         ),
                     ),
                 ),
@@ -410,7 +410,7 @@ class LiquidFlowTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "03000003E803",
+                "03000003CDCCCC3D",
             ),
             array( // #1
                 array(
@@ -421,7 +421,7 @@ class LiquidFlowTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "030102030001",
+                "0301020300008043",
             ),
         );
     }
