@@ -798,7 +798,9 @@ class DriverTest extends drivers\DriverTestBase
                 1,
                 array(),
                 array(
-                    "raw" => 0x0201,
+                    0 => array(
+                        "raw" => 0x0201,
+                    ),
                 ),
                 array(
                     array(
@@ -830,7 +832,9 @@ class DriverTest extends drivers\DriverTestBase
                 1,
                 array(),
                 array(
-                    "raw" => 0x0201,
+                    0 => array(
+                        "raw" => 0x0201,
+                    ),
                 ),
                 array(
                     array(

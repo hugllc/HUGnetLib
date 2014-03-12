@@ -103,7 +103,8 @@ class CheckGateways extends \HUGnet\processes\analysis\Periodic
                     $this->_gateway->load(
                         (int)$this->_datacollector->get("GatewayKey")
                     );
-                    if (empty($this->_gateway->get("name"))) {
+                    $name = $this->_gateway->get("name");
+                    if (empty($name)) {
                         $this->_gateway->set(
                             "name",
                             $this->_datacollector->get("name")

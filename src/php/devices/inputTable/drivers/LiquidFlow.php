@@ -68,7 +68,7 @@ class LiquidFlow extends \HUGnet\devices\inputTable\DriverPulse
         "shortName" => "LiquidFlow",
         "unitType" => "Flow Rate",
         "storageUnit" => 'gal/min',
-        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
+        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_DIFF,
         "extraText" => array(
             "Gallons / Pulse",
             "Clock Base",
@@ -84,15 +84,20 @@ class LiquidFlow extends \HUGnet\devices\inputTable\DriverPulse
             array(),
             2,
         ),
-        "extraDefault" => array(1000, 0, 0, 3),
+        "extraDefault" => array(0.1, 0, 0, 3),
         "extraDesc" => array(
             "How many gallons each count of the counter represent",
             "The clock base to use to do the pulse counting",
             "The port to count pulses on",
             "The number of matching samples to count as a pulse.",
         ),
+        "dataTypes" => array(
+            \HUGnet\devices\datachan\Driver::TYPE_DIFF
+                => \HUGnet\devices\datachan\Driver::TYPE_DIFF,
+            \HUGnet\devices\datachan\Driver::TYPE_IGNORE
+                => \HUGnet\devices\datachan\Driver::TYPE_IGNORE,
+        ),
         "maxDecimals" => 2,
-        "total" => true,
     );
     /**
     * This function returns the output in RPM
@@ -110,13 +115,13 @@ class LiquidFlow extends \HUGnet\devices\inputTable\DriverPulse
     {
         $extra = $this->getExtra(0);
         if (empty($extra)) {
-            $extra = 1;
+            $extra = 1.0;
         }
         $ppm = $this->getPPM($A, $deltaT);
         if (is_null($ppm)) {
             return null;
         }
-        return round($ppm/$extra, $this->get("maxDecimals"));
+        return round($ppm*$extra, $this->get("maxDecimals"));
     }
     /**
     * Returns the reversed reading
@@ -143,7 +148,7 @@ class LiquidFlow extends \HUGnet\devices\inputTable\DriverPulse
         if (is_null($val)) {
             return null;
         }
-        return (int)($val * $extra);
+        return (int)($val / $extra);
     }
     /**
     * Decodes the driver portion of the setup string
@@ -155,7 +160,7 @@ class LiquidFlow extends \HUGnet\devices\inputTable\DriverPulse
     public function decode($string)
     {
         $extra = $this->pDecode($string, 1);
-        $extra[0] = $this->decodeInt(substr($string, 0, 4), 2);
+        $extra[0] = $this->decodefloat(substr($string, 0, 8), 4);
         $this->input()->set("extra", $extra);
     }
     /**
@@ -166,7 +171,7 @@ class LiquidFlow extends \HUGnet\devices\inputTable\DriverPulse
     public function encode()
     {
         $string  = $this->pEncode(1);
-        $string .= $this->encodeInt($this->getExtra(0), 2);
+        $string .= $this->encodeFloat($this->getExtra(0), 4);
         return $string;
     }
 
