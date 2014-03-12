@@ -1275,96 +1275,112 @@
                 <function>AI,DI,DO</function>
                 <connect>
                     <HWPN003928>PC0</HWPN003928>
+                    <HWPN003912>Port1</HWPN003912>
                 </connect>
             </Port1>
             <Port2>
                 <function>AI,DI,DO</function>
                 <connect>
                     <HWPN003928>PC1</HWPN003928>
+                    <HWPN003912>Port2</HWPN003912>
                 </connect>
             </Port2>
             <Port3>
                 <function>AI,DI,DO</function>
                 <connect>
                     <HWPN003928>PC2</HWPN003928>
+                    <HWPN003912>Port3</HWPN003912>
                 </connect>
             </Port3>
             <Port4>
                 <function>AI,DI,DO</function>
                 <connect>
                     <HWPN003928>PC3</HWPN003928>
+                    <HWPN003912>Port4</HWPN003912>
                 </connect>
             </Port4>
             <Port5>
                 <function>AI,DI,DO</function>
                 <connect>
                     <HWPN003928>PC4</HWPN003928>
+                    <HWPN003912>Port5</HWPN003912>
                 </connect>
             </Port5>
             <Port6>
                 <function>AI,DI,DO</function>
                 <connect>
                     <HWPN003928>PC5</HWPN003928>
+                    <HWPN003912>Port6</HWPN003912>
                 </connect>
             </Port6>
             <Port7>
                 <function>AI</function>
                 <connect>
                     <HWPN003928>ADC6</HWPN003928>
+                    <HWPN003912>Port7</HWPN003912>
                 </connect>
             </Port7>
             <Port8>
                 <function>AI</function>
                 <connect>
                     <HWPN003928>ADC7</HWPN003928>
+                    <HWPN003912>Port8</HWPN003912>
                 </connect>
             </Port8>
             <Port9>
                 <function>DI,DO</function>
                 <connect>
                     <HWPN003928>PB0</HWPN003928>
+                    <HWPN003912>NC</HWPN003912>
                 </connect>
             </Port9>
             <Port10>
                 <function>DI,DO</function>
                 <connect>
                     <HWPN003928>PB1</HWPN003928>
+                    <HWPN003912>NC</HWPN003912>
                 </connect>
             </Port10>
             <Port11>
                 <function>DI,DO</function>
                 <connect>
                     <HWPN003928>PB2</HWPN003928>
+                    <HWPN003912>NC</HWPN003912>
                 </connect>
             </Port11>
             <Port12>
                 <function>DI,DO</function>
                 <connect>
                     <HWPN003928>PB3</HWPN003928>
+                    <HWPN003912>Port10</HWPN003912>
                 </connect>
             </Port12>
             <Port13>
                 <function>DI,DO</function>
                 <connect>
                     <HWPN003928>PB4</HWPN003928>
+                    <HWPN003912>Port11</HWPN003912>
                 </connect>
             </Port13>
             <Port14>
                 <function>DI,DO</function>
                 <connect>
                     <HWPN003928>PB5</HWPN003928>
+                    <HWPN003912>NC</HWPN003912>
                 </connect>
             </Port14>
             <Port15>
                 <function>DI,DO</function>
                 <connect>
                     <HWPN003928>PD5</HWPN003928>
+                    <HWPN003912>NC</HWPN003912>
                 </connect>
             </Port15>
             <Port16>
                 <function>DI,DO</function>
                 <connect>
                     <HWPN003928>PD6</HWPN003928>
+                    <HWPN003912>NC</HWPN003912>
                 </connect>
             </Port16>
         </Pins>
