@@ -537,7 +537,7 @@ class Device extends \HUGnet\base\SystemTableAction
             $ret = array_merge(
                 $ret,
                 (array)$this->input($i)->decodeData(
-                    $data["String"], $deltaT, $prev[$i], $ret
+                    $data["String"], $deltaT, $prev, $ret
                 )
             );
         }

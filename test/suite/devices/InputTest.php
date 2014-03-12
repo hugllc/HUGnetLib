@@ -258,6 +258,7 @@ class InputTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Table" => array(
                         "get" => array(
+                            "input" => 3,
                             "id" => 0xFD,
                             "type" => "TestInputDriver1",
                             "unitType" => "Pressure",
@@ -266,6 +267,7 @@ class InputTest extends \PHPUnit_Framework_TestCase
                             "location" => "asdf",
                         ),
                         "toArray" => array(
+                            "input" => 3,
                             "id" => 0xFD,
                             "type" => "TestInputDriver1",
                             "extra" => array(),
@@ -273,6 +275,12 @@ class InputTest extends \PHPUnit_Framework_TestCase
                             "dataType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                             "storageUnit" => "psi",
                         ),
+                    ),
+                    "Device" => array(
+                        "input" => new \HUGnet\DummyTable("Input")
+                    ),
+                    "Input" => array(
+                        "channels" => array(1),
                     ),
                 ),
                 new \HUGnet\DummyTable("Table"),
@@ -326,11 +334,18 @@ class InputTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Table" => array(
                         "get" => array(
+                            "input" => 3,
                             "id" => 0xFD,
                             "type" => "TestInputDriver1",
                             "dataType" => \HUGnet\devices\datachan\Driver::TYPE_DIFF,
                             "location" => "asdf",
                         ),
+                    ),
+                    "Device" => array(
+                        "input" => new \HUGnet\DummyTable("Input")
+                    ),
+                    "Input" => array(
+                        "channels" => array(1),
                     ),
                 ),
                 new \HUGnet\DummyTable("Table"),
@@ -384,22 +399,31 @@ class InputTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Table" => array(
                         "get" => array(
+                            "input" => 3,
                             "id" => 0xFC,
                             "type" => "TestInputDriver2",
                             "dataType" => \HUGnet\devices\datachan\Driver::TYPE_DIFF,
                             "location" => "asdf",
                         ),
                     ),
+                    "Device" => array(
+                        "input" => new \HUGnet\DummyTable("Input")
+                    ),
+                    "Input" => array(
+                        "channels" => array(1),
+                    ),
                 ),
                 new \HUGnet\DummyTable("Table"),
                 "640000",
                 300,
                 array(
-                    "value" => 12.5,
-                    "units" => "&#176;C",
-                    "unitType" => "Temperature",
-                    "dataType" => \HUGnet\devices\datachan\Driver::TYPE_DIFF,
-                    "raw" => 50,
+                    3 => array(
+                        "value" => 12.5,
+                        "units" => "&#176;C",
+                        "unitType" => "Temperature",
+                        "dataType" => \HUGnet\devices\datachan\Driver::TYPE_DIFF,
+                        "raw" => 50,
+                    ),
                 ),
                 array(
                     array(

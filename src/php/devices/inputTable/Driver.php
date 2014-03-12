@@ -423,13 +423,15 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     * @SuppressWarnings(PHPMD.ShortVariable)
     */
     public function decodeData(
-        &$string, $deltaT = 0, &$prev = null, &$data = array()
+        &$string, $deltaT = 0, &$prev = array(), &$data = array()
     ) {
-        $A = $this->getRawData($string);
-        $ret = $this->channels();
+        $A    = $this->getRawData($string);
+        $ret  = $this->channels();
         $type = $this->get("storageType");
+        $chan = (int)$this->input()->channelStart();
+        $prev = is_array($prev) ? $prev : array();
         $ret[0]["value"] = $this->decodeDataPoint(
-            $A, 0, $deltaT, $prev, $data
+            $A, 0, $deltaT, $prev[$chan], $data
         );
         if ($type == \HUGnet\devices\datachan\Driver::TYPE_DIFF) {
             $ret[0]["raw"] = $A;

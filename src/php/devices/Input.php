@@ -285,7 +285,7 @@ class Input extends \HUGnet\base\IOPBase
     public function channelStart()
     {
         $chan   = 0;
-        $input = $this->id();
+        $input = (int)$this->id();
         for ($i = 0; $i < $input; $i++) {
             $chan += count($this->device()->input($i)->channels());
         }
