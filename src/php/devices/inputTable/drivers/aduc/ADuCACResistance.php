@@ -131,7 +131,8 @@ class ADuCACResistance extends \HUGnet\devices\inputTable\DriverADuC
 
         $A = $this->inputBiasCompensation($A, $Rin, $Rbias);
         $Va = bcmul(bcdiv($A, $Am), $Vref);
-        return round($Va, $this->get('maxDecimals'));
+        // The divide by two is because of the nature of this driver
+        return round($Va/2, $this->get('maxDecimals'));
     }
     /**
     * Returns the reversed reading
@@ -164,7 +165,7 @@ class ADuCACResistance extends \HUGnet\devices\inputTable\DriverADuC
             $A = $A * ($A / $Amod);
         }
         //$A = $A * $this->gain(1);
-        return (int)round($A);
+        return (int)round($A*2);
     }
     /**
     * Changes a raw reading into a output value
@@ -190,7 +191,8 @@ class ADuCACResistance extends \HUGnet\devices\inputTable\DriverADuC
             return null;
         }
         $R = (float)(($A * $Rbias) / ($Am - $A));
-        return round($R, $this->get('maxDecimals', 1));
+        // The divide by two is because of the nature of this sensor
+        return round($R / 2, $this->get('maxDecimals', 1));
     }
     /**
     * Returns the reversed reading
@@ -220,7 +222,7 @@ class ADuCACResistance extends \HUGnet\devices\inputTable\DriverADuC
             return null;
         }
         $A = ($R * $Am) / ($Rbias + $R);
-        return (int)round(($A * -1));
+        return (int)round(($A * -1 * 2));
     }
     /**
     * Gets the direction from a direction sensor made out of a POT.
