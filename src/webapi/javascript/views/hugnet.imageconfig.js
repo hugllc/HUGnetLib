@@ -60,6 +60,9 @@ var ImageConfigPropertiesView = Backbone.View.extend({
         }
         this.model.on('change', this.render, this);
         this.model.on('savefail', this.saveFail, this);
+        this.image = new HUGnet.ImageSVGView({
+            model: this.model,
+        });
     },
     save: function (e)
     {
@@ -96,6 +99,7 @@ var ImageConfigPropertiesView = Backbone.View.extend({
             this.model.off('savefail', this.saveFail, this);
             this.model.off('saved', this.close, this);
             this.model.off('saved', this.render, this);
+            this.image.remove();
             this.remove();
         }
     },
@@ -115,6 +119,7 @@ var ImageConfigPropertiesView = Backbone.View.extend({
     render: function ()
     {
         var data = this.model.toJSON();
+        data.svg = this.image.render().$el.html();
         _.extend(data, HUGnet.viewHelpers);
         this.$el.html(
             _.template(
@@ -170,7 +175,7 @@ var ImageConfigPropertiesView = Backbone.View.extend({
             self.timer = null;
             self.$("#insertImage input[type=file]").val("");
             var id = parseInt(text, 16);
-            this.model.get(id).refresh();
+            self.model.get(id).refresh();
         } else {
             self.timer = setTimeout(
                 function () {

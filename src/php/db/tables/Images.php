@@ -225,11 +225,13 @@ class Images extends \HUGnet\db\Table implements \HUGnet\interfaces\DBTable
     *
     * @return null
     */
+    /*
     protected function setImage($value)
     {
         if (is_string($value)) {
             $this->data["image"] = base64_encode($value);
         }
     }
+    */
 }
 ?>

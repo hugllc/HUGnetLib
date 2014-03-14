@@ -40,6 +40,8 @@ defined('_HUGNET') or die('HUGnetSystem not found');
 require_once dirname(__FILE__)."/../base/SystemTableBase.php";
 /** This is our system interface */
 require_once dirname(__FILE__)."/../interfaces/SystemInterface.php";
+/** This is our system interface */
+require_once dirname(__FILE__)."/../interfaces/WebAPI.php";
 
 /**
  * Base system class.
@@ -129,7 +131,7 @@ class Image extends \HUGnet\base\SystemTableBase
         if (file_exists($_FILES["import"]["tmp_name"])) {
             $finfo = new \finfo(FILEINFO_MIME_TYPE);
             $mimetype = $finfo->file($_FILES['import']['tmp_name']);
-            if (false === $ext = array_search(
+            if (false !== $ext = array_search(
                 $mimetype,
                 array(
                     'jpg' => 'image/jpeg',
@@ -145,7 +147,7 @@ class Image extends \HUGnet\base\SystemTableBase
         }
         if (is_string($data) && (strlen($data) > 0)) {
             $this->load($args->get("id"));
-            $this->table()->set("image", $data);
+            $this->table()->set("image", base64_encode($data));
             $this->table()->set("imagetype", $mimetype);
             $img = imagecreatefromstring($data);
             $this->table()->set("height", imagesy($img));
