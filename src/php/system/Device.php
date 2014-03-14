@@ -198,6 +198,12 @@ class Device extends \HUGnet\base\SystemTableAction
             }
             // @codeCoverageIgnoreEnd
         }
+        if (isset($return["params"]["DaughterBoard"])) {
+            $return["configImage"] = str_replace(
+                "-", "", strtoupper($return["params"]["DaughterBoard"])
+            );
+            $return["configImage"] = trim($return["configImage"]).".svg";
+        }
     }
     /**
     * Returns the table as an array

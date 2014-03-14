@@ -54,6 +54,7 @@ var DeviceConfigImageView = Backbone.View.extend({
     render: function ()
     {
         if (typeof this.url == "string") {
+            console.log(this.url);
             var myself = this;
             this.$el.load(
                 this.url,
@@ -163,6 +164,7 @@ var DeviceConfigView = Backbone.View.extend({
     close: function ()
     {
         this.model.off('change', this.channelRegen, this);
+        this.devImage.remove();
         this.remove();
     },
     setTitle: function (extra)

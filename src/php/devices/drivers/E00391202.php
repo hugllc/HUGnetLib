@@ -111,7 +111,7 @@ class E00391202 extends \HUGnet\devices\Driver
             "0039-16-01-A" => "0039-16-01-A FET Board",
             "0039-23-01-A" => "0039-23-01-A Weather Station",
             "0039-23-01-C" => "0039-23-01-C Relay Driver",
-            "0039-23-01-C" => "0039-23-01-C Generic Input",
+            "0039-23-01-D" => "0039-23-01-D Generic Input",
         ),
     );
 
