@@ -277,7 +277,6 @@ HUGnet.Images = Backbone.Collection.extend({
             function (data)
             {
                 self.add(data);
-                console.log(data);
                 if (data.length < self.limit) {
                     self.start = 0;
                 } else {

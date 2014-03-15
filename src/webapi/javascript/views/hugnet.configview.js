@@ -54,7 +54,6 @@ var DeviceConfigImageView = Backbone.View.extend({
     render: function ()
     {
         if (typeof this.url == "string") {
-            console.log(this.url);
             var myself = this;
             this.$el.load(
                 this.url,

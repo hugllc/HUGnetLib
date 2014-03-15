@@ -43,6 +43,7 @@
 HUGnet.ImageSVGView = Backbone.View.extend({
     template: "#ImageSVGTemplate",
     url: '/HUGnetLib/HUGnetLibAPI.php',
+    style: "",
     events: {
         'click .new': 'create'
     },
@@ -50,6 +51,7 @@ HUGnet.ImageSVGView = Backbone.View.extend({
     {
         if (options) {
             if (options.url) this.url = options.url;
+            if (options.style) this.style = options.style;
         }
         //this.model.each(this.insert, this);
         this.model.bind('change', this.render, this);
@@ -62,6 +64,7 @@ HUGnet.ImageSVGView = Backbone.View.extend({
     render: function ()
     {
         var data = this.model.toJSON();
+        data.style = this.style;
         this.$el.html(
             _.template(
                 $(this.template).html(),

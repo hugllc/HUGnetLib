@@ -424,7 +424,7 @@ class WebAPI extends HTML
     {
         $iid   = $this->args()->get("id");
         $image = $this->system()->image($iid);
-        $ret = $this->_executeSystem($did, $image, $extra);
+        $ret = $this->_executeSystem($iid, $image, $extra);
         if ($ret === "regen") {
             return $this->system()->image($iid)->toArray(true);
         }
@@ -449,6 +449,7 @@ class WebAPI extends HTML
         } else if (($action === "put") && $this->_auth(true)) {
             $data = (array)$this->args()->get("data");
             $ret = "regen";
+            error_log($ident);
             if ($obj->load($ident)) {
                 $obj->change($data);
             } else if (is_null($ident) && isset($data["name"])) {

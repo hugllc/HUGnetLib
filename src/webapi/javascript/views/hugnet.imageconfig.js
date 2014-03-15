@@ -58,10 +58,12 @@ var ImageConfigPropertiesView = Backbone.View.extend({
         if (options) {
             if (options.url) this.url = options.url;
         }
+        this.model.refresh();
         this.model.on('change', this.render, this);
         this.model.on('savefail', this.saveFail, this);
         this.image = new HUGnet.ImageSVGView({
             model: this.model,
+            style: "border: thin solid black;",
         });
     },
     save: function (e)
@@ -175,7 +177,7 @@ var ImageConfigPropertiesView = Backbone.View.extend({
             self.timer = null;
             self.$("#insertImage input[type=file]").val("");
             var id = parseInt(text, 16);
-            self.model.get(id).refresh();
+            self.model.refresh();
         } else {
             self.timer = setTimeout(
                 function () {
@@ -370,7 +372,7 @@ HUGnet.ImageConfigView = Backbone.View.extend({
             modal: true,
             draggable: true,
             width: 700,
-            resizable: false,
+            resizable: true,
             title: view.title(),
             dialogClass: "window",
             zIndex: 500
