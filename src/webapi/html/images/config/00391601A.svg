@@ -15,7 +15,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="00391601.svg"
+   sodipodi:docname="00391601A.svg"
    inkscape:export-filename="/home/jeffl/Documents/InkScape/HUGnetLab/HUGnetLabBoardPicture2.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
@@ -1247,15 +1247,15 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2"
-     inkscape:cx="425.45268"
-     inkscape:cy="235.79896"
+     inkscape:zoom="1.5975"
+     inkscape:cx="400"
+     inkscape:cy="200"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1440"
      inkscape:window-height="845"
-     inkscape:window-x="-2"
+     inkscape:window-x="-3"
      inkscape:window-y="-3"
      inkscape:window-maximized="1"
      inkscape:snap-global="false"
@@ -1588,8 +1588,9 @@
        style="font-size:8.62263298000000056px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
        x="86.03241"
        y="760.35223"
-       id="text4117-6-6-4-7-1-1"
-       sodipodi:linespacing="125%"><tspan
+       id="Port4-"
+       sodipodi:linespacing="125%"
+       inkscape:label="#text4117-6-6-4-7-1-1"><tspan
          sodipodi:role="line"
          id="tspan7306">Port4-</tspan></text>
     <text
@@ -1597,8 +1598,9 @@
        style="font-size:8.62263298000000056px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold;stroke-opacity:1"
        x="85.205154"
        y="780.07062"
-       id="text4117-6-6-4-7-1-1-7"
-       sodipodi:linespacing="125%"><tspan
+       id="Port4_"
+       sodipodi:linespacing="125%"
+       inkscape:label="#text4117-6-6-4-7-1-1-7"><tspan
          sodipodi:role="line"
          id="tspan7308">Port4+</tspan></text>
     <text
@@ -1606,8 +1608,9 @@
        style="font-size:8.62263298000000056px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
        x="84.770805"
        y="717.3291"
-       id="text4117-6-6-4-7-1-1-6"
-       sodipodi:linespacing="125%"><tspan
+       id="Port3-"
+       sodipodi:linespacing="125%"
+       inkscape:label="#text4117-6-6-4-7-1-1-6"><tspan
          sodipodi:role="line"
          id="tspan7302">Port3-</tspan></text>
     <text
@@ -1615,8 +1618,9 @@
        style="font-size:8.62263298000000056px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
        x="84.770805"
        y="737.69019"
-       id="text4117-6-6-4-7-1-1-1"
-       sodipodi:linespacing="125%"><tspan
+       id="Port3_"
+       sodipodi:linespacing="125%"
+       inkscape:label="#text4117-6-6-4-7-1-1-1"><tspan
          sodipodi:role="line"
          id="tspan7304">Port3+</tspan></text>
     <text
@@ -1624,8 +1628,9 @@
        style="font-size:8.62263298000000056px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
        x="715.08069"
        y="716.88641"
-       id="text4117-6-6-4-7-1-1-9"
-       sodipodi:linespacing="125%"><tspan
+       id="Port2_"
+       sodipodi:linespacing="125%"
+       inkscape:label="#text4117-6-6-4-7-1-1-9"><tspan
          sodipodi:role="line"
          id="tspan7300">Port2+</tspan></text>
     <text
@@ -1633,8 +1638,9 @@
        style="font-size:8.62263298000000056px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
        x="716.1366"
        y="737.19067"
-       id="text4117-6-6-4-7-1-1-9-3"
-       sodipodi:linespacing="125%"><tspan
+       id="Port2-"
+       sodipodi:linespacing="125%"
+       inkscape:label="#text4117-6-6-4-7-1-1-9-3"><tspan
          sodipodi:role="line"
          id="tspan7298">Port2-</tspan></text>
     <text
@@ -1642,8 +1648,9 @@
        style="font-size:8.62263298000000056px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
        x="715.25134"
        y="759.76501"
-       id="text4117-6-6-4-7-1-1-9-5"
-       sodipodi:linespacing="125%"><tspan
+       id="Port1_"
+       sodipodi:linespacing="125%"
+       inkscape:label="#text4117-6-6-4-7-1-1-9-5"><tspan
          sodipodi:role="line"
          id="tspan7296">Port1+</tspan></text>
     <text
@@ -1651,9 +1658,98 @@
        style="font-size:8.62263298000000056px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
        x="716.1366"
        y="779.68353"
-       id="text4117-6-6-4-7-1-1-9-4"
-       sodipodi:linespacing="125%"><tspan
+       id="Port1-"
+       sodipodi:linespacing="125%"
+       inkscape:label="#text4117-6-6-4-7-1-1-9-4"><tspan
          sodipodi:role="line"
          id="tspan7294">Port1-</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:8.62263298px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       x="44.192921"
+       y="780.38361"
+       id="text4117-6-6-4-7-5-9"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3984"
+         x="44.192921"
+         y="780.38361">Port4+</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:8.62263298px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       x="44.168629"
+       y="759.98248"
+       id="text4117-6-6-4-7-5-9-7"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4007"
+         x="44.168629"
+         y="759.98248">Port4-</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:8.62263298px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       x="44.168629"
+       y="736.50824"
+       id="text4117-6-6-4-7-5-9-5"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4018"
+         x="44.168629"
+         y="736.50824">Port3+</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:8.62263298px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       x="44.794605"
+       y="718.04187"
+       id="text4117-6-6-4-7-5-9-53"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4029"
+         x="44.794605"
+         y="718.04187">Port3-</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:8.62263298px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       x="756.84467"
+       y="718.66791"
+       id="text4117-6-6-4-7-5-9-1"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4040"
+         x="756.84467"
+         y="718.66791">Port2+</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:8.62263298px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       x="756.84467"
+       y="738.38617"
+       id="text4117-6-6-4-7-5-9-6"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4051"
+         x="756.84467"
+         y="738.38617">Port2-</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:8.62263298px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       x="756.84467"
+       y="760.92139"
+       id="text4117-6-6-4-7-5-9-0"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4062"
+         x="756.84467"
+         y="760.92139">Port1+</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:8.62263298px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       x="756.84467"
+       y="780.32678"
+       id="text4117-6-6-4-7-5-9-3"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4073"
+         x="756.84467"
+         y="780.32678">Port1-</tspan></text>
   </g>
 </svg>
