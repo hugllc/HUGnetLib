@@ -235,23 +235,23 @@ class SVG extends \HUGnet\images\Driver
     */
     private function _point(ImagePointContainer &$point, $indent = "", $end = "")
     {
-        if (strlen($point->text) <= 0) {
+        if (strlen($point["text"]) <= 0) {
             return;
         }
 
-        $pointId = "point".$point->id;
+        $pointId = "point".$point["id"];
 
         $ret  = $indent.$this->_rect(
-            $point->x, $point->y, 0, 0, "transparent", "none", $pointId."box"
+            $point["x"], $point["y"], 0, 0, "transparent", "none", $pointId."box"
         ).$end;
         $ret .= $indent.$this->_text(
-            $point->text, $point->x, $point->y, $point->color, "none",
-            $point->fontsize, $pointId."text", $extra
+            $point["text"], $point["x"], $point["y"], $point["color"], "none",
+            $point["fontsize"], $pointId."text", $extra
         ).$end;
-        if (strlen($point->link) > 0) {
+        if (strlen($point["link"]) > 0) {
             $ret = $this->_xlinkHref(
-                $point->link, $point->linkTitle, $ret, "_top", "", "", $indent, $end
-            );
+                $point["link"], $point["linkTitle"], $ret, "_top", "", "", $indent, $end
+            )
         }
         $ret .= $indent.'<script>'.$end;
         $ret .= $indent.$indent.'var Text=document.getElementById("'
@@ -265,7 +265,7 @@ class SVG extends \HUGnet\images\Driver
         $ret .= $indent.$indent.'Box.setAttributeNS(null, "height", Text.height+6);'
             .$end;
         $ret .= $indent.$indent.'Box.setAttributeNS(null, "fill", "'
-            .$point->fill.'");'.$end;
+            .$point["background"].'");'.$end;
         $ret .= $indent.$indent.'//document.documentElement.appendChild(Box);'.$end;
         $ret .= $indent.'</script>'.$end;
         return $ret;

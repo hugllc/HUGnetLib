@@ -50,6 +50,7 @@ HUGnet.ImagePoint = Backbone.Model.extend({
         y: 0,
         pretext: 'New Point',
         posttext: '',
+        fontsize: 9,
         devid: '',
         datachan: '0',
         color: "#000000",
