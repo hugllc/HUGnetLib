@@ -74,25 +74,24 @@ var ImageConfigPropertiesView = Backbone.View.extend({
         var i, output = {};
         var data = this.$('#imageForm').serializeArray();
         for (i in data) {
-            console.log(data[i].name + " = " + data[i].value);
             output[data[i].name] = data[i].value;
         }
         console.log(output);
         var points = [];
         var self = this;
         $(".datapoint").each(function(index, element) {
-            console.log("DataPoint: "+index);
-            if (!points[index]) {
-                points[index] = {};
-            }
-            var row = this;
-            _.each(["pretext", "posttext", "x", "y", "color", "background"],
-                function(sel, i) {
-                    points[index][sel] = $(row).find("#"+sel).val();
+            if (!$(this).find('[name="delete"]').prop("checked")) {
+                if (!points[index]) {
+                    points[index] = {};
                 }
-            );
+                var row = this;
+                _.each(["pretext", "posttext", "x", "y", "color", "background", "devid", "datachan"],
+                    function(sel, i) {
+                        points[index][sel] = $(row).find('[name="'+sel+'"]').val();
+                    }
+                );
+            }
         });
-console.log(points);
         
         this.model.set(output);
         this.model.points.reset(points);
