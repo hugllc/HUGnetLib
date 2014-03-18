@@ -61,6 +61,10 @@ HUGnet.Config = Backbone.View.extend({
         this.runtime = new HUGnet.RuntimeView({
             url: this.url
         });
+        this.imageConfig = new HUGnet.ImageConfigView({
+            model: options.images,
+            url: this.url
+        });
         this.render();
     },
     render: function ()
@@ -82,11 +86,16 @@ HUGnet.Config = Backbone.View.extend({
         this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+this.id+'-devices">Device Information</a></li>');
         this.tabs.append('<div id="'+this.id+'-devices"></div>');
         $('#'+this.id+'-devices').html(this.devices.render().el);
+        
         this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+this.id+'-Runtime">Runtime Config</a></li>');
         this.tabs.append('<div id="'+this.id+'-Runtime"></div>');
         $('#'+this.id+'-Runtime').html(this.runtime.render().el);
 
-        this.tabs.tabs("refresh");
+        this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+this.id+'-imageConfig">Images</a></li>');
+        this.tabs.append('<div id="'+this.id+'-imageConfig"></div>');
+        $('#'+this.id+'-imageConfig').html(this.imageConfig.render().el);
+        
+         this.tabs.tabs("refresh");
         this.tabs.tabs("option", "active", 0);
     }
 });
