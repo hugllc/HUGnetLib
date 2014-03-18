@@ -50,8 +50,10 @@ var ImageConfigPropertiesView = Backbone.View.extend({
     iframe: undefined,
     events: {
         'click .SaveImageConfig': 'saveclose',
+        'click .ApplyImageConfig': 'save',
         'change select.type': 'save',
         'click .insertImage': '_insertImage',
+        'click .insertPoint': '_insertPoint',
     },
     initialize: function (options)
     {
@@ -70,17 +72,30 @@ var ImageConfigPropertiesView = Backbone.View.extend({
     {
         this.setTitle( " [ Saving...] " );
         var i, output = {};
-        var data = this.$('form').serializeArray();
+        var data = this.$('#imageForm').serializeArray();
         for (i in data) {
+            console.log(data[i].name + " = " + data[i].value);
             output[data[i].name] = data[i].value;
         }
-        output.params = this.model.get('params');
-        for (i in output.params) {
-            output[i] = output['params['+i+']'];
-            output.params[i]['value'] = output['params['+i+']'];
-            delete output['params['+i+']'];
-        }
+        console.log(output);
+        var points = [];
+        var self = this;
+        $(".datapoint").each(function(index, element) {
+            console.log("DataPoint: "+index);
+            if (!points[index]) {
+                points[index] = {};
+            }
+            var row = this;
+            _.each(["pretext", "posttext", "x", "y", "color", "background"],
+                function(sel, i) {
+                    points[index][sel] = $(row).find("#"+sel).val();
+                }
+            );
+        });
+console.log(points);
+        
         this.model.set(output);
+        this.model.points.reset(points);
         this.model.save();
     },
     saveclose: function (e)
@@ -149,6 +164,10 @@ var ImageConfigPropertiesView = Backbone.View.extend({
             $(this.tTemplate).html(),
             this.model.toJSON()
         );
+    },
+    _insertPoint: function ()
+    {
+        this.model.newpoint();
     },
     _insertImage: function ()
     {

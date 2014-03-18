@@ -53,18 +53,23 @@ HUGnet.Image = Backbone.Model.extend({
         desc: '',
         points: ''
     },
+    points: {},
     lock: false,
     /**
     * This function initializes the object
     */
     initialize: function(attrib)
     {
+        this.points = new HUGnet.ImagePoints({});
+        this.points.reset(this.get('points'));
     },
     /**
     * This function initializes the object
     */
-    fix: function(attributes)
+    newpoint: function()
     {
+        this.points.add({pretext: "New Point"});
+        this.set("points", this.points.toJSON());
     },
     /**
     * Gets infomration about a device.  This is retrieved from the database only.
@@ -93,6 +98,7 @@ HUGnet.Image = Backbone.Model.extend({
                 function (data)
                 {
                     myself.set(data);
+                    myself.points.reset(mysql.get('points'));
                 }
             );
         }
@@ -126,6 +132,7 @@ HUGnet.Image = Backbone.Model.extend({
                     if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
                         self.trigger('refresh');
                         self.set(data);
+                        self.points.reset(self.get('points'));
                         self.trigger('fetchdone');
                         self.trigger('sync', self);
                     } else {
@@ -152,6 +159,8 @@ HUGnet.Image = Backbone.Model.extend({
         var id = this.get('id');
         if (id !== 0) {
             var self = this;
+            self.set("points", self.points.toJSON())
+            var data = self.toJSON();
             $.ajax({
                 type: 'POST',
                 url: this.url(),
@@ -162,7 +171,7 @@ HUGnet.Image = Backbone.Model.extend({
                     "task": "image",
                     "action": "put",
                     "id": id,
-                    "data": self.toJSON()
+                    "data": data
                 }
             }).done(
                 function (data)
