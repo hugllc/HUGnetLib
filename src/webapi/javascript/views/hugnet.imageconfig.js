@@ -94,10 +94,10 @@ var ImageConfigPropertiesView = Backbone.View.extend({
                 index++;
             }
         });
-        
         this.model.set(output);
         this.model.points.reset(points);
         this.model.save();
+        this.setTitle();
     },
     saveclose: function (e)
     {
@@ -121,6 +121,7 @@ var ImageConfigPropertiesView = Backbone.View.extend({
             this.remove();
         }
     },
+    
     setTitle: function (extra)
     {
         if (this.$el.is(':data(dialog)')) {
@@ -397,13 +398,5 @@ HUGnet.ImageConfigView = Backbone.View.extend({
             dialogClass: "window",
             zIndex: 500
         });
-        view.model.bind(
-            'change',
-            function ()
-            {
-                this.$el.dialog( "option", "title", this.title() );
-            },
-            view
-        );
     }
 });
