@@ -70,6 +70,7 @@ var InputTablePropertiesView = Backbone.View.extend({
         }
         this.model.set(output);
         this.model.save();
+        this.setTitle();
     },
     saveclose: function (e)
     {
@@ -298,13 +299,5 @@ HUGnet.InputTablesView = Backbone.View.extend({
             dialogClass: "window",
             zIndex: 500
         });
-        view.model.bind(
-            'change',
-            function ()
-            {
-                this.$el.dialog( "option", "title", this.title() );
-            },
-            view
-        );
     }
 });

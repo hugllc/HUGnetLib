@@ -90,6 +90,7 @@ var DeviceInputPropertiesView = Backbone.View.extend({
         var data = this.$('form').serializeObject();
         this.model.set(data);
         this.model.save();
+        this.setTitle();
     },
     setTitle: function (extra)
     {
@@ -251,15 +252,5 @@ HUGnet.DeviceInputsView = Backbone.View.extend({
             dialogClass: "window",
             zIndex: 1000
         });
-        view.model.bind(
-            'change',
-            function ()
-            {
-                if (this.$el.is(':data(dialog)')) {
-                    this.$el.dialog( "option", "title", this.title() );
-                }
-            },
-            view
-        );
     }
 });

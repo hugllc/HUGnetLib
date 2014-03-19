@@ -176,13 +176,5 @@ HUGnet.DeviceDataChannelsView = Backbone.View.extend({
             dialogClass: "window",
             zIndex: 1000
         });
-        view.model.bind(
-            'change',
-            function ()
-            {
-                this.$el.dialog( "option", "title", this.title() );
-            },
-            view
-        );
     }
 });
