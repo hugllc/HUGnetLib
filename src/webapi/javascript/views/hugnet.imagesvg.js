@@ -45,7 +45,6 @@ HUGnet.ImageSVGView = Backbone.View.extend({
     url: '/HUGnetLib/HUGnetLibAPI.php',
     style: "",
     events: {
-        'click .new': 'create'
     },
     initialize: function (options)
     {

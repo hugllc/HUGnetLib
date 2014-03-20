@@ -51,7 +51,8 @@ HUGnet.Image = Backbone.Model.extend({
         height: 0,
         width: 0,
         desc: '',
-        points: ''
+        points: '',
+        length: 0
     },
     points: {},
     lock: false,
@@ -61,7 +62,7 @@ HUGnet.Image = Backbone.Model.extend({
     initialize: function(attrib)
     {
         this.points = new HUGnet.ImagePoints({});
-        this.points.reset(this.get('points'));
+        this._resetPoints();
     },
     /**
     * This function initializes the object
@@ -70,6 +71,12 @@ HUGnet.Image = Backbone.Model.extend({
     {
         this.points.add({pretext: "New Point"});
         this.set("points", this.points.toJSON());
+        this._resetPoints();
+    },
+    _resetPoints: function()
+    {
+        this.points.reset(this.get('points'));
+        this.set("length", this.points.length);
     },
     /**
     * Gets infomration about a device.  This is retrieved from the database only.
@@ -98,7 +105,7 @@ HUGnet.Image = Backbone.Model.extend({
                 function (data)
                 {
                     myself.set(data);
-                    myself.points.reset(mysql.get('points'));
+                    myself._resetPoints();
                 }
             );
         }
@@ -132,7 +139,7 @@ HUGnet.Image = Backbone.Model.extend({
                     if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
                         self.trigger('refresh');
                         self.set(data);
-                        self.points.reset(self.get('points'));
+                        self._resetPoints();
                         self.trigger('fetchdone');
                         self.trigger('sync', self);
                     } else {
@@ -179,6 +186,7 @@ HUGnet.Image = Backbone.Model.extend({
                     if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
                         self.trigger('saved');
                         self.set(data);
+                        self._resetPoints();
                         self.trigger('fetchdone');
                         self.trigger('sync', self);
                     } else {

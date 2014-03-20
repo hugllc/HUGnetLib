@@ -76,7 +76,6 @@ var ImageConfigPropertiesView = Backbone.View.extend({
         for (i in data) {
             output[data[i].name] = data[i].value;
         }
-        console.log(output);
         var points = [];
         var self = this;
         var index = 0;
@@ -85,12 +84,18 @@ var ImageConfigPropertiesView = Backbone.View.extend({
                 if (!points[index]) {
                     points[index] = {};
                 }
+                points[index].id = index;
                 var row = this;
                 _.each(["pretext", "posttext", "fontsize", "x", "y", "color", "background", "devid", "datachan"],
                     function(sel, i) {
                         points[index][sel] = $(row).find('[name="'+sel+'"]').val();
                     }
                 );
+                if ($(this).find('[name="units"]').prop("checked")) {
+                    points[index].units = 1;
+                } else {
+                    points[index].units = 0;
+                }
                 index++;
             }
         });
@@ -336,10 +341,12 @@ HUGnet.ImageConfigView = Backbone.View.extend({
     */
     render: function ()
     {
+        var data = this.model.toJSON();
+        
         this.$el.html(
             _.template(
                 $(this.template).html(),
-                this.model.toJSON()
+                data
             )
         );
         //this.model.each(this.renderEntry);

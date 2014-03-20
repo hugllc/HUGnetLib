@@ -43,8 +43,9 @@
 HUGnet.ImagePoint = Backbone.Model.extend({
     defaults:
     {
+        id: null,
         value: '',
-        units: '',
+        units: 1,
         type: 'TEXT',
         x: 0,
         y: 0,
