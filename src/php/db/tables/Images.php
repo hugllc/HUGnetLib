@@ -122,6 +122,11 @@ class Images extends \HUGnet\db\Table implements \HUGnet\interfaces\DBTable
             "Type" => "text",
             "Default" => '',
         ),
+        "baseavg" => array(
+            "Name" => "baseavg",
+            "Type" => "varchar(32)",
+            "Default" => '15MIN',
+        ),
         "points" => array(
             "Name" => "points",
             "Type" => "longtext",
@@ -225,13 +230,14 @@ class Images extends \HUGnet\db\Table implements \HUGnet\interfaces\DBTable
     *
     * @return null
     */
-    /*
-    protected function setImage($value)
+    protected function setBaseavg($value)
     {
-        if (is_string($value)) {
-            $this->data["image"] = base64_encode($value);
+        $value = strtoupper($value);
+        if (is_string($value) && (($value == "15MIN") || ($value == "30SEC"))) {
+            $this->data["baseavg"] = $value;
+        } else {
+            $this->data["baseavg"] = "15MIN";
         }
     }
-    */
 }
 ?>

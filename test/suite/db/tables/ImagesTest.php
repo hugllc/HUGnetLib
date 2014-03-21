@@ -188,6 +188,9 @@ class ImagesTest extends TableTestBase
             array("points", "asdfasdfasdfasdf", "asdfasdfasdfasdf"),
             array("points", array(1,2,3,4), "[1,2,3,4]"),
             array("extra", array(1,2,3,4), null),
+            array("baseavg", "asdfasdfasdfasdf", "15MIN"),
+            array("baseavg", "15MIN", "15MIN"),
+            array("baseavg", "30SEC", "30SEC"),
         );
     }
 
@@ -310,6 +313,7 @@ class ImagesTest extends TableTestBase
                     'height' => 0,
                     'width' => 0,
                     'imagetype' => "",
+                    'baseavg' => "15MIN",
                 ),
             ),
             array(
@@ -330,6 +334,7 @@ class ImagesTest extends TableTestBase
                     'height' => 0,
                     'width' => 0,
                     'imagetype' => "",
+                    'baseavg' => "15MIN",
                 ),
             ),
             array(
@@ -351,6 +356,7 @@ class ImagesTest extends TableTestBase
                     'height' => 0,
                     'width' => 0,
                     'imagetype' => "",
+                    'baseavg' => "15MIN",
                 ),
             ),
         );
@@ -403,6 +409,7 @@ class ImagesTest extends TableTestBase
                     'height' => 0,
                     'width' => 0,
                     'imagetype' => "",
+                    'baseavg' => "15MIN",
                 ),
             ),
             array(
@@ -457,6 +464,7 @@ class ImagesTest extends TableTestBase
                     'height' => 0,
                     'width' => 0,
                     'imagetype' => "",
+                    'baseavg' => "15MIN",
                 ),
             ),
         );
