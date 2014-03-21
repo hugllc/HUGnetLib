@@ -251,7 +251,7 @@ class SVG extends \HUGnet\images\Driver
         if (strlen($point["link"]) > 0) {
             $ret = $this->_xlinkHref(
                 $point["link"], $point["linkTitle"], $ret, "_top", "", "", $indent, $end
-            )
+            );
         }
         $ret .= $indent.'<script>'.$end;
         $ret .= $indent.$indent.'var Text=document.getElementById("'

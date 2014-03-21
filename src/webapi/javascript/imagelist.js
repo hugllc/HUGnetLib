@@ -128,7 +128,7 @@ HUGnet.ImageList = Backbone.View.extend({
             TestID: 1,
             url: this.url
         });
-        var title = 'Image "' + image.get("ImageID") + '" History';
+        var title = 'Image: "' + image.get("name") + '"';
 
         //this.tabs.tabs("add", tag, title);
         this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+tag+'">'+title+'</a> <span name="#{href}" class="ui-icon ui-icon-close">Remove Tab</span></li>');
