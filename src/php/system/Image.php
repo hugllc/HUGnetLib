@@ -159,7 +159,26 @@ class Image extends \HUGnet\base\SystemTableBase
         }
         return null;
     }
-
+    /**
+    * Returns the table as an array
+    *
+    * @param bool $default Whether or not to include the default values
+    *
+    * @return array
+    */
+    public function toArray($default = false)
+    {
+        $return = $this->table()->toArray($default);
+        if ($default) {
+            if ($return["baseavg"] == "15MIN") {
+                $avg = $this->system()->table("E00391200Average");
+            } else {
+                $avg = $this->system()->table("E00393700Average");
+            }
+            $return["averageTypes"] = (array)$avg->averageTypes();
+        }
+        return $return;
+    }
 }
 
 
