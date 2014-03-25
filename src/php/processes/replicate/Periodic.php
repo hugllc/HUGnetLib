@@ -77,7 +77,7 @@ abstract class Periodic
     * as the driver class name.
     */
     private static $_drivers = array(
-        "PullDevices", "PullHistory"
+        "PullDevices", "PullHistory", "PullImages"
     );
     /**
     * This function sets up the driver object, and the database object.  The

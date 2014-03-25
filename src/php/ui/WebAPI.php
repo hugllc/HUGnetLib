@@ -422,8 +422,9 @@ class WebAPI extends HTML
     */
     private function _executeImage($extra = array())
     {
-        $iid   = $this->args()->get("id");
-        $image = $this->system()->image($iid);
+        $iid    = $this->args()->get("id");
+        $image  = $this->system()->image($iid);
+        $action = strtolower(trim($this->args()->get("action")));
         if ($action == "get") {
             $ret = $this->_executeSystem($iid, $image, $extra);
         } else if ($this->_auth(true) || ($action == "list")) {
