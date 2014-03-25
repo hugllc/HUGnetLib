@@ -449,7 +449,6 @@ class WebAPI extends HTML
         } else if (($action === "put") && $this->_auth(true)) {
             $data = (array)$this->args()->get("data");
             $ret = "regen";
-            error_log($ident);
             if ($obj->load($ident)) {
                 $obj->change($data);
             } else if (is_null($ident) && isset($data["name"])) {

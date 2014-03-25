@@ -179,6 +179,41 @@ class Image extends \HUGnet\base\SystemTableBase
         }
         return $return;
     }
+    /**
+    * Gets one of the parameters
+    *
+    * @param string $field The field to get
+    *
+    * @return The value of the field
+    */
+    public function &getParam($field)
+    {
+        $params = $this->table()->get("params");
+        $array = json_decode($params, true);
+        return $array[$field];
+    }
+    /**
+    * Sets one of the parameters
+    *
+    * @param string $field The field to set
+    * @param mixed  $value The value to set the field to
+    *
+    * @return null
+    */
+    public function &setParam($field, $value)
+    {
+        /* This makes sure the field is always in json format */
+        $this->getParam($field);
+        /* get the fields */
+        $params = $this->table()->get("params");
+        $params = json_decode($params, true);
+        if (is_null($value)) {
+            unset($params[$field]);
+        } else {
+            $params[$field] = $value;
+        }
+        return $this->table()->set("params", json_encode($params));
+    }
 }
 
 

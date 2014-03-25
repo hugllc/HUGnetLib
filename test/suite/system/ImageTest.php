@@ -212,6 +212,7 @@ class ImageTest extends \PHPUnit_Framework_TestCase
                     'desc' => 'This is a desc',
                     'baseavg' => '15MIN',
                     'points' => array(1,2,3,4),
+                    'params' => array(4, 3, 2, 1),
                 ),
                 new DummyTable("Table"),
                 true,
@@ -226,6 +227,7 @@ class ImageTest extends \PHPUnit_Framework_TestCase
                     'desc' => 'This is a desc',
                     'baseavg' => '15MIN',
                     'points' => array(1,2,3,4),
+                    'params' => array(4, 3, 2, 1),
                     'averageTypes' => array(
                         '15MIN' => '15 Minute Average',
                         'HOURLY' => 'Hourly Average',
@@ -246,7 +248,8 @@ class ImageTest extends \PHPUnit_Framework_TestCase
                     'width' => 20,
                     'desc' => 'This is a desc',
                     'baseavg' => '30SEC',
-                    'points' => array(1,2,3,4),
+                    'points' => array(1, 2, 3, 4),
+                    'params' => array(4, 3, 2, 1),
                 ),
                 new DummyTable("Table"),
                 false,
@@ -259,7 +262,8 @@ class ImageTest extends \PHPUnit_Framework_TestCase
                     'width' => 20,
                     'desc' => 'This is a desc',
                     'baseavg' => '30SEC',
-                    'points' => array(1,2,3,4),
+                    'points' => array(1, 2, 3, 4),
+                    'params' => array(4, 3, 2, 1),
                 )
             ),
             array( //  #2 30SEC average
@@ -287,6 +291,7 @@ class ImageTest extends \PHPUnit_Framework_TestCase
                     'desc' => 'This is a desc',
                     'baseavg' => '30SEC',
                     'points' => array(1,2,3,4),
+                    'params' => array(),
                     'averageTypes' => array(
                         '30SEC' => '30 Second Average',
                         '1MIN' => '1 Minute Average',
@@ -320,6 +325,218 @@ class ImageTest extends \PHPUnit_Framework_TestCase
         $obj = Image::factory($sys, $config);
         $json = $obj->toArray($default);
         $this->assertEquals($expect, $json);
+        unset($obj);
+    }
+    /**
+    * Data provider for testGetParam
+    *
+    * @return array
+    */
+    public static function dataSetParam()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "params" => json_encode(
+                                array(
+                                    "A" => 1,
+                                    "B" => 2,
+                                    "C" => 3,
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                "B",
+                4,
+                array(
+                    array(
+                        'params',
+                        json_encode(
+                            array("A" => 1, "B" => 4, "C" => 3,)
+                        ),
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "params" => "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                "B",
+                5,
+                array(
+                    array(
+                        'params',
+                        json_encode(
+                            array("B" => 5,)
+                        ),
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "params" => json_encode(
+                                array(
+                                    "A" => 1,
+                                    "B" => 2,
+                                    "C" => 3,
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                "Q",
+                8,
+                array(
+                    array(
+                        'params',
+                        json_encode(
+                            array("A" => 1, "B" => 2, "C" => 3, "Q" => 8)
+                        ),
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "params" => json_encode(
+                                array(
+                                    "A" => 1,
+                                    "B" => 2,
+                                    "C" => 3,
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                "B",
+                null,
+                array(
+                    array(
+                        'params',
+                        json_encode(
+                            array("A" => 1, "C" => 3,)
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config The configuration to use
+    * @param mixed  $class  This is either the name of a class or an object
+    * @param string $field  The field to set
+    * @param mixed  $value  The value to set the field to
+    * @param mixed  $expect The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataSetParam
+    */
+    public function testSetParam(
+        $config, $class, $field, $value, $expect
+    ) {
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = Image::factory($sys, null, $class);
+        $obj->setParam($field, $value);
+        $ret = $sys->retrieve("Table");
+        $this->assertEquals($expect, $ret["set"]);
+        unset($obj);
+    }
+    /**
+    * Data provider for testGetParam
+    *
+    * @return array
+    */
+    public static function dataGetParam()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "params" => json_encode(
+                                array(
+                                    "A" => 1,
+                                    "B" => 2,
+                                    "C" => 3,
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                "B",
+                2,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "params" => "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                "B",
+                null,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "params" => json_encode(
+                                array(
+                                    "A" => 1,
+                                    "B" => 2,
+                                    "C" => 3,
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                "Q",
+                null,
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config The configuration to use
+    * @param mixed  $class  This is either the name of a class or an object
+    * @param string $field  The field to get
+    * @param mixed  $expect The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataGetParam
+    * @large
+    */
+    public function testGetParam(
+        $config, $class, $field, $expect
+    ) {
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = Image::factory($sys, null, $class);
+        $this->assertSame($expect, $obj->getParam($field));
         unset($obj);
     }
 }

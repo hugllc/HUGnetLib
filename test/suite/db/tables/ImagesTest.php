@@ -191,6 +191,8 @@ class ImagesTest extends TableTestBase
             array("baseavg", "asdfasdfasdfasdf", "15MIN"),
             array("baseavg", "15MIN", "15MIN"),
             array("baseavg", "30SEC", "30SEC"),
+            array("params", "string", "string"),
+            array("params", array(1,2,3,4), "[1,2,3,4]"),
         );
     }
 
@@ -314,6 +316,7 @@ class ImagesTest extends TableTestBase
                     'width' => 0,
                     'imagetype' => "",
                     'baseavg' => "15MIN",
+                    'params' => "",
                 ),
             ),
             array(
@@ -335,6 +338,7 @@ class ImagesTest extends TableTestBase
                     'width' => 0,
                     'imagetype' => "",
                     'baseavg' => "15MIN",
+                    'params' => "",
                 ),
             ),
             array(
@@ -357,6 +361,7 @@ class ImagesTest extends TableTestBase
                     'width' => 0,
                     'imagetype' => "",
                     'baseavg' => "15MIN",
+                    'params' => "",
                 ),
             ),
         );
@@ -393,7 +398,7 @@ class ImagesTest extends TableTestBase
                     "name" => "asdf",
                     "desc" => "HERE",
                     "image" => "Temperature",
-                    "points" => '{"storageUnits":"&deg;C","unitType":"Temperature"}',
+                    "points" => '',
                 ),
                 true,
                 array(
@@ -403,13 +408,12 @@ class ImagesTest extends TableTestBase
                     "desc" => "HERE",
                     "image" => "Temperature",
                     "points" => array(
-                        "storageUnits" => "&deg;C",
-                        "unitType" => "Temperature",
                     ),
                     'height' => 0,
                     'width' => 0,
                     'imagetype' => "",
                     'baseavg' => "15MIN",
+                    'params' => array(),
                 ),
             ),
             array(
@@ -426,6 +430,7 @@ class ImagesTest extends TableTestBase
                         .',"ADC1CODE":0,"ADC1CH":6,"ADC1REF":0,"BUF_BYPASS":0'
                         .',"ADC1PGA":0,"CHOPEN":1,"RAVG2":0,"AF":0,"NOTCH2":0'
                         .',"SF":9}',
+                    "params" => '[1,2,3,4]',
                 ),
                 true,
                 array(
@@ -465,6 +470,7 @@ class ImagesTest extends TableTestBase
                     'width' => 0,
                     'imagetype' => "",
                     'baseavg' => "15MIN",
+                    'params' => array(1, 2, 3, 4),
                 ),
             ),
         );

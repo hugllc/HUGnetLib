@@ -132,6 +132,11 @@ class Images extends \HUGnet\db\Table implements \HUGnet\interfaces\DBTable
             "Type" => "longtext",
             "Default" => "",
         ),
+        "params" => array(
+            "Name" => "params",
+            "Type" => "text",
+            "Default" => "",
+        ),
     );
     /**
     * @var array This is the definition of the indexes
@@ -199,8 +204,9 @@ class Images extends \HUGnet\db\Table implements \HUGnet\interfaces\DBTable
     public function toArray($default = true)
     {
         $data   = parent::toArray($default);
-        $data["points"] = json_decode($data["points"], true);
-        return array_merge((array)$params, (array)$data);
+        $data["points"] = (array)json_decode($data["points"], true);
+        $data["params"] = (array)json_decode($data["params"], true);
+        return (array)$data;
     }
 
     /******************************************************************
@@ -221,6 +227,21 @@ class Images extends \HUGnet\db\Table implements \HUGnet\interfaces\DBTable
             $this->data["points"] = json_encode($value);
         } else if (is_string($value)) {
             $this->data["points"] = $value;
+        }
+    }
+    /**
+    * function to set LastHistory
+    *
+    * @param string $value The value to set
+    *
+    * @return null
+    */
+    protected function setParams($value)
+    {
+        if (is_array($value)) {
+            $this->data["params"] = json_encode($value);
+        } else if (is_string($value)) {
+            $this->data["params"] = $value;
         }
     }
     /**
