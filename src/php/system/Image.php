@@ -94,6 +94,8 @@ class Image extends \HUGnet\base\SystemTableBase
             $ret = $this->_list($args);
         } else if ($action === "insert") {
             $ret = $this->_insert($args);
+        } else if ($action === "put") {
+            $ret = $this->_put($args);
         }
         return $ret;
     }
@@ -152,12 +154,38 @@ class Image extends \HUGnet\base\SystemTableBase
             $img = imagecreatefromstring($data);
             $this->table()->set("height", imagesy($img));
             $this->table()->set("width", imagesx($img));
+            $this->setParam("LastModified", $this->system()->now());
             imagedestroy($img);
             print json_encode((string)((int)$this->table()->updateRow()));
         } else {
             print json_encode("0");
         }
         return null;
+    }
+    /**
+    * returns a history object for this device
+    *
+    * @param object $args The argument object
+    *
+    * @return string
+    */
+    private function _put($args)
+    {
+        $data = (array)$args->get("data");
+        $params = (array)$data["params"];
+        unset($data["params"]);
+        $this->table()->clearData();
+        $this->table()->fromArray($data);
+
+        foreach ($params as $key => $value) {
+            $this->setParam($key, $value);
+        }
+        $this->setParam("LastModified", $this->system()->now());
+
+        if ($this->store(true)) {
+            return $this->toArray(true);
+        }
+        return -1;
     }
     /**
     * Returns the table as an array

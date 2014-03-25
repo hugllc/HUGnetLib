@@ -424,7 +424,11 @@ class WebAPI extends HTML
     {
         $iid   = $this->args()->get("id");
         $image = $this->system()->image($iid);
-        $ret = $this->_executeSystem($iid, $image, $extra);
+        if ($action == "get") {
+            $ret = $this->_executeSystem($iid, $image, $extra);
+        } else if ($this->_auth(true) || ($action == "list")) {
+            $ret = $image->webAPI($this->args(), $extra);
+        }
         if ($ret === "regen") {
             return $this->system()->image($iid)->toArray(true);
         }
