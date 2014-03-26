@@ -427,7 +427,10 @@ class WebAPI extends HTML
         $action = strtolower(trim($this->args()->get("action")));
         if ($action == "get") {
             $ret = $this->_executeSystem($iid, $image, $extra);
-        } else if ($this->_auth(true) || ($action == "list")) {
+        } else if ($this->_auth(true) 
+            || ($action == "list") 
+            || ($action == "getreading")
+        ) {
             $ret = $image->webAPI($this->args(), $extra);
         }
         if ($ret === "regen") {

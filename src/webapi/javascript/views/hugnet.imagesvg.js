@@ -53,7 +53,8 @@ HUGnet.ImageSVGView = Backbone.View.extend({
             if (options.style) this.style = options.style;
         }
         //this.model.each(this.insert, this);
-        this.model.bind('change', this.render, this);
+        this.model.on('change', this.render, this);
+        this.model.on('datasync', this.updatePoints, this);
     },
     /**
     * This renders the SVG
@@ -72,6 +73,37 @@ HUGnet.ImageSVGView = Backbone.View.extend({
         );
         this.$("table").tablesorter({ widgets: ['zebra'] });
         this.$("table").trigger('update');
+        this.update();
         return this;
     },
+    /**
+     * This updates the data in the image
+     * 
+     * @return null
+     */
+    update: function (date, type)
+    {
+        this.model.getReading(date, type);
+    },
+    /**
+     * This updates the data in the image
+     * 
+     * @return null
+     */
+    updatePoints: function ()
+    {
+        var points = this.model.get("points");
+        var data   = this.model.get("data");
+        _.each(
+            points,
+            function (point, key)
+            {
+                var id = "point"+key;
+                // This escapes these characters correctly for the selector
+                //id = id.replace(/([ #;?&,.+*~\':"!^$[\]()=>|\/@])/g,'\\$1');
+                var el = $('text#'+id+' tspan');
+                el.text(data.points[key]);
+            }
+        );
+    }
 });

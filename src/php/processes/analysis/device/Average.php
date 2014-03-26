@@ -68,7 +68,7 @@ class Average extends \HUGnet\processes\analysis\Device
             "type" => \HUGnet\db\Average::AVERAGE_15MIN,
             "history" => true,
             "time" => "Y-m-d H:i",
-            "timeout" => 900,
+            "timeout" => 60,
         ),
         "HOURLY" => array(
             "base" => \HUGnet\db\Average::AVERAGE_15MIN,

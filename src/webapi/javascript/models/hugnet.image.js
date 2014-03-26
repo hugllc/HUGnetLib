@@ -54,7 +54,8 @@ HUGnet.Image = Backbone.Model.extend({
         baseavg: '15MIN',
         points: '',
         length: 0,
-        averageTypes: {}
+        averageTypes: {},
+        data: {}
     },
     points: {},
     lock: false,
@@ -152,6 +153,57 @@ HUGnet.Image = Backbone.Model.extend({
                 function ()
                 {
                     self.trigger('refreshfail', "failed to contact server");
+                }
+            );
+        }
+    },
+    /**
+    * Gets infomration about a device.  This is retrieved from the database only.
+    *
+    * @param id The id of the device to get
+    *
+    * @return null
+    */
+    getReading: function(date, type)
+    {
+        var id = this.get('id');
+        if ((id !== 0) && !this.lock) {
+            if (!date) {
+                var date = 0;
+            }
+            if (!type) {
+                var type = "";
+            }
+            var self = this;
+            $.ajax({
+                type: 'GET',
+                url: this.url(),
+                dataType: 'json',
+                cache: false,
+                data:
+                {
+                    "task": "image",
+                    "action": "getreading",
+                    "id": id,
+                    "data": {
+                        "date": date,
+                        "type": type,
+                    }
+                }
+            }).done(
+                function (data)
+                {
+                    if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
+                        self.set("data", data);
+                        self.trigger('datasync', self);
+                    } else {
+                        self.trigger('datasyncfail', "getReading failed on server");
+                    }
+                }
+            ).fail(
+                function ()
+                {
+                    self.trigger('datasyncfail', "failed to contact server");
                 }
             );
         }

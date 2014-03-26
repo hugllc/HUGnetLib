@@ -63,6 +63,9 @@ require_once dirname(__FILE__)."/../interfaces/WebAPI.php";
 class Image extends \HUGnet\base\SystemTableBase
     implements \HUGnet\interfaces\WebAPI, \HUGnet\interfaces\SystemInterface
 {
+    /** This is where we cache the point data */
+    private $_dataCache = array();
+    
     /**
     * This function creates the system.
     *
@@ -96,6 +99,8 @@ class Image extends \HUGnet\base\SystemTableBase
             $ret = $this->_insert($args);
         } else if ($action === "put") {
             $ret = $this->_put($args);
+        } else if ($action === "getreading") {
+            $ret = $this->_getReading($args);
         }
         return $ret;
     }
@@ -188,6 +193,18 @@ class Image extends \HUGnet\base\SystemTableBase
         return -1;
     }
     /**
+    * returns a history object for this device
+    *
+    * @param object $args The argument object
+    *
+    * @return string
+    */
+    private function _getReading($args)
+    {
+        $data = (array)$args->get("data");
+        return $this->getReading($data["date"], $data["type"]);
+    }
+    /**
     * Returns the table as an array
     *
     * @param bool $default Whether or not to include the default values
@@ -241,6 +258,172 @@ class Image extends \HUGnet\base\SystemTableBase
             $params[$field] = $value;
         }
         return $this->table()->set("params", json_encode($params));
+    }
+    /**
+    * Returns data for this image
+    *
+    * @param mixed  $date The date to get the reading for
+    * @param string $type The type of average to get
+    *
+    * @return array Record of the data for this image
+    */
+    public function getReading($date = null, $type = null)
+    {
+        /* Clear the cache */
+        $this->_dataCache = array();
+        if (empty($date)) {
+            $date = time();
+        } else {
+            $date = \HUGnet\db\Table::unixDate($date);
+        }
+        if (empty($type)) {
+            $type = $this->get("baseavg");
+        }
+        $ret = array(
+            "id"     => $this->id(),
+            "type"   => $type,
+            "points" => array(),
+        );
+        $points = (array)json_decode($this->get("points"), true);
+        foreach ($points as $key => $point) {
+            $ret["points"][$key] = $this->_getPoint(
+                $point["devid"], $point["datachan"], $date, $type, $point["units"]
+            );
+        }
+        return $ret;
+    }
+    /**
+    * Returns data for this image
+    *
+    * @param mixed  $date The date to get the reading for
+    * @param string $type The type of average to fix the date for
+    *
+    * @return int Date in unix format for this average type
+    */
+    private function _dateDiff($date, $type)
+    {
+        switch ($type) {
+        case "30SEC":
+            $ret = $date - 55;
+            break;
+        case "1MIN":
+            $ret = $date - 90;
+            break;
+        case "5MIN":
+            $ret = $date - 550;
+            break;
+        case "15MIN":
+            $ret = $date - 1700;
+            break;
+        case "HOURLY":
+            $ret = $date - 3800;
+            break;
+        case "DAILY":
+            $ret = $date - 87500;
+            break;
+        case "WEEKLY":
+            $ret = $date - (86400 * 7);
+            break;
+        case "MONTHLY":
+            $ret = $date - (86400 * (int)date('t', $date));
+            break;
+        case "YEARLY":
+            $ret = $date - (86400 * 365.242);
+            break;
+        }
+        return (int)$ret;
+    }
+    /**
+    * Returns data for this image
+    *
+    * @param mixed  $date The date to get the reading for
+    * @param string $type The type of average to fix the date for
+    *
+    * @return string The date in a pretty string
+    */
+    private function _prettyDate($date, $type)
+    {
+        switch ($type) {
+        case "30SEC":
+            $format = "Y-m-d H:i:s";
+            break;
+        case "1MIN":
+        case "5MIN":
+        case "15MIN":
+            $format = "Y-m-d H:i:00";
+            break;
+        case "HOURLY":
+            $format = "Y-m-d H:00:00";
+            break;
+        case "DAILY":
+            $format = "Y-m-d";
+            break;
+        case "WEEKLY":
+            $format = "Y-m-d";
+            break;
+        case "MONTHLY":
+            $format = "Y-m";
+            break;
+        case "YEARLY":
+            $format = "Y";
+            break;
+        default:
+            $format = "Y-m-d H:i:s";
+        }
+        return gmdate($format, $date);
+    }
+    /**
+    * Returns data for this image
+    *
+    * @param string $device   The device to get the reading for
+    * @param int    $datachan The data channel on that device
+    * @param mixed  &$date    The date to get the reading for
+    * @param string $type     The type of average to get
+    *
+    * @return array Record of the data for this image
+    */
+    private function _getPoint($device, $datachan, $date, $type, $units = false)
+    {
+        if (!is_array($this->_dataCache[$date])) {
+            $this->_dataCache[$date] = array();
+        }
+        if (is_string($device)) {
+            $device = hexdec($device);
+        }
+        if (!is_array($this->_dataCache[$date][$device])) {
+            $dev = $this->system()->device($device);
+            $hist = $dev->historyFactory(
+                array(), false
+            );
+            $res = $hist->getPeriod(
+                (int)$this->_dateDiff($date, $type),
+                (int)$date,
+                $device,
+                $type
+            );
+            $chans = $dev->dataChannels();
+            $this->_dataCache[$date][$device] = $hist->toArray(true);
+            $chans->convert(
+                $this->_dataCache[$date][$device]
+            );
+            $this->_dataCache[$date][$device]["chans"] = $chans->toArray();
+        }
+        if (trim(strtolower($datachan)) == "date") {
+            $ret = $this->_prettyDate(
+                $this->_dataCache[$date][$device]["Date"], $type
+            );
+        } else if (is_numeric($datachan)) {
+            $ret = (string)$this->_dataCache[$date][$device]["Data".$datachan];
+        } else {
+            $ret = "?";
+        }
+        if ((bool)$units) {
+            $units = $this->_dataCache[$date][$device]["chans"][$datachan]["units"];
+            if (!is_null($units)) {
+                $ret .= " ".$units;
+            }
+        }
+        return $ret;
     }
 }
 
