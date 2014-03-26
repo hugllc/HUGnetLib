@@ -114,6 +114,5 @@ HUGnet.ImageSVGView = Backbone.View.extend({
             }
         );
         this.trigger("datasync");
-        console.log('datasync');
     }
 });

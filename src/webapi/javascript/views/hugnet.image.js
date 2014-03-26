@@ -45,7 +45,7 @@
 HUGnet.ImageView = Backbone.View.extend({
     template: '#ImageViewTemplate',
     tagName: 'div',
-    pause: 10,
+    pause: 30,
     rows: 0,
     id: undefined,
     table: undefined,
@@ -84,15 +84,14 @@ HUGnet.ImageView = Backbone.View.extend({
             this.type   = "15MIN";
         }
         this.type = (options.type !== undefined) ? options.type : this.type;
-        this.getLatest();
         this.image = new HUGnet.ImageSVGView({
             model: this.model,
             style: "border: thin solid black; margin-left: auto; margin-right: auto; display: block; margin-top: 20px;"
         });
+        this.getLatest();
     },
     update: function ()
     {
-        console.log("here");
         this.image.update(this.before, this.type);
     },
     updateDates: function ()
@@ -106,16 +105,18 @@ HUGnet.ImageView = Backbone.View.extend({
     {
         this.before  = (new Date()).getTime();
         this.updateDates();
-//        this.startPoll();
+        this.update();
     },
     submit: function ()
     {
         this.stopPoll();
         if (!this.polling) {
             this.$('#autorefresh').prop("disabled", true);
-//            this.$('input[type="submit"]').prop('disabled', true);
+            this.$('input[type="submit"]').prop('disabled', true);
             this.before = Date.parse(this.$('#'+this.beforeId).val()+' UTC');
             this.type = this.$('#type').val();
+            this.image.on("datasyncfail", this._finishFetch, this);
+            this.image.on("datasync", this._finishFetch, this);
             this.updateDates();
             this.update();
         }
@@ -124,6 +125,16 @@ HUGnet.ImageView = Backbone.View.extend({
     {
         this.image.remove();
         this.remove();
+    },
+    setRefresh: function ()
+    {
+        if (this.$('#autorefresh').prop("checked")) {
+            this.autorefresh = this.$('#autorefresh').val() - 0;
+            this.startPoll();
+        } else {
+            this.stopPoll();
+            this.autorefresh = 0;
+        }
     },
     startPoll: function()
     {

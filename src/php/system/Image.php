@@ -343,6 +343,9 @@ class Image extends \HUGnet\base\SystemTableBase
     */
     private function _prettyDate($date, $type)
     {
+        if (empty($date)) {
+            return "Never";
+        }
         switch ($type) {
         case "30SEC":
             $format = "Y-m-d H:i:s";
@@ -413,8 +416,11 @@ class Image extends \HUGnet\base\SystemTableBase
                 $this->_dataCache[$date][$device]["Date"], $type
             );
         } else if (is_numeric($datachan)) {
-            $ret = (string)$this->_dataCache[$date][$device]["Data".$datachan];
+            $ret = $this->_dataCache[$date][$device]["Data".$datachan];
         } else {
+            $ret = null;
+        }
+        if (is_null($ret)) {
             $ret = "?";
         }
         if ((bool)$units) {
@@ -423,7 +429,7 @@ class Image extends \HUGnet\base\SystemTableBase
                 $ret .= " ".$units;
             }
         }
-        return $ret;
+        return (string)$ret;
     }
 }
 
