@@ -24,7 +24,7 @@
  * @package    HUGnetLib
  * @subpackage DataPoints
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2012 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
@@ -37,7 +37,7 @@
 * @package    HUGnetLib
 * @subpackage DataPoints
 * @author     Scott Price <prices@hugllc.com>
-* @copyright  2012 Hunt Utilities Group, LLC
+* @copyright  2014 Hunt Utilities Group, LLC
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @version    Release: 0.9.7
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
