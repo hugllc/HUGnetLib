@@ -44,6 +44,8 @@ HUGnet.ImageSVGView = Backbone.View.extend({
     template: "#ImageSVGTemplate",
     url: '/HUGnetLib/HUGnetLibAPI.php',
     style: "",
+    date: null,
+    type: null,
     events: {
     },
     initialize: function (options)
@@ -83,7 +85,13 @@ HUGnet.ImageSVGView = Backbone.View.extend({
      */
     update: function (date, type)
     {
-        this.model.getReading(date, type);
+        if (date) {
+            this.date = date;
+        }
+        if (type) {
+            this.type = type;
+        }
+        this.model.getReading(this.date, this.type);
     },
     /**
      * This updates the data in the image
@@ -105,5 +113,7 @@ HUGnet.ImageSVGView = Backbone.View.extend({
                 el.text(data.points[key]);
             }
         );
+        this.trigger("datasync");
+        console.log('datasync');
     }
 });

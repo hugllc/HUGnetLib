@@ -186,7 +186,7 @@ HUGnet.Image = Backbone.Model.extend({
                     "action": "getreading",
                     "id": id,
                     "data": {
-                        "date": date,
+                        "date": (date / 1000),
                         "type": type,
                     }
                 }

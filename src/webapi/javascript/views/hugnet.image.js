@@ -85,7 +85,6 @@ HUGnet.ImageView = Backbone.View.extend({
         }
         this.type = (options.type !== undefined) ? options.type : this.type;
         this.getLatest();
-        this.on("update", this.update, this);
         this.image = new HUGnet.ImageSVGView({
             model: this.model,
             style: "border: thin solid black; margin-left: auto; margin-right: auto; display: block; margin-top: 20px;"
@@ -93,12 +92,13 @@ HUGnet.ImageView = Backbone.View.extend({
     },
     update: function ()
     {
-//        this.image.update();
+        console.log("here");
+        this.image.update(this.before, this.type);
     },
     updateDates: function ()
     {
         var d = new Date;
-        d.setTime(this.last);
+        d.setTime(this.before);
         var before = this._formatDate(d);
         this.$("#"+this.beforeId).val(before);
     },
@@ -106,22 +106,67 @@ HUGnet.ImageView = Backbone.View.extend({
     {
         this.before  = (new Date()).getTime();
         this.updateDates();
+//        this.startPoll();
     },
     submit: function ()
     {
         this.stopPoll();
         if (!this.polling) {
             this.$('#autorefresh').prop("disabled", true);
-            this.$('input[type="submit"]').prop('disabled', true);
+//            this.$('input[type="submit"]').prop('disabled', true);
             this.before = Date.parse(this.$('#'+this.beforeId).val()+' UTC');
             this.type = this.$('#type').val();
             this.updateDates();
+            this.update();
         }
     },
     exit: function()
     {
         this.image.remove();
         this.remove();
+    },
+    startPoll: function()
+    {
+        if (!this.polling) {
+            this.polling = true;
+            this.$('input[type="submit"]').prop('disabled', true);
+            this.$('select').prop('disabled', true);
+            this.$('input[type="text"]').prop('disabled', true);
+            this.image.on("datasyncfail", this._poll, this);
+            this.image.on("datasync", this._poll, this);
+            this.getLatest();
+        }
+    },
+    stopPoll: function()
+    {
+        if (this.polling) {
+            clearTimeout(this.timer);
+            this.image.off("datasyncfail", this._poll, this);
+            this.image.off("datasync", this._poll, this);
+            this.$('#autorefresh').prop("checked", false);
+            this._finishFetch();
+        }
+    },
+    _finishFetch: function ()
+    {
+        this.$('input[type="submit"]').prop('disabled', false);
+        this.$('select').prop('disabled', false);
+        this.$('input[type="text"]').prop('disabled', false);
+        this.$('#autorefresh').prop("disabled", false);
+        this.image.off("datasyncfail", this._finishFetch, this);
+        this.image.off("datasync", this._finishFetch, this);
+        this.image.off('sync', this._finishFetch, this);
+        this.polling = false;
+    },
+    _poll: function ()
+    {
+        var self = this;
+        this.timer = setTimeout(
+            function () {
+                self.getLatest();
+            },
+            (this.pause * 1000)
+        );
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
