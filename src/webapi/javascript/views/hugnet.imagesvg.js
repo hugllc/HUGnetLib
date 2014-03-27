@@ -75,7 +75,6 @@ HUGnet.ImageSVGView = Backbone.View.extend({
         );
         this.$("table").tablesorter({ widgets: ['zebra'] });
         this.$("table").trigger('update');
-        this.update();
         return this;
     },
     /**

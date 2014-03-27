@@ -206,6 +206,7 @@ HUGnet.ImageView = Backbone.View.extend({
         }
         this.$("#"+this.beforeId).datetimepicker();
         this.$el.append(this.image.render().el);
+        this.update();
         return this;
     },
     _formatDate: function (d)

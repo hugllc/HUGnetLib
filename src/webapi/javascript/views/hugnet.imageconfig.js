@@ -99,6 +99,7 @@ var ImageConfigPropertiesView = Backbone.View.extend({
                 index++;
             }
         });
+        delete output.points;
         this.model.set(output);
         this.model.points.reset(points);
         this.model.save();
