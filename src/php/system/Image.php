@@ -452,7 +452,7 @@ class Image extends \HUGnet\base\SystemTableBase
         if ((bool)$units) {
             $units = $this->_dataCache[$date][$device]["chans"][$datachan]["units"];
             if (!is_null($units)) {
-                $ret .= " ".html_entity_decode($units);
+                $ret .= " ".html_entity_decode($units, ENT_COMPAT, 'UTF-8');
             }
         }
         return (string)$ret;
