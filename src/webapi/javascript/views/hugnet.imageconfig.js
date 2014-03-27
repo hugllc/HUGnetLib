@@ -291,9 +291,10 @@ var ImageConfigEntryView = Backbone.View.extend({
     delImage: function (e)
     {
         var name = this.model.get("name");
+        var id   = this.model.get("id");
         var self = this;
         $('<div></div>').appendTo('body')
-        .html('Delete Image "'+name+'"?')
+        .html('Delete Image #'+id+' "'+name+'"?')
         .dialog({
             resizable: false,
             height:140,
@@ -310,7 +311,6 @@ var ImageConfigEntryView = Backbone.View.extend({
                 }
             }
         });    
-//        parent.confirm('Delete Image "'+name+'"?', this.model.remove, this.render);
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
