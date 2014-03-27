@@ -79,7 +79,8 @@ class ADuCACResistance extends \HUGnet\devices\inputTable\DriverADuC
             "The resistor connecting the AtoD to ground",
             "The fixed resistor in the resistor divider",
             "The voltage used for the AtoD reference.",
-            "The port to use for the digital reference"
+            "The port to use for the digital reference.  Only the setting from the
+            first AC Resistance input is used.  The rest are ignored." 
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
