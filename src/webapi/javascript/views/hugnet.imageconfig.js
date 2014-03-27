@@ -80,7 +80,9 @@ var ImageConfigPropertiesView = Backbone.View.extend({
         var self = this;
         var index = 0;
         $(".datapoint").each(function(ind, element) {
-            if (!$(this).find('[name="delete"]').prop("checked")) {
+            // This checks that we only include this one once.
+            var check = $(this).find('[name="index"]').val();
+            if (!$(this).find('[name="delete"]').prop("checked") && (check >= ind)) {
                 if (!points[index]) {
                     points[index] = {};
                 }
