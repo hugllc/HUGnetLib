@@ -99,8 +99,26 @@ class Image extends \HUGnet\base\SystemTableBase
             $ret = $this->_insert($args);
         } else if ($action === "put") {
             $ret = $this->_put($args);
+        } else if ($action === "delete") {
+            $ret = $this->_delete($args);
         } else if ($action === "getreading") {
             $ret = $this->_getReading($args);
+        }
+        return $ret;
+    }
+    /**
+    * returns a history object for this device
+    *
+    * @param object $args The argument object
+    *
+    * @return string
+    */
+    private function _delete($args)
+    {
+        if ($this->table()->deleteRow()) {
+            $ret = "success";
+        } else {
+            $ret = "error";
         }
         return $ret;
     }

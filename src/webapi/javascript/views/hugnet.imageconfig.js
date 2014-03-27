@@ -279,12 +279,38 @@ var ImageConfigEntryView = Backbone.View.extend({
         //this.$('.action')[0].selectedIndex = 0;
         if (action === 'properties') {
             this.properties(e);
+        } else if (action === 'delete') {
+            this.delImage(e);
         }
     },
     properties: function (e)
     {
         var view = new ImageConfigPropertiesView({ model: this.model, url: this.url });
         this.parent.popup(view);
+    },
+    delImage: function (e)
+    {
+        var name = this.model.get("name");
+        var self = this;
+        $('<div></div>').appendTo('body')
+        .html('Delete Image "'+name+'"?')
+        .dialog({
+            resizable: false,
+            height:140,
+            modal: true,
+            buttons: {
+                "Delete": function() {
+                    self.model.removeImg();
+                    $(this).dialog("close");
+                    $(this).remove();
+                },
+                "Cancel": function() {
+                    $(this).dialog("close");
+                    $(this).remove();
+                }
+            }
+        });    
+//        parent.confirm('Delete Image "'+name+'"?', this.model.remove, this.render);
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -327,6 +353,7 @@ HUGnet.ImageConfigView = Backbone.View.extend({
     events: {
         'click .new': 'create'
     },
+    views: {},
     initialize: function (options)
     {
         if (options) {
@@ -334,6 +361,7 @@ HUGnet.ImageConfigView = Backbone.View.extend({
         }
         //this.model.each(this.insert, this);
         this.model.bind('add', this.insert, this);
+        this.model.bind('remove', this.delImage, this);
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -359,9 +387,15 @@ HUGnet.ImageConfigView = Backbone.View.extend({
     },
     insert: function (model, collection, options)
     {
-        var view = new ImageConfigEntryView({ model: model, parent: this, url: this.url });
-        this.$('tbody').append(view.render().el);
+        var id = model.get("id");
+        this.views[id] = new ImageConfigEntryView({ model: model, parent: this, url: this.url });
+        this.$('tbody').append(this.views[id].render().el);
         this.$("table").trigger('update');
+    },
+    delImage: function (model, collection, options)
+    {
+        var id = model.get("id");
+        this.views[id].remove();
     },
     create: function ()
     {
@@ -408,5 +442,5 @@ HUGnet.ImageConfigView = Backbone.View.extend({
             dialogClass: "window",
             zIndex: 500
         });
-    }
+    },
 });
