@@ -195,17 +195,25 @@ class Image extends \HUGnet\base\SystemTableBase
     private function _put($args)
     {
         $data = (array)$args->get("data");
-        $params = (array)$data["params"];
-        unset($data["params"]);
-        $this->table()->clearData();
-        $this->table()->fromArray($data);
+        $id = $args->get("id");
+        
+        if (is_null($id)) {
+            $this->create($data);
+            $ret = true;
+        } else {
+            $params = (array)$data["params"];
+            unset($data["params"]);
+            $this->table()->clearData();
+            $this->table()->fromArray($data);
 
-        foreach ($params as $key => $value) {
-            $this->setParam($key, $value);
+            foreach ($params as $key => $value) {
+                $this->setParam($key, $value);
+            }
+            $this->setParam("LastModified", $this->system()->now());
+            $ret = $this->store(true);
+
         }
-        $this->setParam("LastModified", $this->system()->now());
-
-        if ($this->store(true)) {
+        if ($ret) {
             return $this->toArray(true);
         }
         return -1;
