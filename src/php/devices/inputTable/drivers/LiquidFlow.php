@@ -97,7 +97,7 @@ class LiquidFlow extends \HUGnet\devices\inputTable\DriverPulse
             \HUGnet\devices\datachan\Driver::TYPE_IGNORE
                 => \HUGnet\devices\datachan\Driver::TYPE_IGNORE,
         ),
-        "maxDecimals" => 2,
+        "maxDecimals" => 8,
     );
     /**
     * This function returns the output in RPM
