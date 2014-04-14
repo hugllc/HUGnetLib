@@ -139,6 +139,14 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                 0x105,
                 "05",
             ),
+            array(  // Make sure that hexadecimal strings work
+                array(
+                ),
+                null,
+                "driver0",
+                "4A",
+                "4A",
+            ),
         );
     }
     /**
@@ -871,6 +879,41 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
                     'AF' => 0,
                     'NOTCH2' => 0,
                     'SF' => 9
+                ),
+            ),
+            array( // #4 Make sure it is converting strings to ints properly
+                array(
+                ),
+                null,
+                "0102C080008609804AFF03",
+                true,
+                array(
+                    'driver0' => 0x4A,
+                    'driver1' => 0xFF,
+                    'priority' => 1,
+                    'process' => 2,
+                    'process1' => 3,
+                    'ADC0EN' => 1,
+                    'ADC0DIAG' => 0,
+                    'HIGHEXTREF0' => 0,
+                    'AMP_CM' => 0,
+                    'ADC0CODE' => 0,
+                    'ADC0CH' => 3,
+                    'ADC0REF' => 0,
+                    'ADC0PGA' => 0,
+                    'ADC1EN' => 1,
+                    'ADC1DIAG' => 0,
+                    'HIGHEXTREF1' => 0,
+                    'ADC1CODE' => 0,
+                    'ADC1CH' => 12,
+                    'ADC1REF' => 0,
+                    'BUF_BYPASS' => 0,
+                    'ADC1PGA' => 0,
+                    'CHOPEN' => 1,
+                    'RAVG2' => 0,
+                    'AF' => 0,
+                    'NOTCH2' => 0,
+                    'SF' => 9,
                 ),
             ),
         );

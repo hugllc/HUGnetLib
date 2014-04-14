@@ -554,7 +554,7 @@ class ADuCInputTableTest extends DriverTestBaseADuC
                 ),
                 "FF00C0800086098041FF000102030405060708",
                 array(
-                    "extra" => array(1, 2, 3),
+                    "extra" => array(1, 972.44803691, 3),
                     "id" => 0xF9,
                     "location" => "asdf",
                     'driver' => 'ADuCInputTable',

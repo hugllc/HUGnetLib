@@ -612,7 +612,7 @@ class ADuCInputTable
     public function driver0($set = null)
     {
         if (is_string($set)) {
-            $set = (int)$set;
+            $set = hexdec($set);
         }
         return sprintf("%02X", $this->_params("driver0", $set));
     }
@@ -626,7 +626,7 @@ class ADuCInputTable
     public function driver1($set = null)
     {
         if (is_string($set)) {
-            $set = (int)$set;
+            $set = hexdec($set);
         }
         return sprintf("%02X", $this->_params("driver1", $set));
     }
