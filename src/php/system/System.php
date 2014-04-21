@@ -166,8 +166,8 @@ class System
     */
     public function runtime($config = null)
     {
-        $dev =  $this->dataCollector(array("uuid" => $this->get("uuid")));
-        if (is_array($config)) {
+        $dev = $this->dataCollector(array("uuid" => $this->get("uuid")));
+        if (is_array($config) && is_numeric($dev->get("GatewayKey"))) {
             $dev->set("Runtime", json_encode($config));
             $dev->store();
         }
