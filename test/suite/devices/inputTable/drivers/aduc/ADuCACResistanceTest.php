@@ -623,7 +623,7 @@ class ADuCACResistanceTest extends DriverTestBaseADuC
                         "port" => "Port1",
                     ),
                     array(
-                        "value" => 0.06767175,
+                        "value" => 0.06338254,
                         "decimals" => 8,
                         "units" => "Ohms",
                         "maxDecimals" => 8,
@@ -895,7 +895,7 @@ class ADuCACResistanceTest extends DriverTestBaseADuC
                         "port" => "Port1",
                     ),
                     array(
-                        "value" => 6.76717455,
+                        "value" => 6.33825385,
                         "decimals" => 8,
                         "units" => "Ohms",
                         "maxDecimals" => 8,
@@ -963,7 +963,7 @@ class ADuCACResistanceTest extends DriverTestBaseADuC
                         "port" => "Port1",
                     ),
                     array(
-                        "value" => 0.06767175,
+                        "value" => 0.06338254,
                         "decimals" => 8,
                         "units" => "Ohms",
                         "maxDecimals" => 8,
@@ -1031,7 +1031,7 @@ class ADuCACResistanceTest extends DriverTestBaseADuC
                         "port" => "Port1",
                     ),
                     array(
-                        "value" => 0.00110488,
+                        "value" => 0.00110366,
                         "decimals" => 8,
                         "units" => "Ohms",
                         "maxDecimals" => 8,
@@ -1100,7 +1100,7 @@ class ADuCACResistanceTest extends DriverTestBaseADuC
                         "port" => "Port1",
                     ),
                     array(
-                        "value" => 0.00110488,
+                        "value" => 0.00110366,
                         "decimals" => 8,
                         "units" => "Ohms",
                         "maxDecimals" => 8,

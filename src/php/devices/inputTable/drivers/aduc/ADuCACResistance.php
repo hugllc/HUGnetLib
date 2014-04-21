@@ -129,11 +129,12 @@ class ADuCACResistance extends \HUGnet\devices\inputTable\DriverADuC
         $Rin   = $this->getExtra(0);
         $Rbias = $this->getExtra(1);
         $Vref  = $this->getExtra(3);
-
-        $A = $this->inputBiasCompensation($A, $Rin, $Rbias);
-        $Va = bcmul(bcdiv($A, $Am), $Vref);
         // The divide by two is because of the nature of this driver
-        return round($Va/2, $this->get('maxDecimals'));
+	$A = bcdiv($A, 2);
+
+	$A = $this->inputBiasCompensation($A, $Rin, $Rbias);
+        $Va = bcmul(bcdiv($A, $Am), $Vref);
+        return round($Va, $this->get('maxDecimals'));
     }
     /**
     * Returns the reversed reading
@@ -188,12 +189,13 @@ class ADuCACResistance extends \HUGnet\devices\inputTable\DriverADuC
         $Rbias = $this->getExtra(2);
 
         $A = abs($A);
+        // The divide by two is because of the nature of this sensor
+        $A = bcdiv($A, 2);
         if ($A >= $Am) {
             return null;
         }
         $R = (float)(($A * $Rbias) / ($Am - $A));
-        // The divide by two is because of the nature of this sensor
-        return round($R / 2, $this->get('maxDecimals', 1));
+        return round($R, $this->get('maxDecimals', 1));
     }
     /**
     * Returns the reversed reading
