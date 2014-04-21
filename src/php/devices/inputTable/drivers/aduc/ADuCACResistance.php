@@ -49,9 +49,9 @@ require_once dirname(__FILE__)."/../../DriverADuC.php";
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2013 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.10.2
+ * @version    Release: 0.14.1
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
- * @since      0.9.7
+ * @since      0.14.0
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */

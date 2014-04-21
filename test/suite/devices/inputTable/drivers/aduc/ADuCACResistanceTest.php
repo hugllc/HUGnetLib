@@ -53,7 +53,7 @@ require_once CODE_BASE.'devices/inputTable/tables/ADuCInputTable.php';
  * @copyright  2013 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.10.2
+ * @version    Release: 0.14.1
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class ADuCACResistanceTest extends DriverTestBaseADuC
