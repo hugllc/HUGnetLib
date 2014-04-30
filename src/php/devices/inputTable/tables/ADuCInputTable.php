@@ -73,7 +73,7 @@ class ADuCInputTable
             "value" => 0xFF,
             'mask'  => 0xFF,
             "valid" => array(
-                0x04 => "ADuC RTD",
+                0x04 => "ADuC Vishay RTD",
                 0x41 => "ADuC Voltage",
                 0x42 => "ADuC Thermocouple",
                 0x43 => "ADuC Scaled Temperature",
@@ -84,6 +84,7 @@ class ADuCInputTable
                 0x48 => "ADuC Resistance",
                 0x49 => "Omega Alpha pH",
                 0x4A => "ADuC AC Resistance",
+                0x4B => "ADuC US Sensor RTD",
                 0x11 => "ADuC DC Power",
             ),
             "desc"     => "First Driver",
@@ -93,7 +94,7 @@ class ADuCInputTable
             "value" => 0xFF,
             'mask'  => 0xFF,
             "valid" => array(
-                0x04 => "ADuC RTD",
+                0x04 => "ADuC Vishay RTD",
                 0x41 => "ADuC Voltage",
                 0x42 => "ADuC Thermocouple",
                 0x43 => "ADuC Scaled Temperature",
@@ -103,6 +104,7 @@ class ADuCInputTable
                 0x47 => "MF51E Series Thermistor",
                 0x48 => "ADuC Resistance",
                 0x49 => "Omega Alpha pH",
+                0x4B => "ADuC US Sensor RTD",
                 0xFF => "None",
             ),
             "desc"     => "Second Driver",

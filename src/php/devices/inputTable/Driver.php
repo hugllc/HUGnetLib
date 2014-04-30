@@ -144,6 +144,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "48:DEFAULT"                 => "ADuCResistance",
         "49:DEFAULT"                 => "OmegaAlphaPH",
         "4A:DEFAULT"                 => "ADuCACResistance",
+        "4B:DEFAULT"                 => "ADuCUSSensorRTD",
         "F9:DEFAULT"                 => "ADuCInputTable",
         // AVR
         "00:DEFAULT"                 => "AVRBC2322640_0",
