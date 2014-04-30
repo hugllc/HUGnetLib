@@ -95,6 +95,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "01:DEFAULT"                 => "LevelHolderProcess",
         "02:DEFAULT"                 => "PIDProcess",
         "04:DEFAULT"                 => "WaveGenProcess",
+        "05:DEFAULT"                 => "QuadFetProcess",
         "FF:DEFAULT"                 => "EmptyProcess",
     );
     /**
@@ -106,6 +107,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     */
     protected $arch = array(
         "0039-12" => array(
+            0x05 => "QuadFetProcess",
         ),
         "0039-21-01" => array(
         ),
