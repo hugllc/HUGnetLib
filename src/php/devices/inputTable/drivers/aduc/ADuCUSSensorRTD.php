@@ -244,6 +244,7 @@ class ADuCUSSensorRTD extends \HUGnet\devices\inputTable\DriverADuC
         if ($A == $Am) {
             return null;
         }
+        $A *= $this->reference();
         $R = (float)(($A * $Rbias) / ($Am - $A));
         $T = $this->_tableInterpolate($R, $this->_valueTable);
         return round($T, $this->get('maxDecimals', 1));
