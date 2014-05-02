@@ -733,6 +733,269 @@ class DriverADuCTest extends drivers\DriverTestBase
     *
     * @return array
     */
+    public static function dataReference()
+    {
+        return array(
+            array(  // #0 Normal
+                array(
+                    "location" => "asdf",
+                    "tableEntry" => array(
+                        'driver0' => 255,
+                        'driver1' => 255,
+                        'priority' => 255,
+                        'process' => 0,
+                        'process1' => 0,
+                        'ADC0EN' => 1,
+                        'ADC0DIAG' => 0,
+                        'HIGHEXTREF0' => 0,
+                        'AMP_CM' => 0,
+                        'ADC0CODE' => 0,
+                        'ADC0CH' => 3,
+                        'ADC0REF' => 3,
+                        'ADC0PGA' => 1,
+                        'ADC1EN' => 1,
+                        'ADC1DIAG' => 0,
+                        'HIGHEXTREF1' => 0,
+                        'ADC1CODE' => 0,
+                        'ADC1CH' => 12,
+                        'ADC1REF' => 0,
+                        'BUF_BYPASS' => 0,
+                        'ADC1PGA' => 2,
+                        'CHOPEN' => 1,
+                        'RAVG2' => 0,
+                        'AF' => 0,
+                        'NOTCH2' => 0,
+                        'SF' => 9,
+                    ),
+                ),
+                new \HUGnet\DummyBase("Entry"),
+                1,
+                0,
+                0,
+                0.5,
+            ),
+            array(  // #1 No channel given
+                array(
+                array(
+                    "location" => "asdf",
+                    "tableEntry" => array(
+                        'driver0' => 255,
+                        'driver1' => 255,
+                        'priority' => 255,
+                        'process' => 0,
+                        'process1' => 0,
+                        'ADC0EN' => 1,
+                        'ADC0DIAG' => 0,
+                        'HIGHEXTREF0' => 0,
+                        'AMP_CM' => 0,
+                        'ADC0CODE' => 0,
+                        'ADC0CH' => 3,
+                        'ADC0REF' => 0,
+                        'ADC0PGA' => 1,
+                        'ADC1EN' => 1,
+                        'ADC1DIAG' => 0,
+                        'HIGHEXTREF1' => 0,
+                        'ADC1CODE' => 0,
+                        'ADC1CH' => 12,
+                        'ADC1REF' => 0,
+                        'BUF_BYPASS' => 0,
+                        'ADC1PGA' => 2,
+                        'CHOPEN' => 1,
+                        'RAVG2' => 0,
+                        'AF' => 0,
+                        'NOTCH2' => 0,
+                        'SF' => 9,
+                    ),
+                ),
+                ),
+                new \HUGnet\DummyBase("Entry"),
+                1,
+                1,
+                null,
+                1.0,
+            ),
+            array( // #2 No valid entry
+                array(
+                array(
+                    "location" => "asdf",
+                    "tableEntry" => array(
+                        'driver0' => 255,
+                        'driver1' => 255,
+                        'priority' => 255,
+                        'process' => 0,
+                        'process1' => 0,
+                        'ADC0EN' => 0,
+                        'ADC0DIAG' => 0,
+                        'HIGHEXTREF0' => 0,
+                        'AMP_CM' => 0,
+                        'ADC0CODE' => 0,
+                        'ADC0CH' => 3,
+                        'ADC0REF' => 0,
+                        'ADC0PGA' => 1,
+                        'ADC1EN' => 0,
+                        'ADC1DIAG' => 0,
+                        'HIGHEXTREF1' => 0,
+                        'ADC1CODE' => 0,
+                        'ADC1CH' => 12,
+                        'ADC1REF' => 0,
+                        'BUF_BYPASS' => 0,
+                        'ADC1PGA' => 2,
+                        'CHOPEN' => 1,
+                        'RAVG2' => 0,
+                        'AF' => 0,
+                        'NOTCH2' => 0,
+                        'SF' => 9,
+                    ),
+                ),
+                ),
+                null,
+                1,
+                1,
+                null,
+                1.0,
+            ),
+            array(  // #3 Asking for channel 0 when ADC0 is not enabled
+                array(
+                    "location" => "asdf",
+                    "tableEntry" => array(
+                        'driver0' => 255,
+                        'driver1' => 255,
+                        'priority' => 255,
+                        'process' => 0,
+                        'process1' => 0,
+                        'ADC0EN' => 0,
+                        'ADC0DIAG' => 0,
+                        'HIGHEXTREF0' => 0,
+                        'AMP_CM' => 0,
+                        'ADC0CODE' => 0,
+                        'ADC0CH' => 3,
+                        'ADC0REF' => 0,
+                        'ADC0PGA' => 1,
+                        'ADC1EN' => 1,
+                        'ADC1DIAG' => 0,
+                        'HIGHEXTREF1' => 1,
+                        'ADC1CODE' => 0,
+                        'ADC1CH' => 12,
+                        'ADC1REF' => 0,
+                        'BUF_BYPASS' => 0,
+                        'ADC1PGA' => 2,
+                        'CHOPEN' => 1,
+                        'RAVG2' => 0,
+                        'AF' => 0,
+                        'NOTCH2' => 0,
+                        'SF' => 9,
+                    ),
+                ),
+                new \HUGnet\DummyBase("Entry"),
+                1,
+                1,
+                0,
+                0.5,
+            ),
+            array(  // #4 /128
+                array(
+                    "location" => "asdf",
+                    "tableEntry" => array(
+                        'driver0' => 255,
+                        'driver1' => 255,
+                        'priority' => 255,
+                        'process' => 2,
+                        'process1' => 0,
+                        'ADC0EN' => 1,
+                        'ADC0DIAG' => 0,
+                        'HIGHEXTREF0' => 1,
+                        'AMP_CM' => 0,
+                        'ADC0CODE' => 0,
+                        'ADC0CH' => 3,
+                        'ADC0REF' => 0,
+                        'ADC0PGA' => 1,
+                        'ADC1EN' => 1,
+                        'ADC1DIAG' => 0,
+                        'HIGHEXTREF1' => 1,
+                        'ADC1CODE' => 0,
+                        'ADC1CH' => 12,
+                        'ADC1REF' => 0,
+                        'BUF_BYPASS' => 0,
+                        'ADC1PGA' => 2,
+                        'CHOPEN' => 1,
+                        'RAVG2' => 0,
+                        'AF' => 0,
+                        'NOTCH2' => 0,
+                        'SF' => 9,
+                    ),
+                ),
+                new \HUGnet\DummyBase("Entry"),
+                1,
+                0,
+                0,
+                0.5,
+            ),
+            array(  // #5
+                array(
+                    "location" => "asdf",
+                    "tableEntry" => array(
+                        'driver0' => 255,
+                        'driver1' => 255,
+                        'priority' => 255,
+                        'process' => 1,
+                        'process1' => 0,
+                        'ADC0EN' => 1,
+                        'ADC0DIAG' => 0,
+                        'HIGHEXTREF0' => 1,
+                        'AMP_CM' => 0,
+                        'ADC0CODE' => 0,
+                        'ADC0CH' => 3,
+                        'ADC0REF' => 0,
+                        'ADC0PGA' => 1,
+                        'ADC1EN' => 1,
+                        'ADC1DIAG' => 0,
+                        'HIGHEXTREF1' => 0,
+                        'ADC1CODE' => 0,
+                        'ADC1CH' => 12,
+                        'ADC1REF' => 0,
+                        'BUF_BYPASS' => 0,
+                        'ADC1PGA' => 2,
+                        'CHOPEN' => 1,
+                        'RAVG2' => 0,
+                        'AF' => 0,
+                        'NOTCH2' => 0,
+                        'SF' => 9,
+                    ),
+                ),
+                new \HUGnet\DummyBase("Entry"),
+                1,
+                0,
+                0,
+                0.5,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $mocks    The mocks to feed this
+    * @param object $entry    The entry to send
+    * @param int    $offset   The integer to feed to the function
+    * @param int    $initchan The channel to initialize the object to
+    * @param int    $channel  The channel to set
+    * @param int    $expect   The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataReference
+    */
+    public function testReference($mocks, $entry, $offset, $initchan, $channel, $expect)
+    {
+        $this->input->load($mocks);
+        $val = $this->o->reference($channel);
+        $this->assertSame($expect, $val);
+    }
+    /**
+    * data provider for testNumeric
+    *
+    * @return array
+    */
     public static function dataIpRoutine()
     {
         return array(
@@ -1506,6 +1769,17 @@ class DriverADuCTestClass extends \HUGnet\devices\inputTable\DriverADuC
     public function gain($channel = null)
     {
         return parent::gain($channel);
+    }
+    /**
+    * Gets the reference multiplier.
+    *
+    * @param int $channel The channel to use
+    *
+    * @return null
+    */
+    public function reference($channel = null)
+    {
+        return parent::reference($channel);
     }
     /**
     * Gets the immediate processing routine.

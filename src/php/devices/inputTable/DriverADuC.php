@@ -182,6 +182,25 @@ abstract class DriverADuC extends Driver
         return (float)$this->entry()->gain($channel);
     }
     /**
+    * Gets the reference multiplier
+    *
+    * @param int $channel The channel to get the gain for
+    *
+    * @return null
+    */
+    protected function reference($channel = null)
+    {
+        if (is_null($channel)) {
+            $channel = $this->channel;
+        }
+        $channel = (int)$channel;
+        if (($channel == 0) && !$this->adcOn($channel)) {
+            // If channel 0 is off, get the gain from channel 1
+            $channel = 1;
+        }
+        return (float)$this->entry()->reference($channel);
+    }
+    /**
     * Gets the total gain.
     *
     * @param int $channel The channel to get the gain for
