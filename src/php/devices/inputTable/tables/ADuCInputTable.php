@@ -861,6 +861,31 @@ class ADuCInputTable
         return $gain;
     }
     /**
+    * Gets the reference multiplier
+    *
+    * @param int $channel The channel to get the gain for
+    *
+    * @return null
+    */
+    public function reference($channel = 0)
+    {
+        $ref = 1;
+        if ($channel == 1) {
+            if (($this->_params("HIGHEXTREF1") == 1)
+             || ($this->_params("ADC1REF") == 3)
+            ) {
+                $ref = 0.5;
+            }
+        } else {
+            if (($this->_params("HIGHEXTREF0") == 1)
+             || ($this->_params("ADC0REF") == 3)
+            ) {
+                $ref = 0.5;
+            }
+        }
+        return $ref;
+    }
+    /**
     * Gets the total gain.
     *
     * @param int $channel The channel to get the port for

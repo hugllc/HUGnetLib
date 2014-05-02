@@ -1021,6 +1021,90 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expect, $ret, 0.0001);
     }
     /**
+    * Data provider for testReference
+    *
+    * @return array
+    */
+    public static function dataReference()
+    {
+        return array(
+            array( // #0  
+                array(
+                ),
+                array(
+                    "ADC1REF" => 3,
+                ),
+                1,
+                0.5,
+            ),
+            array( // #1
+                array(
+                ),
+                array(
+                    "HIGHEXTREF0" => 1,
+                ),
+                0,
+                0.5,
+            ),
+            array( // #2
+                array(
+                ),
+                array(
+                    "HIGHEXTREF1" => 1,
+                ),
+                1,
+                0.5,
+            ),
+            array( // #3
+                array(
+                ),
+                array(
+                    "ADC0REF" => 3,
+                ),
+                0,
+                0.5,
+            ),
+            array( // #4
+                array(
+                ),
+                array(
+                    "ADC0REF" => 0,
+                ),
+                0,
+                1,
+            ),
+            array( // #4
+                array(
+                ),
+                array(
+                    "ADC1REF" => 0,
+                ),
+                1,
+                1,
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param array  $mock    The mocks to preload
+    * @param string $preload The string to give to the class
+    * @param int    $channel The channel to use
+    * @param array  $expect  The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataReference
+    */
+    public function testReference($mock, $preload, $channel, $expect)
+    {
+        $sensor = new \HUGnet\DummyTable("Sensor");
+        $sensor->resetMock($mock);
+        $obj = ADuCInputTable::factory($sensor, $preload);
+        $ret = $obj->reference($channel);
+        $this->assertEquals($expect, $ret, 0.0001);
+    }
+    /**
     * Data provider for testRemove
     *
     * @return array
