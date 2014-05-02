@@ -299,6 +299,7 @@ class Gather extends \HUGnet\ui\Daemon
         $this->_unsolicited->set("GatewayKey", $this->system()->get("GatewayKey"));
         $this->_unsolicited->setParam("LastConfig", $LastConfig);
         $this->_unsolicited->setParam("Startup", $now);
+        $this->_unsolicited->setParam("LastStartup", $now);
         $this->_unsolicited->setParam("LastContact", time());
         $this->_unsolicited->store();
         $this->out(
