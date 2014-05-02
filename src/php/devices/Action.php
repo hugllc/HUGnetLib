@@ -378,44 +378,48 @@ class Action
                 $deltaT,
                 $prev
             );
-            $raw = $this->system->table(
-                "RawHistory",
-                array(
-                    "id" => $this->device->id(),
-                    "Date" => $time,
-                    "packet" => array(
-                        "Command" => $pkt->command(),
-                        "Data"    => (string)$pkt->data(),
-                        "Reply"   => (string)$pkt->reply(),
-                        "To"      => $pkt->to(),
-                    ),
-                    "dataIndex" => $data["DataIndex"],
-                    "command"   => $pkt->command(),
-                )
-            );
-            $raw->insertRow();
-            $data["id"]     = $this->device->get("id");
-            $data["Date"]   = $time;
-            $data["TestID"] = $TestID;
-            $data["deltaT"] = $deltaT;
-            $this->device->load($this->device->id());
-            $this->device->setParam("LastPollData", $data);
-            $hist = $this->device->historyFactory($data);
-            if ($hist->insertRow()) {
-                $this->device->setParam("LastHistory", $time);
-                $this->device->setLocalParam("LastHistory", $time);
+            // If the data index is 0 this could be a bad packet.
+            if ($data["DataIndex"] != 0) {
+                $raw = $this->system->table(
+                    "RawHistory",
+                    array(
+                        "id" => $this->device->id(),
+                        "Date" => $time,
+                        "packet" => array(
+                            "Command" => $pkt->command(),
+                            "Data"    => (string)$pkt->data(),
+                            "Reply"   => (string)$pkt->reply(),
+                            "To"      => $pkt->to(),
+                        ),
+                        "dataIndex" => $data["DataIndex"],
+                        "command"   => $pkt->command(),
+                    )
+                );
+                $raw->insertRow();
+                $data["id"]     = $this->device->get("id");
+                $data["Date"]   = $time;
+                $data["TestID"] = $TestID;
+                $data["deltaT"] = $deltaT;
+                $this->device->load($this->device->id());
+                $this->device->setParam("LastPollData", $data);
+                $hist = $this->device->historyFactory($data);
+                if ($hist->insertRow()) {
+                    $this->device->setParam("LastHistory", $time);
+                    $this->device->setLocalParam("LastHistory", $time);
+                }
+                $this->device->setParam("LastPoll", $time);
+                $this->device->setParam("LastContact", $time);
+                $this->device->setParam("PollFail", 0);
+                $this->device->setParam("ContactFail", 0);
+                $this->device->store();
+                return $hist;
             }
-            $this->device->setParam("LastPoll", $time);
-            $this->device->setParam("LastContact", $time);
-            $this->device->setParam("PollFail", 0);
-            $this->device->setParam("ContactFail", 0);
+        } else {
+            $this->device->load($this->device->id());
+            $fail = $this->device->getParam("PollFail");
+            $this->device->setParam("PollFail", $fail+1);
             $this->device->store();
-            return $hist;
         }
-        $this->device->load($this->device->id());
-        $fail = $this->device->getParam("PollFail");
-        $this->device->setParam("PollFail", $fail+1);
-        $this->device->store();
         return false;
     }
     /**
