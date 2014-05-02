@@ -1,0 +1,1684 @@
+<!--
+/**
+* This file defines what devices are about
+*
+* HUGnetLib is a library of HUGnet code
+* Copyright (C) 2009 Hunt Utilities Group, LLC
+* Copyright (C) 2009 Scott Price
+*
+* This program is free software; you can redistribute it and/or
+* modify it under the terms of the GNU General Public License
+* as published by the Free Software Foundation; either version 3
+* of the License, or (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA  02110-1301, USA.
+*/
+
+-->
+
+
+<HUGnet>
+    <!-- Table endpoints -->
+    <endpoints>
+        <HWPartNum>0039-12-01-A</HWPartNum>
+        <Parameters>
+            ARCH: AVR
+            CPU: attiny26
+            VCC: 5V
+        </Parameters>
+        <Obsolete>1</Obsolete>
+        <Notes>Test Run.  Only 20 ever made.</Notes>
+    </endpoints>
+    <endpoints>
+        <HWPartNum>0039-12-02-A</HWPartNum>
+        <Parameters>
+            ARCH: AVR
+            CPU: attiny26
+            VCC: 3.3V
+        </Parameters>
+        <Obsolete>1</Obsolete>
+        <Notes>Very few of these were made.</Notes>
+    </endpoints>
+    <endpoints>
+        <HWPartNum>0039-12-02-B</HWPartNum>
+        <Parameters>
+            ARCH: AVR
+            CPU: attiny26
+            VCC: 5V
+        </Parameters>
+        <Obsolete>1</Obsolete>
+        <Notes>
+            Martek made 96 of these.  Scott make a number more than that.
+            There are still a lot of these out in the field.
+        </Notes>
+    </endpoints>
+    <endpoints>
+        <HWPartNum>0039-12-02-C</HWPartNum>
+        <Parameters>
+            ARCH: AVR
+            CPU: attiny861
+            VCC: 5V
+            Firmware: 0039-38-01-C
+            FuseExtended: 0x01
+            FuseHigh: 0xD4
+            FuseLow: 0xE2
+            Built: 96
+        </Parameters>
+        <Pins>
+            <name>Port1</name>
+            <function>AI,DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>Port2</name>
+            <function>AI,DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>Port3</name>
+            <function>AI,DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>Port4</name>
+            <function>AI,DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>Port5</name>
+            <function>AI,DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>Port6</name>
+            <function>AI,DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>Port7</name>
+            <function>AI,DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>Port8</name>
+            <function>AI,DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>Port9</name>
+            <function>AI,DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>Port10</name>
+            <function>DI,DO</function>
+         </Pins>
+        <Pins>
+            <name>Port11</name>
+            <function>DI,D0</function>
+        </Pins>
+        <Pins>
+            <name>Port12</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Obsolete>0</Obsolete>
+        <Notes>This is an upgraded version of 0039-12-02-B.  It uses the tiny861 processor
+            in place of the tiny26.  It has 8k code space instead of 2k.  All 0039-12-02-B
+            endpoints will be field upgrade to this version eventually.
+        </Notes>
+    </endpoints>
+    <endpoints>
+        <HWPartNum>0039-21-01-A</HWPartNum>
+        <Parameters>
+            ARCH: AVR
+            CPU: atmega16
+            VCC: 5V
+            Firmware: 0039-38-01-C
+            FuseHigh: 0xD0
+            FuseLow: 0x2F
+            LockBits: 0xEF
+            Built: 30
+        </Parameters>
+        <Obsolete>0</Obsolete>
+        <Notes>
+            This is the current controller board.
+
+            6 were made by Scott
+            6 were made by Barb
+            18 were made by Martek
+        </Notes>
+    </endpoints>
+    <endpoints>
+        <HWPartNum>0039-21-02-A</HWPartNum>
+        <Parameters>CPU: atmega324
+            ARCH: AVR
+            VCC: 5V
+            Firmware: 0039-38-01-C
+            FuseExtended: 0xFC
+            FuseHigh: 0xD0
+            FuseLow: 0xE7
+            LockBits: 0x3F
+            Built: 42
+        </Parameters>
+        <Obsolete>0</Obsolete>
+        <Notes>
+            This is the new controller board.
+
+            42 were made by Martek
+        </Notes>
+    </endpoints>
+    <endpoints>
+        <HWPartNum>0039-28-01-A</HWPartNum>
+        <Parameters>
+            ARCH: AVR
+            CPU: atmega168
+            VCC: 5V
+            Firmware: 0039-38-01-C
+            FuseHigh: 0xD5
+            FuseLow: 0xE2
+            Built: 216
+        </Parameters>
+        <Pins>
+            <name>PB0</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>PB1</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>PB2</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>PC0</name>
+            <function>AI,DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>PC1</name>
+            <function>AI,DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>PC2</name>
+            <function>AI,DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>PC3</name>
+            <function>AI,DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>PC4</name>
+            <function>AI,DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>PC5</name>
+            <function>AI,DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>ADC6</name>
+            <function>AI</function>
+        </Pins>
+        <Pins>
+            <name>ADC7</name>
+            <function>AI</function>
+        </Pins>
+        <Pins>
+            <name>PD0</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>PD1</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>PD3</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>PD4</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>PD5</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>PD6</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Obsolete>0</Obsolete>
+        <Notes>
+            This is the current endpoint
+
+            12 were made by Scott
+            156 were made by Martek
+            48 were made by Martek 5/11
+        </Notes>
+    </endpoints>
+    <endpoints>
+        <HWPartNum>0039-37-01-A</HWPartNum>
+        <Parameters>
+            ARCH: ADuC7060
+            CPU: ADuC7060
+            VCC: 2.5V
+            TestFirmware: 0039-38-05-C
+            BootFirmware: 0039-38-02-C
+            Firmware: 0039-38-01-C
+            Built: ?
+        </Parameters>
+        <Pins>
+            <name>Port1</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R19</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port2</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R18</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port3</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R17</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port4</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R16</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port5</name>
+            <function>AI</function>
+            <series>100K</series>
+            <shunt>
+                <value>1K</value>
+                <location>R23</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port6</name>
+            <function>AI</function>
+            <series>100K</series>
+            <shunt>
+                <value>1K</value>
+                <location>R22</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port7</name>
+            <function>AI</function>
+            <series>100K</series>
+            <shunt>
+                <value>1K</value>
+                <location>R21</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port8</name>
+            <function>AI</function>
+            <series>100K</series>
+            <shunt>
+                <value>1K</value>
+                <location>R20</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>DAC0</name>
+            <function>AO</function>
+        </Pins>
+        <Pins>
+            <name>PWM1</name>
+            <function>DO</function>
+        </Pins>
+        <Pins>
+            <name>PWM3</name>
+            <function>DO</function>
+        </Pins>
+        <Pins>
+            <name>PWM5</name>
+            <function>DO</function>
+        </Pins>
+        <Pins>
+            <name>P0.0</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P0.1</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P0.2</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P0.3</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P1.4</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P1.6</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P2.0</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Obsolete>0</Obsolete>
+        <Notes>
+            This has screw terminals for the inputs and power/rs485.  This has
+            4 high voltage and 4 low voltage AtoD inputs
+        </Notes>
+    </endpoints>
+    <endpoints>
+        <HWPartNum>0039-37-01-B</HWPartNum>
+        <Parameters>
+            ARCH: ADuC7060
+            CPU: ADuC7060
+            VCC: 2.5V
+            TestFirmware: 0039-38-05-C
+            BootFirmware: 0039-38-02-C
+            Firmware: 0039-38-01-C
+            Built: ?
+        </Parameters>
+        <Pins>
+            <name>Port1</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>none</value>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port2</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>none</value>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port3</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>none</value>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port4</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>none</value>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port5</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>none</value>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port6</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>none</value>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port7</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>none</value>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port8</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>none</value>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>DAC0</name>
+            <function>AO</function>
+        </Pins>
+        <Pins>
+            <name>PWM1</name>
+            <function>DO</function>
+        </Pins>
+        <Pins>
+            <name>PWM3</name>
+            <function>DO</function>
+        </Pins>
+        <Pins>
+            <name>PWM5</name>
+            <function>DO</function>
+         </Pins>
+        <Pins>
+            <name>P0.0</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P0.1</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P0.2</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P0.3</name>
+            <function>DI,DO</function>
+         </Pins>
+        <Pins>
+            <name>P1.4</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P1.6</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P2.0</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Obsolete>0</Obsolete>
+        <Notes>
+            These have the 0.1 male headers on everything and only current limiting
+            resistors on the inputs.
+        </Notes>
+    </endpoints>
+    <endpoints>
+        <HWPartNum>0039-37-01-C</HWPartNum>
+        <Parameters>
+            ARCH: ADuC7060
+            CPU: ADuC7060
+            VCC: 2.5V
+            TestFirmware: 0039-38-05-C
+            BootFirmware: 0039-38-02-C
+            Firmware: 0039-38-01-C
+            Built: ?
+        </Parameters>
+        <Pins>
+            <name>Port1</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R19</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port2</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R18</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port3</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R17</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port4</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R16</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port5</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R23</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port6</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R22</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port7</name>
+            <function>AI</function>
+            <series>100K</series>
+            <shunt>
+                <value>1K</value>
+                <location>R21</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port8</name>
+            <function>AI</function>
+            <series>100K</series>
+            <shunt>
+                <value>1K</value>
+                <location>R20</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>DAC0</name>
+            <function>AO</function>
+        </Pins> 
+        <Pins>
+            <name>PWM1</name>
+            <function>DO</function>
+        </Pins> 
+        <Pins>
+                <name>PWM3</name>
+                <function>DO</function>
+        </Pins>
+        <Pins>
+            <name>PWM5</name>
+            <function>DO</function>
+        </Pins>
+        <Pins>
+            <name>P0.0</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P0.1</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P0.2</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P0.3</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P1.4</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P1.6</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P2.0</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Obsolete>0</Obsolete>
+        <Notes>
+            This has screw terminals for the inputs and power/rs485. This has
+            2 high voltage and 6 low voltage AtoD inputs
+        </Notes>
+    </endpoints>
+    <endpoints>
+        <HWPartNum>0039-37-01-D</HWPartNum>
+        <Parameters>
+            ARCH: ADuC7060
+            CPU: ADuC7060
+            VCC: 2.5V
+            TestFirmware: 0039-38-05-C
+            BootFirmware: 0039-38-02-C
+            Firmware: 0039-38-01-C
+            Built: ?
+        </Parameters>
+        <Pins>
+            <name>Port1</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R19</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port2</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R18</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port3</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R17</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port4</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R16</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port5</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R23</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port6</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R22</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port7</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R21</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port8</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R20</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>DAC0</name>
+            <function>AO</function>
+        </Pins>
+        <Pins>
+            <name>PWM1</name>
+            <function>DO</function>
+        </Pins>
+        <Pins>
+            <name>PWM3</name>
+            <function>DO</function>
+        </Pins>
+        <Pins>
+            <name>PWM5</name>
+            <function>DO</function>
+        </Pins>
+        <Pins>
+            <name>P0.0</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>PO.1</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>PO.2</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P0.3</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P1.4</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P1.6</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P2.0</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Obsolete>0</Obsolete>
+        <Notes>
+            This has screw terminals for the inputs and power/rs485.This has
+            8 low voltage AtoD inputs
+        </Notes>
+    </endpoints>
+    <endpoints>
+        <HWPartNum>0039-37-01-E</HWPartNum>
+        <Parameters>
+            ARCH: ADuC7060
+            CPU: ADuC7060
+            VCC: 2.5V
+            TestFirmware: 0039-38-05-C
+            BootFirmware: 0039-38-02-C
+            Firmware: 0039-38-01-C
+            Built: ?
+        </Parameters>
+        <Pins>
+            <name>Port1</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>none</value>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port2</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>none</value>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port3</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>none</value>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port4</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>none</value>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port5</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>none</value>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port6</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>none</value>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port7</name>
+            <function>AI</function>
+            <series>100K</series>
+            <shunt>
+                <value>1K</value>
+                <location>R21</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port8</name>
+            <function>AI</function>
+            <series>100K</series>
+            <shunt>
+                <value>1K</value>
+                <location>R20</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>DAC0</name>
+            <function>AO</function>
+        </Pins>
+        <Pins>
+            <name>PWM1</name>
+            <function>DO</function>
+        </Pins>
+        <Pins>
+            <name>PWM3</name>
+            <function>DO</function>
+        </Pins>
+        <Pins>
+            <name>PWM5</name>
+            <function>DO</function>
+        </Pins>
+        <Pins>
+            <name>P0.0</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P0.1</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P0.2</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P0.3</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P1.4</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P1.6</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P2.0</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Obsolete>0</Obsolete>
+        <Notes>
+            This has screw terminals for the inputs and power/rs485.  This has
+            2 high voltage and 6 low voltage AtoD inputs with only current
+            limiting resistors on the 6 low voltage inputs
+        </Notes>
+    </endpoints>
+    <endpoints>
+        <HWPartNum>0039-37-01-F</HWPartNum>
+        <Parameters>
+            ARCH: ADuC7060
+            CPU: ADuC7060
+            VCC: 2.5V
+            TestFirmware: 0039-38-05-C
+            BootFirmware: 0039-38-02-C
+            Firmware: 0039-38-01-C
+            Built: ?
+        </Parameters>
+        <Pins>
+            <name>Port1</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>none</value>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port2</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>none</value>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port3</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>none</value>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port4</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>none</value>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port5</name>
+            <function>AI</function>
+            <series>100K</series>
+            <shunt>
+                <value>1K</value>
+                <location>R23</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port6</name>
+            <function>AI</function>
+            <series>100K</series>
+            <shunt>
+                <value>1K</value>
+                <location>R22</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port7</name>
+            <function>AI</function>
+            <series>100K</series>
+            <shunt>
+                <value>1K</value>
+                <location>R21</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port8</name>
+            <function>AI</function>
+            <series>100K</series>
+            <shunt>
+                <value>1K</value>
+                <location>R20</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>DAC0</name>
+            <function>AO</function>
+        </Pins>
+        <Pins>
+            <name>PWM1</name>
+            <function>DO</function>
+        </Pins>
+        <Pins>
+            <name>PWM3</name>
+            <function>DO</function>
+        </Pins>
+        <Pins>
+            <name>PWM5</name>
+            <function>DO</function>
+        </Pins>
+        <Pins>
+            <name>P0.0</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P0.1</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P0.2</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P0.3</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P1.4</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P1.6</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P2.0</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Obsolete>0</Obsolete>
+        <Notes>
+            This has screw terminals for the inputs and power/rs485.  This has
+            4 high voltage and 4 low voltage AtoD inputs with only current
+            limiting resistors on the 4 low voltage inputs
+        </Notes>
+    </endpoints>
+    <endpoints>
+        <HWPartNum>0039-37-01-G</HWPartNum>
+        <Parameters>
+            ARCH: ADuC7060
+            CPU: ADuC7060
+            VCC: 2.5V
+            TestFirmware: 0039-38-05-C
+            BootFirmware: 0039-38-02-C
+            Firmware: 0039-38-01-C
+            Built: ?
+        </Parameters>
+        <Pins>
+            <name>Port1</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>none</value>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port2</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>none</value>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port3</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>none</value>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port4</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>none</value>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port5</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>none</value>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port6</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>none</value>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port7</name>
+            <function>AI</function>
+            <series>100K</series>
+            <shunt>
+                <value>1K</value>
+                <location>R21</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port8</name>
+            <function>AI</function>
+            <series>100K</series>
+            <shunt>
+                <value>1K</value>
+                <location>R20</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>DAC0</name>
+            <function>AO</function>
+        </Pins>
+        <Pins>
+            <name>PWM1</name>
+            <function>DO</function>
+        </Pins>
+        <Pins>
+            <name>PWM3</name>
+            <function>DO</function>
+        </Pins>
+        <Pins>
+            <name>PWM5</name>
+            <function>DO</function>
+        </Pins>
+        <Pins>
+            <name>P0.0</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P0.1</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P0.2</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P0.3</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P1.4</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P1.6</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P2.0</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Obsolete>0</Obsolete>
+        <Notes>
+            This has female headers mounted on the bottom of the board for 
+            the inputs, outputs, and power/rs485. It has 2 high
+            voltage and 6 low voltage AtoD inputs with only current
+            limiting resistors on the 6 low voltage inputs
+        </Notes>
+    </endpoints>
+    <endpoints>
+        <HWPartNum>0039-37-01-H</HWPartNum>
+        <Parameters>
+            ARCH: ADuC7060
+            CPU: ADuC7060
+            VCC: 2.5V
+            TestFirmware: 0039-38-05-C
+            BootFirmware: 0039-38-02-C
+            Firmware: 0039-38-01-C
+            Built: ?
+        </Parameters>
+        <Pins>
+            <name>Port1</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R35</location>
+                <pull>AGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port2</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R34</location>
+                <pull>AGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port3</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R33</location>
+                <pull>AGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port4</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R32</location>
+                <pull>AGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port5</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R36</location>
+                <pull>AGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port6</name>
+            <function>AI</function>
+            <series>1K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R37</location>
+                <pull>AGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port7</name>
+            <function>AI</function>
+            <series>100K</series>
+            <shunt>
+                <value>1K</value>
+                <location>R21</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>Port8</name>
+            <function>AI</function>
+            <series>100K</series>
+            <shunt>
+                <value>1K</value>
+                <location>R20</location>
+                <pull>CGND</pull>
+            </shunt>
+        </Pins>
+        <Pins>
+            <name>DAC0</name>
+            <function>AO</function>
+        </Pins>
+        <Pins>
+            <name>PWM1</name>
+            <function>DO</function>
+        </Pins>
+        <Pins>
+            <name>PWM3</name>
+            <function>DO</function>
+        </Pins>
+        <Pins>
+            <name>PWM5</name>
+            <function>DO</function>
+        </Pins>
+        <Pins>
+            <name>P0.0</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P0.1</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P0.2</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P0.3</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P1.4</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P1.6</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>P2.0</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Obsolete>0</Obsolete>
+        <Notes>
+            This has screw terminals for the inputs and power/rs485.  It has
+            2 high voltage and 6 low voltage AtoD inputs with shunt resistors
+            and cuurent limiting resistors on the 6 low voltage inputs.
+        </Notes>
+    </endpoints>
+    <daughterboards>
+        <HWPartNum>0039-15-01</HWPartNum>
+        <Pins>
+            <name>Port1</name>
+            <function>AI</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port1</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>Port1</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port2</name>
+            <function>AI</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port2</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>Port2</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port3</name>
+            <function>AI</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port3</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>Port3</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port4</name>
+            <function>AI</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port4</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>Port4</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port5</name>
+            <function>AI</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port5</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>Port5</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port6</name>
+            <function>AI</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port6</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>Port6</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port7</name>
+            <function>AI</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port7</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>Port7</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port8</name>
+            <function>AI</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port8</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>Port8</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port9</name>
+            <function>AI</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port9</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>NC</conpin>
+            </connect>
+        </Pins>
+    </daughterboards>
+    <daughterboards>
+        <HWPartNum>0039-16-01</HWPartNum>
+        <Pins>
+            <name>Port1</name>
+            <function>DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port10</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port2</name>
+            <function>DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port11</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port3</name>
+            <function>DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port12</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port4</name>
+            <function>DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port7</conpin>
+            </connect>
+        </Pins>
+        <notes> This daughter board only functions on a 003912 endpoint. </notes>
+    </daughterboards>
+    <daughterboards>
+        <HWPartNum>0039-23-01</HWPartNum>
+        <Pins>
+            <name>Port1</name>
+            <function>AI,DI,DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port1</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PC0</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port2</name>
+            <function>AI,DI,DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port2</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PC1</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port3</name>
+            <function>AI,DI,DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port3</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PC2</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port4</name>
+            <function>AI,DI,DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port4</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PC3</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port5</name>
+            <function>AI,DI,DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port5</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PC4</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port6</name>
+            <function>AI,DI,DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port6</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PC5</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port7</name>
+            <function>AI</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port7</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>ADC6</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port8</name>
+            <function>AI</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port8</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>ADC7</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port9</name>
+            <function>DI,DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>NC</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PB0</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port10</name>
+            <function>DI,DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>NC</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PB1</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port11</name>
+            <function>DI,DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>NC</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PB2</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port12</name>
+            <function>DI,DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port10</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PB3</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port13</name>
+            <function>DI,DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port11</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PB4</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port14</name>
+            <function>DI,DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>NC</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PB5</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port15</name>
+            <function>DI,DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>NC</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PD5</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port16</name>
+            <function>DI,DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>NC</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PD6</conpin>
+            </connect>
+        </Pins>
+    </daughterboards>
+</HUGnet>
