@@ -367,7 +367,7 @@ class ADuCInputTable
                 1 => "External VREF+/VREF-",
                 2 => "External AUX",
                 3 => "AVDD/AGND (div/2 selected)",
-                4 => "AVCC/ADC3",
+                4 => "AVDD/ADC3",
             ),
             'desc'  => "ADC1 Reference",
             'longDesc' => "Which reference would you choose?",
