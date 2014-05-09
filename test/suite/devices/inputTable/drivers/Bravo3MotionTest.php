@@ -116,8 +116,34 @@ class Bravo3MotionTest extends DriverTestBase
     public static function dataGetReading()
     {
         return array(
-            array(array(), 500, 300, array(), array(), 500),
-            array(array("extra" => array(1)), 1000, 300, array(), array(), 1000),
+            array(
+                array(), 500, 300, array(), 
+                array(
+                    "raw" => null,
+                ), 
+                null
+            ),
+            array(
+                array(), 500, 300, array(), 
+                array(
+                    "raw" => 0,
+                ), 
+                500
+            ),
+            array(
+                array(), 1000, 300, array(), 
+                array(
+                    "raw" => 500,
+                ), 
+                500
+            ),
+            array(
+                array("extra" => array(1)), 1000, 300, array(), 
+                array(
+                    "raw" => 0,
+                ), 
+                1000
+            ),
         );
     }
     /**

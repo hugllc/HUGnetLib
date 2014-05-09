@@ -434,9 +434,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         $ret[0]["value"] = $this->decodeDataPoint(
             $A, 0, $deltaT, $prev[$chan], $data
         );
-        if ($type == \HUGnet\devices\datachan\Driver::TYPE_DIFF) {
-            $ret[0]["raw"] = $A;
-        }
+        $ret[0]["raw"] = $A;
         return $ret;
     }
     /**
@@ -461,8 +459,13 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         }
         $type = $this->get("storageType");
         if ($type == \HUGnet\devices\datachan\Driver::TYPE_DIFF) {
+            if (is_null($prev["raw"])) {
+                $val = null;
+            } else {
+                $val = $A - $prev["raw"];
+            }
             $ret = $this->getReading(
-                ($A - $prev["raw"]), $deltaT, $data, $prev
+                $val, $deltaT, $data, $prev
             );
         } else {
             $ret = $this->getReading(

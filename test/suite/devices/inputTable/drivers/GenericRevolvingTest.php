@@ -167,12 +167,52 @@ class GenericRevolvingTest extends DriverTestBase
                         ),
                     ),
                 ),
+                1000,
+                300,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(
+                    "raw" => 500,
+                ), 
+                100.0
+            ),
+            array(
+                array(
+                    "Input" => array(
+                        "get" => array(
+                            "id" => 0x70,
+                            "type" => "GenericRevolving",
+                        ),
+                    ),
+                ),
                 500,
                 300,
                 array(
                     "timeConstant" => 1,
                 ),
-                array(),
+                array(
+                    "raw" => null,
+                ), 
+                null
+            ),
+            array(
+                array(
+                    "Input" => array(
+                        "get" => array(
+                            "id" => 0x70,
+                            "type" => "GenericRevolving",
+                        ),
+                    ),
+                ),
+                500,
+                300,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(
+                    "raw" => 0,
+                ), 
                 100.0
             ),
             array(
@@ -190,7 +230,9 @@ class GenericRevolvingTest extends DriverTestBase
                 array(
                     "timeConstant" => 1,
                 ),
-                array(),
+                array(
+                    "raw" => 0,
+                ), 
                 50.0
             ),
             array(
@@ -208,7 +250,9 @@ class GenericRevolvingTest extends DriverTestBase
                 array(
                     "timeConstant" => 1,
                 ),
-                array(),
+                array(
+                    "raw" => 0,
+                ), 
                 100.0
             ),
             array(
@@ -226,7 +270,9 @@ class GenericRevolvingTest extends DriverTestBase
                 array(
                     "timeConstant" => 1,
                 ),
-                array(),
+                array(
+                    "raw" => 0,
+                ), 
                 null
             ),
             array(
@@ -244,7 +290,9 @@ class GenericRevolvingTest extends DriverTestBase
                 array(
                     "timeConstant" => 1,
                 ),
-                array(),
+                array(
+                    "raw" => 0,
+                ), 
                 null
             ),
             array(
@@ -262,7 +310,9 @@ class GenericRevolvingTest extends DriverTestBase
                 array(
                     "timeConstant" => 1,
                 ),
-                array(),
+                array(
+                    "raw" => 0,
+                ), 
                 null
             ),
         );

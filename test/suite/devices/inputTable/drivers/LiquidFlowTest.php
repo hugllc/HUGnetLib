@@ -172,7 +172,9 @@ class LiquidFlowTest extends DriverTestBase
                 array(
                     "timeConstant" => 1,
                 ),
-                array(),
+                array(
+                    "raw" => 0,
+                ), 
                 10.0
             ),
             array(
@@ -208,7 +210,9 @@ class LiquidFlowTest extends DriverTestBase
                 array(
                     "timeConstant" => 1,
                 ),
-                array(),
+                array(
+                    "raw" => 0,
+                ), 
                 1000.0
             ),
             array(
@@ -225,7 +229,9 @@ class LiquidFlowTest extends DriverTestBase
                 array(
                     "timeConstant" => 1,
                 ),
-                array(),
+                array(
+                    "raw" => 0,
+                ), 
                 null
             ),
             array(
@@ -242,7 +248,9 @@ class LiquidFlowTest extends DriverTestBase
                 array(
                     "timeConstant" => 1,
                 ),
-                array(),
+                array(
+                    "raw" => 0,
+                ), 
                 null
             ),
             array(
@@ -259,7 +267,9 @@ class LiquidFlowTest extends DriverTestBase
                 array(
                     "timeConstant" => 1,
                 ),
-                array(),
+                array(
+                    "raw" => 0,
+                ), 
                 null
             ),
         );

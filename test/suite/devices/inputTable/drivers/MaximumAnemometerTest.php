@@ -128,7 +128,9 @@ class MaximumAnemometerTest extends DriverTestBase
                 array(
                     "timeConstant" => 1,
                 ),
-                array(),
+                array(
+                    "raw" => 0,
+                ), 
                 2.7275
             ),
             array(
@@ -145,7 +147,9 @@ class MaximumAnemometerTest extends DriverTestBase
                 array(
                     "timeConstant" => 1,
                 ),
-                array(),
+                array(
+                    "raw" => 0,
+                ), 
                 null
             ),
             array(
@@ -162,7 +166,9 @@ class MaximumAnemometerTest extends DriverTestBase
                 array(
                     "timeConstant" => 1,
                 ),
-                array(),
+                array(
+                    "raw" => 0,
+                ), 
                 null
             ),
             array(
@@ -179,7 +185,9 @@ class MaximumAnemometerTest extends DriverTestBase
                 array(
                     "timeConstant" => 1,
                 ),
-                array(),
+                array(
+                    "raw" => 0,
+                ), 
                 0.0
             ),
             array(
@@ -196,7 +204,9 @@ class MaximumAnemometerTest extends DriverTestBase
                 array(
                     "timeConstant" => 1,
                 ),
-                array(),
+                array(
+                    "raw" => 0,
+                ), 
                 0.0
             ),
 

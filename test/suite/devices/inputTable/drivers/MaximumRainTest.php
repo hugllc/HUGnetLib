@@ -131,7 +131,9 @@ class MaximumRainTest extends DriverTestBase
                 array(
                     "timeConstant" => 1,
                 ),
-                array(),
+                array(
+                    "raw" => 0,
+                ), 
                 5
             ),
             array(
@@ -148,7 +150,9 @@ class MaximumRainTest extends DriverTestBase
                 array(
                     "timeConstant" => 1,
                 ),
-                array(),
+                array(
+                    "raw" => 0,
+                ), 
                 10
             ),
 

@@ -338,6 +338,7 @@ class AVRAnalogTableTest extends DriverTestBaseAVR
                         "index" => 0,
                         "epChannel" => true,
                         "port" => null,
+                        "raw" => 16960,
                     ),
                 ),
             ),
