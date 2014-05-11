@@ -247,7 +247,7 @@ class DriverPulseTest extends drivers\DriverTestBase
             'extraDefault' => array(2, 3, 5, 7, 11),
             'extraValues' => array(5, array(1, 2, 3), 5, 5, 5),
             'storageUnit' => 'unknown',
-            'storageType' => 'raw',
+            'storageType' => 'diff',
             'maxDecimals' => 2,
             'testParam' => '12345',
             "dataTypes" => array(
@@ -277,8 +277,62 @@ class DriverPulseTest extends drivers\DriverTestBase
                 256210,
                 1,
                 array(),
-                array(),
+                array(
+                    "raw" => null,
+                ),
                 null,
+            ),
+            array(
+                array(
+                ),
+                500,
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(
+                    "raw" => 0,
+                ), 
+                500
+            ),
+            array(
+                array(
+                ),
+                null,
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(
+                    "raw" => 0,
+                ), 
+                null
+            ),
+            array(
+                array(
+                ),
+                500,
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(
+                    "raw" => 100,
+                ), 
+                400
+            ),
+            array(
+                array(
+                ),
+                500,
+                0,
+                array(
+                    "timeConstant" => 1,
+                ),
+                array(
+                    "raw" => 5000,
+                ), 
+                500
             ),
         );
     }
@@ -444,7 +498,7 @@ class DriverPulseTest extends drivers\DriverTestBase
                         'maxDecimals' => 2,
                         'storageUnit' => 'unknown',
                         'unitType' => 'asdf',
-                        'dataType' => 'raw',
+                        'dataType' => 'diff',
                         'label' => '',
                         'index' => 0,
                         'epChannel' => true,
@@ -489,6 +543,7 @@ class DriverPulseTestClass extends \HUGnet\devices\inputTable\DriverPulse
         "extraText" => array("a","b","c","d","e"),
         "extraDesc" => array("A","B","C","D","E"),
         "extraValues" => array(5, 5, 5, 5, 5),
+        "storageType" => \HUGnet\devices\datachan\Driver::TYPE_DIFF,
     );
     /**
     * Gets the extra values
@@ -516,7 +571,7 @@ class DriverPulseTestClass extends \HUGnet\devices\inputTable\DriverPulse
     public function getReading(
         $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
-        return null;
+        return $A;
     }
     /**
     * This returns the voltage on the upper side of a voltage divider if the
