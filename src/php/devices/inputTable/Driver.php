@@ -459,11 +459,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         }
         $type = $this->get("storageType");
         if ($type == \HUGnet\devices\datachan\Driver::TYPE_DIFF) {
-            if (is_null($prev["raw"])) {
-                $val = null;
-            } else {
-                $val = $A - $prev["raw"];
-            }
+            $val = $this->calcDiff($A, $prev);
             $ret = $this->getReading(
                 $val, $deltaT, $data, $prev
             );
@@ -473,6 +469,25 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
             );
         }
         return $ret;
+    }
+    /**
+    * Calculates the difference between this value and the previous one.
+    *
+    * @param int   $A     The data value given
+    * @param array &$prev The previous reading
+    *
+    * @return int The difference value
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    */
+    protected function calcDiff(&$A, &$prev = null) 
+    {
+        if (is_null($prev["raw"])) {
+            $val = null;
+        } else {
+            $val = $A - $prev["raw"];
+        }
+        return $val;
     }
     /**
     * Gets the direction from a direction sensor made out of a POT.

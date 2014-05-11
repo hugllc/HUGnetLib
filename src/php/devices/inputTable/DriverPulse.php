@@ -109,6 +109,25 @@ abstract class DriverPulse extends Driver
         return $param;
     }
     /**
+    * Calculates the difference between this value and the previous one.
+    *
+    * @param int   $A     The data value given
+    * @param array &$prev The previous reading
+    *
+    * @return int The difference value
+    *
+    * @SuppressWarnings(PHPMD.ShortVariable)
+    */
+    protected function calcDiff(&$A, &$prev = null) 
+    {
+        if (is_null($prev["raw"])) {
+            $val = null;
+        } else {
+            $val = $A - $prev["raw"];
+        }
+        return $val;
+    }
+    /**
     * Decodes the driver portion of the setup string
     *
     * @param string $string The string to decode
