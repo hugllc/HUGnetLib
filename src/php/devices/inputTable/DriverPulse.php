@@ -120,8 +120,10 @@ abstract class DriverPulse extends Driver
     */
     protected function calcDiff(&$A, &$prev = null) 
     {
-        if (is_null($prev["raw"])) {
+        if (is_null($prev["raw"]) || is_null($A)) {
             $val = null;
+        } else if ($prev["raw"] > $A) {
+            $val = $A;
         } else {
             $val = $A - $prev["raw"];
         }
