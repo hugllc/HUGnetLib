@@ -96,6 +96,7 @@ class FastAverageTest extends tables\TableTestBase
                         ),
                     ),
                     "verbose" => 0,
+                    "NoAverages" => 0,
                 ),
             ),
         );
@@ -1431,7 +1432,36 @@ class FastAverageTest extends tables\TableTestBase
     */
     public function testAverageTypesIsAnArray()
     {
-        $this->assertInternalType("array", $this->o->averageTypes());
+        $ret = $this->o->averageTypes();
+        $this->assertInternalType("array", $ret, "Return must be an array");
+        $this->assertGreaterThan(0, count($ret), "Return must not be empty");
+    }
+     /**
+    * Test that averageTypes is an array
+    *
+    * @return null
+    */
+    public function testAverageTypesNoAverages()
+    {
+        $this->config = array(
+            "System" => array(
+                "get" => array(
+                    "servers" => array(
+                        array(
+                            "driver" => "sqlite",
+                            "file" => ":memory:",
+                            "group" => "default",
+                        ),
+                    ),
+                    "verbose" => 0,
+                    "NoAverages" => 1,
+                ),
+            ),
+        );
+        $this->system->resetMock($this->config);
+        $ret = $this->o->averageTypes();
+        $this->assertInternalType("array", $ret, "Return must be an array");
+        $this->assertEquals(array(), $ret, "Return must be empty");
     }
     /**
     * test the set routine when an extra class exists

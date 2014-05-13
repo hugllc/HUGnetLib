@@ -469,14 +469,19 @@ abstract class Average extends History
     */
     public function averageTypes()
     {
-        return array(
-            self::AVERAGE_15MIN   => "15 Minute Average",
-            self::AVERAGE_HOURLY  => "Hourly Average",
-            self::AVERAGE_DAILY   => "Daily Average",
-            self::AVERAGE_WEEKLY  => "Weekly Average",
-            self::AVERAGE_MONTHLY => "Monthly Average",
-            self::AVERAGE_YEARLY  => "Yearly Average",
-        );
+        if ($this->system()->get("NoAverages")) {
+            $ret = array();
+        } else {
+            $ret = array(
+                self::AVERAGE_15MIN   => "15 Minute Average",
+                self::AVERAGE_HOURLY  => "Hourly Average",
+                self::AVERAGE_DAILY   => "Daily Average",
+                self::AVERAGE_WEEKLY  => "Weekly Average",
+                self::AVERAGE_MONTHLY => "Monthly Average",
+                self::AVERAGE_YEARLY  => "Yearly Average",
+            );
+        }
+        return $ret;
     }
     /**
     * By default it outputs the date in the format specified in myConfig

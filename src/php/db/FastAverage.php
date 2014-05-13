@@ -357,12 +357,17 @@ abstract class FastAverage extends History
     */
     public function averageTypes()
     {
-        return array(
-            self::AVERAGE_30SEC   => "30 Second Average",
-            self::AVERAGE_1MIN   => "1 Minute Average",
-            self::AVERAGE_5MIN   => "5 Minute Average",
-            self::AVERAGE_15MIN   => "15 Minute Average",
-        );
+        if ($this->system()->get("NoAverages")) {
+            $ret = array();
+        } else {
+            $ret = array(
+                self::AVERAGE_30SEC => "30 Second Average",
+                self::AVERAGE_1MIN  => "1 Minute Average",
+                self::AVERAGE_5MIN  => "5 Minute Average",
+                self::AVERAGE_15MIN => "15 Minute Average",
+            );
+        }
+        return $ret;
     }
     /**
     * By default it outputs the date in the format specified in myConfig
