@@ -375,7 +375,7 @@ var DeviceEntryView = Backbone.View.extend({
                 draggable: true,
                 width: 300,
                 title: title,
-                dialogClass: "window no-close",
+                dialogClass: "window",
                 zIndex: 500,
             });
             this.progress.update(false);
