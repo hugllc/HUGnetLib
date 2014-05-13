@@ -172,6 +172,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "index" => 0,
                         "epChannel" => false,
                         "port" => 'VREF+,VREF-',
+                        "raw" => null,
                     ),
                 ),
             ),
@@ -238,6 +239,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "index" => 0,
                         "epChannel" => false,
                         "port" => 'VREF+,VREF-',
+                        "raw" => null,
                     ),
                     array(
                         "value" => 14.448166,
@@ -251,6 +253,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "index" => 1,
                         "epChannel" => false,
                         "port" => null,
+                        "raw" => null,
                     ),
                     array(
                         "value" => 4.547026,
@@ -264,6 +267,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "index" => 2,
                         "epChannel" => false,
                         "port" => null,
+                        "raw" => null,
                     ),
                     array(
                         "value" => 45.909022,
@@ -277,6 +281,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "index" => 3,
                         "epChannel" => false,
                         "port" => null,
+                        "raw" => null,
                     ),
                 ),
             ),
@@ -333,6 +338,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "index" => 0,
                         "epChannel" => false,
                         "port" => 'VREF+,VREF-',
+                        "raw" => null,
                     ),
                     array(
                         "value" => 14.448166,
@@ -346,6 +352,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "index" => 1,
                         "epChannel" => false,
                         "port" => null,
+                        "raw" => null,
                     ),
                     array(
                         "value" => 4.547026,
@@ -359,6 +366,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "index" => 2,
                         "epChannel" => false,
                         "port" => null,
+                        "raw" => null,
                     ),
                     array(
                         "value" => 45.909022,
@@ -372,6 +380,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "index" => 3,
                         "epChannel" => false,
                         "port" => null,
+                        "raw" => null,
                     ),
                 ),
             ),
@@ -431,6 +440,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "index" => 0,
                         "epChannel" => false,
                         "port" => 'VREF+,VREF-',
+                        "raw" => null,
                     ),
                     array(
                         "value" => 14.448166,
@@ -444,6 +454,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "index" => 1,
                         "epChannel" => false,
                         "port" => null,
+                        "raw" => null,
                     ),
                     array(
                         "value" => 4.547026,
@@ -457,6 +468,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "index" => 2,
                         "epChannel" => false,
                         "port" => null,
+                        "raw" => null,
                     ),
                     array(
                         "value" => 45.909022,
@@ -470,6 +482,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "index" => 3,
                         "epChannel" => false,
                         "port" => null,
+                        "raw" => null,
                     ),
                 ),
             ),

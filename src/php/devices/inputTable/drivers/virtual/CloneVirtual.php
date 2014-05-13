@@ -195,6 +195,7 @@ class CloneVirtual extends \HUGnet\devices\inputTable\DriverVirtual
             } else {
                 $ret[$key]["value"] = null;
             }
+            $ret[$key]["raw"] = null;
         }
         return $ret;
     }

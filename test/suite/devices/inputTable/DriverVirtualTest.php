@@ -214,6 +214,7 @@ class DriverVirtualTest extends drivers\DriverTestBase
                         "index" => 0,
                         "epChannel" => false,
                         "port" => null,
+                        "raw" => null,
                     ),
                 ),
             ),

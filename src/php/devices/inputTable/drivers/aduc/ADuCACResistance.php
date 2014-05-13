@@ -244,13 +244,10 @@ class ADuCACResistance extends \HUGnet\devices\inputTable\DriverADuC
         &$string, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
     ) {
         $return = null;
-        if (!is_null($string)) {
-            $A = $this->getRawData($string, $channel);
-        }
         if ($channel == 0) {
-            $return = $this->getVoltage($A, $deltaT, $data, $prev);
+            $return = $this->getVoltage($string, $deltaT, $data, $prev);
         } else if ($channel == 1) {
-            $return = $this->getResistance($A, $deltaT, $data, $prev);
+            $return = $this->getResistance($string, $deltaT, $data, $prev);
         }
         return $return;
     }
@@ -296,9 +293,15 @@ class ADuCACResistance extends \HUGnet\devices\inputTable\DriverADuC
     ) {
         $ret = $this->channels();
         foreach (array_keys($ret) as $key) {
+            if (!is_null($string) && (strlen($string) > 0)) {
+                $A = $this->getRawData($string, $channel);
+            } else {
+                $A = null;
+            }
             $ret[$key]["value"] = $this->decodeDataPoint(
-                $string, $key, $deltaT, $prev, $ret
+                $A, $key, $deltaT, $prev, $ret
             );
+            $ret[$key]["raw"] = $A;
         }
         return $ret;
     }

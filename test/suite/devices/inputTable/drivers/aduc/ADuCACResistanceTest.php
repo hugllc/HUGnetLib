@@ -621,6 +621,7 @@ class ADuCACResistanceTest extends DriverTestBaseADuC
                         "index" => 0,
                         "epChannel" => true,
                         "port" => "Port1",
+                        "raw"  => 1000000,
                     ),
                     array(
                         "value" => 0.06338254,
@@ -634,6 +635,7 @@ class ADuCACResistanceTest extends DriverTestBaseADuC
                         "index" => 1,
                         "epChannel" => true,
                         "port" => "Port7 -,Port8 +",
+                        "raw"  => 1000000,
                     ),
                 ),
             ),
@@ -689,6 +691,7 @@ class ADuCACResistanceTest extends DriverTestBaseADuC
                         "index" => 0,
                         "epChannel" => true,
                          "port" => "Port1",
+                        "raw"  => -1,
                     ),
                     array(
                         "value" => null,
@@ -702,6 +705,7 @@ class ADuCACResistanceTest extends DriverTestBaseADuC
                         "index" => 1,
                         "epChannel" => true,
                         "port" => "Port7 -,Port8 +",
+                        "raw"  => 0,
                     ),
                 ),
             ),
@@ -757,6 +761,7 @@ class ADuCACResistanceTest extends DriverTestBaseADuC
                         "index" => 0,
                         "epChannel" => true,
                         "port" => "Port1",
+                        "raw"  => 1000000,
                     ),
                     array(
                         "value" => null,
@@ -770,6 +775,7 @@ class ADuCACResistanceTest extends DriverTestBaseADuC
                         "index" => 1,
                         "epChannel" => true,
                         "port" => "Port7 -,Port8 +",
+                        "raw"  => null,
                     ),
                 ),
             ),
@@ -825,6 +831,7 @@ class ADuCACResistanceTest extends DriverTestBaseADuC
                         "index" => 0,
                         "epChannel" => true,
                         "port" => "Port1",
+                        "raw"  => null,
                     ),
                     array(
                         "value" => null,
@@ -838,6 +845,7 @@ class ADuCACResistanceTest extends DriverTestBaseADuC
                         "index" => 1,
                         "epChannel" => true,
                         "port" => "Port7 -,Port8 +",
+                        "raw"  => null,
                     ),
                 ),
             ),
@@ -893,6 +901,7 @@ class ADuCACResistanceTest extends DriverTestBaseADuC
                         "index" => 0,
                         "epChannel" => true,
                         "port" => "Port1",
+                        "raw"  => 1000000,
                     ),
                     array(
                         "value" => 6.33825385,
@@ -906,6 +915,7 @@ class ADuCACResistanceTest extends DriverTestBaseADuC
                         "index" => 1,
                         "epChannel" => true,
                         "port" => "Port7 -,Port8 +",
+                        "raw"  => 1000000,
                     ),
                 ),
             ),
@@ -961,6 +971,7 @@ class ADuCACResistanceTest extends DriverTestBaseADuC
                         "index" => 0,
                         "epChannel" => true,
                         "port" => "Port1",
+                        "raw"  => 1000000,
                     ),
                     array(
                         "value" => 0.06338254,
@@ -974,6 +985,7 @@ class ADuCACResistanceTest extends DriverTestBaseADuC
                         "index" => 1,
                         "epChannel" => true,
                         "port" => "Port7 -,Port8 +",
+                        "raw"  => -1000000,
                     ),
                 ),
             ),
@@ -1029,6 +1041,7 @@ class ADuCACResistanceTest extends DriverTestBaseADuC
                         "index" => 0,
                         "epChannel" => true,
                         "port" => "Port1",
+                        "raw"  => 576,
                     ),
                     array(
                         "value" => 0.00110366,
@@ -1042,6 +1055,7 @@ class ADuCACResistanceTest extends DriverTestBaseADuC
                         "index" => 1,
                         "epChannel" => true,
                         "port" => "Port7 -,Port8 +",
+                        "raw"  => 18496,
                     ),
                 ),
                 8  // THis makes sure it doesn't take too much of the string
@@ -1098,6 +1112,7 @@ class ADuCACResistanceTest extends DriverTestBaseADuC
                         "index" => 0,
                         "epChannel" => true,
                         "port" => "Port1",
+                        "raw"  => 576,
                     ),
                     array(
                         "value" => 0.00110366,
@@ -1111,6 +1126,7 @@ class ADuCACResistanceTest extends DriverTestBaseADuC
                         "index" => 1,
                         "epChannel" => true,
                         "port" => "Port7 -,Port8 +",
+                        "raw"  => 18496,
                     ),
                 ),
             ),

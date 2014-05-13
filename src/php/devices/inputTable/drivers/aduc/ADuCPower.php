@@ -384,9 +384,11 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
     ) {
         $ret = $this->channels();
         foreach (array_keys($ret) as $key) {
+            $A = $this->getRawData($string, $key);
             $ret[$key]["value"] = $this->decodeDataPoint(
-                $string, $key, $deltaT, $prev, $ret
+                $A, $key, $deltaT, $prev, $ret
             );
+            $ret[$key]["raw"] = $A;
         }
         return $ret;
     }
@@ -438,20 +440,19 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
     ) {
         $return = null;
         $Enable = $this->_hardwareEnable();
-        $A = $this->getRawData($string, $channel);
         if ($channel == 0) {
-            $return = $this->getCurrent($A, $deltaT, $data, $prev);
+            $return = $this->getCurrent($string, $deltaT, $data, $prev);
         } else if ($channel == 1) {
-            $return = $this->getVoltage($A, $deltaT, $data, $prev);
+            $return = $this->getVoltage($string, $deltaT, $data, $prev);
         } else if ($channel == 2) {
             if ($Enable) {
-                $return = $this->getPower($A, $deltaT, $data, $prev);
+                $return = $this->getPower($string, $deltaT, $data, $prev);
             } else {
                 $return = $this->getCalcPower($deltaT, $data, $prev);
             }
         } else if ($channel == 3) {
             if ($Enable) {
-                $return = $this->getImpedance($A, $deltaT, $data, $prev);
+                $return = $this->getImpedance($string, $deltaT, $data, $prev);
             } else {
                 $return = $this->getCalcImpedance($deltaT, $data, $prev);
             }

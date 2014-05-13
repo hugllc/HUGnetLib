@@ -273,12 +273,12 @@ abstract class DriverADuC extends Driver
             $ret[0]["value"] = $this->getReading(
                 ($A - $prev["raw"]), $deltaT, $data, $prev
             );
-            $ret[0]["raw"] = $A;
         } else {
             $ret[0]["value"] = $this->getReading(
                 $A, $deltaT, $data, $prev
             );
         }
+        $ret[0]["raw"] = $A;
         return $ret;
     }
     /**

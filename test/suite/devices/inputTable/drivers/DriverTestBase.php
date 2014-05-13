@@ -73,7 +73,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-    }
+   }
 
     /**
     * Tears down the fixture, for example, closes a network connection.
@@ -85,6 +85,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     */
     protected function tearDown()
     {
+        unset($this->input);
         unset($this->o);
     }
 
@@ -504,6 +505,60 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
         $sen->resetMock($sensor);
         $ret = $this->o->decodeDataPoint($A, $channel, $deltaT, $prev, $data);
         $this->assertEquals($expect, $ret, 0.00001);
+    }
+    /**
+    * DecodeData MUST return a value
+    *
+    * @return null
+    *
+    */
+    public function testDecodeDataValue() 
+    {
+        $A = 0;
+        $deltaT = 0;
+        $prev = array();
+        $data = array();
+        $ret = $this->o->decodeData(
+            $A, 
+            $deltaT, 
+            $prev, 
+            $data
+        );
+        $this->assertInternalType("array", $ret);
+        foreach (array_keys($ret) as $key) {
+            $this->assertArrayHasKey(
+                "value",
+                (array)$ret[$key],
+                "Decoded array must have key 'value'"
+            );
+        }
+    }
+    /**
+    * DecodeData MUST return a value
+    *
+    * @return null
+    *
+    */
+    public function testDecodeDataRaw() 
+    {
+        $A = 0;
+        $deltaT = 0;
+        $prev = array();
+        $data = array();
+        $ret = $this->o->decodeData(
+            $A, 
+            $deltaT, 
+            $prev, 
+            $data
+        );
+        $this->assertInternalType("array", $ret);
+        foreach (array_keys($ret) as $key) {
+            $this->assertArrayHasKey(
+                "raw", 
+                (array)$ret[$key],
+                "Decoded array must have key 'raw'"
+            );
+        }
     }
     /**
      * Data provider for testGetReading

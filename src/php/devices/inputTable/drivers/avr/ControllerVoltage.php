@@ -196,6 +196,11 @@ class ControllerVoltage extends \HUGnet\devices\inputTable\DriverAVR
         }
         $ret = $this->channels();
         $ret[0]["value"] = $this->getReading($Ah - $Al, $deltaT, $data, $prev);
+        if (!is_null($Ah) && !is_null($Al)) {
+            $ret[0]["raw"] = $Ah - $Al;
+        } else {
+            $ret[0]["raw"] = null;
+        }
         return $ret;
     }
 

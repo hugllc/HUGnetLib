@@ -184,6 +184,7 @@ class ControllerCurrent extends \HUGnet\devices\inputTable\DriverAVR
         }
         $ret             = $this->channels();
         $ret[0]["value"] = $this->getReading($A);
+        $ret[0]["raw"]   = $A;
         return $ret;
     }
 

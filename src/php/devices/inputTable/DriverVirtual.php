@@ -85,6 +85,7 @@ abstract class DriverVirtual extends Driver
         $ret = $this->channels();
         $A = null;
         $ret[0]["value"] = $this->decodeDataPoint($A, 0, $deltaT, $prev, $data);
+        $ret[0]["raw"]   = $A;
         return $ret;
     }
     /**
