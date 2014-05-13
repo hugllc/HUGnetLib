@@ -149,6 +149,21 @@ class AVROnTimePulseTest extends DriverTestBaseAVR
                 array(),
                 null
             ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            'id' => 0x7E,
+                        ),
+                    ),
+                ),
+                0,
+                0,
+                array(
+                ),
+                array(),
+                null
+            ),
         );
     }
     /**

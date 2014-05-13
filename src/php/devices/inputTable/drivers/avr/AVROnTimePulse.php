@@ -91,7 +91,7 @@ class AVROnTimePulse extends \HUGnet\devices\inputTable\DriverAVR
     */
     protected function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
-        if ($A < 0) {
+        if (($A < 0) || !is_array($data) || empty($data["timeConstant"])) {
             return null;
         }
         return round(
