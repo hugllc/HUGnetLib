@@ -268,16 +268,9 @@ abstract class DriverADuC extends Driver
         $A = $this->getRawData($string);
         $A = $A / $this->gain();
         $ret = $this->channels();
-        $type = $this->get("storageType");
-        if ($type == \HUGnet\devices\datachan\Driver::TYPE_DIFF) {
-            $ret[0]["value"] = $this->getReading(
-                ($A - $prev["raw"]), $deltaT, $data, $prev
-            );
-        } else {
-            $ret[0]["value"] = $this->getReading(
-                $A, $deltaT, $data, $prev
-            );
-        }
+        $ret[0]["value"] = $this->decodeDataPoint(
+            $A, $deltaT, $data, $prev
+        );
         $ret[0]["raw"] = $A;
         return $ret;
     }
@@ -296,7 +289,7 @@ abstract class DriverADuC extends Driver
         if (is_string($string)) {
             $A = $this->getTwosCompliment($this->strToInt($string), 32);
         } else {
-            $A = (int)$string;
+            $A = (float)$string;
         }
         return $A;
     }

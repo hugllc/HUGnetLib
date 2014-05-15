@@ -440,19 +440,20 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
     ) {
         $return = null;
         $Enable = $this->_hardwareEnable();
+        $A = $this->getRawData($string, $channel);
         if ($channel == 0) {
-            $return = $this->getCurrent($string, $deltaT, $data, $prev);
+            $return = $this->getCurrent($A, $deltaT, $data, $prev);
         } else if ($channel == 1) {
-            $return = $this->getVoltage($string, $deltaT, $data, $prev);
+            $return = $this->getVoltage($A, $deltaT, $data, $prev);
         } else if ($channel == 2) {
             if ($Enable) {
-                $return = $this->getPower($string, $deltaT, $data, $prev);
+                $return = $this->getPower($A, $deltaT, $data, $prev);
             } else {
                 $return = $this->getCalcPower($deltaT, $data, $prev);
             }
         } else if ($channel == 3) {
             if ($Enable) {
-                $return = $this->getImpedance($string, $deltaT, $data, $prev);
+                $return = $this->getImpedance($A, $deltaT, $data, $prev);
             } else {
                 $return = $this->getCalcImpedance($deltaT, $data, $prev);
             }
@@ -473,6 +474,9 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
     {
         if (is_null($string)) {
             return null;
+        }
+        if (!is_string($string)) {
+            return (float)$string;
         }
         $return = null;
         $Enable = $this->_hardwareEnable();
