@@ -269,7 +269,7 @@ abstract class DriverADuC extends Driver
         $A = $A / $this->gain();
         $ret = $this->channels();
         $ret[0]["value"] = $this->decodeDataPoint(
-            $A, $deltaT, $data, $prev
+            $A, 0, $deltaT, $prev, $data
         );
         $ret[0]["raw"] = $A;
         return $ret;

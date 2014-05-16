@@ -166,6 +166,16 @@ class ADuCVishayRTDTest extends DriverTestBaseADuC
                 array(),
                 null,
             ),
+            array(
+                array(
+                    'extra' => array(2210),
+                ),
+                "CFF2F9FF",
+                0,
+                array(),
+                array(),
+                24.8409,
+            ),
         );
     }
     /**

@@ -156,6 +156,22 @@ class ADuCThermocoupleTest extends DriverTestBaseADuC
                 array(),
                 -96.9944,
             ),
+            array( //#6 
+                array(
+                    "extra" => array(
+                        0 => 1000,
+                        1 => "inf",
+                        2 => 1200,
+                        3 => "k",
+                        4 => 0
+                    )
+                ),
+                "40FCFFFF",
+                1,
+                array(0 => array("value" => 24.8409)),
+                array(),
+                21.3644,
+            ),
         );
     }
     /**
