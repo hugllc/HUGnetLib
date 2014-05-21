@@ -244,10 +244,14 @@ class ADuCACResistance extends \HUGnet\devices\inputTable\DriverADuC
         &$string, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
     ) {
         $return = null;
+        $A      = null;
+        if (!is_null($string)) {
+            $A = $this->getRawData($string, $channel);
+        }
         if ($channel == 0) {
-            $return = $this->getVoltage($string, $deltaT, $data, $prev);
+            $return = $this->getVoltage($A, $deltaT, $data, $prev);
         } else if ($channel == 1) {
-            $return = $this->getResistance($string, $deltaT, $data, $prev);
+            $return = $this->getResistance($A, $deltaT, $data, $prev);
         }
         return $return;
     }

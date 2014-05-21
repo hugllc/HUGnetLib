@@ -380,11 +380,11 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
         $extra = $this->input()->get("extra");
         $start = 22;
         $data = substr($string, $start);
-        $val = $this->decodeDataPoint($data, 0);
+        $val = $this->_driver(0)->decodeDataPoint($data, 0);
         if (!is_null($val)) {
             $extra[1] = $val;
         }
-        $val = $this->decodeDataPoint($data, 1);
+        $val = $this->_driver(1)->decodeDataPoint($data, 0);
         if (!is_null($val)) {
             $extra[2] = $val;
         }

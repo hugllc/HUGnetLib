@@ -294,7 +294,7 @@ class DriverADuCTest extends drivers\DriverTestBase
                 1,
                 array(),
                 array(),
-                256210,
+                256210.0,
             ),
         );
     }
