@@ -145,7 +145,7 @@ class WattNodeTest extends DriverTestBase
                         ),
                     ),
                 ),
-                array(7, array(0 => "Counter"), array(1, 2, 3), 2),
+                array(7, array(0 => "Counter"), array(1, 2, 3), 3),
             ),
         );
     }

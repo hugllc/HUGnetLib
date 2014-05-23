@@ -78,7 +78,7 @@ class Bravo3Motion extends \HUGnet\devices\inputTable\DriverPulse
         "extraValues" => array(
             array(0 => "Counter"),
             array(),
-            2,
+            3,
         ),
         "extraDefault" => array(0, 0, 3),
         "extraDesc" => array(

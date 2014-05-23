@@ -82,7 +82,7 @@ class GenericRevolving extends \HUGnet\devices\inputTable\DriverPulse
             5,
             array(0 => "Counter"),
             array(),
-            2,
+            3,
         ),
         "extraDefault" => array(1, 0, 0, 3),
         "extraDesc" => array(

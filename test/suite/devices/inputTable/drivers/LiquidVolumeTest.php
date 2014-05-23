@@ -145,7 +145,7 @@ class LiquidVolumeTest extends DriverTestBase
                         ),
                     ),
                 ),
-                array(10, array(0 => "Counter"), array(1, 2, 3), 2),
+                array(10, array(0 => "Counter"), array(1, 2, 3), 3),
             ),
         );
     }

@@ -82,7 +82,7 @@ class LiquidVolume extends \HUGnet\devices\inputTable\DriverPulse
             10,
             array(0 => "Counter"),
             array(),
-            2,
+            3,
         ),
         "extraDefault" => array(1000, 0, 0, 3),
         "extraDesc" => array(

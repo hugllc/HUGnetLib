@@ -82,7 +82,7 @@ class WattNode extends \HUGnet\devices\inputTable\DriverPulse
             7,
             array(0 => "Counter"),
             array(),
-            2,
+            3,
         ),
         "extraDefault" => array(5, 0, 0, 3),
         "extraDesc" => array(

@@ -82,7 +82,7 @@ class LiquidFlow extends \HUGnet\devices\inputTable\DriverPulse
             10,
             array(0 => "Counter"),
             array(),
-            2,
+            3,
         ),
         "extraDefault" => array(0.1, 0, 0, 3),
         "extraDesc" => array(
