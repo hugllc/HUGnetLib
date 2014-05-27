@@ -47,6 +47,7 @@ HUGnet.ImageSVGView = Backbone.View.extend({
     date: null,
     type: null,
     events: {
+       'click text': '_hilightText',
     },
     initialize: function (options)
     {
@@ -57,6 +58,16 @@ HUGnet.ImageSVGView = Backbone.View.extend({
         //this.model.each(this.insert, this);
         this.model.on('change', this.render, this);
         this.model.on('datasync', this.updatePoints, this);
+    },
+    _hilightText: function (e)
+    {
+        console.log("SVG");
+        console.log(e);
+        //$(e.target).closest("tr").siblings().removeClass("datapointhilight");
+        //$(e.target).closest("tr").addClass("datapointhilight");
+        //var index = $(e.target).closest("tr").attr("rowindex");
+        //$('svg text').attr('class', '');
+        //$('svg text#point'+index).attr('class', 'datapointhilight');
     },
     /**
     * This renders the SVG
