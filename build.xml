@@ -150,7 +150,7 @@
         <delete file="${basedir}/src/webapi/html/hugnet.min.js"/>
         <echo>Building src/webapi/html/contrib.js</echo>
         <concat destfile="${basedir}/src/webapi/html/contrib.js">
-            <fileset file="${basedir}/src/webapi/contrib/jquery-1.9.0.js"/>
+            <fileset file="${basedir}/src/webapi/contrib/jquery-2.1.1.js"/>
             <fileset file="${basedir}/src/webapi/contrib/jquery.cookie.js"/>
             <fileset file="${basedir}/src/webapi/contrib/jquery.metadata.js"/>
             <fileset file="${basedir}/src/webapi/contrib/jquery.tablesorter.js"/>
