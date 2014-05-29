@@ -170,9 +170,6 @@
             <fileset file="${basedir}/src/webapi/contrib/jqplot.canvasAxisLabelRenderer.js"/>
             <fileset file="${basedir}/src/webapi/contrib/jqplot.dateAxisRenderer.js"/>
             <fileset file="${basedir}/src/webapi/contrib/svg/jquery.svg.min.js"/>
-            <fileset file="${basedir}/src/webapi/contrib/svg/jquery.svgdom.min.js"/>
-            <fileset file="${basedir}/src/webapi/contrib/svg/jquery.svganim.min.js"/>
-            <fileset file="${basedir}/src/webapi/contrib/svg/jquery.svgfilter.min.js"/>
             <!--
             <fileset file="${basedir}/src/webapi/javascript/contrib/jquery.flot.selection.js"/>
             <fileset file="${basedir}/src/webapi/javascript/contrib/jquery.flot.navigation.js"/>
