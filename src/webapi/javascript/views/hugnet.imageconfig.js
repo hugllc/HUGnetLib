@@ -55,7 +55,6 @@ var ImageConfigPropertiesView = Backbone.View.extend({
         'click .insertImage': '_insertImage',
         'click .insertPoint': '_insertPoint',
         'click tr.datapoint': '_hilight',
-        'click svg text': '_hilightText',
     },
     initialize: function (options)
     {
@@ -69,16 +68,6 @@ var ImageConfigPropertiesView = Backbone.View.extend({
             model: this.model,
             style: "border: thin solid black;",
         });
-        this.image.render();
-    },
-    _hilightText: function (e)
-    {
-        console.log(e);
-        //$(e.target).closest("tr").siblings().removeClass("datapointhilight");
-        //$(e.target).closest("tr").addClass("datapointhilight");
-        //var index = $(e.target).closest("tr").attr("rowindex");
-        //$('svg text').attr('class', '');
-        //$('svg text#point'+index).attr('class', 'datapointhilight');
     },
     _hilight: function (e)
     {
