@@ -92,7 +92,7 @@ HUGnet.ImageView = Backbone.View.extend({
     },
     update: function ()
     {
-        this.image.update(this.before, this.type);
+        this.image.updateData(this.before, this.type);
     },
     updateDates: function ()
     {
@@ -188,12 +188,14 @@ HUGnet.ImageView = Backbone.View.extend({
     */
     render: function ()
     {
+        var id   = 'svgimg'+this.model.get("id");
         var data = this.model.toJSON();
         data.type = this.type;
         data.before = this.before;
         var d = new Date;
         d.setTime(data.before);
         data.beforeDate = this._formatDate(d);
+        data.svg = '<div id="'+id+'">/div>';
         this.$el.html(
             _.template(
                 $(this.template).html(),
@@ -205,7 +207,8 @@ HUGnet.ImageView = Backbone.View.extend({
             this.$("#before").attr("id", this.beforeId);
         }
         this.$("#"+this.beforeId).datetimepicker();
-        this.$el.append(this.image.render().el);
+        this.$("div#"+id).html("");
+        this.$("div#"+id).append(this.image.render().el);
         this.update();
         return this;
     },

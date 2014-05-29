@@ -54,7 +54,7 @@ var ImageConfigPropertiesView = Backbone.View.extend({
         'change select.type': 'save',
         'click .insertImage': '_insertImage',
         'click .insertPoint': '_insertPoint',
-        'click tr.datapoint': '_hilight',
+        'click tr.datapoint': '_rowclick',
     },
     initialize: function (options)
     {
@@ -67,15 +67,35 @@ var ImageConfigPropertiesView = Backbone.View.extend({
         this.image = new HUGnet.ImageSVGView({
             model: this.model,
             style: "border: thin solid black;",
+            draggable: true,
+            id: "cfgimg-"+this.model.get("name"),
+
         });
-    },
-    _hilight: function (e)
+        this.image.on("dragend", this._dragmove, this);
+    }, 
+    _dragmove: function (point, delta, e)
     {
-        $(e.target).closest("tr").siblings().removeClass("datapointhilight");
-        $(e.target).closest("tr").addClass("datapointhilight");
+        if ((delta.x != 0) && (delta.y != 0)) {
+            var pt = this.model.points.get(point.id);
+            var x  = parseInt(pt.get("x"), 10) + parseInt(delta.x, 10);
+            var y  = parseInt(pt.get("y"), 10) + parseInt(delta.y, 10);
+            pt.set("x", x);
+            pt.set("y", y);
+            this.model.flushpoints();
+        }
+        this._hilight(point.id);
+    },
+    _rowclick: function (e)
+    {
         var index = $(e.target).closest("tr").attr("rowindex");
-        $('svg text').attr('class', '');
-        $('svg text#point'+index).attr('class', 'datapointhilight');
+        this._hilight(index);
+    },
+    _hilight: function (index)
+    {
+        var row = $('[rowindex="'+index+'"]');
+        row.siblings().removeClass("datapointhilight");
+        row.addClass("datapointhilight");
+        this.image.hilight(index);
     },
     save: function (e)
     {
@@ -154,8 +174,10 @@ var ImageConfigPropertiesView = Backbone.View.extend({
     */
     render: function ()
     {
+        var self = this;
+        var id   = 'svgimg'+this.model.get("id");
         var data = this.model.toJSON();
-        data.svg = this.image.render().$el.html();
+        data.svg = '<div id="'+id+'">/div>';
         _.extend(data, HUGnet.viewHelpers);
         this.$el.html(
             _.template(
@@ -165,7 +187,16 @@ var ImageConfigPropertiesView = Backbone.View.extend({
         );
         this.iframe = $('<iframe>', { name: 'insertImageFrame', id: 'insertImageFrame', content: "text/plain;charset=UTF-8" }).hide();
         this.$el.append(this.iframe);
+        this.$("div#"+id).html("");
+        this.$("div#"+id).append(this.image.render().el);
         this.model.off('saved', this.render, this);
+        // This fixes the backgrounds that don't work otherwise...
+        setTimeout(
+            function () {
+                self.image.update();
+            },
+            250
+        );
         return this;
     },
     /**

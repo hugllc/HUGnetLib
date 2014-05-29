@@ -66,6 +66,7 @@ HUGnet.Image = Backbone.Model.extend({
     {
         this.points = new HUGnet.ImagePoints({});
         this._resetPoints();
+        this.points.on("change", function() { this.trigger("change"); }, this);
     },
     /**
     * This function initializes the object
@@ -73,6 +74,13 @@ HUGnet.Image = Backbone.Model.extend({
     newpoint: function()
     {
         this.points.add({pretext: "New Point"});
+        this.flushpoints();
+    },
+    /**
+    * This function initializes the object
+    */
+    flushpoints: function()
+    {
         this.set("points", this.points.toJSON());
         this._resetPoints();
     },

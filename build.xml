@@ -148,6 +148,8 @@
         </delete>
         <delete file="${basedir}/src/webapi/html/hugnet.js"/>
         <delete file="${basedir}/src/webapi/html/hugnet.min.js"/>
+        <delete file="${basedir}/src/webapi/html/contrib.js"/>
+        <delete file="${basedir}/src/webapi/html/contrib.min.js"/>
         <echo>Building src/webapi/html/contrib.js</echo>
         <concat destfile="${basedir}/src/webapi/html/contrib.js">
             <fileset file="${basedir}/src/webapi/contrib/jquery-2.1.1.js"/>
@@ -169,6 +171,9 @@
             <fileset file="${basedir}/src/webapi/contrib/jquery.jqplot.js"/>
             <fileset file="${basedir}/src/webapi/contrib/jqplot.canvasAxisLabelRenderer.js"/>
             <fileset file="${basedir}/src/webapi/contrib/jqplot.dateAxisRenderer.js"/>
+            <fileset file="${basedir}/src/webapi/contrib/svg.1.0.0-rc6.js"/>
+            <fileset file="${basedir}/src/webapi/contrib/svg.draggable.js"/>
+            <fileset file="${basedir}/src/webapi/contrib/svg.filter.js"/>
             <!--
             <fileset file="${basedir}/src/webapi/javascript/contrib/jquery.flot.selection.js"/>
             <fileset file="${basedir}/src/webapi/javascript/contrib/jquery.flot.navigation.js"/>
@@ -184,9 +189,15 @@
             <fileset dir="${basedir}/src/webapi/javascript" includes="*.js"/>
             <fileset file="${basedir}/src/webapi/javascript/extra/footer.js"/>
         </concat>
+        <echo>Building src/webapi/html/hugnet.min.js</echo>
         <exec executable="uglifyjs">
             <arg line="-o ${basedir}/src/webapi/html/hugnet.min.js
                        ${basedir}/src/webapi/html/hugnet.js" />
+        </exec>
+        <echo>Building src/webapi/html/contrib.min.js</echo>
+        <exec executable="uglifyjs">
+            <arg line="-o ${basedir}/src/webapi/html/contrib.min.js
+                       ${basedir}/src/webapi/html/contrib.js" />
         </exec>
     </target>
 
