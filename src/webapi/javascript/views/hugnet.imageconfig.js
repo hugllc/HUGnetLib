@@ -110,7 +110,7 @@ var ImageConfigPropertiesView = Backbone.View.extend({
         var index = 0;
         $(".datapoint").each(function(ind, element) {
             // This checks that we only include this one once.
-            var check = $(this).find('[name="index"]').val();
+            var check = $(this).attr("rowindex");
             if (!$(this).find('[name="delete"]').prop("checked") && (check >= ind)) {
                 if (!points[index]) {
                     points[index] = {};
@@ -154,6 +154,8 @@ var ImageConfigPropertiesView = Backbone.View.extend({
             this.model.off('savefail', this.saveFail, this);
             this.model.off('saved', this.close, this);
             this.model.off('saved', this.render, this);
+            // Remove all of the datapoints.
+            $(".datapoint").remove();
             this.image.remove();
             this.remove();
         }
