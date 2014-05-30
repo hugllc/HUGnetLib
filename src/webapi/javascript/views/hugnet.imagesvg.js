@@ -57,6 +57,7 @@ HUGnet.ImageSVGView = Backbone.View.extend({
     text: {},
     background: null,
     draggable: false,
+    autocolor: false,
     events: {
     },
     initialize: function (options)
@@ -65,7 +66,8 @@ HUGnet.ImageSVGView = Backbone.View.extend({
             if (options.url) this.url = options.url;
             if (options.style) this.style = options.style;
             if (options.draggable) this.draggable = options.draggable;
-            if (options.id) this.draggable = options.id;
+            if (options.autocolor) this.autocolor = options.autocolor;
+            if (options.id) this.id = options.id;
         }
         //this.model.each(this.insert, this);
         this.model.on('change', this.render, this);
@@ -124,7 +126,7 @@ HUGnet.ImageSVGView = Backbone.View.extend({
             });
             text.fill({color: point.color});
             text.font({size: point.fontsize});
-            var box  = group.rect(10, 10);
+            var box = group.rect(10, 10);
             self.textBackground(text, box, point.background);
             text.front();
             group.move(parseInt(point.x, 10), parseInt(point.y, 10));
@@ -190,8 +192,18 @@ HUGnet.ImageSVGView = Backbone.View.extend({
                 if (self.points[key] && data) {
                     self.points[key].clear();
                     self.points[key].plain(data.points[key]);
-                }
-                if (self.text[key] && self.boxes[key]) {
+                    var background = self._autocolor(data.points[key], point);
+                    self.textBackground(
+                        self.text[key], self.boxes[key], background
+                    );
+                    if (background != point.background) {
+                        var color = tinycolor.mostReadable(
+                            background,
+                            [ point.color, "#000000", "#FFFFFF" ]
+                        );
+                        self.text[key].fill(color.toHexString());
+                    }
+                } else if (self.text[key] && self.boxes[key]) {
                     self.textBackground(
                         self.text[key], self.boxes[key], point.background
                     );
@@ -229,5 +241,28 @@ HUGnet.ImageSVGView = Backbone.View.extend({
         var data   = this.model.get("data");
         this.update(data);
         this.trigger("datasync");
+    },
+    _autocolor: function (value, point)
+    {
+        value = parseFloat(value);
+        if (!point.backgroundmax || (point.valmin >= point.valmax) || (value <= point.valmin)) {
+            return point.background;
+        }
+        var denom = parseFloat(point.valmax) - parseFloat(point.valmin);
+        if ((value >= point.valmax) || (denom <= 0)) {
+            return point.backgroundmax;
+        }
+        var diff = (value - parseFloat(point.valmin));
+        diff = diff / denom;
+        var min = tinycolor(point.background).toHsv();
+        var max = tinycolor(point.backgroundmax).toHsv()
+        var color = {};
+        color.h = min.h + ((max.h - min.h) * diff);
+        color.s = min.s + ((max.s - min.s) * diff);
+        color.v = min.v + ((max.v - min.v) * diff);
+        //color.a = min.a + ((max.a - min.a) * diff);
+        var ret = tinycolor(color);
+        return ret.toHexString();
     }
+
 });
