@@ -199,7 +199,7 @@ HUGnet.ImageSVGView = Backbone.View.extend({
                     if (background != point.background) {
                         var color = tinycolor.mostReadable(
                             background,
-                            [ point.color, "#000000", "#FFFFFF" ]
+                            [ point.color, point.color1, "#000000", "#FFFFFF" ]
                         );
                         self.text[key].fill(color.toHexString());
                     }

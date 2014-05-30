@@ -117,7 +117,7 @@ var ImageConfigPropertiesView = Backbone.View.extend({
                 }
                 points[index].id = index;
                 var row = this;
-                _.each(["pretext", "posttext", "fontsize", "x", "y", "color", "background", "devid", "datachan", "backgroundmax", "valmin", "valmax"],
+                _.each(["pretext", "posttext", "fontsize", "x", "y", "color", "color1", "background", "devid", "datachan", "backgroundmax", "valmin", "valmax"],
                     function(sel, i) {
                         points[index][sel] = $(row).find('[name="'+sel+'"]').val();
                     }
