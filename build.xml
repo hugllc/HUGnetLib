@@ -173,8 +173,8 @@
             <fileset file="${basedir}/src/webapi/contrib/jqplot.dateAxisRenderer.js"/>
             <fileset file="${basedir}/src/webapi/contrib/svg.1.0.0-rc6.js"/>
             <fileset file="${basedir}/src/webapi/contrib/svg.draggable.js"/>
-            <fileset file="${basedir}/src/webapi/contrib/svg.filter.js"/>
             <!--
+            <fileset file="${basedir}/src/webapi/contrib/svg.filter.js"/>
             <fileset file="${basedir}/src/webapi/javascript/contrib/jquery.flot.selection.js"/>
             <fileset file="${basedir}/src/webapi/javascript/contrib/jquery.flot.navigation.js"/>
             -->
