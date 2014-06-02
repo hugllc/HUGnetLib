@@ -117,6 +117,7 @@ HUGnet.ImageView = Backbone.View.extend({
             this.type = this.$('#type').val();
             this.image.on("datasyncfail", this._finishFetch, this);
             this.image.on("datasync", this._finishFetch, this);
+            this._setURL();
             this.updateDates();
             this.update();
         }
@@ -179,6 +180,18 @@ HUGnet.ImageView = Backbone.View.extend({
             (this.pause * 1000)
         );
     },
+    _setURL: function ()
+    {
+        var id      = this.model.get("id");
+        var imgurl  = window.location.origin+"/";
+        imgurl     += this.url+"?task=image&action=get";
+        imgurl     += "&id="+id.toString(16);
+        imgurl     += "&data[type]="+this.type;
+        imgurl     += "&data[date]=now";
+        imgurl     += '&format=PNG';
+        $("span#url").text(imgurl);
+        return imgurl;
+    },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
     *
@@ -196,6 +209,8 @@ HUGnet.ImageView = Backbone.View.extend({
         d.setTime(data.before);
         data.beforeDate = this._formatDate(d);
         data.svg = '<div id="'+id+'">/div>';
+        data.imgurl  = this._setURL();
+
         this.$el.html(
             _.template(
                 $(this.template).html(),

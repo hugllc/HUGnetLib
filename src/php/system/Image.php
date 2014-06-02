@@ -120,27 +120,32 @@ class Image extends \HUGnet\base\SystemTableBase
         $format   = trim(strtoupper($args->get("format")));
         $filename = $this->get("name");
         $filename = preg_replace('/[^a-zA-Z0-9-_\.]/','_', $filename);
+        $data     = $args->get("data");
+        if (empty($date)) {
+            $date = null;
+        }
         $content  = 'Content-disposition: inline; filename=';
         if ($format == "PNG") {
             //header('Content-type: text/plain');
-            header('Content-type: image/png');
-            header($content.$filename.'.png');
-            print $this->encode($format);
+            $fileext  = ".png";
+            $mimetype = "image/png";
             $ret = null;
         } else if ($format == "SVG") {
-            header('Content-type: image/svg+xml');
-            header($content.$filename.'.svg');
-            print $this->encode($format);
+            $fileext  = ".png";
+            $mimetype = "image/svg+xml";
             $ret = null;
         } else if (($format == "JPG") || ($format == "JPEG")) {
-            header('Content-type: image/jpg');
-            header($content.$filename.'.jpg');
-            print $this->encode("JPEG");
+            $fileext  = ".png";
+            $mimetype = "image/jpg";
+            $format = "JPG";
             $ret = null;
         } else {
-            $ret = $this->toArray(true);
+            return $this->toArray(true);
         }
-        return $ret;
+        header('Content-type: '.$mimetype);
+        header($content.$filename.$fileext);
+        print $this->encode($format, $data["date"], $data["type"]);
+        return null;
     }
     /**
     * This outputs the image, as an image
@@ -149,11 +154,11 @@ class Image extends \HUGnet\base\SystemTableBase
     *
     * @return null
     */
-    public function encode($format = "SVG")
+    public function encode($format = "SVG", $date = null, $type = null)
     {
         include_once dirname(__FILE__)."/../images/Driver.php";
         $driver = images\Driver::factory($format, $this);
-        $driver->reading($this->getReading());
+        $driver->reading($this->getReading($date, $type));
         $ret = $driver->encode();
         return $ret;
     }
