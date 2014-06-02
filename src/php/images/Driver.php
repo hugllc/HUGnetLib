@@ -43,6 +43,8 @@ defined('_HUGNET') or die('HUGnetSystem not found');
 require_once dirname(__FILE__)."/../base/LoadableDriver.php";
 /** This is our interface */
 require_once dirname(__FILE__)."/drivers/DriverInterface.php";
+/** This is our base class */
+require_once dirname(__FILE__)."/../contrib/Color.php";
 /**
  * This class has functions that relate to the manipulation of elements
  * of the devInfo array.
@@ -246,16 +248,17 @@ abstract class Driver
         $pretext  = html_entity_decode((string)$point["pretext"]);
         $posttext = html_entity_decode((string)$point["posttext"]);
         $fontsize = ((int)$point["fontsize"] > 0) ? (int)$point["fontsize"] : 12;
-        $text     = $pretext;
-        $text    .= $this->_reading["points"][$point["id"]];
-        $text    .= $posttext;
+        $value    = $this->_reading["points"][$point["id"]];
+        $text     = $pretext.$value.$posttext;
         $box      = imagettfbbox($fontsize, 0, $this->_fontFile, $text);
+
         if (!is_null($point["background"])
             && (strtolower($point["background"]) !== "none")
             && (strtolower($point["background"]) !== "transparent")
         ) {
 
-            $bcolor = $this->gdAllocateColor($point["background"]);
+            $background = $this->autobackground($value, $point);
+            $bcolor = $this->gdAllocateColor($background);
             imagefilledrectangle(
                 $this->img,
                 $point["x"] + $box[6] - 3,
@@ -264,6 +267,7 @@ abstract class Driver
                 $point["y"] + $box[3] + 3,
                 $bcolor
             );
+            $color = $this->gdAllocateColor($this->autocolor($background, $point));
         }
         $ret = imagettftext(
             $this->img,
@@ -288,16 +292,170 @@ abstract class Driver
     protected function gdAllocateColor($color)
     {
 
-        $color = empty($color) ? "#000000" : trim(strtoupper($color));
         if (empty($this->colors[$color])) {
-            $r = hexdec(substr($color, 1, 2));
-            $g = hexdec(substr($color, 3, 2));
-            $b = hexdec(substr($color, 5, 2));
-
-            $this->colors[$color] = imagecolorallocate($this->img, $r, $g, $b);
-            $this->RGB[$color]    = array("R" => $r, "G" => $g, "B" => $b);
+            $c = $this->hexToRGB($color);
+            $this->colors[$color] = imagecolorallocate(
+                $this->img, $c["R"], $c["G"], $c["B"]
+            );
         }
         return $this->colors[$color];
+    }
+    /**
+     * Converts an HTML color into RGB
+     *
+     * @param string $color The color in HTML format (#RRGGBB)
+     *
+     * @return array The rgb information
+     */
+    protected function hexToRGB($color)
+    {
+        $color = empty($color) ? "#000000" : trim(strtoupper($color));
+        if (empty($this->RGB[$color])) {
+            $color = str_replace("#", "", $color);
+            $r = hexdec(substr($color, 0, 2));
+            $g = hexdec(substr($color, 2, 2));
+            $b = hexdec(substr($color, 4, 2));
+
+            $this->RGB[$color]    = array("R" => $r, "G" => $g, "B" => $b);
+        }
+        return $this->RGB[$color];
+    }
+    /**
+     * Returns the brightness of the color
+     *
+     * @param string $color The color in HTML format (#RRGGBB)
+     *
+     * @return array The rgb information
+     */
+    protected function brightness($color)
+    {
+        $c = $this->hexToRGB($color);
+        $brightness  =  sqrt(
+            (0.241 * pow($c["R"], 2)) 
+            + (0.691 * pow($c["G"], 2)) 
+            + (0.068 * pow($c["B"], 2))
+        );
+        return $brightness;
+    }
+    /**
+     * Returns whether a color combination will be readable
+     *
+     * @param string $color1 The first color in HTML format (#RRGGBB)
+     * @param string $color2 The second color in HTML format (#RRGGBB)
+     *
+     * @return array The rgb information
+     */
+    protected function readable($color1, $color2)
+    {
+        $brightness = abs($this->brightness($color1) - $this->brightness($color2));
+        return $brightness > 130;
+    }
+    /**
+     * Converts an HTML color into RGB
+     *
+     * @param string $color  The color in HTML format (#RRGGBB)
+     * @param array  $colors Array of colors in HTML format (#RRGGBB)
+     *
+     * @return array The rgb information
+     */
+    protected function mostReadable($color, $colors)
+    {
+        $max    = null;
+        $maxkey = null;
+        foreach ((array)$colors as $key => $c) {
+            if (is_string($c) && (strlen($c) == 7)) {
+                $brightness = abs($this->brightness($color) - $this->brightness($c));
+                if (is_null($max) || ($brightness > $max)) {
+                    $max    = $brightness;
+                    $maxkey = $key;
+                }
+            }
+        }
+        if (is_null($maxkey)) {
+            return null;
+        }
+        return $colors[$maxkey];
+    }
+    /**
+     * Method to automatically pick a color
+     *
+     * @param string $background The background color to use
+     * @param array  $point      The point to use
+     *
+     * @return string
+     */
+    protected function autocolor($background, $point)
+    {
+        if ($background != $point["background"]) {
+            $color = $this->mostReadable(
+                $background,
+                array($point["color"], $point["color1"], "#000000", "#FFFFFF")
+            );
+        } else {
+            $color = $point["color"];
+        }
+        if (empty($color)) {
+            // Black if nothing else is specified
+            $color = "#000000";
+        }
+        return $color;
+    }
+    /**
+     * Method to automatically pick a color
+     *
+     * @param mixed $value The value to use
+     * @param array $point The point to use
+     *
+     * @return string
+     */
+    protected function autobackground($value, $point)
+    {
+        $value = (float)$value;
+        if (empty($point['backgroundmax']) 
+            || ($point["valmin"] >= $point["valmax"]) 
+            || ($value <= $point["valmin"])
+        ) {
+            return $point["background"];
+        }
+        $denom = ($point["valmax"] - $point["valmin"]);
+        if (($value >= $point["valmax"]) || ($denom <= 0)) {
+            return $point["backgroundmax"];
+        }
+        $diff = (float)($value - (float)$point["valmin"]);
+        $diff = $diff / $denom;
+        $min = $this->_color2HSV($point["background"]);
+        $max = $this->_color2HSV($point["backgroundmax"]);
+
+        $hue = $min['h'] + (($max['h'] - $min['h']) * $diff);
+        $sat = $min['s'] + (($max['s'] - $min['s']) * $diff);
+        $val = $min['v'] + (($max['v'] - $min['v']) * $diff);
+        return $this->_hsv2Color($hue, $sat, $val);
+    }
+
+    /**
+     * Method to display the view
+     *
+     * @param string $color The color value to use.  Should be RRGGBB
+     *
+     * @return string
+     */
+    private function _color2HSV($color)
+    {
+        $color = str_replace("#", "", $color);
+        return \HUGnet\contrib\Color::hex2hsv($color);
+    }
+    /**
+    * Method to display the view
+    *
+    * @param int $hue The Hue
+    * @param int $sat The Saturation
+    * @param int $val The Value
+    *
+    * @return string
+    */
+    private function _hsv2Color($hue, $sat, $val)
+    {
+        return "#".\HUGnet\contrib\Color::hsv2hex($hue, $sat, $val);
     }
 }
 ?>

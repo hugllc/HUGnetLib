@@ -255,6 +255,362 @@ class DriverTest extends drivers\DriverTestBase
         $ret = $obj->encode();
         $this->assertSame($expect, $ret);
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataBrightness()
+    {
+        return array(
+            array( // #0
+                array(
+                ),
+                "#FFFFFF",
+                255.0,
+            ),
+            array( // #1
+                array(
+                ),
+                "#000000",
+                0.0,
+            ),
+            array( // #2
+                array(
+                ),
+                "#888888",
+                136.0,
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $mocks  The value to preload into the mocks
+    * @param string $color  The color to check against
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataBrightness
+    */
+    public function testBrightness($mocks, $color, $expect)
+    {
+        $sensor  = new \HUGnet\DummyTable("Sensor");
+        $sensor->resetMock($mocks);
+        $obj = Driver::factory("DriverTestClass", $sensor);
+        $ret = $obj->brightness($color);
+        $this->assertSame($expect, $ret);
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataMostReadable()
+    {
+        return array(
+            array( // #0
+                array(
+                ),
+                "#000000",
+                array("#000000", "#888888", "#FFFFFF"),
+                "#FFFFFF"
+            ),
+            array( // #1
+                array(
+                ),
+                "#FFFFFF",
+                array("#000000", "#888888", "#FFFFFF"),
+                "#000000"
+            ),
+            array( // #2
+                array(
+                ),
+                "#888888",
+                array("#000000", "#888888", "#FFFFFF"),
+                "#000000"
+            ),
+            array( // #3
+                array(
+                ),
+                "#888888",
+                array(null, "#888888", "#FFFFFF"),
+                "#FFFFFF"
+            ),
+            array( // #4
+                array(
+                ),
+                "#888888",
+                array("#000", "#888888", "#FFFFFF"),
+                "#FFFFFF"
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $mocks  The value to preload into the mocks
+    * @param string $color  The color to check against
+    * @param array  $colors The color array to try
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataMostReadable
+    */
+    public function testMostReadable($mocks, $color, $colors, $expect)
+    {
+        $sensor  = new \HUGnet\DummyTable("Sensor");
+        $sensor->resetMock($mocks);
+        $obj = Driver::factory("DriverTestClass", $sensor);
+        $ret = $obj->mostReadable($color, $colors);
+        $this->assertSame($expect, $ret);
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataReadable()
+    {
+        return array(
+            array( // #0
+                array(
+                ),
+                "#000000",
+                "#000000",
+                false,
+            ),
+            array( // #1
+                array(
+                ),
+                "#FFFFFF",
+                "#000000",
+                true,
+            ),
+            array( // #2
+                array(
+                ),
+                "#888888",
+                "#000000",
+                true,
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $mocks  The value to preload into the mocks
+    * @param string $color1 The color to check against
+    * @param string $color2 The color array to try
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataReadable
+    */
+    public function testReadable($mocks, $color1, $color2, $expect)
+    {
+        $sensor  = new \HUGnet\DummyTable("Sensor");
+        $sensor->resetMock($mocks);
+        $obj = Driver::factory("DriverTestClass", $sensor);
+        $ret = $obj->readable($color1, $color2);
+        $this->assertSame($expect, $ret);
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataAutocolor()
+    {
+        return array(
+            array( // #0
+                array(
+                ),
+                "#FFFFFF",
+                array(
+                    "color"      => "#123456",
+                    "color2"     => "#8E8E8E",
+                    "background" => "#FFFFFF",
+                ),
+                "#123456",
+            ),
+            array( // #1
+                array(
+                ),
+                "#888888",
+                array(
+                    "color"      => "#123456",
+                    "color2"     => "#8E8E8E",
+                    "background" => "#FFFFFF",
+                ),
+                "#000000",
+            ),
+            array( // #2
+                array(
+                ),
+                "#FFFFFF",
+                array(
+                    "background" => "#FFFFFF",
+                ),
+                "#000000",
+            ),
+            array( // #2
+                array(
+                ),
+                "#000000",
+                array(
+                    "background" => "#FFFFFF",
+                ),
+                "#FFFFFF",
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $mocks  The value to preload into the mocks
+    * @param string $value  The value to use
+    * @param array  $point  The point to use
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataAutocolor
+    */
+    public function testAutocolor($mocks, $value, $point, $expect)
+    {
+        $sensor  = new \HUGnet\DummyTable("Sensor");
+        $sensor->resetMock($mocks);
+        $obj = Driver::factory("DriverTestClass", $sensor);
+        $ret = $obj->autocolor($value, $point);
+        $this->assertSame($expect, $ret);
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataAutobackground()
+    {
+        return array(
+            array( // #0
+                array(
+                ),
+                5,
+                array(
+                    "background" => "#FFFFFF",
+                    "backgroundmax" => "#000000",
+                    "valmin" => 1,
+                    "valmax" => 10,
+                ),
+                "#8E8E8E",
+            ),
+            array( // #1
+                array(
+                ),
+                1,
+                array(
+                    "background" => "#FFFFFF",
+                    "backgroundmax" => "#000000",
+                    "valmin" => 1,
+                    "valmax" => 10,
+                ),
+                "#FFFFFF",
+            ),
+            array( // #2
+                array(
+                ),
+                10,
+                array(
+                    "background" => "#FFFFFF",
+                    "backgroundmax" => "#000000",
+                    "valmin" => 1,
+                    "valmax" => 10,
+                ),
+                "#000000",
+            ),
+            array( // #3
+                array(
+                ),
+                5,
+                array(
+                    "background" => "#FFFFFF",
+                ),
+                "#FFFFFF",
+            ),
+            array( // #4
+                array(
+                ),
+                5,
+                array(
+                    "background" => "#FFFFFF",
+                    "backgroundmax" => "#000000",
+                    "valmin" => 10,
+                    "valmax" => 1,
+                ),
+                "#FFFFFF",
+            ),
+            array( // #5
+                array(
+                ),
+                0,
+                array(
+                    "background" => "#FFFFFF",
+                    "backgroundmax" => "#000000",
+                    "valmin" => 1,
+                    "valmax" => 10,
+                ),
+                "#FFFFFF",
+            ),
+            array( // #6
+                array(
+                ),
+                11,
+                array(
+                    "background" => "#FFFFFF",
+                    "backgroundmax" => "#000000",
+                    "valmin" => 1,
+                    "valmax" => 10,
+                ),
+                "#000000",
+            ),
+            array( // #7
+                array(
+                ),
+                "5 V",
+                array(
+                    "background" => "#FFFFFF",
+                    "backgroundmax" => "#000000",
+                    "valmin" => 1,
+                    "valmax" => 10,
+                ),
+                "#8E8E8E",
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $mocks  The value to preload into the mocks
+    * @param string $value  The value to use
+    * @param array  $point  The point to use
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataAutobackground
+    */
+    public function testAutobackground($mocks, $value, $point, $expect)
+    {
+        $sensor  = new \HUGnet\DummyTable("Sensor");
+        $sensor->resetMock($mocks);
+        $obj = Driver::factory("DriverTestClass", $sensor);
+        $ret = $obj->autobackground($value, $point);
+        $this->assertSame($expect, $ret);
+    }
 }
 /** This is the HUGnet namespace */
 namespace HUGnet\images\drivers;
@@ -295,6 +651,64 @@ class DriverTestClass extends \HUGnet\images\Driver
     {
         return $this->toArray();
     }
-    
+    /**
+     * Returns the brightness of the color
+     *
+     * @param string $color The color in HTML format (#RRGGBB)
+     *
+     * @return array The rgb information
+     */
+    public function brightness($color)
+    {
+        return parent::brightness($color);
+    }
+    /**
+     * Returns whether a color combination will be readable
+     *
+     * @param string $color1 The first color in HTML format (#RRGGBB)
+     * @param string $color2 The second color in HTML format (#RRGGBB)
+     *
+     * @return array The rgb information
+     */
+    public function readable($color1, $color2)
+    {
+        return parent::readable($color1, $color2);
+    }
+    /**
+     * Converts an HTML color into RGB
+     *
+     * @param string $color  The color in HTML format (#RRGGBB)
+     * @param array  $colors Array of colors in HTML format (#RRGGBB)
+     *
+     * @return array The rgb information
+     */
+    public function mostReadable($color, $colors)
+    {
+        return parent::mostReadable($color, $colors);
+    }
+    /**
+     * Method to automatically pick a color
+     *
+     * @param mixed $value The value to use
+     * @param array $point The point to use
+     *
+     * @return string
+     */
+    public function autobackground($value, $point)
+    {
+        return parent::autobackground($value, $point);
+    }
+    /**
+     * Method to automatically pick a color
+     *
+     * @param string $background The background color to use
+     * @param array  $point      The point to use
+     *
+     * @return string
+     */
+    public function autocolor($background, $point)
+    {
+        return parent::autocolor($background, $point);
+    }
 }
 ?>

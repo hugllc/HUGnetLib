@@ -243,11 +243,10 @@ class SVG extends \HUGnet\images\Driver
         $pretext    = html_entity_decode((string)$point["pretext"]);
         $posttext   = html_entity_decode((string)$point["posttext"]);
         $fontsize   = ((int)$point["fontsize"] > 0) ? (int)$point["fontsize"] : 12;
-        $text       = $pretext;
-        $text      .= $this->_reading["points"][$point["id"]];
-        $text      .= $posttext;
-        $background = $point["background"];
-        
+        $value      = $this->_reading["points"][$point["id"]];
+        $text       = $pretext.$value.$posttext;
+        $background = $this->autobackground($value, $point);
+        $color      = $this->autocolor($background, $point);
         if (strlen($text) <= 0) {
             return;
         }
@@ -256,7 +255,7 @@ class SVG extends \HUGnet\images\Driver
                        .' id="background'.$index.'">'
                        .'<feFlood flood-color="'.$background.'"/>'
                        .'</filter>'.$this->_end;
-        $this->_defs .= $this->_defindent.'<text style="fill:'.$point["color"].';'
+        $this->_defs .= $this->_defindent.'<text style="fill:'.$color.';'
                        .' font-size:'.$fontsize.'pt;" x="0" y="0"'
                        .' transform="translate('.$point["x"].', '.$point["y"].')"'
                        .' id="point'.$index.'">'.$text.'</text>'.$this->_end;

@@ -34,6 +34,8 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
+/** This is the HUGnet namespace */
+namespace HUGnet\contrib;
 /**
  * Color
  *
@@ -62,7 +64,7 @@ class Color {
      *
      * @return  array
      */
-    public function hex2rgb($hex)
+    static public function hex2rgb($hex)
     {
         try {
             $hex = self::checkHex($hex);
@@ -85,7 +87,7 @@ class Color {
      *
      * @return  array
      */
-    public function hex2hsv($hex)
+    static public function hex2hsv($hex)
     {
         list($r, $g, $b) = array_values(self::hex2rgb($hex));
         return self::rgb2hsv($r, $g, $b);
@@ -102,7 +104,7 @@ class Color {
      *
      * @return  array
      */
-    public function hex2hsl($hex)
+    static public function hex2hsl($hex)
     {
         list($r, $g, $b) = array_values(self::hex2rgb($hex));
         return self::rgb2hsl($r, $g, $b);
@@ -119,7 +121,7 @@ class Color {
      *
      * @return  string
      */
-    public function rgb2hex($r, $g, $b)
+    static public function rgb2hex($r, $g, $b)
     {
         try {
             self::checkRGB($r, $g, $b);
@@ -153,7 +155,7 @@ class Color {
      *
      * @return  array
      */
-    public function rgb2hsv($r, $g, $b)
+    static public function rgb2hsv($r, $g, $b)
     {
         try {
             self::checkRGB($r, $g, $b);
@@ -185,7 +187,7 @@ class Color {
      *
      * @return  array
      */
-    public function rgb2hsl($r, $g, $b)
+    static public function rgb2hsl($r, $g, $b)
     {
         try {
             self::checkRGB($r, $g, $b);
@@ -231,7 +233,7 @@ class Color {
      *
      * @return  string
      */
-    public function hsv2hex($h, $s, $v)
+    static public function hsv2hex($h, $s, $v)
     {
         list($r, $g, $b) = array_values(self::hsv2rgb($h, $s, $v));
         return self::rgb2hex($r, $g, $b);
@@ -248,7 +250,7 @@ class Color {
      *
      * @return  array
      */
-    public function hsv2rgb($h, $s, $v)
+    static public function hsv2rgb($h, $s, $v)
     {
         try {
             self::checkHSV($h, $s, $v);
@@ -294,7 +296,7 @@ class Color {
      *
      * @return  array
      */
-    public function hsv2hsl($h, $s, $v)
+    static public function hsv2hsl($h, $s, $v)
     {
         list($r, $g, $b) = array_values(self::hsv2rgb($h, $s, $v));
         return self::rgb2hsl($r, $g, $b);
@@ -313,7 +315,7 @@ class Color {
      *
      * @return  string
      */
-    public function hsl2hex($h, $s, $l)
+    static public function hsl2hex($h, $s, $l)
     {
         list($r, $g, $b) = array_values(self::hsl2rgb($h, $s, $l));
         return self::rgb2hex($r, $g, $b);
@@ -330,7 +332,7 @@ class Color {
      *
      * @return  array
      */
-    public function hsl2rgb($h, $s, $l)
+    static public function hsl2rgb($h, $s, $l)
     {
         try {
             self::checkHSL($h, $s, $l);
@@ -387,7 +389,7 @@ class Color {
      *
      * @return  array
      */
-    public function hsl2hsv($h, $s, $l)
+    static public function hsl2hsv($h, $s, $l)
     {
         list($r, $g, $b) = array_values(self::hsl2rgb($h, $s, $l));
         return self::rgb2hsv($r, $g, $b);
@@ -406,7 +408,7 @@ class Color {
      *
      * @return  array
      */
-    private function parseHue($r, $g, $b)
+    static private function parseHue($r, $g, $b)
     {
         $min = min($r, $g, $b);
         $max = max($r, $g, $b);
@@ -443,7 +445,7 @@ class Color {
      * @throws  Out of bounds exception.
      * @return  void
      */
-    private function checkRGB($r, $g, $b)
+    static private function checkRGB($r, $g, $b)
     {
         if (($r < 0) || ($r > 255)) {
             throw new Exception("RGB[R]: ".$r." is not in the 0..255 boundary.");
@@ -468,7 +470,7 @@ class Color {
      * @throws  Improper hexadicimal value.
      * @return  string
      */
-    private function checkHex($hex)
+    static private function checkHex($hex)
     {
         $phex = preg_replace("/[^a-fA-F0-9]/", "", $hex);
         if (strlen($phex) == 6) {
@@ -495,7 +497,7 @@ class Color {
      * @throws  Out of bounds exception.
      * @return  void
      */
-    private function checkHSV($h, $s, $v)
+    static private function checkHSV($h, $s, $v)
     {
         if (($h < 0) || ($h > 359)) {
             throw new Exception("HSV[H]: ".$h." is not in the 0..359 boundary.");
@@ -524,7 +526,7 @@ class Color {
      * @throws Out of bounds exception.
      * @return  void
      */
-    private function checkHSL($h, $s, $l)
+    static private function checkHSL($h, $s, $l)
     {
         if (($h < 0) || ($h > 359)) {
             throw new Exception("HSL[H]: ".$h." is not in the 0..359 boundary.");
