@@ -93,7 +93,9 @@ class Image extends \HUGnet\base\SystemTableBase
     {
         $action = trim(strtolower($args->get("action")));
         $ret = null;
-        if ($action === "list") {
+        if ($action === "get") {
+            $ret = $this->_getImg($args);
+        } else if ($action === "list") {
             $ret = $this->_list($args);
         } else if ($action === "insert") {
             $ret = $this->_insert($args);
@@ -104,6 +106,55 @@ class Image extends \HUGnet\base\SystemTableBase
         } else if ($action === "getreading") {
             $ret = $this->_getReading($args);
         }
+        return $ret;
+    }
+    /**
+    * returns a history object for this device
+    *
+    * @param object $args The argument object
+    *
+    * @return string
+    */
+    private function _getImg($args)
+    {
+        $format   = trim(strtoupper($args->get("format")));
+        $filename = $this->get("name");
+        $filename = preg_replace('/[^a-zA-Z0-9-_\.]/','_', $filename);
+        $content  = 'Content-disposition: inline; filename=';
+        if ($format == "PNG") {
+            //header('Content-type: text/plain');
+            header('Content-type: image/png');
+            header($content.$filename.'.png');
+            print $this->encode($format);
+            $ret = null;
+        } else if ($format == "SVG") {
+            header('Content-type: image/svg+xml');
+            header($content.$filename.'.svg');
+            print $this->encode($format);
+            $ret = null;
+        } else if (($format == "JPG") || ($format == "JPEG")) {
+            header('Content-type: image/jpg');
+            header($content.$filename.'.jpg');
+            print $this->encode("JPEG");
+            $ret = null;
+        } else {
+            $ret = $this->toArray(true);
+        }
+        return $ret;
+    }
+    /**
+    * This outputs the image, as an image
+    *
+    * @param string $format The format to output the image as
+    *
+    * @return null
+    */
+    public function encode($format = "SVG")
+    {
+        include_once dirname(__FILE__)."/../images/Driver.php";
+        $driver = images\Driver::factory($format, $this);
+        $driver->reading($this->getReading());
+        $ret = $driver->encode();
         return $ret;
     }
     /**

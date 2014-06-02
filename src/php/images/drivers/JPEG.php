@@ -53,7 +53,9 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class JPEG extends \HUGnet\images\Driver
+class JPEG extends \HUGnet\images\Driver 
+    implements \HUGnet\images\drivers\DriverInterface
+
 {
     /** This is our parameters */
     protected $params = array(

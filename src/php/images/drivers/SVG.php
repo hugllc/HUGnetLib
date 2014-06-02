@@ -39,6 +39,8 @@
 namespace HUGnet\images\drivers;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
+/** This is our interface */
+require_once dirname(__FILE__)."/DriverInterface.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -53,7 +55,8 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class SVG extends \HUGnet\images\Driver
+class SVG extends \HUGnet\images\Driver 
+    implements \HUGnet\images\drivers\DriverInterface
 {
     /** This is our parameters */
     protected $params = array(
@@ -63,6 +66,12 @@ class SVG extends \HUGnet\images\Driver
     private $_ind = "    ";
     /** @var This is the line end to use */
     private $_end = "\n";
+    /** @var This image */
+    private $_image = "";
+    /** @var This definitions */
+    private $_defs = "";
+    /** @var This definitions indent */
+    private $_defindent = "        ";
     
     /**
     * Returns the object as a string
@@ -71,19 +80,28 @@ class SVG extends \HUGnet\images\Driver
     */
     public function encode()
     {
+        $this->_image = "";
+        $this->_defs  = "";
         $output .= $this->_xmlHeader().$this->_end;
-        $output .= $this->_doctypeHeader().$this->_end;
         $output .= $this->_svgHeader().$this->_end;
         $output .= $this->_ind.$this->_description().$this->_end;
         $output .= $this->_ind.$this->_rect(
-            0, 0, $this->image()->get("width"), $this->image()->get("height"), "#FFFFFF", "none"
+            0, 
+            0, 
+            $this->image()->get("width"), 
+            $this->image()->get("height"), 
+            "#FFFFFF", 
+            "none"
         ).$this->_end;
-        $output .= $this->_backgroundImage($this->_ind, $this->_end);
-        for ($i = 0; $i < $this->image()->pointCount; $i++) {
-            $output .= $this->_point(
-                $this->image()->point($i), $this->_ind, $this->_end
+        $this->_backgroundImage($this->_ind, $this->_end);
+        $points = json_decode($this->image()->get("points"), true);
+        foreach ($points as $point) {
+            $this->_point(
+                $point, $this->_ind, $this->_end
             );
         }
+        $output .= "    <defs>".$this->_end.$this->_defs."    </defs>".$this->_end;
+        $output .= $this->_image.$this->_end;
         $output .= $this->_svgFooter().$this->_end;
         return $output;
     }
@@ -102,22 +120,12 @@ class SVG extends \HUGnet\images\Driver
     *
     * @return string
     */
-    private function _doctypeHeader()
-    {
-        return '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" '
-            .'"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
-    }
-    /**
-    * Returns the object as a string
-    *
-    * @return string
-    */
     private function _svgHeader()
     {
         return '<svg version="1.1" xmlns="http://www.w3.org/2000/svg"'
             .' xmlns:xlink="http://www.w3.org/1999/xlink"'
-            .' width="'.$this->image()->get("width").'px"'
-            .' height="'.$this->image()->get("height").'px">';
+            .' width="'.$this->image()->get("width").'"'
+            .' height="'.$this->image()->get("height").'">';
     }
     /**
     * Returns the object as a string
@@ -126,7 +134,7 @@ class SVG extends \HUGnet\images\Driver
     */
     private function _description()
     {
-        return '<desc>'.strip_tags((string)$this->image()->description).'</desc>';
+        return '<desc>'.strip_tags((string)$this->image()->get("desc")).'</desc>';
     }
     /**
     * Returns a rectangle object
@@ -213,62 +221,48 @@ class SVG extends \HUGnet\images\Driver
     */
     private function _backgroundImage($indent = "", $end = "")
     {
-        $ret  = '<image';
-        $ret .= ' id=""';
-        $ret .= ' height="'.$this->image()->get("height").'"';
-        $ret .= ' width="'.$this->image()->get("width").'"';
-        $ret .= ' xlink:href="data:'.$this->image()->get("imagetype").';base64,  ';
-        $ret .= base64_encode($this->image()->get("image"));
-        $ret .= '" />';
-        return $ret;
-
+        $this->_image  = $indent.'<image';
+        $this->_image .= ' id=""';
+        $this->_image .= ' height="'.$this->image()->get("height").'"';
+        $this->_image .= ' width="'.$this->image()->get("width").'"';
+        $this->_image .= ' xlink:href="data:'.$this->image()->get("imagetype").';base64,   ';
+        $this->_image .= $this->image()->get("image");
+        $this->_image .= '" />'.$this->_end;
     }
 
     /**
     * Returns the object as a string
     *
-    * @param ImagePointContainer &$point The point to use
-    * @param string              $indent The indent to use
-    * @param string              $end    The line end to use
+    * @param array  $point   The point to use
+    * @param string $indent  The indent to use for the image
     *
     * @return string
     */
-    private function _point(ImagePointContainer &$point, $indent = "", $end = "")
+    private function _point($point, $indent = "    ")
     {
-        if (strlen($point["text"]) <= 0) {
+        $pretext    = html_entity_decode((string)$point["pretext"]);
+        $posttext   = html_entity_decode((string)$point["posttext"]);
+        $fontsize   = ((int)$point["fontsize"] > 0) ? (int)$point["fontsize"] : 12;
+        $text       = $pretext;
+        $text      .= $this->_reading["points"][$point["id"]];
+        $text      .= $posttext;
+        $background = $point["background"];
+        
+        if (strlen($text) <= 0) {
             return;
         }
-
-        $pointId = "point".$point["id"];
-
-        $ret  = $indent.$this->_rect(
-            $point["x"], $point["y"], 0, 0, "transparent", "none", $pointId."box"
-        ).$end;
-        $ret .= $indent.$this->_text(
-            $point["text"], $point["x"], $point["y"], $point["color"], "none",
-            $point["fontsize"], $pointId."text", $extra
-        ).$end;
-        if (strlen($point["link"]) > 0) {
-            $ret = $this->_xlinkHref(
-                $point["link"], $point["linkTitle"], $ret, "_top", "", "", $indent, $end
-            );
-        }
-        $ret .= $indent.'<script>'.$end;
-        $ret .= $indent.$indent.'var Text=document.getElementById("'
-            .$pointId."text".'").getBBox();'.$end;
-        $ret .= $indent.$indent.'var Box =document.getElementById("'
-            .$pointId."box".'");'.$end;
-        $ret .= $indent.$indent.'Box.setAttributeNS(null, "x", Text.x-3);'.$end;
-        $ret .= $indent.$indent.'Box.setAttributeNS(null, "y", Text.y-3);'.$end;
-        $ret .= $indent.$indent.'Box.setAttributeNS(null, "width", Text.width+6);'
-            .$end;
-        $ret .= $indent.$indent.'Box.setAttributeNS(null, "height", Text.height+6);'
-            .$end;
-        $ret .= $indent.$indent.'Box.setAttributeNS(null, "fill", "'
-            .$point["background"].'");'.$end;
-        $ret .= $indent.$indent.'//document.documentElement.appendChild(Box);'.$end;
-        $ret .= $indent.'</script>'.$end;
-        return $ret;
+        $index = $point["id"];
+        $this->_defs .= $this->_defindent.'<filter x="0" y="0" width="1" height="1"' 
+                       .' id="background'.$index.'">'
+                       .'<feFlood flood-color="'.$background.'"/>'
+                       .'</filter>'.$this->_end;
+        $this->_defs .= $this->_defindent.'<text style="fill:'.$point["color"].';'
+                       .' font-size:'.$fontsize.'pt;" x="0" y="0"'
+                       .' transform="translate('.$point["x"].', '.$point["y"].')"'
+                       .' id="point'.$index.'">'.$text.'</text>'.$this->_end;
+        $this->_image .= $indent.'<use xlink:href="#point'.$index.'" '
+                        .'filter="url(#background'.$index.')"/>'.$this->_end;
+        $this->_image .= $indent.'<use xlink:href="#point'.$index.'" />'.$this->_end;
     }
 
 }

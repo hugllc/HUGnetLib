@@ -72,6 +72,8 @@ abstract class Driver
     );
     /** This is our parameters */
     protected $params = array();
+    /** This is our reading */
+    protected $reading = array();
     /**
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
@@ -187,6 +189,18 @@ abstract class Driver
         return $this->_image;
     }
     /**
+    * This returns the image class
+    *
+    * @return null
+    */
+    public function &reading($reading = null)
+    {
+        if (is_array($reading)) {
+            $this->_reading = $reading;
+        }
+        return $this->_reading;
+    }
+    /**
     * Returns the object as a string
     *
     * @return string
@@ -207,7 +221,9 @@ abstract class Driver
      */
     protected function gdStartImage()
     {
-        $this->img  = imagecreatefromstring($this->image()->get("image"));
+        $this->img  = imagecreatefromstring(
+            base64_decode($this->image()->get("image"))
+        );
         if ($this->img === false) {
             $this->img  = imagecreatetruecolor(
                 $this->image()->get("width"), $this->image()->get("height")
@@ -226,40 +242,32 @@ abstract class Driver
     */
     protected function gdImagePoint($point)
     {
-
-        
-        $color = $this->gdAllocateColor($point["color"]);
-        $text  = html_entity_decode((string)$point["text"]);
-        $box = imagettfbbox($point->fontsize, 0, $this->_fontFile, $text);
-        if (!is_null($point["outline"])) {
-            $ocolor = $this->gdAllocateColor($point["outline"]);
-            imagefilledrectangle(
-                $this->img,
-                $point->x + $box[6] - 6,
-                $point->y + $box[7] - 6,
-                $point->x + $box[2] + 6,
-                $point->y + $box[3] + 6,
-                $ocolor
-            );
-        }
-        
-        if (!is_null($point["fill"])
-            && (strtolower($point["fill"]) !== "none")
-            && (strtolower($point["fill"]) !== "transparent")
+        $color    = $this->gdAllocateColor($point["color"]);
+        $pretext  = html_entity_decode((string)$point["pretext"]);
+        $posttext = html_entity_decode((string)$point["posttext"]);
+        $fontsize = ((int)$point["fontsize"] > 0) ? (int)$point["fontsize"] : 12;
+        $text     = $pretext;
+        $text    .= $this->_reading["points"][$point["id"]];
+        $text    .= $posttext;
+        $box      = imagettfbbox($fontsize, 0, $this->_fontFile, $text);
+        if (!is_null($point["background"])
+            && (strtolower($point["background"]) !== "none")
+            && (strtolower($point["background"]) !== "transparent")
         ) {
-            $bcolor = $this->gdAllocateColor($point["fill"]);
+
+            $bcolor = $this->gdAllocateColor($point["background"]);
             imagefilledrectangle(
                 $this->img,
-                $point->x + $box[6] - 3,
-                $point->y + $box[7] - 3,
-                $point->x + $box[2] + 3,
-                $point->y + $box[3] + 3,
+                $point["x"] + $box[6] - 3,
+                $point["y"] + $box[7] - 3,
+                $point["x"] + $box[2] + 3,
+                $point["y"] + $box[3] + 3,
                 $bcolor
             );
         }
         $ret = imagettftext(
             $this->img,
-            ($point["fontsize"] > 0) ? $point["fontsize"] : 12,
+            $fontsize,
             0,
             (int)$point["x"],
             (int)$point["y"],
