@@ -959,9 +959,9 @@ class MaximumWindDirectionTest extends DriverTestBase
                 ),
                 array(
                     array(
-                        'decimals' => 0,
+                        'decimals' => 2,
                         'units' => '&#176;',
-                        'maxDecimals' => 0,
+                        'maxDecimals' => 2,
                         'storageUnit' => '&#176;',
                         'unitType' => 'Direction',
                         'dataType' => 'raw',

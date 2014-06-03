@@ -122,7 +122,7 @@ class MaximumWindDirection extends \HUGnet\devices\inputTable\Driver
             "The port that terminal 5 of the sensor is tied to",
         ),
         "inputSize" => 3,
-        "maxDecimals" => 0,
+        "maxDecimals" => 2,
     );
     /**
     * Gets an item
