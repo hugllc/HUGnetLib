@@ -58,6 +58,7 @@ HUGnet.ImageSVGView = Backbone.View.extend({
     background: null,
     draggable: false,
     autocolor: false,
+    sync: true,
     events: {
     },
     initialize: function (options)
@@ -68,16 +69,23 @@ HUGnet.ImageSVGView = Backbone.View.extend({
             if (options.draggable) this.draggable = options.draggable;
             if (options.autocolor) this.autocolor = options.autocolor;
             if (options.id) this.id = options.id;
+            if (typeof options.sync == "boolean") this.sync = options.sync;
         }
+        console.log(typeof this.sync);
         //this.model.each(this.insert, this);
-        this.model.on('change', this.render, this);
-        this.model.on('datasync', this.updatePoints, this);
+        if (this.sync) {
+            this.model.on('change', this.render, this);
+            this.model.on('datasync', this.updatePoints, this);
+        }
         //this.$el = $(document.createElement("svg"));
         var name = this.model.get("name");
         this.name = name.replace(/([ #;?&,.+*~\':"!^$[\]()=>|\/@])/g,'_');
         if (this.id == "") {
             this.id = "svgimage-"+this.name;
         }
+        console.log(this.id);
+        console.log(this.sync);
+        console.log(options);
         this.id = this.id.replace(/([ #;?&,.+*~\':"!^$[\]()=>|\/@])/g,'_');
         this.$el.attr("id", this.id);
         this.svg = SVG(this.$el[0]);
@@ -238,9 +246,11 @@ HUGnet.ImageSVGView = Backbone.View.extend({
      */
     updatePoints: function ()
     {
-        var data   = this.model.get("data");
-        this.update(data);
-        this.trigger("datasync");
+        if (this.sync) {
+            var data   = this.model.get("data");
+            this.update(data);
+            this.trigger("datasync");
+        }
     },
     _autocolor: function (value, point)
     {

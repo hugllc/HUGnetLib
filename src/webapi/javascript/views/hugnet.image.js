@@ -86,7 +86,8 @@ HUGnet.ImageView = Backbone.View.extend({
         this.type = (options.type !== undefined) ? options.type : this.type;
         this.image = new HUGnet.ImageSVGView({
             model: this.model,
-            style: "border: thin solid black; margin-left: auto; margin-right: auto; display: block; margin-top: 20px;"
+            style: "border: thin solid black; margin-left: auto; margin-right: auto; display: block; margin-top: 20px;",
+            id: "displayimg-"+this.model.get("name"),
         });
         this.getLatest();
     },

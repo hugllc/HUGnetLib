@@ -69,6 +69,7 @@ var ImageConfigPropertiesView = Backbone.View.extend({
             style: "border: thin solid black;",
             draggable: true,
             id: "cfgimg-"+this.model.get("name"),
+            sync: false,
 
         });
         this.image.on("dragend", this._dragmove, this);
@@ -177,7 +178,7 @@ var ImageConfigPropertiesView = Backbone.View.extend({
     render: function ()
     {
         var self = this;
-        var id   = 'svgimg'+this.model.get("id");
+        var id   = 'svgcfgimg'+this.model.get("id");
         var data = this.model.toJSON();
         data.svg = '<div id="'+id+'">/div>';
         _.extend(data, HUGnet.viewHelpers);
