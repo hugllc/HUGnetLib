@@ -64,6 +64,7 @@ HUGnet.ImageList = Backbone.View.extend({
         this.images = new HUGnet.ImageListView({
             model: options.images,
             url: this.url,
+            filter: this.filter
         });
         this.render();
     },

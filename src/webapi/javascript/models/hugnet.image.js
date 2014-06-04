@@ -55,7 +55,8 @@ HUGnet.Image = Backbone.Model.extend({
         points: '',
         length: 0,
         averageTypes: {},
-        data: {}
+        data: {},
+        publish: 1
     },
     points: {},
     lock: false,

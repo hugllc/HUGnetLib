@@ -116,6 +116,7 @@ HUGnet.ImageListView = Backbone.View.extend({
     sorted: false,
     sorting: [[1,0]],
     viewed: 0,
+    filter: {},
     events: {
     },
     initialize: function (options)
@@ -124,8 +125,12 @@ HUGnet.ImageListView = Backbone.View.extend({
             if (options.url) {
                 this.url = options.url;
             }
+            if (options.filter) {
+                this.filter = options.filter;
+            }
         }
         this.model.on('add', this.insert, this);
+        this.model.on('change:publish', this.showhide, this);
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -154,12 +159,25 @@ HUGnet.ImageListView = Backbone.View.extend({
     },
     insert: function (model, collection, options)
     {
-        var view = new ImageListEntryView({
+        var id = model.get("id");
+        this.views[id] = new ImageListEntryView({
             model: model,
             parent: this,
             templatebase: this.templatebase
         });
-        this.$('tbody').append(view.render().el);
+        this.$('tbody').append(this.views[id].render().el);
         this.$('table').trigger('update');
+        this.showhide(model);
     },
+    showhide: function (model)
+    {
+        var id = model.get("id");
+        if (this.filter.publish && this.views[id]) {
+            if (model.get("publish") == this.filter.publish) {
+                this.views[id].$el.show();
+            } else {
+                this.views[id].$el.hide();
+            }
+        }
+    }
 });
