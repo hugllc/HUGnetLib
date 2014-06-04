@@ -317,6 +317,7 @@ class ImagesTest extends TableTestBase
                     'imagetype' => "",
                     'baseavg' => "15MIN",
                     'params' => "",
+                    'publish' => 1,
                 ),
             ),
             array(
@@ -339,6 +340,7 @@ class ImagesTest extends TableTestBase
                     'imagetype' => "",
                     'baseavg' => "15MIN",
                     'params' => "",
+                    'publish' => 1,
                 ),
             ),
             array(
@@ -362,6 +364,7 @@ class ImagesTest extends TableTestBase
                     'imagetype' => "",
                     'baseavg' => "15MIN",
                     'params' => "",
+                    'publish' => 1,
                 ),
             ),
         );
@@ -414,6 +417,7 @@ class ImagesTest extends TableTestBase
                     'imagetype' => "",
                     'baseavg' => "15MIN",
                     'params' => array(),
+                    'publish' => 1,
                 ),
             ),
             array(
@@ -471,6 +475,7 @@ class ImagesTest extends TableTestBase
                     'imagetype' => "",
                     'baseavg' => "15MIN",
                     'params' => array(1, 2, 3, 4),
+                    'publish' => 1,
                 ),
             ),
         );

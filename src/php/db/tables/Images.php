@@ -137,6 +137,11 @@ class Images extends \HUGnet\db\Table implements \HUGnet\interfaces\DBTable
             "Type" => "text",
             "Default" => "",
         ),
+        "publish" => array(
+            "Name" => "publish",
+            "Type" => "tinyint",
+            "Default" => 1,
+        ),
     );
     /**
     * @var array This is the definition of the indexes

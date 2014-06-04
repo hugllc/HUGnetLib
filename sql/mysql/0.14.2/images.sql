@@ -1,0 +1,1 @@
+ALTER TABLE `images` ADD `publish` TINYINT NOT NULL DEFAULT '1';
