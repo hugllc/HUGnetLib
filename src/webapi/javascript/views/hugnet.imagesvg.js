@@ -58,6 +58,7 @@ HUGnet.ImageSVGView = Backbone.View.extend({
     background: null,
     draggable: false,
     autocolor: false,
+    hilightIndex: null,
     sync: true,
     events: {
     },
@@ -73,8 +74,8 @@ HUGnet.ImageSVGView = Backbone.View.extend({
         }
         console.log(typeof this.sync);
         //this.model.each(this.insert, this);
+        this.model.on('change', this.render, this);
         if (this.sync) {
-            this.model.on('change', this.render, this);
             this.model.on('datasync', this.updatePoints, this);
         }
         //this.$el = $(document.createElement("svg"));
@@ -155,6 +156,7 @@ HUGnet.ImageSVGView = Backbone.View.extend({
             // Send the background to the back.
             this.background.back();
         }
+        this.hilight(null);
         return this;
     },
     textBackground: function (text, box, color)
@@ -218,6 +220,7 @@ HUGnet.ImageSVGView = Backbone.View.extend({
                 }
             }
         );
+        this.hilight(null);
         this.trigger("datasync");
     },
     /**
@@ -227,17 +230,23 @@ HUGnet.ImageSVGView = Backbone.View.extend({
      */
     hilight: function (index)
     {
-        var offset = 5;
-        this.$("svg rect.datapointhilight").remove();
-        var box  = this.svg.rect(
-            this.boxes[index].width() + offset, 
-            this.boxes[index].height() + offset
-        );
-        box.attr("class", "datapointhilight");
-        
-        this.groups[index].add(box);
-        this.boxes[index].before(box);
-        box.center(this.boxes[index].cx(), this.boxes[index].cy());
+        if (index === null) {
+            index = this.hilightIndex;
+        }
+        if (index !== null) {
+            var offset = 5;
+            this.$("svg rect.datapointhilight").remove();
+            var box  = this.svg.rect(
+                this.boxes[index].width() + offset, 
+                this.boxes[index].height() + offset
+            );
+            box.attr("class", "datapointhilight");
+            
+            this.groups[index].add(box);
+            this.boxes[index].before(box);
+            box.center(this.boxes[index].cx(), this.boxes[index].cy());
+        }
+        this.hilightIndex = index;
     },
     /**
      * This updates the data in the image
