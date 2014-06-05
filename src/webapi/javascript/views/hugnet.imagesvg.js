@@ -84,9 +84,6 @@ HUGnet.ImageSVGView = Backbone.View.extend({
         if (this.id == "") {
             this.id = "svgimage-"+this.name;
         }
-        console.log(this.id);
-        console.log(this.sync);
-        console.log(options);
         this.id = this.id.replace(/([ #;?&,.+*~\':"!^$[\]()=>|\/@])/g,'_');
         this.$el.attr("id", this.id);
         this.svg = SVG(this.$el[0]);
