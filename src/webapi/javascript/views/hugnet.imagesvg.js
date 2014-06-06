@@ -72,13 +72,10 @@ HUGnet.ImageSVGView = Backbone.View.extend({
             if (options.id) this.id = options.id;
             if (typeof options.sync == "boolean") this.sync = options.sync;
         }
-        console.log(typeof this.sync);
-        //this.model.each(this.insert, this);
         this.model.on('change', this.render, this);
         if (this.sync) {
             this.model.on('datasync', this.updatePoints, this);
         }
-        //this.$el = $(document.createElement("svg"));
         var name = this.model.get("name");
         this.name = name.replace(/([ #;?&,.+*~\':"!^$[\]()=>|\/@])/g,'_');
         if (this.id == "") {
@@ -255,7 +252,6 @@ HUGnet.ImageSVGView = Backbone.View.extend({
         if (this.sync) {
             var data   = this.model.get("data");
             this.update(data);
-            this.trigger("datasync");
         }
     },
     _autocolor: function (value, point)

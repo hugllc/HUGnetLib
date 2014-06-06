@@ -45,13 +45,11 @@
 HUGnet.ImageView = Backbone.View.extend({
     template: '#ImageViewTemplate',
     tagName: 'div',
-    pause: 30,
-    rows: 0,
+    pause: 60,
     id: undefined,
     table: undefined,
     plot: undefined,
     before: 0,
-    period: 30,
     polling: false,
     type: '30SEC',
     beforeId: "before",
@@ -63,18 +61,12 @@ HUGnet.ImageView = Backbone.View.extend({
     },
     initialize: function (options)
     {
-        this.url = options.url;
-        this.data = options.data;
-        this.parent = options.parent;
+        if (options) {
+            if (options.url) this.url = options.url;
+            if (options.parent) this.parent = options.parent;
+        }
         var device;
         var i;
-        this.header = [];
-        this.fields = [];
-        this.classes = [];
-        this.units = [];
-        this.header[0] = 'Date';
-        this.fields[0] = 'Date';
-        this.classes[0] = '';
         this.pause = (options.pause !== undefined) ? parseInt(options.pause, 10) : this.pause;
 
         var avgTypes = this.model.get("averageTypes");
@@ -225,7 +217,7 @@ HUGnet.ImageView = Backbone.View.extend({
         this.$("#"+this.beforeId).datetimepicker();
         this.$("div#"+id).html("");
         this.$("div#"+id).append(this.image.render().el);
-        this.update();
+        this.image.update();
         return this;
     },
     _formatDate: function (d)
