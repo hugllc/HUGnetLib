@@ -70,6 +70,10 @@ abstract class Periodic
     */
     private $_ui = null;
     /**
+    * the count of failures
+    */
+    private $_failcnt = 0;
+    /**
     * This is where all of the driver information is stored.
     *
     * Drivers must be registered here, otherwise they will never get loaded.  The
@@ -184,24 +188,44 @@ abstract class Periodic
     *
     * @return bool
     */
-    protected function success()
+    protected function success($msg = null)
     {
         $this->last = $this->system()->now();
+        if (is_null($msg)) {
+            $msg = "  Next run ".date("Y-m-d H:i:s", $this->last + $this->period);
+        }
         $this->system()->out(
-            "Success.  Next run ".date("Y-m-d H:i:s", $this->last + $this->period)
+            "Success.".$msg
         );
+        // Reset the failcnt
+        if ($this->_failcnt != 0) {
+            $this->_failcnt = 0;
+            $this->system()->out("Failure count reset.");
+        }
     }
     /**
     * This says if we are ready to run
     *
     * @return bool
     */
-    protected function failure()
-    {
-        $this->last = (time() - $this->period + 60);
-        $this->system()->out(
-            "Failure. Will try again in 1 minute"
-        );
+    protected function failure(
+        $msg = "  Will try again in 1 minute", 
+        $timeout = 60,
+        $maxcount = 20
+    ) {
+        $this->last = (time() - $this->period + $timeout);
+        $this->_failcnt++;
+        $this->system()->out("Failure Cnt: ".$this->_failcnt, 2);
+        if ($this->_failcnt > $maxcount) {
+            $this->system()->out(
+                "Too many failures.  Exiting"
+            );
+            $this->system()->quit(true);
+        } else {
+            $this->system()->out(
+                "Failure.".$msg
+            );
+        }
     }
     /**
     * This says if we are ready to run

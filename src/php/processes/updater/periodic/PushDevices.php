@@ -154,14 +154,14 @@ class PushDevices extends \HUGnet\processes\updater\Periodic
         $ret = $dev->action()->post();
         $devid = hexdec($ret);
         if ($devid == $dev->id()) {
-            $this->system()->out(
-                "Successfully pushed ".sprintf("%06X", $dev->id())."."
+            $this->success(
+                "  Pushed ".sprintf("%06X", $dev->id())."."
             );
             $dev->load($dev->id());
             $dev->setParam("LastMasterPush", $now);
             $dev->store();
         } else {
-            $this->system()->out("Failure.");
+            $this->failure("", 0, 100);
             /* Don't store it if we fail */
         }
     }
