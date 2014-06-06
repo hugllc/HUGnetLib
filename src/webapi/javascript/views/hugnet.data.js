@@ -379,8 +379,8 @@ HUGnet.DataView = Backbone.View.extend({
             this.$("#since").attr("id", this.sinceId);
             this.$("#until").attr("id", this.untilId);
         }
-        this.$("#"+this.sinceId).datetimepicker();
-        this.$("#"+this.untilId).datetimepicker();
+        this.$("#"+this.sinceId).datetimepicker({timeFormat: 'HH:mm:ss', useLocalTimezone: false, timezone: "UTC" });
+        this.$("#"+this.untilId).datetimepicker({timeFormat: 'HH:mm:ss', useLocalTimezone: false, timezone: "UTC" });
         this.iframe = $('<iframe>', { id:'exportCSV' }).hide();
         this.$el.append(this.plot.el);
         this.$el.append(this.table.render().el);
