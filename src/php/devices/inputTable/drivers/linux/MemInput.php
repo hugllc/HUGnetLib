@@ -85,7 +85,7 @@ class MemInput extends \HUGnet\devices\inputTable\Driver
             "The number of times to run per second.  0.5 to 129",
             "The memory type to get"
         ),
-        "maxDecimals" => 0,
+        "maxDecimals" => 8,
         "inputSize" => 4,
     );
     /**

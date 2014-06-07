@@ -263,9 +263,9 @@ class MemInputTest extends DriverTestBaseLinux
                 ),
                 array(
                     array(
-                        'decimals' => 0,
+                        'decimals' => 8,
                         'units' => 'kB',
-                        'maxDecimals' => 0,
+                        'maxDecimals' => 8,
                         'storageUnit' => 'kB',
                         'unitType' => 'Memory',
                         'dataType' => 'raw',
