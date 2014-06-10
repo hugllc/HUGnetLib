@@ -88,13 +88,16 @@ class DataChan extends \HUGnet\base\BaseChan
         if (is_null($data)) {
             return;
         }
+        $units = $this->get("units");
         $this->_units()->convert(
             $data,
-            $this->get("units"),
+            $units,
             $this->get("storageUnit"),
             $this->get("storageType")
         );
-        $data = round($data, (int)$this->get('decimals'));
+        if ($this->_units()->numeric($units)) {
+            $data = round($data, (int)$this->get('decimals'));
+        }
     }
     /**
     * Encodes data for this channel
