@@ -176,6 +176,7 @@ class MaximumWindDirection extends \HUGnet\devices\inputTable\Driver
     */
     protected function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
+        $A = $A & 0xFF;
         foreach ($this->directions as $mask => $dir) {
             if ($A === bindec($mask)) {
                 return (float)$dir;
