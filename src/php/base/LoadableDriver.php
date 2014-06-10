@@ -75,6 +75,10 @@ abstract class LoadableDriver
     * The location of our tables.
     */
     protected $tableLoc = "";
+    /**
+    * The offset for getExtra
+    */
+    protected $offset = 0;
 
     /**
     * This is where we store our float size information
@@ -92,12 +96,14 @@ abstract class LoadableDriver
     * database object is taken from the driver object.
     *
     * @param object &$iopobject The output in question
+    * @param int    $offset     The offset to use for getExtra
     *
     * @return null
     */
-    protected function __construct(&$iopobject)
+    protected function __construct(&$iopobject, $offset = 0)
     {
         $this->_iopobject = &$iopobject;
+        $this->offset     = (int)$offset;
     }
     /**
     * This is the destructor
@@ -229,10 +235,12 @@ abstract class LoadableDriver
     public function getExtra($index)
     {
         $extra = (array)$this->iopobject()->get("extra");
-        if (!isset($extra[$index])) {
+        $return = $extra[$index + $this->offset];
+        if (is_null($return)) {
             $extra = $this->get("extraDefault");
+            $return = $extra[$index];
         }
-        return $extra[$index];
+        return $return;
     }
 
     /**

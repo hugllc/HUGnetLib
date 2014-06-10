@@ -243,10 +243,11 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     *
     * @param string $driver  The driver to load
     * @param object &$sensor The sensor object
+    * @param int    $offset  The extra offset to use
     *
     * @return null
     */
-    public static function &factory($driver, &$sensor)
+    public static function &factory($driver, &$sensor, $offset = 0)
     {
         $filebase = dirname(__FILE__)."/drivers/";
         if (file_exists($filebase."aduc/".$driver.".php")) {
@@ -269,7 +270,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         }
         $interface = "\\HUGnet\\devices\\inputTable\\DriverInterface";
         if (is_subclass_of($class, $interface)) {
-            return new $class($sensor);
+            return new $class($sensor, $offset);
         }
         include_once dirname(__FILE__)."/drivers/SDEFAULT.php";
         return new \HUGnet\devices\inputTable\drivers\SDEFAULT($sensor);

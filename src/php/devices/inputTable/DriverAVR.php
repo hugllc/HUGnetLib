@@ -101,8 +101,7 @@ abstract class DriverAVR extends Driver
     public static function &factory(
         $driver, &$sensor, $offset = 0, $entry = null, $channel = 0
     ) {
-        $obj = parent::factory($driver, $sensor);
-        $obj->offset = (int)$offset;
+        $obj = parent::factory($driver, $sensor, $offset);
         $obj->entry = $entry;
         return $obj;
     }
@@ -450,24 +449,6 @@ abstract class DriverAVR extends Driver
         return (int)round($A);
     }
 
-
-    /**
-    * Gets the extra values
-    *
-    * @param int $index The extra index to use
-    *
-    * @return The extra value (or default if empty)
-    */
-    public function getExtra($index)
-    {
-        $extra = (array)$this->input()->get("extra");
-        $return = $extra[$index + $this->offset];
-        if (is_null($return)) {
-            $extra = $this->get("extraDefault");
-            $return = $extra[$index];
-        }
-        return $return;
-    }
 }
 
 

@@ -732,6 +732,86 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
             $this->assertInternalType("array", $output["tableEntry"]);
         }
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataGetExtra()
+    {
+        return array(
+            array(
+                array(
+                ),
+                0,
+                0,
+                2
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6),
+                        ),
+                    ),
+                ),
+                0,
+                0,
+                3
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6),
+                        ),
+                    ),
+                ),
+                0,
+                1,
+                4
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6),
+                        ),
+                    ),
+                ),
+                1,
+                1,
+                5
+            ),
+            array(
+                array(
+                ),
+                1,
+                1,
+                3
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $mock   The mocks to use
+    * @param int   $index  The index to get
+    * @param int   $offset The offset to use
+    * @param array $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataGetExtra
+    */
+    public function testGetExtra($mock, $index, $offset, $expect)
+    {
+        unset($this->o);
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($mock);
+        $this->o = DriverTestClass::factory($sensor, $offset);
+        $this->assertSame($expect, $this->o->getExtra($index));
+    }
 }
 /**
  * Base driver class for devices.
@@ -809,12 +889,13 @@ class DriverTestClass extends LoadableDriver
     * This function creates the system.
     *
     * @param object &$sensor The sensor object
+    * @param int    $offset  The extra offset to use
     *
     * @return null
     */
-    public static function &factory(&$sensor)
+    public static function &factory(&$sensor, $offset = 0)
     {
-        $obj = new DriverTestClass($sensor);
+        $obj = new DriverTestClass($sensor, $offset);
         return $obj;
     }
     /**
@@ -898,5 +979,6 @@ class DriverTestClass extends LoadableDriver
     {
         return $this->iopobject();
     }
+    
 }
 ?>

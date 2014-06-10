@@ -78,12 +78,13 @@ abstract class DriverPulse extends Driver
     * database object is taken from the driver object.
     *
     * @param object &$iopobject The output in question
+    * @param int    $offset     The extra offset to use
     *
     * @return null
     */
-    protected function __construct(&$iopobject)
+    protected function __construct(&$iopobject, $offset = 0)
     {
-        parent::__construct($iopobject);
+        parent::__construct($iopobject, $offset);
         $size = $this->input()->device()->get("inputSize");
         if (is_int($size) && ($size > 0)) {
             $this->default["inputSize"] = $size;
