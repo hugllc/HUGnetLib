@@ -177,6 +177,8 @@ var ImageConfigPropertiesView = Backbone.View.extend({
     */
     render: function ()
     {
+        // Remove all data points
+        $(".datapoint").remove();
         var self = this;
         var id   = 'svgcfgimg'+this.model.get("id");
         var data = this.model.toJSON();
