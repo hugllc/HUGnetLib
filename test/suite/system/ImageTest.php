@@ -236,6 +236,7 @@ class ImageTest extends \PHPUnit_Framework_TestCase
                         'MONTHLY' => 'Monthly Average',
                         'YEARLY' => 'Yearly Average',
                     ),
+                    'publish' => 1,
                 )
             ),
             array( //  #1 No Defaults
@@ -298,6 +299,7 @@ class ImageTest extends \PHPUnit_Framework_TestCase
                         '5MIN' => '5 Minute Average',
                         '15MIN' => '15 Minute Average',
                     ),
+                    'publish' => 1,
                 )
             ),
         );
