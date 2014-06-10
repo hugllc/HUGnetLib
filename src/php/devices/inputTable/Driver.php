@@ -175,6 +175,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "61:DEFAULT"                 => "ControlSumInput",
         "63:DEFAULT"                 => "NoisyInput",
         "65:DEFAULT"                 => "MemInput",
+        "66:DEFAULT"                 => "FileInput",
         // Virtual
         "FE:DEFAULT"                 => "EmptyVirtual",
         "FE:AlarmVirtual"            => "AlarmVirtual",
@@ -223,6 +224,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
             0x63 => "Noisy Input",
             0x64 => "Null Input",
             0x65 => "Memory Input",
+            0x66 => "File Input",
         ),
         "all" => array(
             0xFE => "Virtual",
@@ -300,6 +302,21 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
             $driver = "SDEFAULT";
         }
         return $driver;
+    }
+    /**
+    * Returns the driver that should be used for a particular device
+    *
+    * @return array The array of drivers that will work
+    */
+    public function getDrivers($all = false)
+    {
+        if (!$all) {
+            $ret = parent::getDrivers();
+        } else {
+            $ret = self::$_drivers;
+            ksort($ret);
+        }
+        return $ret;
     }
     /**
     * Returns an array of types that this sensor could be
