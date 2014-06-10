@@ -74,7 +74,7 @@ HUGnet.Image = Backbone.Model.extend({
     */
     newpoint: function()
     {
-        this.points.add({pretext: "New Point"});
+        this.points.add({pretext: "New Point", id: this.points.length});
         this.flushpoints();
     },
     /**
