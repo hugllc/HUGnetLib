@@ -176,11 +176,12 @@ var DevicePropertiesView = Backbone.View.extend({
     {
         this.setTitle( " [ Saving...] " );
         var params = {};
-        params.InfoLink = this.$(".params_InfoLink").val();
-        params.ImageURL = this.$(".params_ImageURL").val();
-        params.LogURL = this.$(".params_LogURL").val();
-        params.PushHistory = this.$(".params_PushHistory").val();
-        params.DaughterBoard = this.$(".params_DaughterBoard").val();
+        var self = this;
+        _.each(["InfoLink", "ImageURL", "LogURL", "PushHistory", "DaughterBoard", "Watchdog"],
+            function(sel, i) {
+                params[sel] = self.$('.params_'+sel).val();
+            }
+        );
         this.model.set({
             DeviceName: this.$(".DeviceName").val(),
             DeviceLocation: this.$(".DeviceLocation").val(),

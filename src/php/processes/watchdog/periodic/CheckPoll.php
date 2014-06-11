@@ -102,7 +102,10 @@ class CheckPoll extends \HUGnet\processes\watchdog\Periodic
                     break;
                 }
                 $device->load($key);
-                if ($device->get("PollInterval") > 0) {
+                $watchdog = $device->getParam("Watchdog");
+                if (($device->get("PollInterval") > 0) 
+                    && (($watchdog == 1) || is_null($watchdog))
+                ) {
                     $lastHistory = $device->getLocalParam("LastHistory");
                     if ($lastHistory < $oldest) {
                         $this->ui()->criticalError(
