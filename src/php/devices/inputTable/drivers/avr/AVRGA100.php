@@ -72,8 +72,8 @@ class AVRGA100 extends \HUGnet\devices\inputTable\DriverAVR
         "extraText" => array(
             "Min Voltage (V)",
             "Max Voltage (V)",
-            "Read @ Min Voltage (mBar)",
-            "Read @ Max Voltage (mBar)",
+            "Read @ Min Voltage (psi)",
+            "Read @ Max Voltage (psi)",
             "AtoD Ref Voltage (V)"
         ),
         "extraDesc" => array(

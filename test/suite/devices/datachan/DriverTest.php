@@ -222,6 +222,10 @@ class DriverTest extends drivers\DriverTestBase
                 \HUGnet\devices\datachan\Driver::TYPE_RAW,
                 true, 1231200
             ),
+            array(
+                1.351, "Pa", "mbar", \HUGnet\devices\datachan\Driver::TYPE_RAW,
+                true, 135.1
+            ),
         );
     }
     /**

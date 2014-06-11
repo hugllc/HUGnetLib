@@ -67,13 +67,13 @@ class AVRBAROA4V extends \HUGnet\devices\inputTable\DriverAVR
         "longName" => "BARO-A-4V Barometric Pressure Sensor",
         "shortName" => "BAROA4V",
         "unitType" => "Pressure",
-        "storageUnit" => 'mBar',
+        "storageUnit" => 'mbar',
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraText" => array(
                     "Min Voltage (V)",
                     "Max Voltage (V)",
-                    "Read @ Min Voltage (mBar)",
-                    "Read @ Max Voltage (mBar)",
+                    "Read @ Min Voltage (mbar)",
+                    "Read @ Max Voltage (mbar)",
                     "AtoD Ref Voltage (V)"
         ),
         "extraDesc" => array(
