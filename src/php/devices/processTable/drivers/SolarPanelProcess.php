@@ -93,7 +93,7 @@ class SolarPanelProcess extends \HUGnet\devices\processTable\Driver
             "The temperature where the tank is too hot.",
         ),
         "extraDefault" => array(
-            128, 0, 0, 0, 0, 0, 0, 0
+            128, 0, 0, 0, 0, 8, 32, 150
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
@@ -138,31 +138,41 @@ class SolarPanelProcess extends \HUGnet\devices\processTable\Driver
     */
     public function decode($string)
     {
+        $channels = $this->process()->device()->dataChannels();
         $extra = (array)$this->process()->get("extra");
         $index = 0;
         // Priority
         $extra[0] = $this->decodePriority(substr($string, $index, 2));
         $index += 2;
-        // Control
-        $extra[1] = $this->decodeInt(substr($string, $index, 2), 1);
+        // Tank Temp
+        $epChan = $this->decodeInt(substr($string, $index, 2), 1);
+        $dataChan = $channels->epChannel($epChan);
+        $extra[1] = (int)$dataChan->get("channel");
         $index += 2;
-        // On Time
-        $extra[2] = $this->decodeInt(substr($string, $index, 4), 2);
+        // Panel Temp
+        $epChan = $this->decodeInt(substr($string, $index, 2), 1);
+        $dataChan = $channels->epChannel($epChan);
+        $extra[2] = (int)$dataChan->get("channel");
+        $index += 2;
+        // Pump Control
+        $extra[3] = $this->decodeInt(substr($string, $index, 2), 1);
+        $index += 2;
+        // Alarm Control
+        $extra[4] = $this->decodeInt(substr($string, $index, 2), 1);
+        $index += 2;
+        // Contant 0
+        $extra[5] = $this->decodeInt(substr($string, $index, 4), 2);
         $index += 4;
-        // Off Time
-        $extra[3] = $this->decodeInt(substr($string, $index, 4), 2);
+        // Constant 1
+        $extra[6] = $this->decodeInt(substr($string, $index, 4), 2);
         $index += 4;
-        // On Value
-        $extra[4] = $this->decodeInt(substr($string, $index, 8), 4, true);
-        $index += 8;
-        // Off Value
-        $extra[5] = $this->decodeInt(substr($string, $index, 8), 4, true);
-        $index += 8;
-        // Min
-        $extra[6] = $this->decodeInt(substr($string, $index, 8), 4, true);
-        $index += 8;
-        // Max
-        $extra[7] = $this->decodeInt(substr($string, $index, 8), 4, true);
+        // Alarm Thresh
+        $thresh = $this->decodeInt(substr($string, $index, 4), 2);
+        $thresh = (0xFFFF - ($thresh<<6));
+        $dataChan = $channels->dataChannel($extra[1]);
+        $extra[7] = $dataChan->decode(
+            (float)$thresh
+        );
         $this->process()->set("extra", $extra);
     }
     /**
@@ -172,29 +182,23 @@ class SolarPanelProcess extends \HUGnet\devices\processTable\Driver
     */
     public function encode()
     {
+        $channels = $this->process()->device()->dataChannels();
         $data  = "";
-        $output = $this->process()->device()->controlChannels()->controlChannel(0);
-        $min    = $output->get("min");
-        $max    = $output->get("max");
+        $chan   = $this->getExtra(1);
         $data  .= $this->encodePriority($this->getExtra(0));
-        $dcstr  = "";
-        $valstr = "";
-        for ($i = 0; $i < 4; $i++) {
-            $base  = $i * 2;
-            $mode  = $this->getExtra($base + 1);
-            $set   = $this->getExtra($base + 2);
-            if ($mode == 0) {
-                $base++;
-            }
-            $chan    = $this->process()->device()->dataChannels()->dataChannel($base);
-            $epChan  = (int)$chan->get("epChannel");
-            $value   = $chan->encode($set);
-            $dcstr  .= $this->encodeInt($epChan, 1);
-            $valstr .= $this->encodeInt($value, 2);
-        }
-        $data .= $dcstr.$valstr;
-        $data .= $this->encodeInt($min, 2);
-        $data .= $this->encodeInt($max, 2);
+        $data  .= $this->encodeInt($chan, 1);
+        $data  .= $this->encodeInt($this->getExtra(2), 1);
+        $data  .= $this->encodeInt($this->getExtra(3), 1);
+        $data  .= $this->encodeInt($this->getExtra(4), 1);
+        $data  .= $this->encodeInt($this->getExtra(5), 2);
+        $data  .= $this->encodeInt($this->getExtra(6), 2);
+        $dataChan = $channels->dataChannel($chan);
+        $epChan   = (int)$dataChan->get("epChannel");
+        $thresh   = $dataChan->encode(
+            (float)$this->getExtra(7)
+        );
+        $thresh   = (0xFFFF - $thresh)/64;
+        $data  .= $this->encodeInt($thresh, 2);
         return $data;
     }
 

@@ -154,6 +154,9 @@ class SolarPanelProcessTest extends DriverTestBase
                             "channel" => 1,
                             "decimals" => 0,
                         ),
+                        "decode" => array(
+                            "64511" => 0xABCD,
+                        ),
                     ),
                     "DataChan2" => array(
                         "get" => array(
@@ -162,11 +165,6 @@ class SolarPanelProcessTest extends DriverTestBase
                         ),
                     ),
                     "DataChan3" => array(
-                        "decode" => array(
-                            "12345678" => "12",
-                            "11223344" => "14",
-                            "87654321" => "13",
-                        ),
                         "get" => array(
                             "channel" => 3,
                             "decimals" => 0,
@@ -188,7 +186,7 @@ class SolarPanelProcessTest extends DriverTestBase
                         ),
                     )
                 ),
-                "010102000D0001000000E8030000A00F0000401F0000",
+                "0101020304341278561000",
                 array(
                     "get" => array(
                         array('extra'),
@@ -199,109 +197,17 @@ class SolarPanelProcessTest extends DriverTestBase
                             array(
                                 0 => 128.0,
                                 1 => 1,
-                                2 => 2,
-                                3 => 13,
-                                4 => 1,
-                                5 => 1000,
-                                6 => 4000,
-                                7 => 8000,
+                                2 => 3,
+                                3 => 3,
+                                4 => 4,
+                                5 => 0x1234,
+                                6 => 0x5678,
+                                7 => 0xABCD,
                             )
                         ),
                     ),
-                ),
-            ),
-            array( // #1 Negative Step
-                array(
-                    "Process" => array(
-                        "device" => new \HUGnet\DummyBase("Device"),
-                    ),
-                    "Device" => array(
-                        "dataChannels" => new \HUGnet\DummyBase("Channels"),
-                        "controlChannels" => new \HUGnet\DummyBase("cChannels"),
-                    ),
-                    "Channels" => array(
-                        "dataChannel" => array(
-                            "0" => new \HUGnet\DummyBase("DataChan0"),
-                            "1" => new \HUGnet\DummyBase("DataChan1"),
-                            "2" => new \HUGnet\DummyBase("DataChan2"),
-                            "3" => new \HUGnet\DummyBase("DataChan3"),
-                            "4" => new \HUGnet\DummyBase("DataChan4"),
-                        ),
-                        "epChannel" => array(
-                            "0" => new \HUGnet\DummyBase("DataChan0"),
-                            "1" => new \HUGnet\DummyBase("DataChan1"),
-                            "2" => new \HUGnet\DummyBase("DataChan3"),
-                            "3" => new \HUGnet\DummyBase("DataChan4"),
-                        ),
-                    ),
-                    "DataChan0" => array(
-                        "get" => array(
-                            "channel" => 0,
-                            "decimals" => 0,
-                        ),
-                    ),
-                    "DataChan1" => array(
-                        "get" => array(
-                            "channel" => 1,
-                            "decimals" => 0,
-                        ),
-                        "decode" => array(
-                            "12345678" => "9",
-                            "11223344" => "7",
-                            "87654321" => "8",
-                        ),
-                    ),
-                    "DataChan2" => array(
-                        "get" => array(
-                            "channel" => 2,
-                            "decimals" => 0,
-                        ),
-                    ),
-                    "DataChan3" => array(
-                        "decode" => array(
-                            "12345678" => "12",
-                            "11223344" => "14",
-                            "87654321" => "13",
-                        ),
-                        "get" => array(
-                            "channel" => 3,
-                            "decimals" => 0,
-                        ),
-                    ),
-                    "DataChan4" => array(
-                        "get" => array(
-                            "channel" => 4,
-                            "decimals" => 0,
-                        ),
-                    ),
-                    "cChannels" => array(
-                        "controlChannel" => new \HUGnet\DummyBase("cChannel"),
-                    ),
-                    "cChannel" => array(
-                        "get" => array(
-                            "min" => 0,
-                            "max" => 1000,
-                        ),
-                    )
-                ),
-                "010102000D0001000000E8030000A00F0000C20D0000",
-                array(
-                    "get" => array(
-                        array('extra'),
-                    ),
-                    "set" => array(
+                    "device" => array(
                         array(
-                            'extra',
-                            array(
-                                0 => 128.0,
-                                1 => 1,
-                                2 => 2,
-                                3 => 13,
-                                4 => 1,
-                                5 => 1000,
-                                6 => 4000,
-                                7 => 3522
-                            )
                         ),
                     ),
                 ),
@@ -339,150 +245,13 @@ class SolarPanelProcessTest extends DriverTestBase
                     "Process" => array(
                         "get" => array(
                             "extra" => array(
-                                1 => 0,
-                                2 => 12,
-                                3 => 0,
-                                4 => 12,
-                                5 => 0,
-                                6 => 12,
-                                7 => 0,
-                                8 => 12,
-                            ),
-                        ),
-                        "device" => new \HUGnet\DummyBase("Device"),
-                    ),
-                    "Device" => array(
-                        "dataChannels" => new \HUGnet\DummyBase("Channels"),
-                        "controlChannels" => new \HUGnet\DummyBase("cChannels"),
-                    ),
-                    "Channels" => array(
-                        "dataChannel" => array(
-                            "0" => new \HUGnet\DummyBase("DataChan0"),
-                            "1" => new \HUGnet\DummyBase("DataChan1"),
-                            "2" => new \HUGnet\DummyBase("DataChan2"),
-                            "3" => new \HUGnet\DummyBase("DataChan3"),
-                            "4" => new \HUGnet\DummyBase("DataChan4"),
-                            "5" => new \HUGnet\DummyBase("DataChan5"),
-                            "6" => new \HUGnet\DummyBase("DataChan6"),
-                            "7" => new \HUGnet\DummyBase("DataChan7"),
-                            "8" => new \HUGnet\DummyBase("DataChan8"),
-                        ),
-                    ),
-                    "DataChan0" => array(
-                        "get" => array(
-                            "epChannel" => 1,
-                        ),
-                        "encode" => array(
-                            "12" => 0x1111,
-                            "14" => 0x1212,
-                            "13" => 0x1313,
-                        ),
-                    ),
-                    "DataChan1" => array(
-                        "get" => array(
-                            "epChannel" => 2,
-                        ),
-                        "encode" => array(
-                            "12" => 0x2121,
-                            "14" => 0x2222,
-                            "13" => 0x2323,
-                        ),
-                    ),
-                    "DataChan2" => array(
-                        "get" => array(
-                            "epChannel" => 3,
-                        ),
-                        "encode" => array(
-                            "12" => 0x3131,
-                            "14" => 0x3232,
-                            "13" => 0x3333,
-                        ),
-                    ),
-                    "DataChan3" => array(
-                        "get" => array(
-                            "epChannel" => 4,
-                        ),
-                        "encode" => array(
-                            "12" => 0x4141,
-                            "14" => 0x4242,
-                            "13" => 0x4343,
-                        ),
-                    ),
-                    "DataChan4" => array(
-                        "get" => array(
-                            "epChannel" => 5,
-                        ),
-                        "encode" => array(
-                            "12" => 0x5151,
-                            "14" => 0x5252,
-                            "13" => 0x5353,
-                        ),
-                    ),
-                    "DataChan5" => array(
-                        "get" => array(
-                            "epChannel" => 6,
-                        ),
-                        "encode" => array(
-                            "12" => 0x6161,
-                            "14" => 0x6262,
-                            "13" => 0x6363,
-                        ),
-                    ),
-                    "DataChan6" => array(
-                        "get" => array(
-                            "epChannel" => 7,
-                        ),
-                        "encode" => array(
-                            "12" => 0x7171,
-                            "14" => 0x7272,
-                            "13" => 0x7373,
-                        ),
-                    ),
-                    "DataChan7" => array(
-                        "get" => array(
-                            "epChannel" => 8,
-                        ),
-                        "encode" => array(
-                            "12" => 0x8181,
-                            "14" => 0x8282,
-                            "13" => 0x8383,
-                        ),
-                    ),
-                    "DataChan8" => array(
-                        "get" => array(
-                            "epChannel" => 9,
-                        ),
-                        "encode" => array(
-                            "12" => 0x9191,
-                            "14" => 0x9292,
-                            "13" => 0x9393,
-                        ),
-                    ),
-                    "cChannels" => array(
-                        "controlChannel" => new \HUGnet\DummyBase("cChannel"),
-                    ),
-                    "cChannel" => array(
-                        "get" => array(
-                            "min" => 1556,
-                            "max" => 3522,
-                        ),
-                    )
-                ),
-                "010204060821214141616181811406C20D",
-            ),
-            array( // #0
-                array(
-                    "Process" => array(
-                        "get" => array(
-                            "extra" => array(
                                 1 => 1,
-                                2 => 12,
-                                3 => 1,
-                                4 => 12,
-                                5 => 1,
-                                6 => 12,
-                                7 => 1,
-                                8 => 12,
+                                2 => 2,
+                                3 => 3,
+                                4 => 4,
+                                5 => 0x1234,
+                                6 => 0x5678,
+                                7 => 12,
                             ),
                         ),
                         "device" => new \HUGnet\DummyBase("Device"),
@@ -519,7 +288,7 @@ class SolarPanelProcessTest extends DriverTestBase
                             "epChannel" => 2,
                         ),
                         "encode" => array(
-                            "12" => 0x2121,
+                            "12" => 0xFBFF,
                             "14" => 0x2222,
                             "13" => 0x2323,
                         ),
@@ -604,7 +373,7 @@ class SolarPanelProcessTest extends DriverTestBase
                         ),
                     )
                 ),
-                "010103050711113131515171711406C20D",
+                "0101020304341278561000",
             ),
         );
     }
