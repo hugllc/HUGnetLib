@@ -106,8 +106,11 @@ HUGnet.DataView = Backbone.View.extend({
         var avgTypes = this.model.get("averageTypes");
         if (avgTypes["30SEC"]) {
             this.type = "30SEC";
-        } else {
+        } else if (avgTypes["15MIN"]) {
             this.type   = "15MIN";
+            this.period = 1440;
+        } else {
+            this.type   = "history";
             this.period = 1440;
         }
         this.type = (options.type !== undefined) ? options.type : this.type;
