@@ -394,7 +394,7 @@ class WattNodeTest extends DriverTestBase
                         'units' => 'kWh',
                         'maxDecimals' => 3,
                         'storageUnit' => 'kWh',
-                        'unitType' => 'Power',
+                        'unitType' => 'Energy',
                         'dataType' => 'raw',
                         'label' => '',
                         'index' => 0,
