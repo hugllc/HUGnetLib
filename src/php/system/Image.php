@@ -386,10 +386,10 @@ class Image extends \HUGnet\base\SystemTableBase
     {
         switch ($type) {
         case "30SEC":
-            $ret = $date - 55;
+            $ret = $date - 180;
             break;
         case "1MIN":
-            $ret = $date - 90;
+            $ret = $date - 180;
             break;
         case "5MIN":
             $ret = $date - 550;
