@@ -12,7 +12,13 @@ src/webapi/html/hugnet.js
 src/webapi/html/contrib.js
 src/webapi/html/hugnet.min.js
 src/webapi/html/contrib.min.js
+src/webapi/html/images/config/.directory
 src/php/.directory
+src/php/devices/.directory
+test/.directory
+test/suite/.directory
+test/suite/devices/.directory
+test/suite/ui/.directory
 *.gz
 *.kdev4
 .kdev4
