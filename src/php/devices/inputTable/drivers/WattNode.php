@@ -66,7 +66,7 @@ class WattNode extends \HUGnet\devices\inputTable\DriverPulse
     protected $params = array(
         "longName" => "CCS WattNode Pulse Output Power Meter",
         "shortName" => "WattNode",
-        "unitType" => "Power",
+        "unitType" => "Energy",
         "storageUnit" => 'kWh',
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraText" => array(
