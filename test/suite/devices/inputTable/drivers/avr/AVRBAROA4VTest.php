@@ -118,7 +118,7 @@ class AVRBAROA4VTest extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                664.2107
+                673.0578
             ),
             array(
                 array(
@@ -169,7 +169,7 @@ class AVRBAROA4VTest extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                1093.7836
+                1082.1749
             ),
             array(
                 array(
@@ -180,7 +180,7 @@ class AVRBAROA4VTest extends DriverTestBaseAVR
                         ),
                     ),
                 ),
-                56000,
+                57000,
                 1,
                 array(
                     "timeConstant" => 1,
@@ -215,7 +215,7 @@ class AVRBAROA4VTest extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                664.2107
+                673.0578
             ),
             array(
                 array(
@@ -249,7 +249,7 @@ class AVRBAROA4VTest extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                1093.7836
+                1082.1749
             ),
         );
     }

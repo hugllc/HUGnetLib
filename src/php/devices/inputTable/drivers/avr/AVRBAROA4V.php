@@ -87,7 +87,7 @@ class AVRBAROA4V extends \HUGnet\devices\inputTable\DriverAVR
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(5, 5, 5, 5, 5),
-        "extraDefault" => array(.25, 4.25, 600, 1100, 5),
+        "extraDefault" => array(.15, 4.35, 600, 1100, 5),
         "maxDecimals" => 4,
     );
     /**
