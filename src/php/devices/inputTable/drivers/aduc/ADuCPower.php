@@ -87,6 +87,12 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
             "The resistor connecting the AtoD reading the current to ground",
         ),
         "extraNames" => array(
+            "atodref"    => 0,
+            "shuntr"     => 1,
+            "voltinr"    => 2,
+            "voltr"      => 3,
+            "currentinr" => 4,
+            "currentr"   => 5,
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take

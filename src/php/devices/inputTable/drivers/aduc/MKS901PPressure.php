@@ -79,6 +79,9 @@ class MKS901PPressure extends \HUGnet\devices\inputTable\DriverADuC
             "The resistor connecting the pressure sensor to ground",
         ),
         "extraNames" => array(
+            "atodref" => 0,
+            "rin"     => 1,
+            "r"       => 2,
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take

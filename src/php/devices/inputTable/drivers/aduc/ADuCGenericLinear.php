@@ -97,6 +97,16 @@ class ADuCGenericLinear extends \HUGnet\devices\inputTable\DriverADuC
             "The maximum number of decimals that are valid for the output",
         ),
         "extraNames" => array(
+            "volta"       => 0,
+            "voltb"       => 1,
+            "reada"       => 2,
+            "readb"       => 3,
+            "atodref"     => 4,
+            "rin"         => 5,
+            "storageunit" => 6,
+            "unittype"    => 7,
+            "datatype"    => 8,
+            "maxdecimals" => 9,
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take

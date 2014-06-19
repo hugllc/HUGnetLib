@@ -79,6 +79,8 @@ class ADuCMF51E extends \HUGnet\devices\inputTable\DriverADuC
             "The thermistor used",
         ),
         "extraNames" => array(
+            "r"     => 0,
+            "therm" => 1,
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
