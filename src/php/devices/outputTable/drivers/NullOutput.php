@@ -88,6 +88,8 @@ class NullOutput extends \HUGnet\devices\outputTable\Driver
             2 => "The minimum this channel can be",
             3 => "The zero point of this channel",
         ),
+        "extraNames" => array(
+        ),
     );
     /**
     * Gets an item

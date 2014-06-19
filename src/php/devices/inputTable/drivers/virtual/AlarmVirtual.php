@@ -83,6 +83,8 @@ class AlarmVirtual extends \HUGnet\devices\inputTable\DriverVirtual
             "The threshold at which an alarm should be output",
             "The threshold at which the alarm should be reset",
         ),
+        "extraNames" => array(
+        ),
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "storageUnit" => "decimal",
         "maxDecimals" => 4,

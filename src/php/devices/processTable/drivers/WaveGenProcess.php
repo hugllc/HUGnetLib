@@ -92,6 +92,8 @@ class WaveGenProcess extends \HUGnet\devices\processTable\Driver
             "The minimum value for the control channel.  Empty means use default",
             "The maximum value for the control channel.  Empty means use default",
         ),
+        "extraNames" => array(
+        ),
         "extraDefault" => array(
             128, 0, 1, 1, 1, -1, "", ""
         ),

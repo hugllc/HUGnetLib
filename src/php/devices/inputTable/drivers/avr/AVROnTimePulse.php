@@ -69,6 +69,8 @@ class AVROnTimePulse extends \HUGnet\devices\inputTable\DriverAVR
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraText" => array(),
         "extraDesc" => array(),
+        "extraNames" => array(
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

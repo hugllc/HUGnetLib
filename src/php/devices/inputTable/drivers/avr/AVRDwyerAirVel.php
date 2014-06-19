@@ -87,6 +87,8 @@ class AVRDwyerAirVel extends \HUGnet\devices\inputTable\DriverAVR
             "The gain on the current sense",
             "The reference voltage for the AtoD",
         ),
+        "extraNames" => array(
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

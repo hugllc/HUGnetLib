@@ -99,6 +99,8 @@ class ADuCInputTable extends \HUGnet\devices\inputTable\Driver
             "The offset for ADC0.  This is in the units of the driver used",
             "The offset for ADC1.  This is in the units of the driver used",
         ),
+        "extraNames" => array(
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

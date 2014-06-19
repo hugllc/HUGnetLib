@@ -92,6 +92,8 @@ class SolarPanelProcess extends \HUGnet\devices\processTable\Driver
             "The constant for the off hysteresis.",
             "The temperature where the tank is too hot.",
         ),
+        "extraNames" => array(
+        ),
         "extraDefault" => array(
             128, 0, 0, 0, 0, 8, 32, 150
         ),

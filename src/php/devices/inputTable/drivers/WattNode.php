@@ -91,6 +91,8 @@ class WattNode extends \HUGnet\devices\inputTable\DriverPulse
             "The clock base to use to do the pulse counting",
             "The port to count pulses on",
         ),
+        "extraNames" => array(
+        ),
         "maxDecimals" => 3,
         "total" => true,
     );

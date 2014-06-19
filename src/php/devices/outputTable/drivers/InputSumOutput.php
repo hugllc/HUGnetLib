@@ -90,6 +90,8 @@ class InputSumOutput extends \HUGnet\devices\outputTable\Driver
                   to the control channel value.",
             3 => "This is added to the control channel value every iteration",
         ),
+        "extraNames" => array(
+        ),
     );
     /**
     * Gets an item

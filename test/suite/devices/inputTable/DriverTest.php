@@ -214,6 +214,7 @@ class DriverTest extends drivers\DriverTestBase
             "extraDesc" => array("A","B","C","D","E"),
             'extraDefault' => Array (2,3,5,7,11),
             'extraValues' => Array (5, 5, 5, 5, 5),
+            'extraNames' => array(),
             'storageUnit' => 'unknown',
             'storageType' => 'raw',
             'maxDecimals' => 7,

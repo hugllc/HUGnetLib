@@ -258,7 +258,13 @@ abstract class LoadableDriver
         if (($value === "") || is_null($value)) {
             unset($extra[$index]);
         } else {
-            $extra[$index] = $value;
+            $extraValues = $this->iopobject()->get("extraValues");
+            // This checks to see if this is a valid value
+            if (!is_array($extraValues[$index]) 
+                || isset($extraValues[$index][$value])
+            ) {
+                $extra[$index] = $value;
+            }
         }
         $this->iopobject()->set("extra", $extra);
         return $extra[$index];

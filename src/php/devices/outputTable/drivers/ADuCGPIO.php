@@ -99,6 +99,8 @@ class ADuCGPIO extends \HUGnet\devices\outputTable\DriverADuC
                   the output.",
             1 => "The port we should go out",
         ),
+        "extraNames" => array(
+        ),
         "min" => -65535,
         "max" => 65535,
         "zero" => 0,

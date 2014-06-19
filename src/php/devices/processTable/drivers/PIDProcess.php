@@ -99,6 +99,8 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
             12 => "The control channel to put the sign bit into",
             13 => "Normal means the sign bit output as is.  Inverted inverts it",
         ),
+        "extraNames" => array(
+        ),
         "extraDefault" => array(
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "", 0, 0xFF
         ),

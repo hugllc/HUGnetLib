@@ -90,6 +90,8 @@ class ADuCPWM extends \HUGnet\devices\outputTable\DriverADuC
             11 => "The value to initially set the control channel for PWM3",
             12 => "The value to initially set the control channel for PWM5",
         ),
+        "extraNames" => array(
+        ),
         "min" => -65535,
         "max" => 65535,
         "zero" => 0,

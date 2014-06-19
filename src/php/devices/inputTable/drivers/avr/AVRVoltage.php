@@ -80,6 +80,8 @@ class AVRVoltage extends \HUGnet\devices\inputTable\DriverAVR
             "The voltage used for the AtoD reference.  Usually the power supply
              voltage",
         ),
+        "extraNames" => array(
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

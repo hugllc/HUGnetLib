@@ -72,6 +72,8 @@ class NoisyInput extends \HUGnet\devices\inputTable\Driver
             "Noise Min",
             "Noise Max",
         ),
+        "extraNames" => array(
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

@@ -82,6 +82,8 @@ class ADuCACResistance extends \HUGnet\devices\inputTable\DriverADuC
             "The port to use for the digital reference.  Only the setting from the
             first AC Resistance input is used.  The rest are ignored." 
         ),
+        "extraNames" => array(
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

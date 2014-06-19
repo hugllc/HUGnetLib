@@ -84,6 +84,8 @@ class ADuCDAC extends \HUGnet\devices\outputTable\DriverADuC
         "extraDesc" => array(
             6 => "The value to initially set the control channel to"
         ),
+        "extraNames" => array(
+        ),
         "min" => 0,
         "max" => array(0 => 4095, 1 => 65535),
         "zero" => array(0 => 1556, 1 => 24900),

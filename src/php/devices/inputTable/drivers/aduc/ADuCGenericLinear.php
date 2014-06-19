@@ -96,6 +96,8 @@ class ADuCGenericLinear extends \HUGnet\devices\inputTable\DriverADuC
             "The data type that the output will be in",
             "The maximum number of decimals that are valid for the output",
         ),
+        "extraNames" => array(
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

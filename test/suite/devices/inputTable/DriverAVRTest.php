@@ -150,6 +150,7 @@ class DriverAVRTest extends drivers\DriverTestBase
             'total' => false,
             'extraText' => Array ("a", "b", "c", "d", "e"),
             "extraDesc" => array("A","B","C","D","E"),
+            "extraNames" => array(),
             'extraDefault' => Array (2,3,5,7,11),
             'extraValues' => Array (5, 5, 5, 5, 5),
             'storageUnit' => 'unknown',

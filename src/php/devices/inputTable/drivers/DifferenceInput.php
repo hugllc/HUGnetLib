@@ -87,6 +87,8 @@ class DifferenceInput extends \HUGnet\devices\inputTable\Driver
             "The number to subtract from the first number",
             "The offset to add to the math",
         ),
+        "extraNames" => array(
+        ),
         "maxDecimals" => 0,
         "inputSize" => 4,
     );

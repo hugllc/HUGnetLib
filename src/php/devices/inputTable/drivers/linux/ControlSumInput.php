@@ -96,6 +96,8 @@ class ControlSumInput extends \HUGnet\devices\inputTable\Driver
             7 => "The maximum the added noise can be.  Set to 0 for no noise.",
             8 => "The mode the data should be set to the data channel as."
         ),
+        "extraNames" => array(
+        ),
         "maxDecimals" => 0,
         "inputSize" => 4,
     );

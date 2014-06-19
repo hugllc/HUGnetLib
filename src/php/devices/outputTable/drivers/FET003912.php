@@ -98,6 +98,8 @@ class FET003912 extends \HUGnet\devices\outputTable\DriverAVR
             1 => "The port we should go out",
             2 => "The mode for the port.",
         ),
+        "extraNames" => array(
+        ),
         "min" => -256,
         "max" => +256,
         "zero" => 0,

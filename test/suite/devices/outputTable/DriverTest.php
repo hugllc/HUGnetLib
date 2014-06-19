@@ -173,6 +173,7 @@ class DriverTest extends drivers\DriverTestBase
             'extraDesc' => array(),
             'extraDefault' => array(),
             'extraValues' => array(),
+            'extraNames' => array(),
             "min" => 25,
             "max" => 81,
             "zero" => 0,

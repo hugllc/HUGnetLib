@@ -80,6 +80,8 @@ class ControllerVoltage extends \HUGnet\devices\inputTable\DriverAVR
             "The resistor on the bottom of the resistor divider",
             "The power supply voltage for the board.  Normally 5",
         ),
+        "extraNames" => array(
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

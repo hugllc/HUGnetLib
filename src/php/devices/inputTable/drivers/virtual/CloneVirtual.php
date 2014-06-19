@@ -81,6 +81,8 @@ class CloneVirtual extends \HUGnet\devices\inputTable\DriverVirtual
             "The DeviceID of the board (in hexidecimal)",
             "The INPUT to clone.  Zero based."
         ),
+        "extraNames" => array(
+        ),
     );
     /**
      * This is the routine that gets the sensor that we are cloning
