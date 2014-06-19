@@ -94,6 +94,11 @@ class CalorimeterPowerVirtual extends \HUGnet\devices\inputTable\DriverVirtual
             "Constant of the curve fit polynomial to use",
         ),
         "extraNames" => array(
+            "innertube" => 0,
+            "outertube" => 1,
+            "x2coeff"   => 2,
+            "x1coeff"   => 3,
+            "constant"  => 4,
         ),
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "storageUnit" => "W",

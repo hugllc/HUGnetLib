@@ -97,6 +97,12 @@ class CelaniPowerCalVirtual extends \HUGnet\devices\inputTable\DriverVirtual
             "Constant E"
         ),
         "extraNames" => array(
+            "tempchan"  => 0,
+            "constanta" => 1,
+            "constantb" => 2,
+            "constantc" => 3,
+            "constantd" => 4,
+            "constante" => 5,
         ),
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "storageUnit" => "W",

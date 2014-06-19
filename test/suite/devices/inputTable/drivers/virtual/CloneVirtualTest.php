@@ -630,7 +630,10 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "The DeviceID of the board (in hexidecimal)",
                         "The INPUT to clone.  Zero based."
                     ),
-                    'extraNames'   => array(),
+                    'extraNames'   => array(
+                        'deviceid' => 0,
+                        'datachan' => 1,
+                    ),
                     'storageUnit'  => '&#176;C',
                     'storageType'  => 'raw',
                     'maxDecimals'  => 2,
@@ -672,7 +675,10 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "The DeviceID of the board (in hexidecimal)",
                         "The INPUT to clone.  Zero based."
                     ),
-                    'extraNames'   => array(),
+                    'extraNames'   => array(
+                        'deviceid' => 0,
+                        'datachan' => 1,
+                    ),
                     'storageUnit'  => 'unknown',
                     'storageType'  => 'raw',
                     'maxDecimals'  => 2,
@@ -718,7 +724,10 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                         "The DeviceID of the board (in hexidecimal)",
                         "The INPUT to clone.  Zero based."
                     ),
-                    'extraNames'   => array(),
+                    'extraNames'   => array(
+                        'deviceid' => 0,
+                        'datachan' => 1,
+                    ),
                     'storageUnit'  => 'none',
                     'storageType'  => 'ignore',
                     'maxDecimals'  => 0,

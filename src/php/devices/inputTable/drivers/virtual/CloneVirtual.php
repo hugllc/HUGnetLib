@@ -82,6 +82,8 @@ class CloneVirtual extends \HUGnet\devices\inputTable\DriverVirtual
             "The INPUT to clone.  Zero based."
         ),
         "extraNames" => array(
+            "deviceid" => 0,
+            "datachan" => 1,
         ),
     );
     /**

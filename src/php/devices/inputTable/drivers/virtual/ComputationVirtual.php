@@ -104,6 +104,12 @@ class ComputationVirtual extends \HUGnet\devices\inputTable\DriverVirtual
              referenced have invalid values this will output a null."
         ),
         "extraNames" => array(
+            "math"        => 0, 
+            "storageunit" => 1, 
+            "unittype"    => 2,
+            "datatype"    => 3,
+            "maxdecimals" => 4,
+            "zeronull"    => 5,
         ),
         "storageType" => "getExtra3",
         "storageUnit" => "getExtra1",
