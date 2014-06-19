@@ -70,11 +70,11 @@ class AVRBAROA4V extends \HUGnet\devices\inputTable\DriverAVR
         "storageUnit" => 'mbar',
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraText" => array(
-                    "Min Voltage (V)",
-                    "Max Voltage (V)",
-                    "Read @ Min Voltage (mbar)",
-                    "Read @ Max Voltage (mbar)",
-                    "AtoD Ref Voltage (V)"
+            "Min Voltage (V)",
+            "Max Voltage (V)",
+            "Read @ Min Voltage (mbar)",
+            "Read @ Max Voltage (mbar)",
+            "AtoD Ref Voltage (V)"
         ),
         "extraDesc" => array(
             "The minimum value the voltage from the pressure sensor",
@@ -84,6 +84,11 @@ class AVRBAROA4V extends \HUGnet\devices\inputTable\DriverAVR
             "The reference voltage for the AtoD",
         ),
         "extraNames" => array(
+            "minv"    => 0,
+            "maxv"    => 1,
+            "minread" => 2,
+            "maxread" => 3,
+            "atodref" => 4,
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take

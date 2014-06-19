@@ -75,6 +75,7 @@ class AVRIMCSolar extends \HUGnet\devices\inputTable\DriverAVR
              voltage",
         ),
         "extraNames" => array(
+            "r" => 0,
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take

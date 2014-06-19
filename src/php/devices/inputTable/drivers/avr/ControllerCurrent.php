@@ -79,6 +79,9 @@ class ControllerCurrent extends \HUGnet\devices\inputTable\DriverAVR
             "The power supply voltage for the board.  Normally 5",
         ),
         "extraNames" => array(
+            "r"       => 0,
+            "gain"    => 1,
+            "atodref" => 2,
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take

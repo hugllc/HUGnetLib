@@ -88,6 +88,13 @@ class AVRDwyerAirVel extends \HUGnet\devices\inputTable\DriverAVR
             "The reference voltage for the AtoD",
         ),
         "extraNames" => array(
+            "minc"    => 0,
+            "maxc"    => 1,
+            "minread" => 2,
+            "maxread" => 3,
+            "r"       => 4,
+            "gain"    => 5,
+            "atodref" => 6,
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
