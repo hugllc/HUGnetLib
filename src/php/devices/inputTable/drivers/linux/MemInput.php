@@ -71,6 +71,8 @@ class MemInput extends \HUGnet\devices\inputTable\Driver
             "Mode"
         ),
         "extraNames" => array(
+            "priority" => 0,
+            "mode"     => 1,
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take

@@ -75,6 +75,8 @@ class FileInput extends \HUGnet\devices\inputTable\Driver
             "Driver",
         ),
         "extraNames" => array(
+            "priority" => 0,
+            "driver"   => 1,
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
