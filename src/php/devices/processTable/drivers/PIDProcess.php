@@ -100,6 +100,20 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
             13 => "Normal means the sign bit output as is.  Inverted inverts it",
         ),
         "extraNames" => array(
+            "frequency"     => 0,
+            "controlchan"   => 1,
+            "datachan"      => 2,
+            "inputoffset"   => 3,
+            "setpoint"      => 4,
+            "errorthresh"   => 5,
+            "p"             => 6,
+            "i"             => 7,
+            "d"             => 8,
+            "outputoffset"  => 9,
+            "min"           => 10,
+            "max"           => 11,
+            "signcontrolchan" => 12,
+            "signbitsense"  => 13,
         ),
         "extraDefault" => array(
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "", 0, 0xFF

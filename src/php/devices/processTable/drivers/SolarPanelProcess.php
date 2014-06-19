@@ -93,6 +93,14 @@ class SolarPanelProcess extends \HUGnet\devices\processTable\Driver
             "The temperature where the tank is too hot.",
         ),
         "extraNames" => array(
+            "frequency"    => 0,
+            "tanktemp"     => 1,
+            "paneltemp"    => 2,
+            "pumpcontrol"  => 3,
+            "alarmcontrol" => 4,
+            "onconstant"   => 5,
+            "offconstant"  => 6,
+            "alarmthresh"  => 7,
         ),
         "extraDefault" => array(
             128, 0, 0, 0, 0, 8, 32, 150
