@@ -80,6 +80,8 @@ class NullInput extends \HUGnet\devices\inputTable\Driver
             "The initial value of the data channel",
         ),
         "extraNames" => array(
+            "priority"  => 0,
+            "initvalue" => 1,
         ),
         "maxDecimals" => 0,
         "inputSize" => 4,

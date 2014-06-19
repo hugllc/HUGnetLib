@@ -76,8 +76,7 @@ class EmptySensor extends \HUGnet\devices\inputTable\Driver
         "extraValues" => array(),
         "extraDefault" => array(),
         "extraDesc" => array(),
-        "extraNames" => array(
-        ),
+        "extraNames" => array(),
         "maxDecimals" => 0,
         "dataTypes" => array(
             \HUGnet\devices\datachan\Driver::TYPE_IGNORE

@@ -89,6 +89,9 @@ class MaximumAnemometer extends \HUGnet\devices\inputTable\DriverPulse
             "The number of matching samples to count as a pulse.",
         ),
         "extraNames" => array(
+            "clockbase" => 0,
+            "port"      => 1,
+            "debounce"  => 2,
         ),
         "maxDecimals" => 2,
     );

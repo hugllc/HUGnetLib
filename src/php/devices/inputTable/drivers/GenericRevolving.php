@@ -92,6 +92,10 @@ class GenericRevolving extends \HUGnet\devices\inputTable\DriverPulse
             "The number of matching samples to count as a pulse.",
         ),
         "extraNames" => array(
+            "cntperrev" => 0,
+            "clockbase" => 1,
+            "port"      => 2,
+            "debounce"  => 3,
         ),
         "maxDecimals" => 2,
     );
