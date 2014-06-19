@@ -216,6 +216,13 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
             'extraText' => Array ("a", "b", "c", "d", "e"),
             'extraDefault' => Array (2,3,5,7,11),
             'extraValues' => Array (5, 5, 5, 5, 5),
+            "extraNames" => array(
+                "hello" => 0,
+                "this"  => 1,
+                "is"    => 2,
+                "name"  => 3,
+                "again" => 1,
+            ),
             'storageUnit' => 'unknown',
             'storageType' => 'raw',
             'maxDecimals' => 7,
@@ -767,7 +774,43 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                "is",
                 0,
+                5
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6),
+                        ),
+                    ),
+                ),
+                "again",
+                0,
+                4
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6),
+                        ),
+                    ),
+                ),
+                0,
+                1,
+                4
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6),
+                        ),
+                    ),
+                ),
+                "hello",
                 1,
                 4
             ),
@@ -826,7 +869,8 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
                 0,
                 2,
                 0,
-                2
+                2,
+                array(array("extra", array(0 => 2))),
             ),
             array(
                 array(
@@ -837,43 +881,75 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 0,
+                1,
+                0,
+                1,
+                array(array("extra", array(1,4,5,6))),
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6),
+                        ),
+                    ),
+                ),
+                "name",
+                1,
+                0,
+                1,
+                array(array("extra", array(3,4,5,1))),
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6),
+                        ),
+                    ),
+                ),
+                0,
+                2,
+                1,
+                2,
+                array(array("extra", array(3,2,5,6))),
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6),
+                        ),
+                    ),
+                ),
+                "hello",
+                2,
+                1,
+                2,
+                array(array("extra", array(3,2,5,6))),
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6),
+                        ),
+                    ),
+                ),
+                1,
+                6,
+                1,
+                6,
+                array(array("extra", array(3,4,6,6))),
+            ),
+            array(
+                array(
+                ),
+                1,
                 3,
-                0,
-                3
-            ),
-            array(
-                array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(3,4,5,6),
-                        ),
-                    ),
-                ),
-                0,
-                4,
-                1,
-                4
-            ),
-            array(
-                array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "extra" => array(3,4,5,6),
-                        ),
-                    ),
-                ),
-                1,
-                5,
-                1,
-                5
-            ),
-            array(
-                array(
-                ),
                 1,
                 3,
-                1,
-                3
+                array(array("extra", array(2 => 3))),
             ),
         );
     }
@@ -885,12 +961,13 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
     * @param mixed $value  The value to set the indext to
     * @param int   $offset The offset to use
     * @param array $expect The expected return
+    * @param array $calls  The expected calls
     *
     * @return null
     *
     * @dataProvider dataSetExtra
     */
-    public function testSetExtra($mock, $index, $value, $offset, $expect)
+    public function testSetExtra($mock, $index, $value, $offset, $expect, $calls)
     {
         unset($this->o);
         $sensor = new \HUGnet\DummyBase("Sensor");
@@ -898,6 +975,8 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
         $this->o = DriverTestClass::factory($sensor, $offset);
         $ret = $this->o->setExtra($index, $value);
         $this->assertSame($expect, $ret);
+        $ret = $sensor->retrieve("Sensor");
+        $this->assertEquals($calls, $ret["set"]);
     }
 }
 /**
@@ -944,6 +1023,13 @@ class DriverTestClass extends LoadableDriver
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(),
+        "extraNames" => array(
+            "hello" => 0,
+            "this"  => 1,
+            "is"    => 2,
+            "name"  => 3,
+            "again" => 1,
+        ),
         "storageUnit" => "unknown",
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "maxDecimals" => 2,
