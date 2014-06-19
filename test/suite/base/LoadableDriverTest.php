@@ -215,7 +215,9 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
             'total' => false,
             'extraText' => Array ("a", "b", "c", "d", "e"),
             'extraDefault' => Array (2,3,5,7,11),
-            'extraValues' => Array (5, 5, 5, 5, 5),
+            'extraValues' => Array (
+                5, 5, 5, 5, array("a" => "first", "b" => "second")
+            ),
             "extraNames" => array(
                 "hello" => 0,
                 "this"  => 1,
@@ -951,6 +953,34 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
                 3,
                 array(array("extra", array(2 => 3))),
             ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6, "a"),
+                        ),
+                    ),
+                ),
+                4,
+                "c",
+                0,
+                "a",
+                array(array("extra", array(3,4,5,6, "a"))),
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6, "a"),
+                        ),
+                    ),
+                ),
+                4,
+                "b",
+                0,
+                "b",
+                array(array("extra", array(3,4,5,6, "b"))),
+            ),
         );
     }
     /**
@@ -1055,7 +1085,7 @@ class DriverTestClass extends LoadableDriver
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraDefault" => array(2,3,5,7,11),
         "extraText" => array("a","b","c","d","e"),
-        "extraValues" => array(5, 5, 5, 5, 5),
+        "extraValues" => array(5, 5, 5, 5, array("a" => "first", "b" => "second")),
         "maxDecimals" => "getExtra3",
     );
     /**
