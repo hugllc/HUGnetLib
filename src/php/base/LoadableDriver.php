@@ -186,9 +186,6 @@ abstract class LoadableDriver
     public function &entry()
     {
         $entryClass = $this->entryClass();
-        if (!is_string($entryClass)) {
-            return null;
-        }
         if (!is_object($this->_entry)  && class_exists($entryClass)) {
             $table = json_decode(
                 (string)$this->iopobject()->table()->get("tableEntry"), true
@@ -264,6 +261,13 @@ abstract class LoadableDriver
                 || isset($extraValues[$index][$value])
             ) {
                 $extra[$index] = $value;
+            } else if (is_array($extraValues[$index])) {
+                // This is a case where we are given the value of the array element,
+                // instead of the key.
+                $key = array_search($value, $extraValues[$index], true);
+                if ($key !== false) {
+                    $extra[$index] = $key;
+                }
             }
         }
         $this->iopobject()->set("extra", $extra);

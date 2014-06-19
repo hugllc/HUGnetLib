@@ -896,6 +896,34 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                1,
+                "",
+                0,
+                null,
+                array(array("extra", array(0 => 3, 2 => 5, 3 => 6))),
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6),
+                        ),
+                    ),
+                ),
+                1,
+                null,
+                0,
+                null,
+                array(array("extra", array(0 => 3, 2 => 5, 3 => 6))),
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6),
+                        ),
+                    ),
+                ),
                 "name",
                 1,
                 0,
@@ -976,7 +1004,35 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 4,
+                "third",
+                0,
+                "a",
+                array(array("extra", array(3,4,5,6, "a"))),
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6, "a"),
+                        ),
+                    ),
+                ),
+                4,
                 "b",
+                0,
+                "b",
+                array(array("extra", array(3,4,5,6, "b"))),
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6, "a"),
+                        ),
+                    ),
+                ),
+                4,
+                "second",
                 0,
                 "b",
                 array(array("extra", array(3,4,5,6, "b"))),
@@ -1007,6 +1063,24 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, $ret);
         $ret = $sensor->retrieve("Sensor");
         $this->assertEquals($calls, $ret["set"]);
+    }
+    /**
+    * test the getDrivers() function
+    *
+    * @return null
+    */
+    public function testGetDrivers()
+    {
+        $ret = $this->o->getDrivers();
+        $expect = array(
+            'a' => 'a',
+            'b' => 'b',
+            'c' => 'c',
+            'd' => 'd',
+            'e' => 'e',
+            'f' => 'f',
+        );
+        $this->assertSame($expect, $ret, "Return is wrong");
     }
 }
 /**
@@ -1087,6 +1161,11 @@ class DriverTestClass extends LoadableDriver
         "extraText" => array("a","b","c","d","e"),
         "extraValues" => array(5, 5, 5, 5, array("a" => "first", "b" => "second")),
         "maxDecimals" => "getExtra3",
+    );
+    /** This is to test getDrivers() */
+    protected $arch = array(
+        "unknown" => array("d" => "d", "e" => "e", "f" => "f"),
+        "all" => array("a" => "a", "b" => "b", "c" => "c"),
     );
     /**
     * This function creates the system.
