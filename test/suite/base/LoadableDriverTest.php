@@ -812,6 +812,93 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
         $this->o = DriverTestClass::factory($sensor, $offset);
         $this->assertSame($expect, $this->o->getExtra($index));
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataSetExtra()
+    {
+        return array(
+            array(
+                array(
+                ),
+                0,
+                2,
+                0,
+                2
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6),
+                        ),
+                    ),
+                ),
+                0,
+                3,
+                0,
+                3
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6),
+                        ),
+                    ),
+                ),
+                0,
+                4,
+                1,
+                4
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6),
+                        ),
+                    ),
+                ),
+                1,
+                5,
+                1,
+                5
+            ),
+            array(
+                array(
+                ),
+                1,
+                3,
+                1,
+                3
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $mock   The mocks to use
+    * @param int   $index  The index to get
+    * @param mixed $value  The value to set the indext to
+    * @param int   $offset The offset to use
+    * @param array $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataSetExtra
+    */
+    public function testSetExtra($mock, $index, $value, $offset, $expect)
+    {
+        unset($this->o);
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($mock);
+        $this->o = DriverTestClass::factory($sensor, $offset);
+        $ret = $this->o->setExtra($index, $value);
+        $this->assertSame($expect, $ret);
+    }
 }
 /**
  * Base driver class for devices.
