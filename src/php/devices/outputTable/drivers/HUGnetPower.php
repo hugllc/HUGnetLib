@@ -85,6 +85,8 @@ class HUGnetPower extends \HUGnet\devices\outputTable\Driver
             1 => "The initial value for the port",
         ),
         "extraNames" => array(
+            "port"      => 0,
+            "initvalue" => 1
         ),
         "min" => -1,
         "max" => 1,

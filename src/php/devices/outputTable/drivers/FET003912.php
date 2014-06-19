@@ -99,6 +99,9 @@ class FET003912 extends \HUGnet\devices\outputTable\DriverAVR
             2 => "The mode for the port.",
         ),
         "extraNames" => array(
+            "frequency" => 0,
+            "port"      => 1,
+            "mode"      => 2,
         ),
         "min" => -256,
         "max" => +256,

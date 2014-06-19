@@ -89,6 +89,10 @@ class NullOutput extends \HUGnet\devices\outputTable\Driver
             3 => "The zero point of this channel",
         ),
         "extraNames" => array(
+            "initvalue" => 0,
+            "min"       => 1,
+            "max"       => 2,
+            "zero"      => 3,
         ),
     );
     /**

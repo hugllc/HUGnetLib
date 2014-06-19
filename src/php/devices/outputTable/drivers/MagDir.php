@@ -92,6 +92,11 @@ class MagDir extends \HUGnet\devices\outputTable\Driver
             4 => "The initial value of the control channel",
         ),
         "extraNames" => array(
+            "frequency"  => 0,
+            "mode"       => 1,
+            "dircontrol" => 2,
+            "magcontrol" => 3,
+            "initvalue"  => 4,
         ),
     );
     /**
