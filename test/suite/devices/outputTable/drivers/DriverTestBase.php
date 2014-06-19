@@ -263,6 +263,38 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
             "extraDesc needs to have the same number of entries as extraDefault"
         );
     }
+    /**
+    * Check the number of entries in extraValues
+    *
+    * @return null
+    */
+    public function testExtraNamesValues()
+    {
+        $names   = (array)$this->o->get("extraNames", 1);
+        $default = (array)$this->o->get("extraDefault", 1);
+        foreach ($names as $key => $value) {
+            $this->assertTrue(
+                isset($default[$value]),
+                "extraNames must point to a valid key in extraDefault"
+                ." $value not in extraDefault.  Name $key "
+            );
+        }
+    }
+    /**
+    * Check the number of entries in extraValues
+    *
+    * @return null
+    */
+    public function testExtraNamesNames()
+    {
+        $names   = (array)$this->o->get("extraNames", 1);
+        foreach ($names as $key => $value) {
+            $this->assertFalse(
+                is_numeric($key),
+                "extraNames array keys can not be numeric ($key)"
+            );
+        }
+    }
 
     /**
     * data provider for testDeviceID
