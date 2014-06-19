@@ -92,6 +92,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(),
+        "extraNames" => array(),
         "storageUnit" => "unknown",
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "maxDecimals" => 2,

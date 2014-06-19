@@ -76,6 +76,10 @@ class ControllerTemp extends \HUGnet\devices\inputTable\drivers\avr\AVRBC2322640
             "The resistor connecting the thermistor and the AtoD reference voltage.",
             "The value of the thermistor at 25 C",
         ),
+        "extraNames" => array(
+            "r"      => 0,
+            "value"  => 1,
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

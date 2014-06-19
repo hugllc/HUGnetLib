@@ -87,6 +87,15 @@ class AVRHitachiVFDFan extends \HUGnet\devices\inputTable\DriverAVR
             "The speed of the motors at the maximum voltage",
             "The reference voltage for the AtoD",
         ),
+        "extraNames" => array(
+            "r1"      => 0,
+            "r2"      => 1,
+            "minv"    => 2,
+            "maxv"    => 3,
+            "minread" => 4,
+            "maxread" => 5,
+            "atodref" => 6,
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

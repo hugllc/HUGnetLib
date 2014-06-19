@@ -190,6 +190,7 @@ class InputTest extends \PHPUnit_Framework_TestCase
                     "extraDesc" => array("Silliness", "Unit"),
                     "extraDefault" => array(2210, '&#176;C'),
                     "extraValues" => array(5, array('&#176;C', '&#176;F', 'K')),
+                    'extraNames'   => array(),
                     "storageUnit" => "&#176;C",
                     "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                     "maxDecimals" => 4,

@@ -228,12 +228,13 @@ abstract class LoadableDriver
     /**
     * Gets the extra values
     *
-    * @param int $index The extra index to use
+    * @param mixed $index The extra index to use
     *
     * @return The extra value (or default if empty)
     */
     public function getExtra($index)
     {
+        $index = $this->_extraIndex($index);
         $extra = (array)$this->iopobject()->get("extra");
         $return = $extra[$index + $this->offset];
         if (is_null($return)) {
@@ -242,7 +243,49 @@ abstract class LoadableDriver
         }
         return $return;
     }
-
+    /**
+    * Gets the extra values
+    *
+    * @param mixed $index The extra index to use
+    * @param mixed $value The value to set it to
+    *
+    * @return The extra value (or default if empty)
+    */
+    public function setExtra($index, $value)
+    {
+        $index = $this->_extraIndex($index) + $this->offset;
+        $extra = (array)$this->iopobject()->get("extra");
+        if (($value === "") || is_null($value)) {
+            unset($extra[$index]);
+        } else {
+            $extraValues = $this->get("extraValues");
+            // This checks to see if this is a valid value
+            if (!is_array($extraValues[$index]) 
+                || isset($extraValues[$index][$value])
+            ) {
+                $extra[$index] = $value;
+            }
+        }
+        $this->iopobject()->set("extra", $extra);
+        return $extra[$index];
+    }
+    /**
+    * Gets the extra Index
+    *
+    * @param mixed $index The extra index to use
+    *
+    * @return The extra value (or default if empty)
+    */
+    private function _extraIndex($index)
+    {
+        if (!is_numeric($index)) {
+            $extraNames = $this->get("extraNames");
+            if (isset($extraNames[$index])) {
+                $index = $extraNames[$index];
+            }
+        }
+        return (int)$index;
+    }
     /**
     * Returns the driver that should be used for a particular device
     *

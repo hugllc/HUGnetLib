@@ -215,7 +215,16 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
             'total' => false,
             'extraText' => Array ("a", "b", "c", "d", "e"),
             'extraDefault' => Array (2,3,5,7,11),
-            'extraValues' => Array (5, 5, 5, 5, 5),
+            'extraValues' => Array (
+                5, 5, 5, 5, array("a" => "first", "b" => "second")
+            ),
+            "extraNames" => array(
+                "hello" => 0,
+                "this"  => 1,
+                "is"    => 2,
+                "name"  => 3,
+                "again" => 1,
+            ),
             'storageUnit' => 'unknown',
             'storageType' => 'raw',
             'maxDecimals' => 7,
@@ -767,7 +776,43 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                "is",
                 0,
+                5
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6),
+                        ),
+                    ),
+                ),
+                "again",
+                0,
+                4
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6),
+                        ),
+                    ),
+                ),
+                0,
+                1,
+                4
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6),
+                        ),
+                    ),
+                ),
+                "hello",
                 1,
                 4
             ),
@@ -811,6 +856,157 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
         $sensor->resetMock($mock);
         $this->o = DriverTestClass::factory($sensor, $offset);
         $this->assertSame($expect, $this->o->getExtra($index));
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataSetExtra()
+    {
+        return array(
+            array(
+                array(
+                ),
+                0,
+                2,
+                0,
+                2,
+                array(array("extra", array(0 => 2))),
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6),
+                        ),
+                    ),
+                ),
+                0,
+                1,
+                0,
+                1,
+                array(array("extra", array(1,4,5,6))),
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6),
+                        ),
+                    ),
+                ),
+                "name",
+                1,
+                0,
+                1,
+                array(array("extra", array(3,4,5,1))),
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6),
+                        ),
+                    ),
+                ),
+                0,
+                2,
+                1,
+                2,
+                array(array("extra", array(3,2,5,6))),
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6),
+                        ),
+                    ),
+                ),
+                "hello",
+                2,
+                1,
+                2,
+                array(array("extra", array(3,2,5,6))),
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6),
+                        ),
+                    ),
+                ),
+                1,
+                6,
+                1,
+                6,
+                array(array("extra", array(3,4,6,6))),
+            ),
+            array(
+                array(
+                ),
+                1,
+                3,
+                1,
+                3,
+                array(array("extra", array(2 => 3))),
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6, "a"),
+                        ),
+                    ),
+                ),
+                4,
+                "c",
+                0,
+                "a",
+                array(array("extra", array(3,4,5,6, "a"))),
+            ),
+            array(
+                array(
+                    "Sensor" => array(
+                        "get" => array(
+                            "extra" => array(3,4,5,6, "a"),
+                        ),
+                    ),
+                ),
+                4,
+                "b",
+                0,
+                "b",
+                array(array("extra", array(3,4,5,6, "b"))),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $mock   The mocks to use
+    * @param int   $index  The index to get
+    * @param mixed $value  The value to set the indext to
+    * @param int   $offset The offset to use
+    * @param array $expect The expected return
+    * @param array $calls  The expected calls
+    *
+    * @return null
+    *
+    * @dataProvider dataSetExtra
+    */
+    public function testSetExtra($mock, $index, $value, $offset, $expect, $calls)
+    {
+        unset($this->o);
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($mock);
+        $this->o = DriverTestClass::factory($sensor, $offset);
+        $ret = $this->o->setExtra($index, $value);
+        $this->assertSame($expect, $ret);
+        $ret = $sensor->retrieve("Sensor");
+        $this->assertEquals($calls, $ret["set"]);
     }
 }
 /**
@@ -857,6 +1053,13 @@ class DriverTestClass extends LoadableDriver
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(),
+        "extraNames" => array(
+            "hello" => 0,
+            "this"  => 1,
+            "is"    => 2,
+            "name"  => 3,
+            "again" => 1,
+        ),
         "storageUnit" => "unknown",
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "maxDecimals" => 2,
@@ -882,7 +1085,7 @@ class DriverTestClass extends LoadableDriver
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraDefault" => array(2,3,5,7,11),
         "extraText" => array("a","b","c","d","e"),
-        "extraValues" => array(5, 5, 5, 5, 5),
+        "extraValues" => array(5, 5, 5, 5, array("a" => "first", "b" => "second")),
         "maxDecimals" => "getExtra3",
     );
     /**

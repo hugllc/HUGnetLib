@@ -82,6 +82,8 @@ class OmegaAlphaPH extends \HUGnet\devices\inputTable\DriverADuC
             "The voltage when the sensor reads 0 pH",
             "The voltage when the sensor reads 14 pH"
         ),
+        "extraNames" => array(
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

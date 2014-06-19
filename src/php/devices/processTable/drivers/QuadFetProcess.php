@@ -94,6 +94,17 @@ class QuadFetProcess extends \HUGnet\devices\processTable\Driver
             "The mode to use for Port 4",
             "The threshold to use for Port 4",
         ),
+        "extraNames" => array(
+            "frequency"     => 0,
+            "port1mode"     => 1,
+            "port1thresh"   => 2,
+            "port2mode"     => 3,
+            "port2thresh"   => 4,
+            "port3mode"     => 5,
+            "port3thresh"   => 6,
+            "port4mode"     => 7,
+            "port4thresh"   => 8,
+        ),
         "extraDefault" => array(
             128, 0, 0, 0, 0, 0, 0, 0, 0
         ),

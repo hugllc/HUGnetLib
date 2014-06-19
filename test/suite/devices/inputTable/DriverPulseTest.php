@@ -244,6 +244,7 @@ class DriverPulseTest extends drivers\DriverTestBase
             'total' => false,
             'extraText' => array ("a", "b", "c", "d", "e"),
             "extraDesc" => array("A","B","C","D","E"),
+            "extraNames" => array(),
             'extraDefault' => array(2, 3, 5, 7, 11),
             'extraValues' => array(5, array(1, 2, 3), 5, 5, 5),
             'storageUnit' => 'unknown',

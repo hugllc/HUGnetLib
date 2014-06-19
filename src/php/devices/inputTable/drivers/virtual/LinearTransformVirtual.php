@@ -109,6 +109,18 @@ class LinearTransformVirtual extends \HUGnet\devices\inputTable\DriverVirtual
             "The data type that the output will be in",
             "The maximum number of decimals that are valid for the output",
         ),
+        "extraNames" => array(
+            "datachan"    => 0,
+            "origpta"     => 1,
+            "origptb"     => 2,
+            "newpta"      => 3,
+            "newptb"      => 4,
+            "type"        => 5,
+            "storageunit" => 6,
+            "unittype"    => 7,
+            "datatype"    => 8,
+            "maxdecimals" => 9,
+        ),
         "extraDefault" => array(
             "", 0, 0, 0, 0, 'unbounded', "unknown", "Generic",
             \HUGnet\devices\datachan\Driver::TYPE_RAW, 4

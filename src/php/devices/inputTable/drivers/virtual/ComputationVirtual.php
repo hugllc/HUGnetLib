@@ -103,6 +103,14 @@ class ComputationVirtual extends \HUGnet\devices\inputTable\DriverVirtual
              treated as zero in the math.  If No, then if any of the data channels
              referenced have invalid values this will output a null."
         ),
+        "extraNames" => array(
+            "math"        => 0, 
+            "storageunit" => 1, 
+            "unittype"    => 2,
+            "datatype"    => 3,
+            "maxdecimals" => 4,
+            "zeronull"    => 5,
+        ),
         "storageType" => "getExtra3",
         "storageUnit" => "getExtra1",
         "maxDecimals" => "getExtra4",

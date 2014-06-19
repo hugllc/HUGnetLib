@@ -91,6 +91,12 @@ class LiquidFlow extends \HUGnet\devices\inputTable\DriverPulse
             "The port to count pulses on",
             "The number of matching samples to count as a pulse.",
         ),
+        "extraNames" => array(
+            "galperpulse" => 0,
+            "clockbase"   => 1,
+            "port"        => 2,
+            "debounce"    => 3,
+        ),
         "dataTypes" => array(
             \HUGnet\devices\datachan\Driver::TYPE_DIFF
                 => \HUGnet\devices\datachan\Driver::TYPE_DIFF,

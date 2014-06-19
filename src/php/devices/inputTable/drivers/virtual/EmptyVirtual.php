@@ -77,6 +77,7 @@ class EmptyVirtual extends \HUGnet\devices\inputTable\DriverVirtual
         "extraValues" => array(),
         "extraDefault" => array(),
         "extraDesc" => array(),
+        "extraNames" => array(),
         "maxDecimals" => 0,
         "dataTypes" => array(
             \HUGnet\devices\datachan\Driver::TYPE_IGNORE

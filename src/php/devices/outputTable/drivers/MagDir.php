@@ -91,6 +91,13 @@ class MagDir extends \HUGnet\devices\outputTable\Driver
             3 => "The control channel we should output the magnitude to.",
             4 => "The initial value of the control channel",
         ),
+        "extraNames" => array(
+            "frequency"  => 0,
+            "mode"       => 1,
+            "dircontrol" => 2,
+            "magcontrol" => 3,
+            "initvalue"  => 4,
+        ),
     );
     /**
     * Gets an item

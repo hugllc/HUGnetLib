@@ -105,6 +105,22 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
             "The minimum value for the control channel.  Empty means use default",
             "The maximum value for the control channel.  Empty means use default",
         ),
+        "extraNames" => array(
+            "frequency"     => 0,
+            "controlchan"   => 1,
+            "step"          => 2,
+            "limit1channel" => 3,
+            "limit1high"    => 4,
+            "limit1low"     => 5,
+            "limit2channel" => 6,
+            "limit2high"    => 7,
+            "limit2low"     => 8,
+            "datachan"      => 9,
+            "setpoint"      => 10,
+            "tolerance"     => 11,
+            "min"           => 12,
+            "max"           => 13,
+        ),
         "extraDefault" => array(
             34, 0, 2, 0xFF, 0, 0, 0xFF, 0, 0, 0, 0, 0.01, "", ""
         ),

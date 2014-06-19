@@ -85,6 +85,13 @@ class AVRPotDirection extends \HUGnet\devices\inputTable\DriverAVR
              Resistance 2",
             "The resistance that is read when the thing is pointed in Direction 2",
         ),
+        "extraNames" => array(
+            "potr" => 0,
+            "dir1" => 1,
+            "r1"   => 2,
+            "dir2" => 3,
+            "r2"   => 4,
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

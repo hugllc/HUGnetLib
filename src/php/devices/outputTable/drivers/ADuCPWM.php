@@ -90,6 +90,11 @@ class ADuCPWM extends \HUGnet\devices\outputTable\DriverADuC
             11 => "The value to initially set the control channel for PWM3",
             12 => "The value to initially set the control channel for PWM5",
         ),
+        "extraNames" => array(
+            "pwm1initvalue" => 10,
+            "pwm2initvalue" => 11,
+            "pwm3initvalue" => 12,
+        ),
         "min" => -65535,
         "max" => 65535,
         "zero" => 0,
@@ -120,6 +125,10 @@ class ADuCPWM extends \HUGnet\devices\outputTable\DriverADuC
             $entry = $this->entry()->fullArray();
             foreach ($this->entryMap as $key => $field) {
                 $ret[$key]  = $entry[$field]["desc"];
+            }
+        } else if ($name == "extraNames") {
+            foreach ($this->entryMap as $key => $field) {
+                $ret[strtolower($field)]  = $key;
             }
         } else if ($name == "extraDesc") {
             $entry = $this->entry()->fullArray();

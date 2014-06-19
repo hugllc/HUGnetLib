@@ -102,6 +102,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
             array("extraValues", "array"),
             array("extraDefault", "array"),
             array("extraDesc", "array"),
+            array("extraNames", "array"),
         );
     }
     /**
@@ -166,6 +167,55 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
         $this->assertGreaterThanOrEqual(
             $min, strlen($name), "$field must be more than $min characters"
         );
+    }
+    /**
+    * Check the number of entries in extraValues
+    *
+    * @return null
+    */
+    public function testExtraNamesValues()
+    {
+        $names   = (array)$this->o->get("extraNames", 1);
+        $default = (array)$this->o->get("extraDefault", 1);
+        foreach ($names as $key => $value) {
+            $this->assertTrue(
+                isset($default[$value]),
+                "extraNames must point to a valid key in extraDefault"
+                ." $value not a key in extraDefault.  Name $key "
+            );
+        }
+    }
+    /**
+    * Check the number of entries in extraValues
+    *
+    * @return null
+    */
+    public function testExtraNamesNumeric()
+    {
+        $names   = (array)$this->o->get("extraNames", 1);
+        foreach ($names as $key => $value) {
+            $this->assertFalse(
+                is_numeric($key),
+                "extraNames array keys can not be numeric ($key => $value)"
+            );
+        }
+    }
+    /**
+    * Check the number of entries in extraValues
+    *
+    * @return null
+    */
+    public function testExtraNamesCase()
+    {
+        $names   = (array)$this->o->get("extraNames", 1);
+        foreach ($names as $key => $value) {
+            $newkey = preg_replace("/[^a-z0-9]/", "", $key);
+            $this->assertTrue(
+                $key === $newkey,
+                "extraNames keys can only contain numbers and lower case letters"
+                ."('$key' should be '$newkey')"
+            );
+        }
     }
 
     /**

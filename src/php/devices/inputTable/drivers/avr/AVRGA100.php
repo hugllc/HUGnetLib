@@ -83,6 +83,13 @@ class AVRGA100 extends \HUGnet\devices\inputTable\DriverAVR
             "The pressure at the maximum voltage",
             "The reference voltage for the AtoD",
         ),
+        "extraNames" => array(
+            "minv"    => 0,
+            "maxv"    => 1,
+            "minread" => 2,
+            "maxread" => 3,
+            "atodref" => 4,
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing

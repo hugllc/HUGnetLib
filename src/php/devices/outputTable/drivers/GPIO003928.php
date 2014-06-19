@@ -101,6 +101,10 @@ class GPIO003928 extends \HUGnet\devices\outputTable\DriverAVR
                   the output.",
             1 => "The port we should go out",
         ),
+        "extraNames" => array(
+            "frequency" => 0,
+            "port"      => 1,
+        ),
         "min" => -127,
         "max" => +127,
         "zero" => 0,
