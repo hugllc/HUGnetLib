@@ -209,7 +209,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     {
         $names   = (array)$this->o->get("extraNames", 1);
         foreach ($names as $key => $value) {
-            $newkey = preg_replace("/[^a-z1-9]/", "", $key);
+            $newkey = preg_replace("/[^a-z0-9]/", "", $key);
             $this->assertTrue(
                 $key === $newkey,
                 "extraNames keys can only contain numbers and lower case letters"

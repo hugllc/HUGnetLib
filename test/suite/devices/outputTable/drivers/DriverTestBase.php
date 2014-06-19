@@ -285,13 +285,30 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     *
     * @return null
     */
-    public function testExtraNamesNames()
+    public function testExtraNamesNumeric()
     {
         $names   = (array)$this->o->get("extraNames", 1);
         foreach ($names as $key => $value) {
             $this->assertFalse(
                 is_numeric($key),
-                "extraNames array keys can not be numeric ($key)"
+                "extraNames array keys can not be numeric ($key => $value)"
+            );
+        }
+    }
+    /**
+    * Check the number of entries in extraValues
+    *
+    * @return null
+    */
+    public function testExtraNamesCase()
+    {
+        $names   = (array)$this->o->get("extraNames", 1);
+        foreach ($names as $key => $value) {
+            $newkey = preg_replace("/[^a-z0-9]/", "", $key);
+            $this->assertTrue(
+                $key === $newkey,
+                "extraNames keys can only contain numbers and lower case letters"
+                ."('$key' should be '$newkey')"
             );
         }
     }
