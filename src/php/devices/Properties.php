@@ -199,6 +199,7 @@ class Properties
     *                                       [2] shunt resistor value
     *                                       [3] shunt resistor location 
     *                                       [4] shunt resistor pull
+    *                                       [5] high voltage input flag
     *
     */
     public function epPinProperties($epName, $pinName)
@@ -236,7 +237,13 @@ class Properties
                                         endpoints[$i]->Pins[$j]->shunt->pull);
                                     $pinArray[3] = $pinShuntResLoc;
                                     $pinArray[4] = $pinShuntResPull;
+                                } else {
+                                    $pinArray[3] = "none";
+                                    $pinArray[4] = "none";
                                 }
+                                $pinHighVoltage = (string)($this->_Xml->
+                                    endpoints[$i]->Pins[$j]->highvoltage);
+                                $pinArray[5] = $pinHighVoltage;
                             }
                         }
                     }
