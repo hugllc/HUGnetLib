@@ -446,5 +446,63 @@ abstract class IOPDriverTestBase extends \PHPUnit_Framework_TestCase
         $sensor->resetMock($mock);
         $this->assertSame($expect, $this->o->getExtra($extra));
     }
+    /**
+    * data provider for testProvidesRequires
+    *
+    * @return array
+    */
+    public static function dataProvidesRequires()
+    {
+        return array(
+            array("provides"),
+            array("requires"),
+        );
+    }
+    /**
+    * Check the string size
+    *
+    * @param string $field The field to check
+    *
+    * @return null
+    *
+    * @dataProvider dataProvidesRequires
+    */
+    final public function testProvidesRequires($field)
+    {
+        $names  = (array)$this->o->get($field, 1);
+        $values = array("CC", "DC", "DO", "DI", "AO", "AI", "HVAI");
+        $index  = 0;
+        foreach ($names as $key => $value) {
+            $search = array_search($value, $values);
+            $this->assertTrue(
+                false !== $search,
+                "$field must only contain the following values:"
+                ."(".implode(", ", $values).") $value is not on the list"
+                ." at key $key."
+            );
+        }
+    }
+    /**
+    * Check the string size
+    *
+    * @param string $field The field to check
+    *
+    * @return null
+    *
+    * @dataProvider dataProvidesRequires
+    */
+    final public function testProvidesRequires2($field)
+    {
+        $names  = (array)$this->o->get($field, 1);
+        $index  = 0;
+        foreach ($names as $key => $value) {
+            $this->assertSame(
+                $index++, 
+                $key, 
+                "$field must have incrementing integers"
+                ." for keys starting at 0.  $key => $value is the first problem."
+            );
+        }
+    }
 }
 ?>

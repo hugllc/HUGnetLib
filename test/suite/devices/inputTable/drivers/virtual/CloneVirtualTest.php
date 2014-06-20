@@ -637,6 +637,8 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                     'storageUnit'  => '&#176;C',
                     'storageType'  => 'raw',
                     'maxDecimals'  => 2,
+                    "provides"     => array(),
+                    "requires"     => array(),
                     'dataTypes'    => array(
                         'raw'    => 'raw',
                         'diff'   => 'diff',
@@ -682,6 +684,8 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                     'storageUnit'  => 'unknown',
                     'storageType'  => 'raw',
                     'maxDecimals'  => 2,
+                    "provides"     => array(),
+                    "requires"     => array(),
                     'dataTypes'    => array(
                         'ignore' => 'ignore',
                     ),
@@ -731,6 +735,8 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                     'storageUnit'  => 'none',
                     'storageType'  => 'ignore',
                     'maxDecimals'  => 0,
+                    "provides"     => array(),
+                    "requires"     => array(),
                     'dataTypes'    => array(
                         'ignore' => 'ignore',
                     ),

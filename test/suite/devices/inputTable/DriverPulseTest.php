@@ -250,6 +250,8 @@ class DriverPulseTest extends drivers\DriverTestBase
             'storageUnit' => 'unknown',
             'storageType' => 'diff',
             'maxDecimals' => 2,
+            'requires' => array(),
+            'provides' => array(),
             'testParam' => '12345',
             "dataTypes" => array(
                 \HUGnet\devices\datachan\Driver::TYPE_RAW

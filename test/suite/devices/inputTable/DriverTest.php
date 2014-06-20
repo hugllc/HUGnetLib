@@ -228,6 +228,8 @@ class DriverTest extends drivers\DriverTestBase
                     => \HUGnet\devices\datachan\Driver::TYPE_IGNORE,
             ),
             'inputSize' => 3,
+            "provides" => array(),
+            "requires" => array(),
         );
         $this->assertEquals($expect, $this->o->toArray(1));
     }

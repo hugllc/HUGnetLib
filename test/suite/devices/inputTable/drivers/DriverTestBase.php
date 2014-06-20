@@ -123,6 +123,8 @@ abstract class DriverTestBase extends \HUGnet\devices\IOPDriverTestBase
             array("maxDecimals", "int"),
             array("unitType", "string"),
             array("dataTypes", "array"),
+            array("provides", "array"),
+            array("requires", "array"),
         );
     }
     /**

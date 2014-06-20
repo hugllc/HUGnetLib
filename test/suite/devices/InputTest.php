@@ -194,6 +194,8 @@ class InputTest extends \PHPUnit_Framework_TestCase
                     "storageUnit" => "&#176;C",
                     "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
                     "maxDecimals" => 4,
+                    'requires' => array(),
+                    'provides' => array(),
                     "dataTypes" => array(
                         \HUGnet\devices\datachan\Driver::TYPE_RAW
                             => \HUGnet\devices\datachan\Driver::TYPE_RAW,
