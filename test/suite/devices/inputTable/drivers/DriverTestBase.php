@@ -146,6 +146,17 @@ abstract class DriverTestBase extends \HUGnet\devices\IOPDriverTestBase
     *
     * @return array
     */
+    public static function dataStringRegex()
+    {
+        return array(
+            array("unitType", "/[A-Za-z0-9]*/"),
+        );
+    }
+    /**
+    * data provider for testType
+    *
+    * @return array
+    */
     final public static function dataIntSize()
     {
         return array(

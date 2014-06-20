@@ -66,7 +66,7 @@ class LiquidFlow extends \HUGnet\devices\inputTable\DriverPulse
     protected $params = array(
         "longName" => "Liquid Flow Meter",
         "shortName" => "LiquidFlow",
-        "unitType" => "Flow Rate",
+        "unitType" => "FlowRate",
         "storageUnit" => 'gal/min',
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_DIFF,
         "extraText" => array(

@@ -172,6 +172,42 @@ abstract class IOPDriverTestBase extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
+    public static function dataStringRegex()
+    {
+        return array(
+            array(null, null),
+        );
+    }
+    /**
+    * Check the string size
+    *
+    * @param string $field The field to check
+    * @param string $regex The regular expression
+    *
+    * @return null
+    *
+    * @dataProvider dataStringRegex
+    */
+    final public function testStringRegex($field, $regex)
+    {
+        if (!is_null($field)) {
+            $value   = $this->o->get($field);
+            $matches = array();
+            preg_match_all($regex, $value, $matches);
+            $match = implode("", $matches[0]);
+            $this->assertSame(
+                $match,
+                $value,
+                "$field must follow regex $regex"
+                ."('$value' should be '$match')"
+            );
+        }
+    }
+    /**
+    * data provider for testType
+    *
+    * @return array
+    */
     public static function dataIntSize()
     {
         return array(

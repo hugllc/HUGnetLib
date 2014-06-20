@@ -468,7 +468,7 @@ class LiquidFlowTest extends DriverTestBase
                         'units' => 'gal/min',
                         'maxDecimals' => 8,
                         'storageUnit' => 'gal/min',
-                        'unitType' => 'Flow Rate',
+                        'unitType' => 'FlowRate',
                         'dataType' => 'diff',
                         'label' => '',
                         'index' => 0,
