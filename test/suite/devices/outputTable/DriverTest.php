@@ -178,6 +178,8 @@ class DriverTest extends drivers\DriverTestBase
             "max" => 81,
             "zero" => 0,
             'port' => '2Z',
+            "requires" => array(),
+            "provides" => array(),
         );
         $this->assertEquals($expect, $this->o->toArray(1));
     }

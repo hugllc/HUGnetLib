@@ -202,6 +202,8 @@ class OutputTest extends \PHPUnit_Framework_TestCase
                     'port' => '10B',
                     "otherTables" => array(),
                     "tableEntry" => array(),
+                    "requires" => array(),
+                    "provides" => array(),
                 ),
             ),
             array(
@@ -247,6 +249,8 @@ class OutputTest extends \PHPUnit_Framework_TestCase
                     "zero" => 0,
                     "otherTables" => array(),
                     "tableEntry" => array(),
+                    "requires" => array(),
+                    "provides" => array(),
                 ),
             ),
         );

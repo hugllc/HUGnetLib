@@ -94,7 +94,7 @@ class NullOutput extends \HUGnet\devices\outputTable\Driver
             "max"       => 2,
             "zero"      => 3,
         ),
-        "provides" => array("ACC"),
+        "provides" => array("CC"),
     );
     /**
     * Gets an item

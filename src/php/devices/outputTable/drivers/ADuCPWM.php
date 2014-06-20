@@ -98,7 +98,7 @@ class ADuCPWM extends \HUGnet\devices\outputTable\DriverADuC
         "min" => -65535,
         "max" => 65535,
         "zero" => 0,
-        "provides" => array("ACC", "ACC", "ACC"),
+        "provides" => array("CC", "CC", "CC"),
     );
     /** This tells us our mapping from extra to entry */
     protected $entryMap = array(

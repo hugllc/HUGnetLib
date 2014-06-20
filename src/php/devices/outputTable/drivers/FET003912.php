@@ -107,7 +107,7 @@ class FET003912 extends \HUGnet\devices\outputTable\DriverAVR
         "max" => +256,
         "zero" => 0,
         "requires" => array("DO"),
-        "provides" => array("DCC"),
+        "provides" => array("CC"),
     );
 
     /**
