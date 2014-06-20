@@ -91,13 +91,14 @@ class ADuCPWM extends \HUGnet\devices\outputTable\DriverADuC
             12 => "The value to initially set the control channel for PWM5",
         ),
         "extraNames" => array(
-            "pwm1initvalue" => 10,
-            "pwm2initvalue" => 11,
-            "pwm3initvalue" => 12,
+            "initvalue0" => 10,
+            "initvalue1" => 11,
+            "initvalue2" => 12,
         ),
         "min" => -65535,
         "max" => 65535,
         "zero" => 0,
+        "provides" => array("ACC", "ACC", "ACC"),
     );
     /** This tells us our mapping from extra to entry */
     protected $entryMap = array(

@@ -91,6 +91,8 @@ class HUGnetPower extends \HUGnet\devices\outputTable\Driver
         "min" => -1,
         "max" => 1,
         "zero" => 0,
+        "requires" => array("DO"),
+        "provides" => array("DCC"),
     );
     /**
     * Decodes the driver portion of the setup string

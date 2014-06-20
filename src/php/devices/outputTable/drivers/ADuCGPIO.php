@@ -106,6 +106,8 @@ class ADuCGPIO extends \HUGnet\devices\outputTable\DriverADuC
         "min" => -65535,
         "max" => 65535,
         "zero" => 0,
+        "requires" => array("DO"),
+        "provides" => array("DCC"),
     );
 
     /**

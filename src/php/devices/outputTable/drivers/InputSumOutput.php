@@ -96,6 +96,8 @@ class InputSumOutput extends \HUGnet\devices\outputTable\Driver
             "gain"      => 2,
             "offset"    => 3,
         ),
+        "provides" => array("ACC"),
+        "requires" => array("ADC"),
     );
     /**
     * Gets an item

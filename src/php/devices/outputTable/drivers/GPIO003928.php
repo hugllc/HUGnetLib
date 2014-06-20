@@ -108,6 +108,8 @@ class GPIO003928 extends \HUGnet\devices\outputTable\DriverAVR
         "min" => -127,
         "max" => +127,
         "zero" => 0,
+        "requires" => array("DO"),
+        "provides" => array("DCC"),
     );
 
     /**

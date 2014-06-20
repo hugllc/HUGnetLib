@@ -98,6 +98,8 @@ class MagDir extends \HUGnet\devices\outputTable\Driver
             "magcontrol" => 3,
             "initvalue"  => 4,
         ),
+        "requires" => array("ACC", "DCC"),
+        "provides" => array("ACC"),
     );
     /**
     * Gets an item

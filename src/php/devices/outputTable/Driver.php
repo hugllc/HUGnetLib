@@ -91,6 +91,8 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "min" => 0,
         "max" => 0,
         "zero" => 0,
+        "requires" => array(),
+        "provides" => array(),
     );
     /**
     * This is where all of the driver information is stored.
