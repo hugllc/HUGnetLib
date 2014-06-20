@@ -83,6 +83,11 @@ class ADuCACResistance extends \HUGnet\devices\inputTable\DriverADuC
             first AC Resistance input is used.  The rest are ignored." 
         ),
         "extraNames" => array(
+            "rsrc"        => 0,
+            "rgnd"        => 1,
+            "fixedr"      => 2,
+            "atodref"     => 3,
+            "controlchan" => 4,
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take

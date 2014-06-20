@@ -362,6 +362,36 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
         unset($obj);
     }
     /**
+    * This tests getExtra
+    *
+    * @return null
+    */
+    public function testGetExtra()
+    {
+        $sys = new \HUGnet\DummySystem("System");
+        $dev = new \HUGnet\DummyBase("Device");
+        $sys->resetMock($config);
+        $obj = IOPBaseStub::factory($sys, null, $class, $dev);
+        $ret = $obj->getExtra(0);
+        $this->assertSame(array("getExtra", 0), $ret);
+        unset($obj);
+    }
+    /**
+    * This tests setExtra
+    *
+    * @return null
+    */
+    public function testSetExtra()
+    {
+        $sys = new \HUGnet\DummySystem("System");
+        $dev = new \HUGnet\DummyBase("Device");
+        $sys->resetMock($config);
+        $obj = IOPBaseStub::factory($sys, null, $class, $dev);
+        $ret = $obj->setExtra(0, 1);
+        $this->assertSame(array("setExtra", 0, 1), $ret);
+        unset($obj);
+    }
+    /**
     * Data provider for testCreate
     *
     * @return array
@@ -1229,6 +1259,29 @@ class TestIOPBaseDriver1 extends \HUGnet\devices\replaceme\Driver
         $A, $deltaT = 0, &$data = array(), $prev = null
     ) {
         return $A * 2;
+    }
+    /**
+    * Gets the extra values
+    *
+    * @param mixed $index The extra index to use
+    *
+    * @return The extra value (or default if empty)
+    */
+    public function getExtra($index)
+    {
+        return array_merge(array("getExtra"), func_get_args());
+    }
+    /**
+    * Sets the extra values
+    *
+    * @param mixed $index The extra index to use
+    * @param mixed $value The value to set it to
+    *
+    * @return The extra value (or default if empty)
+    */
+    public function setExtra($index, $value)
+    {
+        return array_merge(array("setExtra"), func_get_args());
     }
 
 }

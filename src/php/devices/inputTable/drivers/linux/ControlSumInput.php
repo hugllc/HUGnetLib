@@ -97,7 +97,7 @@ class ControlSumInput extends \HUGnet\devices\inputTable\Driver
             8 => "The mode the data should be set to the data channel as."
         ),
         "extraNames" => array(
-            "priority"    => 0,
+            "frequency"   => 0,
             "controlchan" => 1,
             "gain"        => 2,
             "offset"      => 3,

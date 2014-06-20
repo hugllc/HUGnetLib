@@ -147,7 +147,10 @@ abstract class LoadableDriver
         } else if (isset($this->default[$name])) {
             $ret = $this->default[$name];
         }
-        if (is_string($ret) && (strtolower(substr($ret, 0, 8)) === "getextra")) {
+        if (is_string($ret) 
+            && ($name != "extraDefault")   // This would cause an infinite loop
+            && (strtolower(substr($ret, 0, 8)) === "getextra")
+        ) {
             $key = (int)substr($ret, 8);
             $ret = $this->getExtra($key);
         }
@@ -186,9 +189,6 @@ abstract class LoadableDriver
     public function &entry()
     {
         $entryClass = $this->entryClass();
-        if (!is_string($entryClass)) {
-            return null;
-        }
         if (!is_object($this->_entry)  && class_exists($entryClass)) {
             $table = json_decode(
                 (string)$this->iopobject()->table()->get("tableEntry"), true
@@ -244,7 +244,7 @@ abstract class LoadableDriver
         return $return;
     }
     /**
-    * Gets the extra values
+    * Sets the extra values
     *
     * @param mixed $index The extra index to use
     * @param mixed $value The value to set it to
@@ -264,6 +264,13 @@ abstract class LoadableDriver
                 || isset($extraValues[$index][$value])
             ) {
                 $extra[$index] = $value;
+            } else if (is_array($extraValues[$index])) {
+                // This is a case where we are given the value of the array element,
+                // instead of the key.
+                $key = array_search($value, $extraValues[$index], true);
+                if ($key !== false) {
+                    $extra[$index] = $key;
+                }
             }
         }
         $this->iopobject()->set("extra", $extra);

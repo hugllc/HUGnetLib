@@ -87,6 +87,13 @@ class ADuCPressure extends \HUGnet\devices\inputTable\DriverADuC
             "The resistor connecting the AtoD to ground",
         ),
         "extraNames" => array(
+            "volta"   => 0,
+            "voltb"   => 1,
+            "reada"   => 2,
+            "readb"   => 3,
+            "atodref" => 4,
+            "rin"     => 5,
+            "r"       => 6,
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take

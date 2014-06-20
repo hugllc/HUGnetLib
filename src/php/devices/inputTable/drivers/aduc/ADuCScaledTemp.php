@@ -83,6 +83,11 @@ class ADuCScaledTemp extends \HUGnet\devices\inputTable\DriverADuC
             "The offset to use to change voltage into temperature",
         ),
         "extraNames" => array(
+            "r1"      => 0,
+            "r2"      => 1,
+            "atodref" => 2,
+            "scale"   => 3,
+            "offset"  => 4,
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take

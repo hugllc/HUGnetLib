@@ -79,6 +79,9 @@ class ADuCVoltage extends \HUGnet\devices\inputTable\DriverADuC
             "The voltage used for the AtoD reference.",
         ),
         "extraNames" => array(
+            "r1"      => 0,
+            "r2"      => 1,
+            "atodref" => 2,
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
