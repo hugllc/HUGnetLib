@@ -147,7 +147,10 @@ abstract class LoadableDriver
         } else if (isset($this->default[$name])) {
             $ret = $this->default[$name];
         }
-        if (is_string($ret) && (strtolower(substr($ret, 0, 8)) === "getextra")) {
+        if (is_string($ret) 
+            && ($name != "extraDefault")   // This would cause an infinite loop
+            && (strtolower(substr($ret, 0, 8)) === "getextra")
+        ) {
             $key = (int)substr($ret, 8);
             $ret = $this->getExtra($key);
         }
