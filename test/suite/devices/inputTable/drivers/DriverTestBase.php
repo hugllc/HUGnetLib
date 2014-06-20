@@ -38,9 +38,7 @@ namespace HUGnet\devices\inputTable\drivers;
 /** This is the base class */
 require_once CODE_BASE."/devices/inputTable/Driver.php";
 /** This is a required class */
-require_once CODE_BASE.'system/System.php';
-/** This is a required class */
-require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
+require_once TEST_CONFIG_BASE.'suite/devices/IOPDriverTestBase.php';
 
 /**
  * Test class for HUGnetDB.
@@ -56,7 +54,7 @@ require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
  * @version    Release: 0.10.2
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
+abstract class DriverTestBase extends \HUGnet\devices\IOPDriverTestBase
 {
     /** This is the class we are testing */
     protected $class = "";
@@ -73,7 +71,8 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-   }
+        parent::setUp();
+    }
 
     /**
     * Tears down the fixture, for example, closes a network connection.
@@ -85,8 +84,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
     */
     protected function tearDown()
     {
-        unset($this->input);
-        unset($this->o);
+        parent::tearDown();
     }
 
     /**
@@ -125,24 +123,7 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
             array("maxDecimals", "int"),
             array("unitType", "string"),
             array("dataTypes", "array"),
-            array("requires", "array"),
-            array("provides", "array"),
         );
-    }
-    /**
-    * Check the variable type
-    *
-    * @param string $field The field to check
-    * @param string $type  The type it should be
-    *
-    * @return null
-    *
-    * @dataProvider dataInternalType
-    */
-    final public function testInternalType($field, $type)
-    {
-        $name = $this->o->get($field, 1);
-        $this->assertInternalType($type, $name, "$field must be a $type");
     }
     /**
     * data provider for testType
@@ -159,42 +140,6 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
         );
     }
     /**
-    * Check the string size
-    *
-    * @param string $field The field to check
-    * @param int    $max   The largest it can be
-    * @param int    $min   The smallest it can be
-    *
-    * @return null
-    *
-    * @dataProvider dataStringSize
-    */
-    final public function testStringMaxSize($field, $max, $min)
-    {
-        $name = (string)$this->o->get($field, 1);
-        $this->assertLessThanOrEqual(
-            $max, strlen($name), "$field must be less than $max chars"
-        );
-    }
-    /**
-    * Check the string size
-    *
-    * @param string $field The field to check
-    * @param int    $max   The largest it can be
-    * @param int    $min   The smallest it can be
-    *
-    * @return null
-    *
-    * @dataProvider dataStringSize
-    */
-    final public function testStringMinSize($field, $max, $min)
-    {
-        $name = (string)$this->o->get($field, 1);
-        $this->assertGreaterThanOrEqual(
-            $min, strlen($name), "$field must be more than $min characters"
-        );
-    }
-    /**
     * data provider for testType
     *
     * @return array
@@ -204,46 +149,6 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
         return array(
             array("maxDecimals", 10, 0),
         );
-    }
-    /**
-    * Check the string size
-    *
-    * @param string $field The field to check
-    * @param int    $max   The largest it can be
-    * @param int    $min   The smallest it can be
-    *
-    * @return null
-    *
-    * @dataProvider dataIntSize
-    */
-    final public function testIntMaxSize($field, $max, $min)
-    {
-        ///if (!is_null($max)) {
-            $name = (string)$this->o->get($field, 1);
-            $this->assertLessThanOrEqual(
-                $max, $name, "$field must be less than $max chars"
-            );
-        //}
-    }
-    /**
-    * Check the string size
-    *
-    * @param string $field The field to check
-    * @param int    $max   The largest it can be
-    * @param int    $min   The smallest it can be
-    *
-    * @return null
-    *
-    * @dataProvider dataIntSize
-    */
-    final public function testIntMinSize($field, $max, $min)
-    {
-        //if (!is_null($min)) {
-            $name = (string)$this->o->get($field, 1);
-            $this->assertGreaterThanOrEqual(
-                $min, $name, "$field must be more than $min characters"
-            );
-        //}
     }
     /**
     * data provider for testType
@@ -260,24 +165,6 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
                     \HUGnet\devices\datachan\Driver::TYPE_IGNORE,
                 ),
             ),
-        );
-    }
-    /**
-    * Check the variable type
-    *
-    * @param string $field  The field to check
-    * @param array  $values The type it should be
-    *
-    * @return null
-    *
-    * @dataProvider dataValues
-    */
-    final public function testValues($field, $values)
-    {
-        $name = $this->o->get($field, 1);
-        $this->assertTrue(
-            in_array($name, (array)$values),
-            "$field must be one of ".implode(",", (array)$values)
         );
     }
     /**
@@ -326,137 +213,6 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-    * Check the extraText value size
-    *
-    * @return null
-    */
-    public function testExtraTextValueSize()
-    {
-        $size = 26;
-        $extra = $this->o->get("extraText", 1);
-        $this->assertInternalType("array", $extra);
-        foreach ($extra as $key => $value) {
-            $this->assertTrue(
-                (strlen($value) < $size),
-                "extraText[$key] must be less than $size chars"
-            );
-        }
-    }
-    /**
-    * Check the number of entries in extraText
-    *
-    * @return null
-    */
-    public function testExtraTextCount()
-    {
-        $extra   = (array)$this->o->get("extraText", 1);
-        $default = (array)$this->o->get("extraDefault", 1);
-        $this->assertSame(
-            count($default),
-            count($extra),
-            "extraText needs to have the same number of entries as extraDefault"
-        );
-    }
-    /**
-    * Check the number of entries in extraText
-    *
-    * @return null
-    */
-    public function testExtraDescCount()
-    {
-        $extra   = (array)$this->o->get("extraDesc", 1);
-        $default = (array)$this->o->get("extraDefault", 1);
-        $this->assertSame(
-            count($default),
-            count($extra),
-            "extraDesc needs to have the same number of entries as extraDefault"
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @return null
-    */
-    public function testExtraValuesElementTypes()
-    {
-        $size = 26;
-        $extra = $this->o->get("extraValues", 1);
-        $this->assertInternalType("array", $extra);
-        foreach ($extra as $key => $value) {
-            $ret = is_null($value);
-            $ret = $ret || is_array($value);
-            $ret = $ret || is_int($value);
-            $this->assertTrue(
-                $ret,
-                "extraValues[$key] must be null, an array, or an int"
-            );
-        }
-    }
-    /**
-    * Check the number of entries in extraValues
-    *
-    * @return null
-    */
-    public function testExtraValuesCount()
-    {
-        $extra   = (array)$this->o->get("extraValues", 1);
-        $default = (array)$this->o->get("extraDefault", 1);
-        $this->assertSame(
-            count($default),
-            count($extra),
-            "extraValues needs to have the same number of entries as extraDefault"
-        );
-    }
-    /**
-    * Check the number of entries in extraValues
-    *
-    * @return null
-    */
-    public function testExtraNamesValues()
-    {
-        $names   = (array)$this->o->get("extraNames", 1);
-        $default = (array)$this->o->get("extraDefault", 1);
-        foreach ($names as $key => $value) {
-            $this->assertTrue(
-                isset($default[$value]),
-                "extraNames must point to a valid key in extraDefault"
-                ." $value not in extraDefault.  Name $key "
-            );
-        }
-    }
-    /**
-    * Check the number of entries in extraValues
-    *
-    * @return null
-    */
-    public function testExtraNamesNumeric()
-    {
-        $names   = (array)$this->o->get("extraNames", 1);
-        foreach ($names as $key => $value) {
-            $this->assertFalse(
-                is_numeric($key),
-                "extraNames array keys can not be numeric ($key => $value)"
-            );
-        }
-    }
-    /**
-    * Check the number of entries in extraValues
-    *
-    * @return null
-    */
-    public function testExtraNamesCase()
-    {
-        $names   = (array)$this->o->get("extraNames", 1);
-        foreach ($names as $key => $value) {
-            $newkey = preg_replace("/[^a-z0-9]/", "", $key);
-            $this->assertTrue(
-                $key === $newkey,
-                "extraNames keys can only contain numbers and lower case letters"
-                ."('$key' should be '$newkey')"
-            );
-        }
-    }
 
     /**
     * data provider for testDeviceID
@@ -472,55 +228,6 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
                 null,
             ),
         );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $name   The name of the variable to test.
-    * @param array  $mock   The mocks to set up
-    * @param array  $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataGet
-    */
-    public function testGet($name, $mock, $expect)
-    {
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock($mock);
-        $this->assertSame($expect, $this->o->get($name));
-    }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataExtra()
-    {
-        return array(
-            array(
-                200,
-                array(),
-                null,
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $extra  The name of the variable to test.
-    * @param array  $mock   The mocks to set up
-    * @param array  $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataExtra
-    */
-    public function testGetExtra($extra, $mock, $expect)
-    {
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock($mock);
-        $this->assertSame($expect, $this->o->getExtra($extra));
     }
     /**
      * Data provider for testGetReading

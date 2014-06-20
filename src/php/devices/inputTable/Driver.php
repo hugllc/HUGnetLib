@@ -105,8 +105,6 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
                 => \HUGnet\devices\datachan\Driver::TYPE_IGNORE,
         ),
         "inputSize" => 3,
-        "requires"  => array(),
-        "provides"  => array(),
     );
     /**
     * This is where all of the driver information is stored.
