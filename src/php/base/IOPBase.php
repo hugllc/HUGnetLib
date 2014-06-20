@@ -436,11 +436,7 @@ abstract class IOPBase extends SystemTableBase
     {
         $data = (array)$args->get("data");
         $entry = $this->driver()->entry($data["tableEntry"]);
-        if (is_object($entry)) {
-            $data["tableEntry"] = $entry->toArray();
-        } else {
-            $data["tableEntry"] = array();
-        }
+        $data["tableEntry"] = is_object($entry) ? $entry->toArray() : array();
         $ret = $this->change($data);
         if ($ret) {
             $this->device()->setParam("LastModified", $this->system()->now());

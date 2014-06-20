@@ -817,6 +817,274 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
         unset($obj);
     }
     /**
+    * Data provider for testWebAPI
+    *
+    * @return array
+    */
+    public static function dataWebAPI()
+    {
+        return array(
+            array(
+                new \HUGnet\DummySystem(),
+                null,
+                array(
+                    "id" => 5,
+                ),
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "HWPartNum"    => "0039-12-01-C",
+                            "FWPartNum"    => "0039-20-03-C",
+                            "FWVersion"    => "1.2.3",
+                            "DeviceGroup"  => "FFFFFF",
+                            "TimeConstant" => 1,
+                        ),
+                    ),
+                    "args" => array(
+                        "get" => array(
+                            "action" => "put",
+                        ),
+                    ),
+                    "System" => array(
+                        "now" => 123456,
+                    ),
+                ),
+                "",
+                "regen",
+                array(
+                    "setParam" => array(
+                        array(
+                            "LastModified", 123456
+                        ),
+                    ),
+                    "store" => array(
+                        array(
+                        ),
+                    ),
+                ),
+                "Device",
+            ),
+            array(
+                new \HUGnet\DummySystem(),
+                null,
+                array(
+                    "id" => 5,
+                ),
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "HWPartNum"    => "0039-12-01-C",
+                            "FWPartNum"    => "0039-20-03-C",
+                            "FWVersion"    => "1.2.3",
+                            "DeviceGroup"  => "FFFFFF",
+                            "TimeConstant" => 1,
+                        ),
+                    ),
+                    "args" => array(
+                        "get" => array(
+                            "action" => "put",
+                        ),
+                    ),
+                    "System" => array(
+                        "now" => 123456,
+                    ),
+                ),
+                "",
+                "regen",
+                array(
+                    "setParam" => array(
+                        array(
+                            "LastModified", 123456
+                        ),
+                    ),
+                    "store" => array(
+                        array(
+                        ),
+                    ),
+                ),
+                "Device",
+            ),
+            array(
+                new \HUGnet\DummySystem(),
+                null,
+                array(
+                    "id" => 5,
+                ),
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "HWPartNum"    => "0039-12-01-C",
+                            "FWPartNum"    => "0039-20-03-C",
+                            "FWVersion"    => "1.2.3",
+                            "DeviceGroup"  => "FFFFFF",
+                            "TimeConstant" => 1,
+                        ),
+                    ),
+                    "args" => array(
+                        "get" => array(
+                            "action" => "settable",
+                        ),
+                    ),
+                    "Replaceme" => array(
+                        "selectOneInto" => true,
+                        "get" => array(
+                            "params" => "ParametersHere",
+                            "name"   => "NameHere",
+                            "id"     => 1,
+                        ),
+                    ),
+                ),
+                "",
+                "regen",
+                array(
+                    "set" => array(
+                        array(
+                            "tableEntry", "ParametersHere"
+                        ),
+                        array(
+                            "lastTable", "1: NameHere"
+                        ),
+                    ),
+                    "get" => array(
+                        array(
+                            "id"
+                        ),
+                    ),
+                    "insertRow" => array(
+                        array(
+                            true
+                        ),
+                    ),
+                ),
+                "Table",
+            ),
+            array(
+                new \HUGnet\DummySystem(),
+                null,
+                array(
+                    "id" => 5,
+                ),
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "HWPartNum"    => "0039-12-01-C",
+                            "FWPartNum"    => "0039-20-03-C",
+                            "FWVersion"    => "1.2.3",
+                            "DeviceGroup"  => "FFFFFF",
+                            "TimeConstant" => 1,
+                        ),
+                    ),
+                    "args" => array(
+                        "get" => array(
+                            "action" => "settable",
+                            "data"   => array("id" => 12),
+                        ),
+                    ),
+                    "Device" => array(
+                        "get" => array(
+                            "arch" => "asdf",
+                        ),
+                    ),
+                    "Replaceme" => array(
+                        "selectOneInto" => false,
+                        "get" => array(
+                            "params" => "ParametersHere",
+                            "name"   => "NameHere",
+                            "id"     => 1,
+                        ),
+                    ),
+                ),
+                "",
+                -1,
+                array(
+                    "selectOneInto" => array(
+                        array(
+                            array(
+                                "arch" => "asdf", "id" => 12
+                            ),
+                        ),
+                    ),
+                ),
+                "Replaceme",
+            ),
+            array(
+                new \HUGnet\DummySystem(),
+                null,
+                array(
+                    "id" => 5,
+                ),
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "HWPartNum"    => "0039-12-01-C",
+                            "FWPartNum"    => "0039-20-03-C",
+                            "FWVersion"    => "1.2.3",
+                            "DeviceGroup"  => "FFFFFF",
+                            "TimeConstant" => 1,
+                        ),
+                    ),
+                    "args" => array(
+                        "get" => array(
+                            "action" => "aWrongAction",
+                        ),
+                    ),
+                ),
+                "", // This is a bad input.
+                null,
+                array(
+                    "fatalError" => array(
+                        array(
+                            "HUGnet\base\IOPBase needs to be passed a device object",
+                            false
+                        ),
+                    ),
+                ),
+                "System",
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config The configuration to use
+    * @param mixed  $device The device to set
+    * @param mixed  $class  This is either the name of a class or an object
+    * @param array  $mocks  The mocks to use
+    * @param array  $extra  The string to feed into the decode
+    * @param array  $expect The expected return
+    * @param array  $calls  The expected calls
+    * @param string $call   The place to look for the calls
+    *
+    * @return null
+    *
+    * @dataProvider dataWebAPI
+    */
+    public function testWebAPI(
+        $config, $device, $class, $mocks, $extra, $expect, $calls, $call
+    ) {
+        $config->resetMock($mocks);
+        $dev  = new \HUGnet\DummyBase("Device");
+        $obj  = IOPBaseStub::factory($config, $device, $class, $dev);
+        $args = new \HUGnet\DummyBase("args");
+        $ret  = $obj->WebAPI($args, $extra);
+        $this->assertEquals(
+            $expect, $ret, "Return Wrong"
+        );
+        $ret = $config->retrieve();
+        if (!is_null($call)) {
+            $ret = $ret[$call];
+        }
+        $this->assertEquals(
+            $calls, $ret, "Calls Wrong"
+        );
+        unset($obj);
+    }
+    /**
     * This tests the object creation
     *
     * @return null
