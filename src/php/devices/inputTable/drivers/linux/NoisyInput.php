@@ -73,7 +73,7 @@ class NoisyInput extends \HUGnet\devices\inputTable\Driver
             "Noise Max",
         ),
         "extraNames" => array(
-            "priority"  => 0,
+            "frequency" => 0,
             "initvalue" => 1,
             "noisemin"  => 2,
             "noisemax"  => 3,

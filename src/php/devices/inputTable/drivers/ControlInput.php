@@ -80,7 +80,7 @@ class ControlInput extends \HUGnet\devices\inputTable\Driver
             "The control channel channel to read",
         ),
         "extraNames" => array(
-            "priority"    => 0,
+            "frequency"   => 0,
             "controlchan" => 1,
         ),
         "maxDecimals" => 0,
