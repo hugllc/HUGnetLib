@@ -177,6 +177,8 @@ class DriverTest extends drivers\DriverTestBase
             // Array   is the values that the extra can take
             // Null    nothing
             "extraValues" => array(),
+            "requires" => array(),
+            "provides" => array(),
         );
         $this->assertEquals($expect, $this->o->toArray(1));
     }

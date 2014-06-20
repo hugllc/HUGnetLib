@@ -84,6 +84,8 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(),
+        "requires" => array(),
+        "provides" => array(),
     );
     /**
     * This is where all of the driver information is stored.

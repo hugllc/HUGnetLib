@@ -200,6 +200,8 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
                     "extraValues" => array(),
                     "otherTables" => array(),
                     "tableEntry" => array(),
+                    "requires" => array(),
+                    "provides" => array(),
                 ),
             ),
             array(
@@ -244,6 +246,8 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
                     "extraValues" => array(),
                     "otherTables" => array(),
                     "tableEntry" => array(),
+                    "requires" => array(),
+                    "provides" => array(),
                 ),
             ),
         );
