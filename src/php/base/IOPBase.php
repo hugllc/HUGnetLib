@@ -193,6 +193,29 @@ abstract class IOPBase extends SystemTableBase
         return $return;
     }
     /**
+    * Gets the extra values
+    *
+    * @param mixed $index The extra index to use
+    *
+    * @return The extra value (or default if empty)
+    */
+    public function getExtra($index)
+    {
+        return $this->driver()->getExtra($index);
+    }
+    /**
+    * Sets the extra values
+    *
+    * @param mixed $index The extra index to use
+    * @param mixed $value The value to set it to
+    *
+    * @return The extra value (or default if empty)
+    */
+    public function setExtra($index, $value)
+    {
+        return $this->driver()->setExtra($index, $value);
+    }
+    /**
     * Returns the table as an array
     *
     * @param bool $default Whether to include the default params or not
