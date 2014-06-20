@@ -82,6 +82,8 @@ class ADuCVishayRTD extends \HUGnet\devices\inputTable\DriverADuC
         "extraDefault" => array(2210),
         "maxDecimals" => 4,
         "inputSize" => 4,
+        "requires" => array("AI"),
+        "provides" => array("DC"),
     );
     /** @var array The lookup table */
     private $_valueTable = array(

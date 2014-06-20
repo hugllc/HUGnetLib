@@ -97,18 +97,20 @@ class ControlSumInput extends \HUGnet\devices\inputTable\Driver
             8 => "The mode the data should be set to the data channel as."
         ),
         "extraNames" => array(
-            "frequency"   => 0,
-            "controlchan" => 1,
-            "gain"        => 2,
-            "offset"      => 3,
-            "min"         => 4,
-            "max"         => 5,
-            "noisemin"    => 6,
-            "noisemax"    => 7,
-            "mode"        => 8,
+            "frequency"    => 0,
+            "controlchan0" => 1,
+            "gain"         => 2,
+            "offset"       => 3,
+            "min"          => 4,
+            "max"          => 5,
+            "noisemin"     => 6,
+            "noisemax"     => 7,
+            "mode"         => 8,
         ),
         "maxDecimals" => 0,
         "inputSize" => 4,
+        "requires" => array("CC"),
+        "provides" => array("DC"),
     );
     /**
     * This function returns the output in RPM

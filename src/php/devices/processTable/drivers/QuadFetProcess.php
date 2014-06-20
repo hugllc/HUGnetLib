@@ -134,6 +134,7 @@ class QuadFetProcess extends \HUGnet\devices\processTable\Driver
             ), 
             8 => 10,
         ),
+        "requires" => array("FREQ"),
     );
     /**
     * Gets an item

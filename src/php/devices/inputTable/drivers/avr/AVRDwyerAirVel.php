@@ -102,6 +102,8 @@ class AVRDwyerAirVel extends \HUGnet\devices\inputTable\DriverAVR
         "extraValues" => array(5, 5, 7, 7, 10, 5, 5),
         "extraDefault" => array(4, 20, 0, 3, 249, 1, 5.0),
         "maxDecimals" => 4,
+        "requires" => array("AI", "ATODREF"),
+        "provides" => array("DC"),
     );
     /**
     * Changes a raw reading into a output value

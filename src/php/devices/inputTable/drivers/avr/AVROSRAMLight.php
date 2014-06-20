@@ -64,7 +64,7 @@ class AVROSRAMLight extends \HUGnet\devices\inputTable\DriverAVR
     protected $params = array(
         "longName" => "OSRAM BPW-34 Photodiode",
         "shortName" => "OSRAMLight",
-        "unitType" => "Heat/Unit Area",
+        "unitType" => "HeatPerUnitArea",
         "storageUnit" => 'W/m^2',
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraText" => array(),
@@ -77,6 +77,8 @@ class AVROSRAMLight extends \HUGnet\devices\inputTable\DriverAVR
         "extraValues" => array(),
         "extraDefault" => array(),
         "maxDecimals" => 2,
+        "requires" => array("AI"),
+        "provides" => array("DC"),
     );
 
     /**

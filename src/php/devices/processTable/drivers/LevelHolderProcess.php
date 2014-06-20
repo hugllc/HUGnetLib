@@ -107,7 +107,7 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
         ),
         "extraNames" => array(
             "frequency"     => 0,
-            "controlchan"   => 1,
+            "controlchan0"  => 1,
             "step"          => 2,
             "limit1channel" => 3,
             "limit1high"    => 4,
@@ -115,7 +115,7 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
             "limit2channel" => 6,
             "limit2high"    => 7,
             "limit2low"     => 8,
-            "datachan"      => 9,
+            "datachan0"     => 9,
             "setpoint"      => 10,
             "tolerance"     => 11,
             "min"           => 12,
@@ -130,6 +130,7 @@ class LevelHolderProcess extends \HUGnet\devices\processTable\Driver
         "extraValues" => array(
             4, array(), 10, array(), 15, 15, array(), 15, 15, array(), 15, 15, 7, 7
         ),
+        "requires" => array("DC", "CC", "FREQ"),
     );
     /**
     * Gets an item

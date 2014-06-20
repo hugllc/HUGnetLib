@@ -132,6 +132,8 @@ class ADuCGenericLinear extends \HUGnet\devices\inputTable\DriverADuC
         ),
         "maxDecimals" => "getExtra10",
         "inputSize" => 4,
+        "requires" => array("AI", "ATODREF"),
+        "provides" => array("DC"),
     );
     /**
     * Changes a raw reading into a output value

@@ -85,6 +85,7 @@ class CloneVirtual extends \HUGnet\devices\inputTable\DriverVirtual
             "deviceid" => 0,
             "datachan" => 1,
         ),
+        "requires" => array(), // We don't require anything.
     );
     /**
      * This is the routine that gets the sensor that we are cloning

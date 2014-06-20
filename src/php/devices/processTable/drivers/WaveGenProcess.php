@@ -93,14 +93,14 @@ class WaveGenProcess extends \HUGnet\devices\processTable\Driver
             "The maximum value for the control channel.  Empty means use default",
         ),
         "extraNames" => array(
-            "frequency"   => 0,
-            "controlchan" => 1,
-            "ontime"      => 2,
-            "offtime"     => 3,
-            "onvalue"     => 4,
-            "offvalue"    => 5,
-            "min"         => 6,
-            "max"         => 7,
+            "frequency"    => 0,
+            "controlchan0" => 1,
+            "ontime"       => 2,
+            "offtime"      => 3,
+            "onvalue"      => 4,
+            "offvalue"     => 5,
+            "min"          => 6,
+            "max"          => 7,
         ),
         "extraDefault" => array(
             128, 0, 1, 1, 1, -1, "", ""
@@ -111,6 +111,7 @@ class WaveGenProcess extends \HUGnet\devices\processTable\Driver
         "extraValues" => array(
             4, array(), 6, 6, 15, 15, 15, 15
         ),
+        "requires" => array("CC", "FREQ"),
     );
     /**
     * Gets an item

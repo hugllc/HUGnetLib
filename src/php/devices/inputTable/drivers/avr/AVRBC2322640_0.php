@@ -86,6 +86,8 @@ class AVRBC2322640_0 extends AVRBC2322640
         "extraValues" => array(5, 5),
         "extraDefault" => array(100, 10),
         "maxDecimals" => 2,
+        "requires" => array("AI"),
+        "provides" => array("DC"),
     );
 }
 

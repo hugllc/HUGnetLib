@@ -94,11 +94,13 @@ class WattNode extends \HUGnet\devices\inputTable\DriverPulse
         "extraNames" => array(
             "wattsperpulse" => 0,
             "clockbask"     => 1,
-            "port"          => 2,
+            "port0"         => 2,
             "debounce"      => 3,
         ),
         "maxDecimals" => 3,
         "total" => true,
+        "requires" => array("DI"),
+        "provides" => array("DC"),
     );
 
     /**

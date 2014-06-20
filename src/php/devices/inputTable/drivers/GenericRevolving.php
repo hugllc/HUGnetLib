@@ -94,10 +94,12 @@ class GenericRevolving extends \HUGnet\devices\inputTable\DriverPulse
         "extraNames" => array(
             "cntperrev" => 0,
             "clockbase" => 1,
-            "port"      => 2,
+            "port0"     => 2,
             "debounce"  => 3,
         ),
         "maxDecimals" => 2,
+        "requires" => array("DI"),
+        "provides" => array("DC"),
     );
 
     /**

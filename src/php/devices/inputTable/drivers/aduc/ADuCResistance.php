@@ -82,6 +82,8 @@ class ADuCResistance extends \HUGnet\devices\inputTable\DriverADuC
         "extraDefault" => array(10000),
         "maxDecimals" => 8,
         "inputSize" => 4,
+        "requires" => array("AI"),
+        "provides" => array("DC"),
     );
     /**
     * Changes a raw reading into a output value

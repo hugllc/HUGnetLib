@@ -93,6 +93,8 @@ class FileInput extends \HUGnet\devices\inputTable\Driver
         ),
         "maxDecimals" => 0,
         "inputSize" => 4,
+        "requires" => array("FREQ"),
+        "provides" => array("DC"),
     );
     /**
     * Changes a raw reading into a output value

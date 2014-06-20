@@ -77,6 +77,8 @@ class AVROnTimePulse extends \HUGnet\devices\inputTable\DriverAVR
         "extraValues" => array(),
         "extraDefault" => array(),
         "maxDecimals" => 4,
+        "requires" => array("AI"),
+        "provides" => array("DC"),
     );
 
     /**

@@ -102,6 +102,8 @@ class ADuCPressure extends \HUGnet\devices\inputTable\DriverADuC
         "extraDefault" => array(0, 5, 0, 100, 1.2, 100, 1),
         "maxDecimals" => 4,
         "inputSize" => 4,
+        "requires" => array("AI", "ATODREF"),
+        "provides" => array("DC"),
     );
     /**
     * Changes a raw reading into a output value

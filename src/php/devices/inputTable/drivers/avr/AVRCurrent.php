@@ -90,6 +90,8 @@ class AVRCurrent extends \HUGnet\devices\inputTable\DriverAVR
         "extraValues" => array(5, 7, 5),
         "extraDefault" => array(0.5, 1, 5.0),
         "maxDecimals" => 4,
+        "requires" => array("AI", "ATODREF"),
+        "provides" => array("DC"),
     );
     /**
     * Changes a raw reading into a output value

@@ -81,8 +81,8 @@ class WindChillVirtual extends \HUGnet\devices\inputTable\DriverVirtual
             "Data channel to use for the wind speed input",
         ),
         "extraNames" => array(
-            "tempchan" => 0,
-            "windchan" => 1,
+            "datachan0" => 0,
+            "datachan1" => 1,
         ),
         "storageUnit" => "&#176;C",
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
@@ -95,6 +95,8 @@ class WindChillVirtual extends \HUGnet\devices\inputTable\DriverVirtual
             \HUGnet\devices\datachan\Driver::TYPE_RAW
                 => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         ),
+        "requires" => array("DC", "DC"),
+        "provides" => array("DC"),
     );
     /**
     * Gets an item

@@ -83,6 +83,8 @@ class AVRIMCSolar extends \HUGnet\devices\inputTable\DriverAVR
         "extraValues" => array(5),
         "extraDefault" => array(100),
         "maxDecimals" => 2,
+        "requires" => array("AI"),
+        "provides" => array("DC"),
     );
     /** @var array The table for IMC Sensors */
     protected $valueTable = array(

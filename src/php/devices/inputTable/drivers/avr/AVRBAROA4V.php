@@ -96,6 +96,8 @@ class AVRBAROA4V extends \HUGnet\devices\inputTable\DriverAVR
         "extraValues" => array(5, 5, 5, 5, 5),
         "extraDefault" => array(.15, 4.35, 600, 1100, 5),
         "maxDecimals" => 4,
+        "requires" => array("AI", "ATODREF"),
+        "provides" => array("DC"),
     );
     /**
     * Changes a raw reading into a output value

@@ -96,6 +96,8 @@ class OmegaAlphaPH extends \HUGnet\devices\inputTable\DriverADuC
         "extraDefault" => array(100, 1, 1.2, 0.4141, -0.4141),
         "maxDecimals" => 4,
         "inputSize" => 4,
+        "requires" => array("AI", "ATODREF"),
+        "provides" => array("DC"),
     );
     /**
     * Changes a raw reading into a output value

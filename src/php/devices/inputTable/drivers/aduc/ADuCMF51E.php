@@ -94,6 +94,8 @@ class ADuCMF51E extends \HUGnet\devices\inputTable\DriverADuC
         "extraDefault" => array(10, "10-3950"),
         "maxDecimals" => 8,
         "inputSize" => 4,
+        "requires" => array("AI"),
+        "provides" => array("DC"),
     );
     /** These are the coeffients of the thermocouple equasion */
     private $_coef = array(

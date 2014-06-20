@@ -96,6 +96,8 @@ class ADuCScaledTemp extends \HUGnet\devices\inputTable\DriverADuC
         "extraDefault" => array(100, 1, 1.2, 0.25641026, 0),
         "maxDecimals" => 8,
         "inputSize" => 4,
+        "requires" => array("AI", "ATODREF"),
+        "provides" => array("DC"),
     );
     /**
     * Changes a raw reading into a output value

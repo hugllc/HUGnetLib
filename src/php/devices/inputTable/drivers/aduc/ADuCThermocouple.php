@@ -99,6 +99,8 @@ class ADuCThermocouple extends \HUGnet\devices\inputTable\DriverADuC
         "extraDefault" => array(1, 10, 1200, "k", 0),
         "maxDecimals" => 4,
         "inputSize" => 4,
+        "requires" => array("AI", "ATODREF"),
+        "provides" => array("DC"),
     );
     /** These are the coeffients of the thermocouple equasion */
     private $_coeffients = array(

@@ -98,6 +98,8 @@ class AVRPotDirection extends \HUGnet\devices\inputTable\DriverAVR
         "extraValues" => array(7, 4, 7, 4, 7),
         "extraDefault" => array(25,0, 0, 180, 25),
         "maxDecimals" => 1,
+        "requires" => array("AI"),
+        "provides" => array("DC"),
     );
     /**
     * Gets the direction from a direction sensor made out of a POT.

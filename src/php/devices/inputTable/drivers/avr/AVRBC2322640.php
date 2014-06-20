@@ -86,6 +86,8 @@ class AVRBC2322640 extends \HUGnet\devices\inputTable\DriverAVR
         "extraValues" => array(5, 5),
         "extraDefault" => array(10, 10),
         "maxDecimals" => 2,
+        "requires" => array("AI"),
+        "provides" => array("DC"),
     );
     /**
     * Changes a raw reading into a output value

@@ -84,7 +84,7 @@ class AlarmVirtual extends \HUGnet\devices\inputTable\DriverVirtual
             "The threshold at which the alarm should be reset",
         ),
         "extraNames" => array(
-            "datachan"    => 0,
+            "datachan0"   => 0,
             "alarmthresh" => 1,
             "resetthresh" => 2,
         ),
@@ -98,6 +98,8 @@ class AlarmVirtual extends \HUGnet\devices\inputTable\DriverVirtual
             \HUGnet\devices\datachan\Driver::TYPE_RAW
                 => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         ),
+        "requires" => array("DC"),
+        "provides" => array("DC"),
     );
     /**
     * Gets an item

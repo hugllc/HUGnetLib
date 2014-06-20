@@ -101,8 +101,8 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
         ),
         "extraNames" => array(
             "frequency"     => 0,
-            "controlchan"   => 1,
-            "datachan"      => 2,
+            "controlchan0"  => 1,
+            "datachan0"     => 2,
             "inputoffset"   => 3,
             "setpoint"      => 4,
             "errorthresh"   => 5,
@@ -125,6 +125,7 @@ class PIDProcess extends \HUGnet\devices\processTable\Driver
             4, array(), array(), 15, 15, 15, 15, 15, 15, 15, 7, 7, array(), 
             array(0xFF => "No sign bit output", 1 => "Normal", 2 => "Inverted")
         ),
+        "requires" => array("DC", "CC", "FREQ"),
     );
     /**
     * Gets an item

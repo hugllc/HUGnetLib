@@ -91,6 +91,8 @@ class FETBoardVoltage extends AVRVoltage
         "extraValues" => array(5, 5, 5),
         "extraDefault" => array(150, 10, 5.0),
         "maxDecimals" => 4,
+        "requires" => array("AI", "ATODREF"),
+        "provides" => array("DC"),
     );
 
 }

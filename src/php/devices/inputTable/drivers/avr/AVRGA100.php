@@ -96,6 +96,8 @@ class AVRGA100 extends \HUGnet\devices\inputTable\DriverAVR
         "extraValues" => array(5, 5, 5, 5, 5),
         "extraDefault" => array(.5, 4.5, 0, 1, 5),
         "maxDecimals" => 4,
+        "requires" => array("AI", "ATODREF"),
+        "provides" => array("DC"),
     );
     /**
     * Changes a raw reading into a output value

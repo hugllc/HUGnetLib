@@ -90,6 +90,8 @@ class MKS901PPressure extends \HUGnet\devices\inputTable\DriverADuC
         "extraDefault" => array(1.2, 100, 1),
         "maxDecimals" => 6,
         "inputSize" => 4,
+        "requires" => array("AI", "ATODREF"),
+        "provides" => array("DC"),
     );
     /**
     * Changes a raw reading into a output value

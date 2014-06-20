@@ -91,6 +91,8 @@ class NoisyInput extends \HUGnet\devices\inputTable\Driver
         ),
         "maxDecimals" => 0,
         "inputSize" => 4,
+        "requires" => array("FREQ"),
+        "provides" => array("DC"),
     );
     /**
     * This function returns the output in RPM

@@ -94,10 +94,10 @@ class SolarPanelProcess extends \HUGnet\devices\processTable\Driver
         ),
         "extraNames" => array(
             "frequency"    => 0,
-            "tanktemp"     => 1,
-            "paneltemp"    => 2,
-            "pumpcontrol"  => 3,
-            "alarmcontrol" => 4,
+            "datachan0"    => 1,
+            "datachan1"    => 2,
+            "controlchan0" => 3,
+            "controlchan1" => 4,
             "onconstant"   => 5,
             "offconstant"  => 6,
             "alarmthresh"  => 7,
@@ -118,6 +118,7 @@ class SolarPanelProcess extends \HUGnet\devices\processTable\Driver
             6 => 10,
             7 => 10,
         ),
+        "requires" => array("DC", "DC", "CC", "CC", "FREQ"),
     );
     /**
     * Gets an item

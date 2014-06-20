@@ -83,8 +83,8 @@ class DewPointVirtual extends \HUGnet\devices\inputTable\DriverVirtual
             "The input to read the relative humidity from",
         ),
         "extraNames" => array(
-            "tempchan"     => 0,
-            "humiditychan" => 1,
+            "datachan0" => 0,
+            "datachan1" => 1,
         ),
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "storageUnit" => "&#176;C",
@@ -97,6 +97,8 @@ class DewPointVirtual extends \HUGnet\devices\inputTable\DriverVirtual
             \HUGnet\devices\datachan\Driver::TYPE_RAW
                 => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         ),
+        "requires" => array("DC", "DC"),
+        "provides" => array("DC"),
     );
     /**
     * Gets an item

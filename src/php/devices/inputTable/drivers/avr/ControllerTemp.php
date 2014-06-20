@@ -93,6 +93,8 @@ class ControllerTemp extends \HUGnet\devices\inputTable\drivers\avr\AVRBC2322640
             \HUGnet\devices\datachan\Driver::TYPE_RAW
                 => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         ),
+        "requires" => array("AI"),
+        "provides" => array("DC"),
     );
 
 }

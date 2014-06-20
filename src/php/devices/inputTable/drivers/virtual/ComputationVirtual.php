@@ -122,6 +122,7 @@ class ComputationVirtual extends \HUGnet\devices\inputTable\DriverVirtual
             \HUGnet\devices\datachan\Driver::TYPE_RAW
                 => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         ),
+        "provides" => array("DC"),
     );
     /**
     * Changes a raw reading into a output value

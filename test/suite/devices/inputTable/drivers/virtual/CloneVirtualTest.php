@@ -637,7 +637,7 @@ class CloneVirtualTest extends DriverTestBaseVirtual
                     'storageUnit'  => '&#176;C',
                     'storageType'  => 'raw',
                     'maxDecimals'  => 2,
-                    "provides"     => array(),
+                    "provides"     => array("DC"),
                     "requires"     => array(),
                     'dataTypes'    => array(
                         'raw'    => 'raw',

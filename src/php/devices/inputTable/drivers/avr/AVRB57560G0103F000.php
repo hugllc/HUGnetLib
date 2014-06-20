@@ -81,6 +81,8 @@ class AVRB57560G0103F000 extends \HUGnet\devices\inputTable\DriverAVR
         "extraValues" => array(5),
         "extraDefault" => array(10),
         "maxDecimals" => 2,
+        "requires" => array("AI"),
+        "provides" => array("DC"),
     );
     /** @var array The table for IMC Sensors */
     protected $valueTable = array(

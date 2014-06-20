@@ -97,7 +97,7 @@ class CelaniPowerCalVirtual extends \HUGnet\devices\inputTable\DriverVirtual
             "Constant E"
         ),
         "extraNames" => array(
-            "tempchan"  => 0,
+            "datachan0"  => 0,
             "constanta" => 1,
             "constantb" => 2,
             "constantc" => 3,
@@ -115,6 +115,8 @@ class CelaniPowerCalVirtual extends \HUGnet\devices\inputTable\DriverVirtual
             \HUGnet\devices\datachan\Driver::TYPE_RAW
                 => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         ),
+        "requires" => array("DC"),
+        "provides" => array("DC"),
     );
     /**
     * Gets an item

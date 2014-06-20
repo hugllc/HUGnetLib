@@ -101,6 +101,8 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
         "extraDefault" => array(1.2, 0.05, 100, 1, 1, 10),
         "maxDecimals" => 8,
         "inputSize" => 4,
+        "requires" => array("AI", "AI", "ATODREF"),
+        "provides" => array("DC", "DC", "DC", "DC"),
     );
     /**
     * Changes a raw reading into a output value

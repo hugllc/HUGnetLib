@@ -470,7 +470,9 @@ abstract class IOPDriverTestBase extends \PHPUnit_Framework_TestCase
     final public function testProvidesRequires($field)
     {
         $names  = (array)$this->o->get($field, 1);
-        $values = array("CC", "DC", "DO", "DI", "AO", "AI", "HVAI");
+        $values = array(
+            "CC", "DC", "DO", "DI", "AO", "AI", "HVAI", "FREQ", "ATODREF"
+        );
         $index  = 0;
         foreach ($names as $key => $value) {
             $search = array_search($value, $values);

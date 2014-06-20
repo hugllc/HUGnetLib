@@ -94,7 +94,7 @@ class LiquidFlow extends \HUGnet\devices\inputTable\DriverPulse
         "extraNames" => array(
             "galperpulse" => 0,
             "clockbase"   => 1,
-            "port"        => 2,
+            "port0"       => 2,
             "debounce"    => 3,
         ),
         "dataTypes" => array(
@@ -104,6 +104,8 @@ class LiquidFlow extends \HUGnet\devices\inputTable\DriverPulse
                 => \HUGnet\devices\datachan\Driver::TYPE_IGNORE,
         ),
         "maxDecimals" => 8,
+        "requires" => array("DI"),
+        "provides" => array("DC"),
     );
     /**
     * This function returns the output in RPM

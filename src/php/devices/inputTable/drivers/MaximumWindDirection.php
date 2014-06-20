@@ -123,14 +123,16 @@ class MaximumWindDirection extends \HUGnet\devices\inputTable\Driver
         ),
         "extraNames" => array(
             "frequency" => 0,
-            "term1"     => 1,
-            "term2"     => 2,
-            "term3"     => 3,
-            "term3"     => 4,
-            "term5"     => 5,
+            "port0"     => 1,
+            "port1"     => 2,
+            "port2"     => 3,
+            "port3"     => 4,
+            "port4"     => 5,
         ),
         "inputSize" => 3,
         "maxDecimals" => 2,
+        "requires" => array("FREQ", "DI", "DI", "DI", "DI", "DI"),
+        "provides" => array("DC"),
     );
     /**
     * Gets an item

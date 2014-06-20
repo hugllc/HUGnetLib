@@ -91,7 +91,7 @@ class BinaryVirtual extends \HUGnet\devices\inputTable\DriverVirtual
             "The maximum number of valid decimal places",
         ),
         "extraNames" => array(
-            "datachan"    => 0,
+            "datachan0"   => 0,
             "highthresh"  => 1,
             "lowthresh"   => 2,
             "multiplier"  => 3,
@@ -110,6 +110,8 @@ class BinaryVirtual extends \HUGnet\devices\inputTable\DriverVirtual
             \HUGnet\devices\datachan\Driver::TYPE_RAW
                 => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         ),
+        "requires" => array("DC"),
+        "provides" => array("DC"),
     );
     /**
     * Gets an item

@@ -88,11 +88,13 @@ class MaximumRain extends \HUGnet\devices\inputTable\DriverPulse
         ),
         "extraNames" => array(
             "clockbase" => 0,
-            "port"      => 1,
+            "port0"     => 1,
             "debounce"  => 2,
         ),
         "maxDecimals" => 2,
         "total" => true,
+        "requires" => array("DI"),
+        "provides" => array("DC"),
     );
 
     /**

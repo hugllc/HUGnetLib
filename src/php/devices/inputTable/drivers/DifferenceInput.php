@@ -89,12 +89,14 @@ class DifferenceInput extends \HUGnet\devices\inputTable\Driver
         ),
         "extraNames" => array(
             "frequency" => 0,
-            "num1"      => 1,
-            "num2"      => 2,
+            "datachan0" => 1,
+            "datachan1" => 2,
             "offset"    => 3,
         ),
         "maxDecimals" => 0,
         "inputSize" => 4,
+        "requires" => array("DC", "DC"),
+        "provides" => array("DC"),
     );
     /**
     * Changes a raw reading into a output value

@@ -96,6 +96,8 @@ class AVRChsMss extends \HUGnet\devices\inputTable\DriverAVR
         "extraValues" => array(5, 5, 4, 4, 5),
         "extraDefault" => array(0, 1, 0, 100, 1.1),
         "maxDecimals" => 2,
+        "requires" => array("AI", "ATODREF"),
+        "provides" => array("DC"),
     );
     /**
     * Changes a raw reading into a output value

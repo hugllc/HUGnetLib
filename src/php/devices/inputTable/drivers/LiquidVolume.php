@@ -94,11 +94,13 @@ class LiquidVolume extends \HUGnet\devices\inputTable\DriverPulse
         "extraNames" => array(
             "galperpulse" => 0,
             "clockbase"   => 1,
-            "port"        => 2,
+            "port0"       => 2,
             "debounce"    => 3,
         ),
         "maxDecimals" => 2,
         "total" => true,
+        "requires" => array("DI"),
+        "provides" => array("DC"),
     );
     /**
     * This function returns the output in RPM

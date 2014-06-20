@@ -80,11 +80,13 @@ class ControlInput extends \HUGnet\devices\inputTable\Driver
             "The control channel channel to read",
         ),
         "extraNames" => array(
-            "frequency"   => 0,
-            "controlchan" => 1,
+            "frequency"    => 0,
+            "controlchan0" => 1,
         ),
         "maxDecimals" => 0,
         "inputSize" => 4,
+        "requires" => array("FREQ", "CC"),
+        "provides" => array("DC"),
     );
     /**
     * Changes a raw reading into a output value

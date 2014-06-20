@@ -91,6 +91,8 @@ class MemInput extends \HUGnet\devices\inputTable\Driver
         ),
         "maxDecimals" => 8,
         "inputSize" => 4,
+        "requires" => array("FREQ"),
+        "provides" => array("DC"),
     );
     /**
     * Decodes the driver portion of the setup string

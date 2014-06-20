@@ -110,7 +110,7 @@ class LinearTransformVirtual extends \HUGnet\devices\inputTable\DriverVirtual
             "The maximum number of decimals that are valid for the output",
         ),
         "extraNames" => array(
-            "datachan"    => 0,
+            "datachan0"   => 0,
             "origpta"     => 1,
             "origptb"     => 2,
             "newpta"      => 3,
@@ -136,6 +136,8 @@ class LinearTransformVirtual extends \HUGnet\devices\inputTable\DriverVirtual
             \HUGnet\devices\datachan\Driver::TYPE_RAW
                 => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         ),
+        "requires" => array("DC"),
+        "provides" => array("DC"),
     );
     /**
     * Gets an item
