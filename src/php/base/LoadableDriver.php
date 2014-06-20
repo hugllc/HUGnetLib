@@ -244,7 +244,7 @@ abstract class LoadableDriver
         return $return;
     }
     /**
-    * Gets the extra values
+    * Sets the extra values
     *
     * @param mixed $index The extra index to use
     * @param mixed $value The value to set it to
