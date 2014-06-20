@@ -99,6 +99,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "02:DEFAULT"                 => "PIDProcess",
         "04:DEFAULT"                 => "WaveGenProcess",
         "05:DEFAULT"                 => "QuadFetProcess",
+        "06:DEFAULT"                 => "SolarPanelProcess",
         "FF:DEFAULT"                 => "EmptyProcess",
     );
     /**
@@ -117,6 +118,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "0039-21-01" => array(
         ),
         "0039-28" => array(
+            0x06 => "SolarPanelProcess",
         ),
         "0039-37" => array(
             0x01 => "LevelHolderProcess",
