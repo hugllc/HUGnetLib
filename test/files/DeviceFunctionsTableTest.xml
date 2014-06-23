@@ -4,7 +4,7 @@
         <column>dev</column>
         <column>function</column>
         <column>id</column>
-        <column>type</column>
+        <column>complexity</column>
         <column>tableEntry</column>
         <column>params</column>
     </table>
