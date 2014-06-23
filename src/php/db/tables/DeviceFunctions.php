@@ -102,9 +102,9 @@ class DeviceFunctions extends \HUGnet\db\TableParams
             "Type" => "INTEGER",
             "Default" => 0xFF,
         ),
-        "complexity" => array(
-            "Name" => "complexity",
-            "Type" => "tinyint",
+        "type" => array(
+            "Name" => "type",
+            "Type" => "varchar(16)",
             "Default" => '',
         ),
         "driver" => array(
@@ -217,17 +217,6 @@ class DeviceFunctions extends \HUGnet\db\TableParams
     protected function setId($value)
     {
         $this->data["id"] = (int) $value;
-    }
-    /**
-    * function to set id
-    *
-    * @param string $value The value to set
-    *
-    * @return null
-    */
-    protected function setComplexity($value)
-    {
-        $this->data["complexity"] = (int) $value;
     }
     /**
     * function to set tableEntry
