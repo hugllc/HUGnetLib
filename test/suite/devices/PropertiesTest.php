@@ -251,6 +251,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
                     2 => '10K',
                     3 => 'R18',
                     4 => 'CGND',
+		    5 => 'N',
                 ),
             ),
             array(
