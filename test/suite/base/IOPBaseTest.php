@@ -6,8 +6,7 @@
  *
  * <pre>
  * HUGnetLib is a library of HUGnet code
- * Copyright (C) 2013 Hunt Utilities Group, LLC
- * Copyright (C) 2009 Scott Price
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,8 +27,7 @@
  * @package    HUGnetLibTest
  * @subpackage SuiteBase
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2013 Hunt Utilities Group, LLC
- * @copyright  2009 Scott Price
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
@@ -54,10 +52,9 @@ require_once CODE_BASE."devices/datachan/Driver.php";
  * @package    HUGnetLibTest
  * @subpackage SuiteBase
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2013 Hunt Utilities Group, LLC
- * @copyright  2009 Scott Price
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.10.2
+ * @version    Release: 0.14.3
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class IOPBaseTest extends \PHPUnit_Framework_TestCase
@@ -1135,9 +1132,9 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
  * @package    HUGnetLib
  * @subpackage Sensors
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2013 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.10.2
+ * @version    Release: 0.14.3
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  *
@@ -1156,9 +1153,9 @@ class IOPBaseStub extends IOPBase
  * @package    HUGnetLib
  * @subpackage Sensors
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2013 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.10.2
+ * @version    Release: 0.14.3
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  *
@@ -1206,9 +1203,9 @@ namespace HUGnet\devices\replaceme;
  * @package    HUGnetLib
  * @subpackage Sensors
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2013 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.10.2
+ * @version    Release: 0.14.3
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  *
@@ -1493,9 +1490,9 @@ namespace HUGnet\devices\replaceme\drivers;
  * @package    HUGnetLib
  * @subpackage IOPBases
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2013 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.10.2
+ * @version    Release: 0.14.3
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  *
@@ -1560,9 +1557,9 @@ class TestIOPBaseDriver1 extends \HUGnet\devices\replaceme\Driver
  * @package    HUGnetLib
  * @subpackage IOPBases
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2013 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.10.2
+ * @version    Release: 0.14.3
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  *
