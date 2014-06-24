@@ -459,7 +459,7 @@ abstract class IOPDriverTestBase extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                200,
+                null,
                 array(),
                 null,
             ),
@@ -478,9 +478,11 @@ abstract class IOPDriverTestBase extends \PHPUnit_Framework_TestCase
     */
     public function testGetExtra($extra, $mock, $expect)
     {
-        $sensor = new \HUGnet\DummyBase("Sensor");
-        $sensor->resetMock($mock);
-        $this->assertSame($expect, $this->o->getExtra($extra));
+        if (!is_null($extra)) {
+            $sensor = new \HUGnet\DummyBase("Sensor");
+            $sensor->resetMock($mock);
+            $this->assertSame($expect, $this->o->getExtra($extra));
+        }
     }
     /**
     * data provider for testProvidesRequires
