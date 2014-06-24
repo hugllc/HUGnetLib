@@ -60,6 +60,7 @@ class Properties
     private $EpArray = array();
     private $DbArray = array();
     
+    private $_deviceNum;
 
 
     /**
@@ -69,7 +70,7 @@ class Properties
     *
     * @return void
     */
-    protected function __construct($filename)
+    protected function __construct($filename, $devnum)
     {
         if (is_null($filename)) {
             $filename = dirname(__FILE__)."/../devices.xml";
@@ -89,6 +90,7 @@ class Properties
             $this->DbArray[$i] = (string) ($this->_Xml->daughterboards[$i]
                 ->HWPartNum);
         }
+        $this->_deviceNum = $devnum;
 
     } /* end function __construct */
 
@@ -101,10 +103,10 @@ class Properties
     * @return object device data object.
     *
     */
-    public static function &factory($filename = null)
+    public static function &factory($filename = null, $devnum)
     {
 
-        $object = new Properties($filename);
+        $object = new Properties($filename, $devnum);
         return $object;
 
     }
@@ -141,20 +143,61 @@ class Properties
 
     }
 
+    /**
+    *********************************************************************
+    * this function returns the device hardware number for which the 
+    * object was created.
+    *
+    * @return string - device hardware partnumber.
+    *
+    *
+    */
+    public function getDevNum()
+    {
+        return $this->_deviceNum;
+ 
+    }
+
+    /**
+    *********************************************************************
+    * this function gets the pin list for the object device whether it 
+    * is an endpoint or a daughterboard.
+    *
+    * @return array $pinArray - array of type string containing pin 
+    *                           names.
+    *
+    */
+    public function getPinList()
+    {
+        $pinArray = array();
+
+        if (in_array($this->_deviceNum, $this->EpArray)) {
+            $pinArray = $this->epPinList();
+        } else if (in_array($this->_deviceNum, $this->DbArray)) {
+            $pinArray = $this->dbPinList();
+        } else {
+            $pinArray[0] = "Error";
+            $pinArray[1] = "Device not found";
+        }
+
+        return $pinArray;
+    }
+            
+
 
     /**
     *********************************************************************
     * this function returns a list of the pin names and their functions  
     * for the given endpoint.
     *
-    * @param string $epName - hardware part number for the endpoint.
     *
     * @return array $pinArray - array of type string containing pin 
     *                           names.
     *
     */
-    public function epPinList($epName)
+    public function epPinList()
     {
+        $epName = $this->_deviceNum;
 
         $pinArray = array();
         $epCount = count($this->EpArray);
@@ -202,8 +245,9 @@ class Properties
     *                                       [5] high voltage input flag
     *
     */
-    public function epPinProperties($epName, $pinName)
+    public function epPinProperties($pinName)
     {
+        $epName = $this->_deviceNum;
         $pinArray = array();
         $epCount = count($this->EpArray);
         $found = 0;
@@ -276,13 +320,13 @@ class Properties
     *********************************************************************
     * this function displays the list of pins for a given daughterboard.
     *
-    * @param string $dbNum - daughterboard hardware part number.
     *
     * @return array $pinArray - a list of pin names for the daughterboard.
     *
     */
-    public function dbPinList($dbNum)
+    public function dbPinList()
     {
+        $dbNum = $this->_deviceNum;
         $pinArray = array();
         $dbCount = count($this->DbArray);
         $found = 0;
@@ -313,7 +357,6 @@ class Properties
     * this function returns the pin function for a given daughter and a
     * give pin name.
     *
-    * @param string $dbName - hardware number of the daughterboard
     * @param string $pinName - name of the pin 
     *
     * @return array $pinProperties - a 2 dimensional array containing: 
@@ -327,8 +370,9 @@ class Properties
     *                                   or 2.
     *
     */
-    public function dbPinProperties($dbName, $pinName)
+    public function dbPinProperties($pinName)
     {
+        $dbName = $this->_deviceNum;
         $pinArray = array();
         $dbCount = count($this->DbArray);
         $found = 0;
@@ -377,10 +421,9 @@ class Properties
 
     /**
     *********************************************************************
-    * this function returns a list of the daughterboard pins and thier
+    * this function returns a list of the daughterboard pins and their
     * connection to the given endpoint.
     * 
-    * @param string $dbNum - daughterboard hardware part number
     * @param string $epNum - endpoint part number
     *
     * @return array $pinArray - 2 dimensional array containing 
@@ -388,8 +431,9 @@ class Properties
     *                           [x][1] connecting endpoint pin name
     *
     */
-    public function dbToEpConnections($dbNum, $epNum)
+    public function dbToEpConnections($epNum)
     {
+        $dbNum = $this->_deviceNum;
         $pinArray = array();
         $dbCount = count($this->DbArray);
         $dbFound = 0;
