@@ -6,8 +6,7 @@
  *
  * <pre>
  * HUGnetLib is a library of HUGnet code
- * Copyright (C) 2013 Hunt Utilities Group, LLC
- * Copyright (C) 2009 Scott Price
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,8 +27,7 @@
  * @package    HUGnetLibTest
  * @subpackage SuiteBase
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2013 Hunt Utilities Group, LLC
- * @copyright  2009 Scott Price
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
@@ -58,10 +56,9 @@ require_once CODE_BASE."devices/processTable/DriverInterface.php";
  * @package    HUGnetLibTest
  * @subpackage SuiteBase
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2013 Hunt Utilities Group, LLC
- * @copyright  2009 Scott Price
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.10.2
+ * @version    Release: 0.14.3
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class ProcessTest extends \PHPUnit_Framework_TestCase
@@ -437,9 +434,9 @@ namespace HUGnet\devices\processTable\drivers;
  * @package    HUGnetLib
  * @subpackage Processs
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2013 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.10.2
+ * @version    Release: 0.14.3
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  *
@@ -482,9 +479,9 @@ class TestProcessDriver1 extends \HUGnet\devices\processTable\Driver
  * @package    HUGnetLib
  * @subpackage Processs
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2013 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.10.2
+ * @version    Release: 0.14.3
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  *
