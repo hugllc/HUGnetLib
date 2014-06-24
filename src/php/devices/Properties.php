@@ -182,6 +182,31 @@ class Properties
         return $pinArray;
     }
             
+    /**
+    *********************************************************************
+    * this function returns the pin properties for a given device and
+    * a given pin name.
+    *
+    * @return array $pinArray - array of type string containing pin 
+    *                           names.
+    *
+    */
+    public function getPinProperties($pinName)
+    {
+        $pinArray = array();
+
+        if (in_array($this->_deviceNum, $this->EpArray)) {
+            $pinArray = $this->epPinProperties($pinName);
+        } else if (in_array($this->_deviceNum, $this->DbArray)) {
+            $pinArray = $this->dbPinProperties($pinName);
+        } else {
+            $pinArray[0] = "Error";
+            $pinArray[1] = "Device not found";
+        }
+
+        return $pinArray;
+    }
+            
 
 
     /**
@@ -194,7 +219,7 @@ class Properties
     *                           names.
     *
     */
-    public function epPinList()
+    private function epPinList()
     {
         $epName = $this->_deviceNum;
 
@@ -216,10 +241,7 @@ class Properties
             }
         }
 
-        if ($found == 0) {
-            $pinArray[0] = "Error";
-            $pinArray[1] = "Endpoint not found!";
-        } elseif ($found == 1) {
+        if ($found == 1) {
             $pinArray[0] = "Error";
             $pinArray[1] = "No Pins to display!";
         }
@@ -298,9 +320,6 @@ class Properties
             $pinArray[0] = "Error";
 
             switch($found) {
-                case 0:
-                    $pinArray[1] = "Endpoint not found!";
-                    break;
                 case 1: 
                     $pinArray[1] = "Pin not found!";
                     break;
@@ -323,18 +342,16 @@ class Properties
     * @return array $pinArray - a list of pin names for the daughterboard.
     *
     */
-    public function dbPinList()
+    private function dbPinList()
     {
         $dbNum = $this->_deviceNum;
         $pinArray = array();
         $dbCount = count($this->DbArray);
-        $found = 0;
 
         for ($i=0; $i<$dbCount; $i++) {
             if($this->DbArray[$i] == $dbNum) {
                 $pinCount = $this->_Xml->daughterboards[$i]->Pins->count();
                     for ($j=0; $j< $pinCount; $j++) {
-                        $found = 1;
                         $pinName = (string)($this->_Xml->daughterboards[$i]->
                             Pins[$j]->name);
                         $pinArray[$j]= $pinName;
@@ -342,11 +359,6 @@ class Properties
             }
         }
     
-        if ($found == 0) {
-            $pinArray[0] = "Error";
-            $pinArray[1] = "Daughterboard not found!";
-        }
-
         return $pinArray;
     } /* end function dbPinList */
 
@@ -407,9 +419,7 @@ class Properties
         
         if ($found <> 2) {
             $pinArray[0][0] = "Error";
-            if ($found == 0) {
-                $pinArray[0][1] = "Daughterboard not found!";
-            } else {
+            if ($found == 1) {
                 $pinArray[0][1] = "Pin not found!";
             }
         }
@@ -435,7 +445,6 @@ class Properties
         $dbNum = $this->_deviceNum;
         $pinArray = array();
         $dbCount = count($this->DbArray);
-        $dbFound = 0;
         $epFound = 0;
 
         for ($i = 0; $i < $dbCount; $i++) {
@@ -467,11 +476,6 @@ class Properties
             }
         }
         
-        if ($dbFound == 0) {
-            $pinArray[0][0] = "Error";
-            $pinArray[0][1] = "Daughterboard not found!";
-        }
-
         return $pinArray;
     } /* end function dbToEpConnections */
 

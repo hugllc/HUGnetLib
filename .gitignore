@@ -16,6 +16,7 @@ src/webapi/html/images/config/.directory
 src/php/.directory
 src/php/devices/.directory
 test/.directory
+test/files/.directory
 test/suite/.directory
 test/suite/devices/.directory
 test/suite/ui/.directory
