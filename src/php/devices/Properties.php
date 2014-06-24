@@ -207,6 +207,32 @@ class Properties
         return $pinArray;
     }
             
+    /**
+    *********************************************************************
+    * this function returns a list of the daughterboard pins and their
+    * connection to the given endpoint provided the hardware part number
+    * is in the set of daughter boards.
+    * 
+    * @param string $epNum - endpoint part number
+    *
+    * @return array $pinArray - 2 dimensional array containing 
+    *                           [x][0] daughterboard pin name
+    *                           [x][1] connecting endpoint pin name
+    *
+    */
+    public function getDbToEpConnections($epNum)
+    {
+        $pinArray = array();
+
+        if (in_array($this->_deviceNum, $this->DbArray)) {
+            $pinArray = $this->dbToEpConnections($epNum);
+        } else {
+            $pinArray[0][0] = "Error";
+            $pinArray[0][1] = "Daughterboard not found!";
+        }
+
+        return $pinArray;
+    }
 
 
     /**
@@ -266,7 +292,7 @@ class Properties
     *                                       [5] high voltage input flag
     *
     */
-    public function epPinProperties($pinName)
+    private function epPinProperties($pinName)
     {
         $epName = $this->_deviceNum;
         $pinArray = array();
@@ -381,7 +407,7 @@ class Properties
     *                                   or 2.
     *
     */
-    public function dbPinProperties($pinName)
+    private function dbPinProperties($pinName)
     {
         $dbName = $this->_deviceNum;
         $pinArray = array();
@@ -440,7 +466,7 @@ class Properties
     *                           [x][1] connecting endpoint pin name
     *
     */
-    public function dbToEpConnections($epNum)
+    private function dbToEpConnections($epNum)
     {
         $dbNum = $this->_deviceNum;
         $pinArray = array();

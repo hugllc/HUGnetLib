@@ -577,6 +577,47 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, $this->r->getPinProperties($pin));
     }
 
+
+    /**
+    * data provider for testDbToEpConnectionsError
+    *
+    * @return array
+    */
+    public static function dataDbToEpConnectionsError()
+    {
+        return array(
+            array(
+                    true,
+                    "0039-28-01-A",
+                    array(
+                        0 => array(
+                            0 => 'Error',
+                            1 => 'Daughterboard not found!',
+                            ),
+                    ),
+            )
+        );
+    }
+
+
+    /**
+    ******************************************************************
+    * test routine for getDbtoEpConnections error condition
+    * 
+    * @param string $dbname   The name of the daughterboard to test
+    * @param string $epname   The name of the endpoint connecting
+    * @param array  $expect   The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataDbToEpConnectionsError
+    */
+    public function testDbToEpConnectionsError($dbname, $epname, $expect)
+    {
+        $this->assertSame($expect, $this->s->getDbToEpConnections($epname));
+    }
+
+
     /**
     * data provider for testDbToEpConnections
     *
@@ -727,7 +768,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     */
     public function testDbToEpPConnections($dbname, $epname, $expect)
     {
-        $this->assertSame($expect, $this->q->dbToEpConnections($epname));
+        $this->assertSame($expect, $this->q->getDbToEpConnections($epname));
     }
 
 
@@ -747,7 +788,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
        
         unset($this->o);
         $this->o = Properties::factory(null,"0039-28-01-A");   
-        $this->assertSame($expect, $this->o->getDaughterboards($name));
+        $this->assertSame($expect, $this->o->getDaughterboards());
     }
 
 
