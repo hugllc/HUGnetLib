@@ -60,6 +60,7 @@ require_once CODE_BASE.'devices/drivers/DriverInterface.php';
 class PropertiesTest extends \PHPUnit_Framework_TestCase
 {
     /** test objects */
+    protected $m;
     protected $n;
     protected $o;
     protected $p;
@@ -77,12 +78,13 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->n = Properties::factory(TEST_CONFIG_BASE."/files/devices.xml","0039-12-01-A");
-        $this->o = Properties::factory(TEST_CONFIG_BASE."/files/devices.xml","0039-12-02-C");
-        $this->p = Properties::factory(TEST_CONFIG_BASE."/files/devices.xml","0039-37-01-E");
-        $this->q = Properties::factory(TEST_CONFIG_BASE."/files/devices.xml","0039-23-01");
-        $this->r = Properties::factory(TEST_CONFIG_BASE."/files/devices.xml","0039-15-01");
-        $this->s = Properties::factory(TEST_CONFIG_BASE."/files/devices.xml","");
+        $this->m = Properties::factory(TEST_CONFIG_BASE."/files/devices.xml","0039-14-01-A","0039-23-01");
+        $this->n = Properties::factory(TEST_CONFIG_BASE."/files/devices.xml","0039-12-01-A","");
+        $this->o = Properties::factory(TEST_CONFIG_BASE."/files/devices.xml","0039-12-02-C","");
+        $this->p = Properties::factory(TEST_CONFIG_BASE."/files/devices.xml","0039-37-01-E","");
+        $this->q = Properties::factory(TEST_CONFIG_BASE."/files/devices.xml","0039-28-01-A","0039-23-01");
+        $this->r = Properties::factory(TEST_CONFIG_BASE."/files/devices.xml","0039-12-02-C","0039-15-01");
+        $this->s = Properties::factory(TEST_CONFIG_BASE."/files/devices.xml","","");
     }
 
     /**
@@ -95,6 +97,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     */
     protected function tearDown()
     {
+        unset($this->m);
         unset($this->n);
         unset($this->o);
         unset($this->p);
@@ -186,12 +189,12 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
 
 
     /**
-    * data provider for testGetDevNum
+    * data provider for testGetEndpointNum
     *
-    * @return arry
+    * @return array
     *
     */
-    public static function dataGetDevNum()
+    public static function dataGetEndpointNum()
     {
         return array(
             array(
@@ -202,20 +205,50 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-    * test routine for get device number 
+    * test routine for get endpoint number 
     *
     * @param string $name   The name of the variable to test
     * @param string $expect The expected return
     *
     * @return null
     *
-    * @dataProvider dataGetDevNum
+    * @dataProvider dataGetEndpointNum
     */
-    public function testGetDevNum($name, $expect)
+    public function testGetEndpointNum($name, $expect)
     {
-        $this->assertSame($expect, $this->o->getDevNum());
+        $this->assertSame($expect, $this->o->getEndpointNum());
     }
 
+    /**
+    * data provider for testGetDaughterboardNum
+    *
+    * @return array
+    *
+    */
+    public static function dataGetDaughterboardNum()
+    {
+        return array(
+            array(
+                true,
+                '0039-23-01',
+            ),
+        );
+    }
+
+    /**
+    * test routine for get daughterboard number 
+    *
+    * @param string $name   The name of the variable to test
+    * @param string $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataGetDaughterboardNum
+    */
+    public function testGetDaughterboardNum($name, $expect)
+    {
+        $this->assertSame($expect, $this->m->getDaughterboardNum());
+    }
 
     /**
     * data provider for testEpPinList
@@ -261,7 +294,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     */
     public function testEpPinList($name, $expect)
     {
-        $this->assertSame($expect, $this->o->getPinList());
+        $this->assertSame($expect, $this->o->getEpPinList());
     }
 
 
@@ -271,14 +304,14 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     * @return array
     *
     */
-    public static function dataGetPinList()
+    public static function dataGetEpPinList()
     {
         return array(
             array(
                 true,
                 array(
                     0 => 'Error',
-                    1 => 'Device not found',
+                    1 => 'Endpoint not found!',
                 ),
             ),
         );
@@ -293,11 +326,11 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataGetPinList
+    * @dataProvider dataGetEpPinList
     */
-    public function testGetPinList($name, $expect)
+    public function testGetEpPinList($name, $expect)
     {
-        $this->assertSame($expect, $this->s->getPinList());
+        $this->assertSame($expect, $this->s->getEpPinList());
     }
    
     /**
@@ -331,16 +364,17 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     */
     public function testEpPinListError($name, $expect)
     {
-        $this->assertSame($expect, $this->n->getPinList());
+        $this->assertSame($expect, $this->n->getEpPinList());
     }
+
     
     /**
-    * data provider for testGetPinPropertiesError 
+    * data provider for testGetEpPinPropertiesError 
     *
     * @return array
     *
     */
-    public static function dataGetPinPropertiesError()
+    public static function dataGetEpPinPropertiesError()
     {
         return array(
             array(
@@ -354,29 +388,29 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         );
     }
     /**
-    * test routine for get pin properties error condition
+    * test routine for get endpoint pin properties error condition
     * 
     * @param string $name   The name of the variable to test
     * @param array  $expect The expected return
     *
     * @return null
     *
-    * @dataProvider dataGetPinPropertiesError
+    * @dataProvider dataGetEpPinPropertiesError
     */
-    public function testGetPinPropertiesError($name, $pin, $expect)
+    public function testGetEpPinPropertiesError($name, $pin, $expect)
     {
-        $this->assertSame($expect, $this->n->getPinProperties($pin));
+        $this->assertSame($expect, $this->n->getEpPinProperties($pin));
     }
         
  
 
     /**
-    * data provider for testGetPinProperties error condition
+    * data provider for testGetEpPinProperties error condition
     *
     * @return array
     *
     */
-    public static function dataGetPinProperties()
+    public static function dataGetEpPinProperties()
     {
         return array(
             array(
@@ -384,25 +418,25 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
                 "Port4",
                 array(
                     0 => 'Error',
-                    1 => 'Device not found',
+                    1 => 'Endpoint not found!',
                 ),
             ),
         );
     }
 
     /**
-    * test routine for get pin properties error condition
+    * test routine for get endpoint pin properties error condition
     * 
     * @param string $name   The name of the variable to test
     * @param array  $expect The expected return
     *
     * @return null
     *
-    * @dataProvider dataGetPinProperties
+    * @dataProvider dataGetEpPinProperties
     */
-    public function testGetPinProperties($name, $pin, $expect)
+    public function testGetEpPinProperties($name, $pin, $expect)
     {
-        $this->assertSame($expect, $this->s->getPinProperties($pin));
+        $this->assertSame($expect, $this->s->getEpPinProperties($pin));
     }
         
 
@@ -465,7 +499,43 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     */
     public function testEpPinProperties($name, $pin, $expect)
     {
-        $this->assertSame($expect, $this->p->getPinProperties($pin));
+        $this->assertSame($expect, $this->p->getEpPinProperties($pin));
+    }
+
+
+
+    /**
+    * data provider for testDbPinListError
+    *
+    * @return array
+    */
+    public static function dataDbPinListError()
+    {
+        return array(
+            array(
+                true,
+                array(
+                    0 => 'Error',
+                    1 => 'Daughterboard not found!',
+                ),
+            ),
+        );
+    }
+
+    /**
+    *************************************************************
+    * test routine for get daughterboard pins list error
+    *
+    * @param string $name   The name of the variable to test
+    * @param array  $expect The expected return.
+    *
+    * @return null
+    *
+    * @dataProvider dataDbPinListError
+    */
+    public function testDbPinListError($name, $expect)
+    {
+        $this->assertSame($expect, $this->n->getDbPinList());
     }
 
 
@@ -515,10 +585,50 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     */
     public function testDbPinList($name, $expect)
     {
-        $this->assertSame($expect, $this->q->getPinList());
+        $this->assertSame($expect, $this->q->getDbPinList());
     }
 
 
+    /**
+    * data provider for testDbPinPropertiesError
+    *
+    * @return array
+    */
+    public static function dataDbPinPropertiesError()
+    {
+        return array(
+            array(
+                true,
+                'Port2',
+                array(
+                    0 => array(
+                            0 => 'Error',
+                            1 => 'Daughterboard not found!',
+                        ),
+                ),
+            ),
+        );
+    }
+
+    /**
+    *************************************************************
+    * test routine for get daughterboard pin properties error
+    *
+    * @param string $name   The name of the variable to test
+    * @param string $pin    The name of the pin to test
+    * @param array  $expect The expected return.
+    *
+    * @return null
+    *
+    * @dataProvider dataDbPinPropertiesError
+    */
+    public function testDbPinPropertiesError($name, $pin, $expect)
+    {
+        $this->assertSame($expect, $this->n->getDbPinProperties($pin));
+    }
+
+
+    
     /**
     * data provider for testDbPinProperties
     *
@@ -574,7 +684,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     */
     public function testDbPinProperties($name, $pin, $expect)
     {
-        $this->assertSame($expect, $this->r->getPinProperties($pin));
+        $this->assertSame($expect, $this->r->getDbPinProperties($pin));
     }
 
 
@@ -588,7 +698,6 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                     true,
-                    "0039-28-01-A",
                     array(
                         0 => array(
                             0 => 'Error',
@@ -599,22 +708,103 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+ 
 
     /**
     ******************************************************************
     * test routine for getDbtoEpConnections error condition
     * 
     * @param string $dbname   The name of the daughterboard to test
-    * @param string $epname   The name of the endpoint connecting
     * @param array  $expect   The expected return
     *
     * @return null
     *
     * @dataProvider dataDbToEpConnectionsError
     */
-    public function testDbToEpConnectionsError($dbname, $epname, $expect)
+    public function testDbToEpConnectionsError($dbname, $expect)
     {
-        $this->assertSame($expect, $this->s->getDbToEpConnections($epname));
+        $this->assertSame($expect, $this->s->getDbToEpConnections());
+    }
+
+    /**
+    * data provider for testDbToEpConnectionsError2
+    *
+    * @return array
+    */
+    public static function dataDbToEpConnectionsError2()
+    {
+        return array(
+            array(
+                true,
+                array(
+                    0 => array(
+                            0 => 'Error',
+                            1 => 'Endpoint not found in connections',
+                        ),
+                    1 => array(
+                            0 => 'Port2',
+                        ),
+                    2 => array(
+                            0 => 'Port3',
+                        ),
+                    3 => array(
+                            0 => 'Port4',
+                        ),
+                    4 => array(
+                            0 => 'Port5',
+                        ),
+                    5 => array(
+                            0 => 'Port6',
+                        ),
+                    6 => array( 
+                            0 => 'Port7',
+                        ),
+                    7 => array(
+                            0 => 'Port8',
+                        ),
+                    8 => array(
+                            0 => 'Port9',
+                        ),
+                    9 => array(
+                            0 => 'Port10',
+                        ),
+                    10 => array(
+                            0 => 'Port11',
+                        ),
+                    11 => array(
+                            0 => 'Port12',
+                        ),
+                    12 => array(
+                            0 => 'Port13',
+                        ),
+                    13 => array(
+                            0 => 'Port14',
+                        ),
+                    14 => array(
+                            0 => 'Port15',
+                        ),
+                    15 => array(
+                            0 => 'Port16',
+                        ),
+                ),
+            ),
+        );
+    }
+
+    /**
+    ******************************************************************
+    * test routine for getDbtoEpConnections error 2 condition
+    * 
+    * @param string $dbname   The name of the daughterboard to test
+    * @param array  $expect   The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataDbToEpConnectionsError2
+    */
+    public function testDbToEpConnectionsError2($dbname, $expect)
+    {
+        $this->assertSame($expect, $this->m->getDbToEpConnections());
     }
 
 
@@ -628,7 +818,6 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 true,  /* 0039-23-01 */
-                "0039-28-01-A",
                 array(
                     0 => array(
                             0 => 'Port1',
@@ -696,61 +885,6 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
                         ),
                 ),
             ),
-            array(
-                true,
-                "0039-17-01-A",
-                array(
-                    0 => array(
-                            0 => 'Error',
-                            1 => 'Endpoint not found in connections',
-                        ),
-                    1 => array(
-                            0 => 'Port2',
-                        ),
-                    2 => array(
-                            0 => 'Port3',
-                        ),
-                    3 => array(
-                            0 => 'Port4',
-                        ),
-                    4 => array(
-                            0 => 'Port5',
-                        ),
-                    5 => array(
-                            0 => 'Port6',
-                        ),
-                    6 => array( 
-                            0 => 'Port7',
-                        ),
-                    7 => array(
-                            0 => 'Port8',
-                        ),
-                    8 => array(
-                            0 => 'Port9',
-                        ),
-                    9 => array(
-                            0 => 'Port10',
-                        ),
-                    10 => array(
-                            0 => 'Port11',
-                        ),
-                    11 => array(
-                            0 => 'Port12',
-                        ),
-                    12 => array(
-                            0 => 'Port13',
-                        ),
-                    13 => array(
-                            0 => 'Port14',
-                        ),
-                    14 => array(
-                            0 => 'Port15',
-                        ),
-                    15 => array(
-                            0 => 'Port16',
-                        ),
-                ),
-            ),
         );
     }
 
@@ -766,9 +900,9 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     *
     * @dataProvider dataDbToEpConnections
     */
-    public function testDbToEpPConnections($dbname, $epname, $expect)
+    public function testDbToEpPConnections($dbname, $expect)
     {
-        $this->assertSame($expect, $this->q->getDbToEpConnections($epname));
+        $this->assertSame($expect, $this->q->getDbToEpConnections());
     }
 
 
@@ -787,7 +921,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     {
        
         unset($this->o);
-        $this->o = Properties::factory(null,"0039-28-01-A");   
+        $this->o = Properties::factory(null,"0039-28-01-A","0039-23-01");   
         $this->assertSame($expect, $this->o->getDaughterboards());
     }
 

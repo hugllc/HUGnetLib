@@ -59,17 +59,18 @@ class Properties
     private $EpArray = array();
     private $DbArray = array();
     
-    private $_deviceNum;
+    private $_endpointNum;
+    private $_daughterNum;
 
 
     /**
     *********************************************************************
     * this function loads the devices xml file into an object and loads  
-    * the arrays of endpoints and daughterboardd.
+    * the arrays of endpoints and daughterboards.
     *
     * @return void
     */
-    protected function __construct($filename, $devnum)
+    protected function __construct($filename, $endpointNum, $daughterNum)
     {
         if (is_null($filename)) {
             $filename = dirname(__FILE__)."/../devices.xml";
@@ -89,7 +90,8 @@ class Properties
             $this->DbArray[$i] = (string) ($this->_Xml->daughterboards[$i]
                 ->HWPartNum);
         }
-        $this->_deviceNum = $devnum;
+        $this->_endpointNum = $endpointNum;
+        $this->_daughterNum = $daughterNum;
 
     } /* end function __construct */
 
@@ -102,10 +104,10 @@ class Properties
     * @return object device data object.
     *
     */
-    public static function &factory($filename = null, $devnum)
+    public static function &factory($filename = null, $endpointNum, $daughterNum )
     {
 
-        $object = new Properties($filename, $devnum);
+        $object = new Properties($filename, $endpointNum, $daughterNum);
         return $object;
 
     }
@@ -144,39 +146,73 @@ class Properties
 
     /**
     *********************************************************************
-    * this function returns the device hardware number for which the 
+    * this function returns the endpoint hardware number with which the 
     * object was created.
     *
-    * @return string - device hardware partnumber.
+    * @return string - endpoint hardware partnumber.
     *
     *
     */
-    public function getDevNum()
+    public function getEndpointNum()
     {
-        return $this->_deviceNum;
+        return $this->_endpointNum;
  
     }
 
     /**
     *********************************************************************
-    * this function gets the pin list for the object device whether it 
-    * is an endpoint or a daughterboard.
+    * this function returns the daughterboard hardware number with which 
+    * the object was created.
+    *
+    * @return string - daughterboard hardware partnumber.
+    *
+    *
+    */
+    public function getDaughterboardNum()
+    {
+        return $this->_daughterNum;
+ 
+    }
+
+    /**
+    *********************************************************************
+    * this function gets the pin list for the object endpoint. 
     *
     * @return array $pinArray - array of type string containing pin 
     *                           names.
     *
     */
-    public function getPinList()
+    public function getEpPinList()
     {
         $pinArray = array();
 
-        if (in_array($this->_deviceNum, $this->EpArray)) {
+        if (in_array($this->_endpointNum, $this->EpArray)) {
             $pinArray = $this->epPinList();
-        } else if (in_array($this->_deviceNum, $this->DbArray)) {
+        } else {
+            $pinArray[0] = "Error";
+            $pinArray[1] = "Endpoint not found!";
+        }
+
+        return $pinArray;
+    }
+
+    /**
+    *********************************************************************
+    * this function gets the pin list for the object daughterboard. 
+    *
+    * @return array $pinArray - array of type string containing pin 
+    *                           names.
+    *
+    */
+    public function getDbPinList()
+    {
+        $pinArray = array();
+
+        if (in_array($this->_daughterNum, $this->DbArray)) {
             $pinArray = $this->dbPinList();
         } else {
             $pinArray[0] = "Error";
-            $pinArray[1] = "Device not found";
+            $pinArray[1] = "Daughterboard not found!";
         }
 
         return $pinArray;
@@ -184,24 +220,57 @@ class Properties
             
     /**
     *********************************************************************
-    * this function returns the pin properties for a given device and
+    * this function returns the pin properties for the endpoint and
     * a given pin name.
     *
-    * @return array $pinArray - array of type string containing pin 
-    *                           names.
+    * @return array $pinArray - an array containing:
+    *                              [0] the pin function(s),
+    *                              [1] series resistor value
+    *                              [2] shunt resistor value
+    *                              [3] shunt resistor location 
+    *                              [4] shunt resistor pull
+    *                              [5] high voltage input flag
     *
     */
-    public function getPinProperties($pinName)
+    public function getEpPinProperties($pinName)
     {
         $pinArray = array();
 
-        if (in_array($this->_deviceNum, $this->EpArray)) {
+        if (in_array($this->_endpointNum, $this->EpArray)) {
             $pinArray = $this->epPinProperties($pinName);
-        } else if (in_array($this->_deviceNum, $this->DbArray)) {
-            $pinArray = $this->dbPinProperties($pinName);
         } else {
             $pinArray[0] = "Error";
-            $pinArray[1] = "Device not found";
+            $pinArray[1] = "Endpoint not found!";
+        }
+
+        return $pinArray;
+    }
+
+    /**
+    *********************************************************************
+    * this function returns the pin properties for the daughterboard and
+    * a given pin name.
+    *
+    * @return array $pinProperties - a 2 dimensional array containing: 
+    *                                   [0][0] the pin function(s)
+    *                                   [x][0] connect
+    *                                   [x][1] connecting endpoint number
+    *                                   [x][2] connecting pin name
+    *
+    *                                   currently the max connections is
+    *                                   2, so values for x would be 1
+    *                                   or 2.
+    *
+    */
+    public function getDbPinProperties($pinName)
+    {
+        $pinArray = array();
+
+        if (in_array($this->_daughterNum, $this->DbArray)) {
+            $pinArray = $this->dbPinProperties($pinName);
+        } else {
+            $pinArray[0][0] = "Error";
+            $pinArray[0][1] = "Daughterboard not found!";
         }
 
         return $pinArray;
@@ -220,12 +289,12 @@ class Properties
     *                           [x][1] connecting endpoint pin name
     *
     */
-    public function getDbToEpConnections($epNum)
+    public function getDbToEpConnections()
     {
         $pinArray = array();
 
-        if (in_array($this->_deviceNum, $this->DbArray)) {
-            $pinArray = $this->dbToEpConnections($epNum);
+        if (in_array($this->_daughterNum, $this->DbArray)) {
+            $pinArray = $this->dbToEpConnections();
         } else {
             $pinArray[0][0] = "Error";
             $pinArray[0][1] = "Daughterboard not found!";
@@ -247,7 +316,7 @@ class Properties
     */
     private function epPinList()
     {
-        $epName = $this->_deviceNum;
+        $epName = $this->_endpointNum;
 
         $pinArray = array();
         $epCount = count($this->EpArray);
@@ -294,7 +363,7 @@ class Properties
     */
     private function epPinProperties($pinName)
     {
-        $epName = $this->_deviceNum;
+        $epName = $this->_endpointNum;
         $pinArray = array();
         $epCount = count($this->EpArray);
         $found = 0;
@@ -370,7 +439,7 @@ class Properties
     */
     private function dbPinList()
     {
-        $dbNum = $this->_deviceNum;
+        $dbNum = $this->_daughterNum;
         $pinArray = array();
         $dbCount = count($this->DbArray);
 
@@ -409,7 +478,7 @@ class Properties
     */
     private function dbPinProperties($pinName)
     {
-        $dbName = $this->_deviceNum;
+        $dbName = $this->_daughterNum;
         $pinArray = array();
         $dbCount = count($this->DbArray);
         $found = 0;
@@ -466,9 +535,10 @@ class Properties
     *                           [x][1] connecting endpoint pin name
     *
     */
-    private function dbToEpConnections($epNum)
+    private function dbToEpConnections()
     {
-        $dbNum = $this->_deviceNum;
+        $dbNum = $this->_daughterNum;
+        $epNum = $this->_endpointNum;
         $pinArray = array();
         $dbCount = count($this->DbArray);
         $epFound = 0;
