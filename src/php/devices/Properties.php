@@ -176,6 +176,39 @@ class Properties
 
     /**
     *********************************************************************
+    * this function sets a new endpoint and daughterboard part number 
+    * for the object.
+    *
+    * @param string $endpointNum   new endpoint hardware number
+    * @param string $daughterNum   new daughterboard hardware part number
+    *
+    * @return array  - success or error with condition 
+    *
+    */
+    public function setPartNumbers($endpointNum, $daughterNum)
+    {
+        $result = array();
+
+        if (in_array($endpointNum, $this->EpArray)) {
+            if (in_array($daughterNum, $this->DbArray)) {
+                $this->_endpointNum = $endpointNum;
+                $this->_daughterNum = $daughterNum;
+                $result[0] = 'Okay';
+            } else {
+                $result[0] = 'Error';
+                $result[1] = 'Invalid Daughterboard Number!';
+            }
+        } else {
+            $result[0] = 'Error';
+            $result[1] = 'Invalid Endpoint Number!';
+        }
+
+        return $result;
+    }
+
+
+    /**
+    *********************************************************************
     * this function gets the pin list for the object endpoint. 
     *
     * @return array $pinArray - array of type string containing pin 

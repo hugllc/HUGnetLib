@@ -205,6 +205,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+    ****************************************************************
     * test routine for get endpoint number 
     *
     * @param string $name   The name of the variable to test
@@ -220,10 +221,11 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-    * data provider for testGetDaughterboardNum
-    *
-    * @return array
-    *
+    #
+    # data provider for testGetDaughterboardNum
+    #
+    # @return array
+    #
     */
     public static function dataGetDaughterboardNum()
     {
@@ -249,6 +251,118 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame($expect, $this->m->getDaughterboardNum());
     }
+
+
+    /**
+    * data provider for testSetPartNumbers
+    *
+    * @return array
+    */
+    public static function dataSetPartNumbers()
+    {
+        return array(
+            array(
+                '0039-28-01-A',
+                '0039-23-01',
+                array(
+                    0 => 'Okay',
+                ),
+            ),
+        );
+    }   
+
+    /**
+    ****************************************************************
+    * test routine for setPartnumbers
+    *
+    * @param string $epNum  The endpoint number to set 
+    * @param string $dbNum  The daughterboard number to set
+    * @param array  $expect The expected return
+    * 
+    * @return null
+    *
+    * @dataProvider dataSetPartNumbers
+    */
+    public function testSetPartNumbers($epNum, $dbNum, $expect)
+    {
+        $this->assertSame($expect, $this->r->setPartnumbers($epNum,$dbNum));
+
+    }
+
+    /**
+    * data provider for testSetPartNumbersError1
+    *
+    * @return array
+    */
+    public static function dataSetPartNumbersError1()
+    {
+        return array(
+            array(
+                '0039-29-01-A',
+                '0039-23-01',
+                array(
+                    0 => 'Error',
+                    1 => 'Invalid Endpoint Number!',
+                ),
+            ),
+        );
+    }   
+
+    /**
+    ****************************************************************
+    * test routine for setPartnumbers Error 1
+    *
+    * @param string $epNum  The endpoint number to set 
+    * @param string $dbNum  The daughterboard number to set
+    * @param array  $expect The expected return
+    * 
+    * @return null
+    *
+    * @dataProvider dataSetPartNumbersError1
+    */
+    public function testSetPartNumbersError1($epNum, $dbNum, $expect)
+    {
+        $this->assertSame($expect, $this->r->setPartnumbers($epNum,$dbNum));
+
+    }
+
+    /**
+    * data provider for testSetPartNumbersError2
+    *
+    * @return array
+    */
+    public static function dataSetPartNumbersError2()
+    {
+        return array(
+            array(
+                '0039-28-01-A',
+                '0039-24-01',
+                array(
+                    0 => 'Error',
+                    1 => 'Invalid Daughterboard Number!',
+                ),
+            ),
+        );
+    }   
+
+    /**
+    ****************************************************************
+    * test routine for setPartnumbers Error 2
+    *
+    * @param string $epNum  The endpoint number to set 
+    * @param string $dbNum  The daughterboard number to set
+    * @param array  $expect The expected return
+    * 
+    * @return null
+    *
+    * @dataProvider dataSetPartNumbersError2
+    */
+    public function testSetPartNumbersError2($epNum, $dbNum, $expect)
+    {
+        $this->assertSame($expect, $this->r->setPartnumbers($epNum,$dbNum));
+
+    }
+
 
     /**
     * data provider for testEpPinList
