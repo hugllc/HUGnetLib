@@ -186,7 +186,7 @@ class DeviceFunctionsTest extends TableTestBase
             array("tableEntry", array(1,2,3,4), "[1,2,3,4]"),
             array("extra", array(1,2,3,4), array(1,2,3,4)),
             array("dev", "123", 123),
-            array("function", "123", 123),
+            array("fct", "123", 123),
         );
     }
 
@@ -219,13 +219,13 @@ class DeviceFunctionsTest extends TableTestBase
                 array(
                     array(
                         "dev" => 156,
-                        "function" => 23,
+                        "fct" => 23,
                         "id" => 1,
                     ),
                 ),
                 array(
                     "dev" => 156,
-                    "function" => 23,
+                    "fct" => 23,
                     "id" => 1,
                 ),
                 true
@@ -234,13 +234,13 @@ class DeviceFunctionsTest extends TableTestBase
                 array(
                     array(
                         "dev" => 158,
-                        "function" => 23,
+                        "fct" => 23,
                         "id" => 1,
                     ),
                 ),
                 array(
                     "dev" => 156,
-                    "function" => 23,
+                    "fct" => 23,
                     "id" => 1,
                 ),
                 false
@@ -250,7 +250,7 @@ class DeviceFunctionsTest extends TableTestBase
                 ),
                 array(
                     "dev" => 156,
-                    "function" => 23,
+                    "fct" => 23,
                     "id" => 1,
                 ),
                 false
@@ -290,7 +290,7 @@ class DeviceFunctionsTest extends TableTestBase
             array(
                 array(
                     "dev" => 156,
-                    "function" => 23,
+                    "fct" => 23,
                     "id" => 1,
                     "complexity" => 5,
                     "location" => "HERE",
@@ -306,7 +306,7 @@ class DeviceFunctionsTest extends TableTestBase
                 array(
                     "group" => 'default',
                     "dev" => 156,
-                    "function" => 23,
+                    "fct" => 23,
                     "driver"  => "asdf",
                     "params" => json_encode(
                         array("extra" => array())
@@ -317,7 +317,7 @@ class DeviceFunctionsTest extends TableTestBase
             array(
                 array(
                     "dev" => 156,
-                    "function" => 23,
+                    "fct" => 23,
                     "location" => "HERE",
                     "units" => "&deg;C",
                     "decimals" => 4,
@@ -326,7 +326,7 @@ class DeviceFunctionsTest extends TableTestBase
                 array(
                     "group" => 'default',
                     "dev" => 156,
-                    "function" => 23,
+                    "fct" => 23,
                     "driver"  => "Empty",
                     "params" => '{"storageUnits":"&deg;C","unitType":"Temperature"}',
                     'tableEntry' => '',
@@ -335,7 +335,7 @@ class DeviceFunctionsTest extends TableTestBase
             array(
                 array(
                     "dev" => 156,
-                    "function" => 23,
+                    "fct" => 23,
                     "id" => 1,
                     "complexity" => 5,
                     "location" => "HERE",
@@ -348,7 +348,7 @@ class DeviceFunctionsTest extends TableTestBase
                 array(
                     "group" => 'default',
                     "dev" => 156,
-                    "function" => 23,
+                    "fct" => 23,
                     "driver"  => "Empty",
                     "params" => '{"extra":[1,2,3,4]}',
                     'tableEntry' => '',
@@ -384,7 +384,7 @@ class DeviceFunctionsTest extends TableTestBase
             array(
                 array(
                     "dev" => 156,
-                    "function" => 23,
+                    "fct" => 23,
                     "id" => 1,
                     "complexity" => 5,
                     "location" => "HERE",
@@ -398,7 +398,7 @@ class DeviceFunctionsTest extends TableTestBase
                 array(
                     "group" => 'default',
                     "dev" => 156,
-                    "function" => 23,
+                    "fct" => 23,
                     "storageUnits" => "&deg;C",
                     "driver"  => "Empty",
                     "unitType" => "Temperature",

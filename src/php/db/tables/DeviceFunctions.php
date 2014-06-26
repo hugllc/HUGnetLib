@@ -90,8 +90,8 @@ class DeviceFunctions extends \HUGnet\db\TableParams
             "Name" => "dev",
             "Type" => "INTEGER",
         ),
-        "function" => array(
-            "Name" => "function",
+        "fct" => array(
+            "Name" => "fct",
             "Type" => "INTEGER",
         ),
         "driver" => array(
@@ -128,7 +128,7 @@ class DeviceFunctions extends \HUGnet\db\TableParams
         "DevFunction" => array(
             "Name" => "DevFunction",
             "Unique" => true,
-            "Columns" => array("dev", "function"),
+            "Columns" => array("dev", "fct"),
         ),
     );
 
@@ -161,8 +161,8 @@ class DeviceFunctions extends \HUGnet\db\TableParams
     {
 
         $ret = (bool) $this->dbDriver()->countWhere(
-            "dev = ? AND function = ?",
-            array($this->get("dev"), $this->get("function")), "dev"
+            "dev = ? AND fct = ?",
+            array($this->get("dev"), $this->get("fct")), "dev"
         );
         $this->dbDriver()->reset();
         return $ret;
@@ -190,9 +190,9 @@ class DeviceFunctions extends \HUGnet\db\TableParams
     *
     * @return null
     */
-    protected function setFunction($value)
+    protected function setFct($value)
     {
-        $this->data["function"] = (int) $value;
+        $this->data["fct"] = (int) $value;
     }    
     /**
     * function to set tableEntry
