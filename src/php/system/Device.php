@@ -575,6 +575,21 @@ class Device extends \HUGnet\base\SystemTableAction
         return $this->_role;
     }
     /**
+    * This creates the function drivers
+    *
+    * @param int $fid The function id to get.  They are labaled 0 to whatever
+    *
+    * @return null
+    */
+    public function &fct($fid)
+    {
+        $data["fct"] = (int)$fid;
+        $data["dev"] = (int)$this->id();
+        $system = $this->system();
+        include_once dirname(__FILE__)."/../devices/Fct.php";
+        return \HUGnet\devices\Fct::factory($system, $data, null, $this);
+    }
+    /**
     * This creates the sensor drivers
     *
     * @param int $sid The sensor id to get.  They are labaled 0 to sensors

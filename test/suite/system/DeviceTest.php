@@ -1550,6 +1550,233 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
+    public static function dataFct()
+    {
+        return array(
+            array(      // #0
+                array(
+                    "Devices" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "sensors" => array(array("id" => 0x15)),
+                            "group" => "hello",
+                        ),
+                    ),
+                    "Inputs" => array(
+                        "sanitizeWhere" => array(
+                            "sensor" => 5,
+                            "name" => 3,
+                            "value" => 1,
+                        ),
+                    ),
+                ),
+                0,
+                "\HUGnet\devices\Fct",
+                array(
+                    array(
+                        array(
+                            'dev' => 5,
+                            'fct' => 0,
+                        ),
+                    ),
+                    array(
+                        array(
+                            'id' => 0x15,
+                        ),
+                    ),
+                ),
+            ),
+            array(      // #1
+                array(
+                    "Devices" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "sensors" => base64_encode(
+                                serialize(
+                                    array(
+                                        array("id" => 0x18),
+                                    )
+                                )
+                            ),
+                            "group" => "hello",
+                        ),
+                    ),
+                ),
+                0,
+                "\HUGnet\devices\Fct",
+                array(
+                    array(
+                        array(
+                            'dev' => 5,
+                            'fct' => 0,
+                        ),
+                    ),
+                    array(
+                        array(
+                            'id' => 0x18,
+                        ),
+                    ),
+                ),
+            ),
+            array(      // #2
+                array(
+                    "Devices" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "sensors" => true,
+                            "group" => "hello",
+                        ),
+                    ),
+                ),
+                10,
+                "\HUGnet\devices\Fct",
+                array(
+                    array(
+                        array(
+                            'dev' => 5,
+                            'fct' => 10,
+                        ),
+                    ),
+                ),
+            ),
+            array(      // #3
+                array(
+                    "Devices" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "sensors" => true,
+                            "RawSetup" => "000000100800393701410039380143000004"
+                            ."FFFFFFFF01044242424241414141",
+                            "group" => "hello",
+                        ),
+                    ),
+                ),
+                1,
+                "\HUGnet\devices\Fct",
+                array(
+                    array(
+                        array(
+                            'dev' => 5,
+                            'fct' => 1,
+                        ),
+                    ),
+                ),
+            ),
+            array(      // #4
+                array(
+                    "Devices" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "Role" => "DeviceTestRole",
+                            "group" => "hello",
+                        ),
+                    ),
+                    "Inputs" => array(
+                        "sanitizeWhere" => array(
+                            "sensor" => 5,
+                            "name" => 3,
+                            "value" => 1,
+                        ),
+                    ),
+                ),
+                0,
+                "\HUGnet\devices\Fct",
+                array(
+                    array(
+                        array(
+                            "fct" => 0,
+                            "dev" => 5,
+                        ),
+                    ),
+                ),
+            ),
+            array(      // #5
+                array(
+                    "Devices" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "sensors" => array(array("id" => 0x15)),
+                            "Role" => "ThisIsABadRole",
+                            "group" => "hello",
+                        ),
+                    ),
+                    "Inputs" => array(
+                        "sanitizeWhere" => array(
+                            "sensor" => 5,
+                            "name" => 3,
+                            "value" => 1,
+                        ),
+                    ),
+                ),
+                0,
+                "\HUGnet\devices\Fct",
+                array(
+                    array(
+                        array(
+                            'dev' => 5,
+                            'fct' => 0,
+                        ),
+                    ),
+                    array(
+                        array(
+                            'id' => 0x15,
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config       The configuration to use
+    * @param string $fct          The driver to tell it to load
+    * @param string $driverExpect The driver we expect to be loaded
+    * @param int    $expect       The expected sensor id
+    *
+    * @return null
+    *
+    * @dataProvider dataFct
+    */
+    public function testFct(
+        $config, $fct, $driverExpect, $expect
+    ) {
+        $sys = $this->getMock(
+            '\HUGnet\System', 
+            array('now'),
+            array(
+                array(
+                    "servers" => array(
+                        "hello" => array(
+                            "driver" => "sqlite",
+                            "file" => ":memory:",
+                            "group" => "hello",
+                        ),
+                        "default" => array(
+                            "driver" => "sqlite",
+                            "file" => ":memory:",
+                            "group" => "default",
+                        ),
+                    ),
+                ),
+            )
+        );
+        $sys->expects($this->any())
+            ->method('now')
+            ->will($this->returnValue(1000000));
+        $obj = Device::factory($sys, $config);
+        $ret = $obj->fct($fct);
+        $this->assertTrue(
+            is_a($ret, $driverExpect),
+            "Return is not a ".$driverExpect
+        );
+        unset($obj);
+    }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
     public static function dataInput()
     {
         return array(
