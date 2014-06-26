@@ -1976,6 +1976,84 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
+            array(  // #40
+                array(
+                    "task" => "devicefunction",
+                    "action" => "get",
+                    "id" => "10.5",
+                    "data" => array(
+                        "a" => "b",
+                        "c" => "d",
+                    ),
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "fct" => new \HUGnet\DummyBase("Function"),
+                        "dataChannels" => new \HUGnet\DummyBase("Channels"),
+                    ),
+                    "Function" => array(
+                        "load" => true,
+                        "toArray" => array(
+                            "Real" => "array",
+                        ),
+                    ),
+                ),
+                false,
+                array(),
+                json_encode(array("Real" => "array")),
+                array(
+                    "Function" => array(
+                        "toArray" => array(
+                            array(true),
+                        ),
+                    ),
+                ),
+            ),
+            array(  // #6
+                array(
+                    "task" => "devicefunction",
+                    "action" => "list",
+                    "id" => "10",
+                    "data" => array(
+                        "a" => "b",
+                        "c" => "d",
+                    ),
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "fct" => new \HUGnet\DummyBase("Function"),
+                        "dataChannels" => new \HUGnet\DummyBase("Channels"),
+                    ),
+                    "Function" => array(
+                        "load" => true,
+                        "getList" => array(
+                            "Real" => "array",
+                        ),
+                    ),
+                ),
+                false,
+                array(),
+                json_encode(array("Real" => "array")),
+                array(
+                    "Function" => array(
+                        "getList" => array(
+                            array(array("dev" => 16), true),
+                        ),
+                    ),
+                ),
+            ),
         );
     }
     /**

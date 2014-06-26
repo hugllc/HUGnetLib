@@ -2,7 +2,7 @@
 <dataset>
     <table name="deviceFunctions">
         <column>dev</column>
-        <column>function</column>
+        <column>fct</column>
         <column>driver</column>
         <column>tableEntry</column>
         <column>params</column>
