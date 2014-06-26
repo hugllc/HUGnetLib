@@ -159,8 +159,8 @@ abstract class Driver
         if (is_subclass_of($class, $interface)) {
             return new $class($function, $table);
         }
-        include_once dirname(__FILE__)."/drivers/EmptyFunction.php";
-        return new \HUGnet\devices\functions\drivers\EmptyFunction($function);
+        include_once dirname(__FILE__)."/drivers/InputFunction.php";
+        return new \HUGnet\devices\functions\drivers\InputFunction($function);
     }
     /**
     * Registers an extra driver to be used by the class

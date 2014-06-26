@@ -168,7 +168,7 @@ class DriverTest extends drivers\DriverTestBase
             'shortName' => 'Unknown',
             'min' => 25,
             'max' => 81,
-            'port' => '2Z',
+            'type' => 'Simple',
         );
         $this->assertEquals($expect, $this->o->toArray(1));
     }
@@ -183,12 +183,12 @@ class DriverTest extends drivers\DriverTestBase
             array(
                 "asdf",
                 array(),
-                'HUGnet\devices\functions\drivers\EmptyFunction',
+                'HUGnet\devices\functions\drivers\InputFunction',
             ),
             array(
                 "EmptyFunction",
                 array(),
-                'HUGnet\devices\functions\drivers\EmptyFunction',
+                'HUGnet\devices\functions\drivers\InputFunction',
             ),
         );
     }
@@ -239,7 +239,7 @@ class DriverTestClass extends \HUGnet\devices\functions\Driver
     protected $params = array(
         "min" => 25,
         "max" => 81,
-        "port" => "2Z",
+        "type" => "Simple",
     );
 }
 ?>

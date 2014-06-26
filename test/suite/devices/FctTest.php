@@ -204,12 +204,13 @@ class FctTest extends \PHPUnit_Framework_TestCase
                 ),
                 new \HUGnet\DummyTable("Table"),
                 array(
-                    "longName" => "Empty Function",
-                    "shortName" => "Empty",
+                    "longName" => "Input Function",
+                    "shortName" => "Input",
                     'id' => 0xFD,
                     'asdf' => 3,
                     'params' => array(1,2,3,4),
-                    'driver' => "EmptyFunction",
+                    'driver' => "InputFunction",
+                    "type" => "Simple",
                     "tableEntry" => array(4, 3, 2, 1),
                 )
             ),

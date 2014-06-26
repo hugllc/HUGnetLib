@@ -36,7 +36,7 @@ namespace HUGnet\devices\functions\drivers;
 /** This is the base class */
 require_once dirname(__FILE__)."/DriverTestBase.php";
 /** This is a required class */
-require_once CODE_BASE.'devices/functions/drivers/EmptyFunction.php';
+require_once CODE_BASE.'devices/functions/drivers/InputFunction.php';
 
 /**
  * Test class for HUGnetDB.
@@ -51,10 +51,10 @@ require_once CODE_BASE.'devices/functions/drivers/EmptyFunction.php';
  * @version    Release: 0.14.3
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class EmptyFunctionTest extends DriverTestBase
+class InputFunctionTest extends DriverTestBase
 {
     /** This is the class we are testing */
-    protected $class = "EmptyFunction";
+    protected $class = "InputFunction";
     /** This is the output object */
     protected $output;
     /**
@@ -69,7 +69,7 @@ class EmptyFunctionTest extends DriverTestBase
     {
         parent::setUp();
         $this->o = \HUGnet\devices\functions\Driver::factory(
-            "EmptyFunction", $this->output
+            "InputFunction", $this->output
         );
     }
 

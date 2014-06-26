@@ -105,6 +105,7 @@ abstract class DriverTestBase extends \HUGnet\devices\IOPDriverTestBase
         return array(
             array("longName", "string"),
             array("shortName", "string"),
+            array("type", "string"),
         );
     }
     /**
@@ -117,6 +118,17 @@ abstract class DriverTestBase extends \HUGnet\devices\IOPDriverTestBase
         return array(
             array("longName", 40, 10),
             array("shortName", 15, 1),
+        );
+    }
+    /**
+    * data provider for testType
+    *
+    * @return array
+    */
+    public static function dataValues()
+    {
+        return array(
+            array("type", array("Simple", "Moderate", "Complex")),
         );
     }
     /**

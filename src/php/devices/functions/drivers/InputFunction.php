@@ -52,11 +52,11 @@ require_once dirname(__FILE__)."/../DriverInterface.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.14.3
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
- * @since      0.9.7
+ * @since      0.14.3
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class EmptyFunction extends \HUGnet\devices\functions\Driver
+class InputFunction extends \HUGnet\devices\functions\Driver
     implements \HUGnet\devices\functions\DriverInterface
 {
     /**
@@ -64,8 +64,9 @@ class EmptyFunction extends \HUGnet\devices\functions\Driver
     * put into all derivative classes, even if it is empty.
     */
     protected $params = array(
-        "longName" => "Empty Function",
-        "shortName" => "Empty",
+        "longName"  => "Input Function",
+        "shortName" => "Input",
+        "type"      => "Simple",
     );
 
 }
