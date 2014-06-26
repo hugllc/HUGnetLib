@@ -184,6 +184,8 @@ class DeviceFunctionsTest extends TableTestBase
             array("params", array(1,2,3,4), "[1,2,3,4]"),
             array("tableEntry", "asdfasdfasdfasdf", "asdfasdfasdfasdf"),
             array("tableEntry", array(1,2,3,4), "[1,2,3,4]"),
+            array("proposed", "asdfasdfasdfasdf", "asdfasdfasdfasdf"),
+            array("proposed", array(1,2,3,4), "[1,2,3,4]"),
             array("extra", array(1,2,3,4), array(1,2,3,4)),
             array("dev", "123", 123),
             array("fct", "123", 123),
@@ -312,6 +314,7 @@ class DeviceFunctionsTest extends TableTestBase
                         array("extra" => array())
                     ),
                     'tableEntry' => '',
+                    'proposed'   => '',
                 ),
             ),
             array(
@@ -330,6 +333,7 @@ class DeviceFunctionsTest extends TableTestBase
                     "driver"  => "Empty",
                     "params" => '{"storageUnits":"&deg;C","unitType":"Temperature"}',
                     'tableEntry' => '',
+                    'proposed'   => '',
                 ),
             ),
             array(
@@ -352,6 +356,7 @@ class DeviceFunctionsTest extends TableTestBase
                     "driver"  => "Empty",
                     "params" => '{"extra":[1,2,3,4]}',
                     'tableEntry' => '',
+                    'proposed'   => '',
                 ),
             ),
         );
@@ -403,6 +408,7 @@ class DeviceFunctionsTest extends TableTestBase
                     "driver"  => "Empty",
                     "unitType" => "Temperature",
                     'tableEntry' => '',
+                    'proposed'   => '',
                 ),
             ),
         );

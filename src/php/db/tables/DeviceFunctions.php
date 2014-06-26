@@ -104,6 +104,11 @@ class DeviceFunctions extends \HUGnet\db\TableParams
             "Type" => "text",
             "Default" => "",
         ),
+        "proposed" => array(
+            "Name" => "proposed",
+            "Type" => "text",
+            "Default" => "",
+        ),
         "params" => array(
             "Name" => "params",
             "Type" => "longtext",
@@ -207,6 +212,21 @@ class DeviceFunctions extends \HUGnet\db\TableParams
             $this->data["tableEntry"] = json_encode($value);
         } else if (is_string($value)) {
             $this->data["tableEntry"] = $value;
+        }
+    }
+    /**
+    * function to set tableEntry
+    *
+    * @param string $value The value to set
+    *
+    * @return null
+    */
+    protected function setProposed($value)
+    {
+        if (is_array($value)) {
+            $this->data["proposed"] = json_encode($value);
+        } else if (is_string($value)) {
+            $this->data["proposed"] = $value;
         }
     }
 
