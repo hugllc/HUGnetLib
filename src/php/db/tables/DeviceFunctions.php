@@ -97,7 +97,7 @@ class DeviceFunctions extends \HUGnet\db\TableParams
         "driver" => array(
             "Name" => "driver",
             "Type" => "varchar(32)",
-            "Default" => 'Empty',
+            "Default" => '',
         ),
         "tableEntry" => array(
             "Name" => "tableEntry",
