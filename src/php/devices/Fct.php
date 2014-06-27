@@ -219,8 +219,10 @@ class Fct extends \HUGnet\base\Container
     {
         $action = trim(strtolower($args->get("action")));
         $ret = null;
-        if ($action === "delete") {
-            $ret = $this->_delete($args);
+        if ($action === "put") {
+            $ret = $this->_put($args);
+        } else if ($action === "settable") {
+            $ret = $this->_settable($args);
         }
         return $ret;
     }
@@ -231,11 +233,33 @@ class Fct extends \HUGnet\base\Container
     *
     * @return string
     */
-    private function _delete($args)
+    private function _settable($args)
     {
-        $ret = $this->table()->deleteRow();
+        $data = (array)$args->get("data");
+        $ret = $this->setEntry((int)$data["id"]);
         if ($ret) {
-            return 0;
+            $this->store();
+            return "regen";
+        }
+        return -1;
+    }
+    /**
+    * returns a history object for this device
+    *
+    * @param object $args The argument object
+    *
+    * @return string
+    */
+    private function _put($args)
+    {
+        $data = (array)$args->get("data");
+        $entry = $this->driver()->entry($data["tableEntry"]);
+        $data["tableEntry"] = is_object($entry) ? $entry->toArray() : array();
+        $ret = $this->change($data);
+        if ($ret) {
+            $this->device()->setParam("LastModified", $this->system()->now());
+            $this->device()->store();
+            return "regen";
         }
         return -1;
     }

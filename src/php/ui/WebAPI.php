@@ -283,31 +283,6 @@ class WebAPI extends HTML
     * @return null
     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
     */
-    private function _executeDeviceFunction($extra = array())
-    {
-        $ids = explode(".", $this->args()->get("id"));
-        $did = hexdec($ids[0]);
-        $fid = (int)$ids[1];
-        $ident = array("dev" => $did, "fct" => $fid);
-        $action = strtolower(trim($this->args()->get("action")));
-        $fct = $this->system()->device($did)->fct($fid);
-        if ($action === "list") {
-            $this->args()->set("data", array("dev" => $did));
-        }
-        $ret = $this->_executeSystem($ident, $fct, $extra);
-        if ($ret === "regen") {
-            return $this->system()->device($did)->fct($fid)->toArray(true);
-        }
-        return $ret;
-    }
-    /**
-    * This function executes the api call.
-    *
-    * @param array $extra Extra data that should be added to the HTMLArgs data
-    *
-    * @return null
-    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
-    */
     private function _executeDeviceControlChan($extra = array())
     {
         $ids = explode(".", $this->args()->get("id"));
