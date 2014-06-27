@@ -37,7 +37,7 @@ namespace HUGnet\devices;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our base class */
-require_once dirname(__FILE__)."/../base/SystemTableBase.php";
+require_once dirname(__FILE__)."/../base/Container.php";
 /** This is our base class */
 require_once dirname(__FILE__)."/../interfaces/WebAPI.php";
 
@@ -57,9 +57,16 @@ require_once dirname(__FILE__)."/../interfaces/WebAPI.php";
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.14.3
  */
-class Fct extends \HUGnet\base\SystemTableBase
+class Fct extends \HUGnet\base\Container
     implements \HUGnet\interfaces\WebAPI
 {
+    /** @var array This is the default values for the data */
+    protected $default = array(
+        "id" => null,
+        "driver" => "",
+        "params" => "",
+        "tableEntry" => "",
+    );
     /**
     * This is the cache for the drivers.
     */
@@ -93,13 +100,12 @@ class Fct extends \HUGnet\base\SystemTableBase
     *
     * @param mixed  &$system (object)The system object to use
     * @param mixed  $data    (int)The id of the item, (array) data info array
-    * @param string $dbtable The table to use
     * @param object &$device The device object to use
     *
     * @return null
     */
     public static function &factory(
-        &$system, $data=null, $dbtable=null, &$device = null
+        &$system, $data=null, &$device = null
     ) {
         \HUGnet\System::systemMissing(
             get_class($this)." needs to be passed a system object",
@@ -109,11 +115,8 @@ class Fct extends \HUGnet\base\SystemTableBase
             get_class($this)." needs to be passed a device object",
             !is_object($device)
         );
-        $object = new Fct($system, $dbtable);
+        $object = new Fct($system, $data);
         $object->_device = &$device;
-        if (!is_null($data)) {
-            $object->load($data);
-        }
         return $object;
     }
     /**
@@ -152,7 +155,7 @@ class Fct extends \HUGnet\base\SystemTableBase
     */
     public function toArray($default = true)
     {
-        $return = (array)$this->table()->toArray($default);
+        $return = (array)parent::toArray($default);
         if ($default) {
             $driver = $this->driver()->toArray();
             $return = array_merge($driver, $return);
@@ -185,7 +188,7 @@ class Fct extends \HUGnet\base\SystemTableBase
         }
         $class = "\\HUGnet\\devices\\functions\\Driver";
         if (empty($driver)) {
-            $driver = (string)$this->table()->get("driver");
+            $driver = (string)$this->data["driver"];
         }
         if (!is_object($this->_driverCache[$driver])) {
             $this->_driverCache[$driver] = $class::factory(
@@ -195,32 +198,6 @@ class Fct extends \HUGnet\base\SystemTableBase
         return $this->_driverCache[$driver];
     }
     /**
-    * Loads the data into the table class
-    *
-    * @param mixed $data (int)The id of the record,
-    *                    (array) or (string) data info array
-    *
-    * @return bool Whether we found this in the db or not.
-    */
-    public function load($data)
-    {
-        $ret = parent::load($data);
-        if (!$ret) {
-            $this->_new = true;
-            $ret = $this->table()->insertRow();
-        }
-        return $ret;
-    }
-    /**
-    * Loads the data into the table class
-    *
-    * @return bool true if this is a new iop.  False otherwise
-    */
-    public function isNew()
-    {
-        return $this->_new;
-    }
-    /**
     * This builds the class from a setup string
     *
     * @return Array of channel information
@@ -228,28 +205,6 @@ class Fct extends \HUGnet\base\SystemTableBase
     public function device()
     {
         return $this->_device;
-    }
-    /**
-    * Sets the table entry, based on the given ID
-    *
-    * @param int $id The id of the entry to set this input to
-    *
-    * @return boolean True on success, false on failure
-    */
-    public function setEntry($id)
-    {
-        $entry = $this->system()->table("functions");
-        $ret = $entry->selectOneInto(
-            array("arch" => $arch, "id" => (int)$id)
-        );
-        if ($ret) {
-            $this->set("tableEntry", $entry->get("params"));
-            $this->set(
-                "lastTable", 
-                $entry->get("id").": ".$entry->get("name")
-            );
-        }
-        return (bool)$ret;
     }
     /**
     * returns a history object for this device

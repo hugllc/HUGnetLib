@@ -148,7 +148,7 @@ class FctTest extends \PHPUnit_Framework_TestCase
         $dev = new \HUGnet\DummyBase("Device");
         // This just resets the mock
         $table->resetMock();
-        $obj = Fct::factory($config, $data, $class, $dev);
+        $obj = Fct::factory($config, $data, $dev);
         // Make sure we have the right object
         $this->assertInstanceOf(
             "HUGnet\devices\Fct", $obj, "Class wrong"
@@ -164,25 +164,19 @@ class FctTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    "Table" => array(
-                        "get" => array(
-                            "id" => 0xFD,
-                            "driver" => "TestFctDriver1",
-                        ),
-                        "toArray" => array(
-                            "id" => 0xFD,
-                            "asdf" => 3,
-                            "params" => json_encode(array(1, 2, 3, 4)),
-                            "tableEntry" => json_encode(array(4, 3, 2, 1)),
-                        ),
-                    ),
+                ),
+                array(
+                    "id" => 0xFD,
+                    "asdf" => 3,
+                    "driver" => "TestFctDriver1",
+                    "params" => json_encode(array(1, 2, 3, 4)),
+                    "tableEntry" => json_encode(array(4, 3, 2, 1)),
                 ),
                 new \HUGnet\DummyTable("Table"),
                 array(
                     "longName" => "Silly Fct Driver 1",
                     "shortName" => "SSD1",
                     'id' => 0xFD,
-                    'asdf' => 3,
                     'params' => array(1,2,3,4),
                     'driver' => "TestFctDriver1",
                     "tableEntry" => array(4, 3, 2, 1),
@@ -190,24 +184,18 @@ class FctTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "Table" => array(
-                        "get" => array(
-                            "id" => 0xFD,
-                        ),
-                        "toArray" => array(
-                            "id" => 0xFD,
-                            "asdf" => 3,
-                            "params" => json_encode(array(1, 2, 3, 4)),
-                            "tableEntry" => json_encode(array(4, 3, 2, 1)),
-                        ),
-                    ),
+                ),
+                array(
+                    "id" => 0xFD,
+                    "asdf" => 3,
+                    "params" => json_encode(array(1, 2, 3, 4)),
+                    "tableEntry" => json_encode(array(4, 3, 2, 1)),
                 ),
                 new \HUGnet\DummyTable("Table"),
                 array(
                     "longName" => "Input Function",
                     "shortName" => "Input",
                     'id' => 0xFD,
-                    'asdf' => 3,
                     'params' => array(1,2,3,4),
                     'driver' => "InputFunction",
                     "type" => "Simple",
@@ -220,6 +208,7 @@ class FctTest extends \PHPUnit_Framework_TestCase
     * This tests the object creation
     *
     * @param array $config The configuration to use
+    * @param array $data   The data to be given to the object
     * @param mixed $class  This is either the name of a class or an object
     * @param mixed $expect The value we expect back
     *
@@ -228,12 +217,12 @@ class FctTest extends \PHPUnit_Framework_TestCase
     * @dataProvider data2Array
     */
     public function test2Array(
-        $config, $class, $expect
+        $config, $data, $class, $expect
     ) {
         $sys = new \HUGnet\DummySystem("System");
         $dev = new \HUGnet\DummyBase("Device");
         $sys->resetMock($config);
-        $obj = Fct::factory($sys, null, $class, $dev);
+        $obj = Fct::factory($sys, $data, $dev);
         $json = $obj->toArray();
         $this->assertEquals($expect, $json);
         unset($obj);
