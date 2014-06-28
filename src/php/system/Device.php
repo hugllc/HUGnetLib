@@ -81,6 +81,7 @@ class Device extends \HUGnet\base\SystemTableAction
         "insertVirtual" => "table",
         "dataChannel" => "dataChannels",
         "controlChannel" => "controlChannels",
+        "fct" => "fcts",
         "reboot" => "network",
         "send" => "action",
     );
@@ -577,17 +578,15 @@ class Device extends \HUGnet\base\SystemTableAction
     /**
     * This creates the function drivers
     *
-    * @param int $fid The function id to get.  They are labaled 0 to whatever
-    *
     * @return null
     */
-    public function &fct($fid)
+    public function &fcts()
     {
-        $data["fct"] = (int)$fid;
-        $data["dev"] = (int)$this->id();
         $system = $this->system();
-        include_once dirname(__FILE__)."/../devices/Fct.php";
-        return \HUGnet\devices\Fct::factory($system, $data, null, $this);
+        include_once dirname(__FILE__)."/../devices/Fcts.php";
+        return \HUGnet\devices\Fcts::factory(
+            $system, $this, $this->getParam("Fcts")
+        );
     }
     /**
     * This creates the sensor drivers

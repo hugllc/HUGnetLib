@@ -1550,7 +1550,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataFct()
+    public static function dataFcts()
     {
         return array(
             array(      // #0
@@ -1571,7 +1571,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 0,
-                "\HUGnet\devices\Fct",
+                "\HUGnet\devices\Fcts",
                 array(
                     array(
                         array(
@@ -1603,7 +1603,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 0,
-                "\HUGnet\devices\Fct",
+                "\HUGnet\devices\Fcts",
                 array(
                     array(
                         array(
@@ -1629,7 +1629,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 10,
-                "\HUGnet\devices\Fct",
+                "\HUGnet\devices\Fcts",
                 array(
                     array(
                         array(
@@ -1652,7 +1652,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 1,
-                "\HUGnet\devices\Fct",
+                "\HUGnet\devices\Fcts",
                 array(
                     array(
                         array(
@@ -1680,7 +1680,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 0,
-                "\HUGnet\devices\Fct",
+                "\HUGnet\devices\Fcts",
                 array(
                     array(
                         array(
@@ -1709,7 +1709,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 0,
-                "\HUGnet\devices\Fct",
+                "\HUGnet\devices\Fcts",
                 array(
                     array(
                         array(
@@ -1736,9 +1736,9 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataFct
+    * @dataProvider dataFcts
     */
-    public function testFct(
+    public function testFcts(
         $config, $fct, $driverExpect, $expect
     ) {
         $sys = $this->getMock(
@@ -1765,7 +1765,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
             ->method('now')
             ->will($this->returnValue(1000000));
         $obj = Device::factory($sys, $config);
-        $ret = $obj->fct($fct);
+        $ret = $obj->fcts($fct);
         $this->assertTrue(
             is_a($ret, $driverExpect),
             "Return is not a ".$driverExpect
@@ -2411,6 +2411,23 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $sen = $obj->dataChannel(0);
         $this->assertInstanceOf(
             "\\HUGnet\\devices\\DataChan",
+            $sen
+        );
+        unset($obj);
+    }
+    /**
+    * This tests the object creation
+    *
+    * @return null
+    */
+    public function testFct()
+    {
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = Device::factory($sys, null, $class);
+        $sen = $obj->fct(0);
+        $this->assertInstanceOf(
+            "\\HUGnet\\devices\\Fct",
             $sen
         );
         unset($obj);
