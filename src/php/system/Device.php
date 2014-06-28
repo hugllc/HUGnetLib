@@ -585,7 +585,7 @@ class Device extends \HUGnet\base\SystemTableAction
         $system = $this->system();
         include_once dirname(__FILE__)."/../devices/Fcts.php";
         return \HUGnet\devices\Fcts::factory(
-            $system, $this, $this->getParam("Fcts")
+            $system, $this, $this->getParam("fcts")
         );
     }
     /**

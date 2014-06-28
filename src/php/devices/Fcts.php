@@ -164,6 +164,18 @@ class Fcts
         return $this->_device->setParam("fcts", json_encode($ret));
 
     }
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @return null
+    */
+    public function apply()
+    {
+        $this->store();
+        // This says what facts were last applied
+        $this->_device->setParam("fctsApplied", $this->_device->getParam("fcts"));
+
+    }
 
     /**
     * Returns the number of channels

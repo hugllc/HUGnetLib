@@ -538,6 +538,134 @@ class FctsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expect, $ret["setParam"]);
         unset($obj);
     }
+    /**
+    * Data provider for testApply
+    *
+    * @return array
+    */
+    public static function dataApply()
+    {
+        return array(
+            array(   // #0
+                array(
+                    "Device" => array(
+                        "getParam" => array(
+                            "fcts" => "HelloThere",
+                        ),
+                    ),
+                ),
+                array(
+                ),
+                array(
+                    "setParam" => array(
+                        array(
+                            "fcts",
+                            json_encode(array()),
+                        ),
+                        array(
+                            "fctsApplied",
+                            "HelloThere",
+                        ),
+                    ),
+                    "getParam" => array(
+                        array("fcts"),
+                    ),
+                ),
+            ),
+            array(  // #1
+                array(
+                    "Device" => array(
+                        "getParam" => array(
+                            "fcts" => "Hello",
+                        ),
+                    ),
+                ),
+                array(
+                    array(
+                    ),
+                    array(
+                    ),
+                    array(
+                    ),
+                    array(
+                    ),
+                    array(
+                    ),
+                ),
+                array(
+                    "setParam" => array(
+                        array(
+                            "fcts",
+                            json_encode(
+                                array(
+                                    array(
+                                        "id"         => 0,
+                                        "driver"     => "InputFunction",
+                                        "params"     => array(),
+                                        "tableEntry" => array(),
+                                    ),
+                                    array(
+                                        "id"         => 1,
+                                        "driver"     => "InputFunction",
+                                        "params"     => array(),
+                                        "tableEntry" => array(),
+                                    ),
+                                    array(
+                                        "id"         => 2,
+                                        "driver"     => "InputFunction",
+                                        "params"     => array(),
+                                        "tableEntry" => array(),
+                                    ),
+                                    array(
+                                        "id"         => 3,
+                                        "driver"     => "InputFunction",
+                                        "params"     => array(),
+                                        "tableEntry" => array(),
+                                    ),
+                                    array(
+                                        "id"         => 4,
+                                        "driver"     => "InputFunction",
+                                        "params"     => array(),
+                                        "tableEntry" => array(),
+                                    ),
+                                )
+                            ),
+                        ),
+                        array(
+                            "fctsApplied",
+                            "Hello",
+                        ),
+                    ),
+                    "getParam" => array(
+                        array("fcts"),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array $config   The configuration to use
+    * @param array $channels The channels to give it
+    * @param mixed $expect   The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataApply
+    */
+    public function testApply(
+        $config, $channels, $expect
+    ) {
+        $sys = new \HUGnet\DummySystem("System");
+        $dev = new \HUGnet\DummyTable("Device");
+        $sys->resetMock($config);
+        $obj = Fcts::factory($sys, $dev, $channels);
+        $obj->apply();
+        $ret = $sys->retrieve("Device");
+        $this->assertEquals($expect, $ret);
+        unset($obj);
+    }
 
 }
 ?>
