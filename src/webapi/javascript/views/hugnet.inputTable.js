@@ -3,7 +3,7 @@
  *
  * <pre>
  * HUGnetLib is a user interface for the HUGnet
- * Copyright (C) 2012 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,7 +24,7 @@
  * @package    HUGnetLib
  * @subpackage InputTables
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2012 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
@@ -35,9 +35,9 @@
 * @package    HUGnetLib
 * @subpackage InputTables
 * @author     Scott Price <prices@hugllc.com>
-* @copyright  2012 Hunt Utilities Group, LLC
+* @copyright  2014 Hunt Utilities Group, LLC
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-* @version    Release: 0.9.7
+* @version    Release: 0.14.3
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 var InputTablePropertiesView = Backbone.View.extend({
@@ -144,9 +144,9 @@ var InputTablePropertiesView = Backbone.View.extend({
 * @package    HUGnetLib
 * @subpackage InputTables
 * @author     Scott Price <prices@hugllc.com>
-* @copyright  2012 Hunt Utilities Group, LLC
+* @copyright  2014 Hunt Utilities Group, LLC
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-* @version    Release: 0.9.7
+* @version    Release: 0.14.3
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 var InputTableEntryView = Backbone.View.extend({
@@ -209,9 +209,9 @@ var InputTableEntryView = Backbone.View.extend({
 * @package    HUGnetLib
 * @subpackage InputTables
 * @author     Scott Price <prices@hugllc.com>
-* @copyright  2012 Hunt Utilities Group, LLC
+* @copyright  2014 Hunt Utilities Group, LLC
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-* @version    Release: 0.9.7
+* @version    Release: 0.14.3
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 HUGnet.InputTablesView = Backbone.View.extend({

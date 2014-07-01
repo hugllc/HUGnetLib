@@ -3,7 +3,7 @@
  *
  * <pre>
  * HUGnetLib is a user interface for the HUGnet
- * Copyright (C) 2012 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,7 +24,7 @@
  * @package    HUGnetLib
  * @subpackage Gateways
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2012 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
@@ -35,9 +35,9 @@
 * @package    HUGnetLib
 * @subpackage Gateways
 * @author     Scott Price <prices@hugllc.com>
-* @copyright  2012 Hunt Utilities Group, LLC
+* @copyright  2014 Hunt Utilities Group, LLC
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-* @version    Release: 0.9.7
+* @version    Release: 0.14.3
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 var GatewayPropertiesView = Backbone.View.extend({
@@ -158,9 +158,9 @@ var GatewayPropertiesView = Backbone.View.extend({
 * @package    HUGnetLib
 * @subpackage Gateways
 * @author     Scott Price <prices@hugllc.com>
-* @copyright  2012 Hunt Utilities Group, LLC
+* @copyright  2014 Hunt Utilities Group, LLC
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-* @version    Release: 0.9.7
+* @version    Release: 0.14.3
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 var GatewayEntryView = Backbone.View.extend({
@@ -271,9 +271,9 @@ var GatewayEntryView = Backbone.View.extend({
 * @package    HUGnetLib
 * @subpackage Gateways
 * @author     Scott Price <prices@hugllc.com>
-* @copyright  2012 Hunt Utilities Group, LLC
+* @copyright  2014 Hunt Utilities Group, LLC
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-* @version    Release: 0.9.7
+* @version    Release: 0.14.3
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 HUGnet.GatewaysView = Backbone.View.extend({
