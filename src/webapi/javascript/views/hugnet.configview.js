@@ -84,8 +84,10 @@ var DeviceConfigImageView = Backbone.View.extend({
                         {
                             var pval = port.split(" ");
                             var id = $.trim(pval[0]);
+                            // Inkscape replaces a '+' with '_', so we will, too.
+                            id = id.replace(/\+/g, '_');
                             // This escapes these characters correctly for the selector
-                            id = id.replace(/([ #;?&,.+*~\':"!^$[\]()=>|\/@])/g,'\\$1');
+                            id = id.replace(/([ #;?&,.*~\':"!^$[\]()=>|\/@])/g,'\\$1');
                             var el = $('text#'+id+' tspan');
                             var text = label;
                             if (pval[1] != undefined) {
