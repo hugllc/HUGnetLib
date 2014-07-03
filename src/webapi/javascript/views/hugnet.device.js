@@ -599,7 +599,8 @@ HUGnet.DevicesView = Backbone.View.extend({
             resizable: false,
             title: view.title(),
             dialogClass: "window",
-            zIndex: 500
+            zIndex: 500,
+            position: { my: "top center", at: "top center", of: this.$el }
         });
     }
 });
