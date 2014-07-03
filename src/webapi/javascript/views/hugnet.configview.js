@@ -81,8 +81,6 @@ var DeviceConfigImageView = Backbone.View.extend({
                     if (chan.unitType) {
                         label = label+" ("+chan.unitType+")";
                     }
-                    console.log(chan);
-                    console.log(label);
                     _.each(
                         ports,
                         function (port, key)
@@ -131,6 +129,9 @@ var DeviceConfigView = Backbone.View.extend({
     devImage: null,
     events: {
         'click .close': 'close',
+        'click [name="NewFunction"]': 'newfunction',
+        'click [name="Save"]': 'save',
+        'click [name="Apply"]': 'apply'
     },
     initialize: function (options)
     {
@@ -185,6 +186,37 @@ var DeviceConfigView = Backbone.View.extend({
         var controlchannels = this.model.get('controlChannels');
         this.controlchannelsmodel.reset(controlchannels);
         this.render();
+    },
+    /**
+    * This function initializes the object
+    */
+    newfunction: function()
+    {
+        this.functionsmodel.add({
+            dev: this.model.get("id"), 
+            id: this.functionsmodel.length,
+        });
+        this.render();
+    },
+    /**
+    * This function initializes the object
+    */
+    save: function()
+    {
+        var params = {
+            fcts: this.functionsmodel.toJSON()
+        };
+        this.model.set({
+            setparams: params
+        });
+        this.model.save();
+    },
+    /**
+    * This function initializes the object
+    */
+    apply: function()
+    {
+        console.log("apply");
     },
     close: function ()
     {

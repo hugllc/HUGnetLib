@@ -46,8 +46,11 @@ HUGnet.DeviceFunction = Backbone.Model.extend({
         dev: null,
         fct: null,
         driver: '',
+        longName: 'Unknown',
         tableEntry: {},
-        params: {},
+        params: {
+            name: 'New Function',
+        },
     },
     idAttribute: 'fct',
     /**
@@ -55,90 +58,6 @@ HUGnet.DeviceFunction = Backbone.Model.extend({
     */
     initialize: function(attrib)
     {
-    },
-    /**
-    * Gets infomration about a device.  This is retrieved from the database only.
-    *
-    * @param id The id of the device to get
-    *
-    * @return null
-    */
-    fetch: function()
-    {
-        var dev = this.get('dev');
-        var self = this;
-        $.ajax({
-            type: 'GET',
-            url: this.url(),
-            cache: false,
-            dataType: 'json',
-            data:
-            {
-                "task": "devicefunction",
-                "action": "get",
-                "id": parseInt(dev, 10).toString(16)+"."+this.get("fct"),
-                "sid": this.get("fct")
-            }
-        }).done(
-            function (data)
-            {
-                if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
-                    self.set(data);
-                    self.trigger('fetchdone');
-                    self.trigger('sync');
-                } else {
-                    self.trigger('fetchfail');
-                }
-            }
-        ).fail(
-            function (data)
-            {
-                self.trigger('fetchfail');
-            }
-        );
-    },
-    /**
-    * Gets infomration about a device.  This is retrieved from the database only.
-    *
-    * @param id The id of the device to get
-    *
-    * @return null
-    */
-    save: function()
-    {
-        var self = this;
-        var dev = this.get('dev');
-        var data = this.toJSON();
-        delete data.url;
-        $.ajax({
-            type: 'POST',
-            url: this.url(),
-            cache: false,
-            dataType: 'json',
-            data: {
-                "task": "devicefunction",
-                "action": "put",
-                "id": parseInt(dev, 10).toString(16)+"."+this.get("fct"),
-                "data": data
-            }
-        }).done(
-            function (data)
-            {
-                if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
-                    self.trigger('saved');
-                    self.set(data);
-                    self.trigger('fetchdone');
-                    self.trigger('sync');
-                } else {
-                    self.trigger('savefail', "save failed on server");
-                }
-            }
-        ).fail(
-            function ()
-            {
-                self.trigger('savefail', "failed to contact server");
-            }
-        );
     },
 });
 
@@ -170,7 +89,7 @@ HUGnet.DeviceFunctions = Backbone.Collection.extend({
     *
     * @return null
     */
-    fetch: function ()
+    fetch: function (id)
     {
         var self = this;
         var ret = $.ajax({
@@ -179,20 +98,46 @@ HUGnet.DeviceFunctions = Backbone.Collection.extend({
             dataType: 'json',
             cache: false,
             data: {
-                "task": "devicefunction", 
-                "action": "list", 
+                "task": "device", 
+                "action": "getfct",
+                "id": id.toString(16)
             }
         });
         ret.done(
             function (data)
             {
-                self.add(data);
-                if (data.length < self.limit) {
-                    self.start = 0;
-                } else {
-                    self.start += data.length;
-                    self.fetch();
-                }
+                self.reset(data);
+            }
+        );
+    },
+    /**
+    * Gets infomration about a device.  This is retrieved directly from the device
+    *
+    * This function is for use of the device list
+    *
+    * @param id The id of the device to get
+    *
+    * @return null
+    */
+    save: function (id)
+    {
+        var self = this;
+        var ret = $.ajax({
+            type: 'POST',
+            url: this.url,
+            dataType: 'json',
+            cache: false,
+            data: {
+                "task": "device", 
+                "action": "putfct",
+                "id": id.toString(16),
+                "data": self.toJSON()
+            }
+        });
+        ret.done(
+            function (data)
+            {
+                self.reset(data);
             }
         );
     }
