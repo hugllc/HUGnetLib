@@ -374,7 +374,7 @@ var DeviceEntryView = Backbone.View.extend({
     },
     configsetview: function (e)
     {
-        var view = new DeviceConfigSetView({ model: this.model });
+        var view = new DeviceConfigView({ model: this.model, set: true });
         this.parent.popup(view);
     },
     _setupProgress: function(title)

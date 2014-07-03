@@ -120,28 +120,47 @@ var DeviceConfigView = Backbone.View.extend({
     template: '#DeviceConfigViewTemplate',
     tTemplate: '#DeviceConfigViewTitleTemplate',
     tagName: 'div',
+    set: false,
     devImage: null,
     events: {
         'click .close': 'close',
     },
     initialize: function (options)
     {
+        if (options) {
+            if (options.set) this.set = options.set;
+        }
+        var set = "";
+        if (this.set) {
+            set = "Set";
+            this.template = '#DeviceConfigSetViewTemplate';
+            this.tTemplate = '#DeviceConfigSetViewTitleTemplate';
+        }
         this.model.lock = true;
         this.datachannelsmodel = new HUGnet.DeviceDataChannels();
         var datachannels = this.model.get('dataChannels');
         this.datachannelsmodel.reset(datachannels);
         this.datachannels = new HUGnet.DeviceDataChannelsView({
             model: this.datachannelsmodel,
-            template: "#ConfigViewDataChannelListTemplate",
-            rowTemplate: "#ConfigViewDataChannelEntryTemplate"
+            template: "#Config"+set+"ViewDataChannelListTemplate",
+            rowTemplate: "#Config"+set+"ViewDataChannelEntryTemplate"
         });
         this.controlchannelsmodel = new HUGnet.DeviceControlChannels();
         var controlchannels = this.model.get('controlChannels');
         this.controlchannelsmodel.reset(controlchannels);
         this.controlchannels = new HUGnet.DeviceControlChannelsView({
             model: this.controlchannelsmodel,
-            template: "#ConfigViewControlChannelListTemplate",
-            rowTemplate: "#ConfigViewControlChannelEntryTemplate"
+            template: "#Config"+set+"ViewControlChannelListTemplate",
+            rowTemplate: "#Config"+set+"ViewControlChannelEntryTemplate"
+        });
+        this.functionsmodel = new HUGnet.DeviceFunctions();
+        var params = this.model.get('params');
+        var functions = params.fcts;
+        this.functionsmodel.reset(functions);
+        this.functions = new HUGnet.DeviceFunctionsView({
+            model: this.functionsmodel,
+            template: "#Config"+set+"ViewFunctionListTemplate",
+            rowTemplate: "#Config"+set+"ViewFunctionEntryTemplate"
         });
         this.model.on(
             'change',
@@ -186,6 +205,7 @@ var DeviceConfigView = Backbone.View.extend({
         _.extend(data, HUGnet.viewHelpers);
         data.dataChannels = '<div id="DeviceDataChannelsDiv"></div>';
         data.controlChannels = '<div id="DeviceControlChannelsDiv"></div>';
+        data.functions = '<div id="DeviceFunctionsDiv"></div>';
         this.$el.html(
             _.template(
                 $(this.template).html(),
@@ -194,6 +214,7 @@ var DeviceConfigView = Backbone.View.extend({
         );
         this.$("#DeviceDataChannelsDiv").html(this.datachannels.render().el);
         this.$("#DeviceControlChannelsDiv").html(this.controlchannels.render().el);
+        this.$("#DeviceFunctionsDiv").html(this.functions.render().el);
         this.$("#image").html(this.devImage.render().el);
         return this;
     },
