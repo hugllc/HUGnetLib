@@ -78,6 +78,11 @@ var DeviceConfigImageView = Backbone.View.extend({
                 if (typeof chan.port == "string") {
                     var ports = chan.port.split(",");
                     var label = chan.label;
+                    if (chan.unitType) {
+                        label = label+" ("+chan.unitType+")";
+                    }
+                    console.log(chan);
+                    console.log(label);
                     _.each(
                         ports,
                         function (port, key)
