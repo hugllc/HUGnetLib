@@ -196,7 +196,9 @@ class Device extends \HUGnet\base\SystemTableAction
             }
             // @codeCoverageIgnoreEnd
         }
-        if (isset($return["params"]["DaughterBoard"])) {
+        if (isset($return["params"]["DaughterBoard"])
+            && !empty($return["params"]["DaughterBoard"])
+        ) {
             $return["configImage"] = str_replace(
                 "-", "", strtoupper($return["params"]["DaughterBoard"])
             );
