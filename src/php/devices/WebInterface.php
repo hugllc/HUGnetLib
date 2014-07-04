@@ -166,6 +166,10 @@ class WebInterface
             $ret = $this->_import($args, true);
         } else if ($action === "lastdata") {
             $ret = $this->_lastdata($args);
+        } else if ($action === "getfcts") {
+            $ret = $this->_getfcts();
+        } else if ($action === "putfcts") {
+            $ret = $this->_putfcts($args);
         }
         return $ret;
     }
@@ -241,6 +245,30 @@ class WebInterface
             return $this->_device->toArray(true);
         }
         return -1;
+    }
+    /**
+    * returns a history object for this device
+    *
+    * @param object $args The argument object
+    *
+    * @return string
+    */
+    private function _getfcts($args = null)
+    {
+        return $this->_device->fcts()->toArray(true);
+    }
+    /**
+    * returns a history object for this device
+    *
+    * @param object $args The argument object
+    *
+    * @return string
+    */
+    private function _putfcts($args)
+    {
+        $data = (array)$args->get("data");
+        $ret = $this->_device->fcts($data, true);
+        return $ret->toArray(true);
     }
     /**
     * returns a history object for this device

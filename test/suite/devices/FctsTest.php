@@ -452,9 +452,8 @@ class FctsTest extends \PHPUnit_Framework_TestCase
                 array(
                 ),
                 array(
-                    array(
-                        "fcts",
-                        json_encode(array()),
+                    "fcts" => array(
+                        array(array(), true),
                     ),
                 ),
             ),
@@ -474,9 +473,8 @@ class FctsTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(
-                    array(
-                        "fcts",
-                        json_encode(
+                    "fcts" => array(
+                        array(
                             array(
                                 array(
                                     "id"         => 0,
@@ -508,7 +506,8 @@ class FctsTest extends \PHPUnit_Framework_TestCase
                                     "params"     => array(),
                                     "tableEntry" => array(),
                                 ),
-                            )
+                            ),
+                            true
                         ),
                     ),
                 ),
@@ -535,7 +534,7 @@ class FctsTest extends \PHPUnit_Framework_TestCase
         $obj = Fcts::factory($sys, $dev, $channels);
         $obj->store();
         $ret = $sys->retrieve("Device");
-        $this->assertEquals($expect, $ret["setParam"]);
+        $this->assertEquals($expect, $ret);
         unset($obj);
     }
     /**
@@ -549,26 +548,40 @@ class FctsTest extends \PHPUnit_Framework_TestCase
             array(   // #0
                 array(
                     "Device" => array(
-                        "getParam" => array(
-                            "fcts" => "HelloThere",
+                        "fcts" => array(
+                            "asdf" => "HelloThere",
                         ),
                     ),
                 ),
                 array(
+                    array("id" => 0),
                 ),
                 array(
+                    "fcts" => array(
+                        array(
+                            array(
+                                array(
+                                    "id" => 0, 
+                                    'driver' => 'InputFunction',
+                                    'params' => array(),
+                                    'tableEntry' => array(),
+                                ),
+                            ), 
+                            true
+                        ),
+                    ),
                     "setParam" => array(
                         array(
-                            "fcts",
-                            json_encode(array()),
-                        ),
-                        array(
                             "fctsApplied",
-                            "HelloThere",
+                            array(
+                                array(
+                                    "id" => 0, 
+                                    'driver' => 'InputFunction',
+                                    'params' => array(),
+                                    'tableEntry' => array(),
+                                ),
+                            ),
                         ),
-                    ),
-                    "getParam" => array(
-                        array("fcts"),
                     ),
                 ),
             ),
@@ -593,51 +606,79 @@ class FctsTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(
-                    "setParam" => array(
+                    "fcts" => array(
                         array(
-                            "fcts",
-                            json_encode(
+                            array(
                                 array(
-                                    array(
-                                        "id"         => 0,
-                                        "driver"     => "InputFunction",
-                                        "params"     => array(),
-                                        "tableEntry" => array(),
-                                    ),
-                                    array(
-                                        "id"         => 1,
-                                        "driver"     => "InputFunction",
-                                        "params"     => array(),
-                                        "tableEntry" => array(),
-                                    ),
-                                    array(
-                                        "id"         => 2,
-                                        "driver"     => "InputFunction",
-                                        "params"     => array(),
-                                        "tableEntry" => array(),
-                                    ),
-                                    array(
-                                        "id"         => 3,
-                                        "driver"     => "InputFunction",
-                                        "params"     => array(),
-                                        "tableEntry" => array(),
-                                    ),
-                                    array(
-                                        "id"         => 4,
-                                        "driver"     => "InputFunction",
-                                        "params"     => array(),
-                                        "tableEntry" => array(),
-                                    ),
-                                )
-                            ),
-                        ),
-                        array(
-                            "fctsApplied",
-                            "Hello",
+                                    "id" => 0, 
+                                    'driver' => 'InputFunction',
+                                    'params' => array(),
+                                    'tableEntry' => array(),
+                                ),
+                                array(
+                                    "id" => 1, 
+                                    'driver' => 'InputFunction',
+                                    'params' => array(),
+                                    'tableEntry' => array(),
+                                ),
+                                array(
+                                    "id" => 2, 
+                                    'driver' => 'InputFunction',
+                                    'params' => array(),
+                                    'tableEntry' => array(),
+                                ),
+                                array(
+                                    "id" => 3, 
+                                    'driver' => 'InputFunction',
+                                    'params' => array(),
+                                    'tableEntry' => array(),
+                                ),
+                                array(
+                                    "id" => 4, 
+                                    'driver' => 'InputFunction',
+                                    'params' => array(),
+                                    'tableEntry' => array(),
+                                ),
+                            ), 
+                            true
                         ),
                     ),
-                    "getParam" => array(
-                        array("fcts"),
+                    "setParam" => array(
+                        array(
+                            "fctsApplied",
+                            array(
+                                array(
+                                    "id" => 0, 
+                                    'driver' => 'InputFunction',
+                                    'params' => array(),
+                                    'tableEntry' => array(),
+                                ),
+                                array(
+                                    "id" => 1, 
+                                    'driver' => 'InputFunction',
+                                    'params' => array(),
+                                    'tableEntry' => array(),
+                                ),
+                                array(
+                                    "id" => 2, 
+                                    'driver' => 'InputFunction',
+                                    'params' => array(),
+                                    'tableEntry' => array(),
+                                ),
+                                array(
+                                    "id" => 3, 
+                                    'driver' => 'InputFunction',
+                                    'params' => array(),
+                                    'tableEntry' => array(),
+                                ),
+                                array(
+                                    "id" => 4, 
+                                    'driver' => 'InputFunction',
+                                    'params' => array(),
+                                    'tableEntry' => array(),
+                                ),
+                            ),
+                        ),
                     ),
                 ),
             ),

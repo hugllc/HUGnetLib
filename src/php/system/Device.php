@@ -579,16 +579,24 @@ class Device extends \HUGnet\base\SystemTableAction
     }
     /**
     * This creates the function drivers
+    * 
+    * @param array $data The data to put in.  If left blank the saved data is used.
+    * @param bool  $save Whether to save the data or not.
     *
     * @return null
     */
-    public function &fcts()
+    public function &fcts($data = null, $save = false)
     {
         $system = $this->system();
         include_once dirname(__FILE__)."/../devices/Fcts.php";
-        return \HUGnet\devices\Fcts::factory(
-            $system, $this, $this->getParam("fcts")
-        );
+        if (!is_array($data)) {
+            $data = $this->getParam("fcts");
+        }
+        $fcts = \HUGnet\devices\Fcts::factory($system, $this, $data);
+        if ($save) {
+            $this->setParam("fcts", $fcts->toArray());
+        }
+        return $fcts;
     }
     /**
     * This creates the sensor drivers

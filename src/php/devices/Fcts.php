@@ -160,9 +160,7 @@ class Fcts
     */
     public function store()
     {
-        $ret = $this->toArray(false);
-        return $this->_device->setParam("fcts", json_encode($ret));
-
+        $this->_device->fcts($this->toArray(false), true);
     }
     /**
     * Sets all of the endpoint attributes from an array
@@ -173,7 +171,7 @@ class Fcts
     {
         $this->store();
         // This says what facts were last applied
-        $this->_device->setParam("fctsApplied", $this->_device->getParam("fcts"));
+        $this->_device->setParam("fctsApplied", $this->toArray(false));
 
     }
 
