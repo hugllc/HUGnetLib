@@ -76,6 +76,11 @@ HUGnet.DeviceFunction = Backbone.Model.extend({
 HUGnet.DeviceFunctions = Backbone.Collection.extend({
     url: '/HUGnetLib/HUGnetLibAPI.php',
     model: HUGnet.DeviceFunction,
+    devid: 0,
+    initialize: function (options)
+    {
+        this.devid = options.devid;
+    },
     comparator: function (model)
     {
         return parseInt(model.get("fct"), 10);
@@ -89,7 +94,7 @@ HUGnet.DeviceFunctions = Backbone.Collection.extend({
     *
     * @return null
     */
-    fetch: function (id)
+    fetch: function ()
     {
         var self = this;
         var ret = $.ajax({
@@ -100,7 +105,7 @@ HUGnet.DeviceFunctions = Backbone.Collection.extend({
             data: {
                 "task": "device", 
                 "action": "getfct",
-                "id": id.toString(16)
+                "id": this.devid.toString(16)
             }
         });
         ret.done(
@@ -119,7 +124,7 @@ HUGnet.DeviceFunctions = Backbone.Collection.extend({
     *
     * @return null
     */
-    save: function (id)
+    save: function ()
     {
         var self = this;
         var ret = $.ajax({

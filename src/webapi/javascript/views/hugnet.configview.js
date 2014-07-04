@@ -161,10 +161,10 @@ var DeviceConfigView = Backbone.View.extend({
             template: "#Config"+set+"ViewControlChannelListTemplate",
             rowTemplate: "#Config"+set+"ViewControlChannelEntryTemplate"
         });
-        this.functionsmodel = new HUGnet.DeviceFunctions();
-        var params = this.model.get('params');
-        var functions = params.fcts;
-        this.functionsmodel.reset(functions);
+        this.functionsmodel = new HUGnet.DeviceFunctions({ 
+            devid: this.model.get("id") 
+        });
+        this.functionsmodel.fetch();
         this.functions = new HUGnet.DeviceFunctionsView({
             model: this.functionsmodel,
             template: "#Config"+set+"ViewFunctionListTemplate",
