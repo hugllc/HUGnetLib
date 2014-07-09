@@ -311,32 +311,22 @@ class FctsTest extends \PHPUnit_Framework_TestCase
                 array(
                     array(
                         "driver"     => "InputFunction",
-                        "params"     => array(),
-                        "tableEntry" => array(),
                         "id"         => 0,
                     ),
                     array(
                         "driver"     => "InputFunction",
-                        "params"     => array(),
-                        "tableEntry" => array(),
                         "id"         => 1,
                     ),
                     array(
                         "driver"     => "InputFunction",
-                        "params"     => array(),
-                        "tableEntry" => array(),
                         "id"         => 2,
                     ),
                     array(
                         "driver"     => "InputFunction",
-                        "params"     => array(),
-                        "tableEntry" => array(),
                         "id"         => 3,
                     ),
                     array(
                         "driver"     => "InputFunction",
-                        "params"     => array(),
-                        "tableEntry" => array(),
                         "id"         => 4,
                     ),
                 ),
@@ -372,8 +362,8 @@ class FctsTest extends \PHPUnit_Framework_TestCase
                         'type' => 'Simple',
                         'id' => 0,
                         'driver' => 'InputFunction',
-                        'params' => array(),
-                        'tableEntry' => array(),
+                        'data' => array(),
+                        'name' => 'New Function',
                     ),
                     array(
                         'longName' => 'Input Function',
@@ -381,8 +371,8 @@ class FctsTest extends \PHPUnit_Framework_TestCase
                         'type' => 'Simple',
                         'id' => 1,
                         'driver' => 'InputFunction',
-                        'params' => array(),
-                        'tableEntry' => array(),
+                        'data' => array(),
+                        'name' => 'New Function',
                     ),
                     array(
                         'longName' => 'Input Function',
@@ -390,8 +380,8 @@ class FctsTest extends \PHPUnit_Framework_TestCase
                         'type' => 'Simple',
                         'id' => 2,
                         'driver' => 'InputFunction',
-                        'params' => array(),
-                        'tableEntry' => array(),
+                        'data' => array(),
+                        'name' => 'New Function',
                     ),
                     array(
                         'longName' => 'Input Function',
@@ -399,8 +389,8 @@ class FctsTest extends \PHPUnit_Framework_TestCase
                         'type' => 'Simple',
                         'id' => 3,
                         'driver' => 'InputFunction',
-                        'params' => array(),
-                        'tableEntry' => array(),
+                        'data' => array(),
+                        'name' => 'New Function',
                     ),
                     array(
                         'longName' => 'Input Function',
@@ -408,8 +398,8 @@ class FctsTest extends \PHPUnit_Framework_TestCase
                         'type' => 'Simple',
                         'id' => 4,
                         'driver' => 'InputFunction',
-                        'params' => array(),
-                        'tableEntry' => array(),
+                        'data' => array(),
+                        'name' => 'New Function',
                     ),
                 ),
             ),
@@ -479,32 +469,22 @@ class FctsTest extends \PHPUnit_Framework_TestCase
                                 array(
                                     "id"         => 0,
                                     "driver"     => "InputFunction",
-                                    "params"     => array(),
-                                    "tableEntry" => array(),
                                 ),
                                 array(
                                     "id"         => 1,
                                     "driver"     => "InputFunction",
-                                    "params"     => array(),
-                                    "tableEntry" => array(),
                                 ),
                                 array(
                                     "id"         => 2,
                                     "driver"     => "InputFunction",
-                                    "params"     => array(),
-                                    "tableEntry" => array(),
                                 ),
                                 array(
                                     "id"         => 3,
                                     "driver"     => "InputFunction",
-                                    "params"     => array(),
-                                    "tableEntry" => array(),
                                 ),
                                 array(
                                     "id"         => 4,
                                     "driver"     => "InputFunction",
-                                    "params"     => array(),
-                                    "tableEntry" => array(),
                                 ),
                             ),
                             true
@@ -563,8 +543,6 @@ class FctsTest extends \PHPUnit_Framework_TestCase
                                 array(
                                     "id" => 0, 
                                     'driver' => 'InputFunction',
-                                    'params' => array(),
-                                    'tableEntry' => array(),
                                 ),
                             ), 
                             true
@@ -577,8 +555,6 @@ class FctsTest extends \PHPUnit_Framework_TestCase
                                 array(
                                     "id" => 0, 
                                     'driver' => 'InputFunction',
-                                    'params' => array(),
-                                    'tableEntry' => array(),
                                 ),
                             ),
                         ),
@@ -612,32 +588,22 @@ class FctsTest extends \PHPUnit_Framework_TestCase
                                 array(
                                     "id" => 0, 
                                     'driver' => 'InputFunction',
-                                    'params' => array(),
-                                    'tableEntry' => array(),
                                 ),
                                 array(
                                     "id" => 1, 
                                     'driver' => 'InputFunction',
-                                    'params' => array(),
-                                    'tableEntry' => array(),
                                 ),
                                 array(
                                     "id" => 2, 
                                     'driver' => 'InputFunction',
-                                    'params' => array(),
-                                    'tableEntry' => array(),
                                 ),
                                 array(
                                     "id" => 3, 
                                     'driver' => 'InputFunction',
-                                    'params' => array(),
-                                    'tableEntry' => array(),
                                 ),
                                 array(
                                     "id" => 4, 
                                     'driver' => 'InputFunction',
-                                    'params' => array(),
-                                    'tableEntry' => array(),
                                 ),
                             ), 
                             true
@@ -650,32 +616,22 @@ class FctsTest extends \PHPUnit_Framework_TestCase
                                 array(
                                     "id" => 0, 
                                     'driver' => 'InputFunction',
-                                    'params' => array(),
-                                    'tableEntry' => array(),
                                 ),
                                 array(
                                     "id" => 1, 
                                     'driver' => 'InputFunction',
-                                    'params' => array(),
-                                    'tableEntry' => array(),
                                 ),
                                 array(
                                     "id" => 2, 
                                     'driver' => 'InputFunction',
-                                    'params' => array(),
-                                    'tableEntry' => array(),
                                 ),
                                 array(
                                     "id" => 3, 
                                     'driver' => 'InputFunction',
-                                    'params' => array(),
-                                    'tableEntry' => array(),
                                 ),
                                 array(
                                     "id" => 4, 
                                     'driver' => 'InputFunction',
-                                    'params' => array(),
-                                    'tableEntry' => array(),
                                 ),
                             ),
                         ),

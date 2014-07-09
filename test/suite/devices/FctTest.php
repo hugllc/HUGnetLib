@@ -169,17 +169,17 @@ class FctTest extends \PHPUnit_Framework_TestCase
                     "id" => 0xFD,
                     "asdf" => 3,
                     "driver" => "TestFctDriver1",
-                    "params" => json_encode(array(1, 2, 3, 4)),
-                    "tableEntry" => json_encode(array(4, 3, 2, 1)),
+                    "data" => array(1, 2, 3, 4),
+                    "name" => "Hello",
                 ),
                 new \HUGnet\DummyTable("Table"),
                 array(
                     "longName" => "Silly Fct Driver 1",
                     "shortName" => "SSD1",
                     'id' => 0xFD,
-                    'params' => array(1,2,3,4),
+                    'data' => array(1,2,3,4),
                     'driver' => "TestFctDriver1",
-                    "tableEntry" => array(4, 3, 2, 1),
+                    "name" => "Hello",
                 )
             ),
             array(
@@ -188,7 +188,7 @@ class FctTest extends \PHPUnit_Framework_TestCase
                 array(
                     "id" => 0xFD,
                     "asdf" => 3,
-                    "params" => json_encode(array(1, 2, 3, 4)),
+                    "data" => array(1, 2, 3, 4),
                     "tableEntry" => json_encode(array(4, 3, 2, 1)),
                 ),
                 new \HUGnet\DummyTable("Table"),
@@ -196,10 +196,10 @@ class FctTest extends \PHPUnit_Framework_TestCase
                     "longName" => "Input Function",
                     "shortName" => "Input",
                     'id' => 0xFD,
-                    'params' => array(1,2,3,4),
+                    'data' => array(1,2,3,4),
                     'driver' => "InputFunction",
                     "type" => "Simple",
-                    "tableEntry" => array(4, 3, 2, 1),
+                    "name" => "New Function",
                 )
             ),
         );

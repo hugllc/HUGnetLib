@@ -64,8 +64,8 @@ class Fct extends \HUGnet\base\Container
     protected $default = array(
         "id" => null,
         "driver" => "",
-        "name" => "",
-        "data" => "New Function",
+        "name" => "New Function",
+        "data" => array(),
     );
     /**
     * This is the cache for the drivers.
