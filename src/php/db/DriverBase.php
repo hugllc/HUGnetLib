@@ -141,6 +141,20 @@ abstract class DriverBase extends DriverQuery
         $this->executeData();
     }
     /**
+    *  Removes the column given
+    *
+    * @param string $column The column to drop.
+    *
+    * @return null
+    */
+    public function removeColumn($column)
+    {
+        $this->reset();
+        $this->query  = "ALTER TABLE ".$this->table()." DROP COLUMN `$column`";
+        $this->prepare();
+        $this->executeData();
+    }
+    /**
     *  Adds a field to the devices table for cache information
     *
     * @param array $columns array of $column entries @See columnDef for
@@ -250,7 +264,22 @@ abstract class DriverBase extends DriverQuery
         $this->prepare();
         $this->executeData();
     }
-
+    /**
+    *  Removes the named index.
+    *
+    * @param string $name The name of the index to remove
+    *
+    * @return null
+    */
+    public function removeIndex($name)
+    {
+        $this->reset();
+        // Build the query
+        $this->query  = "DROP INDEX `".$name."` ON ";
+        $this->query .= $this->table();
+        $this->prepare();
+        $this->executeData();
+    }
     /**
     * Checks to see if a table exists
     *

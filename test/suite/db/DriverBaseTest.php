@@ -300,6 +300,40 @@ class DriverBaseTest extends \PHPUnit_Extensions_Database_TestCase
         $this->assertSame($column, $ret);
     }
     /**
+    * Data provider for testAddColumnQuery
+    *
+    * @return array
+    */
+    public static function dataRemoveColumnQuery()
+    {
+        return array(
+            array(
+                "ColumnName",
+                "ALTER TABLE `myTable` DROP COLUMN `ColumnName`"
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param array  $column The database key to get the record from
+    * @param string $expect The query created
+    *
+    * @return null
+    *
+    * @dataProvider dataRemoveColumnQuery
+    */
+    public function testRemoveColumnQuery($column, $expect)
+    {
+        $this->o->removeColumn($column);
+        $this->assertAttributeSame($expect, "query", $this->o);
+        $stmt = $this->pdo->query("PRAGMA table_info(".$this->table->sqlTable.")");
+        $cols = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        foreach ((array)$cols as $row) {
+            $this->assertFalse($row["name"] === $column, "Column not deleted");
+        }
+    }
+    /**
     * Data provider for testCreateTable
     *
     * @return array
@@ -528,6 +562,35 @@ class DriverBaseTest extends \PHPUnit_Extensions_Database_TestCase
     public function testAddIndex($column, $expect)
     {
         $this->o->addIndex($column);
+        $this->assertAttributeSame($expect, "query", $this->o);
+    }
+    /**
+    * Data provider for testAddColumn
+    *
+    * @return array
+    */
+    public static function dataRemoveIndex()
+    {
+        return array(
+            array(
+                "IndexName",
+                "DROP INDEX `IndexName` ON `myTable`"
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param array  $column The database key to get the record from
+    * @param string $expect The query created
+    *
+    * @return null
+    *
+    * @dataProvider dataRemoveIndex
+    */
+    public function testRemoveIndex($column, $expect)
+    {
+        $this->o->removeIndex($column);
         $this->assertAttributeSame($expect, "query", $this->o);
     }
 
