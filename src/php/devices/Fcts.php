@@ -117,6 +117,13 @@ class Fcts
     public function fct($chan)
     {
         $chan = (int)$chan;
+        if (!is_array($this->_channels[$chan])) {
+            return \HUGnet\devices\Fct::factory(
+                $this->_system,
+                array("id" => $chan),
+                $this->_device
+            );
+        }
         if (!is_object($this->_objCache[$chan])) {
             $this->_channels[$chan]["id"] = $chan;
         
@@ -160,7 +167,8 @@ class Fcts
     */
     public function store()
     {
-        $this->_device->fcts($this->toArray(false), true);
+        $ret = $this->toArray(false);
+        $this->_device->fcts($ret, true);
     }
     /**
     * Sets all of the endpoint attributes from an array

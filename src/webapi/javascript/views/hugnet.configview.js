@@ -161,7 +161,7 @@ var DeviceConfigView = Backbone.View.extend({
             template: "#Config"+set+"ViewControlChannelListTemplate",
             rowTemplate: "#Config"+set+"ViewControlChannelEntryTemplate"
         });
-        this.functionsmodel = new HUGnet.DeviceFunctions({ 
+        this.functionsmodel = new HUGnet.DeviceFunctions([], { 
             devid: this.model.get("id") 
         });
         this.functionsmodel.fetch();
@@ -173,6 +173,11 @@ var DeviceConfigView = Backbone.View.extend({
         this.model.on(
             'change',
             this.channelRegen,
+            this
+        );
+        this.functionsmodel.on(
+            'change',
+            this.render,
             this
         );
         this.devImage = new DeviceConfigImageView({
@@ -192,16 +197,20 @@ var DeviceConfigView = Backbone.View.extend({
     */
     newfunction: function()
     {
-        this.functionsmodel.add({
-            dev: this.model.get("id"), 
-            id: this.functionsmodel.length,
-        });
-        this.render();
+        this.functionsmodel.create();
     },
     /**
     * This function initializes the object
     */
     save: function()
+    {
+        this.apply();
+        this.close();
+    },
+    /**
+    * This function initializes the object
+    */
+    apply: function()
     {
         var params = {
             fcts: this.functionsmodel.toJSON()
@@ -210,13 +219,6 @@ var DeviceConfigView = Backbone.View.extend({
             setparams: params
         });
         this.model.save();
-    },
-    /**
-    * This function initializes the object
-    */
-    apply: function()
-    {
-        console.log("apply");
     },
     close: function ()
     {
@@ -239,7 +241,6 @@ var DeviceConfigView = Backbone.View.extend({
     */
     render: function ()
     {
-
         var data = this.model.toJSON();
         _.extend(data, HUGnet.viewHelpers);
         data.dataChannels = '<div id="DeviceDataChannelsDiv"></div>';

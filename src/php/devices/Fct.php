@@ -64,8 +64,8 @@ class Fct extends \HUGnet\base\Container
     protected $default = array(
         "id" => null,
         "driver" => "",
-        "params" => "",
-        "tableEntry" => "",
+        "name" => "",
+        "data" => "New Function",
     );
     /**
     * This is the cache for the drivers.
@@ -160,15 +160,10 @@ class Fct extends \HUGnet\base\Container
             $driver = $this->driver()->toArray();
             $return = array_merge($driver, $return);
         }
-        $params = json_decode($return["params"], true);
         if (empty($return["driver"])) {
             $return["driver"] = implode(
                 "", array_slice(explode('\\', get_class($this->driver())), -1)
             );
-        }
-        $return["params"] = (array)$params;
-        if (!is_array($return["tableEntry"])) {
-            $return["tableEntry"] = (array)json_decode($return["tableEntry"], true);
         }
         return (array)$return;
     }

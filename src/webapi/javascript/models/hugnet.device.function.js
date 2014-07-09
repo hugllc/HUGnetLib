@@ -43,21 +43,22 @@
 HUGnet.DeviceFunction = Backbone.Model.extend({
     defaults:
     {
-        dev: null,
-        fct: null,
+        id: null,
         driver: '',
         longName: 'Unknown',
-        tableEntry: {},
-        params: {
-            name: 'New Function',
-        },
+        shortName: 'Unknown',
+        data: {},
+        name: 'New Function',
     },
-    idAttribute: 'fct',
+    idAttribute: 'id',
     /**
     * This function initializes the object
     */
     initialize: function(attrib)
     {
+        console.log(this.toJSON());
+        var id = this.get("id");
+        this.set("id", parseInt(id, 0));
     },
 });
 
@@ -77,13 +78,13 @@ HUGnet.DeviceFunctions = Backbone.Collection.extend({
     url: '/HUGnetLib/HUGnetLibAPI.php',
     model: HUGnet.DeviceFunction,
     devid: 0,
-    initialize: function (options)
+    initialize: function (model, options)
     {
         this.devid = options.devid;
     },
     comparator: function (model)
     {
-        return parseInt(model.get("fct"), 10);
+        return parseInt(model.get("id"), 10);
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -104,14 +105,14 @@ HUGnet.DeviceFunctions = Backbone.Collection.extend({
             cache: false,
             data: {
                 "task": "device", 
-                "action": "getfct",
+                "action": "getfcts",
                 "id": this.devid.toString(16)
             }
-        });
-        ret.done(
+        }).done(
             function (data)
             {
                 self.reset(data);
+                self.trigger("change");
             }
         );
     },
@@ -127,23 +128,39 @@ HUGnet.DeviceFunctions = Backbone.Collection.extend({
     save: function ()
     {
         var self = this;
-        var ret = $.ajax({
+        var ret  = $.ajax({
             type: 'POST',
             url: this.url,
             dataType: 'json',
             cache: false,
             data: {
                 "task": "device", 
-                "action": "putfct",
-                "id": id.toString(16),
+                "action": "putfcts",
+                "id": this.devid.toString(16),
                 "data": self.toJSON()
             }
-        });
-        ret.done(
+        }).done(
             function (data)
             {
                 self.reset(data);
+                self.trigger("change");
             }
         );
-    }
+    },
+    /**
+    * Gets infomration about a device.  This is retrieved directly from the device
+    *
+    * This function is for use of the device list
+    *
+    * @param id The id of the device to get
+    *
+    * @return null
+    */
+    create: function ()
+    {
+        this.add({
+            id: this.length,
+        });
+        this.save();
+    },
 });

@@ -594,7 +594,7 @@ class Device extends \HUGnet\base\SystemTableAction
         }
         $fcts = \HUGnet\devices\Fcts::factory($system, $this, $data);
         if ($save) {
-            $this->setParam("fcts", $fcts->toArray());
+            $this->setParam("fcts", $fcts->toArray(false));
         }
         return $fcts;
     }

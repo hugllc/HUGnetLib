@@ -268,6 +268,7 @@ class WebInterface
     {
         $data = (array)$args->get("data");
         $ret = $this->_device->fcts($data, true);
+        $this->_device->store();
         return $ret->toArray(true);
     }
     /**
