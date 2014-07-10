@@ -105,6 +105,36 @@ class Sqlite extends \HUGnet\db\Driver implements \HUGnet\interfaces\DBDriver
         return true;
     }
     /**
+    *  This database doesn't support this
+    *
+    * @param array $column @See columnDef for format
+    *
+    * @return null
+    */
+    public function modifyColumn($column)
+    {
+    }
+    /**
+    *  This database doesn't support this
+    *
+    * @param string $column The column to drop.
+    *
+    * @return null
+    */
+    public function removeColumn($column)
+    {
+    }
+    /**
+    *  This database doesn't support this
+    *
+    * @param string $name The name of the index to remove
+    *
+    * @return null
+    */
+    public function removeIndex($name)
+    {
+    }
+   /**
     * Get the names of all the tables in the current database
     *
     * @return array of table names

@@ -304,6 +304,50 @@ class DriverBaseTest extends \PHPUnit_Extensions_Database_TestCase
     *
     * @return array
     */
+    public static function dataModifyColumnQuery()
+    {
+        return array(
+            array(
+                array(
+                    "Name" => "name",
+                    "Type" => "INT(12)",
+                    "Default" => "0",
+                    "Null" => false,
+                ),
+                "ALTER TABLE `myTable` MODIFY COLUMN "
+                ."`name` INT(12) NOT NULL DEFAULT '0'"
+            ),
+            array(
+                array(
+                    "Name" => "value",
+                    "Type" => "NUMERIC(12)",
+                    "Default" => null,
+                    "Null" => true,
+                ),
+                "ALTER TABLE `myTable` MODIFY COLUMN `value` NUMERIC(12) NULL"
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param array  $column The database key to get the record from
+    * @param string $expect The query created
+    *
+    * @return null
+    *
+    * @dataProvider dataModifyColumnQuery
+    */
+    public function testModifyColumnQuery($column, $expect)
+    {
+        $this->o->modifyColumn($column);
+        $this->assertAttributeSame($expect, "query", $this->o);
+    }
+    /**
+    * Data provider for testAddColumnQuery
+    *
+    * @return array
+    */
     public static function dataRemoveColumnQuery()
     {
         return array(

@@ -141,6 +141,21 @@ abstract class DriverBase extends DriverQuery
         $this->executeData();
     }
     /**
+    *  Adds a field to the devices table for cache information
+    *
+    * @param array $column @See columnDef for format
+    *
+    * @return null
+    */
+    public function modifyColumn($column)
+    {
+        $this->reset();
+        $this->query  = "ALTER TABLE ".$this->table()." MODIFY COLUMN ";
+        $this->columnDef($column);
+        $this->prepare();
+        $this->executeData();
+    }
+    /**
     *  Removes the column given
     *
     * @param string $column The column to drop.
