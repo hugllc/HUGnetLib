@@ -414,6 +414,15 @@ class Nulldb extends \HUGnet\db\Driver implements \HUGnet\interfaces\DBDriver
         return array();
     }
     /**
+     * Indexes are irrelevant in Nulldb
+     *
+     * @return null
+     */
+    public function indexes()
+    {
+        return array();
+    }
+    /**
      * Checks the database table, repairs and optimizes it
      *
      * @param bool $force Force the repair

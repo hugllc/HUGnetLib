@@ -1777,6 +1777,36 @@ class NulldbTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, $cols);
     }
     /**
+    * Data provider for testIndexes
+    *
+    * @return array
+    */
+    public static function dataIndexes()
+    {
+        return array(
+            array(
+                array(),
+                array(
+                ),
+            ),
+        );
+    }
+    /**
+     * Tests galtol
+     *
+     * @param string $preload The query to preload the database with
+     * @param array  $expect  The expeced return array
+     *
+     * @return null
+     *
+     * @dataProvider dataIndexes
+     */
+    public function testIndexes($preload, $expect)
+    {
+        $cols = $this->o->indexes();
+        $this->assertSame($expect, $cols);
+    }
+    /**
     * test the lock routine.
     *
     * @return null
