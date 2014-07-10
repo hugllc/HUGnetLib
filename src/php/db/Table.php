@@ -329,6 +329,111 @@ abstract class Table extends TableBase
             array()
         );
     }
+    /**
+    * Checks the table in the database against the definition, and returns
+    * the differences.
+    *
+    * @return null
+    */
+    public function tableDiff()
+    {
+        return array(
+            "column" => $this->_columnDiff(),
+            "index"  => $this->_indexDiff(),
+        );
+    }
+    /**
+    * Checks the table in the database against the definition, and returns
+    * the differences.
+    *
+    * @return null
+    */
+    private function _columnDiff()
+    {
+        $table = $this->dbdriver()->columns();
+        $ret   = array();
+        foreach ((array)$this->sqlColumns as $name => $col) {
+            if (is_array($table[$name])) {
+                $diff = array_diff_assoc($col, (array)$table[$name]);
+                if (!empty($diff)) {
+                    $ret[$name] = array(
+                        "type" => "update",
+                        "diff" => $diff,
+                    );
+                }
+                unset($table[$name]);
+            } else {
+                $ret[$name] = array(
+                    "type" => "add",
+                    "diff" => $col,
+                );
+            }
+        }
+        foreach ($table as $col) {
+            $ret[$col["Name"]] = array(
+                "type" => "remove",
+                "diff" => $col,
+            );
+        }
+        return $ret;
+    }
+    /**
+    * Checks the table in the database against the definition, and returns
+    * the differences.
+    *
+    * @return null
+    */
+    private function _indexDiff()
+    {
+        $table = $this->dbdriver()->indexes();
+        $ret   = array();
+        foreach ((array)$this->sqlIndexes as $name => $ind) {
+            $found = false;
+            foreach ($table as $tindex) {
+                if ($this->_indexSame($ind, (array)$table[$name])) {
+                    unset($table[$name]);
+                    $found = true;
+                    break;
+                }
+            }
+            if (!$found) {
+                $this->system()->out(
+                    "Missing index ".$name." (".implode(", ", $ind["Columns"]).")",
+                    1
+                );
+                $ret[$name] = array(
+                    "type" => "add",
+                    "diff" => $ind,
+                );
+            }
+        }
+        foreach ($table as $ind) {
+            $ret[$ind["Name"]] = array(
+                "type" => "remove",
+                "diff" => $ind,
+            );
+        }
+        return $ret;
+    }
+    /**
+    * Checks the table in the database against the definition, and returns
+    * the differences.
+    *
+    * @return null
+    */
+    private function _indexSame($index1, $index2)
+    {
+        if ($index1["Unique"] != $index2["Unique"]) {
+            return false;
+        }
+        $coldiff = array_diff_assoc(
+            (array)$index1["Columns"], (array)$index2["Columns"]
+        );
+        if ($coldiff !== array()) {
+            return false;
+        }
+        return true;
+    }
 
 
 }

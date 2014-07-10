@@ -1568,6 +1568,164 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
         }
         $this->assertSame($expect, $ret);
     }
+    /**
+    * Data provider for testTableDiff
+    *
+    * @return array
+    */
+    public static function dataTableDiff()
+    {
+        return array(
+            array(
+                array(
+                    "ALTER TABLE `myTable` ADD `ColumnName` NUMERIC(12) NULL",
+                ),
+                array(
+                ),
+                array(
+                ),
+                array(
+                    "column" => array(
+                        'id' => array(
+                            'type' => 'update',
+                            'diff' => array(
+                                'Default' => 0,
+                                'AutoIncrement' => true,
+                            )
+                        ),
+                        'name' => array(
+                            'type' => 'update',
+                            'diff' => array(
+                                'Type' => 'varchar',
+                                'Default' => 'Name',
+                            )
+                        ),
+                        'value' => array(
+                            'type' => 'update',
+                            'diff' => array(
+                                'Default' => 12.0
+                            )
+                        ),
+                        'ColumnName' => array(
+                            'type' => 'remove',
+                            'diff' => array(
+                                'Name' => 'ColumnName',
+                                'Type' => 'NUMERIC(12)',
+                                'Default' => null,
+                                'Null' => true,
+                            )
+                        ),
+                    ),
+                    "index" => array(
+                        'stuff' => array(
+                            'type' => 'add',
+                            'diff' => array(
+                                'Name' => 'stuff',
+                                'Unique' => true,
+                                'Columns' => array('id', 'value'),
+                            )
+                        )
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    "CREATE INDEX iddate on `myTable` (id, name);"
+                ),
+                array(
+                    "id" => array(
+                        "Name" => "id",
+                        "Type" => "INTEGER",
+                        "Default" => 0,
+                        "AutoIncrement" => true,
+                    ),
+                    "name" => array(
+                        "Name" => "name", "Type" => "varchar(32)", "Default" => ""
+                    ),
+                    "value" => array(
+                        "Name" => "value", "Type" => "float", "Default" => 0.0
+                    ),
+                    "value2" => array(
+                        "Name" => "value", "Type" => "float", "Default" => 0.0
+                    ),
+                ),
+                array(
+                    "idvalue2" => array(
+                        "Name" => "idvalue2",
+                        "Unique" => true,
+                        "Columns" => array("id", "value2"),
+                    ),
+                ),
+                array(
+                    "column" => array(
+                        'id' => array(
+                            'type' => 'update',
+                            'diff' => array(
+                                'Default' => 0,
+                                'AutoIncrement' => true,
+                            )
+                        ),
+                        'value' => array(
+                            'type' => 'update',
+                            'diff' => array(
+                                'Default' => 0.0
+                            )
+                        ),
+                        'value2' => array(
+                            'type' => 'add',
+                            'diff' => array(
+                                'Name' => 'value',
+                                'Type' => 'float',
+                                'Default' => 0.0,
+                            ),
+                        ),
+                    ),
+                    "index" => array(
+                        'idvalue2' => array(
+                            'type' => 'add',
+                            'diff' => array(
+                                'Name' => 'idvalue2',
+                                'Unique' => true,
+                                'Columns' => array('id', 'value2'),
+                            )
+                        ),
+                        'iddate' => array(
+                            'type' => 'remove',
+                            'diff' => array(
+                                'Name' => 'iddate',
+                                'Unique' => false,
+                                'Columns' => array('id', 'name'),
+                            )
+                        )
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $setup  Database query to modify the table
+    * @param string $expect The query created
+    *
+    * @return null
+    *
+    * @dataProvider dataTableDiff
+    */
+    public function testTableDiff($setup, $sqlColumns, $sqlIndexes, $expect)
+    {
+        foreach ($setup as $query) {
+            $this->pdo->query($query);
+        }
+        if (is_array($sqlIndexes) && !empty($sqlIndexes)) {
+            $this->o->sqlIndexes = $sqlIndexes;
+        }
+        if (is_array($sqlColumns) && !empty($sqlColumns)) {
+            $this->o->sqlColumns = $sqlColumns;
+        }
+        $diff = $this->o->tableDiff();
+        $this->assertSame($expect, $diff);
+    }
 
 }
 namespace HUGnet\db\tables;
