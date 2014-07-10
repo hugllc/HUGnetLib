@@ -1569,11 +1569,11 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
         $this->assertSame($expect, $ret);
     }
     /**
-    * Data provider for testTableDiff
+    * Data provider for testDiff
     *
     * @return array
     */
-    public static function dataTableDiff()
+    public static function dataDiff()
     {
         return array(
             array(
@@ -1710,9 +1710,9 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     *
     * @return null
     *
-    * @dataProvider dataTableDiff
+    * @dataProvider dataDiff
     */
-    public function testTableDiff($setup, $sqlColumns, $sqlIndexes, $expect)
+    public function testDiff($setup, $sqlColumns, $sqlIndexes, $expect)
     {
         foreach ($setup as $query) {
             $this->pdo->query($query);
@@ -1723,7 +1723,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
         if (is_array($sqlColumns) && !empty($sqlColumns)) {
             $this->o->sqlColumns = $sqlColumns;
         }
-        $diff = $this->o->tableDiff();
+        $diff = $this->o->diff();
         $this->assertSame($expect, $diff);
     }
 

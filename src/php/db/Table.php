@@ -335,7 +335,7 @@ abstract class Table extends TableBase
     *
     * @return null
     */
-    public function tableDiff()
+    public function diff()
     {
         return array(
             "column" => $this->_columnDiff(),
