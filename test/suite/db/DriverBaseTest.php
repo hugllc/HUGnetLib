@@ -356,6 +356,10 @@ class DriverBaseTest extends \PHPUnit_Extensions_Database_TestCase
                     "ALTER TABLE `myTable` ADD `ColumnName` NUMERIC(12) NULL",
                 ),
                 array(
+                ),
+                array(
+                ),
+                array(
                     "column" => array(
                         'id' => array(
                             'type' => 'update',
@@ -381,6 +385,86 @@ class DriverBaseTest extends \PHPUnit_Extensions_Database_TestCase
                         ),
                     ),
                     "index" => array(
+                        'stuff' => array(
+                            'type' => 'add',
+                            'diff' => array(
+                                'Name' => 'stuff',
+                                'Unique' => true,
+                                'Columns' => array('id', 'value'),
+                            )
+                        )
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    "CREATE INDEX iddate on `myTable` (id, name);"
+                ),
+                array(
+                    "id" => array(
+                        "Name" => "id",
+                        "Type" => "INTEGER",
+                        "Default" => 0,
+                        "AutoIncrement" => true,
+                    ),
+                    "name" => array(
+                        "Name" => "name", "Type" => "varchar(32)", "Default" => ""
+                    ),
+                    "value" => array(
+                        "Name" => "value", "Type" => "float", "Default" => 0.0
+                    ),
+                    "value2" => array(
+                        "Name" => "value", "Type" => "float", "Default" => 0.0
+                    ),
+                ),
+                array(
+                    "idvalue2" => array(
+                        "Name" => "idvalue2",
+                        "Unique" => true,
+                        "Columns" => array("id", "value2"),
+                    ),
+                ),
+                array(
+                    "column" => array(
+                        'id' => array(
+                            'type' => 'update',
+                            'diff' => array(
+                                'Default' => 0,
+                                'AutoIncrement' => true,
+                            )
+                        ),
+                        'value' => array(
+                            'type' => 'update',
+                            'diff' => array(
+                                'Default' => 0.0
+                            )
+                        ),
+                        'value2' => array(
+                            'type' => 'add',
+                            'diff' => array(
+                                'Name' => 'value',
+                                'Type' => 'float',
+                                'Default' => 0.0,
+                            ),
+                        ),
+                    ),
+                    "index" => array(
+                        'idvalue2' => array(
+                            'type' => 'add',
+                            'diff' => array(
+                                'Name' => 'idvalue2',
+                                'Unique' => true,
+                                'Columns' => array('id', 'value2'),
+                            )
+                        ),
+                        'iddate' => array(
+                            'type' => 'remove',
+                            'diff' => array(
+                                'Name' => 'iddate',
+                                'Unique' => false,
+                                'Columns' => array('id', 'name'),
+                            )
+                        )
                     ),
                 ),
             ),
@@ -396,10 +480,16 @@ class DriverBaseTest extends \PHPUnit_Extensions_Database_TestCase
     *
     * @dataProvider dataTableDiff
     */
-    public function testTableDiff($setup, $expect)
+    public function testTableDiff($setup, $sqlColumns, $sqlIndexes, $expect)
     {
         foreach ($setup as $query) {
             $this->pdo->query($query);
+        }
+        if (is_array($sqlIndexes) && !empty($sqlIndexes)) {
+            $this->table->sqlIndexes = $sqlIndexes;
+        }
+        if (is_array($sqlColumns) && !empty($sqlColumns)) {
+            $this->table->sqlColumns = $sqlColumns;
         }
         $diff = $this->o->tableDiff();
         $this->assertSame($expect, $diff);
@@ -1232,6 +1322,38 @@ class DriverBaseTestStub extends \HUGnet\db\DriverBase
             }
         }
         return (array)$cols;
+    }
+    /**
+    * Gets indexes from a SQLite server
+    *
+    * @return null
+    */
+    public function indexes()
+    {
+        $indexes = $this->query("PRAGMA index_list(".$this->table().")");
+        $inds = array();
+        if (is_array($indexes)) {
+            foreach ($indexes as $key) {
+                $name = $key["name"];
+                if (substr($name, 0, 16) !== "sqlite_autoindex") {
+                    // Get info on this index
+                    $info = $this->query("PRAGMA index_info(".$name.")");
+                    foreach ($info as $ind) {
+                        $seq = $ind["seqno"];
+                        if (!is_array($inds[$name])) {
+                            $inds[$name] = array(
+                                "Name" => $name,
+                                "Unique" => (bool)$key["unique"],
+                                "Columns" => array($seq => $ind["name"]),
+                            );
+                        } else {
+                            $inds[$name]["Columns"][$seq] = $ind["name"];
+                        }
+                    }
+                }
+            }
+        }
+        return (array)$inds;
     }
     /**
     * This gets a new PDO object

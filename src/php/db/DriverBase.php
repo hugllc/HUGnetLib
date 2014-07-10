@@ -328,14 +328,21 @@ abstract class DriverBase extends DriverQuery
         $table = $this->columns();
         $ret   = array();
         foreach ((array)$this->myTable->sqlColumns as $name => $col) {
-            $diff = array_diff_assoc($col, (array)$table[$name]);
-            if (!empty($diff)) {
+            if (is_array($table[$name])) {
+                $diff = array_diff_assoc($col, (array)$table[$name]);
+                if (!empty($diff)) {
+                    $ret[$name] = array(
+                        "type" => "update",
+                        "diff" => $diff,
+                    );
+                }
+                unset($table[$name]);
+            } else {
                 $ret[$name] = array(
-                    "type" => "update",
-                    "diff" => $diff,
+                    "type" => "add",
+                    "diff" => $col,
                 );
             }
-            unset($table[$name]);
         }
         foreach ($table as $col) {
             $ret[$col["Name"]] = array(
@@ -353,8 +360,50 @@ abstract class DriverBase extends DriverQuery
     */
     private function _indexDiff()
     {
-        $ret = array();
+        $table = $this->indexes();
+        $ret   = array();
+        foreach ((array)$this->myTable->sqlIndexes as $name => $ind) {
+            $found = false;
+            foreach ($table as $tindex) {
+                if ($this->_indexSame($ind, (array)$table[$name])) {
+                    unset($table[$name]);
+                    $found = true;
+                    break;
+                }
+            }
+            if (!$found) {
+                $ret[$name] = array(
+                    "type" => "add",
+                    "diff" => $ind,
+                );
+            }
+        }
+        foreach ($table as $ind) {
+            $ret[$ind["Name"]] = array(
+                "type" => "remove",
+                "diff" => $ind,
+            );
+        }
         return $ret;
+    }
+    /**
+    * Checks the table in the database against the definition, and returns
+    * the differences.
+    *
+    * @return null
+    */
+    private function _indexSame($index1, $index2)
+    {
+        if ($index1["Unique"] != $index2["Unique"]) {
+            return false;
+        }
+        $coldiff = array_diff_assoc(
+            (array)$index1["Columns"], (array)$index2["Columns"]
+        );
+        if ($coldiff !== array()) {
+            return false;
+        }
+        return true;
     }
     /**
     * Gets all rows from the database
