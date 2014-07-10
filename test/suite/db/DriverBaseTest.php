@@ -300,7 +300,7 @@ class DriverBaseTest extends \PHPUnit_Extensions_Database_TestCase
         $this->assertSame($column, $ret);
     }
     /**
-    * Data provider for testAddColumnQuery
+    * Data provider for testModifyColumnQuery
     *
     * @return array
     */
@@ -342,6 +342,67 @@ class DriverBaseTest extends \PHPUnit_Extensions_Database_TestCase
     {
         $this->o->modifyColumn($column);
         $this->assertAttributeSame($expect, "query", $this->o);
+    }
+    /**
+    * Data provider for testTableDiff
+    *
+    * @return array
+    */
+    public static function dataTableDiff()
+    {
+        return array(
+            array(
+                array(
+                    "ALTER TABLE `myTable` ADD `ColumnName` NUMERIC(12) NULL",
+                ),
+                array(
+                    "column" => array(
+                        'id' => array(
+                            'type' => 'update',
+                            'diff' => array(
+                                'Default' => 0,
+                                'AutoIncrement' => true,
+                            )
+                        ),
+                        'value' => array(
+                            'type' => 'update',
+                            'diff' => array(
+                                'Default' => 0.0
+                            )
+                        ),
+                        'ColumnName' => array(
+                            'type' => 'remove',
+                            'diff' => array(
+                                'Name' => 'ColumnName',
+                                'Type' => 'NUMERIC(12)',
+                                'Default' => null,
+                                'Null' => true,
+                            )
+                        ),
+                    ),
+                    "index" => array(
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $setup  Database query to modify the table
+    * @param string $expect The query created
+    *
+    * @return null
+    *
+    * @dataProvider dataTableDiff
+    */
+    public function testTableDiff($setup, $expect)
+    {
+        foreach ($setup as $query) {
+            $this->pdo->query($query);
+        }
+        $diff = $this->o->tableDiff();
+        $this->assertSame($expect, $diff);
     }
     /**
     * Data provider for testAddColumnQuery
@@ -1158,7 +1219,19 @@ class DriverBaseTestStub extends \HUGnet\db\DriverBase
     */
     public function columns()
     {
-        return $this->query("PRAGMA table_info(".$this->table().")");
+        $columns = $this->query("PRAGMA table_info(".$this->table().")");
+        $cols = array();
+        if (is_array($columns)) {
+            foreach ($columns as $col) {
+                $cols[$col["name"]] = array(
+                    "Name" => $col["name"],
+                    "Type" => $col["type"],
+                    "Default" => $col["dflt_value"],
+                    "Null" => !(bool)$col["notnull"],
+                );
+            }
+        }
+        return (array)$cols;
     }
     /**
     * This gets a new PDO object

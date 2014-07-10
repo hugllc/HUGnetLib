@@ -304,7 +304,58 @@ abstract class DriverBase extends DriverQuery
     {
         return (count(@$this->columns()) > 0);
     }
-
+    /**
+    * Checks the table in the database against the definition, and returns
+    * the differences.
+    *
+    * @return null
+    */
+    public function tableDiff()
+    {
+        return array(
+            "column" => $this->_columnDiff(),
+            "index"  => $this->_indexDiff(),
+        );
+    }
+    /**
+    * Checks the table in the database against the definition, and returns
+    * the differences.
+    *
+    * @return null
+    */
+    private function _columnDiff()
+    {
+        $table = $this->columns();
+        $ret   = array();
+        foreach ((array)$this->myTable->sqlColumns as $name => $col) {
+            $diff = array_diff_assoc($col, (array)$table[$name]);
+            if (!empty($diff)) {
+                $ret[$name] = array(
+                    "type" => "update",
+                    "diff" => $diff,
+                );
+            }
+            unset($table[$name]);
+        }
+        foreach ($table as $col) {
+            $ret[$col["Name"]] = array(
+                "type" => "remove",
+                "diff" => $col,
+            );
+        }
+        return $ret;
+    }
+    /**
+    * Checks the table in the database against the definition, and returns
+    * the differences.
+    *
+    * @return null
+    */
+    private function _indexDiff()
+    {
+        $ret = array();
+        return $ret;
+    }
     /**
     * Gets all rows from the database
     *
