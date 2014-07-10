@@ -215,6 +215,59 @@ class SqliteTest extends \PHPUnit_Extensions_Database_TestCase
         $this->assertSame($expect, $cols);
     }
     /**
+    * Data provider for testFindUnit
+    *
+    * @return array
+    */
+    public static function dataIndexes()
+    {
+        return array(
+            array(
+                "",
+                array(
+                ),
+            ),
+            array(
+                "CREATE INDEX iddate ON `myTable` (id, name)",
+                array(
+                    'iddate' => array(
+                        'Name' => 'iddate',
+                        'Unique' => false,
+                        'Columns' => array('id', 'name'),
+                    ),
+                ),
+            ),
+            array(
+                "CREATE UNIQUE INDEX iddate ON `myTable` (id, name)",
+                array(
+                    'iddate' => array(
+                        'Name' => 'iddate',
+                        'Unique' => true,
+                        'Columns' => array('id', 'name'),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+     * Tests galtol
+     *
+     * @param string $preload The query to preload the database with
+     * @param array  $expect  The expeced return array
+     *
+     * @return null
+     *
+     * @dataProvider dataIndexes
+     */
+    public function testIndexes($preload, $expect)
+    {
+        if (!empty($preload)) {
+            $this->pdo->query($preload);
+        }
+        $cols = $this->o->indexes();
+        $this->assertSame($expect, $cols);
+    }
+    /**
     * test the lock routine.
     *
     * @return null

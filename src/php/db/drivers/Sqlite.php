@@ -162,6 +162,38 @@ class Sqlite extends \HUGnet\db\Driver implements \HUGnet\interfaces\DBDriver
     {
         return 0;
     }
+    /**
+    * Gets indexes from a SQLite server
+    *
+    * @return null
+    */
+    public function indexes()
+    {
+        $indexes = $this->query("PRAGMA index_list(".$this->table().")");
+        $inds = array();
+        if (is_array($indexes)) {
+            foreach ($indexes as $key) {
+                $name = $key["name"];
+                if (substr($name, 0, 16) !== "sqlite_autoindex") {
+                    // Get info on this index
+                    $info = $this->query("PRAGMA index_info(".$name.")");
+                    foreach ($info as $ind) {
+                        $seq = $ind["seqno"];
+                        if (!is_array($inds[$name])) {
+                            $inds[$name] = array(
+                                "Name" => $name,
+                                "Unique" => (bool)$key["unique"],
+                                "Columns" => array($seq => $ind["name"]),
+                            );
+                        } else {
+                            $inds[$name]["Columns"][$seq] = $ind["name"];
+                        }
+                    }
+                }
+            }
+        }
+        return (array)$inds;
+    }
 
 }
 

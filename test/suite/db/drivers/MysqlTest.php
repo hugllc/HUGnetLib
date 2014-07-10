@@ -455,21 +455,11 @@ class MysqlTest extends \PHPUnit_Extensions_Database_TestCase
             array(
                 "",
                 array(
-                    'PRIMARY' => array(
-                        'Name' => 'PRIMARY',
-                        'Unique' => true,
-                        'Columns' => array('id')
-                    )
                ),
             ),
             array(
                 "CREATE INDEX iddate ON `myTable` (id, name)",
                 array(
-                    'PRIMARY' => array(
-                        'Name' => 'PRIMARY',
-                        'Unique' => true,
-                        'Columns' => array('id')
-                    ),
                     'iddate' => array(
                         'Name' => 'iddate',
                         'Unique' => false,
@@ -480,11 +470,6 @@ class MysqlTest extends \PHPUnit_Extensions_Database_TestCase
             array(
                 "CREATE UNIQUE INDEX iddate ON `myTable` (id, name)",
                 array(
-                    'PRIMARY' => array(
-                        'Name' => 'PRIMARY',
-                        'Unique' => true,
-                        'Columns' => array('id')
-                    ),
                     'iddate' => array(
                         'Name' => 'iddate',
                         'Unique' => true,

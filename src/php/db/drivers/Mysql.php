@@ -282,15 +282,17 @@ class Mysql extends \HUGnet\db\Driver implements \HUGnet\interfaces\DBDriver
                 // @codeCoverageIgnoreStart
                 // This is impossible to test without a mysql server
                 $name = $ind["Key_name"];
-                $seq = $ind["Seq_in_index"] - 1;
-                if (!is_array($inds[$name])) {
-                    $inds[$name] = array(
-                        "Name" => $name,
-                        "Unique" => !(bool)$ind["Non_unique"],
-                        "Columns" => array($seq => $ind["Column_name"]),
-                    );
-                } else {
-                    $inds[$name]["Columns"][$seq] = $ind["Column_name"];
+                if ($name !== "PRIMARY") {
+                    $seq = $ind["Seq_in_index"] - 1;
+                    if (!is_array($inds[$name])) {
+                        $inds[$name] = array(
+                            "Name" => $name,
+                            "Unique" => !(bool)$ind["Non_unique"],
+                            "Columns" => array($seq => $ind["Column_name"]),
+                        );
+                    } else {
+                        $inds[$name]["Columns"][$seq] = $ind["Column_name"];
+                    }
                 }
                 // @codeCoverageIgnoreEnd
             }
