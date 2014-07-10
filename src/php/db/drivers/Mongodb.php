@@ -592,7 +592,14 @@ class Mongodb extends \HUGnet\db\Driver implements \HUGnet\interfaces\DBDriver
             $c = explode(",", $col);
             $keys[$c[0]] = 1;
         }
-        $this->collection->ensureIndex($keys, $options);
+        // @codeCoverageIgnoreStart
+        // Would have to have two versions of mongodb to test this
+        if (method_exists($this->collection, "createIndex")) {
+            $this->collection->createIndex($keys, $options);
+        } else {
+            $this->collection->ensureIndex($keys, $options);
+        }
+        // @codeCoverageIgnoreEnd
     }
     /**
     * Checks to see if a table exists
