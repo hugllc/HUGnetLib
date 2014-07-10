@@ -444,6 +444,78 @@ class MysqlTest extends \PHPUnit_Extensions_Database_TestCase
             }
         }
     }
+    /**
+    * Data provider for testIndexes
+    *
+    * @return array
+    */
+    public static function dataIndexes()
+    {
+        return array(
+            array(
+                "",
+                array(
+                    'PRIMARY' => array(
+                        'Name' => 'PRIMARY',
+                        'Unique' => true,
+                        'Columns' => array('id')
+                    )
+               ),
+            ),
+            array(
+                "CREATE INDEX iddate ON `myTable` (id, name)",
+                array(
+                    'PRIMARY' => array(
+                        'Name' => 'PRIMARY',
+                        'Unique' => true,
+                        'Columns' => array('id')
+                    ),
+                    'iddate' => array(
+                        'Name' => 'iddate',
+                        'Unique' => false,
+                        'Columns' => Array ('id', 'name')
+                    )
+               ),
+            ),
+            array(
+                "CREATE UNIQUE INDEX iddate ON `myTable` (id, name)",
+                array(
+                    'PRIMARY' => array(
+                        'Name' => 'PRIMARY',
+                        'Unique' => true,
+                        'Columns' => array('id')
+                    ),
+                    'iddate' => array(
+                        'Name' => 'iddate',
+                        'Unique' => true,
+                        'Columns' => Array ('id', 'name')
+                    )
+               ),
+            ),
+        );
+    }
+    /**
+    * Tests galtol
+    *
+    * @param string $preload The query to preload the database with
+    * @param array  $expect  The expeced return array
+    *
+    * @return null
+    *
+    * @dataProvider dataIndexes
+    */
+    public function testIndexes($preload, $expect)
+    {
+        if (!empty($preload)) {
+            $this->pdo->query($preload);
+        }
+        $cols = $this->o->indexes();
+        if ($this->skipPDOTests) {
+            $this->markTestSkipped("No MySQL server available");
+        } else {
+            $this->assertSame($expect, $cols);
+        }
+    }
 
 
 }

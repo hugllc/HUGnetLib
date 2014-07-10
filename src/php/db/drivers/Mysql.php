@@ -268,6 +268,36 @@ class Mysql extends \HUGnet\db\Driver implements \HUGnet\interfaces\DBDriver
         }
         return $count;
     }
+    /**
+    * Gets columns from a mysql server
+    *
+    * @return null
+    */
+    public function indexes()
+    {
+        $indexes = $this->query("SHOW INDEXES FROM ".$this->table());
+        $inds    = array();
+        if (is_array($indexes)) {
+            foreach ($indexes as $ind) {
+                // @codeCoverageIgnoreStart
+                // This is impossible to test without a mysql server
+                $name = $ind["Key_name"];
+                $seq = $ind["Seq_in_index"] - 1;
+                if (!is_array($inds[$name])) {
+                    $inds[$name] = array(
+                        "Name" => $name,
+                        "Unique" => !(bool)$ind["Non_unique"],
+                        "Columns" => array($seq => $ind["Column_name"]),
+                    );
+                } else {
+                    $inds[$name]["Columns"][$seq] = $ind["Column_name"];
+                }
+                // @codeCoverageIgnoreEnd
+            }
+        }
+        return (array)$inds;
+
+    }
 
 }
 
