@@ -554,6 +554,7 @@ class Mongodb extends \HUGnet\db\Driver implements \HUGnet\interfaces\DBDriver
                     $this->autoIncrement = true;
                     $this->addIndex(
                         array(
+                            "Name"   => "PRIMARY",
                             "Unique" => true,
                             "Columns" => array($col["Name"])
                         )
@@ -582,6 +583,9 @@ class Mongodb extends \HUGnet\db\Driver implements \HUGnet\interfaces\DBDriver
         // Build the query
         if ($index["Unique"]) {
             $options["unique"] = true;
+        }
+        if (!empty($index["Name"])) {
+            $options["name"] = $index["Name"];
         }
         // SQLite requires the index name to be unique
         foreach ((array)$index["Columns"] as $col) {
@@ -755,14 +759,13 @@ class Mongodb extends \HUGnet\db\Driver implements \HUGnet\interfaces\DBDriver
     public function indexes()
     {
         $indexes = $this->collection->getIndexInfo();
-        var_dump($indexes);
         $inds    = array();
         if (is_array($indexes)) {
             foreach ($indexes as $ind) {
                 // @codeCoverageIgnoreStart
                 // This is impossible to test without a mysql server
                 $name = $ind["name"];
-                if (($name !== "_id_") && ($name != "id_1")) {
+                if (($name !== "_id_") && ($name != "PRIMARY")) {
                     $seq = $ind["Seq_in_index"] - 1;
                     $inds[$name] = array(
                         "Name" => $name,
