@@ -747,7 +747,39 @@ class Mongodb extends \HUGnet\db\Driver implements \HUGnet\interfaces\DBDriver
     {
         return 0;
     }
-    
+    /**
+    * Gets indexes from a SQLite server
+    *
+    * @return null
+    */
+    public function indexes()
+    {
+        $indexes = $this->collection->getIndexInfo();
+        var_dump($indexes);
+        $inds    = array();
+        if (is_array($indexes)) {
+            foreach ($indexes as $ind) {
+                // @codeCoverageIgnoreStart
+                // This is impossible to test without a mysql server
+                $name = $ind["name"];
+                if (($name !== "_id_") && ($name != "id_1")) {
+                    $seq = $ind["Seq_in_index"] - 1;
+                    $inds[$name] = array(
+                        "Name" => $name,
+                        "Unique" => (bool)$ind["unique"],
+                        "Columns" => array(),
+                    );
+                    $cnt = 0;
+                    foreach ((array)$ind["key"] as $key => $dir) {
+                        $inds[$name]["Columns"][$cnt] = $key;
+                        $cnt++;
+                    }
+                }
+                // @codeCoverageIgnoreEnd
+            }
+        }
+        return (array)$inds;
+    }
 }
 
 ?>
