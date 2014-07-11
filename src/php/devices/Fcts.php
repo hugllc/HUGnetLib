@@ -89,16 +89,37 @@ class Fcts
             get_class($this)." needs to be passed a device object",
             !is_object($device)
         );
-        $this->_system   = &$system;
-        $this->_device   = &$device;
-        $this->_channels = (array)$channels;
+        $this->_system = &$system;
+        $this->_device = &$device;
+        $this->_setChannels($channels);
+    }
+    /**
+    * This function normalizes the channels, so that they are always zero based,
+    * and never skip any indexes.
+    *
+    * @param mixed $channels The channels
+    *
+    * @return null
+    */
+    private function _setChannels($channels)
+    {
+        $chans = array();
+        $index = 0;
+        foreach ((array)$channels as $chan) {
+            if (is_array($chan)) {
+                $chans[$index]       = $chan;
+                $chans[$index]["id"] = $index;
+                $index++;
+            }
+        }
+        $this->_channels = (array)$chans;
     }
     /**
     * This function creates the system.
     *
     * @param object &$system  The system oject
     * @param object &$device  The device object
-    * @param mixed  $channels The channels.  If not provided retrieved from device
+    * @param mixed  $channels The channels
     *
     * @return null
     */

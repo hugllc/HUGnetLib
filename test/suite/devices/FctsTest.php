@@ -335,22 +335,22 @@ class FctsTest extends \PHPUnit_Framework_TestCase
                 array(
                 ),
                 array(
-                    array(
+                    0 => array(
                         "index" => 2,
                         "output" => 4,
                         "min" => 8,
                         "max" => 8150,
                         "label" => "PWM",
                     ),
-                    array(
+                    2 => array(
                         "label" => "PWM",
                     ),
-                    array(
+                    4 => array(
                     ),
-                    array(
+                    6 => array(
                         "label" => "PWM",
                     ),
-                    array(
+                    8 => array(
                         "label" => "PWM",
                     ),
                 ),
