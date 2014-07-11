@@ -338,8 +338,10 @@ abstract class Table extends TableBase
     {
         if (get_class($this) !== 'HUGnet\db\tables\Generic') {
             $diff = $this->diff();
+            $this->dbdriver()->lock();
             $ret =  $this->_upgradeColumns($diff["column"]);
             $ret &= $this->_upgradeIndexes($diff["index"]);
+            $this->dbdriver()->unlock();
             return (bool)$ret;
         }
         $this->system()->out(
@@ -416,9 +418,20 @@ abstract class Table extends TableBase
     */
     private function _upgradeIndexes($diff)
     {
+        // Remove the bad ones first
         foreach ($diff as $name => $ind) {
-            switch ($ind["type"]) {
-            case "add":
+            if ($ind["type"] == "remove") {
+                $this->system()->out(
+                    "Removing index $name", 1
+                );
+                $this->_diffPrint($ind["diff"]);
+                $this->dbdriver()->removeIndex($name);
+                break;
+            }
+        }
+        // Now add the new ones
+        foreach ($diff as $name => $ind) {
+            if ($ind["type"] == "add") {
                 $this->system()->out(
                     "Adding index ".$name."_".$this->sqlTable, 1
                 );
@@ -426,14 +439,6 @@ abstract class Table extends TableBase
                 $this->dbdriver()->addIndex(
                     $ind["diff"]
                 );
-                break;
-            case "remove":
-                $this->system()->out(
-                    "Removing index $name", 1
-                );
-                $this->_diffPrint($ind["diff"]);
-                $this->dbdriver()->removeIndex($name);
-                break;
             }
         }
         return true;
@@ -468,7 +473,9 @@ abstract class Table extends TableBase
                 if (($pos !== false) && ($pos2 === false)) {
                     $table[$name]["Type"] = substr($table[$name]["Type"], 0, $pos);
                 }
-                if ($col["Type"] == "INTEGER") {
+                if (($col["Type"] == "INTEGER") 
+                    && ($table[$name]["Type"] == "int")
+                ) {
                     $col["Type"] = "int";
                 }
                 $diff = array_diff_assoc($col, (array)$table[$name]);
