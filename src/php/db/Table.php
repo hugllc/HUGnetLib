@@ -332,15 +332,17 @@ abstract class Table extends TableBase
     /**
     * This upgrades the table to the current standard.
     *
+    * @param bool $fake If true, we go through the motions, but don't do the upgrade
+    *
     * @return null
     */
-    public function upgrade()
+    public function upgrade($fake = true)
     {
         if (get_class($this) !== 'HUGnet\db\tables\Generic') {
             $diff = $this->diff();
             $this->dbdriver()->lock();
-            $ret =  $this->_upgradeColumns($diff["column"]);
-            $ret &= $this->_upgradeIndexes($diff["index"]);
+            $ret  = $this->_upgradeColumns($diff["column"], $fake);
+            $ret &= $this->_upgradeIndexes($diff["index"], $fake);
             $this->dbdriver()->unlock();
             return (bool)$ret;
         }
@@ -373,37 +375,49 @@ abstract class Table extends TableBase
     * This upgrades the table to the current standard.
     *
     * @param array $diff The difference
+    * @param bool  $fake If true, we go through the motions, but don't do the upgrade
     *
     * @return null
     */
-    private function _upgradeColumns($diff)
+    private function _upgradeColumns($diff, $fake = true)
     {
+        if ($fake) {
+            $fakeprint = "(What I would do)";
+        } else {
+            $fakeprint = "";
+        }
         foreach ($diff as $name => $col) {
             switch ($col["type"]) {
             case "update":
                 $this->system()->out(
-                    "Upgrading column $name", 1
+                    "Upgrading column $name $fakeprint", 1
                 );
                 $this->_diffPrint($col["diff"]);
-                $this->dbdriver()->modifyColumn(
-                    $this->sqlColumns[$name]
-                );
+                if (!$fake) {
+                    $this->dbdriver()->modifyColumn(
+                        $this->sqlColumns[$name]
+                    );
+                }
                 break;
             case "add":
                 $this->system()->out(
-                    "Adding column $name", 1
+                    "Adding column $name $fakeprint", 1
                 );
                 $this->_diffPrint($col["diff"]);
-                $this->dbdriver()->addColumn(
-                    $this->sqlColumns[$name]
-                );
+                if (!$fake) {
+                    $this->dbdriver()->addColumn(
+                        $this->sqlColumns[$name]
+                    );
+                }
                 break;
             case "remove":
                 $this->system()->out(
-                    "Removing column $name", 1
+                    "Removing column $name $fakeprint", 1
                 );
                 $this->_diffPrint($col["diff"]);
-                $this->dbdriver()->removeColumn($name);
+                if (!$fake) {
+                    $this->dbdriver()->removeColumn($name);
+                }
                 break;
             }
         }
@@ -413,19 +427,27 @@ abstract class Table extends TableBase
     * This upgrades the table to the current standard.
     *
     * @param array $diff The difference
+    * @param bool  $fake If true, we go through the motions, but don't do the upgrade
     *
     * @return null
     */
-    private function _upgradeIndexes($diff)
+    private function _upgradeIndexes($diff, $fake = true)
     {
+        if ($fake) {
+            $fakeprint = "(What I would do)";
+        } else {
+            $fakeprint = "";
+        }
         // Remove the bad ones first
         foreach ($diff as $name => $ind) {
             if ($ind["type"] == "remove") {
                 $this->system()->out(
-                    "Removing index $name", 1
+                    "Removing index $name $fakeprint", 1
                 );
                 $this->_diffPrint($ind["diff"]);
-                $this->dbdriver()->removeIndex($name);
+                if (!$fake) {
+                    $this->dbdriver()->removeIndex($name);
+                }
                 break;
             }
         }
@@ -433,12 +455,14 @@ abstract class Table extends TableBase
         foreach ($diff as $name => $ind) {
             if ($ind["type"] == "add") {
                 $this->system()->out(
-                    "Adding index ".$name."_".$this->sqlTable, 1
+                    "Adding index ".$name."_".$this->sqlTable." $fakeprint", 1
                 );
                 $this->_diffPrint($ind["diff"]);
-                $this->dbdriver()->addIndex(
-                    $ind["diff"]
-                );
+                if (!$fake) {
+                    $this->dbdriver()->addIndex(
+                        $ind["diff"]
+                    );
+                }
             }
         }
         return true;
