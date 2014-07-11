@@ -88,15 +88,15 @@ class DeviceInputs extends \HUGnet\db\TableParams
     public $sqlColumns = array(
         "dev" => array(
             "Name" => "dev",
-            "Type" => "INTEGER",
+            "Type" => "int",
         ),
         "input" => array(
             "Name" => "input",
-            "Type" => "INTEGER",
+            "Type" => "int",
         ),
         "id" => array(
             "Name" => "id",
-            "Type" => "INTEGER",
+            "Type" => "int",
             "Default" => 0xFF,
         ),
         "type" => array(

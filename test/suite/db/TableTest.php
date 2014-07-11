@@ -1596,7 +1596,6 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
                         'name' => array(
                             'type' => 'update',
                             'diff' => array(
-                                'Type' => 'varchar',
                                 'Default' => 'Name',
                             )
                         ),
@@ -1630,7 +1629,7 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
             ),
             array(
                 array(
-                    "CREATE INDEX iddate on `myTable` (id, name);"
+                    "CREATE INDEX iddate_myTable on `myTable` (id, name);"
                 ),
                 array(
                     "id" => array(
@@ -1689,10 +1688,10 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
                                 'Columns' => array('id', 'value2'),
                             )
                         ),
-                        'iddate' => array(
+                        'iddate_myTable' => array(
                             'type' => 'remove',
                             'diff' => array(
-                                'Name' => 'iddate',
+                                'Name' => 'iddate_myTable',
                                 'Unique' => false,
                                 'Columns' => array('id', 'name'),
                             )
@@ -1724,6 +1723,80 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
             $this->o->sqlColumns = $sqlColumns;
         }
         $diff = $this->o->diff();
+        $this->assertSame($expect, $diff);
+    }
+    /**
+    * Data provider for testDiff
+    *
+    * @return array
+    */
+    public static function dataUpgrade()
+    {
+        return array(
+            array(
+                array(
+                    "ALTER TABLE `myTable` ADD `ColumnName` NUMERIC(12) NULL",
+                ),
+                array(
+                ),
+                array(
+                ),
+                true,
+            ),
+            array(
+                array(
+                    "CREATE INDEX iddate on `myTable` (id, name);"
+                ),
+                array(
+                    "id" => array(
+                        "Name" => "id",
+                        "Type" => "INTEGER",
+                        "Default" => 0,
+                        "AutoIncrement" => true,
+                    ),
+                    "name" => array(
+                        "Name" => "name", "Type" => "varchar(32)", "Default" => ""
+                    ),
+                    "value" => array(
+                        "Name" => "value", "Type" => "float", "Default" => 0.0
+                    ),
+                    "value2" => array(
+                        "Name" => "value", "Type" => "float", "Default" => 0.0
+                    ),
+                ),
+                array(
+                    "idvalue2" => array(
+                        "Name" => "idvalue2",
+                        "Unique" => true,
+                        "Columns" => array("id", "value2"),
+                    ),
+                ),
+                true,
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $setup  Database query to modify the table
+    * @param string $expect The query created
+    *
+    * @return null
+    *
+    * @dataProvider dataUpgrade
+    */
+    public function testUpgrade($setup, $sqlColumns, $sqlIndexes, $expect)
+    {
+        foreach ($setup as $query) {
+            $this->pdo->query($query);
+        }
+        if (is_array($sqlIndexes) && !empty($sqlIndexes)) {
+            $this->o->sqlIndexes = $sqlIndexes;
+        }
+        if (is_array($sqlColumns) && !empty($sqlColumns)) {
+            $this->o->sqlColumns = $sqlColumns;
+        }
+        $diff = $this->o->upgrade();
         $this->assertSame($expect, $diff);
     }
 

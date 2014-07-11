@@ -88,15 +88,15 @@ class DeviceProcesses extends \HUGnet\db\TableParams
     public $sqlColumns = array(
         "dev" => array(
             "Name" => "dev",
-            "Type" => "INTEGER",
+            "Type" => "int",
         ),
         "process" => array(
             "Name" => "process",
-            "Type" => "INTEGER",
+            "Type" => "int",
         ),
         "id" => array(
             "Name" => "id",
-            "Type" => "INTEGER",
+            "Type" => "int",
             "Default" => 0xFF,
         ),
         "type" => array(

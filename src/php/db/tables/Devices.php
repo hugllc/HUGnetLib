@@ -103,7 +103,7 @@ class Devices extends \HUGnet\db\Table
     public $sqlColumns = array(
         "id" => array(
             "Name" => "id",
-            "Type" => "INTEGER",
+            "Type" => "int",
             "Primary" => true,
         ),
         "DeviceID" => array(

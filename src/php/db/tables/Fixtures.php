@@ -109,7 +109,7 @@ class Fixtures extends \HUGnet\db\Table
         ),
         "dev" => array(
             "Name" => "dev",
-            "Type" => "INTEGER",
+            "Type" => "int",
             "Null" => false,
         ),
         "fixture" => array(

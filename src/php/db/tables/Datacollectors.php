@@ -140,8 +140,8 @@ class DataCollectors extends \HUGnet\db\Table
     *   ),
     */
     public $sqlIndexes = array(
-        "id" => array(
-            "Name" => "id",
+        "ipGatewayKey" => array(
+            "Name" => "ipGatewayKey",
             "Unique" => true,
             "Columns" => array("GatewayKey", "ip"),
         ),
