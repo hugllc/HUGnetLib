@@ -56,7 +56,6 @@ HUGnet.DeviceFunction = Backbone.Model.extend({
     */
     initialize: function(attrib)
     {
-        console.log(this.toJSON());
         var id = this.get("id");
         this.set("id", parseInt(id, 0));
     },
