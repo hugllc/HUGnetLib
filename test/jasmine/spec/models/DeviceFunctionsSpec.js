@@ -4,7 +4,9 @@ describe("src/webapi/javascript/models/HUGnet.DeviceFunctions", function() {
         var fcts;
 
         beforeEach(function() {
-            fcts = new HUGnet.DeviceFunctions();
+            fcts = new HUGnet.DeviceFunctions({
+                devid = 12;
+            });
         });
         afterEach(function() {
         });

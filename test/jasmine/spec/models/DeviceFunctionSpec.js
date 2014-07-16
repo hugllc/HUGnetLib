@@ -14,10 +14,16 @@ describe("src/webapi/javascript/models/HUGnet.DeviceFunction", function() {
             expect(input.get('driver')).toEqual('');
         });
         it("tableEntry should default to an empty array", function() {
-            expect(input.get('tableEntry')).toEqual({});
+            expect(input.get('data')).toEqual({});
         });
-        it("params should default to an empty array", function() {
-            expect(input.get('tableEntry')).toEqual({});
+        it("longName should default to 'Unknown'", function() {
+            expect(input.get('longName')).toEqual('Unknown');
+        });
+        it("shortName should default to 'Unknown'", function() {
+            expect(input.get('shortName')).toEqual('Unknown');
+        });
+        it("name should default to 'New Function'", function() {
+            expect(input.get('name')).toEqual('New Function');
         });
         
     });
