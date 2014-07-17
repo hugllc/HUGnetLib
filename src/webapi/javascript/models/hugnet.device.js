@@ -356,6 +356,38 @@ HUGnet.Device = Backbone.Model.extend({
                 }
             );
         }
+    },
+   /**
+    * Gets infomration about a device.  This is retrieved from the database only.
+    *
+    * @param id The id of the device to get
+    *
+    * @return null
+    */
+    fctsetup: function()
+    {
+        var id = this.get('id');
+        if ((id !== 0) && !this.lock) {
+            var myself = this;
+            $.ajax({
+                type: 'GET',
+                url: this.url(),
+                cache: false,
+                dataType: 'json',
+                data:
+                {
+                    "task": "device",
+                    "action": "fctsetup",
+                    "id": id.toString(16)
+                }
+            }).done(
+                function (data)
+                {
+                    console.log(data);
+                    myself.set(data);
+                }
+            );
+        }
     }
 });
 

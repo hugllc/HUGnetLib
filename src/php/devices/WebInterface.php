@@ -170,6 +170,8 @@ class WebInterface
             $ret = $this->_getfcts();
         } else if ($action === "putfcts") {
             $ret = $this->_putfcts($args);
+        } else if ($action === "fctsetup") {
+            $ret = $this->_fctsetup($args);
         }
         return $ret;
     }
@@ -256,6 +258,22 @@ class WebInterface
     private function _getfcts($args = null)
     {
         return $this->_device->fcts()->toArray(true);
+    }
+    /**
+    * returns a history object for this device
+    *
+    * @param object $args The argument object
+    *
+    * @return string
+    */
+    private function _fctsetup($args = null)
+    {
+        $dev = $this->_device->toArray();
+        // This sets it so that it can't save this info
+        $dev["group"] = "null";
+        $device = $this->_system->device($dev);
+        // Apply the function setup here
+        return $device->toArray(true);
     }
     /**
     * returns a history object for this device

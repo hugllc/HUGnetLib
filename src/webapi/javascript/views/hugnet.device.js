@@ -369,12 +369,19 @@ var DeviceEntryView = Backbone.View.extend({
     },
     configview: function (e)
     {
-        var view = new DeviceConfigView({ model: this.model });
+        var view = new DeviceConfigView({ 
+            model: this.model, 
+            url: this.url
+        });
         this.parent.popup(view);
     },
     configsetview: function (e)
     {
-        var view = new DeviceConfigView({ model: this.model, set: true });
+        var view = new DeviceConfigView({ 
+            model: this.model, 
+            url: this.url, 
+            set: true 
+        });
         this.parent.popup(view);
     },
     _setupProgress: function(title)

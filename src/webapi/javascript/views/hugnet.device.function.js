@@ -162,7 +162,7 @@ HUGnet.DeviceFunctionsView = Backbone.View.extend({
             parent: this,
             template: this.rowTemplate
         });
-        this.$('tbody').append(view.render().el);
+        this.$('table:first').children('tbody').append(view.render().el);
     },
     popup: function (view)
     {

@@ -434,7 +434,7 @@ HUGnet.ImageConfigView = Backbone.View.extend({
     {
         var id = model.get("id");
         this.views[id] = new ImageConfigEntryView({ model: model, parent: this, url: this.url });
-        this.$('tbody').append(this.views[id].render().el);
+        this.$('table:first').children('tbody').append(this.views[id].render().el);
         this.$("table").trigger('update');
     },
     delImage: function (model, collection, options)

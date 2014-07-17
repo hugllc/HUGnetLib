@@ -237,7 +237,8 @@ HUGnet.DeviceOutputsView = Backbone.View.extend({
     insert: function (model, key)
     {
         var view = new DeviceOutputEntryView({ model: model, parent: this });
-        this.$('tbody').append(view.render().el);
+        this.$('table:first').children('tbody').append(view.render().el);
+        //this.$('tbody').append(view.render().el);
     },
     popup: function (view)
     {
