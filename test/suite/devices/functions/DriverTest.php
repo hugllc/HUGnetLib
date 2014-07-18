@@ -166,6 +166,15 @@ class DriverTest extends drivers\DriverTestBase
         $expect = array(
             'longName' => 'Unknown Function',
             'shortName' => 'Unknown',
+            "extraText" => array(
+            ),
+            "extraValues" => array(
+            ),
+            "extraDefault" => array(),
+            "extraDesc" => array(
+            ),
+            "extraNames" => array(
+            ),
             'min' => 25,
             'max' => 81,
             'type' => 'Simple',

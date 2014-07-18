@@ -36,6 +36,8 @@
 namespace HUGnet\devices\functions;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
+/** This is our base class */
+require_once dirname(__FILE__)."/../../base/LoadableDriver.php";
 
 /**
  * Base driver class for devices.
@@ -55,7 +57,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-abstract class Driver
+abstract class Driver extends \HUGnet\base\LoadableDriver
 {
     /**
     * This is where we store the process.
@@ -77,7 +79,20 @@ abstract class Driver
     */
     protected $default = array(
         'longName' => 'Unknown Function',
-        'shortName' => 'Unknown'
+        'shortName' => 'Unknown',
+        "extraText" => array(
+        ),
+        // Integer is the size of the field needed to edit
+        // Array   is the values that the extra can take
+        // Null    nothing
+        "extraValues" => array(
+        ),
+        "extraDefault" => array(
+        ),
+        "extraDesc" => array(
+        ),
+        "extraNames" => array(
+        ),
     );
     /**
     * This is where all of the driver information is stored.
@@ -89,54 +104,13 @@ abstract class Driver
     private static $_drivers = array(
     );
     /**
-    * This function sets up the driver object, and the database object.  The
-    * database object is taken from the driver object.
-    *
-    * @param object &$fctobject The function in question
-    *
-    * @return null
-    */
-    protected function __construct(&$fctobject)
-    {
-        $this->_fctobject = &$fctobject;
-        $this->offset     = (int)$offset;
-    }
-    /**
     * This is the destructor
     *
     * @return object
     */
     public function fct()
     {
-        return parent::fctobject();
-    }
-    /**
-    * Checks to see if a piece of data exists
-    *
-    * @param string $name The name of the property to check
-    *
-    * @return true if the property exists, false otherwise
-    */
-    public function present($name)
-    {
-        return !is_null($this->get($name));
-    }
-    /**
-    * Gets an item
-    *
-    * @param string $name The name of the property to get
-    *
-    * @return null
-    */
-    public function get($name)
-    {
-        $ret = null;
-        if (isset($this->params[$name])) {
-            $ret = $this->params[$name];
-        } else if (isset($this->default[$name])) {
-            $ret = $this->default[$name];
-        }
-        return $ret;
+        return parent::iopobject();
     }
     /**
     * This function creates the system.
@@ -178,20 +152,6 @@ abstract class Driver
         if (class_exists($driver) && !isset(self::$_drivers[$key])) {
             self::$_drivers[$key] = $class;
         }
-    }
-    /**
-    * Returns all of the parameters and defaults in an array
-    *
-    * @return array of data from the sensor
-    */
-    public function toArray()
-    {
-        $return = array();
-        $keys = array_merge(array_keys($this->default), array_keys($this->params));
-        foreach ($keys as $key) {
-            $return[$key] = $this->get($key);
-        }
-        return $return;
     }
 
 

@@ -66,6 +66,7 @@ class Fct extends \HUGnet\base\Container
         "driver" => "",
         "name" => "New Function",
         "data" => array(),
+        "extra" => array(),
     );
     /**
     * This is the cache for the drivers.

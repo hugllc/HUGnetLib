@@ -67,6 +67,19 @@ class InputFunction extends \HUGnet\devices\functions\Driver
         "longName"  => "Input Function",
         "shortName" => "Input",
         "type"      => "Simple",
+        "extraText" => array(
+        ),
+        // Integer is the size of the field needed to edit
+        // Array   is the values that the extra can take
+        // Null    nothing
+        "extraValues" => array(
+        ),
+        "extraDefault" => array(
+        ),
+        "extraDesc" => array(
+        ),
+        "extraNames" => array(
+        ),
     );
 
 }

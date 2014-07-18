@@ -180,6 +180,12 @@ class FctTest extends \PHPUnit_Framework_TestCase
                     'data' => array(1,2,3,4),
                     'driver' => "TestFctDriver1",
                     "name" => "Hello",
+                    'extraText' => array(),
+                    'extraValues' => array(),
+                    'extraDefault' => array(),
+                    'extraDesc' => array(),
+                    'extraNames' => array(),
+                    'extra' => array(),
                 )
             ),
             array(
@@ -200,6 +206,12 @@ class FctTest extends \PHPUnit_Framework_TestCase
                     'driver' => "InputFunction",
                     "type" => "Simple",
                     "name" => "New Function",
+                    'extraText' => array(),
+                    'extraValues' => array(),
+                    'extraDefault' => array(),
+                    'extraDesc' => array(),
+                    'extraNames' => array(),
+                    'extra' => array(),
                 )
             ),
         );
