@@ -102,6 +102,31 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     * as the driver class name.
     */
     private static $_drivers = array(
+        "InputFunction" => "Generic  Input",
+    );
+    /**
+    * This is where the correlation between the drivers and the arch is stored.
+    *
+    * If a driver is not registered here, it will not be in the list of drivers
+    * that can be chosen.
+    *
+    */
+    protected $arch = array(
+        "0039-12" => array(
+        ),
+        "0039-21-01" => array(
+        ),
+        "0039-21-02" => array(
+        ),
+        "0039-28" => array(
+        ),
+        "0039-37" => array(
+        ),
+        "Linux" => array(
+        ),
+        "all" => array(
+            "InputFunction" => "Generic Input",
+        ),
     );
     /**
     * This is the destructor

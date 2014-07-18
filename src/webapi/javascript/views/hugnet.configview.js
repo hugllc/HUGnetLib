@@ -147,7 +147,6 @@ var DeviceConfigView = Backbone.View.extend({
             this.tTemplate = '#DeviceConfigSetViewTitleTemplate';
             this.modelset = new HUGnet.Device(this.model.toJSON());
             this.modelset.urlRoot = this.url;
-            console.log(this.url);
             // This gets the latest setup
             this.modelset.fctsetup();
         } else {

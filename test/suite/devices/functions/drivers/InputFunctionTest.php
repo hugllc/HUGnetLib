@@ -85,6 +85,31 @@ class InputFunctionTest extends DriverTestBase
     {
         parent::tearDown();
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataGet()
+    {
+        return array(
+            array(
+                "ThisIsABadName",
+                array(),
+                null,
+            ),
+            array(
+                "extraValues",
+                array(),
+                array(
+                    array(
+                        254 => 'Virtual',
+                        255 => 'Empty Slot'
+                    ),
+                ),
+            ),
+        );
+    }
 
 }
 ?>

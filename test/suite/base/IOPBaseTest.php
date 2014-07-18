@@ -1120,6 +1120,27 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
         );
         unset($obj);
     }
+    /**
+    * This tests the object creation
+    *
+    * @return null
+    */
+    public function testGetDrivers() 
+    {
+        $sys = $this->getMock('\HUGnet\System', array('now'));
+        $dev = new \HUGnet\DummyBase("Device");
+        $obj = IOPBaseStub2::factory(
+            $sys, array("dev" => 5, "input" => 0), null, $dev
+        );
+        $this->assertSame(
+            array(
+                254 => 'Virtual',
+                255 => 'Empty Slot'
+            ),
+            $obj->getDrivers()
+        );
+        unset($obj);
+    }
 
 }
 /**

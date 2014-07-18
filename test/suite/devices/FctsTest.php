@@ -285,6 +285,12 @@ class FctsTest extends \PHPUnit_Framework_TestCase
         return array(
             array(   // #0
                 array(
+                    "Device" => array(
+                        "input" => new \HUGnet\DummyBase("Input")
+                    ),
+                    "Input" => array(
+                        "getDrivers" => array("a" => "b"),
+                    ),
                 ),
                 array(
                 ),
@@ -294,6 +300,12 @@ class FctsTest extends \PHPUnit_Framework_TestCase
             ),
             array(  // #1
                 array(
+                    "Device" => array(
+                        "input" => new \HUGnet\DummyBase("Input")
+                    ),
+                    "Input" => array(
+                        "getDrivers" => array("a" => "b"),
+                    ),
                 ),
                 array(
                     array(
@@ -333,6 +345,12 @@ class FctsTest extends \PHPUnit_Framework_TestCase
             ),
             array(  // #2
                 array(
+                    "Device" => array(
+                        "input" => new \HUGnet\DummyBase("Input")
+                    ),
+                    "Input" => array(
+                        "getDrivers" => array("a" => "b"),
+                    ),
                 ),
                 array(
                     0 => array(
@@ -364,12 +382,15 @@ class FctsTest extends \PHPUnit_Framework_TestCase
                         'driver' => 'InputFunction',
                         'data' => array(),
                         'name' => 'New Function',
-                        'extraText' => array(),
-                        'extraValues' => array(),
-                        'extraDefault' => array(),
-                        'extraDesc' => array(),
-                        'extraNames' => array(),
+                        'extraText' => array("Driver"),
+                        'extraValues' => array(array("a" => "b")),
+                        'extraDefault' => array(0),
+                        'extraDesc' => array("The input function driver to use"),
+                        'extraNames' => array("driver" => 0),
                         'extra' => array(),
+                        'validIds' => array(
+                            'InputFunction' => 'Generic Input',
+                        )
                     ),
                     array(
                         'longName' => 'Input Function',
@@ -379,12 +400,15 @@ class FctsTest extends \PHPUnit_Framework_TestCase
                         'driver' => 'InputFunction',
                         'data' => array(),
                         'name' => 'New Function',
-                        'extraText' => array(),
-                        'extraValues' => array(),
-                        'extraDefault' => array(),
-                        'extraDesc' => array(),
-                        'extraNames' => array(),
+                        'extraText' => array("Driver"),
+                        'extraValues' => array(array("a" => "b")),
+                        'extraDefault' => array(0),
+                        'extraDesc' => array("The input function driver to use"),
+                        'extraNames' => array("driver" => 0),
                         'extra' => array(),
+                        'validIds' => array(
+                            'InputFunction' => 'Generic Input',
+                        )
                     ),
                     array(
                         'longName' => 'Input Function',
@@ -394,12 +418,15 @@ class FctsTest extends \PHPUnit_Framework_TestCase
                         'driver' => 'InputFunction',
                         'data' => array(),
                         'name' => 'New Function',
-                        'extraText' => array(),
-                        'extraValues' => array(),
-                        'extraDefault' => array(),
-                        'extraDesc' => array(),
-                        'extraNames' => array(),
+                        'extraText' => array("Driver"),
+                        'extraValues' => array(array("a" => "b")),
+                        'extraDefault' => array(0),
+                        'extraDesc' => array("The input function driver to use"),
+                        'extraNames' => array("driver" => 0),
                         'extra' => array(),
+                        'validIds' => array(
+                            'InputFunction' => 'Generic Input',
+                        )
                     ),
                     array(
                         'longName' => 'Input Function',
@@ -409,12 +436,15 @@ class FctsTest extends \PHPUnit_Framework_TestCase
                         'driver' => 'InputFunction',
                         'data' => array(),
                         'name' => 'New Function',
-                        'extraText' => array(),
-                        'extraValues' => array(),
-                        'extraDefault' => array(),
-                        'extraDesc' => array(),
-                        'extraNames' => array(),
+                        'extraText' => array("Driver"),
+                        'extraValues' => array(array("a" => "b")),
+                        'extraDefault' => array(0),
+                        'extraDesc' => array("The input function driver to use"),
+                        'extraNames' => array("driver" => 0),
                         'extra' => array(),
+                        'validIds' => array(
+                            'InputFunction' => 'Generic Input',
+                        )
                     ),
                     array(
                         'longName' => 'Input Function',
@@ -424,12 +454,15 @@ class FctsTest extends \PHPUnit_Framework_TestCase
                         'driver' => 'InputFunction',
                         'data' => array(),
                         'name' => 'New Function',
-                        'extraText' => array(),
-                        'extraValues' => array(),
-                        'extraDefault' => array(),
-                        'extraDesc' => array(),
-                        'extraNames' => array(),
+                        'extraText' => array("Driver"),
+                        'extraValues' => array(array("a" => "b")),
+                        'extraDefault' => array(0),
+                        'extraDesc' => array("The input function driver to use"),
+                        'extraNames' => array("driver" => 0),
                         'extra' => array(),
+                        'validIds' => array(
+                            'InputFunction' => 'Generic Input',
+                        )
                     ),
                 ),
             ),

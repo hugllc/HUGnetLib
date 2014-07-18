@@ -160,6 +160,7 @@ class Fct extends \HUGnet\base\Container
         if ($default) {
             $driver = $this->driver()->toArray();
             $return = array_merge($driver, $return);
+            $return["validIds"] = $this->driver()->getDrivers();
         }
         if (empty($return["driver"])) {
             $return["driver"] = implode(

@@ -164,6 +164,12 @@ class FctTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
+                    "Device" => array(
+                        "input" => new \HUGnet\DummyBase("Input")
+                    ),
+                    "Input" => array(
+                        "getDrivers" => array("a" => "b"),
+                    ),
                 ),
                 array(
                     "id" => 0xFD,
@@ -186,10 +192,19 @@ class FctTest extends \PHPUnit_Framework_TestCase
                     'extraDesc' => array(),
                     'extraNames' => array(),
                     'extra' => array(),
+                    'validIds' => array(
+                        'InputFunction' => 'Generic Input',
+                    )
                 )
             ),
             array(
                 array(
+                    "Device" => array(
+                        "input" => new \HUGnet\DummyBase("Input")
+                    ),
+                    "Input" => array(
+                        "getDrivers" => array("a" => "b"),
+                    ),
                 ),
                 array(
                     "id" => 0xFD,
@@ -206,12 +221,15 @@ class FctTest extends \PHPUnit_Framework_TestCase
                     'driver' => "InputFunction",
                     "type" => "Simple",
                     "name" => "New Function",
-                    'extraText' => array(),
-                    'extraValues' => array(),
-                    'extraDefault' => array(),
-                    'extraDesc' => array(),
-                    'extraNames' => array(),
+                    'extraText' => array("Driver"),
+                    'extraValues' => array(array("a" => "b")),
+                    'extraDefault' => array(0),
+                    'extraDesc' => array("The input function driver to use"),
+                    'extraNames' => array("driver" => 0),
                     'extra' => array(),
+                    'validIds' => array(
+                        'InputFunction' => 'Generic Input',
+                    )
                 )
             ),
         );

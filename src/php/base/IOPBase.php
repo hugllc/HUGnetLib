@@ -362,7 +362,16 @@ abstract class IOPBase extends SystemTableBase
     {
         return parent::store($replace);
     }
-    /**
+     /**
+    * Returns the driver that should be used for a particular device
+    *
+    * @return array The array of drivers that will work
+    */
+    public function getDrivers()
+    {
+        return $this->driver()->getDrivers();
+    }
+   /**
     * Sets the table entry, based on the given ID
     *
     * @param int $id The id of the entry to set this input to

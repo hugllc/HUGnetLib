@@ -68,19 +68,39 @@ class InputFunction extends \HUGnet\devices\functions\Driver
         "shortName" => "Input",
         "type"      => "Simple",
         "extraText" => array(
+            "Driver"
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
+            array(),
         ),
         "extraDefault" => array(
+            0,
         ),
         "extraDesc" => array(
+            "The input function driver to use"
         ),
         "extraNames" => array(
+            "driver" => 0,
         ),
     );
+    /**
+    * Gets an item
+    *
+    * @param string $name The name of the property to get
+    *
+    * @return null
+    */
+    public function get($name)
+    {
+        $ret = parent::get($name);
+        if ($name == "extraValues") {
+            $ret[0] = $this->fct()->device()->input(0)->getDrivers();
+        }
+        return $ret;
+    }
 
 }
 
