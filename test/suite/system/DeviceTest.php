@@ -2112,7 +2112,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-                null,
+                "free",
                 "\HUGnet\devices\Input",
                 array(
                     'dev' => 0,
@@ -2243,7 +2243,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     "Role" => "NotARole",
                     "group" => "default",
                 ),
-                null,
+                "free",
                 null,
                 array(
                 ),
@@ -2257,7 +2257,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     "HWPartNum" => "0039-37-01-B",
                     "FWPartNum" => "0039-38-01-C"
                 ),
-                0,
+                "free",
                 "\HUGnet\devices\Output",
                 array(
                     "output" => 0,
@@ -2398,7 +2398,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     "HWPartNum" => "0039-37-01-B",
                     "FWPartNum" => "0039-38-01-C"
                 ),
-                null,
+                "free",
                 "\HUGnet\devices\Process",
                 array(
                     "process" => 0,

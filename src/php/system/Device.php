@@ -607,7 +607,7 @@ class Device extends \HUGnet\base\SystemTableAction
     */
     public function &input($sid)
     {
-        if (is_null($sid)) {
+        if ($sid === "free") {
             return $this->_getFreeIOP("input");
         }
         return $this->_getIOP($sid, "input");
@@ -621,7 +621,7 @@ class Device extends \HUGnet\base\SystemTableAction
     */
     public function &output($sid)
     {
-        if (is_null($sid)) {
+        if ($sid === "free") {
             return $this->_getFreeIOP("output");
         }
         return $this->_getIOP($sid, "output");
@@ -635,7 +635,7 @@ class Device extends \HUGnet\base\SystemTableAction
     */
     public function &process($sid)
     {
-        if (is_null($sid)) {
+        if ($sid === "free") {
             return $this->_getFreeIOP("process");
         }
         return $this->_getIOP($sid, "process");
