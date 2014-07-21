@@ -1958,17 +1958,12 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 0,
                 "\HUGnet\devices\Input",
                 array(
-                    array(
-                        array(
-                            'dev' => 5,
-                            'input' => 0,
-                        ),
-                    ),
-                    array(
-                        array(
-                            'id' => 0x15,
-                        ),
-                    ),
+                    'dev' => 0,
+                    'input' => 0,
+                    'driver' => 'EmptySensor',
+                    'type' => 'EmptySensor',
+                    'params' => array(),
+                    'tableEntry' => array(),
                 ),
             ),
             array(      // #1
@@ -1990,17 +1985,12 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 0,
                 "\HUGnet\devices\Input",
                 array(
-                    array(
-                        array(
-                            'dev' => 5,
-                            'input' => 0,
-                        ),
-                    ),
-                    array(
-                        array(
-                            'id' => 0x18,
-                        ),
-                    ),
+                    'dev' => 0,
+                    'input' => 0,
+                    'driver' => 'EmptySensor',
+                    'type' => 'EmptySensor',
+                    'params' => array(),
+                    'tableEntry' => array(),
                 ),
             ),
             array(      // #2
@@ -2016,12 +2006,12 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 10,
                 "\HUGnet\devices\Input",
                 array(
-                    array(
-                        array(
-                            'dev' => 5,
-                            'input' => 10,
-                        ),
-                    ),
+                    'dev' => 0,
+                    'input' => 10,
+                    'driver' => 'EmptySensor',
+                    'type' => 'EmptySensor',
+                    'params' => array(),
+                    'tableEntry' => array(),
                 ),
             ),
             array(      // #3
@@ -2039,12 +2029,12 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 1,
                 "\HUGnet\devices\Input",
                 array(
-                    array(
-                        array(
-                            'dev' => 5,
-                            'input' => 1,
-                        ),
-                    ),
+                    'dev' => 0,
+                    'input' => 1,
+                    'driver' => 'EmptySensor',
+                    'type' => 'EmptySensor',
+                    'params' => array(),
+                    'tableEntry' => array(),
                 ),
             ),
             array(      // #4
@@ -2067,12 +2057,12 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 0,
                 "\HUGnet\devices\Input",
                 array(
-                    array(
-                        array(
-                            "input" => 0,
-                            "dev" => 5,
-                        ),
-                    ),
+                    'dev' => 0,
+                    'input' => 0,
+                    'driver' => 'EmptySensor',
+                    'type' => 'EmptySensor',
+                    'params' => array(),
+                    'tableEntry' => array(),
                 ),
             ),
             array(      // #5
@@ -2096,17 +2086,41 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 0,
                 "\HUGnet\devices\Input",
                 array(
-                    array(
-                        array(
-                            'dev' => 5,
-                            'input' => 0,
+                    'dev' => 0,
+                    'input' => 0,
+                    'driver' => 'EmptySensor',
+                    'type' => 'EmptySensor',
+                    'params' => array(),
+                    'tableEntry' => array(),
+                ),
+            ),
+            array(      // #6
+                array(
+                    "Devices" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "sensors" => array(array("id" => 0x15)),
+                            "Role" => "ThisIsABadRole",
+                            "group" => "hello",
                         ),
                     ),
-                    array(
-                        array(
-                            'id' => 0x15,
+                    "Inputs" => array(
+                        "sanitizeWhere" => array(
+                            "sensor" => 5,
+                            "name" => 3,
+                            "value" => 1,
                         ),
                     ),
+                ),
+                null,
+                "\HUGnet\devices\Input",
+                array(
+                    'dev' => 0,
+                    'input' => 0,
+                    'driver' => 'EmptySensor',
+                    'type' => 'EmptySensor',
+                    'params' => array(),
+                    'tableEntry' => array(),
                 ),
             ),
         );
@@ -2154,6 +2168,11 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(
             is_a($sen, $driverExpect),
             "Return is not a ".$driverExpect
+        );
+        $this->assertEquals(
+            $expect,
+            $sen->toArray(false),
+            "The data is wrong"
         );
         unset($obj);
     }
@@ -2218,6 +2237,37 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 ),
                 "default",
             ),
+            array(      // #3
+                array(
+                    "id" => 5,
+                    "Role" => "NotARole",
+                    "group" => "default",
+                ),
+                null,
+                null,
+                array(
+                ),
+                "default",
+            ),
+            array(      // #4
+                array(
+                    "id" => 5,
+                    "Role" => "NotARole",
+                    "group" => "default",
+                    "HWPartNum" => "0039-37-01-B",
+                    "FWPartNum" => "0039-38-01-C"
+                ),
+                0,
+                "\HUGnet\devices\Output",
+                array(
+                    "output" => 0,
+                    "dev" => 5,
+                    'type' => 'EmptyOutput',
+                    'params' => array(),
+                    'tableEntry' => array(),
+                ),
+                "default",
+            ),
         );
     }
     /**
@@ -2261,20 +2311,24 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(1000000));
         $obj = Device::factory($sys, $config);
         $sen = $obj->output($sensor);
-        $this->assertTrue(
-            is_a($sen, $driverExpect),
-            "Return is not a ".$driverExpect
-        );
-        $this->assertEquals(
-            $expect,
-            $sen->toArray(false),
-            "Wrong sensor returned"
-        );
-        $this->assertEquals(
-            $group,
-            $sen->get("group"),
-            "Wrong group returned"
-        );
+        if (!is_null($driverExpect)) {
+            $this->assertTrue(
+                is_a($sen, $driverExpect),
+                "Return is not a ".$driverExpect
+            );
+            $this->assertEquals(
+                $expect,
+                $sen->toArray(false),
+                "Wrong sensor returned"
+            );
+            $this->assertEquals(
+                $group,
+                $sen->get("group"),
+                "Wrong group returned"
+            );
+        } else {
+            $this->assertNull($sen, 'null should have been returned');
+        }
         unset($obj);
     }
     /**
@@ -2333,6 +2387,22 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     "process" => 0,
                     "dev" => 5,
                     //"group" => "hello",
+                    'type' => 'EmptyProcess',
+                    'params' => array(),
+                    'tableEntry' => array(),
+                ),
+            ),
+            array(      // #0
+                array(
+                    "id" => 5,
+                    "HWPartNum" => "0039-37-01-B",
+                    "FWPartNum" => "0039-38-01-C"
+                ),
+                null,
+                "\HUGnet\devices\Process",
+                array(
+                    "process" => 0,
+                    "dev" => 5,
                     'type' => 'EmptyProcess',
                     'params' => array(),
                     'tableEntry' => array(),

@@ -553,6 +553,108 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
+    public static function dataFirstFree()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "selectOneInto" => true,
+                        "sanitizeWhere" => array(
+                            "dev" => 2,
+                            "sensor" => 0,
+                        ),
+                    ),
+                ),
+                new \HUGnet\DummyTable("Table"),
+                array("dev" => 2, "sensor" => 0),
+                array(
+                    "selectOneInto" => array(
+                        array(
+                            array("dev" => 2, "sensor" => 0),
+                        ),
+                    ),
+                    "clearData" => array(array()),
+                    "sanitizeWhere" => array(
+                        array(
+                            array(
+                                "dev" => 2,
+                                "sensor" => 0,
+                            ),
+                        ),
+                    ),
+                ),
+                true,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "selectOneInto" => false,
+                        "get" => array(
+                            "id" => 0xFA,
+                            "type" => "raw",
+                            "sensor" => 5,
+                        ),
+                        "sanitizeWhere" => array(
+                            "dev" => 2,
+                            "sensor" => 0,
+                        ),
+                        "insertRow" => true,
+                        "updateRow" => true,
+                    ),
+                ),
+                new \HUGnet\DummyTable("Table"),
+                array("dev" => 2, "sensor" => 0),
+                array(
+                    "fromAny" => array(
+                        array(
+                            array(
+                                "dev" => 2,
+                                "sensor" => 0,
+                            ),
+                        ),
+                    ),
+                    "selectOneInto" => array(
+                        array(
+                            array("dev" => 2, "sensor" => 0),
+                        ),
+                    ),
+                ),
+                true,
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param object $config      The configuration to use
+    * @param object $class       The table class to use
+    * @param mixed  $data        The gateway data to set
+    * @param array  $expectTable The table to expect
+    * @param bool   $return      The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataFirstFree
+    */
+    public function testFirstFree($config, $class, $data, $expectTable, $return)
+    {
+        $sys = new \HUGnet\DummySystem("System");
+        $dev = new \HUGnet\DummyBase("Device");
+        $sys->resetMock($config);
+        $obj = IOPBaseStub::factory($sys, null, $class, $dev);
+        $ret = $obj->firstFree($data);
+        $this->assertSame($return, $ret, "Return Wrong");
+        $ret = $class->retrieve("Table");
+        foreach ((array)$expectTable as $key => $expect) {
+            $this->assertEquals($expect, $ret[$key], "$key Data Wrong");
+        }
+    }
+    /**
+    * Data provider for testLoad
+    *
+    * @return array
+    */
     public static function dataChange()
     {
         return array(

@@ -607,6 +607,9 @@ class Device extends \HUGnet\base\SystemTableAction
     */
     public function &input($sid)
     {
+        if (is_null($sid)) {
+            return $this->_getFreeIOP("input");
+        }
         return $this->_getIOP($sid, "input");
     }
     /**
@@ -618,6 +621,9 @@ class Device extends \HUGnet\base\SystemTableAction
     */
     public function &output($sid)
     {
+        if (is_null($sid)) {
+            return $this->_getFreeIOP("output");
+        }
         return $this->_getIOP($sid, "output");
     }
     /**
@@ -629,6 +635,9 @@ class Device extends \HUGnet\base\SystemTableAction
     */
     public function &process($sid)
     {
+        if (is_null($sid)) {
+            return $this->_getFreeIOP("process");
+        }
         return $this->_getIOP($sid, "process");
     }
     /**
@@ -653,6 +662,25 @@ class Device extends \HUGnet\base\SystemTableAction
         if (!empty($info)) {
             $iop->mix("extra", $extra);
             $iop->mix("location", $location);
+        }
+        return $iop;
+    }
+    /**
+    * This gets the first IOP that is free
+    *
+    * @param string $type The type of iop to get (input, output, process)
+    *
+    * @return null
+    */
+    private function &_getFreeIOP($type)
+    {
+        $num = $this->driver()->get(ucfirst($type)."Tables");
+        for ($sid = 0; $sid < $num; $sid++) {
+            $iop = $this->driver()->$type($sid);
+            if ($iop->get("id") == 0xFF) {
+                break;
+            }
+            unset($iop);
         }
         return $iop;
     }

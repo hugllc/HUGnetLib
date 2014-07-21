@@ -142,7 +142,8 @@ class Fcts
             return \HUGnet\devices\Fct::factory(
                 $this->_system,
                 array("id" => $chan),
-                $this->_device
+                $this->_device,
+                $this
             );
         }
         if (!is_object($this->_objCache[$chan])) {
@@ -151,7 +152,8 @@ class Fcts
             $this->_objCache[$chan] = \HUGnet\devices\Fct::factory(
                 $this->_system,
                 $this->_channels[$chan],
-                $this->_device
+                $this->_device,
+                $this
             );
         }
         return $this->_objCache[$chan];

@@ -102,11 +102,12 @@ class Fct extends \HUGnet\base\Container
     * @param mixed  &$system (object)The system object to use
     * @param mixed  $data    (int)The id of the item, (array) data info array
     * @param object &$device The device object to use
+    * @param object &$fcts   The fucntions object this is attached to.
     *
     * @return null
     */
     public static function &factory(
-        &$system, $data=null, &$device = null
+        &$system, $data=null, &$device = null, $fcts = null
     ) {
         \HUGnet\System::systemMissing(
             get_class($this)." needs to be passed a system object",
@@ -118,6 +119,7 @@ class Fct extends \HUGnet\base\Container
         );
         $object = new Fct($system, $data);
         $object->_device = &$device;
+        $object->_fcts   = &$fcts;
         return $object;
     }
     /**
@@ -202,6 +204,15 @@ class Fct extends \HUGnet\base\Container
     public function device()
     {
         return $this->_device;
+    }
+    /**
+    * This builds the class from a setup string
+    *
+    * @return Array of channel information
+    */
+    public function fcts()
+    {
+        return $this->_fcts;
     }
     /**
     * returns a history object for this device
