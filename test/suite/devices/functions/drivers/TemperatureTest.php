@@ -69,7 +69,7 @@ class TemperatureTest extends DriverTestBase
     {
         parent::setUp();
         $this->o = \HUGnet\devices\functions\Driver::factory(
-            "Temperature", $this->output
+            "Temperature", $this->fct
         );
     }
 
@@ -104,10 +104,86 @@ class TemperatureTest extends DriverTestBase
                 ),
                 array(
                     array(
+                        'ADuCThermocouple' => 'Thermocouple',
+                        'ADuCMF51E' => 'Cantherm MF51E Thermistor',
+                        'ADuCScaledTemp' => 'Scaled Temperature Sensor',
+                        'ADuCUSSensorRTD' => 'USSensor RTD',
+                        'ADuCVishayRTD' => 'Vishay RTD',
                     ),
                 ),
             ),
+            array(
+                "extraDefault",
+                array(
+                ),
+                array(
+                    "ADuCThermocouple"
+                ),
+            ),
+            array(
+                "extraValues",
+                array(
+                    "system" => array(
+                    ),
+                    "device" => array(
+                        "arch" => "0039-12",
+                    ),
+                    "fct" => array(
+                    ),
+                ),
+                array(
+                    array(
+                        'AVRBC2322640' => 'BC Components 2322640 Thermistor',
+                        'AVRB57560G0103F000' => 'EPCOS B57560G0103F000 Thermistor',
+                        'AVRIMCSolar' => 'IMC Solar Thermistor',
+                    ),
+                ),
+            ),
+            array(
+                "extraDefault",
+                array(
+                    "system" => array(
+                    ),
+                    "device" => array(
+                        "arch" => "0039-12",
+                    ),
+                    "fct" => array(
+                    ),
+                ),
+                array(
+                    "AVRBC2322640"
+                ),
+            ),
         );
+    }
+    /**
+    * data provider for testType
+    *
+    * @return array
+    */
+    public static function dataExecute()
+    {
+        return array(
+            array("a", array(), true),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $name   The name of the variable to test.
+    * @param array  $stuff  The mocks to set up
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataExecute
+    */
+    public function testExecute($name, $stuff, $expect)
+    {
+        if (!empty($stuff)) {
+            $this->stuff = $stuff;
+        }
+        $this->assertSame($expect, $this->o->execute());
     }
 
 }

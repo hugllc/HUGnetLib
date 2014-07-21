@@ -179,7 +179,15 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
             self::$_drivers[$key] = $class;
         }
     }
-
+    /**
+    * Applies this function
+    *
+    * @return null
+    */
+    public function execute()
+    {
+        return false;
+    }
 
 }
 

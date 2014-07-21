@@ -339,6 +339,58 @@ class DriverTest extends drivers\DriverTestBase
     *
     * @return array
     */
+    public static function dataGetDriverID()
+    {
+        return array(
+            array(
+                array(),
+                "test",
+                false,
+            ),
+            array(
+                array(),
+                "ADuCVoltage",
+                "41:DEFAULT",
+            ),
+            array(
+                array(),
+                "ADuCPressure",
+                "41:ADuCPressure",
+            ),
+            array(
+                array(
+                    "38:thisIsATest" => "DriverTestClass",
+                ),
+                "DriverTestClass",
+                "38:thisIsATest",
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $registers Drivers to register
+    * @param mixed  $class     The hardware part number
+    * @param array  $expect    The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataGetDriverID
+    */
+    public function testGetDriverID($registers, $class, $expect)
+    {
+        foreach ($registers as $key => $cl) {
+            Driver::register($key, $cl);
+        }
+        $this->assertSame(
+            $expect, Driver::getDriverID($class)
+        );
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
     public static function dataGetDrivers()
     {
         return array(

@@ -60,7 +60,19 @@ abstract class DriverTestBase extends \HUGnet\devices\IOPDriverTestBase
     /** This is our system object */
     protected $system;
     /** This is our output object */
-    protected $output;
+    protected $device;
+    /** This is our output object */
+    protected $fct;
+    /** This is stuff for our get mock */
+    protected $stuff = array(
+        "device" => array(
+            "arch" => "0039-37",
+        ), 
+        "system" => array(
+        ), 
+        "fct" => array(
+        )
+    );
 
     /**
     * Sets up the fixture, for example, opens a network connection.
@@ -73,11 +85,111 @@ abstract class DriverTestBase extends \HUGnet\devices\IOPDriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->system = $this->getMock("\HUGnet\System", array("now"));
+        $this->system = $this->getMockBuilder('\HUGnet\System')
+            ->setMethods(array("get", "device", "now"))
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->system->expects($this->any())
             ->method('now')
             ->will($this->returnValue(123456));
-        $this->output = $this->system->device()->output(0);
+        $this->system->expects($this->any())
+            ->method('get')
+            ->will($this->returnCallback(array($this, "getSystem")));
+
+            
+        $this->device = $this->getMockBuilder('\HUGnet\Device')
+            ->setMethods(array("get", "system", "fct"))
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->device->expects($this->any())
+            ->method('get')
+            ->will($this->returnCallback(array($this, "getDevice")));
+
+            
+        $this->fct = $this->getMockBuilder('\HUGnet\devices\Fct')
+            ->setMethods(array("get", "system", "device"))
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->fct->expects($this->any())
+            ->method('get')
+            ->will($this->returnCallback(array($this, "getFct")));
+
+        
+        $this->system->expects($this->any())
+            ->method('device')
+            ->will($this->returnCallback(array($this, "device")));
+        $this->device->expects($this->any())
+            ->method('system')
+            ->will($this->returnCallback(array($this, 'system')));
+        $this->device->expects($this->any())
+            ->method('fct')
+            ->will($this->returnCallback(array($this, "fct")));
+        $this->fct->expects($this->any())
+            ->method('device')
+            ->will($this->returnCallback(array($this, "device")));
+        $this->fct->expects($this->any())
+            ->method('system')
+            ->will($this->returnCallback(array($this, "system")));
+    }
+    /**
+    * Returns our mock system object
+    *
+    * @return null
+    */
+    public function &system()
+    {
+        return $this->system;
+    }
+    /**
+    * Returns our mock device object
+    *
+    * @return null
+    */
+    public function &device()
+    {
+        return $this->device;
+    }
+    /**
+    * Returns our mock device object
+    *
+    * @return null
+    */
+    public function &fct()
+    {
+        return $this->fct;
+    }
+    /**
+    * Returns our mock device object
+    *
+    * @param string $name The name of the stuff to get
+    * 
+    * @return null
+    */
+    public function getDevice($name)
+    {
+        return $this->stuff["device"][$name];
+    }
+    /**
+    * Returns our mock device object
+    *
+    * @param string $name The name of the stuff to get
+    *
+    * @return null
+    */
+    public function getSystem($name)
+    {
+        return $this->stuff["system"][$name];
+    }
+    /**
+    * Returns our mock device object
+    *
+    * @param string $name The name of the stuff to get
+    *
+    * @return null
+    */
+    public function getFct($name)
+    {
+        return $this->stuff["fct"][$name];
     }
 
     /**
@@ -135,17 +247,48 @@ abstract class DriverTestBase extends \HUGnet\devices\IOPDriverTestBase
     * test the set routine when an extra class exists
     *
     * @param string $name   The name of the variable to test.
-    * @param array  $mock   The mocks to set up
+    * @param array  $stuff  The mocks to set up
     * @param array  $expect The expected return
     *
     * @return null
     *
     * @dataProvider dataGet
     */
-    public function testGet($name, $mock, $expect)
+    public function testGet($name, $stuff, $expect)
     {
-        $this->output->table()->fromArray($mock);
+        if (!empty($stuff)) {
+            $this->stuff = $stuff;
+        }
         $this->assertSame($expect, $this->o->get($name));
+    }
+    /**
+    * data provider for testType
+    *
+    * @return array
+    */
+    public static function dataExecute()
+    {
+        return array(
+            array("a", array(), false),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $name   The name of the variable to test.
+    * @param array  $stuff  The mocks to set up
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataExecute
+    */
+    public function testExecute($name, $stuff, $expect)
+    {
+        if (!empty($stuff)) {
+            $this->stuff = $stuff;
+        }
+        $this->assertSame($expect, $this->o->execute());
     }
 }
 ?>

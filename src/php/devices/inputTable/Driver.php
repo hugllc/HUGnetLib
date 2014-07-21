@@ -306,6 +306,18 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         return $driver;
     }
     /**
+    * Returns id:type for the class given.  It will only return the first one it
+    * encounters
+    *
+    * @param string $class The class the driver belongs to
+    *
+    * @return string The driver to use
+    */
+    public static function getDriverID($class)
+    {
+        return array_search($class, self::$_drivers);
+    }
+    /**
     * Returns the driver that should be used for a particular device
     *
     * @return array The array of drivers that will work

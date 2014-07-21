@@ -77,7 +77,7 @@ require_once dirname(__FILE__)."/../DriverInterface.php";
             array(),
         ),
         "extraDefault" => array(
-            0,
+            "NoOp",
         ),
         "extraDesc" => array(
             "The temperature sensor type to use"
@@ -90,9 +90,19 @@ require_once dirname(__FILE__)."/../DriverInterface.php";
     * This is where we get the temperature sensor types for this device
     */
     protected $archType = array(
+        "0039-12" => array(
+            "AVRBC2322640"       => "BC Components 2322640 Thermistor",
+            "AVRB57560G0103F000" => "EPCOS B57560G0103F000 Thermistor",
+            "AVRIMCSolar"        => "IMC Solar Thermistor",
+        ),
+        "0039-28" => array(
+            "AVRBC2322640"       => "BC Components 2322640 Thermistor",
+            "AVRB57560G0103F000" => "EPCOS B57560G0103F000 Thermistor",
+            "AVRIMCSolar"        => "IMC Solar Thermistor",
+        ),
         "0039-37" => array(
             "ADuCThermocouple" => "Thermocouple",
-            "ADuCMF51E"        => "MF51E Thermistor",
+            "ADuCMF51E"        => "Cantherm MF51E Thermistor",
             "ADuCScaledTemp"   => "Scaled Temperature Sensor",
             "ADuCUSSensorRTD"  => "USSensor RTD",
             "ADuCVishayRTD"    => "Vishay RTD",
@@ -115,10 +125,73 @@ require_once dirname(__FILE__)."/../DriverInterface.php";
             $ret[0] = array_merge(
                 (array)$this->archType["all"], (array)$this->archType[$arch]
             );
+        } else if ($name == "extraDefault") {
+            $arch  = $this->fct()->device()->get("arch");
+            $array = (array)$this->archType[$arch];
+            reset($array);
+            $key = (string)key($array);
+            if (trim($key) != "") {
+                $ret[0] = $key;
+            }
         }
         return $ret;
     }
-
+    /**
+    * Applies this function
+    *
+    * @return null
+    */
+    public function execute()
+    {
+        $arch = $this->fct()->device()->get("arch");
+        $ret  = false;
+        switch ($arch) {
+        case "0039-12":
+            $ret = $this->_execute003912();
+            break;
+        case "0039-28":
+            $ret = $this->_execute003928();
+            break;
+        case "0039-37":
+            $ret = $this->_execute003937();
+            break;
+        }
+        return $ret;
+    }
+    /**
+    * Applies this function to 0039-12
+    *
+    * @return null
+    */
+    private function _execute003912()
+    {
+        return true;
+    }
+    /**
+    * Applies this function to 0039-28
+    *
+    * @return null
+    */
+    private function _execute003928()
+    {
+        return true;
+    }
+    /**
+    * Applies this function to 0039-37
+    *
+    * @return null
+    */
+    private function _execute003937()
+    {
+        include_once dirname(__FILE__)."/../../inputTable/Driver.php";
+        $driver = $this->getExtra(0);
+        $driverID = \HUGnet\devices\inputTable\Driver::getDriverID($driver);
+        list($sid, $sub) = explode(":", $driverID);
+        $entry  = array(
+            "driver0" => hexdec($sid),
+        );
+        return true;
+    }
 }
 
 
