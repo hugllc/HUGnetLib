@@ -102,7 +102,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     * as the driver class name.
     */
     private static $_drivers = array(
-        "InputFunction" => "Generic  Input",
+        "Temperature" => "Temperature Sensor",
     );
     /**
     * This is where the correlation between the drivers and the arch is stored.
@@ -121,11 +121,12 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "0039-28" => array(
         ),
         "0039-37" => array(
+            "Temperature" => "Temperature Sensor",
         ),
         "Linux" => array(
         ),
         "all" => array(
-            "InputFunction" => "Generic Input",
+            "NoOp" => "Do Nothing",
         ),
     );
     /**
@@ -158,8 +159,8 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         if (is_subclass_of($class, $interface)) {
             return new $class($function, $table);
         }
-        include_once dirname(__FILE__)."/drivers/InputFunction.php";
-        return new \HUGnet\devices\functions\drivers\InputFunction($function);
+        include_once dirname(__FILE__)."/drivers/NoOp.php";
+        return new \HUGnet\devices\functions\drivers\NoOp($function);
     }
     /**
     * Registers an extra driver to be used by the class

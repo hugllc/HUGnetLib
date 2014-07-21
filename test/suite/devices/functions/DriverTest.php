@@ -192,12 +192,17 @@ class DriverTest extends drivers\DriverTestBase
             array(
                 "asdf",
                 array(),
-                'HUGnet\devices\functions\drivers\InputFunction',
+                'HUGnet\devices\functions\drivers\NoOp',
             ),
             array(
                 "EmptyFunction",
                 array(),
-                'HUGnet\devices\functions\drivers\InputFunction',
+                'HUGnet\devices\functions\drivers\NoOp',
+            ),
+            array(
+                "Temperature",
+                array(),
+                'HUGnet\devices\functions\drivers\Temperature',
             ),
         );
     }

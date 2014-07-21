@@ -56,7 +56,7 @@ require_once dirname(__FILE__)."/../DriverInterface.php";
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class InputFunction extends \HUGnet\devices\functions\Driver
+ class Temperature extends \HUGnet\devices\functions\Driver
     implements \HUGnet\devices\functions\DriverInterface
 {
     /**
@@ -64,8 +64,8 @@ class InputFunction extends \HUGnet\devices\functions\Driver
     * put into all derivative classes, even if it is empty.
     */
     protected $params = array(
-        "longName"  => "Input Function",
-        "shortName" => "Input",
+        "longName"  => "Temperature Sensor",
+        "shortName" => "Temp",
         "type"      => "Simple",
         "extraText" => array(
             "Driver"
@@ -80,10 +80,24 @@ class InputFunction extends \HUGnet\devices\functions\Driver
             0,
         ),
         "extraDesc" => array(
-            "The input function driver to use"
+            "The temperature sensor type to use"
         ),
         "extraNames" => array(
             "driver" => 0,
+        ),
+    );
+    /**
+    * This is where we get the temperature sensor types for this device
+    */
+    protected $archType = array(
+        "0039-37" => array(
+            "ADuCThermocouple" => "Thermocouple",
+            "ADuCMF51E"        => "MF51E Thermistor",
+            "ADuCScaledTemp"   => "Scaled Temperature Sensor",
+            "ADuCUSSensorRTD"  => "USSensor RTD",
+            "ADuCVishayRTD"    => "Vishay RTD",
+        ),
+        "all" => array(
         ),
     );
     /**
@@ -97,7 +111,10 @@ class InputFunction extends \HUGnet\devices\functions\Driver
     {
         $ret = parent::get($name);
         if ($name == "extraValues") {
-            $ret[0] = $this->fct()->device()->input(0)->getDrivers();
+            $arch = $this->fct()->device()->get("arch");
+            $ret[0] = array_merge(
+                (array)$this->archType["all"], (array)$this->archType[$arch]
+            );
         }
         return $ret;
     }

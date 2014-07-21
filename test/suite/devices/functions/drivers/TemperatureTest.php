@@ -36,7 +36,7 @@ namespace HUGnet\devices\functions\drivers;
 /** This is the base class */
 require_once dirname(__FILE__)."/DriverTestBase.php";
 /** This is a required class */
-require_once CODE_BASE.'devices/functions/drivers/InputFunction.php';
+    require_once CODE_BASE.'devices/functions/drivers/Temperature.php';
 
 /**
  * Test class for HUGnetDB.
@@ -51,10 +51,10 @@ require_once CODE_BASE.'devices/functions/drivers/InputFunction.php';
  * @version    Release: 0.14.3
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class InputFunctionTest extends DriverTestBase
+class TemperatureTest extends DriverTestBase
 {
     /** This is the class we are testing */
-    protected $class = "InputFunction";
+    protected $class = "Temperature";
     /** This is the output object */
     protected $output;
     /**
@@ -69,7 +69,7 @@ class InputFunctionTest extends DriverTestBase
     {
         parent::setUp();
         $this->o = \HUGnet\devices\functions\Driver::factory(
-            "InputFunction", $this->output
+            "Temperature", $this->output
         );
     }
 
@@ -100,11 +100,10 @@ class InputFunctionTest extends DriverTestBase
             ),
             array(
                 "extraValues",
-                array(),
+                array(
+                ),
                 array(
                     array(
-                        254 => 'Virtual',
-                        255 => 'Empty Slot'
                     ),
                 ),
             ),

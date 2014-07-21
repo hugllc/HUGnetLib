@@ -322,23 +322,23 @@ class FctsTest extends \PHPUnit_Framework_TestCase
                 false,
                 array(
                     array(
-                        "driver"     => "InputFunction",
+                        "driver"     => "NoOp",
                         "id"         => 0,
                     ),
                     array(
-                        "driver"     => "InputFunction",
+                        "driver"     => "NoOp",
                         "id"         => 1,
                     ),
                     array(
-                        "driver"     => "InputFunction",
+                        "driver"     => "NoOp",
                         "id"         => 2,
                     ),
                     array(
-                        "driver"     => "InputFunction",
+                        "driver"     => "NoOp",
                         "id"         => 3,
                     ),
                     array(
-                        "driver"     => "InputFunction",
+                        "driver"     => "NoOp",
                         "id"         => 4,
                     ),
                 ),
@@ -375,93 +375,93 @@ class FctsTest extends \PHPUnit_Framework_TestCase
                 true,
                 array(
                     array(
-                        'longName' => 'Input Function',
-                        'shortName' => 'Input',
+                        'longName' => 'This does nothing',
+                        'shortName' => 'NoOp',
                         'type' => 'Simple',
                         'id' => 0,
-                        'driver' => 'InputFunction',
+                        'driver' => 'NoOp',
                         'data' => array(),
                         'name' => 'New Function',
-                        'extraText' => array("Driver"),
-                        'extraValues' => array(array("a" => "b")),
-                        'extraDefault' => array(0),
-                        'extraDesc' => array("The input function driver to use"),
-                        'extraNames' => array("driver" => 0),
+                        'extraText' => array(),
+                        'extraValues' => array(),
+                        'extraDefault' => array(),
+                        'extraDesc' => array(),
+                        'extraNames' => array(),
                         'extra' => array(),
                         'validIds' => array(
-                            'InputFunction' => 'Generic Input',
+                            'NoOp' => 'Do Nothing',
                         )
                     ),
                     array(
-                        'longName' => 'Input Function',
-                        'shortName' => 'Input',
+                        'longName' => 'This does nothing',
+                        'shortName' => 'NoOp',
                         'type' => 'Simple',
                         'id' => 1,
-                        'driver' => 'InputFunction',
+                        'driver' => 'NoOp',
                         'data' => array(),
                         'name' => 'New Function',
-                        'extraText' => array("Driver"),
-                        'extraValues' => array(array("a" => "b")),
-                        'extraDefault' => array(0),
-                        'extraDesc' => array("The input function driver to use"),
-                        'extraNames' => array("driver" => 0),
+                        'extraText' => array(),
+                        'extraValues' => array(),
+                        'extraDefault' => array(),
+                        'extraDesc' => array(),
+                        'extraNames' => array(),
                         'extra' => array(),
                         'validIds' => array(
-                            'InputFunction' => 'Generic Input',
+                            'NoOp' => 'Do Nothing',
                         )
                     ),
                     array(
-                        'longName' => 'Input Function',
-                        'shortName' => 'Input',
+                        'longName' => 'This does nothing',
+                        'shortName' => 'NoOp',
                         'type' => 'Simple',
                         'id' => 2,
-                        'driver' => 'InputFunction',
+                        'driver' => 'NoOp',
                         'data' => array(),
                         'name' => 'New Function',
-                        'extraText' => array("Driver"),
-                        'extraValues' => array(array("a" => "b")),
-                        'extraDefault' => array(0),
-                        'extraDesc' => array("The input function driver to use"),
-                        'extraNames' => array("driver" => 0),
+                        'extraText' => array(),
+                        'extraValues' => array(),
+                        'extraDefault' => array(),
+                        'extraDesc' => array(),
+                        'extraNames' => array(),
                         'extra' => array(),
                         'validIds' => array(
-                            'InputFunction' => 'Generic Input',
+                            'NoOp' => 'Do Nothing',
                         )
                     ),
                     array(
-                        'longName' => 'Input Function',
-                        'shortName' => 'Input',
+                        'longName' => 'This does nothing',
+                        'shortName' => 'NoOp',
                         'type' => 'Simple',
                         'id' => 3,
-                        'driver' => 'InputFunction',
+                        'driver' => 'NoOp',
                         'data' => array(),
                         'name' => 'New Function',
-                        'extraText' => array("Driver"),
-                        'extraValues' => array(array("a" => "b")),
-                        'extraDefault' => array(0),
-                        'extraDesc' => array("The input function driver to use"),
-                        'extraNames' => array("driver" => 0),
+                        'extraText' => array(),
+                        'extraValues' => array(),
+                        'extraDefault' => array(),
+                        'extraDesc' => array(),
+                        'extraNames' => array(),
                         'extra' => array(),
                         'validIds' => array(
-                            'InputFunction' => 'Generic Input',
+                            'NoOp' => 'Do Nothing',
                         )
                     ),
                     array(
-                        'longName' => 'Input Function',
-                        'shortName' => 'Input',
+                        'longName' => 'This does nothing',
+                        'shortName' => 'NoOp',
                         'type' => 'Simple',
                         'id' => 4,
-                        'driver' => 'InputFunction',
+                        'driver' => 'NoOp',
                         'data' => array(),
                         'name' => 'New Function',
-                        'extraText' => array("Driver"),
-                        'extraValues' => array(array("a" => "b")),
-                        'extraDefault' => array(0),
-                        'extraDesc' => array("The input function driver to use"),
-                        'extraNames' => array("driver" => 0),
+                        'extraText' => array(),
+                        'extraValues' => array(),
+                        'extraDefault' => array(),
+                        'extraDesc' => array(),
+                        'extraNames' => array(),
                         'extra' => array(),
                         'validIds' => array(
-                            'InputFunction' => 'Generic Input',
+                            'NoOp' => 'Do Nothing',
                         )
                     ),
                 ),
@@ -531,23 +531,23 @@ class FctsTest extends \PHPUnit_Framework_TestCase
                             array(
                                 array(
                                     "id"         => 0,
-                                    "driver"     => "InputFunction",
+                                    "driver"     => "NoOp",
                                 ),
                                 array(
                                     "id"         => 1,
-                                    "driver"     => "InputFunction",
+                                    "driver"     => "NoOp",
                                 ),
                                 array(
                                     "id"         => 2,
-                                    "driver"     => "InputFunction",
+                                    "driver"     => "NoOp",
                                 ),
                                 array(
                                     "id"         => 3,
-                                    "driver"     => "InputFunction",
+                                    "driver"     => "NoOp",
                                 ),
                                 array(
                                     "id"         => 4,
-                                    "driver"     => "InputFunction",
+                                    "driver"     => "NoOp",
                                 ),
                             ),
                             true
@@ -605,7 +605,7 @@ class FctsTest extends \PHPUnit_Framework_TestCase
                             array(
                                 array(
                                     "id" => 0, 
-                                    'driver' => 'InputFunction',
+                                    'driver' => 'NoOp',
                                 ),
                             ), 
                             true
@@ -617,7 +617,7 @@ class FctsTest extends \PHPUnit_Framework_TestCase
                             array(
                                 array(
                                     "id" => 0, 
-                                    'driver' => 'InputFunction',
+                                    'driver' => 'NoOp',
                                 ),
                             ),
                         ),
@@ -650,23 +650,23 @@ class FctsTest extends \PHPUnit_Framework_TestCase
                             array(
                                 array(
                                     "id" => 0, 
-                                    'driver' => 'InputFunction',
+                                    'driver' => 'NoOp',
                                 ),
                                 array(
                                     "id" => 1, 
-                                    'driver' => 'InputFunction',
+                                    'driver' => 'NoOp',
                                 ),
                                 array(
                                     "id" => 2, 
-                                    'driver' => 'InputFunction',
+                                    'driver' => 'NoOp',
                                 ),
                                 array(
                                     "id" => 3, 
-                                    'driver' => 'InputFunction',
+                                    'driver' => 'NoOp',
                                 ),
                                 array(
                                     "id" => 4, 
-                                    'driver' => 'InputFunction',
+                                    'driver' => 'NoOp',
                                 ),
                             ), 
                             true
@@ -678,23 +678,23 @@ class FctsTest extends \PHPUnit_Framework_TestCase
                             array(
                                 array(
                                     "id" => 0, 
-                                    'driver' => 'InputFunction',
+                                    'driver' => 'NoOp',
                                 ),
                                 array(
                                     "id" => 1, 
-                                    'driver' => 'InputFunction',
+                                    'driver' => 'NoOp',
                                 ),
                                 array(
                                     "id" => 2, 
-                                    'driver' => 'InputFunction',
+                                    'driver' => 'NoOp',
                                 ),
                                 array(
                                     "id" => 3, 
-                                    'driver' => 'InputFunction',
+                                    'driver' => 'NoOp',
                                 ),
                                 array(
                                     "id" => 4, 
-                                    'driver' => 'InputFunction',
+                                    'driver' => 'NoOp',
                                 ),
                             ),
                         ),

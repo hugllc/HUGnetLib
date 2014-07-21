@@ -193,7 +193,7 @@ class FctTest extends \PHPUnit_Framework_TestCase
                     'extraNames' => array(),
                     'extra' => array(),
                     'validIds' => array(
-                        'InputFunction' => 'Generic Input',
+                        'NoOp' => 'Do Nothing',
                     )
                 )
             ),
@@ -214,21 +214,21 @@ class FctTest extends \PHPUnit_Framework_TestCase
                 ),
                 new \HUGnet\DummyTable("Table"),
                 array(
-                    "longName" => "Input Function",
-                    "shortName" => "Input",
+                    "longName" => "This does nothing",
+                    "shortName" => "NoOp",
                     'id' => 0xFD,
                     'data' => array(1,2,3,4),
-                    'driver' => "InputFunction",
+                    'driver' => "NoOp",
                     "type" => "Simple",
                     "name" => "New Function",
-                    'extraText' => array("Driver"),
-                    'extraValues' => array(array("a" => "b")),
-                    'extraDefault' => array(0),
-                    'extraDesc' => array("The input function driver to use"),
-                    'extraNames' => array("driver" => 0),
+                    'extraText' => array(),
+                    'extraValues' => array(),
+                    'extraDefault' => array(),
+                    'extraDesc' => array(),
+                    'extraNames' => array(),
                     'extra' => array(),
                     'validIds' => array(
-                        'InputFunction' => 'Generic Input',
+                        'NoOp' => 'Do Nothing',
                     )
                 )
             ),
