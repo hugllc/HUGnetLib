@@ -549,106 +549,72 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
         }
     }
     /**
-    * Data provider for testLoad
+    * Data provider for testClear
     *
     * @return array
     */
-    public static function dataFirstFree()
+    public static function dataClear()
     {
         return array(
             array(
                 array(
-                    "Table" => array(
-                        "selectOneInto" => true,
-                        "sanitizeWhere" => array(
-                            "dev" => 2,
-                            "sensor" => 0,
+                    "servers" => array(
+                        "default" => array(
+                            "driver" => "sqlite",
+                            "file" => ":memory:",
+                            "group" => "default",
                         ),
                     ),
                 ),
                 new \HUGnet\DummyTable("Table"),
-                array("dev" => 2, "sensor" => 0),
                 array(
-                    "selectOneInto" => array(
-                        array(
-                            array("dev" => 2, "sensor" => 0),
-                        ),
-                    ),
-                    "clearData" => array(array()),
-                    "sanitizeWhere" => array(
-                        array(
-                            array(
-                                "dev" => 2,
-                                "sensor" => 0,
-                            ),
-                        ),
-                    ),
+                    "dev" => 2, 
+                    "input" => 0, 
+                    "type" => 0x41,
+                    "tableEntry" => array("a", "b"),
+                    "params" => json_encode(array("c" => "d")),
+                    "group" => "null",
+                    "extra" => array(0, 1, 2, 3),
                 ),
-                true,
-            ),
-            array(
                 array(
-                    "Table" => array(
-                        "selectOneInto" => false,
-                        "get" => array(
-                            "id" => 0xFA,
-                            "type" => "raw",
-                            "sensor" => 5,
-                        ),
-                        "sanitizeWhere" => array(
-                            "dev" => 2,
-                            "sensor" => 0,
-                        ),
-                        "insertRow" => true,
-                        "updateRow" => true,
-                    ),
+                    'dev' => 2,
+                    'input' => 0,
+                    'type' => 'EmptySensor',
+                    'params' => array(),
+                    'tableEntry' => array(),
                 ),
-                new \HUGnet\DummyTable("Table"),
-                array("dev" => 2, "sensor" => 0),
-                array(
-                    "fromAny" => array(
-                        array(
-                            array(
-                                "dev" => 2,
-                                "sensor" => 0,
-                            ),
-                        ),
-                    ),
-                    "selectOneInto" => array(
-                        array(
-                            array("dev" => 2, "sensor" => 0),
-                        ),
-                    ),
-                ),
-                true,
             ),
         );
     }
     /**
     * This tests the object creation
     *
-    * @param object $config      The configuration to use
-    * @param object $class       The table class to use
-    * @param mixed  $data        The gateway data to set
-    * @param array  $expectTable The table to expect
-    * @param bool   $return      The expected return
+    * @param object $config The configuration to use
+    * @param object $class  The table class to use
+    * @param mixed  $data   The gateway data to set
+    * @param array  $expect The table to expect
     *
     * @return null
     *
-    * @dataProvider dataFirstFree
+    * @dataProvider dataClear
     */
-    public function testFirstFree($config, $class, $data, $expectTable, $return)
+    public function testClear($config, $class, $data, $expect)
     {
-        $sys = new \HUGnet\DummySystem("System");
-        $dev = new \HUGnet\DummyBase("Device");
-        $sys->resetMock($config);
-        $obj = IOPBaseStub::factory($sys, null, $class, $dev);
-        $ret = $obj->firstFree($data);
-        $this->assertSame($return, $ret, "Return Wrong");
-        $ret = $class->retrieve("Table");
-        foreach ((array)$expectTable as $key => $expect) {
-            $this->assertEquals($expect, $ret[$key], "$key Data Wrong");
-        }
+        $sys = $this->getMockBuilder('\HUGnet\System')
+            ->setMethods(array("now"))
+            ->setConstructorArgs(
+                array(
+                    $config
+                )
+            )
+            ->getMock();
+        $sys->expects($this->any())
+            ->method('now')
+            ->will($this->returnValue(123456));
+        $dev = $sys->device();
+        $obj = IOPBaseStub2::factory($sys, $data, null, $dev);
+        $obj->clear();
+        $this->assertSame($expect, $obj->toArray(false), "Return Wrong");
     }
     /**
     * Data provider for testLoad

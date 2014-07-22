@@ -35,6 +35,14 @@
 namespace HUGnet\devices\functions\drivers;
 /** This is the base class */
 require_once CODE_BASE."devices/functions/Driver.php";
+/** This is the base class */
+require_once CODE_BASE."system/Device.php";
+/** This is the base class */
+require_once CODE_BASE."system/System.php";
+/** This is the base class */
+require_once CODE_BASE."devices/Fcts.php";
+/** This is the base class */
+require_once CODE_BASE."devices/Fct.php";
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'suite/devices/IOPDriverTestBase.php';
 
@@ -86,6 +94,7 @@ abstract class DriverTestBase extends \HUGnet\devices\IOPDriverTestBase
     {
         parent::setUp();
         $this->system = $this->getMockBuilder('\HUGnet\System')
+            ->enableArgumentCloning()
             ->setMethods(array("get", "device", "now"))
             ->disableOriginalConstructor()
             ->getMock();
@@ -98,6 +107,7 @@ abstract class DriverTestBase extends \HUGnet\devices\IOPDriverTestBase
 
             
         $this->device = $this->getMockBuilder('\HUGnet\Device')
+            ->enableArgumentCloning()
             ->setMethods(array("get", "system", "fct"))
             ->disableOriginalConstructor()
             ->getMock();
@@ -107,6 +117,7 @@ abstract class DriverTestBase extends \HUGnet\devices\IOPDriverTestBase
 
             
         $this->fct = $this->getMockBuilder('\HUGnet\devices\Fct')
+            ->enableArgumentCloning()
             ->setMethods(array("get", "system", "device"))
             ->disableOriginalConstructor()
             ->getMock();

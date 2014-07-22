@@ -60,6 +60,8 @@ require_once dirname(__FILE__)."/../interfaces/WebAPI.php";
 abstract class IOPBase extends SystemTableBase
     implements \HUGnet\interfaces\WebAPI
 {
+    /** These are our keys to search for.  Null means search everything given */
+    protected $keys = array("dev");
     /**
     * This is the cache for the drivers.
     */
@@ -370,6 +372,20 @@ abstract class IOPBase extends SystemTableBase
     public function getDrivers()
     {
         return $this->driver()->getDrivers();
+    }
+    /**
+    * Clears out the data, while preserving the dev and index
+    *
+    * @return null
+    */
+    public function clear()
+    {
+        $data = array_intersect_key(
+            $this->table()->toArray(true),
+            array_flip($this->keys)
+        );
+        $this->table()->clearData();
+        $this->table()->fromArray($data);
     }
    /**
     * Sets the table entry, based on the given ID

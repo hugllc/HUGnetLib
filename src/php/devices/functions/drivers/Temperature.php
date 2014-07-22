@@ -184,7 +184,7 @@ require_once dirname(__FILE__)."/../DriverInterface.php";
     private function _execute003937()
     {
         include_once dirname(__FILE__)."/../../inputTable/Driver.php";
-        $input = $this->fct()->getInput();
+        $input = $this->fct()->device()->input("free");
         $driver = $this->getExtra(0);
         $driverID = \HUGnet\devices\inputTable\Driver::getDriverID($driver);
         list($sid, $sub) = explode(":", $driverID);
@@ -192,7 +192,7 @@ require_once dirname(__FILE__)."/../DriverInterface.php";
             "driver0" => hexdec($sid),
         );
         $input->table()->set("tableEntry", $entry);
-        return true;
+        return $input->store(true);
     }
 }
 
