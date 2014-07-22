@@ -8,7 +8,7 @@ GIT=`which git`
 all:
 
 setup-ubuntu: 
-	sudo apt-get install php-pear php5-sqlite php5-mysql php5-curl npm nodejs
+	sudo apt-get install php-pear php5-sqlite php5-mysql php5-curl npm nodejs nodejs-legacy
 	mkdir -p $(BASE_DIR)bin
 
 setup: bin bin/composer build-setup
@@ -16,7 +16,7 @@ setup: bin bin/composer build-setup
 	./bin/composer install
 	
 	
-build-setup: node_modules/jasmine-node node_modules/jsdom node_modules/jquery node_modules/backbone node_modules/underscore
+build-setup: bin/phantomjs bin/jsdoc bin/jslint bin/jasmine-node node_modules/jsdom node_modules/jquery node_modules/backbone node_modules/underscore bin/jshint
 
 bin:
 	mkdir -p $(BASE_DIR)bin
@@ -66,19 +66,41 @@ bin/composer:
 	mv $(BASE_DIR)bin/composer.phar $(BASE_DIR)bin/composer
 	
 node_modules/underscore: bin
-	npm --prefix ./ install underscore
+	npm install underscore
 
 node_modules/jsdom: bin
-	npm --prefix ./ install jsdom
+	npm install jsdom
 
 node_modules/jquery: bin
-	npm --prefix ./ install jquery
+	npm install jquery
 
 node_modules/backbone: bin
-	npm --prefix ./ install backbone
+	npm install backbone
 
-node_modules/jasmine-node: bin
-	npm --prefix ./ install jasmine-node
+bin/jasmine-node: bin
+	rm -f bin/jasmine-node
+	npm install jasmine-node
+	ln -s ../node_modules/jasmine-node/bin/jasmine-node ./bin/jasmine-node
+	
+bin/jshint:
+	rm -f bin/jshint
+	npm install jshint
+	ln -s ../node_modules/jshint/bin/jshint ./bin/jshint
+
+bin/jsdoc:
+	rm -f bin/jsdoc
+	npm install jsdoc
+	ln -s ../node_modules/jsdoc/jsdoc.js ./bin/jsdoc
+
+bin/jslint:
+	rm -f bin/jslint
+	npm install jslint
+	ln -s ../node_modules/jslint/bin/jslint.js ./bin/jslint
+
+bin/phantomjs:
+	rm -f bin/phantomjs
+	npm install phantomjs
+	ln -s ../node_modules/phantomjs/bin/phantomjs ./bin/phantomjs
 
 clean:
 	find . -iname "*~" -exec rm -f {} \;

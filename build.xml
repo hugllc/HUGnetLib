@@ -32,7 +32,7 @@
 
     <target name="jsdoc" depends="build" description="Run unit tests using jasmine and generates junit.xml and clover.xml">
         <delete dir="${basedir}/build/jsdoc" failonerror="false"/>
-        <exec executable="jsdoc" failonerror="false">
+        <exec executable="${basedir}/bin/jsdoc" failonerror="false">
             <arg line="-d=${basedir}/build/jsdoc ${basedir}/src/webapi/javascript/" />
         </exec>
     </target>
@@ -40,14 +40,14 @@
     <target name="jasmine" depends="build" description="Run unit tests using jasmine and generates junit.xml and clover.xml">
         <delete dir="${basedir}/build/jasmine" failonerror="false"/>
         <mkdir dir="${basedir}/build/jasmine"/>
-        <exec executable="phantomjs" failonerror="false" dir="${basedir}/test/jasmine">
+        <exec executable="${basedir}/bin/phantomjs" failonerror="false" dir="${basedir}/test/jasmine">
             <arg line="run-jasmine.js SpecRunner.html" />
         </exec>
     </target>
     <target name="jshint" depends="build" description="code check">
         <mkdir dir="${basedir}/build/javascript"/>
         <delete file="${basedir}/build/javascript/jshint.xml" failonerror="false"/>
-        <exec executable="jshint" failonerror="false" dir="${basedir}/src/webapi/html"
+        <exec executable="${basedir}/bin/jshint" failonerror="false" dir="${basedir}/src/webapi/html"
             output="${basedir}/build/javascript/jshint.xml">
             <arg line="--jslint-reporter --config ${basedir}/test/jshint.json hugnet.js" />
         </exec>
