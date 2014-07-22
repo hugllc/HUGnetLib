@@ -8,6 +8,11 @@ old/
 *.kate*
 build/
 rel/
+composer.lock
+composer/
+pear/
+bin/
+
 src/webapi/html/hugnet.js
 src/webapi/html/contrib.js
 src/webapi/html/hugnet.min.js

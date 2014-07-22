@@ -53,7 +53,7 @@
         </exec>
     </target>
     <target name="phpunit" description="Run unit tests using PHPUnit and generates junit.xml and clover.xml">
-        <exec executable="phpunit" failonerror="false"/>
+        <exec executable="${basedir}/bin/phpunit" failonerror="false"/>
     </target>
 
     <target name="parallelTasks" description="Run the pdepend, phpmd, phpcpd, phpcs, phpdoc and phploc tasks in parallel using a maximum of 2 threads.">
@@ -70,18 +70,18 @@
     </target>
 
     <target name="pdepend" description="Generate jdepend.xml and software metrics charts using PHP_Depend">
-        <exec executable="pdepend">
+        <exec executable="${basedir}/bin/pdepend">
             <arg line="--jdepend-xml=${basedir}/build/logs/jdepend.xml
                         --jdepend-chart=${basedir}/build/pdepend/dependencies.svg
                         --overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg
-                        --configuration=build/pdepend.xml
+                        --configuration=${basedir}/build/pdepend.xml
                         --ignore=${basedir}/src/php/contrib
                         ${source}/php" />
         </exec>
     </target>
 
     <target name="phpmd" description="Generate pmd.xml using PHPMD">
-        <exec executable="phpmd">
+        <exec executable="${basedir}/bin/phpmd">
             <arg line="${source}
                         xml
                         ${basedir}/build/ruleset.xml
@@ -91,14 +91,14 @@
     </target>
 
     <target name="phpcpd" description="Generate pmd-cpd.xml using PHPCPD">
-        <exec executable="phpcpd">
+        <exec executable="${basedir}/bin/phpcpd">
             <arg line="--log-pmd ${basedir}/build/logs/pmd-cpd.xml
                         ${source}" />
         </exec>
     </target>
 
     <target name="phploc" description="Generate phploc.csv">
-        <exec executable="phploc">
+        <exec executable="${basedir}/bin/phploc">
             <arg line="--log-csv ${basedir}/build/logs/phploc.csv
                         --exclude contrib
                         ${source}" />
@@ -106,7 +106,7 @@
     </target>
 
     <target name="phpcs" description="Generate checkstyle.xml using PHP_CodeSniffer">
-        <exec executable="phpcs" output="/dev/null">
+        <exec executable="${basedir}/bin/phpcs" output="/dev/null">
             <arg line="--report=checkstyle
                         --report-file=${basedir}/build/logs/checkstyle.xml
                         --ignore=contrib/,scripts2/,test/jasmine/,src/webapi/
@@ -115,7 +115,7 @@
         </exec>
     </target>
     <target name="style" description="Generate readable output using PHP_CodeSniffer">
-        <exec executable="phpcs">
+        <exec executable="${basedir}/bin/phpcs">
             <arg line=" --ignore=contrib/,scripts2/,test/jasmine/,src/webapi/
                         --standard=PEAR
                         ${source} ${testSource}" />
@@ -123,13 +123,13 @@
     </target>
 
     <target name="phpdoc" description="Generate API documentation using DocBlox">
-        <exec executable="phpdoc">
+        <exec executable="${basedir}/bin/phpdox">
             <arg line="" />
         </exec>
     </target>
 
     <target name="phpcb" description="Aggregate tool output with PHP_CodeBrowser">
-        <exec executable="phpcb">
+        <exec executable="${basedir}/bin/phpcb">
             <arg line="--log    ${basedir}/build/logs
                        --source ${source}
                        --output ${basedir}/build/code-browser" />
