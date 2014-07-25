@@ -191,6 +191,7 @@ HUGnet.DataFlot = Backbone.View.extend({
     checkboxes: [],
     previousPoint: null,
     hoversetup: false,
+    clicksetup: false,
     events: {
        'click #flot-choice input': 'render',
        'click #toggle': 'toggle'
@@ -245,7 +246,7 @@ HUGnet.DataFlot = Backbone.View.extend({
                 position: 'nw', container: this.$legend, noColumns: 4
             },
             // selection: { mode: 'x' },
-            grid: { backgroundColor: '#EEE', hoverable: true, clickable: false },
+            grid: { backgroundColor: '#EEE', hoverable: true, clickable: true },
             zoom: { interactive: true },
             pan: { interactive: true }
         };
@@ -282,6 +283,7 @@ HUGnet.DataFlot = Backbone.View.extend({
         });
         this.$plot = $.plot(this.$graph, data, options);
         this._hoversetup();
+        this._clicksetup();
         return this;
     },
     renderTooltip: function (x, y, contents) {
@@ -337,6 +339,23 @@ HUGnet.DataFlot = Backbone.View.extend({
             '<li><button id="toggle">Toggle</button></li>'
         );
         return this;
+    },
+    _clicksetup: function ()
+    {
+        var prevPoint = null;
+        var prevId = null;
+        var self = this;
+
+        if (!this.clicksetup) {
+            this.$graph.on("plotclick", function (event, pos, item) {
+                if (item) {
+                    console.log(event);
+                    console.log(pos);
+                    console.log(item);
+                }
+            });
+            this.clicksetup = true;
+        }
     },
     _hoversetup: function ()
     {
