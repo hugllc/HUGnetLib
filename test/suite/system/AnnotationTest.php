@@ -213,7 +213,7 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
                 ),
                 "asdf",
                 array(
-                    "Annotation" => array(
+                    "Annotations" => array(
                         "get" => array(
                             array("test"),
                         ),

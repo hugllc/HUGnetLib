@@ -71,7 +71,7 @@ class Annotation extends \HUGnet\base\SystemTableBase
     *
     * @return null
     */
-    public static function &factory(&$system, $data=null, $table="Annotation")
+    public static function &factory(&$system, $data=null, $table="Annotations")
     {
         $object = parent::factory($system, $data, $table);
         return $object;

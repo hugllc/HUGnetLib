@@ -958,9 +958,9 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                         "config" => array(
                             "verbose" => 0,
                         ),
-                        "table" => new \HUGnet\DummyTable("Table"),
+                        "annotation" => new \HUGnet\DummyTable("Annotation"),
                     ),
-                    "Table" => array(
+                    "Annotation" => array(
                         "isEmpty" => false,
                         "toArray" => array(
                             "Real" => "array",
@@ -971,7 +971,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                 array(),
                 json_encode(array("Real" => "array")),
                 array(
-                    "Table" => array(
+                    "Annotation" => array(
                         "toArray" => array(array(true)),
                     ),
                 ),

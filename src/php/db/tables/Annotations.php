@@ -98,6 +98,14 @@ class Annotations extends \HUGnet\db\Table
             "Name" => "test",
             "Type" => "int",
         ),
+        "testcol" => array(
+            "Name" => "testcol",
+            "Type" => "int",
+        ),
+        "testdate" => array(
+            "Name" => "testdate",
+            "Type" => "bigint",
+        ),
         "title" => array(
             "Name" => "title",
             "Type" => "varchar(255)",

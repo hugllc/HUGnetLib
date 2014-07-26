@@ -223,7 +223,7 @@ class WebAPI extends HTML
     private function _executeAnnotation($extra = array())
     {
         $aid = (int)$this->args()->get("id");
-        $table = $this->system()->table("Annotations");
+        $table = $this->system()->annotation();
         $ret = $this->_executeSystem($aid, $table, $extra);
         if ($ret === "regen") {
             return $this->system()->annotation($aid)->toArray(true);
