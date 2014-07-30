@@ -253,7 +253,7 @@ HUGnet.Annotations = Backbone.Collection.extend({
             cache: false,
             data: {
                 "task": "annotation", 
-                "action": "list"
+                "action": "list",
                 "data": { test: test, since: since, until: until }
             }
         });
