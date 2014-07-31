@@ -46,6 +46,7 @@ var AnnotationPropertiesView = Backbone.View.extend({
     tagName: 'div',
     events: {
         'click [name="save"]': 'save',
+        'click [name="cancel"]': 'cancel',
     },
     initialize: function (options)
     {
@@ -58,6 +59,12 @@ var AnnotationPropertiesView = Backbone.View.extend({
     {
         this.apply(e);
         this._close = true;
+    },
+    cancel: function (e)
+    {
+        this.model.collection.remove(this.model);
+        this._close = true;
+        this.saveSuccess();
     },
     apply: function (e)
     {

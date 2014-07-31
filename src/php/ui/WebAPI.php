@@ -223,6 +223,9 @@ class WebAPI extends HTML
     private function _executeAnnotation($extra = array())
     {
         $aid = (int)$this->args()->get("id");
+        if ($aid == 0) {
+            $aid = null;
+        }
         $table = $this->system()->annotation();
         $action = strtolower(trim($this->args()->get("action")));
         if ($action == "list") {
@@ -230,10 +233,14 @@ class WebAPI extends HTML
         } else {
             $data = (array)$this->args()->get("data");
             $data["date"] = time();
+            unset($data["id"]);
             $this->args()->set("data", $data);
             $ret = $this->_executeSystem($aid, $table, $extra);
         }
-        if ($ret === "regen") {
+        if (($aid == 0) && ($action == "put")) {
+            $data = (array)$this->args()->get("data");
+            return $this->system()->annotation($data)->toArray(true);
+        } else if ($ret === "regen") {
             return $this->system()->annotation($aid)->toArray(true);
         }
         return $ret;

@@ -189,6 +189,7 @@ HUGnet.DataFlot = Backbone.View.extend({
     classes: {},
     $plot: null,
     checkboxes: [],
+    annotationColor: "#000",
     previousPoint: null,
     hoversetup: false,
     clicksetup: false,
@@ -241,6 +242,7 @@ HUGnet.DataFlot = Backbone.View.extend({
     */
     render: function ()
     {
+        var markings = this._markingSetup();
         var options = {
             series: { lines: { show: true }, points: { show: false} },
             xaxis: { mode: 'time', timeformat: '%m/%d %y<br/>%H:%M:%S', axisLabel: "Time (UTC)" },
@@ -250,11 +252,12 @@ HUGnet.DataFlot = Backbone.View.extend({
                 position: 'nw', container: this.$legend, noColumns: 4
             },
             // selection: { mode: 'x' },
-            grid: { backgroundColor: '#EEE', hoverable: true, clickable: true },
+            grid: { 
+                backgroundColor: '#EEE', hoverable: true, clickable: true, markings: markings 
+            },
             zoom: { interactive: this.zoom },
             pan: { interactive: this.zoom }
         };
-
         this.points.clear();
         this.points.fromHistory(this.model);
         var data = [];
@@ -344,6 +347,45 @@ HUGnet.DataFlot = Backbone.View.extend({
         );
         return this;
     },
+    /**
+    * Gets infomration about a device.  This is retrieved directly from the device
+    *
+    * This function is for use of the device list
+    *
+    * @param id The id of the device to get
+    *
+    * @return null
+    */
+    _markingSetup: function ()
+    {
+        var markings = [];
+        if (!this.zoom) {
+            var keys = [];
+            this.$el.find("input:checked").each(function () {
+                var key = $(this).attr("name");
+                keys[key] = true;
+            });
+            var index = 0;
+            var self = this;
+            this.annotations.each(
+                function (model, collection, options)
+                {
+                    var col = model.get("testcol");
+                    if (keys[col]) {
+                        var date = model.get("testdate") * 1000;
+                        markings[index] = {
+                            color: self.annotationColor, 
+                            lineWidth: 1, 
+                            xaxis: { from: date, to: date }
+                        };
+                        index++;
+                    }
+                },
+                this
+            );
+        }
+        return markings;
+    },
     _clicksetup: function ()
     {
         var prevPoint = null;
@@ -353,12 +395,12 @@ HUGnet.DataFlot = Backbone.View.extend({
         if (!this.clicksetup) {
             this.$graph.on("plotclick", function (event, pos, item) {
                 if (item) {
+                    var hist = self.model.at(0);
                     var model = self.annotations.add({
-                        id: self.annotations.length,
                         test: self.parent.model.get("id"),
-                        testcol: item.series.id,
+                        testcol: item.seriesIndex,
                         testdate: (item.datapoint[0] / 1000),
-                        Type: parent.model.get("type")
+                        Type: hist.get("Type")
                     });
                     var view = new AnnotationPropertiesView({
                         model: model,
@@ -374,10 +416,16 @@ HUGnet.DataFlot = Backbone.View.extend({
                         dialogClass: "window",
                         zIndex: 500
                     });
+                    self.annotations.on("change", self._annotationChange, self);
                 }
             });
             this.clicksetup = true;
         }
+    },
+    _annotationChange: function ()
+    {
+        this.annotations.off("change", this._annotationChange, this);
+        this.render();
     },
     _hoversetup: function ()
     {
@@ -396,6 +444,7 @@ HUGnet.DataFlot = Backbone.View.extend({
 
                         var text = '<div class="bold">'+item.series.label+'</div>';
                         text = text + x + "<br />"+item.datapoint[1];
+                        
                         self.renderTooltip(item.pageX, item.pageY, text);
                     }
                 }
