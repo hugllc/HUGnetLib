@@ -40,6 +40,8 @@ defined('_HUGNET') or die('HUGnetSystem not found');
 require_once dirname(__FILE__)."/../base/SystemTableBase.php";
 /** This is our system interface */
 require_once dirname(__FILE__)."/../interfaces/SystemInterface.php";
+/** This is our base class */
+require_once dirname(__FILE__)."/../interfaces/WebAPI.php";
 
 /**
  * Base system class.
@@ -58,7 +60,7 @@ require_once dirname(__FILE__)."/../interfaces/SystemInterface.php";
  * @since      0.9.7
  */
 class Annotation extends \HUGnet\base\SystemTableBase
-    implements \HUGnet\interfaces\SystemInterface
+    implements \HUGnet\interfaces\WebAPI, \HUGnet\interfaces\SystemInterface
 {
     /** This is the test we are attached to */
     private $_test = null;
@@ -89,6 +91,56 @@ class Annotation extends \HUGnet\base\SystemTableBase
         }
         return $this->_test;
     }
+    /**
+    * returns a history object for this device
+    *
+    * @param object $args  The argument object
+    * @param array  $extra Extra data from the
+    *
+    * @return string
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function webAPI($args, $extra)
+    {
+        $action = trim(strtolower($args->get("action")));
+        $ret = null;
+        if ($action === "list") {
+            $ret = $this->_getAnnotation($args);
+        }
+        return $ret;
+    }
+    /**
+    * returns a history object for this device
+    *
+    * @param object $args The argument object
+    *
+    * @return string
+    */
+    private function _getAnnotation($args)
+    {
+        $id = (int)$args->get("id");
+        if ($id != 0) {
+            $this->load($id);
+            $ret = "regen";
+        } else {
+            $data = (array)$args->get("data");
+            $type = trim(strtoupper($data["type"]));
+            $extraData = array();
+            $res = $this->table()->getPeriod(
+                (int)$data["since"],
+                (int)$data["until"],
+                $data["test"],
+                (empty($type)) ? "history": $type
+            );
+            $ret = array();
+            while ($res) {
+                $ret[] = $this->table()->toArray(true);
+                $res = $this->table()->nextInto();
+            }
+        }
+        return $ret;
+    }
+    
 }
 
 

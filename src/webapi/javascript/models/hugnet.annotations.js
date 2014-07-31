@@ -49,7 +49,6 @@ HUGnet.Annotation = Backbone.Model.extend({
         test: 0,
         testcol: 0,
         testdate: 0,
-        title: "",
         text: "",
         author: "",
         Type: "history"
@@ -244,7 +243,7 @@ HUGnet.Annotations = Backbone.Collection.extend({
     *
     * @return null
     */
-    fetch: function (test, since, until)
+    fetch: function (test, since, until, type)
     {
         var self = this;
         var ret = $.ajax({
@@ -255,13 +254,19 @@ HUGnet.Annotations = Backbone.Collection.extend({
             data: {
                 "task": "annotation", 
                 "action": "list",
-                "data": { test: test, since: since, until: until }
+                "data": { 
+                    test: test, 
+                    since: since / 1000, 
+                    until: until / 1000,
+                    type: type
+                }
             }
         });
         ret.done(
             function (data)
             {
-                self.reset(data);
+                self.reset();
+                self.add(data);
             }
         );
     },

@@ -139,6 +139,16 @@ HUGnet.DataView = Backbone.View.extend({
             fields: this.fields,
             classes: this.classes
         });
+        this.annotations = new HUGnet.Annotations({});
+        this.annotations.fetch(
+            this.model.get("id"), 
+            this.since, 
+            this.until,
+            this.type
+        );
+        this.annotate = new HUGnet.AnnotationsView({
+            model: this.annotations
+        });
         this.setupPlot();
         this.on("update", this.update, this);
     },
@@ -204,14 +214,15 @@ HUGnet.DataView = Backbone.View.extend({
     {
         var d = new Date();
         this.plot = new HUGnet.DataFlot({
-            parent: this.parent,
+            parent: this,
             model: this.history,
             header: this.header,
             fields: this.fields,
             classes: this.classes,
             units: this.units,
             timeOffset: 0, //d.getTimezoneOffset() * 60000
-            url: this.url
+            url: this.url,
+            annotations: this.annotations
         });
     },
     setRefresh: function ()
@@ -388,6 +399,7 @@ HUGnet.DataView = Backbone.View.extend({
         this.iframe = $('<iframe>', { id:'exportCSV' }).hide();
         this.$el.append(this.plot.el);
         this.$el.append(this.table.render().el);
+        this.$el.append(this.annotate.render().el);
         this.$el.append(this.iframe);
         return this;
     },

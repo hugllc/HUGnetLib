@@ -199,17 +199,18 @@ HUGnet.DataFlot = Backbone.View.extend({
     },
     initialize: function (options)
     {
+ 
         delete options.model;
         this.url = options.url;
         this.fields = options.fields;
         this.classes = options.classes;
         this.parent = options.parent;
+        this.annotations = options.annotations;
         // This sets the legend to the correct value for this instance
         this.points = new HUGnet.FlotPoints(null, options);
         this.model.on('sync', this.render, this);
         this._setup();
         this.$graph.on('update', this.update, this);
-
     },
     update: function ()
     {
@@ -351,18 +352,13 @@ HUGnet.DataFlot = Backbone.View.extend({
         if (!this.clicksetup) {
             this.$graph.on("plotclick", function (event, pos, item) {
                 if (item) {
-                    console.log(event);
-                    console.log(pos);
-                    console.log(item);
-                    var hist = self.model.at(0);
-                    var model = new HUGnet.Annotation({
-                        test: hist.get("id"),
+                    var model = self.annotations.add({
+                        id: self.annotations.length,
+                        test: self.parent.model.get("id"),
                         testcol: item.series.id,
                         testdate: (item.datapoint[0] / 1000),
-                        Type: hist.get("Type")
+                        Type: parent.model.get("type")
                     });
-                    model.urlRoot = self.url;
-                    console.log(model);
                     var view = new AnnotationPropertiesView({
                         model: model,
                         url: self.url

@@ -64,7 +64,6 @@ var AnnotationPropertiesView = Backbone.View.extend({
         this.setTitle( " [ Saving...] " );
         this.model.set({
             text: this.$('[name="text"]').val(),
-            title: this.$('[name="title"]').val(),
             author: this.$('[name="author"]').val(),
         });
         this.model.save();
@@ -249,10 +248,12 @@ var AnnotationEntryView = Backbone.View.extend({
     render: function ()
     {
         this._teardownProgress();
+        var data = this.model.toJSON();
+        _.extend(data, HUGnet.viewHelpers);
         this.$el.html(
             _.template(
                 $(this.template).html(),
-                this.model.toJSON()
+                data
             )
         );
         this.$el.trigger('update');
@@ -359,6 +360,7 @@ HUGnet.AnnotationsView = Backbone.View.extend({
     render: function ()
     {
         var data = this.model.toJSON();
+        _.extend(data, HUGnet.viewHelpers);
         data.url = this.url;
         this.$el.html(
             _.template(

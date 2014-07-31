@@ -58,6 +58,8 @@ class Annotations extends \HUGnet\db\Table
     public $sqlTable = "annotations";
     /** @var string This is the primary key of the table.  Leave blank if none  */
     public $sqlId = "id";
+    /** @var string This is the date field for the table.  Leave blank if none  */
+    protected $dateField = "testdate";
     /**
     * @var array This is the definition of the columns
     *
@@ -106,15 +108,10 @@ class Annotations extends \HUGnet\db\Table
             "Name" => "testdate",
             "Type" => "bigint",
         ),
-        "title" => array(
-            "Name" => "title",
-            "Type" => "varchar(255)",
-            "Default" => '',
-        ),
         "text" => array(
             "Name" => "text",
-            "Type" => "text",
-            "Default" => "",
+            "Type" => "varchar(255)",
+            "Default" => '',
         ),
         "author" => array(
             "Name" => "author",
@@ -164,6 +161,31 @@ class Annotations extends \HUGnet\db\Table
     {
         parent::__construct($system, $data, $connect);
         $this->create();
+    }
+    /**
+    * Sets the extra attributes field
+    *
+    * @param int    $start      The start of the time
+    * @param int    $end        The end of the time
+    * @param mixed  $devId      The ID to use.  None if null
+    * @param string $type       Not used here.  This is to be compatible with
+    *                              AverageTableBase::getPeriod()
+    * @param string $extraWhere Extra where clause
+    * @param array  $extraData  Data for the extraWhere clause
+    *
+    * @return mixed The value of the attribute
+    *
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function getPeriod(
+        $start,
+        $end = null,
+        $devId = null,
+        $type = null
+    ) {
+        return parent::getTimePeriod(
+            $start, $end, $devId, "test"
+        );
     }
 
 }
