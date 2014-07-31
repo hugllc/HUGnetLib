@@ -149,7 +149,7 @@ abstract class SystemTableBase
     ) {
         $class = get_called_class();
         $object = new $class($system, $table);
-        if (!is_null($data)) {
+        if (!is_null($data) && ($data !== array())) {
             $object->load($data);
         }
         return $object;
@@ -187,7 +187,7 @@ abstract class SystemTableBase
             } else {
                 $ret = true;
             }
-        } else if (is_array($data)) {
+        } else if (is_array($data) && !empty($data)) {
             $ret = $this->_find($data, $this->keys);
         }
         if (is_array($data) || is_object($data)) {

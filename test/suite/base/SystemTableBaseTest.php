@@ -113,6 +113,13 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                 ),
             ),
             array(
+                array(),
+                array(),
+                "Table",
+                array(
+                ),
+            ),
+            array(
                 array(
                     "Table" => array(
                         "sanitizeWhere" => array(
@@ -386,6 +393,41 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 true,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "isEmpty" => true,
+                    ),
+                    "selectOneInto" => false,
+                ),
+                new \HUGnet\DummyTable("Table"),
+                "\\HUGnet\\base\\SystemTableBaseTestStub",
+                array(),
+                array(
+                    "Table" => array(
+                        "clearData" => array(array()),
+                        'fromAny' => array(array(array())),
+                    ),
+                ),
+                false,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "isEmpty" => true,
+                    ),
+                    "selectOneInto" => false,
+                ),
+                new \HUGnet\DummyTable("Table"),
+                "\\HUGnet\\base\\SystemTableBaseTestStub",
+                null,
+                array(
+                    "Table" => array(
+                        "clearData" => array(array()),
+                    ),
+                ),
+                false,
             ),
         );
     }
