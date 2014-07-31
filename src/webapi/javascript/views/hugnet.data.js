@@ -210,7 +210,8 @@ HUGnet.DataView = Backbone.View.extend({
             fields: this.fields,
             classes: this.classes,
             units: this.units,
-            timeOffset: 0 //d.getTimezoneOffset() * 60000
+            timeOffset: 0, //d.getTimezoneOffset() * 60000
+            url: this.url
         });
     },
     setRefresh: function ()

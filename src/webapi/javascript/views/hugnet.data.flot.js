@@ -192,6 +192,7 @@ HUGnet.DataFlot = Backbone.View.extend({
     previousPoint: null,
     hoversetup: false,
     clicksetup: false,
+    url: "",
     events: {
        'click #flot-choice input': 'render',
        'click #toggle': 'toggle'
@@ -199,6 +200,7 @@ HUGnet.DataFlot = Backbone.View.extend({
     initialize: function (options)
     {
         delete options.model;
+        this.url = options.url;
         this.fields = options.fields;
         this.classes = options.classes;
         this.parent = options.parent;
@@ -352,6 +354,29 @@ HUGnet.DataFlot = Backbone.View.extend({
                     console.log(event);
                     console.log(pos);
                     console.log(item);
+                    var hist = self.model.at(0);
+                    var model = new HUGnet.Annotation({
+                        test: hist.get("id"),
+                        testcol: item.series.id,
+                        testdate: (item.datapoint[0] / 1000),
+                        Type: hist.get("Type")
+                    });
+                    model.urlRoot = self.url;
+                    console.log(model);
+                    var view = new AnnotationPropertiesView({
+                        model: model,
+                        url: self.url
+                    });
+                    self.$el.append(view.render().el);
+                    view.$el.dialog({
+                        modal: true,
+                        draggable: true,
+                        width: 800,
+                        resizable: false,
+                        title: view.title(),
+                        dialogClass: "window",
+                        zIndex: 500
+                    });
                 }
             });
             this.clicksetup = true;

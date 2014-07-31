@@ -121,6 +121,11 @@ class Annotations extends \HUGnet\db\Table
             "Type" => "varchar(128)",
             "Default" => '',
         ),
+        "Type" => array(
+            "Name"    => "Type",
+            "Type"    => "varchar(16)",
+            "Default" => "",
+        ),
     );
     /**
     * @var array This is the definition of the indexes

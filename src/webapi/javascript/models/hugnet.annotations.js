@@ -51,7 +51,8 @@ HUGnet.Annotation = Backbone.Model.extend({
         testdate: 0,
         title: "",
         text: "",
-        author: ""
+        author: "",
+        Type: "history"
     },
     /**
     * This function initializes the object
@@ -153,7 +154,7 @@ HUGnet.Annotation = Backbone.Model.extend({
                 "task": "annotation",
                 "action": "put",
                 "id": this.get("id"),
-                "data": self.saveData()
+                "data": self.toJSON()
             }
         }).done(
             function (data)

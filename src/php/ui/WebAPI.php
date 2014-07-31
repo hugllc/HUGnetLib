@@ -224,6 +224,9 @@ class WebAPI extends HTML
     {
         $aid = (int)$this->args()->get("id");
         $table = $this->system()->annotation();
+        $data = (array)$this->args()->get("data");
+        $data["date"] = time();
+        $this->args()->set("data", $data);
         $ret = $this->_executeSystem($aid, $table, $extra);
         if ($ret === "regen") {
             return $this->system()->annotation($aid)->toArray(true);
