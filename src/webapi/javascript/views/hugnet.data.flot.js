@@ -192,6 +192,7 @@ HUGnet.DataFlot = Backbone.View.extend({
     previousPoint: null,
     hoversetup: false,
     clicksetup: false,
+    zoom: false,
     url: "",
     events: {
        'click #flot-choice input': 'render',
@@ -250,8 +251,8 @@ HUGnet.DataFlot = Backbone.View.extend({
             },
             // selection: { mode: 'x' },
             grid: { backgroundColor: '#EEE', hoverable: true, clickable: true },
-            zoom: { interactive: true },
-            pan: { interactive: true }
+            zoom: { interactive: this.zoom },
+            pan: { interactive: this.zoom }
         };
 
         this.points.clear();

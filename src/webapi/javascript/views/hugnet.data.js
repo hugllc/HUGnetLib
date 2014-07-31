@@ -70,6 +70,7 @@ HUGnet.DataView = Backbone.View.extend({
     timer: null,
     events: {
         'click #autorefresh': 'setRefresh',
+        'click [name="zoom"]': 'setZoom',
         'submit': 'submit',
         'click .exportCSV': 'exportCSV',
         'change #setPeriod': '_setPeriod',
@@ -235,6 +236,16 @@ HUGnet.DataView = Backbone.View.extend({
             this.autorefresh = 0;
         }
     },
+    setZoom: function ()
+    {
+        if (this.$('[name="zoom"]').prop("checked")) {
+            this.plot.zoom = true;
+        } else {
+            this.plot.zoom = false;
+        }
+        // This triggers a redraw of the graph
+        this.history.trigger("sync");
+    },
     submit: function ()
     {
         this.stopPoll();
@@ -313,6 +324,9 @@ HUGnet.DataView = Backbone.View.extend({
             this.$('input[type="submit"]').prop('disabled', true);
             this.$('select').prop('disabled', true);
             this.$('input[type="text"]').prop('disabled', true);
+            this.$('[name="zoom"]').prop("disabled", true);
+            this.$('[name="zoom"]').prop("checked", 0)
+            this.plot.zoom = false;
             this.history.on("fetchfail", this._poll, this);
             this.history.on("fetchdone", this._poll, this);
             this.getLatest();
@@ -337,6 +351,7 @@ HUGnet.DataView = Backbone.View.extend({
         this.$('select').prop('disabled', false);
         this.$('input[type="text"]').prop('disabled', false);
         this.$('#autorefresh').prop("disabled", false);
+        this.$('[name="zoom"]').prop("disabled", false);
         this.history.off("fetchfail", this._finishFetch, this);
         this.history.off("fetchdone", this._finishFetch, this);
         this.history.off('sync', this._finishFetch, this);
