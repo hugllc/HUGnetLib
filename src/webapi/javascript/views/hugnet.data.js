@@ -144,8 +144,7 @@ HUGnet.DataView = Backbone.View.extend({
         this.annotations.fetch(
             this.model.get("id"), 
             this.since, 
-            this.until,
-            this.type
+            this.until
         );
         this.annotate = new HUGnet.AnnotationsView({
             model: this.annotations

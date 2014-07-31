@@ -124,7 +124,6 @@ class Annotation extends \HUGnet\base\SystemTableBase
             $ret = "regen";
         } else {
             $data = (array)$args->get("data");
-            $type = trim(strtoupper($data["type"]));
             $extraData = array();
             $res = $this->table()->getPeriod(
                 (int)$data["since"],

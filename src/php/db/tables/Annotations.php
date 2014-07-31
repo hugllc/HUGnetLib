@@ -100,10 +100,6 @@ class Annotations extends \HUGnet\db\Table
             "Name" => "test",
             "Type" => "int",
         ),
-        "testcol" => array(
-            "Name" => "testcol",
-            "Type" => "int",
-        ),
         "testdate" => array(
             "Name" => "testdate",
             "Type" => "bigint",
@@ -117,11 +113,6 @@ class Annotations extends \HUGnet\db\Table
             "Name" => "author",
             "Type" => "varchar(128)",
             "Default" => '',
-        ),
-        "Type" => array(
-            "Name"    => "Type",
-            "Type"    => "varchar(16)",
-            "Default" => "",
         ),
     );
     /**

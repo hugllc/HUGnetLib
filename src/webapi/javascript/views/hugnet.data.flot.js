@@ -189,7 +189,7 @@ HUGnet.DataFlot = Backbone.View.extend({
     classes: {},
     $plot: null,
     checkboxes: [],
-    annotationColor: "#000",
+    annotationColor: "#C00",
     previousPoint: null,
     hoversetup: false,
     clicksetup: false,
@@ -360,26 +360,18 @@ HUGnet.DataFlot = Backbone.View.extend({
     {
         var markings = [];
         if (!this.zoom) {
-            var keys = [];
-            this.$el.find("input:checked").each(function () {
-                var key = $(this).attr("name");
-                keys[key] = true;
-            });
             var index = 0;
             var self = this;
             this.annotations.each(
                 function (model, collection, options)
                 {
-                    var col = model.get("testcol");
-                    if (keys[col]) {
-                        var date = model.get("testdate") * 1000;
-                        markings[index] = {
-                            color: self.annotationColor, 
-                            lineWidth: 1, 
-                            xaxis: { from: date, to: date }
-                        };
-                        index++;
-                    }
+                    var date = model.get("testdate") * 1000;
+                    markings[index] = {
+                        color: self.annotationColor, 
+                        lineWidth: 1, 
+                        xaxis: { from: date, to: date }
+                    };
+                    index++;
                 },
                 this
             );
@@ -395,12 +387,9 @@ HUGnet.DataFlot = Backbone.View.extend({
         if (!this.clicksetup) {
             this.$graph.on("plotclick", function (event, pos, item) {
                 if (item) {
-                    var hist = self.model.at(0);
                     var model = self.annotations.add({
                         test: self.parent.model.get("id"),
-                        testcol: item.seriesIndex,
                         testdate: (item.datapoint[0] / 1000),
-                        Type: hist.get("Type")
                     });
                     var view = new AnnotationPropertiesView({
                         model: model,
