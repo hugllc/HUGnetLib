@@ -106,7 +106,7 @@ class Annotations extends \HUGnet\db\Table
         ),
         "text" => array(
             "Name" => "text",
-            "Type" => "varchar(255)",
+            "Type" => "text",
             "Default" => '',
         ),
         "author" => array(
