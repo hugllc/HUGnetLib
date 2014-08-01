@@ -141,7 +141,8 @@ HUGnet.DeviceList = Backbone.View.extend({
             parent: tag,
             model: device,
             TestID: 1,
-            url: this.url
+            url: this.url,
+            readonly: this.readonly
         });
         var title = 'Device "' + device.get("DeviceID") + '" History';
 

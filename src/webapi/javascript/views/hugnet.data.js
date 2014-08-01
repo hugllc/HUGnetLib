@@ -67,6 +67,7 @@ HUGnet.DataView = Backbone.View.extend({
     progress: undefined,
     sinceId: "since",
     untilId: "until",
+    readonly: true,
     timer: null,
     events: {
         'click #autorefresh': 'setRefresh',
@@ -78,6 +79,8 @@ HUGnet.DataView = Backbone.View.extend({
     },
     initialize: function (options)
     {
+        
+        if (options.readonly !== undefined) this.readonly = options.readonly;
         this.url = options.url;
         this.data = options.data;
         this.parent = options.parent;
@@ -222,7 +225,8 @@ HUGnet.DataView = Backbone.View.extend({
             units: this.units,
             timeOffset: 0, //d.getTimezoneOffset() * 60000
             url: this.url,
-            annotations: this.annotations
+            annotations: this.annotations,
+            readonly: this.readonly
         });
     },
     setRefresh: function ()

@@ -194,6 +194,7 @@ HUGnet.DataFlot = Backbone.View.extend({
     hoversetup: false,
     clicksetup: false,
     zoom: false,
+    readonly: true,
     url: "",
     events: {
        'click #flot-choice input': 'render',
@@ -203,6 +204,7 @@ HUGnet.DataFlot = Backbone.View.extend({
     {
  
         delete options.model;
+        if (options.readonly !== undefined) this.readonly = options.readonly;
         this.url = options.url;
         this.fields = options.fields;
         this.classes = options.classes;
@@ -380,11 +382,8 @@ HUGnet.DataFlot = Backbone.View.extend({
     },
     _clicksetup: function ()
     {
-        var prevPoint = null;
-        var prevId = null;
         var self = this;
-
-        if (!this.clicksetup) {
+        if (!this.clicksetup && !this.readonly) {
             this.$graph.on("plotclick", function (event, pos, item) {
                 if (item) {
                     var model = self.annotations.add({

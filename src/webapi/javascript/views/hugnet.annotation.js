@@ -283,7 +283,6 @@ var AnnotationEntryView = Backbone.View.extend({
 HUGnet.AnnotationsView = Backbone.View.extend({
     url: '/HUGnetLib/HUGnetLibAPI.php',
     template: "#AnnotationsTemplate",
-    iframe: undefined,
     progress: undefined,
     timer: null,
     events: {
@@ -296,66 +295,6 @@ HUGnet.AnnotationsView = Backbone.View.extend({
     {
         this.model.each(this.insert, this);
         this.model.on('add', this.insert, this);
-    },
-    _importProgress: function(title)
-    {
-        if (typeof this.progress !== "object") {
-            this.progress = new HUGnet.Progress({
-                modal: false,
-                draggable: true,
-                width: 300,
-                title: title,
-                dialogClass: "window no-close",
-                zIndex: 500,
-            });
-            this.progress.update(false);
-        }
-    },
-    _teardownProgress: function()
-    {
-        if (this.progress !== undefined) {
-            this.progress.update(1);
-            this.progress.remove();
-            delete this.progress;
-        }
-    },
-    _importAnnotation: function ()
-    {
-        if (this.$("#importAnnotation input[type=file]").val() == "") {
-            return;
-        }
-        var url = this.url+"?task=device&action=import";
-        var form = $("#importAnnotation");
-        form.attr({
-            action: url,
-            method: 'post',
-            enctype: 'multipart/form-data',
-            encoding: 'multipart/form-data',
-            target: "exportAnnotation"
-        });
-        form.submit();
-        this._importProgress("Importing the device");
-        this._importWait();
-    },
-    _importWait: function ()
-    {
-        var text = this.iframe.contents().text();
-        var self = this;
-        if (text != "") {
-            self._teardownProgress();
-            self.timer = null;
-            self.$("#importAnnotation input[type=file]").val("");
-            var id = parseInt(text, 16);
-            this.model.add({id: id});
-            this.model.get(id).refresh();
-        } else {
-            self.timer = setTimeout(
-                function () {
-                    self._importWait();
-                },
-                500
-            );
-        }
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -378,8 +317,6 @@ HUGnet.AnnotationsView = Backbone.View.extend({
         //this.model.each(this.renderEntry);
         this.$("table").tablesorter({ widgets: ['zebra'] });
         this.$("table").trigger('update');
-        this.iframe = $('<iframe>', { name: 'exportAnnotation', id:'exportAnnotation' }).hide();
-        this.$el.append(this.iframe);
         return this;
     },
     insert: function (model, collection, options)
