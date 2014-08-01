@@ -45,6 +45,7 @@ HUGnet.TestSuite = Backbone.View.extend({
     id: "tests-tabs",
     readonly: false,
     filter: {type: "test", Publish: 1},
+    DeviceID: null,
     data: {},
     url: '/HUGnetLib/HUGnetLibAPI.php',
     tabTemplate: '<li style="white-space: nowrap;"><a href="#{href}">#{label}</a> <span name="#{href}" class="ui-icon ui-icon-close">Remove Tab</span></li>',
@@ -62,6 +63,9 @@ HUGnet.TestSuite = Backbone.View.extend({
             }
             if (options.filter) {
                 this.filter = options.filter;
+            }
+            if (typeof options.DeviceID) {
+                this.DeviceID = options.DeviceID;
             }
         }
         this.tests = new HUGnet.TestsView({
@@ -122,6 +126,24 @@ HUGnet.TestSuite = Backbone.View.extend({
             },
             this
         );
+        if (this.DeviceID) {
+            var dev = this.devices.model.get(parseInt(this.DeviceID, 16));
+            if (dev && dev.refreshed) {
+                this.testTab(dev);
+            } else {
+                this.devices.model.on("refresh", this.autoDevTab, this);
+            }
+        }
+    },
+    autoDevTab: function (device)
+    {
+        if (device) {
+            if (device.get("id") == parseInt(this.DeviceID, 16)) {
+                this.testTab(device);
+                this.devices.model.off("refresh", this.autoDevTab, this);
+                this.DeviceID = null;
+            }
+        }
     },
     testTab: function (test)
     {

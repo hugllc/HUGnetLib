@@ -46,6 +46,7 @@ HUGnet.DeviceList = Backbone.View.extend({
     readonly: false,
     data: {},
     filter: {publish: 1},
+    DeviceID: null,
     GatewayKey: null,
     url: '/HUGnetLib/HUGnetLibAPI.php',
     tabTemplate: '<li style="white-space: nowrap;"><a href="#{href}">#{label}</a> <span name="#{href}" class="ui-icon ui-icon-close">Remove Tab</span></li>',
@@ -63,6 +64,9 @@ HUGnet.DeviceList = Backbone.View.extend({
             }
             if (typeof options.filter === 'object') {
                 this.filter = options.filter;
+            }
+            if (typeof options.DeviceID) {
+                this.DeviceID = options.DeviceID;
             }
         }
         this.devices = new HUGnet.DeviceListView({
@@ -129,6 +133,24 @@ HUGnet.DeviceList = Backbone.View.extend({
             },
             this
         );
+        if (this.DeviceID) {
+            var dev = this.devices.model.get(parseInt(this.DeviceID, 16));
+            if (dev && dev.refreshed) {
+                this.deviceTab(dev);
+            } else {
+                this.devices.model.on("refresh", this.autoDevTab, this);
+            }
+        }
+    },
+    autoDevTab: function (device)
+    {
+        if (device) {
+            if (device.get("id") == parseInt(this.DeviceID, 16)) {
+                this.deviceTab(device);
+                this.devices.model.off("refresh", this.autoDevTab, this);
+                this.DeviceID = null;
+            }
+        }
     },
     deviceTab: function (device)
     {
