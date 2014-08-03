@@ -256,6 +256,27 @@ class Device extends \HUGnet\base\SystemTableAction
         );
     }
     /**
+    * This function creates an annotation.
+    *
+    * @param string $author The author of the annotation
+    * @param int    $date   The date that the annotation takes place
+    * @param string $text   The text of the annotation
+    *
+    * @return Reference to the network object
+    */
+    public function annotate($author, $date, $text)
+    {
+        return $this->system()->annotation()->create(
+            array(
+                "date" => $this->system()->now(),
+                "test" => $this->id(),
+                "testdate" => $date,
+                "text" => $text,
+                "author" => $author
+            )
+        );
+    }
+    /**
     * This function creates the system.
     *
     * @return Reference to the network object

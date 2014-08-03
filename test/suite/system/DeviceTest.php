@@ -42,6 +42,8 @@ require_once CODE_BASE.'devices/Input.php';
 /** This is a required class */
 require_once CODE_BASE.'devices/datachan/Driver.php';
 /** This is the dummy table container */
+require_once TEST_CONFIG_BASE.'stubs/DummyBase.php';
+/** This is the dummy table container */
 require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
 /** This is the dummy table container */
 require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
@@ -247,6 +249,88 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $obj = Device::factory($config, $device, $class);
         $this->assertEquals(
             "HUGnet\devices\Network", get_class($obj->network()), "Wrong Class"
+        );
+        unset($obj);
+    }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataAnnotate()
+    {
+        return array(
+            array(
+                new DummySystem(),
+                array(
+                    "id" => 5,
+                    "name" => 3,
+                    "value" => 1,
+                ),
+                "DummyTable",
+                array(
+                    "System" => array(
+                        "annotation" => new \HUGnet\DummyBase("Annotation"),
+                        "now" => 1234,
+                    ),
+                    "Annotation" => array(
+                        "create" => true,
+                    ),
+                    "DummyTable" => array(
+                        "get" => array(
+                            "id" => 4321,
+                        ),
+                    ),
+                ),
+                "Me",
+                "MySelf",
+                1,
+                true,
+                array(
+                    "create" => array(
+                        array(
+                            array(
+                                'date' => 1234,
+                                'test' => 4321,
+                                'testdate' => 1,
+                                'text' => 'MySelf',
+                                'author' => 'Me',
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config The configuration to use
+    * @param mixed  $device The device to set
+    * @param mixed  $class  This is either the name of a class or an object
+    * @param array  $mocks  The mocks to use
+    * @param string $author The author of the annotation
+    * @param int    $date   The date that the annotation takes place
+    * @param string $text   The text of the annotation
+    * @param mixed  $return The expected return value
+    * @param mixed  $expect The expected calls
+    *
+    * @return null
+    *
+    * @dataProvider dataAnnotate
+    */
+    public function testAnnotate(
+        $config, $device, $class, $mocks, $author, $text, $date, $return, $expect
+    ) {
+        $config->resetMock($mocks);
+        $obj = Device::factory($config, $device, $class);
+        $ret = $obj->annotate($author, $date, $text);
+        $this->assertEquals(
+            $return, $ret, "Wrong return"
+        );
+        $ret = $config->retrieve("Annotation");
+        $this->assertEquals(
+            $expect, $ret, "Calls wrong"
         );
         unset($obj);
     }
