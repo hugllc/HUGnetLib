@@ -292,6 +292,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                             array(
                                 'date' => 1234,
                                 'test' => 4321,
+                                'type' => 'device',
                                 'testdate' => 1,
                                 'text' => 'MySelf',
                                 'author' => 'Me',

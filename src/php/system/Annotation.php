@@ -129,7 +129,7 @@ class Annotation extends \HUGnet\base\SystemTableBase
                 (int)$data["since"],
                 (int)$data["until"],
                 $data["test"],
-                (empty($type)) ? "history": $type
+                $data["type"]
             );
             $ret = array();
             while ($res) {

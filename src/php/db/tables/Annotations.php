@@ -100,6 +100,11 @@ class Annotations extends \HUGnet\db\Table
             "Name" => "test",
             "Type" => "int",
         ),
+        "type" => array(
+            "Name" => "type",
+            "Type" => "varchar(128)",
+            "Default" => "Unknown"
+        ),
         "testdate" => array(
             "Name" => "testdate",
             "Type" => "bigint",
@@ -175,7 +180,7 @@ class Annotations extends \HUGnet\db\Table
         $type = null
     ) {
         return parent::getTimePeriod(
-            $start, $end, $devId, "test"
+            $start, $end, $devId, "test", array("type" => $type)
         );
     }
 

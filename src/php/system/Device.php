@@ -269,6 +269,7 @@ class Device extends \HUGnet\base\SystemTableAction
         return $this->system()->annotation()->create(
             array(
                 "date" => $this->system()->now(),
+                "type" => "device",
                 "test" => $this->id(),
                 "testdate" => $date,
                 "text" => $text,

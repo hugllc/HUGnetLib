@@ -389,6 +389,7 @@ HUGnet.DataFlot = Backbone.View.extend({
                     var model = self.annotations.add({
                         test: self.parent.model.get("id"),
                         testdate: (item.datapoint[0] / 1000),
+                        type: "device",
                     });
                     var view = new AnnotationPropertiesView({
                         model: model,
