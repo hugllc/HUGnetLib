@@ -57,7 +57,7 @@ class Sqlite extends \HUGnet\db\Driver implements \HUGnet\interfaces\DBDriver
     *
     * @return null
     */
-    public function columns()
+    protected function driverColumns()
     {
         $columns = $this->query("PRAGMA table_info(".$this->table().")");
         $cols = array();

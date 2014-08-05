@@ -43,5 +43,7 @@ define("TEST_CONFIG_BASE", realpath(dirname(__FILE__))."/");
 define("TEST_INTEGRATION_BASE", realpath(dirname(__FILE__)."/integration/")."/");
 /** This define allows everything else to be included */
 define("_HUGNET", true);
+/** This define allows everything else to be included */
+define("_TESTMODE", true);
 
 ?>

@@ -405,15 +405,6 @@ class Nulldb extends \HUGnet\db\Driver implements \HUGnet\interfaces\DBDriver
     {
     }
     /**
-     * Columns are irrelevant in Nulldb
-     *
-     * @return null
-     */
-    public function columns()
-    {
-        return array();
-    }
-    /**
      * Indexes are irrelevant in Nulldb
      *
      * @return null

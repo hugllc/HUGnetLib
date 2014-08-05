@@ -59,7 +59,7 @@ class Mysql extends \HUGnet\db\Driver implements \HUGnet\interfaces\DBDriver
     *
     * @return null
     */
-    public function columns()
+    protected function driverColumns()
     {
         $columns = $this->query("SHOW COLUMNS FROM ".$this->table());
         $cols = array();

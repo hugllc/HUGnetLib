@@ -663,15 +663,6 @@ class Mongodb extends \HUGnet\db\Driver implements \HUGnet\interfaces\DBDriver
         $this->cursor = null;
     }
     /**
-     * Columns are irrelevant in Mongodb
-     *
-     * @return null
-     */
-    public function columns()
-    {
-        return array();
-    }
-    /**
      * Checks the database table, repairs and optimizes it
      *
      * @param bool $force Force the repair

@@ -70,6 +70,8 @@ abstract class DriverQuery
     protected $query = "";
     /** @var string The name of this driver */
     protected $driver = "";
+    /** @var array The cache of table data */
+    private static $_tableCache = array();
 
     /**
     * Register this database object
@@ -156,6 +158,31 @@ abstract class DriverQuery
             $ret = $this->pdo()->getAttribute($attrib);
         }
         return $ret;
+    }
+    /**
+    * Gets columns from a mysql server
+    *
+    * @return null
+    */
+    public function columns()
+    {
+        $cols  = &self::$_tableCache;
+        $table = $this->sqlTable;
+        // This doesn't work when we run tests.  We don't want to globalize anything
+        // for the tests.
+        if (!is_array($cols[$table]) || defined("_TESTMODE")) {
+            $cols[$table] = $this->driverColumns();
+        } 
+        return $cols[$table];
+    }
+    /**
+    * Gets columns from a mysql server
+    *
+    * @return null
+    */
+    protected function driverColumns()
+    {
+        return array();
     }
     /**
     * This function deals with errors
