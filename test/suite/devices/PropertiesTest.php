@@ -78,13 +78,27 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->m = Properties::factory(TEST_CONFIG_BASE."/files/devices.xml","0039-14-01-A","0039-23-01");
-        $this->n = Properties::factory(TEST_CONFIG_BASE."/files/devices.xml","0039-12-01-A","");
-        $this->o = Properties::factory(TEST_CONFIG_BASE."/files/devices.xml","0039-12-02-C","");
-        $this->p = Properties::factory(TEST_CONFIG_BASE."/files/devices.xml","0039-37-01-E","");
-        $this->q = Properties::factory(TEST_CONFIG_BASE."/files/devices.xml","0039-28-01-A","0039-23-01");
-        $this->r = Properties::factory(TEST_CONFIG_BASE."/files/devices.xml","0039-12-02-C","0039-15-01");
-        $this->s = Properties::factory(TEST_CONFIG_BASE."/files/devices.xml","","");
+        $this->m = Properties::factory(
+            "0039-14-01-A", "0039-23-01", TEST_CONFIG_BASE."/files/devices.xml"
+        );
+        $this->n = Properties::factory(
+            "0039-12-01-A", "", TEST_CONFIG_BASE."/files/devices.xml"
+        );
+        $this->o = Properties::factory(
+            "0039-12-02-C", "", TEST_CONFIG_BASE."/files/devices.xml"
+        );
+        $this->p = Properties::factory(
+            "0039-37-01-E", "", TEST_CONFIG_BASE."/files/devices.xml"
+        );
+        $this->q = Properties::factory(
+            "0039-28-01-A", "0039-23-01", TEST_CONFIG_BASE."/files/devices.xml"
+        );
+        $this->r = Properties::factory(
+            "0039-12-02-C", "0039-15-01", TEST_CONFIG_BASE."/files/devices.xml"
+        );
+        $this->s = Properties::factory(
+            "", "", TEST_CONFIG_BASE."/files/devices.xml"
+        );
     }
 
     /**
@@ -221,11 +235,10 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-    #
-    # data provider for testGetDaughterboardNum
-    #
-    # @return array
-    #
+    * data provider for testGetDaughterboardNum
+    *
+    * @return array
+    *
     */
     public static function dataGetDaughterboardNum()
     {
@@ -285,8 +298,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     */
     public function testSetPartNumbers($epNum, $dbNum, $expect)
     {
-        $this->assertSame($expect, $this->r->setPartnumbers($epNum,$dbNum));
-
+        $this->assertSame($expect, $this->r->setPartnumbers($epNum, $dbNum));
     }
 
     /**
@@ -322,7 +334,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     */
     public function testSetPartNumbersError1($epNum, $dbNum, $expect)
     {
-        $this->assertSame($expect, $this->r->setPartnumbers($epNum,$dbNum));
+        $this->assertSame($expect, $this->r->setPartnumbers($epNum, $dbNum));
 
     }
 
@@ -359,8 +371,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     */
     public function testSetPartNumbersError2($epNum, $dbNum, $expect)
     {
-        $this->assertSame($expect, $this->r->setPartnumbers($epNum,$dbNum));
-
+        $this->assertSame($expect, $this->r->setPartnumbers($epNum, $dbNum));
     }
 
 
@@ -505,6 +516,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     * test routine for get endpoint pin properties error condition
     * 
     * @param string $name   The name of the variable to test
+    * @param int    $pin    The pin to use
     * @param array  $expect The expected return
     *
     * @return null
@@ -542,6 +554,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     * test routine for get endpoint pin properties error condition
     * 
     * @param string $name   The name of the variable to test
+    * @param int    $pin    The pin to use
     * @param array  $expect The expected return
     *
     * @return null
@@ -828,8 +841,8 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     ******************************************************************
     * test routine for getDbtoEpConnections error condition
     * 
-    * @param string $dbname   The name of the daughterboard to test
-    * @param array  $expect   The expected return
+    * @param string $dbname The name of the daughterboard to test
+    * @param array  $expect The expected return
     *
     * @return null
     *
@@ -909,8 +922,8 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     ******************************************************************
     * test routine for getDbtoEpConnections error 2 condition
     * 
-    * @param string $dbname   The name of the daughterboard to test
-    * @param array  $expect   The expected return
+    * @param string $dbname The name of the daughterboard to test
+    * @param array  $expect The expected return
     *
     * @return null
     *
@@ -1006,8 +1019,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     *************************************************************
     * test routine for get daughterboard to endpoint connections
     *
-    * @param string $dbname   The name of the daughterboard test
-    * @param string $epname  The name of the endpoint test
+    * @param string $dbname The name of the daughterboard test
     * @param array  $expect The expected return.
     *
     * @return null
@@ -1024,8 +1036,8 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     *************************************************************
     * test routine for constructor using default filename
     *
-    * @param string $name - name of the variable to test
-    * @param array  $expect - the expected return
+    * @param string $name   name of the variable to test
+    * @param array  $expect the expected return
     *
     * @return null
     *
@@ -1035,7 +1047,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     {
        
         unset($this->o);
-        $this->o = Properties::factory(null,"0039-28-01-A","0039-23-01");   
+        $this->o = Properties::factory("0039-28-01-A", "0039-23-01");
         $this->assertSame($expect, $this->o->getDaughterboards());
     }
 

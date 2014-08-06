@@ -56,10 +56,13 @@ class Properties
 {
     private $_Xml;
 
-    private $EpArray = array();
-    private $DbArray = array();
-    
+    /** @var The endpoint array */
+    private $_EpArray = array();
+    /** @var The daughterboard array */
+    private $_DbArray = array();
+    /** @var The part number of the endpoint */
     private $_endpointNum;
+    /** @var The part number of the daughterboard */
     private $_daughterNum;
 
 
@@ -68,6 +71,10 @@ class Properties
     * this function loads the devices xml file into an object and loads  
     * the arrays of endpoints and daughterboards.
     *
+    * @param string $filename    The file to use
+    * @param string $endpointNum The part number of the endpoint
+    * @param string $daughterNum The part number of the daughterboard
+    * 
     * @return void
     */
     protected function __construct($filename, $endpointNum, $daughterNum)
@@ -81,30 +88,32 @@ class Properties
         /* fill the endpoint list array */
         $count = $this->_Xml->endpoints->count();
         for ($i=0; $i<$count; $i++) {
-            $this->EpArray[$i] = (string) ($this->_Xml->endpoints[$i]->HWPartNum);
+            $this->_EpArray[$i] = (string) ($this->_Xml->endpoints[$i]->HWPartNum);
         }
 
         /* fill the daughterboard list array */
         $count = $this->_Xml->daughterboards->count();
-        for($i = 0; $i < $count; $i++) {
-            $this->DbArray[$i] = (string) ($this->_Xml->daughterboards[$i]
+        for ($i = 0; $i < $count; $i++) {
+            $this->_DbArray[$i] = (string) ($this->_Xml->daughterboards[$i]
                 ->HWPartNum);
         }
         $this->_endpointNum = $endpointNum;
         $this->_daughterNum = $daughterNum;
 
     } /* end function __construct */
-
-
     /**
     *********************************************************************
     * this function instantiates the class object and returns the object
     * to the caller.
     *
+    * @param string $endpointNum The part number of the endpoint
+    * @param string $daughterNum The part number of the daughterboard
+    * @param string $filename    The file to use
+    * 
     * @return object device data object.
     *
     */
-    public static function &factory($filename = null, $endpointNum, $daughterNum )
+    public static function &factory($endpointNum, $daughterNum, $filename = null)
     {
 
         $object = new Properties($filename, $endpointNum, $daughterNum);
@@ -118,13 +127,13 @@ class Properties
     * this function returns the list of endpoints available in 
     * the devices.xml file.
     *
-    * @return array - $EpArray a list of endpoint hardware part numbers.
+    * @return array - $_EpArray a list of endpoint hardware part numbers.
     *
     */
     public function getEndpoints()
     {
 
-        return $this->EpArray;
+        return $this->_EpArray;
 
     }
 
@@ -133,14 +142,14 @@ class Properties
     * this function returns the list of daughterboards available in 
     * the devices.xml file.
     *
-    * @return array - $DbArray, a list of daughterboard hardware part
+    * @return array - $_DbArray, a list of daughterboard hardware part
     *                            numbers.
     *
     */
     public function getDaughterboards()
     {
 
-        return $this->DbArray;
+        return $this->_DbArray;
 
     }
 
@@ -179,8 +188,8 @@ class Properties
     * this function sets a new endpoint and daughterboard part number 
     * for the object.
     *
-    * @param string $endpointNum   new endpoint hardware number
-    * @param string $daughterNum   new daughterboard hardware part number
+    * @param string $endpointNum new endpoint hardware number
+    * @param string $daughterNum new daughterboard hardware part number
     *
     * @return array  - success or error with condition 
     *
@@ -189,8 +198,8 @@ class Properties
     {
         $result = array();
 
-        if (in_array($endpointNum, $this->EpArray)) {
-            if (in_array($daughterNum, $this->DbArray)) {
+        if (in_array($endpointNum, $this->_EpArray)) {
+            if (in_array($daughterNum, $this->_DbArray)) {
                 $this->_endpointNum = $endpointNum;
                 $this->_daughterNum = $daughterNum;
                 $result[0] = 'Okay';
@@ -219,8 +228,8 @@ class Properties
     {
         $pinArray = array();
 
-        if (in_array($this->_endpointNum, $this->EpArray)) {
-            $pinArray = $this->epPinList();
+        if (in_array($this->_endpointNum, $this->_EpArray)) {
+            $pinArray = $this->_epPinList();
         } else {
             $pinArray[0] = "Error";
             $pinArray[1] = "Endpoint not found!";
@@ -241,8 +250,8 @@ class Properties
     {
         $pinArray = array();
 
-        if (in_array($this->_daughterNum, $this->DbArray)) {
-            $pinArray = $this->dbPinList();
+        if (in_array($this->_daughterNum, $this->_DbArray)) {
+            $pinArray = $this->_dbPinList();
         } else {
             $pinArray[0] = "Error";
             $pinArray[1] = "Daughterboard not found!";
@@ -255,6 +264,8 @@ class Properties
     *********************************************************************
     * this function returns the pin properties for the endpoint and
     * a given pin name.
+    *
+    * @param string $pinName name of the pin 
     *
     * @return array $pinArray - an array containing:
     *                              [0] the pin function(s),
@@ -269,8 +280,8 @@ class Properties
     {
         $pinArray = array();
 
-        if (in_array($this->_endpointNum, $this->EpArray)) {
-            $pinArray = $this->epPinProperties($pinName);
+        if (in_array($this->_endpointNum, $this->_EpArray)) {
+            $pinArray = $this->_epPinProperties($pinName);
         } else {
             $pinArray[0] = "Error";
             $pinArray[1] = "Endpoint not found!";
@@ -283,6 +294,8 @@ class Properties
     *********************************************************************
     * this function returns the pin properties for the daughterboard and
     * a given pin name.
+    *
+    * @param string $pinName name of the pin 
     *
     * @return array $pinProperties - a 2 dimensional array containing: 
     *                                   [0][0] the pin function(s)
@@ -299,8 +312,8 @@ class Properties
     {
         $pinArray = array();
 
-        if (in_array($this->_daughterNum, $this->DbArray)) {
-            $pinArray = $this->dbPinProperties($pinName);
+        if (in_array($this->_daughterNum, $this->_DbArray)) {
+            $pinArray = $this->_dbPinProperties($pinName);
         } else {
             $pinArray[0][0] = "Error";
             $pinArray[0][1] = "Daughterboard not found!";
@@ -315,8 +328,6 @@ class Properties
     * connection to the given endpoint provided the hardware part number
     * is in the set of daughter boards.
     * 
-    * @param string $epNum - endpoint part number
-    *
     * @return array $pinArray - 2 dimensional array containing 
     *                           [x][0] daughterboard pin name
     *                           [x][1] connecting endpoint pin name
@@ -326,8 +337,8 @@ class Properties
     {
         $pinArray = array();
 
-        if (in_array($this->_daughterNum, $this->DbArray)) {
-            $pinArray = $this->dbToEpConnections();
+        if (in_array($this->_daughterNum, $this->_DbArray)) {
+            $pinArray = $this->_dbToEpConnections();
         } else {
             $pinArray[0][0] = "Error";
             $pinArray[0][1] = "Daughterboard not found!";
@@ -342,28 +353,27 @@ class Properties
     * this function returns a list of the pin names and their functions  
     * for the given endpoint.
     *
-    *
     * @return array $pinArray - array of type string containing pin 
     *                           names.
     *
     */
-    private function epPinList()
+    private function _epPinList()
     {
         $epName = $this->_endpointNum;
 
         $pinArray = array();
-        $epCount = count($this->EpArray);
+        $epCount = count($this->_EpArray);
         $found = 0;
 
         for ($i=0; $i<$epCount; $i++) {
-            if($this->EpArray[$i] == $epName) {
+            if ($this->_EpArray[$i] == $epName) {
                 $pinCount = $this->_Xml->endpoints[$i]->Pins->count();
                 if ($pinCount == 0) {
                     $found = 1;
                 }
                 for ($j=0; $j< $pinCount; $j++) {
                     $found = 2;
-                    $pinName = (string)($this->_Xml->endpoints[$i]->Pins[$j]->name);
+                    $pinName = (string)$this->_Xml->endpoints[$i]->Pins[$j]->name;
                     $pinArray[$j]= $pinName;
                 }
             }
@@ -375,15 +385,14 @@ class Properties
         }
 
         return $pinArray;
-    } /* end function epPinList */
+    } /* end function _epPinList */
 
     /**
     *********************************************************************
     * this function returns the pin properties for a given endpoint and
     * a given pin name.
     *
-    * @param string $epName - hardware part number of the endpoint
-    * @param string $pinName - name of the pin 
+    * @param string $pinName name of the pin 
     *
     * @return array $pinProperties - an array containing:
     *                                       [0] the pin function(s),
@@ -394,48 +403,48 @@ class Properties
     *                                       [5] high voltage input flag
     *
     */
-    private function epPinProperties($pinName)
+    private function _epPinProperties($pinName)
     {
         $epName = $this->_endpointNum;
         $pinArray = array();
-        $epCount = count($this->EpArray);
+        $epCount = count($this->_EpArray);
         $found = 0;
 
         for ($i=0; $i<$epCount; $i++) {
-            if($this->EpArray[$i] == $epName) {
+            if ($this->_EpArray[$i] == $epName) {
                 $found = 1;
                 $pinCount = $this->_Xml->endpoints[$i]->Pins->count();
                 if ($pinCount == 0) {
                     $found = 2;
                 } else {
                     for ($j=0; $j< $pinCount; $j++) {
-                        $pName = (string)($this->_Xml->endpoints[$i]->Pins[$j]
-                            ->name);
+                        $pName = (string)$this->_Xml->endpoints[$i]->Pins[$j]
+                            ->name;
                         if ($pName == $pinName) {
                             $found = 3;
-                            $pinFunct = (string)($this->_Xml->endpoints[$i]
-                                ->Pins[$j]->function);
-                            $pinSeriesResValue = (string)($this->_Xml->
-                                endpoints[$i]->Pins[$j]->series);
+                            $pinFunct = (string)$this->_Xml->endpoints[$i]
+                                ->Pins[$j]->function;
+                            $pinSeriesResValue = (string)$this->_Xml
+                                ->endpoints[$i]->Pins[$j]->series;
                             $pinArray[0]= $pinFunct;
-                            if ($pinSeriesResValue <> NULL) {
-                                $pinShuntResValue = (string)($this->_Xml->
-                                    endpoints[$i]->Pins[$j]->shunt->value);
+                            if ($pinSeriesResValue <> null) {
+                                $pinShuntResValue = (string)$this->_Xml
+                                    ->endpoints[$i]->Pins[$j]->shunt->value;
                                 $pinArray[1] = $pinSeriesResValue;
                                 $pinArray[2] = $pinShuntResValue;
                                 if ($pinShuntResValue <> "none") {
-                                    $pinShuntResLoc = (string)($this->_Xml->
-                                        endpoints[$i]->Pins[$j]->shunt->location);
-                                    $pinShuntResPull = (string)($this->_Xml->
-                                        endpoints[$i]->Pins[$j]->shunt->pull);
+                                    $pinShuntResLoc = (string)$this->_Xml
+                                        ->endpoints[$i]->Pins[$j]->shunt->location;
+                                    $pinShuntResPull = (string)$this->_Xml
+                                        ->endpoints[$i]->Pins[$j]->shunt->pull;
                                     $pinArray[3] = $pinShuntResLoc;
                                     $pinArray[4] = $pinShuntResPull;
                                 } else {
                                     $pinArray[3] = "none";
                                     $pinArray[4] = "none";
                                 }
-                                $pinHighVoltage = (string)($this->_Xml->
-                                    endpoints[$i]->Pins[$j]->highvoltage);
+                                $pinHighVoltage = (string)$this->_Xml
+                                    ->endpoints[$i]->Pins[$j]->highvoltage;
                                 $pinArray[5] = $pinHighVoltage;
                             }
                         }
@@ -448,12 +457,12 @@ class Properties
             $pinArray[0] = "Error";
 
             switch($found) {
-                case 1: 
-                    $pinArray[1] = "Pin not found!";
-                    break;
-                case 2:
-                    $pinArray[1] = "No Pins to display!";
-                    break;
+            case 1: 
+                $pinArray[1] = "Pin not found!";
+                break;
+            case 2:
+                $pinArray[1] = "No Pins to display!";
+                break;
             }
         }
         
@@ -466,29 +475,28 @@ class Properties
     *********************************************************************
     * this function displays the list of pins for a given daughterboard.
     *
-    *
     * @return array $pinArray - a list of pin names for the daughterboard.
     *
     */
-    private function dbPinList()
+    private function _dbPinList()
     {
         $dbNum = $this->_daughterNum;
         $pinArray = array();
-        $dbCount = count($this->DbArray);
+        $dbCount = count($this->_DbArray);
 
         for ($i=0; $i<$dbCount; $i++) {
-            if($this->DbArray[$i] == $dbNum) {
+            if ($this->_DbArray[$i] == $dbNum) {
                 $pinCount = $this->_Xml->daughterboards[$i]->Pins->count();
-                    for ($j=0; $j< $pinCount; $j++) {
-                        $pinName = (string)($this->_Xml->daughterboards[$i]->
-                            Pins[$j]->name);
-                        $pinArray[$j]= $pinName;
-                    }
+                for ($j=0; $j< $pinCount; $j++) {
+                    $pinName = (string)($this->_Xml->daughterboards[$i]
+                        ->Pins[$j]->name);
+                    $pinArray[$j]= $pinName;
+                }
             }
         }
     
         return $pinArray;
-    } /* end function dbPinList */
+    } /* end function _dbPinList */
 
 
     /**
@@ -496,9 +504,9 @@ class Properties
     * this function returns the pin function for a given daughter and a
     * give pin name.
     *
-    * @param string $pinName - name of the pin 
+    * @param string $pinName name of the pin 
     *
-    * @return array $pinProperties - a 2 dimensional array containing: 
+    * @return array $pinProperties a 2 dimensional array containing: 
     *                                   [0][0] the pin function(s)
     *                                   [x][0] connect
     *                                   [x][1] connecting endpoint number
@@ -509,32 +517,32 @@ class Properties
     *                                   or 2.
     *
     */
-    private function dbPinProperties($pinName)
+    private function _dbPinProperties($pinName)
     {
         $dbName = $this->_daughterNum;
         $pinArray = array();
-        $dbCount = count($this->DbArray);
+        $dbCount = count($this->_DbArray);
         $found = 0;
 
         for ($i=0; $i<$dbCount; $i++) {
-            if($this->DbArray[$i] == $dbName) {
+            if ($this->_DbArray[$i] == $dbName) {
                 $found = 1;
                 $pinCount = $this->_Xml->daughterboards[$i]->Pins->count();
                 for ($j=0; $j< $pinCount; $j++) {
-                    $pName = (string) ($this->_Xml->daughterboards[$i]->Pins[$j]->
-                        name);
+                    $pName = (string) $this->_Xml->daughterboards[$i]
+                        ->Pins[$j]->name;
                     if ($pName == $pinName) {
                         $found = 2;
-                        $pfunct = (string) ($this->_Xml->daughterboards[$i]->
-                            Pins[$j]->function);
+                        $pfunct = (string) ($this->_Xml->daughterboards[$i]
+                            ->Pins[$j]->function);
                         $pinArray[0][0] = $pfunct;
-                        $cCount = $this->_Xml->daughterboards[$i]->Pins[$j]->
-                            connect->count();
+                        $cCount = $this->_Xml->daughterboards[$i]->Pins[$j]
+                            ->connect->count();
                         for ($k=0; $k<$cCount; $k++) {
-                            $conEP = (string)($this->_Xml->daughterboards[$i]->
-                                Pins[$j]->connect[$k]->device);
-                            $conPin = (string)($this->_Xml->daughterboards[$i]->
-                                Pins[$j]->connect[$k]->conpin);
+                            $conEP = (string)($this->_Xml->daughterboards[$i]
+                                ->Pins[$j]->connect[$k]->device);
+                            $conPin = (string)($this->_Xml->daughterboards[$i]
+                                ->Pins[$j]->connect[$k]->conpin);
                             $pinArray[$k+1][0] = "Connect";
                             $pinArray[$k+1][1] = $conEP;
                             $pinArray[$k+1][2] = $conPin;
@@ -543,7 +551,7 @@ class Properties
                 }
 
             }
-        } /* end function dbPinProperties */
+        } /* end function _dbPinProperties */
         
         if ($found <> 2) {
             $pinArray[0][0] = "Error";
@@ -561,38 +569,37 @@ class Properties
     * this function returns a list of the daughterboard pins and their
     * connection to the given endpoint.
     * 
-    * @param string $epNum - endpoint part number
-    *
     * @return array $pinArray - 2 dimensional array containing 
     *                           [x][0] daughterboard pin name
     *                           [x][1] connecting endpoint pin name
     *
     */
-    private function dbToEpConnections()
+    private function _dbToEpConnections()
     {
         $dbNum = $this->_daughterNum;
         $epNum = $this->_endpointNum;
         $pinArray = array();
-        $dbCount = count($this->DbArray);
+        $dbCount = count($this->_DbArray);
         $epFound = 0;
 
         for ($i = 0; $i < $dbCount; $i++) {
-            if($this->DbArray[$i] == $dbNum) {
+            if ($this->_DbArray[$i] == $dbNum) {
                 $dbFound = 1;
                 $pinCount = $this->_Xml->daughterboards[$i]->Pins->count();
                 for ($j = 0; $j < $pinCount; $j++) {
-                    $pinName = (string)($this->_Xml->daughterboards[$i]->
-                        Pins[$j]->name);
+                    $pinName = (string)($this->_Xml->daughterboards[$i]
+                        ->Pins[$j]->name);
                     $pinArray[$j][0]= $pinName;
-                    $connectNum = $this->_Xml->daughterboards[$i]->Pins[$j]->
-                        connect->count();
-                    for ($times = 0; $times < $connectNum; $times++)  {
-                        $pinConnect = (string)$this->_Xml->daughterboards[$i]->
-                            Pins[$j]->connect[$times]->device;
+                    $connectNum = $this->_Xml->daughterboards[$i]->Pins[$j]
+                        ->connect->count();
+                    for ($times = 0; $times < $connectNum; $times++) {
+                        $pinConnect = (string)$this->_Xml->daughterboards[$i]
+                            ->Pins[$j]->connect[$times]->device;
                         if ($pinConnect == $epNum) {
                             $epFound = 1;
-                            $pinConnectname = (string)$this->_Xml->
-                                daughterboards[$i]->Pins[$j]->connect[$times]->conpin;
+                            $pinConnectname = (string)$this->_Xml
+                                ->daughterboards[$i]->Pins[$j]->connect[$times]
+                                ->conpin;
                             $pinArray[$j][1] = $pinConnectname;
                         }
                     }
@@ -606,7 +613,7 @@ class Properties
         }
         
         return $pinArray;
-    } /* end function dbToEpConnections */
+    } /* end function _dbToEpConnections */
 
 
 }
