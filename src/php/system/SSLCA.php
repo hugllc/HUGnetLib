@@ -110,8 +110,8 @@ class SSLCA
     /**
     * This function creates the system.
     *
-    * @param mixed  &$system (object)The system object to use
-    * @param mixed  $data    (int)The id of the item, (array) data info array
+    * @param mixed &$system (object)The system object to use
+    * @param mixed $data    (int)The id of the item, (array) data info array
     *
     * @return null
     */
@@ -129,7 +129,7 @@ class SSLCA
     private function _setup()
     {
         $dirs = array("", "/private", "/requests", "/signed", "/revoked");
-        foreach($dirs as $dir) {
+        foreach ($dirs as $dir) {
             if (!file_exists($this->_ssldir.$dir)) {
                 mkdir($this->_ssldir.$dir, 0750, true);
             }

@@ -358,7 +358,7 @@ abstract class Table extends TableBase
     *
     * @return null
     */
-    public function _diffPrint($diff)
+    private function _diffPrint($diff)
     {
         foreach ((array)$diff as $key => $value) {
             if (is_array($value)) {
@@ -557,6 +557,9 @@ abstract class Table extends TableBase
     /**
     * Checks the table in the database against the definition, and returns
     * the differences.
+    *
+    * @param array $index1 The first index to check
+    * @param array $index2 The second index to check
     *
     * @return null
     */

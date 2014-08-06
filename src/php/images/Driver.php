@@ -30,7 +30,6 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.14.3
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
@@ -53,6 +52,7 @@ require_once dirname(__FILE__)."/../contrib/Color.php";
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.14.3
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 abstract class Driver
@@ -189,6 +189,8 @@ abstract class Driver
     }
     /**
     * This returns the image class
+    * 
+    * @param array $reading The reading to set.  If null it just returns the currnet
     *
     * @return null
     */

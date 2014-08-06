@@ -311,8 +311,8 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     * @param mixed  $class  This is either the name of a class or an object
     * @param array  $mocks  The mocks to use
     * @param string $author The author of the annotation
-    * @param int    $date   The date that the annotation takes place
     * @param string $text   The text of the annotation
+    * @param int    $date   The date that the annotation takes place
     * @param mixed  $return The expected return value
     * @param mixed  $expect The expected calls
     *

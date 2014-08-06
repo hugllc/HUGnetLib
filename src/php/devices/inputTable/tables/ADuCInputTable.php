@@ -871,13 +871,13 @@ class ADuCInputTable
         $ref = 1;
         if ($channel == 1) {
             if (($this->_params("HIGHEXTREF1") == 1)
-             || ($this->_params("ADC1REF") == 3)
+                || ($this->_params("ADC1REF") == 3)
             ) {
                 $ref = 0.5;
             }
         } else {
             if (($this->_params("HIGHEXTREF0") == 1)
-             || ($this->_params("ADC0REF") == 3)
+                || ($this->_params("ADC0REF") == 3)
             ) {
                 $ref = 0.5;
             }
@@ -888,7 +888,7 @@ class ADuCInputTable
     * Gets the total gain.
     *
     * @param int $channel The channel to get the port for
-    
+    *
     * @return null
     */
     public function port($channel = 0)
@@ -896,7 +896,7 @@ class ADuCInputTable
         if (!$this->enabled($channel)) {
             // If we are given channel 0, but channel 0 isn't enabled, check
             // channel 1.
-            if (($channel == 0) && $this->enabled(1)){
+            if (($channel == 0) && $this->enabled(1)) {
                 $mux = $this->_params("ADC1CH");
                 $channel = 1;
             } else {

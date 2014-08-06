@@ -206,7 +206,7 @@ abstract class TableBase extends \HUGnet\base\Container
     * This function creates other tables that are identical to this one, except
     * for the data given.
     *
-    * @param mixed $data This is an array or string to create the object from
+    * @param mixed $flag Set the flag if it is bool.  Otherwise just return the flag
     *
     * @return bool The read only flag
     */

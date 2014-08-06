@@ -369,9 +369,9 @@ class DriverTest extends drivers\DriverTestBase
     /**
     * test the set routine when an extra class exists
     *
-    * @param array  $registers Drivers to register
-    * @param mixed  $class     The hardware part number
-    * @param array  $expect    The expected return
+    * @param array $registers Drivers to register
+    * @param mixed $class     The hardware part number
+    * @param array $expect    The expected return
     *
     * @return null
     *

@@ -110,7 +110,7 @@ class CheckGateways extends \HUGnet\processes\analysis\Periodic
                     if ($this->_gateway->table()->insert(true)) {
                         $this->system()->out(
                             "Updated Gateway ".$this->_gateway->id()
-                                .": ".$this->_gateway->get("name")
+                            .": ".$this->_gateway->get("name")
                         );
                     }
                 }

@@ -56,7 +56,7 @@ require_once dirname(__FILE__)."/../DriverInterface.php";
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
- class NoOp extends \HUGnet\devices\functions\Driver
+class NoOp extends \HUGnet\devices\functions\Driver
     implements \HUGnet\devices\functions\DriverInterface
 {
     /**
@@ -83,6 +83,5 @@ require_once dirname(__FILE__)."/../DriverInterface.php";
     );
 
 }
-
 
 ?>

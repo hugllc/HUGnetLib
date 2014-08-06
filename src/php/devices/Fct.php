@@ -102,7 +102,7 @@ class Fct extends \HUGnet\base\Container
     * @param mixed  &$system (object)The system object to use
     * @param mixed  $data    (int)The id of the item, (array) data info array
     * @param object &$device The device object to use
-    * @param object &$fcts   The fucntions object this is attached to.
+    * @param object $fcts    The fucntions object this is attached to.
     *
     * @return null
     */

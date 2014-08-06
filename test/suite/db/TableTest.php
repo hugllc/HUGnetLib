@@ -1704,8 +1704,10 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     /**
     * test
     *
-    * @param string $setup  Database query to modify the table
-    * @param string $expect The query created
+    * @param string $setup      Database query to modify the table
+    * @param array  $sqlColumns The SQL columns to use
+    * @param array  $sqlIndexes The SQL indexes to use
+    * @param string $expect     The query created
     *
     * @return null
     *
@@ -1778,8 +1780,10 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
     /**
     * test
     *
-    * @param string $setup  Database query to modify the table
-    * @param string $expect The query created
+    * @param string $setup      Database query to modify the table
+    * @param array  $sqlColumns The SQL columns to use
+    * @param array  $sqlIndexes The SQL indexes to use
+    * @param string $expect     The query created
     *
     * @return null
     *

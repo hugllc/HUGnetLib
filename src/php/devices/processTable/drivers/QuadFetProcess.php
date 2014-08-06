@@ -207,7 +207,9 @@ class QuadFetProcess extends \HUGnet\devices\processTable\Driver
             if ($mode == 0) {
                 $base++;
             }
-            $chan    = $this->process()->device()->dataChannels()->dataChannel($base);
+            $chan    = $this->process()->device()->dataChannels()->dataChannel(
+                $base
+            );
             $epChan  = (int)$chan->get("epChannel");
             $value   = $chan->encode($set);
             $dcstr  .= $this->encodeInt($epChan, 1);

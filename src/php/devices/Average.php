@@ -53,7 +53,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class Average 
+class Average
 {
     /** @var This is the system object */
     protected $system = null;
@@ -196,7 +196,6 @@ class Average
     /**
     * This runs the job.
     *
-    *
     * @param object &$data   This is the data to use to calculate the average
     *                        This is not used here, but it is required to
     *                        match the main implementation.
@@ -262,7 +261,7 @@ class Average
     * stored in the instance this is called from.  If this is fed history table
     * then it will calculate 15 minute averages.
     *
-    * @param array $param The parameters to use
+    * @param array &$param The parameters to use
     *
     * @return bool array on success, false on failure
     */

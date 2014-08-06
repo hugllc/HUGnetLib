@@ -312,7 +312,6 @@ class Fixture extends \HUGnet\Device
         foreach ($params as $key => $value) {
             $dev->setParam($key, $value);
         }
-//        $dev->table()->fromArray($data);
         $dev->table()->insertRow(true);
         /* Now do the iopTables */
         $input = $dev->input(0);

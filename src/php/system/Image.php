@@ -118,7 +118,7 @@ class Image extends \HUGnet\base\SystemTableBase
     {
         $format   = trim(strtoupper($args->get("format")));
         $filename = $this->get("name");
-        $filename = preg_replace('/[^a-zA-Z0-9-_\.]/','_', $filename);
+        $filename = preg_replace('/[^a-zA-Z0-9-_\.]/', '_', $filename);
         $data     = $args->get("data");
         if (empty($date)) {
             $date = null;
@@ -150,6 +150,8 @@ class Image extends \HUGnet\base\SystemTableBase
     * This outputs the image, as an image
     *
     * @param string $format The format to output the image as
+    * @param string $date   The date to encode
+    * @param string $type   The type to encode
     *
     * @return null
     */
@@ -461,8 +463,9 @@ class Image extends \HUGnet\base\SystemTableBase
     *
     * @param string $device   The device to get the reading for
     * @param int    $datachan The data channel on that device
-    * @param mixed  &$date    The date to get the reading for
+    * @param mixed  $date     The date to get the reading for
     * @param string $type     The type of average to get
+    * @param bool   $units    Whether to show the units or not
     *
     * @return array Record of the data for this image
     */

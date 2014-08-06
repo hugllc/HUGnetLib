@@ -111,7 +111,7 @@ abstract class DriverPulse extends Driver
     /**
     * Calculates the difference between this value and the previous one.
     *
-    * @param int   $A     The data value given
+    * @param int   &$A    The data value given
     * @param array &$prev The previous reading
     *
     * @return int The difference value
@@ -154,7 +154,6 @@ abstract class DriverPulse extends Driver
     * Decodes the driver portion of the setup string
     *
     * @param string &$string The string to decode
-    * @param array  &$extra  The extra stuff to use
     * @param int    $index   The index to start in the extra
     *
     * @return array
@@ -180,7 +179,9 @@ abstract class DriverPulse extends Driver
     */
     protected function pEncode($index = 0)
     {
-        $string = sprintf("%02X",  $driver,
+        $string = sprintf(
+            "%02X",
+            $driver,
             $this->subdriver[$driver][$drivers[1]]
         );
         $string  = $this->encodeInt((int)$this->subdriver(), 1);
@@ -193,6 +194,8 @@ abstract class DriverPulse extends Driver
     }
     /**
     * Returns the port this data channel is attached to
+    *
+    * @param string $driver The driver to use
     *
     * @return array
     */

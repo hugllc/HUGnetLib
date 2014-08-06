@@ -56,7 +56,7 @@ require_once dirname(__FILE__)."/../DriverInterface.php";
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
- class Temperature extends \HUGnet\devices\functions\Driver
+class Temperature extends \HUGnet\devices\functions\Driver
     implements \HUGnet\devices\functions\DriverInterface
 {
     /**

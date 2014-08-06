@@ -356,7 +356,7 @@ class AVRAnalogTable extends \HUGnet\devices\inputTable\DriverAVR
     public function channels()
     {
         $ret = $this->_driver()->channels();
-        foreach(array_keys($ret) as $key) {
+        foreach (array_keys($ret) as $key) {
             $ret[$key]["port"] = $this->entry()->port();
         }
         return $ret;

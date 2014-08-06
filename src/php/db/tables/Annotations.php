@@ -161,13 +161,11 @@ class Annotations extends \HUGnet\db\Table
     /**
     * Sets the extra attributes field
     *
-    * @param int    $start      The start of the time
-    * @param int    $end        The end of the time
-    * @param mixed  $devId      The ID to use.  None if null
-    * @param string $type       Not used here.  This is to be compatible with
-    *                              AverageTableBase::getPeriod()
-    * @param string $extraWhere Extra where clause
-    * @param array  $extraData  Data for the extraWhere clause
+    * @param int    $start The start of the time
+    * @param int    $end   The end of the time
+    * @param mixed  $devId The ID to use.  None if null
+    * @param string $type  Not used here.  This is to be compatible with
+    *                          AverageTableBase::getPeriod()
     *
     * @return mixed The value of the attribute
     *

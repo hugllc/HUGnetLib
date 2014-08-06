@@ -248,7 +248,7 @@ class Mysql extends \HUGnet\db\Driver implements \HUGnet\interfaces\DBDriver
     {
         $ret = $this->query("SHOW FULL PROCESSLIST");
         $count = 0;
-        foreach($ret as $row => $field) {
+        foreach ($ret as $row => $field) {
             // Kill select queries only
             if (strtolower(substr(trim($field['Info']), 6)) != 'select') {
                 continue;
@@ -259,7 +259,7 @@ class Mysql extends \HUGnet\db\Driver implements \HUGnet\interfaces\DBDriver
                 $this->logError(
                     -10, 
                     "Killed mysql process ".$field['Id']
-                        ." after ".$field['Time']." s", 
+                    ." after ".$field['Time']." s", 
                     ErrorTable::SEVERITY_WARNING, 
                     "timeout"
                 );

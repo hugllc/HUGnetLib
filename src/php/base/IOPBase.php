@@ -387,7 +387,7 @@ abstract class IOPBase extends SystemTableBase
         $this->table()->clearData();
         $this->table()->fromArray($data);
     }
-   /**
+    /**
     * Sets the table entry, based on the given ID
     *
     * @param int $id The id of the entry to set this input to

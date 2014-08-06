@@ -320,6 +320,8 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     /**
     * Returns the driver that should be used for a particular device
     *
+    * @param bool $all Wether to return all of the driver, or only mine.
+    * 
     * @return array The array of drivers that will work
     */
     public function getDrivers($all = false)
@@ -505,7 +507,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     /**
     * Calculates the difference between this value and the previous one.
     *
-    * @param int   $A     The data value given
+    * @param int   &$A    The data value given
     * @param array &$prev The previous reading
     *
     * @return int The difference value

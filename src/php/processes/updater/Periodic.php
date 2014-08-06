@@ -184,6 +184,8 @@ abstract class Periodic
     /**
     * This says if we are ready to run
     *
+    * @param string $msg The message to use
+    * 
     * @return bool
     */
     protected function success($msg = null)
@@ -203,6 +205,10 @@ abstract class Periodic
     }
     /**
     * This says if we are ready to run
+    *
+    * @param string $msg      The message to use
+    * @param int    $timeout  The timeout
+    * @param int    $maxcount The max count
     *
     * @return bool
     */

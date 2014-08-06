@@ -30,7 +30,6 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.14.3
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
@@ -50,6 +49,7 @@ require_once dirname(__FILE__)."/DriverInterface.php";
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.14.3
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class SVG extends \HUGnet\images\Driver 
@@ -222,7 +222,8 @@ class SVG extends \HUGnet\images\Driver
         $this->_image .= ' id=""';
         $this->_image .= ' height="'.$this->image()->get("height").'"';
         $this->_image .= ' width="'.$this->image()->get("width").'"';
-        $this->_image .= ' xlink:href="data:'.$this->image()->get("imagetype").';base64,   ';
+        $this->_image .= ' xlink:href="data:'.$this->image()->get("imagetype");
+        $this->_image .= ';base64,   ';
         $this->_image .= $this->image()->get("image");
         $this->_image .= '" />'.$this->_end;
     }
@@ -230,8 +231,8 @@ class SVG extends \HUGnet\images\Driver
     /**
     * Returns the object as a string
     *
-    * @param array  $point   The point to use
-    * @param string $indent  The indent to use for the image
+    * @param array  $point  The point to use
+    * @param string $indent The indent to use for the image
     *
     * @return string
     */

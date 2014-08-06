@@ -4407,7 +4407,7 @@ class AverageTest extends tables\TableTestBase
         $this->assertInternalType("array", $ret, "Return must be an array");
         $this->assertEquals(array(), $ret, "Return must be empty");
     }
-   /**
+    /**
     * test the set routine when an extra class exists
     *
     * @return null

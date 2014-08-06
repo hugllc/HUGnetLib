@@ -382,7 +382,8 @@ class WebInterface
     /**
     * Import the device
     *
-    * @param object $args The argument object
+    * @param object $args      The argument object
+    * @param bool   $checkdate Whether to check the date
     *
     * @return string
     */

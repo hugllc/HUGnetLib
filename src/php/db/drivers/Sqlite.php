@@ -134,7 +134,7 @@ class Sqlite extends \HUGnet\db\Driver implements \HUGnet\interfaces\DBDriver
     public function removeIndex($name)
     {
     }
-   /**
+    /**
     * Get the names of all the tables in the current database
     *
     * @return array of table names

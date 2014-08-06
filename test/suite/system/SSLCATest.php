@@ -197,7 +197,8 @@ class SSLCATest extends \PHPUnit_Framework_TestCase
                 "Certificate Request:
     Data:
         Version: 0 (0x0)
-        Subject: C=US, ST=Minnesota, L=Pine River, O=Hunt Utilities Group LLC, OU=HUGnet, CN=localhost
+        Subject: C=US, ST=Minnesota, L=Pine River, O=Hunt Utilities Group LLC, "
+        ."OU=HUGnet, CN=localhost
         Subject Public Key Info:
             Public Key Algorithm: rsaEncryption
                 Public-Key: (2048 bit)
@@ -322,7 +323,8 @@ NVgXKWgeID8xgZ30JtXYwfvETeRZTr4QlIYCZN+p8kM/udsxGvqkrirrWcbhtzQ=
                 "Certificate Request:
     Data:
         Version: 0 (0x0)
-        Subject: C=US, ST=Minnesota, L=Pine River, O=Hunt Utilities Group LLC, OU=HUGnet, CN=localhost
+        Subject: C=US, ST=Minnesota, L=Pine River, O=Hunt Utilities Group LLC, "
+        ."OU=HUGnet, CN=localhost
         Subject Public Key Info:
             Public Key Algorithm: rsaEncryption
                 Public-Key: (2048 bit)
@@ -466,7 +468,8 @@ NVgXKWgeID8xgZ30JtXYwfvETeRZTr4QlIYCZN+p8kM/udsxGvqkrirrWcbhtzQ=
                 "Certificate Request:
     Data:
         Version: 0 (0x0)
-        Subject: C=US, ST=Minnesota, L=Pine River, O=Hunt Utilities Group LLC, OU=HUGnet, CN=localhost
+        Subject: C=US, ST=Minnesota, L=Pine River, O=Hunt Utilities Group LLC, "
+        ."OU=HUGnet, CN=localhost
         Subject Public Key Info:
             Public Key Algorithm: rsaEncryption
                 Public-Key: (2048 bit)

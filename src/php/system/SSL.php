@@ -50,7 +50,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class SSL 
+class SSL
 {
     
     /** File name of our CA Certificate*/
@@ -112,8 +112,8 @@ class SSL
     /**
     * This function creates the system.
     *
-    * @param mixed  &$system (object)The system object to use
-    * @param mixed  $data    (int)The id of the item, (array) data info array
+    * @param mixed &$system (object)The system object to use
+    * @param mixed $data    (int)The id of the item, (array) data info array
     *
     * @return null
     */

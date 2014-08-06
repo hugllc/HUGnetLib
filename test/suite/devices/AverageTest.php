@@ -715,8 +715,6 @@ class AverageTest extends \PHPUnit_Framework_TestCase
     * @param array  $mockData    The data to use
     * @param string $type        The type of average to do
     * @param array  $expect      The expected average (from toArray())
-    * @param int    $lastHist    The expected last history date
-    * @param int    $lastPoll    The expected last poll date
     *
     * @return null
     *

@@ -66,6 +66,5 @@ class E00394000Average extends \HUGnet\db\FastAverage
      ********  The following are input modification functions  ********
      ******************************************************************
      ******************************************************************/
-
 }
 ?>

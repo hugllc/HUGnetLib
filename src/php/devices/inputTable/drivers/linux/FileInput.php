@@ -134,8 +134,6 @@ class FileInput extends \HUGnet\devices\inputTable\Driver
     /**
     * Gets an item
     *
-    * @param string $name The name of the property to get
-    *
     * @return null
     */
     private function _driver()

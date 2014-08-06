@@ -1146,8 +1146,8 @@ class TableBaseTest extends \PHPUnit_Extensions_Database_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param mixed  $value  The value to set
-    * @param mixed  $expect The expected return
+    * @param mixed $value  The value to set
+    * @param mixed $expect The expected return
     *
     * @return null
     *

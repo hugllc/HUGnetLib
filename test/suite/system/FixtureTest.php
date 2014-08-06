@@ -197,9 +197,9 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
     /**
     * This tests the get function
     *
-    * @param array  $config The configuration to use
-    * @param array  $data   The data to feed the object
-    * @param array  $expect The table to expect
+    * @param array $config The configuration to use
+    * @param array $data   The data to feed the object
+    * @param array $expect The table to expect
     *
     * @return null
     *
@@ -1644,11 +1644,11 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
     /**
     * This tests the set function
     *
-    * @param array $config    The configuration to use
-    * @param array $data      The data to feed the object
-    * @param array $device    The device information
-    * @param array $input    The input to load
-    * @param array $output   The output to load
+    * @param array $config  The configuration to use
+    * @param array $data    The data to feed the object
+    * @param array $device  The device information
+    * @param array $input   The input to load
+    * @param array $output  The output to load
     * @param array $process The process to load
     *
     * @return null
@@ -2512,11 +2512,13 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
     /**
     * This tests the set function
     *
-    * @param array $config    The configuration to use
-    * @param array $data      The data to feed the object
-    * @param array $device    The device information
-    * @param array $input    The input to load
-    * @param array $output   The output to load
+    * @param array $config  The configuration to use
+    * @param array $data    The data to feed the object
+    * @param array $device  The device information
+    * @param array $expect  The return to expect
+    * @param bool  $replace Whether to replace the stuff or just insert it.
+    * @param array $input   The input to load
+    * @param array $output  The output to load
     * @param array $process The process to load
     *
     * @return null

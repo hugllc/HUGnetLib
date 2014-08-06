@@ -30,7 +30,6 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.14.3
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
@@ -48,11 +47,11 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.14.3
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class PNG extends \HUGnet\images\Driver 
     implements \HUGnet\images\drivers\DriverInterface
-
 {
     /** This is our parameters */
     protected $params = array(

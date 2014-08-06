@@ -138,9 +138,9 @@ class ADuCACResistance extends \HUGnet\devices\inputTable\DriverADuC
         $Rbias = $this->getExtra(1);
         $Vref  = $this->getExtra(3);
         // The divide by two is because of the nature of this driver
-	$A = bcdiv($A, 2);
-
-	$A = $this->inputBiasCompensation($A, $Rin, $Rbias);
+        $A = bcdiv($A, 2);
+        $A = $this->inputBiasCompensation($A, $Rin, $Rbias);
+        
         $Va = bcmul(bcdiv($A, $Am), $Vref);
         return round($Va, $this->get('maxDecimals'));
     }

@@ -106,6 +106,8 @@ class SSLTest extends \PHPUnit_Framework_TestCase
     /**
     * This removes the directory everything is built in
     *
+    * @param string $dir The directory to use
+    *
     * @access protected
     *
     * @return null

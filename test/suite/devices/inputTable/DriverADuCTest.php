@@ -982,8 +982,9 @@ class DriverADuCTest extends drivers\DriverTestBase
     *
     * @dataProvider dataReference
     */
-    public function testReference($mocks, $entry, $offset, $initchan, $channel, $expect)
-    {
+    public function testReference(
+        $mocks, $entry, $offset, $initchan, $channel, $expect
+    ) {
         $this->input->load($mocks);
         $val = $this->o->reference($channel);
         $this->assertSame($expect, $val);
