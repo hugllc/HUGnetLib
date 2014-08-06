@@ -621,6 +621,20 @@ class Device extends \HUGnet\base\SystemTableAction
         return $fcts;
     }
     /**
+    * This creates the object for this devices properties
+    * 
+    * @return null
+    */
+    public function &properties()
+    {
+        $system = $this->system();
+        include_once dirname(__FILE__)."/../devices/Properties.php";
+        $fcts = \HUGnet\devices\Properties::factory(
+            $this->get("HWPartNum"), $this->getParam("DaughterBoard")
+        );
+        return $fcts;
+    }
+    /**
     * This creates the sensor drivers
     *
     * @param int $sid The sensor id to get.  They are labaled 0 to sensors

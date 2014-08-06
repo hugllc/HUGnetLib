@@ -115,10 +115,8 @@ class Properties
     */
     public static function &factory($endpointNum, $daughterNum, $filename = null)
     {
-
         $object = new Properties($filename, $endpointNum, $daughterNum);
         return $object;
-
     }
 
 
