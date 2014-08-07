@@ -151,7 +151,8 @@ HUGnet.DataView = Backbone.View.extend({
             "device"
         );
         this.annotate = new HUGnet.AnnotationsView({
-            model: this.annotations
+            model: this.annotations,
+            readonly: this.readonly
         });
         this.setupPlot();
         this.on("update", this.update, this);

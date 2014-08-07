@@ -172,10 +172,7 @@ var AnnotationEntryView = Backbone.View.extend({
     parent: null,
     progress: undefined,
     events: {
-        'change .action': 'action',
-        'click .refresh': 'refresh',
-        'click .properties': 'properties',
-        'click .configview': 'configview'
+        'click [name="edit"]': 'properties',
     },
     initialize: function (options)
     {
@@ -256,6 +253,7 @@ var AnnotationEntryView = Backbone.View.extend({
     {
         this._teardownProgress();
         var data = this.model.toJSON();
+        data.readonly = this.parent.readonly;
         _.extend(data, HUGnet.viewHelpers);
         this.$el.html(
             _.template(
@@ -285,6 +283,7 @@ HUGnet.AnnotationsView = Backbone.View.extend({
     template: "#AnnotationsTemplate",
     progress: undefined,
     timer: null,
+    readonly: true,
     events: {
         'click .newtest': 'createTest',
         'click .newfastvirtual': 'createFastVirtual',
@@ -295,6 +294,9 @@ HUGnet.AnnotationsView = Backbone.View.extend({
     {
         this.model.each(this.insert, this);
         this.model.on('add', this.insert, this);
+        if (options.readonly !== undefined) {
+            this.readonly = options.readonly;
+        }
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -306,6 +308,7 @@ HUGnet.AnnotationsView = Backbone.View.extend({
     render: function ()
     {
         var data = this.model.toJSON();
+        data.readonly = this.readonly;
         _.extend(data, HUGnet.viewHelpers);
         data.url = this.url;
         this.$el.html(
@@ -321,7 +324,11 @@ HUGnet.AnnotationsView = Backbone.View.extend({
     },
     insert: function (model, collection, options)
     {
-        var view = new AnnotationEntryView({ model: model, parent: this, url: this.url });
+        var view = new AnnotationEntryView({ 
+            model: model, 
+            parent: this, 
+            url: this.url 
+        });
         this.$('tbody').append(view.render().el);
         this.$("table").trigger('update');
     },
