@@ -269,7 +269,7 @@ HUGnet.Annotations = Backbone.Collection.extend({
                     {
                         var date = model.get("testdate");
                         if ((date > (until / 1000)) || (date < (since / 1000))) {
-                            collection.remove(model);
+                            model.collection.remove(model);
                         }
                     },
                     self

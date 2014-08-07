@@ -45,7 +45,7 @@
 HUGnet.DataView = Backbone.View.extend({
     template: '#DataViewTemplate',
     tagName: 'div',
-    pause: 10,
+    pause: 30,
     rows: 0,
     id: undefined,
     table: undefined,
@@ -136,7 +136,6 @@ HUGnet.DataView = Backbone.View.extend({
             },
             this
         );
-        this.getLatest();
         this.table = new HUGnet.DataTable({
             model: this.history,
             header: this.header,
@@ -144,16 +143,11 @@ HUGnet.DataView = Backbone.View.extend({
             classes: this.classes
         });
         this.annotations = new HUGnet.Annotations({});
-        this.annotations.fetch(
-            this.model.get("id"), 
-            this.since, 
-            this.until,
-            "device"
-        );
         this.annotate = new HUGnet.AnnotationsView({
             model: this.annotations,
             readonly: this.readonly
         });
+        this.getLatest();
         this.setupPlot();
         this.on("update", this.update, this);
     },
@@ -213,6 +207,12 @@ HUGnet.DataView = Backbone.View.extend({
         this.history.latest(this.period);
         this.since = this.history.since;
         this.until = this.history.until;
+        this.annotations.fetch(
+            this.model.get("id"), 
+            this.since, 
+            this.until,
+            "device"
+        );
         this.updateDates();
     },
     setupPlot: function ()
