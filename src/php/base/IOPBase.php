@@ -467,6 +467,15 @@ abstract class IOPBase extends SystemTableBase
         }
         return -1;
     }
+    /**
+    * Returns an array of the pins and stuff this one uses
+    *
+    * @return null
+    */
+    public function uses()
+    {
+        return $this->driver()->uses();
+    }
 }
 
 

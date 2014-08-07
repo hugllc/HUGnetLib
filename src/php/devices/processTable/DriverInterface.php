@@ -160,7 +160,12 @@ interface DriverInterface
     * @return array The array of drivers that will work
     */
     public function getDrivers();
-
+    /**
+    * Returns an array of the pins and stuff this one uses
+    *
+    * @return null
+    */
+    public function uses();
 }
 
 

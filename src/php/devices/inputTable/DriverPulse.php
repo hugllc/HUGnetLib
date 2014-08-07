@@ -222,6 +222,15 @@ abstract class DriverPulse extends Driver
         $ports = (array)$this->input()->device()->get("DigitalInputs");
         return str_replace(" ", "", (string)$ports[$port]);
     }
+    /**
+    * Returns an array of the pins and stuff this one uses
+    *
+    * @return null
+    */
+    public function uses()
+    {
+        return array($this->getExtra($this->portExtra));
+    }
 }
 
 

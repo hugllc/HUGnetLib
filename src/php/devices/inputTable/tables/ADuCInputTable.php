@@ -910,6 +910,27 @@ class ADuCInputTable
         }
         return $this->ports[$channel][$mux];
     }
+    /**
+    * Returns an array of the pins and stuff this one uses
+    *
+    * @return null
+    */
+    public function uses()
+    {
+        $uses = array();
+        foreach (array(0, 1) as $chan) {
+            if ($this->enabled($chan)) {
+                $ports = $this->port($chan);
+                $ports = str_replace("+", "", $ports);
+                $ports = str_replace("-", "", $ports);
+                $ports = str_replace(" ", "", $ports);
+                foreach (explode(",", $ports) as $port) {
+                    $uses[] = trim($port);
+                }
+            }
+        }
+        return $uses;
+    }
 
 }
 

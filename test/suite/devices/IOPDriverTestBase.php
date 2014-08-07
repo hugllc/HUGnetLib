@@ -414,6 +414,15 @@ abstract class IOPDriverTestBase extends \PHPUnit_Framework_TestCase
             );
         }
     }
+    /**
+    * Check the number of entries in extraValues
+    *
+    * @return null
+    */
+    public function testUsesArray()
+    {
+        $this->assertInternalType("array", $this->o->uses());
+    }
 
     /**
     * data provider for testDeviceID

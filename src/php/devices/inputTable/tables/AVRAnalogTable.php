@@ -432,6 +432,23 @@ class AVRAnalogTable
         $mux = $this->params("MUX");
         return $this->ports[$mux];
     }
+    /**
+    * Returns an array of the pins and stuff this one uses
+    *
+    * @return null
+    */
+    public function uses()
+    {
+        $uses = array();
+        $ports = $this->port();
+        $ports = str_replace("+", "", $ports);
+        $ports = str_replace("-", "", $ports);
+        $ports = str_replace(" ", "", $ports);
+        foreach (explode(",", $ports) as $port) {
+            $uses[] = trim($port);
+        }
+        return $uses;
+    }
 
 }
 

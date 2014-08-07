@@ -398,5 +398,15 @@ class ADuCDACTest extends \PHPUnit_Framework_TestCase
             $this->assertNull($param["bits"]);
         }
     }
+    /**
+    * Check the number of entries in extraValues
+    *
+    * @return null
+    */
+    public function testUsesValue()
+    {
+        $obj = ADuCDAC::factory($this->output, $preload);
+        $this->assertSame(array("DAC"), $obj->uses());
+    }
 }
 ?>

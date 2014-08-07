@@ -180,6 +180,30 @@ abstract class LoadableDriver
         return null;
     }
     /**
+    * Returns an array of the pins and stuff this one uses
+    *
+    * @return null
+    */
+    public function uses()
+    {
+        if (is_object($this->entry())) {
+            return $this->entry()->uses();
+        } else if (method_exists($this, "port")) {
+            $uses = array();
+            $ports = trim($this->port());
+            if (!empty($ports)) {
+                $ports = str_replace("+", "", $ports);
+                $ports = str_replace("-", "", $ports);
+                $ports = str_replace(" ", "", $ports);
+                foreach (explode(",", $ports) as $port) {
+                    $uses[] = trim($port);
+                }
+            }
+            return $uses;
+        }
+        return array();
+    }
+    /**
     * Returns the driver object
     * 
     * @return object The driver requested

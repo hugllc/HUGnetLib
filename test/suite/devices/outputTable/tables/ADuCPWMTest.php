@@ -418,5 +418,15 @@ class ADuCPWMTest extends \PHPUnit_Framework_TestCase
             $this->assertNull($param["bits"]);
         }
     }
+    /**
+    * Check the number of entries in extraValues
+    *
+    * @return null
+    */
+    public function testUsesValue()
+    {
+        $obj = ADuCPWM::factory($this->output, $preload);
+        $this->assertSame(array("PWM1", "PWM3", "PWM5"), $obj->uses());
+    }
 }
 ?>

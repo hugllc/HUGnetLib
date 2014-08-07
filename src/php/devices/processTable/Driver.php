@@ -221,7 +221,15 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
             self::$_drivers[$key] = $class;
         }
     }
-
+    /**
+    * Returns an array of the pins and stuff this one uses
+    *
+    * @return null
+    */
+    public function uses()
+    {
+        return array();
+    }
 }
 
 

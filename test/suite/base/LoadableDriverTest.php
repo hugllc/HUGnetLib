@@ -1080,6 +1080,66 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertSame($expect, $ret, "Return is wrong");
     }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $mocks  The value to preload into the mocks
+    * @param array $expect The expected return
+    *
+    * @return null
+    */
+    public function testUses()
+    {
+        $this->o = DriverTestClass::factory($this->output);
+        $this->output->load($mocks);
+        $ret = $this->o->uses();
+        $this->assertSame(array(), $ret);
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $mocks  The value to preload into the mocks
+    * @param array $expect The expected return
+    *
+    * @return null
+    */
+    public function testUses2()
+    {
+        $this->o = DriverTestClass2::factory($this->output);
+        $this->output->load($mocks);
+        $ret = $this->o->uses();
+        $this->assertSame(array("Port0", "Port1"), $ret);
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $mocks  The value to preload into the mocks
+    * @param array $expect The expected return
+    *
+    * @return null
+    */
+    public function testUses3()
+    {
+        $this->o = DriverTestClass3::factory($this->output);
+        $this->output->load($mocks);
+        $ret = $this->o->uses();
+        $this->assertSame(array("Port0", "Port1"), $ret);
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $mocks  The value to preload into the mocks
+    * @param array $expect The expected return
+    *
+    * @return null
+    */
+    public function testUses4()
+    {
+        $this->o = DriverTestClass4::factory($this->output);
+        $this->output->load($mocks);
+        $ret = $this->o->uses();
+        $this->assertSame(array(), $ret);
+    }
 }
 /**
  * Base driver class for devices.
@@ -1260,5 +1320,157 @@ class DriverTestClass extends LoadableDriver
         return $this->iopobject();
     }
     
+}
+/**
+ * Base driver class for devices.
+ *
+ * This class deals with loading the drivers and figuring out what driver needs
+ * to be loaded.
+ *
+ * @category   Libraries
+ * @package    HUGnetLib
+ * @subpackage Devices
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2014 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.14.3
+ * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @since      0.9.7
+ */
+class DriverTestClass2 extends DriverTestClass
+{
+    /**
+    * This function creates the system.
+    *
+    * @param object &$sensor The sensor object
+    * @param int    $offset  The extra offset to use
+    *
+    * @return null
+    */
+    public static function &factory(&$sensor, $offset = 0)
+    {
+        $obj = new DriverTestClass2($sensor, $offset);
+        return $obj;
+    }
+    /**
+    * This function creates the system.
+    *
+    * @return null
+    */
+    public function port()
+    {
+        return "Port 0 +, Port 1 -"; 
+    }
+}
+/**
+ * Base driver class for devices.
+ *
+ * This class deals with loading the drivers and figuring out what driver needs
+ * to be loaded.
+ *
+ * @category   Libraries
+ * @package    HUGnetLib
+ * @subpackage Devices
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2014 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.14.3
+ * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @since      0.9.7
+ */
+class DriverTestClassEntryStub
+{
+    /**
+    * This function creates the system.
+    *
+    * @return null
+    */
+    public function uses()
+    {
+        return array("Port0", "Port1");
+    }
+
+}
+/**
+ * Base driver class for devices.
+ *
+ * This class deals with loading the drivers and figuring out what driver needs
+ * to be loaded.
+ *
+ * @category   Libraries
+ * @package    HUGnetLib
+ * @subpackage Devices
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2014 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.14.3
+ * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @since      0.9.7
+ */
+class DriverTestClass3 extends DriverTestClass
+{
+    /**
+    * This function creates the system.
+    *
+    * @param object &$sensor The sensor object
+    * @param int    $offset  The extra offset to use
+    *
+    * @return null
+    */
+    public static function &factory(&$sensor, $offset = 0)
+    {
+        $obj = new DriverTestClass3($sensor, $offset);
+        return $obj;
+    }
+    /**
+    * This function creates the system.
+    *
+    * @return null
+    */
+    public function &entry()
+    {
+        return new DriverTestClassEntryStub();
+    }
+}
+/**
+ * Base driver class for devices.
+ *
+ * This class deals with loading the drivers and figuring out what driver needs
+ * to be loaded.
+ *
+ * @category   Libraries
+ * @package    HUGnetLib
+ * @subpackage Devices
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2014 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.14.3
+ * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @since      0.9.7
+ */
+class DriverTestClass4 extends DriverTestClass
+{
+    /**
+    * This function creates the system.
+    *
+    * @param object &$sensor The sensor object
+    * @param int    $offset  The extra offset to use
+    *
+    * @return null
+    */
+    public static function &factory(&$sensor, $offset = 0)
+    {
+        $obj = new DriverTestClass4($sensor, $offset);
+        return $obj;
+    }
+    /**
+    * This function creates the system.
+    *
+    * @return null
+    */
+    public function port()
+    {
+        return null; 
+    }
 }
 ?>

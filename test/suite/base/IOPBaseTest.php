@@ -1209,6 +1209,62 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
         );
         unset($obj);
     }
+    /**
+    * Data provider for testUses
+    *
+    * @return array
+    */
+    public static function dataUses()
+    {
+        return array(
+            array(
+                new \HUGnet\DummySystem(),
+                null,
+                array(
+                    "id" => 5,
+                ),
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "HWPartNum"    => "0039-12-01-C",
+                            "FWPartNum"    => "0039-20-03-C",
+                            "FWVersion"    => "1.2.3",
+                            "DeviceGroup"  => "FFFFFF",
+                            "TimeConstant" => 1,
+                        ),
+                    ),
+                ),
+                array(
+                    "Port1", "Port2"
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config The configuration to use
+    * @param mixed  $device The device to set
+    * @param mixed  $class  This is either the name of a class or an object
+    * @param array  $mocks  The mocks to use
+    * @param string $string The string to feed into the decode
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataUses
+    */
+    public function testUses(
+        $config, $device, $class, $mocks, $expect
+    ) {
+        $config->resetMock($mocks);
+        $dev = new \HUGnet\DummyBase("Device");
+        $obj = IOPBaseStub::factory($config, $device, $class, $dev);
+        $ret = $obj->uses();
+        $this->assertEquals($expect, $ret);
+        unset($obj);
+    }
 
 }
 /**
@@ -1568,6 +1624,15 @@ abstract class Driver
     {
         return new \HUGnet\DummyBase("Entry");
     }
+    /**
+    * Returns the stuff this driver uses
+    *
+    * @return array The stuff this uses
+    */
+    public function uses()
+    {
+        return array();
+    }
 }
 
 namespace HUGnet\devices\replaceme\drivers;
@@ -1636,6 +1701,15 @@ class TestIOPBaseDriver1 extends \HUGnet\devices\replaceme\Driver
     public function setExtra($index, $value)
     {
         return array_merge(array("setExtra"), func_get_args());
+    }
+    /**
+    * Returns the stuff this driver uses
+    *
+    * @return array The stuff this uses
+    */
+    public function uses()
+    {
+        return array("Port1", "Port2");
     }
 
 }
