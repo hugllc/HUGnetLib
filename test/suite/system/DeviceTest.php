@@ -2025,117 +2025,34 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         return array(
             array(      // #0
                 array(
-                    "Devices" => array(
-                        "get" => array(
-                            "id" => 5,
-                            "sensors" => array(array("id" => 0x15)),
-                            "group" => "hello",
-                        ),
-                    ),
-                    "Inputs" => array(
-                        "sanitizeWhere" => array(
-                            "sensor" => 5,
-                            "name" => 3,
-                            "value" => 1,
-                        ),
+                    "id" => 5,
+                    "sensors" => array(array("id" => 0x15)),
+                    "Role" => "ThisIsABadRole",
+                    "group" => "hello",
+                    "HWPartNum" => "0039-28-01-A",
+                    "params" => array(
+                        "DaughterBoard" => "0039-15-01-A",
                     ),
                 ),
                 "\HUGnet\devices\Properties",
                 array(
                 ),
+                "0039-28-01-A",
+                "0039-15-01-A",
             ),
             array(      // #1
                 array(
-                    "Devices" => array(
-                        "get" => array(
-                            "id" => 5,
-                            "sensors" => base64_encode(
-                                serialize(
-                                    array(
-                                        array("id" => 0x18),
-                                    )
-                                )
-                            ),
-                            "group" => "hello",
-                        ),
-                    ),
+                    "id" => 5,
+                    "sensors" => array(array("id" => 0x15)),
+                    "Role" => "ThisIsABadRole",
+                    "group" => "hello",
+                    "HWPartNum" => "0039-21-01-A",
                 ),
                 "\HUGnet\devices\Properties",
                 array(
                 ),
-            ),
-            array(      // #2
-                array(
-                    "Devices" => array(
-                        "get" => array(
-                            "id" => 5,
-                            "sensors" => true,
-                            "group" => "hello",
-                        ),
-                    ),
-                ),
-                "\HUGnet\devices\Properties",
-                array(
-                ),
-            ),
-            array(      // #3
-                array(
-                    "Devices" => array(
-                        "get" => array(
-                            "id" => 5,
-                            "sensors" => true,
-                            "RawSetup" => "000000100800393701410039380143000004"
-                            ."FFFFFFFF01044242424241414141",
-                            "group" => "hello",
-                        ),
-                    ),
-                ),
-                "\HUGnet\devices\Properties",
-                array(
-                ),
-            ),
-            array(      // #4
-                array(
-                    "Devices" => array(
-                        "get" => array(
-                            "id" => 5,
-                            "Role" => "DeviceTestRole",
-                            "group" => "hello",
-                        ),
-                    ),
-                    "Inputs" => array(
-                        "sanitizeWhere" => array(
-                            "sensor" => 5,
-                            "name" => 3,
-                            "value" => 1,
-                        ),
-                    ),
-                ),
-                "\HUGnet\devices\Properties",
-                array(
-                ),
-            ),
-            array(      // #5
-                array(
-                    "Devices" => array(
-                        "get" => array(
-                            "id" => 5,
-                            "sensors" => array(array("id" => 0x15)),
-                            "Role" => "ThisIsABadRole",
-                            "group" => "hello",
-                        ),
-                    ),
-                    "Inputs" => array(
-                        "sanitizeWhere" => array(
-                            "sensor" => 5,
-                            "name" => 3,
-                            "value" => 1,
-                        ),
-                    ),
-                ),
-                "\HUGnet\devices\Properties",
-                array(
-                ),
+                "0039-21-01-A",
+                null,
             ),
         );
     }
@@ -2143,16 +2060,17 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     * This tests the object creation
     *
     * @param array  $config       The configuration to use
-    * @param string $fct          The driver to tell it to load
     * @param string $driverExpect The driver we expect to be loaded
     * @param int    $expect       The expected sensor id
+    * @param string $epnum        The expected part number
+    * @param string $dbnum        The expected daughterboard number
     *
     * @return null
     *
     * @dataProvider dataProperties
     */
     public function testProperties(
-        $config, $driverExpect, $expect
+        $config, $driverExpect, $expect, $epnum, $dbnum
     ) {
         $sys = $this->getMock(
             '\HUGnet\System', 
@@ -2182,6 +2100,12 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(
             is_a($ret, $driverExpect),
             "Return is not a ".$driverExpect
+        );
+        $this->assertSame(
+            $epnum, $ret->getEndpointNum(), "Endpoint Num not right"
+        );
+        $this->assertSame(
+            $dbnum, $ret->getDaughterboardNum(), "Daughterboard Num not right"
         );
         unset($obj);
     }

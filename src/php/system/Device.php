@@ -73,6 +73,10 @@ class Device extends \HUGnet\base\SystemTableAction
     */
     private $_role = null;
     /**
+    * This is the cache for our properties
+    */
+    private $_properties = null;
+    /**
     * This is the firmware table
     */
     private $_firmware = null;
@@ -628,11 +632,16 @@ class Device extends \HUGnet\base\SystemTableAction
     public function &properties()
     {
         $system = $this->system();
-        include_once dirname(__FILE__)."/../devices/Properties.php";
-        $fcts = \HUGnet\devices\Properties::factory(
+        if (!is_object($this->_properties)) {
+            include_once dirname(__FILE__)."/../devices/Properties.php";
+            $this->_properties = \HUGnet\devices\Properties::factory(
+                $this->get("HWPartNum"), $this->getParam("DaughterBoard")
+            );
+        }
+        $this->_properties->setPartNumbers(
             $this->get("HWPartNum"), $this->getParam("DaughterBoard")
         );
-        return $fcts;
+        return $this->_properties;
     }
     /**
     * This creates the sensor drivers
