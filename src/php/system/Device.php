@@ -627,7 +627,7 @@ class Device extends \HUGnet\base\SystemTableAction
     /**
     * This creates the object for this devices properties
     * 
-    * @return null
+    * @return Properties object
     */
     public function &properties()
     {
@@ -642,6 +642,27 @@ class Device extends \HUGnet\base\SystemTableAction
             $this->get("HWPartNum"), $this->getParam("DaughterBoard")
         );
         return $this->_properties;
+    }
+    /**
+    * This creates the object for 
+    * 
+    * @return array of ports used
+    */
+    public function uses()
+    {
+        $tables = array(
+            "input" => "InputTables",
+            "output" => "OutputTables",
+            "process" => "ProcessTables",
+        );
+        $uses = array();
+        foreach ($tables as $fct => $table) {
+            $count = $this->get($table);
+            for ($i = 0; $i < $count; $i++) {
+                $uses = array_merge($uses, $this->$fct($i)->uses());
+            }
+        }
+        return $uses;
     }
     /**
     * This creates the sensor drivers

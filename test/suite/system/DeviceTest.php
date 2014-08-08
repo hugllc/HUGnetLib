@@ -2110,6 +2110,113 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         unset($obj);
     }
     /**
+    * Data provider for testUses
+    *
+    * @return array
+    */
+    public static function dataUses()
+    {
+        return array(
+            array(      // #0
+                array(
+                    "id" => 5,
+                    "sensors" => array(array("id" => 0x15)),
+                    "Role" => "ThisIsABadRole",
+                    "HWPartNum" => "0039-28-01-A",
+                    "FWPartNum" => "0039-38-01-C",
+                    "FWVersion" => "0.2.3",
+                    "Driver"    => "E00392800",
+                    "params" => array(
+                        "DaughterBoard" => "0039-15-01-A",
+                    ),
+                ),
+                array(
+                    "inputs" => array(
+                        array(
+                            "id" => 0xf8,
+                            "tableEntry" => array("MUX" => 4),
+                        ),
+                        array(
+                            "id" => 0xf8,
+                            "tableEntry" => array("MUX" => 2),
+                        ),
+                        array(
+                            "id" => 0xf8,
+                            "tableEntry" => array("MUX" => 6),
+                        ),
+                        array(
+                            "id" => 0xf8,
+                            "tableEntry" => array("MUX" => 0),
+                        ),
+                    ),
+                    "outputs" => array(
+                        array(
+                            "id" => 0x32,
+                            "extra" => array(1 => 14),
+                        ),
+                    ),
+                    "processes" => array(
+                    ),
+                ),
+                array(
+                    'Port5',
+                    'Port3',
+                    'Port7',
+                    'Port1',
+                    'Port14',
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array $config The configuration to use
+    * @param array $IOP    The IOP configuration to use
+    * @param array $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataUses
+    */
+    public function testUses(
+        $config, $IOP, $expect
+    ) {
+        $sys = $this->getMock(
+            '\HUGnet\System', 
+            array('now'),
+            array(
+                array(
+                    "servers" => array(
+                        "default" => array(
+                            "driver" => "sqlite",
+                            "file" => ":memory:",
+                            "group" => "default",
+                        ),
+                    ),
+                ),
+            )
+        );
+        $sys->expects($this->any())
+            ->method('now')
+            ->will($this->returnValue(1000000));
+        $obj = Device::factory($sys, $config);
+        foreach ((array)$IOP["inputs"] as $key => $setup) {
+            $obj->input($key)->change($setup);
+        }
+        foreach ((array)$IOP["outputs"] as $key => $setup) {
+            $obj->output($key)->change($setup);
+        }
+        foreach ((array)$IOP["processes"] as $key => $setup) {
+            $obj->process($key)->change($setup);
+        }
+        
+        $ret = $obj->uses();
+        $this->assertSame(
+            $expect, $ret, "Endpoint Num not right"
+        );
+    }
+    /**
     * Data provider for testCreate
     *
     * @return array
