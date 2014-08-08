@@ -441,5 +441,66 @@ class AVRAnalogTableTest extends \PHPUnit_Framework_TestCase
         $ret = $obj->port();
         $this->assertSame($expect, $ret);
     }
+    /**
+    * Data provider for testUses
+    *
+    * @return array
+    */
+    public static function dataUses()
+    {
+        return array(
+            array(
+                array(
+                ),
+                null,
+                array(
+                    "id" => 5,
+                ),
+                array(
+                ),
+                array(
+                    "ADC0"
+                ),
+            ),
+            array(
+                array(
+                    "MUX" => 4
+                ),
+                null,
+                array(
+                    "id" => 5,
+                ),
+                array(
+                ),
+                array(
+                    "ADC4"
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config The configuration to use
+    * @param mixed  $device The device to set
+    * @param mixed  $class  This is either the name of a class or an object
+    * @param array  $mocks  The mocks to use
+    * @param string $string The string to feed into the decode
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataUses
+    */
+    public function testUses(
+        $config, $device, $class, $mocks, $expect
+    ) {
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($mocks);
+        $obj = AVRAnalogTable::factory($sensor, $config);
+        $ret = $obj->uses();
+        $this->assertEquals($expect, $ret);
+        unset($obj);
+    }
 }
 ?>

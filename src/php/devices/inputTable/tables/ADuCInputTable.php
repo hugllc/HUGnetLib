@@ -920,12 +920,14 @@ class ADuCInputTable
         $uses = array();
         foreach (array(0, 1) as $chan) {
             if ($this->enabled($chan)) {
-                $ports = $this->port($chan);
-                $ports = str_replace("+", "", $ports);
-                $ports = str_replace("-", "", $ports);
-                $ports = str_replace(" ", "", $ports);
-                foreach (explode(",", $ports) as $port) {
-                    $uses[] = trim($port);
+                $ports = trim($this->port($chan));
+                if (!empty($ports)) {
+                    $ports = str_replace(" +", "", $ports);
+                    $ports = str_replace(" -", "", $ports);
+                    $ports = str_replace(" ", "", $ports);
+                    foreach (explode(",", $ports) as $port) {
+                        $uses[] = trim($port);
+                    }
                 }
             }
         }
