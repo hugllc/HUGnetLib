@@ -194,23 +194,17 @@ class Properties
     */
     public function setPartNumbers($endpointNum, $daughterNum)
     {
-        $result = array();
+        $ret = false;
 
         if (in_array($endpointNum, $this->_EpArray)) {
-            if (in_array($daughterNum, $this->_DbArray)) {
+            if (in_array($daughterNum, $this->_DbArray) || empty($daughterNum)) {
                 $this->_endpointNum = $endpointNum;
                 $this->_daughterNum = $daughterNum;
-                $result[0] = 'Okay';
-            } else {
-                $result[0] = 'Error';
-                $result[1] = 'Invalid Daughterboard Number!';
+                $ret = true;
             }
-        } else {
-            $result[0] = 'Error';
-            $result[1] = 'Invalid Endpoint Number!';
         }
 
-        return $result;
+        return $ret;
     }
 
 
@@ -226,11 +220,10 @@ class Properties
     {
         $pinArray = array();
 
-        if (in_array($this->_endpointNum, $this->_EpArray)) {
+        if ($this->_useEP()) {
             $pinArray = $this->_epPinList();
         } else {
-            $pinArray[0] = "Error";
-            $pinArray[1] = "Endpoint not found!";
+            $pinArray = false;
         }
 
         return $pinArray;
@@ -248,16 +241,44 @@ class Properties
     {
         $pinArray = array();
 
-        if (in_array($this->_daughterNum, $this->_DbArray)) {
+        if ($this->_useDB()) {
             $pinArray = $this->_dbPinList();
         } else {
-            $pinArray[0] = "Error";
-            $pinArray[1] = "Daughterboard not found!";
+            $pinArray = false;
         }
 
         return $pinArray;
     }
-            
+    /**
+    *********************************************************************
+    * this function returns the pin properties for the endpoint and
+    * a given pin name.
+    *
+    * @param string $pinName name of the pin 
+    *
+    * @return array $pinArray - an array containing:
+    *                              [0] the pin function(s),
+    *                              [1] series resistor value
+    *                              [2] shunt resistor value
+    *                              [3] shunt resistor location 
+    *                              [4] shunt resistor pull
+    *                              [5] high voltage input flag
+    *
+    */
+    public function getPinProperties($pinName)
+    {
+        $pinArray = array();
+
+        if ($this->_useDB()) {
+            $pinArray = $this->_dbPinProperties($pinName);
+        } else if ($this->_useEP()) {
+            $pinArray = $this->_epPinProperties($pinName);
+        } else {
+            $pinArray = false;
+        }
+
+        return $pinArray;
+    }
     /**
     *********************************************************************
     * this function returns the pin properties for the endpoint and
@@ -278,11 +299,10 @@ class Properties
     {
         $pinArray = array();
 
-        if (in_array($this->_endpointNum, $this->_EpArray)) {
+        if ($this->_useEP()) {
             $pinArray = $this->_epPinProperties($pinName);
         } else {
-            $pinArray[0] = "Error";
-            $pinArray[1] = "Endpoint not found!";
+            $pinArray = false;
         }
 
         return $pinArray;
@@ -310,11 +330,10 @@ class Properties
     {
         $pinArray = array();
 
-        if (in_array($this->_daughterNum, $this->_DbArray)) {
+        if ($this->_useDB()) {
             $pinArray = $this->_dbPinProperties($pinName);
         } else {
-            $pinArray[0][0] = "Error";
-            $pinArray[0][1] = "Daughterboard not found!";
+            $pinArray = false;
         }
 
         return $pinArray;
@@ -335,16 +354,37 @@ class Properties
     {
         $pinArray = array();
 
-        if (in_array($this->_daughterNum, $this->_DbArray)) {
+        if ($this->_useDB()) {
             $pinArray = $this->_dbToEpConnections();
         } else {
-            $pinArray[0][0] = "Error";
-            $pinArray[0][1] = "Daughterboard not found!";
+            $pinArray = false;
         }
 
         return $pinArray;
     }
 
+    /**
+    *********************************************************************
+    * This function returns a boolean to tell whether or not we should be using
+    * the daughterboard instead of the endpoint.
+    *
+    * @return bool Whether or not to use the daughterboard
+    */
+    private function _useDB()
+    {
+        return in_array($this->_daughterNum, $this->_DbArray);
+    }
+    /**
+    *********************************************************************
+    * This function returns a boolean to tell whether or not we should be using
+    * the endpoint.
+    *
+    * @return bool Whether or not to use the endpoint
+    */
+    private function _useEP()
+    {
+        return in_array($this->_endpointNum, $this->_EpArray);
+    }
 
     /**
     *********************************************************************
@@ -378,8 +418,7 @@ class Properties
         }
 
         if ($found == 1) {
-            $pinArray[0] = "Error";
-            $pinArray[1] = "No Pins to display!";
+            $pinArray = false;
         }
 
         return $pinArray;
@@ -452,16 +491,7 @@ class Properties
         }
 
         if ($found <> 3) {
-            $pinArray[0] = "Error";
-
-            switch($found) {
-            case 1: 
-                $pinArray[1] = "Pin not found!";
-                break;
-            case 2:
-                $pinArray[1] = "No Pins to display!";
-                break;
-            }
+            $pinArray = false;
         }
         
         return $pinArray;
@@ -552,10 +582,7 @@ class Properties
         } /* end function _dbPinProperties */
         
         if ($found <> 2) {
-            $pinArray[0][0] = "Error";
-            if ($found == 1) {
-                $pinArray[0][1] = "Pin not found!";
-            }
+            $pinArray = false;
         }
 
         return $pinArray;
@@ -604,8 +631,7 @@ class Properties
                 }
 
                 if ($epFound == 0) {
-                    $pinArray[0][0] = "Error";
-                    $pinArray[0][1] = "Endpoint not found in connections";
+                    $pinArray = false;
                 }
             }
         }
