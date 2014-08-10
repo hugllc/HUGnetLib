@@ -104,15 +104,29 @@ abstract class DriverTestBase extends \HUGnet\devices\IOPDriverTestBase
         $this->system->expects($this->any())
             ->method('get')
             ->will($this->returnCallback(array($this, "getSystem")));
-
+        $this->system->config(
+            array(
+                "servers" => array(
+                    array(
+                        "driver" => "sqlite",
+                        "file" => ":memory:",
+                        "group" => "default",
+                    ),
+                ),
+                "verbose" => 0,
+            )
+        );
             
         $this->device = $this->getMockBuilder('\HUGnet\Device')
             ->enableArgumentCloning()
-            ->setMethods(array("get", "system", "fct"))
+            ->setMethods(array("get", "getParam", "system", "fct"))
             ->disableOriginalConstructor()
             ->getMock();
         $this->device->expects($this->any())
             ->method('get')
+            ->will($this->returnCallback(array($this, "getDevice")));
+        $this->device->expects($this->any())
+            ->method('getParam')
             ->will($this->returnCallback(array($this, "getDevice")));
 
             

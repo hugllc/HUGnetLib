@@ -298,6 +298,131 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, $this->o->getEpPinList());
     }
     /**
+    * data provider for testPinList
+    *
+    * @return array
+    */
+    public static function dataPinList()
+    {
+        return array(
+            array(
+                "0039-12-02-C", 
+                "",
+                array(
+                    0 => 'Port1',
+                    1 => 'Port2',
+                    2 => 'Port3',
+                    3 => 'Port4',
+                    4 => 'Port5',
+                    5 => 'Port6',
+                    6 => 'Port7',
+                    7 => 'Port8',
+                    8 => 'Port9',
+                    9 => 'Port10',
+                    10 => 'Port11',
+                    11 => 'Port12',
+                ),
+            ),
+            array(
+                "0039-12-01-A", 
+                "",
+                false,
+            ),
+            array(
+                "0039-28-01-A", 
+                "0039-23-01",
+                array(
+                    0 => 'Port1',
+                    1 => 'Port2',
+                    2 => 'Port3',
+                    3 => 'Port4',
+                    4 => 'Port5',
+                    5 => 'Port6',
+                    6 => 'Port7',
+                    7 => 'Port8',
+                    8 => 'Port9',
+                    9 => 'Port10',
+                    10 => 'Port11',
+                    11 => 'Port12',
+                    12 => 'Port13',
+                    13 => 'Port14',
+                    14 => 'Port15',
+                    15 => 'Port16',
+                ),
+            ),
+            array(
+                "", 
+                "",
+                false,
+            ),
+            array(
+                "0039-28-01-A", 
+                "0039-23-01-A",
+                array(
+                    0 => 'Port1',
+                    1 => 'Port2',
+                    2 => 'Port3',
+                    3 => 'Port4',
+                    4 => 'Port5',
+                    5 => 'Port6',
+                    6 => 'Port7',
+                    7 => 'Port8',
+                    8 => 'Port9',
+                    9 => 'Port10',
+                    10 => 'Port11',
+                    11 => 'Port12',
+                    12 => 'Port13',
+                    13 => 'Port14',
+                    14 => 'Port15',
+                    15 => 'Port16',
+                ),
+            ),
+            array(
+                "0039-28-01-A", 
+                "0039-23-01-Q",
+                array(
+                    0 => 'Port1',
+                    1 => 'Port2',
+                    2 => 'Port3',
+                    3 => 'Port4',
+                    4 => 'Port5',
+                    5 => 'Port6',
+                    6 => 'Port7',
+                    7 => 'Port8',
+                    8 => 'Port9',
+                    9 => 'Port10',
+                    10 => 'Port11',
+                    11 => 'Port12',
+                    12 => 'Port13',
+                    13 => 'Port14',
+                    14 => 'Port15',
+                    15 => 'Port16',
+                ),
+            ),
+        );
+    }
+
+
+
+
+    /**
+    *************************************************************
+    * test routine for get endpoint pins list
+    *
+    * @param string $epNum  The endpoint number to set 
+    * @param string $dbNum  The daughterboard number to set
+    * @param array  $expect The expected return.
+    *
+    * @return null
+    *
+    * @dataProvider dataPinList
+    */
+    public function testPinList($epNum, $dbNum, $expect)
+    {
+        $this->o->setPartnumbers($epNum, $dbNum);
+        $this->assertSame($expect, $this->o->getPinList());
+    }
+    /**
     * data provider for testEpPinProperties
     *      data from endpoint 0039-37-01-E
     *
@@ -488,6 +613,101 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     {
         $this->o->setPartnumbers($epNum, $dbNum);
         $this->assertSame($expect, $this->o->getDbPinProperties($pin));
+    }
+
+    /**
+    * data provider for testPinProperties
+    *
+    * @return array
+    */
+    public static function dataPinProperties()
+    {
+        return array(
+            array(
+                "0039-12-02-C", 
+                "0039-15-01",
+                "Port2",
+                array(
+                    0 => array(
+                            0 => 'AI',
+                        ),
+                    1 => array(
+                            0 => 'Connect',
+                            1 => '0039-12-02-C',
+                            2 => 'Port2',
+                         ),
+                    2 => array(
+                            0 => 'Connect',
+                            1 => '0039-28-01-A',
+                            2 => 'Port2',
+                        ),
+                ),
+            ),
+            array(
+                "0039-12-02-C", 
+                "0039-15-01",
+                "Port10",
+                false,
+            ),
+             array(
+                "0039-37-01-E", 
+                "",
+                "Port7",
+                array(
+                    0 => 'AI',
+                    1 => '100K',
+                    2 => '1K',
+                    3 => 'R21',
+                    4 => 'CGND',
+                    5 => 'Y',
+                ),
+            ),
+            array(
+                "0039-37-01-E", 
+                "",
+                "Port1",
+                array(
+                    0 => 'AI',
+                    1 => '1K',
+                    2 => 'none',
+                    3 => 'none',
+                    4 => 'none',
+                    5 => 'N',
+                ),
+            ),
+            array(
+                "0039-37-01-E", 
+                "",
+                "Port9",
+                false,
+            ),
+            array(
+                "", 
+                "",
+                "Port1",
+                false,
+            ),
+       );
+    }
+
+
+    /**
+    *************************************************************
+    * test routine for get daughterboard pin properties
+    *
+    * @param string $epNum  The endpoint number to set 
+    * @param string $dbNum  The daughterboard number to set
+    * @param string $pin    The name of the pin to test
+    * @param array  $expect The expected return.
+    *
+    * @return null
+    *
+    * @dataProvider dataPinProperties
+    */
+    public function testPinProperties($epNum, $dbNum, $pin, $expect)
+    {
+        $this->o->setPartnumbers($epNum, $dbNum);
+        $this->assertSame($expect, $this->o->getPinProperties($pin));
     }
 
 

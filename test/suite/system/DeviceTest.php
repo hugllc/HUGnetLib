@@ -2038,7 +2038,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 array(
                 ),
                 "0039-28-01-A",
-                "0039-15-01-A",
+                "0039-15-01",
             ),
             array(      // #1
                 array(
@@ -2052,7 +2052,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                 array(
                 ),
                 "0039-21-01-A",
-                null,
+                "",
             ),
         );
     }

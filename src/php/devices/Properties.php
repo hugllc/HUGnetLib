@@ -194,9 +194,39 @@ class Properties
     public function setPartNumbers($endpointNum, $daughterNum)
     {
         $this->_endpointNum = $endpointNum;
-        $this->_daughterNum = $daughterNum;
+        $base = explode("-", $daughterNum);
+        unset($base[3]);
+        $base = implode("-", $base);
+        if (in_array($daughterNum, $this->_DbArray)) {
+            $this->_daughterNum = $daughterNum;
+        } else if (in_array($base, $this->_DbArray)) {
+            $this->_daughterNum = $base;
+        }
     }
 
+
+    /**
+    *********************************************************************
+    * this function gets the pin list for the object endpoint. 
+    *
+    * @return array $pinArray - array of type string containing pin 
+    *                           names.
+    *
+    */
+    public function getPinList()
+    {
+        $pinArray = array();
+
+        if ($this->_useDB()) {
+            $pinArray = $this->_dbPinList();
+        } else if ($this->_useEP()) {
+            $pinArray = $this->_epPinList();
+        } else {
+            $pinArray = false;
+        }
+
+        return $pinArray;
+    }
 
     /**
     *********************************************************************

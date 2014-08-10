@@ -188,6 +188,43 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     {
         return false;
     }
+    /**
+    * Gets one port for each element of the array $specs
+    * 
+    * @param array $specs The specifications of the required ports
+    *
+    * @return null
+    */
+    protected function getPorts($specs)
+    {
+        $ports      = array();
+        $used       = (array)$this->fct()->device()->uses();
+        $properties = &$this->fct()->device()->properties();
+        $has        = (array)$properties->getPinList();
+        $unused     = array_diff($has, $used);
+        foreach ($unused as $pin) {
+            $prop = $properties->getPinProperties($pin);
+            $props[$pin] = explode(",", $prop[0][0]);
+        }
+        foreach ((array)$specs as $key => $spec) {
+            $count = null;
+            $index = null;
+            // This picks the pin that has the fewest properties.
+            foreach ($props as $pin => $prop) {
+                if (array_diff((array)$spec, (array)$prop) == array()) {
+                    if (is_null($count) || (count($prop) < $count)) {
+                        $count = count($prop);
+                        $index = $pin;
+                    }
+                }
+            }
+            if (!is_null($index)) {
+                $ports[$key] = $index;
+                unset($props[$index]);
+            }
+        }
+        return $ports;
+    }
 
 }
 

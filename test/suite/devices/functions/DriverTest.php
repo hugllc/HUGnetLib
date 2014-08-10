@@ -70,7 +70,7 @@ class DriverTest extends drivers\DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->o = Driver::factory("DriverTestClass", $this->output);
+        $this->o = Driver::factory("DriverTestClass", $this->fct);
     }
 
     /**
@@ -155,6 +155,70 @@ class DriverTest extends drivers\DriverTestBase
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($mock);
         $this->assertSame($expect, $this->o->get($name, 1));
+    }
+    /**
+    * data provider for testGetPorts
+    *
+    * @return array
+    */
+    public static function dataGetPorts()
+    {
+        return array(
+            array(
+                array(
+                    "device" => array(
+                        "HWPartNum" => "0039-28-01-A",
+                        "DaughterBoard" => "0039-23-01-A",
+                    ),
+                ),
+                array(array("DI"), array("AI")),
+                array("Port9", "Port7"),
+            ),
+            array(
+                array(
+                    "device" => array(
+                        "HWPartNum" => "0039-28-01-A",
+                        "DaughterBoard" => "0039-23-01-A",
+                    ),
+                ),
+                array(array("QI"), array("AI")),
+                array(1 => "Port7"),
+            ),
+            array(
+                array(
+                    "device" => array(
+                        "HWPartNum" => "0039-28-01-A",
+                        "DaughterBoard" => "0039-23-01-A",
+                    ),
+                ),
+                array(array("DI", "DO"), array("AI", "DI", "DO")),
+                array("Port9", "Port1"),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $mock   The mocks to use
+    * @param array $specs  The specs to get
+    * @param array $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataGetPorts
+    */
+    public function testGetPorts($mock, $specs, $expect)
+    {
+        $this->stuff = $mock;
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($mock);
+        $ret = $this->o->getPorts($specs);
+        foreach ($ret as $key => $value) {
+            if (is_object($value)) {
+                $ret[$key] = $value->toArray(false);
+            }
+        }
+        $this->assertSame($expect, $ret);
     }
     /**
     * test the set routine when an extra class exists
@@ -255,5 +319,16 @@ class DriverTestClass extends \HUGnet\devices\functions\Driver
         "max" => 81,
         "type" => "Simple",
     );
+    /**
+    * Gets one port for each element of the array $specs
+    * 
+    * @param array $specs The specifications of the required ports
+    *
+    * @return null
+    */
+    public function getPorts($specs)
+    {
+        return parent::getPorts($specs);
+    }
 }
 ?>
