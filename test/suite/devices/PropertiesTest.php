@@ -195,22 +195,19 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
             array(
                 '0039-28-01-A',
                 '0039-23-01',
-                true,
                 '0039-28-01-A',
                 '0039-23-01',
             ),
             array(
                 '0039-37-01-A',
                 '',
-                true,
                 '0039-37-01-A',
                 '',
             ),
             array(
                 'asdf',
                 '',
-                false,
-                '',
+                'asdf',
                 '',
             ),
         );
@@ -221,7 +218,6 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     *
     * @param string $epNum    The endpoint number to set 
     * @param string $dbNum    The daughterboard number to set
-    * @param string $Sexpect  The expected return from the setter
     * @param string $expectEP The expected return from the getter (endpoint)
     * @param string $expectDB The expected return from the getter (daughterboard)
     *
@@ -230,14 +226,9 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     * @dataProvider dataGetSetPN
     */
     public function testGetSetPN(
-        $epNum, $dbNum, $sExpect, $expectEP, $expectDB
+        $epNum, $dbNum, $expectEP, $expectDB
     ) {
-        $ret = $this->o->setPartnumbers($epNum, $dbNum);
-        $this->assertSame(
-            $sExpect, 
-            $ret, 
-            "Return wrong"
-        );
+        $this->o->setPartnumbers($epNum, $dbNum);
         $this->assertSame(
             $expectDB, 
             $this->o->getDaughterboardNum(), 

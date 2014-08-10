@@ -61,9 +61,9 @@ class Properties
     /** @var The daughterboard array */
     private $_DbArray = array();
     /** @var The part number of the endpoint */
-    private $_endpointNum;
+    private $_endpointNum = "";
     /** @var The part number of the daughterboard */
-    private $_daughterNum;
+    private $_daughterNum = "";
 
 
     /**
@@ -97,8 +97,7 @@ class Properties
             $this->_DbArray[$i] = (string) ($this->_Xml->daughterboards[$i]
                 ->HWPartNum);
         }
-        $this->_endpointNum = $endpointNum;
-        $this->_daughterNum = $daughterNum;
+        $this->setPartNumbers($endpointNum, $daughterNum);
 
     } /* end function __construct */
     /**
@@ -194,17 +193,8 @@ class Properties
     */
     public function setPartNumbers($endpointNum, $daughterNum)
     {
-        $ret = false;
-
-        if (in_array($endpointNum, $this->_EpArray)) {
-            if (in_array($daughterNum, $this->_DbArray) || empty($daughterNum)) {
-                $this->_endpointNum = $endpointNum;
-                $this->_daughterNum = $daughterNum;
-                $ret = true;
-            }
-        }
-
-        return $ret;
+        $this->_endpointNum = $endpointNum;
+        $this->_daughterNum = $daughterNum;
     }
 
 
