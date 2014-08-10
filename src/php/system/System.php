@@ -113,7 +113,6 @@ class System
             $this->_fixed = array_merge($this->_fixed, $uname);
         }
         $this->config((array)$config);
-        $this->_dbconnect = \HUGnet\db\Connection::factory($this);
         $this->_ui = $interface;
         if (is_object($error)) {
             $this->_error = &$error;
@@ -150,6 +149,9 @@ class System
             );
             $confdir = dirname((string)$config['file']);
             $this->_fixed["confdir"] = (empty($confdir)) ? '/etc/hugnet' : $confdir;
+            // Re-create the database connection
+            unset($this->_dbconnect);
+            $this->_dbconnect = \HUGnet\db\Connection::factory($this);
         }
         // Return the configuration
         return $this->_config;
