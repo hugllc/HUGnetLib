@@ -60,6 +60,8 @@ require_once dirname(__FILE__)."/../interfaces/SystemInterface.php";
 class ProcessTable extends \HUGnet\base\XTableBase
     implements \HUGnet\interfaces\SystemInterface
 {
+    /** @var int The database table class to use */
+    protected $tableClass = "ProcessTable";
     /** This is the table we are using */
     protected $xTable = "ProcessTable";
     /**

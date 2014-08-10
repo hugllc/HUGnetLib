@@ -101,7 +101,7 @@ class GatewayTest extends \PHPUnit_Framework_TestCase
             array(
                 new DummySystem(),
                 array(
-                    "Table" => array(
+                    "Gateways" => array(
                         "sanitizeWhere" => array(
                             "id" => 5,
                             "name" => 3,
@@ -150,7 +150,7 @@ class GatewayTest extends \PHPUnit_Framework_TestCase
                 new DummySystem(),
                 array(),
                 2,
-                new DummyTable("Table"),
+                new DummyTable("Gateways"),
                 array(
                     "getRow" => array(
                         array(0 => 2),
@@ -186,7 +186,7 @@ class GatewayTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue((get_class($obj) === "HUGnet\Gateway"), "Class wrong");
         if (is_object($table)) {
             $this->assertEquals(
-                $expectTable, $table->retrieve("Table"), "Data Wrong"
+                $expectTable, $table->retrieve("Gateways"), "Data Wrong"
             );
         }
     }

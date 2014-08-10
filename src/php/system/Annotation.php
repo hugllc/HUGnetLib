@@ -62,6 +62,8 @@ require_once dirname(__FILE__)."/../interfaces/WebAPI.php";
 class Annotation extends \HUGnet\base\SystemTableBase
     implements \HUGnet\interfaces\WebAPI, \HUGnet\interfaces\SystemInterface
 {
+    /** @var int The database table class to use */
+    protected $tableClass = "Annotations";
     /** This is the test we are attached to */
     private $_test = null;
     /**

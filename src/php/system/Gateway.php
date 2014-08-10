@@ -60,6 +60,8 @@ require_once dirname(__FILE__)."/../interfaces/SystemInterface.php";
 class Gateway extends \HUGnet\base\SystemTableBase
     implements \HUGnet\interfaces\SystemInterface
 {
+    /** @var int The database table class to use */
+    protected $tableClass = "Gateways";
     /**
     * This function creates the system.
     *

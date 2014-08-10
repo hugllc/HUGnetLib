@@ -60,6 +60,8 @@ require_once dirname(__FILE__)."/../interfaces/SystemInterface.php";
 class Test extends \HUGnet\base\SystemTableBase
     implements \HUGnet\interfaces\SystemInterface
 {
+    /** @var int The database table class to use */
+    protected $tableClass = "Tests";
     /** This is the device we are attached to */
     private $_device = null;
     /** This is our history to */

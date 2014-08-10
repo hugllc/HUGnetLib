@@ -105,7 +105,7 @@ class TestTest extends \PHPUnit_Framework_TestCase
             array(
                 new DummySystem(),
                 array(
-                    "Table" => array(
+                    "Tests" => array(
                         "sanitizeWhere" => array(
                             "id" => 5,
                             "name" => 3,
@@ -154,7 +154,7 @@ class TestTest extends \PHPUnit_Framework_TestCase
                 new DummySystem(),
                 array(),
                 2,
-                new DummyTable("Table"),
+                new DummyTable("Tests"),
                 array(
                     "getRow" => array(
                         array(0 => 2),
@@ -190,7 +190,7 @@ class TestTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue((get_class($obj) === "HUGnet\Test"), "Class wrong");
         if (is_object($table)) {
             $this->assertEquals(
-                $expectTable, $table->retrieve("Table"), "Data Wrong"
+                $expectTable, $table->retrieve("Tests"), "Data Wrong"
             );
         }
     }

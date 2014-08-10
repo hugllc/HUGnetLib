@@ -72,6 +72,8 @@ class Device extends \HUGnet\base\SystemTableAction
     * This is the cache the roles.
     */
     private $_role = null;
+    /** @var int The database table class to use */
+    protected $tableClass = "Devices";
     /**
     * This is the cache for our properties
     */

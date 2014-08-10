@@ -62,6 +62,8 @@ require_once dirname(__FILE__)."/../interfaces/WebAPI.php";
 class Image extends \HUGnet\base\SystemTableBase
     implements \HUGnet\interfaces\WebAPI, \HUGnet\interfaces\SystemInterface
 {
+    /** @var int The database table class to use */
+    protected $tableClass = "Images";
     /** This is where we cache the point data */
     private $_dataCache = array();
     

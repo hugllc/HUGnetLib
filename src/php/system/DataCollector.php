@@ -62,6 +62,8 @@ require_once dirname(__FILE__)."/../interfaces/SystemInterface.php";
 class DataCollector extends \HUGnet\base\SystemTableBase
     implements \HUGnet\interfaces\WebAPI, \HUGnet\interfaces\SystemInterface
 {
+    /** @var int The database table class to use */
+    protected $tableClass = "Datacollectors";
     /**
     * This function creates the system.
     *

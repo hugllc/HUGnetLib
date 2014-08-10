@@ -64,6 +64,8 @@ require_once dirname(__FILE__)."/../devices/Output.php";
 class Fixture extends \HUGnet\Device
     implements \HUGnet\interfaces\SystemInterface
 {
+    /** @var int The database table class to use */
+    protected $tableClass = "Fixtures";
     /**
     * This is the destructor
     */

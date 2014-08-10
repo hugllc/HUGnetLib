@@ -57,6 +57,8 @@ require_once dirname(__FILE__)."/../interfaces/SystemInterface.php";
 class Error extends \HUGnet\base\SystemTableBase
     implements \HUGnet\interfaces\SystemInterface
 {
+    /** @var int The database table class to use */
+    protected $tableClass = "Errors";
     /** notice level severity */
     const NOTICE = 1;
     /** warning level severity */
