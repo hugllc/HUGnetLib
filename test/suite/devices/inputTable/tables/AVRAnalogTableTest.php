@@ -442,6 +442,73 @@ class AVRAnalogTableTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, $ret);
     }
     /**
+    * Data provider for testPorts
+    *
+    * @return array
+    */
+    public static function dataPorts()
+    {
+        return array(
+            array( 
+                array(
+                ),
+                array(
+                    'REFS' => 1,
+                    'ADLAR' => 0,
+                    'MUX' => 4,
+                    'driver' => "40:DEFAULT",
+                    'priority' => 16,
+                    'offset' => 0x1234,
+                ),
+                array(
+                    0 => 'ADC0',
+                    1 => 'ADC1',
+                    2 => 'ADC2',
+                    3 => 'ADC3',
+                    4 => 'ADC4',
+                    5 => 'ADC5',
+                    6 => 'ADC6',
+                    7 => 'ADC7',
+                ),
+            ),
+            array( 
+                array(
+                ),
+                array(
+                ),
+                array(
+                    0 => 'ADC0',
+                    1 => 'ADC1',
+                    2 => 'ADC2',
+                    3 => 'ADC3',
+                    4 => 'ADC4',
+                    5 => 'ADC5',
+                    6 => 'ADC6',
+                    7 => 'ADC7',
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param array  $mock    The mocks to preload
+    * @param string $preload The string to give to the class
+    * @param array  $expect  The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataPorts
+    */
+    public function testPorts($mock, $preload, $expect)
+    {
+        $sensor = new \HUGnet\DummyTable("Sensor");
+        $sensor->resetMock($mock);
+        $obj = AVRAnalogTable::factory($sensor, $preload);
+        $ret = $obj->ports();
+        $this->assertSame($expect, $ret);
+    }
+    /**
     * Data provider for testUses
     *
     * @return array

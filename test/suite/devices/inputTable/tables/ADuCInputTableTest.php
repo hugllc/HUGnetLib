@@ -1357,6 +1357,115 @@ class ADuCInputTableTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, $ret);
     }
     /**
+    * Data provider for testPorts
+    *
+    * @return array
+    */
+    public static function dataPorts()
+    {
+        return array(
+            array( 
+                array(
+                ),
+                array(
+                    'ADC1CH' => 4,
+                ),
+                1,
+                array(
+                    0 => 'Port2 -,Port1 +',
+                    1 => 'ADC4,ADC5',
+                    2 => 'Port5 -,Port6 +',
+                    3 => 'Port7 -,Port8 +',
+                    4 => 'Port2',
+                    5 => 'Port1',
+                    6 => 'ADC4',
+                    7 => 'Port5',
+                    8 => 'Port6',
+                    9 => 'Port7',
+                    10 => 'Port8',
+                ),
+            ),
+            array( 
+                array(
+                ),
+                array(
+                    'ADC0CH' => 5,
+                ),
+                15,
+                array(
+                ),
+            ),
+            array( 
+                array(
+                ),
+                array(
+                    'ADC0EN' => 0,
+                    'ADC0CH' => 5,
+                ),
+                0,
+                array(
+                    0 => 'Port4 -,Port3 +',
+                    1 => 'Port4',
+                    2 => 'Port3',
+                    3 => 'VREF+,VREF-',
+                    5 => 'Port2 -,Port1 +',
+                    6 => 'Port2',
+                    7 => 'Port1',
+                ),
+            ),
+            array( 
+                array(
+                ),
+                array(
+                    'ADC0EN' => 0,
+                    'ADC0CH' => 5,
+                    'ADC1EN' => 1,
+                    'ADC1CH' => 6,
+                ),
+                0,
+                array(
+                    0 => 'Port4 -,Port3 +',
+                    1 => 'Port4',
+                    2 => 'Port3',
+                    3 => 'VREF+,VREF-',
+                    5 => 'Port2 -,Port1 +',
+                    6 => 'Port2',
+                    7 => 'Port1',
+                ),
+            ),
+            array( 
+                array(
+                ),
+                array(
+                ),
+                15,
+                array(),
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param array  $mock    The mocks to preload
+    * @param string $preload The string to give to the class
+    * @param int    $channel The channel to get the port for
+    * @param array  $expect  The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataPorts
+    */
+    public function testPorts($mock, $preload, $channel, $expect)
+    {
+        $sensor = new \HUGnet\DummyTable("Sensor");
+        $sensor->resetMock($mock);
+        $obj = ADuCInputTable::factory($sensor, $preload);
+        $ret = $obj->ports($channel);
+        $this->assertSame($expect, $ret);
+    }
+
+    
+    /**
     * Data provider for testUses
     *
     * @return array

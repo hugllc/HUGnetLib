@@ -476,6 +476,18 @@ abstract class IOPBase extends SystemTableBase
     {
         return $this->driver()->uses();
     }
+    /**
+    * Returns an array of the pins and stuff this one uses
+    *
+    * @return null
+    */
+    public function ports()
+    {
+        if (method_exists($this->driver(), "ports")) {
+            return $this->driver()->ports();
+        }
+        return array();
+    }
 }
 
 

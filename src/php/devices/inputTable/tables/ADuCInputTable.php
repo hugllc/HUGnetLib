@@ -911,6 +911,20 @@ class ADuCInputTable
         return $this->ports[$channel][$mux];
     }
     /**
+    * Gets the all the possible ports.
+    *
+    * @param int $channel The channel to get the port for
+    *
+    * @return null
+    */
+    public function ports($channel = 0)
+    {
+        if (isset($this->ports[$channel])) {
+            return $this->ports[$channel];
+        }
+        return array();
+    }
+    /**
     * Returns an array of the pins and stuff this one uses
     *
     * @return null

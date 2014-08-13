@@ -164,13 +164,21 @@ class TemperatureTest extends DriverTestBase
     public static function dataExecute()
     {
         return array(
-            array("a", array(), true),
+            array(
+                "Name",
+                array(
+                    "device" => array(
+                        "arch" => "0039-37",
+                    ),
+                ), 
+                true
+            ),
         );
     }
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $name   The name of the variable to test.
+    * @param string $name   The name to use
     * @param array  $stuff  The mocks to set up
     * @param array  $expect The expected return
     *

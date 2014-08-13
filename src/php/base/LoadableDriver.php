@@ -204,6 +204,18 @@ abstract class LoadableDriver
         return array();
     }
     /**
+    * Returns an array of the pins and stuff this one uses
+    *
+    * @return null
+    */
+    public function ports()
+    {
+        if (is_object($this->entry()) && method_exists($this->entry(), "ports")) {
+            return $this->entry()->ports();
+        }
+        return array();
+    }
+    /**
     * Returns the driver object
     * 
     * @return object The driver requested

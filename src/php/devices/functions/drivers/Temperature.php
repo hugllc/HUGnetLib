@@ -185,6 +185,9 @@ class Temperature extends \HUGnet\devices\functions\Driver
     {
         include_once dirname(__FILE__)."/../../inputTable/Driver.php";
         $input  = $this->fct()->device()->input("free");
+        $input->set("id", 0xF9);
+        $fullEntry = $input->toArray(true)["fullEntry"];
+
         $driver = $this->getExtra(0);
         $driverID = \HUGnet\devices\inputTable\Driver::getDriverID($driver);
         list($sid, $sub) = explode(":", $driverID);

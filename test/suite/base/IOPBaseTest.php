@@ -1265,6 +1265,65 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expect, $ret);
         unset($obj);
     }
+    /**
+    * Data provider for testPorts
+    *
+    * @return array
+    */
+    public static function dataPorts()
+    {
+        return array(
+            array(
+                new \HUGnet\DummySystem(),
+                null,
+                array(
+                    "id" => 5,
+                ),
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 5,
+                            "HWPartNum"    => "0039-12-01-C",
+                            "FWPartNum"    => "0039-38-01-C",
+                            "FWVersion"    => "1.2.3",
+                            "DeviceGroup"  => "FFFFFF",
+                            "TimeConstant" => 1,
+                        ),
+                    ),
+                ),
+                array(
+                    0 => 'Port1',
+                    1 => 'Port2',
+                    2 => 'Port3',
+                    3 => 'Port4',
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config The configuration to use
+    * @param mixed  $device The device to set
+    * @param mixed  $class  This is either the name of a class or an object
+    * @param array  $mocks  The mocks to use
+    * @param string $string The string to feed into the decode
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataPorts
+    */
+    public function testPorts(
+        $config, $device, $class, $mocks, $expect
+    ) {
+        $config->resetMock($mocks);
+        $dev = new \HUGnet\DummyBase("Device");
+        $obj = IOPBaseStub::factory($config, $device, $class, $dev);
+        $ret = $obj->ports();
+        $this->assertEquals($expect, $ret);
+        unset($obj);
+    }
 
 }
 /**
@@ -1710,6 +1769,15 @@ class TestIOPBaseDriver1 extends \HUGnet\devices\replaceme\Driver
     public function uses()
     {
         return array("Port1", "Port2");
+    }
+    /**
+    * Returns the stuff this driver uses
+    *
+    * @return array The stuff this uses
+    */
+    public function ports()
+    {
+        return array("Port1", "Port2", "Port3", "Port4");
     }
 
 }

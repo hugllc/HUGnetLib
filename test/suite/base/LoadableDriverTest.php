@@ -1088,6 +1088,21 @@ class LoadableDriverTest extends \PHPUnit_Framework_TestCase
     *
     * @return null
     */
+    public function testPorts()
+    {
+        $this->o = DriverTestClass::factory($this->output);
+        $this->output->load($mocks);
+        $ret = $this->o->ports();
+        $this->assertSame(array(), $ret);
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $mocks  The value to preload into the mocks
+    * @param array $expect The expected return
+    *
+    * @return null
+    */
     public function testUses()
     {
         $this->o = DriverTestClass::factory($this->output);

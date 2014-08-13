@@ -423,7 +423,7 @@ class AVRAnalogTable
         return 1;
     }
     /**
-    * Gets the total gain.
+    * Gets port this is using
     *
     * @return null
     */
@@ -431,6 +431,15 @@ class AVRAnalogTable
     {
         $mux = $this->params("MUX");
         return $this->ports[$mux];
+    }
+    /**
+    * Gets the ports this can possibly use.
+    *
+    * @return null
+    */
+    public function ports()
+    {
+        return $this->ports;
     }
     /**
     * Returns an array of the pins and stuff this one uses
