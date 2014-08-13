@@ -202,30 +202,49 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         $properties = &$this->fct()->device()->properties();
         $has        = (array)$properties->getPinList();
         $unused     = array_diff($has, $used);
-        foreach ($unused as $pin) {
-            $prop = $properties->getPinProperties($pin);
-            $props[$pin] = explode(",", $prop[0][0]);
-        }
         foreach ((array)$specs as $key => $spec) {
-            $count = null;
-            $index = null;
+            $count   = null;
+            $useport = null;
             // This picks the pin that has the fewest properties.
-            foreach ($props as $pin => $prop) {
-                if (array_diff((array)$spec, (array)$prop) == array()) {
-                    if (is_null($count) || (count($prop) < $count)) {
-                        $count = count($prop);
-                        $index = $pin;
-                    }
+            foreach ($unused as $k => $port) {
+                $cnt = $this->checkPort($port, $spec);
+                if (($cnt >= 0) && (is_null($useport) || ($cnt < $count))) {
+                    $count   = $cnt;
+                    $useport = $port;
+                    $index   = $k;
                 }
             }
-            if (!is_null($index)) {
-                $ports[$key] = $index;
-                unset($props[$index]);
+            if (!is_null($useport)) {
+                $ports[$key] = $useport;
+                unset($unused[$index]);
             }
         }
         return $ports;
     }
-
+    /**
+    * Checks to see if port meets specs
+    * 
+    * @param string $port The port to check
+    * @param array  $spec The specifications of the required port
+    *
+    * @return null
+    */
+    protected function checkPort($port, $spec)
+    {
+        $prop = $this->fct()->device()->properties()->getPinProperties($port);
+        if (is_array($prop) && is_array($prop[0]) && is_string($prop[0][0])) {
+            $props = explode(",", $prop[0][0]);
+            $diff = array_diff((array)$spec, (array)$props);
+            if (count($diff) > 0) {
+                $ret = -1 * count($diff);
+            } else {
+                $ret = count($props) - count($spec);
+            }
+        } else {
+            $ret = -1 * count($spec);
+        }
+        return $ret;
+    }
 }
 
 

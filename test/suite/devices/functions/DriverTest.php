@@ -221,6 +221,69 @@ class DriverTest extends drivers\DriverTestBase
         $this->assertSame($expect, $ret);
     }
     /**
+    * data provider for testCheckPort
+    *
+    * @return array
+    */
+    public static function dataCheckPort()
+    {
+        return array(
+            array(
+                array(
+                    "device" => array(
+                        "HWPartNum" => "0039-28-01-A",
+                        "DaughterBoard" => "0039-23-01-A",
+                    ),
+                ),
+                "Port9",
+                array("DI"),
+                1,
+            ),
+            array(
+                array(
+                    "device" => array(
+                        "HWPartNum" => "0039-28-01-A",
+                        "DaughterBoard" => "0039-23-01-A",
+                    ),
+                ),
+                "Port7",
+                array("QI"),
+                -1,
+            ),
+            array(
+                array(
+                    "device" => array(
+                        "HWPartNum" => "0039-28-01-A",
+                        "DaughterBoard" => "0039-23-01-A",
+                    ),
+                ),
+                "Port9",
+                array("DI", "DO"),
+                0,
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $mock   The mocks to use
+    * @param string $port   The port to check
+    * @param array  $spec   The spec to get
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataCheckPort
+    */
+    public function testCheckPort($mock, $port, $spec, $expect)
+    {
+        $this->stuff = $mock;
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($mock);
+        $ret = $this->o->checkPort($port, $spec);
+        $this->assertSame($expect, $ret);
+    }
+    /**
     * test the set routine when an extra class exists
     *
     * @return null
@@ -329,6 +392,18 @@ class DriverTestClass extends \HUGnet\devices\functions\Driver
     public function getPorts($specs)
     {
         return parent::getPorts($specs);
+    }
+    /**
+    * Checks to see if port meets specs
+    * 
+    * @param string $port The port to check
+    * @param array  $spec The specifications of the required port
+    *
+    * @return null
+    */
+    public function checkPort($port, $spec)
+    {
+        return parent::checkPort($port, $spec);
     }
 }
 ?>
