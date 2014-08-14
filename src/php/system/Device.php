@@ -545,6 +545,26 @@ class Device extends \HUGnet\base\SystemTableAction
         return $ret;
     }
     /**
+    * Loads the data into the table class
+    *
+    * @return null
+    */
+    public function delete()
+    {
+        $iop = array(
+            "input" => "InputTables",
+            "output" => "OutputTables",
+            "process" => "ProcessTables",
+        );
+        foreach ($iop as $fct => $param) {
+            $cnt = (int)$this->get($param);
+            for ($i = 0; $i < $cnt; $i++) {
+                $this->$fct($i)->delete();
+            }
+        }
+        return parent::delete();
+    }
+    /**
     * Decodes the sensor data
     *
     * @param string $string  The string of sensor data
