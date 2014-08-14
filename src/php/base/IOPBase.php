@@ -488,6 +488,16 @@ abstract class IOPBase extends SystemTableBase
         }
         return array();
     }
+    /**
+    * Returns true if the object is empty, false otherwise
+    *
+    * @return bool
+    */
+    public function isEmpty()
+    {
+        // If the driver is empty, then the whole IOP object is empty
+        return ($this->table()->get("id") == 0xFF);
+    }
 }
 
 

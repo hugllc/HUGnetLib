@@ -168,43 +168,46 @@ class TemperatureTest extends DriverTestBase
                 "Name",
                 array(
                     "device" => array(
+                        "id" => 8,
                         "HWPartNum" => "0039-37-01-B",
                         "DaughterBoard" => "",
                         "arch" => "0039-37",
                     ),
                 ), 
-                true
+                true,
+                array(
+                    'input' => array(
+                        0 => array(
+                            'dev' => 8,
+                            'input' => 0,
+                            'id' => 249,
+                            'driver' => 'ADuCInputTable',
+                            'tableEntry' => array(
+                                'driver0' => 66,
+                                'ADC0EN' => 1,
+                                'ADC0CH' => 1,
+                            ),
+                            'type' => 'ADuCInputTable',
+                            'params' => array(),
+                        )
+                    )
+                ),
             ),
             array(
                 "Name",
                 array(
                     "device" => array(
+                        "id" => 8,
                         "HWPartNum" => "0039-28-01-A",
                         "DaughterBoard" => "0039-23-01-A",
                         "arch" => "0039-28",
                     ),
                 ), 
-                true
+                true,
+                array(
+                ),
             ),
         );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $name   The name to use
-    * @param array  $stuff  The mocks to set up
-    * @param array  $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataExecute
-    */
-    public function testExecute($name, $stuff, $expect)
-    {
-        if (!empty($stuff)) {
-            $this->stuff = $stuff;
-        }
-        $this->assertSame($expect, $this->o->execute());
     }
 
 }

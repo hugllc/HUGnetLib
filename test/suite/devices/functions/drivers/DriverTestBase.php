@@ -119,12 +119,15 @@ abstract class DriverTestBase extends \HUGnet\devices\IOPDriverTestBase
             
         $this->device = $this->getMockBuilder('\HUGnet\Device')
             ->enableArgumentCloning()
-            ->setMethods(array("get", "getParam", "system", "fct"))
+            ->setMethods(array("get", "getParam", "system", "fct", "id"))
             ->disableOriginalConstructor()
             ->getMock();
         $this->device->expects($this->any())
             ->method('get')
             ->will($this->returnCallback(array($this, "getDevice")));
+        $this->device->expects($this->any())
+            ->method('id')
+            ->will($this->returnCallback(array($this, "getDeviceID")));
         $this->device->expects($this->any())
             ->method('getParam')
             ->will($this->returnCallback(array($this, "getDevice")));
@@ -216,6 +219,15 @@ abstract class DriverTestBase extends \HUGnet\devices\IOPDriverTestBase
     {
         return $this->stuff["fct"][$name];
     }
+    /**
+    * Returns our mock device object
+    *
+    * @return null
+    */
+    public function getDeviceID()
+    {
+        return $this->getDevice("id");
+    }
 
     /**
     * Tears down the fixture, for example, closes a network connection.
@@ -294,7 +306,7 @@ abstract class DriverTestBase extends \HUGnet\devices\IOPDriverTestBase
     public static function dataExecute()
     {
         return array(
-            array("a", array(), false),
+            array("a", array(), false, array()),
         );
     }
     /**
@@ -303,17 +315,28 @@ abstract class DriverTestBase extends \HUGnet\devices\IOPDriverTestBase
     * @param string $name   The name of the variable to test.
     * @param array  $stuff  The mocks to set up
     * @param array  $expect The expected return
+    * @param array  $IOP    The expected IOP to be set
     *
     * @return null
     *
     * @dataProvider dataExecute
     */
-    public function testExecute($name, $stuff, $expect)
+    public function testExecute($name, $stuff, $expect, $IOP)
     {
         if (!empty($stuff)) {
             $this->stuff = $stuff;
         }
-        $this->assertSame($expect, $this->o->execute());
+        $this->assertSame($expect, $this->o->execute(), "Return wrong");
+        $ret = array();
+        foreach (array("input", "output", "process") as $fct) {
+            for ($i = 0; $i < 20; $i++) {
+                $obj = $this->device->$fct($i);
+                if (!$obj->isEmpty()) {
+                    $ret[$fct][$i] = $obj->toArray(false);
+                }
+            }
+        }
+        $this->assertSame($IOP, $ret, "IOP Created wrong");
     }
 }
 ?>

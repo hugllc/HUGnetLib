@@ -745,7 +745,7 @@ class Device extends \HUGnet\base\SystemTableAction
         $num = $this->driver()->get(ucfirst($type)."Tables");
         for ($sid = 0; $sid < $num; $sid++) {
             $iop = $this->driver()->$type($sid);
-            if ($iop->get("id") == 0xFF) {
+            if ($iop->isEmpty()) {
                 break;
             }
             unset($iop);

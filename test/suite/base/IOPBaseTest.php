@@ -1324,6 +1324,58 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expect, $ret);
         unset($obj);
     }
+    /**
+    * data provider for testIsEmpty
+    *
+    * @return array
+    */
+    public static function dataIsEmpty()
+    {
+        return array(
+            array(
+                array(
+                ),
+                true,
+            ),
+            array(
+                array(
+                    "id" => 0x42,
+                ),
+                false,
+            ),
+        );
+    }
+    /**
+    * test the isEmpty method
+    *
+    * @param array  $preload Data to preload
+    * @param string $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataIsEmpty
+    */
+    public function testIsEmpty($preload, $expect)
+    {
+        $sys = $this->getMockBuilder('\HUGnet\System')
+            ->setMethods(array("now"))
+            ->setConstructorArgs(
+                array(
+                    $config
+                )
+            )
+            ->getMock();
+        $sys->expects($this->any())
+            ->method('now')
+            ->will($this->returnValue(123456));
+        $dev = $sys->device();
+        $obj = IOPBaseStub2::factory($sys, $preload, null, $dev);
+        $ret = $obj->isEmpty();
+        $this->assertSame(
+            $expect,
+            $ret
+        );
+    }
 
 }
 /**
