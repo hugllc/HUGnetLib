@@ -210,6 +210,15 @@ class Fct extends \HUGnet\base\Container
     *
     * @return Array of channel information
     */
+    public function execute()
+    {
+        return $this->driver()->execute();
+    }
+    /**
+    * This builds the class from a setup string
+    *
+    * @return Array of channel information
+    */
     public function fcts()
     {
         return $this->_fcts;

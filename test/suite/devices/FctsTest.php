@@ -588,115 +588,332 @@ class FctsTest extends \PHPUnit_Framework_TestCase
     public static function dataApply()
     {
         return array(
-            array(   // #0
+            array(  // #0
                 array(
-                    "Device" => array(
-                        "fcts" => array(
-                            "asdf" => "HelloThere",
+                    "id" => 0x123456,
+                    "HWPartNum" => "0039-37-01-E",
+                    "FWPartNum" => "0039-38-01-C",
+                    "FWVersion" => "0.1.2",
+                    "Driver"    => "e00393700",
+                ),
+                array(
+                    array(
+                        "id" => 0, 
+                        'driver' => 'Temperature',
+                        "extra" => array(
+                            0 => "ADuCThermocouple",
+                        ),
+                    ),
+                    array(
+                        "id" => 1, 
+                        'driver' => 'Temperature',
+                        "extra" => array(
+                            0 => "ADuCThermocouple",
+                        ),
+                    ),
+                    array(
+                        "id" => 2, 
+                        'driver' => 'Temperature',
+                        "extra" => array(
+                            0 => "ADuCThermocouple",
+                        ),
+                    ),
+                    array(
+                        "id" => 3, 
+                        'driver' => 'Temperature',
+                        "extra" => array(
+                            0 => "ADuCThermocouple",
+                        ),
+                    ),
+                    array(
+                        "id" => 4, 
+                        'driver' => 'Temperature',
+                        "extra" => array(
+                            0 => "ADuCThermocouple",
                         ),
                     ),
                 ),
+                true,
                 array(
-                    array("id" => 0),
-                ),
-                array(
-                    "fcts" => array(
-                        array(
+                    'id' => 0x123456,
+                    'DeviceID' => '123456',
+                    'DeviceName' => '',
+                    'HWPartNum' => '0039-37-01-E',
+                    'FWPartNum' => '0039-38-01-C',
+                    'FWVersion' => '0.1.2',
+                    'RawSetup' => '',
+                    'Active' => 1,
+                    'Publish' => 1,
+                    'GatewayKey' => 0,
+                    'ControllerKey' => 0,
+                    'ControllerIndex' => 0,
+                    'DeviceLocation' => '',
+                    'DeviceJob' => '',
+                    'Role' => '',
+                    'Driver' => 'e00393700',
+                    'PollInterval' => 0,
+                    'ActiveSensors' => 0,
+                    'DeviceGroup' => 'FFFFFF',
+                    'dataChannels' => Array (),
+                    'controlChannels' => Array (),
+                    'sensors' => '',
+                    'params' => array(
+                        'fcts' => array(
                             array(
-                                array(
-                                    "id" => 0, 
-                                    'driver' => 'NoOp',
+                                "id" => 0, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
                                 ),
-                            ), 
-                            true
-                        ),
-                    ),
-                    "setParam" => array(
-                        array(
-                            "fctsApplied",
+                            ),
                             array(
-                                array(
-                                    "id" => 0, 
-                                    'driver' => 'NoOp',
+                                "id" => 1, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                            array(
+                                "id" => 2, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                            array(
+                                "id" => 3, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                            array(
+                                "id" => 4, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                       ),
+                        'fctsApplied' => array(
+                            array(
+                                "id" => 0, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                            array(
+                                "id" => 1, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                            array(
+                                "id" => 2, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                            array(
+                                "id" => 3, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                            array(
+                                "id" => 4, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
                                 ),
                             ),
                         ),
                     ),
-                ),
-            ),
-            array(  // #1
-                array(
-                    "Device" => array(
-                        "getParam" => array(
-                            "fcts" => "Hello",
+                    'input' => array(
+                        0 => array(
+                            'id' => 255,
+                        ),
+                        1 => array(
+                            'id' => 255,
+                        ),
+                        2 => array(
+                            'id' => 255,
+                        ),
+                        3 => array(
+                            'id' => 255,
+                        ),
+                        4 => array(
+                            'id' => 255,
+                        ),
+                        5 => array(
+                            'id' => 255,
+                        ),
+                        6 => array(
+                            'id' => 255,
+                        ),
+                        7 => array(
+                            'id' => 255,
+                        ),
+                        8 => array(
+                            'id' => 255,
+                        ),
+                    ),
+                    'output' => array(
+                        0 => array(
+                            'id' => 255,
+                        ),
+                        1 => array(
+                            'id' => 255,
+                        ),
+                        2 => array(
+                            'id' => 255,
+                        ),
+                        3 => array(
+                            'id' => 255,
+                        ),
+                        4 => array(
+                            'id' => 255,
+                        ),
+                    ),
+                    'process' => array(
+                        0 => array(
+                            'id' => 255,
+                        ),
+                        1 => array(
+                            'id' => 255,
+                        ),
+                        2 => array(
+                            'id' => 255,
+                        ),
+                        3 => array(
+                            'id' => 255,
                         ),
                     ),
                 ),
                 array(
-                    array(
-                    ),
-                    array(
-                    ),
-                    array(
-                    ),
-                    array(
-                    ),
-                    array(
-                    ),
-                ),
-                array(
-                    "fcts" => array(
-                        array(
+                    'id' => 0x123456,
+                    'DeviceID' => '123456',
+                    'DeviceName' => '',
+                    'HWPartNum' => '0039-37-01-E',
+                    'FWPartNum' => '0039-38-01-C',
+                    'FWVersion' => '0.1.2',
+                    'RawSetup' => '',
+                    'Active' => 1,
+                    'Publish' => 1,
+                    'GatewayKey' => 0,
+                    'ControllerKey' => 0,
+                    'ControllerIndex' => 0,
+                    'DeviceLocation' => '',
+                    'DeviceJob' => '',
+                    'Role' => '',
+                    'Driver' => 'e00393700',
+                    'PollInterval' => 0,
+                    'ActiveSensors' => 0,
+                    'DeviceGroup' => 'FFFFFF',
+                    'dataChannels' => Array (),
+                    'controlChannels' => Array (),
+                    'sensors' => '',
+                    'params' => array(
+                        'fcts' => array(
                             array(
-                                array(
-                                    "id" => 0, 
-                                    'driver' => 'NoOp',
-                                ),
-                                array(
-                                    "id" => 1, 
-                                    'driver' => 'NoOp',
-                                ),
-                                array(
-                                    "id" => 2, 
-                                    'driver' => 'NoOp',
-                                ),
-                                array(
-                                    "id" => 3, 
-                                    'driver' => 'NoOp',
-                                ),
-                                array(
-                                    "id" => 4, 
-                                    'driver' => 'NoOp',
-                                ),
-                            ), 
-                            true
-                        ),
-                    ),
-                    "setParam" => array(
-                        array(
-                            "fctsApplied",
-                            array(
-                                array(
-                                    "id" => 0, 
-                                    'driver' => 'NoOp',
-                                ),
-                                array(
-                                    "id" => 1, 
-                                    'driver' => 'NoOp',
-                                ),
-                                array(
-                                    "id" => 2, 
-                                    'driver' => 'NoOp',
-                                ),
-                                array(
-                                    "id" => 3, 
-                                    'driver' => 'NoOp',
-                                ),
-                                array(
-                                    "id" => 4, 
-                                    'driver' => 'NoOp',
+                                "id" => 0, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
                                 ),
                             ),
+                            array(
+                                "id" => 1, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                            array(
+                                "id" => 2, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                            array(
+                                "id" => 3, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                            array(
+                                "id" => 4, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                       ),
+                    ),
+                    'input' => array(
+                        0 => array(
+                            'id' => 255,
+                        ),
+                        1 => array(
+                            'id' => 255,
+                        ),
+                        2 => array(
+                            'id' => 255,
+                        ),
+                        3 => array(
+                            'id' => 255,
+                        ),
+                        4 => array(
+                            'id' => 255,
+                        ),
+                        5 => array(
+                            'id' => 255,
+                        ),
+                        6 => array(
+                            'id' => 255,
+                        ),
+                        7 => array(
+                            'id' => 255,
+                        ),
+                        8 => array(
+                            'id' => 255,
+                        ),
+                    ),
+                    'output' => array(
+                        0 => array(
+                            'id' => 255,
+                        ),
+                        1 => array(
+                            'id' => 255,
+                        ),
+                        2 => array(
+                            'id' => 255,
+                        ),
+                        3 => array(
+                            'id' => 255,
+                        ),
+                        4 => array(
+                            'id' => 255,
+                        ),
+                    ),
+                    'process' => array(
+                        0 => array(
+                            'id' => 255,
+                        ),
+                        1 => array(
+                            'id' => 255,
+                        ),
+                        2 => array(
+                            'id' => 255,
+                        ),
+                        3 => array(
+                            'id' => 255,
                         ),
                     ),
                 ),
@@ -708,6 +925,8 @@ class FctsTest extends \PHPUnit_Framework_TestCase
     *
     * @param array $config   The configuration to use
     * @param array $channels The channels to give it
+    * @param bool  $pretend  Whether to pretend to apply this or not.
+    * @param mixed $return   The value we expect returned
     * @param mixed $expect   The value we expect back
     *
     * @return null
@@ -715,15 +934,23 @@ class FctsTest extends \PHPUnit_Framework_TestCase
     * @dataProvider dataApply
     */
     public function testApply(
-        $config, $channels, $expect
+        $config, $channels, $pretend, $return, $expect
     ) {
-        $sys = new \HUGnet\DummySystem("System");
-        $dev = new \HUGnet\DummyTable("Device");
-        $sys->resetMock($config);
+        $sys = $this->getMockBuilder('\HUGnet\System')
+            ->enableArgumentCloning()
+            ->setMethods(array("now"))
+            ->disableOriginalConstructor()
+            ->getMock();
+        $sys->expects($this->any())
+            ->method('now')
+            ->will($this->returnValue(123456));
+        $sys->config(array());
+        
+        $dev = $sys->device($config);
         $obj = Fcts::factory($sys, $dev, $channels);
-        $obj->apply();
-        $ret = $sys->retrieve("Device");
-        $this->assertEquals($expect, $ret);
+        $ret = $obj->apply($pretend);
+        $this->assertEquals($return, $ret, "Return wrong");
+        $this->assertEquals($expect, $dev->fixture()->toArray(false), "Device Wrong");
         unset($obj);
     }
 

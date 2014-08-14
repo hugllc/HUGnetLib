@@ -94,6 +94,28 @@ class Fcts
         $this->_setChannels($channels);
     }
     /**
+    * This removes all of the object cache
+    *
+    * @return null
+    */
+    public function __destruct()
+    {
+        $this->_clearCache();
+        unset($this->_system);
+        unset($this->_device);
+    }
+    /**
+    * This removes all of the object cache
+    *
+    * @return null
+    */
+    private function _clearCache()
+    {
+        foreach (array_keys((array)$this->_objCache) as $key) {
+            unset($this->_objCache[$key]);
+        }
+    }
+    /**
     * This function normalizes the channels, so that they are always zero based,
     * and never skip any indexes.
     *
@@ -196,14 +218,39 @@ class Fcts
     /**
     * Sets all of the endpoint attributes from an array
     *
+    * @param bool $pretend Whether to pretend to actually do this, to see what
+    *                      it would look like.
+    *                      
     * @return null
     */
-    public function apply()
+    public function apply($pretend = true)
     {
         $this->store();
-        // This says what facts were last applied
-        $this->_device->setParam("fctsApplied", $this->toArray(false));
+        if ($pretend) {
+            $dev = $this->_system->device($this->_device->toArray(false));
+            $dev->set("group", "null");
+            $dev->fcts()->execute();
+            $fixture = $dev->fixture();
+            return $fixture->toArray(false);
+        } else {
+            $this->execute();
+            return true;
+        }
+    }
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    *                      
+    * @return null
+    */
+    protected function execute()
+    {
+        foreach (array_keys($this->_channels) as $key) {
+            $this->fct($key)->execute();
+        }
 
+        $this->_device->setParam("fctsApplied", $this->toArray(false));
+        return $this->_device->fixture()->export();
     }
 
     /**
