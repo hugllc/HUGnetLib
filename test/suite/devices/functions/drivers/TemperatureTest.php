@@ -168,7 +168,20 @@ class TemperatureTest extends DriverTestBase
                 "Name",
                 array(
                     "device" => array(
+                        "HWPartNum" => "0039-37-01-B",
+                        "DaughterBoard" => "",
                         "arch" => "0039-37",
+                    ),
+                ), 
+                true
+            ),
+            array(
+                "Name",
+                array(
+                    "device" => array(
+                        "HWPartNum" => "0039-28-01-A",
+                        "DaughterBoard" => "0039-23-01-A",
+                        "arch" => "0039-28",
                     ),
                 ), 
                 true

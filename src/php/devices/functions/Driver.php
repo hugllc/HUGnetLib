@@ -232,8 +232,8 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     protected function checkPort($port, $spec)
     {
         $prop = $this->fct()->device()->properties()->getPinProperties($port);
-        if (is_array($prop) && is_array($prop[0]) && is_string($prop[0][0])) {
-            $props = explode(",", $prop[0][0]);
+        if (is_array($prop) && is_string($prop["properties"])) {
+            $props = explode(",", $prop["properties"]);
             $diff = array_diff((array)$spec, (array)$props);
             if (count($diff) > 0) {
                 $ret = -1 * count($diff);

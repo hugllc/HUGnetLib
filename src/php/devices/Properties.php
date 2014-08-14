@@ -466,50 +466,47 @@ class Properties
         $pinArray = array();
         $epCount = count($this->_EpArray);
         $found = 0;
-
         for ($i=0; $i<$epCount; $i++) {
-            if ($this->_EpArray[$i] == $epName) {
-                $found = 1;
-                $pinCount = $this->_Xml->endpoints[$i]->Pins->count();
-                if ($pinCount == 0) {
-                    $found = 2;
-                } else {
-                    for ($j=0; $j< $pinCount; $j++) {
-                        $pName = (string)$this->_Xml->endpoints[$i]->Pins[$j]
-                            ->name;
-                        if ($pName == $pinName) {
-                            $found = 3;
-                            $pinFunct = (string)$this->_Xml->endpoints[$i]
-                                ->Pins[$j]->function;
-                            $pinSeriesResValue = (string)$this->_Xml
-                                ->endpoints[$i]->Pins[$j]->series;
-                            $pinArray[0]= $pinFunct;
-                            if ($pinSeriesResValue <> null) {
-                                $pinShuntResValue = (string)$this->_Xml
-                                    ->endpoints[$i]->Pins[$j]->shunt->value;
-                                $pinArray[1] = $pinSeriesResValue;
-                                $pinArray[2] = $pinShuntResValue;
-                                if ($pinShuntResValue <> "none") {
-                                    $pinShuntResLoc = (string)$this->_Xml
-                                        ->endpoints[$i]->Pins[$j]->shunt->location;
-                                    $pinShuntResPull = (string)$this->_Xml
-                                        ->endpoints[$i]->Pins[$j]->shunt->pull;
-                                    $pinArray[3] = $pinShuntResLoc;
-                                    $pinArray[4] = $pinShuntResPull;
-                                } else {
-                                    $pinArray[3] = "none";
-                                    $pinArray[4] = "none";
-                                }
-                                $pinHighVoltage = (string)$this->_Xml
-                                    ->endpoints[$i]->Pins[$j]->highvoltage;
-                                $pinArray[5] = $pinHighVoltage;
-                            }
-                        }
+            if ($this->_EpArray[$i] != $epName) {
+                continue;
+            }
+            $found = 1;
+            $pinCount = $this->_Xml->endpoints[$i]->Pins->count();
+            if ($pinCount == 0) {
+                $found = 2;
+            } else {
+                for ($j=0; $j< $pinCount; $j++) {
+                    $pName = (string)$this->_Xml->endpoints[$i]->Pins[$j]->name;
+                    if ($pName != $pinName) {
+                        continue;
                     }
+                    $found = 3;
+                    $pinFunct = (string)$this->_Xml->endpoints[$i]
+                        ->Pins[$j]->function;
+                    $pinSeriesResValue = (string)$this->_Xml
+                        ->endpoints[$i]->Pins[$j]->series;
+                    $pinArray["properties"]= str_replace(" ", "", $pinFunct);
+                    if ($pinSeriesResValue <> null) {
+                        $pinShuntResValue = (string)$this->_Xml
+                            ->endpoints[$i]->Pins[$j]->shunt->value;
+                        $pinArray["seriesRes"] = $pinSeriesResValue;
+                        $pinArray["shuntRes"] = $pinShuntResValue;
+                        if ($pinShuntResValue <> "none") {
+                            $pinShuntResLoc = (string)$this->_Xml
+                                ->endpoints[$i]->Pins[$j]->shunt->location;
+                            $pinShuntResPull = (string)$this->_Xml
+                                ->endpoints[$i]->Pins[$j]->shunt->pull;
+                            $pinArray["shuntLoc"] = $pinShuntResLoc;
+                            $pinArray["shuntPull"] = $pinShuntResPull;
+                        }
+                        $pinHighVoltage = (string)$this->_Xml
+                            ->endpoints[$i]->Pins[$j]->highvoltage;
+                        $pinArray["highVoltage"] = $pinHighVoltage;
+                    }
+                    break;
                 }
             }
         }
-
         if ($found <> 3) {
             $pinArray = false;
         }
@@ -533,13 +530,14 @@ class Properties
         $dbCount = count($this->_DbArray);
 
         for ($i=0; $i<$dbCount; $i++) {
-            if ($this->_DbArray[$i] == $dbNum) {
-                $pinCount = $this->_Xml->daughterboards[$i]->Pins->count();
-                for ($j=0; $j< $pinCount; $j++) {
-                    $pinName = (string)($this->_Xml->daughterboards[$i]
-                        ->Pins[$j]->name);
-                    $pinArray[$j]= $pinName;
-                }
+            if ($this->_DbArray[$i] != $dbNum) {
+                continue;
+            }
+            $pinCount = $this->_Xml->daughterboards[$i]->Pins->count();
+            for ($j=0; $j< $pinCount; $j++) {
+                $pinName = (string)($this->_Xml->daughterboards[$i]
+                    ->Pins[$j]->name);
+                $pinArray[$j]= $pinName;
             }
         }
     
@@ -573,31 +571,35 @@ class Properties
         $found = 0;
 
         for ($i=0; $i<$dbCount; $i++) {
-            if ($this->_DbArray[$i] == $dbName) {
-                $found = 1;
-                $pinCount = $this->_Xml->daughterboards[$i]->Pins->count();
-                for ($j=0; $j< $pinCount; $j++) {
-                    $pName = (string) $this->_Xml->daughterboards[$i]
-                        ->Pins[$j]->name;
-                    if ($pName == $pinName) {
-                        $found = 2;
-                        $pfunct = (string) ($this->_Xml->daughterboards[$i]
-                            ->Pins[$j]->function);
-                        $pinArray[0][0] = $pfunct;
-                        $cCount = $this->_Xml->daughterboards[$i]->Pins[$j]
-                            ->connect->count();
-                        for ($k=0; $k<$cCount; $k++) {
-                            $conEP = (string)($this->_Xml->daughterboards[$i]
-                                ->Pins[$j]->connect[$k]->device);
-                            $conPin = (string)($this->_Xml->daughterboards[$i]
-                                ->Pins[$j]->connect[$k]->conpin);
-                            $pinArray[$k+1][0] = "Connect";
-                            $pinArray[$k+1][1] = $conEP;
-                            $pinArray[$k+1][2] = $conPin;
-                        }
+            if ($this->_DbArray[$i] != $dbName) {
+                continue;
+            }
+            $found = 1;
+            $pinCount = $this->_Xml->daughterboards[$i]->Pins->count();
+            for ($j=0; $j< $pinCount; $j++) {
+                $pName = (string) $this->_Xml->daughterboards[$i]
+                    ->Pins[$j]->name;
+                if ($pName != $pinName) {
+                    continue;
+                }
+                $found = 2;
+                $pfunct = (string) ($this->_Xml->daughterboards[$i]
+                    ->Pins[$j]->function);
+                $pinArray["properties"] = $pfunct;
+                $cCount = $this->_Xml->daughterboards[$i]->Pins[$j]
+                    ->connect->count();
+                for ($k=0; $k<$cCount; $k++) {
+                    $conEP = (string)($this->_Xml->daughterboards[$i]
+                        ->Pins[$j]->connect[$k]->device);
+                    if ($conEP == $this->_endpointNum) {
+                        $conPin = (string)($this->_Xml->daughterboards[$i]
+                            ->Pins[$j]->connect[$k]->conpin);
+
+                        $pinArray["mbcon"] = $conPin;
+                        break;
                     }
                 }
-
+                break;
             }
         } /* end function _dbPinProperties */
         

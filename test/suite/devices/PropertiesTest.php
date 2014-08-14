@@ -436,12 +436,12 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
                 "",
                 "Port7",
                 array(
-                    0 => 'AI',
-                    1 => '100K',
-                    2 => '1K',
-                    3 => 'R21',
-                    4 => 'CGND',
-                    5 => 'Y',
+                    "properties"  => 'AI',
+                    "seriesRes"   => '100K',
+                    "shuntRes"    => '1K',
+                    "shuntLoc"    => 'R21',
+                    "shuntPull"   => 'CGND',
+                    "highVoltage" => 'Y',
                 ),
             ),
             array(
@@ -449,12 +449,10 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
                 "",
                 "Port1",
                 array(
-                    0 => 'AI',
-                    1 => '1K',
-                    2 => 'none',
-                    3 => 'none',
-                    4 => 'none',
-                    5 => 'N',
+                    "properties" => 'AI',
+                    "seriesRes"   => '1K',
+                    "shuntRes"    => 'none',
+                    "highVoltage" => 'N',
                 ),
             ),
             array(
@@ -565,19 +563,8 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
                 "0039-15-01",
                 "Port2",
                 array(
-                    0 => array(
-                            0 => 'AI',
-                        ),
-                    1 => array(
-                            0 => 'Connect',
-                            1 => '0039-12-02-C',
-                            2 => 'Port2',
-                         ),
-                    2 => array(
-                            0 => 'Connect',
-                            1 => '0039-28-01-A',
-                            2 => 'Port2',
-                        ),
+                    "properties" => 'AI',
+                    "mbcon"      => 'Port2',
                 ),
             ),
             array(
@@ -628,19 +615,16 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
                 "0039-15-01",
                 "Port2",
                 array(
-                    0 => array(
-                            0 => 'AI',
-                        ),
-                    1 => array(
-                            0 => 'Connect',
-                            1 => '0039-12-02-C',
-                            2 => 'Port2',
-                         ),
-                    2 => array(
-                            0 => 'Connect',
-                            1 => '0039-28-01-A',
-                            2 => 'Port2',
-                        ),
+                    "properties" => 'AI',
+                    "mbcon"      => 'Port2',
+                ),
+            ),
+            array(
+                "0039-12-02-C", 
+                "",
+                "Port2",
+                array(
+                    "properties" => 'AI,DI,DO',
                 ),
             ),
             array(
@@ -654,12 +638,12 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
                 "",
                 "Port7",
                 array(
-                    0 => 'AI',
-                    1 => '100K',
-                    2 => '1K',
-                    3 => 'R21',
-                    4 => 'CGND',
-                    5 => 'Y',
+                    'properties' => 'AI',
+                    'seriesRes' => '100K',
+                    'shuntRes' => '1K',
+                    'shuntLoc' => 'R21',
+                    'shuntPull' => 'CGND',
+                    'highVoltage' => 'Y',
                 ),
             ),
             array(
@@ -667,12 +651,10 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
                 "",
                 "Port1",
                 array(
-                    0 => 'AI',
-                    1 => '1K',
-                    2 => 'none',
-                    3 => 'none',
-                    4 => 'none',
-                    5 => 'N',
+                    'properties' => 'AI',
+                    'seriesRes' => '1K',
+                    'shuntRes' => 'none',
+                    'highVoltage' => 'N',
                 ),
             ),
             array(

@@ -184,15 +184,32 @@ class Temperature extends \HUGnet\devices\functions\Driver
     private function _execute003937()
     {
         include_once dirname(__FILE__)."/../../inputTable/Driver.php";
-        $input  = $this->fct()->device()->input("free");
+        $input = $this->fct()->device()->input("free");
         $input->set("id", 0xF9);
-        $fullEntry = $input->toArray(true)["fullEntry"];
-
+        $entry = (array)$input->toArray(false)["tableEntry"];
+        foreach (array(0, 1) as $index) {
+            $ports = $input->ports($index);
+            foreach ($ports as $key => $port) {
+                $cnt = $this->checkPort($port, array("AI"));
+                if ($cnt >= 0) {
+                    break;
+                }
+            }
+            if ($cnt >= 0) {
+                break;
+            }
+        }
+        
         $driver = $this->getExtra(0);
         $driverID = \HUGnet\devices\inputTable\Driver::getDriverID($driver);
         list($sid, $sub) = explode(":", $driverID);
-        $entry  = array(
-            "driver0" => hexdec($sid),
+        $entry = array_merge(
+            $entry,
+            array(
+                "driver0" => hexdec($sid),
+                "ADC".$index."EN" => 1,
+                "ADC".$index."CH" => $key,
+            )
         );
         $input->table()->set("tableEntry", $entry);
         return $input->store(true);

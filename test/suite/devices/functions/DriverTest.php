@@ -261,6 +261,17 @@ class DriverTest extends drivers\DriverTestBase
                 array("DI", "DO"),
                 0,
             ),
+            array(
+                array(
+                    "device" => array(
+                        "HWPartNum" => "0039-37-01-A",
+                        "DaughterBoard" => "",
+                    ),
+                ),
+                "Port1",
+                array("AI"),
+                0,
+            ),
         );
     }
     /**
