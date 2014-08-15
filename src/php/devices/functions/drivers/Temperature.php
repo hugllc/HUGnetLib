@@ -147,10 +147,10 @@ class Temperature extends \HUGnet\devices\functions\Driver
         $ret  = false;
         switch ($arch) {
         case "0039-12":
-            $ret = $this->_execute003912();
+            $ret = $this->_executeAVR();
             break;
         case "0039-28":
-            $ret = $this->_execute003928();
+            $ret = $this->_executeAVR();
             break;
         case "0039-37":
             $ret = $this->_execute003937();
@@ -159,22 +159,35 @@ class Temperature extends \HUGnet\devices\functions\Driver
         return $ret;
     }
     /**
-    * Applies this function to 0039-12
-    *
-    * @return null
-    */
-    private function _execute003912()
-    {
-        return true;
-    }
-    /**
     * Applies this function to 0039-28
     *
     * @return null
     */
-    private function _execute003928()
+    private function _executeAVR()
     {
-        return true;
+        include_once dirname(__FILE__)."/../../inputTable/Driver.php";
+        $input = $this->fct()->device()->input("free");
+        $input->set("id", 0xF9);
+        $entry = (array)$input->toArray(false)["tableEntry"];
+        $ports = $input->ports();
+        foreach ($ports as $key => $port) {
+            $cnt = $this->checkPort($port, array("AI"));
+            if ($cnt >= 0) {
+                break;
+            }
+        }
+        $driver = $this->getExtra(0);
+        $driverID = \HUGnet\devices\inputTable\Driver::getDriverID($driver);
+        list($sid, $sub) = explode(":", $driverID);
+        $entry = array_merge(
+            $entry,
+            array(
+                "driver" => hexdec($sid),
+                "MUX" => $key,
+            )
+        );
+        $input->table()->set("tableEntry", $entry);
+        return $input->store(true);
     }
     /**
     * Applies this function to 0039-37

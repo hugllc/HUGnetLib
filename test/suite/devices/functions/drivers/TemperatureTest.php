@@ -205,6 +205,20 @@ class TemperatureTest extends DriverTestBase
                 ), 
                 true,
                 array(
+                    'input' => array(
+                        0 => array(
+                            'dev' => 8,
+                            'input' => 0,
+                            'id' => 249,
+                            'driver' => 'ADuCInputTable',
+                            'tableEntry' => array(
+                                'driver' => 2,
+                                'MUX' => 1,
+                            ),
+                            'type' => 'ADuCInputTable',
+                            'params' => array(),
+                        )
+                    )
                 ),
             ),
         );
