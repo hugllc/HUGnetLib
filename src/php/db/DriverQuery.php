@@ -165,13 +165,14 @@ abstract class DriverQuery
     public function columns()
     {
         $cols  = &self::$_tableCache;
-        $table = $this->sqlTable;
+        $table = $this->myTable->sqlTable;
+        $group = $this->myTable->get("group");
         // This doesn't work when we run tests.  We don't want to globalize anything
         // for the tests.
-        if (!is_array($cols[$table]) || defined("_TESTMODE")) {
-            $cols[$table] = $this->driverColumns();
+        if (!is_array($cols[$group][$table]) || defined("_TESTMODE")) {
+            $cols[$group][$table] = $this->driverColumns();
         } 
-        return $cols[$table];
+        return $cols[$group][$table];
     }
     /**
     * Gets columns from a mysql server
