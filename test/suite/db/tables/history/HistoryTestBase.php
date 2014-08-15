@@ -117,7 +117,7 @@ abstract class HistoryTestBase extends \PHPUnit_Framework_TestCase
     public static function dataSet()
     {
         return array(
-            array("group", "test", "test"),
+            array("group", "default", "default"),
         );
     }
 

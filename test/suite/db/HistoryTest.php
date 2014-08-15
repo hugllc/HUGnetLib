@@ -87,6 +87,11 @@ class HistoryTest extends tables\TableTestBase
                             "file" => ":memory:",
                             "group" => "default",
                         ),
+                        array(
+                            "driver" => "sqlite",
+                            "file" => ":memory:",
+                            "group" => "remote",
+                        ),
                     ),
                     "verbose" => 0,
                 ),

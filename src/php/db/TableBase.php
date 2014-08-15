@@ -457,6 +457,20 @@ abstract class TableBase extends \HUGnet\base\Container
         }
         return $ret;
     }
+    /**
+    * function to set Group
+    *
+    * @param string $value The value to set
+    *
+    * @return null
+    */
+    protected function setGroup($value)
+    {
+        if (is_string($value)) {
+            $this->data["group"] = $value;
+            $this->create();
+        }
+    }
 
 }
 
