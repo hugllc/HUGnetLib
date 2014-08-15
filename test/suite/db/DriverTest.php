@@ -208,7 +208,7 @@ class DriverTest extends \PHPUnit_Extensions_Database_TestCase
     public static function dataConstructVerbose()
     {
         return array(
-            array(6, \PDO::ERRMODE_EXCEPTION),
+            array(6, \PDO::ERRMODE_WARNING),
             array(2, \PDO::ERRMODE_WARNING),
             array(0, \PDO::ERRMODE_SILENT),
         );

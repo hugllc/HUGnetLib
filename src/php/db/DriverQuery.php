@@ -135,9 +135,7 @@ abstract class DriverQuery
             !is_a($this->pdo(), "\PDO")
         );
         $verbose = $this->system->get("verbose");
-        if ($verbose > 5) {
-            $this->pdo()->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-        } else if ($verbose > 1) {
+        if ($verbose > 1) {
             $this->pdo()->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_WARNING);
         } else {
             $this->pdo()->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_SILENT);
