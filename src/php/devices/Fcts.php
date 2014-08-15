@@ -228,7 +228,7 @@ class Fcts
         $this->store();
         if ($pretend) {
             $dev = $this->_system->device($this->_device->toArray(false));
-            $dev->set("group", "null");
+            $dev->set("group", "tmp");
             $dev->fcts()->execute();
             $fixture = $dev->fixture();
             return $fixture->toArray(false);
