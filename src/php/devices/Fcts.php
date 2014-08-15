@@ -227,8 +227,9 @@ class Fcts
     {
         $this->store();
         if ($pretend) {
-            $dev = $this->_system->device($this->_device->toArray(false));
-            $dev->set("group", "tmp");
+            $data = $this->_device->toArray(false);
+            $data["group"] = "tmp";
+            $dev = $this->_system->device($data);
             $dev->fcts()->execute();
             $fixture = $dev->fixture();
             return $fixture->toArray(false);
@@ -240,7 +241,6 @@ class Fcts
     /**
     * Sets all of the endpoint attributes from an array
     *
-    *                      
     * @return null
     */
     protected function execute()
