@@ -1,0 +1,224 @@
+<!--
+/**
+* This file defines what devices are about
+*
+* HUGnetLib is a library of HUGnet code
+* Copyright (C) 2009 Hunt Utilities Group, LLC
+* Copyright (C) 2009 Scott Price
+*
+* This program is free software; you can redistribute it and/or
+* modify it under the terms of the GNU General Public License
+* as published by the Free Software Foundation; either version 3
+* of the License, or (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA  02110-1301, USA.
+*/
+
+-->
+
+
+<HUGnet>
+    <daughterboards>
+        <HWPartNum>0039-23-01</HWPartNum>
+        <Pins>
+            <name>Port1</name>
+            <function>AI,DI,DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port1</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PC0</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port2</name>
+            <function>AI,DI,DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port2</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PC1</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port3</name>
+            <function>AI,DI,DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port3</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PC2</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port4</name>
+            <function>AI,DI,DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port4</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PC3</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port5</name>
+            <function>AI,DI,DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port5</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PC4</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port6</name>
+            <function>AI,DI,DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port6</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PC5</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port7</name>
+            <function>AI</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port7</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>ADC6</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port8</name>
+            <function>AI</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port8</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>ADC7</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port9</name>
+            <function>DI,DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>NC</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PB0</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port10</name>
+            <function>DI,DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>NC</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PB1</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port11</name>
+            <function>DI,DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>NC</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PB2</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port12</name>
+            <function>DI,DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port10</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PB3</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port13</name>
+            <function>DI,DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>Port11</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PB4</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port14</name>
+            <function>DI,DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>NC</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PB5</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port15</name>
+            <function>DI,DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>NC</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PD5</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port16</name>
+            <function>DI,DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>NC</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PD6</conpin>
+            </connect>
+        </Pins>
+    </daughterboards>
+</HUGnet>
