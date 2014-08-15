@@ -100,8 +100,14 @@ class Connection implements \ConnectionManager
         $this->_servers["null"] = array(
             array("group" => "null", "driver" => "nulldb")
         );
+        // Always have the tmp tables
+        $this->_servers["tmp"] = array(
+            array("group" => "tmp", "driver" => "sqilte", "file" => ":memory:")
+        );
         $this->_drivers["null"] = "nulldb";
         $this->_groups["null"] = "null";
+        $this->_drivers["tmp"] = "sqlite";
+        $this->_groups["tmp"] = "tmp";
     }
     /**
     * This function creates the system.
