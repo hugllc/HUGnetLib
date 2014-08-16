@@ -232,6 +232,8 @@ class Fcts
             $dev = $this->_system->device($data);
             $dev->fcts()->execute();
             $fixture = $dev->fixture();
+            // Remove this device from the temporary database.
+            $dev->delete();
             return $fixture->toArray(false);
         } else {
             $this->execute();
