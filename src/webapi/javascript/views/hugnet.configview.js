@@ -231,15 +231,21 @@ var DeviceConfigView = Backbone.View.extend({
                 if ($(this).find('[name="delete"]').prop("checked")) {
                     self.functionsmodel.remove(id);
                 }
+                
                 var row   = this;
                 var model = self.functionsmodel.get(id);
                 if (model != undefined) {
-                    _.each(["name"],
+                    _.each(["name", "driver"],
                         function(sel, i) {
                             model.set(sel, $(row).find('[name="'+sel+'"]').val());
                         }
                     );
                 }
+                var extra = [];
+                $(row).find('[name^="extra"]').each(function(ind, element) {
+                    extra[ind] = $(this).val();
+                });
+                model.set("extra", extra);
             }
         });
         this.functionsmodel.save();
