@@ -75,10 +75,11 @@ abstract class SystemTableBase
     *
     * @param object &$system The configuration array
     * @param string $table   The table class to use
+    * @param array  $data    The initial data for this object
     *
     * @return null
     */
-    protected function __construct(&$system, $table)
+    protected function __construct(&$system, $table, $data = array())
     {
         \HUGnet\System::systemMissing(
             get_class($this)." needs to be passed a system object",
@@ -86,6 +87,9 @@ abstract class SystemTableBase
         );
         $this->_system = &$system;
         $this->_setTable($table);
+        // Create the table with initial data in it.
+        // The main reason this is here is to set the group immediately.
+        $this->_table($data);
     }
     /**
     * Sets the database table to use. It expects either an object or a string
@@ -121,8 +125,21 @@ abstract class SystemTableBase
     */
     public function &table()
     {
+        return $this->_table();
+    }
+    /**
+    * This function gives us access to the table class
+    *
+    * @param array $data This is the inital data for the table.
+    *
+    * @return reference to the table class object
+    */
+    private function &_table($data = array())
+    {
         if (!is_object($this->_table)) {
-            $this->_table = $this->system()->table($this->tableClass);
+            $this->_table = $this->system()->table(
+                $this->tableClass, $data
+            );
         }
         return $this->_table;
     }
@@ -148,7 +165,7 @@ abstract class SystemTableBase
         &$system, $data=null, $table="GenericTable"
     ) {
         $class = get_called_class();
-        $object = new $class($system, $table);
+        $object = new $class($system, $table, $data);
         if (!is_null($data) && ($data !== array())) {
             $object->load($data);
         }

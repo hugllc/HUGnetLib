@@ -466,8 +466,9 @@ abstract class TableBase extends \HUGnet\base\Container
     */
     protected function setGroup($value)
     {
-        if (is_string($value)) {
+        if (is_string($value) && ($value !== $this->data["group"])) {
             $this->data["group"] = $value;
+            $this->system()->out("Setting group to $value", 7);
             $this->create();
         }
     }

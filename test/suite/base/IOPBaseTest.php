@@ -1108,6 +1108,11 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
                             false
                         ),
                     ),
+                    "table" => array(
+                        array(
+                            null
+                        ),
+                    ),
                 ),
                 "System",
             ),

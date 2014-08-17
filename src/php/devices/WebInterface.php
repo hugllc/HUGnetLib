@@ -269,11 +269,7 @@ class WebInterface
     private function _fctsetup($args = null)
     {
         $dev = $this->_device->toArray();
-        // This sets it so that it can't save this info
-        $dev["group"] = "null";
-        $device = $this->_system->device($dev);
-        // Apply the function setup here
-        return $device->toArray(true);
+        return $this->_device->fcts()->apply(true);
     }
     /**
     * returns a history object for this device
