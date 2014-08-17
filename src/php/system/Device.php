@@ -562,6 +562,11 @@ class Device extends \HUGnet\base\SystemTableAction
         foreach ($iop as $fct => $param) {
             $cnt = (int)$this->get($param);
             for ($i = 0; $i < $cnt; $i++) {
+                $this->system()->out(
+                    "Deleting $fct $i",
+                    8
+                );
+                $$fct->table()->clearData();
                 $$fct->table()->fromArray(
                     array("dev" => $this->id(), $fct => $i)
                 );
