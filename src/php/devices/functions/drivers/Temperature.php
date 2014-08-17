@@ -168,6 +168,7 @@ class Temperature extends \HUGnet\devices\functions\Driver
         include_once dirname(__FILE__)."/../../inputTable/Driver.php";
         $input = $this->fct()->device()->input("free");
         $input->set("id", 0xF9);
+        $input->set("location", $this->fct()->get("name"));
         $entry = (array)$input->toArray(false)["tableEntry"];
         $ports = $input->ports();
         foreach ($ports as $key => $port) {
@@ -199,6 +200,8 @@ class Temperature extends \HUGnet\devices\functions\Driver
         include_once dirname(__FILE__)."/../../inputTable/Driver.php";
         $input = $this->fct()->device()->input("free");
         $input->set("id", 0xF9);
+        $input->set("location", $this->fct()->get("name"));
+        
         $entry = (array)$input->toArray(false)["tableEntry"];
         foreach (array(0, 1) as $index) {
             $ports = $input->ports($index);

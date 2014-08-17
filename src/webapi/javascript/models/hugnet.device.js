@@ -386,6 +386,7 @@ HUGnet.Device = Backbone.Model.extend({
             }).done(
                 function (data)
                 {
+                    console.log(data);
                     myself.set(data);
                 }
             );

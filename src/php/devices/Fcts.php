@@ -266,8 +266,16 @@ class Fcts
 
         $this->_device->setParam("fctsApplied", $this->toArray(false));
         $this->_device->setParam("fctsAppliedDate", $this->_system->now());
+        $this->_device->dataChannels()->store();
+        
         $this->_device->store();
-        return $this->_device->fixture()->toArray(true);
+        $return = $this->_device->fixture()->toArray(true);
+        $return["dataChannels"] = $this->_device->dataChannels()->toArray(true);
+        $return["controlChannels"] = $this->_device->controlChannels()->toArray(
+            true
+        );
+        return $return;
+        
     }
 
     /**
