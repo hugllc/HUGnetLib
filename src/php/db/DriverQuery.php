@@ -169,9 +169,15 @@ abstract class DriverQuery
         $group = $this->myTable->get("group");
         // This doesn't work when we run tests.  We don't want to globalize anything
         // for the tests.
-        if (!is_array($cols[$group][$table]) || defined("_TESTMODE")) {
+        if (!is_array($cols[$group][$table]) 
+            || defined("_TESTMODE")
+            || empty($cols[$group][$table])
+        ) {
+            $this->system->out("tableCache Miss! $table: $group", 6);
             $cols[$group][$table] = $this->driverColumns();
-        } 
+        }  else {
+            $this->system->out("tableCache Hit! $table: $group", 6);
+        }
         return $cols[$group][$table];
     }
     /**
@@ -249,6 +255,11 @@ abstract class DriverQuery
             $pdo->closeCursor();
         } else {
             $error = $this->pdo()->errorInfo();
+            $this->system->out(
+                "Error: "
+                .print_r($error, true),
+                8
+            );
         }
         // Set the errors if there are any and we are not on table 'errors'
         if (is_array($error)) {

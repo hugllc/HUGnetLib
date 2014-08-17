@@ -302,7 +302,8 @@ abstract class DriverBase extends DriverQuery
     */
     public function tableExists()
     {
-        return (count(@$this->columns()) > 0);
+        $cols = @$this->columns();
+        return (count($cols) > 0);
     }
     /**
     * Gets all rows from the database
