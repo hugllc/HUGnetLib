@@ -207,7 +207,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
             $useport = null;
             // This picks the pin that has the fewest properties.
             foreach ($unused as $k => $port) {
-                $cnt = $this->checkPort($port, $spec);
+                $cnt = $this->portCheck($port, $spec);
                 if (($cnt >= 0) && (is_null($useport) || ($cnt < $count))) {
                     $count   = $cnt;
                     $useport = $port;
@@ -229,7 +229,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     *
     * @return null
     */
-    protected function checkPort($port, $spec)
+    protected function portCheck($port, $spec)
     {
         $prop = $this->fct()->device()->properties()->getPinProperties($port);
         if (is_array($prop) && is_string($prop["properties"])) {
@@ -244,6 +244,21 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
             $ret = -1 * count($spec);
         }
         return $ret;
+    }
+    /**
+    * Checks to see if port is in use
+    * 
+    * @param string $port The port to check
+    *
+    * @return null
+    */
+    protected function portAvailable($port)
+    {
+        $has = (array)$this->fct()->device()->properties()->getPinList();
+        if (!in_array($port, $has)) {
+            return false;
+        }
+        return !in_array($port, (array)$this->fct()->device()->uses());
     }
 }
 

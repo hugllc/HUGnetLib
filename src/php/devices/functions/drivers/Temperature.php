@@ -206,9 +206,11 @@ class Temperature extends \HUGnet\devices\functions\Driver
         foreach (array(0, 1) as $index) {
             $ports = $input->ports($index);
             foreach ($ports as $key => $port) {
-                $cnt = $this->checkPort($port, array("AI"));
-                if ($cnt >= 0) {
-                    break;
+                if ($this->portAvailable($port)) {
+                    $cnt = $this->portCheck($port, array("AI"));
+                    if ($cnt >= 0) {
+                        break;
+                    }
                 }
             }
             if ($cnt >= 0) {

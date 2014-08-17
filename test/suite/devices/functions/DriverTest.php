@@ -225,7 +225,7 @@ class DriverTest extends drivers\DriverTestBase
     *
     * @return array
     */
-    public static function dataCheckPort()
+    public static function dataPortCheck()
     {
         return array(
             array(
@@ -284,14 +284,74 @@ class DriverTest extends drivers\DriverTestBase
     *
     * @return null
     *
-    * @dataProvider dataCheckPort
+    * @dataProvider dataPortCheck
     */
-    public function testCheckPort($mock, $port, $spec, $expect)
+    public function testPortCheck($mock, $port, $spec, $expect)
     {
         $this->stuff = $mock;
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock($mock);
-        $ret = $this->o->checkPort($port, $spec);
+        $ret = $this->o->portCheck($port, $spec);
+        $this->assertSame($expect, $ret);
+    }
+    /**
+    * data provider for testPortAvailable
+    *
+    * @return array
+    */
+    public static function dataPortAvailable()
+    {
+        return array(
+            array(
+                array(
+                    "device" => array(
+                        "HWPartNum" => "0039-28-01-A",
+                        "DaughterBoard" => "0039-23-01-A",
+                    ),
+                ),
+                "Port20",
+                false,
+            ),
+            array(
+                array(
+                    "device" => array(
+                        "HWPartNum" => "0039-28-01-A",
+                        "DaughterBoard" => "0039-23-01-A",
+                    ),
+                ),
+                "Port7",
+                true,
+            ),
+            array(
+                array(
+                    "device" => array(
+                        "HWPartNum" => "0039-37-01-A",
+                        "DaughterBoard" => "",
+                    ),
+                ),
+                "Port1",
+                true,
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $mock   The mocks to use
+    * @param string $port   The port to check
+    * @param array  $spec   The spec to get
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataPortAvailable
+    */
+    public function testPortAvailable($mock, $port, $expect)
+    {
+        $this->stuff = $mock;
+        $sensor = new \HUGnet\DummyBase("Sensor");
+        $sensor->resetMock($mock);
+        $ret = $this->o->portAvailable($port);
         $this->assertSame($expect, $ret);
     }
     /**
@@ -412,9 +472,20 @@ class DriverTestClass extends \HUGnet\devices\functions\Driver
     *
     * @return null
     */
-    public function checkPort($port, $spec)
+    public function portCheck($port, $spec)
     {
-        return parent::checkPort($port, $spec);
+        return parent::portCheck($port, $spec);
+    }
+    /**
+    * Checks to see if port is used
+    * 
+    * @param string $port The port to check
+    *
+    * @return null
+    */
+    public function portAvailable($port)
+    {
+        return parent::portAvailable($port);
     }
 }
 ?>
