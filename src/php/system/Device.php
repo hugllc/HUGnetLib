@@ -556,10 +556,16 @@ class Device extends \HUGnet\base\SystemTableAction
             "output" => "OutputTables",
             "process" => "ProcessTables",
         );
+        $input   = $this->input("new");
+        $output  = $this->output("new");
+        $process = $this->process("new");
         foreach ($iop as $fct => $param) {
             $cnt = (int)$this->get($param);
             for ($i = 0; $i < $cnt; $i++) {
-                $this->$fct($i)->delete();
+                $$fct->table()->fromArray(
+                    array("dev" => $this->id(), $fct => $i)
+                );
+                $$fct->delete();
             }
         }
         return parent::delete();

@@ -230,6 +230,7 @@ class Fcts
             $data = $this->_device->toArray(false);
             $data["group"] = "tmp";
             $dev = $this->_system->device($data);
+            $dev->delete();
             $dev->fcts()->execute();
             $fixture = $dev->fixture();
             // Remove this device from the temporary database.
