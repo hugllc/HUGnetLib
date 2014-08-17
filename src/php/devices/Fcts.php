@@ -242,8 +242,7 @@ class Fcts
             $dev->delete();
             return $ret;
         } else {
-            $this->execute();
-            return true;
+            return $this->execute();
         }
     }
     /**

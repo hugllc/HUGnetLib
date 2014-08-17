@@ -927,6 +927,504 @@ class FctsTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
+            array(  // #0
+                array(
+                    "id" => 0x123456,
+                    "HWPartNum" => "0039-37-01-E",
+                    "FWPartNum" => "0039-38-01-C",
+                    "FWVersion" => "0.1.2",
+                    "Driver"    => "e00393700",
+                    "params"     => array(
+                        'fcts' => array(
+                            array(
+                                "id" => 0, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                            array(
+                                "id" => 1, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                            array(
+                                "id" => 2, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                            array(
+                                "id" => 3, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                            array(
+                                "id" => 4, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    array(
+                        "id" => 0, 
+                        'driver' => 'Temperature',
+                        "extra" => array(
+                            0 => "ADuCThermocouple",
+                        ),
+                    ),
+                    array(
+                        "id" => 1, 
+                        'driver' => 'Temperature',
+                        "extra" => array(
+                            0 => "ADuCThermocouple",
+                        ),
+                    ),
+                    array(
+                        "id" => 2, 
+                        'driver' => 'Temperature',
+                        "extra" => array(
+                            0 => "ADuCThermocouple",
+                        ),
+                    ),
+                    array(
+                        "id" => 3, 
+                        'driver' => 'Temperature',
+                        "extra" => array(
+                            0 => "ADuCThermocouple",
+                        ),
+                    ),
+                    array(
+                        "id" => 4, 
+                        'driver' => 'Temperature',
+                        "extra" => array(
+                            0 => "ADuCThermocouple",
+                        ),
+                    ),
+                ),
+                false,
+                array(
+                    'id' => 0x123456,
+                    'DeviceID' => '123456',
+                    'DeviceName' => '',
+                    'HWPartNum' => '0039-37-01-E',
+                    'FWPartNum' => '0039-38-01-C',
+                    'FWVersion' => '0.1.2',
+                    'RawSetup' => '',
+                    'Active' => 1,
+                    'Publish' => 1,
+                    'GatewayKey' => 0,
+                    'ControllerKey' => 0,
+                    'ControllerIndex' => 0,
+                    'DeviceLocation' => '',
+                    'DeviceJob' => '',
+                    'Role' => '',
+                    'Driver' => 'e00393700',
+                    'PollInterval' => 0,
+                    'ActiveSensors' => 0,
+                    'DeviceGroup' => 'FFFFFF',
+                    'dataChannels' => Array (),
+                    'controlChannels' => Array (),
+                    'sensors' => '',
+                    'params' => array(
+                        'fcts' => array(
+                            array(
+                                "id" => 0, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                            array(
+                                "id" => 1, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                            array(
+                                "id" => 2, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                            array(
+                                "id" => 3, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                            array(
+                                "id" => 4, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                        ),
+                        'fctsApplied' => array(
+                            array(
+                                "id" => 0, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                            array(
+                                "id" => 1, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                            array(
+                                "id" => 2, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                            array(
+                                "id" => 3, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                            array(
+                                "id" => 4, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                        ),
+                        'fctsAppliedDate' => 123456,
+                    ),
+                    'input' => array(
+                        0 => array(
+                            'id' => 249,
+                            'type' => '',
+                            'location' => '',
+                            'driver' => 'ADuCInputTable',
+                            'calibration' => '',
+                            'tableEntry' => array(
+                                'driver0' => 66,
+                                'ADC0EN' => 1,
+                                'ADC0CH' => 1,
+                            ),
+                        ),
+                        1 => array(
+                            'id' => 249,
+                            'type' => '',
+                            'location' => '',
+                            'driver' => 'ADuCInputTable',
+                            'calibration' => '',
+                            'tableEntry' => array(
+                                'driver0' => 66,
+                                'ADC0EN' => 1,
+                                'ADC0CH' => 1,
+                            ),
+                        ),
+                        2 => array(
+                            'id' => 249,
+                            'type' => '',
+                            'location' => '',
+                            'driver' => 'ADuCInputTable',
+                            'calibration' => '',
+                            'tableEntry' => array(
+                                'driver0' => 66,
+                                'ADC0EN' => 1,
+                                'ADC0CH' => 1,
+                            ),
+                        ),
+                        3 => array(
+                            'id' => 249,
+                            'type' => '',
+                            'location' => '',
+                            'driver' => 'ADuCInputTable',
+                            'calibration' => '',
+                            'tableEntry' => array(
+                                'driver0' => 66,
+                                'ADC0EN' => 1,
+                                'ADC0CH' => 1,
+                            ),
+                        ),
+                        4 => array(
+                            'id' => 249,
+                            'type' => '',
+                            'location' => '',
+                            'driver' => 'ADuCInputTable',
+                            'calibration' => '',
+                            'tableEntry' => array(
+                                'driver0' => 66,
+                                'ADC0EN' => 1,
+                                'ADC0CH' => 1,
+                            ),
+                        ),
+                        5 => array(
+                            'id' => 255,
+                        ),
+                        6 => array(
+                            'id' => 255,
+                        ),
+                        7 => array(
+                            'id' => 255,
+                        ),
+                        8 => array(
+                            'id' => 255,
+                        ),
+                    ),
+                    'output' => array(
+                        0 => array(
+                            'id' => 255,
+                        ),
+                        1 => array(
+                            'id' => 255,
+                        ),
+                        2 => array(
+                            'id' => 255,
+                        ),
+                        3 => array(
+                            'id' => 255,
+                        ),
+                        4 => array(
+                            'id' => 255,
+                        ),
+                    ),
+                    'process' => array(
+                        0 => array(
+                            'id' => 255,
+                        ),
+                        1 => array(
+                            'id' => 255,
+                        ),
+                        2 => array(
+                            'id' => 255,
+                        ),
+                        3 => array(
+                            'id' => 255,
+                        ),
+                    ),
+                ),
+                array(
+                    'id' => 0x123456,
+                    'DeviceID' => '123456',
+                    'DeviceName' => '',
+                    'HWPartNum' => '0039-37-01-E',
+                    'FWPartNum' => '0039-38-01-C',
+                    'FWVersion' => '0.1.2',
+                    'RawSetup' => '',
+                    'Active' => 1,
+                    'Publish' => 1,
+                    'GatewayKey' => 0,
+                    'ControllerKey' => 0,
+                    'ControllerIndex' => 0,
+                    'DeviceLocation' => '',
+                    'DeviceJob' => '',
+                    'Role' => '',
+                    'Driver' => 'e00393700',
+                    'PollInterval' => 0,
+                    'ActiveSensors' => 0,
+                    'DeviceGroup' => 'FFFFFF',
+                    'dataChannels' => Array (),
+                    'controlChannels' => Array (),
+                    'sensors' => '',
+                    'params' => array(
+                        'fcts' => array(
+                            array(
+                                "id" => 0, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                            array(
+                                "id" => 1, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                            array(
+                                "id" => 2, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                            array(
+                                "id" => 3, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                            array(
+                                "id" => 4, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                        ),
+                        'fctsApplied' => array(
+                            array(
+                                "id" => 0, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                            array(
+                                "id" => 1, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                            array(
+                                "id" => 2, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                            array(
+                                "id" => 3, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                            array(
+                                "id" => 4, 
+                                'driver' => 'Temperature',
+                                "extra" => array(
+                                    0 => "ADuCThermocouple",
+                                ),
+                            ),
+                        ),
+                        'fctsAppliedDate' => 123456,
+                    ),
+                    'input' => array(
+                        0 => array(
+                            'id' => 249,
+                            'type' => '',
+                            'location' => '',
+                            'driver' => 'ADuCInputTable',
+                            'calibration' => '',
+                            'tableEntry' => array(
+                                'driver0' => 66,
+                                'ADC0EN' => 1,
+                                'ADC0CH' => 1,
+                            ),
+                        ),
+                        1 => array(
+                            'id' => 249,
+                            'type' => '',
+                            'location' => '',
+                            'driver' => 'ADuCInputTable',
+                            'calibration' => '',
+                            'tableEntry' => array(
+                                'driver0' => 66,
+                                'ADC0EN' => 1,
+                                'ADC0CH' => 1,
+                            ),
+                        ),
+                        2 => array(
+                            'id' => 249,
+                            'type' => '',
+                            'location' => '',
+                            'driver' => 'ADuCInputTable',
+                            'calibration' => '',
+                            'tableEntry' => array(
+                                'driver0' => 66,
+                                'ADC0EN' => 1,
+                                'ADC0CH' => 1,
+                            ),
+                        ),
+                        3 => array(
+                            'id' => 249,
+                            'type' => '',
+                            'location' => '',
+                            'driver' => 'ADuCInputTable',
+                            'calibration' => '',
+                            'tableEntry' => array(
+                                'driver0' => 66,
+                                'ADC0EN' => 1,
+                                'ADC0CH' => 1,
+                            ),
+                        ),
+                        4 => array(
+                            'id' => 249,
+                            'type' => '',
+                            'location' => '',
+                            'driver' => 'ADuCInputTable',
+                            'calibration' => '',
+                            'tableEntry' => array(
+                                'driver0' => 66,
+                                'ADC0EN' => 1,
+                                'ADC0CH' => 1,
+                            ),
+                        ),
+                        5 => array(
+                            'id' => 255,
+                        ),
+                        6 => array(
+                            'id' => 255,
+                        ),
+                        7 => array(
+                            'id' => 255,
+                        ),
+                        8 => array(
+                            'id' => 255,
+                        ),
+                    ),
+                    'output' => array(
+                        0 => array(
+                            'id' => 255,
+                        ),
+                        1 => array(
+                            'id' => 255,
+                        ),
+                        2 => array(
+                            'id' => 255,
+                        ),
+                        3 => array(
+                            'id' => 255,
+                        ),
+                        4 => array(
+                            'id' => 255,
+                        ),
+                    ),
+                    'process' => array(
+                        0 => array(
+                            'id' => 255,
+                        ),
+                        1 => array(
+                            'id' => 255,
+                        ),
+                        2 => array(
+                            'id' => 255,
+                        ),
+                        3 => array(
+                            'id' => 255,
+                        ),
+                    ),
+                ),
+            ),
         );
     }
     /**
