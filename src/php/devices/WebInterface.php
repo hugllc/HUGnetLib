@@ -172,6 +172,8 @@ class WebInterface
             $ret = $this->_putfcts($args);
         } else if ($action === "fctsetup") {
             $ret = $this->_fctsetup($args);
+        } else if ($action === "fctapply") {
+            $ret = $this->_fctapply($args);
         }
         return $ret;
     }
@@ -268,8 +270,19 @@ class WebInterface
     */
     private function _fctsetup($args = null)
     {
-        $dev = $this->_device->toArray();
         return $this->_device->fcts()->apply(true);
+    }
+    /**
+    * returns a history object for this device
+    *
+    * @param object $args The argument object
+    *
+    * @return string
+    */
+    private function _fctapply($args = null)
+    {
+        $this->_device->fcts()->apply(false);
+        return "regen";
     }
     /**
     * returns a history object for this device

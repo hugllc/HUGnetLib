@@ -238,12 +238,9 @@ class Fcts
             $data = $this->_device->toArray(false);
             $data["group"] = "tmp";
             $dev = $this->_system->device($data);
+            $ret = $dev->fcts($this->toArray(false), true)->execute();
             $dev->delete();
-            $dev->fcts()->execute();
-            $fixture = $dev->fixture();
-            // Remove this device from the temporary database.
-            $dev->delete();
-            return $fixture->toArray(false);
+            return $ret;
         } else {
             $this->execute();
             return true;
@@ -256,8 +253,12 @@ class Fcts
     */
     protected function execute()
     {
+        // This deletes all of the IOP
+        $this->_device->delete();
         // The raw setup will pollute the inputs.  It needs to be cleared.
         $this->_device->set("RawSetup", "");
+        // Put the device back in the database.
+        $this->_device->store();
         // Execute all of the functions
         foreach (array_keys($this->_channels) as $key) {
             $this->_system->out("Executing function $key", 7);
@@ -265,7 +266,9 @@ class Fcts
         }
 
         $this->_device->setParam("fctsApplied", $this->toArray(false));
-        return $this->_device->fixture()->export();
+        $this->_device->setParam("fctsAppliedDate", $this->_system->now());
+        $this->_device->store();
+        return $this->_device->fixture()->toArray(true);
     }
 
     /**

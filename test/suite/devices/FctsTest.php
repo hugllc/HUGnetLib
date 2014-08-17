@@ -732,6 +732,7 @@ class FctsTest extends \PHPUnit_Framework_TestCase
                                 ),
                             ),
                         ),
+                        'fctsAppliedDate' => 123456,
                     ),
                     'input' => array(
                         0 => array(
@@ -863,43 +864,6 @@ class FctsTest extends \PHPUnit_Framework_TestCase
                     'controlChannels' => Array (),
                     'sensors' => '',
                     'params' => array(
-                        'fcts' => array(
-                            array(
-                                "id" => 0, 
-                                'driver' => 'Temperature',
-                                "extra" => array(
-                                    0 => "ADuCThermocouple",
-                                ),
-                            ),
-                            array(
-                                "id" => 1, 
-                                'driver' => 'Temperature',
-                                "extra" => array(
-                                    0 => "ADuCThermocouple",
-                                ),
-                            ),
-                            array(
-                                "id" => 2, 
-                                'driver' => 'Temperature',
-                                "extra" => array(
-                                    0 => "ADuCThermocouple",
-                                ),
-                            ),
-                            array(
-                                "id" => 3, 
-                                'driver' => 'Temperature',
-                                "extra" => array(
-                                    0 => "ADuCThermocouple",
-                                ),
-                            ),
-                            array(
-                                "id" => 4, 
-                                'driver' => 'Temperature',
-                                "extra" => array(
-                                    0 => "ADuCThermocouple",
-                                ),
-                            ),
-                       ),
                     ),
                     'input' => array(
                         0 => array(
