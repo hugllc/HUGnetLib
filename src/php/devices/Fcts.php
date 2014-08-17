@@ -225,8 +225,16 @@ class Fcts
     */
     public function apply($pretend = true)
     {
-        $this->store();
+        $this->_system->out(
+            "Applying functions for Device "
+            .$this->_device->get("DeviceID"), 
+            7
+        );
         if ($pretend) {
+            $this->_system->out(
+                "************************** Just Pretending ***********************",
+                7
+            );
             $data = $this->_device->toArray(false);
             $data["group"] = "tmp";
             $dev = $this->_system->device($data);
@@ -248,7 +256,11 @@ class Fcts
     */
     protected function execute()
     {
+        // The raw setup will pollute the inputs.  It needs to be cleared.
+        $this->_device->set("RawSetup", "");
+        // Execute all of the functions
         foreach (array_keys($this->_channels) as $key) {
+            $this->_system->out("Executing function $key", 7);
             $this->fct($key)->execute();
         }
 
