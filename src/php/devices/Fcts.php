@@ -253,7 +253,7 @@ class Fcts
     protected function execute()
     {
         // This deletes all of the IOP
-        $this->_device->delete();
+        $this->_device->deleteIOP();
         // The raw setup will pollute the inputs.  It needs to be cleared.
         $this->_device->set("RawSetup", "");
         // Put the device back in the database.

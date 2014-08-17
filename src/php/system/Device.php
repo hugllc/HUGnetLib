@@ -551,6 +551,16 @@ class Device extends \HUGnet\base\SystemTableAction
     */
     public function delete()
     {
+        $this->deleteIOP();
+        return parent::delete();
+    }
+    /**
+    * Loads the data into the table class
+    *
+    * @return null
+    */
+    public function deleteIOP()
+    {
         $iop = array(
             "input" => "InputTables",
             "output" => "OutputTables",
@@ -573,7 +583,6 @@ class Device extends \HUGnet\base\SystemTableAction
                 $$fct->delete();
             }
         }
-        return parent::delete();
     }
     /**
     * Decodes the sensor data

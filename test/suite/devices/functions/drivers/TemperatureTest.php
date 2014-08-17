@@ -183,8 +183,9 @@ class TemperatureTest extends DriverTestBase
                             'id' => 249,
                             'driver' => 'ADuCInputTable',
                             'tableEntry' => array(
-                                'driver0' => 66,
                                 'ADC0EN' => 1,
+                                'ADC1EN' => 0,
+                                'driver0' => 66,
                                 'ADC0CH' => 1,
                             ),
                             'type' => 'ADuCInputTable',

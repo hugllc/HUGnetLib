@@ -132,7 +132,8 @@ var DeviceConfigView = Backbone.View.extend({
         'click .close': 'close',
         'click [name="NewFunction"]': 'newfunction',
         'click [name="Save"]': 'save',
-        'click [name="Apply"]': 'apply'
+        'click [name="Apply"]': 'apply',
+        'click [name="Execute"]': 'execute'
     },
     initialize: function (options)
     {
@@ -213,6 +214,16 @@ var DeviceConfigView = Backbone.View.extend({
     save: function()
     {
         this.apply();
+        this.close();
+    },
+    /**
+     * This function initializes the object
+     */
+    execute: function()
+    {
+        this.apply();
+        this.modelset.fctapply();
+        this.model.refresh();
         this.close();
     },
     /**

@@ -172,7 +172,7 @@ class Temperature extends \HUGnet\devices\functions\Driver
         $entry = (array)$input->toArray(false)["tableEntry"];
         $ports = $input->ports();
         foreach ($ports as $key => $port) {
-            $cnt = $this->checkPort($port, array("AI"));
+            $cnt = $this->portCheck($port, array("AI"));
             if ($cnt >= 0) {
                 break;
             }
@@ -203,6 +203,8 @@ class Temperature extends \HUGnet\devices\functions\Driver
         $input->set("location", $this->fct()->get("name"));
         
         $entry = (array)$input->toArray(false)["tableEntry"];
+        $entry["ADC0EN"] = 0;
+        $entry["ADC1EN"] = 0;
         foreach (array(0, 1) as $index) {
             $ports = $input->ports($index);
             foreach ($ports as $key => $port) {
