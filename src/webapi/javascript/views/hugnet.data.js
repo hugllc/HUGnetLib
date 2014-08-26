@@ -207,12 +207,7 @@ HUGnet.DataView = Backbone.View.extend({
         this.history.latest(this.period);
         this.since = this.history.since;
         this.until = this.history.until;
-        this.annotations.fetch(
-            this.model.get("id"), 
-            this.since, 
-            this.until,
-            "device"
-        );
+        this.getAnnotations();
         this.updateDates();
     },
     setupPlot: function ()
@@ -265,8 +260,18 @@ HUGnet.DataView = Backbone.View.extend({
             this._setupProgress();
             this.history.on('sync', this._finishFetch, this);
             this.history.getPeriod(this.since, this.until);
+            this.getAnnotations();
             this.updateDates();
         }
+    },
+    getAnnotations: function ()
+    {
+        this.annotations.fetch(
+            this.model.get("id"), 
+                               this.since, 
+                               this.until,
+                               "device"
+        );
     },
     _setupProgress: function()
     {
