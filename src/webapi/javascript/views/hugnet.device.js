@@ -315,8 +315,8 @@ var DeviceEntryView = Backbone.View.extend({
     action: function (e)
     {
         var action = this.$('.action').val();
-        this.$('.action').val('option:first');
-        //this.$('.action')[0].selectedIndex = 0;
+        //this.$('.action').val('option:first');
+        this.$('.action')[0].selectedIndex = 0;
         if (action === 'refresh') {
             this.refresh(e);
         } else if (action === 'properties') {
