@@ -177,8 +177,12 @@ class Annotations extends \HUGnet\db\Table
         $devId = null,
         $type = null
     ) {
+        $where = array();
+        if (!is_null($type)) {
+            $where["type"] = $type;
+        }
         return parent::getTimePeriod(
-            $start, $end, $devId, "test", array("type" => $type)
+            $start, $end, $devId, "test", $where
         );
     }
 

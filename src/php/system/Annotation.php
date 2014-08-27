@@ -108,8 +108,37 @@ class Annotation extends \HUGnet\base\SystemTableBase
         $ret = null;
         if ($action === "list") {
             $ret = $this->_getAnnotation($args);
+        } else if ($action === "repl") {
+            $ret = $this->_repl($args);
         } else if ($action === "delete") {
             $ret = $this->_deleteAnnotation($args);
+        }
+        return $ret;
+    }
+    /**
+    * returns a history object for this device
+    *
+    * @param object $args The argument object
+    *
+    * @return string
+    */
+    private function _repl($args)
+    {
+        $id = (int)$args->get("id");
+        $data = (array)$args->get("data");
+        $extraData = array();
+        $start = (isset($data["start"])) ? (int)$data["start"] : 0;
+        $res = $this->table()->selectInto(
+            array(
+                $this->table()->sqlId => array(
+                    '$gte' => $start,
+                )
+            )
+        );
+        $ret = array();
+        while ($res) {
+            $ret[] = $this->table()->toArray(true);
+            $res = $this->table()->nextInto();
         }
         return $ret;
     }
@@ -129,9 +158,11 @@ class Annotation extends \HUGnet\base\SystemTableBase
         } else {
             $data = (array)$args->get("data");
             $extraData = array();
+            $data["since"] = (isset($data["since"])) ? (int)$data["since"] : 0;
+            $data["until"] = (isset($data["until"])) ? (int)$data["until"] : 0;
             $res = $this->table()->getPeriod(
-                (int)$data["since"],
-                (int)$data["until"],
+                $data["since"],
+                $data["until"],
                 $data["test"],
                 $data["type"]
             );
