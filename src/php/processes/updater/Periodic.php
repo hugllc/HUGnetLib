@@ -79,7 +79,8 @@ abstract class Periodic
     * as the driver class name.
     */
     private static $_drivers = array(
-        "Checkin", "PushDevices", "GetFirmware", "SyncTables", "SyncDevices"
+        "Checkin", "PushDevices", "GetFirmware", "SyncTables", "SyncDevices",
+        "PushAnnotations"
     );
     /**
     * This function sets up the driver object, and the database object.  The
