@@ -114,6 +114,7 @@ class PushAnnotations extends \HUGnet\processes\updater\Periodic
             )
         );
         $count = 0;
+        $fail  = 0;
         while ($res) {
             $data = $this->_annotation->table()->toArray();
             // IDs will be different on different servers
@@ -129,14 +130,18 @@ class PushAnnotations extends \HUGnet\processes\updater\Periodic
                 ),
                 120
             );
-            var_dump($ret);
             if ($ret) {
                 $this->_start = $data["date"];
                 $count++;
+            } else {
+                $fail++;
             }
             $res = $this->_annotation->table()->nextInto();
         }
-        $this->system()->out("Pushed out $count annotations");
+        $this->system()->out("Pushed out $count annotation(s)");
+        if ($fail > 0) {
+            $this->system()->out("Failed to push out $fail annotation(s)");
+        }
     }
 
 }
