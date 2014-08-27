@@ -128,9 +128,11 @@ class Annotation extends \HUGnet\base\SystemTableBase
         $data = (array)$args->get("data");
         $extraData = array();
         $start = (isset($data["start"])) ? (int)$data["start"] : 0;
+        $limit = (isset($data["limit"])) ? (int)$data["limit"] : 20;
+        $this->table()->sqlLimit = $limit;
         $res = $this->table()->selectInto(
             array(
-                $this->table()->sqlId => array(
+                "date" => array(
                     '$gte' => $start,
                 )
             )

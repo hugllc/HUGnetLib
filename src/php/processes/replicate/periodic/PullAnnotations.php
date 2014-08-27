@@ -56,7 +56,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
 class PullAnnotations extends \HUGnet\processes\replicate\Periodic
 {
     /** This is the maximum number of history records to get */
-    const MAX_DEVICES = 20;
+    const MAX_ANNOTATIONS = 50;
     /** This is the period */
     protected $period = 3600;
     /** This is the object we use */
@@ -116,7 +116,8 @@ class PullAnnotations extends \HUGnet\processes\replicate\Periodic
                     "action" => "repl",
                     "task"   => "annotation",
                     "data"   => array(
-                        "start" => $this->_last,
+                        "since" => $this->_last,
+                        "limit" => self::MAX_ANNOTATIONS,
                     )
                 ),
                 120
@@ -133,10 +134,11 @@ class PullAnnotations extends \HUGnet\processes\replicate\Periodic
                         $this->_annotation->table()->fromArray($anno);
                         $this->_annotation->table()->insertRow(true);
                     }
+                    $this->_last = $anno["date"];
                 }
-                $this->_last += self::MAX_DEVICES;
+                $this->_last += self::MAX_ANNOTATIONS;
             }
-        } while ((count($ret) == self::MAX_DEVICES) && $this->ui()->loop());
+        } while ((count($ret) == self::MAX_ANNOTATIONS) && $this->ui()->loop());
     }
 }
 

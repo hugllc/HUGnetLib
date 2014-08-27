@@ -135,10 +135,10 @@ class Annotations extends \HUGnet\db\Table
     *   ),
     */
     public $sqlIndexes = array(
-        "id" => array(
-            "Name" => "id",
+        "testdatetype" => array(
+            "Name" => "testdatetype",
             "Unique" => true,
-            "Columns" => array("id"),
+            "Columns" => array("test", "testdate", "type"),
         ),
     );
 
