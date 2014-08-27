@@ -108,6 +108,8 @@ class Annotation extends \HUGnet\base\SystemTableBase
         $ret = null;
         if ($action === "list") {
             $ret = $this->_getAnnotation($args);
+        } else if ($action === "delete") {
+            $ret = $this->_deleteAnnotation($args);
         }
         return $ret;
     }
@@ -140,6 +142,18 @@ class Annotation extends \HUGnet\base\SystemTableBase
             }
         }
         return $ret;
+    }
+    /**
+    * Deletes an annotation
+    *
+    * @param object $args The argument object
+    *
+    * @return string
+    */
+    private function _deleteAnnotation($args)
+    {
+        $id = (int)$args->get("id");
+        return $this->table()->deleteRow();
     }
     
 }

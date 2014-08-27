@@ -99,6 +99,37 @@ HUGnet.Annotation = Backbone.Model.extend({
     *
     * @return null
     */
+    remove: function()
+    {
+        var myself = this;
+        $.ajax({
+            type: 'GET',
+            url: this.url(),
+            cache: false,
+            dataType: 'json',
+            data:
+            {
+                "task": "annotation",
+                "action": "delete",
+                "id": this.get("id"),
+            }
+        }).done(
+            function (data)
+            {
+                var col = myself.collection;
+                col.remove(myself);
+                col.trigger("remove", myself, myself.collection);
+
+            }
+        );
+    },
+    /**
+    * Gets infomration about a device.  This is retrieved from the database only.
+    *
+    * @param id The id of the device to get
+    *
+    * @return null
+    */
     refresh: function()
     {
         var self = this;

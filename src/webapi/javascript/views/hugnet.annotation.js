@@ -44,12 +44,15 @@ var AnnotationPropertiesView = Backbone.View.extend({
     template: '#AnnotationPropertiesTemplate',
     tTemplate: '#AnnotationPropertiesTitleTemplate',
     tagName: 'div',
+    parent: null,
     events: {
         'click [name="save"]': 'save',
         'click [name="cancel"]': 'cancel',
+        'click [name="delete"]': 'del',
     },
     initialize: function (options)
     {
+        this.parent = options.parent;
         this.model.lock = true;
         this.model.on('savefail', this.saveFail, this);
         this.model.on('saved', this.saveSuccess, this);
@@ -60,11 +63,15 @@ var AnnotationPropertiesView = Backbone.View.extend({
         this.apply(e);
         this._close = true;
     },
-    cancel: function (e)
+    del: function (e)
     {
-        this.model.collection.remove(this.model);
+        this.model.remove();
         this._close = true;
         this.saveSuccess();
+    },
+    cancel: function (e)
+    {
+        this.del(e);
     },
     apply: function (e)
     {
@@ -215,7 +222,10 @@ var AnnotationEntryView = Backbone.View.extend({
     },
     properties: function (e)
     {
-        var view = new AnnotationPropertiesView({ model: this.model });
+        var view = new AnnotationPropertiesView({ 
+            model: this.model,
+            parent: this
+        });
         this.parent.popup(view);
     },
     _setupProgress: function(title)

@@ -150,6 +150,7 @@ HUGnet.DataView = Backbone.View.extend({
         this.getLatest();
         this.setupPlot();
         this.on("update", this.update, this);
+        this.annotations.on("remove", this.plot.render, this.plot);
     },
     update: function ()
     {
@@ -268,9 +269,9 @@ HUGnet.DataView = Backbone.View.extend({
     {
         this.annotations.fetch(
             this.model.get("id"), 
-                               this.since, 
-                               this.until,
-                               "device"
+            this.since, 
+            this.until,
+            "device"
         );
     },
     _setupProgress: function()
