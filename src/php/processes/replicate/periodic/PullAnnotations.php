@@ -58,7 +58,7 @@ class PullAnnotations extends \HUGnet\processes\replicate\Periodic
     /** This is the maximum number of history records to get */
     const MAX_ANNOTATIONS = 50;
     /** This is the period */
-    protected $period = 3600;
+    protected $period = 60;
     /** This is the object we use */
     private $_annotation;
     /** This is the url to get stuff from */
