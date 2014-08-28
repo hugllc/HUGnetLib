@@ -63,6 +63,8 @@ class PushAnnotations extends \HUGnet\processes\updater\Periodic
     private $_annotation;
     /** This is our start time */
     private $_start = 0;
+    /** This is the url to send data to */
+    private $_url = "";
     /**
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
@@ -76,6 +78,8 @@ class PushAnnotations extends \HUGnet\processes\updater\Periodic
         parent::__construct($gui);
         $this->_annotation = $this->system()->annotation();
         $this->_annotation->table()->sqlLimit = self::MAX_ANNOTATIONS;
+        $master = $this->system()->get("master");
+        $this->_url = $master["url"];
     }
     /**
     * This function creates the system.
@@ -109,7 +113,7 @@ class PushAnnotations extends \HUGnet\processes\updater\Periodic
         $res = $this->_annotation->table()->selectInto(
             array(
                 "date" => array(
-                    '$gte' => $this->_start,
+                    '$gt' => $this->_start,
                 )
             )
         );
