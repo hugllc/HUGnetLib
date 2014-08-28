@@ -156,7 +156,7 @@ class Error extends \HUGnet\db\Table
         "ClassDate" => array(
             "Name" => "ClassDate",
             "Unique" => true,
-            "Columns" => array("Date", "class"),
+            "Columns" => array(0 => "Date", 1 => "class"),
         ),
     );
 

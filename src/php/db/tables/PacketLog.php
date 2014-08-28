@@ -139,7 +139,7 @@ class PacketLog extends \HUGnet\db\Table
         "DateIfaceToFrom" => array(
             "Name" => "DateIfaceToFrom",
             "Unique" => true,
-            "Columns" => array("Date", "Iface", "To", "From"),
+            "Columns" => array(0 => "Date", 1 => "Iface", 2 => "To", 3 => "From"),
         ),
     );
 

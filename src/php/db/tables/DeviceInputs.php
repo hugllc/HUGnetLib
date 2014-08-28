@@ -148,7 +148,7 @@ class DeviceInputs extends \HUGnet\db\TableParams
         "DevInput" => array(
             "Name" => "DevInput",
             "Unique" => true,
-            "Columns" => array("dev", "input"),
+            "Columns" => array(0 => "dev", 1 => "input"),
         ),
     );
 

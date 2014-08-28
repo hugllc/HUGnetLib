@@ -128,10 +128,10 @@ abstract class History extends Table
     *   ),
     */
     public $sqlIndexes = array(
-        "DateIDIndex" => array(
-            "Name" => "DateIDIndex",
+        "IDDateIndex" => array(
+            "Name" => "IDDateIndex",
             "Unique" => true,
-            "Columns" => array("id", "Date"),
+            "Columns" => array(0 => "id", 1 => "Date"),
         ),
     );
 

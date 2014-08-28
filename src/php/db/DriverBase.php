@@ -266,6 +266,8 @@ abstract class DriverBase extends DriverQuery
         $this->query .= $this->table();
         $this->query .= " (";
         $sep = "";
+        $index["Columns"] = isset($index["Columns"]) ? (array)$index["Columns"] : array();
+        ksort($index["Columns"]);
         foreach ((array)$index["Columns"] as $col) {
             $c = explode(",", $col);
             $this->query .= $sep."`".$c[0]."`";

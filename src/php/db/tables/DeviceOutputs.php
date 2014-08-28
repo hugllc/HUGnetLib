@@ -143,7 +143,7 @@ class DeviceOutputs extends \HUGnet\db\TableParams
         "DevOutput" => array(
             "Name" => "DevOutput",
             "Unique" => true,
-            "Columns" => array("dev", "output"),
+            "Columns" => array(0 => "dev", 1 => "output"),
         ),
     );
 

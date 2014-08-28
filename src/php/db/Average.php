@@ -141,15 +141,15 @@ abstract class Average extends History
     *   ),
     */
     public $sqlIndexes = array(
-        "DateIDTypeIndex" => array(
-            "Name" => "DateIDTypeIndex",
+        "IDDateTypeIndex" => array(
+            "Name" => "IDDateTypeIndex",
             "Unique" => true,
-            "Columns" => array("id", "Date", "Type"),
+            "Columns" => array(0 => "id", 1 => "Date", 2 => "Type"),
         ),
-        "DateIDIndex" => array(
-            "Name" => "DateIDIndex",
+        "IDDateIndex" => array(
+            "Name" => "IDDateIndex",
             "Unique" => false,
-            "Columns" => array("id", "Date"),
+            "Columns" => array(0 => "id", 1 => "Date"),
         ),
     );
 

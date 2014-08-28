@@ -200,7 +200,7 @@ class Firmware extends \HUGnet\db\Table
         "Version" => array(
             "Name" => "Version",
             "Unique" => true,
-            "Columns" => array("HWPartNum", "FWPartNum", "Version")
+            "Columns" => array(0 => "HWPartNum", 1 => "FWPartNum", 2 => "Version")
         ),
     );
 

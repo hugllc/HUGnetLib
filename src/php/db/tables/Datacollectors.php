@@ -143,7 +143,7 @@ class DataCollectors extends \HUGnet\db\Table
         "ipGatewayKey" => array(
             "Name" => "ipGatewayKey",
             "Unique" => true,
-            "Columns" => array("GatewayKey", "ip"),
+            "Columns" => array(0 => "GatewayKey", 1 => "ip"),
         ),
         "uuid" => array(
             "Name" => "uuid",

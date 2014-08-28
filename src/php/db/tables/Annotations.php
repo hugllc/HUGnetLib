@@ -138,7 +138,7 @@ class Annotations extends \HUGnet\db\Table
         "testdatetype" => array(
             "Name" => "testdatetype",
             "Unique" => true,
-            "Columns" => array("test", "testdate", "type"),
+            "Columns" => array(0 => "test", 1 => "testdate", 2 => "type"),
         ),
     );
 

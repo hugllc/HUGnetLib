@@ -140,12 +140,14 @@ class RawHistory extends \HUGnet\db\Table
         "DateIDIndex" => array(
             "Name" => "DateIDIndex",
             "Unique" => true,
-            "Columns" => array("id", "Date", "dataIndex", "command"),
+            "Columns" => array(
+                0 => "id", 1 => "Date", 2 => "dataIndex", 3 => "command"
+            ),
         ),
         "idDate"  => array(
             "Name" => "idDate",
             "Unique" => false,
-            "Columns" => array("id", "Date"),
+            "Columns" => array(0 => "id", 1 => "Date"),
         ),
     );
 

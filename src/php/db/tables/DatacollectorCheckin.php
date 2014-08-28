@@ -113,7 +113,7 @@ class DataCollectorCheckin extends \HUGnet\db\Table
         "id" => array(
             "Name" => "id",
             "Unique" => true,
-            "Columns" => array("uuid", "Date"),
+            "Columns" => array(0 => "uuid", 1 => "Date"),
         ),
         "uuid" => array(
             "Name" => "uuid",

@@ -143,7 +143,7 @@ class DeviceProcesses extends \HUGnet\db\TableParams
         "DevProcess" => array(
             "Name" => "DevProcess",
             "Unique" => true,
-            "Columns" => array("dev", "process"),
+            "Columns" => array(0 => "dev", 1 => "process"),
         ),
     );
 
