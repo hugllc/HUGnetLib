@@ -130,6 +130,7 @@ class Annotation extends \HUGnet\base\SystemTableBase
         $start = (isset($data["start"])) ? (int)$data["start"] : 0;
         $limit = (isset($data["limit"])) ? (int)$data["limit"] : 20;
         $this->table()->sqlLimit = $limit;
+        $this->table()->sqlOrderBy = "date ASC";
         $res = $this->table()->selectInto(
             array(
                 "date" => array(

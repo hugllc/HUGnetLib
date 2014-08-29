@@ -116,7 +116,7 @@ class PullAnnotations extends \HUGnet\processes\replicate\Periodic
                     "action" => "repl",
                     "task"   => "annotation",
                     "data"   => array(
-                        "since" => $this->_last,
+                        "start" => $this->_last,
                         "limit" => self::MAX_ANNOTATIONS,
                     )
                 ),
@@ -124,8 +124,7 @@ class PullAnnotations extends \HUGnet\processes\replicate\Periodic
             );
             if (count($ret) > 0) {
                 $this->system()->out(
-                    "Pulling annotations ".$this->_last." to "
-                    .($this->_last + (count($ret) - 1))
+                    "Pulled ".count($ret)." annotations since ".$this->_last
                 );
                 foreach ($ret as $anno) {
                     // Insert any unknown devices
@@ -136,9 +135,9 @@ class PullAnnotations extends \HUGnet\processes\replicate\Periodic
                     }
                     $this->_last = $anno["date"];
                 }
-                $this->_last += self::MAX_ANNOTATIONS;
+                $this->_last++;
             }
-        } while ((count($ret) == self::MAX_ANNOTATIONS) && $this->ui()->loop());
+        } while ((count($ret) > 0) && $this->ui()->loop());
     }
 }
 
