@@ -125,7 +125,7 @@ class PullAnnotations extends \HUGnet\processes\replicate\Periodic
             if (count($ret) > 0) {
                 $this->system()->out(
                     "Pulled ".count($ret)." annotations since "
-                    .date($this->_last, "Y-m-d H:i:s")
+                    .date("Y-m-d H:i:s", $this->_last)
                 );
                 foreach ($ret as $anno) {
                     // Insert any unknown devices
