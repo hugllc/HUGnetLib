@@ -14,7 +14,7 @@
    height="400"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.3.1 r9886"
+   inkscape:version="0.48.4 r9939"
    sodipodi:docname="00392301A.svg"
    inkscape:export-filename="/home/jeffl/Documents/InkScape/HUGnetLab/HUGnetLabBoardPicture2.png"
    inkscape:export-xdpi="90"
@@ -1757,6 +1757,20 @@
          transform="scale(0.6,0.6)"
          inkscape:connector-curvature="0" />
     </marker>
+    <marker
+       inkscape:stockid="Arrow2Mstart"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow2Mstart-466"
+       style="overflow:visible">
+      <path
+         id="path4325-406"
+         style="fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         transform="scale(0.6,0.6)"
+         inkscape:connector-curvature="0" />
+    </marker>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -1765,16 +1779,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.5975"
-     inkscape:cx="400"
-     inkscape:cy="200"
+     inkscape:zoom="6.39"
+     inkscape:cx="373.23379"
+     inkscape:cy="375.72067"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1440"
      inkscape:window-height="845"
-     inkscape:window-x="-3"
-     inkscape:window-y="-3"
+     inkscape:window-x="-2"
+     inkscape:window-y="27"
      inkscape:window-maximized="1"
      inkscape:snap-global="false"
      showguides="true"
@@ -2684,8 +2698,8 @@
        id="path3527-2-7-5-2-6-6-2-5-0-1-1"
        inkscape:connector-curvature="0" />
     <path
-       style="fill:none;stroke:#000093;stroke-width:1.28;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
-       d="m 422.83275,709.98529 71.91342,0"
+       style="fill:none;stroke:#000093;stroke-width:1.2827338;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+       d="m 422.5225,709.98529 72.22093,0"
        id="path3527-2-7-5-2-6-6-2-5-2-4-8"
        inkscape:connector-curvature="0" />
     <path
@@ -2905,5 +2919,15 @@
          id="tspan4481"
          x="65.336548"
          y="848.30542">Port16</tspan></text>
+    <path
+       style="fill:none;stroke:#000093;stroke-width:1.27816331;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+       d="m 402.60759,694.71443 91.63839,0"
+       id="path3527-2-7-5-2-6-6-2-5-2-4-8-1"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000093;stroke-width:1.28;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:url(#Arrow2Mstart)"
+       d="m 403.22697,783.8233 0,-89.70342"
+       id="path3527-2-7-5-2-6-6-2-5-0-1-1-6"
+       inkscape:connector-curvature="0" />
   </g>
 </svg>

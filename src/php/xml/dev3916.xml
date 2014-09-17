@@ -29,11 +29,19 @@
     <daughterboards>
         <HWPartNum>0039-16-01</HWPartNum>
         <Pins>
+            <name>Port0</name>
+            <function>DO</function>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>PB0</conpin>
+            </connect>
+        </Pins>
+        <Pins>
             <name>Port1</name>
             <function>DO</function>
             <connect>
                 <device>0039-12-02-C</device>
-                <conpin>Port10</conpin>
+                <conpin>PB1</conpin>
             </connect>
         </Pins>
         <Pins>
@@ -41,7 +49,7 @@
             <function>DO</function>
             <connect>
                 <device>0039-12-02-C</device>
-                <conpin>Port11</conpin>
+                <conpin>PB3</conpin>
             </connect>
         </Pins>
         <Pins>
@@ -49,15 +57,7 @@
             <function>DO</function>
             <connect>
                 <device>0039-12-02-C</device>
-                <conpin>Port12</conpin>
-            </connect>
-        </Pins>
-        <Pins>
-            <name>Port4</name>
-            <function>DO</function>
-            <connect>
-                <device>0039-12-02-C</device>
-                <conpin>Port7</conpin>
+                <conpin>AREF</conpin>
             </connect>
         </Pins>
         <notes> This daughter board only functions on a 003912 endpoint. </notes>

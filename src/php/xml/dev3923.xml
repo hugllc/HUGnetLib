@@ -27,13 +27,19 @@
 
 <HUGnet>
     <daughterboards>
-        <HWPartNum>0039-23-01</HWPartNum>
+        <HWPartNum>0039-23-01-A</HWPartNum>
         <Pins>
             <name>Port1</name>
             <function>AI,DI,DO</function>
+            <series>10k</series>
+            <shunt>
+                <value>10K</value>
+                <location>R1</location>
+                <pull>AVCC</pull>
+            </shunt>
             <connect>
                 <device>0039-12-02-C</device>
-                <conpin>Port1</conpin>
+                <conpin>ADC0</conpin>
             </connect>
             <connect>
                 <device>0039-28-01-A</device>
@@ -43,9 +49,15 @@
         <Pins>
             <name>Port2</name>
             <function>AI,DI,DO</function>
+            <series>10K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R2</location>
+                <pull>AVCC</pull>
+            </shunt>
             <connect>
                 <device>0039-12-02-C</device>
-                <conpin>Port2</conpin>
+                <conpin>ADC1</conpin>
             </connect>
             <connect>
                 <device>0039-28-01-A</device>
@@ -55,9 +67,15 @@
         <Pins>
             <name>Port3</name>
             <function>AI,DI,DO</function>
+            <series>10K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R3</location>
+                <pull>AVCC</pull>
+            </shunt>
             <connect>
                 <device>0039-12-02-C</device>
-                <conpin>Port3</conpin>
+                <conpin>ADC2</conpin>
             </connect>
             <connect>
                 <device>0039-28-01-A</device>
@@ -67,9 +85,15 @@
         <Pins>
             <name>Port4</name>
             <function>AI,DI,DO</function>
+            <series>10K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R4</location>
+                <pull>AVCC</pull>
+            </shunt>
             <connect>
                 <device>0039-12-02-C</device>
-                <conpin>Port4</conpin>
+                <conpin>ADC3</conpin>
             </connect>
             <connect>
                 <device>0039-28-01-A</device>
@@ -79,9 +103,14 @@
         <Pins>
             <name>Port5</name>
             <function>AI,DI,DO</function>
+            <series>10K</series>
+            <shunt>
+                <value>none</value>
+                <location>R5</location>
+            </shunt>
             <connect>
                 <device>0039-12-02-C</device>
-                <conpin>Port5</conpin>
+                <conpin>ADC4</conpin>
             </connect>
             <connect>
                 <device>0039-28-01-A</device>
@@ -91,9 +120,14 @@
         <Pins>
             <name>Port6</name>
             <function>AI,DI,DO</function>
+            <series>10K</series>
+            <shunt>
+                <value>none</value>
+                <location>R6</location>
+            </shunt>
             <connect>
                 <device>0039-12-02-C</device>
-                <conpin>Port6</conpin>
+                <conpin>ADC5</conpin>
             </connect>
             <connect>
                 <device>0039-28-01-A</device>
@@ -103,9 +137,15 @@
         <Pins>
             <name>Port7</name>
             <function>AI</function>
+            <series>10K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R7</location>
+                <pull>AVCC</pull>
+            </shunt>
             <connect>
                 <device>0039-12-02-C</device>
-                <conpin>Port7</conpin>
+                <conpin>ADC6</conpin>
             </connect>
             <connect>
                 <device>0039-28-01-A</device>
@@ -115,9 +155,15 @@
         <Pins>
             <name>Port8</name>
             <function>AI</function>
+            <series>10K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R8</location>
+                <pull>AVCC</pull>
+            </shunt>
             <connect>
                 <device>0039-12-02-C</device>
-                <conpin>Port8</conpin>
+                <conpin>ADC7</conpin>
             </connect>
             <connect>
                 <device>0039-28-01-A</device>
@@ -127,7 +173,13 @@
         <Pins>
             <name>Port9</name>
             <function>DI,DO</function>
-            <connect>
+            <series>10K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R29</location>
+                <pull>PD4</pull>
+            </shunt>
+           <connect>
                 <device>0039-12-02-C</device>
                 <conpin>NC</conpin>
             </connect>
@@ -139,7 +191,13 @@
         <Pins>
             <name>Port10</name>
             <function>DI,DO</function>
-            <connect>
+             <series>10K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R28</location>
+                <pull>PD4</pull>
+            </shunt>
+           <connect>
                 <device>0039-12-02-C</device>
                 <conpin>NC</conpin>
             </connect>
@@ -151,6 +209,12 @@
         <Pins>
             <name>Port11</name>
             <function>DI,DO</function>
+            <series>10K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R27</location>
+                <pull>PD4</pull>
+            </shunt>
             <connect>
                 <device>0039-12-02-C</device>
                 <conpin>NC</conpin>
@@ -163,9 +227,15 @@
         <Pins>
             <name>Port12</name>
             <function>DI,DO</function>
+            <series>10K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R26</location>
+                <pull>PD4</pull>
+            </shunt>
             <connect>
                 <device>0039-12-02-C</device>
-                <conpin>Port10</conpin>
+                <conpin>PB0</conpin>
             </connect>
             <connect>
                 <device>0039-28-01-A</device>
@@ -175,9 +245,15 @@
         <Pins>
             <name>Port13</name>
             <function>DI,DO</function>
+            <series>0</series>
+            <shunt>
+                <value>none</value>
+                <location>R25</location>
+                <pull>none</pull>
+            </shunt>
             <connect>
                 <device>0039-12-02-C</device>
-                <conpin>Port11</conpin>
+                <conpin>PB1</conpin>
             </connect>
             <connect>
                 <device>0039-28-01-A</device>
@@ -187,6 +263,12 @@
         <Pins>
             <name>Port14</name>
             <function>DI,DO</function>
+            <series>10K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R24</location>
+                <pull>VCC</pull>
+            </shunt>
             <connect>
                 <device>0039-12-02-C</device>
                 <conpin>NC</conpin>
@@ -199,6 +281,12 @@
         <Pins>
             <name>Port15</name>
             <function>DI,DO</function>
+            <series>10K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R23</location>
+                <pull>VCC</pull>
+            </shunt>
             <connect>
                 <device>0039-12-02-C</device>
                 <conpin>NC</conpin>
@@ -211,6 +299,311 @@
         <Pins>
             <name>Port16</name>
             <function>DI,DO</function>
+            <series>10K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R22</location>
+                <pull>VCC</pull>
+            </shunt>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>NC</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PD6</conpin>
+            </connect>
+        </Pins>
+    </daughterboards>
+    <daughterboards>
+        <HWPartNum>0039-23-01-D</HWPartNum>
+        <Pins>
+            <name>Port1</name>
+            <function>AI,DI,DO</function>
+            <series>10k</series>
+            <shunt>
+                <value>10K</value>
+                <location>R1</location>
+                <pull>VCC</pull>
+            </shunt>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>ADC0</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PC0</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port2</name>
+            <function>AI,DI,DO</function>
+            <series>10k</series>
+            <shunt>
+                <value>10K</value>
+                <location>R2</location>
+                <pull>VCC</pull>
+            </shunt>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>ADC1</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PC1</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port3</name>
+            <function>AI,DI,DO</function>
+            <series>10k</series>
+            <shunt>
+                <value>10K</value>
+                <location>R3</location>
+                <pull>VCC</pull>
+            </shunt>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>ADC2</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PC2</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port4</name>
+            <function>AI,DI,DO</function>
+            <series>10k</series>
+            <shunt>
+                <value>10K</value>
+                <location>R4</location>
+                <pull>VCC</pull>
+            </shunt>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>ADC3</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PC3</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port5</name>
+            <function>AI,DI,DO</function>
+            <series>10k</series>
+            <shunt>
+                <value>10K</value>
+                <location>R5</location>
+                <pull>VCC</pull>
+            </shunt>
+            <shunt>
+                <value>none</value>
+                <location>R5</location>
+            </shunt>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>ADC4</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PC4</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port6</name>
+            <function>AI,DI,DO</function>
+            <series>10k</series>
+            <shunt>
+                <value>10K</value>
+                <location>R6</location>
+                <pull>VCC</pull>
+            </shunt>
+            <shunt>
+                <value>none</value>
+                <location>R6</location>
+            </shunt>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>ADC5</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PC5</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port7</name>
+            <function>AI</function>
+            <series>10K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R7</location>
+                <pull>VCC</pull>
+            </shunt>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>ADC6</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>ADC6</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port8</name>
+            <function>AI</function>
+            <series>10K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R8</location>
+                <pull>VCC</pull>
+            </shunt>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>ADC7</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>ADC7</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port9</name>
+            <function>DI,DO</function>
+            <series>10K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R29</location>
+                <pull>PD4</pull>
+            </shunt>
+           <connect>
+                <device>0039-12-02-C</device>
+                <conpin>NC</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PB0</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port10</name>
+            <function>DI,DO</function>
+             <series>10K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R28</location>
+                <pull>PD4</pull>
+            </shunt>
+           <connect>
+                <device>0039-12-02-C</device>
+                <conpin>NC</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PB1</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port11</name>
+            <function>DI,DO</function>
+            <series>10K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R27</location>
+                <pull>PD4</pull>
+            </shunt>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>NC</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PB2</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port12</name>
+            <function>DI,DO</function>
+            <series>10K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R26</location>
+                <pull>PD4</pull>
+            </shunt>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>PB0</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PB3</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port13</name>
+            <function>DI,DO</function>
+            <series>10K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R25</location>
+                <pull>PD4</pull>
+            </shunt>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>PB1</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PB4</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port14</name>
+            <function>DI,DO</function>
+            <series>10K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R24</location>
+                <pull>PD4</pull>
+            </shunt>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>NC</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PB5</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port15</name>
+            <function>DI,DO</function>
+            <series>10K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R23</location>
+                <pull>PD4</pull>
+            </shunt>
+            <connect>
+                <device>0039-12-02-C</device>
+                <conpin>NC</conpin>
+            </connect>
+            <connect>
+                <device>0039-28-01-A</device>
+                <conpin>PD5</conpin>
+            </connect>
+        </Pins>
+        <Pins>
+            <name>Port16</name>
+            <function>DI,DO</function>
+            <series>10K</series>
+            <shunt>
+                <value>10K</value>
+                <location>R22</location>
+                <pull>PD4</pull>
+            </shunt>
             <connect>
                 <device>0039-12-02-C</device>
                 <conpin>NC</conpin>

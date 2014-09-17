@@ -73,51 +73,51 @@
             Built: 96
         </Parameters>
         <Pins>
-            <name>Port1</name>
+            <name>ADC0</name>
             <function>AI,DI,DO</function>
         </Pins>
         <Pins>
-            <name>Port2</name>
+            <name>ADC1</name>
             <function>AI,DI,DO</function>
         </Pins>
         <Pins>
-            <name>Port3</name>
+            <name>ADC2</name>
             <function>AI,DI,DO</function>
         </Pins>
         <Pins>
-            <name>Port4</name>
+            <name>ADC3</name>
             <function>AI,DI,DO</function>
         </Pins>
         <Pins>
-            <name>Port5</name>
+            <name>ADC4</name>
             <function>AI,DI,DO</function>
         </Pins>
         <Pins>
-            <name>Port6</name>
+            <name>ADC5</name>
             <function>AI,DI,DO</function>
         </Pins>
         <Pins>
-            <name>Port7</name>
+            <name>ADC6</name>
             <function>AI,DI,DO</function>
         </Pins>
         <Pins>
-            <name>Port8</name>
+            <name>ADC7</name>
             <function>AI,DI,DO</function>
         </Pins>
         <Pins>
-            <name>Port9</name>
+            <name>ADC8</name>
             <function>AI,DI,DO</function>
         </Pins>
         <Pins>
-            <name>Port10</name>
+            <name>PB0</name>
             <function>DI,DO</function>
          </Pins>
         <Pins>
-            <name>Port11</name>
+            <name>PB1</name>
             <function>DI,D0</function>
         </Pins>
         <Pins>
-            <name>Port12</name>
+            <name>PB3</name>
             <function>DI,DO</function>
         </Pins>
         <Obsolete>0</Obsolete>
