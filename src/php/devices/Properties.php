@@ -54,7 +54,8 @@ namespace HUGnet\devices;
  */
 class Properties
 {
-    private $_Xml;
+    private $_epXml;
+    private $_dbXml;
 
     /** @var The endpoint array */
     private $_EpArray = array();
@@ -83,23 +84,39 @@ class Properties
             $filename = dirname(__FILE__)."/../devices.xml";
         }
 
-        $this->_Xml = simplexml_load_file($filename);
+        if (is_null($endpointNum)) {
+            $endpointNum = "0039-28-01-A";
+        }
+
+        if (is_null($daughterNum)) {
+            $daughterNum = "0039-23-01-A";
+        }
+
+        $epFileName = $this->ConvertToDevFilename($endpointNum);
+        $dbFileName = $this->ConvertToDevFilename($daughterNum);
+        
+        $this->_epXml = simplexml_load_file(dirname(__FILE__)."/../xml/".$epFileName);
+        $this->_dbXml = simplexml_load_file(dirname(__FILE__)."/../xml/".$dbFileName);
 
         /* fill the endpoint list array */
-        $count = $this->_Xml->endpoints->count();
+        $count = $this->_epXml->endpoints->count();
         for ($i=0; $i<$count; $i++) {
-            $this->_EpArray[$i] = (string) ($this->_Xml->endpoints[$i]->HWPartNum);
+            $this->_EpArray[$i] = (string) ($this->_epXml->endpoints[$i]->HWPartNum);
         }
 
         /* fill the daughterboard list array */
-        $count = $this->_Xml->daughterboards->count();
+        $count = $this->_dbXml->daughterboards->count();
         for ($i = 0; $i < $count; $i++) {
-            $this->_DbArray[$i] = (string) ($this->_Xml->daughterboards[$i]
+            $this->_DbArray[$i] = (string) ($this->_dbXml->daughterboards[$i]
                 ->HWPartNum);
         }
-        $this->setPartNumbers($endpointNum, $daughterNum);
+
+        $this->_endpointNum = $endpointNum;
+        $this->_daughterNum = $daughterNum;
 
     } /* end function __construct */
+
+
     /**
     *********************************************************************
     * this function instantiates the class object and returns the object
@@ -116,6 +133,22 @@ class Properties
     {
         $object = new Properties($filename, $endpointNum, $daughterNum);
         return $object;
+    }
+
+    /**
+    ********************************************************************
+    * this function takes the endpoint or daughterboard number passed 
+    * to it and converts it to the dev XML file for that part number.
+    *
+    * @return string - $devFileName 
+    *
+    */
+    private function ConvertToDevFilename($devnum)
+    {
+        $devFileName = "dev".substr($devnum,2,2).substr($devnum,5,2).".xml";
+
+        return $devFileName;
+
     }
 
 
@@ -149,6 +182,37 @@ class Properties
         return $this->_DbArray;
 
     }
+
+    /**
+    *********************************************************************
+    * this function empties the endpoint list array.
+    *
+    */
+    private function emptyEpArray()
+    {
+        $epCount = count($this->_EpArray);
+        for ($i = 0; $i<$epCount; $i++) {
+            array_pop($this->_EpArray);
+        }
+
+    }
+
+    /**
+    **********************************************************************
+    * this function empties the daughterboard list array
+    *
+    */
+    private function emptyDbArray()
+    {
+
+        $dbCount = count($this->_DbArray);
+
+        for ($i = 0; $i<$dbCount; $i++) {
+            array_pop($this->_DbArray);
+        }
+
+    }
+
 
     /**
     *********************************************************************
@@ -193,15 +257,46 @@ class Properties
     */
     public function setPartNumbers($endpointNum, $daughterNum)
     {
-        $this->_endpointNum = $endpointNum;
-        $base = explode("-", $daughterNum);
-        unset($base[3]);
-        $base = implode("-", $base);
-        if (in_array($daughterNum, $this->_DbArray)) {
-            $this->_daughterNum = $daughterNum;
-        } else if (in_array($base, $this->_DbArray)) {
-            $this->_daughterNum = $base;
+        $result = array();
+
+        $epFileName = $this->ConvertToDevFilename($endpointNum);
+        $dbFileName = $this->ConvertToDevFilename($daughterNum);
+        
+        $this->_epXml = simplexml_load_file(dirname(__FILE__).'/../xml/'.$epFileName);
+        $this->_dbXml = simplexml_load_file(dirname(__FILE__).'/../xml/'.$dbFileName);
+
+        /* first, empty the endpoint list array */
+        $this->emptyEpArray();
+        /* next, fill the endpoint list array */
+        $count = $this->_epXml->endpoints->count();
+        for ($i=0; $i<$count; $i++) {
+            $this->_EpArray[$i] = (string) ($this->_epXml->endpoints[$i]->HWPartNum);
         }
+
+        /* now, empty the daughterboard list array */
+        $this->emptyDbArray();
+        /* finally, fill the daughterboard list array */
+        $count = $this->_dbXml->daughterboards->count();
+        for($i = 0; $i < $count; $i++) {
+            $this->_DbArray[$i] = (string) ($this->_dbXml->daughterboards[$i]
+                ->HWPartNum);
+        }
+
+        if (in_array($endpointNum, $this->_EpArray)) {
+            if (in_array($daughterNum, $this->_DbArray)) {
+                $this->_endpointNum = $endpointNum;
+                $this->_daughterNum = $daughterNum;
+                $result[0] = 'Okay';
+            } else {
+                $result[0] = 'Error';
+                $result[1] = 'Invalid Daughterboard Number!';
+            }
+        } else {
+            $result[0] = 'Error';
+            $result[1] = 'Invalid Endpoint Number!';
+        }
+
+        return $result;
     }
 
 
@@ -425,13 +520,13 @@ class Properties
 
         for ($i=0; $i<$epCount; $i++) {
             if ($this->_EpArray[$i] == $epName) {
-                $pinCount = $this->_Xml->endpoints[$i]->Pins->count();
+                $pinCount = $this->_epXml->endpoints[$i]->Pins->count();
                 if ($pinCount == 0) {
                     $found = 1;
                 }
                 for ($j=0; $j< $pinCount; $j++) {
                     $found = 2;
-                    $pinName = (string)$this->_Xml->endpoints[$i]->Pins[$j]->name;
+                    $pinName = (string)$this->_epXml->endpoints[$i]->Pins[$j]->name;
                     $pinArray[$j]= $pinName;
                 }
             }
@@ -471,35 +566,35 @@ class Properties
                 continue;
             }
             $found = 1;
-            $pinCount = $this->_Xml->endpoints[$i]->Pins->count();
+            $pinCount = $this->_epXml->endpoints[$i]->Pins->count();
             if ($pinCount == 0) {
                 $found = 2;
             } else {
                 for ($j=0; $j< $pinCount; $j++) {
-                    $pName = (string)$this->_Xml->endpoints[$i]->Pins[$j]->name;
+                    $pName = (string)$this->_epXml->endpoints[$i]->Pins[$j]->name;
                     if ($pName != $pinName) {
                         continue;
                     }
                     $found = 3;
-                    $pinFunct = (string)$this->_Xml->endpoints[$i]
+                    $pinFunct = (string)$this->_epXml->endpoints[$i]
                         ->Pins[$j]->function;
-                    $pinSeriesResValue = (string)$this->_Xml
+                    $pinSeriesResValue = (string)$this->_epXml
                         ->endpoints[$i]->Pins[$j]->series;
                     $pinArray["properties"]= str_replace(" ", "", $pinFunct);
                     if ($pinSeriesResValue <> null) {
-                        $pinShuntResValue = (string)$this->_Xml
+                        $pinShuntResValue = (string)$this->_epXml
                             ->endpoints[$i]->Pins[$j]->shunt->value;
                         $pinArray["seriesRes"] = $pinSeriesResValue;
                         $pinArray["shuntRes"] = $pinShuntResValue;
                         if ($pinShuntResValue <> "none") {
-                            $pinShuntResLoc = (string)$this->_Xml
+                            $pinShuntResLoc = (string)$this->_epXml
                                 ->endpoints[$i]->Pins[$j]->shunt->location;
-                            $pinShuntResPull = (string)$this->_Xml
+                            $pinShuntResPull = (string)$this->_epXml
                                 ->endpoints[$i]->Pins[$j]->shunt->pull;
                             $pinArray["shuntLoc"] = $pinShuntResLoc;
                             $pinArray["shuntPull"] = $pinShuntResPull;
                         }
-                        $pinHighVoltage = (string)$this->_Xml
+                        $pinHighVoltage = (string)$this->_epXml
                             ->endpoints[$i]->Pins[$j]->highvoltage;
                         $pinArray["highVoltage"] = $pinHighVoltage;
                     }
@@ -533,9 +628,9 @@ class Properties
             if ($this->_DbArray[$i] != $dbNum) {
                 continue;
             }
-            $pinCount = $this->_Xml->daughterboards[$i]->Pins->count();
+            $pinCount = $this->_dbXml->daughterboards[$i]->Pins->count();
             for ($j=0; $j< $pinCount; $j++) {
-                $pinName = (string)($this->_Xml->daughterboards[$i]
+                $pinName = (string)($this->_dbXml->daughterboards[$i]
                     ->Pins[$j]->name);
                 $pinArray[$j]= $pinName;
             }
@@ -575,24 +670,24 @@ class Properties
                 continue;
             }
             $found = 1;
-            $pinCount = $this->_Xml->daughterboards[$i]->Pins->count();
+            $pinCount = $this->_dbXml->daughterboards[$i]->Pins->count();
             for ($j=0; $j< $pinCount; $j++) {
-                $pName = (string) $this->_Xml->daughterboards[$i]
+                $pName = (string) $this->_dbXml->daughterboards[$i]
                     ->Pins[$j]->name;
                 if ($pName != $pinName) {
                     continue;
                 }
                 $found = 2;
-                $pfunct = (string) ($this->_Xml->daughterboards[$i]
+                $pfunct = (string) ($this->_dbXml->daughterboards[$i]
                     ->Pins[$j]->function);
                 $pinArray["properties"] = $pfunct;
-                $cCount = $this->_Xml->daughterboards[$i]->Pins[$j]
+                $cCount = $this->_dbXml->daughterboards[$i]->Pins[$j]
                     ->connect->count();
                 for ($k=0; $k<$cCount; $k++) {
-                    $conEP = (string)($this->_Xml->daughterboards[$i]
+                    $conEP = (string)($this->_dbXml->daughterboards[$i]
                         ->Pins[$j]->connect[$k]->device);
                     if ($conEP == $this->_endpointNum) {
-                        $conPin = (string)($this->_Xml->daughterboards[$i]
+                        $conPin = (string)($this->_dbXml->daughterboards[$i]
                             ->Pins[$j]->connect[$k]->conpin);
 
                         $pinArray["mbcon"] = $conPin;
@@ -632,19 +727,19 @@ class Properties
         for ($i = 0; $i < $dbCount; $i++) {
             if ($this->_DbArray[$i] == $dbNum) {
                 $dbFound = 1;
-                $pinCount = $this->_Xml->daughterboards[$i]->Pins->count();
+                $pinCount = $this->_dbXml->daughterboards[$i]->Pins->count();
                 for ($j = 0; $j < $pinCount; $j++) {
-                    $pinName = (string)($this->_Xml->daughterboards[$i]
+                    $pinName = (string)($this->_dbXml->daughterboards[$i]
                         ->Pins[$j]->name);
                     $pinArray[$j][0]= $pinName;
-                    $connectNum = $this->_Xml->daughterboards[$i]->Pins[$j]
+                    $connectNum = $this->_dbXml->daughterboards[$i]->Pins[$j]
                         ->connect->count();
                     for ($times = 0; $times < $connectNum; $times++) {
-                        $pinConnect = (string)$this->_Xml->daughterboards[$i]
+                        $pinConnect = (string)$this->_dbXml->daughterboards[$i]
                             ->Pins[$j]->connect[$times]->device;
                         if ($pinConnect == $epNum) {
                             $epFound = 1;
-                            $pinConnectname = (string)$this->_Xml
+                            $pinConnectname = (string)$this->_dbXml
                                 ->daughterboards[$i]->Pins[$j]->connect[$times]
                                 ->conpin;
                             $pinArray[$j][1] = $pinConnectname;

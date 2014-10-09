@@ -79,7 +79,13 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->o = Properties::factory(
-            "", "", TEST_CONFIG_BASE."/files/devices.xml"
+            "0039-28-01-A", "0039-23-01-A", ""
+        );
+        $this->n = Properties::factory(
+            "0039-12-02-C", "0039-15-01-A",""
+        );
+        $this->m = Properties::factory(
+            "0039-37-01-E", "0039-23-01-A",""
         );
     }
 
@@ -113,21 +119,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
             array(
                 true,
                 array(
-                    0 => '0039-12-01-A',
-                    1 => '0039-12-02-A',
-                    2 => '0039-12-02-B',
-                    3 => '0039-12-02-C',
-                    4 => '0039-21-01-A',
-                    5 => '0039-21-02-A',
-                    6 => '0039-28-01-A',
-                    7 => '0039-37-01-A',
-                    8 => '0039-37-01-B',
-                    9 => '0039-37-01-C',
-                    10 => '0039-37-01-D',
-                    11 => '0039-37-01-E',
-                    12 => '0039-37-01-F',
-                    13 => '0039-37-01-G',
-                    14 => '0039-37-01-H',
+                    0 => '0039-28-01-A',
                 ),
             ),
         );
@@ -159,9 +151,9 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
             array(
                 true,
                 array(
-                    0 => '0039-15-01',
-                    1 => '0039-16-01',
-                    2 => '0039-23-01',
+                    0 => '0039-23-01-A',
+                    1 => '0039-23-01-C',
+                    2 => '0039-23-01-D',
                 ),
             ),
         );
@@ -194,21 +186,9 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 '0039-28-01-A',
-                '0039-23-01',
+                '0039-23-01-A',
                 '0039-28-01-A',
-                '0039-23-01',
-            ),
-            array(
-                '0039-37-01-A',
-                '',
-                '0039-37-01-A',
-                '',
-            ),
-            array(
-                'asdf',
-                '',
-                'asdf',
-                '',
+                '0039-23-01-A',
             ),
         );
     }
@@ -228,7 +208,6 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     public function testGetSetPN(
         $epNum, $dbNum, $expectEP, $expectDB
     ) {
-        $this->o->setPartnumbers($epNum, $dbNum);
         $this->assertSame(
             $expectDB, 
             $this->o->getDaughterboardNum(), 
@@ -253,25 +232,25 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 "0039-12-02-C", 
-                "",
+                "0039-15-01-A",
                 array(
-                    0 => 'Port1',
-                    1 => 'Port2',
-                    2 => 'Port3',
-                    3 => 'Port4',
-                    4 => 'Port5',
-                    5 => 'Port6',
-                    6 => 'Port7',
-                    7 => 'Port8',
-                    8 => 'Port9',
-                    9 => 'Port10',
-                    10 => 'Port11',
-                    11 => 'Port12',
+                    0 => 'ADC0',
+                    1 => 'ADC1',
+                    2 => 'ADC2',
+                    3 => 'ADC3',
+                    4 => 'ADC4',
+                    5 => 'ADC5',
+                    6 => 'ADC6',
+                    7 => 'ADC7',
+                    8 => 'ADC8',
+                    9 => 'PB0',
+                    10 => 'PB1',
+                    11 => 'PB3',
                 ),
             ),
             array(
                 "0039-12-01-A", 
-                "",
+                "0039-15-01-A",
                 false,
             ),
         );
@@ -294,9 +273,10 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     */
     public function testEpPinList($epNum, $dbNum, $expect)
     {
-        $this->o->setPartnumbers($epNum, $dbNum);
-        $this->assertSame($expect, $this->o->getEpPinList());
+        $this->n->setPartnumbers($epNum, $dbNum);
+        $this->assertSame($expect, $this->n->getEpPinList());
     }
+
     /**
     * data provider for testPinList
     *
@@ -307,7 +287,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 "0039-12-02-C", 
-                "",
+                "0039-15-01-A",
                 array(
                     0 => 'Port1',
                     1 => 'Port2',
@@ -317,44 +297,133 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
                     5 => 'Port6',
                     6 => 'Port7',
                     7 => 'Port8',
-                    8 => 'Port9',
-                    9 => 'Port10',
-                    10 => 'Port11',
-                    11 => 'Port12',
+                    8 => 'Port9',                ),
+            ),
+            array(
+                "0039-12-02-C", 
+                "0039-16-01-B",
+                array(
+                    0 => 'ADC0',
+                    1 => 'ADC1',
+                    2 => 'ADC2',
+                    3 => 'ADC3',
+                    4 => 'ADC4',
+                    5 => 'ADC5',
+                    6 => 'ADC6',
+                    7 => 'ADC7',
+                    8 => 'ADC8',
+                    9 => 'PB0',
+                    10 => 'PB1',
+                    11 => 'PB3',
                 ),
             ),
             array(
-                "0039-12-01-A", 
-                "",
+                "0039-28-01-B", 
+                "0039-23-01-B",
                 false,
+            ),
+        );
+    }
+
+
+
+
+    /**
+    *************************************************************
+    * test routine for get endpoint pins list
+    *
+    * @param string $epNum  The endpoint number to set 
+    * @param string $dbNum  The daughterboard number to set
+    * @param array  $expect The expected return.
+    *
+    * @return null
+    *
+    * @dataProvider dataPinList
+    */
+    public function testPinList($epNum, $dbNum, $expect)
+    {
+        $this->n->setPartnumbers($epNum, $dbNum);
+        $this->assertSame($expect, $this->n->getPinList());
+    }
+
+    /**
+    * data provider for testEpPinProperties
+    *      data from endpoint 0039-37-01-E
+    *
+    * @return array
+    */
+    public static function dataEpPinProperties()
+    {
+        return array(
+            array(
+                "0039-37-01-E", 
+                "0039-23-01-A",
+                "Port7",
+                array(
+                    "properties"  => 'AI',
+                    "seriesRes"   => '100K',
+                    "shuntRes"    => '1K',
+                    "shuntLoc"    => 'R21',
+                    "shuntPull"   => 'CGND',
+                    "highVoltage" => 'Y',
+                ),
+            ),
+            array(
+                "0039-37-01-E", 
+                "0039-23-01-A",
+                "Port1",
+                array(
+                    "properties" => 'AI',
+                    "seriesRes"   => '1K',
+                    "shuntRes"    => 'none',
+                    "highVoltage" => 'N',
+                ),
             ),
             array(
                 "0039-28-01-A", 
-                "0039-23-01",
-                array(
-                    0 => 'Port1',
-                    1 => 'Port2',
-                    2 => 'Port3',
-                    3 => 'Port4',
-                    4 => 'Port5',
-                    5 => 'Port6',
-                    6 => 'Port7',
-                    7 => 'Port8',
-                    8 => 'Port9',
-                    9 => 'Port10',
-                    10 => 'Port11',
-                    11 => 'Port12',
-                    12 => 'Port13',
-                    13 => 'Port14',
-                    14 => 'Port15',
-                    15 => 'Port16',
-                ),
-            ),
-            array(
-                "", 
-                "",
+                "0039-16-01-B",
+                "Port9",
                 false,
             ),
+            array(
+                "0039-12-01-A", 
+                "0039-15-01-A",
+                "Port1",
+                false,
+            ),
+        );
+    }
+
+
+    /**
+    *************************************************************
+    * test routine for get endpoint pin properties
+    *
+    * @param string $epNum  The endpoint number to set 
+    * @param string $dbNum  The daughterboard number to set
+    * @param string $pin    The name of the pin to test
+    * @param array  $expect The expected return.
+    *
+    * @return null
+    *
+    * @dataProvider dataEpPinProperties
+    */
+    public function testEpPinProperties($epNum, $dbNum, $pin, $expect)
+    {
+        $this->m->setPartnumbers($epNum, $dbNum);
+        $this->assertSame($expect, $this->m->getEpPinProperties($pin));
+    }
+
+
+
+    /**
+    * data provider for testDbPinList
+    *
+    * @return array
+    */
+    public static function dataDbPinList()
+    {
+        return array(
             array(
                 "0039-28-01-A", 
                 "0039-23-01-A",
@@ -378,153 +447,8 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
                 ),
             ),
             array(
-                "0039-28-01-A", 
-                "0039-23-01-Q",
-                array(
-                    0 => 'Port1',
-                    1 => 'Port2',
-                    2 => 'Port3',
-                    3 => 'Port4',
-                    4 => 'Port5',
-                    5 => 'Port6',
-                    6 => 'Port7',
-                    7 => 'Port8',
-                    8 => 'Port9',
-                    9 => 'Port10',
-                    10 => 'Port11',
-                    11 => 'Port12',
-                    12 => 'Port13',
-                    13 => 'Port14',
-                    14 => 'Port15',
-                    15 => 'Port16',
-                ),
-            ),
-        );
-    }
-
-
-
-
-    /**
-    *************************************************************
-    * test routine for get endpoint pins list
-    *
-    * @param string $epNum  The endpoint number to set 
-    * @param string $dbNum  The daughterboard number to set
-    * @param array  $expect The expected return.
-    *
-    * @return null
-    *
-    * @dataProvider dataPinList
-    */
-    public function testPinList($epNum, $dbNum, $expect)
-    {
-        $this->o->setPartnumbers($epNum, $dbNum);
-        $this->assertSame($expect, $this->o->getPinList());
-    }
-    /**
-    * data provider for testEpPinProperties
-    *      data from endpoint 0039-37-01-E
-    *
-    * @return array
-    */
-    public static function dataEpPinProperties()
-    {
-        return array(
-            array(
-                "0039-37-01-E", 
-                "",
-                "Port7",
-                array(
-                    "properties"  => 'AI',
-                    "seriesRes"   => '100K',
-                    "shuntRes"    => '1K',
-                    "shuntLoc"    => 'R21',
-                    "shuntPull"   => 'CGND',
-                    "highVoltage" => 'Y',
-                ),
-            ),
-            array(
-                "0039-37-01-E", 
-                "",
-                "Port1",
-                array(
-                    "properties" => 'AI',
-                    "seriesRes"   => '1K',
-                    "shuntRes"    => 'none',
-                    "highVoltage" => 'N',
-                ),
-            ),
-            array(
-                "0039-37-01-E", 
-                "",
-                "Port9",
-                false,
-            ),
-            array(
-                "", 
-                "",
-                "Port1",
-                false,
-            ),
-        );
-    }
-
-
-    /**
-    *************************************************************
-    * test routine for get endpoint pin properties
-    *
-    * @param string $epNum  The endpoint number to set 
-    * @param string $dbNum  The daughterboard number to set
-    * @param string $pin    The name of the pin to test
-    * @param array  $expect The expected return.
-    *
-    * @return null
-    *
-    * @dataProvider dataEpPinProperties
-    */
-    public function testEpPinProperties($epNum, $dbNum, $pin, $expect)
-    {
-        $this->o->setPartnumbers($epNum, $dbNum);
-        $this->assertSame($expect, $this->o->getEpPinProperties($pin));
-    }
-
-
-
-    /**
-    * data provider for testDbPinList
-    *
-    * @return array
-    */
-    public static function dataDbPinList()
-    {
-        return array(
-            array(
-                "0039-28-01-A", 
-                "0039-23-01",
-                array(
-                    0 => 'Port1',
-                    1 => 'Port2',
-                    2 => 'Port3',
-                    3 => 'Port4',
-                    4 => 'Port5',
-                    5 => 'Port6',
-                    6 => 'Port7',
-                    7 => 'Port8',
-                    8 => 'Port9',
-                    9 => 'Port10',
-                    10 => 'Port11',
-                    11 => 'Port12',
-                    12 => 'Port13',
-                    13 => 'Port14',
-                    14 => 'Port15',
-                    15 => 'Port16',
-                ),
-            ),
-            array(
-                "", 
-                "",
+                "0039-28-01-D", 
+                "0039-15-01-D",
                 false,
             ),
         );
@@ -560,24 +484,32 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 "0039-12-02-C", 
-                "0039-15-01",
+                "0039-15-01-A",
                 "Port2",
                 array(
                     "properties" => 'AI',
-                    "mbcon"      => 'Port2',
+                    "mbcon"      => 'ADC1',
                 ),
             ),
             array(
                 "0039-12-02-C", 
-                "0039-15-01",
+                "0039-15-01-A",
                 "Port10",
                 false,
             ),
             array(
-                "", 
-                "",
-                "Port10",
+                "0039-28-01-A", 
+                "0039-16-01-B",
+                "Port9",
                 false,
+            ),
+            array(
+                "0039-12-01-A", 
+                "0039-15-01-A",
+                "Port9",
+                array(
+                    "properties" => 'AI',
+                ),
             ),
         );
     }
@@ -598,8 +530,8 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     */
     public function testDbPinProperties($epNum, $dbNum, $pin, $expect)
     {
-        $this->o->setPartnumbers($epNum, $dbNum);
-        $this->assertSame($expect, $this->o->getDbPinProperties($pin));
+        $this->n->setPartnumbers($epNum, $dbNum);
+        $this->assertSame($expect, $this->n->getDbPinProperties($pin));
     }
 
     /**
@@ -612,61 +544,29 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 "0039-12-02-C", 
-                "0039-15-01",
+                "0039-15-01-A",
                 "Port2",
                 array(
                     "properties" => 'AI',
-                    "mbcon"      => 'Port2',
+                    "mbcon"      => 'ADC1',
                 ),
             ),
             array(
                 "0039-12-02-C", 
-                "",
-                "Port2",
-                array(
-                    "properties" => 'AI,DI,DO',
-                ),
-            ),
-            array(
-                "0039-12-02-C", 
-                "0039-15-01",
+                "0039-15-01-A",
                 "Port10",
                 false,
             ),
-             array(
-                "0039-37-01-E", 
-                "",
-                "Port7",
-                array(
-                    'properties' => 'AI',
-                    'seriesRes' => '100K',
-                    'shuntRes' => '1K',
-                    'shuntLoc' => 'R21',
-                    'shuntPull' => 'CGND',
-                    'highVoltage' => 'Y',
-                ),
-            ),
             array(
-                "0039-37-01-E", 
-                "",
-                "Port1",
-                array(
-                    'properties' => 'AI',
-                    'seriesRes' => '1K',
-                    'shuntRes' => 'none',
-                    'highVoltage' => 'N',
-                ),
-            ),
-            array(
-                "0039-37-01-E", 
-                "",
-                "Port9",
+                "0039-12-02-C", 
+                "0039-16-01-B",
+                "Port10",
                 false,
             ),
             array(
-                "", 
-                "",
-                "Port1",
+                "0039-28-01-A", 
+                "0039-16-01-B",
+                "Port17",
                 false,
             ),
        );
@@ -688,9 +588,79 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     */
     public function testPinProperties($epNum, $dbNum, $pin, $expect)
     {
-        $this->o->setPartnumbers($epNum, $dbNum);
-        $this->assertSame($expect, $this->o->getPinProperties($pin));
+        $this->n->setPartnumbers($epNum, $dbNum);
+        $this->assertSame($expect, $this->n->getPinProperties($pin));
     }
+
+
+    /**
+    * data provider for testPinProperties2
+    *
+    * @return array
+    */
+    public static function dataPinProperties2()
+    {
+        return array(
+             array(
+                "0039-37-01-E", 
+                "0039-23-01-A",
+                "Port7",
+                array(
+                    'properties' => 'AI',
+                    'seriesRes' => '100K',
+                    'shuntRes' => '1K',
+                    'shuntLoc' => 'R21',
+                    'shuntPull' => 'CGND',
+                    'highVoltage' => 'Y',
+                ),
+            ),
+            array(
+                "0039-37-01-E", 
+                "0039-23-01-A",
+                "Port1",
+                array(
+                    'properties' => 'AI',
+                    'seriesRes' => '1K',
+                    'shuntRes' => 'none',
+                    'highVoltage' => 'N',
+                ),
+            ),
+            array(
+                "0039-37-01-E", 
+                "0039-23-01-A",
+                "Port9",
+                false,
+            ),
+            array(
+                "0039-37-02-L", 
+                "0039-23-01-A",
+                "Port12",
+                false,
+            ),
+       );
+    }
+
+
+    /**
+    *************************************************************
+    * test routine for get daughterboard pin properties
+    *
+    * @param string $epNum  The endpoint number to set 
+    * @param string $dbNum  The daughterboard number to set
+    * @param string $pin    The name of the pin to test
+    * @param array  $expect The expected return.
+    *
+    * @return null
+    *
+    * @dataProvider dataPinProperties2
+    */
+    public function testPinProperties2($epNum, $dbNum, $pin, $expect)
+    {
+        $this->m->setPartnumbers($epNum, $dbNum);
+        $this->assertSame($expect, $this->m->getEpPinProperties($pin));
+    }
+
+
 
 
 
@@ -704,7 +674,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 "0039-28-01-A", 
-                "0039-23-01",
+                "0039-23-01-A",
                 array(
                     0 => array(
                             0 => 'Port1',
@@ -773,8 +743,13 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
                 ),
             ),
             array(
-                "", 
-                "",
+                "0039-28-01-A", 
+                "0039-16-01-A",
+                false,
+            ),
+            array(
+                "0039-12-01-A", 
+                "0039-15-01-A",
                 false,
             ),
         );
@@ -814,8 +789,43 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     {
        
         unset($this->o);
-        $this->o = Properties::factory("0039-28-01-A", "0039-23-01");
+        $this->o = Properties::factory("0039-28-01-A", "0039-23-01-A");
         $this->assertSame($expect, $this->o->getDaughterboards());
+    }
+
+
+
+    /**
+    * data provider for testEmptyEpArray
+    *
+    * @return array
+    */
+    public static function dataTestEmptyEpArray()
+    {
+        return array(
+            array(
+                "0039-12-02-D", 
+                "0039-15-01-A",
+                false,
+            ),
+       );
+    }
+
+    /**
+    ***************************************************************
+    * test routine for emptyEpArray
+    *
+    * @param string $name name of variable to test
+    * @param boolean $expect the expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataTestEmptyEpArray()
+    */
+    public function testEmptyEpArray($endpoint, $daughterboard, $expect)
+    {
+        $this->o->setPartNumbers($endpoint, $daughterboard);
+        $this->assertSame($expect, $this->o->getEpPinList());
     }
 
 
