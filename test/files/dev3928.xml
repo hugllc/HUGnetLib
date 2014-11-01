@@ -28,102 +28,91 @@
 <HUGnet>
     <!-- Table endpoints -->
     <endpoints>
-        <HWPartNum>0039-12-01-A</HWPartNum>
+        <HWPartNum>0039-28-01-A</HWPartNum>
         <Parameters>
             ARCH: AVR
-            CPU: attiny26
-            VCC: 5V
-        </Parameters>
-        <Obsolete>1</Obsolete>
-        <Notes>Test Run.  Only 20 ever made.</Notes>
-    </endpoints>
-    <endpoints>
-        <HWPartNum>0039-12-02-A</HWPartNum>
-        <Parameters>
-            ARCH: AVR
-            CPU: attiny26
-            VCC: 3.3V
-        </Parameters>
-        <Obsolete>1</Obsolete>
-        <Notes>Very few of these were made.</Notes>
-    </endpoints>
-    <endpoints>
-        <HWPartNum>0039-12-02-B</HWPartNum>
-        <Parameters>
-            ARCH: AVR
-            CPU: attiny26
-            VCC: 5V
-        </Parameters>
-        <Obsolete>1</Obsolete>
-        <Notes>
-            Martek made 96 of these.  Scott make a number more than that.
-            There are still a lot of these out in the field.
-        </Notes>
-    </endpoints>
-    <endpoints>
-        <HWPartNum>0039-12-02-C</HWPartNum>
-        <Parameters>
-            ARCH: AVR
-            CPU: attiny861
+            CPU: atmega168
             VCC: 5V
             Firmware: 0039-38-01-C
-            FuseExtended: 0x01
-            FuseHigh: 0xD4
+            FuseHigh: 0xD5
             FuseLow: 0xE2
-            Built: 96
+            Built: 216
         </Parameters>
         <Pins>
-            <name>ADC0</name>
+            <name>PB0</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>PB1</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>PB2</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>PC0</name>
             <function>AI,DI,DO</function>
         </Pins>
         <Pins>
-            <name>ADC1</name>
+            <name>PC1</name>
             <function>AI,DI,DO</function>
         </Pins>
         <Pins>
-            <name>ADC2</name>
+            <name>PC2</name>
             <function>AI,DI,DO</function>
         </Pins>
         <Pins>
-            <name>ADC3</name>
+            <name>PC3</name>
             <function>AI,DI,DO</function>
         </Pins>
         <Pins>
-            <name>ADC4</name>
+            <name>PC4</name>
             <function>AI,DI,DO</function>
         </Pins>
         <Pins>
-            <name>ADC5</name>
+            <name>PC5</name>
             <function>AI,DI,DO</function>
         </Pins>
         <Pins>
             <name>ADC6</name>
-            <function>AI,DI,DO</function>
+            <function>AI</function>
         </Pins>
         <Pins>
             <name>ADC7</name>
-            <function>AI,DI,DO</function>
+            <function>AI</function>
         </Pins>
         <Pins>
-            <name>ADC8</name>
-            <function>AI,DI,DO</function>
-        </Pins>
-        <Pins>
-            <name>PB0</name>
+            <name>PD0</name>
             <function>DI,DO</function>
-         </Pins>
-        <Pins>
-            <name>PB1</name>
-            <function>DI,D0</function>
         </Pins>
         <Pins>
-            <name>PB3</name>
+            <name>PD1</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>PD3</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>PD4</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>PD5</name>
+            <function>DI,DO</function>
+        </Pins>
+        <Pins>
+            <name>PD6</name>
             <function>DI,DO</function>
         </Pins>
         <Obsolete>0</Obsolete>
-        <Notes>This is an upgraded version of 0039-12-02-B.  It uses the tiny861 processor
-            in place of the tiny26.  It has 8k code space instead of 2k.  All 0039-12-02-B
-            endpoints will be field upgrade to this version eventually.
+        <Notes>
+            This is the current endpoint
+
+            12 were made by Scott
+            156 were made by Martek
+            48 were made by Martek 5/11
         </Notes>
     </endpoints>
 </HUGnet>
