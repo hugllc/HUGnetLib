@@ -113,7 +113,9 @@ class Config
     */
     public static function checkSetupString($string)
     {
-        if (substr($string, self::HW_START, 4) !== "0039") {
+        if ((substr($string, self::HW_START, 4) !== "0039")
+            && (substr($string, self::HW_START, 4) !== "1046")
+        ) {
             return false;
         }
         if (substr($string, self::FW_START, 4) !== "0039") {
