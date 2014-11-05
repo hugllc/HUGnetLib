@@ -148,6 +148,7 @@ final class Packet implements PacketInterface
         "POWERUP" => 0x5E,
         "RECONFIG" => 0x5D,
         "BOREDOM" => 0x5F,
+        "BOOTLOADERBORED" => 0x6F,
         "BAD COMMAND" => 0xFF,
     );
 
