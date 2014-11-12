@@ -169,6 +169,146 @@ class ADuCThermocoupleTest extends DriverTestBaseADuC
                 array(),
                 21.3644,
             ),
+            array( //#7 Verified by http://srdata.nist.gov/its90/download/type_b.tab
+                array(
+                    "extra" => array(3 => "b")
+                ),
+                23927, // (3.76506329 mV)
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                886.9668,
+            ),
+            array( //#8 Verified by http://srdata.nist.gov/its90/download/type_e.tab
+                array(
+                    "extra" => array(3 => "e")
+                ),
+                -23921, // (-3.76411915 mV)
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                -59.0575,
+            ),
+            array( //#9 Verified by http://srdata.nist.gov/its90/download/type_e.tab
+                array(
+                    "extra" => array(3 => "e")
+                ),
+                23927, // (3.76506329 mV)
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                71.2510,
+            ),
+            array( //#10 Verified by http://srdata.nist.gov/its90/download/type_e.tab
+                array(
+                    "extra" => array(3 => "e")
+                ),
+                239241, // (37.64591217 mV)
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                517.9118,
+            ),
+            array( //#11 Verified by http://srdata.nist.gov/its90/download/type_j.tab
+                array(
+                    "extra" => array(3 => "j")
+                ),
+                -23921, // (-3.76411915 mV)
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                -69.5253,
+            ),
+            array( //#12 Verified by http://srdata.nist.gov/its90/download/type_j.tab
+                array(
+                    "extra" => array(3 => "j")
+                ),
+                23927, // (3.76506329 mV)
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                82.1569,
+            ),
+            array( //#13 Verified by http://srdata.nist.gov/its90/download/type_j.tab
+                array(
+                    "extra" => array(3 => "j")
+                ),
+                239241, // (37.64591217 mV)
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                685.9338,
+            ),
+            array( //#14 Verified by http://srdata.nist.gov/its90/download/type_n.tab
+                array(
+                    "extra" => array(3 => "n")
+                ),
+                -23921, // (-3.76411915 mV)
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                -169.8769,
+            ),
+            array( //#15 Verified by http://srdata.nist.gov/its90/download/type_n.tab
+                array(
+                    "extra" => array(3 => "n")
+                ),
+                23927, // (3.76506329 mV)
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                142.7561,
+            ),
+            array( //#16 Verified by http://srdata.nist.gov/its90/download/type_n.tab
+                array(
+                    "extra" => array(3 => "n")
+                ),
+                239241, // (37.64591217 mV)
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                1046.1158,
+            ),
+            array( //#17 Verified by http://srdata.nist.gov/its90/download/type_r.tab
+                array(
+                    "extra" => array(3 => "r")
+                ),
+                23927, // (3.76506329 mV)
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                444.1438,
+            ),
+            array( //#19 Verified by http://srdata.nist.gov/its90/download/type_s.tab
+                array(
+                    "extra" => array(3 => "s")
+                ),
+                23927, // (3.76506329 mV)
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                462.3454,
+            ),
+            array( //#20 Verified by http://srdata.nist.gov/its90/download/type_t.tab
+                array(
+                    "extra" => array(3 => "t")
+                ),
+                -23921, // (-3.76411915 mV)
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                -103.9886,
+            ),
+            array( //#21 Verified by http://srdata.nist.gov/its90/download/type_t.tab
+                array(
+                    "extra" => array(3 => "t")
+                ),
+                23927, // (3.76506329 mV)
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                98.9267,
+            ),
         );
     }
     /**
@@ -252,6 +392,146 @@ class ADuCThermocoupleTest extends DriverTestBaseADuC
                 array(3 => array("value" => 10)),
                 array(),
                 -96.9939,
+            ),
+            array( //#7 Verified by http://srdata.nist.gov/its90/download/type_b.tab
+                array(
+                    "extra" => array(3 => "b")
+                ),
+                "93660000", // (3.76506329 mV)
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                886.9668,
+            ),
+            array( //#8 Verified by http://srdata.nist.gov/its90/download/type_e.tab
+                array(
+                    "extra" => array(3 => "e")
+                ),
+                "2FA2FFFF", // (-3.76411915 mV)
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                -59.0575,
+            ),
+            array( //#9 Verified by http://srdata.nist.gov/its90/download/type_e.tab
+                array(
+                    "extra" => array(3 => "e")
+                ),
+                "755D0000", // (3.76506329 mV)
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                71.2510,
+            ),
+            array( //#10 Verified by http://srdata.nist.gov/its90/download/type_e.tab
+                array(
+                    "extra" => array(3 => "e")
+                ),
+                "34010300", // (37.64591217 mV)
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                517.9118,
+            ),
+            array( //#11 Verified by http://srdata.nist.gov/its90/download/type_j.tab
+                array(
+                    "extra" => array(3 => "j")
+                ),
+                "8AA2FFFF", // (-3.76411915 mV)
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                -69.5253,
+            ),
+            array( //#12 Verified by http://srdata.nist.gov/its90/download/type_j.tab
+                array(
+                    "extra" => array(3 => "j")
+                ),
+                "775D0000", // (3.76506329 mV)
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                82.1569,
+            ),
+            array( //#13 Verified by http://srdata.nist.gov/its90/download/type_j.tab
+                array(
+                    "extra" => array(3 => "j")
+                ),
+                "418E0300", // (37.64591217 mV)
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                685.9338,
+            ),
+            array( //#14 Verified by http://srdata.nist.gov/its90/download/type_n.tab
+                array(
+                    "extra" => array(3 => "n")
+                ),
+                "A7A2FFFF", // (-3.76411915 mV)
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                -169.8769,
+            ),
+            array( //#15 Verified by http://srdata.nist.gov/its90/download/type_n.tab
+                array(
+                    "extra" => array(3 => "n")
+                ),
+                "765D0000", // (3.76506329 mV)
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                142.7561,
+            ),
+            array( //#16 Verified by http://srdata.nist.gov/its90/download/type_n.tab
+                array(
+                    "extra" => array(3 => "n")
+                ),
+                "98C63A00", // (37.64591217 mV)
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                1046.1158,
+            ),
+            array( //#17 Verified by http://srdata.nist.gov/its90/download/type_r.tab
+                array(
+                    "extra" => array(3 => "r")
+                ),
+                "D15C0000", // (3.76506329 mV)
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                444.1438,
+            ),
+            array( //#19 Verified by http://srdata.nist.gov/its90/download/type_s.tab
+                array(
+                    "extra" => array(3 => "s")
+                ),
+                "965D0000", // (3.76506329 mV)
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                462.3454,
+            ),
+            array( //#20 Verified by http://srdata.nist.gov/its90/download/type_t.tab
+                array(
+                    "extra" => array(3 => "t")
+                ),
+                "941B0100", // (-3.76411915 mV)
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                -103.9886,
+            ),
+            array( //#21 Verified by http://srdata.nist.gov/its90/download/type_t.tab
+                array(
+                    "extra" => array(3 => "t")
+                ),
+                "765D0000", // (3.76506329 mV)
+                1,
+                array(0 => array("value" => 10)),
+                array(),
+                98.9267,
             ),
         );
     }
