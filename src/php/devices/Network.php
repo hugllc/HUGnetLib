@@ -68,6 +68,10 @@ class Network
     */
     private $_device = null;
     /**
+    * This is the table object
+    */
+    private $_address_size = 4;
+    /**
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
     *
@@ -94,6 +98,9 @@ class Network
         $this->_system = &$system;
         $this->_driver  = &$driver;
         $this->_device  = &$device;
+        $digits = $this->_device->get("AddressSize");
+        $this->_address_size = (is_int($digits) && ($digits > 0)) ? $digits * 2 : $this->_address_size;
+
     }
     /**
     * This is the destructor
@@ -688,7 +695,7 @@ class Network
         $address, $data, $command, $callback = null, $config = array()
     ) {
         if (is_string($data)) {
-            $write = sprintf("%04X", $address);
+            $write = sprintf("%0".$this->_address_size."X", $address);
             $write .= $data;
             $reply = $this->_sendPkt($command, $callback, $config, $write);
             if (is_object($reply)) {

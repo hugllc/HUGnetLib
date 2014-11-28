@@ -861,6 +861,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     "DigitalInputs" => array(),
                     "DigitalOutputs" => array(),
                     'localParams' => array(),
+                    'AddressSize' => 2,
                 )
             ),
             array(   // #1 No default stuff
@@ -961,6 +962,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     "DigitalInputs" => array(),
                     "DigitalOutputs" => array(),
                     'localParams' => array(),
+                    'AddressSize' => 2,
                 )
             ),
             array( //  #3 Not a Late Poll
@@ -1039,6 +1041,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     "DigitalInputs" => array(),
                     "DigitalOutputs" => array(),
                     'localParams' => array(),
+                    'AddressSize' => 2,
                 )
             ),
             array( //  #4 Everything Normal with daughterboard
@@ -1119,6 +1122,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     "DigitalOutputs" => array(),
                     'localParams' => array(),
                     "configImage" => "00392301A.svg",
+                    'AddressSize' => 2,
                 )
             ),
             array( //  #5 Everything Normal with empty daughterboard
@@ -1197,6 +1201,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     "DigitalInputs" => array(),
                     "DigitalOutputs" => array(),
                     'localParams' => array(),
+                    'AddressSize' => 2,
                 )
             ),
         );
