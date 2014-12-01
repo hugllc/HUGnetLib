@@ -569,6 +569,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                     "DaughterBoards" => array(
                         "" => "None",
                     ),
+                    'AddressSize' => 2,
                 ),
             ),
             array(
@@ -599,6 +600,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                     "DaughterBoards" => array(
                         "" => "None",
                     ),
+                    'AddressSize' => 2,
                 ),
             ),
         );

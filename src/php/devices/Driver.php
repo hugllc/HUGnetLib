@@ -92,6 +92,7 @@ abstract class Driver
         "DigitalOutputs" => array(),
         "DaughterBoards" => array("" => "None"),
         "setConfig" => true,
+        "AddressSize" => 2,
     );
     /**
     * This is where all of the driver information is stored.

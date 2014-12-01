@@ -124,6 +124,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                             array("packetTimeout"),
                         ),
@@ -176,6 +177,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                             array("packetTimeout"),
                         ),
@@ -228,6 +230,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                             array("packetTimeout"),
                         ),
@@ -323,6 +326,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                             array("packetTimeout"),
                         ),
@@ -375,6 +379,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                             array("packetTimeout"),
                         ),
@@ -467,6 +472,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                             array("packetTimeout"),
                         ),
@@ -519,6 +525,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                             array("packetTimeout"),
                         ),
@@ -612,6 +619,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                             array("packetTimeout"),
                         ),
@@ -673,6 +681,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                             array("packetTimeout"),
                         ),
@@ -770,6 +779,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                             array("packetTimeout"),
                         ),
@@ -912,6 +922,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                             array("packetTimeout"),
                         ),
@@ -1050,6 +1061,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                             array("packetTimeout"),
                         ),
@@ -1092,6 +1104,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                             array("packetTimeout"),
                         ),
@@ -1129,6 +1142,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                             array("packetTimeout"),
                         ),
@@ -1208,6 +1222,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                             array("packetTimeout"),
                         ),
@@ -1250,6 +1265,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                             array("packetTimeout"),
                         ),
@@ -1287,6 +1303,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                             array("packetTimeout"),
                         ),
@@ -1366,6 +1383,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                         ),
                     ),
@@ -1407,6 +1425,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                         ),
                     ),
@@ -1444,6 +1463,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                         ),
                     ),
@@ -1523,6 +1543,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                             array("packetTimeout"),
                         ),
@@ -1564,6 +1585,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                             array("packetTimeout"),
                         ),
@@ -1601,6 +1623,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                             array("packetTimeout"),
                         ),
@@ -1682,6 +1705,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                             array("packetTimeout"),
                         ),
@@ -1728,6 +1752,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                             array("packetTimeout"),
                         ),
@@ -1774,6 +1799,150 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                 ),
                 false,
+            ),
+            array(
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                            "AddressSize" => 3,
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\packets\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => "ABCDEF",
+                            )
+                        ),
+                    ),
+                ),
+                0x1234,
+                "ABCDEF",
+                null,
+                array(),
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            array("AddressSize"),
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_FLASH',
+                                    "Data" => "001234ABCDEF",
+                                ),
+                                null,
+                                array(
+                                    "timeout" => 4,
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                true,
+            ),
+            array(
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                            "AddressSize" => 2,
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\packets\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => "ABCDEF",
+                            )
+                        ),
+                    ),
+                ),
+                0x123456,
+                "ABCDEF",
+                null,
+                array(),
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            array("AddressSize"),
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_FLASH',
+                                    "Data" => "123456ABCDEF",
+                                ),
+                                null,
+                                array(
+                                    "timeout" => 4,
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                true,
+            ),
+            array(
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                            "AddressSize" => 3,
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\packets\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => "ABCDEF",
+                            )
+                        ),
+                    ),
+                ),
+                0x123456,
+                "ABCDEF",
+                null,
+                array(),
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            array("AddressSize"),
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_FLASH',
+                                    "Data" => "123456ABCDEF",
+                                ),
+                                null,
+                                array(
+                                    "timeout" => 4,
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                true,
             ),
         );
     }
@@ -1839,6 +2008,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                             array("packetTimeout"),
                         ),
@@ -1885,6 +2055,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                             array("packetTimeout"),
                         ),
@@ -2011,6 +2182,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                             array("packetTimeout"),
                             array("id"),
@@ -2100,6 +2272,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                             array("packetTimeout"),
                             array("id"),
@@ -2189,6 +2362,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                             array("packetTimeout"),
                             array("id"),
@@ -2383,6 +2557,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                             array("packetTimeout"),
                             array("id"),
@@ -2472,6 +2647,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                             array("packetTimeout"),
                             array("id"),
@@ -2561,6 +2737,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("id"),
                             array("packetTimeout"),
                             array("id"),
@@ -2773,6 +2950,7 @@ S9030000FC",
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("HWPartNum"),
                             array("id"),
                         ),
@@ -2850,6 +3028,7 @@ S9030000FC",
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("HWPartNum"),
                             array("id"),
                             array("id"),
@@ -2958,6 +3137,7 @@ S9030000FC",
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("HWPartNum"),
                             array("id"),
                             array("id"),
@@ -3116,6 +3296,7 @@ S9030000FC",
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("HWPartNum"),
                             array("id"),
                             array("id"),
@@ -3332,6 +3513,7 @@ S9030000FC",
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("HWPartNum"),
                             array("id"),
                             array("id"),
@@ -3586,6 +3768,7 @@ S9030000FC",
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("HWPartNum"),
                             array("id"),
                             array("id"),
@@ -3860,6 +4043,7 @@ S9030000FC",
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("HWPartNum"),
                             array("id"),
                             array("id"),
@@ -4121,6 +4305,7 @@ S9030000FC",
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("HWPartNum"),
                             array("id"),
                             array("id"),
@@ -4350,6 +4535,7 @@ S9030000FC",
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("HWPartNum"),
                             array("id"),
                             array("id"),
@@ -4594,6 +4780,7 @@ S9030000FC",
                 array(
                     "Device" => array(
                         "get" => array(
+                            array("AddressSize"),
                             array("HWPartNum"),
                             array("id"),
                             array("id"),

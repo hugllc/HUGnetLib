@@ -88,15 +88,20 @@ class Properties
             $endpointNum = "0039-28-01-A";
         }
 
+        /*
         if (is_null($daughterNum)) {
             $daughterNum = "0039-23-01-A";
         }
-
+        */
         $epFileName = $this->ConvertToDevFilename($endpointNum);
-        $dbFileName = $this->ConvertToDevFilename($daughterNum);
         
+        if (!empty($daughterNum)) {
+            $dbFileName = $this->ConvertToDevFilename($daughterNum);
+            $this->_dbXml = simplexml_load_file(dirname(__FILE__)."/../xml/".$dbFileName);
+        } else {
+            $this->_dbXml = simplexml_load_file(dirname(__FILE__)."/../xml/dev.xml");
+        }
         $this->_epXml = simplexml_load_file(dirname(__FILE__)."/../xml/".$epFileName);
-        $this->_dbXml = simplexml_load_file(dirname(__FILE__)."/../xml/".$dbFileName);
 
         /* fill the endpoint list array */
         $count = $this->_epXml->endpoints->count();
