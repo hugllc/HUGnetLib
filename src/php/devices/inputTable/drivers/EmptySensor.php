@@ -84,6 +84,25 @@ class EmptySensor extends \HUGnet\devices\inputTable\Driver
         "id" => 0xFF,  // Force ID to be 0xFF
     );
     /**
+    * This function sets up the driver object, and the database object.  The
+    * database object is taken from the driver object.
+    *
+    * @param object &$iopobject The output in question
+    * @param int    $offset     The extra offset to use
+    *
+    * @return null
+    */
+    protected function __construct(&$iopobject, $offset = 0)
+    {
+        parent::__construct($iopobject, $offset);
+        if (is_object($this->input()) && is_object($this->input()->device())) {
+            $size = $this->input()->device()->get("inputSize");
+            if (is_int($size) && ($size > 0)) {
+                $this->default["inputSize"] = $size;
+            }
+        }
+    }
+    /**
     * Changes a raw reading into a output value
     *
     * @param int   $A      Output of the A to D converter

@@ -242,7 +242,8 @@ class Connection implements \ConnectionManager
         if ($this->connected($group)) {
             return $this->_server[$group]->getDBO();
         }
-        return null;
+        $return = null;
+        return $return;
     }
     /**
     * Disconnects from the database
