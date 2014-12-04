@@ -595,25 +595,35 @@ class Network
             $this->_system->out("config 1/1 fail", 1);
             return false;
         }
-        $code = $this->writeFlashBuffer(
-            $firmware->getCode()
-        );
-        if (!$code) {
-            return false;
+        $code = $firmware->getCode();
+        if (is_string($code)) {
+            $code = array(0 => $code);
+        }
+        foreach ($code as $start => $cd) {
+            $coderet = $this->writeFlashBuffer(
+                $cd, $start
+            );
+            if (!$coderet) {
+                return false;
+            }
         }
         /* Data is not required */
-        if ((strlen($firmware->getData()) > 0) && $loadData) {
+        $data = $firmware->getData();
+        if (is_string($data)) {
+            $data = array(0 => $data);
+        }
+        if ((count($data) > 0) && $loadData) {
             $part = $firmware->get("FWPartNum");
-            $data = $firmware->getData();
-            $start = 0;
-            if (substr($part, 0, 7) === "0039-20") {
-                /* This is a band-aid for the older firmware */
-                $data = substr($data, 20);
-                $start = 10;
-            }
-            $data = $this->writeE2Buffer($data, $start);
-            if (!$data) {
-                return false;
+            foreach ($data as $start => $dat) {
+                if (substr($part, 0, 7) === "0039-20") {
+                    /* This is a band-aid for the older firmware */
+                    $dat = substr($dat, 20);
+                    $start += 10;
+                }
+                $dataret = $this->writeE2Buffer($dat, $start);
+                if (!$dataret) {
+                    return false;
+                }
             }
         }
         $crc = $this->setCRC();

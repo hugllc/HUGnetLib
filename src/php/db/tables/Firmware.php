@@ -544,12 +544,28 @@ class Firmware extends \HUGnet\db\Table
     {
         // Put the srec into the buffer
         $srec = explode("\n", $srec);
+        $code = array();
+        $start = -1;
         foreach ((array)$srec as $rec) {
-            if (substr($rec, 0, 2) == "S1") {
+            if (substr($rec, 0, 2) == "S0") {
+                if ($start >= 0) {
+                    // Got some stuff
+                    // remove the extra
+                    while (substr($buffer, -2) == $empty) {
+                        $buffer = substr($buffer, 0, -2);
+                    }
+                    $code[$start] = $buffer;
+                }
+                $start = -1;
+            } else if (substr($rec, 0, 2) == "S1") {
                 // Set up all the stuff to put into the buffer
                 $size  = hexdec(substr($rec, 2, 2));
                 $size -= 3;
                 $addr  = hexdec(substr($rec, 4, 4));
+                if ($start < 0) {
+                    $start = $addr;
+                }
+                $addr -= $start;
                 $data  = substr($rec, 8, ($size*2));
                 // Make sure the buffer is big enough for the data
                 $buffer = str_pad($buffer, ($addr + $size)*2, $empty, STR_PAD_RIGHT);
@@ -560,6 +576,10 @@ class Firmware extends \HUGnet\db\Table
                 $size  = hexdec(substr($rec, 2, 2));
                 $size -= 3;
                 $addr  = hexdec(substr($rec, 4, 6));
+                if ($start < 0) {
+                    $start = $addr;
+                }
+                $addr -= $start;
                 $data  = substr($rec, 10, ($size*2));
                 // Make sure the buffer is big enough for the data
                 $buffer = str_pad($buffer, ($addr + $size)*2, $empty, STR_PAD_RIGHT);
@@ -567,12 +587,15 @@ class Firmware extends \HUGnet\db\Table
                 $buffer = substr_replace($buffer, $data, $addr*2, $size*2);
             }
         }
-        // remove the extra
-        while (substr($buffer, -2) == $empty) {
-            $buffer = substr($buffer, 0, -2);
+        if ($start >= 0) {
+            // remove the extra
+            while (substr($buffer, -2) == $empty) {
+                $buffer = substr($buffer, 0, -2);
+            }
+            $code[$start] = $buffer;
         }
         // return the buffer
-        return $buffer;
+        return $code;
     }
 }
 ?>
