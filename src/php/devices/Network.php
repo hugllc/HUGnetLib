@@ -743,7 +743,7 @@ class Network
             $buffer = str_split($buffer, $chunkSize*2);
             $pages = count($buffer);
             $this->_system->out(
-                "Writing $pages pages at 0x".sprintf("%X", $start),
+                "$memName writing $pages pages at 0x".sprintf("%X", $start),
                 1
             );
             foreach ($buffer as $page => $data) {
