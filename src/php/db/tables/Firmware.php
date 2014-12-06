@@ -555,6 +555,7 @@ class Firmware extends \HUGnet\db\Table
                         $buffer = substr($buffer, 0, -2);
                     }
                     $code[$start] = $buffer;
+                    $buffer = "";
                 }
                 $start = -1;
             } else if (substr($rec, 0, 2) == "S1") {
