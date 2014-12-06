@@ -742,6 +742,10 @@ class Network
         if (strlen($buffer) > 0) {
             $buffer = str_split($buffer, $chunkSize*2);
             $pages = count($buffer);
+            $this->_system->out(
+                "Writing $pages at ".sprintf("%X", $start),
+                1
+            );
             foreach ($buffer as $page => $data) {
                 $data = str_pad($data, $chunkSize*2, $empty);
                 $addr = $start + ($page * $chunkSize);
