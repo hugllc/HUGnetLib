@@ -78,7 +78,7 @@ class E10460200 extends \HUGnet\devices\Driver
         "OutputTables" => 0,
         "DataChannels" => 2,
         "ProcessTables" => 0,
-        "inputSize" => 3,
+        "inputSize" => 2,
         "AddressSize" => 3,
     );
 
