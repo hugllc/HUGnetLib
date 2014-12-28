@@ -1059,6 +1059,79 @@ class DriverTest extends \PHPUnit_Framework_TestCase
         );
         unset($obj);
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataDecodeRTC()
+    {
+        return array(
+            array( // #0
+                "78563412",
+                0x12345678 + gmmktime(0, 0, 0, 1, 1, 2000)
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $string The setup string to test
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataDecodeRTC
+    */
+    public function testDecodeRTC($string, $expect)
+    {
+        $device  = new \HUGnet\DummyTable("Device");
+        $obj = Driver::factory("DriverTestClass", $device);
+        $ret = $obj->decodeRTC($string);
+        $this->assertEquals(
+            $expect, 
+            $ret, 
+            sprintf("%08X", $ret)." Doesn't match expected ".sprintf("%08X", $expect)
+        );
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataEncodeRTC()
+    {
+        return array(
+            array( // #0
+                array(),
+                0x12345678 + gmmktime(0, 0, 0, 1, 1, 2000),
+                "78563412"
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $mocks  The value to preload into the mocks
+    * @param string $string The setup string to test
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataEncodeRTC
+    */
+    public function testEncodeRTC($mocks, $string, $expect)
+    {
+        $device  = new \HUGnet\DummyTable("Device");
+        $device->resetMock($mocks);
+        $obj = Driver::factory("DriverTestClass", $device);
+        $ret = $obj->encodeRTC($string);
+        $this->assertEquals(
+            $expect, 
+            $ret, 
+            "$ret Doesn't match expected $expect"
+        );
+    }
 
 }
 /** This is the HUGnet namespace */

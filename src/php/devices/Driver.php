@@ -505,6 +505,47 @@ abstract class Driver
         );
         return $obj;
     }
+    /**
+    * Decodes the RTC value given by an endpoint
+    *
+    * @param mixed $value The RTC value to decode
+    *
+    * @return array
+    */
+    public function decodeRTC($value)
+    {
+        if (is_string($value)) {
+            $date = 0;
+            $vals = str_split($value, 2);
+            for ($i = 0; $i < 4; $i++) {
+                $date += hexdec($vals[$i])<<($i * 8);
+            }
+            $value = $date;
+        }
+        if (!is_int($value)) {
+            return null;
+        }
+        return $value + gmmktime(0, 0, 0, 1, 1, 2000);
+    }
+    /**
+    * Encodes the RTC value to give to the endpoint
+    *
+    * @param mixed $value The RTC value to encode
+    * 
+    * @return string
+    */
+    public function encodeRTC($value = null)
+    {
+        if (!is_int($value) || is_null($value)) {
+            $value = $this->_device->system()->now();
+        }
+        $time = $value - gmmktime(0, 0, 0, 1, 1, 2000);
+        $string = "";
+        for ($i = 0; $i < 4; $i++) {
+            $string .= sprintf("%02X", (($time>>($i * 8)) & 0xFF));
+        }
+        return $string;
+    }
 }
 
 
