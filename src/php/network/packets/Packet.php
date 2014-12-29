@@ -150,6 +150,7 @@ final class Packet implements PacketInterface
         "BOREDOM" => 0x5F,
         "BOOTLOADPOWERUP" => 0x6E,
         "BOOTLOADERBORED" => 0x6F,
+        "TIMEBROADCAST" => 0x70,
         "BAD COMMAND" => 0xFF,
     );
 

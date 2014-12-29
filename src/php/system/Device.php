@@ -92,8 +92,6 @@ class Device extends \HUGnet\base\SystemTableAction
         "send" => "action",
         "encodeRTC" => "driver",
         "decodeRTC" => "driver",
-        "getRTC" => "network",
-        "setRTC" => "network",
     );
     /** This is where we store our objects */
     protected $classes = array(

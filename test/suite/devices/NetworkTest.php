@@ -1388,6 +1388,94 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
 
     }
     /**
+    * Data provider for testTimeBroadcast
+    *
+    * @return array
+    */
+    public static function dataTimeBroadcast()
+    {
+        return array(
+            array(
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
+                        "encodeRTC" => "11223344",
+                        "decodeRTC" => "asdf",
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\packets\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => "78563412",
+                            )
+                        ),
+                    ),
+                ),
+                array(),
+                0x12345678,
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            array("AddressSize"),
+                        ),
+                        "encodeRTC" => array(
+                            array(0x12345678),
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    array(
+                                        "Command" => 'TIMEBROADCAST',
+                                        "Data" => "1122334411223344",
+                                        "To" => 0,
+                                    ),
+                                ),
+                                null,
+                                array(
+                                    "NoReply" => true,
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                true,
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param array $mocks  The data to reset the mocks with
+    * @param array $config The configuration array
+    * @param array $value  The value to set it to
+    * @param array $expect The expected calls in the mock
+    * @param bool  $return The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataTimeBroadcast()
+    */
+    public function testTimeBroadcast($mocks, $config, $value, $expect, $return)
+    {
+        $system   = new \HUGnet\DummySystem();
+        $device = new \HUGnet\DummyBase("Device");
+        $driver = new \HUGnet\DummyBase("Driver");
+        $system->resetMock($mocks);
+        $devnet = &Network::factory($system, $device, $driver);
+        $ret = $devnet->timeBroadcast($value, $config);
+        $this->assertSame($return, $ret,  "Return Wrong");
+        $ret = $system->retrieve();
+        foreach ((array)$expect as $obj => $call) {
+            $this->assertEquals($call, $system->retrieve($obj),  "$obj Calls Wrong");
+        }
+
+    }
+    /**
     * Data provider for testMatcher
     *
     * @return array

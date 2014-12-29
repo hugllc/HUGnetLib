@@ -326,10 +326,9 @@ class Network
         return false;
     }
     /**
-    * Gets the application CRC for the device in question.
-    *
-    * This only works on devices that have loadable firmware, and only when they are
-    * running the bootloader.
+    * Gets the RTC on a device.
+    * 
+    * This only works on devices with a Real Time Clock.
     *
     * @param array $config The network config to use for the packet
     *
@@ -344,10 +343,9 @@ class Network
         return false;
     }
     /**
-    * Sets the application CRC for the device in question.
-    *
-    * This only works on devices that have loadable firmware, and only when they are
-    * running the bootloader.
+    * Sets the RTC on a device.
+    * 
+    * This only works on devices with a Real Time Clock.
     *
     * @param array $config The network config to use for the packet
     *
@@ -366,6 +364,31 @@ class Network
             return $this->_device->decodeRTC($reply->Reply());
         }
         return false;
+    }
+    /**
+    * Sets the RTC on a device.
+    * 
+    * This only works on devices with a Real Time Clock.
+    *
+    * @param array $config The network config to use for the packet
+    *
+    * @return The RTC value
+    */
+    public function timeBroadcast($value = null, $config = array())
+    {
+        $config = (array)$config;
+        $config["NoReply"] = true;
+        
+        $time = $this->_device->encodeRTC($value);
+        $pkt = array(
+            array(
+                "To" => 0,
+                "Command" => "TIMEBROADCAST",
+                "Data" => $time.$time,
+            ),
+        );
+        $reply = $this->_system->network()->send($pkt, null, $config);
+        return true;
     }
     /**
     * Gets the application CRC for the device in question.
