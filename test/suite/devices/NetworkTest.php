@@ -1033,6 +1033,361 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
 
     }
     /**
+    * Data provider for testGetRTC
+    *
+    * @return array
+    */
+    public static function dataGetRTC()
+    {
+        return array(
+            array(
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
+                        "decodeRTC" => "asdf",
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\packets\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => "78563412",
+                            )
+                        ),
+                    ),
+                ),
+                array(),
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            array("AddressSize"),
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
+                        "decodeRTC" => array(
+                            array("78563412"),
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'GET_RTC',
+                                ),
+                                null,
+                                array(
+                                    "timeout" => 4,
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                "asdf",
+            ),
+            array(
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\packets\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => null,
+                            )
+                        ),
+                    ),
+                ),
+                array(),
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            array("AddressSize"),
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'GET_RTC',
+                                ),
+                                null,
+                                array(
+                                    "timeout" => 4,
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                false,
+            ),
+            array(
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => false,
+                    ),
+                ),
+                array(),
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            array("AddressSize"),
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'GET_RTC',
+                                ),
+                                null,
+                                array(
+                                    "timeout" => 4,
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                false,
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param array $mocks  The data to reset the mocks with
+    * @param array $config The configuration array
+    * @param array $expect The expected calls in the mock
+    * @param bool  $return The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataGetRTC()
+    */
+    public function testGetRTC($mocks, $config, $expect, $return)
+    {
+        $system   = new \HUGnet\DummySystem();
+        $device = new \HUGnet\DummyBase("Device");
+        $driver = new \HUGnet\DummyBase("Driver");
+        $system->resetMock($mocks);
+        $devnet = &Network::factory($system, $device, $driver);
+        $ret = $devnet->getRTC($config);
+        $this->assertSame($return, $ret,  "Return Wrong");
+        $ret = $system->retrieve();
+        foreach ((array)$expect as $obj => $call) {
+            $this->assertEquals($call, $system->retrieve($obj),  "$obj Calls Wrong");
+        }
+
+    }
+    /**
+    * Data provider for testSetRTC
+    *
+    * @return array
+    */
+    public static function dataSetRTC()
+    {
+        return array(
+            array(
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
+                        "encodeRTC" => "11223344",
+                        "decodeRTC" => "asdf",
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\packets\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => "78563412",
+                            )
+                        ),
+                    ),
+                ),
+                array(),
+                0x12345678,
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            array("AddressSize"),
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
+                        "decodeRTC" => array(
+                            array("78563412"),
+                        ),
+                        "encodeRTC" => array(
+                            array(0x12345678),
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    array(
+                                        "Command" => 'SET_RTC',
+                                        "Data" => "11223344",
+                                        "To" => 21,
+                                    ),
+                                ),
+                                null,
+                                array(
+                                    "timeout" => 4,
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                "asdf",
+            ),
+            array(
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
+                        "encodeRTC" => "11223344",
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\packets\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => null,
+                            )
+                        ),
+                    ),
+                ),
+                array(),
+                null,
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            array("AddressSize"),
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
+                        "encodeRTC" => array(
+                            array(null),
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    array(
+                                        "Command" => 'SET_RTC',
+                                        "Data" => "11223344",
+                                        "To" => 21,
+                                    ),
+                                ),
+                                null,
+                                array(
+                                    "timeout" => 4,
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                false,
+            ),
+            array(
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                        ),
+                        "encodeRTC" => "11223344",
+                    ),
+                    "Network" => array(
+                        "send" => false,
+                    ),
+                ),
+                array(),
+                null,
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            array("AddressSize"),
+                            array("id"),
+                            array("packetTimeout"),
+                        ),
+                        "encodeRTC" => array(
+                            array(null),
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    array(
+                                        "Command" => 'SET_RTC',
+                                        "Data" => "11223344",
+                                        "To" => 21,
+                                    ),
+                                ),
+                                null,
+                                array(
+                                    "timeout" => 4,
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                false,
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param array $mocks  The data to reset the mocks with
+    * @param array $config The configuration array
+    * @param array $value  The value to set it to
+    * @param array $expect The expected calls in the mock
+    * @param bool  $return The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataSetRTC()
+    */
+    public function testSetRTC($mocks, $config, $value, $expect, $return)
+    {
+        $system   = new \HUGnet\DummySystem();
+        $device = new \HUGnet\DummyBase("Device");
+        $driver = new \HUGnet\DummyBase("Driver");
+        $system->resetMock($mocks);
+        $devnet = &Network::factory($system, $device, $driver);
+        $ret = $devnet->setRTC($value, $config);
+        $this->assertSame($return, $ret,  "Return Wrong");
+        $ret = $system->retrieve();
+        foreach ((array)$expect as $obj => $call) {
+            $this->assertEquals($call, $system->retrieve($obj),  "$obj Calls Wrong");
+        }
+
+    }
+    /**
     * Data provider for testMatcher
     *
     * @return array

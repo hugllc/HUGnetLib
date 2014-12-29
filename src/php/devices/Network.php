@@ -335,6 +335,48 @@ class Network
     *
     * @return The CRC as a string, or false on failure
     */
+    public function getRTC($config = array())
+    {
+        $reply = $this->_sendPkt("GET_RTC", null, (array)$config);
+        if (is_object($reply) && is_string($reply->Reply())) {
+            return $this->_device->decodeRTC($reply->Reply());
+        }
+        return false;
+    }
+    /**
+    * Sets the application CRC for the device in question.
+    *
+    * This only works on devices that have loadable firmware, and only when they are
+    * running the bootloader.
+    *
+    * @param array $config The network config to use for the packet
+    *
+    * @return The CRC as a string, or false on failure
+    */
+    public function setRTC($value = null, $config = array())
+    {
+        $command = array(
+            array(
+                "Command" => "SET_RTC",
+                "Data" => $this->_device->encodeRTC($value),
+            ),
+        );
+        $reply = $this->_sendPkt($command, null, (array)$config);
+        if (is_object($reply) && is_string($reply->Reply())) {
+            return $this->_device->decodeRTC($reply->Reply());
+        }
+        return false;
+    }
+    /**
+    * Gets the application CRC for the device in question.
+    *
+    * This only works on devices that have loadable firmware, and only when they are
+    * running the bootloader.
+    *
+    * @param array $config The network config to use for the packet
+    *
+    * @return The CRC as a string, or false on failure
+    */
     public function getCRC($config = array())
     {
         $reply = $this->_sendPkt("GETCRC", null, (array)$config);
