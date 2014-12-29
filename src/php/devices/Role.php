@@ -81,6 +81,9 @@ class Role
         ),
         "0039-37" => array(
         ),
+        "1046-02" => array(
+            "Type3" => "Type 3",
+        ),
         "Linux" => array(
         ),
         "all" => array(

@@ -168,10 +168,10 @@ abstract class DriverAVR extends Driver
         if (is_null($A)) {
             return null;
         }
-        $Am = self::AM;
-        $s = self::S;
-        $Tf = self::TF;
-        $D = self::D;
+        $Am = static::AM;
+        $s = static::S;
+        $Tf = static::TF;
+        $D = static::D;
         $denom = $Tc * $Tf * $Am * $s;
         if ($denom == 0) {
             return 0.0;
@@ -195,10 +195,10 @@ abstract class DriverAVR extends Driver
         if (is_null($V)) {
             return null;
         }
-        $Am = self::AM;
-        $s = self::S;
-        $Tf = self::TF;
-        $D = self::D;
+        $Am = static::AM;
+        $s = static::S;
+        $Tf = static::TF;
+        $D = static::D;
         $denom = $D * $Vref;
         if ($denom == 0) {
             return null;
@@ -267,10 +267,10 @@ abstract class DriverAVR extends Driver
     */
     protected function getCurrent($A, $R, $G, $Vref, $Tc)
     {
-        $Am = self::AM;
-        $s = self::S;
-        $Tf = self::TF;
-        $D = self::D;
+        $Am = static::AM;
+        $s = static::S;
+        $Tf = static::TF;
+        $D = static::D;
         $denom = $s * $Tc * $Tf * $Am * $G * $R;
         if ($denom == 0) {
             return 0.0;
@@ -297,10 +297,10 @@ abstract class DriverAVR extends Driver
     */
     protected function revCurrent($I, $R, $G, $Vref, $Tc)
     {
-        $Am = self::AM;
-        $s = self::S;
-        $Tf = self::TF;
-        $D = self::D;
+        $Am = static::AM;
+        $s = static::S;
+        $Tf = static::TF;
+        $D = static::D;
         $denom = $D * $Vref;
         if (is_null($I) || ($denom == 0)) {
             return null;
@@ -345,10 +345,10 @@ abstract class DriverAVR extends Driver
     */
     protected function getResistance($A, $Bias, $Tc)
     {
-        $Am = self::AM;
-        $s = self::S;
-        $Tf = self::TF;
-        $D = self::D;
+        $Am = static::AM;
+        $s = static::S;
+        $Tf = static::TF;
+        $D = static::D;
         $Den = ((($Am*$s*$Tc*$Tf)/$D) - $A);
         if (($Den == 0) || !is_numeric($Den)) {
             $Den = 1.0;
@@ -371,10 +371,10 @@ abstract class DriverAVR extends Driver
     */
     protected function revResistance($R, $Bias, $Tc)
     {
-        $Am = self::AM;
-        $s = self::S;
-        $Tf = self::TF;
-        $D = self::D;
+        $Am = static::AM;
+        $s = static::S;
+        $Tf = static::TF;
+        $D = static::D;
         if (($R < 0) || ($Bias <= 0)) {
             return null;
         }
@@ -400,10 +400,10 @@ abstract class DriverAVR extends Driver
     */
     protected function getSweep($A, $R, $Tc)
     {
-        $Am = self::AM;
-        $s = self::S;
-        $Tf = self::TF;
-        $D = self::D;
+        $Am = static::AM;
+        $s = static::S;
+        $Tf = static::TF;
+        $D = static::D;
         $Den = (($Am*$s*$Tc*$Tf)/$D);
         if (($Den == 0) || !is_numeric($Den)) {
             $Den = 1.0;
@@ -436,10 +436,10 @@ abstract class DriverAVR extends Driver
     */
     protected function revSweep($Rs, $R, $Tc)
     {
-        $Am = self::AM;
-        $s = self::S;
-        $Tf = self::TF;
-        $D = self::D;
+        $Am = static::AM;
+        $s = static::S;
+        $Tf = static::TF;
+        $D = static::D;
         $Den = (($Am*$s*$Tc*$Tf)/$D);
         if ($R == 0) {
             return null;
