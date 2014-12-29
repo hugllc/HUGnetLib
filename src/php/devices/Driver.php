@@ -93,6 +93,7 @@ abstract class Driver
         "DaughterBoards" => array("" => "None"),
         "setConfig" => true,
         "AddressSize" => 2,
+        "fixed" => false,
     );
     /**
     * This is where all of the driver information is stored.

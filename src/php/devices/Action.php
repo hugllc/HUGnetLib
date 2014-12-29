@@ -199,8 +199,7 @@ class Action
     */
     protected function configStuff()
     {
-        $arch = $this->device->get("arch");
-        if ($arch === "old") {
+        if ($this->device->get("fixed")) {
             /* This device doesn't have loadable sensors */
             return true;
         }

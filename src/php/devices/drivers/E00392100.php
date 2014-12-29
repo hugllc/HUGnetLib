@@ -78,6 +78,7 @@ class E00392100 extends \HUGnet\devices\Driver
         "job"  => "control",
         "arch" => "old",
         "DataChannels" => 10,
+        "fixed" => true,
     );
 
     /**

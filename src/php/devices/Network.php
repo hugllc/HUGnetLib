@@ -551,8 +551,7 @@ class Network
         if (!$this->_device->get("setConfig")) {
             return true;
         }
-        $arch = $this->_device->get("arch");
-        if ($arch === "old") {
+        if ($this->_device->get("fixed")) {
             /* This device doesn't have loadable sensors */
             return true;
         }
