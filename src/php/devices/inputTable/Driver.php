@@ -157,6 +157,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "02:imcSolar"                => "AVRIMCSolar",
         "02:XMegaTemp"               => "XMegaTemp",
         "02:potDirection"            => "AVRPotDirection",
+        "02:MurataNCPP18XH"          => "XMegaMurataNCPP18XH",
         "10:DEFAULT"                 => "AVRChsMss",
         "10:chsMss"                  => "AVRChsMss",
         "30:DEFAULT"                 => "AVROSRAMLight",

@@ -66,7 +66,7 @@ class Type3 extends \HUGnet\base\Role
     *  This is the input table data
     */
     protected $input = array(
-        0 => array(            // HUGnet1 Voltage High
+        0 => array(
             "id" => 0x50,
             "extra" => array(0.001, 64.0, 1.0),
             "location" => "PC Current",
@@ -142,6 +142,96 @@ class Type3 extends \HUGnet\base\Role
             "id" => 0x40,
             "extra" => array(0, 0, 1.0),
             "location" => "Lower Internal DAC",
+            "type" => "XMegaVoltage",
+        ),
+        13 => array(
+            "id" => 0x50,
+            "extra" => array(0.001, 64.0, 1.0),
+            "location" => "Current 1",
+            "type" => "XMegaCurrent",
+        ),
+        14 => array(
+            "id" => 0x50,
+            "extra" => array(0.001, 64.0, 1.0),
+            "location" => "Current 2",
+            "type" => "XMegaCurrent",
+        ),
+        15 => array(
+            "id" => 0x50,
+            "extra" => array(0.001, 64.0, 1.0),
+            "location" => "Current 3",
+            "type" => "XMegaCurrent",
+        ),
+        16 => array(
+            "id" => 0x50,
+            "extra" => array(0.001, 64.0, 1.0),
+            "location" => "Current 4",
+            "type" => "XMegaCurrent",
+        ),
+        17 => array(
+            "id" => 0x50,
+            "extra" => array(0.001, 64.0, 1.0),
+            "location" => "Current 5",
+            "type" => "XMegaCurrent",
+        ),
+        18 => array(
+            "id" => 0x50,
+            "extra" => array(0.001, 64.0, 1.0),
+            "location" => "Current 6",
+            "type" => "XMegaCurrent",
+        ),
+        19 => array(
+            "id" => 0x50,
+            "extra" => array(0.001, 64.0, 1.0),
+            "location" => "Current 7",
+            "type" => "XMegaCurrent",
+        ),
+        20 => array(
+            "id" => 0x50,
+            "extra" => array(0.001, 64.0, 1.0),
+            "location" => "Current 8",
+            "type" => "XMegaCurrent",
+        ),
+        21 => array(
+            "id" => 0x40,
+            "extra" => array(40.2, 2.0, 1.0),
+            "location" => "V++",
+            "type" => "XMegaVoltage",
+        ),
+        22 => array(
+            "id" => 0x40,
+            "extra" => array(33, 3.3, 1.0),
+            "location" => "Vcc",
+            "type" => "XMegaVoltage",
+        ),
+        22 => array(
+            "id" => 0x02,
+            "extra" => array(10),
+            "location" => "Thermistor 1",
+            "type" => "MurataNCPP18XH",
+        ),
+        23 => array(
+            "id" => 0x02,
+            "extra" => array(10),
+            "location" => "Thermistor 2",
+            "type" => "MurataNCPP18XH",
+        ),
+        24 => array(
+            "id" => 0x02,
+            "extra" => array(),
+            "location" => "Upper Internal Temperature",
+            "type" => "XMegaTemp",
+        ),
+        25 => array(
+            "id" => 0x40,
+            "extra" => array(1.0),
+            "location" => "Upper Internal VCC",
+            "type" => "XMegaVCC",
+        ),
+        26 => array( 
+            "id" => 0x40,
+            "extra" => array(0, 0, 1.0),
+            "location" => "Upper Internal DAC",
             "type" => "XMegaVoltage",
         ),
     );
