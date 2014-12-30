@@ -128,7 +128,7 @@ class Type3 extends \HUGnet\base\Role
         ),
         10 => array(
             "id" => 0x02,
-            "extra" => array(40.2, 2.0, 1.0),
+            "extra" => array(),
             "location" => "Lower Internal Temperature",
             "type" => "XMegaTemp",
         ),
@@ -140,9 +140,9 @@ class Type3 extends \HUGnet\base\Role
         ),
         12 => array( 
             "id" => 0x40,
-            "extra" => array(0.001, 64.0, 1.0),
+            "extra" => array(0, 0, 1.0),
             "location" => "Lower Internal DAC",
-            "type" => "XMegaCurrent",
+            "type" => "XMegaVoltage",
         ),
     );
     /**

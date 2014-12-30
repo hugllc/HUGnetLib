@@ -83,6 +83,21 @@ class E10460200 extends \HUGnet\devices\Driver
         "fixed" => true,
         "Role" => "Type3",
     );
+    /**
+    * Decodes the sensor string
+    *
+    * @param string $string The string of sensor data
+    *
+    * @return null
+    */
+    public function decodeSensorString($string)
+    {
+        $ret = array(
+            "DataIndex" => hexdec(substr($string, 0, 2)),
+            "String" => substr($string, 2),
+        );
+        return $ret;
+    }
 
 }
 

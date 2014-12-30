@@ -118,7 +118,11 @@ class XMegaVoltage extends \HUGnet\devices\inputTable\DriverAVR
         $R1   = $this->getExtra(0);
         $R2   = $this->getExtra(1);
         $Vref = $this->getExtra(2);
-        $V = $this->getDividerVoltage($A, $R1, $R2, $Vref, $data["timeConstant"]);
+        if ($R1 == 0) {
+            $V = $this->getVoltage($A, $Vref, 1);
+        } else {
+            $V = $this->getDividerVoltage($A, $R1, $R2, $Vref, $data["timeConstant"]);
+        }
         return round($V, 4);
     }
     /**
@@ -141,9 +145,13 @@ class XMegaVoltage extends \HUGnet\devices\inputTable\DriverAVR
         $R1   = $this->getExtra(0);
         $R2   = $this->getExtra(1);
         $Vref = $this->getExtra(2);
-        $A    = $this->revDividerVoltage(
-            $value, $R1, $R2, $Vref, $data["timeConstant"]
-        );
+        if ($R1 == 0) {
+            $A = $this->revVoltage($value, $Vref, 1);
+        } else {
+            $A = $this->revDividerVoltage(
+                $value, $R1, $R2, $Vref, 1
+            );
+        }
         if (($A < 0) || is_null($A) || is_null($value)) {
             return null;
         }

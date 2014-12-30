@@ -66,19 +66,20 @@ class XMegaTemp extends \HUGnet\devices\inputTable\DriverAVR
         "unitType" => "Temperature",
         "storageUnit" => '&#176;C',
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
-        "extraText" => array("Bias Resistor (kOhms)"),
+        "extraText" => array("Value @ 0k", "Value @ 385k"),
         "extraDesc" => array(
-            "The resistance connected between the thermistor and the reference
-             voltage",
+            "The calibration value at 0k",
+            "The calibration value at 385k",
         ),
         "extraNames" => array(
-            "r" => 0,
+            "cal0" => 0,
+            "cal385" => 1,
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
-        "extraValues" => array(5),
-        "extraDefault" => array(100),
+        "extraValues" => array(8, 8),
+        "extraDefault" => array(0, 0x520),
         "maxDecimals" => 2,
         "requires" => array("AI"),
         "provides" => array("DC"),
@@ -99,12 +100,17 @@ class XMegaTemp extends \HUGnet\devices\inputTable\DriverAVR
     */
     protected function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
-        $Bias  = $this->getExtra(0);
-        if (is_null($T)) {
+        $valLow   = $this->getExtra(0);
+        $valHigh  = $this->getExtra(1);
+        if ($valHigh == $valLow) {
             return null;
         }
-        // tableInterpolate forces the result to be in range, or returns null
-        $T = round($T, 4);
+        $k        = 385 / ($valHigh - $valLow);
+        var_dump($k);
+        var_dump($A);
+        // This is kelvin, so the -273.15 converts it into C
+        $T = ($A * $k) - 273.15;
+        $T = round($T, $this->get("maxDecimals"));
         return $T;
     }
     /**
