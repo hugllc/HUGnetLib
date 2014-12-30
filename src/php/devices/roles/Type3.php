@@ -218,17 +218,29 @@ class Type3 extends \HUGnet\base\Role
         ),
         24 => array(
             "id" => 0x02,
+            "extra" => array(10),
+            "location" => "UpAnalog 1",
+            "type" => "MurataNCPP18XH",
+        ),
+        25 => array(
+            "id" => 0x02,
+            "extra" => array(10),
+            "location" => "UpAnalog 2",
+            "type" => "MurataNCPP18XH",
+        ),
+        26 => array(
+            "id" => 0x02,
             "extra" => array(),
             "location" => "Upper Internal Temperature",
             "type" => "XMegaTemp",
         ),
-        25 => array(
+        27 => array(
             "id" => 0x40,
             "extra" => array(1.0),
             "location" => "Upper Internal VCC",
             "type" => "XMegaVCC",
         ),
-        26 => array( 
+        28 => array( 
             "id" => 0x40,
             "extra" => array(0, 0, 1.0),
             "location" => "Upper Internal DAC",
