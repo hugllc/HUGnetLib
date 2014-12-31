@@ -74,7 +74,7 @@ class E10460200 extends \HUGnet\devices\Driver
         "type" => "endpoint",
         "job"  => "sense",
         "arch" => "1046-02",
-        "InputTables" => 27,
+        "InputTables" => 40,
         "OutputTables" => 0,
         "DataChannels" => 2,
         "ProcessTables" => 0,
