@@ -106,8 +106,6 @@ class XMegaTemp extends \HUGnet\devices\inputTable\DriverAVR
             return null;
         }
         $k        = 385 / ($valHigh - $valLow);
-        var_dump($k);
-        var_dump($A);
         // This is kelvin, so the -273.15 converts it into C
         $T = ($A * $k) - 273.15;
         $T = round($T, $this->get("maxDecimals"));

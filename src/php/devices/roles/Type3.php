@@ -204,43 +204,43 @@ class Type3 extends \HUGnet\base\Role
             "location" => "Vcc",
             "type" => "XMegaVoltage",
         ),
-        22 => array(
+        23 => array(
             "id" => 0x02,
             "extra" => array(10),
             "location" => "Thermistor 1",
             "type" => "MurataNCPP18XH",
         ),
-        23 => array(
+        24 => array(
             "id" => 0x02,
             "extra" => array(10),
             "location" => "Thermistor 2",
             "type" => "MurataNCPP18XH",
         ),
-        24 => array(
+        25 => array(
             "id" => 0x02,
             "extra" => array(10),
             "location" => "UpAnalog 1",
             "type" => "MurataNCPP18XH",
         ),
-        25 => array(
+        26 => array(
             "id" => 0x02,
             "extra" => array(10),
             "location" => "UpAnalog 2",
             "type" => "MurataNCPP18XH",
         ),
-        26 => array(
+        27 => array(
             "id" => 0x02,
             "extra" => array(),
             "location" => "Upper Internal Temperature",
             "type" => "XMegaTemp",
         ),
-        27 => array(
+        28 => array(
             "id" => 0x40,
             "extra" => array(1.0),
             "location" => "Upper Internal VCC",
             "type" => "XMegaVCC",
         ),
-        28 => array( 
+        29 => array( 
             "id" => 0x40,
             "extra" => array(0, 0, 1.0),
             "location" => "Upper Internal DAC",

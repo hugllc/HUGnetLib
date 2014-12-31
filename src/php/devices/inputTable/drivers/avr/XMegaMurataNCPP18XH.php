@@ -90,6 +90,7 @@ class XMegaMurataNCPP18XH extends \HUGnet\devices\inputTable\DriverAVR
         "maxDecimals" => 2,
         "requires" => array("AI"),
         "provides" => array("DC"),
+        "inputSize" => 2,
     );
     /** @var array The table for IMC Sensors */
     protected $valueTable = array(
