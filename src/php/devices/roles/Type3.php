@@ -201,7 +201,7 @@ class Type3 extends \HUGnet\base\Role
         22 => array(
             "id" => 0x40,
             "extra" => array(33, 3.3, 1.0),
-            "location" => "Vcc",
+            "location" => "U5V",
             "type" => "XMegaVoltage",
         ),
         23 => array(
