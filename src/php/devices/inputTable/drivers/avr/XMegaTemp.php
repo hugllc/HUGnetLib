@@ -66,10 +66,10 @@ class XMegaTemp extends \HUGnet\devices\inputTable\DriverAVR
         "unitType" => "Temperature",
         "storageUnit" => '&#176;C',
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
-        "extraText" => array("Value @ 0k", "Value @ 385k"),
+        "extraText" => array("Temp", "Value @ Temp"),
         "extraDesc" => array(
-            "The calibration value at 0k",
-            "The calibration value at 385k",
+            "The calibration temperature",
+            "The calibration value at the calibration temperature",
         ),
         "extraNames" => array(
             "cal0" => 0,
@@ -79,7 +79,7 @@ class XMegaTemp extends \HUGnet\devices\inputTable\DriverAVR
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(8, 8),
-        "extraDefault" => array(0, 0x520),
+        "extraDefault" => array(0x55, 0x4AB),
         "maxDecimals" => 2,
         "requires" => array("AI"),
         "provides" => array("DC"),
@@ -100,12 +100,12 @@ class XMegaTemp extends \HUGnet\devices\inputTable\DriverAVR
     */
     protected function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
-        $valLow   = $this->getExtra(0);
+        $temp     = $this->getExtra(0);
         $valHigh  = $this->getExtra(1);
         if ($valHigh == $valLow) {
             return null;
         }
-        $k        = 385 / ($valHigh - $valLow);
+        $k        = ($temp + 273.15) / $valHigh;
         // This is kelvin, so the -273.15 converts it into C
         $T = ($A * $k) - 273.15;
         $T = round($T, $this->get("maxDecimals"));
