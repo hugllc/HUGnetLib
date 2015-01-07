@@ -128,7 +128,6 @@ class Type3 extends \HUGnet\base\Role
         ),
         10 => array(
             "id" => 0x02,
-            "extra" => array(),
             "location" => "Lower Internal Temperature",
             "type" => "XMegaTemp",
         ),
@@ -230,7 +229,6 @@ class Type3 extends \HUGnet\base\Role
         ),
         27 => array(
             "id" => 0x02,
-            "extra" => array(),
             "location" => "Upper Internal Temperature",
             "type" => "XMegaTemp",
         ),
