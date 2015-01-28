@@ -807,6 +807,21 @@ class Device extends \HUGnet\base\SystemTableAction
         return $fixture;
     }
     /**
+    * This creates an error object
+    *
+    * @param mixed $data the data to use to create the error
+    *
+    * @return The error object
+    */
+    public function &error($data = null)
+    {
+        include_once dirname(__FILE__)."/../devices/Error.php";
+        $error = \HUGnet\devices\Error::factory(
+            $this->system(), $data, null, $this
+        );
+        return $error;
+    }
+    /**
     * Returns the devices XML file as an array
     *
     * @param mixed $obsolete Bool true for yes, bool false for no, anything

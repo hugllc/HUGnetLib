@@ -2829,6 +2829,73 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
+    public static function dataError()
+    {
+        return array(
+            array(      // #0
+                array(
+                    "id" => 0x123456,
+                    "DeviceID" => "123456",
+                ),
+                "010203040506070809",
+                "\HUGnet\devices\Error",
+                array(
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config       The configuration to use
+    * @param string $error        The driver to tell it to load
+    * @param string $driverExpect The driver we expect to be loaded
+    * @param int    $expect       The expected sensor id
+    *
+    * @return null
+    *
+    * @dataProvider dataError
+    */
+    public function testError(
+        $config, $error, $driverExpect, $expect
+    ) {
+        $sys = $this->getMock(
+            '\HUGnet\System', 
+            array('now'),
+            array(
+                array(
+                    "servers" => array(
+                        "hello" => array(
+                            "driver" => "sqlite",
+                            "file" => ":memory:",
+                            "group" => "hello",
+                        ),
+                        "default" => array(
+                            "driver" => "sqlite",
+                            "file" => ":memory:",
+                            "group" => "default",
+                        ),
+                    ),
+                ),
+            )
+        );
+        $sys->expects($this->any())
+            ->method('now')
+            ->will($this->returnValue(1000000));
+        $obj = Device::factory($sys, $config);
+        $fix = $obj->error($error);
+        $this->assertTrue(
+            is_a($fix, $driverExpect),
+            "Return is not a ".$driverExpect
+        );
+        $this->assertSame($obj->get("id"), $fix->id(), "ID is wrong");
+        unset($obj);
+    }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
     public static function dataChannels()
     {
         return array(

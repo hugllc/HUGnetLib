@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+    <table name="deviceErrors">
+        <column>id</column>
+        <column>Date</column>
+        <column>errno</column>
+        <column>extra</column>
+    </table>
+</dataset>
