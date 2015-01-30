@@ -89,6 +89,10 @@ class E00393700 extends \HUGnet\devices\Driver
                 10 => "P2.0",
                 11 => "P2.1",
         ),
+        "LogicStates" => array(
+                0 => "Normal",
+                1 => "Inverted",
+        ),
         "DigitalOutputs" => array(
                 0 => "P1.2",
                 1 => "P1.3",
