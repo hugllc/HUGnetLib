@@ -72,17 +72,18 @@ class DigitalInput extends \HUGnet\devices\inputTable\Driver
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
+            1,
             array(),
             array()
         ),
-        "extraDefault" => array(0, 0),
+        "extraDefault" => array(2, 0),
         "extraDesc" => array(
             "The input port number",
             "The type of logic, normal or inverted",
         ),
         "extraNames" => array(
-            "port0"       => 0,
-            "logictype"   => 1,
+            "port0"      => 1,
+            "logic"      => 2,
         ),
         "maxDecimals" => 0,
         "inputSize" => 4,
@@ -130,7 +131,6 @@ class DigitalInput extends \HUGnet\devices\inputTable\Driver
     protected function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
         
-
         $bits = 32;
         /* Clear off any excess */
         $A = (int)($A & (pow(2, $bits) - 1));
@@ -141,7 +141,6 @@ class DigitalInput extends \HUGnet\devices\inputTable\Driver
             /* This is a negative number */
             $A = -(pow(2, $bits) - $A);
         }
-
 
         return (int)$A;
     }
@@ -169,6 +168,65 @@ class DigitalInput extends \HUGnet\devices\inputTable\Driver
 
         return (int)$value;
     }
+
+
+    /**
+    * Decodes the driver portion of the setup string
+    *
+    * @param string $string The string to decode
+    *
+    * @return array
+    */
+    public function decode($string)
+    {
+        $extra = $this->pDecode($string, 0);
+        $this->input()->set("extra", $extra);
+    }
+
+    /**
+    * Encodes this driver as a setup string
+    *
+    * @return array
+    */
+    public function encode()
+    {
+        return $this->pEncode(0);
+    }
+
+    /**
+    * Decodes the driver portion of the setup string
+    *
+    * @param string &$string The string to decode
+    * @param int    $index   The index to start in the extra
+    *
+    * @return array
+    */
+    protected function pDecode(&$string, $index)
+    {
+        $extra = $this->input()->get("extra");
+        $extra[$index] = $this->decodeInt(substr($string, 6, 2), 1);
+        $index++;
+        $extra[$index] = $this->decodeInt(substr($string, 8, 2), 1);
+        return $extra;
+    }
+    /**
+    * Encodes this driver as a setup string
+    *
+    * @param int $index The index to start in the extra
+    * 
+    * @return array
+    */
+    protected function pEncode($index = 0)
+    {
+        
+        $string  = "00"; /* place holder for subdriver */
+        $tring  .= "01"; /* priority level */
+        $string .= $this->encodeInt($this->getExtra($index), 1);
+        $index++;
+        $string .= $this->encodeInt($this->getExtra($index), 1);
+        return $string;
+    }
+
 
 }
 
