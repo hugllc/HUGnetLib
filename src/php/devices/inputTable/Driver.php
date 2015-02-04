@@ -127,6 +127,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "70:MaximumAnemometer"       => "MaximumAnemometer",
         "70:MaximumRain"             => "MaximumRain",
         "70:WattNode"                => "WattNode",
+        "71:DEFAULT"                 => "DigitalInput",
         "7F:DEFAULT"                 => "GenericPulse",
         "7F:GenericRevolving"        => "GenericRevolving",
         "7F:LiquidFlow"              => "LiquidFlow",
@@ -223,6 +224,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "0039-37" => array(
             0x60 => "Control Value Input",
             0x70 => "Pulse Counter",
+            0x71 => "Digital Input",
             0xF9 => "Input Table Entry",
         ),
         "Linux" => array(
