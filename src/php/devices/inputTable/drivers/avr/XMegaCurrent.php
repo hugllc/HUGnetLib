@@ -117,6 +117,8 @@ class XMegaCurrent extends \HUGnet\devices\inputTable\DriverAVR
         $R    = $this->getExtra(0);
         $Gain = $this->getExtra(1);
         $Vref = $this->getExtra(2);
+        $A    = $this->twosCompliment($A, $this->get("inputSize") * 8);
+
         $Amps = $this->getCurrent($A, $R, $Gain, $Vref, $data["timeConstant"]);
         return round($Amps * 1000, 1);  // Return mA
     }

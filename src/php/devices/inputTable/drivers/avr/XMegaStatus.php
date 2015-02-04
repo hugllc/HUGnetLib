@@ -113,7 +113,6 @@ class XMegaStatus extends \HUGnet\devices\inputTable\DriverAVR
     */
     protected function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
-    var_dump($A);
         $val = ($A & 0xFF).".".(($A >> 8) & 0xFF);
         return $val;
     }

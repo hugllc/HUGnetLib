@@ -883,6 +883,64 @@ class DriverAVRTest extends drivers\DriverTestBase
             ),
         );
     }
+    /**
+    * data provider for testNumeric
+    *
+    * @return array
+    */
+    public static function dataTwosCompliment()
+    {
+        return array(
+            array(  // #0
+                8388608,
+                24,
+                array(),
+                -8388608,
+            ),
+            array(  // #1
+                0xFFFFFF,
+                24,
+                array(),
+                -1,
+            ),
+            array(  // #2
+                0xFFFFFFFFFFFF,
+                24,
+                array(),
+                -1,
+            ),
+            array(  // #3
+                0,
+                24,
+                array(),
+                0,
+            ),
+            array(  // #4
+                8388607,
+                24,
+                array(),
+                8388607,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param int   $value  The integer to feed to the function
+    * @param int   $bits   The number of bits to use
+    * @param array $entry  The input table entry to use
+    * @param int   $expect The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataTwosCompliment
+    */
+    public function testTwosCompliment($value, $bits, $entry, $expect)
+    {
+        $val = $this->o->twosCompliment($value, $bits);
+        $this->assertSame($expect, $val);
+    }
 }
 /** This is the HUGnet namespace */
 namespace HUGnet\devices\inputTable\drivers;
@@ -1158,5 +1216,18 @@ class DriverAVRTestClass extends \HUGnet\devices\inputTable\DriverAVR
     {
         return parent::revSweep($Rs, $R, $Tc);
     }
+    /**
+    * Changes an n-bit twos compliment number into a signed number PHP can use
+    *
+    * @param int   $value The incoming number
+    * @param float $bits  The number of bits the incoming number is
+    *
+    * @return int A signed integer for PHP to use
+    */
+    public function twosCompliment($value, $bits = 16)
+    {
+        return parent::twosCompliment($value, $bits);
+    }
+    
 }
 ?>

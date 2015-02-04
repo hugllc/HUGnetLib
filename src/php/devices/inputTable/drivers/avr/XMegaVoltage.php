@@ -118,10 +118,12 @@ class XMegaVoltage extends \HUGnet\devices\inputTable\DriverAVR
         $R1   = $this->getExtra(0);
         $R2   = $this->getExtra(1);
         $Vref = $this->getExtra(2);
+        $A    = $this->twosCompliment($A, $this->get("inputSize") * 8);
+        
         if ($R1 == 0) {
             $V = $this->getVoltage($A, $Vref, 1);
         } else {
-            $V = $this->getDividerVoltage($A, $R1, $R2, $Vref, $data["timeConstant"]);
+            $V = $this->getDividerVoltage($A, $R1, $R2, $Vref, 1);
         }
         return round($V, 4);
     }

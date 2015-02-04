@@ -447,6 +447,27 @@ abstract class DriverAVR extends Driver
         $A = ($Rs * $Den) / $R;
         return (int)round($A);
     }
+    /**
+    * Changes an n-bit twos compliment number into a signed number PHP can use
+    *
+    * @param int   $value The incoming number
+    * @param float $bits  The number of bits the incoming number is
+    *
+    * @return int A signed integer for PHP to use
+    */
+    protected function twosCompliment($value, $bits = 16)
+    {
+        /* Clear off any excess */
+        $value = (int)($value & (pow(2, $bits) - 1));
+        /* Calculate the top bit */
+        $topBit = pow(2, ($bits - 1));
+        /* Check to see if the top bit is set */
+        if (($value & $topBit) == $topBit) {
+            /* This is a negative number */
+            $value = -(pow(2, $bits) - $value);
+        }
+        return $value;
+    }
 
 }
 

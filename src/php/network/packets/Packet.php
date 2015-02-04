@@ -151,6 +151,10 @@ final class Packet implements PacketInterface
         "BOOTLOADPOWERUP" => 0x6E,
         "BOOTLOADERBORED" => 0x6F,
         "TIMEBROADCAST" => 0x70,
+        "GOONLINE"      => 0x71,
+        "CPUREADY"      => 0x72,
+        "READERROR"      => 0x73,
+        "DEVICEERROR" => 0x77,
         "BAD COMMAND" => 0xFF,
     );
 

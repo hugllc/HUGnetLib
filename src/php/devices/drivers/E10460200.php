@@ -108,7 +108,7 @@ class E10460200 extends \HUGnet\devices\Driver
     public function decode($string)
     {
     
-        if (strlen($string) < 12) {
+        if (strlen($string) < 6) {
             return;
         }
         // This is the temperature constants for the internal temperature.
@@ -116,13 +116,18 @@ class E10460200 extends \HUGnet\devices\Driver
             "temp" => hexdec(substr($string, 0, 2)),
             "set"  => hexdec(substr($string, 2, 2)) + (hexdec(substr($string, 4, 2)) << 8)
         );
-        $temp[1] = array(
-            "temp" => hexdec(substr($string, 6, 2)),
-            "set"  => hexdec(substr($string, 8, 2)) + (hexdec(substr($string, 10, 2)) << 8)
-        );
+        if (strlen($string) >= 12) {
+            $temp[1] = array(
+                "temp" => hexdec(substr($string, 6, 2)),
+                "set"  => hexdec(substr($string, 8, 2)) + (hexdec(substr($string, 10, 2)) << 8)
+            );
+        }
 
         $index = 0;
         for ($i = 0; $i < $this->get("InputTables"); $i++) {
+            if (!isset($temp[$index])) {
+                break;
+            }
             $input = $this->device()->input($i);
             if ($input->get("type") == "XMegaTemp") {
                 $input->setExtra(0, $temp[$index]["temp"]);
