@@ -25,7 +25,7 @@ test/files/.directory
 test/suite/.directory
 test/suite/devices/.directory
 test/suite/devices/drivers/.directory
-test/suite/devices/inutTable/.directory
+test/suite/devices/inputTable/.directory
 test/suite/devices/inputTable/drivers/.directory
 test/suite/ui/.directory
 *.gz

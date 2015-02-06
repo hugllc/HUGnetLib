@@ -1036,7 +1036,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                 false,
                 array(),
                 "Date,Channel1 (Dallas),Channel3 (hello)\r\n"
-                    ."2012-11-12 03:05:31,1,3\r\n",
+                    ."2012-11-12 03:05:31,1,3\r\n",  /* right here */
                 array(
                     "History" => array(
                         "getPeriod" => array(
@@ -1112,7 +1112,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                 false,
                 array(),
                 "Date,Channel1 (Dallas),Channel3 (hello)\r\n"
-                    ."2012-11-12 03:05:31,1,3\r\n",
+                    ."2012-11-12 03:05:31,1,3\r\n", /* or right here */
                 array(
                     "History" => array(
                         "getPeriod" => array(
@@ -1611,7 +1611,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     ."<tr><th>Date</th><th>Channel1 (Dallas)</th><th>Channel3 "
                     ."(hello)</th></tr>\r\n"
                     ."<tr><td>2012-11-11 21:05:31</td><td>1</td><td>3</td></tr>"
-                    ."\r\n</table></body>\r\n</html>",
+                    ."\r\n</table></body>\r\n</html>",  /* this might be it */
                 array(
                     "History" => array(
                         "getPeriod" => array(
@@ -1685,7 +1685,7 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     ."(hello)</th></tr>\r\n"
                     ."<tr><td>2012-11-11 21:05:31</td><td>ABCD</td><td>1</td>"
                     ."<td>3</td></tr>"
-                    ."\r\n</table></body>\r\n</html>",
+                    ."\r\n</table></body>\r\n</html>", /* or here! */
                 array(
                     "History" => array(
                         "toArray" => array(

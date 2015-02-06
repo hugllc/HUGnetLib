@@ -442,6 +442,7 @@ class DriverTest extends drivers\DriverTestBase
                 array(
                     0x60 => 'Control Value Input',
                     0x70 => "Pulse Counter",
+                    0x71 => "Digital Input",
                     0xF9 => 'Input Table Entry',
                     0xFE => 'Virtual',
                     0xFF => 'Empty Slot'

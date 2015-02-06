@@ -283,7 +283,6 @@ class DigitalInputTest extends DriverTestBase
     */
     public function testDecode($mocks, $string, $expect)
     {
-        echo ("Input String is ".$string);
         $this->input->resetMock($mocks);
         $this->o->decode($string);
         $ret = $this->input->retrieve();
