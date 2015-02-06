@@ -61,7 +61,7 @@ class DigitalInput extends \HUGnet\devices\inputTable\Driver
     protected $params = array(
         "longName" => "Digital Input",
         "shortName" => "Digital",
-        "unitType" => "Logic Level",
+        "unitType" => "LogicLevel",
         "storageUnit" => 'State',
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraText" => array(
@@ -72,7 +72,6 @@ class DigitalInput extends \HUGnet\devices\inputTable\Driver
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            1,
             array(),
             array()
         ),
@@ -82,8 +81,8 @@ class DigitalInput extends \HUGnet\devices\inputTable\Driver
             "The type of logic, normal or inverted",
         ),
         "extraNames" => array(
-            "port0"      => 1,
-            "logic"      => 2,
+            "port0"      => 0,
+            "logic"      => 1,
         ),
         "maxDecimals" => 0,
         "inputSize" => 4,
