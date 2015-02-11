@@ -494,7 +494,8 @@ final class Packet implements PacketInterface
     */
     public function type()
     {
-        $key = array_search($this->_command, self::$_commands);
+        $command = $this->_command & 0x7F;
+        $key = array_search($command, self::$_commands);
         if (!is_bool($key)) {
             return $key;
         }
