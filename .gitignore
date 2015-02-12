@@ -20,6 +20,7 @@ src/webapi/html/contrib.min.js
 src/webapi/html/images/config/.directory
 src/php/.directory
 src/php/devices/.directory
+src/php/ui/.directory
 test/.directory
 test/files/.directory
 test/suite/.directory
