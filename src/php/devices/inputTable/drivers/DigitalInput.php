@@ -219,7 +219,7 @@ class DigitalInput extends \HUGnet\devices\inputTable\Driver
     {
         
         $string  = "00"; /* place holder for subdriver */
-        $tring  .= "01"; /* priority level */
+        $string  .= "01"; /* priority level */
         $string .= $this->encodeInt($this->getExtra($index), 1);
         $index++;
         $string .= $this->encodeInt($this->getExtra($index), 1);
