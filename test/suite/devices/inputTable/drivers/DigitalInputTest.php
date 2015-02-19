@@ -307,7 +307,7 @@ class DigitalInputTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "000200",
+                "00010200",
             ),
             array( // #1
                 array(
@@ -318,7 +318,7 @@ class DigitalInputTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "000200",
+                "00010200",
             ),
         );
     }
