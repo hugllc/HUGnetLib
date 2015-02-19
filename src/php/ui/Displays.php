@@ -108,6 +108,66 @@ class Displays extends CLI
     }
 
     /**
+    *******************************************************
+    * Multiple Line Heading
+    *
+    * this function prints out the multiple line 
+    * heading passed to it inside a box of stars.
+    *
+    * @param $heaingsArray  an array of heading strings
+    *
+    * @return void
+    **/
+    public function displayMLHeader($headingsArray=array())
+    {
+
+        $items = count($headingsArray);
+
+
+        for ($i=0; $i < $items; $i++) {
+
+            $length = strlen($headingsArray[$i]);
+
+
+            /* if not divisible by 2, then add a space */
+            if (($length % 2) != 0) {
+                $headingsArray[$i] .= " ";
+                $length++;
+            }
+
+            $remainder = 60 - $length;
+
+            $blankspc = $remainder/2 -1;
+
+            $outstring = "*";
+            for ($j=0;$j<$blankspc;$j++) {
+                $outstring .= " ";
+            }
+
+            $outstring .= $headingsArray[$i]; 
+            for ($j=0;$j<$blankspc;$j++) {
+                $outstring .= " ";
+            }
+
+            $headingsArray[$i] = $outstring."*";
+
+        }
+
+        $this->_system->out(str_repeat("*", 60));
+        $this->_system->out("*".str_repeat(" ", 58)."*");
+
+        for ($j=0; $j<$items; $j++) {
+            $this->_system->out($headingsArray[$j]);
+        }
+        $this->_system->out("*".str_repeat(" ", 58)."*");
+        $this->_system->out(str_repeat("*", 60));
+
+        $this->_system->out("\n\r\n\r");
+
+    }
+
+
+    /**
     ********************************************************
     * Print Header Routine
     *
@@ -144,12 +204,13 @@ class Displays extends CLI
         $outstring .= "*";
 
         $this->_system->out(str_repeat("*", 60));
-        $this->_system->out("*                                                          *");
+        $this->_system->out("*".str_repeat(" ", 58)."*");
+
         $this->_system->out($outstring);
-        $this->_system->out("*                                                          *");
+        $this->_system->out("*".str_repeat(" ", 58)."*");
         $this->_system->out(str_repeat("*", 60));
 
-        $this->_system->out("\n\r\n\r");
+        $this->_system->out("\n\r");
 
     }
 
