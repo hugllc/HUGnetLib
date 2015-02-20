@@ -88,18 +88,58 @@ class DisplaysTest extends \PHPUnit_Framework_TestCase
         unset($this->display);
 
     }
+
+    /**
+    * data provider for testClearScreen
+    *
+    * @return array
+    */
+    public static function dataTestClearScreen()
+    {
+        return array(
+            array(
+                true,
+            ),
+
+        );
+    }
+
+    /**
+    * Tests the clearScreen function
+    *
+    * @param $expect
+    *
+    * @return null
+    *
+    * @dataProvider dataTestClearScreen()
+    */
+    public function testClearScreen($expect)
+    {
+        ob_start();
+        $this->display->clearScreen();
+        $newHeading = ob_get_contents();
+        ob_end_clean();
+
+        $this->assertEquals($expect,(boolean)$newHeading);
+
+    }
+
     /**
     * data provider for testDisplayHeader
     *
     * @return array
     */
-    public static function dataTestDisplayHeader()
+    public static function dataTestDisplayMLHeader()
     {
         return array(
             array(
-                "Test Heading",
+                array(
+                    0 => "Test Headings",
+                    1 => "Test Heading",
+                ),
                 "************************************************************
 *                                                          *
+*                      Test Headings                       *
 *                       Test Heading                       *
 *                                                          *
 ************************************************************
@@ -109,10 +149,51 @@ class DisplaysTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-    * Tests the iteration and preload functions
+    * Tests the displayMLHeader function
+    *
+    * @param array  $headingArray   array of heading strings
+    * @param string $expect         The display we are expecting
+    *
+    * @return null
+    *
+    * @dataProvider dataTestDisplayMLHeader()
+    */
+    public function testDisplayMLHeader($heading=array(), $expect)
+    {
+        ob_start();
+        $this->display->displayMLHeader($heading);
+        $newHeading = ob_get_contents();
+        ob_end_clean();
+
+        $this->assertEquals($expect, $newHeading);
+    }
+
+
+    /**
+    * data provider for testDisplayHeader
+    *
+    * @return array
+    */
+    public static function dataTestDisplayHeader()
+    {
+        return array(
+            array(
+                "Test Headings",
+                "************************************************************
+*                                                          *
+*                      Test Headings                       *
+*                                                          *
+************************************************************
+\n\r\n",
+             )
+        );
+    }
+
+    /**
+    * Tests the displayHeader function
     *
     * @param string $heading   heading string
-    * @param mixed $expect The system object we are expecting
+    * @param string $expect    The display we are expecting
     *
     * @return null
     *
@@ -127,6 +208,167 @@ class DisplaysTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($expect, $newHeading);
     }
+
+
+
+/************************************************************************************
+* This test commented out because the displayMenu routine does a readline, prompting
+* user input.  This stops the test and waits for user input and currently their is 
+* no way to programmatically stuff a keyboard response.
+*
+    /**
+    * data provider for testDisplayMenu
+    *
+    * @return array
+    *
+    public static function dataTestDisplayMenu()
+    {
+        return array(
+            array(
+                "Test Headings",
+                array(
+                    0 => "Menu Item 1",
+                    1 => "Menu Item 2",
+                    2 => "Menu Item 3",
+                ),
+                "************************************************************
+*                                                          *
+*                      Test Headings                       *
+*                                                          *
+************************************************************
+\n\r
+A ) Menu Item 1
+B ) Menu Item 2
+C ) Menu Item 3
+D ) Exit
+\r\n",
+             )
+        );
+    }
+    
+    /**
+    * Test the displayMenu function
+    * 
+    * @param string $heading
+    * @param array  $menu
+    * @param string $expect
+    *
+    * @return null
+    *
+    * @dataProvider dataTestDisplayMenu()
+    *
+    public function testDisplayMenu($heading, $menuArray, $expect)
+    {
+        ob_start();
+        $this->display->displayMenu($heading, $menuArray);
+        $menuDisplay = ob_get_contents();
+        ob_end_clean();
+
+
+        /***
+        print "\n\rMenuDisplay Contents\n\r";
+        var_dump($menuDisplay);
+
+        print "expect contents\n\r";
+        var_dump($expect);
+
+
+        for ($i=0; $i < strlen($menuDisplay); $i++) {
+            if ($menuDisplay[$i] != $expect[$i]) {
+                print "mismatch at ".$i."\n\r";
+                print "the ".ord($menuDisplay[$i])."does not match".
+                            ord($expect[$i])."\n\r";
+            }
+        }  
+
+        $this->assertEquals($expect, $menuDisplay);
+
+    } 
+*
+* End of commented out menuDisplay test.
+*************************************************************************************/
+
+    /**
+    * data provider for testDisplayPassed
+    *
+    * @return array
+    */
+    public static function dataTestDisplayPassed()
+    {
+        return array(
+            array(
+                "\n\r
+**************************************************
+*                                                *
+*                P A S S E D !                   *
+*                                                *
+**************************************************
+\n\r\n",
+             )
+        );
+    }
+
+    /**
+    * Tests the displayPassed function
+    *
+    * @param string $expect
+    *
+    * @return null
+    *
+    * @dataProvider dataTestDisplayPassed()
+    *
+    */
+    public function testDisplayPassed($expect)
+    {
+        ob_start();
+        $this->display->displayPassed();
+        $passedDisplay = ob_get_contents();
+        ob_end_clean();
+
+        $this->assertEquals($expect, $passedDisplay);
+    }
+
+    /**
+    * data provider for testDisplayFailed
+    *
+    * @return array
+    */
+    public static function dataTestDisplayFailed()
+    {
+        return array(
+            array(
+                "\n\r
+**************************************************
+*                                                *
+*                F A I L E D !                   *
+*                                                *
+**************************************************
+\n\r\n",
+             )
+        );
+    }
+
+    /**
+    * Tests the displayFailed function
+    *
+    * @param string $expect
+    *
+    * @return null
+    *
+    * @dataProvider dataTestDisplayFailed()
+    *
+    */
+    public function testDisplayFailed($expect)
+    {
+        ob_start();
+        $this->display->displayFailed();
+        $failedDisplay = ob_get_contents();
+        ob_end_clean();
+
+        $this->assertEquals($expect, $failedDisplay);
+    }
+
+
 
 }
 ?>

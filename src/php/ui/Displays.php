@@ -162,7 +162,7 @@ class Displays extends CLI
         $this->_system->out("*".str_repeat(" ", 58)."*");
         $this->_system->out(str_repeat("*", 60));
 
-        $this->_system->out("\n\r\n\r");
+        $this->_system->out("\n\r");
 
     }
 
