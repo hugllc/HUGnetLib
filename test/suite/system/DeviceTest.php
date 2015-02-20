@@ -812,6 +812,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     'InputTables' => 9,
                     'OutputTables' => 0,
                     'ProcessTables' => 0,
+                    'PowerTables' => 0,
                     "DataChannels" => 0,
                     "DaughterBoards" => array(
                         "" => "None",
@@ -914,6 +915,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     'InputTables' => 9,
                     'OutputTables' => 0,
                     'ProcessTables' => 0,
+                    'PowerTables' => 0,
                     "DataChannels" => 0,
                     "DaughterBoards" => array(
                         "" => "None",
@@ -994,6 +996,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     'InputTables' => 9,
                     'OutputTables' => 0,
                     'ProcessTables' => 0,
+                    'PowerTables' => 0,
                     "DataChannels" => 0,
                     "DaughterBoards" => array(
                         "" => "None",
@@ -1075,6 +1078,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     'InputTables' => 9,
                     'OutputTables' => 0,
                     'ProcessTables' => 0,
+                    'PowerTables' => 0,
                     "DataChannels" => 0,
                     "DaughterBoards" => array(
                         "" => "None",
@@ -1156,6 +1160,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     'InputTables' => 9,
                     'OutputTables' => 0,
                     'ProcessTables' => 0,
+                    'PowerTables' => 0,
                     "DataChannels" => 0,
                     "DaughterBoards" => array(
                         "" => "None",
@@ -2758,6 +2763,161 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         unset($obj);
     }
     /**
+    * Data provider for testPower
+    *
+    * @return array
+    */
+    public static function dataPower()
+    {
+        return array(
+            array(      // #0
+                array(
+                    "id" => 5,
+                    "group" => "null",
+                ),
+                0,
+                "\HUGnet\devices\Power",
+                array(
+                    "power" => 0,
+                    "dev" => 5,
+                    'type' => 'EmptyPower',
+                    'params' => array(),
+                    'tableEntry' => array(),
+                ),
+                "null",
+            ),
+            array(      // #1
+                array(
+                    "id" => 5,
+                    "Role" => "DeviceTestRole",
+                    "group" => "hello",
+                ),
+                1,
+                "\HUGnet\devices\Power",
+                array(
+                    "power" => 1,
+                    "dev" => 5,
+                    'extra' => array(1, 1),
+                    'location' => 'Power 1',
+                    'id' => 49,
+                    'type' => 'FSDA',
+                    'tableEntry' => array(),
+                    'params' => array(),
+                ),
+                "hello",
+            ),
+            array(      // #2
+                array(
+                    "id" => 5,
+                    "Role" => "NotARole",
+                    "group" => "default",
+                ),
+                0,
+                "\HUGnet\devices\Power",
+                array(
+                    "power" => 0,
+                    "dev" => 5,
+                    'type' => 'EmptyPower',
+                    'params' => array(),
+                    'tableEntry' => array(),
+                ),
+                "default",
+            ),
+            array(      // #3
+                array(
+                    "id" => 5,
+                    "Role" => "NotARole",
+                    "group" => "default",
+                ),
+                "free",
+                null,
+                array(
+                ),
+                "default",
+            ),
+            array(      // #4
+                array(
+                    "id" => 5,
+                    "Role" => "NotARole",
+                    "group" => "default",
+                    "HWPartNum" => "1046-02-01-A",
+                    "FWPartNum" => "0039-38-01-C"
+                ),
+                "free",
+                "\HUGnet\devices\Power",
+                array(
+                    "power" => 0,
+                    "dev" => 5,
+                    'type' => 'EmptyPower',
+                    'params' => array(),
+                    'tableEntry' => array(),
+                ),
+                "default",
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config       The configuration to use
+    * @param string $sensor       The driver to tell it to load
+    * @param string $driverExpect The driver we expect to be loaded
+    * @param int    $expect       The expected sensor id
+    * @param string $group        The group to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataPower
+    */
+    public function testPower(
+        $config, $sensor, $driverExpect, $expect, $group
+    ) {
+        $sys = $this->getMock(
+            '\HUGnet\System', 
+            array('now'),
+            array(
+                array(
+                    "servers" => array(
+                        "hello" => array(
+                            "driver" => "sqlite",
+                            "file" => ":memory:",
+                            "group" => "hello",
+                        ),
+                        "default" => array(
+                            "driver" => "sqlite",
+                            "file" => ":memory:",
+                            "group" => "default",
+                        ),
+                    ),
+                ),
+            )
+        );
+        $sys->expects($this->any())
+            ->method('now')
+            ->will($this->returnValue(1000000));
+        $obj = Device::factory($sys, $config);
+        $sen = $obj->power($sensor);
+        if (!is_null($driverExpect)) {
+            $this->assertTrue(
+                is_a($sen, $driverExpect),
+                "Return is not a ".$driverExpect
+            );
+            $this->assertEquals(
+                $expect,
+                $sen->toArray(false),
+                "Wrong sensor returned"
+            );
+            $this->assertEquals(
+                $group,
+                $sen->get("group"),
+                "Wrong group returned"
+            );
+        } else {
+            $this->assertNull($sen, 'null should have been returned');
+        }
+        unset($obj);
+    }
+    /**
     * Data provider for testCreate
     *
     * @return array
@@ -3347,6 +3507,27 @@ class DeviceTestRole extends \HUGnet\base\Role
             "extra" => array(2, 1, 0),
             "location" => "Process 1",
             "id"     => 0x23,
+            "type"   => "FSDA",
+            "tableEntry" => array(
+            ),
+        ),
+    );
+    /**
+    *  This is the output table data
+    */
+    protected $power = array(
+        0 => array(
+            "extra" => array(0, 1),
+            "location" => "Power 0",
+            "id"     => 0x32,
+            "type"   => "ASDF",
+            "tableEntry" => array(
+            ),
+        ),
+        1 => array(
+            "extra" => array(1, 1),
+            "location" => "Power 1",
+            "id"     => 0x31,
             "type"   => "FSDA",
             "tableEntry" => array(
             ),

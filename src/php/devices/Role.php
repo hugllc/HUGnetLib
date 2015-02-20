@@ -184,6 +184,22 @@ class Role
         return array();
     }
     /**
+    * This creates the power drivers
+    *
+    * @param string $role The name of the role
+    * @param int    $pid  The sensor id to get.  They are zero based
+    *
+    * @return array
+    */
+    public function power($role, $pid)
+    {
+        $uRole = $this->_getRole($role);
+        if (is_object($uRole)) {
+            return $uRole->power($pid);
+        }
+        return array();
+    }
+    /**
     * This creates the sensor drivers
     *
     * @param string $arch The architecture to get the roles for

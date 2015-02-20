@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+    <table name="devicePowers">
+        <column>dev</column>
+        <column>power</column>
+        <column>id</column>
+        <column>type</column>
+        <column>driver</column>
+        <column>params</column>
+    </table>
+</dataset>

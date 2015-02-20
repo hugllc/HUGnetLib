@@ -87,6 +87,7 @@ abstract class Driver
         "InputTables" => 9,
         "OutputTables" => 0,
         "ProcessTables" => 0,
+        "PowerTables" => 0,
         "DataChannels"  => 0,
         "DigitalInputs" => array(),
         "DigitalOutputs" => array(),
@@ -508,6 +509,30 @@ abstract class Driver
         $system = $this->device()->system();
         $device = $this->device();
         $obj = \HUGnet\devices\Process::factory(
+            $system, $data, null, $device
+        );
+        return $obj;
+    }
+    /**
+    * This creates the sensor drivers
+    *
+    * @param int   $sid  The sensor id to get.  They are labaled 0 to sensors
+    * @param array $data The data to use for a role
+    *
+    * @return null
+    */
+    public function &power($sid, $data = null)
+    {
+        if (!is_array($data)) {
+            $data = array();
+        }
+        include_once dirname(__FILE__)."/Power.php";
+        $data["power"] = (int)$sid;
+        $data["dev"]    = (int)$this->device()->id();
+        $data["group"]  = $this->device()->get("group");
+        $system = $this->device()->system();
+        $device = $this->device();
+        $obj = \HUGnet\devices\Power::factory(
             $system, $data, null, $device
         );
         return $obj;

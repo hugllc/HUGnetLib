@@ -751,6 +751,20 @@ class Device extends \HUGnet\base\SystemTableAction
         return $this->_getIOP($sid, "process");
     }
     /**
+    * This creates the sensor drivers
+    *
+    * @param int $sid The sensor id to get.  They are labaled 0 to sensors
+    *
+    * @return null
+    */
+    public function &power($pid)
+    {
+        if ($pid === "free") {
+            return $this->_getFreeIOP("power");
+        }
+        return $this->_getIOP($pid, "power");
+    }
+    /**
     * This fixes the IOP object
     *
     * @param int    $sid  The sensor id to get.  They are labaled 0 to sensors

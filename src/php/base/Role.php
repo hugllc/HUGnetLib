@@ -135,6 +135,20 @@ abstract class Role
         }
         return null;
     }
+    /**
+    * This returns the data for the give id if there is any.
+    *
+    * @param int $pid The sensor id to get.  They are zero based
+    *
+    * @return null if not found, array otherwise
+    */
+    public function power($pid)
+    {
+        if (isset($this->power[(int)$pid])) {
+            return $this->power[(int)$pid];
+        }
+        return null;
+    }
 }
 
 
