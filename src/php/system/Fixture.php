@@ -278,6 +278,13 @@ class Fixture extends \HUGnet\Device
         for ($i = 0; $i < $dev->get("ProcessTables"); $i++) {
             $import["process"][$i] = $this->_importIOP($dev->process($i));
         }
+        $power = $dev->get("PowerTables");
+        if ($power > 0) {
+            $import["power"] = array();
+            for ($i = 0; $i < $power; $i++) {
+                $import["power"][$i] = $this->_importIOP($dev->power($i));
+            }
+        }
         return $import;
     }
     /**
@@ -340,6 +347,13 @@ class Fixture extends \HUGnet\Device
             $proc->table()->set("process", $i);
             $proc->table()->insertRow(true);
         }
+        for ($i = 0; $i < $dev->get("PowerTables"); $i++) {
+            $proc->table()->clearData();
+            $proc->table()->fromArray($data["power"][$i]);
+            $proc->table()->set("dev", $dev->get("id"));
+            $proc->table()->set("power", $i);
+            $proc->table()->insertRow(true);
+        }
         return $dev;
     }
     /**
@@ -361,6 +375,7 @@ class Fixture extends \HUGnet\Device
             unset($data["input"]);
             unset($data["output"]);
             unset($data["process"]);
+            unset($data["power"]);
             $arrays = array("params", "tableEntry");
             foreach ($arrays as $key) {
                 if (is_string($data[$key])) {
@@ -406,6 +421,17 @@ class Fixture extends \HUGnet\Device
     public function &process($sid)
     {
         return $this->_iop($sid, "process");
+    }
+    /**
+    * This creates the process object
+    *
+    * @param int $sid The process id to get.  They are labeled 0 to ProcessTables
+    *
+    * @return object The process object
+    */
+    public function &power($sid)
+    {
+        return $this->_iop($sid, "power");
     }
     /**
     * This creates the process object

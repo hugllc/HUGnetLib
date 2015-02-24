@@ -840,6 +840,111 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
         );
     }
     /**
+    * Data provider for testProcess
+    *
+    * @return array
+    */
+    public static function dataPower()
+    {
+        return array(
+            array(  // #0 Everything normal
+                array(
+                ),
+                array(
+                    "id" => 1,
+                    "dev" => 0x123456,
+                    "fixture" => json_encode(
+                        array(
+                            "DeviceName" => "Hello",
+                            "params" => array(
+                                "LastModified" => 0x12345678,
+                            ),
+                            "power" => array(
+                                0 => array(
+                                    "id" => 0x01,
+                                    'type' => "Stuff Here",
+                                    "tableEntry" => array(
+                                    ),
+                                ),
+                            ),
+                        )
+                    ),
+                    "created" => 1234,
+                    "modified" => 1234,
+                ),
+                0,
+                array(
+                    "id" => 0x01,
+                    'dev' => 0x123456,
+                    'power' => 0,
+                    'type' => "Stuff Here",
+                    'params' => array(),
+                    'tableEntry' => array(),
+                ),
+            ),
+            array(  // #1 Output doesn't exist
+                array(
+                ),
+                array(
+                    "id" => 1,
+                    "dev" => 0x123456,
+                    "fixture" => json_encode(
+                        array(
+                            "DeviceName" => "Hello",
+                            "params" => array(
+                                "LastModified" => 0x12345678,
+                            ),
+                            "process" => array(
+                                0 => array(
+                                    "id" => 0xFC,
+                                    'type' => "Virtual Sensor",
+                                    "tableEntry" => array(
+                                    ),
+                                ),
+                            ),
+                        )
+                    ),
+                    "created" => 1234,
+                    "modified" => 1234,
+                ),
+                1,
+                array(
+                    'dev' => 1193046,
+                    'power' => 1,
+                    'type' => "EmptyPower",
+                    'params' => array(),
+                    'tableEntry' => array(),
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the set function
+    *
+    * @param array $config The configuration to use
+    * @param array $data   The data to feed the object
+    * @param bool  $sid    This does nothing, but we have to prove that.
+    * @param array $expect The data to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataPower
+    */
+    public function testPower($config, $data, $sid, $expect)
+    {
+        $sys = $this->getMock('\HUGnet\System', array('now'), array($config));
+        $obj = Fixture::factory($sys, $data);
+        $ret = $obj->power($sid);
+        $this->assertInternalType("object", $ret, "Return is not an object");
+        $this->assertTrue(
+            is_a($ret, '\HUGnet\devices\Power'), 
+            "Return is not an power"
+        );
+        $this->assertEquals(
+            $expect, $ret->toArray(false), "Return setup is wrong"
+        );
+    }
+    /**
     * Data provider for testSet
     *
     * @return array
