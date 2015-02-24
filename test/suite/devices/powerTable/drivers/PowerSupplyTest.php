@@ -32,11 +32,11 @@
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\devices\outputTable\drivers;
+namespace HUGnet\devices\powerTable\drivers;
 /** This is the base class */
 require_once dirname(__FILE__)."/DriverTestBase.php";
 /** This is a required class */
-require_once CODE_BASE.'devices/outputTable/drivers/EmptyOutput.php';
+require_once CODE_BASE.'devices/powerTable/drivers/PowerSupply.php';
 
 /**
  * Test class for HUGnetDB.
@@ -51,12 +51,12 @@ require_once CODE_BASE.'devices/outputTable/drivers/EmptyOutput.php';
  * @version    Release: 0.14.3
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class EmptyOutputTest extends DriverTestBase
+class PowerSupplyTest extends DriverTestBase
 {
     /** This is the class we are testing */
-    protected $class = "EmptyOutput";
-    /** This is the output object */
-    protected $output;
+    protected $class = "PowerSupply";
+    /** This is the power object */
+    protected $power;
     /**
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
@@ -68,8 +68,8 @@ class EmptyOutputTest extends DriverTestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->o = \HUGnet\devices\outputTable\Driver::factory(
-            "EmptyOutput", $this->output
+        $this->o = \HUGnet\devices\powerTable\Driver::factory(
+            "PowerSupply", $this->power
         );
     }
 
@@ -86,13 +86,63 @@ class EmptyOutputTest extends DriverTestBase
         parent::tearDown();
     }
     /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataDecode()
+    {
+        return array(
+            array( // #0
+                array(
+                    'dev' => 1,
+                    'power' => 1,
+                    'id' => 0x31,
+                ),
+                "130102",
+                array(
+                    'dev' => 1,
+                    'power' => 1,
+                    'id' => 0x31,
+                    'type' => "EmptyPower",
+                    'params' => array(),
+                    'tableEntry' => array(),
+                ),
+            ),
+            array( // #1
+                array(
+                    'dev' => 1,
+                    'power' => 1,
+                    'id' => 0x31,
+                ),
+                "100103",
+                array(
+                    'dev' => 1,
+                    'power' => 1,
+                    'id' => 0x31,
+                    'type' => "EmptyPower",
+                    'params' => array(),
+                    'tableEntry' => array(),
+                ),
+            ),
+        );
+    }
+    /**
     * test the set routine when an extra class exists
     *
+    * @param array  $mocks  The value to preload into the mocks
+    * @param string $string The setup string to test
+    * @param array  $expect The expected return
+    *
     * @return null
+    *
+    * @dataProvider dataDecode
     */
-    public function testChannels()
+    public function testDecode($mocks, $string, $expect)
     {
-        $this->assertSame(array(), $this->o->channels());
+        $this->power->load($mocks);
+        $this->o->decode($string);
+        $this->assertEquals($expect, $this->power->toArray(false));
     }
     /**
     * data provider for testDeviceID
@@ -104,21 +154,13 @@ class EmptyOutputTest extends DriverTestBase
         return array(
             array( // #0
                 array(
-                    "Output" => array(
-                        "getExtra" => array(
-                        ),
-                    ),
                 ),
                 "",
             ),
-            array( // #0
+            array( // #1
                 array(
-                    "Output" => array(
-                        "getExtra" => array(
-                        ),
-                        "get" => array(
-                            "RawSetup" => "0102030405",
-                        ),
+                    "extra" => array(
+                        10, 11, 12
                     ),
                 ),
                 "",
@@ -137,7 +179,7 @@ class EmptyOutputTest extends DriverTestBase
     */
     public function testEncode($mocks, $expect)
     {
-        $this->output->load($mocks);
+        $this->power->load($mocks);
         $ret = $this->o->encode();
         $this->assertSame($expect, $ret);
     }

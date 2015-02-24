@@ -102,16 +102,8 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     * as the driver class name.
     */
     private static $_drivers = array(
-        "01:DEFAULT"                 => "ADuCDAC",
-        "02:DEFAULT"                 => "ADuCPWM",
-        "03:DEFAULT"                 => "ADuCGPIO",
-        "20:DEFAULT"                 => "MagDir",
-        "30:DEFAULT"                 => "HUGnetPower",
-        "31:DEFAULT"                 => "FET003912",
-        "32:DEFAULT"                 => "GPIO003928",
-        "60:DEFAULT"                 => "InputSumPower",
-        "FE:DEFAULT"                 => "NullPower",
-        "FF:DEFAULT"                 => "EmptyPower",
+        "E0:DEFAULT"                 => "PowerSupply",
+        "E1:DEFAULT"                 => "SolarPanel",
     );
     /**
     * This is where the correlation between the drivers and the arch is stored.
@@ -122,27 +114,22 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     */
     protected $arch = array(
         "0039-12" => array(
-            0x31 => "FET",
         ),
         "0039-21-01" => array(
         ),
         "0039-21-01" => array(
         ),
         "0039-28" => array(
-            0x32 => "GPIO",
         ),
         "0039-37" => array(
-            0x01 => "ADuC DAC",
-            0x02 => "ADuC PWM",
-            0x03 => "ADuC GPIO",
-            0x20 => "Magnitude/Direction",
+        ),
+        "1046-02" => array(
+            0xE0 => "Power Supply",
+            0xE1 => "Solar Panel",
         ),
         "Linux" => array(
-            0x20 => "Magnitude/Direction",
-            0x60 => "Input Sum Control",
         ),
         "all" => array(
-            0xFE => "Null Power",
             0xFF => "Empty Slot"
         ),
     );
