@@ -8,7 +8,7 @@ GIT=`which git`
 all:
 
 setup-ubuntu: 
-	sudo apt-get install php-pear php5-sqlite php5-mysql php5-curl npm nodejs php5-xsl
+	sudo apt-get install php-pear php5-sqlite php5-mysql php5-curl npm nodejs php5-xsl php5-curl
 	sudo apt-get install nodejs-legacy
 
 setup: bin bin/composer build-setup
