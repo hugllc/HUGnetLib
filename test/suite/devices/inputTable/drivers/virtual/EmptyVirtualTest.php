@@ -112,13 +112,15 @@ class EmptyVirtualTest extends DriverTestBaseVirtual
         );
     }
     /**
-    * test the set routine when an extra class exists
+    * data provider for testDeviceID
     *
-    * @return null
+    * @return array
     */
-    public function testChannels()
+    public static function dataChannels()
     {
-        $this->assertSame(array(), $this->o->channels());
+        return array(
+            array(array(), "", array()),
+        );
     }
 
 }
