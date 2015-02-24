@@ -567,6 +567,7 @@ class Device extends \HUGnet\base\SystemTableAction
             "input" => "InputTables",
             "output" => "OutputTables",
             "process" => "ProcessTables",
+            "power" => "PowerTables",
         );
         $input   = $this->input("new");
         $output  = $this->output("new");

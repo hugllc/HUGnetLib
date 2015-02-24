@@ -129,6 +129,8 @@ final class Packet implements PacketInterface
         "WRITE_E2" => 0x1A,
         "WRITE_SRAM" => 0x1B,
         "WRITE_FLASH" => 0x1C,
+        "SETPOWERTABLE" => 0x45,
+        "READPOWERTABLE" => 0x46,
         "SETPROCESSTABLERAM" => 0x47,
         "READPROCESSTABLERAM" => 0x48,
         "SETPROCESSTABLE" => 0x49,
