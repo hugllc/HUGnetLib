@@ -1228,8 +1228,8 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
             array(
                 "myDate", "Sun, 25 April 2010, 1:42:23pm", "2010-04-25 13:42:23"
             ),
-            array("myDate", 1234567890, "2009-02-13 17:31:30"),
-            array("myDate", "1234567890", "2009-02-13 17:31:30"),
+            array("myDate", 1234567890, "2009-02-13 23:31:30"),
+            array("myDate", "1234567890", "2009-02-13 23:31:30"),
             array("myDate", "This is not a date", "1970-01-01 00:00:00"),
             array("myOtherDate", "2010-04-25 13:42:23", 1272202943),
             array("myOtherDate", "2010-04-25", 1272153600),

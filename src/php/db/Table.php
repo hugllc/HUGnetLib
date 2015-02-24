@@ -229,7 +229,7 @@ abstract class Table extends TableBase
     static public function sqlDate($value, $TimeZone = "UTC")
     {
         if (is_numeric($value)) {
-            $value = date("Y-m-d H:i:s", (int)$value);
+            $value = gmdate("Y-m-d H:i:s", (int)$value);
         }
         try {
             $date = new \DateTime($value, new \DateTimeZone($TimeZone));
