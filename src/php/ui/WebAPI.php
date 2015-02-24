@@ -890,7 +890,7 @@ class WebAPI extends HTML
         $out .= "</tr>\r\n";
         foreach ($records as $hist) {
             $out .= "<tr>";
-            $out .= "<td>".date("Y-m-d H:i:s", $hist["Date"])."</td>";
+            $out .= "<td>".gmdate("Y-m-d H:i:s", $hist["Date"])."</td>";
             if ($type) {
                 $out .= "<td>".$hist["Type"]."</td>";
             }
