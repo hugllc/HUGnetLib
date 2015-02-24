@@ -551,7 +551,8 @@ class Network
         if (!$this->_device->get("setConfig")) {
             return true;
         }
-        if ($this->_device->get("fixed")) {
+        $fixed = $this->_device->get("fixed");
+        if (!is_array($fixed) && ($fixed == true)) {
             /* This device doesn't have loadable sensors */
             return true;
         }
@@ -561,47 +562,53 @@ class Network
             return false;
         }
         $this->_system->out("config success", 1);
-        $input = (int)$this->_device->get("InputTables");
-        for ($i = 0; $i < $input; $i++) {
-            $ret = $this->setInputTable(
-                $i,
-                $this->_device->input($i)->encode(),
-                $callback,
-                $config
-            );
-            if (!$ret) {
-                $this->_system->out("inputTable $i fail", 1);
-                return false;
+        if (is_array($fixed) && ($fixed["InputTables"] !== true)) {
+            $input = (int)$this->_device->get("InputTables");
+            for ($i = 0; $i < $input; $i++) {
+                $ret = $this->setInputTable(
+                    $i,
+                    $this->_device->input($i)->encode(),
+                    $callback,
+                    $config
+                );
+                if (!$ret) {
+                    $this->_system->out("inputTable $i fail", 1);
+                    return false;
+                }
+                $this->_system->out("inputTable $i success", 1);
             }
-            $this->_system->out("inputTable $i success", 1);
         }
-        $output = (int)$this->_device->get("OutputTables");
-        for ($i = 0; $i < $output; $i++) {
-            $ret = $this->setOutputTable(
-                $i,
-                $this->_device->output($i)->encode(),
-                $callback,
-                $config
-            );
-            if (!$ret) {
-                $this->_system->out("outputTable $i fail", 1);
-                return false;
+        if (is_array($fixed) && ($fixed["OutputTables"] !== true)) {
+            $output = (int)$this->_device->get("OutputTables");
+            for ($i = 0; $i < $output; $i++) {
+                $ret = $this->setOutputTable(
+                    $i,
+                    $this->_device->output($i)->encode(),
+                    $callback,
+                    $config
+                );
+                if (!$ret) {
+                    $this->_system->out("outputTable $i fail", 1);
+                    return false;
+                }
+                $this->_system->out("outputTable $i success", 1);
             }
-            $this->_system->out("outputTable $i success", 1);
         }
-        $process = (int)$this->_device->get("ProcessTables");
-        for ($i = 0; $i < $process; $i++) {
-            $ret = $this->setProcessTable(
-                $i,
-                $this->_device->process($i)->encode(),
-                $callback,
-                $config
-            );
-            if (!$ret) {
-                $this->_system->out("processTable $i fail", 1);
-                return false;
+        if (is_array($fixed) && ($fixed["ProcessTables"] !== true)) {
+            $process = (int)$this->_device->get("ProcessTables");
+            for ($i = 0; $i < $process; $i++) {
+                $ret = $this->setProcessTable(
+                    $i,
+                    $this->_device->process($i)->encode(),
+                    $callback,
+                    $config
+                );
+                if (!$ret) {
+                    $this->_system->out("processTable $i fail", 1);
+                    return false;
+                }
+                $this->_system->out("processTable $i success", 1);
             }
-            $this->_system->out("processTable $i success", 1);
         }
         /* This reboots the board */
         $this->_system->out("rebooting", 1);
