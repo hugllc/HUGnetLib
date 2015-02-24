@@ -257,6 +257,18 @@ var DevicePropertiesView = Backbone.View.extend({
                 data
             )
         );
+        if (this.model.get("PowerTables") == 0) {
+            this.$(".powerList").hide();
+        }
+        if (this.model.get("InputTables") == 0) {
+            this.$(".inputList").hide();
+        }
+        if (this.model.get("OutputTables") == 0) {
+            this.$(".outputList").hide();
+        }
+        if (this.model.get("ProcessTables") == 0) {
+            this.$(".processList").hide();
+        }
         this.$("#DeviceDataChannelsDiv").html(this.datachannels.render().el);
         this.$("#DeviceControlChannelsDiv").html(this.controlchannels.render().el);
         return this;
