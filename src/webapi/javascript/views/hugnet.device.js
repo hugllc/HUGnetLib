@@ -49,6 +49,7 @@ var DevicePropertiesView = Backbone.View.extend({
         'click .inputList': 'inputList',
         'click .outputList': 'outputList',
         'click .processList': 'processList',
+        'click .powerList': 'powerList',
         'submit #inputForm': 'saveInput',
         'change #inputForm select': 'saveInput',
         'change #deviceForm select': 'apply'
@@ -165,6 +166,21 @@ var DevicePropertiesView = Backbone.View.extend({
         this.popup(
             view,
             "Processes for device " + this.model.get('id').toString(16).toUpperCase()
+        );
+    },
+    powerList: function ()
+    {
+        this.powersmodel = new HUGnet.DevicePowers();
+        var powers = this.model.get('PowerTables');
+        var dev = this.model.get('id');
+        for (var p = 0; p < powers; p++) {
+            this.powersmodel.add({dev: dev, power: p});
+        }
+        this.powersmodel.invoke('fetch');
+        var view = new HUGnet.DevicePowersView({ model: this.powersmodel });
+        this.popup(
+            view,
+            "Power Ports for device " + this.model.get('id').toString(16).toUpperCase()
         );
     },
     save: function (e)
