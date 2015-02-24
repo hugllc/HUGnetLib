@@ -245,6 +245,7 @@ class HUGnetPowerTest extends DriverTestBase
                     "location" => "Hello",
                     "extra"    => array(1, 1),
                 ),
+                "",
                 array(
                     array(
                         'min' => -1,

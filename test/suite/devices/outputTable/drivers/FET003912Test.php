@@ -205,6 +205,7 @@ class FET003912Test extends DriverTestBase
                     "location" => "Hello",
                     "extra"    => array(1, 2),
                 ),
+                "",
                 array(
                     array(
                         'min' => -256,

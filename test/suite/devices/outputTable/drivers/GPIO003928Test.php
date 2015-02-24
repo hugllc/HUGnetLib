@@ -205,6 +205,7 @@ class GPIO003928Test extends DriverTestBase
                     "location" => "Hello",
                     "extra"    => array(1, 5),
                 ),
+                "",
                 array(
                     array(
                         'min' => -127,

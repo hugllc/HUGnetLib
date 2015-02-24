@@ -264,6 +264,7 @@ class ADuCPWMTest extends DriverTestBase
                     "unitType" => "asdf",
                     "location" => "Hello",
                 ),
+                "",
                 array(
                     array(
                         'min' => -65535,

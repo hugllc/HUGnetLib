@@ -142,14 +142,15 @@ abstract class DriverTestBase extends \HUGnet\devices\IOPDriverTestBase
     /**
     * test the set routine when an extra class exists
     *
-    * @param array $mocks  The mocks to use
-    * @param array $expect The expected return
+    * @param array  $mocks  The mocks to use
+    * @param string $name   The name of the variable to test.
+    * @param array  $expect The expected return
     *
     * @return null
     *
     * @dataProvider dataChannels
     */
-    public function testChannels($mocks, $expect)
+    public function testChannels($mocks, $name, $expect)
     {
         $this->output->load($mocks);
         $this->assertSame($expect, $this->o->channels());

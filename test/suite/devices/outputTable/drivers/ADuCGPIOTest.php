@@ -205,6 +205,7 @@ class ADuCGPIOTest extends DriverTestBase
                     "location" => "Hello",
                     "extra"    => array(1, 5),
                 ),
+                "",
                 array(
                     array(
                         'min' => -0xFFFF,

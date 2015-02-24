@@ -161,6 +161,7 @@ class DriverADuCTest extends drivers\DriverTestBase
                     "location" => "Hello",
                     "extra"    => array(1, 5),
                 ),
+                "",
                 array(
                     array(
                         'min' => 0,
