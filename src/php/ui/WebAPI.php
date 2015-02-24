@@ -399,6 +399,33 @@ class WebAPI extends HTML
     * @return null
     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
     */
+    private function _executeDevicePower($extra = array())
+    {
+        $ids = explode(".", $this->args()->get("id"));
+        $did = hexdec($ids[0]);
+        $sid = (int)$ids[1];
+        $ident = array("dev" => $did, "power" => $sid);
+        $action = strtolower(trim($this->args()->get("action")));
+        $sen = $this->system()->device($did)->power($sid);
+        if ($action === "list") {
+            $this->args()->set("data", array("dev" => $did));
+        } else if ($action == "put") {
+            $ret = $sen->webAPI($this->args(), $extra);
+        }
+        $ret = $this->_executeSystem($ident, $sen, $extra);
+        if ($ret === "regen") {
+            return $this->system()->device($did)->power($sid)->toArray(true);
+        }
+        return $ret;
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+    */
     private function _executeDatacollector($extra = array())
     {
         $uuid = strtolower($this->args()->get("id"));
