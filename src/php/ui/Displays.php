@@ -39,7 +39,7 @@ namespace HUGnet\ui;
 /** This is our base class */
 require_once dirname(__FILE__)."/CLI.php";
 /** This is our base class */
-require_once "HUGnetLib/ui/Daemon.php";
+require_once dirname(__FILE__)."/Daemon.php";
 
 /**
  * This code tests, serializes and programs HUGnetLab endpoints with 
