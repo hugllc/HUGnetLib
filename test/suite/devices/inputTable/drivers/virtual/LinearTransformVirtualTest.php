@@ -214,6 +214,7 @@ class LinearTransformVirtualTest extends DriverTestBaseVirtual
             array(
                 array(
                 ),
+                "",
                 array(
                     array(
                         'decimals' => 4,

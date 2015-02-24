@@ -316,6 +316,7 @@ class ControlSumInputTest extends DriverTestBaseLinux
             array(
                 array(
                 ),
+                "",
                 array(
                     array(
                         'decimals' => 0,

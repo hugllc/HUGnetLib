@@ -211,6 +211,7 @@ class MaximumRainTest extends DriverTestBase
             array(
                 array(
                 ),
+                "",
                 array(
                     array(
                         'decimals' => 2,

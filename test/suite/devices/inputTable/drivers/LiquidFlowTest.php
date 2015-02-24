@@ -459,6 +459,7 @@ class LiquidFlowTest extends DriverTestBase
             array(
                 array(
                 ),
+                "",
                 array(
                     array(
                         'decimals' => 8,

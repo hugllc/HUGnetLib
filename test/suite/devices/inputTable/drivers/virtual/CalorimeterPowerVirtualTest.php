@@ -256,6 +256,7 @@ class CalorimeterPowerVirtualTest extends DriverTestBaseVirtual
             array(
                 array(
                 ),
+                "",
                 array(
                     array(
                         'decimals' => 8,

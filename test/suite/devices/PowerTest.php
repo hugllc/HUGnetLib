@@ -185,7 +185,6 @@ class PowerTest extends \PHPUnit_Framework_TestCase
                         'DEFAULT' => 'TestPowerDriver1'
                     ),
                     'validIds' => Array (
-                        0xFE => 'Null Power',
                         0xFF => 'Empty Slot'
                     ),
                     "extraText" => array(),
@@ -230,10 +229,8 @@ class PowerTest extends \PHPUnit_Framework_TestCase
                     ),
                     'type' => 'EmptyPower',
                     'otherTypes' => Array (
-                        'DEFAULT' => 'EmptyPower'
                     ),
                     'validIds' => Array (
-                        0xFE => 'Null Power',
                         0xFF => 'Empty Slot'
                     ),
                     "extraText" => array(),

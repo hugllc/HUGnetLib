@@ -1649,6 +1649,7 @@ class DriverADuCTest extends drivers\DriverTestBase
             array(
                 array(
                 ),
+                "",
                 array(
                     array(
                         'decimals' => 2,

@@ -318,6 +318,7 @@ class FileInputTest extends DriverTestBaseLinux
                         ),
                     ),
                 ),
+                "",
                 array(
                     array(
                         'decimals' => 8,

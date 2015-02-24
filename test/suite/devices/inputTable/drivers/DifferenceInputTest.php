@@ -665,6 +665,7 @@ class DifferenceInputTest extends DriverTestBase
             array(
                 array(
                 ),
+                "",
                 array(
                     array(
                         'decimals' => 0,

@@ -286,6 +286,7 @@ class NoisyInputTest extends DriverTestBaseLinux
             array(
                 array(
                 ),
+                "",
                 array(
                     array(
                         'decimals' => 0,

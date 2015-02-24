@@ -254,6 +254,7 @@ class DewPointVirtualTest extends DriverTestBaseVirtual
             array(
                 array(
                 ),
+                "",
                 array(
                     array(
                         'decimals' => 4,

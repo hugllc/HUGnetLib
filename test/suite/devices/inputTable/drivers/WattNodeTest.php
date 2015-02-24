@@ -385,6 +385,7 @@ class WattNodeTest extends DriverTestBase
             array(
                 array(
                 ),
+                "",
                 array(
                     array(
                         'decimals' => 3,

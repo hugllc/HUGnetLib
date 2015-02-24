@@ -248,6 +248,7 @@ class CelaniPowerCalVirtualTest extends DriverTestBaseVirtual
             array(
                 array(
                 ),
+                "",
                 array(
                     array(
                         'decimals' => 6,

@@ -258,6 +258,7 @@ class MemInputTest extends DriverTestBaseLinux
             array(
                 array(
                 ),
+                "",
                 array(
                     array(
                         'decimals' => 8,

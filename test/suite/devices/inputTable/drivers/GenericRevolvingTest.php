@@ -484,6 +484,7 @@ class GenericRevolvingTest extends DriverTestBase
             array(
                 array(
                 ),
+                "",
                 array(
                     array(
                         'decimals' => 2,

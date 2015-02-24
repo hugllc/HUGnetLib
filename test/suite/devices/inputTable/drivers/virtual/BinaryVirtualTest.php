@@ -232,6 +232,7 @@ class BinaryVirtualTest extends DriverTestBaseVirtual
             array(
                 array(
                 ),
+                "",
                 array(
                     array(
                         'decimals' => 4,
