@@ -35,7 +35,7 @@
 /** This is the HUGnet namespace */
 namespace HUGnet\ui;
 /** Displays class */
-require_once "HUGnetLib/ui/Displays.php";
+require_once CODE_BASE."ui/Displays.php";
 /** This is a required class */
 require_once CODE_BASE.'system/Error.php';
 /** This is a required class */
