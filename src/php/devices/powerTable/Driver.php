@@ -102,6 +102,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     * as the driver class name.
     */
     private static $_drivers = array(
+        "A0:DEFAULT"                 => "Load",
         "E0:DEFAULT"                 => "PowerSupply",
         "E1:DEFAULT"                 => "SolarPanel",
     );
@@ -124,6 +125,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "0039-37" => array(
         ),
         "1046-02" => array(
+            0xA0 => "Load",
             0xE0 => "Power Supply",
             0xE1 => "Solar Panel",
         ),
