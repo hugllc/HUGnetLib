@@ -63,6 +63,7 @@ class Displays extends CLI
 {
 
     private $_system;
+    private $_headerWidth = 60;
 
     /*
     * Sets our configuration
@@ -108,6 +109,25 @@ class Displays extends CLI
     }
 
     /**
+    ************************************************************
+    * Set Header Width 
+    *
+    * This function allows the setting of the width for the 
+    * box of stars which surrounds the headers.
+    *
+    * @param $width an integer value between 40 and 100
+    *
+    * @return void
+    */
+    public function displaySetHeaderWidth($width)
+    {
+        if ($width >= 40 && $width <= 100) {
+            $this->_headerWidth = $width;
+        }
+
+    }
+
+    /**
     *******************************************************
     * Multiple Line Heading
     *
@@ -135,7 +155,7 @@ class Displays extends CLI
                 $length++;
             }
 
-            $remainder = 60 - $length;
+            $remainder = $this->_headerWidth - $length;
 
             $blankspc = $remainder/2 -1;
 
@@ -153,14 +173,14 @@ class Displays extends CLI
 
         }
 
-        $this->_system->out(str_repeat("*", 60));
-        $this->_system->out("*".str_repeat(" ", 58)."*");
+        $this->_system->out(str_repeat("*", $this->_headerWidth));
+        $this->_system->out("*".str_repeat(" ", ($this->_headerWidth-2))."*");
 
         for ($j=0; $j<$items; $j++) {
             $this->_system->out($headingsArray[$j]);
         }
-        $this->_system->out("*".str_repeat(" ", 58)."*");
-        $this->_system->out(str_repeat("*", 60));
+        $this->_system->out("*".str_repeat(" ", ($this->_headerWidth-2))."*");
+        $this->_system->out(str_repeat("*", $this->_headerWidth));
 
         $this->_system->out("\n\r");
 
@@ -188,7 +208,7 @@ class Displays extends CLI
             $length++;
         }
 
-        $remainder = 60 - $length;
+        $remainder = $this->_headerWidth - $length;
 
         $blankspc = $remainder/2 -1;
 
@@ -203,12 +223,12 @@ class Displays extends CLI
         }
         $outstring .= "*";
 
-        $this->_system->out(str_repeat("*", 60));
-        $this->_system->out("*".str_repeat(" ", 58)."*");
+        $this->_system->out(str_repeat("*", $this->_headerWidth));
+        $this->_system->out("*".str_repeat(" ", ($this->_headerWidth-2))."*");
 
         $this->_system->out($outstring);
-        $this->_system->out("*".str_repeat(" ", 58)."*");
-        $this->_system->out(str_repeat("*", 60));
+        $this->_system->out("*".str_repeat(" ",($this->_headerWidth-2))."*");
+        $this->_system->out(str_repeat("*", $this->_headerWidth));
 
         $this->_system->out("\n\r");
 
