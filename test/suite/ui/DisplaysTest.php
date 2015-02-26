@@ -210,6 +210,47 @@ class DisplaysTest extends \PHPUnit_Framework_TestCase
     }
 
 
+    /**
+    * data provider for testDisplayHeader2
+    *
+    * @return array
+    */
+    public static function dataTestDisplayHeader2()
+    {
+        return array(
+            array(
+                "Test Headings",
+                "******************************************************************
+*                                                                *
+*                         Test Headings                          *
+*                                                                *
+******************************************************************
+\n\r\n",
+             )
+        );
+    }
+
+    /**
+    * Tests the setHeaderWidth function
+    *
+    * @param string $heading   heading string
+    * @param string $expect    The display we are expecting
+    *
+    * @return null
+    *
+    * @dataProvider dataTestDisplayHeader2()
+    */
+    public function testDisplayHeader2($heading, $expect)
+    {
+        ob_start();
+        $this->display->displaySetHeaderWidth(66);
+        $this->display->displayHeader($heading);
+        $newHeading = ob_get_contents();
+        ob_end_clean();
+
+        $this->assertEquals($expect, $newHeading);
+    }
+
 
 /************************************************************************************
 * This test commented out because the displayMenu routine does a readline, prompting
@@ -286,7 +327,7 @@ D ) Exit
     } 
 *
 * End of commented out menuDisplay test.
-*************************************************************************************/
+************************************************************************************/
 
     /**
     * data provider for testDisplayPassed
