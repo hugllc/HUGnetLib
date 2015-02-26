@@ -136,11 +136,13 @@ class DisplaysTest extends \PHPUnit_Framework_TestCase
                 array(
                     0 => "Test Headings",
                     1 => "Test Heading",
+                    2 => "Here is a really really long heading that is way too long for the box",
                 ),
                 "************************************************************
 *                                                          *
 *                      Test Headings                       *
 *                       Test Heading                       *
+* Here is a really really long heading that is way too lon *
 *                                                          *
 ************************************************************
 \n\r\n",
@@ -209,13 +211,53 @@ class DisplaysTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expect, $newHeading);
     }
 
-
     /**
     * data provider for testDisplayHeader2
     *
     * @return array
     */
     public static function dataTestDisplayHeader2()
+    {
+        return array(
+            array(
+                "This will be part of Test Headings for a really long heading.",
+                "************************************************************
+*                                                          *
+* This will be part of Test Headings for a really long hea *
+*                                                          *
+************************************************************
+\n\r\n",
+             )
+        );
+    }
+
+    /**
+    * Tests the displayHeader function
+    *
+    * @param string $heading   heading string
+    * @param string $expect    The display we are expecting
+    *
+    * @return null
+    *
+    * @dataProvider dataTestDisplayHeader2()
+    */
+    public function testDisplayHeader2($heading, $expect)
+    {
+        ob_start();
+        $this->display->displayHeader($heading);
+        $newHeading = ob_get_contents();
+        ob_end_clean();
+
+        $this->assertEquals($expect, $newHeading);
+    }
+
+
+    /**
+    * data provider for testSetHeaderWidth
+    *
+    * @return array
+    */
+    public static function dataTestSetHeaderWidth()
     {
         return array(
             array(
@@ -238,9 +280,9 @@ class DisplaysTest extends \PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataTestDisplayHeader2()
+    * @dataProvider dataTestSetHeaderWidth()
     */
-    public function testDisplayHeader2($heading, $expect)
+    public function testSetHeaderWidth($heading, $expect)
     {
         ob_start();
         $this->display->displaySetHeaderWidth(66);

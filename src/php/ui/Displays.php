@@ -148,6 +148,13 @@ class Displays extends CLI
 
             $length = strlen($headingsArray[$i]);
 
+            /* if heading is too long for box then truncate it */
+            /* and get the length of truncated string.         */
+            if ($length > ($this->_headerWidth - 4)){
+                $headingsArray[$i] = substr($headingsArray[$i], 0,
+                                    ($this->_headerWidth -4));
+                $length = strlen($headingsArray[$i]);
+            }
 
             /* if not divisible by 2, then add a space */
             if (($length % 2) != 0) {
@@ -201,6 +208,13 @@ class Displays extends CLI
     public function displayHeader($heading)
     {
         $length = strlen($heading);
+
+        /* if heading is too long for box then truncate it */
+        /* and get the length of truncated string.         */
+        if ($length > ($this->_headerWidth - 4)){
+            $heading = substr($heading, 0, ($this->_headerWidth -4));
+            $length = strlen($heading);
+        }
 
         /* if not divisible by 2, then add a space */
         if (($length % 2) != 0) {
