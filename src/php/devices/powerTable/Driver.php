@@ -25,9 +25,9 @@
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage Sensors
+ * @subpackage PowerPorts
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2014 Hunt Utilities Group, LLC
+ * @copyright  2015 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  *
@@ -47,13 +47,13 @@ require_once dirname(__FILE__)."/../../base/LoadableDriver.php";
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage Sensors
+ * @subpackage PowerPorts
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2014 Hunt Utilities Group, LLC
+ * @copyright  2015 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.14.3
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
- * @since      0.10.0
+ * @since      0.14.5
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
