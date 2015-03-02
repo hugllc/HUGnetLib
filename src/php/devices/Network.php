@@ -643,7 +643,7 @@ class Network
                 $this->_system->out("processTable $i success", 1);
             }
         }
-        if (is_array($fixed) && ($fixed["PowerTables"] !== true)) {
+        if (!is_array($fixed) || ($fixed["PowerTables"] !== true)) {
             $power = (int)$this->_device->get("PowerTables");
             for ($i = 0; $i < $power; $i++) {
                 $ret = $this->setPowerTable(
