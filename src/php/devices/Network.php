@@ -595,7 +595,7 @@ class Network
             return false;
         }
         $this->_system->out("config success", 1);
-        if (!isset($fixed["InputTables"]) && ($fixed["InputTables"] !== true)) {
+        if (!is_array($fixed) || ($fixed["InputTables"] !== true)) {
             $input = (int)$this->_device->get("InputTables");
             for ($i = 0; $i < $input; $i++) {
                 $ret = $this->setInputTable(
@@ -611,7 +611,7 @@ class Network
                 $this->_system->out("inputTable $i success", 1);
             }
         }
-        if (!isset($fixed["OutputTables"]) || ($fixed["OutputTables"] !== true)) {
+        if (!is_array($fixed) || ($fixed["OutputTables"] !== true)) {
             $output = (int)$this->_device->get("OutputTables");
             for ($i = 0; $i < $output; $i++) {
                 $ret = $this->setOutputTable(
@@ -627,7 +627,7 @@ class Network
                 $this->_system->out("outputTable $i success", 1);
             }
         }
-        if (!isset($fixed["ProcessTables"]) || ($fixed["ProcessTables"] !== true)) {
+        if (!is_array($fixed) || ($fixed["ProcessTables"] !== true)) {
             $process = (int)$this->_device->get("ProcessTables");
             for ($i = 0; $i < $process; $i++) {
                 $ret = $this->setProcessTable(
@@ -643,7 +643,7 @@ class Network
                 $this->_system->out("processTable $i success", 1);
             }
         }
-        if (!isset($fixed["PowerTables"]) || ($fixed["PowerTables"] !== true)) {
+        if (is_array($fixed) && ($fixed["PowerTables"] !== true)) {
             $power = (int)$this->_device->get("PowerTables");
             for ($i = 0; $i < $power; $i++) {
                 $ret = $this->setPowerTable(
