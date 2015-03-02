@@ -611,7 +611,7 @@ class Network
                 $this->_system->out("inputTable $i success", 1);
             }
         }
-        if (!isset($fixed$fixed["OutputTables"]) || ($fixed["OutputTables"] !== true)) {
+        if (!isset($fixed["OutputTables"]) || ($fixed["OutputTables"] !== true)) {
             $output = (int)$this->_device->get("OutputTables");
             for ($i = 0; $i < $output; $i++) {
                 $ret = $this->setOutputTable(
