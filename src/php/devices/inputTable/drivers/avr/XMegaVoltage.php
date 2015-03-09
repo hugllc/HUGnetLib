@@ -118,6 +118,7 @@ class XMegaVoltage extends \HUGnet\devices\inputTable\DriverAVR
         $R1   = $this->getExtra(0);
         $R2   = $this->getExtra(1);
         $Vref = $this->getExtra(2);
+        $Ain  = $A;
         $A    = $this->twosCompliment($A, $this->get("inputSize") * 8);
         
         if ($R1 == 0) {
