@@ -72,7 +72,7 @@ class XMegaCurrent extends \HUGnet\devices\inputTable\DriverAVR
         "longName" => "Xmega Current Sensor",
         "shortName" => "XMegaCurrent",
         "unitType" => "Current",
-        "storageUnit" => 'mA',
+        "storageUnit" => 'A',
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraText" => array(
             "Sense Resistor (Ohms)",
@@ -124,7 +124,7 @@ class XMegaCurrent extends \HUGnet\devices\inputTable\DriverAVR
             return null;
         }
         $Amps    = ($A * $Vref) / $num;
-        return round($Amps * 1000, 1);  // Return mA
+        return round($Amps, 1);  // Return mA
     }
     /**
     * Returns the reversed reading
