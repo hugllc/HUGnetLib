@@ -133,6 +133,30 @@ class WebAPI extends HTML
     * @return null
     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
     */
+    private function _executeFirmware($extra = array())
+    {
+        $ret = array();
+        $firmware = $this->system()->table("firmware");
+        $action = strtolower(trim($this->args()->get("action")));
+        if ($action == "list") {
+            $ret = $this->_executeTableList($ident, $firmware);
+            foreach ($ret as &$value) {
+                unset($value["Code"]);
+                unset($value["Data"]);
+                unset($value["CodeHash"]);
+                unset($value["DataHash"]);
+            }
+        }
+        return $ret;
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+    */
     private function _executeDevice($extra = array())
     {
         $did = hexdec($this->args()->get("id"));
