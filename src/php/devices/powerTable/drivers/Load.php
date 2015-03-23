@@ -67,17 +67,27 @@ class Load extends \HUGnet\devices\powerTable\Driver
         "longName" => "External Load",
         "shortName" => "Load",
         "extraText" => array(
+            0 => "Priority (0-255)",
+            1 => "Dump Load",
         ),
         "extraDefault" => array(
+            0 => 0,
+            1 => 0,
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
+            0 => 5,
+            1 => array(0 => "No", 1 => "Yes"),
         ),
         "extraDesc" => array(
+            0 => 'The priority of this load.  Higher number is higher priority',
+            1 => 'A dump load is just there to shed excess power.  It is not normally powered',
         ),
         "extraNames" => array(
+            'priority' => 0,
+            'dump' => 1,
         ),
     );
     /**
@@ -87,7 +97,10 @@ class Load extends \HUGnet\devices\powerTable\Driver
     */
     public function encode()
     {
-        return "";
+        $string  = "";
+        $string .= $this->encodeInt($this->getExtra(0), 1);
+        $string .= $this->encodeInt($this->getExtra(1), 1);
+        return $string;
     }
     /**
     * Decodes the driver portion of the setup string
@@ -98,7 +111,11 @@ class Load extends \HUGnet\devices\powerTable\Driver
     */
     public function decode($string)
     {
-    }
+        $extra = $this->power()->get("extra");
+        $extra[0] = $this->decodeInt(substr($string, 0, 2), 1);
+        $extra[1] = $this->decodeInt(substr($string, 2, 2), 1);
+        $this->power()->set("extra", $extra);
+   }
 
 }
 

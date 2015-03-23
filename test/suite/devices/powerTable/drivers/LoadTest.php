@@ -107,6 +107,7 @@ class LoadTest extends DriverTestBase
                     'type' => "EmptyPower",
                     'params' => array(),
                     'tableEntry' => array(),
+                    'extra' => array(0x13, 0x01),
                 ),
             ),
             array( // #1
@@ -123,6 +124,7 @@ class LoadTest extends DriverTestBase
                     'type' => "EmptyPower",
                     'params' => array(),
                     'tableEntry' => array(),
+                    'extra' => array(0x10, 0x01),
                 ),
             ),
         );
@@ -155,15 +157,15 @@ class LoadTest extends DriverTestBase
             array( // #0
                 array(
                 ),
-                "",
+                "0000",
             ),
             array( // #1
                 array(
                     "extra" => array(
-                        10, 11, 12
+                        0x10, 0x11
                     ),
                 ),
-                "",
+                "1011",
             ),
         );
     }

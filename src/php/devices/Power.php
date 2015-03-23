@@ -146,6 +146,39 @@ class Power extends \HUGnet\base\IOPBase
         return $channels;
     }
     /**
+    * This takes the class and makes it into a setup string
+    *
+    * @return Reference to the network object
+    */
+    public function encode()
+    {
+        $string  = sprintf("%02X", ($this->get("id") & 0xFF));  // Driver
+        $string .= sprintf("%02X", (0 & 0xFF));  // Subdriver
+        $string .= $this->driver()->encode($this);
+        return $string;
+    }
+    /**
+    * This builds the class from a setup string
+    *
+    * @param string $string The setup string to decode
+    *
+    * @return Reference to the network object
+    */
+    public function decode($string)
+    {
+        if (!is_string($string) || (strlen($string) < 2)) {
+            return;
+        }
+        $this->set("id", hexdec(substr($string, 0, 2)));
+        $subdriver = hexdec(substr($string, 2, 2));
+        $this->set("RawSetup", substr($string, 4));
+        $extra = substr($string, 2);
+        if (strlen($extra) > 1) {
+            $this->driver()->decode($extra, $this);
+        }
+        $this->fixTable();
+    }
+    /**
     * Gets the config and saves it
     *
     * @param string $url The url to post to
