@@ -229,6 +229,7 @@ class PowerTest extends \PHPUnit_Framework_TestCase
                     ),
                     'type' => 'EmptyPower',
                     'otherTypes' => Array (
+                        'DEFAULT' => 'EmptyPower'
                     ),
                     'validIds' => Array (
                         0xFF => 'Empty Slot'

@@ -364,6 +364,7 @@ class DriverTest extends drivers\DriverTestBase
             array(
                 0xFF,
                 array(
+                    'DEFAULT' => 'EmptyPower'
                 ),
             ),
         );

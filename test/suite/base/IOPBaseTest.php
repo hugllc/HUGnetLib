@@ -652,6 +652,20 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
                             ),
                         ),
                         "updateRow" => array(array()),
+                        'get' => array(
+                            array(
+                                'id',
+                            ),
+                            array(
+                                'type',
+                            ),
+                        ),
+                        'set' => array(
+                            array(
+                                0 => 'driver',
+                                1 => 'TestIOPBaseDriver1',
+                            ),
+                        ),
                     ),
                 ),
                 true,
@@ -679,6 +693,20 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
                             )
                         ),
                         'updateRow' => array(array()),
+                        'get' => array(
+                            array(
+                                'id',
+                            ),
+                            array(
+                                'type',
+                            ),
+                        ),
+                        'set' => array(
+                            array(
+                                0 => 'driver',
+                                1 => 'TestIOPBaseDriver1',
+                            ),
+                        ),
                     ),
                 ),
                 true,
@@ -805,6 +833,7 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
                     array("id", 5),
                     array("RawSetup", "1234"),
                     array("driver", "TestIOPBaseDriver1"),
+                    array("driver", "TestIOPBaseDriver1"),
                 ),
             ),
             array(
@@ -829,6 +858,7 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
                 array(
                     array("id", 5),
                     array("RawSetup", ""),
+                    array("driver", "TestIOPBaseDriver1"),
                 ),
             ),
             array(
@@ -1012,10 +1042,17 @@ class IOPBaseTest extends \PHPUnit_Framework_TestCase
                         array(
                             "lastTable", "1: NameHere"
                         ),
+                        array("driver", "TestIOPBaseDriver1"),
                     ),
                     "get" => array(
                         array(
                             "id"
+                        ),
+                        array(
+                            "id"
+                        ),
+                        array(
+                            "type"
                         ),
                     ),
                     "insertRow" => array(

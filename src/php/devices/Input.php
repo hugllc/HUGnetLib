@@ -216,6 +216,7 @@ class Input extends \HUGnet\base\IOPBase
     */
     protected function fixTable()
     {
+        parent::fixTable();
         $table =& $this->table();
         $driver =& $this->driver();
         if (!$this->units()->valid($table->get("units"))) {

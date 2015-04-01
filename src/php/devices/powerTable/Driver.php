@@ -105,6 +105,8 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "A0:DEFAULT"                 => "Load",
         "E0:DEFAULT"                 => "PowerSupply",
         "E1:DEFAULT"                 => "SolarPanel",
+        "FE:DEFAULT"                 => "PowerConverter",
+        "FF:DEFAULT"                 => "EmptyPower",
     );
     /**
     * This is where the correlation between the drivers and the arch is stored.

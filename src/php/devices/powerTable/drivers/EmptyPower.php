@@ -67,6 +67,7 @@ class EmptyPower extends \HUGnet\devices\powerTable\Driver
         "longName" => "Empty Power Port",
         "shortName" => "Empty",
         "id" => 0xFF,  // Force ID to be 0xFF
+        "type" => "EmptyPower", // Force type to be "EmptyPower"
         "min" => 0,
         "max" => 0,
     );

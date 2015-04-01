@@ -268,6 +268,7 @@ abstract class IOPBase extends SystemTableBase
             );
             $this->table()->set("driver", $driver);
         }
+        $this->_driverName = $driver;
         if (!is_object($this->_driverCache[$driver])) {
             $this->_driverCache[$driver] = $class::factory(
                 $driver, $this
@@ -312,6 +313,9 @@ abstract class IOPBase extends SystemTableBase
     */
     protected function fixTable()
     {
+        // This sets the driver
+        $this->driver();
+
     }
     /**
     * This takes the class and makes it into a setup string

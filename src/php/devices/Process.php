@@ -117,18 +117,6 @@ class Process extends \HUGnet\base\IOPBase
         return $this->table()->get("process");
     }
     /**
-    * This function should be overloaded to make changes to the table based on
-    * changes to incoming data.
-    *
-    * This is a way to make sure that the data is consistant before it gets stored
-    * in the database
-    *
-    * @return null
-    */
-    protected function fixTable()
-    {
-    }
-    /**
     * Gets the config and saves it
     *
     * @param string $url The url to post to

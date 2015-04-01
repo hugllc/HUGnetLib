@@ -2518,6 +2518,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     'type' => 'FSDA',
                     'tableEntry' => array(),
                     'params' => array(),
+                    'driver' => 'FET003912'
                 ),
                 "hello",
             ),

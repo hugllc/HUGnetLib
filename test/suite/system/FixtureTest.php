@@ -668,6 +668,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                         'Rate' => 1,
                         'Range' => 3,
                     ),
+                    'driver' => 'ADuCDAC',
                 ),
             ),
             array(  // #1 Output doesn't exist
@@ -775,6 +776,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                     'type' => "Stuff Here",
                     'params' => array(),
                     'tableEntry' => array(),
+                    'driver' => 'LevelHolderProcess',
                 ),
             ),
             array(  // #1 Output doesn't exist
@@ -809,6 +811,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                     'type' => "EmptyProcess",
                     'params' => array(),
                     'tableEntry' => array(),
+                    
                 ),
             ),
         );
@@ -1667,6 +1670,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                         'type' => 'NullOutput',
                         'params' => array(),
                         'tableEntry' => array(),
+                        'driver' => 'NullOutput',
                     ),
                     array(
                         'id' => 0xFE,
@@ -1676,6 +1680,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                         'type' => 'NullOutput',
                         'params' => array(),
                         'tableEntry' => array(),
+                        'driver' => 'NullOutput',
                     ),
                     array(
                         'id' => 0xFE,
@@ -1685,6 +1690,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                         'type' => 'NullOutput',
                         'params' => array(),
                         'tableEntry' => array(),
+                        'driver' => 'NullOutput',
                     ),
                     array(
                         'id' => 0xFE,
@@ -1694,6 +1700,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                         'type' => 'NullOutput',
                         'params' => array(),
                         'tableEntry' => array(),
+                        'driver' => 'NullOutput',
                     ),
                     array(
                         'id' => 0xFE,
@@ -1703,6 +1710,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                         'type' => 'NullOutput',
                         'params' => array(),
                         'tableEntry' => array(),
+                        'driver' => 'NullOutput',
                     ),
                 ), // Outputs
                 array(
@@ -1714,6 +1722,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                         'type' => 'LevelHolderProcess',
                         'params' => array(),
                         'tableEntry' => array(),
+                        'driver' => 'LevelHolderProcess',
                     ),
                     array(
                         'id' => 1,
@@ -1723,6 +1732,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                         'type' => 'LevelHolderProcess',
                         'params' => array(),
                         'tableEntry' => array(),
+                        'driver' => 'LevelHolderProcess',
                     ),
                     array(
                         'id' => 1,
@@ -1732,6 +1742,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                         'type' => 'LevelHolderProcess',
                         'params' => array(),
                         'tableEntry' => array(),
+                        'driver' => 'LevelHolderProcess',
                     ),
                     array(
                         'id' => 1,
@@ -1741,6 +1752,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                         'type' => 'LevelHolderProcess',
                         'params' => array(),
                         'tableEntry' => array(),
+                        'driver' => 'LevelHolderProcess',
                     ),
                 ), // Processes
             ),
@@ -2125,6 +2137,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                         'type' => 'NullOutput',
                         'params' => array(),
                         'tableEntry' => array(),
+                        'driver' => 'NullOutput',
                     ),
                     array(
                         'id' => 0xFE,
@@ -2134,6 +2147,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                         'type' => 'NullOutput',
                         'params' => array(),
                         'tableEntry' => array(),
+                        'driver' => 'NullOutput',
                     ),
                     array(
                         'id' => 0xFE,
@@ -2143,6 +2157,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                         'type' => 'NullOutput',
                         'params' => array(),
                         'tableEntry' => array(),
+                        'driver' => 'NullOutput',
                     ),
                     array(
                         'id' => 0xFE,
@@ -2152,6 +2167,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                         'type' => 'NullOutput',
                         'params' => array(),
                         'tableEntry' => array(),
+                        'driver' => 'NullOutput',
                     ),
                     array(
                         'id' => 0xFE,
@@ -2161,6 +2177,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                         'type' => 'NullOutput',
                         'params' => array(),
                         'tableEntry' => array(),
+                        'driver' => 'NullOutput',
                     ),
                 ), // Outputs
                 array(
@@ -2172,6 +2189,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                         'type' => 'LevelHolderProcess',
                         'params' => array(),
                         'tableEntry' => array(),
+                        'driver' => 'LevelHolderProcess',
                     ),
                     array(
                         'id' => 1,
@@ -2181,6 +2199,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                         'type' => 'LevelHolderProcess',
                         'params' => array(),
                         'tableEntry' => array(),
+                        'driver' => 'LevelHolderProcess',
                     ),
                     array(
                         'id' => 1,
@@ -2190,6 +2209,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                         'type' => 'LevelHolderProcess',
                         'params' => array(),
                         'tableEntry' => array(),
+                        'driver' => 'LevelHolderProcess',
                     ),
                     array(
                         'id' => 1,
@@ -2199,6 +2219,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                         'type' => 'LevelHolderProcess',
                         'params' => array(),
                         'tableEntry' => array(),
+                        'driver' => 'LevelHolderProcess',
                     ),
                 ), // Processes
             ),
@@ -2535,6 +2556,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                         'type' => 'NullOutput',
                         'params' => array(),
                         'tableEntry' => array(),
+                        'driver' => 'NullOutput',
                     ),
                     array(
                         'id' => 0xFE,
@@ -2544,6 +2566,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                         'type' => 'NullOutput',
                         'params' => array(),
                         'tableEntry' => array(),
+                        'driver' => 'NullOutput',
                     ),
                     array(
                         'id' => 0xFE,
@@ -2553,6 +2576,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                         'type' => 'NullOutput',
                         'params' => array(),
                         'tableEntry' => array(),
+                        'driver' => 'NullOutput',
                     ),
                     array(
                         'id' => 0xFE,
@@ -2562,6 +2586,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                         'type' => 'NullOutput',
                         'params' => array(),
                         'tableEntry' => array(),
+                        'driver' => 'NullOutput',
                     ),
                     array(
                         'id' => 0xFE,
@@ -2571,6 +2596,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                         'type' => 'NullOutput',
                         'params' => array(),
                         'tableEntry' => array(),
+                        'driver' => 'NullOutput',
                     ),
                 ), // Outputs
                 array(
@@ -2582,6 +2608,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                         'type' => 'LevelHolderProcess',
                         'params' => array(),
                         'tableEntry' => array(),
+                        'driver' => 'LevelHolderProcess',
                     ),
                     array(
                         'id' => 1,
@@ -2591,6 +2618,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                         'type' => 'LevelHolderProcess',
                         'params' => array(),
                         'tableEntry' => array(),
+                        'driver' => 'LevelHolderProcess',
                     ),
                     array(
                         'id' => 1,
@@ -2600,6 +2628,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                         'type' => 'LevelHolderProcess',
                         'params' => array(),
                         'tableEntry' => array(),
+                        'driver' => 'LevelHolderProcess',
                     ),
                     array(
                         'id' => 1,
@@ -2609,6 +2638,7 @@ class FixtureTest extends \PHPUnit_Framework_TestCase
                         'type' => 'LevelHolderProcess',
                         'params' => array(),
                         'tableEntry' => array(),
+                        'driver' => 'LevelHolderProcess',
                     ),
                 ), // Processes
             ),

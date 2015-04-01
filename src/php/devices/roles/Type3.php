@@ -267,6 +267,15 @@ class Type3 extends \HUGnet\base\Role
     */
     protected $process = array(
     );
+    /**
+    *  This is the process table data
+    */
+    protected $power = array(
+        0 => array( 
+            "id" => 0xFE,
+            "location" => "Power Converter",
+        ),
+    );
 }
 
 
