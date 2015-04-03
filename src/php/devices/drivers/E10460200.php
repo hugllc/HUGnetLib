@@ -70,7 +70,7 @@ class E10460200 extends \HUGnet\devices\Driver
         "historyTable" => "E10460200History",
         "averageTable" => "E10460200Average",
         "loadable" => true,
-        "packetTimeout" => 2,
+        "packetTimeout" => 5,
         "type" => "endpoint",
         "job"  => "sense",
         "arch" => "1046-02",
