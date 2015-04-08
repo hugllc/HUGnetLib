@@ -107,7 +107,7 @@ class LoadTest extends DriverTestBase
                     'type' => "EmptyPower",
                     'params' => array(),
                     'tableEntry' => array(),
-                    'extra' => array(0x13, 0x01),
+                    'extra' => array(0x07, 0x01),
                 ),
             ),
             array( // #1
@@ -116,7 +116,7 @@ class LoadTest extends DriverTestBase
                     'power' => 1,
                     'id' => 0x31,
                 ),
-                "100103",
+                "060103",
                 array(
                     'dev' => 1,
                     'power' => 1,
@@ -124,7 +124,7 @@ class LoadTest extends DriverTestBase
                     'type' => "EmptyPower",
                     'params' => array(),
                     'tableEntry' => array(),
-                    'extra' => array(0x10, 0x01),
+                    'extra' => array(0x06, 0x00),
                 ),
             ),
         );
@@ -157,7 +157,7 @@ class LoadTest extends DriverTestBase
             array( // #0
                 array(
                 ),
-                "0000",
+                "00",
             ),
             array( // #1
                 array(
@@ -165,7 +165,7 @@ class LoadTest extends DriverTestBase
                         0x10, 0x11
                     ),
                 ),
-                "1011",
+                "0F",
             ),
         );
     }

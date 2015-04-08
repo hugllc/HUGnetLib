@@ -67,7 +67,7 @@ class Load extends \HUGnet\devices\powerTable\Driver
         "longName" => "External Load",
         "shortName" => "Load",
         "extraText" => array(
-            0 => "Priority (0-255)",
+            0 => "Priority (0-7)",
             1 => "Dump Load",
         ),
         "extraDefault" => array(
@@ -82,7 +82,7 @@ class Load extends \HUGnet\devices\powerTable\Driver
             1 => array(0 => "No", 1 => "Yes"),
         ),
         "extraDesc" => array(
-            0 => 'The priority of this load.  Higher number is higher priority',
+            0 => 'The priority of this load.  A lower number is a higher priority',
             1 => 'A dump load is just there to shed excess power.  It is not normally powered',
         ),
         "extraNames" => array(
@@ -98,8 +98,12 @@ class Load extends \HUGnet\devices\powerTable\Driver
     public function encode()
     {
         $string  = "";
-        $string .= $this->encodeInt($this->getExtra(0), 1);
-        $string .= $this->encodeInt($this->getExtra(1), 1);
+        $priority = abs($this->getExtra(0));
+        $priority = ($priority > 7) ? 7 : $priority;
+        if ($this->getExtra(1)) {
+            $priority += 8;
+        }
+        $string .= $this->encodeInt($priority, 1);
         return $string;
     }
     /**
@@ -112,8 +116,15 @@ class Load extends \HUGnet\devices\powerTable\Driver
     public function decode($string)
     {
         $extra = $this->power()->get("extra");
-        $extra[0] = $this->decodeInt(substr($string, 0, 2), 1);
-        $extra[1] = $this->decodeInt(substr($string, 2, 2), 1);
+        $priority = $this->decodeInt(substr($string, 0, 2), 1);
+        $priority = ($priority > 15) ? 15 : $priority;
+        if ($priority > 7) {
+            $extra[1] = 1;
+            $priority -= 8;
+        } else {
+            $extra[1] = 0;
+        }
+        $extra[0] = $priority;
         $this->power()->set("extra", $extra);
    }
 
