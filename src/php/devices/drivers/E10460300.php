@@ -88,7 +88,7 @@ class E10460300 extends \HUGnet\devices\Driver
             "PowerTables" => false,
         ),
         "Role" => "Type4",
-        "useCRC" => false,
+        "useCRC" => true,
     );
     /**
     * Decodes the sensor string
