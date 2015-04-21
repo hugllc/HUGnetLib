@@ -95,6 +95,7 @@ abstract class Driver
         "setConfig" => true,
         "AddressSize" => 2,
         "fixed" => false,
+        "useCRC" => false,
     );
     /**
     * This is where all of the driver information is stored.
@@ -109,6 +110,7 @@ abstract class Driver
         "0039-20-16-C:DEFAULT:DEFAULT"      => "E00393802",
         "0039-38-02-C:DEFAULT:DEFAULT"      => "E00393802",
         "0039-38-03-C:DEFAULT:DEFAULT"      => "E00393803",
+        "0039-38-81-C:DEFAULT:DEFAULT"      => "E00393881",
         "0039-38-82-C:DEFAULT:DEFAULT"      => "E00393882",
         "DEFAULT:0039-12-00-A:DEFAULT"      => "E00391200",
         "DEFAULT:0039-12-01-A:DEFAULT"      => "E00391200",

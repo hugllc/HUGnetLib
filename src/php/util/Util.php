@@ -50,8 +50,8 @@ namespace HUGnet;
  */
 class Util
 {
-    /** This is the polynomial for the CRC  */
-    private static $_poly = 0xA6;
+    /** This is the polynomial for the CRC-8-CCITT  */
+    private static $_poly = 0x07;
     /**
     * This function gives us access to the table class
     *
@@ -132,7 +132,7 @@ class Util
         $pkt = str_split($string, 2);
         $crc = 0;
         foreach ($pkt as $value) {
-            self::_crc8byte($crc, hexdec($value));
+            self::crc8_update($crc, hexdec($value));
         }
         return $crc;
     }
@@ -144,7 +144,7 @@ class Util
     *
     * @return byte The total CRC
     */
-    private static function _crc8byte(&$crc, $byte)
+    public static function crc8_update(&$crc, $byte)
     {
         $crc = ((int)$crc ^ (int)$byte) & 0xFF;
         for ($bit = 8; $bit > 0; $bit--) {

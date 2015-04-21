@@ -146,6 +146,7 @@ class Route extends \HUGnet\ui\Daemon
             print " -> To: ".$pkt->To();
             print " Command: ".$pkt->Command();
             print " Type: ".$pkt->Type();
+            print " (".(($pkt->crc()) ? "CRC" : "XOR").")";
             print "\r\n";
             $data = $pkt->Data();
             if (!empty($data)) {

@@ -132,7 +132,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 "55000ABC0000200401020304",
-                0x82,
+                144,
             ),
         );
     }

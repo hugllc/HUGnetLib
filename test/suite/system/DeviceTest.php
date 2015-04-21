@@ -864,6 +864,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     'localParams' => array(),
                     'AddressSize' => 2,
                     'fixed' => false,
+                    'useCRC' => false,
                 )
             ),
             array(   // #1 No default stuff
@@ -967,6 +968,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     'localParams' => array(),
                     'AddressSize' => 2,
                     'fixed' => false,
+                    'useCRC' => false,
                 )
             ),
             array( //  #3 Not a Late Poll
@@ -1048,6 +1050,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     'localParams' => array(),
                     'AddressSize' => 2,
                     'fixed' => false,
+                    'useCRC' => false,
                 )
             ),
             array( //  #4 Everything Normal with daughterboard
@@ -1131,6 +1134,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     "configImage" => "00392301A.svg",
                     'AddressSize' => 2,
                     'fixed' => false,
+                    'useCRC' => false,
                 )
             ),
             array( //  #5 Everything Normal with empty daughterboard
@@ -1212,6 +1216,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     'localParams' => array(),
                     'AddressSize' => 2,
                     'fixed' => false,
+                    'useCRC' => false,
                 )
             ),
         );

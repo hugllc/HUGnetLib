@@ -105,6 +105,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -126,6 +127,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -136,6 +138,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                     "To" => 21,
                                     "Command" => 'PING',
                                     "Data" => "123456",
+                                    "CRC" => false,
                                 ),
                                 null,
                                 array(
@@ -158,6 +161,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => true,
                         ),
                     ),
                     "Network" => array(
@@ -179,6 +183,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -189,6 +194,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                     "To" => 21,
                                     "Command" => 'FINDPING',
                                     "Data" => "654321",
+                                    "CRC" => true,
                                 ),
                                 null,
                                 array(
@@ -211,6 +217,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -232,6 +239,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -241,6 +249,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 array(
                                     "To" => 21,
                                     "Command" => 'PING',
+                                    "CRC" => false,
                                 ),
                                 null,
                                 array(
@@ -309,6 +318,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => true,
                         ),
                     ),
                     "Network" => array(
@@ -328,6 +338,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -337,6 +348,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 array(
                                     "To" => 21,
                                     "Command" => 'SENSORREAD',
+                                    "CRC" => true,
                                 ),
                                 null,
                                 array(
@@ -359,6 +371,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -381,6 +394,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -391,6 +405,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                     array(
                                         "To" => 21,
                                         "Command" => 'SENSORREAD',
+                                        "CRC" => false,
                                     ),
                                 ),
                                 null,
@@ -455,6 +470,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => true,
                         ),
                     ),
                     "Network" => array(
@@ -474,6 +490,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -483,6 +500,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 array(
                                     "To" => 21,
                                     "Command" => 'CONFIG',
+                                    "CRC" => true,
                                 ),
                                 null,
                                 array(
@@ -505,6 +523,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -527,6 +546,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -537,6 +557,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                     array(
                                         "To" => 21,
                                         "Command" => 'CONFIG',
+                                        "CRC" => false,
                                     ),
                                 ),
                                 null,
@@ -601,6 +622,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => true,
                         ),
                     ),
                     "Network" => array(
@@ -621,6 +643,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -632,6 +655,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                         "To" => 21,
                                         "Command" => 'SENSORCONFIG',
                                         "Data" => "03",
+                                        "CRC" => true,
                                     ),
                                 ),
                                 null,
@@ -655,6 +679,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -683,6 +708,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -694,6 +720,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                         "To" => 21,
                                         "Command" => 'SENSORCONFIG',
                                         "Data" => "03",
+                                        "CRC" => false,
                                     ),
                                 ),
                                 null,
@@ -760,6 +787,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -781,6 +809,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -792,6 +821,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                         "To" => 21,
                                         "Command" => 'SETINPUTTABLE',
                                         "Data" => "0309080706",
+                                        "CRC" => false,
                                     ),
                                 ),
                                 null,
@@ -810,6 +840,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -836,6 +867,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -903,6 +935,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -924,6 +957,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -935,6 +969,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                         "To" => 21,
                                         "Command" => 'SETOUTPUTTABLE',
                                         "Data" => "0309080706",
+                                        "CRC" => false,
                                     ),
                                 ),
                                 null,
@@ -953,6 +988,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -979,6 +1015,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -1046,6 +1083,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => true,
                         ),
                         "decodeRTC" => "asdf",
                     ),
@@ -1064,6 +1102,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                         "decodeRTC" => array(
@@ -1076,6 +1115,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 array(
                                     "To" => 21,
                                     "Command" => 'GET_RTC',
+                                    "CRC" => true,
                                 ),
                                 null,
                                 array(
@@ -1093,6 +1133,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -1110,6 +1151,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -1119,6 +1161,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 array(
                                     "To" => 21,
                                     "Command" => 'GET_RTC',
+                                    "CRC" => false,
                                 ),
                                 null,
                                 array(
@@ -1136,6 +1179,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -1148,6 +1192,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -1157,6 +1202,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 array(
                                     "To" => 21,
                                     "Command" => 'GET_RTC',
+                                    "CRC" => false,
                                 ),
                                 null,
                                 array(
@@ -1211,6 +1257,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                         "encodeRTC" => "11223344",
                         "decodeRTC" => "asdf",
@@ -1231,6 +1278,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                         "decodeRTC" => array(
@@ -1248,6 +1296,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                         "Command" => 'SET_RTC',
                                         "Data" => "11223344",
                                         "To" => 21,
+                                        "CRC" => false,
                                     ),
                                 ),
                                 null,
@@ -1266,6 +1315,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                         "encodeRTC" => "11223344",
                     ),
@@ -1285,6 +1335,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                         "encodeRTC" => array(
@@ -1299,6 +1350,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                         "Command" => 'SET_RTC',
                                         "Data" => "11223344",
                                         "To" => 21,
+                                        "CRC" => false,
                                     ),
                                 ),
                                 null,
@@ -1317,6 +1369,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                         "encodeRTC" => "11223344",
                     ),
@@ -1331,6 +1384,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                         "encodeRTC" => array(
@@ -1345,6 +1399,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                         "Command" => 'SET_RTC',
                                         "Data" => "11223344",
                                         "To" => 21,
+                                        "CRC" => false,
                                     ),
                                 ),
                                 null,
@@ -1401,6 +1456,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                         "encodeRTC" => "11223344",
                         "decodeRTC" => "asdf",
@@ -1433,6 +1489,13 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                         "Command" => 'TIMEBROADCAST',
                                         "Data" => "1122334411223344",
                                         "To" => 0,
+                                        "CRC" => false,
+                                    ),
+                                    array(
+                                        "Command" => 'TIMEBROADCAST',
+                                        "Data" => "1122334411223344",
+                                        "To" => 0,
+                                        "CRC" => true,
                                     ),
                                 ),
                                 null,
@@ -1489,6 +1552,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -1506,6 +1570,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -1515,6 +1580,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 array(
                                     "To" => 21,
                                     "Command" => 'GETCRC',
+                                    "CRC" => false,
                                 ),
                                 null,
                                 array(
@@ -1532,6 +1598,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -1549,6 +1616,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -1558,6 +1626,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 array(
                                     "To" => 21,
                                     "Command" => 'GETCRC',
+                                    "CRC" => false,
                                 ),
                                 null,
                                 array(
@@ -1575,6 +1644,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => true,
                         ),
                     ),
                     "Network" => array(
@@ -1587,6 +1657,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -1596,6 +1667,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 array(
                                     "To" => 21,
                                     "Command" => 'GETCRC',
+                                    "CRC" => true,
                                 ),
                                 null,
                                 array(
@@ -1650,6 +1722,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -1667,6 +1740,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -1676,6 +1750,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 array(
                                     "To" => 21,
                                     "Command" => 'SETCRC',
+                                    "CRC" => false,
                                 ),
                                 null,
                                 array(
@@ -1693,6 +1768,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => true,
                         ),
                     ),
                     "Network" => array(
@@ -1710,6 +1786,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -1719,6 +1796,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 array(
                                     "To" => 21,
                                     "Command" => 'SETCRC',
+                                    "CRC" => true,
                                 ),
                                 null,
                                 array(
@@ -1736,6 +1814,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -1748,6 +1827,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -1757,6 +1837,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 array(
                                     "To" => 21,
                                     "Command" => 'SETCRC',
+                                    "CRC" => false,
                                 ),
                                 null,
                                 array(
@@ -1811,6 +1892,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -1828,6 +1910,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                         ),
                     ),
                     "Network" => array(
@@ -1836,6 +1919,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 array(
                                     "To" => 21,
                                     "Command" => 'BOOTLOADER',
+                                    "CRC" => false,
                                 ),
                                 null,
                                 array(
@@ -1854,6 +1938,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => true,
                         ),
                     ),
                     "Network" => array(
@@ -1870,6 +1955,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                         ),
                     ),
                     "Network" => array(
@@ -1878,6 +1964,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 array(
                                     "To" => 21,
                                     "Command" => 'BOOTLOADER',
+                                    "CRC" => true,
                                 ),
                                 null,
                                 array(
@@ -1896,6 +1983,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -1908,6 +1996,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                         ),
                     ),
                     "Network" => array(
@@ -1916,6 +2005,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 array(
                                     "To" => 21,
                                     "Command" => 'BOOTLOADER',
+                                    "CRC" => false,
                                 ),
                                 null,
                                 array(
@@ -1971,6 +2061,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => true,
                         ),
                     ),
                     "Network" => array(
@@ -1988,6 +2079,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -1997,6 +2089,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 array(
                                     "To" => 21,
                                     "Command" => 'BOOT',
+                                    "CRC" => true,
                                 ),
                                 null,
                                 array(
@@ -2014,6 +2107,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -2030,6 +2124,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -2039,6 +2134,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 array(
                                     "To" => 21,
                                     "Command" => 'BOOT',
+                                    "CRC" => false,
                                 ),
                                 null,
                                 array(
@@ -2056,6 +2152,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -2068,6 +2165,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -2077,6 +2175,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 array(
                                     "To" => 21,
                                     "Command" => 'BOOT',
+                                    "CRC" => false,
                                 ),
                                 null,
                                 array(
@@ -2130,6 +2229,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => true,
                         ),
                     ),
                     "Network" => array(
@@ -2150,6 +2250,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -2160,6 +2261,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                     "To" => 21,
                                     "Command" => 'WRITE_FLASH',
                                     "Data" => "1234ABCDEF",
+                                    'CRC' => true,
                                 ),
                                 null,
                                 array(
@@ -2177,6 +2279,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -2197,6 +2300,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -2207,6 +2311,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                     "To" => 21,
                                     "Command" => 'WRITE_FLASH',
                                     "Data" => "1234ABCDEF",
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -2224,6 +2329,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -2250,6 +2356,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             "id" => 21,
                             "packetTimeout" => 4,
                             "AddressSize" => 3,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -2270,6 +2377,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -2280,6 +2388,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                     "To" => 21,
                                     "Command" => 'WRITE_FLASH',
                                     "Data" => "001234ABCDEF",
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -2298,6 +2407,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             "id" => 21,
                             "packetTimeout" => 4,
                             "AddressSize" => 2,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -2318,6 +2428,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -2328,6 +2439,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                     "To" => 21,
                                     "Command" => 'WRITE_FLASH',
                                     "Data" => "123456ABCDEF",
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -2346,6 +2458,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             "id" => 21,
                             "packetTimeout" => 4,
                             "AddressSize" => 3,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -2366,6 +2479,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -2376,6 +2490,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                     "To" => 21,
                                     "Command" => 'WRITE_FLASH',
                                     "Data" => "123456ABCDEF",
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -2433,6 +2548,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -2453,6 +2569,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -2463,6 +2580,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                     "To" => 21,
                                     "Command" => 'WRITE_E2',
                                     "Data" => "1234ABCDEF",
+                                    "CRC" => false,
                                 ),
                                 null,
                                 array(
@@ -2480,6 +2598,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -2500,6 +2619,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -2510,6 +2630,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                     "To" => 21,
                                     "Command" => 'WRITE_E2',
                                     "Data" => "1234ABCDEF",
+                                    "CRC" => false,
                                 ),
                                 null,
                                 array(
@@ -2593,6 +2714,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -2627,10 +2749,13 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -2641,6 +2766,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                     "To" => 21,
                                     "Command" => 'WRITE_FLASH',
                                     "Data" => "1000000102030405",
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -2653,6 +2779,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                     "To" => 21,
                                     "Command" => 'WRITE_FLASH',
                                     "Data" => "1006060708090A0B",
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -2665,6 +2792,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                     "To" => 21,
                                     "Command" => 'WRITE_FLASH',
                                     "Data" => "100C0C0D0E0FFFFF",
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -2683,6 +2811,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -2717,10 +2846,13 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -2731,6 +2863,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                     "To" => 21,
                                     "Command" => 'WRITE_FLASH',
                                     "Data" => "1000000102030405",
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -2743,6 +2876,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                     "To" => 21,
                                     "Command" => 'WRITE_FLASH',
                                     "Data" => "1006060708090A0B",
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -2755,6 +2889,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                     "To" => 21,
                                     "Command" => 'WRITE_FLASH',
                                     "Data" => "100C0C0D0E0FFFFF",
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -2773,6 +2908,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -2807,8 +2943,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -2819,6 +2957,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                     "To" => 21,
                                     "Command" => 'WRITE_FLASH',
                                     "Data" => "1000000102030405",
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -2831,6 +2970,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                     "To" => 21,
                                     "Command" => 'WRITE_FLASH',
                                     "Data" => "1006060708090A0B",
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -2849,6 +2989,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -2888,6 +3029,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -2968,6 +3110,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => true,
                         ),
                     ),
                     "Network" => array(
@@ -3002,10 +3145,13 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -3016,6 +3162,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                     "To" => 21,
                                     "Command" => 'WRITE_E2',
                                     "Data" => "1000000102030405",
+                                    "CRC" => true,
                                 ),
                                 null,
                                 array(
@@ -3028,6 +3175,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                     "To" => 21,
                                     "Command" => 'WRITE_E2',
                                     "Data" => "1006060708090A0B",
+                                    "CRC" => true,
                                 ),
                                 null,
                                 array(
@@ -3040,6 +3188,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                     "To" => 21,
                                     "Command" => 'WRITE_E2',
                                     "Data" => "100C0C0D0E0FFFFF",
+                                    "CRC" => true,
                                 ),
                                 null,
                                 array(
@@ -3058,6 +3207,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -3092,10 +3242,13 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -3106,6 +3259,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                     "To" => 21,
                                     "Command" => 'WRITE_E2',
                                     "Data" => "1000000102030405",
+                                    "CRC" => false,
                                 ),
                                 null,
                                 array(
@@ -3118,6 +3272,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                     "To" => 21,
                                     "Command" => 'WRITE_E2',
                                     "Data" => "1006060708090A0B",
+                                    "CRC" => false,
                                 ),
                                 null,
                                 array(
@@ -3130,6 +3285,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                     "To" => 21,
                                     "Command" => 'WRITE_E2',
                                     "Data" => "100C0C0D0E0FFFFF",
+                                    "CRC" => false,
                                 ),
                                 null,
                                 array(
@@ -3148,6 +3304,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -3182,8 +3339,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             array("AddressSize"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -3194,6 +3353,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                     "To" => 21,
                                     "Command" => 'WRITE_E2',
                                     "Data" => "1000000102030405",
+                                    "CRC" => false,
                                 ),
                                 null,
                                 array(
@@ -3206,6 +3366,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                     "To" => 21,
                                     "Command" => 'WRITE_E2',
                                     "Data" => "1006060708090A0B",
+                                    "CRC" => false,
                                 ),
                                 null,
                                 array(
@@ -3224,6 +3385,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "useCRC" => false,
                         ),
                     ),
                     "Network" => array(
@@ -3346,6 +3508,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             "HWPartNum" => "0039-21-01-A",
                             "FWPartNum" => "0039-20-01-C",
                             "packetTimeout" => 2,
+                            "useCRC" => false,
                         ),
                         "decode" => true,
                     ),
@@ -3396,6 +3559,7 @@ S9030000FC",
                             array("AddressSize"),
                             array("HWPartNum"),
                             array("id"),
+                            array("useCRC"),
                         ),
                     ),
                     "Network" => array(
@@ -3404,6 +3568,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'BOOTLOADER',
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -3424,6 +3589,7 @@ S9030000FC",
                             "HWPartNum" => "0039-21-01-A",
                             "FWPartNum" => "0039-20-01-C",
                             "packetTimeout" => 2,
+                            "useCRC" => false,
                         ),
                         "decode" => true,
                     ),
@@ -3474,7 +3640,9 @@ S9030000FC",
                             array("AddressSize"),
                             array("HWPartNum"),
                             array("id"),
+                            array("useCRC"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                     ),
@@ -3484,6 +3652,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'BOOTLOADER',
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -3495,6 +3664,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'CONFIG',
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -3514,6 +3684,7 @@ S9030000FC",
                             "HWPartNum" => "0039-21-01-A",
                             "FWPartNum" => "0039-20-01-C",
                             "packetTimeout" => 2,
+                            "useCRC" => true,
                         ),
                         "decode" => true,
                     ),
@@ -3583,9 +3754,12 @@ S9030000FC",
                             array("AddressSize"),
                             array("HWPartNum"),
                             array("id"),
+                            array("useCRC"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                         "decode" => array(
@@ -3601,6 +3775,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'BOOTLOADER',
+                                    'CRC' => true,
                                 ),
                                 null,
                                 array(
@@ -3612,6 +3787,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'CONFIG',
+                                    'CRC' => true,
                                 ),
                                 null,
                                 array(
@@ -3629,6 +3805,7 @@ S9030000FC",
                                     ."0270010270000001027001027000000102700102700"
                                     ."0000202700102700000020270010270000002027001"
                                     ."02700000020",
+                                    'CRC' => true,
                                 ),
                                 null,
                                 array(
@@ -3649,6 +3826,7 @@ S9030000FC",
                             "HWPartNum" => "0039-21-01-A",
                             "FWPartNum" => "0039-20-01-C",
                             "packetTimeout" => 2,
+                            "useCRC" => false,
                         ),
                         "decode" => true,
                     ),
@@ -3742,13 +3920,18 @@ S9030000FC",
                             array("AddressSize"),
                             array("HWPartNum"),
                             array("id"),
+                            array("useCRC"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                         "decode" => array(
@@ -3764,6 +3947,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'BOOTLOADER',
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -3775,6 +3959,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'CONFIG',
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -3792,6 +3977,7 @@ S9030000FC",
                                     ."0270010270000001027001027000000102700102700"
                                     ."0000202700102700000020270010270000002027001"
                                     ."02700000020",
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -3810,6 +3996,7 @@ S9030000FC",
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFF",
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -3828,6 +4015,7 @@ S9030000FC",
                                     ."0270010270000001027001027000000102700102700"
                                     ."0000202700102700000020270010270000002027001"
                                     ."02700000020",
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -3848,6 +4036,7 @@ S9030000FC",
                             "HWPartNum" => "0039-21-01-A",
                             "FWPartNum" => "0039-20-01-C",
                             "packetTimeout" => 2,
+                            "useCRC" => false,
                         ),
                         "decode" => true,
                     ),
@@ -3959,17 +4148,24 @@ S9030000FC",
                             array("AddressSize"),
                             array("HWPartNum"),
                             array("id"),
+                            array("useCRC"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                         "decode" => array(
@@ -3985,6 +4181,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'BOOTLOADER',
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -3996,6 +4193,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'CONFIG',
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -4013,6 +4211,7 @@ S9030000FC",
                                     ."0270010270000001027001027000000102700102700"
                                     ."0000202700102700000020270010270000002027001"
                                     ."02700000020",
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -4031,6 +4230,7 @@ S9030000FC",
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFF",
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -4049,6 +4249,7 @@ S9030000FC",
                                     ."0270010270000001027001027000000102700102700"
                                     ."0000202700102700000020270010270000002027001"
                                     ."02700000020",
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -4067,6 +4268,7 @@ S9030000FC",
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFF",
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -4078,6 +4280,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'SETCRC',
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -4097,6 +4300,7 @@ S9030000FC",
                             "HWPartNum" => "0039-21-01-A",
                             "FWPartNum" => "0039-20-01-C",
                             "packetTimeout" => 2,
+                            "useCRC" => false,
                         ),
                         "decode" => true,
                     ),
@@ -4214,19 +4418,27 @@ S9030000FC",
                             array("AddressSize"),
                             array("HWPartNum"),
                             array("id"),
+                            array("useCRC"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                         "decode" => array(
@@ -4242,6 +4454,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'BOOTLOADER',
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -4253,6 +4466,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'CONFIG',
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -4270,6 +4484,7 @@ S9030000FC",
                                     ."0270010270000001027001027000000102700102700"
                                     ."0000202700102700000020270010270000002027001"
                                     ."02700000020",
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -4288,6 +4503,7 @@ S9030000FC",
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFF",
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -4306,6 +4522,7 @@ S9030000FC",
                                     ."0270010270000001027001027000000102700102700"
                                     ."0000202700102700000020270010270000002027001"
                                     ."02700000020",
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -4324,6 +4541,7 @@ S9030000FC",
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFF",
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -4335,6 +4553,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'SETCRC',
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -4345,6 +4564,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'BOOT',
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -4365,6 +4585,7 @@ S9030000FC",
                             "FWPartNum" => "0039-20-01-C",
                             "packetTimeout" => 2,
                             "fixed" => true,
+                            "useCRC" => false,
                         ),
                         "decode" => true,
                     ),
@@ -4489,21 +4710,30 @@ S9030000FC",
                             array("AddressSize"),
                             array("HWPartNum"),
                             array("id"),
+                            array("useCRC"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("setConfig"),
                             array("fixed"),
@@ -4525,6 +4755,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'BOOTLOADER',
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -4536,6 +4767,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'CONFIG',
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -4553,6 +4785,7 @@ S9030000FC",
                                     ."0270010270000001027001027000000102700102700"
                                     ."0000202700102700000020270010270000002027001"
                                     ."02700000020",
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -4571,6 +4804,7 @@ S9030000FC",
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFF",
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -4589,6 +4823,7 @@ S9030000FC",
                                     ."0270010270000001027001027000000102700102700"
                                     ."0000202700102700000020270010270000002027001"
                                     ."02700000020",
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -4607,6 +4842,7 @@ S9030000FC",
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFF",
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -4618,6 +4854,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'SETCRC',
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -4628,6 +4865,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'BOOT',
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -4638,6 +4876,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'CONFIG',
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -4658,6 +4897,7 @@ S9030000FC",
                             "FWPartNum" => "0039-20-01-C",
                             "fixed" => true,
                             "packetTimeout" => 2,
+                            "useCRC" => false,
                         ),
                         "decode" => true,
                     ),
@@ -4751,17 +4991,24 @@ S9030000FC",
                             array("AddressSize"),
                             array("HWPartNum"),
                             array("id"),
+                            array("useCRC"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("setConfig"),
                             array("fixed"),
@@ -4783,6 +5030,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'BOOTLOADER',
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -4794,6 +5042,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'CONFIG',
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -4811,6 +5060,7 @@ S9030000FC",
                                     ."0270010270000001027001027000000102700102700"
                                     ."0000202700102700000020270010270000002027001"
                                     ."02700000020",
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -4829,6 +5079,7 @@ S9030000FC",
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFF",
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -4840,6 +5091,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'SETCRC',
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -4850,6 +5102,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'BOOT',
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -4860,6 +5113,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'CONFIG',
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -4880,6 +5134,7 @@ S9030000FC",
                             "FWPartNum" => "0039-20-01-C",
                             "fixed" => "true",
                             "packetTimeout" => 2,
+                            "useCRC" => false,
                         ),
                         "decode" => true,
                     ),
@@ -4981,17 +5236,24 @@ S9030000FC",
                             array("AddressSize"),
                             array("HWPartNum"),
                             array("id"),
+                            array("useCRC"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("setConfig"),
                             array("fixed"),
@@ -5013,6 +5275,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'BOOTLOADER',
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -5024,6 +5287,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'CONFIG',
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -5041,6 +5305,7 @@ S9030000FC",
                                     ."0270010270000001027001027000000102700102700"
                                     ."0000202700102700000020270010270000002027001"
                                     ."02700000020",
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -5059,6 +5324,7 @@ S9030000FC",
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFF",
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -5070,6 +5336,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'SETCRC',
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -5080,6 +5347,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'BOOT',
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -5090,6 +5358,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'CONFIG',
+                                    'CRC' => false,
                                 ),
                                 null,
                                 array(
@@ -5109,6 +5378,7 @@ S9030000FC",
                             "HWPartNum" => "0039-21-01-A",
                             "FWPartNum" => "0039-20-01-C",
                             "packetTimeout" => 2,
+                            "useCRC" => false,
                         ),
                         "decode" => true,
                     ),
@@ -5226,19 +5496,27 @@ S9030000FC",
                             array("AddressSize"),
                             array("HWPartNum"),
                             array("id"),
+                            array("useCRC"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                             array("id"),
+                            array("useCRC"),
                             array("packetTimeout"),
                         ),
                         "decode" => array(
@@ -5254,6 +5532,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'BOOTLOADER',
+                                    "CRC" => false,
                                 ),
                                 null,
                                 array(
@@ -5265,6 +5544,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'CONFIG',
+                                    "CRC" => false,
                                 ),
                                 null,
                                 array(
@@ -5282,6 +5562,7 @@ S9030000FC",
                                     ."0270010270000001027001027000000102700102700"
                                     ."0000202700102700000020270010270000002027001"
                                     ."02700000020",
+                                    "CRC" => false,
                                 ),
                                 null,
                                 array(
@@ -5300,6 +5581,7 @@ S9030000FC",
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFF",
+                                    "CRC" => false,
                                 ),
                                 null,
                                 array(
@@ -5318,6 +5600,7 @@ S9030000FC",
                                     ."0270010270000001027001027000000102700102700"
                                     ."0000202700102700000020270010270000002027001"
                                     ."0270000002027001027000000202700",
+                                    "CRC" => false,
                                 ),
                                 null,
                                 array(
@@ -5336,6 +5619,7 @@ S9030000FC",
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                                     ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+                                    "CRC" => false,
                                 ),
                                 null,
                                 array(
@@ -5347,6 +5631,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'SETCRC',
+                                    "CRC" => false,
                                 ),
                                 null,
                                 array(
@@ -5357,6 +5642,7 @@ S9030000FC",
                                 array(
                                     "To" => 21,
                                     "Command" => 'BOOT',
+                                    "CRC" => false,
                                 ),
                                 null,
                                 array(

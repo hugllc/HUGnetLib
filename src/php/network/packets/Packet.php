@@ -36,6 +36,7 @@
 namespace HUGnet\network\packets;
 /** This is our interface */
 require_once dirname(__FILE__)."/PacketInterface.php";
+require_once dirname(__FILE__)."/../../util/Util.php";
 /**
  * This is the packet class.
  *
@@ -86,6 +87,8 @@ final class Packet implements PacketInterface
     /** This is a preamble byte */
     const PREAMBLE = "5A";
     /** This is a preamble byte */
+    const CRCPREAMBLE = "DA";
+    /** This is a preamble byte */
     const PREAMBLE_BYTES = 3;
     /** This is a preamble byte */
     const PREAMBLE_BYTES_MIN = 2;
@@ -107,6 +110,8 @@ final class Packet implements PacketInterface
     private $_reply = null;
     /** This is says if we got a whole packet. Default to true */
     private $_whole = true;
+    /** Whether to use a CRC or not */
+    private $_crc = false;
     /**
     * This has known types in it
     *
@@ -167,7 +172,7 @@ final class Packet implements PacketInterface
     *
     * @param mixed $data The data to create the packet with
     */
-    private function __construct($data)
+    protected function __construct($data)
     {
         // Input a string if we have one
         if (is_string($data)) {
@@ -221,7 +226,7 @@ final class Packet implements PacketInterface
     {
         foreach ($array as $key => $value) {
             if (method_exists($this, $key)) {
-                $this->$key($value);
+                $this->$key($value); 
             }
         }
         $this->_setField("_checksum", $this->_checksum());
@@ -265,7 +270,11 @@ final class Packet implements PacketInterface
         $chksum = 0;
         for ($i = 0; $i < strlen($string); $i+=2) {
             $val     = hexdec(substr($string, $i, 2));
-            $chksum ^= $val;
+            if ($this->_crc) {
+                \HUGnet\Util::crc8_update($chksum, $val);
+            } else {
+                $chksum ^= $val;
+            }
         }
         return $chksum;
     }
@@ -336,13 +345,22 @@ final class Packet implements PacketInterface
     private function _cleanPktStr($string)
     {
         // This strips off anything before the preamble
-        if (($pkt = stristr($string, $this->preamble(true))) === false) {
+        $noncrc = stristr($string, $this->preamble(true, false));
+        $crc = stristr($string, $this->preamble(true, true));
+        if ($crc !== false) {
+            $this->_crc = true;
+            $pkt = $crc;
+        } else if ($noncrc !== false) {
+            $this->_crc = false;
+            $pkt = $noncrc;
+        } else {
             // If there is no preamble present send the string directly through
             $this->extra($string);
             return "";
         }
         // This strips off the preamble.
-        while (strtoupper(substr($pkt, 0, 2)) == self::PREAMBLE) {
+        $preamble = ($this->_crc) ? self::CRCPREAMBLE : self::PREAMBLE;
+        while (strtoupper(substr($pkt, 0, 2)) == $preamble) {
             $pkt = substr($pkt, 2);
         }
         return $pkt;
@@ -358,6 +376,20 @@ final class Packet implements PacketInterface
             return null;
         }
         return ($this->_checksum == $this->_checksum()) && !empty($this->_command);
+    }
+    /**
+    * Sets and/or returns the command
+    *
+    * @param mixed $value The value to set this to.
+    *
+    * @return string (2 chars) Returns the command
+    */
+    public function crc($value = null)
+    {
+        if (!is_null($value)) {
+            $this->_crc = (bool)$value;
+        }
+        return $this->_crc;
     }
     /**
     * Sets and/or returns the command
@@ -484,12 +516,16 @@ final class Packet implements PacketInterface
     *
     * @return string Returns the value it is set to
     */
-    public function preamble($min = false)
+    public function preamble($min = false, $crc = null)
     {
-        if ($min) {
-            return str_repeat(self::PREAMBLE, self::PREAMBLE_BYTES_MIN);
+        if (is_null($crc)) {
+            $crc = $this->_crc;
         }
-        return str_repeat(self::PREAMBLE, self::PREAMBLE_BYTES);
+        $preamble = ($crc) ? self::CRCPREAMBLE : self::PREAMBLE;
+        if ($min) {
+            return str_repeat($preamble, self::PREAMBLE_BYTES_MIN);
+        }
+        return str_repeat($preamble, self::PREAMBLE_BYTES);
     }
     /**
     * Return the packet type

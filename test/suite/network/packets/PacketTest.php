@@ -427,6 +427,86 @@ class PacketTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
+    public static function dataCRC()
+    {
+        return array(
+            array(
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                    "Reply" => "04030201",
+                    "Checksum" => "C3",
+                    "CRC" => true,
+                ),
+                null,
+                true,
+            ),
+            array(
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                    "Reply" => "04030201",
+                    "Checksum" => "C3",
+                    "CRC" => true,
+                ),
+                false,
+                false,
+            ),
+            array(
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                    "Reply" => "04030201",
+                    "Checksum" => "C3",
+                ),
+                null,
+                false,
+            ),
+            array(
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                    "Reply" => "",
+                    "Checksum" => "C3",
+                ),
+                null,
+                false,
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param string $preload The string to give to the class
+    * @param mixed  $value   The value to load.
+    * @param array  $expect  The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataCRC()
+    */
+    public function testCRC($preload, $value, $expect)
+    {
+        $pkt = packets\Packet::factory($preload);
+        $this->assertSame($expect, $pkt->crc($value));
+    }
+    /**
+    * Data provider for testRemove
+    *
+    * @return array
+    */
     public static function dataExtra()
     {
         return array(

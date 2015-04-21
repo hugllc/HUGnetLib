@@ -572,6 +572,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                     ),
                     'AddressSize' => 2,
                     "fixed" => false,
+                    "useCRC" => false,
                 ),
             ),
             array(
@@ -605,6 +606,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                     ),
                     'AddressSize' => 2,
                     "fixed" => false,
+                    "useCRC" => false,
                 ),
             ),
         );

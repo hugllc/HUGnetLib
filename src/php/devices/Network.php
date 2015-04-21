@@ -418,6 +418,13 @@ class Network
                 "To" => 0,
                 "Command" => "TIMEBROADCAST",
                 "Data" => $time.$time,
+                "CRC" => false,
+            ),
+            array(
+                "To" => 0,
+                "Command" => "TIMEBROADCAST",
+                "Data" => $time.$time,
+                "CRC" => true,
             ),
         );
         $reply = $this->_system->network()->send($pkt, null, $config);
@@ -794,9 +801,11 @@ class Network
             if (!is_null($data) && (is_array($data) || is_string($data))) {
                 $pkt["Data"] = $data;
             }
+            $pkt["CRC"] = (bool)$this->_device->get("useCRC");
         } else {
             foreach (array_keys($pkt) as $key) {
                 $pkt[$key]["To"] = $this->_device->get("id");
+                $pkt[$key]["CRC"] = (bool)$this->_device->get("useCRC");
             }
         }
         if (!is_array($config)) {
