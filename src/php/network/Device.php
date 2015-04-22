@@ -207,6 +207,7 @@ final class Device
                 "To"      => $pkt->from(),
                 "Command" => "REPLY",
                 "Data"    => $data,
+                "CRC"     => $pkt->crc(),
             )
         );
         $this->_network->send(
@@ -227,6 +228,7 @@ final class Device
                 "From"    => $this->_config["id"],
                 "Command" => "POWERUP",
                 "Data"    => $data,
+                "CRC"     => $this->_device->get("useCRC"),
             )
         );
         $this->_network->send(
@@ -248,6 +250,7 @@ final class Device
                         "To" => $did,
                         "Command" => "FINDPING",
                         "Data" => $did,
+                        "CRC" => $this->_device->get("useCRC"),
                     ),
                     null,
                     array("block" => 1)

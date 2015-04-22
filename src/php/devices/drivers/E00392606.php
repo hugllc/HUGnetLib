@@ -78,6 +78,7 @@ class E00392606 extends E00392600
         "OutputTables" => 0,
         "ProcessTables" => 0,
         "DataChannels" => 0,
+        "useCRC" => true,
     );
 
 }

@@ -75,6 +75,7 @@ class E00392600 extends \HUGnet\devices\Driver
         "OutputTables" => 0,
         "ProcessTables" => 0,
         "DataChannels" => 0,
+        "useCRC" => true,
     );
     /**
     * Checks a record to see if it needs fixing

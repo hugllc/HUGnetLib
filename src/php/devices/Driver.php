@@ -181,9 +181,13 @@ abstract class Driver
     private function __construct(&$device)
     {
         \HUGnet\System::systemMissing(
-            get_class($this)." needs to be passed a system object",
+            get_class($this)." needs to be passed a device object",
             !is_object($device)
         );
+        $crc = $device->system()->get("useCRC");
+        if (is_bool($crc)) {
+            $this->_default["useCRC"] = $crc;
+        }
         $this->_device = &$device;
     }
     /**

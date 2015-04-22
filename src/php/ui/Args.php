@@ -80,6 +80,7 @@ class Args
         ),
         "n" => array("type" => "bool"),
         "h" => array("type" => "bool", "default" => false),
+        "X" => array("name" => "useCRC", "type" => "bool", "default" => null),
     );
     /** These are the locations we are going to try to find a config, in order */
     protected $configLocations = array(
