@@ -134,6 +134,7 @@ final class Packet implements PacketInterface
         "WRITE_E2" => 0x1A,
         "WRITE_SRAM" => 0x1B,
         "WRITE_FLASH" => 0x1C,
+        "FRIEND" => 0x21,
         "PORT_ON" => 0x30,
         "PORT_OFF" => 0x31,
         "SETPOWERTABLE" => 0x45,
