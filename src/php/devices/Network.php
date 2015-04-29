@@ -369,7 +369,7 @@ class Network
     */
     public function getRTC($config = array())
     {
-        $reply = $this->_sendPkt("GET_RTC", null, (array)$config);
+        $reply = $this->_sendPkt("READ_RTC", null, (array)$config);
         if (is_object($reply) && is_string($reply->Reply())) {
             return $this->_device->decodeRTC($reply->Reply());
         }

@@ -1114,7 +1114,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             array(
                                 array(
                                     "To" => 21,
-                                    "Command" => 'GET_RTC',
+                                    "Command" => 'READ_RTC',
                                     "CRC" => true,
                                 ),
                                 null,
@@ -1160,7 +1160,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             array(
                                 array(
                                     "To" => 21,
-                                    "Command" => 'GET_RTC',
+                                    "Command" => 'READ_RTC',
                                     "CRC" => false,
                                 ),
                                 null,
@@ -1201,7 +1201,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             array(
                                 array(
                                     "To" => 21,
-                                    "Command" => 'GET_RTC',
+                                    "Command" => 'READ_RTC',
                                     "CRC" => false,
                                 ),
                                 null,
