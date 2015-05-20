@@ -108,6 +108,7 @@ class HUGnetLibTest extends \PHPUnit_Framework_TestCase
                     'debug' => false,
                     'test' => false,
                     'file' => '',
+                    "useCRC" => null,
                 ),
             ),
             array(
@@ -139,6 +140,7 @@ class HUGnetLibTest extends \PHPUnit_Framework_TestCase
                     'test' => false,
                     'file' => '',
                     "DeviceID" => null,
+                    "useCRC" => null,
                 ),
             ),
         );

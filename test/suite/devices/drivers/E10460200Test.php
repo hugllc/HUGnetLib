@@ -101,7 +101,7 @@ class E10460200Test extends DriverTestBase
             ),
             array(
                 "packetTimeout",
-                2,
+                5,
             ),
             array(
                 "virtualSensors",

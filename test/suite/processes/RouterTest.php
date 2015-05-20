@@ -131,6 +131,7 @@ class RouteTest extends \PHPUnit_Framework_TestCase
                     "debug" => false,
                     "test" => false,
                     "min_log" => \HUGnet\Error::ERROR,
+                    "useCRC" => null,
                 )
             ),
         );

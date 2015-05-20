@@ -660,6 +660,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                             array(7),
                             array(8),
                         ),
+                        "system" => array(array()),
                     ),
                     'Sensor' => array(
                         'change' => array(
@@ -695,6 +696,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                             array(3),
                             array(4),
                         ),
+                        "system" => array(array()),
                     ),
                     'Sensor' => array(
                         'change' => array(
@@ -711,6 +713,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "input" => new \HUGnet\DummyBase("Sensor"),
+                        "system" => array(),
                     )
                 ),
                 "01FFFFFFFFFFFFFFFFFFFF",
@@ -719,6 +722,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                         "setParam" => array(
                             array("TimeConstant", 1),
                         ),
+                        "system" => array(array()),
                     ),
                 ),
             ),
@@ -726,6 +730,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "input" => new \HUGnet\DummyBase("Sensor"),
+                        "system" => array(),
                     )
                 ),
                 "01FFFFFFFFFFFFFFFFFFFFFFFF",
@@ -734,6 +739,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                         "setParam" => array(
                             array("TimeConstant", 1),
                         ),
+                        "system" => array(array()),
                     ),
                 ),
             ),
@@ -749,6 +755,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                         "setParam" => array(
                             array("TimeConstant", 1),
                         ),
+                        "system" => array(array()),
                     ),
                 ),
             ),

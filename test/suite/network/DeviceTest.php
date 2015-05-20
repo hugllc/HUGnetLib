@@ -223,9 +223,10 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         packets\Packet::factory(
                             array(
                                 "to"      => "000000",
-                                "from"      => "000001",
+                                "from"    => "000001",
                                 "command" => "POWERUP",
                                 "data"    => "00000000010039260150",
+                                "CRC"     => true,
                             )
                         ),
                         null,
@@ -276,6 +277,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 "from"      => "000001",
                                 "command" => "POWERUP",
                                 "data"    => "00000000010039260150",
+                                "CRC"     => true,
                             )
                         ),
                         null,
@@ -329,6 +331,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                 "from"      => "000001",
                                 "command" => "POWERUP",
                                 "data"    => "00000000010039260250",
+                                "CRC"     => true,
                             )
                         ),
                         null,

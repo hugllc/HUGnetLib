@@ -113,6 +113,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "test" => false,
                     "file" => '',
                     "program" => "test",
+                    "useCRC" => null,
                 ),
             ),
             array(  // #1 // Another Simple example
@@ -140,6 +141,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "test" => false,
                     "file" => '',
                     "program" => "test",
+                    "useCRC" => null,
                 ),
             ),
             array(  // #2 Stringing multiple switches together.
@@ -166,6 +168,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "test"  => true,
                     "file" => "",
                     "program" => "test",
+                    "useCRC" => null,
                 ),
             ),
             array(  // #3 File test.
@@ -212,6 +215,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "debug" => false,
                     "test" => false,
                     "program" => "test",
+                    "useCRC" => null,
                 ),
             ),
             array(  // #4 another file test
@@ -257,6 +261,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "debug" => false,
                     "test" => false,
                     "program" => "test",
+                    "useCRC" => null,
                 ),
             ),
             array(  // #5 // Simple example
@@ -290,6 +295,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "test" => false,
                     "file" => '',
                     "program" => "programname",
+                    "useCRC" => null,
                 ),
             ),
             array(  // #6 File test with addLocation.
@@ -335,6 +341,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "debug" => false,
                     "test" => false,
                     "program" => "test",
+                    "useCRC" => null,
                 ),
             ),
             array(  // #7 // Simple example with negative numbers
@@ -364,6 +371,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "file" => '',
                     "program" => "test",
                     "Value" => -45,
+                    "useCRC" => null,
                 ),
             ),
         );
