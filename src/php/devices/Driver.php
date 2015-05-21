@@ -169,6 +169,7 @@ abstract class Driver
         "DEFAULT:0039-24-04-P:DEFAULT"      => "E00392404",
         "DEFAULT:1046-02-01-A:DEFAULT"      => "E10460200",
         "DEFAULT:1046-03-01-A:DEFAULT"      => "E10460300",
+        "DEFAULT:1046-04-01-A:DEFAULT"      => "E10460400",
     );
     /**
     * This function sets up the driver object, and the database object.  The
@@ -184,7 +185,7 @@ abstract class Driver
             get_class($this)." needs to be passed a device object",
             !is_object($device)
         );
-        $crc = $device->system()->get("useCRC");
+        $crc = (is_object($device->system())) ? $device->system()->get("useCRC") : false;
         if (is_bool($crc)) {
             $this->_default["useCRC"] = $crc;
         }
