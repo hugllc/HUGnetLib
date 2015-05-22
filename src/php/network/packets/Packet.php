@@ -165,6 +165,7 @@ final class Packet implements PacketInterface
         "CPUREADY"      => 0x72,
         "READERROR"      => 0x73,
         "DEVICEERROR" => 0x77,
+        "DEVICEWARNING" => 0x78,
         "BAD COMMAND" => 0xFF,
     );
 

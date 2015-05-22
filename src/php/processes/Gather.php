@@ -270,43 +270,57 @@ class Gather extends \HUGnet\ui\Daemon
     */
     public function unsolicited($pkt)
     {
-        $this->out("Got unsolicited packet from ".$pkt->from());
+        $this->out("Got unsolicited packet from ".$pkt->from()." Type: ".$pkt->type());
         $this->_unsolicited->load(array("DeviceID" => $pkt->from()));
 
-        // Test to see if this is a local script
-        if ($this->_unsolicited->get("id") >= 0xFD0000) {
-            $loc = $this->_unsolicited->get("DeviceLocation");
-            $myLoc = $this->device()->get("DeviceLocation");
-            if ($loc == $myLoc) {
-                // This script is local.  Don't get the config of it.
-                $this->out(
-                    printf("%06X", $this->_unsolicited->get("id"))
-                    ." is a local script.  There is no need to get the config."
-                );
-                return;
+        if (is_null($this->_unsolicited->id())) {
+            $this->_unsolicited->set("id", hexdec($pkt->from()));
+            $this->_unsolicited->set("DeviceID", $pkt->from());
+            $this->out("New device.  Getting config immediately");
+            $this->_unsolicited->action()->config();
+        } else if ($pkt->type() == "POWERUP") {
+            // Test to see if this is a local script
+            if ($this->_unsolicited->get("id") >= 0xFD0000) {
+                $loc = $this->_unsolicited->get("DeviceLocation");
+                $myLoc = $this->device()->get("DeviceLocation");
+                if ($loc == $myLoc) {
+                    // This script is local.  Don't get the config of it.
+                    $this->out(
+                        printf("%06X", $this->_unsolicited->get("id"))
+                        ." is a local script.  There is no need to get the config."
+                    );
+                    return;
+                }
             }
-        }
 
-        $LastConfig = $this->_unsolicited->getParam("LastConfig");
-        $now = $this->system()->now();
-        $ConfigInt = $this->_unsolicited->get("ConfigInterval");
-        if ($ConfigInt < self::CONFIG_WAIT) {
-            $ConfigInt = self::CONFIG_WAIT * 2;
-        }
-        $LastConfig = ($now - $ConfigInt) + self::CONFIG_WAIT;
+            $LastConfig = $this->_unsolicited->getParam("LastConfig");
+            $now = $this->system()->now();
+            $ConfigInt = $this->_unsolicited->get("ConfigInterval");
+            if ($ConfigInt < self::CONFIG_WAIT) {
+                $ConfigInt = self::CONFIG_WAIT * 2;
+            }
+            $LastConfig = ($now - $ConfigInt) + self::CONFIG_WAIT;
 
-        $this->_unsolicited->load($this->_unsolicited->id());
-        $this->_unsolicited->set("GatewayKey", $this->system()->get("GatewayKey"));
-        $this->_unsolicited->setParam("LastConfig", $LastConfig);
-        $this->_unsolicited->setParam("Startup", $now);
-        $this->_unsolicited->setParam("LastStartup", $now);
-        $this->_unsolicited->setParam("LastContact", time());
-        $this->_unsolicited->store();
-        $this->out(
-            "Setting next config of ".$this->_unsolicited->get("DeviceID")." to "
-            .date("Y-m-d H:i:s", $LastConfig + $ConfigInt)
-        );
-        $this->_wait = 0;
+            $this->_unsolicited->load($this->_unsolicited->id());
+            $this->_unsolicited->set("GatewayKey", $this->system()->get("GatewayKey"));
+            $this->_unsolicited->setParam("LastConfig", $LastConfig);
+            $this->_unsolicited->setParam("Startup", $now);
+            $this->_unsolicited->setParam("LastStartup", $now);
+            $this->_unsolicited->setParam("LastContact", time());
+            $this->_unsolicited->store();
+            $this->out(
+                "Setting next config of ".$this->_unsolicited->get("DeviceID")." to "
+                .date("Y-m-d H:i:s", $LastConfig + $ConfigInt)
+            );
+            $this->_wait = 0;
+        }
+        if ($pkt->type() == "DEVICEERROR") {
+            $this->out("Logging error data");
+            $this->_unsolicited->error()->log($pkt->data());
+        } else if ($pkt->type() == "DEVICEWARNING") {
+            $this->out("Logging error data");
+            $this->_unsolicited->error()->logwarn($pkt->data());
+        }
     }
     /**
     * Deals with incoming packets

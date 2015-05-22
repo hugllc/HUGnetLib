@@ -93,6 +93,11 @@ class DeviceError extends \HUGnet\db\Table
             "Type" => "bigint",
             "Default" => '0',
         ),
+        "severity" => array(
+            "Name" => "severity",
+            "Type" => "char(1)",
+            "Default" => "E",
+        ),
         "errno" => array(
             "Name" => "errno",
             "Type" => "varchar(32)",

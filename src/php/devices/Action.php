@@ -183,7 +183,7 @@ class Action
         }
         $pkt = $this->device->network()->config();
         $this->device->load($this->device->id());
-        if ($this->storeConfig($pkt->reply())) {
+        if (is_object($pkt) && $this->storeConfig($pkt->reply())) {
             $this->configStuff();
             return true;
         }

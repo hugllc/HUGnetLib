@@ -96,6 +96,27 @@ class Error extends \HUGnet\base\SystemTableBase
     /**
     * Logs an error in the database
     *
+    * @param string $error The error message
+    * @param string $sev   The severity of the error
+    *
+    * @return null
+    */
+    private function _log($error, $sev)
+    {
+        if (is_string($error)) {
+            $error = $this->decode($error);
+        }
+        if (is_array($error)) {
+            $error["id"] = $this->_device->get("id");
+            $error["severity"] = $sev;
+            $this->table()->fromArray($error);
+            return $this->table()->insertRow(true);
+        }
+        return false;
+    }
+    /**
+    * Logs an error in the database
+    *
     * @param int    $id    The id of the device
     * @param string $error The error message
     *
@@ -103,15 +124,19 @@ class Error extends \HUGnet\base\SystemTableBase
     */
     public function log($error)
     {
-        if (is_string($error)) {
-            $error = $this->decode($error);
-        }
-        if (is_array($error)) {
-            $error["id"] = $this->_device->get("id");
-            $this->table()->fromArray($error);
-            return $this->table()->insertRow(true);
-        }
-        return false;
+        return $this->_log($error, "E");
+    }
+    /**
+    * Logs an error in the database
+    *
+    * @param int    $id    The id of the device
+    * @param string $error The error message
+    *
+    * @return null
+    */
+    public function logwarn($error)
+    {
+        return $this->_log($error, "W");
     }
     /**
     * This builds the class from a setup string
