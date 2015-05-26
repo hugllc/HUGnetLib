@@ -479,10 +479,12 @@ class Network
     public function runBootloader($config = array())
     {
         $config["find"] = false;
-        $config["timeout"] = 0.5;
+        $config["timeout"] = 1;
         $reply = $this->_sendPkt("BOOTLOADER", null, $config);
         if (is_object($reply)) {
             if (is_string($reply->Reply())) {
+                // Sleep in case there are packets we haven't gotten yet.
+                sleep(1);
                 return true;
             }
         }
