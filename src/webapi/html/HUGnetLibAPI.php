@@ -37,7 +37,9 @@ require_once "HUGnetLib/ui/WebAPIArgs.php";
 
 $args = \HUGnet\ui\WebAPIArgs::factory(
     $_REQUEST,
-    count($_REQUEST)
+    count($_REQUEST),
+    array(),
+    $_SERVER
 );
 $args->addLocation("/usr/share/HUGnet/config.ini");
 

@@ -74,12 +74,13 @@ class HTMLArgs extends Args
     * @param array $args   The argument array
     * @param int   $count  The argument count
     * @param array $config The configuration of command line args
+    * @param array $sysargs The system arguments
     *
     * @return Args object
     */
-    static public function &factory($args, $count, $config = array())
+    static public function &factory($args, $count, $config = array(), $sysargs = array())
     {
-        $obj = new HTMLArgs((array)$args, (int)$count, (array)$config);
+        $obj = new HTMLArgs((array)$args, (int)$count, (array)$config, (array)$sysargs);
         return $obj;
     }
     /**
@@ -89,7 +90,7 @@ class HTMLArgs extends Args
     */
     protected function interpret()
     {
-        $this->_name = trim($this->argv[0]);
+//        $this->_name = trim($this->argv[0]);
         foreach ((array)$this->argv as $name => $value) {
             if (isset($this->config[$name])) {
                 $this->arguments[$name] = $value;
@@ -102,7 +103,60 @@ class HTMLArgs extends Args
                 }
             }
         }
+        // Do the RESTful interface last, so it takes precident
+        if (!empty($this->sysargs)) {
+            $this->RESTful();
+        }
     }
-
+    /**
+    * Pulls the arguments apart and stores them
+    *
+    * @return null
+    */
+    protected function RESTful()
+    {
+        // This gets everything in the URL beyond the script
+        $temp = explode($this->sysargs['SCRIPT_NAME'], $this->sysargs['REQUEST_URI']);
+        // This takes the arguments off the URL
+        $temp = explode("?", $temp[1]);
+        // This is just the URL after the script.
+        $url  = ltrim($temp[0], "/");
+        // Remove the first
+        if (empty($url)) {
+            $args = array();
+        } else {
+            $args = explode("/", $url);
+        }
+        $task = array_shift($args);
+        if (!empty($task)) {
+            $this->arguments["task"] = $task;
+            switch ($this->sysargs["REQUEST_METHOD"]) {
+                default:
+                case "POST":
+                    $action = "put";
+                    break;
+                case "PUT":
+                    // Nothing
+                    break;
+                case "PATCH":
+                    // Update
+                    break;
+                case "DELETE":
+                    $action = "remove";
+                    break;
+                case "GET":
+                    $action = "get";
+                    break;
+            }
+            $id = array_shift($args);
+            if (empty($id)) {
+                $this->arguments["action"] = "list";
+            } else {
+                $this->arguments["id"] = $id;
+                $this->arguments["action"] = $action;
+            }
+        }
+        $this->arguments["restextra"] = $args;
+    }
 }
 ?>

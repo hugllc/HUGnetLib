@@ -63,6 +63,8 @@ class Args
     protected $arguments = array();
     /** This is the argument array */
     protected $argv = array();
+    /** This is the system argument array */
+    protected $sysargs = array();
     /** This the number of arguments */
     protected $argc = 0;
     /** This is our name */
@@ -93,12 +95,14 @@ class Args
     * @param array $args   The argument array
     * @param int   $count  The argument count
     * @param array $config The configuration of command line args
+    * @param array $sysargs The system arguments
     */
-    protected function __construct($args, $count, $config)
+    protected function __construct($args, $count, $config, $sysargs)
     {
-        $this->argv = $args;
-        $this->argc = $count;
-        $this->config = array_merge($this->defaultConfig, $config);
+        $this->argv    = $args;
+        $this->argc    = $count;
+        $this->config  = array_merge($this->defaultConfig, $config);
+        $this->sysargs = $sysargs;
         $this->_defaults();
         $this->interpret();
     }
@@ -108,12 +112,13 @@ class Args
     * @param array $args   The argument array
     * @param int   $count  The argument count
     * @param array $config The configuration of command line args
+    * @param array $sysargs The system arguments
     *
     * @return Args object
     */
-    static public function &factory($args, $count, $config = array())
+    static public function &factory($args, $count, $config = array(), $sysargs = array())
     {
-        $obj = new Args((array)$args, (int)$count, (array)$config);
+        $obj = new Args((array)$args, (int)$count, (array)$config, (array)$sysargs);
         return $obj;
     }
 

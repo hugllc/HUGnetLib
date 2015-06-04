@@ -77,15 +77,16 @@ class WebAPIArgs extends HTMLArgs
     /**
     * Creates the object
     *
-    * @param array $args   The argument array
-    * @param int   $count  The argument count
-    * @param array $config The configuration of command line args
+    * @param array $args    The argument array
+    * @param int   $count   The argument count
+    * @param array $config  The configuration of command line args
+    * @param array $sysargs The system arguments
     *
     * @return Args object
     */
-    static public function &factory($args, $count, $config = array())
+    static public function &factory($args, $count, $config = array(), $sysargs = array())
     {
-        $obj = new WebAPIArgs((array)$args, (int)$count, (array)$config);
+        $obj = new WebAPIArgs((array)$args, (int)$count, (array)$config, (array)$sysargs);
         return $obj;
     }
 

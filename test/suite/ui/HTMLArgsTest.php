@@ -105,6 +105,7 @@ class HTMLArgsTest extends \PHPUnit_Framework_TestCase
                         "name" => "klong", "default" => "qqqq",
                     ),
                 ),
+                array(),
                 array(
                     "i" => "asdf",
                     "v" => 3,
@@ -129,6 +130,108 @@ class HTMLArgsTest extends \PHPUnit_Framework_TestCase
                 ),
                 "",
             ),
+            array(  // #1 REST Test #1
+                array(
+                    "v" => 3,
+                    "q" => 1,
+                    "i" => "asdf",
+                    "klong" => "wwww",
+                ),
+                8,
+                array(
+                    "i" => array(
+                        "name" => "ilong", "type" => "string", "args" => true
+                    ),
+                    "j" => array(
+                        "name" => "jlong", "default" => "1234",
+                    ),
+                    "k" => array(
+                        "name" => "klong", "default" => "qqqq",
+                    ),
+                ),
+                array(
+                    "SCRIPT_NAME" => "/this/is/a.php",
+                    "REQUEST_URI" => "/this/is/a.php/url",
+                    "REQUEST_METHOD" => "GET",
+                ),
+                array(
+                    "i" => "asdf",
+                    "v" => 3,
+                    "q" => true,
+                    "d" => false,
+                    "t" => false,
+                    "ilong" => "asdf",
+                    "jlong" => "1234",
+                    "k" => "wwww",
+                ),
+                array(
+                    "task" => "url",
+                    "action" => "list",
+                    "id" => null,
+                ),
+                null,
+                array(
+                    "quiet" => true,
+                    "verbose" => 3,
+                    "debug" => false,
+                    "test" => false,
+                    "ilong" => "asdf",
+                    "jlong" => "1234",
+                    "klong" => "wwww",
+                ),
+                "",
+            ),
+            array(  // #2 REST Test #2
+                array(
+                    "v" => 3,
+                    "q" => 1,
+                    "i" => "asdf",
+                    "klong" => "wwww",
+                ),
+                8,
+                array(
+                    "i" => array(
+                        "name" => "ilong", "type" => "string", "args" => true
+                    ),
+                    "j" => array(
+                        "name" => "jlong", "default" => "1234",
+                    ),
+                    "k" => array(
+                        "name" => "klong", "default" => "qqqq",
+                    ),
+                ),
+                array(
+                    "SCRIPT_NAME" => "/this/is/a.php",
+                    "REQUEST_URI" => "/this/is/a.php/url/10",
+                    "REQUEST_METHOD" => "GET",
+                ),
+                array(
+                    "i" => "asdf",
+                    "v" => 3,
+                    "q" => true,
+                    "d" => false,
+                    "t" => false,
+                    "ilong" => "asdf",
+                    "jlong" => "1234",
+                    "k" => "wwww",
+                ),
+                array(
+                    "task" => "url",
+                    "action" => "get",
+                    "id" => '10',
+                ),
+                null,
+                array(
+                    "quiet" => true,
+                    "verbose" => 3,
+                    "debug" => false,
+                    "test" => false,
+                    "ilong" => "asdf",
+                    "jlong" => "1234",
+                    "klong" => "wwww",
+                ),
+                "",
+            ),
         );
     }
     /**
@@ -137,6 +240,7 @@ class HTMLArgsTest extends \PHPUnit_Framework_TestCase
     * @param array  $argv      The array of arguments (first should be name)
     * @param int    $argc      The number of arguments
     * @param array  $config    The config array to feed it
+    * @param array  $sysargs   The system arguments to use
     * @param array  $set       Values to set
     * @param array  $arguments The arguments we expect to be set
     * @param string $file      The file to copy to this directory.  Null for no file
@@ -148,13 +252,13 @@ class HTMLArgsTest extends \PHPUnit_Framework_TestCase
     * @dataProvider dataHTMLArgs()
     */
     public function testHTMLArgs(
-        $argv, $argc, $config, $set, $arguments, $file, $expect, $output
+        $argv, $argc, $config, $sysargs, $set, $arguments, $file, $expect, $output
     ) {
         if (!is_null($file)) {
             copy($file, "./".basename($file));
             $this->_files[] = "./".basename($file);
         }
-        $args = &HTMLArgs::factory($argv, $argc, $config);
+        $args = &HTMLArgs::factory($argv, $argc, $config, $sysargs);
         foreach ((array)$set as $name => $value) {
             $args->set($name, $value);
         }

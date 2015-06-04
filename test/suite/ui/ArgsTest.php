@@ -102,6 +102,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "t" => false,
                     "n" => true,
                 ),
+                array(),
                 "",
                 array(
                 ),
@@ -130,6 +131,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "n" => true,
                     "test" => false,
                 ),
+                array(),
                 "",
                 array(
                 ),
@@ -157,6 +159,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "q" => true,
                     "t"  => true,
                 ),
+                array(),
                 "",
                 array(
                 ),
@@ -180,6 +183,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                 array(
                     "f" => TEST_CONFIG_BASE."files/config.ini",
                 ),
+                array(),
                 "",
                 array(
                 ),
@@ -226,6 +230,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                 ),
+                array(),
                 "",
                 array(
                 ),
@@ -272,6 +277,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                 array(
                     "i" => array("args" => true),
                 ),
+                array(),
                 array(
                     "i" => "000ABC",
                     "v" => 3,
@@ -303,6 +309,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "test", "-v"
                 ),
                 4,
+                array(),
                 array(),
                 array(
                 ),
@@ -357,6 +364,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                         "default" => 20
                     ),
                 ),
+                array(),
                 array(
                 ),
                 "",
@@ -382,6 +390,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
     * @param array  $argv      The array of arguments (first should be name)
     * @param int    $argc      The number of arguments
     * @param array  $config    The config array to feed it
+    * @param array  $sysargs   The system args to use
     * @param array  $set       Values to set
     * @param string $location  Extra file location to add
     * @param array  $arguments The arguments we expect to be set
@@ -393,13 +402,13 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
     * @dataProvider dataArgs()
     */
     public function testArgs(
-        $argv, $argc, $config, $set, $location, $arguments, $file, $expect
+        $argv, $argc, $config, $sysargs, $set, $location, $arguments, $file, $expect
     ) {
         if (!is_null($file)) {
             copy($file, "./".basename($file));
             $this->_files[] = "./".basename($file);
         }
-        $args = &Args::factory($argv, $argc, $config);
+        $args = &Args::factory($argv, $argc, $config, $sysargs);
         foreach ((array)$set as $name => $value) {
             $args->set($name, $value);
         }
