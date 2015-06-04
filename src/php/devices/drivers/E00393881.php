@@ -78,7 +78,7 @@ class E00393881 extends \HUGnet\devices\Driver
         "OutputTables" => 0,
         "ProcessTables" => 0,
         "DataChannels" => 0,
-        "useCRC" => false,
+        "useCRC" => true,
     );
 
 }

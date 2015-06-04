@@ -159,7 +159,7 @@ class Action
             $find, null, null, array("tries" => 1, "find" => false)
         );
         $this->device->load($this->device->id());
-        if (is_object($pkt) && is_string($pkt->reply())) {
+        if (is_object($pkt) && is_string($pkt->reply()) && ($pkt->reply() == $pkt->data())) {
             $this->device->setParam("LastContact", time());
             $this->device->setParam("ContactFail", 0);
             $ret = true;
