@@ -232,6 +232,270 @@ class HTMLArgsTest extends \PHPUnit_Framework_TestCase
                 ),
                 "",
             ),
+            array(  // #3 REST Test #3
+                array(
+                    "v" => 3,
+                    "q" => 1,
+                    "i" => "asdf",
+                    "klong" => "wwww",
+                ),
+                8,
+                array(
+                    "i" => array(
+                        "name" => "ilong", "type" => "string", "args" => true
+                    ),
+                    "j" => array(
+                        "name" => "jlong", "default" => "1234",
+                    ),
+                    "k" => array(
+                        "name" => "klong", "default" => "qqqq",
+                    ),
+                ),
+                array(
+                    "SCRIPT_NAME" => "/this/is/a.php",
+                    "REQUEST_URI" => "/this/is/a.php/url/10/sub",
+                    "REQUEST_METHOD" => "GET",
+                ),
+                array(
+                    "i" => "asdf",
+                    "v" => 3,
+                    "q" => true,
+                    "d" => false,
+                    "t" => false,
+                    "ilong" => "asdf",
+                    "jlong" => "1234",
+                    "k" => "wwww",
+                ),
+                array(
+                    "task" => "url",
+                    "action" => "get",
+                    "id" => '10',
+                    "subtask" => "sub",
+                ),
+                null,
+                array(
+                    "quiet" => true,
+                    "verbose" => 3,
+                    "debug" => false,
+                    "test" => false,
+                    "ilong" => "asdf",
+                    "jlong" => "1234",
+                    "klong" => "wwww",
+                ),
+                "",
+            ),
+            array(  // #4 REST Test #4
+                array(
+                    "v" => 3,
+                    "q" => 1,
+                    "i" => "asdf",
+                    "klong" => "wwww",
+                ),
+                8,
+                array(
+                    "i" => array(
+                        "name" => "ilong", "type" => "string", "args" => true
+                    ),
+                    "j" => array(
+                        "name" => "jlong", "default" => "1234",
+                    ),
+                    "k" => array(
+                        "name" => "klong", "default" => "qqqq",
+                    ),
+                ),
+                array(
+                    "SCRIPT_NAME" => "/this/is/a.php",
+                    "REQUEST_URI" => "/this/is/a.php/url/10/sub/12",
+                    "REQUEST_METHOD" => "GET",
+                ),
+                array(
+                    "i" => "asdf",
+                    "v" => 3,
+                    "q" => true,
+                    "d" => false,
+                    "t" => false,
+                    "ilong" => "asdf",
+                    "jlong" => "1234",
+                    "k" => "wwww",
+                ),
+                array(
+                    "task" => "url",
+                    "action" => "get",
+                    "id" => '10',
+                    "subtask" => "sub",
+                    "sid" => '12',
+                    "restextra" => array(),
+                ),
+                null,
+                array(
+                    "quiet" => true,
+                    "verbose" => 3,
+                    "debug" => false,
+                    "test" => false,
+                    "ilong" => "asdf",
+                    "jlong" => "1234",
+                    "klong" => "wwww",
+                ),
+                "",
+            ),
+            array(  // #5 REST Test #5
+                array(
+                    "v" => 3,
+                    "q" => 1,
+                    "i" => "asdf",
+                    "klong" => "wwww",
+                ),
+                8,
+                array(
+                    "i" => array(
+                        "name" => "ilong", "type" => "string", "args" => true
+                    ),
+                    "j" => array(
+                        "name" => "jlong", "default" => "1234",
+                    ),
+                    "k" => array(
+                        "name" => "klong", "default" => "qqqq",
+                    ),
+                ),
+                array(
+                    "SCRIPT_NAME" => "/this/is/a.php",
+                    "REQUEST_URI" => "/this/is/a.php/url/10/sub/12/other/stuff/here",
+                    "REQUEST_METHOD" => "GET",
+                ),
+                array(
+                    "i" => "asdf",
+                    "v" => 3,
+                    "q" => true,
+                    "d" => false,
+                    "t" => false,
+                    "ilong" => "asdf",
+                    "jlong" => "1234",
+                    "k" => "wwww",
+                ),
+                array(
+                    "task" => "url",
+                    "action" => "get",
+                    "id" => '10',
+                    "subtask" => "sub",
+                    "sid" => '12',
+                    "restextra" => array('other', 'stuff', 'here'),
+                ),
+                null,
+                array(
+                    "quiet" => true,
+                    "verbose" => 3,
+                    "debug" => false,
+                    "test" => false,
+                    "ilong" => "asdf",
+                    "jlong" => "1234",
+                    "klong" => "wwww",
+                ),
+                "",
+            ),
+            array(  // #3 REST Test #3
+                array(
+                    "v" => 3,
+                    "q" => 1,
+                    "i" => "asdf",
+                    "klong" => "wwww",
+                ),
+                8,
+                array(
+                    "i" => array(
+                        "name" => "ilong", "type" => "string", "args" => true
+                    ),
+                    "j" => array(
+                        "name" => "jlong", "default" => "1234",
+                    ),
+                    "k" => array(
+                        "name" => "klong", "default" => "qqqq",
+                    ),
+                ),
+                array(
+                    "SCRIPT_NAME" => "/this/is/a.php",
+                    "REQUEST_URI" => "/this/is/a.php/url/10/sub",
+                    "REQUEST_METHOD" => "POST",
+                ),
+                array(
+                    "i" => "asdf",
+                    "v" => 3,
+                    "q" => true,
+                    "d" => false,
+                    "t" => false,
+                    "ilong" => "asdf",
+                    "jlong" => "1234",
+                    "k" => "wwww",
+                ),
+                array(
+                    "task" => "url",
+                    "action" => "put",
+                    "id" => '10',
+                    "subtask" => "sub",
+                ),
+                null,
+                array(
+                    "quiet" => true,
+                    "verbose" => 3,
+                    "debug" => false,
+                    "test" => false,
+                    "ilong" => "asdf",
+                    "jlong" => "1234",
+                    "klong" => "wwww",
+                ),
+                "",
+            ),
+            array(  // #3 REST Test #3
+                array(
+                    "v" => 3,
+                    "q" => 1,
+                    "i" => "asdf",
+                    "klong" => "wwww",
+                ),
+                8,
+                array(
+                    "i" => array(
+                        "name" => "ilong", "type" => "string", "args" => true
+                    ),
+                    "j" => array(
+                        "name" => "jlong", "default" => "1234",
+                    ),
+                    "k" => array(
+                        "name" => "klong", "default" => "qqqq",
+                    ),
+                ),
+                array(
+                    "SCRIPT_NAME" => "/this/is/a.php",
+                    "REQUEST_URI" => "/this/is/a.php/url/10/sub",
+                    "REQUEST_METHOD" => "DELETE",
+                ),
+                array(
+                    "i" => "asdf",
+                    "v" => 3,
+                    "q" => true,
+                    "d" => false,
+                    "t" => false,
+                    "ilong" => "asdf",
+                    "jlong" => "1234",
+                    "k" => "wwww",
+                ),
+                array(
+                    "task" => "url",
+                    "action" => "delete",
+                    "id" => '10',
+                    "subtask" => "sub",
+                ),
+                null,
+                array(
+                    "quiet" => true,
+                    "verbose" => 3,
+                    "debug" => false,
+                    "test" => false,
+                    "ilong" => "asdf",
+                    "jlong" => "1234",
+                    "klong" => "wwww",
+                ),
+                "",
+            ),
         );
     }
     /**

@@ -142,7 +142,7 @@ class HTMLArgs extends Args
                     // Update
                     break;
                 case "DELETE":
-                    $action = "remove";
+                    $action = "delete";
                     break;
                 case "GET":
                     $action = "get";
@@ -154,6 +154,14 @@ class HTMLArgs extends Args
             } else {
                 $this->arguments["id"] = $id;
                 $this->arguments["action"] = $action;
+                $subtask = array_shift($args);
+                if (!empty($subtask)) {
+                    $this->arguments["subtask"] = $subtask;
+                    $sid = array_shift($args);
+                    if (!empty($sid)) {
+                        $this->arguments["sid"] = $sid;
+                    }
+                }
             }
         }
         $this->arguments["restextra"] = $args;
