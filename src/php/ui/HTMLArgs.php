@@ -158,7 +158,9 @@ class HTMLArgs extends Args
                 if (!empty($subtask)) {
                     $this->arguments["subtask"] = $subtask;
                     $sid = array_shift($args);
-                    if (!empty($sid)) {
+                    if (empty($sid)) {
+                        $this->arguments["action"] = "list";
+                    } else {
                         $this->arguments["sid"] = $sid;
                     }
                 }

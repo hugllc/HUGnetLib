@@ -268,7 +268,7 @@ class HTMLArgsTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                     "task" => "url",
-                    "action" => "get",
+                    "action" => "list",
                     "id" => '10',
                     "subtask" => "sub",
                 ),
@@ -392,7 +392,7 @@ class HTMLArgsTest extends \PHPUnit_Framework_TestCase
                 ),
                 "",
             ),
-            array(  // #3 REST Test #3
+            array(  // #6 REST Test #6
                 array(
                     "v" => 3,
                     "q" => 1,
@@ -413,7 +413,7 @@ class HTMLArgsTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                     "SCRIPT_NAME" => "/this/is/a.php",
-                    "REQUEST_URI" => "/this/is/a.php/url/10/sub",
+                    "REQUEST_URI" => "/this/is/a.php/url/10/sub/5",
                     "REQUEST_METHOD" => "POST",
                 ),
                 array(
@@ -431,6 +431,7 @@ class HTMLArgsTest extends \PHPUnit_Framework_TestCase
                     "action" => "put",
                     "id" => '10',
                     "subtask" => "sub",
+                    "sid" => "5",
                 ),
                 null,
                 array(
@@ -444,7 +445,7 @@ class HTMLArgsTest extends \PHPUnit_Framework_TestCase
                 ),
                 "",
             ),
-            array(  // #3 REST Test #3
+            array(  // #7 REST Test #7
                 array(
                     "v" => 3,
                     "q" => 1,
@@ -465,7 +466,7 @@ class HTMLArgsTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                     "SCRIPT_NAME" => "/this/is/a.php",
-                    "REQUEST_URI" => "/this/is/a.php/url/10/sub",
+                    "REQUEST_URI" => "/this/is/a.php/url/10/sub/5",
                     "REQUEST_METHOD" => "DELETE",
                 ),
                 array(
@@ -483,6 +484,7 @@ class HTMLArgsTest extends \PHPUnit_Framework_TestCase
                     "action" => "delete",
                     "id" => '10',
                     "subtask" => "sub",
+                    "sid" => '5',
                 ),
                 null,
                 array(

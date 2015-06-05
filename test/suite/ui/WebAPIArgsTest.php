@@ -132,6 +132,8 @@ class WebAPIArgsTest extends \PHPUnit_Framework_TestCase
                     'id' => null,
                     'cuuid' => null,
                     'data' => Array (),
+                    'subtask' => null,
+                    'sid' => null,
                 ),
                 "",
             ),
