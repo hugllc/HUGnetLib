@@ -1976,6 +1976,170 @@ class WebAPITest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
+            array(  // #40
+                array(
+                    "task" => "device",
+                    "action" => "get",
+                    "subtask" => "input",
+                    "id" => "10",
+                    "sid" => "5",
+                    "data" => array(
+                        "a" => "b",
+                        "c" => "d",
+                    ),
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "input" => new \HUGnet\DummyBase("Sensor"),
+                        "dataChannels" => new \HUGnet\DummyBase("Channels"),
+                    ),
+                    "Sensor" => array(
+                        "load" => true,
+                        "toArray" => array(
+                            "Real" => "array",
+                        ),
+                    ),
+                ),
+                false,
+                array(),
+                json_encode(array("Real" => "array")),
+                array(
+                    "Sensor" => array(
+                        "toArray" => array(
+                            array(true),
+                        ),
+                    ),
+                ),
+            ),
+            array(  // #41
+                array(
+                    "task" => "device",
+                    "action" => "get",
+                    "subtask" => "output",
+                    "id" => "10",
+                    "sid" => "5",
+                    "data" => array(
+                        "a" => "b",
+                        "c" => "d",
+                    ),
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "output" => new \HUGnet\DummyBase("Sensor"),
+                        "dataChannels" => new \HUGnet\DummyBase("Channels"),
+                    ),
+                    "Sensor" => array(
+                        "load" => true,
+                        "toArray" => array(
+                            "Real" => "array",
+                        ),
+                    ),
+                ),
+                false,
+                array(),
+                json_encode(array("Real" => "array")),
+                array(
+                    "Sensor" => array(
+                        "toArray" => array(
+                            array(true),
+                        ),
+                    ),
+                ),
+            ),
+            array(  // #42
+                array(
+                    "task" => "device",
+                    "action" => "get",
+                    "subtask" => "process",
+                    "id" => "10",
+                    "sid" => "5",
+                    "data" => array(
+                        "a" => "b",
+                        "c" => "d",
+                    ),
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "process" => new \HUGnet\DummyBase("Sensor"),
+                        "dataChannels" => new \HUGnet\DummyBase("Channels"),
+                    ),
+                    "Sensor" => array(
+                        "load" => true,
+                        "toArray" => array(
+                            "Real" => "array",
+                        ),
+                    ),
+                ),
+                false,
+                array(),
+                json_encode(array("Real" => "array")),
+                array(
+                    "Sensor" => array(
+                        "toArray" => array(
+                            array(true),
+                        ),
+                    ),
+                ),
+            ),
+            array(  // #43
+                array(
+                    "task" => "device",
+                    "action" => "get",
+                    "subtask" => "power",
+                    "id" => "10",
+                    "sid" => "5",
+                    "data" => array(
+                        "a" => "b",
+                        "c" => "d",
+                    ),
+                ),
+                array(
+                    "System" => array(
+                        "config" => array(
+                            "verbose" => 0,
+                        ),
+                        "device" => new \HUGnet\DummyBase("Device"),
+                    ),
+                    "Device" => array(
+                        "power" => new \HUGnet\DummyBase("Sensor"),
+                        "dataChannels" => new \HUGnet\DummyBase("Channels"),
+                    ),
+                    "Sensor" => array(
+                        "load" => true,
+                        "toArray" => array(
+                            "Real" => "array",
+                        ),
+                    ),
+                ),
+                false,
+                array(),
+                json_encode(array("Real" => "array")),
+                array(
+                    "Sensor" => array(
+                        "toArray" => array(
+                            array(true),
+                        ),
+                    ),
+                ),
+            ),
         );
     }
     /**

@@ -68,9 +68,11 @@ class WebAPIArgs extends HTMLArgs
         "d" => array("name" => "debug", "type" => "bool", "default" => false),
         "t" => array("name" => "test", "type" => "bool", "default" => false),
         "task" => array("name" => "task", "type" => "string", "default" => ""),
+        "subtask" => array("name" => "subtask", "type" => "string"),
         "action" => array("name" => "action", "type" => "string"),
         "format" => array("name" => "action", "type" => "string"),
         "id" => array("name" => "id", "type" => "string"),
+        "sid" => array("name" => "sid", "type" => "string"),
         "cuuid" => array("name" => "cuuid", "type" => "string"),
         "data" => array("name" => "data", "type" => "array", "default" => array()),
     );

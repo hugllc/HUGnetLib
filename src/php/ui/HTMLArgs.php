@@ -90,7 +90,7 @@ class HTMLArgs extends Args
     */
     protected function interpret()
     {
-//        $this->_name = trim($this->argv[0]);
+        //$this->_name = trim($this->argv[0]);
         foreach ((array)$this->argv as $name => $value) {
             if (isset($this->config[$name])) {
                 $this->arguments[$name] = $value;

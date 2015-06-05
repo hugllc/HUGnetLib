@@ -103,7 +103,8 @@ class WebAPI extends HTML
     public function execute($extra = array())
     {
         $task = (string)$this->args()->get("task");
-        $method = "_execute".ucfirst(strtolower($task));
+        $subtask = (string)$this->args()->get("subtask");
+        $method = "_execute".ucfirst(strtolower($task)).ucfirst(strtolower($subtask));
         if (method_exists($this, $method)) {
             $ret = $this->{$method}($extra);
         }
@@ -299,7 +300,10 @@ class WebAPI extends HTML
     {
         $ids = explode(".", $this->args()->get("id"));
         $did = hexdec($ids[0]);
-        $sid = (int)$ids[1];
+        $sid = $this->args()->get("sid");
+        if (empty($sid)) {
+            $sid = (int)$ids[1];
+        }
         $ident = array("dev" => $did, "input" => $sid);
         $action = strtolower(trim($this->args()->get("action")));
         $sen = $this->system()->device($did)->input($sid);
@@ -326,7 +330,10 @@ class WebAPI extends HTML
     {
         $ids = explode(".", $this->args()->get("id"));
         $did = hexdec($ids[0]);
-        $chan = (int)$ids[1];
+        $chan = $this->args()->get("sid");
+        if (empty($sid)) {
+            $chan = (int)$ids[1];
+        }
         $action = strtolower(trim($this->args()->get("action")));
         if ($action == "get") {
             $pkt = $this->system()->device($did)->action()->send(
@@ -373,7 +380,10 @@ class WebAPI extends HTML
     {
         $ids = explode(".", $this->args()->get("id"));
         $did = hexdec($ids[0]);
-        $sid = (int)$ids[1];
+        $sid = $this->args()->get("sid");
+        if (empty($sid)) {
+            $sid = (int)$ids[1];
+        }
         $ident = array("dev" => $did, "output" => $sid);
         $action = strtolower(trim($this->args()->get("action")));
         $sen = $this->system()->device($did)->output($sid);
@@ -400,7 +410,10 @@ class WebAPI extends HTML
     {
         $ids = explode(".", $this->args()->get("id"));
         $did = hexdec($ids[0]);
-        $sid = (int)$ids[1];
+        $sid = $this->args()->get("sid");
+        if (empty($sid)) {
+            $sid = (int)$ids[1];
+        }
         $ident = array("dev" => $did, "process" => $sid);
         $action = strtolower(trim($this->args()->get("action")));
         $sen = $this->system()->device($did)->process($sid);
@@ -427,7 +440,10 @@ class WebAPI extends HTML
     {
         $ids = explode(".", $this->args()->get("id"));
         $did = hexdec($ids[0]);
-        $sid = (int)$ids[1];
+        $sid = $this->args()->get("sid");
+        if (empty($sid)) {
+            $sid = (int)$ids[1];
+        }
         $ident = array("dev" => $did, "power" => $sid);
         $action = strtolower(trim($this->args()->get("action")));
         $sen = $this->system()->device($did)->power($sid);
