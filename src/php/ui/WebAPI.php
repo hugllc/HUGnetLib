@@ -592,6 +592,19 @@ class WebAPI extends HTML
     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
+    private function _executeDeviceHistory($extra = array())
+    {
+        return $this->_executeHistory($extra);
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
     private function _executeHistory($extra = array())
     {
         $did  = hexdec($this->args()->get("id"));
