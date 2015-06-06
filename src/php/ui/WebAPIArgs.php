@@ -67,12 +67,15 @@ class WebAPIArgs extends HTMLArgs
         "v" => array("name" => "verbose", "type" => "int", "default" => 0),
         "d" => array("name" => "debug", "type" => "bool", "default" => false),
         "t" => array("name" => "test", "type" => "bool", "default" => false),
-        "task" => array("name" => "task", "type" => "string", "default" => ""),
-        "subtask" => array("name" => "subtask", "type" => "string"),
-        "action" => array("name" => "action", "type" => "string"),
-        "format" => array("name" => "action", "type" => "string"),
-        "id" => array("name" => "id", "type" => "string"),
-        "sid" => array("name" => "sid", "type" => "string"),
+        "task" => array("name" => "task", "type" => "string", "default" => null),
+        "subtask" => array("name" => "subtask", "type" => "string", "default" => null),
+        "action" => array("name" => "action", "type" => "string", "default" => null),
+        "format" => array("name" => "action", "type" => "string", 'default' => null),
+        "id" => array("name" => "id", "type" => "string", 'default' => null),
+        "sid" => array("name" => "sid", "type" => "string", 'default' => null),
+        "object" => array("name" => "object", "type" => "string", 'default' => null),
+        "subobject" => array("name" => "subobject", "type" => "string", 'default' => null),
+        "method" => array("name" => "method", "type" => "string", 'default' => 'GET'),
         "cuuid" => array("name" => "cuuid", "type" => "string"),
         "data" => array("name" => "data", "type" => "array", "default" => array()),
     );
@@ -90,6 +93,57 @@ class WebAPIArgs extends HTMLArgs
     {
         $obj = new WebAPIArgs((array)$args, (int)$count, (array)$config, (array)$sysargs);
         return $obj;
+    }
+    /**
+    * Pulls the arguments apart and stores them
+    *
+    * @return null
+    */
+    protected function interpret()
+    {
+        parent::interpret();
+        // Do the RESTful interface last, so it takes precident
+        if (!empty($this->sysargs)) {
+            $this->RESTful();
+        }
+    }
+    /**
+    * Pulls the arguments apart and stores them
+    *
+    * @return null
+    */
+    protected function RESTful()
+    {
+        // This gets everything in the URL beyond the script
+        $temp = explode($this->sysargs['SCRIPT_NAME'], $this->sysargs['REQUEST_URI']);
+        // This takes the arguments off the URL
+        $temp = explode("?", $temp[1]);
+        // This is just the URL after the script.
+        $url  = ltrim($temp[0], "/");
+        // Remove the first
+        if (empty($url)) {
+            $args = array();
+        } else {
+            $args = explode("/", $url);
+        }
+        $obj = array_shift($args);
+        if (!empty($obj)) {
+            $this->arguments["object"] = $obj;
+            $this->arguments["method"] = $this->sysargs["REQUEST_METHOD"];
+            $id = array_shift($args);
+            if (!empty($id)) {
+                $this->arguments["id"] = $id;
+                $subobj = array_shift($args);
+                if (!empty($subobj)) {
+                    $this->arguments["subobject"] = $subobj;
+                    $sid = array_shift($args);
+                    if (!empty($sid)) {
+                        $this->arguments["sid"] = $sid;
+                    }
+                }
+            }
+        }
+        $this->arguments["restextra"] = $args;
     }
 
 }

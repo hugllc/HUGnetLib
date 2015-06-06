@@ -54,7 +54,7 @@ require_once dirname(__FILE__)."/../interfaces/WebAPI.php";
  * @version    Release: 0.14.3
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class WebAPI extends HTML
+class WebAPIOld extends HTML
 {
     /** The config we are using */
     private $_config = array();
@@ -64,32 +64,6 @@ class WebAPI extends HTML
     private $_system = null;
     /** The tells if we are read only or not */
     private $_ro = true;
-    /** The tells what objects we accept */
-    private $_targets = array(
-        "device" => array(
-            "methods" => "GET,POST,PUT,PATCH,DELETE",
-            "input" => "GET,POST,PUT,PATCH,DELETE",
-            "output" => "GET,POST,PUT,PATCH,DELETE",
-            "process" => "GET,POST,PUT,PATCH,DELETE",
-            "annotation" => "GET,POST,PUT,PATCH,DELETE",
-            "power" => "GET,POST,PUT,PATCH,DELETE",
-            "history" => "GET,POST",
-            "rawhistory" => "GET,POST",
-            "history" => "GET,POST",
-        ),
-        "datacollector" => "GET,POST,PUT,PATCH,DELETE",
-        "errorlog" => "GET,POST,PUT,PATCH,DELETE",
-    );
-    /** This is the id we were given */
-    private $_id = null;
-    /** This is the sid we were given */
-    private $_sid = null;
-    /** This is the object we were given */
-    private $_object = null;
-    /** This is the subobject we were given */
-    private $_subobject = null;
-    /** This is the method used */
-    private $_method = "GET";
 
     /**
     * Creates the object
@@ -103,7 +77,7 @@ class WebAPI extends HTML
     static public function &factory(
         $config = array(), $system = null, $readonly = true
     ) {
-        $obj = new WebAPI($config, $system);
+        $obj = new WebAPIOld($config, $system);
         $obj->_ro = (bool)$readonly;
         return $obj;
     }
@@ -128,45 +102,12 @@ class WebAPI extends HTML
     */
     public function execute($extra = array())
     {
-        $ret = "";
-        if (!is_null($this->args()->get("task"))) {
-            include_once "WebAPIOld.php";
-            $api = WebAPIOld::factory($this->args(), $this->system(), $this->_ro);
-            $api->execute($extra);
-        } else {
-            $object = strtolower($this->args()->get("object"));
-            $id     = $this->args()->get("id");
-            if (isset($this->_targets[$object])) {
-                $this->_object = $object;
-                $this->_id     = $id;
-                $this->_method = $this->args()->get("method");
-                $obj = $this->system()->$object($id);
-                $sid     = $this->args()->get("sid");
-                $subobject = strtolower($this->args()->get("subobject"));
-                $methods = "GET";
-                if (is_array($this->_targets[$object]) && isset($this->_targets[$object][$subobject])) {
-                    $this->_sid = $sid;
-                    $this->_subobject = $subobject;
-                    $obj = $obj->$subobject($sid);
-                    if (is_string($this->_targets[$object][$subobject])) {
-                        $methods = $this->_targets[$object][$subobject];
-                    }
-                } else if (is_string($this->_targets[$object])) {
-                    $methods = $this->_targets[$object];
-                } else if (is_string($this->_targets[$object]["methods"])) {
-                    $methods = $this->_targets[$object]["methods"];
-                }
-            }
-            if (stripos($methods, $this->_method) !== false) {
-                $fct = "_execute".ucfirst($object);
-                if (method_exists($this, $fct)) {
-                    $ret = $this->$fct($obj, $methods);
-                } else {
-                    $ret = $this->_executeSystem($obj, $methods);
-                }
-            }
-            $this->_body($ret);
+        $task = (string)$this->args()->get("task");
+        $method = "_execute".ucfirst(strtolower($task));
+        if (method_exists($this, $method)) {
+            $ret = $this->{$method}($extra);
         }
+        $this->_body($ret);
     }
     /**
     * This authenticates a user and returns true if the user has access
@@ -187,6 +128,399 @@ class WebAPI extends HTML
     /**
     * This function executes the api call.
     *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+    */
+    private function _executeFirmware($extra = array())
+    {
+        $ret = array();
+        $firmware = $this->system()->table("firmware");
+        $action = strtolower(trim($this->args()->get("action")));
+        if ($action == "list") {
+            $ret = $this->_executeTableList($ident, $firmware);
+            foreach ($ret as &$value) {
+                unset($value["Code"]);
+                unset($value["Data"]);
+                unset($value["CodeHash"]);
+                unset($value["DataHash"]);
+            }
+        }
+        return $ret;
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+    */
+    private function _executeDevice($extra = array())
+    {
+        $did = hexdec($this->args()->get("id"));
+        $dev = $this->system()->device($did);
+        $action = strtolower(trim($this->args()->get("action")));
+        if ($action == "get") {
+            $ret = $this->_executeSystem($did, $dev, $extra);
+        } else if ($this->_auth(true) || ($action == "list")) {
+            //$dev->load($did);
+            if ($action == "import") {
+                if (file_exists($_FILES["import"]["tmp_name"])) {
+                    $data = json_decode(
+                        file_get_contents($_FILES["import"]["tmp_name"]),
+                        true
+                    );
+                    $this->args()->set("data", $data);
+                }
+            }
+            $ret = $dev->webAPI($this->args(), $extra);
+        }
+        if ($ret === "regen") {
+            return $this->system()->device($did)->toArray(true);
+        }
+        return $ret;
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+    */
+    private function _executeInputtable($extra = array())
+    {
+        $iid = $this->args()->get("id");
+        $inputTable = $this->system()->inputTable($iid);
+        $ret = $this->_executeSystem($iid, $inputTable, $extra);
+        if ($ret === "regen") {
+            return $this->system()->inputTable($iid)->toArray(true);
+        }
+        return $ret;
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+    */
+    private function _executeOutputtable($extra = array())
+    {
+        $iid = $this->args()->get("id");
+        $outputTable = $this->system()->outputTable($iid);
+        $ret = $this->_executeSystem($iid, $outputTable, $extra);
+        if ($ret === "regen") {
+            return $this->system()->outputTable($iid)->toArray(true);
+        }
+        return $ret;
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+    */
+    private function _executeProcesstable($extra = array())
+    {
+        $iid = $this->args()->get("id");
+        $processTable = $this->system()->processTable($iid);
+        $ret = $this->_executeSystem($iid, $processTable, $extra);
+        if ($ret === "regen") {
+            return $this->system()->processTable($iid)->toArray(true);
+        }
+        return $ret;
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+    */
+    private function _executeAnnotation($extra = array())
+    {
+        $aid = (int)$this->args()->get("id");
+        if ($aid == 0) {
+            $aid = null;
+        }
+        $table = $this->system()->annotation();
+        $action = strtolower(trim($this->args()->get("action")));
+        if ($action == "list") {
+            $ret = $table->webAPI($this->args(), $extra);
+        } else {
+            $data = (array)$this->args()->get("data");
+            $data["date"] = time();
+            unset($data["id"]);
+            $this->args()->set("data", $data);
+            $ret = $this->_executeSystem($aid, $table, $extra);
+        }
+        if (($aid == 0) && ($action == "put")) {
+            $data = (array)$this->args()->get("data");
+            return $this->system()->annotation($data)->toArray(true);
+        } else if ($ret === "regen") {
+            return $this->system()->annotation($aid)->toArray(true);
+        }
+        return $ret;
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+    */
+    private function _executeTests($extra = array())
+    {
+        $tid = (int)$this->args()->get("id");
+        $test = $this->system()->test($tid);
+        $ret = $this->_executeSystem($tid, $test, $extra);
+        if ($ret === "regen") {
+            return $this->system()->test($tid)->toArray(true);
+        }
+        return $ret;
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+    */
+    private function _executeDeviceInput($extra = array())
+    {
+        $ids = explode(".", $this->args()->get("id"));
+        $did = hexdec($ids[0]);
+        $sid = $this->args()->get("sid");
+        if (empty($sid)) {
+            $sid = (int)$ids[1];
+        }
+        $ident = array("dev" => $did, "input" => $sid);
+        $action = strtolower(trim($this->args()->get("action")));
+        $sen = $this->system()->device($did)->input($sid);
+        if ($action === "list") {
+            $this->args()->set("data", array("dev" => $did));
+        } else if ($action == "put") {
+            $ret = $sen->webAPI($this->args(), $extra);
+        }
+        $ret = $this->_executeSystem($ident, $sen, $extra);
+        if ($ret === "regen") {
+            return $this->system()->device($did)->input($sid)->toArray(true);
+        }
+        return $ret;
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+    */
+    private function _executeDeviceControlChan($extra = array())
+    {
+        $ids = explode(".", $this->args()->get("id"));
+        $did = hexdec($ids[0]);
+        $chan = $this->args()->get("sid");
+        if (empty($sid)) {
+            $chan = (int)$ids[1];
+        }
+        $action = strtolower(trim($this->args()->get("action")));
+        if ($action == "get") {
+            $pkt = $this->system()->device($did)->action()->send(
+                array(
+                    "Command" => '0x65',
+                    "Data" => sprintf("%02X", $chan),
+                )
+            );
+            if (is_object($pkt)) {
+                $reply = $pkt->reply();
+                $data = 0;
+                for ($i = 0; $i < 4; $i++) {
+                    $data += hexdec(substr($reply, ($i * 2), 2))<<($i * 8);
+                }
+                return $data;
+            }
+        } else if ($action == "set") {
+            $data = (int)$this->args()->get("data");
+            $datastr = sprintf("%08X", $data);
+            for ($i = 6; $i >= 0; $i-=2) {
+                $value .= substr($datastr, $i, 2);
+            }
+            $pkt = $this->system()->device($did)->action()->send(
+                array(
+                    "Command" => '0x64',
+                    "Data" => sprintf("%02X", $chan).$value,
+                )
+            );
+            if ($pkt->reply() == $value) {
+                return $data;
+            }
+        }
+        return null;
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+    */
+    private function _executeDeviceOutput($extra = array())
+    {
+        $ids = explode(".", $this->args()->get("id"));
+        $did = hexdec($ids[0]);
+        $sid = $this->args()->get("sid");
+        if (empty($sid)) {
+            $sid = (int)$ids[1];
+        }
+        $ident = array("dev" => $did, "output" => $sid);
+        $action = strtolower(trim($this->args()->get("action")));
+        $sen = $this->system()->device($did)->output($sid);
+        if ($action === "list") {
+            $this->args()->set("data", array("dev" => $did));
+        } else if ($action == "put") {
+            $ret = $sen->webAPI($this->args(), $extra);
+        }
+        $ret = $this->_executeSystem($ident, $sen, $extra);
+        if ($ret === "regen") {
+            return $this->system()->device($did)->output($sid)->toArray(true);
+        }
+        return $ret;
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+    */
+    private function _executeDeviceProcess($extra = array())
+    {
+        $ids = explode(".", $this->args()->get("id"));
+        $did = hexdec($ids[0]);
+        $sid = $this->args()->get("sid");
+        if (empty($sid)) {
+            $sid = (int)$ids[1];
+        }
+        $ident = array("dev" => $did, "process" => $sid);
+        $action = strtolower(trim($this->args()->get("action")));
+        $sen = $this->system()->device($did)->process($sid);
+        if ($action === "list") {
+            $this->args()->set("data", array("dev" => $did));
+        } else if ($action == "put") {
+            $ret = $sen->webAPI($this->args(), $extra);
+        }
+        $ret = $this->_executeSystem($ident, $sen, $extra);
+        if ($ret === "regen") {
+            return $this->system()->device($did)->process($sid)->toArray(true);
+        }
+        return $ret;
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+    */
+    private function _executeDevicePower($extra = array())
+    {
+        $ids = explode(".", $this->args()->get("id"));
+        $did = hexdec($ids[0]);
+        $sid = $this->args()->get("sid");
+        if (empty($sid)) {
+            $sid = (int)$ids[1];
+        }
+        $ident = array("dev" => $did, "power" => $sid);
+        $action = strtolower(trim($this->args()->get("action")));
+        $sen = $this->system()->device($did)->power($sid);
+        if ($action === "list") {
+            $this->args()->set("data", array("dev" => $did));
+        } else if ($action == "put") {
+            $ret = $sen->webAPI($this->args(), $extra);
+        }
+        $ret = $this->_executeSystem($ident, $sen, $extra);
+        if ($ret === "regen") {
+            return $this->system()->device($did)->power($sid)->toArray(true);
+        }
+        return $ret;
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+    */
+    private function _executeDatacollector($extra = array())
+    {
+        $uuid = strtolower($this->args()->get("id"));
+        $datacol = $this->system()->datacollector($uuid);
+        $ret = $this->_executeSystem($uuid, $datacol, $extra);
+        if ($ret === "regen") {
+            return $this->system()->datacollector($uuid)->toArray(true);
+        }
+        return $ret;
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+    */
+    private function _executeGateway($extra = array())
+    {
+        $gid     = strtolower($this->args()->get("id"));
+        $gateway = $this->system()->gateway($gid);
+        $ret     = $this->_executeSystem($gid, $gateway, $extra);
+        if ($ret === "regen") {
+            return $this->system()->gateway($gid)->toArray(true);
+        }
+        return $ret;
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param array $extra Extra data that should be added to the HTMLArgs data
+    *
+    * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+    */
+    private function _executeImage($extra = array())
+    {
+        $iid    = $this->args()->get("id");
+        $image  = $this->system()->image($iid);
+        $action = strtolower(trim($this->args()->get("action")));
+        if ($this->_auth(true) 
+            || ($action == "list") 
+            || ($action == "get") 
+            || ($action == "getreading")
+        ) {
+            $ret = $image->webAPI($this->args(), $extra);
+        }
+        if ($ret === "regen") {
+            return $this->system()->image($iid)->toArray(true);
+        }
+        return $ret;
+    }
+    /**
+    * This function executes the api call.
+    *
     * @param mixed  $ident The ID to use
     * @param object $obj   The object to work on
     * @param array  $extra Extra data that should be added to the HTMLArgs data
@@ -194,30 +528,28 @@ class WebAPI extends HTML
     * @return null
     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
     */
-    private function _executeSystem($obj, $methods)
+    private function _executeSystem($ident, $obj, $extra = array())
     {
         $ret = null;
-        if (($this->_method === "GET") && $this->_auth(false)) {
-            if (is_null($this->_id) || (is_null($this->_sid) && !empty($this->_subobject))) {
-                $ret = $obj->getList($data, true);
-            } else {
-                $ret = $obj->toArray(true);
-            }
-        } else if (($action === "POST") && $this->_auth(true)) {
-            $data = (array)$this->args()->get("data");
-            $obj->create($data);
-        } else if (($action === "PUT") && $this->_auth(true)) {
-            $data = (array)$this->args()->get("data");
-            $obj->change($data);
-        } else if (($action === "PATCH") && $this->_auth(true)) {
-            $data = (array)$this->args()->get("data");
-            $obj->change($data);
-        }
-        if (is_null($ret)) {
-            $obj->load($obj->id());
+        $action = strtolower(trim($this->args()->get("action")));
+        if ($action === "get") {
             $ret = $obj->toArray(true);
-        }
-        /*
+        } else if (($action === "put") && $this->_auth(true)) {
+            $data = (array)$this->args()->get("data");
+            $ret = "regen";
+            if ($obj->load($ident)) {
+                $obj->change($data);
+            } else if (is_null($ident) && isset($data["name"])) {
+                $obj->create($data);
+                // We don't want to regen this one.  $ident is wrong.
+                $ret = $obj->toArray(true);
+            } else {
+                $obj->load($data);
+                $obj->store(true);
+            }
+        } else if ($action === "list") {
+            $data = $this->args()->get("data");
+            $ret = $obj->getList($data, true);
         } else if ($this->_auth(true)) {
             $interface = "\\HUGnet\\interfaces\\WebAPI";
             if (is_subclass_of($obj, $interface)) {
@@ -225,7 +557,6 @@ class WebAPI extends HTML
                 $ret = $obj->webAPI($this->args(), $extra);
             }
         }
-        */
         return $ret;
     }
     /**
