@@ -131,13 +131,13 @@ class WebAPIArgs extends HTMLArgs
             $this->arguments["object"] = $obj;
             $this->arguments["method"] = $this->sysargs["REQUEST_METHOD"];
             $id = array_shift($args);
-            if (!empty($id)) {
+            if (strlen($id) > 0) {
                 $this->arguments["id"] = $id;
                 $subobj = array_shift($args);
                 if (!empty($subobj)) {
                     $this->arguments["subobject"] = $subobj;
                     $sid = array_shift($args);
-                    if (!empty($sid)) {
+                    if (strlen($sid) > 0) {
                         $this->arguments["sid"] = $sid;
                     }
                 }

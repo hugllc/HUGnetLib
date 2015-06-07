@@ -210,9 +210,9 @@ abstract class SystemTableBase
         if (is_array($data) || is_object($data)) {
             $this->table()->fromAny($data);
             $this->fixTable();
-            if (!$ret) {
-                $this->_new = true;
-            }
+        }
+        if (!$ret) {
+            $this->_new = true;
         }
         return (bool)$ret;
     }
@@ -329,7 +329,7 @@ abstract class SystemTableBase
     {
         $sid = $this->table()->get($this->table()->sqlId);
         $this->fixTable();
-        if (empty($sid) || $replace || $this->_new) {
+        if (empty($sid) || $replace || $this->isNew()) {
             $ret = $this->table()->insertRow($replace);
             $this->_new = false;
         } else {
@@ -403,6 +403,15 @@ abstract class SystemTableBase
     public function &action()
     {
         return $this;
+    }
+    /**
+    * This function creates the action item.  The default is just to return this.
+    *
+    * @return Reference to the action object
+    */
+    public function isNew()
+    {
+        return $this->_new;
     }
 }
 

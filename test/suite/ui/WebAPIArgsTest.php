@@ -581,6 +581,70 @@ class WebAPIArgsTest extends \PHPUnit_Framework_TestCase
                 ),
                 "",
             ),
+            array(  // #8 REST Test #8
+                array(
+                    "v" => 3,
+                    "q" => 1,
+                    "i" => "asdf",
+                    "klong" => "wwww",
+                ),
+                8,
+                array(
+                    "i" => array(
+                        "name" => "ilong", "type" => "string", "args" => true
+                    ),
+                    "j" => array(
+                        "name" => "jlong", "default" => "1234",
+                    ),
+                    "k" => array(
+                        "name" => "klong", "default" => "qqqq",
+                    ),
+                ),
+                array(
+                    "SCRIPT_NAME" => "/this/is/a.php",
+                    "REQUEST_URI" => "/this/is/a.php/url/0/sub/0",
+                    "REQUEST_METHOD" => "DELETE",
+                ),
+                array(
+                    "i" => "asdf",
+                    "v" => 3,
+                    "q" => true,
+                    "d" => false,
+                    "t" => false,
+                    "ilong" => "asdf",
+                    "jlong" => "1234",
+                    "k" => "wwww",
+                ),
+                array(
+                    "object" => "url",
+                    "action" => null,
+                    "id" => '0',
+                    "subobject" => "sub",
+                    "method" => "DELETE",
+                    "sid" => '0',
+                ),
+                null,
+                array(
+                    "quiet" => true,
+                    "verbose" => 3,
+                    "debug" => false,
+                    "test" => false,
+                    "ilong" => "asdf",
+                    "jlong" => "1234",
+                    "klong" => "wwww",
+                    'task' => null,
+                    'subtask' => null,
+                    'action' => null,
+                    'id' => "0",
+                    'sid' => "0",
+                    'object' => 'url',
+                    'subobject' => 'sub',
+                    'method' => 'DELETE',
+                    'cuuid' => null,
+                    'data' => array(),
+                ),
+                "",
+            ),
         );
     }
     /**

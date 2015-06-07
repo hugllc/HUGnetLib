@@ -68,17 +68,55 @@ class WebAPI extends HTML
     private $_targets = array(
         "device" => array(
             "methods" => "GET,POST,PUT,PATCH,DELETE",
-            "input" => "GET,POST,PUT,PATCH,DELETE",
-            "output" => "GET,POST,PUT,PATCH,DELETE",
-            "process" => "GET,POST,PUT,PATCH,DELETE",
-            "annotation" => "GET,POST,PUT,PATCH,DELETE",
-            "power" => "GET,POST,PUT,PATCH,DELETE",
-            "history" => "GET,POST",
-            "rawhistory" => "GET,POST",
-            "history" => "GET,POST",
+            "idformat" => "hex",
+            "subobjects" => array(
+                "input" => array(
+                    "methods" => "GET,POST,PUT,PATCH,DELETE",
+                ),
+                "output" => array(
+                    "methods" => "GET,POST,PUT,PATCH,DELETE",
+                ),
+                "process" => array(
+                    "methods" => "GET,POST,PUT,PATCH,DELETE",
+                ),
+                "annotation" => array(
+                    "methods" => "GET,POST,PUT,PATCH,DELETE",
+                ),
+                "power" => array(
+                    "methods" => "GET,POST,PUT,PATCH,DELETE",
+                ),
+                "history" => array(
+                    "methods" => "GET,POST",
+                ),
+                "rawhistory" => array(
+                    "methods" => "GET,POST",
+                ),
+                "history" => array(
+                    "methods" => "GET,POST",
+                ),
+                "error" => array(
+                    "methods" => "GET,POST,PUT,PATCH,DELETE",
+                ),
+            ),
         ),
-        "datacollector" => "GET,POST,PUT,PATCH,DELETE",
-        "errorlog" => "GET,POST,PUT,PATCH,DELETE",
+        "datacollector" => array(
+            "methods" => "GET,POST,PUT,PATCH,DELETE",
+        ),
+        "inputtable" => array(
+            "methods" => "GET,POST,PUT,PATCH,DELETE",
+        ),
+        "outputtable" => array(
+            "methods" => "GET,POST,PUT,PATCH,DELETE",
+        ),
+        "processtable" => array(
+            "methods" => "GET,POST,PUT,PATCH,DELETE",
+        ),
+        "time" => array(
+            "methods" => "GET",
+        ),
+        "version" => array(
+            "methods" => "GET",
+        ),
     );
     /** This is the id we were given */
     private $_id = null;
@@ -86,10 +124,16 @@ class WebAPI extends HTML
     private $_sid = null;
     /** This is the object we were given */
     private $_object = null;
+    /** This is the final object we are going to use */
+    private $_obj = null;
+    /** This is the info on the final object we are going to use */
+    private $_info = null;
     /** This is the subobject we were given */
     private $_subobject = null;
     /** This is the method used */
     private $_method = "GET";
+    /** This is the available methods */
+    private $_methods = "GET";
 
     /**
     * Creates the object
@@ -134,38 +178,134 @@ class WebAPI extends HTML
             $api = WebAPIOld::factory($this->args(), $this->system(), $this->_ro);
             $api->execute($extra);
         } else {
-            $object = strtolower($this->args()->get("object"));
-            $id     = $this->args()->get("id");
-            if (isset($this->_targets[$object])) {
-                $this->_object = $object;
-                $this->_id     = $id;
-                $this->_method = $this->args()->get("method");
-                $obj = $this->system()->$object($id);
-                $sid     = $this->args()->get("sid");
-                $subobject = strtolower($this->args()->get("subobject"));
-                $methods = "GET";
-                if (is_array($this->_targets[$object]) && isset($this->_targets[$object][$subobject])) {
-                    $this->_sid = $sid;
-                    $this->_subobject = $subobject;
-                    $obj = $obj->$subobject($sid);
-                    if (is_string($this->_targets[$object][$subobject])) {
-                        $methods = $this->_targets[$object][$subobject];
-                    }
-                } else if (is_string($this->_targets[$object])) {
-                    $methods = $this->_targets[$object];
-                } else if (is_string($this->_targets[$object]["methods"])) {
-                    $methods = $this->_targets[$object]["methods"];
-                }
-            }
-            if (stripos($methods, $this->_method) !== false) {
-                $fct = "_execute".ucfirst($object);
-                if (method_exists($this, $fct)) {
-                    $ret = $this->$fct($obj, $methods);
+            $this->_setObject();
+            $this->_setId();
+            $this->_setSubobject();
+            $this->_setSid();
+            $this->_setMethod();
+            $this->_setInfo();
+            $this->_createObj();
+            $fct = "_execute".ucfirst($this->_object);
+            if (method_exists($this, $fct)) {
+                $ret = $this->$fct();
+            } else {
+                if ($this->_object === "version") {
+                    $ret = $this->_executeVersion();
+                } else if ($this->_object === "time") {
+                    $ret = $this->_executeTime();
+                } else if (is_a((object)$this->_obj, '\HUGnet\base\SystemTableBase')) {
+                    $ret = $this->_executeSystem();
+                } else if (is_a((object)$this->_obj, '\HUGnet\db\Table')) {
+                    $ret = $this->_executeTable();
                 } else {
-                    $ret = $this->_executeSystem($obj, $methods);
+                    $ret = $this->_executeUnknown();
                 }
             }
             $this->_body($ret);
+        }
+    }
+    /**
+    * This gets the ID of the object
+    *
+    * @param mixed $object The object to get the ID for
+    *
+    * @return bool
+    */
+    private function _setId()
+    {
+        if (isset($this->_targets[$this->_object])) {
+            $this->_id = $this->args()->get("id");
+            if (is_string($this->_id) && isset($this->_targets[$this->_object]["idformat"]) && ($this->_targets[$this->_object]["idformat"] == 'hex')) {
+                $this->_id = hexdec($this->_id);
+            }
+        }
+    }
+    /**
+    * This gets the ID of the object
+    *
+    * @param mixed $object The object to get the ID for
+    *
+    * @return bool
+    */
+    private function _setObject()
+    {
+        $object = trim(strtolower($this->args()->get("object")));
+        if (isset($this->_targets[$object])) {
+            $this->_object = $object;
+        }
+    }
+    /**
+    * This gets the ID of the object
+    *
+    * @param mixed $object The object to get the ID for
+    *
+    * @return bool
+    */
+    private function _setSid()
+    {
+        if (isset($this->_targets[$this->_object]) && isset($this->_targets[$this->_object][$this->_subobject])) {
+            $this->_sid = $this->args()->get("sid");
+            if (is_string($this->_sid) && isset($this->_targets[$this->_object][$this->_subobject]["idformat"]) && ($this->_targets[$this->_object][$this->_subobject]["idformat"] == 'hex')) {
+                $this->_sid = hexdec($this->_sid);
+            }
+        }
+    }
+    /**
+    * This gets the ID of the object
+    *
+    * @param mixed $object The object to get the ID for
+    *
+    * @return bool
+    */
+    private function _setSubobject()
+    {
+        if (!is_null($this->_id)) {
+            $object = trim(strtolower($this->args()->get("subobject")));
+            if (isset($this->_targets[$this->_object]) && isset($this->_targets[$this->_object][$object])) {
+                $this->_subobject = $object;
+            }
+        }
+    }
+    /**
+    * This gets the ID of the object
+    *
+    * @param mixed $object The object to get the ID for
+    *
+    * @return bool
+    */
+    private function _setMethod()
+    {
+        $this->_method = (string)$this->args()->get("method");
+    }
+    /**
+    * This gets the ID of the object
+    *
+    * @param mixed $object The object to get the ID for
+    *
+    * @return bool
+    */
+    private function &_createObj()
+    {
+        if (is_string($this->_object) && is_callable(array($this->system(), $this->_object))) {
+            $this->_obj = $this->system()->{$this->_object}($this->_id);
+            if (is_object($this->_obj) && is_string($this->_subobject) && is_callable(array($this->_obj, (string)$this->_subobject))) {
+                $this->_obj = $this->_obj->{$this->_subobject}($this->_sid);
+            }
+        }
+    }
+    /**
+    * This gets the ID of the object
+    *
+    * @param mixed $object The object to get the ID for
+    *
+    * @return bool
+    */
+    private function &_setInfo()
+    {
+        if (isset($this->_targets[$this->_object]) && isset($this->_targets[$this->_object][$this->_subobject])) {
+            $this->_info = &$this->_targets[$this->_object][$this->_subobject];
+        } else if (isset($this->_targets[$this->_object])) {
+            $this->_info = &$this->_targets[$this->_object];
         }
     }
     /**
@@ -177,6 +317,9 @@ class WebAPI extends HTML
     */
     private function _auth($write = true)
     {
+        if (!is_array($this->_info) || (stripos($this->_info["methods"], $this->_method) === false)) {
+            return false;
+        }
         if ($write && $this->_ro) {
             return false;
         }
@@ -187,35 +330,90 @@ class WebAPI extends HTML
     /**
     * This function executes the api call.
     *
-    * @param mixed  $ident The ID to use
-    * @param object $obj   The object to work on
-    * @param array  $extra Extra data that should be added to the HTMLArgs data
+    * @param object $obj The object to work on
     *
     * @return null
     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
     */
-    private function _executeSystem($obj, $methods)
+    private function _executeVersion()
+    {
+        $ret = "";
+        if ($this->_auth(false)) {
+            $ret = $this->system()->get("version");
+        }
+        return $ret;
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param object $obj The object to work on
+    *
+    * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+    */
+    private function _executeTime()
+    {
+        $ret = "";
+        if ($this->_auth(false)) {
+            $ret = $this->system()->now();
+        }
+        return $ret;
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param object $obj The object to work on
+    *
+    * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+    */
+    private function _executeUnknown()
+    {
+        $ret = "";
+        // GET is the only method for unknown
+        if (($this->_method === "GET") && $this->_auth(false)) {
+            if ((is_null($this->_id) || (is_null($this->_sid) && !empty($this->_subobject))) && is_callable(array($this->_obj, "getList"))) {
+                $ret = $this->_obj->getList($data, true);
+            } else if (is_callable(array($this->_obj, "toArray"))) {
+                $ret = $this->_obj->toArray(true);
+            }
+        }
+        return $ret;
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param object $obj The object to work on
+    *
+    * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+    */
+    private function _executeSystem()
     {
         $ret = null;
         if (($this->_method === "GET") && $this->_auth(false)) {
             if (is_null($this->_id) || (is_null($this->_sid) && !empty($this->_subobject))) {
-                $ret = $obj->getList($data, true);
+                $ret = $this->_obj->getList($data, true);
             } else {
-                $ret = $obj->toArray(true);
+                if ($this->_obj->isNew()) {
+                    $ret = new \StdClass();
+                } else {
+                    $ret = $this->_obj->toArray(true);
+                }
             }
         } else if (($action === "POST") && $this->_auth(true)) {
             $data = (array)$this->args()->get("data");
-            $obj->create($data);
+            $this->_obj->create($data);
         } else if (($action === "PUT") && $this->_auth(true)) {
             $data = (array)$this->args()->get("data");
-            $obj->change($data);
+            $this->_obj->change($data);
         } else if (($action === "PATCH") && $this->_auth(true)) {
             $data = (array)$this->args()->get("data");
-            $obj->change($data);
+            $this->_obj->change($data);
         }
         if (is_null($ret)) {
-            $obj->load($obj->id());
-            $ret = $obj->toArray(true);
+            $this->_obj->load($obj->id());
+            $ret = $this->_obj->toArray(true);
         }
         /*
         } else if ($this->_auth(true)) {
@@ -231,24 +429,14 @@ class WebAPI extends HTML
     /**
     * This function executes the api call.
     *
-    * @param mixed  $ident The ID to use
-    * @param object &$obj  The object to work on
+    * @param object &$obj The object to work on
     *
     * @return null
     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
-    private function _executeTableList($ident, &$obj)
+    private function _executeTable()
     {
-        $data = (array)$this->args()->get("data");
-        $where = $obj->sanitizeWhere($data);
-        if (!is_array($where) || empty($where)) {
-            $where = array();
-        }
-        $ret = array();
-        foreach ((array)$obj->select($where) as $row) {
-            $ret[] = $row->toArray(true);
-        }
         return $ret;
     }
     /**

@@ -115,6 +115,7 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
                     ),
                     "Device" => array(
                         "get" => 0x5C,
+                        "id" => 0x5C,
                     ),
                 ),
                 array(
@@ -126,6 +127,7 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
                             array(
                                 array(
                                     "id" => 0x5C,
+                                    "severity" => "E",
                                 ),
                             ),
                         ),
@@ -141,7 +143,7 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                     "Device" => array(
-                        "get" => array(array("id")),
+                        "id" => array(array()),
                     ),
                 ),
             ),
@@ -152,6 +154,7 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
                     ),
                     "Device" => array(
                         "get" => 0x5C,
+                        "id" => 0x5C,
                         "decodeRTC" => array(
                             "01020304" => 1234,
                         ),
@@ -167,6 +170,7 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
                                     "Date" => 1234,
                                     "errno" => 5,
                                     "extra" => '060708090A0B0C0D0E0F',
+                                    "severity" => "E",
                                 ),
                             ),
                         ),
@@ -182,7 +186,7 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                     "Device" => array(
-                        "get" => array(array("id")),
+                        "id" => array(array()),
                         "decodeRTC" => array(array("01020304")),
                     ),
                 ),

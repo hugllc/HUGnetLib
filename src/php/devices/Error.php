@@ -90,7 +90,6 @@ class Error extends \HUGnet\base\SystemTableBase
         $class = get_called_class();
         $object = new $class($system, $dbtable);
         $object->_device = &$device; 
-        $object->log($data);
         return $object;
     }
     /**
@@ -107,12 +106,26 @@ class Error extends \HUGnet\base\SystemTableBase
             $error = $this->decode($error);
         }
         if (is_array($error)) {
-            $error["id"] = $this->_device->get("id");
+            $error["id"] = $this->_device->id();
             $error["severity"] = $sev;
             $this->table()->fromArray($error);
             return $this->table()->insertRow(true);
         }
         return false;
+    }
+    /**
+    * Returns a list of the items that it sees.
+    *
+    * @param array $where   The things the list should filter for
+    * @param bool  $default Whether to add the default stuff on or not.
+    *
+    * @return null
+    */
+    public function getList($where = null, $default = false)
+    {
+        $where = (array)$where;
+        $where['id'] = $this->_device->id();
+        return parent::getList($where, $default);
     }
     /**
     * Logs an error in the database
@@ -154,7 +167,18 @@ class Error extends \HUGnet\base\SystemTableBase
         );
         return $vals;
     }
-    
+    /**
+    * Lists the ids of the table values
+    *
+    * @return int The ID of this device
+    *
+    * @SuppressWarnings(PHPMD.ShortMethodName)
+    */
+    public function id()
+    {
+        return $this->_device->id();
+    }
+
 }
 
 
