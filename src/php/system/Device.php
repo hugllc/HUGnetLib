@@ -42,6 +42,8 @@ require_once dirname(__FILE__)."/../base/SystemTableAction.php";
 require_once dirname(__FILE__)."/../devices/Driver.php";
 /** This is our base class */
 require_once dirname(__FILE__)."/../interfaces/WebAPI.php";
+/** This is our base class */
+require_once dirname(__FILE__)."/../interfaces/WebAPI2.php";
 /** This is our system interface */
 require_once dirname(__FILE__)."/../interfaces/SystemInterface.php";
 
@@ -62,7 +64,8 @@ require_once dirname(__FILE__)."/../interfaces/SystemInterface.php";
  * @since      0.9.7
  */
 class Device extends \HUGnet\base\SystemTableAction
-    implements \HUGnet\interfaces\WebAPI, \HUGnet\interfaces\SystemInterface
+    implements \HUGnet\interfaces\WebAPI, \HUGnet\interfaces\SystemInterface,
+    \HUGnet\interfaces\WebAPI2
 {
     /**
     * This is the cache for the drivers.
@@ -96,6 +99,20 @@ class Device extends \HUGnet\base\SystemTableAction
     /** This is where we store our objects */
     protected $classes = array(
     );
+    /**
+    * This function sets up the driver object, and the database object.  The
+    * database object is taken from the driver object.
+    *
+    * @param object &$system The configuration array
+    * @param string $table   The table class to use
+    * @param array  $data    The initial data for this object
+    *
+    * @return null
+    */
+    public function __construct(&$system, $table, $data = array())
+    {
+        parent::__construct($system, $table, $data);
+    }
     /**
     * This is the destructor
     */
@@ -311,6 +328,33 @@ class Device extends \HUGnet\base\SystemTableAction
     public function webAPI($args, $extra)
     {
         return $this->webInterface()->webAPI($args, $extra);
+    }
+    /**
+    * This function creates the system.
+    *
+    * @return Reference to the network object
+    */
+    protected function &webInterface2()
+    {
+        include_once dirname(__FILE__)."/../devices/WebInterface2.php";
+        return \HUGnet\devices\WebInterface2::factory(
+            $this->system(),
+            $this,
+            $this->driver()
+        );
+    }
+    /**
+    * returns a history object for this device
+    *
+    * @param object $args  The argument object
+    * @param array  $extra Extra data from the
+    *
+    * @return string
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function webAPI2($args, $extra)
+    {
+        return $this->webInterface2()->webAPI($args, $extra);
     }
     /**
     * This function creates the system.
@@ -628,12 +672,24 @@ class Device extends \HUGnet\base\SystemTableAction
     *
     * @return string
     */
-    public function &historyFactory($data = array(), $history = true)
+    public function &history($data = array(), $history = true)
     {
         $class = $this->driver()->historyTable($history);
         $obj = $this->system()->table($class, $data);
         $obj->device = &$this;
         return $obj;
+    }
+    /**
+    * returns a history object for this device
+    *
+    * @param array $data    The data to build the history record with.
+    * @param bool  $history History if true, average if false
+    *
+    * @return string
+    */
+    public function &historyFactory($data = array(), $history = true)
+    {
+        return $this->history($data, $history);
     }
     /**
     * This gets the roles

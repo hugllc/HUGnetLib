@@ -255,7 +255,7 @@ class Devices extends \HUGnet\db\Table
     * @param mixed  $data     This is an array or string to create the object from
     * @param object &$connect The connection manager
     */
-    protected function __construct(&$system, $data="", &$connect = null)
+    public function __construct(&$system, $data="", &$connect = null)
     {
         parent::__construct($system, $data, $connect);
         $this->create();

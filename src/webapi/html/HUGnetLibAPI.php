@@ -32,7 +32,7 @@
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
-require_once "HUGnetLib/ui/WebAPI.php";
+require_once "HUGnetLib/ui/WebAPI2.php";
 require_once "HUGnetLib/ui/WebAPIArgs.php";
 
 $args = \HUGnet\ui\WebAPIArgs::factory(
@@ -44,6 +44,6 @@ $args = \HUGnet\ui\WebAPIArgs::factory(
 $args->addLocation("/usr/share/HUGnet/config.ini");
 
 $system = null;
-$api = \HUGnet\ui\WebAPI::factory($args, $system, false);
+$api = \HUGnet\ui\WebAPI2::factory($args, $system, false);
 $api->execute((array)$_REQUEST);
 

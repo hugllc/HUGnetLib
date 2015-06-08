@@ -56,6 +56,7 @@ var DevicePropertiesView = Backbone.View.extend({
     },
     initialize: function (options)
     {
+        _.bindAll(this, "saveSuccess", "saveFail");
         this.model.lock = true;
         this.datachannelsmodel = new HUGnet.DeviceDataChannels();
         var datachannels = this.model.get('dataChannels');
@@ -117,8 +118,6 @@ var DevicePropertiesView = Backbone.View.extend({
             },
             this
         );
-        this.model.on('savefail', this.saveFail, this);
-        this.model.on('saved', this.saveSuccess, this);
 
     },
     inputList: function ()
@@ -198,17 +197,19 @@ var DevicePropertiesView = Backbone.View.extend({
                 params[sel] = self.$('.params_'+sel).val();
             }
         );
-        this.model.set({
-            DeviceName: this.$(".DeviceName").val(),
-            DeviceLocation: this.$(".DeviceLocation").val(),
-            DeviceJob: this.$(".DeviceJob").val(),
-            PollInterval: this.$(".PollInterval").val(),
-            Role: this.$(".Role").val(),
-            Active: (this.$(".Active")) ? this.$(".Active").val() : 1,
-            Publish: (this.$(".Publish")) ? this.$(".Publish").val() : 1,
-            setparams: params
-        });
-        this.model.save();
+        this.model.save({
+                DeviceName: this.$(".DeviceName").val(),
+                DeviceLocation: this.$(".DeviceLocation").val(),
+                DeviceJob: this.$(".DeviceJob").val(),
+                PollInterval: this.$(".PollInterval").val(),
+                Role: this.$(".Role").val(),
+                Active: (this.$(".Active")) ? this.$(".Active").val() : 1,
+                Publish: (this.$(".Publish")) ? this.$(".Publish").val() : 1,
+                setparams: params
+            },
+            {
+                "success" : self.saveSuccess, "error": self.saveFail
+            });
         this.setTitle();
     },
     saveInput: function (e)
@@ -224,9 +225,7 @@ var DevicePropertiesView = Backbone.View.extend({
     {
         this.setTitle("");
         if (this._close) {
-            this.model.off('change', this.render, this);
-            this.model.off('savefail', this.saveFail, this);
-            this.model.off('saved', this.saveSuccess, this);
+            this.model.off('change', self.render, this);
             this.model.lock = false;
             this.remove();
         }
@@ -348,13 +347,13 @@ var DeviceEntryView = Backbone.View.extend({
         if (action === 'refresh') {
             this.refresh(e);
         } else if (action === 'properties') {
-            this.model.refresh();
+            this.model.fetch();
             this.properties(e);
         } else if (action === 'configview') {
-            this.model.refresh();
+            this.model.fetch();
             this.configview(e);
         } else if (action === 'configsetview') {
-            this.model.refresh();
+            this.model.fetch();
             this.configsetview(e);
         } else if (action === 'loadfirmware') {
             this.loadfirmware(e);
@@ -598,7 +597,7 @@ HUGnet.DevicesView = Backbone.View.extend({
         var self = this;
         var ret = $.ajax({
             type: 'GET',
-            url: this.url,
+            url: this.url(),
             dataType: 'json',
             cache: false,
             data:

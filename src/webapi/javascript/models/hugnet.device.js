@@ -41,7 +41,7 @@
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 HUGnet.Device = Backbone.Model.extend({
-    idAttribute: 'id',
+    idAttribute: 'DeviceID',
     defaults:
     {
         id: 0,
@@ -100,37 +100,6 @@ HUGnet.Device = Backbone.Model.extend({
     {
     },
     /**
-    * Gets infomration about a device.  This is retrieved from the database only.
-    *
-    * @param id The id of the device to get
-    *
-    * @return null
-    */
-    fetch: function()
-    {
-        var id = this.get('id');
-        if ((id !== 0) && !this.lock) {
-            var myself = this;
-            $.ajax({
-                type: 'GET',
-                url: this.url(),
-                cache: false,
-                dataType: 'json',
-                data:
-                {
-                    "task": "device",
-                    "action": "get",
-                    "id": id.toString(16)
-                }
-            }).done(
-                function (data)
-                {
-                    myself.set(data);
-                }
-            );
-        }
-    },
-    /**
     * Sets the data to be sent back to the server
     *
     * @return JSON string
@@ -141,94 +110,6 @@ HUGnet.Device = Backbone.Model.extend({
         data.params = this.get("setparams");
 
         return data;
-    },
-    /**
-    * Gets infomration about a device.  This is retrieved from the database only.
-    *
-    * @param id The id of the device to get
-    *
-    * @return null
-    */
-    refresh: function()
-    {
-        var id = this.get('id');
-        if ((id !== 0) && !this.lock) {
-            var self = this;
-            $.ajax({
-                type: 'GET',
-                url: this.url(),
-                dataType: 'json',
-                cache: false,
-                data:
-                {
-                    "task": "device",
-                    "action": "get",
-                    "id": id.toString(16),
-                }
-            }).done(
-                function (data)
-                {
-                    if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
-                        self.set(data);
-                        self.set("setparams", {});
-                        self.trigger('fetchdone', self);
-                        self.trigger('sync', self);
-                        self.trigger('refresh', self);
-                    } else {
-                        self.trigger('refreshfail', "saved failed on server");
-                    }
-                }
-            ).fail(
-                function ()
-                {
-                    self.trigger('refreshfail', "failed to contact server");
-                }
-            );
-        }
-    },
-    /**
-    * Gets infomration about a device.  This is retrieved from the database only.
-    *
-    * @param id The id of the device to get
-    *
-    * @return null
-    */
-    save: function()
-    {
-        var id = this.get('id');
-        if (id !== 0) {
-            var self = this;
-            $.ajax({
-                type: 'POST',
-                url: this.url(),
-                dataType: 'json',
-                cache: false,
-                data:
-                {
-                    "task": "device",
-                    "action": "put",
-                    "id": id.toString(16),
-                    "data": self.saveData()
-                }
-            }).done(
-                function (data)
-                {
-                    if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
-                        self.set(data);
-                        self.trigger('saved');
-                        self.trigger('fetchdone');
-                        self.trigger('sync', self);
-                    } else {
-                        self.trigger('savefail', "saved failed on server");
-                    }
-                }
-            ).fail(
-                function ()
-                {
-                    self.trigger('savefail', "failed to contact server");
-                }
-            );
-        }
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -437,7 +318,7 @@ HUGnet.Device = Backbone.Model.extend({
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 HUGnet.Devices = Backbone.Collection.extend({
-    url: '/HUGnetLib/HUGnetLibAPI.php',
+    url: '/HUGnetLib/HUGnetLibAPI.php/device',
     model: HUGnet.Device,
     refresh: 300,
     start: 0,
@@ -485,51 +366,10 @@ HUGnet.Devices = Backbone.Collection.extend({
             (this.refresh * 1000)
         );
     },
-    /**
-    * Gets information about a device.  This is retrieved directly from the device
-    *
-    * This function is for use of the device list
-    *
-    * @param id The id of the device to get
-    *
-    * @return null
-    */
-    fetch: function (filter)
-    {
-        var self = this;
-        if (typeof filter != "object") {
-            var filter = {};
-        }
-        filter.limit = self.limit;
-        filter.start = self.start;
-        var ret = $.ajax({
-            type: 'GET',
-            url: this.url,
-            dataType: 'json',
-            cache: false,
-            data: {
-                "task": "device", 
-                "action": "list", 
-                "data": filter
-            }
-        });
-        ret.done(
-            function (data)
-            {
-                self.add(data);
-                if (data.length < self.limit) {
-                    self.start = 0;
-                } else {
-                    self.start += data.length;
-                    self.fetch(filter);
-                }
-            }
-        );
-    },
     update: function (model, collection, options)
     {
         if (typeof model == "object") {
-            model.refresh();
+            model.fetch();
         }
     }
 });

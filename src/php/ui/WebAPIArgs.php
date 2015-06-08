@@ -143,6 +143,9 @@ class WebAPIArgs extends HTMLArgs
                 }
             }
         }
+        if ($this->arguments["method"] == "PUT") {
+            $this->arguments["data"] = json_decode(file_get_contents("php://input"), true);
+        }
         $this->arguments["restextra"] = $args;
     }
 
