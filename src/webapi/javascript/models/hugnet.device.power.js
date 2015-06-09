@@ -74,90 +74,6 @@ HUGnet.DevicePower = Backbone.Model.extend({
     *
     * @return null
     */
-    fetch: function()
-    {
-        var dev = this.get('dev');
-        var self = this;
-        $.ajax({
-            type: 'GET',
-            url: this.url(),
-            cache: false,
-            dataType: 'json',
-            data:
-            {
-                "task": "devicepower",
-                "action": "get",
-                "id": parseInt(dev, 10).toString(16)+"."+this.get("power"),
-                "sid": this.get("power")
-            }
-        }).done(
-            function (data)
-            {
-                if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
-                    self.set(data);
-                    self.trigger('fetchdone');
-                    self.trigger('sync');
-                } else {
-                    self.trigger('fetchfail');
-                }
-            }
-        ).fail(
-            function (data)
-            {
-                self.trigger('fetchfail');
-            }
-        );
-    },
-    /**
-    * Gets infomration about a device.  This is retrieved from the database only.
-    *
-    * @param id The id of the device to get
-    *
-    * @return null
-    */
-    save: function()
-    {
-        var self = this;
-        var dev = this.get('dev');
-        var data = this.toJSON();
-        delete data.url;
-        $.ajax({
-            type: 'POST',
-            url: this.url(),
-            cache: false,
-            dataType: 'json',
-            data: {
-                "task": "devicepower",
-                "action": "put",
-                "id": parseInt(dev, 10).toString(16)+"."+this.get("power"),
-                "data": data
-            }
-        }).done(
-            function (data)
-            {
-                if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
-                    self.trigger('saved');
-                    self.set(data);
-                    self.trigger('fetchdone');
-                    self.trigger('sync');
-                } else {
-                    self.trigger('savefail', "save failed on server");
-                }
-            }
-        ).fail(
-            function ()
-            {
-                self.trigger('savefail', "failed to contact server");
-            }
-        );
-    },
-    /**
-    * Gets infomration about a device.  This is retrieved from the database only.
-    *
-    * @param id The id of the device to get
-    *
-    * @return null
-    */
     settable: function(table)
     {
         var self = this;
@@ -207,22 +123,21 @@ HUGnet.DevicePower = Backbone.Model.extend({
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 HUGnet.DevicePowers = Backbone.Collection.extend({
+    urlPart: '/power',
     url: '/HUGnetLib/HUGnetLibAPI.php',
     model: HUGnet.DevicePower,
+    initialize: function (options)
+    {
+        if (options) {
+            if (options.baseurl) this.baseurl = options.baseurl;
+        }
+    },
+    url: function ()
+    {
+        return this.baseurl + this.urlPart;
+    },
     comparator: function (model)
     {
         return parseInt(model.get("power"), 10);
     },
-    /**
-    * Gets infomration about a device.  This is retrieved directly from the device
-    *
-    * This function is for use of the device list
-    *
-    * @param id The id of the device to get
-    *
-    * @return null
-    */
-    fetch: function ()
-    {
-    }
 });

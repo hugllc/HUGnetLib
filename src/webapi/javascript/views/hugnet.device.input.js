@@ -53,6 +53,7 @@ var DeviceInputPropertiesView = Backbone.View.extend({
     },
     initialize: function (options)
     {
+        _.bindAll(this, "saveFail", "saveSuccess");
         this.model.on('change', this.render, this);
         this.model.on('saved', this.saveSuccess, this);
         this.model.on('savefail', this.saveFail, this);
@@ -71,7 +72,6 @@ var DeviceInputPropertiesView = Backbone.View.extend({
     saveFail: function (msg)
     {
         this.setTitle("");
-        //alert("Input Faled: " + msg);
     },
     saveclose: function (e)
     {
@@ -88,8 +88,12 @@ var DeviceInputPropertiesView = Backbone.View.extend({
     {
         this.setTitle( " [ Saving...] " );
         var data = this.$('form').serializeObject();
-        this.model.set(data);
-        this.model.save();
+        this.model.save(
+            data,
+            {
+                "success" : this.saveSuccess, "error": this.saveFail
+            }
+        );
         this.setTitle();
     },
     setTitle: function (extra)

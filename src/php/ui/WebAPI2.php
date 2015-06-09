@@ -58,6 +58,9 @@ require_once dirname(__FILE__)."/../interfaces/WebAPI2.php";
  */
 class WebAPI2 extends HTML
 {
+    const NOT_IMPLEMENTED = 1;
+    const NOT_FOUND = 2;
+    const SAVE_FAILED = 3;
     /** The config we are using */
     private $_config = array();
     /** The arguments we got */
@@ -74,18 +77,18 @@ class WebAPI2 extends HTML
             "methods" => "GET,POST,DELETE",
             "subobjects" => array(
                 "input" => array(
-                    "methods" => "GET,POST,PUT,DELETE",
+                    "methods" => "GET,DELETE",
                 ),
                 "output" => array(
-                    "methods" => "GET,POST,PUT,DELETE",
+                    "methods" => "GET,DELETE",
                 ),
                 "process" => array(
-                    "methods" => "GET,POST,PUT,DELETE",
-                ),
-                "annotation" => array(
-                    "methods" => "GET,POST,PUT,DELETE",
+                    "methods" => "GET,DELETE",
                 ),
                 "power" => array(
+                    "methods" => "GET,DELETE",
+                ),
+                "annotation" => array(
                     "methods" => "GET,POST,PUT,DELETE",
                 ),
                 "history" => array(
@@ -165,6 +168,12 @@ class WebAPI2 extends HTML
         404 => "Not Found",
         501 => "Not Implemented",
     );
+    /** These are our error messages */
+    private $_errorMsg = array(
+        self::NOT_IMPLEMENTED => "This is not implemented at the present time",
+        self::NOT_FOUND       => "The object you requested does not exist",
+        self::SAVE_FAILED     => "Could not save this to the database",
+    );
 
     /**
     * Creates the object
@@ -242,10 +251,12 @@ class WebAPI2 extends HTML
                     if (is_subclass_of($this->_obj, $interface)) {
                         $ret = $this->_obj->webAPI2($this, $extra);
                     } else {
-                        $this->response(403);
+                        $this->response(500);
+                        $ret = $this->error(self::NOT_IMPLEMENTED);
                     }
                 } else if (!$this->_checkMethod()) {
                     $this->response(400);
+                    $ret = $this->error(self::NOT_IMPLEMENTED, "This method is not implemented, or does not work with this object");
                 } else if ($this->_object === "version") {
                     $ret = $this->_executeVersion();
                 } else if ($this->_object === "time") {
@@ -260,6 +271,27 @@ class WebAPI2 extends HTML
             }
             $this->_body($ret);
         }
+    }
+    /**
+    * This returns a json encoded error object
+    *
+    * @param int    $code     The error code
+    * @param string $message  The message to send with it
+    * @param string $moreInfo Where to get more information
+    *
+    * @return bool
+    */
+    public function error($code, $message = null, $moreInfo = "")
+    {
+        if (empty($message) && isset($this->_errorMsg[$code])) {
+            $message = $this->_errorMsg[$code];
+        }
+        error_log("($code) $message"); 
+        return array(
+            "code" => $code,
+            "message" => $message,
+            "moreInfo" => $moreInfo
+        );
     }
     /**
     * This gets the ID of the object
@@ -359,8 +391,11 @@ class WebAPI2 extends HTML
     {
         if (is_string($this->_object) && is_callable(array($this->system(), $this->_object))) {
             $this->_obj = $this->system()->{$this->_object}($this->_id);
+            error_log($this->_object." => ".$this->_id);
             if (is_object($this->_obj) && is_string($this->_subobject) && method_exists($this->_obj, (string)$this->_subobject)) {
                 $this->_obj = $this->_obj->{$this->_subobject}($this->_sid);
+                error_log($this->_subobject." => ".$this->_sid);
+                error_log($this->_obj->isNew());
             }
         }
     }
@@ -463,8 +498,8 @@ class WebAPI2 extends HTML
     {
         $ret = null;
         if ($this->_obj->isNew() && ($this->_method !== "POST")) {
-            $this->response(404);
-            $ret = "";
+//            $this->response(404);
+            $ret = $this->error(self::NOT_FOUND);
         } else if (($this->_method === "GET") && $this->_auth(false)) {
             if (is_null($this->_id) || (is_null($this->_sid) && !empty($this->_subobject))) {
                 $ret = $this->_obj->getList($data, true);
@@ -485,9 +520,11 @@ class WebAPI2 extends HTML
                 $this->response(202);
             } else {
                 $this->response(400);
+                $this->error(self::SAVE_FAILED);
             }
         } else if (($this->_method === "PATCH") && $this->_auth(true)) {
             $this->response(501);
+            $this->error(self::NOT_IMPLEMENTED);
         }
         if (is_null($ret)) {
             $this->_obj->load($this->_obj->id());

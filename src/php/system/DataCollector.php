@@ -176,8 +176,6 @@ class DataCollector extends \HUGnet\base\SystemTableBase
     {
         $method = trim(strtoupper($api->args()->get("method")));
         $object = trim(strtolower($api->args()->get("subobject")));
-        error_log($method);
-        error_log($object);
         $ret = null;
         if ($object === "run") {
             if ($method == "GET") {

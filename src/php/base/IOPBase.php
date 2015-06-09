@@ -58,7 +58,7 @@ require_once dirname(__FILE__)."/../interfaces/WebAPI.php";
  * @since      0.9.7
  */
 abstract class IOPBase extends SystemTableBase
-    implements \HUGnet\interfaces\WebAPI
+    implements \HUGnet\interfaces\WebAPI, \HUGnet\interfaces\WebAPI2
 {
     /** These are our keys to search for.  Null means search everything given */
     protected $keys = array("dev");
@@ -431,6 +431,40 @@ abstract class IOPBase extends SystemTableBase
             $ret = $this->_put($args);
         } else if ($action === "settable") {
             $ret = $this->_settable($args);
+        }
+        return $ret;
+    }
+    /**
+    * returns a history object for this device
+    *
+    * @param object $api   The API object
+    * @param array  $extra Extra data from the
+    *
+    * @return string
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function webAPI2($api, $extra)
+    {
+        $method = trim(strtoupper($api->args()->get("method")));
+        $extra  = $api->args()->get("restextra");
+        $ret = null;
+        if ($method === "PUT") {
+            if (trim(strtolower($extra[0])) == "settable") {
+                $ret = $this->_settable($api->args());
+            } else {
+                $ret = $this->_put($api->args());
+                if ($ret == "regen") {
+                    $api->response(202);
+                } else {
+                    $api->response(401);
+                    $c = get_class($api);
+                    $api->error($c::SAVE_FAILED);
+                }
+            }
+        } else {
+            $api->response(401);
+            $c = get_class($api);
+            $api->error($c::NOT_IMPLEMENTED);
         }
         return $ret;
     }

@@ -78,6 +78,7 @@ class WebAPIArgs extends HTMLArgs
         "method" => array("name" => "method", "type" => "string", 'default' => 'GET'),
         "cuuid" => array("name" => "cuuid", "type" => "string"),
         "data" => array("name" => "data", "type" => "array", "default" => array()),
+        "restextra" => array("name" => "restextra", "type" => "array", "default" => array()),
     );
     /**
     * Creates the object

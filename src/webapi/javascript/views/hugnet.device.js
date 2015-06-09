@@ -118,18 +118,13 @@ var DevicePropertiesView = Backbone.View.extend({
             },
             this
         );
-
+        this.inputsmodel = this.model.input();
+        this.outputsmodel = this.model.output();
+        this.processesmodel = this.model.process();
+        this.powersmodel = this.model.power();
     },
     inputList: function ()
     {
-        this.inputsmodel = new HUGnet.DeviceInputs();
-        var inputs = this.model.get('InputTables');
-        var dev = this.model.get('id');
-        for (var i = 0; i < inputs; i++) {
-            this.inputsmodel.add({dev: dev, input: i});
-        }
-        this.inputsmodel.invoke('fetch');
-
         var view = new HUGnet.DeviceInputsView({ model: this.inputsmodel });
         this.popup(
             view,
@@ -138,14 +133,6 @@ var DevicePropertiesView = Backbone.View.extend({
     },
     outputList: function ()
     {
-        this.outputsmodel = new HUGnet.DeviceOutputs();
-        var outputs = this.model.get('OutputTables');
-        var dev = this.model.get('id');
-        for (var o = 0; o < outputs; o++) {
-            this.outputsmodel.add({dev: dev, output: o});
-        }
-        this.outputsmodel.invoke('fetch');
-
         var view = new HUGnet.DeviceOutputsView({ model: this.outputsmodel });
         this.popup(
             view,
@@ -154,13 +141,6 @@ var DevicePropertiesView = Backbone.View.extend({
     },
     processList: function ()
     {
-        this.processesmodel = new HUGnet.DeviceProcesses();
-        var processes = this.model.get('ProcessTables');
-        var dev = this.model.get('id');
-        for (var p = 0; p < processes; p++) {
-            this.processesmodel.add({dev: dev, process: p});
-        }
-        this.processesmodel.invoke('fetch');
         var view = new HUGnet.DeviceProcessesView({ model: this.processesmodel });
         this.popup(
             view,
@@ -169,13 +149,6 @@ var DevicePropertiesView = Backbone.View.extend({
     },
     powerList: function ()
     {
-        this.powersmodel = new HUGnet.DevicePowers();
-        var powers = this.model.get('PowerTables');
-        var dev = this.model.get('id');
-        for (var p = 0; p < powers; p++) {
-            this.powersmodel.add({dev: dev, power: p});
-        }
-        this.powersmodel.invoke('fetch');
         var view = new HUGnet.DevicePowersView({ model: this.powersmodel });
         this.popup(
             view,
@@ -209,7 +182,8 @@ var DevicePropertiesView = Backbone.View.extend({
             },
             {
                 "success" : self.saveSuccess, "error": self.saveFail
-            });
+            }
+        );
         this.setTitle();
     },
     saveInput: function (e)

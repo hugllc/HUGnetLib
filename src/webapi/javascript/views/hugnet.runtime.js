@@ -53,7 +53,7 @@ HUGnet.RuntimeView = Backbone.View.extend({
     },
     initialize: function (options)
     {
-        _.bindAll(this, "paused", "running");
+        _.bindAll(this, "paused", "running", "_initstatus");
         this.$('.runtests').hide();
         this.$('.stoptests').hide();
         if (options) {
@@ -64,7 +64,7 @@ HUGnet.RuntimeView = Backbone.View.extend({
                 this.datacollectors.on("testpaused", this.paused, this);
             }
         }
-        this.run('status');
+        this._initstatus();
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -84,15 +84,27 @@ HUGnet.RuntimeView = Backbone.View.extend({
         );
         return this;
     },
-    run: function (action)
+    run: function ()
     {
         if (typeof this.datacollectors == "object") {
-            if (action != "status") {
-                this.datacollectors.run("run");
-            } else {
-                this.datacollectors.run("status");
+            this.datacollectors.run("run");
+        }
+    },
+    _initstatus: function ()
+    {
+        if (typeof this.datacollectors == "object") {
+            if (this.status()) {
+                return;
             }
         }
+        setTimeout(this._initstatus, 1000);
+    },
+    status: function ()
+    {
+        if (typeof this.datacollectors == "object") {
+            return this.datacollectors.run("status");
+        }
+        return false;
     },
     running: function ()
     {

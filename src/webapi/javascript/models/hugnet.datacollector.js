@@ -166,7 +166,9 @@ HUGnet.Datacollectors = Backbone.Collection.extend({
         var model = this.at(0);
         if ((typeof model == "object") && (model.get("uuid") != 0)) {
             model.run(action);
+            return true;
         }
+        return false;
     },
     /**
     * Gets infomration about a device.  This is retrieved from the database only.

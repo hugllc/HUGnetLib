@@ -825,7 +825,7 @@ class Device extends \HUGnet\base\SystemTableAction
             $location = $info["location"];
             unset($info["location"]);
         }
-        $iop = $this->driver()->$type($sid, $info);
+        $iop = $this->driver()->$type($sid); //, $info);
         if (!empty($info)) {
             $iop->mix("extra", $extra);
             $iop->mix("location", $location);

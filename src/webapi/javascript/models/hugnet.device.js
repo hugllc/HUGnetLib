@@ -84,11 +84,16 @@ HUGnet.Device = Backbone.Model.extend({
         target: '',
     },
     lock: false,
+    inputCache: null,
+    outputCache: null,
+    processCache: null,
+    powerCache: null,
     /**
     * This function initializes the object
     */
     initialize: function(attrib)
     {
+        _.bindAll(this, "input", "output", "process", "power");
         if (this.get("DeviceID") === '000000') {
             this.set("DeviceID", this.get("id").toString(16));
         }
@@ -98,6 +103,70 @@ HUGnet.Device = Backbone.Model.extend({
     */
     fix: function(attributes)
     {
+    },
+    /**
+    * This returns an input from this device
+    */
+    input: function(id)
+    {
+        if ((this.inputCache == null) || (typeof this.inputCache != 'object')) {
+            this.inputCache = new HUGnet.DeviceInputs({
+                "baseurl": this.url()
+            });
+            this.inputCache.fetch();
+        }
+        if (typeof id !== "undefined") {
+            return this.inputCache.get(id);
+        }
+        return this.inputCache;
+    },
+    /**
+    * This returns an output from this device
+    */
+    output: function(id)
+    {
+        if ((this.outputCache == null) || (typeof this.outputCache != 'object')) {
+            this.outputCache = new HUGnet.DeviceOutputs({
+                "baseurl": this.url()
+            });
+            this.outputCache.fetch();
+        }
+        if (typeof id !== "undefined") {
+            return this.outputCache.get(id);
+        }
+        return this.outputCache;
+    },
+    /**
+    * This returns a process from this device
+    */
+    process: function(id)
+    {
+        if ((this.processCache == null) || (typeof this.processCache != 'object')) {
+            this.processCache = new HUGnet.DeviceProcesses({
+                "baseurl": this.url()
+            });
+            this.processCache.fetch();
+        }
+        if (typeof id !== "undefined") {
+            return this.processCache.get(id);
+        }
+        return this.processCache;
+    },
+    /**
+    * This returns a power from this device
+    */
+    power: function(id)
+    {
+        if ((this.powerCache == null) || (typeof this.powerCache != 'object')) {
+            this.powerCache = new HUGnet.DevicePowers({
+                "baseurl": this.url()
+            });
+            this.powerCache.fetch();
+        }
+        if (typeof id !== "undefined") {
+            return this.powerCache.get(id);
+        }
+        return this.powerCache;
     },
     /**
     * Sets the data to be sent back to the server
