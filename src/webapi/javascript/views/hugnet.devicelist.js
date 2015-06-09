@@ -111,6 +111,7 @@ HUGnet.DeviceListView = Backbone.View.extend({
     template: "#DeviceListViewTemplate",
     templatebase: 'DeviceListView',
     url: '/HUGnetLib/HUGnetLibAPI.php',
+    _template: null,
     readonly: false,
     views: {},
     filter: {Publish: 1},
@@ -151,6 +152,7 @@ HUGnet.DeviceListView = Backbone.View.extend({
         this.GatewayKey = this.filter.GatewayKey;
 //        this.model.each(this.insert, this);
         this.model.on('add', this.insert, this);
+        this._template = _.template($(this.template).html());
 //        this.model.on('sync', this.insert, this);
         //this.model.startRefresh();
     },
@@ -169,16 +171,14 @@ HUGnet.DeviceListView = Backbone.View.extend({
         };
         if (typeof this.gateways == "object") {
             data.gateways = this.gateways.toJSON();
+            console.log(this.gateways);
+            console.log(this.gateways.toJSON());
+            console.log(data.gateways);
         } else {
-            data.gateways = [];
+            data.gateways = {};
         }
         _.extend(data, HUGnet.viewHelpers);
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                data
-            )
-        );
+        this.$el.html(this._template(data));
         this.$('table').tablesorter({
             widgets: ['zebra'],
             widgetOptions: { zebra: [ 'even', 'odd' ] }

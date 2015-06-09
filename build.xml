@@ -160,7 +160,7 @@
             <fileset file="${basedir}/src/webapi/contrib/jquery-ui-1.10.0.custom.min.js"/>
             <fileset file="${basedir}/src/webapi/contrib/jquery-ui-timepicker-addon.js"/>
             <fileset file="${basedir}/src/webapi/contrib/json2.js"/>
-            <fileset file="${basedir}/src/webapi/contrib/underscore-min.js"/>
+            <fileset file="${basedir}/src/webapi/contrib/underscore.js"/>
             <fileset file="${basedir}/src/webapi/contrib/backbone.js"/>
             <fileset file="${basedir}/src/webapi/contrib/flot/jquery.flot.js"/>
             <fileset file="${basedir}/src/webapi/contrib/flot/jquery.flot.navigate.js"/>
