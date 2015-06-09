@@ -69,7 +69,6 @@ HUGnet.DeviceList = Backbone.View.extend({
                 this.DeviceID = options.DeviceID;
             }
         }
-        console.log(options.gateways);
         this.devices = new HUGnet.DeviceListView({
             model: options.devices,
             gateways: options.gateways,
