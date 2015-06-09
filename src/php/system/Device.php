@@ -100,20 +100,6 @@ class Device extends \HUGnet\base\SystemTableAction
     protected $classes = array(
     );
     /**
-    * This function sets up the driver object, and the database object.  The
-    * database object is taken from the driver object.
-    *
-    * @param object &$system The configuration array
-    * @param string $table   The table class to use
-    * @param array  $data    The initial data for this object
-    *
-    * @return null
-    */
-    public function __construct(&$system, $table, $data = array())
-    {
-        parent::__construct($system, $table, $data);
-    }
-    /**
     * This is the destructor
     */
     public function __destruct()

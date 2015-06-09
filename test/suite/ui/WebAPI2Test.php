@@ -171,7 +171,8 @@ class WebAPI2Test extends \PHPUnit_Framework_TestCase
                             ),
                         )
                     )->getMock();
-        $device = $this->getMockBuilder('\HUGnet\Device')
+        $error = $this->getMockBuilder('\HUGnet\Error')
+                    ->setConstructorArgs(array(&$system, "Error"))
                     ->setMethods(array('toArray', 'getList'))
                     ->getMock();
         $table = $this->getMockBuilder('\HUGnet\db\tables\Devices')
@@ -184,15 +185,15 @@ class WebAPI2Test extends \PHPUnit_Framework_TestCase
 
         $system->expects($this->any())
             ->method('device')
-            ->will($this->returnValue($device));
+            ->will($this->returnValue($error));
         $system->expects($this->any())
             ->method('table')
             ->will($this->returnValue($table));
 
-        $device->expects($this->any())
+        $error->expects($this->any())
             ->method('toArray')
             ->will($this->returnValue(array('Real' => 'array')));
-        $device->expects($this->any())
+        $error->expects($this->any())
             ->method('getList')
             ->will($this->returnValue(array('Real' => 'list')));
 
