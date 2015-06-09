@@ -110,6 +110,7 @@ class E00391202 extends \HUGnet\devices\Driver
             "0039-23-01-C" => "0039-23-01-C Relay Driver",
             "0039-23-01-D" => "0039-23-01-D Generic Input",
         ),
+        "configImage" => "00391201.svg",
     );
 
 }

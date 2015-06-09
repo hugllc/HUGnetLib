@@ -82,6 +82,7 @@ class E00391201 extends \HUGnet\devices\Driver
             "0039-23-01-C" => "0039-23-01-C Generic Input",
         ),
         "fixed" => true,
+        "configImage" => "00391201.svg",
     );
 
 }
