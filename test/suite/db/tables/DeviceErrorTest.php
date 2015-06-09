@@ -222,10 +222,11 @@ class DeviceErrorTest extends TableTestBase
                 true,
                 array(
                     array(
-                        "id"     => "92",
-                        "Date"   => "1046397540",
-                        "errno"  => "5",
-                        "extra"  => "",
+                        "id"       => "92",
+                        "Date"     => "1046397540",
+                        "severity" => 'E',
+                        "errno"    => "5",
+                        "extra"    => "",
                     ),
                 ),
             ),
