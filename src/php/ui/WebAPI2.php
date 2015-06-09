@@ -71,23 +71,22 @@ class WebAPI2 extends HTML
     /** The tells what objects we accept */
     private $_targets = array(
         "device" => array(
-            "methods" => "GET,POST,PATCH,DELETE",
-            "idformat" => "hex",
+            "methods" => "GET,POST,DELETE",
             "subobjects" => array(
                 "input" => array(
-                    "methods" => "GET,POST,PUT,PATCH,DELETE",
+                    "methods" => "GET,POST,PUT,DELETE",
                 ),
                 "output" => array(
-                    "methods" => "GET,POST,PUT,PATCH,DELETE",
+                    "methods" => "GET,POST,PUT,DELETE",
                 ),
                 "process" => array(
-                    "methods" => "GET,POST,PUT,PATCH,DELETE",
+                    "methods" => "GET,POST,PUT,DELETE",
                 ),
                 "annotation" => array(
-                    "methods" => "GET,POST,PUT,PATCH,DELETE",
+                    "methods" => "GET,POST,PUT,DELETE",
                 ),
                 "power" => array(
-                    "methods" => "GET,POST,PUT,PATCH,DELETE",
+                    "methods" => "GET,POST,PUT,DELETE",
                 ),
                 "history" => array(
                     "methods" => "GET,POST",
@@ -99,7 +98,7 @@ class WebAPI2 extends HTML
                     "methods" => "GET,POST",
                 ),
                 "error" => array(
-                    "methods" => "GET,POST,PUT,PATCH,DELETE",
+                    "methods" => "GET,POST,PUT,DELETE",
                 ),
                 "config" => array(
                     "methods" => "external",
@@ -107,16 +106,22 @@ class WebAPI2 extends HTML
             ),
         ),
         "datacollector" => array(
-            "methods" => "GET,POST,PUT,PATCH,DELETE",
+            "methods" => "GET,POST,PUT,DELETE",
+        ),
+        "gateway" => array(
+            "methods" => "GET,POST,PUT,DELETE",
+        ),
+        "image" => array(
+            "methods" => "GET,POST,PUT,DELETE",
         ),
         "inputtable" => array(
-            "methods" => "GET,POST,PUT,PATCH,DELETE",
+            "methods" => "GET,POST,PUT,DELETE",
         ),
         "outputtable" => array(
-            "methods" => "GET,POST,PUT,PATCH,DELETE",
+            "methods" => "GET,POST,PUT,DELETE",
         ),
         "processtable" => array(
-            "methods" => "GET,POST,PUT,PATCH,DELETE",
+            "methods" => "GET,POST,PUT,DELETE",
         ),
         "time" => array(
             "methods" => "GET",
@@ -272,9 +277,6 @@ class WebAPI2 extends HTML
             $this->_id = $this->args()->get("id");
             if (!is_null($this->_id)) {
                 $this->_id = trim(strtolower($this->_id));
-                if (isset($this->_targets[$this->_object]["idformat"]) && ($this->_targets[$this->_object]["idformat"] == 'hex')) {
-                    $this->_id = hexdec($this->_id);
-                }
             }
         }
     }

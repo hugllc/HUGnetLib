@@ -404,7 +404,7 @@ HUGnet.ImageConfigView = Backbone.View.extend({
         if (options) {
             if (options.url) this.url = options.url;
         }
-        //this.model.each(this.insert, this);
+        this.model.each(this.insert, this);
         this.model.bind('add', this.insert, this);
         this.model.bind('remove', this.delImage, this);
     },

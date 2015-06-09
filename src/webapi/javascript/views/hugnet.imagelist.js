@@ -121,6 +121,7 @@ HUGnet.ImageListView = Backbone.View.extend({
     },
     initialize: function (options)
     {
+        _.bindAll(this, "insert");
         if (options) {
             if (options.url) {
                 this.url = options.url;

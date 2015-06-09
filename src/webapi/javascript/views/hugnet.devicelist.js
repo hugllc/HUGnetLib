@@ -127,6 +127,7 @@ HUGnet.DeviceListView = Backbone.View.extend({
     },
     initialize: function (options)
     {
+        _.bindAll(this, "insert");
         if (options) {
             if (options.url) {
                 this.url = options.url;
@@ -148,9 +149,9 @@ HUGnet.DeviceListView = Backbone.View.extend({
             }
         }
         this.GatewayKey = this.filter.GatewayKey;
-        this.model.each(this.insert, this);
+//        this.model.each(this.insert, this);
         this.model.on('add', this.insert, this);
-        this.model.on('sync', this.insert, this);
+//        this.model.on('sync', this.insert, this);
         //this.model.startRefresh();
     },
     /**
@@ -190,20 +191,22 @@ HUGnet.DeviceListView = Backbone.View.extend({
     insert: function (model, collection, options)
     {
         var id = model.get("DeviceID");
-        
-        var show = this.checkFilter(model, this.filter);
-        if (show && (this.views[id] == undefined)) {
-            this.views[id] = new DeviceListEntryView({
-                model: model,
-                parent: this,
-                templatebase: this.templatebase
-            });
-            this.$('tbody').append(this.views[id].render().el);
-            this.setView(id, true);
-            this.$('table').trigger('update');
-        } else if ((this.views[id] != undefined) && !show) {
-            // This one has been updated to be filtered out, so hide it
-            this.setView(id, false);
+        // Don't insert anything that doesn't have a DeviceID
+        if ((typeof id != 'undefined') && (id != 0)) {
+            var show = this.checkFilter(model, this.filter);
+            if (show && (this.views[id] == undefined)) {
+                this.views[id] = new DeviceListEntryView({
+                    model: model,
+                    parent: this,
+                    templatebase: this.templatebase
+                });
+                this.$('tbody').append(this.views[id].render().el);
+                this.setView(id, true);
+                this.$('table').trigger('update');
+            } else if ((this.views[id] != undefined) && !show) {
+                // This one has been updated to be filtered out, so hide it
+                this.setView(id, false);
+            }
         }
     },
     update: function()

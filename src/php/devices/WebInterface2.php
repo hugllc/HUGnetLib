@@ -142,6 +142,7 @@ class WebInterface2
     */
     public function WebAPI2($api, $extra)
     {
+    error_log($this->_device->id());
         $args = $api->args();
         $subobject = trim(strtolower($args->get("subobject")));
         $method = trim(strtoupper($args->get("method")));
@@ -311,7 +312,8 @@ class WebInterface2
     private function _config($api)
     {
         $ret = "";
-        if (trim(strtolower($api->args()->get("sid"))) == "w") {
+        $method = trim(strtoupper($api->args()->get("method")));
+        if (($method == "PUT") || ($method == "POST")) {
             if ($this->_device->isNew()) {
                 $api->response(404);
             } else if ($this->_device->action()->loadConfig()) {

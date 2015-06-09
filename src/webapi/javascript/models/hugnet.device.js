@@ -41,7 +41,7 @@
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 HUGnet.Device = Backbone.Model.extend({
-    idAttribute: 'DeviceID',
+    idAttribute: 'id',
     defaults:
     {
         id: 0,
@@ -77,7 +77,7 @@ HUGnet.Device = Backbone.Model.extend({
         input: [],
         output: [],
         process: [],
-        
+        Publish: 1,
         actions: '',
         ViewButtonID: '',
         RefreshButtonID: '',
@@ -120,21 +120,21 @@ HUGnet.Device = Backbone.Model.extend({
     *
     * @return null
     */
-    config: function ()
+    config: function (load)
     {
+        var type = "GET";
+        if (load) {
+            type = "POST";
+        }
         var id = this.get('id');
         if (id !== 0) {
             var self = this;
             $.ajax({
-                type: 'GET',
-                url: this.url(),
+                type: type,
+                url: this.url() + "/config",
                 dataType: 'json',
                 cache: false,
-                data: {
-                    "task": "device",
-                    "action": "config",
-                    "id": id.toString(16)
-                }
+                data: {},
             }).done(
                 function (data)
                 {
@@ -143,49 +143,6 @@ HUGnet.Device = Backbone.Model.extend({
                         self.set(data);
                         self.trigger('configdone');
                         self.trigger('sync', self);
-                    } else {
-                        self.trigger('configfail');
-                    }
-                }
-            ).fail(
-                function (data)
-                {
-                    self.trigger('configfail');
-                }
-            );
-        }
-    },
-    /**
-    * Gets infomration about a device.  This is retrieved directly from the device
-    *
-    * This function is for use of the device list
-    *
-    * @param id The id of the device to get
-    *
-    * @return null
-    */
-    loadconfig: function ()
-    {
-        var id = this.get('id');
-        if (id !== 0) {
-            var self = this;
-            $.ajax({
-                type: 'GET',
-                url: this.url(),
-                dataType: 'json',
-                cache: false,
-                data: {
-                    "task": "device",
-                    "action": "loadconfig",
-                    "id": id.toString(16)
-                }
-            }).done(
-                function (data)
-                {
-                    if (_.isObject(data)) {
-                        self.unset('update');
-                        self.set(data);
-                        self.trigger('configdone');
                     } else {
                         self.trigger('configfail');
                     }
@@ -229,6 +186,7 @@ HUGnet.Device = Backbone.Model.extend({
                         self.unset('update');
                         self.set(data);
                         self.config();
+                        self.trigger('configdone');
                     } else {
                         self.trigger('configfail');
                     }
@@ -318,8 +276,9 @@ HUGnet.Device = Backbone.Model.extend({
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 HUGnet.Devices = Backbone.Collection.extend({
-    url: '/HUGnetLib/HUGnetLibAPI.php/device',
+    urlPart: '/device',
     model: HUGnet.Device,
+    baseurl: '',
     refresh: 300,
     start: 0,
     limit: 20,
@@ -327,9 +286,13 @@ HUGnet.Devices = Backbone.Collection.extend({
     initialize: function (options)
     {
         if (options) {
-            if (options.url) this.url = options.url;
+            if (options.baseurl) this.baseurl = options.baseurl;
         }
         this.on('add', this.update, this);
+    },
+    url: function ()
+    {
+        return this.baseurl + this.urlPart;
     },
     comparator: function (model)
     {

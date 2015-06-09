@@ -66,115 +66,6 @@ HUGnet.Datacollector = Backbone.Model.extend({
     fix: function(attributes)
     {
     },
-    /**
-    * Gets infomration about a device.  This is retrieved from the database only.
-    *
-    * @param id The id of the device to get
-    *
-    * @return null
-    */
-    fetch: function()
-    {
-        var myself = this;
-        $.ajax({
-            type: 'GET',
-            url: this.url(),
-            cache: false,
-            dataType: 'json',
-            data:
-            {
-                "task": "datacollector",
-                "action": "get",
-                "id": this.get("uuid"),
-            }
-        }).done(
-            function (data)
-            {
-                myself.set(data);
-            }
-        );
-    },
-    /**
-    * Gets infomration about a device.  This is retrieved from the database only.
-    *
-    * @param id The id of the device to get
-    *
-    * @return null
-    */
-    refresh: function()
-    {
-        var self = this;
-        $.ajax({
-            type: 'GET',
-            url: this.url(),
-            dataType: 'json',
-            cache: false,
-            data:
-            {
-                "task": "datacollector",
-                "action": "get",
-                "id": this.get("uuid"),
-            }
-        }).done(
-            function (data)
-            {
-                if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
-                    self.trigger('refresh');
-                    self.set(data);
-                    self.trigger('fetchdone');
-                    self.trigger('sync');
-                } else {
-                    self.trigger('refreshfail', "saved failed on server");
-                }
-            }
-        ).fail(
-            function ()
-            {
-                self.trigger('refreshfail', "failed to contact server");
-            }
-        );
-    },
-    /**
-    * Gets infomration about a device.  This is retrieved from the database only.
-    *
-    * @param id The id of the device to get
-    *
-    * @return null
-    */
-    save: function()
-    {
-        var self = this;
-        $.ajax({
-            type: 'POST',
-            url: this.url(),
-            dataType: 'json',
-            cache: false,
-            data:
-            {
-                "task": "datacollector",
-                "action": "put",
-                "id": this.get("id"),
-                "data": self.saveData()
-            }
-        }).done(
-            function (data)
-            {
-                if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
-                    self.trigger('saved');
-                    self.set(data);
-                    self.trigger('fetchdone');
-                    self.trigger('sync');
-                } else {
-                    self.trigger('savefail', "saved failed on server");
-                }
-            }
-        ).fail(
-            function ()
-            {
-                self.trigger('savefail', "failed to contact server");
-            }
-        );
-    }
 });
 
 /**
@@ -190,15 +81,20 @@ HUGnet.Datacollector = Backbone.Model.extend({
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 HUGnet.Datacollectors = Backbone.Collection.extend({
-    url: '/HUGnetLib/HUGnetLibAPI.php',
+    urlPart: '/datacollector',
+    baseurl: '',
     model: HUGnet.Datacollector,
     refresh: 300,
     timer: null,
     initialize: function (options)
     {
         if (options) {
-            if (options.url) this.url = options.url;
+            if (options.baseurl) this.baseurl = options.baseurl;
         }
+    },
+    url: function ()
+    {
+        return this.baseurl + this.urlPart;
     },
     comparator: function (model)
     {
@@ -236,34 +132,6 @@ HUGnet.Datacollectors = Backbone.Collection.extend({
         );
     },
     /**
-    * Gets infomration about a device.  This is retrieved directly from the device
-    *
-    * This function is for use of the device list
-    *
-    * @param id The id of the device to get
-    *
-    * @return null
-    */
-    fetch: function ()
-    {
-        var self = this;
-        var ret = $.ajax({
-            type: 'GET',
-            url: this.url,
-            dataType: 'json',
-            cache: false,
-            data: {
-                "task": "datacollector", "action": "list"
-            }
-        });
-        ret.done(
-            function (data)
-            {
-                self.add(data);
-            }
-        );
-    },
-    /**
     * Gets infomration about a device.  This is retrieved from the database only.
     *
     * @param id The id of the device to get
@@ -275,7 +143,7 @@ HUGnet.Datacollectors = Backbone.Collection.extend({
         this.forEach(
             function (element, index, list)
             {
-                element.refresh();
+                element.fetch();
             }
         );
     }

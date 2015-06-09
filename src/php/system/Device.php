@@ -354,7 +354,7 @@ class Device extends \HUGnet\base\SystemTableAction
     */
     public function webAPI2($args, $extra)
     {
-        return $this->webInterface2()->webAPI($args, $extra);
+        return $this->webInterface2()->webAPI2($args, $extra);
     }
     /**
     * This function creates the system.

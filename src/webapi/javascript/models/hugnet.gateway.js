@@ -63,124 +63,6 @@ HUGnet.Gateway = Backbone.Model.extend({
     fix: function(attributes)
     {
     },
-    /**
-    * Gets infomration about a device.  This is retrieved from the database only.
-    *
-    * @param id The id of the device to get
-    *
-    * @return null
-    */
-    fetch: function()
-    {
-        var id = this.get('id');
-        if ((id !== 0) && !this.lock) {
-            var myself = this;
-            $.ajax({
-                type: 'GET',
-                url: this.url(),
-                cache: false,
-                dataType: 'json',
-                data:
-                {
-                    "task": "gateway",
-                    "action": "get",
-                    "id": id
-                }
-            }).done(
-                function (data)
-                {
-                    myself.set(data);
-                }
-            );
-        }
-    },
-    /**
-    * Gets infomration about a device.  This is retrieved from the database only.
-    *
-    * @param id The id of the device to get
-    *
-    * @return null
-    */
-    refresh: function()
-    {
-        var id = this.get('id');
-        if ((id !== 0) && !this.lock) {
-            var self = this;
-            $.ajax({
-                type: 'GET',
-                url: this.url(),
-                dataType: 'json',
-                cache: false,
-                data:
-                {
-                    "task": "gateway",
-                    "action": "get",
-                    "id": id,
-                }
-            }).done(
-                function (data)
-                {
-                    if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
-                        self.trigger('refresh');
-                        self.set(data);
-                        self.trigger('fetchdone');
-                        self.trigger('sync', self);
-                    } else {
-                        self.trigger('refreshfail', "saved failed on server");
-                    }
-                }
-            ).fail(
-                function ()
-                {
-                    self.trigger('refreshfail', "failed to contact server");
-                }
-            );
-        }
-    },
-    /**
-    * Gets infomration about a device.  This is retrieved from the database only.
-    *
-    * @param id The id of the device to get
-    *
-    * @return null
-    */
-    save: function()
-    {
-        var id = this.get('id');
-        if (id !== 0) {
-            var self = this;
-            $.ajax({
-                type: 'POST',
-                url: this.url(),
-                dataType: 'json',
-                cache: false,
-                data:
-                {
-                    "task": "gateway",
-                    "action": "put",
-                    "id": id,
-                    "data": self.toJSON()
-                }
-            }).done(
-                function (data)
-                {
-                    if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
-                        self.trigger('saved');
-                        self.set(data);
-                        self.trigger('fetchdone');
-                        self.trigger('sync', self);
-                    } else {
-                        self.trigger('savefail', "saved failed on server");
-                    }
-                }
-            ).fail(
-                function ()
-                {
-                    self.trigger('savefail', "failed to contact server");
-                }
-            );
-        }
-    },
 });
 
 /**
@@ -196,7 +78,8 @@ HUGnet.Gateway = Backbone.Model.extend({
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 HUGnet.Gateways = Backbone.Collection.extend({
-    url: '/HUGnetLib/HUGnetLibAPI.php',
+    urlPart: '/gateway',
+    baseurl: '',
     model: HUGnet.Gateway,
     refresh: 300,
     start: 0,
@@ -205,9 +88,13 @@ HUGnet.Gateways = Backbone.Collection.extend({
     initialize: function (options)
     {
         if (options) {
-            if (options.url) this.url = options.url;
+            if (options.baseurl) this.baseurl = options.baseurl;
         }
         this.on('add', this.update, this);
+    },
+    url: function ()
+    {
+        return this.baseurl + this.urlPart;
     },
     comparator: function (model)
     {
@@ -244,49 +131,10 @@ HUGnet.Gateways = Backbone.Collection.extend({
             (this.refresh * 1000)
         );
     },
-    /**
-    * Gets information about a device.  This is retrieved directly from the device
-    *
-    * This function is for use of the device list
-    *
-    * @param id The id of the device to get
-    *
-    * @return null
-    */
-    fetch: function ()
-    {
-        var self = this;
-        var ret = $.ajax({
-            type: 'GET',
-            url: this.url,
-            dataType: 'json',
-            cache: false,
-            data: {
-                "task": "gateway", 
-                "action": "list", 
-                "data": {
-                    "limit": self.limit,
-                    "start": self.start
-                }
-            }
-        });
-        ret.done(
-            function (data)
-            {
-                self.add(data);
-                if (data.length < self.limit) {
-                    self.start = 0;
-                } else {
-                    self.start += data.length;
-                    self.fetch();
-                }
-            }
-        );
-    },
     update: function (model, collection, options)
     {
         if (typeof model == "object") {
-            model.refresh();
+            model.fetch();
         }
     }
 });

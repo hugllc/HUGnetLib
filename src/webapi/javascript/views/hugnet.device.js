@@ -377,7 +377,8 @@ var DeviceEntryView = Backbone.View.extend({
     loadconfig: function (e)
     {
         this._setupProgress("Loading Config in "+this.model.get("DeviceID"));
-        this.model.loadconfig();
+        this.model.on('configdone', this._teardownProgress, this);
+        this.model.config(1);
     },
     loadfirmware: function (e)
     {
