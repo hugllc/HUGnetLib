@@ -42,20 +42,22 @@
 */
 HUGnet.ServerConfig = Backbone.View.extend({
     tabs: undefined,
-    url: "/HUGnetLib/HUGnetLibAPI.php",
+    url: "",
     id: "tabs-serverconfig",
     itables: null,
     initialize: function (options)
     {
         if (options) {
-            if (options.url) {
-                this.url = options.url;
+            if (options.baseurl) {
+                this.url = options.baseurl;
             }
             if (options.id) {
                 this.id = options.id;
             }
         }
-        this.itables = new HUGnet.InputTables();
+        this.itables = new HUGnet.InputTables({
+            'baseurl': this.url
+        });
         this.itables.fetch();
         
         this.devices = new HUGnet.DevicesView({

@@ -357,7 +357,6 @@ HUGnet.Devices = Backbone.Collection.extend({
         if (options) {
             if (options.baseurl) this.baseurl = options.baseurl;
         }
-        this.on('add', this.update, this);
     },
     url: function ()
     {
@@ -384,7 +383,6 @@ HUGnet.Devices = Backbone.Collection.extend({
     _refresh: function ()
     {
         if (this.timer != null) {
-            this.update();
             this._refreshSetTimeout();
         }
     },
@@ -398,10 +396,4 @@ HUGnet.Devices = Backbone.Collection.extend({
             (this.refresh * 1000)
         );
     },
-    update: function (model, collection, options)
-    {
-        if (typeof model == "object") {
-            model.fetch();
-        }
-    }
 });

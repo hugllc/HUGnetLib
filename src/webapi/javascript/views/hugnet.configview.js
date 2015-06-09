@@ -47,9 +47,11 @@ var DeviceConfigImageView = Backbone.View.extend({
     initialize: function (options)
     {
         var img = this.model.get("configImage");
+        console.log(img);
         if (typeof img == "string") {
             this.url = this.urlbase + img;
         }
+        console.log(this.url);
     },
     render: function ()
     {
@@ -309,7 +311,7 @@ var DeviceConfigView = Backbone.View.extend({
     */
     title: function ()
     {
-        return _this._tTemplate(this.modelset.toJSON());
+        return this._tTemplate(this.modelset.toJSON());
     },
 });
 

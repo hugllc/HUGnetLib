@@ -54,6 +54,7 @@ var InputTablePropertiesView = Backbone.View.extend({
         this.model.on('change', this.render, this);
         this.model.on('savefail', this.saveFail, this);
         this._template = _.template($(this.template).html());
+        this._tTemplate = _.template($(this.tTemplate).html());
     },
     save: function (e)
     {

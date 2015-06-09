@@ -107,7 +107,6 @@ HUGnet.DeviceListView = Backbone.View.extend({
     template: "#DeviceListViewTemplate",
     templatebase: 'DeviceListView',
     url: '/HUGnetLib/HUGnetLibAPI.php',
-    _template: null,
     readonly: false,
     views: {},
     filter: {Publish: 1},
@@ -148,9 +147,9 @@ HUGnet.DeviceListView = Backbone.View.extend({
         this.GatewayKey = this.filter.GatewayKey;
 //        this.model.each(this.insert, this);
         this.model.on('add', this.insert, this);
-        this._template = _.template($(this.template).html());
 //        this.model.on('sync', this.insert, this);
         //this.model.startRefresh();
+        this._template = _.template($(this.template).html());
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -161,7 +160,6 @@ HUGnet.DeviceListView = Backbone.View.extend({
     */
     render: function ()
     {
-        //var data = this.model.toJSON();
         var data = {
             GatewayKey: this.GatewayKey
         };

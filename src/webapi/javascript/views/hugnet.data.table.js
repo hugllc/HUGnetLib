@@ -74,8 +74,7 @@ var Row = Backbone.View.extend({
         d.setTime(data.UnixDate);
         data.Date = d.formatHUGnet();
         for (i in this.fields) {
-            out += _.template(
-                $(this.template).html(),
+            out += this._template(
                 { data: data[this.fields[i]], fieldClass: this.classes[i] }
             );
         }
@@ -124,8 +123,7 @@ var Header = Backbone.View.extend({
         var header = "";
         var i;
         for (i in this.header) {
-            header += _.template(
-                $(this.template).html(),
+            header += this._template(
                 { header: this.header[i], classes: this.classes[i] }
             );
         }
@@ -172,7 +170,7 @@ HUGnet.DataTable = Backbone.View.extend({
         });
         this._setup();
         this._dateFormats();
-        this._template = _.template($(this.template).html());
+//        this._template = _.template($(this.template).html());
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
