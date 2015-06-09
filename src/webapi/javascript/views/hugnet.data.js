@@ -151,6 +151,7 @@ HUGnet.DataView = Backbone.View.extend({
         this.setupPlot();
         this.on("update", this.update, this);
         this.annotations.on("remove", this.plot.render, this.plot);
+        this._template = _.template($(this.template).html());
     },
     update: function ()
     {
@@ -408,12 +409,7 @@ HUGnet.DataView = Backbone.View.extend({
         if (data.until == 0) {
             data.csvurl += "&data[limit]="+this.csvlimit;
         }
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                data
-            )
-        );
+        this.$el.html(this._template(data));
         if (this.sinceId == "since") {
             this.sinceId = "since"+this.model.get("id");
             this.untilId = "until"+this.model.get("id");

@@ -55,6 +55,8 @@ var GatewayPropertiesView = Backbone.View.extend({
         this.model.lock = true;
         this.model.on('savefail', this.saveFail, this);
         this.model.on('saved', this.saveSuccess, this);
+        this._template = _.template($(this.template).html());
+        this._tTemplate = _.template($(this.tTemplate).html());
 
     },
     save: function (e)
@@ -112,12 +114,7 @@ var GatewayPropertiesView = Backbone.View.extend({
 
         var data = this.model.toJSON();
         _.extend(data, HUGnet.viewHelpers);
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                data
-            )
-        );
+        this.$el.html(this._template(data));
         return this;
     },
     /**
@@ -131,10 +128,7 @@ var GatewayPropertiesView = Backbone.View.extend({
     */
     title: function ()
     {
-        return _.template(
-            $(this.tTemplate).html(),
-            this.model.toJSON()
-        );
+        return this._tTemplate(this.model.toJSON());
     },
     popup: function (view, title)
     {
@@ -185,6 +179,7 @@ var GatewayEntryView = Backbone.View.extend({
         if (options.url) {
             this.url = options.url;
         }
+        this._template = _.template($(this.template).html());
     },
     action: function (e)
     {
@@ -253,12 +248,8 @@ var GatewayEntryView = Backbone.View.extend({
     render: function ()
     {
         this._teardownProgress();
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                this.model.toJSON()
-            )
-        );
+        var data = this.model.toJSON();
+        this.$el.html(this._template(data));
         this.$el.trigger('update');
         return this;
     }
@@ -292,6 +283,7 @@ HUGnet.GatewaysView = Backbone.View.extend({
     {
         this.model.each(this.insert, this);
         this.model.on('add', this.insert, this);
+        this._template = _.template($(this.template).html());
     },
     _importProgress: function(title)
     {
@@ -364,12 +356,7 @@ HUGnet.GatewaysView = Backbone.View.extend({
     {
         var data = this.model.toJSON();
         data.url = this.url;
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                data
-            )
-        );
+        this.$el.html(this._template(data));
         //this.model.each(this.renderEntry);
         this.$("table").tablesorter({ widgets: ['zebra'] });
         this.$("table").trigger('update');

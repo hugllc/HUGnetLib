@@ -62,6 +62,7 @@ var DeviceListEntryView = Backbone.View.extend({
         this.model.on('change', this.render, this);
         this.model.on('remove', this.remove, this);
         this.parent = options.parent;
+        this._template = _.template($(this.template).html());
     },
     view: function (e)
     {
@@ -84,12 +85,7 @@ var DeviceListEntryView = Backbone.View.extend({
     {
         var data = this.model.toJSON();
         _.extend(data, HUGnet.viewHelpers);
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                data
-            )
-        );
+        this.$el.html(this._template(data));
         this.$el.trigger('update');
         return this;
     }

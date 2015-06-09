@@ -54,6 +54,7 @@ var OutputsViewData = Backbone.View.extend({
     {
         this.model.bind('update', this.render, this);
         this.model.bind('remove', this.remove, this);
+        this._template = _.template($(this.template).html());
     },
     refresh: function (e)
     {
@@ -72,12 +73,7 @@ var OutputsViewData = Backbone.View.extend({
     {
         var data = this.model.toJSON();
         _.extend(data, HUGnet.viewHelpers);
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                data
-            )
-        );
+        this.$el.html(this._template(data));
         return this;
     }
 });
@@ -135,6 +131,7 @@ HUGnet.OutputsView = Backbone.View.extend({
             url: this.url
         });
         //        this.on("update", this.update, this);
+        this._template = _.template($(this.template).html());
     },
     exit: function()
     {
@@ -151,12 +148,7 @@ HUGnet.OutputsView = Backbone.View.extend({
     {
         var data = this.model.toJSON();
         _.extend(data, HUGnet.viewHelpers);
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                data
-            )
-        );
+        this.$el.html(this._template(data));
         this.$("#OutputsViewData").html(this.dataTable.render().el);
         this.$("#OutputsControlChannelsDiv").html(this.controlchannels.render().el);
         return this;

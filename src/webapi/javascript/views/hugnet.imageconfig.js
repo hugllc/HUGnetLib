@@ -73,6 +73,7 @@ var ImageConfigPropertiesView = Backbone.View.extend({
 
         });
         this.image.on("dragend", this._dragmove, this);
+        this._template = _.template($(this.template).html());
     }, 
     _dragmove: function (point, delta, e)
     {
@@ -184,12 +185,7 @@ var ImageConfigPropertiesView = Backbone.View.extend({
         var data = this.model.toJSON();
         data.svg = '<div id="'+id+'">/div>';
         _.extend(data, HUGnet.viewHelpers);
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                data
-            )
-        );
+        this.$el.html(this._template(data));
         this.iframe = $('<iframe>', { name: 'insertImageFrame', id: 'insertImageFrame', content: "text/plain;charset=UTF-8" }).hide();
         this.$el.append(this.iframe);
         this.$("div#"+id).html("");
@@ -215,10 +211,7 @@ var ImageConfigPropertiesView = Backbone.View.extend({
     */
     title: function ()
     {
-        return _.template(
-            $(this.tTemplate).html(),
-            this.model.toJSON()
-        );
+        return this._tTemplate(this.model.toJSON());
     },
     _insertPoint: function ()
     {
@@ -316,6 +309,7 @@ var ImageConfigEntryView = Backbone.View.extend({
         this.model.bind('remove', this.remove, this);
         this.model.bind('configfail', this.refreshFail, this);
         this.parent = options.parent;
+        this._template = _.template($(this.template).html());
     },
     action: function (e)
     {
@@ -369,12 +363,8 @@ var ImageConfigEntryView = Backbone.View.extend({
     render: function ()
     {
         this.$el.removeClass("working");
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                this.model.toJSON()
-            )
-        );
+        var data = this.model.toJSON();
+        this.$el.html(this._template(data));
         this.$el.trigger('update');
         return this;
     }
@@ -407,6 +397,7 @@ HUGnet.ImageConfigView = Backbone.View.extend({
         this.model.each(this.insert, this);
         this.model.bind('add', this.insert, this);
         this.model.bind('remove', this.delImage, this);
+        this._template = _.template($(this.template).html());
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -419,12 +410,7 @@ HUGnet.ImageConfigView = Backbone.View.extend({
     {
         var data = this.model.toJSON();
         
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                data
-            )
-        );
+        this.$el.html(this._template(data));
         //this.model.each(this.renderEntry);
         this.$("table").tablesorter({ widgets: ['zebra'] });
         this.$("table").trigger('update');

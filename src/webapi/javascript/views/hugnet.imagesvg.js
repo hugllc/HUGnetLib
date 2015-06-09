@@ -85,6 +85,7 @@ HUGnet.ImageSVGView = Backbone.View.extend({
         this.$el.attr("id", this.id);
         this.svg = SVG(this.$el[0]);
         this.svg.attr("style", this.style);
+        this._template = _.template($(this.template).html());
     },
     /**
     * This renders the SVG

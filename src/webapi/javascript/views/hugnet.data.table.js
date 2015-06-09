@@ -54,6 +54,7 @@ var Row = Backbone.View.extend({
         this.classes = options.classes;
         this.model.bind('update', this.render, this);
         this.model.bind('remove', this.remove, this);
+        this._template = _.template($(this.template).html());
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -107,6 +108,7 @@ var Header = Backbone.View.extend({
     {
         this.classes = options.classes;
         this.header = options.header;
+        this._template = _.template($(this.template).html());
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -170,6 +172,7 @@ HUGnet.DataTable = Backbone.View.extend({
         });
         this._setup();
         this._dateFormats();
+        this._template = _.template($(this.template).html());
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device

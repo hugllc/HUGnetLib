@@ -192,6 +192,8 @@ var DeviceConfigView = Backbone.View.extend({
         this.devImage = new DeviceConfigImageView({
             model: this.modelset
         });
+        this._template = _.template($(this.template).html());
+        this._tTemplate = _.template($(this.tTemplate).html());
     },
     channelRegen: function (model, collection, view)
     {
@@ -289,12 +291,7 @@ var DeviceConfigView = Backbone.View.extend({
         data.dataChannels = '<div id="DeviceDataChannelsDiv"></div>';
         data.controlChannels = '<div id="DeviceControlChannelsDiv"></div>';
         data.functions = '<div id="DeviceFunctionsDiv"></div>';
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                data
-            )
-        );
+        this.$el.html(this._template(data));
         this.$("#DeviceDataChannelsDiv").html(this.datachannels.render().el);
         this.$("#DeviceControlChannelsDiv").html(this.controlchannels.render().el);
         this.$("#DeviceFunctionsDiv").html(this.functions.render().el);
@@ -312,10 +309,7 @@ var DeviceConfigView = Backbone.View.extend({
     */
     title: function ()
     {
-        return _.template(
-            $(this.tTemplate).html(),
-            this.modelset.toJSON()
-        );
+        return _this._tTemplate(this.modelset.toJSON());
     },
 });
 

@@ -53,6 +53,7 @@ var PowersListEntryView = Backbone.View.extend({
         this.model.bind('change', this.render, this);
         this.model.bind('remove', this.remove, this);
         this.parent = options.parent;
+        this._template = _.template($(this.template).html());
     },
     view: function (e)
     {
@@ -71,12 +72,7 @@ var PowersListEntryView = Backbone.View.extend({
     {
         var data = this.model.toJSON();
         _.extend(data, HUGnet.viewHelpers);
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                data
-            )
-        );
+        this.$el.html(this._template(data));
         this.$el.trigger('update');
         return this;
     }
@@ -127,6 +123,7 @@ HUGnet.PowersListView = HUGnet.DeviceListView.extend({
         this.model.each(this.insert, this);
         this.model.on('add', this.insert, this);
         this.model.on('sync', this.insert, this);
+        this._template = _.template($(this.template).html());
     },
     saveFail: function (msg)
     {

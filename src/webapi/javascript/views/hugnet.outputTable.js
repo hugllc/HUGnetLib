@@ -51,6 +51,7 @@ var OutputTablePropertiesView = Backbone.View.extend({
     {
         this.model.on('savefail', this.saveFail, this);
         this.model.on('saved', this.saveSuccess, this);
+        this._template = _.template($(this.template).html());
     },
     save: function (e)
     {
@@ -101,12 +102,7 @@ var OutputTablePropertiesView = Backbone.View.extend({
 
         var data = this.model.toJSON();
         _.extend(data, HUGnet.viewHelpers);
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                data
-            )
-        );
+        this.$el.html(this._template(data));
         return this;
     },
     /**
@@ -120,10 +116,7 @@ var OutputTablePropertiesView = Backbone.View.extend({
     */
     title: function ()
     {
-        return _.template(
-            $(this.tTemplate).html(),
-            this.model.toJSON()
-        );
+        return this._tTemplate(this.model.toJSON());
     },
 });
 
@@ -155,6 +148,7 @@ var OutputTableEntryView = Backbone.View.extend({
         this.model.bind('remove', this.remove, this);
         this.model.bind('configfail', this.refreshFail, this);
         this.parent = options.parent;
+        this._template = _.template($(this.template).html());
     },
     action: function (e)
     {
@@ -208,12 +202,8 @@ var OutputTableEntryView = Backbone.View.extend({
     render: function ()
     {
         this.$el.removeClass("working");
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                this.model.toJSON()
-            )
-        );
+        var data = this.model.toJSON();
+        this.$el.html(this._template(data));
         this.$el.trigger('update');
         return this;
     }
@@ -244,6 +234,7 @@ HUGnet.OutputTablesView = Backbone.View.extend({
         }
         this.model.each(this.insert, this);
         this.model.bind('add', this.insert, this);
+        this._template = _.template($(this.template).html());
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -254,12 +245,8 @@ HUGnet.OutputTablesView = Backbone.View.extend({
     */
     render: function ()
     {
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                this.model.toJSON()
-            )
-        );
+        var data = this.model.toJSON();
+        this.$el.html(this._template(data));
         //this.model.each(this.renderEntry);
         this.$("table").tablesorter({ widgets: ['zebra'] });
         this.$("table").trigger('update');

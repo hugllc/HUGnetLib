@@ -65,6 +65,7 @@ HUGnet.RuntimeView = Backbone.View.extend({
             }
         }
         this._initstatus();
+        this._template = _.template($(this.template).html());
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -76,12 +77,7 @@ HUGnet.RuntimeView = Backbone.View.extend({
     render: function ()
     {
         var data = {}; //this.model.toJSON();
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                data
-            )
-        );
+        this.$el.html(this._template(data));
         return this;
     },
     run: function ()

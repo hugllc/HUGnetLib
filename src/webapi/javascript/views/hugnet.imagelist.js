@@ -62,6 +62,7 @@ var ImageListEntryView = Backbone.View.extend({
         this.model.on('change', this.render, this);
         this.model.on('remove', this.remove, this);
         this.parent = options.parent;
+        this._template = _.template($(this.template).html());
     },
     view: function (e)
     {
@@ -84,12 +85,7 @@ var ImageListEntryView = Backbone.View.extend({
     {
         var data = this.model.toJSON();
         _.extend(data, HUGnet.viewHelpers);
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                data
-            )
-        );
+        this.$el.html(this._template(data));
         this.$el.trigger('update');
         return this;
     }
@@ -132,6 +128,7 @@ HUGnet.ImageListView = Backbone.View.extend({
         }
         this.model.on('add', this.insert, this);
         this.model.on('change:publish', this.showhide, this);
+        this._template = _.template($(this.template).html());
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -144,12 +141,7 @@ HUGnet.ImageListView = Backbone.View.extend({
     {
         var data = this.model.toJSON();
         _.extend(data, HUGnet.viewHelpers);
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                data
-            )
-        );
+        this.$el.html(this._template(data));
         this.$('table').tablesorter({
             widgets: ['zebra'],
             widgetOptions: { zebra: [ 'even', 'odd' ] }

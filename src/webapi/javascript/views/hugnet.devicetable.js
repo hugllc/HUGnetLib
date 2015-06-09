@@ -62,6 +62,7 @@ var DeviceTableEntryView = Backbone.View.extend({
         this.model.on('change', this.render, this);
         this.model.on('remove', this.remove, this);
         this.parent = options.parent;
+        this._template = _.template($(this.template).html());
     },
     view: function (e)
     {
@@ -84,12 +85,7 @@ var DeviceTableEntryView = Backbone.View.extend({
     {
         var data = this.model.toJSON();
         _.extend(data, HUGnet.viewHelpers);
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                data
-            )
-        );
+        this.$el.html(this._template(data));
         this.$el.trigger('update');
         return this;
     }
@@ -143,6 +139,7 @@ HUGnet.DeviceTableView = Backbone.View.extend({
         this.on('view', this.view, this);
         this.on('export', this.export, this);
         //this.model.startRefresh();
+        this._template = _.template($(this.template).html());
     },
     view: function (model)
     {
@@ -164,12 +161,7 @@ HUGnet.DeviceTableView = Backbone.View.extend({
         this.$el.addClass("tablesorter");
         var data = this.model.toJSON();
         _.extend(data, HUGnet.viewHelpers);
-        this.$el.prepend(
-            _.template(
-                $(this.header).html(),
-                data
-            )
-        );
+        this.$el.prepend(this._template(data));
         this.$el.tablesorter({
             widgets: ['zebra'],
             widgetOptions: { zebra: [ 'even', 'odd' ] }

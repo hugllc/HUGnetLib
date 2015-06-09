@@ -54,6 +54,7 @@ var GatewayListEntryView = Backbone.View.extend({
         this.model.bind('change', this.render, this);
         this.model.bind('remove', this.remove, this);
         this.parent = options.parent;
+        this._template = _.template($(this.template).html());
     },
     view: function (e)
     {
@@ -76,12 +77,7 @@ var GatewayListEntryView = Backbone.View.extend({
     {
         var data = this.model.toJSON();
         _.extend(data, HUGnet.viewHelpers);
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                data
-            )
-        );
+        this.$el.html(this._template(data));
         this.$el.trigger('update');
         return this;
     }
@@ -120,6 +116,7 @@ HUGnet.GatewayList = Backbone.View.extend({
         this.model.bind('add', this.insert, this);
         this.model.bind('savefail', this.saveFail, this);
         this.model.startRefresh();
+        this._template = _.template($(this.template).html());
     },
     saveFail: function (msg)
     {
@@ -136,12 +133,7 @@ HUGnet.GatewayList = Backbone.View.extend({
     {
         var data = this.model.toJSON();
         _.extend(data, HUGnet.viewHelpers);
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                data
-            )
-        );
+        this.$el.html(this._template(data));
         this.$('.tablesorter').tablesorter({ widgets: ['zebra'] });
         this.$el.trigger('update');
         return this;

@@ -122,6 +122,7 @@ var DevicePropertiesView = Backbone.View.extend({
         this.outputsmodel = this.model.output();
         this.processesmodel = this.model.process();
         this.powersmodel = this.model.power();
+        this._template = _.template($(this.template).html());
     },
     inputList: function ()
     {
@@ -224,12 +225,7 @@ var DevicePropertiesView = Backbone.View.extend({
         _.extend(data, HUGnet.viewHelpers);
         data.dataChannels = '<div id="DeviceDataChannelsDiv"></div>';
         data.controlChannels = '<div id="DeviceControlChannelsDiv"></div>';
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                data
-            )
-        );
+        this.$el.html(this._template(data));
         if (this.model.get("PowerTables") == 0) {
             this.$(".powerList").hide();
         }
@@ -312,6 +308,7 @@ var DeviceEntryView = Backbone.View.extend({
         if (options.url) {
             this.url = options.url;
         }
+        this._template = _.template($(this.template).html());
     },
     action: function (e)
     {
@@ -420,12 +417,8 @@ var DeviceEntryView = Backbone.View.extend({
     render: function ()
     {
         this._teardownProgress();
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                this.model.toJSON()
-            )
-        );
+        var data = this.model.toJSON();
+        this.$el.html(this._template(data));
         this.$el.trigger('update');
         return this;
     }
@@ -460,6 +453,7 @@ HUGnet.DevicesView = Backbone.View.extend({
     {
         this.model.each(this.insert, this);
         this.model.on('add', this.insert, this);
+        this._template = _.template($(this.template).html());
     },
     _importProgress: function(title)
     {
@@ -532,12 +526,7 @@ HUGnet.DevicesView = Backbone.View.extend({
     {
         var data = this.model.toJSON();
         data.url = this.url;
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                data
-            )
-        );
+        this.$el.html(this._template(data));
         //this.model.each(this.renderEntry);
         this.$("table").tablesorter({ widgets: ['zebra'] });
         this.$("table").trigger('update');

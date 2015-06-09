@@ -56,6 +56,7 @@ var DeviceControlChannelEntryView = Backbone.View.extend({
         this.model.bind('change', this.render, this);
         this.model.bind('remove', this.remove, this);
         this.parent = options.parent;
+        this._template = _.template($(this.template).html());
     },
     changeLabel: function ()
     {
@@ -77,12 +78,7 @@ var DeviceControlChannelEntryView = Backbone.View.extend({
             data.port = " - ";
         }
         _.extend(data, HUGnet.viewHelpers);
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                data
-            )
-        );
+        this.$el.html(this._template(data));
         return this;
     }
 });
@@ -115,6 +111,7 @@ HUGnet.DeviceControlChannelsView = Backbone.View.extend({
             this.rowTemplate = options.rowTemplate;
         }
         //this.model.bind('add', this.insert, this);
+        this._template = _.template($(this.template).html());
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -127,12 +124,7 @@ HUGnet.DeviceControlChannelsView = Backbone.View.extend({
     {
         var data = this.model.toJSON();
         _.extend(data, HUGnet.viewHelpers);
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                data
-            )
-        );
+        this.$el.html(this._template(data));
         /* insert all of the models */
         this.model.each(this.insert, this);
         this.$("tr").removeClass("odd").removeClass("even");

@@ -82,6 +82,7 @@ HUGnet.ImageView = Backbone.View.extend({
             id: "displayimg-"+this.model.get("name"),
         });
         this.getLatest();
+        this._template = _.template($(this.template).html());
     },
     update: function ()
     {
@@ -204,12 +205,7 @@ HUGnet.ImageView = Backbone.View.extend({
         data.svg = '<div id="'+id+'">/div>';
         data.imgurl  = this._setURL();
 
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                data
-            )
-        );
+        this.$el.html(this._template(data));
         if (this.beforeId == "before") {
             this.beforeId = "before"+this.model.get("id");
             this.$("#before").attr("id", this.beforeId);

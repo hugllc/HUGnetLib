@@ -58,6 +58,8 @@ var DeviceInputPropertiesView = Backbone.View.extend({
         this.model.on('saved', this.saveSuccess, this);
         this.model.on('savefail', this.saveFail, this);
         this.model.on('sync', this.render, this);
+        this._template = _.template($(this.template).html());
+        this._tTemplate = _.template($(this.tTemplate).html());
     },
     saveSuccess: function (e)
     {
@@ -117,12 +119,7 @@ var DeviceInputPropertiesView = Backbone.View.extend({
         var data = this.model.toJSON();
         _.extend(data, HUGnet.viewHelpers);
         var i;
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                data
-            )
-        );
+        this.$el.html(this._template(data));
         return this;
     },
     /**
@@ -136,10 +133,8 @@ var DeviceInputPropertiesView = Backbone.View.extend({
     */
     title: function ()
     {
-        return _.template(
-            $(this.tTemplate).html(),
-            this.model.toJSON()
-        );
+        var data = this.model.toJSON();
+        return this._tTemplate(data);
     }
 });
 
@@ -168,6 +163,7 @@ var DeviceInputEntryView = Backbone.View.extend({
         this.model.bind('change', this.render, this);
         this.model.bind('remove', this.remove, this);
         this.parent = options.parent;
+        this._template = _.template($(this.template).html());
     },
     properties: function (e)
     {
@@ -185,12 +181,8 @@ var DeviceInputEntryView = Backbone.View.extend({
     */
     render: function ()
     {
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                this.model.toJSON()
-            )
-        );
+        var data = this.model.toJSON();
+        this.$el.html(this._template(data));
         return this;
     }
 });
@@ -216,6 +208,7 @@ HUGnet.DeviceInputsView = Backbone.View.extend({
     initialize: function (options)
     {
         //this.model.bind('add', this.insert, this);
+        this._template = _.template($(this.template).html());
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -226,12 +219,8 @@ HUGnet.DeviceInputsView = Backbone.View.extend({
     */
     render: function ()
     {
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                this.model.toJSON()
-            )
-        );
+        var data = this.model.toJSON();
+        this.$el.html(this._template(data));
         /* insert all of the models */
         this.model.each(this.insert, this);
         this.$("tr").removeClass("odd").removeClass("even");

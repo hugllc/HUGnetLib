@@ -64,6 +64,7 @@ HUGnet.ExportView = Backbone.View.extend({
         this.url = options.url;
         // Default to 30 minutes
         this.minute30();
+        this._template = _.template($(this.template).html());
     },
     minute30: function ()
     {
@@ -148,12 +149,7 @@ HUGnet.ExportView = Backbone.View.extend({
         data.order     = this.order;
         var d = new Date;
         d.setTime(data.until);
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                data
-            )
-        );
+        this.$el.html(this._template(data));
         this.$('#since').datetimepicker();
         this.$('#until').datetimepicker();
         this.iframe = $('<iframe>', { id:'exportCSV' }).hide();
