@@ -273,7 +273,7 @@ abstract class DriverTestBase extends \HUGnet\devices\IOPDriverTestBase
         $sen = new \HUGnet\DummyBase("Sensor");
         $sen->resetMock($sensor);
         $ret = $this->o->decodeDataPoint($A, $channel, $deltaT, $prev, $data);
-        $this->assertEquals($expect, $ret, 0.00001);
+        $this->assertEquals($expect, $ret, "", 0.00001);
     }
     /**
     * DecodeData MUST return a value

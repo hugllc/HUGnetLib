@@ -113,7 +113,7 @@ class XMegaCurrentTest extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                7629.4
+                7.5999999
             ),
             array(
                 array(
@@ -164,7 +164,7 @@ class XMegaCurrentTest extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                15869.1
+                15.9
             ),
         );
     }
