@@ -59,6 +59,7 @@ HUGnet.Config = Backbone.View.extend({
             url: this.url
         });
         this.runtime = new HUGnet.RuntimeView({
+            datacollectors: options.datacollectors,
             url: this.url
         });
         this.imageConfig = new HUGnet.ImageConfigView({
@@ -95,7 +96,7 @@ HUGnet.Config = Backbone.View.extend({
         this.tabs.append('<div id="'+this.id+'-imageConfig"></div>');
         $('#'+this.id+'-imageConfig').html(this.imageConfig.render().el);
         
-         this.tabs.tabs("refresh");
+        this.tabs.tabs("refresh");
         this.tabs.tabs("option", "active", 0);
     }
 });

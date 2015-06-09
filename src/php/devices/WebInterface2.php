@@ -142,7 +142,6 @@ class WebInterface2
     */
     public function WebAPI2($api, $extra)
     {
-    error_log($this->_device->id());
         $args = $api->args();
         $subobject = trim(strtolower($args->get("subobject")));
         $method = trim(strtoupper($args->get("method")));

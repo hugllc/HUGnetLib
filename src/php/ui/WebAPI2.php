@@ -107,6 +107,14 @@ class WebAPI2 extends HTML
         ),
         "datacollector" => array(
             "methods" => "GET,POST,PUT,DELETE",
+            "subobjects" => array(
+                "run" => array(
+                    "methods" => "external",
+                ),
+                "checkin" => array(
+                    "methods" => "external",
+                ),
+            ),
         ),
         "gateway" => array(
             "methods" => "GET,POST,PUT,DELETE",

@@ -40,6 +40,8 @@ defined('_HUGNET') or die('HUGnetSystem not found');
 require_once dirname(__FILE__)."/../base/SystemTableBase.php";
 /** This is our webapi interface */
 require_once dirname(__FILE__)."/../interfaces/WebAPI.php";
+/** This is our webapi interface */
+require_once dirname(__FILE__)."/../interfaces/WebAPI2.php";
 /** This is our system interface */
 require_once dirname(__FILE__)."/../interfaces/SystemInterface.php";
 
@@ -60,7 +62,8 @@ require_once dirname(__FILE__)."/../interfaces/SystemInterface.php";
  * @since      0.9.7
  */
 class DataCollector extends \HUGnet\base\SystemTableBase
-    implements \HUGnet\interfaces\WebAPI, \HUGnet\interfaces\SystemInterface
+    implements \HUGnet\interfaces\WebAPI, \HUGnet\interfaces\SystemInterface,
+               \HUGnet\interfaces\WebAPI2
 {
     /** @var int The database table class to use */
     protected $tableClass = "Datacollectors";
@@ -157,6 +160,35 @@ class DataCollector extends \HUGnet\base\SystemTableBase
             $ret = $this->_status();
         } else if ($action === "checkin") {
             $ret = $this->_checkin($args);
+        }
+        return $ret;
+    }
+    /**
+    * returns a history object for this device
+    *
+    * @param object $api   The api object
+    * @param array  $extra Extra data from the
+    *
+    * @return string
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function webAPI2($api, $extra)
+    {
+        $method = trim(strtoupper($api->args()->get("method")));
+        $object = trim(strtolower($api->args()->get("subobject")));
+        error_log($method);
+        error_log($object);
+        $ret = null;
+        if ($object === "run") {
+            if ($method == "GET") {
+                $ret = $this->_status();
+            } else if ($method == "POST") {
+                $ret = $this->_run();
+            }
+        } else if ($object === "checkin") {
+            if ($method == "POST") {
+                $ret = $this->_checkin($api->args());
+            }
         }
         return $ret;
     }

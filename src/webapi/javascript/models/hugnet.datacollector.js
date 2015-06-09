@@ -41,7 +41,7 @@
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 HUGnet.Datacollector = Backbone.Model.extend({
-    idAttribute: 'id',
+    idAttribute: 'uuid',
     defaults:
     {
         uuid: 0,
@@ -65,6 +65,36 @@ HUGnet.Datacollector = Backbone.Model.extend({
     */
     fix: function(attributes)
     {
+    },
+    run: function (action)
+    {
+        var self = this;
+        var method = "GET"
+        if (action === "run") {
+            method = "POST";
+        }
+        var ret = $.ajax({
+            type: method,
+            url: this.url()+"/run",
+            dataType: 'json',
+            cache: false,
+            data: {}
+        }).done(
+            function (data)
+            {
+                if (data == 1) {
+                    self.trigger('testrunning');
+                } else {
+                    self.trigger('testpaused');
+                }
+            }
+        ).fail(
+            function ()
+            {
+                //self.statusFail();
+                self.trigger('statusfail');
+            }
+        );
     },
 });
 
@@ -130,6 +160,13 @@ HUGnet.Datacollectors = Backbone.Collection.extend({
             },
             (this.refresh * 1000)
         );
+    },
+    run: function (action)
+    {
+        var model = this.at(0);
+        if ((typeof model == "object") && (model.get("uuid") != 0)) {
+            model.run(action);
+        }
     },
     /**
     * Gets infomration about a device.  This is retrieved from the database only.

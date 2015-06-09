@@ -46,16 +46,23 @@ HUGnet.RuntimeView = Backbone.View.extend({
     template: '#RuntimeConfigTemplate',
     url: '/HUGnetLib/HUGnetLibAPI.php',
     tagName: 'div',
+    datacollectors: null,
     events: {
         'click .runtests': 'run',
         'click .stoptests': 'run'
     },
     initialize: function (options)
     {
+        _.bindAll(this, "paused", "running");
         this.$('.runtests').hide();
         this.$('.stoptests').hide();
         if (options) {
             options.url && (this.url = options.url);
+            if (options.datacollectors) {
+                this.datacollectors = options.datacollectors;
+                this.datacollectors.on("testrunning", this.running, this);
+                this.datacollectors.on("testpaused", this.paused, this);
+            }
         }
         this.run('status');
     },
@@ -79,38 +86,13 @@ HUGnet.RuntimeView = Backbone.View.extend({
     },
     run: function (action)
     {
-        var self = this;
-        if (action !== "status") {
-            action = "run";
+        if (typeof this.datacollectors == "object") {
+            if (action != "status") {
+                this.datacollectors.run("run");
+            } else {
+                this.datacollectors.run("status");
+            }
         }
-        var ret = $.ajax({
-            type: 'GET',
-            url: this.url,
-            dataType: 'json',
-            cache: false,
-            data:
-            {
-                "task": "datacollector",
-                "action": action,
-            }
-        }).done(
-            function (data)
-            {
-                if (data == 1) {
-                    self.running();
-                    self.trigger('testrunning');
-                } else {
-                    self.paused();
-                    self.trigger('testpaused');
-                }
-            }
-        ).fail(
-            function ()
-            {
-                //self.statusFail();
-                self.trigger('statusfail');
-            }
-        );
     },
     running: function ()
     {

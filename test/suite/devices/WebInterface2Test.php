@@ -305,9 +305,9 @@ class WebInterface2Test extends \PHPUnit_Framework_TestCase
                     ),
                     "Args" => array(
                         "get" => array(
-                            "method" => "get",
+                            "method" => "post",
                             "subobject" => "config",
-                            "sid" => "w",
+                            "sid" => "",
                         ),
                     ),
                     "Network" => array(
@@ -378,7 +378,7 @@ class WebInterface2Test extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
-            array(  // #7
+            array(  // #6
                 new \HUGnet\DummyBase("API"),
                 array(
                     "System" => array(
