@@ -574,7 +574,6 @@ HUGnet.DevicesView = Backbone.View.extend({
     popup: function (view)
     {
         this.$el.append(view.render().el);
-
         view.$el.dialog({
             modal: true,
             draggable: true,
