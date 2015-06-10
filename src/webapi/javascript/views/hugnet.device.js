@@ -106,23 +106,12 @@ var DevicePropertiesView = Backbone.View.extend({
             },
             this
         );
-        this.model.on(
-            'sync',
-            function (model, collection, view)
-            {
-                var datachannels = this.model.get('dataChannels');
-                this.datachannelsmodel.reset(datachannels);
-                var controlchannels = this.model.get('controlChannels');
-                this.controlchannelsmodel.reset(controlchannels);
-                this.render();
-            },
-            this
-        );
+        this._template = _.template($(this.template).html());
+        this._tTemplate = _.template($(this.tTemplate).html());
         this.inputsmodel = this.model.input();
         this.outputsmodel = this.model.output();
         this.processesmodel = this.model.process();
         this.powersmodel = this.model.power();
-        this._template = _.template($(this.template).html());
     },
     inputList: function ()
     {
@@ -200,7 +189,7 @@ var DevicePropertiesView = Backbone.View.extend({
     {
         this.setTitle("");
         if (this._close) {
-            this.model.off('change', self.render, this);
+            this.model.off('change', this.render, this);
             this.model.lock = false;
             this.remove();
         }
@@ -220,9 +209,6 @@ var DevicePropertiesView = Backbone.View.extend({
     */
     render: function ()
     {
-        console.log(this._template);
-        console.trace();
-        console.log("props render "+this.model.get('id'));
         var data = this.model.toJSON();
         _.extend(data, HUGnet.viewHelpers);
         data.dataChannels = '<div id="DeviceDataChannelsDiv"></div>';
@@ -242,7 +228,6 @@ var DevicePropertiesView = Backbone.View.extend({
         }
         this.$("#DeviceDataChannelsDiv").html(this.datachannels.render().el);
         this.$("#DeviceControlChannelsDiv").html(this.controlchannels.render().el);
-        console.log("props render done");
         return this;
     },
     /**
@@ -256,10 +241,7 @@ var DevicePropertiesView = Backbone.View.extend({
     */
     title: function ()
     {
-        return _.template(
-            $(this.tTemplate).html(),
-            this.model.toJSON()
-        );
+        return this._tTemplate(this.model.toJSON());
     },
     popup: function (view, title)
     {
@@ -304,7 +286,6 @@ var DeviceEntryView = Backbone.View.extend({
     initialize: function (options)
     {
         this.model.bind('change', this.render, this);
-        this.model.bind('sync', this.render, this);
         this.model.bind('remove', this.remove, this);
         this.model.bind('configfail', this.refreshFail, this);
         this.parent = options.parent;
@@ -366,10 +347,8 @@ var DeviceEntryView = Backbone.View.extend({
     },
     properties: function (e)
     {
-        console.log("props");
         var view = new DevicePropertiesView({ model: this.model });
         this.parent.popup(view);
-        console.log("props done");
     },
     configview: function (e)
     {
@@ -594,10 +573,8 @@ HUGnet.DevicesView = Backbone.View.extend({
     },
     popup: function (view)
     {
-        console.log("popup");
         this.$el.append(view.render().el);
-        console.log(view.el);
-        console.log("doing popup");
+
         view.$el.dialog({
             modal: true,
             draggable: true,
@@ -608,6 +585,5 @@ HUGnet.DevicesView = Backbone.View.extend({
             zIndex: 500,
             position: { my: "top center", at: "top center", of: this.$el }
         });
-        console.log("popup done");
     }
 });

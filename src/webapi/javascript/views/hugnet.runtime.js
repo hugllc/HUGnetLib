@@ -97,7 +97,7 @@ HUGnet.RuntimeView = Backbone.View.extend({
     },
     status: function ()
     {
-        if (typeof this.datacollectors == "object") {
+        if (_.isObject(this.datacollectors)) {
             return this.datacollectors.run("status");
         }
         return false;
