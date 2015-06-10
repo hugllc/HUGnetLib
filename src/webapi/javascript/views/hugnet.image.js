@@ -161,7 +161,6 @@ HUGnet.ImageView = Backbone.View.extend({
         this.$('#autorefresh').prop("disabled", false);
         this.image.off("datasyncfail", this._finishFetch, this);
         this.image.off("datasync", this._finishFetch, this);
-        this.image.off('sync', this._finishFetch, this);
         this.polling = false;
     },
     _poll: function ()

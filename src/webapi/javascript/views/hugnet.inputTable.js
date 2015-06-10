@@ -154,7 +154,6 @@ var InputTableEntryView = Backbone.View.extend({
     initialize: function (options)
     {
         this.model.bind('change', this.render, this);
-        this.model.bind('sync', this.render, this);
         this.model.bind('remove', this.remove, this);
         this.model.bind('configfail', this.refreshFail, this);
         this.parent = options.parent;

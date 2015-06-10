@@ -57,7 +57,6 @@ var DeviceInputPropertiesView = Backbone.View.extend({
         this.model.on('change', this.render, this);
         this.model.on('saved', this.saveSuccess, this);
         this.model.on('savefail', this.saveFail, this);
-        this.model.on('sync', this.render, this);
         this._template = _.template($(this.template).html());
         this._tTemplate = _.template($(this.tTemplate).html());
     },
@@ -67,7 +66,6 @@ var DeviceInputPropertiesView = Backbone.View.extend({
             this.model.off('change', this.render, this);
             this.model.off('saved', this.saveSuccess, this);
             this.model.off('savefail', this.saveFail, this);
-            this.model.off('sync', this.render, this);
             this.remove();
         }
     },

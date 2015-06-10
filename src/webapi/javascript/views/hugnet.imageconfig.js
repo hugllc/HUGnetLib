@@ -305,7 +305,6 @@ var ImageConfigEntryView = Backbone.View.extend({
             if (options.url) this.url = options.url;
         }
         this.model.bind('change', this.render, this);
-        this.model.bind('sync', this.render, this);
         this.model.bind('remove', this.remove, this);
         this.model.bind('configfail', this.refreshFail, this);
         this.parent = options.parent;

@@ -127,7 +127,6 @@ HUGnet.TestsView = HUGnet.DeviceListView.extend({
         this.model.startRefresh();
         this.model.each(this.insert, this);
         this.model.on('add', this.insert, this);
-        this.model.on('sync', this.insert, this);
         this._template = _.template($(this.template).html());
     },
     saveFail: function (msg)

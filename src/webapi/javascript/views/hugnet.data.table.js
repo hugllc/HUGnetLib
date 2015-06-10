@@ -156,11 +156,6 @@ HUGnet.DataTable = Backbone.View.extend({
     },
     initialize: function (options)
     {
-        /*
-        this.model.bind('add', this.insert, this);
-        this.model.bind('remove', this.remove, this);
-        this.model.bind('sync', this.zebra, this);
-        */
         this.model.bind('sync', this.render, this);
         this.fields = options.fields;
         this.classes = options.classes;

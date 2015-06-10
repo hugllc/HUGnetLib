@@ -135,7 +135,6 @@ HUGnet.DeviceTableView = Backbone.View.extend({
         }
         this.model.each(this.insert, this);
         this.model.on('add', this.insert, this);
-        this.model.on('sync', this.insert, this);
         this.on('view', this.view, this);
         this.on('export', this.export, this);
         //this.model.startRefresh();

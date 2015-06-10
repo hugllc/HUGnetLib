@@ -147,7 +147,6 @@ HUGnet.DeviceListView = Backbone.View.extend({
         this.GatewayKey = this.filter.GatewayKey;
 //        this.model.each(this.insert, this);
         this.model.on('add', this.insert, this);
-//        this.model.on('sync', this.insert, this);
         //this.model.startRefresh();
         this._template = _.template($(this.template).html());
     },
