@@ -118,13 +118,11 @@ HUGnet.DataView = Backbone.View.extend({
             this.period = 1440;
         }
         this.type = (options.type !== undefined) ? options.type : this.type;
-        this.history = new HUGnet.Histories(
+        this.history = this.model.history(
             null,
             {
-                id: this.model.get('id'),
                 mode: this.mode,
                 type: this.type,
-                url: this.url
             }
         );
         this._setupProgress();
@@ -142,7 +140,7 @@ HUGnet.DataView = Backbone.View.extend({
             fields: this.fields,
             classes: this.classes
         });
-        this.annotations = new HUGnet.Annotations({});
+        this.annotations = this.model.annotations({});
         this.annotate = new HUGnet.AnnotationsView({
             model: this.annotations,
             readonly: this.readonly

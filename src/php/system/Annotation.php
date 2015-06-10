@@ -66,18 +66,32 @@ class Annotation extends \HUGnet\base\SystemTableBase
     protected $tableClass = "Annotations";
     /** This is the test we are attached to */
     private $_test = null;
+    /** This is the type of thing we are annotating */
+    private $_type = null;
+    
     /**
     * This function creates the system.
     *
     * @param mixed  &$system (object)The system object to use
     * @param mixed  $data    (int)The id of the item, (array) data info array
     * @param string $table   The table to use
+    * @param array  $extra   Extra stuff to bind to
     *
     * @return null
     */
-    public static function &factory(&$system, $data=null, $table="Annotations")
-    {
+    public static function &factory(
+        &$system, $data=null, $table=null, $extra=array()
+    ) {
+        if (empty($table)) {
+            $table = "Annotations";
+        }
         $object = parent::factory($system, $data, $table);
+        if (isset($extra["test"])) {
+            $object->_test = $extra["test"];
+        }
+        if (isset($extra["type"])) {
+            $object->_type = $extra["type"];
+        }
         return $object;
     }
     /**
@@ -189,7 +203,27 @@ class Annotation extends \HUGnet\base\SystemTableBase
         $id = (int)$args->get("id");
         return $this->table()->deleteRow();
     }
-    
+    /**
+    * Changes data that is in the table and saves it
+    *
+    * @param array $where   The things the list should filter for
+    * @param bool  $default Whether to add the default stuff on or not.
+    *
+    * @return null
+    */
+    public function getList($where = null, $default = false)
+    {
+        if (!is_array($where)) {
+            $where = array();
+        }
+        if (!is_null($this->_type)) {
+            $where["type"] = $this->_type;
+        }
+        if (!is_null($this->_test)) {
+            $where["test"] = $this->_test;
+        }
+        return parent::getList($where, $default);
+    }
 }
 
 

@@ -92,10 +92,9 @@ HUGnet.History = Backbone.Model.extend({
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 HUGnet.Histories = Backbone.Collection.extend({
-    urlPart: '/input',
+    urlPart: '/history',
     baseurl: '',
     model: HUGnet.History,
-    id: undefined,
     LastHistory: 0,
     refresh: null,
     pause: 1,
@@ -114,7 +113,6 @@ HUGnet.Histories = Backbone.Collection.extend({
         this.bind('sync', this.trim, this);
         if (_.isObject(options)) {
             if (options.baseurl) this.baseurl = options.baseurl;
-            this.id = options.id;
             this.type = (options.type !== undefined) ? options.type : this.type;
             this.mode = options.mode;
             this.limit = (options.limit !== undefined) ? parseInt(options.limit, 10) : this.limit;
@@ -191,7 +189,7 @@ HUGnet.Histories = Backbone.Collection.extend({
         };
         $.ajax({
             type: 'GET',
-            url: this.url,
+            url: this.url(),
             dataType: 'json',
             cache: false,
             data: {

@@ -266,6 +266,24 @@ class Device extends \HUGnet\base\SystemTableAction
             $this->driver()
         );
     }
+        /**
+    * This function creates the system.
+    *
+    * @return Reference to the network object
+    */
+    public function &annotation($data = array())
+    {
+        include_once dirname(__FILE__)."/Annotation.php";
+
+        $extra = array(
+            "test" => $this->id(),
+            "type" => "device",
+        );
+        $system = $this->system();
+        $obj = Annotation::factory($system, $data, null, $extra);
+        return $obj;
+    }
+
     /**
     * This function creates an annotation.
     *
@@ -277,10 +295,9 @@ class Device extends \HUGnet\base\SystemTableAction
     */
     public function annotate($author, $date, $text)
     {
-        return $this->system()->annotation()->create(
+        return $this->annotation()->create(
             array(
                 "date" => $this->system()->now(),
-                "type" => "device",
                 "test" => $this->id(),
                 "testdate" => $date,
                 "text" => $text,

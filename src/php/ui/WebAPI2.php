@@ -286,7 +286,7 @@ class WebAPI2 extends HTML
         if (empty($message) && isset($this->_errorMsg[$code])) {
             $message = $this->_errorMsg[$code];
         }
-        error_log("($code) $message"); 
+        error_log("WebAPI2 ($code) $message"); 
         return array(
             "code" => $code,
             "message" => $message,
@@ -391,11 +391,8 @@ class WebAPI2 extends HTML
     {
         if (is_string($this->_object) && is_callable(array($this->system(), $this->_object))) {
             $this->_obj = $this->system()->{$this->_object}($this->_id);
-            error_log($this->_object." => ".$this->_id);
             if (is_object($this->_obj) && is_string($this->_subobject) && method_exists($this->_obj, (string)$this->_subobject)) {
                 $this->_obj = $this->_obj->{$this->_subobject}($this->_sid);
-                error_log($this->_subobject." => ".$this->_sid);
-                error_log($this->_obj->isNew());
             }
         }
     }

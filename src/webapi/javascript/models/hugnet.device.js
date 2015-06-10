@@ -169,6 +169,28 @@ HUGnet.Device = Backbone.Model.extend({
         return this.powerCache;
     },
     /**
+    * This returns a power from this device
+    */
+    history: function(models, options)
+    {
+        if (!_.isObject(options)) {
+            options = {};
+        }
+        options.baseurl = this.url();
+        return new HUGnet.Histories(models, options);
+    },
+    /**
+    * This returns a power from this device
+    */
+    annotations: function(options)
+    {
+        if (!_.isObject(options)) {
+            options = {};
+        }
+        options.baseurl = this.url();
+        return new HUGnet.Annotations(options);
+    },
+    /**
     * Sets the data to be sent back to the server
     *
     * @return JSON string
