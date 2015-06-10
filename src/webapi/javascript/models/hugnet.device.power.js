@@ -79,16 +79,11 @@ HUGnet.DevicePower = Backbone.Model.extend({
         var self = this;
         var dev = this.get('dev');
         $.ajax({
-            type: 'POST',
-            url: this.url(),
-            cache: false,
-            dataType: 'json',
-            data: {
-                "task": "devicepower",
-                "action": "settable",
-                "id": parseInt(dev, 10).toString(16)+"."+this.get("power"),
-                "data": { id: parseInt(table) }
-            }
+            type: 'PUT',
+            url: this.url()+"/settable",
+               cache: false,
+               dataType: 'json',
+               data: parseInt(table)
         }).done(
             function (data)
             {
@@ -124,7 +119,6 @@ HUGnet.DevicePower = Backbone.Model.extend({
 */
 HUGnet.DevicePowers = Backbone.Collection.extend({
     urlPart: '/power',
-    url: '/HUGnetLib/HUGnetLibAPI.php',
     model: HUGnet.DevicePower,
     initialize: function (options)
     {

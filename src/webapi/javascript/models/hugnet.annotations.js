@@ -64,146 +64,6 @@ HUGnet.Annotation = Backbone.Model.extend({
     fix: function(attributes)
     {
     },
-    /**
-    * Gets infomration about a device.  This is retrieved from the database only.
-    *
-    * @param id The id of the device to get
-    *
-    * @return null
-    */
-    fetch: function()
-    {
-        var myself = this;
-        $.ajax({
-            type: 'GET',
-            url: this.url(),
-            cache: false,
-            dataType: 'json',
-            data:
-            {
-                "task": "annotation",
-                "action": "get",
-                "id": this.get("id"),
-            }
-        }).done(
-            function (data)
-            {
-                myself.set(data);
-            }
-        );
-    },
-    /**
-    * Gets infomration about a device.  This is retrieved from the database only.
-    *
-    * @param id The id of the device to get
-    *
-    * @return null
-    */
-    remove: function()
-    {
-        var myself = this;
-        $.ajax({
-            type: 'GET',
-            url: this.url(),
-            cache: false,
-            dataType: 'json',
-            data:
-            {
-                "task": "annotation",
-                "action": "delete",
-                "id": this.get("id"),
-            }
-        }).done(
-            function (data)
-            {
-                var col = myself.collection;
-                col.remove(myself);
-                col.trigger("remove", myself, myself.collection);
-
-            }
-        );
-    },
-    /**
-    * Gets infomration about a device.  This is retrieved from the database only.
-    *
-    * @param id The id of the device to get
-    *
-    * @return null
-    */
-    refresh: function()
-    {
-        var self = this;
-        $.ajax({
-            type: 'GET',
-            url: this.url(),
-            dataType: 'json',
-            cache: false,
-            data:
-            {
-                "task": "annotation",
-                "action": "get",
-                "id": this.get("id"),
-            }
-        }).done(
-            function (data)
-            {
-                if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
-                    self.trigger('refresh');
-                    self.set(data);
-                    self.trigger('fetchdone');
-                    self.trigger('sync');
-                } else {
-                    self.trigger('refreshfail', "saved failed on server");
-                }
-            }
-        ).fail(
-            function ()
-            {
-                self.trigger('refreshfail', "failed to contact server");
-            }
-        );
-    },
-    /**
-    * Gets infomration about a device.  This is retrieved from the database only.
-    *
-    * @param id The id of the device to get
-    *
-    * @return null
-    */
-    save: function()
-    {
-        var self = this;
-        $.ajax({
-            type: 'POST',
-            url: this.url(),
-            dataType: 'json',
-            cache: false,
-            data:
-            {
-                "task": "annotation",
-                "action": "put",
-                "id": this.get("id"),
-                "data": self.toJSON()
-            }
-        }).done(
-            function (data)
-            {
-                if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
-                    self.trigger('saved');
-                    self.set(data);
-                    self.trigger('fetchdone');
-                    self.trigger('sync');
-                } else {
-                    self.trigger('savefail', "saved failed on server");
-                }
-            }
-        ).fail(
-            function ()
-            {
-                self.trigger('savefail', "failed to contact server");
-            }
-        );
-    }
 });
 
 /**
@@ -219,15 +79,20 @@ HUGnet.Annotation = Backbone.Model.extend({
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 HUGnet.Annotations = Backbone.Collection.extend({
-    url: '/HUGnetLib/HUGnetLibAPI.php',
+    urlPart: '/annotation',
     model: HUGnet.Annotation,
+    baseurl: '',
     refresh: 300,
     timer: null,
     initialize: function (options)
     {
         if (options) {
-            if (options.url) this.url = options.url;
+            if (options.baseurl) this.baseurl = options.baseurl;
         }
+    },
+    url: function ()
+    {
+        return this.baseurl + this.urlPart;
     },
     comparator: function (model)
     {
@@ -262,51 +127,6 @@ HUGnet.Annotations = Backbone.Collection.extend({
                 self._refresh();
             },
             (this.refresh * 1000)
-        );
-    },
-    /**
-    * Gets infomration about a device.  This is retrieved directly from the device
-    *
-    * This function is for use of the device list
-    *
-    * @param id The id o
-    *
-    * @return null
-    */
-    fetch: function (test, since, until, type)
-    {
-        var self = this;
-        var ret = $.ajax({
-            type: 'GET',
-            url: this.url,
-            dataType: 'json',
-            cache: false,
-            data: {
-                "task": "annotation", 
-                "action": "list",
-                "data": { 
-                    test: test, 
-                    since: since / 1000, 
-                    until: until / 1000,
-                    type: type
-                }
-            }
-        });
-        ret.done(
-            function (data)
-            {
-                self.each(
-                    function (model, collection, options)
-                    {
-                        var date = model.get("testdate");
-                        if ((date > (until / 1000)) || (date < (since / 1000))) {
-                            model.collection.remove(model);
-                        }
-                    },
-                    self
-                );
-                self.add(data);
-            }
         );
     },
     /**

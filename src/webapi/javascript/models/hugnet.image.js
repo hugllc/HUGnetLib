@@ -115,18 +115,13 @@ HUGnet.Image = Backbone.Model.extend({
             var self = this;
             $.ajax({
                 type: 'GET',
-                url: this.url(),
+                url: this.url()+"/reading",
                 dataType: 'json',
                 cache: false,
                 data:
                 {
-                    "task": "image",
-                    "action": "getreading",
-                    "id": id,
-                    "data": {
-                        "date": (date / 1000),
-                        "type": type,
-                    }
+                    "until": (data / 1000),
+                    "type": type,
                 }
             }).done(
                 function (data)
@@ -142,49 +137,6 @@ HUGnet.Image = Backbone.Model.extend({
                 function ()
                 {
                     self.trigger('datasyncfail', "failed to contact server");
-                }
-            );
-        }
-    },
-    /**
-     * Gets infomration about a device.  This is retrieved from the database only.
-     *
-     * @param id The id of the device to get
-     *
-     * @return null
-     */
-    removeImg: function()
-    {
-        var id = this.get('id');
-        if (id !== 0) {
-            var self = this;
-            self.set("points", self.points.toJSON())
-            var data = self.toJSON();
-            $.ajax({
-                type: 'GET',
-                url: this.url(),
-                   dataType: 'json',
-                   cache: false,
-                   data:
-                   {
-                        "task": "image",
-                        "action": "delete",
-                        "id": id,
-                   }
-            }).done(
-                function (data)
-                {
-                    if (data == "success") {
-                        self.trigger('destroy', self, self.collection, {});
-                        self.trigger('sync', self, self.collection);
-                    } else {
-                        self.trigger('savefail', "delete failed on server");
-                    }
-                }
-            ).fail(
-                function ()
-                {
-                    self.trigger('savefail', "failed to contact server");
                 }
             );
         }

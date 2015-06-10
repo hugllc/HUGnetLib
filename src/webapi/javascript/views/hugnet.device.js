@@ -271,7 +271,6 @@ var DevicePropertiesView = Backbone.View.extend({
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 var DeviceEntryView = Backbone.View.extend({
-    url: '/HUGnetLib/HUGnetLibAPI.php',
     tagName: 'tr',
     template: '#DeviceEntryTemplate',
     parent: null,
@@ -325,9 +324,7 @@ var DeviceEntryView = Backbone.View.extend({
     },
     export: function (e)
     {
-        var url = this.url+"?task=device&action=export";
-        url += "&id="+this.model.get("id").toString(16);
-        this.parent.iframe.attr('src', url);
+        this.parent.iframe.attr('src', this.model.exporturl);
     },
     loadconfig: function (e)
     {
@@ -466,10 +463,9 @@ HUGnet.DevicesView = Backbone.View.extend({
         if (this.$("#importDevice input[type=file]").val() == "") {
             return;
         }
-        var url = this.url+"?task=device&action=import";
         var form = $("#importDevice");
         form.attr({
-            action: url,
+            action: this.model.importurl(),
             method: 'post',
             enctype: 'multipart/form-data',
             encoding: 'multipart/form-data',
@@ -542,34 +538,7 @@ HUGnet.DevicesView = Backbone.View.extend({
     },
     createVirtual: function (type)
     {
-        var self = this;
-        var ret = $.ajax({
-            type: 'GET',
-            url: this.url(),
-            dataType: 'json',
-            cache: false,
-            data:
-            {
-                "task": "device",
-                "action": "new",
-                "data": { type: type }
-            }
-        }).done(
-            function (data)
-            {
-                if (_.isObject(data)) {
-                    self.trigger('created');
-                    self.model.add(data);
-                } else {
-                    self.trigger('newfail');
-                }
-            }
-        ).fail(
-            function (data)
-            {
-                self.trigger('newfail');
-            }
-        );
+        this.model.createVirtual(type);
     },
     popup: function (view)
     {

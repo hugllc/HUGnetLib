@@ -92,7 +92,8 @@ HUGnet.History = Backbone.Model.extend({
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 HUGnet.Histories = Backbone.Collection.extend({
-    url: '/HUGnetLib/HUGnetLibAPI.php',
+    urlPart: '/input',
+    baseurl: '',
     model: HUGnet.History,
     id: undefined,
     LastHistory: 0,
@@ -112,12 +113,16 @@ HUGnet.Histories = Backbone.Collection.extend({
         this.bind('add', this.addExtra, this);
         this.bind('sync', this.trim, this);
         if (_.isObject(options)) {
-            if (options.url) this.url = options.url;
+            if (options.baseurl) this.baseurl = options.baseurl;
             this.id = options.id;
             this.type = (options.type !== undefined) ? options.type : this.type;
             this.mode = options.mode;
             this.limit = (options.limit !== undefined) ? parseInt(options.limit, 10) : this.limit;
         }
+    },
+    url: function ()
+    {
+        return this.baseurl + this.urlPart;
     },
     latest: function (period)
     {
@@ -183,11 +188,6 @@ HUGnet.Histories = Backbone.Collection.extend({
             limit = this.limit;
         }
         var data = {
-            "since": Math.round(this.LastHistory / 1000),
-            "until": Math.round(this.until / 1000),
-            "limit": limit,
-            "order": "asc",
-            "type": this.type
         };
         $.ajax({
             type: 'GET',
@@ -195,10 +195,11 @@ HUGnet.Histories = Backbone.Collection.extend({
             dataType: 'json',
             cache: false,
             data: {
-                "task": "history",
-                "action": "get",
-                "id": this.id.toString(16),
-                "data" : data
+               "since": Math.round(this.LastHistory / 1000),
+               "until": Math.round(this.until / 1000),
+               "limit": limit,
+               "order": "asc",
+               "type": this.type
             }
         }).done(
             function (data)

@@ -78,12 +78,17 @@ HUGnet.ImagePoint = Backbone.Model.extend({
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 HUGnet.ImagePoints = Backbone.Collection.extend({
-    url: '/HUGnetLib/HUGnetLibAPI.php',
+    urlPart: '/points',
     model: HUGnet.ImagePoint,
+    baseurl: '',
     initialize: function (options)
     {
         if (options) {
-            if (options.url) this.url = options.url;
+            if (options.baseurl) this.baseurl = options.baseurl;
         }
     },
+    url: function ()
+    {
+        return this.baseurl + this.urlPart;
+    }
 });

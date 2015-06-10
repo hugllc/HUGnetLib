@@ -79,16 +79,11 @@ HUGnet.DeviceInput = Backbone.Model.extend({
         var self = this;
         var dev = this.get('dev');
         $.ajax({
-            type: 'POST',
-            url: this.url(),
+            type: 'PUT',
+            url: this.url()+"/settable",
             cache: false,
             dataType: 'json',
-            data: {
-                "task": "deviceinput",
-                "action": "settable",
-                "id": parseInt(dev, 10).toString(16)+"."+this.get("input"),
-                "data": { id: parseInt(table) }
-            }
+            data: parseInt(table)
         }).done(
             function (data)
             {

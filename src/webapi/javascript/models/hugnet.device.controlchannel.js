@@ -53,7 +53,6 @@ HUGnet.DeviceControlChannel = Backbone.Model.extend({
     idAttribute: 'channel',
     getValue: function()
     {
-        var dev = this.get('dev');
         var self = this;
         $.ajax({
             type: 'GET',
@@ -62,9 +61,6 @@ HUGnet.DeviceControlChannel = Backbone.Model.extend({
             dataType: 'json',
             data:
             {
-                "task": "devicecontrolchan",
-                "action": "get",
-                "id": parseInt(dev, 10).toString(16)+"."+this.get("channel")
             }
         }).done(
             function (data)
@@ -88,17 +84,11 @@ HUGnet.DeviceControlChannel = Backbone.Model.extend({
         var dev = this.get('dev');
         var self = this;
         $.ajax({
-            type: 'GET',
+            type: 'PUT',
             url: this.url(),
             cache: false,
             dataType: 'json',
-            data:
-            {
-                "task": "devicecontrolchan",
-                "action": "set",
-                "id": parseInt(dev, 10).toString(16)+"."+this.get("channel"),
-                "data": parseInt(value, 10)
-            }
+            data: parseInt(value, 10)
         }).done(
             function (data)
             {
@@ -131,7 +121,7 @@ HUGnet.DeviceControlChannel = Backbone.Model.extend({
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 HUGnet.DeviceControlChannels = Backbone.Collection.extend({
-    url: '/HUGnetLib/HUGnetLibAPI.php',
+    url: '/controlchan',
     model: HUGnet.DeviceControlChannel,
     comparator: function (model)
     {

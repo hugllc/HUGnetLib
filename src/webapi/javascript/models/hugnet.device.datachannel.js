@@ -73,7 +73,6 @@ HUGnet.DeviceDataChannel = Backbone.Model.extend({
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 HUGnet.DeviceDataChannels = Backbone.Collection.extend({
-    url: '/HUGnetLib/HUGnetLibAPI.php',
     model: HUGnet.DeviceDataChannel,
     comparator: function (model)
     {

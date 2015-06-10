@@ -80,5 +80,5 @@ HUGnet.InputTables = Backbone.Collection.extend({
     comparator: function (model)
     {
         return parseInt(model.get("id"), 10);
-    },
+    }
 });

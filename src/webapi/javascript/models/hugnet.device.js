@@ -239,14 +239,11 @@ HUGnet.Device = Backbone.Model.extend({
         if (id !== 0) {
             var self = this;
             $.ajax({
-                type: 'GET',
-                url: this.url(),
+                type: 'POST',
+                url: this.url()+"/firmware",
                 dataType: 'json',
                 cache: false,
                 data: {
-                    "task": "device",
-                    "action": "loadfirmware",
-                    "id": id.toString(16)
                 }
             }).done(
                 function (data)
@@ -282,14 +279,11 @@ HUGnet.Device = Backbone.Model.extend({
             var myself = this;
             $.ajax({
                 type: 'GET',
-                url: this.url(),
+                url: this.url()+"/fct",  // fctsetup
                 cache: false,
                 dataType: 'json',
                 data:
                 {
-                    "task": "device",
-                    "action": "fctsetup",
-                    "id": id.toString(16)
                 }
             }).done(
                 function (data)
@@ -312,15 +306,12 @@ HUGnet.Device = Backbone.Model.extend({
         if ((id !== 0) && !this.lock) {
             var myself = this;
             $.ajax({
-                type: 'GET',
-                url: this.url(),
+                type: 'POST',
+                url: this.url()+"/fct", // fctapply
                 cache: false,
                 dataType: 'json',
                 data:
                 {
-                    "task": "device",
-                    "action": "fctapply",
-                    "id": id.toString(16)
                 }
             }).done(
                 function (data)
@@ -329,7 +320,18 @@ HUGnet.Device = Backbone.Model.extend({
                 }
             );
         }
-    }
+    },
+    /**
+     * Gets infomration about a device.  This is retrieved from the database only.
+     *
+     * @param id The id of the device to get
+     *
+     * @return null
+     */
+    exporturl: function()
+    {
+        return this.url()+"/export";
+    },
 });
 
 /**
@@ -395,5 +397,44 @@ HUGnet.Devices = Backbone.Collection.extend({
             },
             (this.refresh * 1000)
         );
+    },
+    createVirtual: function (type)
+    {
+        var self = this;
+        var ret = $.ajax({
+            type: 'POST',
+            url: this.url()+"/new",
+            dataType: 'json',
+            cache: false,
+            data: {
+                "data": { type: type }
+            }
+        }).done(
+            function (data)
+            {
+                if (_.isObject(data)) {
+                    self.trigger('created');
+                    self.model.add(data);
+                } else {
+                    self.trigger('newfail');
+                }
+            }
+        ).fail(
+            function (data)
+            {
+                self.trigger('newfail');
+            }
+        );
+    },
+    /**
+     * Gets infomration about a device.  This is retrieved from the database only.
+     *
+     * @param id The id of the device to get
+     *
+     * @return null
+     */
+    importurl: function()
+    {
+        return this.url()+"/import";
     },
 });

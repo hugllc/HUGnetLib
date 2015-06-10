@@ -79,77 +79,24 @@ HUGnet.DeviceFunction = Backbone.Model.extend({
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 HUGnet.DeviceFunctions = Backbone.Collection.extend({
-    url: '/HUGnetLib/HUGnetLibAPI.php',
+    urlPart: '/fct',
+    baseurl: '',
     model: HUGnet.DeviceFunction,
     devid: 0,
-    initialize: function (model, options)
+    initialize: function (options)
     {
-        this.devid = options.devid;
+        if (options) {
+            if (options.baseurl) this.baseurl = options.baseurl;
+            this.devid = options.devid;
+        }
+    },
+    url: function ()
+    {
+        return this.baseurl + this.urlPart;
     },
     comparator: function (model)
     {
         return parseInt(model.get("id"), 10);
-    },
-    /**
-    * Gets infomration about a device.  This is retrieved directly from the device
-    *
-    * This function is for use of the device list
-    *
-    * @param id The id of the device to get
-    *
-    * @return null
-    */
-    fetch: function ()
-    {
-        var self = this;
-        var ret = $.ajax({
-            type: 'GET',
-            url: this.url,
-            dataType: 'json',
-            cache: false,
-            data: {
-                "task": "device", 
-                "action": "getfcts",
-                "id": this.devid.toString(16)
-            }
-        }).done(
-            function (data)
-            {
-                self.reset(data);
-                self.trigger("change");
-            }
-        );
-    },
-    /**
-    * Gets infomration about a device.  This is retrieved directly from the device
-    *
-    * This function is for use of the device list
-    *
-    * @param id The id of the device to get
-    *
-    * @return null
-    */
-    save: function ()
-    {
-        var self = this;
-        var ret  = $.ajax({
-            type: 'POST',
-            url: this.url,
-            dataType: 'json',
-            cache: false,
-            data: {
-                "task": "device", 
-                "action": "putfcts",
-                "id": this.devid.toString(16),
-                "data": self.toJSON()
-            }
-        }).done(
-            function (data)
-            {
-                self.reset(data);
-                self.trigger("change");
-            }
-        );
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
