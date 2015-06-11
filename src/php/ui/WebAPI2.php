@@ -125,6 +125,11 @@ class WebAPI2 extends HTML
         ),
         "image" => array(
             "methods" => "GET,POST,PUT,DELETE",
+            "subobjects" => array(
+                "reading" => array(
+                    "methods" => "external",
+                ),
+            ),
         ),
         "inputtable" => array(
             "methods" => "GET,POST,PUT,DELETE",

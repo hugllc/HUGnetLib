@@ -58,12 +58,11 @@ var ImageConfigPropertiesView = Backbone.View.extend({
     },
     initialize: function (options)
     {
+        _.bindAll(this, "saveFail", "saveclose");
         if (options) {
             if (options.url) this.url = options.url;
         }
-        this.model.refresh();
         this.model.on('change', this.render, this);
-        this.model.on('savefail', this.saveFail, this);
         this.image = new HUGnet.ImageSVGView({
             model: this.model,
             style: "border: thin solid black;",
@@ -74,6 +73,7 @@ var ImageConfigPropertiesView = Backbone.View.extend({
         });
         this.image.on("dragend", this._dragmove, this);
         this._template = _.template($(this.template).html());
+        this._tTemplate = _.template($(this.tTemplate).html());
     }, 
     _dragmove: function (point, delta, e)
     {
@@ -132,10 +132,8 @@ var ImageConfigPropertiesView = Backbone.View.extend({
                 index++;
             }
         });
-        delete output.points;
-        this.model.set(output);
-        this.model.points.reset(points);
-        this.model.save();
+        output.points = points;
+        this.model.save(output, { success: this.saveclose, error: this.saveFail, wait: true });
         this.setTitle();
     },
     saveclose: function (e)
@@ -244,7 +242,7 @@ var ImageConfigPropertiesView = Backbone.View.extend({
             self.timer = null;
             self.$("#insertImage input[type=file]").val("");
             var id = parseInt(text, 16);
-            self.model.refresh();
+            self.model.fetch();
         } else {
             self.timer = setTimeout(
                 function () {
@@ -306,7 +304,6 @@ var ImageConfigEntryView = Backbone.View.extend({
         }
         this.model.bind('change', this.render, this);
         this.model.bind('remove', this.remove, this);
-        this.model.bind('configfail', this.refreshFail, this);
         this.parent = options.parent;
         this._template = _.template($(this.template).html());
     },
@@ -323,6 +320,7 @@ var ImageConfigEntryView = Backbone.View.extend({
     },
     properties: function (e)
     {
+        this.model.fetch();
         var view = new ImageConfigPropertiesView({ model: this.model, url: this.url });
         this.parent.popup(view);
     },

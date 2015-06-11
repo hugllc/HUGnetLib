@@ -82,6 +82,13 @@ HUGnet.Image = Backbone.Model.extend({
         });
         this.flushpoints();
     },
+    validate: function(attributes, options)
+    {
+        // This sets the points correctly
+        this.points.reset(attributes.points);
+        delete attributes.points;
+        this.flushpoints();
+    },
     /**
     * This function initializes the object
     */
@@ -95,6 +102,18 @@ HUGnet.Image = Backbone.Model.extend({
         this.points.reset(this.get('points'));
         this.set("length", this.points.length);
     },
+    imageurl: function(date, type, format)
+    {
+        if (_.isNumber(date)) {
+            date = parseInt(date / 1000);
+        } else {
+            date = 'now';
+        }
+        if (!format) {
+            format = "PNG";
+        }
+        return this.url()+"?until="+date+"&type="+type+"&format="+format
+    },
     /**
     * Gets infomration about a device.  This is retrieved from the database only.
     *
@@ -106,8 +125,10 @@ HUGnet.Image = Backbone.Model.extend({
     {
         var id = this.get('id');
         if ((id !== 0) && !this.lock) {
-            if (!date) {
-                var date = 0;
+            if (_.isNumber(date)) {
+                date = parseInt(date / 1000);
+            } else {
+                date = 'now';
             }
             if (!type) {
                 var type = "";
@@ -120,7 +141,7 @@ HUGnet.Image = Backbone.Model.extend({
                 cache: false,
                 data:
                 {
-                    "until": (data / 1000),
+                    "until": date,
                     "type": type,
                 }
             }).done(

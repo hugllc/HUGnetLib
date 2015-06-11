@@ -176,12 +176,7 @@ HUGnet.ImageView = Backbone.View.extend({
     _setURL: function ()
     {
         var id      = this.model.get("id");
-        var imgurl  = window.location.origin+"/";
-        imgurl     += this.url+"?task=image&action=get";
-        imgurl     += "&id="+id.toString(16);
-        imgurl     += "&data[type]="+this.type;
-        imgurl     += "&data[date]=now";
-        imgurl     += '&format=PNG';
+        var imgurl  = window.location.origin+this.model.imageurl('now', this.type);
         $("span#url").text(imgurl);
         return imgurl;
     },

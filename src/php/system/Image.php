@@ -42,6 +42,8 @@ require_once dirname(__FILE__)."/../base/SystemTableBase.php";
 require_once dirname(__FILE__)."/../interfaces/SystemInterface.php";
 /** This is our system interface */
 require_once dirname(__FILE__)."/../interfaces/WebAPI.php";
+/** This is our system interface */
+require_once dirname(__FILE__)."/../interfaces/WebAPI2.php";
 
 /**
  * Base system class.
@@ -60,7 +62,8 @@ require_once dirname(__FILE__)."/../interfaces/WebAPI.php";
  * @since      0.9.7
  */
 class Image extends \HUGnet\base\SystemTableBase
-    implements \HUGnet\interfaces\WebAPI, \HUGnet\interfaces\SystemInterface
+    implements \HUGnet\interfaces\WebAPI, \HUGnet\interfaces\SystemInterface,
+               \HUGnet\interfaces\WebAPI2
 {
     /** @var int The database table class to use */
     protected $tableClass = "Images";
@@ -108,6 +111,50 @@ class Image extends \HUGnet\base\SystemTableBase
             $ret = $this->_getReading($args);
         }
         return $ret;
+    }
+    /**
+    * returns a history object for this device
+    *
+    * @param object $api   The web api object
+    * @param array  $extra Extra data from the
+    *
+    * @return string
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function webAPI2($api, $extra)
+    {
+        $method = trim(strtoupper($api->args()->get("method")));
+        $object = trim(strtolower($api->args()->get("subobject")));
+        $ret = null;
+        if (($method === "GET") && ($object == "reading")) {
+            $date = (int)$api->args()->get("until");
+            $type = $api->args()->get("type");
+            $ret = $this->getReading($data["date"], $data["type"]);
+            $api->response(200);
+        } else {
+            $api->response(401);
+            $c = get_class($api);
+            $api->error($c::NOT_IMPLEMENTED);
+        }
+        return $ret;
+/*
+        $action = trim(strtolower($args->get("action")));
+        $ret = null;
+        if ($action === "get") {
+            $ret = $this->_getImg($args);
+        } else if ($action === "list") {
+            $ret = $this->_list($args);
+        } else if ($action === "insert") {
+            $ret = $this->_insert($args);
+        } else if ($action === "put") {
+            $ret = $this->_put($args);
+        } else if ($action === "delete") {
+            $ret = $this->_delete($args);
+        } else if ($action === "getreading") {
+            $ret = $this->_getReading($args);
+        }
+        return $ret;
+        */
     }
     /**
     * returns a history object for this device
