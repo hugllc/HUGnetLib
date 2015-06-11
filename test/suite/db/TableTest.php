@@ -1343,6 +1343,20 @@ class TableTest extends \PHPUnit_Extensions_Database_TestCase
                 array(
                 ),
             ),
+            array(
+                array(
+                ),
+                array(
+                    "id"  => null,
+                    "value"   => gmmktime(0, 0, 0, 1, 1, 2010),
+                    "name"  => "Date",
+                    "WebNark" => "SeaMonster",
+                ),
+                array(
+                    "value"   => gmmktime(0, 0, 0, 1, 1, 2010),
+                    "name"  => "Date",
+                ),
+            ),
         );
     }
 

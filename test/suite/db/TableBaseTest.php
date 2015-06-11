@@ -1075,6 +1075,18 @@ class TableBaseTest extends \PHPUnit_Extensions_Database_TestCase
                     "value" => 12.0,
                 ),
             ),
+            array(
+                array(
+                    "id" => null,
+                    "name" => "This is a name",
+                    "value" => 1235.932,
+                ),
+                array(
+                    "id" => 5,
+                    "name" => "This is a name",
+                    "value" => 1235.932,
+                ),
+            ),
         );
     }
     /**

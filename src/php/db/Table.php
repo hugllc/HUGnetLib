@@ -275,6 +275,8 @@ abstract class Table extends TableBase
         foreach (array_keys($array) as $key) {
             if (!isset($this->sqlColumns[$key])) {
                 unset($array[$key]);
+            } else if (is_null($array[$key]) && !$this->sqlColumns[$key]["Null"]) {
+                unset($array[$key]);
             }
         }
         return $array;

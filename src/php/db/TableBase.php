@@ -256,7 +256,10 @@ abstract class TableBase extends \HUGnet\base\Container
     {
         foreach ((array)$this->sqlColumns as $col) {
             $key = $col["Name"];
-            $array[$key] = $this->get($key);
+            $value = $this->get($key);
+            if (!is_null($value) || $col["Null"]) {
+                $array[$key] = $this->get($key);
+            }
         }
         return (array)$array;
     }
