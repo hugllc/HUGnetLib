@@ -224,6 +224,22 @@ class Annotation extends \HUGnet\base\SystemTableBase
         }
         return parent::getList($where, $default);
     }
+    /**
+    * This function should be overloaded to make changes to the table based on
+    * changes to incoming data.
+    *
+    * This is a way to make sure that the data is consistant before it gets stored
+    * in the database
+    *
+    * @return null
+    */
+    protected function fixTable()
+    {
+        $date = $this->table()->get("date");
+        if (empty($date)) {
+            $this->table()->set("date", time());
+        }
+    }
 }
 
 

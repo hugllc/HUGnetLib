@@ -79,6 +79,12 @@ class WebAPIArgs extends HTMLArgs
         "cuuid" => array("name" => "cuuid", "type" => "string"),
         "data" => array("name" => "data", "type" => "array", "default" => array()),
         "restextra" => array("name" => "restextra", "type" => "array", "default" => array()),
+        "since" => array("name" => "since", "type" => "string", 'default' => null),
+        "until" => array("name" => "until", "type" => "string", 'default' => null),
+        "limit" => array("name" => "limit", "type" => "string", 'default' => null),
+        "start" => array("name" => "start", "type" => "string", 'default' => null),
+        "order" => array("name" => "order", "type" => "string", 'default' => null),
+
     );
     /**
     * Creates the object
@@ -144,7 +150,7 @@ class WebAPIArgs extends HTMLArgs
                 }
             }
         }
-        if ($this->arguments["method"] == "PUT") {
+        if (($this->arguments["method"] == "PUT") || ($this->arguments["method"] == "POST")) {
             $this->arguments["data"] = json_decode(file_get_contents("php://input"), true);
         }
         $this->arguments["restextra"] = $args;

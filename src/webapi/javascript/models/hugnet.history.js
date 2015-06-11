@@ -189,7 +189,7 @@ HUGnet.Histories = Backbone.Collection.extend({
         };
         $.ajax({
             type: 'GET',
-            url: this.url(),
+            url: this.url()+"/"+this.type,
             dataType: 'json',
             cache: false,
             data: {
@@ -197,7 +197,6 @@ HUGnet.Histories = Backbone.Collection.extend({
                "until": Math.round(this.until / 1000),
                "limit": limit,
                "order": "asc",
-               "type": this.type
             }
         }).done(
             function (data)

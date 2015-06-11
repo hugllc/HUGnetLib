@@ -52,11 +52,11 @@ var AnnotationPropertiesView = Backbone.View.extend({
     },
     initialize: function (options)
     {
+        _.bindAll(this, "saveSuccess", "saveFail");
         this.parent = options.parent;
         this.model.lock = true;
-        this.model.on('savefail', this.saveFail, this);
-        this.model.on('saved', this.saveSuccess, this);
         this._template = _.template($(this.template).html());
+        this._tTemplate = _.template($(this.tTemplate).html());
 
     },
     save: function (e)
@@ -76,12 +76,15 @@ var AnnotationPropertiesView = Backbone.View.extend({
     },
     apply: function (e)
     {
+        console.log(this.model.isNew());
         this.setTitle( " [ Saving...] " );
-        this.model.set({
-            text: this.$('[name="text"]').val(),
-            author: this.$('[name="author"]').val(),
-        });
-        this.model.save();
+
+        this.model.save({
+                text: this.$('[name="text"]').val(),
+                author: this.$('[name="author"]').val(),
+            },
+            { "success": this.saveSuccess, "error": this.saveFail }
+        );
         this.setTitle();
     },
     saveInput: function (e)
@@ -98,8 +101,6 @@ var AnnotationPropertiesView = Backbone.View.extend({
         this.setTitle("");
         if (this._close) {
             this.model.off('change', this.render, this);
-            this.model.off('savefail', this.saveFail, this);
-            this.model.off('saved', this.saveSuccess, this);
             this.model.lock = false;
             this.remove();
         }

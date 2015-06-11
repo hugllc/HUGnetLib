@@ -236,7 +236,7 @@ abstract class SystemTableBase
             if (!empty($this->table()->sqlId)) {
                 $this->table()->sqlOrderBy = $this->table()->sqlId." desc";
             }
-            return $this->_find($data);
+            return $this->_find($this->table()->toDB());
         }
         return false;
     }
@@ -254,7 +254,10 @@ abstract class SystemTableBase
             $this->table()->set("group", $data["group"]);
         }
         $wdata = (array)$this->table()->sanitizeWhere($data);
-        return $this->table()->selectOneInto($wdata);
+        error_log("Before ".json_encode($wdata));
+        $ret = $this->table()->selectOneInto($wdata);
+        error_log("After");
+        return $ret;
     }
     /**
     * Changes data that is in the table and saves it
@@ -331,6 +334,7 @@ abstract class SystemTableBase
         $this->fixTable();
         if (empty($sid) || $replace || $this->isNew()) {
             $ret = $this->table()->insertRow($replace);
+            error_log("Store Ret: ".json_encode($ret));
             $this->_new = false;
         } else {
             $ret = $this->table()->updateRow();

@@ -44,7 +44,7 @@ HUGnet.Image = Backbone.Model.extend({
     idAttribute: 'id',
     defaults:
     {
-        id: 0,
+        id: null,
         name: '',
         image: '',
         imagetype: '',

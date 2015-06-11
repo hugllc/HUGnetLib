@@ -509,7 +509,16 @@ class WebAPI2 extends HTML
             }
         } else if (($this->_method === "POST") && $this->_auth(true)) {
             $data = (array)$this->args()->get("data");
-            $this->_obj->create($data);
+            error_log(json_encode($data));
+            $ret = $this->_obj->create($data);
+            error_log("Final Ret: ".json_encode($ret));
+            if ($ret) {
+                $this->response(202);
+            } else {
+                $this->response(400);
+                $this->error(self::SAVE_FAILED);
+            }
+            
         } else if (($this->_method === "PUT") && $this->_auth(true)) {
             $data = (array)$this->args()->get("data");
             $ret = (int)$this->_obj->change($data);
@@ -678,21 +687,24 @@ class WebAPI2 extends HTML
         $data = (array)$this->args()->get("data");
         $type = strtoupper($this->_sid);
         $extraWhere = "";
-        if (isset($data["limit"]) && is_numeric($data["limit"])) {
-            $hist->sqlLimit = (int)$data["limit"];
+        $limit = $this->args()->get("limit");
+        if (!is_null($limit) && is_numeric($limit)) {
+            $hist->sqlLimit = (int)$limit;
         }
-        if (isset($data["start"]) && is_numeric($data["start"])) {
-            $hist->sqlStart = (int)$data["start"];
+        $start = $this->args()->get("start");
+        if (!is_null($start) && is_numeric($start)) {
+            $hist->sqlStart = (int)$start;
         }
-        if (isset($data["order"])) {
-            $order = trim(strtolower($data["order"]));
+        $order = $this->args()->get("order");
+        if (!is_null($order)) {
+            $order = trim(strtolower($order));
             if (($order === "asc") || ($order === "desc")) {
                 $hist->sqlOrderBy = "Date ".$order;
             }
         }
         $since = $this->args()->get("since");
         $until = $this->args()->get("until");
-        if ($until == 0) {
+        if (empty($until)) {
             $until = time();
         }
         if (is_null($since)) {

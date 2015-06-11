@@ -44,7 +44,7 @@ HUGnet.Annotation = Backbone.Model.extend({
     idAttribute: 'id',
     defaults:
     {
-        id: 0,
+        id: null,
         date: 0,
         test: 0,
         type: "Unknown",

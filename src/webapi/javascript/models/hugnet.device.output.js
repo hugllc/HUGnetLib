@@ -79,7 +79,7 @@ HUGnet.DeviceOutput = Backbone.Model.extend({
         var self = this;
         var dev = this.get('dev');
         $.ajax({
-            type: 'POST',
+            type: 'PUT',
             url: this.url()+"/settable",
             cache: false,
             dataType: 'json',

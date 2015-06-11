@@ -44,7 +44,7 @@ HUGnet.Datacollector = Backbone.Model.extend({
     idAttribute: 'uuid',
     defaults:
     {
-        uuid: 0,
+        uuid: null,
         GatewayKey: 0,
         name: "",
         ip: "",

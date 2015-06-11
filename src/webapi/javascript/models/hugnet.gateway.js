@@ -44,7 +44,7 @@ HUGnet.Gateway = Backbone.Model.extend({
     idAttribute: 'id',
     defaults:
     {
-        id: 0,
+        id: null,
         name: '',
         location: '',
         description: '',

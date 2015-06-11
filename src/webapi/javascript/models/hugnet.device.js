@@ -44,7 +44,7 @@ HUGnet.Device = Backbone.Model.extend({
     idAttribute: 'id',
     defaults:
     {
-        id: 0,
+        id: null,
         DeviceID: '000000',
         DeviceName: '',
         HWPartNum: '',
@@ -95,7 +95,10 @@ HUGnet.Device = Backbone.Model.extend({
     {
         _.bindAll(this, "input", "output", "process", "power");
         if (this.get("DeviceID") === '000000') {
-            this.set("DeviceID", this.get("id").toString(16));
+            var id = this.get("id");
+            if (id != null) {
+                this.set("DeviceID", id.toString(16));
+            }
         }
     },
     /**
