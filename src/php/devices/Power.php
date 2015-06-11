@@ -62,6 +62,8 @@ class Power extends \HUGnet\base\IOPBase
 {
     /** These are our keys to search for.  Null means search everything given */
     protected $keys = array("dev", "power");
+    /** This is the type of IOP this is */
+    protected $type = "power";
     /**
     * This is the cache for the drivers.
     */

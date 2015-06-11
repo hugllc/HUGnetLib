@@ -62,6 +62,8 @@ abstract class IOPBase extends SystemTableBase
 {
     /** These are our keys to search for.  Null means search everything given */
     protected $keys = array("dev");
+    /** This is the type of IOP this is */
+    protected $type = "replaceme";
     /**
     * This is the cache for the drivers.
     */
@@ -122,6 +124,15 @@ abstract class IOPBase extends SystemTableBase
             $object->load($data);
         }
         return $object;
+    }
+    /**
+    * This returns the number of tables on this device
+    *
+    * @return The number of tables on the is device
+    */
+    public function count()
+    {
+        return (int)$this->_device->get(ucfirst($this->type)."Tables");
     }
     /**
     * Sets a value
@@ -453,13 +464,14 @@ abstract class IOPBase extends SystemTableBase
                 $ret = $this->_settable($api->args());
             } else {
                 $ret = $this->_put($api->args());
-                if ($ret == "regen") {
-                    $api->response(202);
-                } else {
-                    $api->response(401);
-                    $c = get_class($api);
-                    $api->error($c::SAVE_FAILED);
-                }
+            }
+            if ($ret == "regen") {
+                $api->response(202);
+                $ret = $this->toArray(true);
+            } else {
+                $api->response(401);
+                $c = get_class($api);
+                $api->pdoerror($this->lastError(), $c::SAVE_FAILED);
             }
         } else {
             $api->response(401);
@@ -536,6 +548,26 @@ abstract class IOPBase extends SystemTableBase
         // If the driver is empty, then the whole IOP object is empty
         return ($this->table()->get("id") == 0xFF);
     }
+    /**
+    * Changes data that is in the table and saves it
+    *
+    * @param array $where   The things the list should filter for
+    * @param bool  $default Whether to add the default stuff on or not.
+    *
+    * @return null
+    */
+    public function getList($where = null, $default = false)
+    {
+        $return = array();
+        $fct = $this->type;
+        if (is_callable(array($this->_device, $fct))) {
+            for ($i = 0; $i < $this->count(); $i++) {
+                $return[$i] = $this->_device->$fct($i)->toArray($default);
+            }
+        }
+        return $return;
+    }
+
 }
 
 

@@ -56,7 +56,7 @@ var DevicePropertiesView = Backbone.View.extend({
     },
     initialize: function (options)
     {
-        _.bindAll(this, "saveSuccess", "saveFail");
+        _.bindAll(this, "saveSuccess", "saveFail", "fetch");
         this.model.lock = true;
         this.datachannelsmodel = new HUGnet.DeviceDataChannels();
         var datachannels = this.model.get('dataChannels');
@@ -108,10 +108,10 @@ var DevicePropertiesView = Backbone.View.extend({
         );
         this._template = _.template($(this.template).html());
         this._tTemplate = _.template($(this.tTemplate).html());
-        this.inputsmodel = this.model.input();
-        this.outputsmodel = this.model.output();
-        this.processesmodel = this.model.process();
-        this.powersmodel = this.model.power();
+        this.inputsmodel = this.model.input(null, true);
+        this.outputsmodel = this.model.output(null, true);
+        this.processesmodel = this.model.process(null, true);
+        this.powersmodel = this.model.power(null, true);
     },
     inputList: function ()
     {
@@ -171,7 +171,7 @@ var DevicePropertiesView = Backbone.View.extend({
                 setparams: params
             },
             {
-                "success" : self.saveSuccess, "error": self.saveFail
+                "success" : self.saveSuccess, "error": self.saveFail, wait: true
             }
         );
         this.setTitle();
@@ -243,6 +243,10 @@ var DevicePropertiesView = Backbone.View.extend({
     {
         return this._tTemplate(this.model.toJSON());
     },
+    fetch: function ()
+    {
+        this.model.fetch();
+    },
     popup: function (view, title)
     {
         this.$el.append(view.render().el);
@@ -255,6 +259,7 @@ var DevicePropertiesView = Backbone.View.extend({
             dialogClass: "window",
             zIndex: 800
         });
+        view.$el.on("dialogclose", this.fetch);
     }
 });
 

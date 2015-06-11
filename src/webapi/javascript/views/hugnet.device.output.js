@@ -53,17 +53,15 @@ var DeviceOutputPropertiesView = Backbone.View.extend({
     },
     initialize: function (options)
     {
+        _.bindAll(this, "saveSuccess", "saveFail");
         this.model.on('change', this.render, this);
-        this.model.on('saved', this.saveSuccess, this);
-        this.model.on('savefail', this.saveFail, this);
         this._template = _.template($(this.template).html());
+        this._tTemplate = _.template($(this.tTemplate).html());
     },
     saveSuccess: function (e)
     {
         if (this._close) {
             this.model.off('change', this.render, this);
-            this.model.off('saved', this.saveSuccess, this);
-            this.model.off('savefail', this.saveFail, this);
             this.remove();
         }
     },
@@ -88,8 +86,10 @@ var DeviceOutputPropertiesView = Backbone.View.extend({
         this.setTitle( " [ Saving...] " );
         var data = this.$('form').serializeObject();
         
-        this.model.set(data);
-        this.model.save();
+        this.model.save(
+            data,
+            { "success": this.saveSuccess, "error": this.saveFail, wait: true }
+        );
         this.setTitle();
     },
     setTitle: function (extra)
@@ -113,12 +113,7 @@ var DeviceOutputPropertiesView = Backbone.View.extend({
         var data = this.model.toJSON();
         _.extend(data, HUGnet.viewHelpers);
         var i;
-        this.$el.html(
-            _.template(
-                $(this.template).html(),
-                data
-            )
-        );
+        this.$el.html(this._template(data));
         return this;
     },
     /**
@@ -133,7 +128,7 @@ var DeviceOutputPropertiesView = Backbone.View.extend({
     title: function ()
     {
         var data = this.model.toJSON();
-        this.$el.html(this._template(data));
+        return this._tTemplate(data);
     }
 });
 
@@ -206,7 +201,6 @@ HUGnet.DeviceOutputsView = Backbone.View.extend({
     },
     initialize: function (options)
     {
-        //this.model.bind('add', this.insert, this);
         this._template = _.template($(this.template).html());
     },
     /**

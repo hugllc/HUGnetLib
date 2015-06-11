@@ -175,6 +175,15 @@ abstract class Table extends TableBase
         return $this->getRow($this->get($sqlId));
     }
     /**
+    * Gets columns from a mysql server
+    *
+    * @return null
+    */
+    public function lastError()
+    {
+        return $this->dbdriver()->lastError();
+    }
+    /**
     * Creates the object from a string or array
     *
     * @param mixed $data This is whatever you want to give the class

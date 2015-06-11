@@ -252,6 +252,8 @@ class WebInterface2
             $api->response(202);
         } else {
             $api->response(400);
+            $c = get_class($api);
+            $api->pdoerror($this->_device->lastError(), $c::SAVE_FAILED);
         }
         return "";
     }

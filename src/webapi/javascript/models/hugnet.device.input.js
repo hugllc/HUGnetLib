@@ -56,6 +56,8 @@ HUGnet.DeviceInput = Backbone.Model.extend({
         tableEntry: {},
         fullEntry: {},
         otherTables: {},
+        otherTypes: {},
+        validUnits: {},
         lastTable: "None",
         driver: 'SDEFAULT',
         params: {},

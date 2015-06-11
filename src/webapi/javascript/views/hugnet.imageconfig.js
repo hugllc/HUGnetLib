@@ -429,36 +429,7 @@ HUGnet.ImageConfigView = Backbone.View.extend({
     },
     create: function ()
     {
-        var self = this;
-        var ret = $.ajax({
-            type: 'GET',
-            url: this.url,
-            dataType: 'json',
-            cache: false,
-            data:
-            {
-                "task": "image",
-                "action": "put",
-                "data": {
-                    "name": 'New Image',
-                }
-            }
-        }).done(
-            function (data)
-            {
-                if (_.isObject(data)) {
-                    self.trigger('created');
-                    self.model.add(data);
-                } else {
-                    self.trigger('newfail');
-                }
-            }
-        ).fail(
-            function ()
-            {
-                self.trigger('newfail');
-            }
-        );
+        this.model.create({"name": "New Image"});
     },
     popup: function (view)
     {

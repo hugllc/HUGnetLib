@@ -254,9 +254,7 @@ abstract class SystemTableBase
             $this->table()->set("group", $data["group"]);
         }
         $wdata = (array)$this->table()->sanitizeWhere($data);
-        error_log("Before ".json_encode($wdata));
         $ret = $this->table()->selectOneInto($wdata);
-        error_log("After");
         return $ret;
     }
     /**
@@ -322,6 +320,15 @@ abstract class SystemTableBase
         return $this->table()->toArray($default);
     }
     /**
+    * Gets columns from a mysql server
+    *
+    * @return null
+    */
+    public function lastError()
+    {
+        return $this->table()->lastError();
+    }
+    /**
     * Stores data into the database
     *
     * @param bool $replace Replace any record that is in the way
@@ -334,7 +341,6 @@ abstract class SystemTableBase
         $this->fixTable();
         if (empty($sid) || $replace || $this->isNew()) {
             $ret = $this->table()->insertRow($replace);
-            error_log("Store Ret: ".json_encode($ret));
             $this->_new = false;
         } else {
             $ret = $this->table()->updateRow();

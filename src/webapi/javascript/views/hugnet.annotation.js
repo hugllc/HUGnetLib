@@ -83,7 +83,7 @@ var AnnotationPropertiesView = Backbone.View.extend({
                 text: this.$('[name="text"]').val(),
                 author: this.$('[name="author"]').val(),
             },
-            { "success": this.saveSuccess, "error": this.saveFail }
+            { "success": this.saveSuccess, "error": this.saveFail, wait: true }
         );
         this.setTitle();
     },

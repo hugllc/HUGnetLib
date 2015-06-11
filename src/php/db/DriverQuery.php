@@ -72,6 +72,8 @@ abstract class DriverQuery
     protected $driver = "";
     /** @var array The cache of table data */
     private static $_tableCache = array();
+    /** @var array the last error */
+    protected $error = null;
 
     /**
     * Register this database object
@@ -190,6 +192,15 @@ abstract class DriverQuery
         return array();
     }
     /**
+    * Gets columns from a mysql server
+    *
+    * @return null
+    */
+    public function lastError()
+    {
+        return $this->error;
+    }
+    /**
     * This function deals with errors
     *
     * @param array  $errorInfo The output of any of the pdo errorInfo() functions
@@ -209,6 +220,8 @@ abstract class DriverQuery
                 $severity
             );
         }
+        $this->error = $errorInfo;
+        
         $this->system->out(
             "With Error: ".print_r($errorInfo, true),
             8
@@ -228,6 +241,9 @@ abstract class DriverQuery
     */
     public function query($query = "", $data = array())
     {
+        // Clear the last error
+        $this->error = null;
+        
         $pdo = $this->pdo()->prepare($query);
 
         $res = false;

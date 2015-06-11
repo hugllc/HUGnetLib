@@ -62,6 +62,8 @@ class Process extends \HUGnet\base\IOPBase
 {
     /** These are our keys to search for.  Null means search everything given */
     protected $keys = array("dev", "process");
+    /** This is the type of IOP this is */
+    protected $type = "process";
     /**
     * This is the cache for the drivers.
     */

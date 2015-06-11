@@ -164,7 +164,7 @@ HUGnet.Datacollectors = Backbone.Collection.extend({
     run: function (action)
     {
         var model = this.at(0);
-        if ((typeof model == "object") && (model.get("uuid") != 0)) {
+        if (_.isObject(model) && !_.isNull(model.get("uuid"))) {
             model.run(action);
             return true;
         }

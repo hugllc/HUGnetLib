@@ -61,6 +61,7 @@ class WebAPI2 extends HTML
     const NOT_IMPLEMENTED = 1;
     const NOT_FOUND = 2;
     const SAVE_FAILED = 3;
+    const DELETE_FAILED = 4;
     /** The config we are using */
     private $_config = array();
     /** The arguments we got */
@@ -173,6 +174,7 @@ class WebAPI2 extends HTML
         self::NOT_IMPLEMENTED => "This is not implemented at the present time",
         self::NOT_FOUND       => "The object you requested does not exist",
         self::SAVE_FAILED     => "Could not save this to the database",
+        self::DELETE_FAILED   => "Could not delete this from the database",
     );
 
     /**
@@ -275,6 +277,24 @@ class WebAPI2 extends HTML
     /**
     * This returns a json encoded error object
     *
+    * @param mixed  $error    The errorInfo array returned from the PDO object
+    * @param int    $code     The error code
+    * @param string $message  The message to send with it
+    * @param string $moreInfo Where to get more information
+    *
+    * @return bool
+    */
+    public function pdoerror($error, $code, $message = null, $moreInfo = "")
+    {
+        if (is_array($error)) {
+            $this->error($error[0], $error[2], $moreInfo);
+        } else {
+            $this->error($code, $message, $moreInfo);
+        }
+    }
+    /**
+    * This returns a json encoded error object
+    *
     * @param int    $code     The error code
     * @param string $message  The message to send with it
     * @param string $moreInfo Where to get more information
@@ -286,11 +306,22 @@ class WebAPI2 extends HTML
         if (empty($message) && isset($this->_errorMsg[$code])) {
             $message = $this->_errorMsg[$code];
         }
-        error_log("WebAPI2 ($code) $message"); 
+        $path = "/".$this->_object;
+        if (!is_null($this->_id)) {
+            $path .= "/".$this->_id;
+        }
+        if (!is_null($this->_subobject)) {
+            $path .= "/".$this->_subobject;
+        }
+        if (!is_null($this->_sid)) {
+            $path .= "/".$this->_sid;
+        }
+        
+        error_log("WebAPI2: $path ($code) $message"); 
         return array(
             "code" => $code,
             "message" => $message,
-            "moreInfo" => $moreInfo
+            "moreInfo" => "($path) ".(string)$moreInfo
         );
     }
     /**
@@ -509,14 +540,12 @@ class WebAPI2 extends HTML
             }
         } else if (($this->_method === "POST") && $this->_auth(true)) {
             $data = (array)$this->args()->get("data");
-            error_log(json_encode($data));
             $ret = $this->_obj->create($data);
-            error_log("Final Ret: ".json_encode($ret));
             if ($ret) {
                 $this->response(202);
             } else {
                 $this->response(400);
-                $this->error(self::SAVE_FAILED);
+                $this->pdoerror($this->_obj->lastError(), self::SAVE_FAILED);
             }
             
         } else if (($this->_method === "PUT") && $this->_auth(true)) {
@@ -526,11 +555,19 @@ class WebAPI2 extends HTML
                 $this->response(202);
             } else {
                 $this->response(400);
-                $this->error(self::SAVE_FAILED);
+                $this->pdoerror($this->_obj->lastError(), self::SAVE_FAILED);
             }
         } else if (($this->_method === "PATCH") && $this->_auth(true)) {
             $this->response(501);
             $this->error(self::NOT_IMPLEMENTED);
+        } else if (($this->_method === "DELETE") && $this->_auth(true)) {
+            $ret = (int)$this->_obj->delete();
+            if ($ret) {
+                $this->response(202);
+            } else {
+                $this->response(400);
+                $this->pdoerror($this->_obj->lastError(), self::DELETE_FAILED);
+            }
         }
         if (is_null($ret)) {
             $this->_obj->load($this->_obj->id());
@@ -993,7 +1030,7 @@ class WebAPI2 extends HTML
                 $this->_headerNoCache();
                 $this->_headerJSON();
                 if (!is_null($data)) {
-                    print json_encode($data);
+                    print json_encode($data, JSON_PRETTY_PRINT);
                 }
             }
             if ($this->system()->get("verbose") > 0) {

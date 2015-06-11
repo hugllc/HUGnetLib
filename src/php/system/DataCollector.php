@@ -92,6 +92,9 @@ class DataCollector extends \HUGnet\base\SystemTableBase
     public function toArray($default = false)
     {
         $return = (array)parent::toArray($default);
+        if (is_string($return["Runtime"])) {
+            $return["Runtime"] = json_decode($return["Runtime"]);
+        }
         if ($default) {
             // This is checks for it being 1 hour late
             $late = $this->system()->now() - 3600;
