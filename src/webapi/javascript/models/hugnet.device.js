@@ -195,6 +195,39 @@ HUGnet.Device = Backbone.Model.extend({
         return new HUGnet.Histories(models, options);
     },
     /**
+     * This returns a power from this device
+     */
+    historyurl: function(type, format, since, until, order, limit)
+    {
+        if (_.isEmpty(type)) {
+            type = "15MIN";
+        }
+        var params = [];
+        if (_.isNumber(since)) {
+            params.unshift("since="+parseInt(since, 10));
+        }
+        if (_.isNumber(until)) {
+            params.unshift("until="+parseInt(until, 10));
+        }
+        if (_.isNumber(order)) {
+            params.unshift("order="+encodeURIComponent(order));
+        }
+        if (!_.isEmpty(limit)) {
+            params.unshift("limit="+parseInt(limit, 10));
+        }
+        if (!_.isEmpty(format)) {
+            params.unshift("format="+encodeURIComponent(format));
+        }
+        var p = params.join("&");
+
+        var url = this.url()+"/history/"+encodeURIComponent(type);
+        if (!_.isEmpty(p)) {
+            url = url + "?" + p;
+        }
+        return url;
+
+    },
+    /**
     * This returns a power from this device
     */
     annotations: function(options)

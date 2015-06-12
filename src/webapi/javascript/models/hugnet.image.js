@@ -112,7 +112,11 @@ HUGnet.Image = Backbone.Model.extend({
         if (!format) {
             format = "PNG";
         }
-        return this.url()+"?until="+date+"&type="+type+"&format="+format
+        return this.url()+"/image?until="+date+"&type="+type+"&format="+format
+    },
+    inserturl: function()
+    {
+        return this.url()+"/insert"
     },
     /**
     * Gets infomration about a device.  This is retrieved from the database only.
@@ -189,7 +193,6 @@ HUGnet.Images = Backbone.Collection.extend({
         if (options) {
             if (options.baseurl) this.baseurl = options.baseurl;
         }
-        this.on('add', this.update, this);
     },
     url: function ()
     {
@@ -216,7 +219,7 @@ HUGnet.Images = Backbone.Collection.extend({
     _refresh: function ()
     {
         if (this.timer != null) {
-            this.update();
+            this.fetch();
             this._refreshSetTimeout();
         }
     },
@@ -230,10 +233,4 @@ HUGnet.Images = Backbone.Collection.extend({
             (this.refresh * 1000)
         );
     },
-    update: function (model, collection, options)
-    {
-        if (typeof model == "object") {
-            model.fetch();
-        }
-    }
 });

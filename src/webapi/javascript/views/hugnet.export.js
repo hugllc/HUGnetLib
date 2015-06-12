@@ -94,18 +94,28 @@ HUGnet.ExportView = Backbone.View.extend({
         } else {
             this.order = "desc";
         }
-        this.csvurl = this.url+"?task=history&action=get&format=CSV";
+//        this.csvurl = this.url+"?task=history&action=get&format=CSV";
         if (this.until != 0) {
             var until = this.until;
         } else {
             var until = this.last;
         }
+        this.csvurl = window.location.origin+this.model.historyurl(
+            this.$('#type').val(), //type,
+            "CSV", // format,
+            parseInt(this.since/1000), // since,
+            parseInt(until/1000), // until,
+            this.order, // order,
+            this.csvlimit // limit
+        );
+        /*
         this.csvurl += "&id="+this.model.get("id").toString(16);
         this.csvurl += "&data[since]="+parseInt(this.since/1000);
         this.csvurl += "&data[until]="+parseInt(until/1000);
         this.csvurl += "&data[order]="+this.order;
         this.csvurl += "&data[limit]="+this.csvlimit;
         this.csvurl += "&data[type]="+this.$('#type').val();
+        */
         this.$("#csvurl").html(this.csvurl);
         this.iframe.attr('src', this.csvurl);
     },

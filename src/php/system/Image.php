@@ -131,6 +131,23 @@ class Image extends \HUGnet\base\SystemTableBase
             $type = $api->args()->get("type");
             $ret = $this->getReading($data["date"], $data["type"]);
             $api->response(200);
+        } else if (($method === "GET") && ($object == "image")) {
+            $this->_getImg($api->args());
+            $api->response(200);
+        } else if (($method === "POST") && ($object == "insert")) {
+            $ret = 0;
+            if ($this->_insertImg($api->args())) {
+                if ($this->store()) {
+                    $ret = 1;
+                }
+            }
+            if ($ret) {
+                $api->response(202);
+            } else {
+                $api-response(401);
+                $c = get_class($api);
+                $api->pdoerror($this->lastError(), $c::SAVE_FAILED);
+            }
         } else {
             $api->response(401);
             $c = get_class($api);
@@ -256,7 +273,7 @@ class Image extends \HUGnet\base\SystemTableBase
     *
     * @return string
     */
-    private function _insert($args)
+    private function _insertImg($args)
     {
         header('Content-type: text/plain; charset=UTF-8');
         if (file_exists($_FILES["import"]["tmp_name"])) {
@@ -276,6 +293,7 @@ class Image extends \HUGnet\base\SystemTableBase
         } else {
             $data = $args->get("data");
         }
+        error_log(base64_encode($data));
         if (is_string($data) && (strlen($data) > 0)) {
             $this->load($args->get("id"));
             $this->table()->set("image", base64_encode($data));
@@ -285,6 +303,20 @@ class Image extends \HUGnet\base\SystemTableBase
             $this->table()->set("width", imagesx($img));
             $this->setParam("LastModified", $this->system()->now());
             imagedestroy($img);
+            return true;
+        }
+        return false;
+    }
+    /**
+    * Insert a background image
+    *
+    * @param object $args The argument object
+    *
+    * @return string
+    */
+    private function _insert($args)
+    {
+        if ($this->_insertImg($args)) {
             print json_encode((string)((int)$this->table()->updateRow()));
         } else {
             print json_encode("0");

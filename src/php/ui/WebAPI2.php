@@ -129,6 +129,12 @@ class WebAPI2 extends HTML
                 "reading" => array(
                     "methods" => "external",
                 ),
+                "insert" => array(
+                    "methods" => "external",
+                ),
+                "image" => array(
+                    "methods" => "external",
+                ),
             ),
         ),
         "inputtable" => array(

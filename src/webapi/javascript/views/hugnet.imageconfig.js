@@ -133,7 +133,7 @@ var ImageConfigPropertiesView = Backbone.View.extend({
             }
         });
         output.points = points;
-        this.model.save(output, { success: this.saveclose, error: this.saveFail, wait: true });
+        this.model.save(output, { error: this.saveFail, wait: true });
         this.setTitle();
     },
     saveclose: function (e)
@@ -221,11 +221,11 @@ var ImageConfigPropertiesView = Backbone.View.extend({
             return;
         }
         var id = parseInt(this.model.get("id"), 10);
-        var url = this.url+"?task=image&action=insert&id="+id;
+        var url = this.model.inserturl();
         var form = $("#insertImage");
         form.attr({
             action: url,
-            method: 'post',
+            method: 'POST',
             enctype: 'multipart/form-data',
             encoding: 'multipart/form-data',
             target: "insertImageFrame"
@@ -260,7 +260,7 @@ var ImageConfigPropertiesView = Backbone.View.extend({
                 draggable: true,
                 width: 300,
                 title: title,
-                dialogClass: "window no-close",
+                dialogClass: "window",
                 zIndex: 500,
             });
             this.progress.update(false);
