@@ -112,7 +112,7 @@ HUGnet.Image = Backbone.Model.extend({
         if (!format) {
             format = "PNG";
         }
-        return this.url()+"/image?until="+date+"&type="+type+"&format="+format
+        return this.url()+"/image?until="+date+"&type="+encodeURIComponent(type)+"&format="+encodeURIComponent(format)
     },
     inserturl: function()
     {
