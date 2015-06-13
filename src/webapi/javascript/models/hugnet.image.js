@@ -138,32 +138,22 @@ HUGnet.Image = Backbone.Model.extend({
                 var type = "";
             }
             var self = this;
-            $.ajax({
-                type: 'GET',
-                url: this.url()+"/reading",
-                dataType: 'json',
-                cache: false,
-                data:
-                {
-                    "until": date,
-                    "type": type,
-                }
-            }).done(
-                function (data)
-                {
-                    if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', encodeURI(this.url()+'/reading?until='+date+'&type='+type));
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var data = xhr.responseText;
+                    if ((data !== null) && _.isObject(data)) {
                         self.set("data", data);
                         self.trigger('datasync', self);
                     } else {
                         self.trigger('datasyncfail', "getReading failed on server");
                     }
+                } else {
                 }
-            ).fail(
-                function ()
-                {
-                    self.trigger('datasyncfail', "failed to contact server");
-                }
-            );
+            };
+            xhr.send();
         }
     },
 });
