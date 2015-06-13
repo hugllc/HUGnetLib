@@ -58,9 +58,7 @@ var DevicePropertiesView = Backbone.View.extend({
     {
         _.bindAll(this, "saveSuccess", "saveFail", "fetch");
         this.model.lock = true;
-        this.datachannelsmodel = new HUGnet.DeviceDataChannels();
-        var datachannels = this.model.get('dataChannels');
-        this.datachannelsmodel.reset(datachannels);
+        this.datachannelsmodel = this.model.datachan();
         this.datachannels = new HUGnet.DeviceDataChannelsView({
             model: this.datachannelsmodel
         });
@@ -72,9 +70,7 @@ var DevicePropertiesView = Backbone.View.extend({
             },
             this
         );
-        this.controlchannelsmodel = new HUGnet.DeviceControlChannels();
-        var controlchannels = this.model.get('controlChannels');
-        this.controlchannelsmodel.reset(controlchannels);
+        this.controlchannelsmodel = this.model.controlchan();
         this.controlchannels = new HUGnet.DeviceControlChannelsView({
             model: this.controlchannelsmodel
         });

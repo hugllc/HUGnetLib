@@ -114,7 +114,7 @@ HUGnet.OutputsView = Backbone.View.extend({
         var device;
         var i;
         
-        this.controlchannelsmodel = new HUGnet.DeviceControlChannels();
+        this.controlchannelsmodel = this.model.controlchan();
         var controlchannels = this.model.get('controlChannels');
         var dev = this.model.get('id');
         _.each(

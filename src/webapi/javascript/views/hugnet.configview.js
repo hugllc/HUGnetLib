@@ -156,17 +156,14 @@ var DeviceConfigView = Backbone.View.extend({
             this.modelset = this.model;
         }
         this.model.lock = true;
-        this.datachannelsmodel = new HUGnet.DeviceDataChannels();
-        var datachannels = this.modelset.get('dataChannels');
-        this.datachannelsmodel.reset(datachannels);
+        this.datachannelsmodel = this.model.datachan();
         this.datachannels = new HUGnet.DeviceDataChannelsView({
             model: this.datachannelsmodel,
             template: "#Config"+set+"ViewDataChannelListTemplate",
             rowTemplate: "#Config"+set+"ViewDataChannelEntryTemplate"
         });
-        this.controlchannelsmodel = new HUGnet.DeviceControlChannels();
-        var controlchannels = this.modelset.get('controlChannels');
-        this.controlchannelsmodel.reset(controlchannels);
+        
+        this.controlchannelsmodel = this.model.controlchan();
         this.controlchannels = new HUGnet.DeviceControlChannelsView({
             model: this.controlchannelsmodel,
             template: "#Config"+set+"ViewControlChannelListTemplate",

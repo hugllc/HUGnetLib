@@ -88,6 +88,7 @@ HUGnet.Device = Backbone.Model.extend({
     outputCache: null,
     processCache: null,
     powerCache: null,
+    controlchanCache: null,
     /**
     * This function initializes the object
     */
@@ -193,6 +194,41 @@ HUGnet.Device = Backbone.Model.extend({
         }
         options.baseurl = this.url();
         return new HUGnet.Histories(models, options);
+    },
+    /**
+    * This returns a process from this device
+    */
+    controlchan: function(id, fetch)
+    {
+        if ((this.controlchanCache == null) || !_.isObject(this.controlchanCache)) {
+            this.controlchanCache = new HUGnet.DeviceControlChannels({
+                "baseurl": this.url()
+            });
+            this.controlchanCache.reset(this.get('controlChannels'));
+        }
+        if (fetch) {
+            this.controlchanCache.fetch();
+        }
+        if (_.isNumber(id)) {
+            return this.controlchanCache.get(id);
+        }
+        return this.controlchanCache;
+    },
+    /**
+    * This returns a process from this device
+    */
+    datachan: function(id, fetch)
+    {
+        if ((this.datachanCache == null) || !_.isObject(this.datachanCache)) {
+            this.datachanCache = new HUGnet.DeviceDataChannels({
+                "baseurl": this.url()
+            });
+            this.datachanCache.reset(this.get('dataChannels'));
+        }
+        if (_.isNumber(id)) {
+            return this.datachanCache.get(id);
+        }
+        return this.datachanCache;
     },
     /**
      * This returns a power from this device

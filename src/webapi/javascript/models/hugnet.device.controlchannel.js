@@ -121,9 +121,20 @@ HUGnet.DeviceControlChannel = Backbone.Model.extend({
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 HUGnet.DeviceControlChannels = Backbone.Collection.extend({
-    url: '/controlchan',
+    urlPart: '/controlchan',
     model: HUGnet.DeviceControlChannel,
-    comparator: function (model)
+    baseurl: '',
+    initialize: function (options)
+    {
+        if (options) {
+            if (options.baseurl) this.baseurl = options.baseurl;
+        }
+    },
+    url: function ()
+    {
+        return this.baseurl + this.urlPart;
+    },
+     comparator: function (model)
     {
         return parseInt(model.get("channel"), 10);
     },
