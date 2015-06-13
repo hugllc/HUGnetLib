@@ -259,35 +259,11 @@ HUGnet.OutputTablesView = Backbone.View.extend({
     },
     create: function ()
     {
-        var self = this;
-        var ret = $.ajax({
-            type: 'GET',
-            url: this.url,
-            dataType: 'json',
-            cache: false,
-            data:
+        this.model.create(
             {
-                "task": "outputTable",
-                "action": "put",
-                "data": {
-                    "name": 'New Table',
-                }
-            }
-        }).done(
-            function (data)
-            {
-                if (_.isObject(data)) {
-                    self.trigger('created');
-                    self.model.add(data);
-                } else {
-                    self.trigger('newfail');
-                }
-            }
-        ).fail(
-            function ()
-            {
-                self.trigger('newfail');
-            }
+                name: "New Table"
+            },
+            { wait: true }
         );
     },
     popup: function (view)

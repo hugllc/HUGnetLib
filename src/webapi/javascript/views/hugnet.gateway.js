@@ -369,49 +369,6 @@ HUGnet.GatewaysView = Backbone.View.extend({
         this.$('tbody').append(view.render().el);
         this.$("table").trigger('update');
     },
-    createTest: function ()
-    {
-        this.createVirtual("test");
-    },
-    createFastVirtual: function ()
-    {
-        this.createVirtual("fastaverage");
-    },
-    createSlowVirtual: function ()
-    {
-        this.createVirtual("slowaverage");
-    },
-    createVirtual: function (type)
-    {
-        var self = this;
-        var ret = $.ajax({
-            type: 'GET',
-            url: this.url,
-            dataType: 'json',
-            cache: false,
-            data:
-            {
-                "task": "device",
-                "action": "new",
-                "data": { type: type }
-            }
-        }).done(
-            function (data)
-            {
-                if (_.isObject(data)) {
-                    self.trigger('created');
-                    self.model.add(data);
-                } else {
-                    self.trigger('newfail');
-                }
-            }
-        ).fail(
-            function (data)
-            {
-                self.trigger('newfail');
-            }
-        );
-    },
     popup: function (view)
     {
         this.$el.append(view.render().el);
