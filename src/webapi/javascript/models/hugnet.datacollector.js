@@ -69,32 +69,27 @@ HUGnet.Datacollector = Backbone.Model.extend({
     run: function (action)
     {
         var self = this;
-        var method = "GET"
+        var xhr = new XMLHttpRequest();
         if (action === "run") {
-            method = "POST";
+            xhr.open('POST', this.url()+"/run");
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        } else {
+            xhr.open('GET', this.url()+"/run");
         }
-        var ret = $.ajax({
-            type: method,
-            url: this.url()+"/run",
-            dataType: 'json',
-            cache: false,
-            data: {}
-        }).done(
-            function (data)
-            {
-                if (data == 1) {
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                if (parseInt(xhr.responseText, 10) == 1) {
                     self.trigger('testrunning');
                 } else {
                     self.trigger('testpaused');
                 }
             }
-        ).fail(
-            function ()
-            {
-                //self.statusFail();
+            else {
                 self.trigger('statusfail');
             }
-        );
+        };
+        xhr.send();
+
     },
 });
 
