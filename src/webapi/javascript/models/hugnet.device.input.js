@@ -79,32 +79,27 @@ HUGnet.DeviceInput = Backbone.Model.extend({
     settable: function(table)
     {
         var self = this;
-        var dev = this.get('dev');
-        $.ajax({
-            type: 'PUT',
-            contentType: "application/json",
-            url: this.url()+"/settable",
-            cache: false,
-            dataType: 'json',
-            data: parseInt(table)
-        }).done(
-            function (data)
-            {
-                if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
+        var xhr = new XMLHttpRequest();
+
+        xhr.open('PUT', this.url()+'/settable');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function() {
+            if ((xhr.status === 200) || (xhr.status === 202)){
+                var data = JSON.parse(xhr.responseText);
+                if (_.isObject(data)) {
                     self.trigger('saved');
                     self.set(data);
                     self.trigger('fetchdone');
                     self.trigger('sync');
                 } else {
-                    self.trigger('savefail', "set table failed on server");
+                    self.trigger('savefail');
                 }
+            } else {
+                self.trigger('savefail');
             }
-        ).fail(
-            function ()
-            {
-                self.trigger('savefail', "failed to contact server");
-            }
-        );
+        };
+        xhr.send(JSON.stringify(parseInt(table)));
+
     }
 });
 

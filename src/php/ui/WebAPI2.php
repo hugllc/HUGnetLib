@@ -552,7 +552,37 @@ class WebAPI2 extends HTML
             $ret = $this->error(self::NOT_FOUND);
         } else if (($this->_method === "GET") && $this->_auth(false)) {
             if (is_null($this->_id) || (is_null($this->_sid) && !empty($this->_subobject))) {
-                $ret = $this->_obj->getList($data, true);
+                $where = array();
+                $field = $this->_obj->table()->dateField();
+                $limit = $this->args()->get("limit");
+                if (!is_null($limit) && is_numeric($limit)) {
+                    $$this->_obj->table()->sqlLimit = (int)$limit;
+                }
+                $start = $this->args()->get("start");
+                if (!is_null($start) && is_numeric($start)) {
+                    $this->_obj->table()->sqlStart = (int)$start;
+                }
+                $order = $this->args()->get("order");
+                if (!is_null($order) && !empty($field)) {
+                    $order = trim(strtolower($order));
+                    if (($order === "asc") || ($order === "desc")) {
+                        $this->_obj->table()->sqlOrderBy = $field." ".$order;
+                    }
+                }
+                $date = array();
+                $since = $this->args()->get("since");
+                if (!is_null($since)) {
+                    $date['$gte'] = (int)$since;
+                }
+                $until = $this->args()->get("until");
+                if (!is_null($until)) {
+                    $date['$lte'] = (int)$until;
+                }
+                if (!empty($date) && !empty($field)) {
+                    $where[$field] = $date;
+                }
+
+                $ret = $this->_obj->getList($where, true);
             } else {
                 if ($this->_obj->isNew()) {
                     $ret = new \StdClass();

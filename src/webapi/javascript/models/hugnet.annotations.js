@@ -129,13 +129,73 @@ HUGnet.Annotations = Backbone.Collection.extend({
             (this.refresh * 1000)
         );
     },
-    /**
-    * Gets infomration about a device.  This is retrieved from the database only.
-    *
-    * @param id The id of the device to get
-    *
-    * @return null
-    */
+    fetch: function (test, since, until)
+    {
+        var self = this;
+
+        var since = Math.round(since / 1000);
+        var until = Math.round(until / 1000);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', encodeURI(this.url()+'?until='+until+'&since='+since));
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText);
+                if ((data !== null) && _.isObject(data)) {
+                    self.each(
+                        function (model, collection, options)
+                        {
+                            var date = model.get("testdate");
+                            if ((date > (until / 1000)) || (date < (since / 1000))) {
+                                model.collection.remove(model);
+                            }
+                        },
+                        self
+                    );
+                    self.add(data);
+                } else {
+                    self.trigger('fetchfail');
+                }
+            } else {
+            }
+        };
+        xhr.send();
+        /*
+        var self = this;
+        var ret = $.ajax({
+            type: 'GET',
+            url: this.url,
+            dataType: 'json',
+            cache: false,
+            data: {
+                "task": "annotation",
+                "action": "list",
+                "data": {
+                    test: test,
+                    since: since / 1000,
+                    until: until / 1000,
+                    type: type
+                }
+            }
+        });
+        ret.done(
+            function (data)
+            {
+                self.each(
+                    function (model, collection, options)
+                    {
+                        var date = model.get("testdate");
+                        if ((date > (until / 1000)) || (date < (since / 1000))) {
+                            model.collection.remove(model);
+                        }
+                    },
+                    self
+                );
+                self.add(data);
+            }
+        );
+        */
+    },
     update: function()
     {
         this.forEach(

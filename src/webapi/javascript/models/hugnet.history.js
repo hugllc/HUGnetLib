@@ -185,8 +185,36 @@ HUGnet.Histories = Backbone.Collection.extend({
         if ((limit > this.limit) && (this.limit !== 0)) {
             limit = this.limit;
         }
-        var data = {
+        var since = Math.round(this.LastHistory / 1000);
+        var until = Math.round(this.until / 1000);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', encodeURI(this.url()+'/'+this.type+'?until='+until+'&since='+since+'&limit='+limit+'&order=asc'));
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText);
+                if ((data !== null) && _.isObject(data)) {
+                    self.add(data);
+                    if ((data.length < self.getLimit) || (self.limit === limit)) {
+                        self.trigger('fetchdone');
+                        self.trigger('sync');
+                    } else {
+                        self.trigger('fetchagain', self.percdone());
+                        self.fetch();
+                    }
+                } else {
+                    self.trigger('fetchfail');
+                }
+            } else {
+            }
         };
+        xhr.send();
+
+/*
+
+
+
+
         $.ajax({
             type: 'GET',
             url: this.url()+"/"+this.type,
@@ -220,6 +248,7 @@ HUGnet.Histories = Backbone.Collection.extend({
                 self.trigger('fetchfail');
             }
         );
+*/
     },
     clear: function ()
     {

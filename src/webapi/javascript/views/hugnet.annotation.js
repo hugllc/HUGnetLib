@@ -66,7 +66,7 @@ var AnnotationPropertiesView = Backbone.View.extend({
     },
     del: function (e)
     {
-        this.model.remove();
+        this.model.destroy();
         this._close = true;
         this.saveSuccess();
     },

@@ -492,6 +492,15 @@ abstract class Table extends TableBase
         );
     }
     /**
+    * Returns the date field that this table uses.
+    *
+    * @return date field, or null if not defined
+    */
+    public function dateField()
+    {
+        return $this->dateField;
+    }
+    /**
     * Checks the table in the database against the definition, and returns
     * the differences.
     *
