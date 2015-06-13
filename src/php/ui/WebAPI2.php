@@ -107,6 +107,9 @@ class WebAPI2 extends HTML
                 "config" => array(
                     "methods" => "external",
                 ),
+                "controlchan" => array(
+                    "methods" => "external",
+                ),
             ),
         ),
         "datacollector" => array(
@@ -332,7 +335,15 @@ class WebAPI2 extends HTML
         return array(
             "code" => $code,
             "message" => $message,
-            "moreInfo" => "($path) ".(string)$moreInfo
+            "moreInfo" => "($path) ".(string)$moreInfo,
+            "stack" => array(
+                "object" => $this->_object,
+                "id" => $this->_id,
+                "subobject" => $this->_subobject,
+                "sid" => $this->_sid,
+                "extra" => $this->args()->get("restextra"),
+                "objectClass" => get_class($this->_obj),
+            ),
         );
     }
     /**

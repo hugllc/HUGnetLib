@@ -54,57 +54,45 @@ HUGnet.DeviceControlChannel = Backbone.Model.extend({
     getValue: function()
     {
         var self = this;
-        $.ajax({
-            type: 'GET',
-            url: this.url(),
-            cache: false,
-            dataType: 'json',
-            data:
-            {
-            }
-        }).done(
-            function (data)
-            {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', this.url()+'/setting');
+        xhr.onload = function() {
+            if ((xhr.status === 200) || (xhr.status === 202)){
+                var data = JSON.parse(xhr.responseText);
                 if ((data !== undefined) && (data !== null)) {
                     self.set('value', data);
                     self.trigger('sync');
                 } else {
                     self.trigger('fetchfail');
                 }
-            }
-        ).fail(
-            function (data)
-            {
+            } else {
                 self.trigger('fetchfail');
             }
-        );
+        };
+        xhr.send();
     },
     setValue: function(value)
     {
         var dev = this.get('dev');
         var self = this;
-        $.ajax({
-            type: 'PUT',
-            url: this.url(),
-            cache: false,
-            dataType: 'json',
-            data: parseInt(value, 10)
-        }).done(
-            function (data)
-            {
+        var xhr = new XMLHttpRequest();
+
+        xhr.open('PUT', this.url()+'/setting');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function() {
+            if ((xhr.status === 200) || (xhr.status === 202)){
+                var data = JSON.parse(xhr.responseText);
                 if ((data !== undefined) && (data !== null)) {
                     self.set('value', data);
                     self.trigger('sync');
                 } else {
                     self.trigger('fetchfail');
                 }
-            }
-        ).fail(
-            function (data)
-            {
+            } else {
                 self.trigger('fetchfail');
             }
-        );
+        };
+        xhr.send(JSON.stringify(parseInt(value)));
     },
 });
 
@@ -129,6 +117,7 @@ HUGnet.DeviceControlChannels = Backbone.Collection.extend({
         if (options) {
             if (options.baseurl) this.baseurl = options.baseurl;
         }
+        console.log(options);
     },
     url: function ()
     {

@@ -156,6 +156,8 @@ class WebInterface2
             $ret = $this->_new($args);
         } else if ($subobject === "firmware") {
             $ret = $this->_firmware($args);
+        } else if ($subobject === "controlchan") {
+            $ret = $this->_controlchan($api);
         /*
         } else if ($subobject === "getraw") {
             $ret = $this->_getRaw($args);
@@ -199,6 +201,60 @@ class WebInterface2
         }
         $ret = $this->_device->getList($data, false);
         return $ret;
+    }
+    /**
+    * returns a history object for this device
+    *
+    * @param object $api The API object
+    *
+    * @return string
+    */
+    private function _controlchan($api)
+    {
+        $method = trim(strtoupper($api->args()->get("method")));
+        $data = null;
+        $sid = $api->args()->get("sid");
+        if ($method == "GET") {
+            $pkt = $this->_device->action()->send(
+                array(
+                    "Command" => '0x65',
+                    "Data" => sprintf("%02X", $sid),
+                )
+            );
+            if (is_object($pkt)) {
+                $reply = $pkt->reply();
+                $data = 0;
+                for ($i = 0; $i < 4; $i++) {
+                    $data += hexdec(substr($reply, ($i * 2), 2))<<($i * 8);
+                }
+                return $data;
+            } else {
+                $api->response(401);
+                $c = get_class($api);
+                $api->error($c::NO_RESPONSE, "No response getting control channel $sid on board ".sprintf("%06X", $this->device->id()));
+            }
+        } else if (($method == "PUT") || ($method == "POST")) {
+            $data = $api->args()->get("data");
+            $datastr = sprintf("%08X", $data);
+            for ($i = 6; $i >= 0; $i-=2) {
+                $value .= substr($datastr, $i, 2);
+            }
+            $pkt = $this->_device->action()->send(
+                array(
+                    "Command" => '0x64',
+                    "Data" => sprintf("%02X", $sid).$value,
+                )
+            );
+            if (is_object($pkt) && ($pkt->reply() == $value)) {
+                $api->response(202);
+                return (int)$data;
+            } else {
+                $api->response(401);
+                $c = get_class($api);
+                $api->error($c::NO_RESPONSE, "No response setting control channel $sid on board ".sprintf("%06X", $this->device->id()));
+            }
+        }
+
     }
     /**
     * returns a history object for this device

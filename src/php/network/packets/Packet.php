@@ -158,6 +158,8 @@ final class Packet implements PacketInterface
         "POWERUP" => 0x5E,
         "RECONFIG" => 0x5D,
         "BOREDOM" => 0x5F,
+        "SETCONTROLCHAN" => 0x64,
+        "READCONTROLCHAN" => 0x65,
         "BOOTLOADPOWERUP" => 0x6E,
         "BOOTLOADERBORED" => 0x6F,
         "TIMEBROADCAST" => 0x70,

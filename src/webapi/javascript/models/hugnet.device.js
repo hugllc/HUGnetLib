@@ -204,10 +204,10 @@ HUGnet.Device = Backbone.Model.extend({
             this.controlchanCache = new HUGnet.DeviceControlChannels({
                 "baseurl": this.url()
             });
-            this.controlchanCache.reset(this.get('controlChannels'));
+            fetch = true;
         }
         if (fetch) {
-            this.controlchanCache.fetch();
+            this.controlchanCache.reset(this.get('controlChannels'));
         }
         if (_.isNumber(id)) {
             return this.controlchanCache.get(id);
@@ -223,6 +223,9 @@ HUGnet.Device = Backbone.Model.extend({
             this.datachanCache = new HUGnet.DeviceDataChannels({
                 "baseurl": this.url()
             });
+            fetch = true;
+        }
+        if (fetch) {
             this.datachanCache.reset(this.get('dataChannels'));
         }
         if (_.isNumber(id)) {
