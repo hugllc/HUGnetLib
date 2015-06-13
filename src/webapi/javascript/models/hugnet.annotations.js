@@ -146,7 +146,7 @@ HUGnet.Annotations = Backbone.Collection.extend({
                         function (model, collection, options)
                         {
                             var date = model.get("testdate");
-                            if ((date > (until / 1000)) || (date < (since / 1000))) {
+                            if ((date > until) || (date < since)) {
                                 model.collection.remove(model);
                             }
                         },
