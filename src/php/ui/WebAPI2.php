@@ -75,7 +75,7 @@ class WebAPI2 extends HTML
     /** The tells what objects we accept */
     private $_targets = array(
         "device" => array(
-            "methods" => "GET,POST,DELETE",
+            "methods" => "GET,DELETE",
             "subobjects" => array(
                 "input" => array(
                     "methods" => "GET,DELETE",
@@ -105,6 +105,21 @@ class WebAPI2 extends HTML
                     "methods" => "GET,POST,PUT,DELETE",
                 ),
                 "config" => array(
+                    "methods" => "external",
+                ),
+                "export" => array(
+                    "methods" => "external",
+                ),
+                "import" => array(
+                    "methods" => "external",
+                ),
+                "fcts" => array(
+                    "methods" => "external",
+                ),
+                "fctsetup" => array(
+                    "methods" => "external",
+                ),
+                "fctapply" => array(
                     "methods" => "external",
                 ),
                 "controlchan" => array(

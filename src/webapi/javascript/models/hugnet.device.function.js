@@ -99,6 +99,66 @@ HUGnet.DeviceFunctions = Backbone.Collection.extend({
         return parseInt(model.get("id"), 10);
     },
     /**
+     * Gets infomration about a device.  This is retrieved directly from the device
+     *
+     * This function is for use of the device list
+     *
+     * @param id The id of the device to get
+     *
+     * @return null
+     */
+    fetch: function ()
+    {
+        var self = this;
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', this.url()+"/fcts");
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText);
+                if (_.isObject(data)) {
+                    self.reset(data);
+                    self.trigger("change");
+                } else {
+                    self.trigger('error');
+                }
+            }
+            else {
+                self.trigger('error');
+            }
+        };
+        xhr.send();
+    },
+    /**
+     * Gets infomration about a device.  This is retrieved directly from the device
+     *
+     * This function is for use of the device list
+     *
+     * @param id The id of the device to get
+     *
+     * @return null
+     */
+    save: function ()
+    {
+        var self = this;
+        var xhr = new XMLHttpRequest();
+        xhr.open('PUT', this.url()+"/fcts");
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText);
+                if (_.isObject(data)) {
+                    self.reset(data);
+                    self.trigger("change");
+                } else {
+                    self.trigger('error');
+                }
+            }
+            else {
+                self.trigger('error');
+            }
+        };
+        xhr.send(self.toJSON());
+    },
+    /**
     * Gets infomration about a device.  This is retrieved directly from the device
     *
     * This function is for use of the device list

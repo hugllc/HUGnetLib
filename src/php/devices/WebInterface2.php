@@ -155,9 +155,23 @@ class WebInterface2
         } else if ($subobject === "new") {
             $ret = $this->_new($args);
         } else if ($subobject === "firmware") {
-            $ret = $this->_firmware($args);
+            $ret = $this->_firmware();
         } else if ($subobject === "controlchan") {
             $ret = $this->_controlchan($api);
+        } else if ($subobject === "export") {
+            $ret = $this->_export($api);
+        } else if ($subobject === "import") {
+            $ret = $this->_import($api, false);
+        } else if (($subobject === "fctsetup") && ($method == "GET")) {
+            $ret = $this->_fctsetup($api);
+        } else if (($subobject === "fctapply") && ($method == "PUT")) {
+            $ret = $this->_fctapply($api);
+        } else if ($subobject === "fcts") {
+            if ($method == "GET") {
+                $ret = $this->_getfcts();
+            } else if ($method === "PUT") {
+                $ret = $this->_putfcts($args);
+            }
         /*
         } else if ($subobject === "getraw") {
             $ret = $this->_getRaw($args);
@@ -331,7 +345,7 @@ class WebInterface2
     *
     * @return string
     */
-    private function _fctsetup($args = null)
+    private function _fctsetup()
     {
         return $this->_device->fcts()->apply(true);
     }
@@ -342,21 +356,21 @@ class WebInterface2
     *
     * @return string
     */
-    private function _fctapply($args = null)
+    private function _fctapply()
     {
         $this->_device->fcts()->apply(false);
-        return "regen";
+        return $this->_device->toArray(true);
     }
     /**
     * returns a history object for this device
     *
-    * @param object $args The argument object
+    * @param object $api The API object
     *
     * @return string
     */
-    private function _putfcts($args)
+    private function _putfcts($api)
     {
-        $data = (array)$args->get("data");
+        $data = (array)$api->args()->get("data");
         $ret = $this->_device->fcts($data, true);
         $this->_device->store();
         return $ret->toArray(true);
@@ -423,13 +437,13 @@ class WebInterface2
     /**
     * Export the device
     *
-    * @param object $args The argument object
+    * @param object $api The API object
     *
     * @return string
     */
-    private function _export($args)
+    private function _export($api)
     {
-        $format = $args->get("format");
+        $format = $api->args()->get("format");
         if (!headers_sent() && ($format != "inline")) {
             // @codeCoverageIgnoreStart
             header('Content-type: application/json');
@@ -452,7 +466,7 @@ class WebInterface2
     /**
     * Import the device
     *
-    * @param object $args      The argument object
+    * @param object $api       The API object
     * @param bool   $checkdate Whether to check the date
     *
     * @return string
@@ -460,7 +474,7 @@ class WebInterface2
     private function _import($args, $checkdate = false)
     {
         header('Content-type: text/plain; charset=UTF-8');
-        $data = $args->get("data");
+        $data = $api->args()->get("data");
         if (is_string($data)) {
             $data = stripcslashes($data);
             $data = json_decode($data, true);

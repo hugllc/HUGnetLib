@@ -94,7 +94,7 @@ HUGnet.Device = Backbone.Model.extend({
     */
     initialize: function(attrib)
     {
-        _.bindAll(this, "input", "output", "process", "power");
+        _.bindAll(this, "input", "output", "process", "power", "exporturl");
         if (this.get("DeviceID") === '000000') {
             var id = this.get("id");
             if (id != null) {
@@ -300,38 +300,31 @@ HUGnet.Device = Backbone.Model.extend({
     */
     config: function (load)
     {
-        var type = "GET";
+        var self = this;
+        var xhr = new XMLHttpRequest();
         if (load) {
-            type = "POST";
+            xhr.open('POST', this.url()+"/config");
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        } else {
+            xhr.open('GET', this.url()+"/config");
         }
-        var id = this.get('id');
-        if (id !== 0) {
-            var self = this;
-            $.ajax({
-                type: type,
-                url: this.url() + "/config",
-                dataType: 'json',
-                cache: false,
-                data: {},
-            }).done(
-                function (data)
-                {
-                    if (_.isObject(data)) {
-                        self.unset('update');
-                        self.set(data);
-                        self.trigger('configdone');
-                        self.trigger('sync', self);
-                    } else {
-                        self.trigger('configfail');
-                    }
-                }
-            ).fail(
-                function (data)
-                {
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText);
+                if (_.isObject(data)) {
+                    self.unset('update');
+                    self.set(data);
+                    self.trigger('configdone');
+                    self.trigger('sync', self);
+                } else {
                     self.trigger('configfail');
                 }
-            );
-        }
+            }
+            else {
+                self.trigger('configfail');
+            }
+        };
+        xhr.send();
     },
     /**
     * Gets infomration about a device.  This is retrieved directly from the device
@@ -342,37 +335,26 @@ HUGnet.Device = Backbone.Model.extend({
     *
     * @return null
     */
-    loadfirmware: function ()
+    loadfirmware: function (id)
     {
-        var id = this.get('id');
-        if (id !== 0) {
-            var self = this;
-            $.ajax({
-                type: 'POST',
-                url: this.url()+"/firmware",
-                dataType: 'json',
-                cache: false,
-                data: {
+        var self = this;
+        var xhr = new XMLHttpRequest();
+        xhr.open('PUT', this.url()+"/firmware");
+        xhr.onload = function() {
+            if ((xhr.status === 200) || (xhr.status === 202)){
+                var data = JSON.parse(xhr.responseText);
+                if (_.isObject(data)) {
+                    self.unset('update');
+                    self.config();
+                } else {
+                    self.trigger('error');
                 }
-            }).done(
-                function (data)
-                {
-                    if (_.isObject(data)) {
-                        self.unset('update');
-                        self.set(data);
-                        self.config();
-                        self.trigger('configdone');
-                    } else {
-                        self.trigger('configfail');
-                    }
-                }
-            ).fail(
-                function ()
-                {
-                    self.trigger('configfail');
-                }
-            );
-        }
+            }
+            else {
+                self.trigger('error');
+            }
+        };
+        xhr.send();
     },
    /**
     * Gets infomration about a device.  This is retrieved from the database only.
@@ -383,24 +365,23 @@ HUGnet.Device = Backbone.Model.extend({
     */
     fctsetup: function()
     {
-        var id = this.get('id');
-        if ((id !== 0) && !this.lock) {
-            var myself = this;
-            $.ajax({
-                type: 'GET',
-                url: this.url()+"/fct",  // fctsetup
-                cache: false,
-                dataType: 'json',
-                data:
-                {
+        var self = this;
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', this.url()+"/fctsetup");
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText);
+                if (_.isObject(data)) {
+                    self.set(data);
+                } else {
+                    self.trigger('error');
                 }
-            }).done(
-                function (data)
-                {
-                    myself.set(data);
-                }
-            );
-        }
+            }
+            else {
+                self.trigger('error');
+            }
+        };
+        xhr.send();
     },
     /**
      * Gets infomration about a device.  This is retrieved from the database only.
@@ -411,24 +392,23 @@ HUGnet.Device = Backbone.Model.extend({
      */
     fctapply: function()
     {
-        var id = this.get('id');
-        if ((id !== 0) && !this.lock) {
-            var myself = this;
-            $.ajax({
-                type: 'POST',
-                url: this.url()+"/fct", // fctapply
-                cache: false,
-                dataType: 'json',
-                data:
-                {
+        var self = this;
+        var xhr = new XMLHttpRequest();
+        xhr.open('PUT', this.url()+"/fctapply");
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText);
+                if (_.isObject(data)) {
+                    self.set(data);
+                } else {
+                    self.trigger('configfail');
                 }
-            }).done(
-                function (data)
-                {
-                    myself.set(data);
-                }
-            );
-        }
+            }
+            else {
+                self.trigger('configfail');
+            }
+        };
+        xhr.send();
     },
     /**
      * Gets infomration about a device.  This is retrieved from the database only.
@@ -509,31 +489,6 @@ HUGnet.Devices = Backbone.Collection.extend({
     },
     createVirtual: function (type)
     {
-        var self = this;
-        var ret = $.ajax({
-            type: 'POST',
-            url: this.url()+"/new",
-            dataType: 'json',
-            cache: false,
-            data: {
-                "data": { type: type }
-            }
-        }).done(
-            function (data)
-            {
-                if (_.isObject(data)) {
-                    self.trigger('created');
-                    self.model.add(data);
-                } else {
-                    self.trigger('newfail');
-                }
-            }
-        ).fail(
-            function (data)
-            {
-                self.trigger('newfail');
-            }
-        );
     },
     /**
      * Gets infomration about a device.  This is retrieved from the database only.

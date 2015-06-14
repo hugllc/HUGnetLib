@@ -160,41 +160,6 @@ HUGnet.Annotations = Backbone.Collection.extend({
             }
         };
         xhr.send();
-        /*
-        var self = this;
-        var ret = $.ajax({
-            type: 'GET',
-            url: this.url,
-            dataType: 'json',
-            cache: false,
-            data: {
-                "task": "annotation",
-                "action": "list",
-                "data": {
-                    test: test,
-                    since: since / 1000,
-                    until: until / 1000,
-                    type: type
-                }
-            }
-        });
-        ret.done(
-            function (data)
-            {
-                self.each(
-                    function (model, collection, options)
-                    {
-                        var date = model.get("testdate");
-                        if ((date > (until / 1000)) || (date < (since / 1000))) {
-                            model.collection.remove(model);
-                        }
-                    },
-                    self
-                );
-                self.add(data);
-            }
-        );
-        */
     },
     update: function()
     {

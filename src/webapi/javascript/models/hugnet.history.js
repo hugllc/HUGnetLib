@@ -209,46 +209,6 @@ HUGnet.Histories = Backbone.Collection.extend({
             }
         };
         xhr.send();
-
-/*
-
-
-
-
-        $.ajax({
-            type: 'GET',
-            url: this.url()+"/"+this.type,
-            dataType: 'json',
-            cache: false,
-            data: {
-               "since": Math.round(this.LastHistory / 1000),
-               "until": Math.round(this.until / 1000),
-               "limit": limit,
-               "order": "asc",
-            }
-        }).done(
-            function (data)
-            {
-                if ((data !== undefined) && (data !== null) && (typeof data === "object")) {
-                    self.add(data);
-                    if ((data.length < self.getLimit) || (self.limit === limit)) {
-                        self.trigger('fetchdone');
-                        self.trigger('sync');
-                    } else {
-                        self.trigger('fetchagain', self.percdone());
-                        self.fetch();
-                    }
-                } else {
-                    self.trigger('fetchfail');
-                }
-            }
-        ).fail(
-            function (data)
-            {
-                self.trigger('fetchfail');
-            }
-        );
-*/
     },
     clear: function ()
     {
