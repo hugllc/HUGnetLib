@@ -280,25 +280,27 @@ class WebInterface2
     private function _new($api)
     {
         $data = (array)$api->args()->get("data");
-        $dev  = array();
         if (isset($data["type"])) {
+            $dev  = array();
             $type = trim(strtolower($data["type"]));
-        } else {
-            $type = null;
-        }
-        if ($type == "test") {
-            $dev["HWPartNum"] = "0039-24-03-P";
-        } else if ($type == "fastaverage") {
-            $dev["HWPartNum"] = "0039-24-04-P";
-        } else if ($type == "slowaverage") {
-            $dev["HWPartNum"] = "0039-24-02-P";
-        }
-        if (!is_null($type) && isset($dev["HWPartNum"])) {
-            if ($this->_device->insertVirtual($dev)) {
-                $this->_device->setParam("Created", $this->_system->now());
-                if ($this->_device->store()) {
-                    return $this->_device->toArray(true);
+            if ($type == "test") {
+                $dev["HWPartNum"] = "0039-24-03-P";
+            } else if ($type == "fastaverage") {
+                $dev["HWPartNum"] = "0039-24-04-P";
+            } else if ($type == "slowaverage") {
+                $dev["HWPartNum"] = "0039-24-02-P";
+            }
+            if (isset($dev["HWPartNum"])) {
+                if ($this->_device->insertVirtual($dev)) {
+                    $this->_device->setParam("Created", $this->_system->now());
+                    if ($this->_device->store()) {
+                        return $this->_device->toArray(true);
+                    }
                 }
+            }
+        } else if (isset($data["id"]) && isset($data["HWPartNum"]) && isset($data["FWPartNum"])) {
+            if ($this->_device->create($data)) {
+                return $this->_device->toArray(true);
             }
         }
         $api->response(401);
