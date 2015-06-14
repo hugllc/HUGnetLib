@@ -489,6 +489,24 @@ HUGnet.Devices = Backbone.Collection.extend({
     },
     createVirtual: function (type)
     {
+        var self = this;
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', this.url());
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function() {
+            if ((xhr.status === 200) || (xhr.status === 202)){
+                var data = JSON.parse(xhr.responseText);
+                if (_.isObject(data)) {
+                    self.add(data);
+                } else {
+                    self.trigger('error');
+                }
+            }
+            else {
+                self.trigger('error');
+            }
+        };
+        xhr.send(JSON.stringify({type: type}));
     },
     /**
      * Gets infomration about a device.  This is retrieved from the database only.

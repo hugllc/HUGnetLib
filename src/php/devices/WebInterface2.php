@@ -152,8 +152,8 @@ class WebInterface2
             $api->response(404);
         } else if (($method === "PUT") && empty($subobject)) {
             $ret = $this->_put($api);
-        } else if ($subobject === "new") {
-            $ret = $this->_new($args);
+        } else if (($method === "POST") && empty($subobject)) {
+            $ret = $this->_new($api);
         } else if ($subobject === "firmware") {
             $ret = $this->_firmware();
         } else if ($subobject === "controlchan") {
@@ -273,26 +273,37 @@ class WebInterface2
     /**
     * returns a history object for this device
     *
-    * @param object $args The argument object
+    * @param object $api The API object
     *
     * @return string
     */
-    private function _new($args)
+    private function _new($api)
     {
-        $data = (array)$args->get("data");
+        $data = (array)$api->args()->get("data");
         $dev  = array();
-        if (trim(strtolower($data["type"])) == "test") {
+        if (isset($data["type"])) {
+            $type = trim(strtolower($data["type"]));
+        } else {
+            $type = null;
+        }
+        if ($type == "test") {
             $dev["HWPartNum"] = "0039-24-03-P";
-        } else if (trim(strtolower($data["type"])) == "fastaverage") {
+        } else if ($type == "fastaverage") {
             $dev["HWPartNum"] = "0039-24-04-P";
-        } else if (trim(strtolower($data["type"])) == "slowaverage") {
+        } else if ($type == "slowaverage") {
             $dev["HWPartNum"] = "0039-24-02-P";
         }
-        if ($this->_device->insertVirtual($dev)) {
-            $this->_device->setParam("Created", $this->_system->now());
-            $this->_device->store();
-            return $this->_device->toArray(true);
+        if (!is_null($type) && isset($dev["HWPartNum"])) {
+            if ($this->_device->insertVirtual($dev)) {
+                $this->_device->setParam("Created", $this->_system->now());
+                if ($this->_device->store()) {
+                    return $this->_device->toArray(true);
+                }
+            }
         }
+        $api->response(401);
+        $c = get_class($api);
+        $api->pdoerror($this->_device->lastError(), $c::SAVE_FAILED);
         return array();
     }
     /**
