@@ -68,7 +68,8 @@ abstract class SystemTableBase
     private $_connect = null;
     /** These are our keys to search for.  Null means search everything given */
     protected $keys = null;
-
+    /** This is our url */
+    protected $url = "";
     /**
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
@@ -423,6 +424,70 @@ abstract class SystemTableBase
     {
         return $this->_new;
     }
+    /**
+    * Gets the config and saves it
+    *
+    * @param int    $timeout  The timeout in seconds
+    *
+    * @return string The left over string
+    */
+    protected function post($url = null, $timeout=60)
+    {
+        $return = false;
+        if (empty($url)) {
+            $master = $this->system()->get("master");
+            $url = $master["url"];
+        }
+        $url .= $this->url;
+        $id = $this->id();
+        if (!is_null($id)) {
+            $url .= "/$id";
+        }
+        if ($this->isNew()) {
+            $return = $this->postMethod(
+                "POST", http_build_query($this->toArray(false)), $url, $timeout
+            );
+        } else {
+            $return = $this->postMethod(
+                "PUT", json_encode($this->toArray(false)), $url, $timeout
+            );
+        }
+        return $return;
+    }
+    /**
+    * Gets the config and saves it
+    *
+    * @param int    $timeout  The timeout in seconds
+    *
+    * @return string The left over string
+    */
+    protected function postMethod($method, $data, $url = null, $timeout=60)
+    {
+        var_dump($url);
+        $params = array(
+            'http' => array(
+                'method' => $method,
+                'content' => $data,
+                'timeout' => $timeout,
+            )
+        );
+        $ctx = stream_context_create($params);
+        try {
+            $response = file_get_contents($url, false, $ctx);
+        } catch (Exception $e) {
+            var_dump($e);
+            // handle error here
+        }
+        $return = json_decode($response, true);
+        if (is_null($return) && ($response != "null")) {
+            $return = $response;
+        }
+        unset($response);
+        unset($params);
+        unset($ctx);
+        return $return;
+    }
+
 }
 
 

@@ -80,6 +80,7 @@ class DataCollector extends \HUGnet\base\SystemTableBase
         &$system, $data=null, $table="Datacollectors"
     ) {
         $object = parent::factory($system, $data, $table);
+        $object->url = "/datacollector";
         return $object;
     }
     /**
@@ -114,35 +115,9 @@ class DataCollector extends \HUGnet\base\SystemTableBase
     public function checkin()
     {
         $master = $this->system()->get("master");
-        return \HUGnet\Util::postData(
-            $master["url"],
-            array(
-                "uuid"   => urlencode($this->system()->get("uuid")),
-                "id"     => urlencode($this->system()->get("uuid")),
-                "action" => "checkin",
-                "task"   => "datacollector",
-                "data"   => $this->toArray(true),
-            )
-        );
-    }
-    /**
-    * Gets the config and saves it
-    *
-    * @return string The left over string
-    */
-    public function post()
-    {
-        $master = $this->system()->get("master");
-        return \HUGnet\Util::postData(
-            $master["url"],
-            array(
-                "uuid"   => urlencode($this->system()->get("uuid")),
-                "id"     => urlencode($this->system()->get("uuid")),
-                "action" => "put",
-                "task"   => "datacollector",
-                "data"   => $this->toArray(true),
-            )
-        );
+        $url = $master["url"];
+        $url .= $this->url."/".$this->id()."/checkin";
+        return $this->postMethod("PUT", "", $url);
     }
     /**
     * returns a history object for this device
@@ -177,6 +152,7 @@ class DataCollector extends \HUGnet\base\SystemTableBase
     */
     public function webAPI2($api, $extra)
     {
+    error_log("HERE");
         $method = trim(strtoupper($api->args()->get("method")));
         $object = trim(strtolower($api->args()->get("subobject")));
         $ret = null;
@@ -187,9 +163,13 @@ class DataCollector extends \HUGnet\base\SystemTableBase
                 $ret = $this->_run();
             }
         } else if ($object === "checkin") {
-            if ($method == "POST") {
+            if (($method == "POST") || ($method == "PUT")) {
                 $ret = $this->_checkin($api->args());
             }
+        } else {
+            $api->response(401);
+            $c = get_class($api);
+            $api->error($c::NOT_IMPLEMENTED);
         }
         return $ret;
     }

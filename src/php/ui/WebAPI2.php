@@ -347,17 +347,23 @@ class WebAPI2 extends HTML
         }
         
         error_log("WebAPI2: $path ($code) $message"); 
+        if (is_object($this->_obj)) {
+            $class = get_class($this->_obj);
+        } else {
+            $class = "None";
+        }
         return array(
             "code" => $code,
             "message" => $message,
             "moreInfo" => "($path) ".(string)$moreInfo,
             "stack" => array(
+                "method" => $this->_method,
                 "object" => $this->_object,
                 "id" => $this->_id,
                 "subobject" => $this->_subobject,
                 "sid" => $this->_sid,
                 "extra" => $this->args()->get("restextra"),
-                "objectClass" => get_class($this->_obj),
+                "objectClass" => $class,
             ),
         );
     }

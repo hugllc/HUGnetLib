@@ -172,6 +172,10 @@ class WebInterface2
             } else if ($method === "PUT") {
                 $ret = $this->_putfcts($args);
             }
+        } else {
+            $api->response(401);
+            $c = get_class($api);
+            $api->error($c::NOT_IMPLEMENTED);
         /*
         } else if ($subobject === "getraw") {
             $ret = $this->_getRaw($args);

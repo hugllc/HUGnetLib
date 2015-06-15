@@ -122,6 +122,7 @@ class Device extends \HUGnet\base\SystemTableAction
     public static function &factory(&$system, $data=null, $table="Devices")
     {
         $object = parent::factory($system, $data, $table);
+        $object->url = "/device";
         return $object;
     }
     /**

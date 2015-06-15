@@ -92,6 +92,10 @@ class Annotation extends \HUGnet\base\SystemTableBase
         if (isset($extra["type"])) {
             $object->_type = $extra["type"];
         }
+        if (isset($extra["url"])) {
+            $object->url = $extra["url"];
+        }
+        $object->url .= "/annotation";
         return $object;
     }
     /**
