@@ -69,6 +69,8 @@ class Image extends \HUGnet\base\SystemTableBase
     protected $tableClass = "Images";
     /** This is where we cache the point data */
     private $_dataCache = array();
+    /** This is our url */
+    protected $url = "/image";
     
     /**
     * This function creates the system.
@@ -145,13 +147,11 @@ class Image extends \HUGnet\base\SystemTableBase
                 $api->response(202);
             } else {
                 $api-response(401);
-                $c = get_class($api);
-                $api->pdoerror($this->lastError(), $c::SAVE_FAILED);
+                $api->pdoerror($this->lastError(), \HUGnet\ui\WebAPI2::SAVE_FAILED);
             }
         } else {
             $api->response(401);
-            $c = get_class($api);
-            $api->error($c::NOT_IMPLEMENTED);
+            $api->error(\HUGnet\ui\WebAPI2::NOT_IMPLEMENTED);
         }
         return $ret;
 /*

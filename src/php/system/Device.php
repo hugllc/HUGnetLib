@@ -99,6 +99,8 @@ class Device extends \HUGnet\base\SystemTableAction
     /** This is where we store our objects */
     protected $classes = array(
     );
+    /** This is our url */
+    protected $url = "/device";
     /**
     * This is the destructor
     */
@@ -122,7 +124,6 @@ class Device extends \HUGnet\base\SystemTableAction
     public static function &factory(&$system, $data=null, $table="Devices")
     {
         $object = parent::factory($system, $data, $table);
-        $object->url = "/device";
         return $object;
     }
     /**

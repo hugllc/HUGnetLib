@@ -64,6 +64,8 @@ class ProcessTable extends \HUGnet\base\XTableBase
     protected $tableClass = "ProcessTable";
     /** This is the table we are using */
     protected $xTable = "ProcessTable";
+    /** This is our url */
+    protected $url = "/processtable";
     /**
     * This function creates the system.
     *

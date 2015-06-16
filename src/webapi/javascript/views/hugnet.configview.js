@@ -47,11 +47,9 @@ var DeviceConfigImageView = Backbone.View.extend({
     initialize: function (options)
     {
         var img = this.model.get("configImage");
-        console.log(img);
         if (typeof img == "string") {
             this.url = this.urlbase + img;
         }
-        console.log(this.url);
     },
     render: function ()
     {

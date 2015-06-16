@@ -74,6 +74,8 @@ class Error extends \HUGnet\base\SystemTableBase
         self::ERROR => LOG_ERR,
         self::CRITICAL => LOG_CRIT,
     );
+    /** This is our url */
+    protected $url = "/error";
     /**
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.

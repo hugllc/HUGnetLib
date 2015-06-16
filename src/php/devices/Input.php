@@ -68,6 +68,8 @@ class Input extends \HUGnet\base\IOPBase
     * This is the cache for the drivers.
     */
     protected $driverLoc = "inputTable";
+    /** This is our url */
+    protected $url = "/input";
 
     /**
     * This function creates the system.

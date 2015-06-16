@@ -76,7 +76,6 @@ var AnnotationPropertiesView = Backbone.View.extend({
     },
     apply: function (e)
     {
-        console.log(this.model.isNew());
         this.setTitle( " [ Saving...] " );
 
         this.model.save({

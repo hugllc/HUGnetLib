@@ -135,6 +135,22 @@ abstract class IOPBase extends SystemTableBase
         return (int)$this->_device->get(ucfirst($this->type)."Tables");
     }
     /**
+    * This returns the URL, including the id, if it exists
+    *
+    * @param string $url This is the base URL
+    *
+    * @return reference to the table class object
+    */
+    public function url($url = "")
+    {
+        $url = (string)$url.$this->_device->url().$this->url;
+        $id = $this->id();
+        if (!is_null($id)) {
+            $url .= "/$id";
+        }
+        return $url;
+    }
+    /**
     * Sets a value
     *
     * @param string $field the field to set
@@ -470,13 +486,11 @@ abstract class IOPBase extends SystemTableBase
                 $ret = $this->toArray(true);
             } else {
                 $api->response(401);
-                $c = get_class($api);
-                $api->pdoerror($this->lastError(), $c::SAVE_FAILED);
+                $api->pdoerror($this->lastError(), \HUGnet\ui\WebAPI2::SAVE_FAILED);
             }
         } else {
             $api->response(401);
-            $c = get_class($api);
-            $api->error($c::NOT_IMPLEMENTED);
+            $api->error(\HUGnet\ui\WebAPI2::NOT_IMPLEMENTED);
         }
         return $ret;
     }

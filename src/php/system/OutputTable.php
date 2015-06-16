@@ -69,6 +69,8 @@ class OutputTable extends \HUGnet\base\XTableBase
         "ADuCDAC" => "0039-37 HUGnetLab Endpoint DAC",
         "ADuCPWM" => "0039-37 HUGnetLab Endpoint PWM",
     );
+    /** This is our url */
+    protected $url = "/outputtable";
     /**
     * This function creates the system.
     *

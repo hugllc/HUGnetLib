@@ -67,6 +67,8 @@ class DataCollector extends \HUGnet\base\SystemTableBase
 {
     /** @var int The database table class to use */
     protected $tableClass = "Datacollectors";
+    /** This is our url */
+    protected $url = "/datacollector";
     /**
     * This function creates the system.
     *
@@ -80,7 +82,6 @@ class DataCollector extends \HUGnet\base\SystemTableBase
         &$system, $data=null, $table="Datacollectors"
     ) {
         $object = parent::factory($system, $data, $table);
-        $object->url = "/datacollector";
         return $object;
     }
     /**
@@ -112,12 +113,14 @@ class DataCollector extends \HUGnet\base\SystemTableBase
     *
     * @return string The left over string
     */
-    public function checkin()
+    public function checkin($url = null)
     {
-        $master = $this->system()->get("master");
-        $url = $master["url"];
-        $url .= $this->url."/".$this->id()."/checkin";
-        return $this->postMethod("PUT", "", $url);
+        if (empty($url)) {
+            $master = $this->system()->get("master");
+            $url = $master["url"];
+        }
+        $url .= $this->url()."/checkin";
+        return $this->httpMethod("PUT", "", $url);
     }
     /**
     * returns a history object for this device
@@ -152,7 +155,6 @@ class DataCollector extends \HUGnet\base\SystemTableBase
     */
     public function webAPI2($api, $extra)
     {
-    error_log("HERE");
         $method = trim(strtoupper($api->args()->get("method")));
         $object = trim(strtolower($api->args()->get("subobject")));
         $ret = null;
@@ -165,11 +167,16 @@ class DataCollector extends \HUGnet\base\SystemTableBase
         } else if ($object === "checkin") {
             if (($method == "POST") || ($method == "PUT")) {
                 $ret = $this->_checkin($api->args());
+                if ($ret) {
+                    $api->response(202);
+                } else {
+                    $api->response(400);
+                    $api->pdoerror($this->lastError, \HUGnet\ui\WebAPI2::SAVE_FAILED);
+                }
             }
         } else {
             $api->response(401);
-            $c = get_class($api);
-            $api->error($c::NOT_IMPLEMENTED);
+            $api->error(\HUGnet\ui\WebAPI2::NOT_IMPLEMENTED);
         }
         return $ret;
     }

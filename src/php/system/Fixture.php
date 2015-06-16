@@ -66,6 +66,8 @@ class Fixture extends \HUGnet\Device
 {
     /** @var int The database table class to use */
     protected $tableClass = "Fixtures";
+    /** This is our url */
+    protected $url = "/fixture";
     /**
     * This is the destructor
     */

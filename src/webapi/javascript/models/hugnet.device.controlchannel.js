@@ -117,7 +117,6 @@ HUGnet.DeviceControlChannels = Backbone.Collection.extend({
         if (options) {
             if (options.baseurl) this.baseurl = options.baseurl;
         }
-        console.log(options);
     },
     url: function ()
     {

@@ -68,6 +68,8 @@ class Annotation extends \HUGnet\base\SystemTableBase
     private $_test = null;
     /** This is the type of thing we are annotating */
     private $_type = null;
+    /** This is our url */
+    protected $url = "/annotation";
     
     /**
     * This function creates the system.
@@ -95,7 +97,6 @@ class Annotation extends \HUGnet\base\SystemTableBase
         if (isset($extra["url"])) {
             $object->url = $extra["url"];
         }
-        $object->url .= "/annotation";
         return $object;
     }
     /**

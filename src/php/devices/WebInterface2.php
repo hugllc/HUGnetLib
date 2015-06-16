@@ -174,8 +174,7 @@ class WebInterface2
             }
         } else {
             $api->response(401);
-            $c = get_class($api);
-            $api->error($c::NOT_IMPLEMENTED);
+            $api->error(\HUGnet\ui\WebAPI2::NOT_IMPLEMENTED);
         /*
         } else if ($subobject === "getraw") {
             $ret = $this->_getRaw($args);
@@ -248,8 +247,7 @@ class WebInterface2
                 return $data;
             } else {
                 $api->response(401);
-                $c = get_class($api);
-                $api->error($c::NO_RESPONSE, "No response getting control channel $sid on board ".sprintf("%06X", $this->device->id()));
+                $api->error(\HUGnet\ui\WebAPI2::NO_RESPONSE, "No response getting control channel $sid on board ".sprintf("%06X", $this->device->id()));
             }
         } else if (($method == "PUT") || ($method == "POST")) {
             $data = $api->args()->get("data");
@@ -268,8 +266,7 @@ class WebInterface2
                 return (int)$data;
             } else {
                 $api->response(401);
-                $c = get_class($api);
-                $api->error($c::NO_RESPONSE, "No response setting control channel $sid on board ".sprintf("%06X", $this->device->id()));
+                $api->error(\HUGnet\ui\WebAPI2::NO_RESPONSE, "No response setting control channel $sid on board ".sprintf("%06X", $this->device->id()));
             }
         }
 
@@ -308,8 +305,7 @@ class WebInterface2
             }
         }
         $api->response(401);
-        $c = get_class($api);
-        $api->pdoerror($this->_device->lastError(), $c::SAVE_FAILED);
+        $api->pdoerror($this->_device->lastError(), \HUGnet\ui\WebAPI2::SAVE_FAILED);
         return array();
     }
     /**
@@ -339,8 +335,7 @@ class WebInterface2
             $api->response(202);
         } else {
             $api->response(400);
-            $c = get_class($api);
-            $api->pdoerror($this->_device->lastError(), $c::SAVE_FAILED);
+            $api->pdoerror($this->_device->lastError(), \HUGnet\ui\WebAPI2::SAVE_FAILED);
         }
         return "";
     }
@@ -427,10 +422,15 @@ class WebInterface2
     */
     private function _firmware()
     {
-        if ($this->_device->action()->loadFirmware()) {
-            $ret = $this->_device->toArray(true);
-        } else {
-            $ret = -1;
+    
+        $method = trim(strtoupper($api->args()->get("method")));
+        if ($method == "GET") {
+        } else if (($method == "PUT") || ($method == "POST")) {
+            if ($this->_device->action()->loadFirmware()) {
+                $ret = $this->_device->toArray(true);
+            } else {
+                $api->response(400);
+            }
         }
         return $ret;
     }

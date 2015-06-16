@@ -120,6 +120,22 @@ abstract class SystemTableBase
         unset($this->_connect);
     }
     /**
+    * This returns the URL, including the id, if it exists
+    *
+    * @param string $url This is the base URL
+    *
+    * @return reference to the table class object
+    */
+    public function url($url = "")
+    {
+        $url = (string)$url.$this->url;
+        $id = $this->id();
+        if (!is_null($id)) {
+            $url .= "/$id";
+        }
+        return $url;
+    }
+    /**
     * This function gives us access to the table class
     *
     * @return reference to the table class object
@@ -431,6 +447,17 @@ abstract class SystemTableBase
     *
     * @return string The left over string
     */
+    protected function retrieve($url = null, $timeout=60)
+    {
+        
+    }
+    /**
+    * Gets the config and saves it
+    *
+    * @param int    $timeout  The timeout in seconds
+    *
+    * @return string The left over string
+    */
     protected function post($url = null, $timeout=60)
     {
         $return = false;
@@ -438,17 +465,13 @@ abstract class SystemTableBase
             $master = $this->system()->get("master");
             $url = $master["url"];
         }
-        $url .= $this->url;
-        $id = $this->id();
-        if (!is_null($id)) {
-            $url .= "/$id";
-        }
+        $url .= $this->url();
         if ($this->isNew()) {
-            $return = $this->postMethod(
+            $return = $this->httpMethod(
                 "POST", http_build_query($this->toArray(false)), $url, $timeout
             );
         } else {
-            $return = $this->postMethod(
+            $return = $this->httpMethod(
                 "PUT", json_encode($this->toArray(false)), $url, $timeout
             );
         }
@@ -461,26 +484,40 @@ abstract class SystemTableBase
     *
     * @return string The left over string
     */
-    protected function postMethod($method, $data, $url = null, $timeout=60)
+    protected function httpMethod($method, $data, $url = null, $timeout=60)
     {
-        var_dump($url);
         $params = array(
             'http' => array(
                 'method' => $method,
                 'content' => $data,
                 'timeout' => $timeout,
+                'header'=>'Connection: close\r\n',
             )
         );
+        $this->_postError = array();
         $ctx = stream_context_create($params);
         try {
-            $response = file_get_contents($url, false, $ctx);
+            $code = 400;
+            $response = @file_get_contents($url, false, $ctx);
+            foreach ((array)$http_response_header as $head) {
+                if (substr($head, 0, 4) == "HTTP") {
+                    $c = explode(" ", $head);
+                    $code = intval($c[1]);
+                }
+            }
+            if (($code >= 200) && ($code < 300)) {
+                $return = json_decode($response, true);
+                if (is_null($return) && ($response != "null")) {
+                    $return = $response;
+                }
+            } else {
+                $this->_postError = json_decode($response, true);
+                $return = null;
+            }
+
         } catch (Exception $e) {
             var_dump($e);
-            // handle error here
-        }
-        $return = json_decode($response, true);
-        if (is_null($return) && ($response != "null")) {
-            $return = $response;
+            //handle error here
         }
         unset($response);
         unset($params);

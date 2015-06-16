@@ -64,7 +64,6 @@ var OutputsControlChannelEntryView = Backbone.View.extend({
     setValue: function (e)
     {
         var value = this.$("#setValue").val();
-        console.log(value);
         this.model.setValue(value);
     },
     /**

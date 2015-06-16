@@ -68,6 +68,8 @@ class Process extends \HUGnet\base\IOPBase
     * This is the cache for the drivers.
     */
     protected $driverLoc = "processTable";
+    /** This is our url */
+    protected $url = "/process";
     /**
     * This function creates the system.
     *

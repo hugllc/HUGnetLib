@@ -68,6 +68,8 @@ class Power extends \HUGnet\base\IOPBase
     * This is the cache for the drivers.
     */
     protected $driverLoc = "powerTable";
+    /** This is our url */
+    protected $url = "/power";
     /**
     * This function creates the system.
     *

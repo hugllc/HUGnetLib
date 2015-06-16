@@ -62,6 +62,8 @@ class Gateway extends \HUGnet\base\SystemTableBase
 {
     /** @var int The database table class to use */
     protected $tableClass = "Gateways";
+    /** This is our url */
+    protected $url = "/gateway";
     /**
     * This function creates the system.
     *

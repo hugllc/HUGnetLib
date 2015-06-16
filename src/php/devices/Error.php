@@ -66,6 +66,8 @@ class Error extends \HUGnet\base\SystemTableBase
     * This is the device we rode in on
     */
     private $_device;
+    /** This is our url */
+    protected $url = "/error";
     /**
     * This function creates the system.
     *

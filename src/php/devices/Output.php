@@ -68,6 +68,8 @@ class Output extends \HUGnet\base\IOPBase
     * This is the cache for the drivers.
     */
     protected $driverLoc = "outputTable";
+    /** This is our url */
+    protected $url = "/output";
     /**
     * This function creates the system.
     *

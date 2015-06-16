@@ -56,7 +56,6 @@ require_once dirname(__FILE__)."/../base/BaseChan.php";
  * @since      0.9.7
  */
 class ControlChan extends \HUGnet\base\BaseChan
-    implements \HUGnet\interfaces\WebAPI2
 {
     /** @var array The configuration that we are going to use */
     protected $setable = array();
@@ -69,81 +68,6 @@ class ControlChan extends \HUGnet\base\BaseChan
     {
         return $this->device()->output($this->get("output"));
     }
-    /**
-    * returns a history object for this device
-    *
-    * @param object $api   The API object
-    * @param array  $extra Extra data from the
-    *
-    * @return string
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-    */
-    public function webAPI2($api, $extra)
-    {
-        $method = trim(strtoupper($api->args()->get("method")));
-        $extra  = $api->args()->get("restextra");
-        $ret = null;
-        if (trim(strtolower($extra[0])) == "settable") {
-            $ret = $this->_value($api);
-        } else {
-            $api->response(401);
-            $c = get_class($api);
-            $api->error($c::NOT_IMPLEMENTED);
-        }
-        return $ret;
-    }
-    /**
-    * returns a history object for this device
-    *
-    * @param object $api The API object
-    *
-    * @return string
-    */
-    private function _value($api)
-    {
-        $data = null;
-        if ($action == "get") {
-            $pkt = $this->system()->device($did)->action()->send(
-                array(
-                    "Command" => '0x65',
-                    "Data" => sprintf("%02X", $chan),
-                )
-            );
-            if (is_object($pkt)) {
-                $reply = $pkt->reply();
-                $data = 0;
-                for ($i = 0; $i < 4; $i++) {
-                    $data += hexdec(substr($reply, ($i * 2), 2))<<($i * 8);
-                }
-                $api->response(202);
-                return $data;
-            } else {
-                $api->response(401);
-                $c = get_class($api);
-                $api->pdoerror($c::NO_RESPONSE);
-            }
-        } else if ($action == "set") {
-            $data = (int)$this->args()->get("data");
-            $datastr = sprintf("%08X", $data);
-            for ($i = 6; $i >= 0; $i-=2) {
-                $value .= substr($datastr, $i, 2);
-            }
-            $pkt = $this->system()->device($did)->action()->send(
-                array(
-                    "Command" => '0x64',
-                    "Data" => sprintf("%02X", $chan).$value,
-                )
-            );
-            if ($pkt->reply() == $value) {
-                return $data;
-            }
-        }
-        if (!is_null($ret)) {
-        } else {
-        }
-
-    }
-
 }
 
 

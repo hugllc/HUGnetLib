@@ -76,99 +76,132 @@ class WebAPI2 extends HTML
     private $_targets = array(
         "device" => array(
             "methods" => "GET,DELETE",
+            "action" => false,
             "subobjects" => array(
                 "input" => array(
                     "methods" => "GET,DELETE",
+                    "action" => false,
                 ),
                 "output" => array(
                     "methods" => "GET,DELETE",
+                    "action" => false,
                 ),
                 "process" => array(
                     "methods" => "GET,DELETE",
+                    "action" => false,
                 ),
                 "power" => array(
                     "methods" => "GET,DELETE",
+                    "action" => false,
                 ),
                 "annotation" => array(
                     "methods" => "GET,POST,PUT,DELETE",
+                    "action" => false,
                 ),
                 "history" => array(
                     "methods" => "GET,POST",
+                    "action" => false,
                 ),
                 "rawhistory" => array(
                     "methods" => "GET,POST",
+                    "action" => false,
                 ),
                 "history" => array(
                     "methods" => "GET,POST",
+                    "action" => false,
                 ),
                 "error" => array(
                     "methods" => "GET,POST,PUT,DELETE",
+                    "action" => false,
                 ),
                 "config" => array(
                     "methods" => "external",
+                    "action" => true,  // This is not an object, but an action
                 ),
                 "export" => array(
                     "methods" => "external",
+                    "action" => true,  // This is not an object, but an action
                 ),
                 "import" => array(
                     "methods" => "external",
+                    "action" => true,  // This is not an object, but an action
                 ),
                 "fcts" => array(
                     "methods" => "external",
+                    "action" => true,  // This is not an object, but an action
                 ),
                 "fctsetup" => array(
                     "methods" => "external",
+                    "action" => true,  // This is not an object, but an action
                 ),
                 "fctapply" => array(
                     "methods" => "external",
+                    "action" => true,  // This is not an object, but an action
                 ),
                 "controlchan" => array(
                     "methods" => "external",
+                    "action" => true,  // This is not an object, but an action
+                ),
+                "firmware" => array(
+                    "methods" => "external",
+                    "action" => true,  // This is not an object, but an action
                 ),
             ),
         ),
         "datacollector" => array(
             "methods" => "GET,POST,PUT,DELETE",
+            "action" => false,
             "subobjects" => array(
                 "run" => array(
                     "methods" => "external",
+                    "action" => true,  // This is not an object, but an action
                 ),
                 "checkin" => array(
                     "methods" => "external",
+                    "action" => true,  // This is not an object, but an action
                 ),
             ),
         ),
         "gateway" => array(
             "methods" => "GET,POST,PUT,DELETE",
+            "action" => false,
         ),
         "image" => array(
             "methods" => "GET,POST,PUT,DELETE",
             "subobjects" => array(
                 "reading" => array(
                     "methods" => "external",
+                    "action" => true,  // This is not an object, but an action
                 ),
                 "insert" => array(
                     "methods" => "external",
+                    "action" => true,  // This is not an object, but an action
                 ),
                 "image" => array(
                     "methods" => "external",
+                    "action" => true,  // This is not an object, but an action
                 ),
             ),
         ),
         "inputtable" => array(
             "methods" => "GET,POST,PUT,DELETE",
+            "action" => false,
         ),
         "outputtable" => array(
             "methods" => "GET,POST,PUT,DELETE",
+            "action" => false,
         ),
         "processtable" => array(
             "methods" => "GET,POST,PUT,DELETE",
+            "action" => false,
         ),
         "time" => array(
             "methods" => "GET",
+            "action" => false,
         ),
         "version" => array(
             "methods" => "GET",
+            "action" => false,
         ),
     );
     /** This is the id we were given */
@@ -271,15 +304,14 @@ class WebAPI2 extends HTML
             $this->_setSubobject();
             $this->_setSid();
             $this->_setMethod();
-            $this->_setInfo();
             $this->_createObj();
             $fct = "_execute".ucfirst($this->_object).ucfirst((string)$this->_subobject);
             if (method_exists($this, $fct)) {
                 $ret = $this->$fct();
             } else {
-                if ((($this->_info["methods"] === "external") || !$this->_checkMethod()) && $this->_auth(true)) {
+                if (($this->_info["action"] || !$this->_checkMethod()) && $this->_auth(true)) {
                     $interface = "\\HUGnet\\interfaces\\WebAPI2";
-                    if (is_subclass_of($this->_obj, $interface)) {
+                    if (is_subclass_of((object)$this->_obj, $interface)) {
                         $ret = $this->_obj->webAPI2($this, $extra);
                     } else {
                         $this->response(500);
@@ -463,26 +495,20 @@ class WebAPI2 extends HTML
     */
     private function &_createObj()
     {
-        if (is_string($this->_object) && is_callable(array($this->system(), $this->_object))) {
-            $this->_obj = $this->system()->{$this->_object}($this->_id);
-            if (is_object($this->_obj) && is_string($this->_subobject) && method_exists($this->_obj, (string)$this->_subobject)) {
-                $this->_obj = $this->_obj->{$this->_subobject}($this->_sid);
-            }
-        }
-    }
-    /**
-    * This gets the ID of the object
-    *
-    * @param mixed $object The object to get the ID for
-    *
-    * @return bool
-    */
-    private function &_setInfo()
-    {
         if (isset($this->_targets[$this->_object]) && isset($this->_targets[$this->_object]["subobjects"][$this->_subobject])) {
             $this->_info = &$this->_targets[$this->_object]["subobjects"][$this->_subobject];
         } else if (isset($this->_targets[$this->_object])) {
             $this->_info = &$this->_targets[$this->_object];
+        } else {
+            $this->_info = null;
+        }
+        if (is_array($this->_info)) {
+            if (is_string($this->_object) && is_callable(array($this->system(), $this->_object))) {
+                $this->_obj = $this->system()->{$this->_object}($this->_id);
+                if (is_object($this->_obj) && is_string($this->_subobject) && method_exists($this->_obj, (string)$this->_subobject) && !$this->_info["action"]) {
+                    $this->_obj = $this->_obj->{$this->_subobject}($this->_sid);
+                }
+            }
         }
     }
     /**

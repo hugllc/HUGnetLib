@@ -72,6 +72,8 @@ class InputTable extends \HUGnet\base\XTableBase
         "0039-21-02" => "0039-21-02 Controller Board Analog",
         "0039-28" => "0039-28 Enhanced AVR Endpoint Analog",
     );
+    /** This is our url */
+    protected $url = "/inputtable";
     /**
     * This function creates the system.
     *
