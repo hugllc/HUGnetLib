@@ -196,6 +196,7 @@ class Device extends \HUGnet\base\SystemTableAction
             array("history" => "History")
         );
         if ($return["loadable"]) {
+        /*
             $this->firmware()->set("HWPartNum", $return["HWPartNum"]);
             $this->firmware()->set("FWPartNum", $return["FWPartNum"]);
             $this->firmware()->set("RelStatus", \HUGnet\db\tables\Firmware::DEV);
@@ -208,6 +209,7 @@ class Device extends \HUGnet\base\SystemTableAction
                 $return["update"] = $this->firmware()->Version;
             }
             // @codeCoverageIgnoreEnd
+            */
         }
         if (isset($return["params"]["DaughterBoard"])
             && !empty($return["params"]["DaughterBoard"])
@@ -564,12 +566,11 @@ class Device extends \HUGnet\base\SystemTableAction
     *
     * @return reference to the table class object
     */
-    public function &firmware()
+    public function &firmware($data = null)
     {
-        if (!is_object($this->_firmware)) {
-            $this->_firmware = $this->system()->table("Firmware");
-        }
-        return $this->_firmware;
+        include_once dirname(__FILE__)."/../devices/Firmware.php";
+        $system = $this->system();
+        return \HUGnet\devices\Firmware::factory($system, $data, null, $this);
     }
 
     /**

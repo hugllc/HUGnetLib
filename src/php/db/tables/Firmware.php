@@ -224,69 +224,6 @@ class Firmware extends \HUGnet\db\Table
         $this->create();
     }
     /**
-    * Gets the latest firmware for the device
-    *
-    * @return bool True on success, false on failure
-    */
-    public function getLatest()
-    {
-        $where["FWPartNum"] = $this->get("FWPartNum");
-        $where["RelStatus"] = array('$lte' => $this->get("RelStatus"));
-        $where["Active"]    = array('$ne' => 0);
-        $HWPartNum = $this->get("HWPartNum");
-        if (!empty($HWPartNum)) {
-            $where["HWPartNum"] = $HWPartNum;
-        }
-        $version = $this->get("Version");
-        if (!empty($version)) {
-            $where["Version"] = $version;
-        }
-        $ret = $this->selectInto($where);
-        // This makes sure we are getting a good one if there is one, instead
-        // of a bad one.
-        $highest = array("Version" => "0.0.0");
-        $found = false;
-        do {
-            if (($this->RelStatus == self::BAD) || !$this->checkHash()) {
-                continue;
-            }
-            if ($this->compareVersion($highest["Version"]) < 0) {
-                $found = true;
-                $highest = $this->toArray();
-            }
-        } while ($ret = $this->nextInto());
-        $this->dbDriver()->reset();
-        $this->clearData();
-        if ($found) {
-            $this->fromArray($highest);
-        }
-        return $found;
-    }
-    /**
-    * Runs a function using the correct driver for the endpoint
-    *
-    * @param string $ver1 The first version to use in the compare
-    * @param string $ver2 The second version to use in the compare
-    *
-    * @return int -1 if $ver1 < $ver2, 0 if $ver1 == $ver2, 1 if $ver1 > $ver2
-    *
-    * @SuppressWarnings(PHPMD.ShortVariable)
-    */
-    public function compareVersion($ver1, $ver2 = null)
-    {
-        $useVer2 = (empty($ver2)) ? $this->get("Version") : $ver2;
-        $v1 = explode(".", $ver1);
-        $v2 = explode(".", $useVer2);
-        for ($i = 0; $i < 3; $i++) {
-            if ($v1[$i] > $v2[$i]) {
-                return 1;
-            } else if ($v1[$i] < $v2[$i]) {
-                return -1;
-            }
-        }
-        return 0;
-    }
-    /**
     * Sets all of the endpoint attributes from an array
     *
     * @param array $array This is an array of this class's attributes
