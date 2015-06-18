@@ -58,6 +58,7 @@ require_once dirname(__FILE__)."/../interfaces/WebAPI2.php";
  */
 class WebAPI2 extends HTML
 {
+    const API_VERSION = 1.0;
     const NOT_IMPLEMENTED = 1;
     const NOT_FOUND = 2;
     const SAVE_FAILED = 3;
@@ -548,7 +549,7 @@ class WebAPI2 extends HTML
     {
         $ret = "";
         if ($this->_auth(false)) {
-            $ret = $this->system()->get("version");
+            $ret = (float)self::API_VERSION;
         }
         return $ret;
     }
