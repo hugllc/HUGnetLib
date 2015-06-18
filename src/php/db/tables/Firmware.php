@@ -243,6 +243,28 @@ class Firmware extends \HUGnet\db\Table
         }
     }
     /**
+    * Returns an array with only the values the database cares about
+    *
+    * @param bool $default Return items set to their default?
+    *
+    * @return null
+    *
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function toDB($default = true)
+    {
+        $array = parent::toDB($default);
+        if ($array["HWPartNum"] == "0039-21") {
+            if (trim(strtolower($array["Target"])) == "atmega16") {
+                $array["HWPartNum"] = "0039-21-01";
+            } else if (trim(strtolower($array["Target"])) == "atmega324p") {
+                $array["HWPartNum"] = "0039-21-02";
+            }
+        }
+        return (array)$array;
+    }
+ 
+    /**
     * Checks the hash of the data and code.
     *
     * @return bool True if hash is good, false otherwise
@@ -300,13 +322,15 @@ class Firmware extends \HUGnet\db\Table
             return false;
         }
         $filename = $this->get("filename");
-        file_put_contents(sys_get_temp_dir()."/".$filename, $stuff);
-        $stuff = implode("", gzfile(sys_get_temp_dir()."/".$filename));
-        @unlink(sys_get_temp_dir()."/".$filename);
-        $this->fromString($stuff);
-        $this->set("md5", $md5);
-        $this->set("filename", $file);
-        unset($stuff);
+        if (!empty($filename)) {
+            file_put_contents(sys_get_temp_dir()."/".$filename, $stuff);
+            $stuff = implode("", gzfile(sys_get_temp_dir()."/".$filename));
+            @unlink(sys_get_temp_dir()."/".$filename);
+            $this->fromString($stuff);
+            $this->set("md5", $md5);
+            $this->set("filename", $file);
+            unset($stuff);
+        }
         return true;
     }
     /**
@@ -356,6 +380,22 @@ class Firmware extends \HUGnet\db\Table
             array(),
             "id"
         );
+    }
+    /**
+    * Sets the part number
+    *
+    * @param mixed $value The value to set
+    *
+    * @return null
+    */
+    public function fixHWPartNum($value)
+    {
+        $val = Devices::formatPartNum($value);
+        $substr = substr($val, 0, 7);
+        if (($substr == "0039-21") && (strlen($val) >= 10)) {
+            $substr = trim(substr($val, 0, 10));
+        }
+        return $substr;
     }
     /******************************************************************
      ******************************************************************
@@ -407,7 +447,7 @@ class Firmware extends \HUGnet\db\Table
     */
     protected function setHWPartNum($value)
     {
-        $this->data["HWPartNum"] = substr(Devices::formatPartNum($value), 0, 7);
+        $this->data["HWPartNum"] = $this->fixHWPartNum($value);
     }
     /**
     * Hexifies a version in x.y.z form.
