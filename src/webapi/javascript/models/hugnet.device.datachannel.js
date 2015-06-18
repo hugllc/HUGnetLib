@@ -74,6 +74,12 @@ HUGnet.DeviceDataChannel = Backbone.Model.extend({
 */
 HUGnet.DeviceDataChannels = Backbone.Collection.extend({
     model: HUGnet.DeviceDataChannel,
+    initialize: function (options)
+    {
+        if (options) {
+            if (options.device) this.device = options.device;
+        }
+    },
     comparator: function (model)
     {
         return parseInt(model.get("channel"), 10);

@@ -103,11 +103,16 @@ class Firmware extends \HUGnet\base\SystemTableBase
     public function getLatest()
     {
         if (is_object($this->_device)) {
-            $where["FWPartNum"] = $this->_device->get("FWPartNum");
-            $HWPartNum          = $this->_device->get("arch");
+            $HWPartNum = $this->_device->get("arch");
+            if (trim(strtolower($HWPartNum)) == "bootloader") {
+                $HWPartNum = $this->table()->fixHWPartNum(
+                    $this->_device->get("HWPartNum")
+                );
+            } else {
+                $where["FWPartNum"] = $this->_device->get("FWPartNum");
+            }
         } else {
             $where["FWPartNum"] = $this->table()->get("FWPartNum");
-            $HWPartNum          = $this->table()->get("HWPartNum");
         }
         $where["RelStatus"] = array('$lte' => $this->table()->get("RelStatus"));
         $where["Active"]    = array('$ne' => 0);
@@ -125,7 +130,7 @@ class Firmware extends \HUGnet\base\SystemTableBase
         $found = false;
         do {
             $data = $this->table()->toArray();
-            if (($data["RelStatus"] == \HUGnet\db\tables\Firmware::BAD) || !$this->table()->checkHash()) {
+            if (($data["RelStatus"] == \HUGnet\db\tables\Firmware::BAD) || !$this->table()->checkHash() || !$this->isLoadable()) {
                 continue;
             }
             if ($this->compareVersion($highest["Version"], $data["Version"]) < 0) {
@@ -138,6 +143,24 @@ class Firmware extends \HUGnet\base\SystemTableBase
             $this->table()->fromArray($highest);
         }
         return $found;
+    }
+    /**
+    * Gets the latest firmware for the device
+    *
+    * @return bool True on success, false on failure
+    */
+    public function isLoadable()
+    {
+        // This makes sure that it is the correct firmware for this device
+        if (is_object($this->_device)) {
+            $Part = $this->table()->fixHWPartNum($this->_device->get("HWPartNum"));
+            if ($this->table()->get("HWPartNum") != $Part) {
+                return false;
+            }
+        }
+        // This makes sure it is not a bootloader.
+        $Part = $this->table()->get("FWPartNum");
+        return (($Part != "0039-38-02-C") && ($Part != "0039-38-81-C") && ($Part != "0039-38-82-C"));
     }
     /**
     * Runs a function using the correct driver for the endpoint
@@ -289,18 +312,27 @@ class Firmware extends \HUGnet\base\SystemTableBase
     */
     public function webAPI2($api, $extra)
     {
+        $return = 0;
         $method = trim(strtoupper($api->args()->get("method")));
         $sid = trim(strtolower($api->args()->get("sid")));
         if (is_object($this->_device)
             && (($method == "PUT") || ($method == "POST"))
-            && (!empty($sid))
-            && (!$this->isNew())
-            && ($this->table()->get('HWPartNum') == $this->_device->get("arch"))
-
         ) {
-            $this->_device->action()->loadFirmware($this);
+            if (empty($sid)) {
+                $return = $this->getLatest();
+            }
+            if ($return && $this->_device->action()->loadFirmware($this)) {
+                $api->response(202);
+                $return = 1
+            } else {
+                $api->response(400);
+                $api->error(\HUGnet\ui\WebAPI2::BAD_REQUEST);
+            }
+        } else {
+            $api->response(501);
+            $api->error(\HUGnet\ui\WebAPI2::NOT_IMPLEMENTED);
         }
-
+        return $return;
     }
 }
 

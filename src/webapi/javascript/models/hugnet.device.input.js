@@ -119,10 +119,12 @@ HUGnet.DeviceInputs = Backbone.Collection.extend({
     urlPart: '/input',
     model: HUGnet.DeviceInput,
     baseurl: '',
+    device: null,
     initialize: function (options)
     {
         if (options) {
             if (options.baseurl) this.baseurl = options.baseurl;
+            if (options.device) this.device = options.device;
         }
     },
     url: function ()

@@ -83,11 +83,13 @@ HUGnet.DeviceFunctions = Backbone.Collection.extend({
     baseurl: '',
     model: HUGnet.DeviceFunction,
     devid: 0,
+    device: null,
     initialize: function (options)
     {
         if (options) {
             if (options.baseurl) this.baseurl = options.baseurl;
             this.devid = options.devid;
+            if (options.device) this.device = options.device;
         }
     },
     url: function ()

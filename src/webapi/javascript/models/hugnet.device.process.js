@@ -115,10 +115,12 @@ HUGnet.DeviceProcess = Backbone.Model.extend({
 HUGnet.DeviceProcesses = Backbone.Collection.extend({
     urlPart: '/process',
     model: HUGnet.DeviceProcess,
+    device: null,
     initialize: function (options)
     {
         if (options) {
             if (options.baseurl) this.baseurl = options.baseurl;
+            if (options.device) this.device = options.device;
         }
     },
     url: function ()

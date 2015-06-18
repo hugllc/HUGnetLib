@@ -82,6 +82,7 @@ HUGnet.Device = Backbone.Model.extend({
         ViewButtonID: '',
         RefreshButtonID: '',
         target: '',
+        loadable: false
     },
     lock: false,
     inputCache: null,
@@ -115,7 +116,8 @@ HUGnet.Device = Backbone.Model.extend({
     {
         if ((this.inputCache == null) || (typeof this.inputCache != 'object')) {
             this.inputCache = new HUGnet.DeviceInputs({
-                "baseurl": this.url()
+                baseurl: this.url(),
+                device: this
             });
             fetch = true;
         }
@@ -134,7 +136,8 @@ HUGnet.Device = Backbone.Model.extend({
     {
         if ((this.outputCache == null) || (typeof this.outputCache != 'object')) {
             this.outputCache = new HUGnet.DeviceOutputs({
-                "baseurl": this.url()
+                baseurl: this.url(),
+                device: this
             });
             fetch = true;
         }
@@ -153,7 +156,8 @@ HUGnet.Device = Backbone.Model.extend({
     {
         if ((this.processCache == null) || (typeof this.processCache != 'object')) {
             this.processCache = new HUGnet.DeviceProcesses({
-                "baseurl": this.url()
+                baseurl: this.url(),
+                device: this
             });
             fetch = true;
         }
@@ -172,7 +176,8 @@ HUGnet.Device = Backbone.Model.extend({
     {
         if ((this.powerCache == null) || (typeof this.powerCache != 'object')) {
             this.powerCache = new HUGnet.DevicePowers({
-                "baseurl": this.url()
+                baseurl: this.url(),
+                device: this
             });
             fetch = true;
         }
@@ -183,6 +188,26 @@ HUGnet.Device = Backbone.Model.extend({
             return this.powerCache.get(id);
         }
         return this.powerCache;
+    },
+    /**
+    * This returns the firmware for this device
+    */
+    firmware: function(id, fetch)
+    {
+        if ((this.firmwareCache == null) || (typeof this.firmwareCache != 'object')) {
+            this.firmwareCache = new HUGnet.Firmware({
+                baseurl: this.url(),
+                device: this
+            });
+            fetch = true;
+        }
+        if (fetch) {
+            this.firmwareCache.fetch();
+        }
+        if (_.isNumber(id)) {
+            return this.firmwareCache.get(id);
+        }
+        return this.firmwareCache;
     },
     /**
     * This returns a power from this device
@@ -202,7 +227,8 @@ HUGnet.Device = Backbone.Model.extend({
     {
         if ((this.controlchanCache == null) || !_.isObject(this.controlchanCache)) {
             this.controlchanCache = new HUGnet.DeviceControlChannels({
-                "baseurl": this.url()
+                baseurl: this.url(),
+                device: this
             });
             fetch = true;
         }
@@ -221,7 +247,8 @@ HUGnet.Device = Backbone.Model.extend({
     {
         if ((this.datachanCache == null) || !_.isObject(this.datachanCache)) {
             this.datachanCache = new HUGnet.DeviceDataChannels({
-                "baseurl": this.url()
+                baseurl: this.url(),
+                device: this
             });
             fetch = true;
         }

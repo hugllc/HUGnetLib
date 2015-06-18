@@ -112,10 +112,12 @@ HUGnet.DeviceControlChannels = Backbone.Collection.extend({
     urlPart: '/controlchan',
     model: HUGnet.DeviceControlChannel,
     baseurl: '',
+    device: null,
     initialize: function (options)
     {
         if (options) {
             if (options.baseurl) this.baseurl = options.baseurl;
+            if (options.device) this.device = options.device;
         }
     },
     url: function ()

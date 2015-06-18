@@ -115,10 +115,12 @@ HUGnet.DeviceOutput = Backbone.Model.extend({
 HUGnet.DeviceOutputs = Backbone.Collection.extend({
     urlPart: '/output',
     model: HUGnet.DeviceOutput,
+    device: null,
     initialize: function (options)
     {
         if (options) {
             if (options.baseurl) this.baseurl = options.baseurl;
+            if (options.device) this.device = options.device;
         }
     },
     url: function ()

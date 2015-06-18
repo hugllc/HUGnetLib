@@ -62,6 +62,7 @@ class WebAPI2 extends HTML
     const NOT_FOUND = 2;
     const SAVE_FAILED = 3;
     const DELETE_FAILED = 4;
+    const BAD_REQUEST = 5;
     /** The config we are using */
     private $_config = array();
     /** The arguments we got */
@@ -237,6 +238,7 @@ class WebAPI2 extends HTML
     );
     /** These are our error messages */
     private $_errorMsg = array(
+        self::BAD_REQUEST     => "This is a bad request",
         self::NOT_IMPLEMENTED => "This is not implemented at the present time",
         self::NOT_FOUND       => "The object you requested does not exist",
         self::SAVE_FAILED     => "Could not save this to the database",

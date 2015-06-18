@@ -445,6 +445,8 @@ class Action
         if ($ret && is_int($this->programLock(true))) {
             if ($this->device->network()->loadFirmware($firmware, $loadData)) {
                 $ret = true;
+            } else {
+                $ret = false;
             }
         }
         $this->programLock(false);

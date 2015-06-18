@@ -115,10 +115,12 @@ HUGnet.DevicePower = Backbone.Model.extend({
 HUGnet.DevicePowers = Backbone.Collection.extend({
     urlPart: '/power',
     model: HUGnet.DevicePower,
+    device: null,
     initialize: function (options)
     {
         if (options) {
             if (options.baseurl) this.baseurl = options.baseurl;
+            if (options.device) this.device = options.device;
         }
     },
     url: function ()
