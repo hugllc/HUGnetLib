@@ -447,9 +447,18 @@ abstract class SystemTableBase
     *
     * @return string The left over string
     */
-    protected function retrieve($url = null, $timeout=60)
+    public function retrieve($url = null, $timeout=60)
     {
-        
+        if (empty($url)) {
+            $master = $this->system()->get("master");
+            $url = $master["url"];
+        }
+        $url .= $this->url();
+        $return = $this->httpMethod(
+            "GET", null, $url, $timeout
+        );
+        return $return;
+
     }
     /**
     * Gets the config and saves it
@@ -458,7 +467,7 @@ abstract class SystemTableBase
     *
     * @return string The left over string
     */
-    protected function post($url = null, $timeout=60)
+    public function post($url = null, $timeout=60)
     {
         $return = false;
         if (empty($url)) {

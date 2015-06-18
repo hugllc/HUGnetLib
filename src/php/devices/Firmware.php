@@ -58,7 +58,7 @@ class Firmware extends \HUGnet\base\SystemTableBase
     implements \HUGnet\interfaces\SystemInterface
 {
     /** @var int The database table class to use */
-    protected $tableClass = "DeviceError";
+    protected $tableClass = "Firmware";
     /** @var Severity level for syslog */
     private $_syslog = array(
     );
@@ -67,7 +67,7 @@ class Firmware extends \HUGnet\base\SystemTableBase
     */
     private $_device;
     /** This is our url */
-    protected $url = "/error";
+    protected $url = "/firmware";
     /**
     * This function creates the system.
     *
@@ -90,7 +90,7 @@ class Firmware extends \HUGnet\base\SystemTableBase
             !is_object($device)
         );
         $class = get_called_class();
-        $object = new $class($system, $dbtable);
+        $object = new $class($system, $dbtable, $data);
         $object->_device = &$device; 
         return $object;
     }
@@ -101,14 +101,19 @@ class Firmware extends \HUGnet\base\SystemTableBase
     */
     public function getLatest()
     {
-        $where["FWPartNum"] = $this->_device->get("FWPartNum");
+        if (is_object($this->_device)) {
+            $where["FWPartNum"] = $this->_device->get("FWPartNum");
+            $HWPartNum          = $this->_device->get("arch");
+        } else {
+            $where["FWPartNum"] = $this->table()->get("FWPartNum");
+            $HWPartNum          = $this->table()->get("HWPartNum");
+        }
         $where["RelStatus"] = array('$lte' => $this->table()->get("RelStatus"));
         $where["Active"]    = array('$ne' => 0);
-        $HWPartNum = $this->get("HWPartNum");
         if (!empty($HWPartNum)) {
             $where["HWPartNum"] = $HWPartNum;
         }
-        $version = $this->get("Version");
+        $version = $this->table()->get("Version");
         if (!empty($version)) {
             $where["Version"] = $version;
         }
@@ -159,27 +164,6 @@ class Firmware extends \HUGnet\base\SystemTableBase
     }
     
     /**
-    * Logs an error in the database
-    *
-    * @param string $error The error message
-    * @param string $sev   The severity of the error
-    *
-    * @return null
-    */
-    private function _log($error, $sev)
-    {
-        if (is_string($error)) {
-            $error = $this->decode($error);
-        }
-        if (is_array($error)) {
-            $error["id"] = $this->_device->id();
-            $error["severity"] = $sev;
-            $this->table()->fromArray($error);
-            return $this->table()->insertRow(true);
-        }
-        return false;
-    }
-    /**
     * Returns a list of the items that it sees.
     *
     * @param array $where   The things the list should filter for
@@ -190,59 +174,108 @@ class Firmware extends \HUGnet\base\SystemTableBase
     public function getList($where = null, $default = false)
     {
         $where = (array)$where;
-        $where['HWPartNum'] = $this->_device->get("HWPartNum");
-        return parent::getList($where, $default);
+        if (is_object($this->_device)) {
+            $where['HWPartNum'] = $this->_device->get("arch");
+        }
+        $ret =  parent::getList($where, $default);
+        // We don't want to return code and data.  They are too big for a list.
+        // The client can request specific firmwares if it wants code and data.
+        foreach ($ret as &$val) {
+            unset($val["Code"]);
+            unset($val["Data"]);
+        }
+        return $ret;
     }
     /**
-    * Logs an error in the database
+    * Changes an SREC source into a raw memory buffer
     *
-    * @param int    $id    The id of the device
-    * @param string $error The error message
+    * @param string $empty This is what a byte looks like when it is
+    *    erased.  The default is for flash memory (FF);
     *
-    * @return null
+    * @return string The raw memory buffer
     */
-    public function log($error)
+    public function getCode($empty="FF")
     {
-        return $this->_log($error, "E");
+        return $this->_interpSREC($this->table()->get("Code"), $empty);
     }
     /**
-    * Logs an error in the database
+    * Changes an SREC source into a raw memory buffer
     *
-    * @param int    $id    The id of the device
-    * @param string $error The error message
+    * @param string $empty This is what a byte looks like when it is
+    *    erased.  The default is for flash memory (FF);
     *
-    * @return null
+    * @return string The raw memory buffer
     */
-    public function logwarn($error)
+    public function getData($empty="FF")
     {
-        return $this->_log($error, "W");
+        return $this->_interpSREC($this->table()->get("Data"), $empty);
     }
     /**
-    * This builds the class from a setup string
+    * Changes an SREC source into a raw memory buffer
     *
-    * @param string $string The setup string to decode
+    * @param string $srec  The S record to change.
+    * @param string $empty This is what a byte looks like when it is
+    *    erased.  The default is for flash memory (FF);
     *
-    * @return Reference to the network object
+    * @return string The raw memory buffer
     */
-    protected function decode($string)
+    private function _interpSREC($srec, $empty="FF")
     {
-        $vals = array(
-            "Date" => $this->_device->decodeRTC(substr($string, 0, 8)),
-            "errno" => hexdec(substr($string, 8, 2)),
-            "extra" => substr($string, 10),
-        );
-        return $vals;
-    }
-    /**
-    * Lists the ids of the table values
-    *
-    * @return int The ID of this device
-    *
-    * @SuppressWarnings(PHPMD.ShortMethodName)
-    */
-    public function id()
-    {
-        return $this->_device->id();
+        // Put the srec into the buffer
+        $srec = explode("\n", $srec);
+        $code = array();
+        $start = -1;
+        foreach ((array)$srec as $rec) {
+            if (substr($rec, 0, 2) == "S0") {
+                if ($start >= 0) {
+                    // Got some stuff
+                    // remove the extra
+                    while (substr($buffer, -2) == $empty) {
+                        $buffer = substr($buffer, 0, -2);
+                    }
+                    $code[$start] = $buffer;
+                    $buffer = "";
+                }
+                $start = -1;
+            } else if (substr($rec, 0, 2) == "S1") {
+                // Set up all the stuff to put into the buffer
+                $size  = hexdec(substr($rec, 2, 2));
+                $size -= 3;
+                $addr  = hexdec(substr($rec, 4, 4));
+                if ($start < 0) {
+                    $start = $addr;
+                }
+                $addr -= $start;
+                $data  = substr($rec, 8, ($size*2));
+                // Make sure the buffer is big enough for the data
+                $buffer = str_pad($buffer, ($addr + $size)*2, $empty, STR_PAD_RIGHT);
+                // Put the data into the buffer
+                $buffer = substr_replace($buffer, $data, $addr*2, $size*2);
+            } else if (substr($rec, 0, 2) == "S2") {
+                // Set up all the stuff to put into the buffer
+                $size  = hexdec(substr($rec, 2, 2));
+                $size -= 3;
+                $addr  = hexdec(substr($rec, 4, 6));
+                if ($start < 0) {
+                    $start = $addr;
+                }
+                $addr -= $start;
+                $data  = substr($rec, 10, ($size*2));
+                // Make sure the buffer is big enough for the data
+                $buffer = str_pad($buffer, ($addr + $size)*2, $empty, STR_PAD_RIGHT);
+                // Put the data into the buffer
+                $buffer = substr_replace($buffer, $data, $addr*2, $size*2);
+            }
+        }
+        if ($start >= 0) {
+            // remove the extra
+            while (substr($buffer, -2) == $empty) {
+                $buffer = substr($buffer, 0, -2);
+            }
+            $code[$start] = $buffer;
+        }
+        // return the buffer
+        return $code;
     }
 
 }

@@ -143,8 +143,8 @@ class WebAPI2 extends HTML
                     "action" => true,  // This is not an object, but an action
                 ),
                 "firmware" => array(
-                    "methods" => "external",
-                    "action" => true,  // This is not an object, but an action
+                    "methods" => "GET,PUT",
+                    "action" => false,  
                 ),
             ),
         ),

@@ -432,7 +432,7 @@ class Action
     {
         $ret = true;
         if (!is_object($firmware)) {
-            $firmware = $this->device->system()->table("Firmware");
+            $firmware = $this->device->firmware();
             if (!$this->device->get("bootloader")) {
                 $firmware->set("FWPartNum", $this->device->get("FWPartNum"));
             } else {

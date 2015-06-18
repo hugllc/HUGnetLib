@@ -107,6 +107,7 @@ class GetFirmware extends \HUGnet\processes\updater\Periodic
                     if (!$this->ui()->loop()) {
                         return;
                     }
+         
                     if (!$this->_firmware->checkFile($file)) {
                         // State we found some new firmware
                         $this->system()->out("Found ".trim($file));
