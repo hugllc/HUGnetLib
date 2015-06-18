@@ -58,7 +58,7 @@ class Error extends \HUGnet\base\SystemTableBase
     implements \HUGnet\interfaces\SystemInterface
 {
     /** @var int The database table class to use */
-    protected $tableClass = "Errors";
+    protected $tableClass = "Error";
     /** notice level severity */
     const NOTICE = 1;
     /** warning level severity */
@@ -89,6 +89,20 @@ class Error extends \HUGnet\base\SystemTableBase
     public function __construct(&$system, $table, $data = array())
     {
         parent::__construct($system, $table, $data);
+    }
+    /**
+    * This function creates the system.
+    *
+    * @param mixed  &$system (object)The system object to use
+    * @param mixed  $data    (int)The id of the item, (array) data info array
+    * @param string $table   The table to use
+    *
+    * @return null
+    */
+    public static function &factory(&$system, $data=null, $table="Error")
+    {
+        $object = parent::factory($system, $data, $table);
+        return $object;
     }
     /**
     * Logs an error in the database

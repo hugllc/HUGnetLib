@@ -434,10 +434,10 @@ class System
     *
     * @return null
     */
-    private function _error()
+    public function error($id=null)
     {
         if (!is_object($this->_error)) {
-            $this->_error = Error::factory($this);
+            $this->_error = Error::factory($this, $id);
         }
         return $this->_error;
     }
@@ -451,7 +451,7 @@ class System
     *
     * @return null
     */
-    public function error($msg, $severity, $condition = true)
+    public function logError($msg, $severity, $condition = true)
     {
         return $this->_setError($msg, $severity, $condition);
     }
@@ -472,7 +472,7 @@ class System
         } else if ($severity < $this->get("min_log")) {
             return true;
         }
-        $this->_error()->syslog($msg, $severity);
+        $this->error()->syslog($msg, $severity);
         if ($this->dbconnect()->available()) {
             $debug = debug_backtrace();
             $method = "unknown";
@@ -481,7 +481,7 @@ class System
                 $method = $debug[2]["function"];
                 $class = $debug[2]["class"];
             }
-            $ret = $this->_error()->log(-1, $msg, $severity, $method, $class);
+            $ret = $this->error()->log(-1, $msg, $severity, $method, $class);
         }
         return $ret;
     }
@@ -503,7 +503,7 @@ class System
             $this->_fatalError = true;
             $this->_setError($msg, Error::CRITICAL);
         }
-        $this->_error()->exception($msg, "Runtime");
+        $this->error()->exception($msg, "Runtime");
     }
     /**
     * Throws an exception

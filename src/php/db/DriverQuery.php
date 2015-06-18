@@ -214,7 +214,7 @@ abstract class DriverQuery
     protected function errorHandler($errorInfo, $method, $severity)
     {
         if ($this->myTable->sqlTable != "errors") {
-            $this->system->error(
+            $this->system->logError(
                 $this->myTable->get("group")." (".$this->myTable->sqlTable."): "
                 .$errorInfo[2],
                 $severity

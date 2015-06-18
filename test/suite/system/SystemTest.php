@@ -168,7 +168,7 @@ class SystemTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataError()
+    public static function dataLogError()
     {
         return array(
             array(
@@ -204,7 +204,7 @@ class SystemTest extends \PHPUnit_Framework_TestCase
                             0 => -1,
                             1 => 'Test Message',
                             2 => Error::ERROR,
-                            3 => 'testError',
+                            3 => 'testLogError',
                             4 => 'HUGnet\SystemTest',
                         ),
                     ),
@@ -234,7 +234,7 @@ class SystemTest extends \PHPUnit_Framework_TestCase
                             0 => -1,
                             1 => 'Test Message',
                             2 => Error::CRITICAL,
-                            3 => 'testError',
+                            3 => 'testLogError',
                             4 => 'HUGnet\SystemTest',
                         ),
                     ),
@@ -255,15 +255,15 @@ class SystemTest extends \PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataError
+    * @dataProvider dataLogError
     */
-    public function testError(
+    public function testLogError(
         $mocks, $msg, $severity, $condition, $return, $expect
     ) {
         $error = new DummyBase("Error");
         $error->resetMock($mocks);
         $obj = System::factory(array(), null, $error);
-        $ret = $obj->error($msg, $severity, $condition);
+        $ret = $obj->logError($msg, $severity, $condition);
         $this->assertSame($return, $ret, "Return Wrong");
         $this->assertEquals($expect, $error->retrieve("Error"), "Calls Wrong");
     }

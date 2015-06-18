@@ -195,6 +195,10 @@ class WebAPI2 extends HTML
             "methods" => "GET,POST,PUT,DELETE",
             "action" => false,
         ),
+        "error" => array(
+            "methods" => "GET,POST,PUT,DELETE",
+            "action" => false,
+        ),
         "time" => array(
             "methods" => "GET",
             "action" => false,
