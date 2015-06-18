@@ -55,7 +55,8 @@ require_once dirname(__FILE__)."/../interfaces/SystemInterface.php";
  * @since      0.14.5
  */
 class Firmware extends \HUGnet\base\SystemTableBase
-    implements \HUGnet\interfaces\SystemInterface
+    implements \HUGnet\interfaces\SystemInterface,
+        \HUGnet\interfaces\WebAPI2
 {
     /** @var int The database table class to use */
     protected $tableClass = "Firmware";
@@ -277,7 +278,30 @@ class Firmware extends \HUGnet\base\SystemTableBase
         // return the buffer
         return $code;
     }
+    /**
+    * returns a history object for this device
+    *
+    * @param object $api   The api object
+    * @param array  $extra Extra data from the
+    *
+    * @return string
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function webAPI2($api, $extra)
+    {
+        $method = trim(strtoupper($api->args()->get("method")));
+        $sid = trim(strtolower($api->args()->get("sid")));
+        if (is_object($this->_device)
+            && (($method == "PUT") || ($method == "POST"))
+            && (!empty($sid))
+            && (!$this->isNew())
+            && ($this->table()->get('HWPartNum') == $this->_device->get("arch"))
 
+        ) {
+            $this->_device->action()->loadFirmware($this);
+        }
+
+    }
 }
 
 
