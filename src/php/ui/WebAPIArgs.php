@@ -61,6 +61,11 @@ require_once dirname(__FILE__)."/HTMLArgs.php";
  */
 class WebAPIArgs extends HTMLArgs
 {
+    private $_types = array(
+        "text/html",
+        "text/csv",
+        "application/json",
+    );
     /** These are pretty standard config changes */
     protected $defaultConfig = array(
         "q" => array("name" => "quiet", "type" => "bool", "default" => false),
@@ -70,7 +75,7 @@ class WebAPIArgs extends HTMLArgs
         "task" => array("name" => "task", "type" => "string", "default" => null),
         "subtask" => array("name" => "subtask", "type" => "string", "default" => null),
         "action" => array("name" => "action", "type" => "string", "default" => null),
-        "format" => array("name" => "action", "type" => "string", 'default' => null),
+        "format" => array("name" => "action", "type" => "string", 'default' => "JSON"),
         "id" => array("name" => "id", "type" => "string", 'default' => null),
         "sid" => array("name" => "sid", "type" => "string", 'default' => null),
         "object" => array("name" => "object", "type" => "string", 'default' => null),
@@ -157,6 +162,14 @@ class WebAPIArgs extends HTMLArgs
             }
         }
         $this->arguments["restextra"] = $args;
+        $this->arguments["format"] = 'application/json';
+        if (isset($this->sysargs["HTTP_ACCEPT"])) {
+            foreach ($this->_types as $format) {
+                if (stripos($this->sysargs["HTTP_ACCEPT"], $format) !== false) {
+                    $this->arguments["format"] = $format;
+                }
+            }
+        }
     }
 
 }

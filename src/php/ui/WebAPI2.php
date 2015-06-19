@@ -1113,25 +1113,17 @@ class WebAPI2 extends HTML
         $this->_headerResponse();
         if ($this->_response < 400) {
             $format = trim($this->args()->get("format"));
-            if (strtoupper($format) === "HTML") {
+            if ($format === "text/html") {
                 $this->_headerNoCache();
                 $this->_headerHTML();
                 if (is_array($data)) {
                     $data = $this->_arrayHTML($data);
                 }
                 print $data;
-            } else if (strtoupper($format) === "CSV") {
+            } else if ($format === "text/csv") {
                 $this->_headerNoCache();
                 $this->_headerCSV();
                 print $data;
-            } else if (strtoupper($format) === "DEBUG") {
-                if (!headers_sent()) {
-                    // @codeCoverageIgnoreStart
-                    header('Content-type: text/plain; charset=UTF-8');
-                }
-                // @codeCoverageIgnoreEnd
-                $this->_headerNoCache();
-                var_dump($data);
             } else {
                 $this->_headerNoCache();
                 $this->_headerJSON();
