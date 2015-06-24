@@ -478,8 +478,10 @@ class Network
     */
     public function runBootloader($config = array())
     {
+        $this->_sendPkt("BOOTLOADER", null, array("NoReply" => true));
+        $this->_sendPkt("BOOTLOADER", null, array("NoReply" => true));
+        $config = (array)$config;
         $config["find"] = false;
-        $config["timeout"] = 0.5;
         $reply = $this->_sendPkt("BOOTLOADER", null, $config);
         if (is_object($reply)) {
             if (is_string($reply->Reply())) {
@@ -700,20 +702,17 @@ class Network
         $part = $firmware->get("HWPartNum");
         if (empty($part)) {
             $this->_system->out("check 1/2 fail", 1);
-            error_log("A");
             return false;
         }
         $this->_system->out("check 1/2 success", 1);
         /* This verifies that we are in the right place */
         if (substr($this->_device->get("HWPartNum"), 0, strlen($part)) !== $part) {
             $this->_system->out("check 2/2 fail", 1);
-            error_log("B");
             return false;
         }
         $this->_system->out("check 2/2 success", 1);
         if (!$this->runBootloader()) {
             $this->_system->out("bootloader 1/1 fail", 1);
-            error_log("C");
             return false;
         }
         $this->_system->out("bootloader 1/1 success", 1);
