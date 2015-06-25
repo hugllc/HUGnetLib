@@ -855,6 +855,9 @@ class Device extends \HUGnet\base\SystemTableAction
         if (!empty($info)) {
             $iop->mix("extra", $extra);
             $iop->mix("location", $location);
+            foreach ($info as $key => $value) {
+                $iop->set($key, $value);
+            }
         }
         return $iop;
     }
