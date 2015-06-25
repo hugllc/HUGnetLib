@@ -109,6 +109,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "30:DEFAULT"                 => "HUGnetPower",
         "31:DEFAULT"                 => "FET003912",
         "32:DEFAULT"                 => "GPIO003928",
+        "40:DEFAULT"                 => "FETCtrl104603",
         "60:DEFAULT"                 => "InputSumOutput",
         "FE:DEFAULT"                 => "NullOutput",
         "FF:DEFAULT"                 => "EmptyOutput",

@@ -75,10 +75,10 @@ class E10460300 extends \HUGnet\devices\Driver
         "job"  => "sense",
         "arch" => "1046-03",
         "InputTables" => 11,
-        "OutputTables" => 0,
+        "OutputTables" => 2,
         "DataChannels" => 11,
-        "ProcessTables" => 0,
-        "PowerTables" => 0,
+        "ProcessTables" => 4,
+        "PowerTables" => 2,
         "inputSize" => 2,
         "AddressSize" => 2,
         "fixed" => array(

@@ -67,75 +67,89 @@ class Type4 extends \HUGnet\base\Role
     */
     protected $input = array(
         0 => array(
-            "id" => 0x7D,
-            "extra" => array(),
-            "location" => "Status 1",
-            "type" => "XMegaStatus",
-        ),
-        1 => array(
             "id" => 0x50,
             "extra" => array(0.001, 64.0, 1.0),
-            "location" => "Current",
+            "location" => "Port 1 Current",
             "type" => "XMegaCurrent",
         ),
-        2 => array(
+        1 => array(
             "id" => 0x40,
-            "extra" => array(40.2, 2.0, 1.0),
-            "location" => "Voltage",
+            "extra" => array(200.0, 10.0, 1.0),
+            "location" => "Port 1 Voltage",
             "type" => "XMegaVoltage",
+        ),
+        2 => array(
+            "id" => 0x02,
+            "extra" => array(160),
+            "location" => "Port 1 Temperature",
+            "type" => "MurataNCPP18XH",
         ),
         3 => array(
-            "id" => 0x40,
-            "extra" => array(40.2, 2.0, 1.0),
-            "location" => "BB Voltage",
-            "type" => "XMegaVoltage",
+            "id" => 0x50,
+            "extra" => array(0.001, 64.0, 1.0),
+            "location" => "Port 2 Current",
+            "type" => "XMegaCurrent",
         ),
         4 => array(
-            "id" => 0x02,
-            "extra" => array(10),
-            "location" => "Thermistor 1",
-            "type" => "MurataNCPP18XH",
+            "id" => 0x40,
+            "extra" => array(200.0, 10.0, 1.0),
+            "location" => "Port 2 Voltage",
+            "type" => "XMegaVoltage",
         ),
         5 => array(
             "id" => 0x02,
-            "extra" => array(10),
-            "location" => "Thermistor 2",
+            "extra" => array(160),
+            "location" => "Port 2 Temperature",
             "type" => "MurataNCPP18XH",
         ),
+        
         6 => array(
-            "id" => 0x02,
-            "extra" => array(10),
-            "location" => "Thermistor 3",
-            "type" => "MurataNCPP18XH",
-        ),
-        7 => array(
             "id" => 0x40,
-            "extra" => array(40.2, 2.0, 1.0),
-            "location" => "V++",
+            "extra" => array(200, 10.0, 1.0),
+            "location" => "Bus Voltage",
             "type" => "XMegaVoltage",
         ),
-        8 => array(
+        7 => array(
             "id" => 0x02,
-            "location" => "MCU Temperature",
-            "type" => "XMegaTemp",
+            "extra" => array(160),
+            "location" => "Bus Temperature",
+            "type" => "MurataNCPP18XH",
         ),
-        9 => array(
+        8 => array(
             "id" => 0x40,
             "extra" => array(1.0),
             "location" => "Internal VCC",
             "type" => "XMegaVCC",
         ),
-        10 => array( 
-            "id" => 0x40,
-            "extra" => array(0, 0, 1.0),
-            "location" => "Internal DAC",
-            "type" => "XMegaVoltage",
+        9 => array(
+            "id" => 0x02,
+            "extra" => array(160),
+            "location" => "External Thermistor 1",
+            "type" => "MurataNCPP18XH",
+        ),
+        10 => array(
+            "id" => 0x02,
+            "extra" => array(160),
+            "location" => "External Thermistor 2",
+            "type" => "MurataNCPP18XH",
         ),
     );
     /**
     *  This is the output table data
     */
     protected $output = array(
+        0 => array(
+            "id" => 0x40,
+            "extra" => array(),
+            "location" => "Power Port 1",
+            "type" => "FETCtrl104603",
+        ),
+        1 => array(
+            "id" => 0x40,
+            "extra" => array(),
+            "location" => "Power Port 2",
+            "type" => "FETCtrl104603",
+        ),
     );
     /**
     *  This is the process table data
@@ -146,10 +160,6 @@ class Type4 extends \HUGnet\base\Role
     *  This is the process table data
     */
     protected $power = array(
-        0 => array( 
-            "id" => 0xFE,
-            "location" => "Power Converter",
-        ),
     );
 }
 

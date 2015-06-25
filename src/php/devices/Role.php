@@ -84,6 +84,9 @@ class Role
         "1046-02" => array(
             "Type3" => "Type 3",
         ),
+        "1046-03" => array(
+            "Type4" => "Dual Socializer",
+        ),
         "Linux" => array(
         ),
         "all" => array(
