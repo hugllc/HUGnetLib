@@ -602,7 +602,7 @@ class WebAPI2 extends HTML
     {
         $ret = null;
         if ($this->_obj->isNew() && ($this->_method !== "POST")) {
-//            $this->response(404);
+            $this->response(404);
             $ret = $this->error(self::NOT_FOUND);
         } else if (($this->_method === "GET") && $this->_auth(false)) {
             if (is_null($this->_id) || (is_null($this->_sid) && !empty($this->_subobject))) {

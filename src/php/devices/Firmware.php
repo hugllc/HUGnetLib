@@ -323,7 +323,7 @@ class Firmware extends \HUGnet\base\SystemTableBase
             }
             if ($return && $this->_device->action()->loadFirmware($this)) {
                 $api->response(202);
-                $return = 1
+                $return = 1;
             } else {
                 $api->response(400);
                 $api->error(\HUGnet\ui\WebAPI2::BAD_REQUEST);
