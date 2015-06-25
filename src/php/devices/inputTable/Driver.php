@@ -173,6 +173,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "40:HitachiVFDFan"           => "AVRHitachiVFDFan",
         "50:DEFAULT"                 => "AVRCurrent",
         "50:XMegaCurrent"            => "XMegaCurrent",
+        "50:XMegaACS711"             => "XMegaACS711",
         "50:ControllerCurrent"       => "ControllerCurrent",
         "50:dwyer616"                => "AVRDwyer616",
         "50:DwyerAirVel"             => "AVRDwyerAirVel",

@@ -54,11 +54,11 @@ require_once dirname(__FILE__)."/../../DriverAVR.php";
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class XMegaMurataNCPP18XH extends \HUGnet\devices\inputTable\DriverAVR
+class XMegaACS711 extends \HUGnet\devices\inputTable\DriverAVR
     implements \HUGnet\devices\inputTable\DriverInterface
 {
     /** This is a constant */
-    const AM = 4096;
+    const AM = 4096.0;
     /** This is a constant */
     const S = 1;
     /** This is a constant */
@@ -69,69 +69,32 @@ class XMegaMurataNCPP18XH extends \HUGnet\devices\inputTable\DriverAVR
     * This is the array of sensor information.
     */
     protected $params = array(
-        "longName" => "Murata NCPP18XH Thermistor",
-        "shortName" => "MurataNCPP18XH",
-        "unitType" => "Temperature",
-        "storageUnit" => '&#176;C',
+        "longName" => "ACS711 Current Sensor",
+        "shortName" => "XMegaACS711",
+        "unitType" => "Current",
+        "storageUnit" => 'A',
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
-        "extraText" => array("Bias Resistor (kOhms)"),
+        "extraText" => array(
+            "Max Current (A)",
+        ),
         "extraDesc" => array(
-            "The resistance connected between the thermistor and the reference
-             voltage",
+            "The maximum current for this part",
         ),
         "extraNames" => array(
-            "r" => 0,
+            "maxI"    => 0,
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
-        "extraValues" => array(5),
-        "extraDefault" => array(10),
-        "maxDecimals" => 2,
+        "extraValues" => array(10),
+        "extraDefault" => array(31.0),
+        "maxDecimals" => 4,
         "requires" => array("AI"),
         "provides" => array("DC"),
         "inputSize" => 2,
     );
-    /** @var array The table for IMC Sensors */
-    protected $valueTable = array(
-        "195.65" => "-40.00",
-        "148.17" => "-35.00",
-        "113.35" => "-30.00",
-        "87.56" => "-25.00",
-        "68.24" => "-20.00",
-        "53.65" => "-15.00",
-        "42.51" => "-10.00",
-        "33.89" => "-5.00",
-        "27.22" => "0.00",
-        "22.02" => "5.00",
-        "17.93" => "10.00",
-        "14.67" => "15.00",
-        "12.08" => "20.00",
-        "10.00" => "25.00",
-        "8.32" => "30.00",
-        "6.95" => "35.00",
-        "5.83" => "40.00",
-        "4.92" => "45.00",
-        "4.16" => "50.00",
-        "3.54" => "55.00",
-        "3.01" => "60.00",
-        "2.59" => "65.00",
-        "2.23" => "70.00",
-        "1.93" => "75.00",
-        "1.67" => "80.00",
-        "1.45" => "85.00",
-        "1.27" => "90.00",
-        "1.11" => "95.00",
-        "0.97" => "100.00",
-        "0.86" => "105.00",
-        "0.76" => "110.00",
-        "0.67" => "115.00",
-        "0.60" => "120.00",
-        "0.53" => "125.00",
-    );
     /**
-    * Converts resistance to temperature for IMCSolar thermistor
-    * 10K thermistor.
+    * Changes a raw reading into a output value
     *
     * @param int   $A      Output of the A to D converter
     * @param float $deltaT The time delta in seconds between this record
@@ -144,21 +107,12 @@ class XMegaMurataNCPP18XH extends \HUGnet\devices\inputTable\DriverAVR
     */
     protected function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
-        $Bias  = $this->getExtra(0);
-        if ($A == self::AM) {
-            return null;
-        }
-        // self::AM is only half of the voltage the two resistors are connected
-        // between.  Therefore, I need to multiply it by to to get the correct
-        // reading.
-        $kohms = ($A * $Bias) / ((self::AM * 2) - $A);
-        $T     = $this->tableInterpolate($kohms, $this->valueTable);
-        if (is_null($T)) {
-            return null;
-        }
-        // tableInterpolate forces the result to be in range, or returns null
-        $T = round($T, 4);
-        return $T;
+        bcscale(6);
+        $max  = $this->getExtra(0);
+        var_dump($A);
+        $Amps    = (($A * $max)/2048.0);
+        
+        return round($Amps, 4);
     }
     /**
     * Returns the reversed reading
@@ -177,13 +131,12 @@ class XMegaMurataNCPP18XH extends \HUGnet\devices\inputTable\DriverAVR
     protected function getRaw(
         $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
     ) {
-        $Bias  = $this->getExtra(0);
-        $table = array_reverse(array_flip($this->valueTable), true);
-        $Kohms = $this->tableInterpolate($value, $table) / 1000;
-        $A     = $this->revResistance($Kohms, $Bias, $data["timeConstant"]);
-        if (is_null($A)) {
+        bcscale(6);
+        $max    = $this->getExtra(0);
+        if ($max == 0) {
             return null;
         }
+        $A = ($value / $max) * self::AM;
         return (int)round($A);
     }
 

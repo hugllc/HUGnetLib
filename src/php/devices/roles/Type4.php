@@ -68,9 +68,9 @@ class Type4 extends \HUGnet\base\Role
     protected $input = array(
         0 => array(
             "id" => 0x50,
-            "extra" => array(0.001, 64.0, 1.0),
+            "extra" => array(31.0),
             "location" => "Port 1 Current",
-            "type" => "XMegaCurrent",
+            "type" => "XMegaACS711",
         ),
         1 => array(
             "id" => 0x40,
@@ -86,9 +86,9 @@ class Type4 extends \HUGnet\base\Role
         ),
         3 => array(
             "id" => 0x50,
-            "extra" => array(0.001, 64.0, 1.0),
+            "extra" => array(31.0),
             "location" => "Port 2 Current",
-            "type" => "XMegaCurrent",
+            "type" => "XMegaACS711",
         ),
         4 => array(
             "id" => 0x40,
