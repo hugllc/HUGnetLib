@@ -58,7 +58,7 @@ class XMegaVoltage extends \HUGnet\devices\inputTable\DriverAVR
     implements \HUGnet\devices\inputTable\DriverInterface
 {
     /** This is a constant */
-    const AM = 4096;
+    const AM = 2047;
     /** This is a constant */
     const S = 1;
     /** This is a constant */

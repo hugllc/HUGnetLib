@@ -58,7 +58,7 @@ class XMegaACS711 extends \HUGnet\devices\inputTable\DriverAVR
     implements \HUGnet\devices\inputTable\DriverInterface
 {
     /** This is a constant */
-    const AM = 4096.0;
+    const AM = 2047.0;
     /** This is a constant */
     const S = 1;
     /** This is a constant */
@@ -109,6 +109,7 @@ class XMegaACS711 extends \HUGnet\devices\inputTable\DriverAVR
     {
         bcscale(6);
         $max  = $this->getExtra(0);
+        $A    = $this->twosCompliment($A, $this->get("inputSize") * 8);
         var_dump($A);
         $Amps    = (($A * $max)/2048.0);
         

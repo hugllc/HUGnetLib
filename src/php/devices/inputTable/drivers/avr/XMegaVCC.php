@@ -58,7 +58,7 @@ class XMegaVCC extends \HUGnet\devices\inputTable\DriverAVR
     implements \HUGnet\devices\inputTable\DriverInterface
 {
     /** This is a constant */
-    const AM = 2048;
+    const AM = 2047;
     /**
     * This is the array of sensor information.
     */
