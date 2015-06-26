@@ -200,7 +200,9 @@ class Network
         if (method_exists($this->_driver, "config")) {
             $command = $this->_driver->config();
         }
-        return $this->_sendPkt($command, $callback, $config);
+        $ret = $this->_sendPkt($command, $callback, $config);
+//        var_dump($ret->reply());
+        return $ret;
     }
     /**
     * Gets the configuration for the device in question
@@ -486,7 +488,7 @@ class Network
         if (is_object($reply)) {
             if (is_string($reply->Reply())) {
                 // Sleep in case there are packets we haven't gotten yet.
-                sleep(1);
+                sleep(2);
                 return true;
             }
         }
