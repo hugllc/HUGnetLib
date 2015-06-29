@@ -69,7 +69,7 @@ class E10460400 extends \HUGnet\devices\Driver
         "virtualSensors" => 0,
         "historyTable" => "E10460400History",
         "averageTable" => "E10460400Average",
-        "loadable" => true,
+        "loadable" => false,
         "packetTimeout" => 5,
         "type" => "endpoint",
         "job"  => "sense",
