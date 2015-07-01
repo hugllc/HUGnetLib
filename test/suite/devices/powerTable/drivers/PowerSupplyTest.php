@@ -107,6 +107,7 @@ class PowerSupplyTest extends DriverTestBase
                     'type' => "EmptyPower",
                     'params' => array(),
                     'tableEntry' => array(),
+                    'extra' => array(0 => 1),
                 ),
             ),
             array( // #1
@@ -115,7 +116,7 @@ class PowerSupplyTest extends DriverTestBase
                     'power' => 1,
                     'id' => 0x31,
                 ),
-                "100103",
+                "101503",
                 array(
                     'dev' => 1,
                     'power' => 1,
@@ -123,6 +124,7 @@ class PowerSupplyTest extends DriverTestBase
                     'type' => "EmptyPower",
                     'params' => array(),
                     'tableEntry' => array(),
+                    'extra' => array(0 => 0x15),
                 ),
             ),
         );
@@ -155,7 +157,7 @@ class PowerSupplyTest extends DriverTestBase
             array( // #0
                 array(
                 ),
-                "",
+                "0000",
             ),
             array( // #1
                 array(
@@ -163,7 +165,7 @@ class PowerSupplyTest extends DriverTestBase
                         10, 11, 12
                     ),
                 ),
-                "",
+                "000A",
             ),
         );
     }

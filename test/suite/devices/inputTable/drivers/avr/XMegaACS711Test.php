@@ -37,7 +37,7 @@ namespace HUGnet\devices\inputTable\drivers\avr;
 /** This is the base class */
 require_once dirname(__FILE__)."/DriverTestBaseAVR.php";
 /** This is a required class */
-require_once CODE_BASE.'devices/inputTable/drivers/avr/XMegaVoltage.php';
+require_once CODE_BASE.'devices/inputTable/drivers/avr/XMegaACS711.php';
 
 /**
  * Test class for filter.
@@ -54,10 +54,10 @@ require_once CODE_BASE.'devices/inputTable/drivers/avr/XMegaVoltage.php';
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class XMegaVoltageTest extends DriverTestBaseAVR
+class XMegaACS711Test extends DriverTestBaseAVR
 {
     /** This is the class we are testing */
-    protected $class = "XMegaVoltage";
+    protected $class = "XMegaACS711";
 
     /**
     * Sets up the fixture, for example, open a network connection.
@@ -73,7 +73,7 @@ class XMegaVoltageTest extends DriverTestBaseAVR
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
         $this->o = \HUGnet\devices\inputTable\DriverAVR::factory(
-            "XMegaVoltage", $sensor
+            "XMegaACS711", $sensor
         );
     }
 
@@ -91,7 +91,7 @@ class XMegaVoltageTest extends DriverTestBaseAVR
     }
 
     /**
-    * Data provider for testXMegaVoltage
+    * Data provider for testXMegaACS711
     *
     * @return array
     */
@@ -102,8 +102,8 @@ class XMegaVoltageTest extends DriverTestBaseAVR
                 array(
                     "Sensor" => array(
                         "get" => array(
-                            "id" => 0x40,
-                            "type" => "XMegaVoltage",
+                            "id" => 0x50,
+                            "type" => "XMegaACS711",
                         ),
                     ),
                 ),
@@ -113,14 +113,14 @@ class XMegaVoltageTest extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                10.3078
+                30.2734
             ),
             array(
                 array(
                     "Sensor" => array(
                         "get" => array(
-                            "id" => 0x40,
-                            "type" => "XMegaVoltage",
+                            "id" => 0x50,
+                            "type" => "XMegaACS711",
                         ),
                     ),
                 ),
@@ -136,8 +136,8 @@ class XMegaVoltageTest extends DriverTestBaseAVR
                 array(
                     "Sensor" => array(
                         "get" => array(
-                            "id" => 0x40,
-                            "type" => "XMegaVoltage",
+                            "id" => 0x50,
+                            "type" => "XMegaACS711",
                         ),
                     ),
                 ),
@@ -153,23 +153,23 @@ class XMegaVoltageTest extends DriverTestBaseAVR
                 array(
                     "Sensor" => array(
                         "get" => array(
-                            "id" => 0x40,
-                            "type" => "XMegaVoltage",
+                            "id" => 0x50,
+                            "type" => "XMegaACS711",
                         ),
                     ),
                 ),
-                2048,
+                0x0820,
                 1,
                 array(
                     "timeConstant" => 1,
                 ),
                 array(),
-                21.1103,
+                62.9688
             ),
         );
     }
     /**
-    * Data provider for testXMegaVoltage
+    * Data provider for testXMegaACS711
     *
     * @return array
     */
@@ -180,8 +180,8 @@ class XMegaVoltageTest extends DriverTestBaseAVR
                 array(
                     "Sensor" => array(
                         "get" => array(
-                            "id" => 0x40,
-                            "type" => "XMegaVoltage",
+                            "id" => 0x50,
+                            "type" => "XMegaACS711",
                         ),
                     ),
                 ),
@@ -191,18 +191,18 @@ class XMegaVoltageTest extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                10.3027
+                30.2734
             ),
             array(
                 array(
                     "Sensor" => array(
                         "get" => array(
-                            "id" => 0x40,
-                            "type" => "XMegaVoltage",
+                            "id" => 0x50,
+                            "type" => "XMegaACS711",
                         ),
                     ),
                 ),
-                "",
+                '',
                 1,
                 array(
                     "timeConstant" => 1,
@@ -214,12 +214,12 @@ class XMegaVoltageTest extends DriverTestBaseAVR
                 array(
                     "Sensor" => array(
                         "get" => array(
-                            "id" => 0x40,
-                            "type" => "XMegaVoltage",
+                            "id" => 0x50,
+                            "type" => "XMegaACS711",
                         ),
                     ),
                 ),
-                '0000',
+                "0000",
                 1,
                 array(
                     "timeConstant" => 1,
@@ -231,18 +231,18 @@ class XMegaVoltageTest extends DriverTestBaseAVR
                 array(
                     "Sensor" => array(
                         "get" => array(
-                            "id" => 0x40,
-                            "type" => "XMegaVoltage",
+                            "id" => 0x50,
+                            "type" => "XMegaACS711",
                         ),
                     ),
                 ),
-                "0008",
+                "2008",
                 1,
                 array(
                     "timeConstant" => 1,
                 ),
                 array(),
-                21.1103,
+                62.9688
             ),
         );
     }

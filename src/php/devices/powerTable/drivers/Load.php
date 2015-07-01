@@ -78,7 +78,10 @@ class Load extends \HUGnet\devices\powerTable\Driver
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            0 => 5,
+            0 => array(
+                0 => "0", 1 => "1", 2 => "2", 3 => "3", 4 => "4", 
+                5 => "5", 6 => "6", 7 => "7"
+            ),
             1 => array(0 => "No", 1 => "Yes"),
         ),
         "extraDesc" => array(
@@ -97,7 +100,7 @@ class Load extends \HUGnet\devices\powerTable\Driver
     */
     public function encode()
     {
-        $string  = "";
+        $string  = "00";  // This is the subdriver
         $priority = abs($this->getExtra(0));
         $priority = ($priority > 7) ? 7 : $priority;
         if ($this->getExtra(1)) {
@@ -116,7 +119,7 @@ class Load extends \HUGnet\devices\powerTable\Driver
     public function decode($string)
     {
         $extra = $this->power()->get("extra");
-        $priority = $this->decodeInt(substr($string, 0, 2), 1);
+        $priority = $this->decodeInt(substr($string, 2, 2), 1);
         $priority = ($priority > 15) ? 15 : $priority;
         if ($priority > 7) {
             $extra[1] = 1;

@@ -178,6 +178,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "50:dwyer616"                => "AVRDwyer616",
         "50:DwyerAirVel"             => "AVRDwyerAirVel",
         "50:fetBoard"                => "FETBoardCurrent",
+        "51:XMegaCharge"             => "XMegaCharge",
         "7D:DEFAULT"                 => "XMegaStatus",
         "7E:DEFAULT"                 => "AVROnTimePulse",
         "F8:DEFAULT"                 => "AVRAnalogTable",

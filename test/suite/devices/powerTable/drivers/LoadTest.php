@@ -99,7 +99,7 @@ class LoadTest extends DriverTestBase
                     'power' => 1,
                     'id' => 0x31,
                 ),
-                "130102",
+                "00130102",
                 array(
                     'dev' => 1,
                     'power' => 1,
@@ -116,7 +116,7 @@ class LoadTest extends DriverTestBase
                     'power' => 1,
                     'id' => 0x31,
                 ),
-                "060103",
+                "00060103",
                 array(
                     'dev' => 1,
                     'power' => 1,
@@ -157,7 +157,7 @@ class LoadTest extends DriverTestBase
             array( // #0
                 array(
                 ),
-                "00",
+                "0000",
             ),
             array( // #1
                 array(
@@ -165,7 +165,7 @@ class LoadTest extends DriverTestBase
                         0x10, 0x11
                     ),
                 ),
-                "0F",
+                "000F",
             ),
         );
     }

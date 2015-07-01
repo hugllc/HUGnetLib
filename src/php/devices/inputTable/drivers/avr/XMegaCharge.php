@@ -54,11 +54,11 @@ require_once dirname(__FILE__)."/../../DriverAVR.php";
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class XMegaACS711 extends \HUGnet\devices\inputTable\DriverAVR
+class XMegaCharge extends \HUGnet\devices\inputTable\DriverAVR
     implements \HUGnet\devices\inputTable\DriverInterface
 {
     /** This is a constant */
-    const AM = 2048.0;
+    const AM = 2048;
     /** This is a constant */
     const S = 1;
     /** This is a constant */
@@ -69,25 +69,28 @@ class XMegaACS711 extends \HUGnet\devices\inputTable\DriverAVR
     * This is the array of sensor information.
     */
     protected $params = array(
-        "longName" => "ACS711 Current Sensor",
-        "shortName" => "XMegaACS711",
-        "unitType" => "Current",
-        "storageUnit" => 'A',
+        "longName" => "Charge Level",
+        "shortName" => "XMegaCharge",
+        "unitType" => "BatteryCapacity",
+        "storageUnit" => 'Ah',
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraText" => array(
             "Max Current (A)",
+            "Time Multiplier",
         ),
         "extraDesc" => array(
             "The maximum current for this part",
+            "The multiplier to get to Amp Hours"
         ),
         "extraNames" => array(
             "maxi"    => 0,
+            "mult"    => 1,
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
-        "extraValues" => array(10),
-        "extraDefault" => array(31.0),
+        "extraValues" => array(10, 10),
+        "extraDefault" => array(31.0, 3600),
         "maxDecimals" => 4,
         "requires" => array("AI"),
         "provides" => array("DC"),
@@ -109,10 +112,13 @@ class XMegaACS711 extends \HUGnet\devices\inputTable\DriverAVR
     {
         bcscale(6);
         $max  = $this->getExtra(0);
-        $A    = $this->twosCompliment($A, $this->get("inputSize") * 8);
-        $Amps    = (($A * $max)/(self::AM/2));
-        
-        return round($Amps, 4);
+        $time = $this->getExtra(1);
+        if (empty($time) || is_null($A)) {
+            return null;
+        }
+        $Amps = (($A * $max)/(self::AM/2.0));
+        $Amph = $Amps / $time; 
+        return round($Amph, 4);
     }
     /**
     * Returns the reversed reading
@@ -132,11 +138,12 @@ class XMegaACS711 extends \HUGnet\devices\inputTable\DriverAVR
         $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
     ) {
         bcscale(6);
-        $max    = $this->getExtra(0);
-        if (($max == 0) || is_null($value)) {
+        $max  = $this->getExtra(0);
+        $time = $this->getExtra(1);
+        if (($max == 0) || ($time == 0) || ($value < 0)) {
             return null;
         }
-        $A = ($value / $max) * (self::AM/2);
+        $A = (($value * $time) * (self::AM / 2.0)) / $max;
         return (int)round($A);
     }
 

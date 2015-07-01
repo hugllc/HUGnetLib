@@ -67,17 +67,22 @@ class PowerSupply extends \HUGnet\devices\powerTable\Driver
         "longName" => "Power Supply",
         "shortName" => "PowerSupply",
         "extraText" => array(
+            0 => "Intermittent",
         ),
         "extraDefault" => array(
+            0 => 0,
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
+            0 => array(1 => "Yes", 0 => "No"),
         ),
         "extraDesc" => array(
+            0 => "Does this power supply come and go like solar, or is it continuous"
         ),
         "extraNames" => array(
+            "intermittent" => 0,
         ),
     );
     /**
@@ -87,7 +92,9 @@ class PowerSupply extends \HUGnet\devices\powerTable\Driver
     */
     public function encode()
     {
-        return "";
+        $string  = "00";  // This is the subdriver
+        $string .= $this->encodeInt($this->getExtra(0), 1);
+        return $string;
     }
     /**
     * Decodes the driver portion of the setup string
@@ -98,6 +105,9 @@ class PowerSupply extends \HUGnet\devices\powerTable\Driver
     */
     public function decode($string)
     {
+        $extra = $this->power()->get("extra");
+        $extra[0] = $this->decodeInt(substr($string, 2, 2), 1);
+        $this->power()->set("extra", $extra);
     }
 
 }

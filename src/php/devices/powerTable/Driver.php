@@ -131,6 +131,10 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
             0xE0 => "Power Supply",
             0xE1 => "Solar Panel",
         ),
+        "1046-03" => array(
+            0xA0 => "Load",
+            0xE0 => "Power Supply",
+        ),
         "Linux" => array(
         ),
         "all" => array(

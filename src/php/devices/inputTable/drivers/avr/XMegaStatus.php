@@ -75,25 +75,16 @@ class XMegaStatus extends \HUGnet\devices\inputTable\DriverAVR
         "storageUnit" => '',
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraText" => array(
-            "Sense Resistor (Ohms)",
-            "Gain",
-            "AtoD Ref Voltage (V)"
         ),
         "extraDesc" => array(
-            "The current sense resistor",
-            "Any gain between the resistor and the AtoD.",
-            "The power supply voltage for the board.  Normally 5",
         ),
         "extraNames" => array(
-            "r"       => 0,
-            "gain"    => 1,
-            "atodref" => 2,
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
-        "extraValues" => array(7, 7, 5),
-        "extraDefault" => array(0.001, 64.0, 1.0),
+        "extraValues" => array(),
+        "extraDefault" => array(),
         "maxDecimals" => 4,
         "requires" => array("AI", "ATODREF"),
         "provides" => array("DC"),
@@ -113,8 +104,7 @@ class XMegaStatus extends \HUGnet\devices\inputTable\DriverAVR
     */
     protected function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
-        $val = ($A & 0xFF).".".(($A >> 8) & 0xFF);
-        return $val;
+        return $A;
     }
     /**
     * Returns the reversed reading
@@ -133,8 +123,7 @@ class XMegaStatus extends \HUGnet\devices\inputTable\DriverAVR
     protected function getRaw(
         $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
     ) {
-        $val = explode(".", $value);
-        return $val[0] + ($val[1] << 8);
+        return round($value, 0);
     }
 }
 ?>

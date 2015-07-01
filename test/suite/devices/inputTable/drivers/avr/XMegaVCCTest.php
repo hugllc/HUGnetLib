@@ -113,7 +113,7 @@ class XMegaVCCTest extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                4.8828
+                4.8852
             ),
             array(
                 array(
@@ -164,7 +164,7 @@ class XMegaVCCTest extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                10.0,
+                10.0049,
             ),
         );
     }
@@ -191,7 +191,7 @@ class XMegaVCCTest extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                4.8828
+                4.8852
             ),
             array(
                 array(
@@ -242,7 +242,7 @@ class XMegaVCCTest extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                10.0,
+                10.0049,
             ),
         );
     }

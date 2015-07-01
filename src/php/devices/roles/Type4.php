@@ -85,49 +85,90 @@ class Type4 extends \HUGnet\base\Role
             "type" => "MurataNCPP18XH",
         ),
         3 => array(
+            "id" => 0x51,
+            "extra" => array(31, 1),
+            "location" => "Port 1 Charge",
+            "type" => "XMegaCharge",
+        ),
+        4 => array(
+            "id" => 0x51,
+            "extra" => array(31, 1),
+            "location" => "Port 1 Capacity",
+            "type" => "XMegaCharge",
+        ),
+        5 => array(
+            "id" => 0x7D,
+            "extra" => array(),
+            "location" => "Port 1 Status",
+            "type" => "XMegaStatus",
+        ),
+        6 => array(
             "id" => 0x50,
             "extra" => array(31.0),
             "location" => "Port 2 Current",
             "type" => "XMegaACS711",
         ),
-        4 => array(
+        7 => array(
             "id" => 0x40,
             "extra" => array(200.0, 10.0, 1.0),
             "location" => "Port 2 Voltage",
             "type" => "XMegaVoltage",
         ),
-        5 => array(
+        8 => array(
             "id" => 0x02,
             "extra" => array(160),
             "location" => "Port 2 Temperature",
             "type" => "MurataNCPP18XH",
         ),
-        
-        6 => array(
+        9 => array(
+            "id" => 0x51,
+            "extra" => array(31, 1),
+            "location" => "Port 2 Charge",
+            "type" => "XMegaCharge",
+        ),
+        10 => array(
+            "id" => 0x51,
+            "extra" => array(31,1),
+            "location" => "Port 2 Capacity",
+            "type" => "XMegaCharge",
+        ),
+        11 => array(
+            "id" => 0x7D,
+            "extra" => array(),
+            "location" => "Port 2 Status",
+            "type" => "XMegaStatus",
+        ),
+        12 => array(
+            "id" => 0x50,
+            "extra" => array(31.0),
+            "location" => "Bus Current",
+            "type" => "XMegaACS711",
+        ),
+        13 => array(
             "id" => 0x40,
             "extra" => array(200, 10.0, 1.0),
             "location" => "Bus Voltage",
             "type" => "XMegaVoltage",
         ),
-        7 => array(
+        14 => array(
             "id" => 0x02,
             "extra" => array(160),
             "location" => "Bus Temperature",
             "type" => "MurataNCPP18XH",
         ),
-        8 => array(
+        15 => array(
             "id" => 0x40,
             "extra" => array(1.0),
             "location" => "Internal VCC",
             "type" => "XMegaVCC",
         ),
-        9 => array(
+        16 => array(
             "id" => 0x02,
             "extra" => array(160),
             "location" => "External Thermistor 1",
             "type" => "MurataNCPP18XH",
         ),
-        10 => array(
+        17 => array(
             "id" => 0x02,
             "extra" => array(160),
             "location" => "External Thermistor 2",

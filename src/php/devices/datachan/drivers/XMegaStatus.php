@@ -58,7 +58,7 @@ class XMegaStatus extends \HUGnet\devices\datachan\Driver
     protected $valid = array('');
     /** @var These are the statuses */
     private $_status = array(
-        0 => "Bootup",
+        0 => "Normal",
         1 => "Off",
         2 => "Ready",
         3 => "Running",

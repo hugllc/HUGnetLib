@@ -37,7 +37,7 @@ namespace HUGnet\devices\inputTable\drivers\avr;
 /** This is the base class */
 require_once dirname(__FILE__)."/DriverTestBaseAVR.php";
 /** This is a required class */
-require_once CODE_BASE.'devices/inputTable/drivers/avr/XMegaVoltage.php';
+require_once CODE_BASE.'devices/inputTable/drivers/avr/XMegaCharge.php';
 
 /**
  * Test class for filter.
@@ -54,10 +54,10 @@ require_once CODE_BASE.'devices/inputTable/drivers/avr/XMegaVoltage.php';
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class XMegaVoltageTest extends DriverTestBaseAVR
+class XMegaChargeTest extends DriverTestBaseAVR
 {
     /** This is the class we are testing */
-    protected $class = "XMegaVoltage";
+    protected $class = "XMegaCharge";
 
     /**
     * Sets up the fixture, for example, open a network connection.
@@ -73,7 +73,7 @@ class XMegaVoltageTest extends DriverTestBaseAVR
         $sensor = new \HUGnet\DummyBase("Sensor");
         $sensor->resetMock(array());
         $this->o = \HUGnet\devices\inputTable\DriverAVR::factory(
-            "XMegaVoltage", $sensor
+            "XMegaCharge", $sensor
         );
     }
 
@@ -91,7 +91,7 @@ class XMegaVoltageTest extends DriverTestBaseAVR
     }
 
     /**
-    * Data provider for testXMegaVoltage
+    * Data provider for testXMegaCharge
     *
     * @return array
     */
@@ -102,8 +102,8 @@ class XMegaVoltageTest extends DriverTestBaseAVR
                 array(
                     "Sensor" => array(
                         "get" => array(
-                            "id" => 0x40,
-                            "type" => "XMegaVoltage",
+                            "id" => 0x51,
+                            "type" => "XMegaCharge",
                         ),
                     ),
                 ),
@@ -113,14 +113,14 @@ class XMegaVoltageTest extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                10.3078
+                0.00840
             ),
             array(
                 array(
                     "Sensor" => array(
                         "get" => array(
-                            "id" => 0x40,
-                            "type" => "XMegaVoltage",
+                            "id" => 0x51,
+                            "type" => "XMegaCharge",
                         ),
                     ),
                 ),
@@ -136,8 +136,8 @@ class XMegaVoltageTest extends DriverTestBaseAVR
                 array(
                     "Sensor" => array(
                         "get" => array(
-                            "id" => 0x40,
-                            "type" => "XMegaVoltage",
+                            "id" => 0x51,
+                            "type" => "XMegaCharge",
                         ),
                     ),
                 ),
@@ -153,23 +153,23 @@ class XMegaVoltageTest extends DriverTestBaseAVR
                 array(
                     "Sensor" => array(
                         "get" => array(
-                            "id" => 0x40,
-                            "type" => "XMegaVoltage",
+                            "id" => 0x51,
+                            "type" => "XMegaCharge",
                         ),
                     ),
                 ),
-                2048,
+                0x0820,
                 1,
                 array(
                     "timeConstant" => 1,
                 ),
                 array(),
-                21.1103,
+                0.0175
             ),
         );
     }
     /**
-    * Data provider for testXMegaVoltage
+    * Data provider for testXMegaCharge
     *
     * @return array
     */
@@ -180,46 +180,46 @@ class XMegaVoltageTest extends DriverTestBaseAVR
                 array(
                     "Sensor" => array(
                         "get" => array(
-                            "id" => 0x40,
-                            "type" => "XMegaVoltage",
+                            "id" => 0x51,
+                            "type" => "XMegaCharge",
                         ),
                     ),
                 ),
-                "E803",
+                "E703",
                 1,
                 array(
                     "timeConstant" => 1,
                 ),
                 array(),
-                10.3027
+                0.00840
             ),
             array(
                 array(
                     "Sensor" => array(
                         "get" => array(
-                            "id" => 0x40,
-                            "type" => "XMegaVoltage",
+                            "id" => 0x51,
+                            "type" => "XMegaCharge",
                         ),
                     ),
                 ),
-                "",
+                '',
                 1,
                 array(
                     "timeConstant" => 1,
                 ),
                 array(),
-                null
+                -1
             ),
             array(
                 array(
                     "Sensor" => array(
                         "get" => array(
-                            "id" => 0x40,
-                            "type" => "XMegaVoltage",
+                            "id" => 0x51,
+                            "type" => "XMegaCharge",
                         ),
                     ),
                 ),
-                '0000',
+                "0000",
                 1,
                 array(
                     "timeConstant" => 1,
@@ -231,18 +231,18 @@ class XMegaVoltageTest extends DriverTestBaseAVR
                 array(
                     "Sensor" => array(
                         "get" => array(
-                            "id" => 0x40,
-                            "type" => "XMegaVoltage",
+                            "id" => 0x51,
+                            "type" => "XMegaCharge",
                         ),
                     ),
                 ),
-                "0008",
+                "2108",
                 1,
                 array(
                     "timeConstant" => 1,
                 ),
                 array(),
-                21.1103,
+                0.0175
             ),
         );
     }

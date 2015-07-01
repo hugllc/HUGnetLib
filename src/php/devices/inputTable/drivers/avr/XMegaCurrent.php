@@ -82,7 +82,7 @@ class XMegaCurrent extends \HUGnet\devices\inputTable\DriverAVR
         "extraDesc" => array(
             "The current sense resistor",
             "Any gain between the resistor and the AtoD.",
-            "The power supply voltage for the board.  Normally 5",
+            "The reference voltage for the AtoD.  Normally 1.0V",
         ),
         "extraNames" => array(
             "r"       => 0,
