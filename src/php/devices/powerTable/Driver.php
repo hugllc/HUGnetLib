@@ -102,9 +102,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "extraValues" => array(
             array(0 => "None"), array(0 => "Highest")
         ),
-        "min" => 0,
-        "max" => 0,
-        "zero" => 0,
+        "chars" => 30,
         "requires" => array(),
         "provides" => array(),
     );
@@ -310,7 +308,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         // Name
         $loc = $this->power()->get("location");
         if (strlen($loc) > 0) {
-            $string .= strtoupper((string)array_shift(unpack('H*', substr($loc, 0, 10))));
+            $string .= strtoupper((string)array_shift(unpack('H*', substr($loc, 0, $this->get("chars")))));
         }
         $string .= "00";
         return $string;
@@ -333,8 +331,6 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     {
         return array(
             array(
-                "min" => $this->get("min"),
-                "max" => $this->get("max"),
                 "label" => (string)$this->power()->get("location"),
                 "index" => 0,
                 "port" => $this->port(),

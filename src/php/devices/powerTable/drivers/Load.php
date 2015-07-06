@@ -77,44 +77,6 @@ class Load extends \HUGnet\devices\powerTable\Driver
             ),
         ),
     );
-    /**
-    * Encodes this driver as a setup string
-    *
-    * @return array
-    */
-    public function encode()
-    {
-        $string  = "00";  // This is the subdriver
-        $priority = abs($this->getExtra(0));
-        $priority = ($priority > 7) ? 7 : $priority;
-        if ($this->getExtra(1)) {
-            $priority += 8;
-        }
-        $string .= $this->encodeInt($priority, 1);
-        return $string;
-    }
-    /**
-    * Decodes the driver portion of the setup string
-    *
-    * @param string $string The string to decode
-    *
-    * @return array
-    */
-    public function decode($string)
-    {
-        $extra = $this->power()->get("extra");
-        $priority = $this->decodeInt(substr($string, 2, 2), 1);
-        $priority = ($priority > 15) ? 15 : $priority;
-        if ($priority > 7) {
-            $extra[1] = 1;
-            $priority -= 8;
-        } else {
-            $extra[1] = 0;
-        }
-        $extra[0] = $priority;
-        $this->power()->set("extra", $extra);
-   }
-
 }
 
 

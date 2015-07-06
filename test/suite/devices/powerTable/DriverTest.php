@@ -186,9 +186,7 @@ class DriverTest extends drivers\DriverTestBase
                 'type' => 0,
                 'priority' => 1
             ),
-            "min" => 25,
-            "max" => 81,
-            "zero" => 0,
+            "chars" => 30,
             'port' => '2Z',
             "requires" => array(),
             "provides" => array(),
@@ -468,7 +466,7 @@ class DriverTest extends drivers\DriverTestBase
                         ),
                     ),
                 ),
-                "01024142434445464748494A00",
+                "01024142434445464748494A4B4C4D4E4F5051525354555658595A00",
             ),
         );
     }
@@ -512,8 +510,6 @@ class DriverTest extends drivers\DriverTestBase
                 "DriverTestClass",
                 array(
                     array(
-                        'min' => 25,
-                        'max' => 81,
                         'label' => 'Hello',
                         'index' => 0,
                         'port' => '2Z',
@@ -567,8 +563,6 @@ class DriverTestClass extends \HUGnet\devices\powerTable\Driver
     * put into all derivative classes, even if it is empty.
     */
     protected $params = array(
-        "min" => 25,
-        "max" => 81,
         "port" => "2Z",
     );
     /**

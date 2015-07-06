@@ -77,25 +77,6 @@ class Battery extends \HUGnet\devices\powerTable\Driver
             ),
         ),
     );
-    /**
-    * Encodes this driver as a setup string
-    *
-    * @return array
-    */
-    public function encode()
-    {
-        return "";
-    }
-    /**
-    * Decodes the driver portion of the setup string
-    *
-    * @param string $string The string to decode
-    *
-    * @return array
-    */
-    public function decode($string)
-    {
-    }
 
 }
 

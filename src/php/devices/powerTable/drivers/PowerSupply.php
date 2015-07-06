@@ -74,30 +74,6 @@ class PowerSupply extends \HUGnet\devices\powerTable\Driver
             1 => array(0 => "Continuous", 1 => "Intermittent"),
         ),
     );
-    /**
-    * Encodes this driver as a setup string
-    *
-    * @return array
-    */
-    public function encode()
-    {
-        $string  = "00";  // This is the subdriver
-        $string .= $this->encodeInt($this->getExtra(0), 1);
-        return $string;
-    }
-    /**
-    * Decodes the driver portion of the setup string
-    *
-    * @param string $string The string to decode
-    *
-    * @return array
-    */
-    public function decode($string)
-    {
-        $extra = $this->power()->get("extra");
-        $extra[0] = $this->decodeInt(substr($string, 2, 2), 1);
-        $this->power()->set("extra", $extra);
-    }
 
 }
 

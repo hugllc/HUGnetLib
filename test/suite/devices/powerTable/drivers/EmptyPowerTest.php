@@ -85,62 +85,6 @@ class EmptyPowerTest extends DriverTestBase
     {
         parent::tearDown();
     }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @return null
-    */
-    public function testChannels()
-    {
-        $this->assertSame(array(), $this->o->channels());
-    }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataEncode()
-    {
-        return array(
-            array( // #0
-                array(
-                    "Power" => array(
-                        "getExtra" => array(
-                        ),
-                    ),
-                ),
-                "",
-            ),
-            array( // #0
-                array(
-                    "Power" => array(
-                        "getExtra" => array(
-                        ),
-                        "get" => array(
-                            "RawSetup" => "0102030405",
-                        ),
-                    ),
-                ),
-                "",
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array $mocks  The value to preload into the mocks
-    * @param array $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataEncode
-    */
-    public function testEncode($mocks, $expect)
-    {
-        $this->power->load($mocks);
-        $ret = $this->o->encode();
-        $this->assertSame($expect, $ret);
-    }
 
 }
 ?>

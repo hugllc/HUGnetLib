@@ -110,9 +110,7 @@ abstract class DriverTestBase extends \HUGnet\devices\IOPDriverTestBase
             array("extraDefault", "array"),
             array("extraDesc", "array"),
             array("extraNames", "array"),
-            array("min", "int"),
-            array("max", "int"),
-            array("zero", "int"),
+            array("chars", "int"),
             array("requires", "array"),
             array("provides", "array"),
         );

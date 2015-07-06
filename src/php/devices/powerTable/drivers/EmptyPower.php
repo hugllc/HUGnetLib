@@ -68,29 +68,7 @@ class EmptyPower extends \HUGnet\devices\powerTable\Driver
         "shortName" => "Empty",
         "id" => 0xFF,  // Force ID to be 0xFF
         "type" => "EmptyPower", // Force type to be "EmptyPower"
-        "min" => 0,
-        "max" => 0,
     );
-    /**
-    * This builds the class from a setup string
-    *
-    * @return Array of channel information
-    */
-    public function channels()
-    {
-        return array(
-        );
-    }
-    /**
-    * Encodes this driver as a setup string
-    *
-    * @return array
-    */
-    public function encode()
-    {
-        return "";
-    }
-
 }
 
 
