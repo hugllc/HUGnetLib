@@ -199,41 +199,57 @@ class Action
     */
     protected function configStuff()
     {
-        if ($this->device->get("fixed")) {
-            /* This device doesn't have loadable sensors */
-            return true;
-        }
-        $input = (int)$this->device->get("InputTables");
-        for ($i = 0; $i < $input; $i++) {
-            $this->system->out("InputTables $i", 2);
-            $ret = $this->send(
-                "READINPUTTABLE", null, array("find" => false), sprintf("%02X", $i)
-            );
-            if (!$this->storeIOP($i, $ret->reply(), "input")) {
-                // Failure.  Stop trying
-                return;
+        $fixed = (array)$this->device->get("fixed");
+        if (!isset($fixed["InputTables"]) || !$fixed["InputTables"]) {
+            $input = (int)$this->device->get("InputTables");
+            for ($i = 0; $i < $input; $i++) {
+                $this->system->out("InputTables $i", 2);
+                $ret = $this->send(
+                    "READINPUTTABLE", null, array("find" => false), sprintf("%02X", $i)
+                );
+                if (!$this->storeIOP($i, $ret->reply(), "input")) {
+                    // Failure.  Stop trying
+                    return;
+                }
             }
         }
-        $output = (int)$this->device->get("OutputTables");
-        for ($i = 0; $i < $output; $i++) {
-            $this->system->out("OutputTables $i", 2);
-            $ret = $this->send(
-                "READOUTPUTTABLE", null, array("find" => false), sprintf("%02X", $i)
-            );
-            if (!$this->storeIOP($i, $ret->reply(), "output")) {
-                // Failure.  Stop trying
-                return;
+        if (!isset($fixed["OutputTables"]) || !$fixed["OutputTables"]) {
+            $output = (int)$this->device->get("OutputTables");
+            for ($i = 0; $i < $output; $i++) {
+                $this->system->out("OutputTables $i", 2);
+                $ret = $this->send(
+                    "READOUTPUTTABLE", null, array("find" => false), sprintf("%02X", $i)
+                );
+                if (!$this->storeIOP($i, $ret->reply(), "output")) {
+                    // Failure.  Stop trying
+                    return;
+                }
             }
         }
-        $process = (int)$this->device->get("ProcessTables");
-        for ($i = 0; $i < $process; $i++) {
-            $this->system->out("ProcessTables $i", 2);
-            $ret = $this->send(
-                "READPROCESSTABLE", null, array("find" => false), sprintf("%02X", $i)
-            );
-            if (!$this->storeIOP($i, $ret->reply(), "process")) {
-                // Failure.  Stop trying
-                return;
+        if (!isset($fixed["ProcessTables"]) || !$fixed["ProcessTables"]) {
+            $process = (int)$this->device->get("ProcessTables");
+            for ($i = 0; $i < $process; $i++) {
+                $this->system->out("ProcessTables $i", 2);
+                $ret = $this->send(
+                    "READPROCESSTABLE", null, array("find" => false), sprintf("%02X", $i)
+                );
+                if (!$this->storeIOP($i, $ret->reply(), "process")) {
+                    // Failure.  Stop trying
+                    return;
+                }
+            }
+        }
+        if (!isset($fixed["PowerTables"]) || !$fixed["PowerTables"]) {
+            $power = (int)$this->device->get("PowerTables");
+            for ($i = 0; $i < $power; $i++) {
+                $this->system->out("PowerTables $i", 2);
+                $ret = $this->send(
+                    "READPOWERTABLE", null, array("find" => false), sprintf("%02X", $i)
+                );
+                if (!$this->storeIOP($i, $ret->reply(), "power")) {
+                    // Failure.  Stop trying
+                    return;
+                }
             }
         }
     }
@@ -283,6 +299,8 @@ class Action
             $iop = $this->device->output($num);
         } else if ($type == "process") {
             $iop = $this->device->process($num);
+        } else if ($type == "power") {
+            $iop = $this->device->power($num);
         }
         if (is_object($iop)) {
             $oldID = $iop->get("id");
