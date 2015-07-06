@@ -230,6 +230,7 @@ final class TransportPacket
                     "From"    => $this->_packet->from(),
                     "Command" => "FINDPING",
                     "Data"    => $this->_ident,
+                    "CRC"     => $this->_packet->crc(),
                 )
             );
         } else if (($this->_retries > 0) && is_null($this->_ident)) {
