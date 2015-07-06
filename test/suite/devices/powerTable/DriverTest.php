@@ -166,11 +166,26 @@ class DriverTest extends drivers\DriverTestBase
         $expect = array(
             'longName' => 'Unknown Power',
             'shortName' => 'Unknown',
-            'extraText' => array(),
-            'extraDesc' => array(),
-            'extraDefault' => array(),
-            'extraValues' => array(),
-            'extraNames' => array(),
+            'extraText' => array(
+                0 => 'Type',
+                1 => 'Priority'
+            ),
+            'extraDesc' => array(
+                0 => "The type of this power port",
+                1 => "The priority of this power port"
+            ),
+            'extraDefault' => array(
+                0 => 0,
+                1 => 0
+            ),
+            'extraValues' => array(
+                0 => array(0 => 'None'),
+                1 => array(0 => 'Highest')
+            ),
+            'extraNames' => array(
+                'type' => 0,
+                'priority' => 1
+            ),
             "min" => 25,
             "max" => 81,
             "zero" => 0,
@@ -184,6 +199,8 @@ class DriverTest extends drivers\DriverTestBase
     * data provider for testDeviceID
     *
     * @return array
++        0 => 'Type'
++        1 => 'Priority'
     */
     public static function dataFactory()
     {
@@ -398,8 +415,17 @@ class DriverTest extends drivers\DriverTestBase
                         "sensor" => new \HUGnet\DummyBase("Sensor"),
                     )
                 ),
-                "010203040506",
+                "01024142434445464748494A00",
                 array(
+                    'Sensor' => array(
+                        'get' => array(
+                            0 => array('extra'),
+                        ),
+                        'set' => array(
+                            0 => array('location', "ABCDEFGHIJ"),
+                            1 => array('extra', array(1, 2)),
+                        ),
+                    ),
                 ),
             ),
         );
@@ -434,13 +460,15 @@ class DriverTest extends drivers\DriverTestBase
         return array(
             array( // #0
                 array(
-                    "Device" => array(
+                    "Sensor" => array(
                         "get" => array(
                             "id" => 7,
+                            "extra" => array(1, 2),
+                            "location" => "ABCDEFGHIJKLMNOPQRSTUVXYZ",
                         ),
                     ),
                 ),
-                "",
+                "01024142434445464748494A00",
             ),
         );
     }

@@ -66,31 +66,15 @@ class Load extends \HUGnet\devices\powerTable\Driver
     protected $params = array(
         "longName" => "External Load",
         "shortName" => "Load",
-        "extraText" => array(
-            0 => "Priority (0-7)",
-            1 => "Dump Load",
-        ),
-        "extraDefault" => array(
-            0 => 0,
-            1 => 0,
-        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            0 => array(
-                0 => "0", 1 => "1", 2 => "2", 3 => "3", 4 => "4", 
-                5 => "5", 6 => "6", 7 => "7"
+            0 => array(0 => "Metered"),
+            1 => array(
+                0 => "Highest", 1 => "1", 2 => "2", 3 => "3", 4 => "4", 
+                5 => "5", 6 => "6", 7 => "Lowest", 8 => "Dump Load"
             ),
-            1 => array(0 => "No", 1 => "Yes"),
-        ),
-        "extraDesc" => array(
-            0 => 'The priority of this load.  A lower number is a higher priority',
-            1 => 'A dump load is just there to shed excess power.  It is not normally powered',
-        ),
-        "extraNames" => array(
-            'priority' => 0,
-            'dump' => 1,
         ),
     );
     /**

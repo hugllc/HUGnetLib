@@ -56,7 +56,7 @@ require_once dirname(__FILE__)."/../DriverInterface.php";
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class PowerConverter extends \HUGnet\devices\powerTable\Driver
+class Battery extends \HUGnet\devices\powerTable\Driver
     implements \HUGnet\devices\powerTable\DriverInterface
 {
     /**
@@ -64,20 +64,17 @@ class PowerConverter extends \HUGnet\devices\powerTable\Driver
     * put into all derivative classes, even if it is empty.
     */
     protected $params = array(
-        "longName" => "Power Converter",
-        "shortName" => "PowerConverter",
-        "extraText" => array(
-        ),
-        "extraDefault" => array(
-        ),
+        "longName" => "Battery Driver",
+        "shortName" => "Battery",
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-        ),
-        "extraDesc" => array(
-        ),
-        "extraNames" => array(
+            0 => array(0 => "Lead Acid"),
+            1 => array(
+                0 => "Highest", 1 => "1", 2 => "2", 3 => "3", 4 => "4", 
+                5 => "5", 6 => "6", 7 => "Lowest", 8 => "Dump Load"
+            ),
         ),
     );
     /**

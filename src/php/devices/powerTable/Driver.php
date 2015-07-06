@@ -80,14 +80,28 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     protected $default = array(
         "longName" => "Unknown Power",
         "shortName" => "Unknown",
-        "extraText" => array(),
-        "extraDesc" => array(),
-        "extraDefault" => array(),
-        "extraNames" => array(),
+        "extraText" => array(
+            0 => "Type",
+            1 => "Priority",
+        ),
+        "extraDesc" => array(
+            0 => "The type of this power port",
+            1 => "The priority of this power port"
+        ),
+        "extraDefault" => array(
+            0 => 0,
+            1 => 0,
+        ),
+        "extraNames" => array(
+            "type" => 0,
+            "priority" => 1,
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
-        "extraValues" => array(),
+        "extraValues" => array(
+            array(0 => "None"), array(0 => "Highest")
+        ),
         "min" => 0,
         "max" => 0,
         "zero" => 0,
@@ -263,6 +277,24 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
             self::$_drivers[$key] = $class;
         }
     }
+    /**
+    * Decodes the driver portion of the setup string
+    *
+    * @param string $string The string to decode
+    *
+    * @return array
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function decode($string)
+    {
+        $extra = $this->power()->get("extra");
+        $extra[0] = hexdec(substr($string, 0, 2));
+        $extra[1] = hexdec(substr($string, 2, 2));
+        $loc = stristr((string)pack("H*", substr($string, 4)), "\0", true); // end at \0
+        $loc = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $loc);  // Remove non printing chars
+        $this->power()->set("location", (string)$loc);
+        $this->power()->set("extra", $extra);
+    }
 
     /**
     * Encodes this driver as a setup string
@@ -271,10 +303,16 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     */
     public function encode()
     {
-        $string  = $this->power()->get("RawSetup");
-        if (!is_string($string)) {
-            $string = "";
+        // Type
+        $string  = sprintf("%02X", ($this->getExtra(0) & 0xFF));
+        // Priority
+        $string .= sprintf("%02X", ($this->getExtra(1) & 0xFF));
+        // Name
+        $loc = $this->power()->get("location");
+        if (strlen($loc) > 0) {
+            $string .= strtoupper((string)array_shift(unpack('H*', substr($loc, 0, 10))));
         }
+        $string .= "00";
         return $string;
     }
     /**

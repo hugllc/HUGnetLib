@@ -36,7 +36,7 @@ namespace HUGnet\devices\powerTable\drivers;
 /** This is the base class */
 require_once dirname(__FILE__)."/DriverTestBase.php";
 /** This is a required class */
-require_once CODE_BASE.'devices/powerTable/drivers/PowerConverter.php';
+require_once CODE_BASE.'devices/powerTable/drivers/Battery.php';
 
 /**
  * Test class for HUGnetDB.
@@ -51,10 +51,10 @@ require_once CODE_BASE.'devices/powerTable/drivers/PowerConverter.php';
  * @version    Release: 0.14.3
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class PowerConverterTest extends DriverTestBase
+class BatteryTest extends DriverTestBase
 {
     /** This is the class we are testing */
-    protected $class = "PowerConverter";
+    protected $class = "Battery";
     /** This is the power object */
     protected $power;
     /**
@@ -69,7 +69,7 @@ class PowerConverterTest extends DriverTestBase
     {
         parent::setUp();
         $this->o = \HUGnet\devices\powerTable\Driver::factory(
-            "PowerConverter", $this->power
+            "Battery", $this->power
         );
     }
 
