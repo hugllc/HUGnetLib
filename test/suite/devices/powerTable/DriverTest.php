@@ -168,23 +168,28 @@ class DriverTest extends drivers\DriverTestBase
             'shortName' => 'Unknown',
             'extraText' => array(
                 0 => 'Type',
-                1 => 'Priority'
+                1 => 'Priority',
+                2 => 'Capacity'
             ),
             'extraDesc' => array(
                 0 => "The type of this power port",
-                1 => "The priority of this power port"
+                1 => "The priority of this power port",
+                2 => "The capacity of this device"
             ),
             'extraDefault' => array(
                 0 => 0,
-                1 => 0
+                1 => 0,
+                2 => 0
             ),
             'extraValues' => array(
                 0 => array(0 => 'None'),
-                1 => array(0 => 'Highest')
+                1 => array(0 => 'Highest'),
+                2 => 10
             ),
             'extraNames' => array(
                 'type' => 0,
-                'priority' => 1
+                'priority' => 1,
+                'capacity' => 2
             ),
             "chars" => 30,
             'port' => '2Z',
@@ -413,7 +418,7 @@ class DriverTest extends drivers\DriverTestBase
                         "sensor" => new \HUGnet\DummyBase("Sensor"),
                     )
                 ),
-                "01024142434445464748494A00",
+                "0102010203044142434445464748494A00",
                 array(
                     'Sensor' => array(
                         'get' => array(
@@ -421,7 +426,7 @@ class DriverTest extends drivers\DriverTestBase
                         ),
                         'set' => array(
                             0 => array('location', "ABCDEFGHIJ"),
-                            1 => array('extra', array(1, 2)),
+                            1 => array('extra', array(1, 2, 0x04030201)),
                         ),
                     ),
                 ),
@@ -461,12 +466,12 @@ class DriverTest extends drivers\DriverTestBase
                     "Sensor" => array(
                         "get" => array(
                             "id" => 7,
-                            "extra" => array(1, 2),
+                            "extra" => array(1, 2, 0x11223344),
                             "location" => "ABCDEFGHIJKLMNOPQRSTUVXYZ",
                         ),
                     ),
                 ),
-                "01024142434445464748494A4B4C4D4E4F5051525354555658595A00",
+                "0102443322114142434445464748494A4B4C4D4E4F5051525354555658595A00",
             ),
         );
     }

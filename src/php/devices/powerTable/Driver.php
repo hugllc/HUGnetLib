@@ -83,24 +83,28 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "extraText" => array(
             0 => "Type",
             1 => "Priority",
+            2 => "Capacity",
         ),
         "extraDesc" => array(
             0 => "The type of this power port",
-            1 => "The priority of this power port"
+            1 => "The priority of this power port",
+            2 => "The capacity of this device",
         ),
         "extraDefault" => array(
             0 => 0,
             1 => 0,
+            2 => 0,
         ),
         "extraNames" => array(
             "type" => 0,
             "priority" => 1,
+            "capacity" => 2
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            array(0 => "None"), array(0 => "Highest")
+            array(0 => "None"), array(0 => "Highest"), 10
         ),
         "chars" => 30,
         "requires" => array(),
@@ -114,10 +118,9 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     * as the driver class name.
     */
     private static $_drivers = array(
+        "10:DEFAULT"                 => "Battery",
         "A0:DEFAULT"                 => "Load",
         "E0:DEFAULT"                 => "PowerSupply",
-        "E1:DEFAULT"                 => "SolarPanel",
-        "FE:DEFAULT"                 => "PowerConverter",
         "FF:DEFAULT"                 => "EmptyPower",
     );
     /**
@@ -141,9 +144,9 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "1046-02" => array(
             0xA0 => "Load",
             0xE0 => "Power Supply",
-            0xE1 => "Solar Panel",
         ),
         "1046-03" => array(
+            0x10 => "Battery",
             0xA0 => "Load",
             0xE0 => "Power Supply",
         ),
@@ -286,9 +289,10 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     public function decode($string)
     {
         $extra = $this->power()->get("extra");
-        $extra[0] = hexdec(substr($string, 0, 2));
-        $extra[1] = hexdec(substr($string, 2, 2));
-        $loc = stristr((string)pack("H*", substr($string, 4)), "\0", true); // end at \0
+        $extra[0] = $this->decodeInt(substr($string, 0, 2), 1);
+        $extra[1] = $this->decodeInt(substr($string, 2, 2), 1);
+        $extra[2] = $this->decodeInt(substr($string, 4, 8), 4);
+        $loc = stristr((string)pack("H*", substr($string, 12)), "\0", true); // end at \0
         $loc = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $loc);  // Remove non printing chars
         $this->power()->set("location", (string)$loc);
         $this->power()->set("extra", $extra);
@@ -302,9 +306,11 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     public function encode()
     {
         // Type
-        $string  = sprintf("%02X", ($this->getExtra(0) & 0xFF));
+        $string  = $this->encodeInt(($this->getExtra(0) & 0xFF), 1);
         // Priority
-        $string .= sprintf("%02X", ($this->getExtra(1) & 0xFF));
+        $string .= $this->encodeInt(($this->getExtra(1) & 0xFF), 1);
+        // Capacity
+        $string .= $this->encodeInt($this->getExtra(2), 4);
         // Name
         $loc = $this->power()->get("location");
         if (strlen($loc) > 0) {

@@ -66,6 +66,11 @@ class Load extends \HUGnet\devices\powerTable\Driver
     protected $params = array(
         "longName" => "External Load",
         "shortName" => "Load",
+        "extraDesc" => array(
+            0 => "The type of load this is",
+            1 => "The priority of this load to be powered",
+            2 => "The maximum draw of the battery in mA",
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
@@ -73,8 +78,9 @@ class Load extends \HUGnet\devices\powerTable\Driver
             0 => array(0 => "Metered"),
             1 => array(
                 0 => "Highest", 1 => "1", 2 => "2", 3 => "3", 4 => "4", 
-                5 => "5", 6 => "6", 7 => "Lowest", 8 => "Dump Load"
+                5 => "5", 6 => "6", 7 => "Lowest", 8 => "Dump Load",
             ),
+            2 => 10
         ),
     );
 }

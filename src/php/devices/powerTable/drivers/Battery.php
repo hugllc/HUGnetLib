@@ -66,6 +66,11 @@ class Battery extends \HUGnet\devices\powerTable\Driver
     protected $params = array(
         "longName" => "Battery Driver",
         "shortName" => "Battery",
+        "extraDesc" => array(
+            0 => "The type of battery this is.",
+            1 => "The priority of this battery to be charged",
+            2 => "The capacity of the battery in mAs",
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
@@ -73,8 +78,9 @@ class Battery extends \HUGnet\devices\powerTable\Driver
             0 => array(0 => "Lead Acid"),
             1 => array(
                 0 => "Highest", 1 => "1", 2 => "2", 3 => "3", 4 => "4", 
-                5 => "5", 6 => "6", 7 => "Lowest", 8 => "Dump Load"
+                5 => "5", 6 => "6", 7 => "Lowest"
             ),
+            2 => 10,
         ),
     );
 

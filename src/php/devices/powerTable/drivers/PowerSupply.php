@@ -66,12 +66,18 @@ class PowerSupply extends \HUGnet\devices\powerTable\Driver
     protected $params = array(
         "longName" => "Power Supply",
         "shortName" => "PowerSupply",
+        "extraDesc" => array(
+            0 => "The type of power supply this is.",
+            1 => "Whether or not this power supply is continuous or intermittent.",
+            2 => "The capacity of the power supply in mA",
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
             0 => array(0 => "Power", 1 => "Solar", 3 => "Vehicle"),
             1 => array(0 => "Continuous", 1 => "Intermittent"),
+            2 => 10,
         ),
     );
 
