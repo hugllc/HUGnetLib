@@ -200,8 +200,13 @@ class Network
         if (method_exists($this->_driver, "config")) {
             $command = $this->_driver->config();
         }
-        $ret = $this->_sendPkt($command, $callback, $config);
-//        var_dump($ret->reply());
+        $ret = false;
+        for ($i = 0; ($i < 3) && (!$ret); $i++) {
+            $ret = $this->_sendPkt($command, $callback, $config);
+            if (is_object($ret) && empty($ret->reply())) {
+                $ret = false;
+            }
+        }
         return $ret;
     }
     /**
@@ -594,6 +599,7 @@ class Network
     */
     public function loadConfig($callback = null, $config = array())
     {
+        $reboot = false;
         if (!$this->_device->get("setConfig")) {
             return true;
         }
@@ -623,6 +629,7 @@ class Network
                 }
                 $this->_system->out("inputTable $i success", 1);
             }
+            $reboot == true;
         }
         if (!is_array($fixed) || ($fixed["OutputTables"] !== true)) {
             $output = (int)$this->_device->get("OutputTables");
@@ -639,6 +646,7 @@ class Network
                 }
                 $this->_system->out("outputTable $i success", 1);
             }
+            $reboot == true;
         }
         if (!is_array($fixed) || ($fixed["ProcessTables"] !== true)) {
             $process = (int)$this->_device->get("ProcessTables");
@@ -673,8 +681,10 @@ class Network
             }
         }
         /* This reboots the board */
-        $this->_system->out("rebooting", 1);
-        $this->reboot();
+        if ($reboot) {
+            $this->_system->out("rebooting", 1);
+            $this->reboot();
+        }
         return true;
 
     }
@@ -884,13 +894,16 @@ class Network
             foreach ($buffer as $page => $data) {
                 $data = str_pad($data, $chunkSize*2, $empty);
                 $addr = $start + ($page * $chunkSize);
-                $ret = $this->_writeMem(
-                    $addr,
-                    $data,
-                    $command,
-                    null,
-                    array("find" => false)
-                );
+                $ret = false;
+                for ($i = 0; ($i < 3) && (!$ret); $i++) {
+                    $ret = $this->_writeMem(
+                        $addr,
+                        $data,
+                        $command,
+                        null,
+                        array("find" => false, "timeout" => 5)
+                    );
+                }
                 if ($ret === false) {
                     $this->_system->out(
                         "$memName ".($page + 1)."/$pages failed",
