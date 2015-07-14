@@ -335,6 +335,7 @@ HUGnet.Device = Backbone.Model.extend({
         } else {
             xhr.open('GET', this.url()+"/config");
         }
+        xhr.setRequestHeader('Accept', 'application/json');
         xhr.onload = function() {
             if (xhr.status === 200) {
                 var data = JSON.parse(xhr.responseText);
@@ -367,6 +368,7 @@ HUGnet.Device = Backbone.Model.extend({
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open('PUT', this.url()+"/firmware");
+        xhr.setRequestHeader('Accept', 'application/json');
         xhr.onload = function() {
             if ((xhr.status === 200) || (xhr.status === 202)){
                 var data = JSON.parse(xhr.responseText);
@@ -395,6 +397,7 @@ HUGnet.Device = Backbone.Model.extend({
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open('GET', this.url()+"/fctsetup");
+        xhr.setRequestHeader('Accept', 'application/json');
         xhr.onload = function() {
             if (xhr.status === 200) {
                 var data = JSON.parse(xhr.responseText);
@@ -422,6 +425,7 @@ HUGnet.Device = Backbone.Model.extend({
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open('PUT', this.url()+"/fctapply");
+        xhr.setRequestHeader('Accept', 'application/json');
         xhr.onload = function() {
             if (xhr.status === 200) {
                 var data = JSON.parse(xhr.responseText);
