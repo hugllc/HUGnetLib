@@ -284,15 +284,16 @@ class Firmware extends \HUGnet\db\Table
     *
     * @param string $path      Where to store the file
     * @param string &$filename The filename to use.  Gets set to the filename used
+    * @param string $fileextra Extra stuff to append to the file name
     *
     * @return bool True on success, false on failure
     */
-    public function toFile($path = ".", &$filename = null)
+    public function toFile($path = ".", &$filename = null, $fileextra = "")
     {
         if (is_null($filename) || empty($filename)) {
             $filename  = str_replace("-", "", $this->get("HWPartNum"));
             $filename .= "-".str_replace("-", "", $this->get("FWPartNum"));
-            $filename .= "-".$this->get("Version").".gz";
+            $filename .= "-".$this->get("Version").$fileextra.".gz";
         }
         return (bool)file_put_contents(
             $path."/".$filename,
