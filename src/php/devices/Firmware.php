@@ -289,6 +289,20 @@ class Firmware extends \HUGnet\base\SystemTableBase
                 $buffer = str_pad($buffer, ($addr + $size)*2, $empty, STR_PAD_RIGHT);
                 // Put the data into the buffer
                 $buffer = substr_replace($buffer, $data, $addr*2, $size*2);
+            } else if (substr($rec, 0, 2) == "S3") {
+                // Set up all the stuff to put into the buffer
+                $size  = hexdec(substr($rec, 2, 2));
+                $size -= 3;
+                $addr  = hexdec(substr($rec, 4, 8));
+                if ($start < 0) {
+                    $start = $addr;
+                }
+                $addr -= $start;
+                $data  = substr($rec, 12, ($size*2));
+                // Make sure the buffer is big enough for the data
+                $buffer = str_pad($buffer, ($addr + $size)*2, $empty, STR_PAD_RIGHT);
+                // Put the data into the buffer
+                $buffer = substr_replace($buffer, $data, $addr*2, $size*2);
             }
         }
         if ($start >= 0) {

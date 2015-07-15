@@ -90,10 +90,13 @@ class FirmwareTest extends \PHPUnit_Framework_TestCase
                         ->setConstructorArgs(array(&$this->sys), "Firmware")
                         ->setMethods(
                             array(
-                                "checkHash"
+                                "checkHash",
+                                "fixHWPartNum"
                             )
                         )
                         ->getMock();
+        $this->table->method('fixHWPartNum')->will($this->returnArgument(0));
+
         $this->o = Firmware::factory($this->sys, null, $this->table, $this->dev);
         parent::setUp();
         $this->preload = array();
@@ -167,6 +170,10 @@ class FirmwareTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
+                    array("arch", "0039-21"),
+                    array("HWPartNum", "0039-21"),
+                ),
+                array(
                     "toArray" => array(
                         array(
                             "group" => "default",
@@ -212,6 +219,10 @@ class FirmwareTest extends \PHPUnit_Framework_TestCase
                 true,
             ),
             array(
+                array(
+                    array("HWPartNum", "0039-21"),
+                    array("arch", "0039-21"),
+                ),
                 array(
                     "toArray" => array(
                         array(
@@ -298,6 +309,10 @@ class FirmwareTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
+                    array("HWPartNum", "0039-21"),
+                    array("arch", "0039-21"),
+                ),
+                array(
                     "toArray" => array(
                         array(
                             "group" => "default",
@@ -382,6 +397,8 @@ class FirmwareTest extends \PHPUnit_Framework_TestCase
                 true,
             ),
             array(
+                array(
+                ),
                 array(
                     "FWPartNum" => "0039-01-01-C",
                     "HWPartNum" => "0039-86",
@@ -397,6 +414,7 @@ class FirmwareTest extends \PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
+    * @param array $device  The array of things that device should return
     * @param array $preload The value to preload
     * @param array $data    The data array to exepct
     * @param bool  $expect  The expected return
@@ -405,9 +423,10 @@ class FirmwareTest extends \PHPUnit_Framework_TestCase
     *
     * @dataProvider dataGetLatest
     */
-    public function testGetLatest($preload, $data, $expect)
+    public function testGetLatest($device, $preload, $data, $expect)
     {
         $this->table->preloadMock($preload["toArray"]);
+        $this->dev->method('get')->will($this->returnValueMap($device));
         foreach (array("checkHash", "selectInto") as $key) {
             if (isset($preload[$key])) {
                 $this->table->method($key)->will($this->returnValue($preload[$key]));
@@ -552,6 +571,28 @@ S9030000FC",
                 ),
                 "FF",
                 array(
+                ),
+            ),
+            array(
+                array(
+                    "Data" => "S32300000000FFFFFFFFFFFFFFFFFFFF0039201343000008FFFFFF"
+                    ."500102020202101002026F46
+S323000000206F6F6F6F707070010000000000000002000000000000001027001027000000102F
+S323000000402700102700000010270010270000001027001027000000102700102700000010E4
+S32300000060270010270000002027001027000000202700102700000020270010270000002084
+S32300000080270010270000002027001027000000202700102700000020270010270000002064
+S323000000A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
+S9030000FC",
+                ),
+                "FF",
+                array(
+                    0 => "FFFFFFFFFFFFFFFFFFFF0039201343000008FFFFFF"
+                    ."500102020202101002026F6F6F6F6F707070010000000000000002"
+                    ."000000000000001027001027000000102700102700000010270010"
+                    ."270000001027001027000000102700102700000010270010270000"
+                    ."002027001027000000202700102700000020270010270000002027"
+                    ."001027000000202700102700000020270010270000002027001027"
+                    ."00000020270010270000002027001027000000"
                 ),
             ),
         );
