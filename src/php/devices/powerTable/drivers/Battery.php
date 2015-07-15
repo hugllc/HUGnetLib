@@ -59,6 +59,8 @@ require_once dirname(__FILE__)."/../DriverInterface.php";
 class Battery extends \HUGnet\devices\powerTable\Driver
     implements \HUGnet\devices\powerTable\DriverInterface
 {
+    /** This is the class for our table entry */
+    protected $entryClass = "BatteryTable";
     /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.

@@ -59,6 +59,10 @@ HUGnet.ServerConfig = Backbone.View.extend({
             'baseurl': this.url
         });
         this.itables.fetch();
+        this.ptables = new HUGnet.PowerTables({
+            'baseurl': this.url
+        });
+        this.ptables.fetch();
         
         this.devices = new HUGnet.DevicesView({
             model: options.devices,
@@ -70,6 +74,10 @@ HUGnet.ServerConfig = Backbone.View.extend({
         });
         this.inputTables = new HUGnet.InputTablesView({
             model: this.itables,
+            url: this.url
+        });
+        this.powerTables = new HUGnet.PowerTablesView({
+            model: this.ptables,
             url: this.url
         });
         this.imageConfig = new HUGnet.ImageConfigView({
@@ -123,6 +131,7 @@ HUGnet.ServerConfig = Backbone.View.extend({
         this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+this.id+'-inputTable">Input Tables</a></li>');
         this.tabs.append('<div id="'+this.id+'-inputTable"></div>');
         $('#'+this.id+'-inputTable').html(this.inputTables.render().el);
+
         /*
         this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+this.id+'-outputTable">Output Tables</a></li>');
         this.tabs.append('<div id="'+this.id+'-outputTable"></div>');
@@ -131,6 +140,10 @@ HUGnet.ServerConfig = Backbone.View.extend({
         this.tabs.append('<div id="'+this.id+'-processTable"></div>');
         $('#'+this.id+'-processTable').html(this.processTables.render().el);
         */
+
+        this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+this.id+'-powerTable">Power Tables</a></li>');
+        this.tabs.append('<div id="'+this.id+'-powerTable"></div>');
+        $('#'+this.id+'-powerTable').html(this.powerTables.render().el);
 
         this.tabs.tabs("refresh");
         this.tabs.tabs("option", "active", 0);

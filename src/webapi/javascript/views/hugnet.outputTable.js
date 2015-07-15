@@ -49,9 +49,9 @@ var OutputTablePropertiesView = Backbone.View.extend({
     },
     initialize: function (options)
     {
-        this.model.on('savefail', this.saveFail, this);
-        this.model.on('saved', this.saveSuccess, this);
+        _.bindAll(this, "saveSuccess", "saveFail");
         this._template = _.template($(this.template).html());
+        this._tTemplate = _.template($(this.tTemplate).html());
     },
     save: function (e)
     {
@@ -67,8 +67,13 @@ var OutputTablePropertiesView = Backbone.View.extend({
             output.params[i]['value'] = output['params['+i+']'];
             delete output['params['+i+']'];
         }
-        this.model.set(output);
-        this.model.save();
+        this.model.save(
+            output,
+            {
+                "success" : this.saveSuccess, "error": this.saveFail, wait: true
+            }
+
+        );
         this.setTitle();
     },
     saveFail: function ()

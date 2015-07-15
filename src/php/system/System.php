@@ -374,6 +374,19 @@ class System
         return $obj;
     }
     /**
+    * This returns a device object.
+    *
+    * @param array $data The data to send to the device object
+    *
+    * @return Reference to a device object
+    */
+    public function &powerTable($data = array())
+    {
+        include_once dirname(__FILE__)."/PowerTable.php";
+        $obj = PowerTable::factory($this, $data);
+        return $obj;
+    }
+    /**
     * This returns a dataCollector object.
     *
     * @param array $string The data to send to the device object

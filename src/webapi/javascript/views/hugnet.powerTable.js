@@ -22,7 +22,7 @@
  *
  * @category   JavaScript
  * @package    HUGnetLib
- * @subpackage ProcessTables
+ * @subpackage PowerTables
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
@@ -33,41 +33,42 @@
 *
 * @category   JavaScript
 * @package    HUGnetLib
-* @subpackage ProcessTables
+* @subpackage PowerTables
 * @author     Scott Price <prices@hugllc.com>
 * @copyright  2014 Hunt Utilities Group, LLC
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @version    Release: 0.14.3
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-var ProcessTablePropertiesView = Backbone.View.extend({
-    template: '#ProcessTablePropertiesTemplate',
-    tTemplate: '#ProcessTablePropertiesTitleTemplate',
+var PowerTablePropertiesView = Backbone.View.extend({
+    template: '#PowerTablePropertiesTemplate',
+    tTemplate: '#PowerTablePropertiesTitleTemplate',
     tagName: 'div',
     events: {
-        'click .SaveProcessTable': 'save',
+        'click .SavePowerTable': 'save',
     },
     initialize: function (options)
     {
         _.bindAll(this, "saveSuccess", "saveFail");
         this._template = _.template($(this.template).html());
+        this._tTemplate = _.template($(this.tTemplate).html());
     },
     save: function (e)
     {
         this.setTitle( " [ Saving...] " );
-        var i, process = {};
+        var i, power = {};
         var data = this.$('form').serializeArray();
         for (i in data) {
-            process[data[i].name] = data[i].value;
+            power[data[i].name] = data[i].value;
         }
-        process.params = this.model.get('params');
-        for (i in process.params) {
-            process[i] = process['params['+i+']'];
-            process.params[i]['value'] = process['params['+i+']'];
-            delete process['params['+i+']'];
+        power.params = this.model.get('params');
+        for (i in power.params) {
+            power[i] = power['params['+i+']'];
+            power.params[i]['value'] = power['params['+i+']'];
+            delete power['params['+i+']'];
         }
         this.model.save(
-            process,
+            power,
             {
                 "success" : this.saveSuccess, "error": this.saveFail, wait: true
             }
@@ -129,16 +130,16 @@ var ProcessTablePropertiesView = Backbone.View.extend({
 *
 * @category   JavaScript
 * @package    HUGnetLib
-* @subpackage ProcessTables
+* @subpackage PowerTables
 * @author     Scott Price <prices@hugllc.com>
 * @copyright  2014 Hunt Utilities Group, LLC
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @version    Release: 0.14.3
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-var ProcessTableEntryView = Backbone.View.extend({
+var PowerTableEntryView = Backbone.View.extend({
     tagName: 'tr',
-    template: '#ProcessTableEntryTemplate',
+    template: '#PowerTableEntryTemplate',
     parent: null,
     events: {
         'change .action': 'action',
@@ -190,7 +191,8 @@ var ProcessTableEntryView = Backbone.View.extend({
     },
     properties: function (e)
     {
-        var view = new ProcessTablePropertiesView({ model: this.model });
+        this.model.fetch();
+        var view = new PowerTablePropertiesView({ model: this.model });
         this.parent.popup(view);
     },
     /**
@@ -217,15 +219,15 @@ var ProcessTableEntryView = Backbone.View.extend({
 *
 * @category   JavaScript
 * @package    HUGnetLib
-* @subpackage ProcessTables
+* @subpackage PowerTables
 * @author     Scott Price <prices@hugllc.com>
 * @copyright  2014 Hunt Utilities Group, LLC
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @version    Release: 0.14.3
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-HUGnet.ProcessTablesView = Backbone.View.extend({
-    template: "#ProcessTableListTemplate",
+HUGnet.PowerTablesView = Backbone.View.extend({
+    template: "#PowerTableListTemplate",
     url: '/HUGnetLib/HUGnetLibAPI.php',
     events: {
         'click .new': 'create'
@@ -257,7 +259,7 @@ HUGnet.ProcessTablesView = Backbone.View.extend({
     },
     insert: function (model, collection, options)
     {
-        var view = new ProcessTableEntryView({ model: model, parent: this });
+        var view = new PowerTableEntryView({ model: model, parent: this });
         this.$('tbody').append(view.render().el);
         this.$("table").trigger('update');
     },

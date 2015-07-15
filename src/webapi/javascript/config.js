@@ -54,10 +54,14 @@ HUGnet.Config = Backbone.View.extend({
                 this.id = options.id;
             }
         }
+        this.ptables = new HUGnet.PowerTables({
+            'baseurl': this.url
+        });
         this.devices = new HUGnet.DevicesView({
             model: options.devices,
             url: this.url
         });
+        this.ptables.fetch();
         this.runtime = new HUGnet.RuntimeView({
             datacollectors: options.datacollectors,
             url: this.url
@@ -66,6 +70,11 @@ HUGnet.Config = Backbone.View.extend({
             model: options.images,
             url: this.url
         });
+        this.powerTables = new HUGnet.PowerTablesView({
+            model: this.ptables,
+            url: this.url
+        });
+
         this.render();
     },
     render: function ()
@@ -95,6 +104,10 @@ HUGnet.Config = Backbone.View.extend({
         this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+this.id+'-imageConfig">Images</a></li>');
         this.tabs.append('<div id="'+this.id+'-imageConfig"></div>');
         $('#'+this.id+'-imageConfig').html(this.imageConfig.render().el);
+        
+        this.tabs.find( ".ui-tabs-nav" ).append('<li><a href="#'+this.id+'-powerTable">Power Tables</a></li>');
+        this.tabs.append('<div id="'+this.id+'-powerTable"></div>');
+        $('#'+this.id+'-powerTable').html(this.powerTables.render().el);
         
         this.tabs.tabs("refresh");
         this.tabs.tabs("option", "active", 0);

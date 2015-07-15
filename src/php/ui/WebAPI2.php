@@ -95,6 +95,12 @@ class WebAPI2 extends HTML
                 "power" => array(
                     "methods" => "GET,DELETE",
                     "action" => false,
+                    "subobjects" => array(
+                        "settable" => array(
+                            "methods" => "PUT",
+                            "action" => true,
+                        ),
+                    ),
                 ),
                 "annotation" => array(
                     "methods" => "GET,POST,PUT,DELETE",
@@ -194,6 +200,10 @@ class WebAPI2 extends HTML
             "action" => false,
         ),
         "processtable" => array(
+            "methods" => "GET,POST,PUT,DELETE",
+            "action" => false,
+        ),
+        "powertable" => array(
             "methods" => "GET,POST,PUT,DELETE",
             "action" => false,
         ),
@@ -635,7 +645,6 @@ class WebAPI2 extends HTML
                 if (!empty($date) && !empty($field)) {
                     $where[$field] = $date;
                 }
-
                 $ret = $this->_obj->getList($where, true);
             } else {
                 if ($this->_obj->isNew()) {

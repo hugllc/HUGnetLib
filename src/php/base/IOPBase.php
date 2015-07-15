@@ -211,7 +211,7 @@ abstract class IOPBase extends SystemTableBase
         $return = array();
         $arch = $this->device()->get("arch");
         $values = $entry->select(
-            array("arch" => $arch)
+            array('$or' => array(array("arch" => $arch), array("arch" => "all")))
         );
         foreach ((array)$values as $val) {
             $return[$val->get("id")] = $val->get("name");
@@ -430,7 +430,7 @@ abstract class IOPBase extends SystemTableBase
         $entry = $this->system()->table(ucfirst($this->driverLoc));
         $arch = $this->device()->get("arch");
         $ret = $entry->selectOneInto(
-            array("arch" => $arch, "id" => (int)$id)
+            array('$or' => array(array("arch" => $arch), array("arch" => "all")), "id" => (int)$id)
         );
         if ($ret) {
             $this->set("tableEntry", $entry->get("params"));
@@ -477,7 +477,11 @@ abstract class IOPBase extends SystemTableBase
         $ret = null;
         if ($method === "PUT") {
             if (trim(strtolower($extra[0])) == "settable") {
-                $ret = $this->_settable($api->args());
+                $ret = $this->setEntry((int)$data["id"]);
+                if ($ret) {
+                    $this->store();
+                    return "regen";
+                }
             } else {
                 $ret = $this->_put($api->args());
             }

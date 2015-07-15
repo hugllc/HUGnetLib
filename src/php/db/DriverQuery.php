@@ -243,7 +243,6 @@ abstract class DriverQuery
     {
         // Clear the last error
         $this->error = null;
-        
         $pdo = $this->pdo()->prepare($query);
 
         $res = false;

@@ -51,27 +51,31 @@ var InputTablePropertiesView = Backbone.View.extend({
     },
     initialize: function (options)
     {
-        this.model.on('change', this.render, this);
-        this.model.on('savefail', this.saveFail, this);
+        _.bindAll(this, "saveSuccess", "saveFail");
         this._template = _.template($(this.template).html());
         this._tTemplate = _.template($(this.tTemplate).html());
     },
     save: function (e)
     {
         this.setTitle( " [ Saving...] " );
-        var i, output = {};
+        var i, input = {};
         var data = this.$('form').serializeArray();
         for (i in data) {
-            output[data[i].name] = data[i].value;
+            input[data[i].name] = data[i].value;
         }
-        output.params = this.model.get('params');
-        for (i in output.params) {
-            output[i] = output['params['+i+']'];
-            output.params[i]['value'] = output['params['+i+']'];
-            delete output['params['+i+']'];
+        input.params = this.model.get('params');
+        for (i in input.params) {
+            input[i] = input['params['+i+']'];
+            input.params[i]['value'] = input['params['+i+']'];
+            delete input['params['+i+']'];
         }
-        this.model.set(output);
-        this.model.save();
+        this.model.save(
+            input,
+            {
+                "success" : this.saveSuccess, "error": this.saveFail, wait: true
+            }
+
+        );
         this.setTitle();
     },
     saveclose: function (e)

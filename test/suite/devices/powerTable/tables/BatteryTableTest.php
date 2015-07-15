@@ -95,10 +95,10 @@ class BatteryTableTest extends \PHPUnit_Framework_TestCase
                 array(
                 ),
                 array(
-                    'AbsorbDwellTime' => 0,
-                    'AbsorbCoefficient' => 0,
-                    'FloatCoefficient' => 0,
-                    'AbsorbVoltage' => 0,
+                    'BulkChargeDwellTime' => 0,
+                    'BulkChargeCoeff' => 0,
+                    'FloatCoeff' => 0,
+                    'BulkChargeVoltage' => 0,
                     'FloatVoltage' => 0,
                     'BulkChargeTriggerVoltage' => 0,
                     'ResumeVoltage' => 0,
@@ -145,15 +145,15 @@ class BatteryTableTest extends \PHPUnit_Framework_TestCase
                 "400010C43412",
                 false,
                 array(
-                    'AbsorbDwellTime' => 0,
-                    'AbsorbCoefficient' => 0,
-                    'FloatCoefficient' => 0,
-                    'AbsorbVoltage' => 0,
-                    'FloatVoltage' => 0,
-                    'BulkChargeTriggerVoltage' => 0,
-                    'ResumeVoltage' => 0,
-                    'CutoffVoltage' => 0,
-                    'MinimumVoltage' => 0,
+                    'BulkChargeDwellTime' => 3600,
+                    'BulkChargeCoeff' => 1,
+                    'FloatCoeff' => 1,
+                    'BulkChargeVoltage' => 12500,
+                    'FloatVoltage' => 13500,
+                    'BulkChargeTriggerVoltage' => 12500,
+                    'ResumeVoltage' => 11000,
+                    'CutoffVoltage' => 10500,
+                    'MinimumVoltage' => 1000,
                 ),
             ),
             array( // #1 String too short
@@ -163,15 +163,15 @@ class BatteryTableTest extends \PHPUnit_Framework_TestCase
                 "01",
                 false,
                 array(
-                    'AbsorbDwellTime' => 0,
-                    'AbsorbCoefficient' => 0,
-                    'FloatCoefficient' => 0,
-                    'AbsorbVoltage' => 0,
-                    'FloatVoltage' => 0,
-                    'BulkChargeTriggerVoltage' => 0,
-                    'ResumeVoltage' => 0,
-                    'CutoffVoltage' => 0,
-                    'MinimumVoltage' => 0,
+                    'BulkChargeDwellTime' => 3600,
+                    'BulkChargeCoeff' => 1,
+                    'FloatCoeff' => 1,
+                    'BulkChargeVoltage' => 12500,
+                    'FloatVoltage' => 13500,
+                    'BulkChargeTriggerVoltage' => 12500,
+                    'ResumeVoltage' => 11000,
+                    'CutoffVoltage' => 10500,
+                    'MinimumVoltage' => 1000,
                 ),
             ),
             array( // #2  All FF given
@@ -181,15 +181,15 @@ class BatteryTableTest extends \PHPUnit_Framework_TestCase
                 "FFFFFFFFFFFFFFFF",
                 false,
                 array(
-                    'AbsorbDwellTime' => 0,
-                    'AbsorbCoefficient' => 0,
-                    'FloatCoefficient' => 0,
-                    'AbsorbVoltage' => 0,
-                    'FloatVoltage' => 0,
-                    'BulkChargeTriggerVoltage' => 0,
-                    'ResumeVoltage' => 0,
-                    'CutoffVoltage' => 0,
-                    'MinimumVoltage' => 0,
+                    'BulkChargeDwellTime' => 3600,
+                    'BulkChargeCoeff' => 1,
+                    'FloatCoeff' => 1,
+                    'BulkChargeVoltage' => 12500,
+                    'FloatVoltage' => 13500,
+                    'BulkChargeTriggerVoltage' => 12500,
+                    'ResumeVoltage' => 11000,
+                    'CutoffVoltage' => 10500,
+                    'MinimumVoltage' => 1000,
                 ),
             ),
         );
@@ -263,10 +263,50 @@ class BatteryTableTest extends \PHPUnit_Framework_TestCase
     *
     * @dataProvider dataParamTests
     */
+    public function testParamMin($name, $param)
+    {
+        $this->assertInternalType(
+            "int", $param["min"], "min value for $name must be an int"
+        );
+        $this->assertTrue(
+            $param["min"] <= $param["max"], 
+            "min value for $name must be less than or equal to the max value"
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param string $name  The name of the param
+    * @param array  $param The param array
+    *
+    * @return null
+    *
+    * @dataProvider dataParamTests
+    */
+    public function testParamMax($name, $param)
+    {
+        $this->assertInternalType(
+            "int", $param["max"], "max value for $name must be an int"
+        );
+        $this->assertTrue(
+            $param["min"] <= $param["max"], 
+            "max value for $name must be greater than or equal to the min value"
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param string $name  The name of the param
+    * @param array  $param The param array
+    *
+    * @return null
+    *
+    * @dataProvider dataParamTests
+    */
     public function testParamDesc($name, $param)
     {
         $min = 5;
-        $max = 30;
+        $max = 35;
         $this->assertInternalType(
             "string", $param["desc"], "Description for $name must be a string"
         );
@@ -295,6 +335,7 @@ class BatteryTableTest extends \PHPUnit_Framework_TestCase
             $this->assertGreaterThan(
                 0, count($param["valid"]), "There must be at least 1 valid value"
             );
+        } else if (is_null($param["valid"])) {
         } else if (is_string($param["valid"])) {
             $power = new \HUGnet\DummyTable("Power");
             $power->resetMock(array());
@@ -304,37 +345,9 @@ class BatteryTableTest extends \PHPUnit_Framework_TestCase
                 $param["valid"]." is not a method of class BatteryTable"
             );
         } else {
-        /*
             $this->fail(
-                "Valid must be null (with mask set), an array, or a function name"
+                "Valid must be null, an array, or a function name"
             );
-            */
-        }
-    }
-    /**
-    * Tests the iteration and preload functions
-    *
-    * @param string $name  The name of the param
-    * @param array  $param The param array
-    *
-    * @return null
-    *
-    * @dataProvider dataParamTests
-    */
-    public function testParamBits($name, $param)
-    {
-        if (is_numeric($param["bit"]) || is_numeric($param["bits"])) {
-            $min = 5;
-            $max = 30;
-            $this->assertInternalType(
-                "int", $param["bit"], "Bit for $name must be an int"
-            );
-            $this->assertInternalType(
-                "int", $param["bits"], "Bits for $name must be a int"
-            );
-        } else {
-            $this->assertNull($param["bit"]);
-            $this->assertNull($param["bits"]);
         }
     }
 }

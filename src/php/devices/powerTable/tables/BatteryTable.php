@@ -69,83 +69,83 @@ class BatteryTable
     * This is where we setup the power object
     */
     protected $params = array(
-        "AbsorbDwellTime" => array(
-            "value" => 0,
+        "BulkChargeDwellTime" => array(
+            "value" => 3600,
             'signed' => false,
-            "desc"  => "Offset",
-            'longDesc' => "Time to absorb (s)",
+            "desc"  => "Bulk Charge Dwell Time (s)",
+            'longDesc' => "This is the total time to stay in bulk charge mode (s)",
             'size'  => 7,
             'min' => 0,
             'max' => 65535,
         ),
-        "AbsorbCoefficient" => array(
-            "value" => 0,
+        "BulkChargeCoeff" => array(
+            "value" => 1,
             'signed' => true,
-            "desc"  => "Offset",
-            'longDesc' => "Temperature coefficient for Absorbtion (mV/C)",
+            "desc"  => "Bulk Charge Temp Coeff (mV/&deg;C)",
+            'longDesc' => "Temperature coefficient for the Bulk Charge voltage (mV/&deg;C)",
             'size'  => 5,
             'min' => -10000,
             'max' => 10000,
         ),
-        "FloatCoefficient" => array(
-            "value" => 0,
+        "FloatCoeff" => array(
+            "value" => 1,
             'signed' => true,
-            "desc"  => "Offset",
-            'longDesc' => "Temperature coefficient for Float (mV/C)",
+            "desc"  => "Float Temp Coeff (mV/&deg;C)",
+            'longDesc' => "Temperature coefficient for Float Voltage (mV/C)",
             'size'  => 5,
             'min' => -10000,
             'max' => 10000,
         ),
-        "AbsorbVoltage" => array(
-            "value" => 0,
+        "BulkChargeVoltage" => array(
+            "value" => 12500,
             'signed' => true,
-            "desc"  => "Offset",
-            'longDesc' => "The voltage to absorb at (mV)",
+            "desc"  => "Bulk Charge Voltage (mV)",
+            'longDesc' => "The voltage to Bulk Charge at (mV)",
             'size'  => 6,
             'min' => 0,
             'max' => 18000,
         ),
         "FloatVoltage" => array(
-            "value" => 0,
+            "value" => 13500,
             'signed' => false,
-            "desc"  => "Offset",
+            "desc"  => "Float Voltage (mV)",
             'longDesc' => "Voltage to float at (mV)",
             'size'  => 6,
             'min' => 0,
             'max' => 18000,
         ),
         "BulkChargeTriggerVoltage" => array(
-            "value" => 0,
+            "value" => 12500,
             'signed' => false,
-            "desc"  => "Offset",
+            "desc"  => "Bulk Charge Trigger Voltage (mV)",
             'longDesc' => "Charge if below this voltage (mV)",
             'size'  => 6,
             'min' => 0,
             'max' => 18000,
         ),
         "ResumeVoltage" => array(
-            "value" => 0,
+            "value" => 11000,
             'signed' => false,
-            "desc"  => "Offset",
+            "desc"  => "Resume Discharge Voltage (mV)",
             'longDesc' => "Resume discharge at this voltage (mV)",
             'size'  => 6,
             'min' => 0,
             'max' => 18000,
         ),
         "CutoffVoltage" => array(
-            "value" => 0,
+            "value" => 10500,
             'signed' => false,
-            "desc"  => "Offset",
-            'longDesc' => "No discharge below this (mV)",
+            "desc"  => "Cutoff Voltage (mV)",
+            'longDesc' => "No discharge below this voltage (mV)",
             'size'  => 6,
             'min' => 0,
             'max' => 18000,
         ),
         "MinimumVoltage" => array(
-            "value" => 0,
+            "value" => 1000,
             'signed' => false,
-            "desc"  => "Offset",
-            'longDesc' => "No battery below this voltage (mV)",
+            "desc"  => "Minimum Voltage (mV)",
+            'longDesc' => "If the port voltage is below this, there is no battery present (mV)",
             'size'  => 6,
             'min' => 0,
             'max' => 18000,
@@ -199,16 +199,13 @@ class BatteryTable
         if (is_int($set) || is_string($set)) {
             $par = &$this->params[$param];
             if (is_int($set)) {
-                $set &= $par["mask"];
+                if ($set < $par["min"]) {
+                    $set = $par["min"];
+                } else if ($set > $par["max"]) {
+                    $set = $par["max"];
+                }
             }
-            if (is_array($par["valid"]) && !isset($par["valid"][$set])) {
-                $check = false;
-            } else {
-                $check = true;
-            }
-            if ($check) {
-                $par["value"] = $set;
-            }
+            $par["value"] = $set;
         }
         return $this->params[$param]["value"];
     }
