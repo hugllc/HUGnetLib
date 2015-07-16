@@ -59,6 +59,7 @@ require_once dirname(__FILE__)."/../../base/LoadableDriver.php";
  */
 abstract class Driver extends \HUGnet\base\LoadableDriver
 {
+    const POWERPORTSIZE = 0x50;
     /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
@@ -318,8 +319,9 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         // Name
         $loc = $this->power()->get("location");
         $chars = $this->get("chars");
-        $string .= str_pad(strtoupper((string)array_shift(unpack('H*', substr($loc, 0, $chars-1)))), $chars * 2, "\0", STR_PAD_RIGHT);
+        $string .= str_pad(strtoupper((string)array_shift(unpack('H*', substr($loc, 0, $chars-1)))), $chars * 2, "0", STR_PAD_RIGHT);
         $string .= $this->entry()->encode();
+        $string = str_pad($string, (self::POWERPORTSIZE - 1) * 2, "F", STR_PAD_RIGHT);
         return $string;
     }
     /**
