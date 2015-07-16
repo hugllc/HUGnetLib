@@ -106,7 +106,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "extraValues" => array(
             array(0 => "None"), array(0 => "Highest"), 10
         ),
-        "chars" => 30,
+        "chars" => 20,
         "requires" => array(),
         "provides" => array(),
     );
@@ -156,6 +156,8 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
             0xFF => "Empty Slot"
         ),
     );
+    /** This is the class for our table entry */
+    protected $entryClass = "EmptyTable";
     /**
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
@@ -292,8 +294,10 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         $extra[0] = $this->decodeInt(substr($string, 0, 2), 1);
         $extra[1] = $this->decodeInt(substr($string, 2, 2), 1);
         $extra[2] = $this->decodeInt(substr($string, 4, 8), 4);
-        $loc = stristr((string)pack("H*", substr($string, 12)), "\0", true); // end at \0
+        $chars = $this->get("chars");
+        $loc = stristr((string)pack("H*", substr($string, 12, $chars)), "\0", true); // end at \0
         $loc = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $loc);  // Remove non printing chars
+        $this->entry()->decode(substr($string, $chars+ 12));
         $this->power()->set("location", (string)$loc);
         $this->power()->set("extra", $extra);
     }
@@ -313,10 +317,9 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         $string .= $this->encodeInt($this->getExtra(2), 4);
         // Name
         $loc = $this->power()->get("location");
-        if (strlen($loc) > 0) {
-            $string .= strtoupper((string)array_shift(unpack('H*', substr($loc, 0, $this->get("chars")))));
-        }
-        $string .= "00";
+        $chars = $this->get("chars");
+        $string .= str_pad(strtoupper((string)array_shift(unpack('H*', substr($loc, 0, $chars-1)))), $chars * 2, "\0", STR_PAD_RIGHT);
+        $string .= $this->entry()->encode();
         return $string;
     }
     /**
