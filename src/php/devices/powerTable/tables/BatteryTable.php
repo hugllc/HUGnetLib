@@ -75,6 +75,7 @@ class BatteryTable
             "desc"  => "Bulk Charge Dwell Time (s)",
             'longDesc' => "This is the total time to stay in bulk charge mode (s)",
             'size'  => 7,
+            'bytes' => 2,
             'min' => 0,
             'max' => 65535,
         ),
@@ -84,6 +85,7 @@ class BatteryTable
             "desc"  => "Bulk Charge Temp Coeff (mV/&deg;C)",
             'longDesc' => "Temperature coefficient for the Bulk Charge voltage (mV/&deg;C)",
             'size'  => 5,
+            'bytes' => 4,
             'min' => -10000,
             'max' => 10000,
         ),
@@ -93,15 +95,17 @@ class BatteryTable
             "desc"  => "Float Temp Coeff (mV/&deg;C)",
             'longDesc' => "Temperature coefficient for Float Voltage (mV/C)",
             'size'  => 5,
+            'bytes' => 4,
             'min' => -10000,
             'max' => 10000,
         ),
         "BulkChargeVoltage" => array(
             "value" => 12500,
-            'signed' => true,
+            'signed' => false,
             "desc"  => "Bulk Charge Voltage (mV)",
             'longDesc' => "The voltage to Bulk Charge at (mV)",
             'size'  => 6,
+            'bytes' => 4,
             'min' => 0,
             'max' => 18000,
         ),
@@ -111,6 +115,7 @@ class BatteryTable
             "desc"  => "Float Voltage (mV)",
             'longDesc' => "Voltage to float at (mV)",
             'size'  => 6,
+            'bytes' => 4,
             'min' => 0,
             'max' => 18000,
         ),
@@ -120,6 +125,7 @@ class BatteryTable
             "desc"  => "Bulk Charge Trigger Voltage (mV)",
             'longDesc' => "Charge if below this voltage (mV)",
             'size'  => 6,
+            'bytes' => 4,
             'min' => 0,
             'max' => 18000,
         ),
@@ -129,6 +135,7 @@ class BatteryTable
             "desc"  => "Resume Discharge Voltage (mV)",
             'longDesc' => "Resume discharge at this voltage (mV)",
             'size'  => 6,
+            'bytes' => 4,
             'min' => 0,
             'max' => 18000,
         ),
@@ -138,6 +145,7 @@ class BatteryTable
             "desc"  => "Cutoff Voltage (mV)",
             'longDesc' => "No discharge below this voltage (mV)",
             'size'  => 6,
+            'bytes' => 4,
             'min' => 0,
             'max' => 18000,
         ),
@@ -147,6 +155,7 @@ class BatteryTable
             "desc"  => "Minimum Voltage (mV)",
             'longDesc' => "If the port voltage is below this, there is no battery present (mV)",
             'size'  => 6,
+            'bytes' => 4,
             'min' => 0,
             'max' => 18000,
         ),
@@ -221,6 +230,70 @@ class BatteryTable
         return $this->params($param);
     }
     /**
+    * This builds the string for the levelholder.
+    *
+    * @param int $val   The value to use
+    * @param int $bytes The number of bytes to set
+    *
+    * @return string The string
+    */
+    protected function encodeInt($val, $bytes = 4)
+    {
+        $val = (int)$val;
+        for ($i = 0; $i < $bytes; $i++) {
+            $str .= sprintf(
+                "%02X",
+                ($val >> ($i * 8)) & 0xFF
+            );
+        }
+        return $str;
+
+    }
+    /**
+    * This builds the string for the levelholder.
+    *
+    * @param string $val    The value to use
+    * @param int    $bytes  The number of bytes to set
+    * @param bool   $signed If the number is signed or not
+    *
+    * @return string The string
+    */
+    protected function decodeInt($val, $bytes = 4, $signed = false)
+    {
+        $int = 0;
+        for ($i = 0; $i < $bytes; $i++) {
+            $int += hexdec(substr($val, ($i * 2), 2))<<($i * 8);
+        }
+        $bits = $bytes * 8;
+        $int = (int)($int & (pow(2, $bits) - 1));
+        if ($signed) {
+            $int = $this->signedInt($int, $bytes);
+        }
+        return $int;
+
+    }
+    /**
+    * This builds the string for the levelholder.
+    *
+    * @param int $val   The value to use
+    * @param int $bytes The number of bytes to set
+    *
+    * @return string The string
+    */
+    protected function signedInt($val, $bytes = 4)
+    {
+        $bits = $bytes * 8;
+        /* Calculate the top bit */
+        $topBit = pow(2, ($bits - 1));
+        /* Check to see if the top bit is set */
+        if (($val & $topBit) == $topBit) {
+            /* This is a negative number */
+            $val = -(pow(2, $bits) - $val);
+        }
+        return $val;
+
+    }
+    /**
     * This takes the class and makes it into a setup string
     *
     * @return string The encoded string
@@ -228,13 +301,9 @@ class BatteryTable
     public function encode()
     {
         $ret  = "";
-        /*
-        $ret .= $this->driver();
-        $ret .= sprintf("%02X", $this->params("priority"));
-        $ret .= $this->register("ADMUX");
-        $offset = $this->params("offset");
-        $ret .= sprintf("%02X%02X", ($offset & 0xFF), (($offset>>8) & 0xFF));
-        */
+        foreach ($this->params as $key => $info) {
+            $ret .= $this->encodeInt($this->params($key), $info["bytes"]);
+        }
         return $ret;
     }
     /**
@@ -246,19 +315,22 @@ class BatteryTable
     */
     public function decode($string)
     {
-    /*
-        if (strlen($string) >= 12) {
-            $this->driver(substr($string, 0, 4));
-            $this->params("priority", hexdec(substr($string, 4, 2)));
-            $this->register("ADMUX", hexdec(substr($string, 6, 2)));
-            $this->params(
-                "offset",
-                hexdec(substr($string, 10, 2).substr($string, 8, 2))
+        $ptr = 0;
+        $ret = true;
+        foreach ($this->params as $key => $info) {
+            $value = $this->decodeInt(
+                substr($string, $ptr, ($info["bytes"] * 2)),
+                $info["bytes"],
+                $info["signed"]
             );
-            return true;
+            $this->params($key, $value);
+            $ptr += $info["bytes"] * 2;
+            if ($ptr > strlen($string)) {
+                $ret = false;
+                break;
+            }
         }
-        */
-        return false;
+        return $ret;
     }
     /**
     * Returns the table as an array
