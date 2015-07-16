@@ -138,29 +138,13 @@ class Power extends \HUGnet\base\IOPBase
         return $channels;
     }
     /**
-    * Gets the config and saves it
+    * Returns the arch to use for the table
     *
-    * @param string $url The url to post to
-    *
-    * @return string The left over string
+    * @return string The arch
     */
-    public function post($url = null)
+    protected function getTableArch()
     {
-        if (!is_string($url) || (strlen($url) == 0)) {
-            $master = $this->system()->get("master");
-            $url = $master["url"];
-        }
-        $power = $this->toArray(false);
-        return \HUGnet\Util::postData(
-            $url,
-            array(
-                "uuid"   => urlencode($this->system()->get("uuid")),
-                "id"     => sprintf("%06X", $power["dev"]).".".$power["power"],
-                "action" => "put",
-                "task"   => "devicepower",
-                "data"   => $power,
-            )
-        );
+        return "Battery";
     }
 }
 

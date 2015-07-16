@@ -66,7 +66,7 @@ class PowerTable extends \HUGnet\base\XTableBase
     protected $xTable = "PowerTable";
     /** This is the type of tables we have available */
     protected $types = array(
-        "all" => "All",
+        "battery" => "Battery",
     );
     /** This is our url */
     protected $url = "/powertable";

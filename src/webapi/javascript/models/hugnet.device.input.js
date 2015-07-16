@@ -83,6 +83,7 @@ HUGnet.DeviceInput = Backbone.Model.extend({
 
         xhr.open('PUT', this.url()+'/settable');
         xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('Accept', 'application/json');
         xhr.onload = function() {
             if ((xhr.status === 200) || (xhr.status === 202)){
                 var data = JSON.parse(xhr.responseText);

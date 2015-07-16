@@ -201,6 +201,15 @@ abstract class IOPBase extends SystemTableBase
         return $ret;
     }
     /**
+    * Returns the arch to use for the table
+    *
+    * @return string The arch
+    */
+    protected function getTableArch()
+    {
+        return $this->device()->get("arch");
+    }
+    /**
     * Returns the driver object
     *
     * @return object The driver requested
@@ -209,7 +218,7 @@ abstract class IOPBase extends SystemTableBase
     {
         $entry = $this->system()->table(ucfirst($this->driverLoc));
         $return = array();
-        $arch = $this->device()->get("arch");
+        $arch = $this->getTableArch();
         $values = $entry->select(
             array('$or' => array(array("arch" => $arch), array("arch" => "all")))
         );
@@ -428,7 +437,7 @@ abstract class IOPBase extends SystemTableBase
     public function setEntry($id)
     {
         $entry = $this->system()->table(ucfirst($this->driverLoc));
-        $arch = $this->device()->get("arch");
+        $arch = $this->getTableArch();
         $ret = $entry->selectOneInto(
             array('$or' => array(array("arch" => $arch), array("arch" => "all")), "id" => (int)$id)
         );
@@ -477,10 +486,10 @@ abstract class IOPBase extends SystemTableBase
         $ret = null;
         if ($method === "PUT") {
             if (trim(strtolower($extra[0])) == "settable") {
-                $ret = $this->setEntry((int)$data["id"]);
+                $ret = $this->setEntry((int)$api->args()->get("data"));
                 if ($ret) {
                     $this->store();
-                    return "regen";
+                    $ret = "regen";
                 }
             } else {
                 $ret = $this->_put($api->args());
