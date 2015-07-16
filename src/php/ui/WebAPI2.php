@@ -658,6 +658,7 @@ class WebAPI2 extends HTML
             $ret = $this->_obj->create($data);
             if ($ret) {
                 $this->response(202);
+                $ret = $this->_obj->toArray(true);
             } else {
                 $this->response(400);
                 $this->pdoerror($this->_obj->lastError(), self::SAVE_FAILED);
