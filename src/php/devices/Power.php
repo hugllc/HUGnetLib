@@ -144,7 +144,7 @@ class Power extends \HUGnet\base\IOPBase
     */
     protected function getTableArch()
     {
-        return "Battery";
+        return "";
     }
 }
 

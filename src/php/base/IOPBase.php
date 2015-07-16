@@ -219,9 +219,11 @@ abstract class IOPBase extends SystemTableBase
         $entry = $this->system()->table(ucfirst($this->driverLoc));
         $return = array();
         $arch = $this->getTableArch();
-        $values = $entry->select(
-            array('$or' => array(array("arch" => $arch), array("arch" => "all")))
-        );
+        $where = array();
+        if (!empty($arch)) {
+            $where["arch"] = $arch;
+        }
+        $values = $entry->select($where);
         foreach ((array)$values as $val) {
             $return[$val->get("id")] = $val->get("name");
         }
@@ -438,9 +440,10 @@ abstract class IOPBase extends SystemTableBase
     {
         $entry = $this->system()->table(ucfirst($this->driverLoc));
         $arch = $this->getTableArch();
-        $ret = $entry->selectOneInto(
-            array('$or' => array(array("arch" => $arch), array("arch" => "all")), "id" => (int)$id)
-        );
+        $where = array("id" => (int)$id);
+        if (!empty($arch)) {
+            $where["arch"] = $arch;
+        }
         if ($ret) {
             $this->set("tableEntry", $entry->get("params"));
             $this->set(

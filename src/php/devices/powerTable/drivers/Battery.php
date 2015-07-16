@@ -92,7 +92,7 @@ class Battery extends \HUGnet\devices\powerTable\Driver
     */
     protected function entryClass()
     {
-        $dir = dirname(__FILE__)."/../../tables/";
+        $dir = dirname(__FILE__)."/../tables/";
         $namespace = "\\HUGnet\\devices\\powerTable\\tables\\";
         $type = $this->getExtra(0);
         switch ($type) {
