@@ -58,11 +58,12 @@ class XMegaStatus extends \HUGnet\devices\datachan\Driver
     protected $valid = array('');
     /** @var These are the statuses */
     private $_status = array(
-        0 => "Normal",
-        1 => "Off",
-        2 => "Ready",
-        3 => "Running",
-        4 => "Error",
+        0 => "No Driver - Supplying Current",
+        1 => "No Driver",
+        2 => "Online",
+        3 => "Offline",
+        4 => "Empty",
+        5 => "Error",
     );
     /** @var These are the statuses */
     private $_errors = array(
