@@ -54,7 +54,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class BatteryTable
+class LeadAcidBatteryTable
 {
     /**
     * This is where we store our power object
@@ -192,7 +192,7 @@ class BatteryTable
     */
     public static function &factory($power, $config = null)
     {
-        $object = new BatteryTable($power, $config);
+        $object = new LeadAcidBatteryTable($power, $config);
         return $object;
     }
     /**

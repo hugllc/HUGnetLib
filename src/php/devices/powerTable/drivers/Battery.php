@@ -59,8 +59,8 @@ require_once dirname(__FILE__)."/../DriverInterface.php";
 class Battery extends \HUGnet\devices\powerTable\Driver
     implements \HUGnet\devices\powerTable\DriverInterface
 {
-    /** This is the class for our table entry */
-    protected $entryClass = "BatteryTable";
+
+    const LEADACID = 0;
     /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
@@ -77,7 +77,7 @@ class Battery extends \HUGnet\devices\powerTable\Driver
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            0 => array(0 => "Lead Acid"),
+            0 => array(self::LEADACID => "Lead Acid"),
             1 => array(
                 0 => "Highest", 1 => "1", 2 => "2", 3 => "3", 4 => "4", 
                 5 => "5", 6 => "6", 7 => "Lowest"
@@ -85,7 +85,25 @@ class Battery extends \HUGnet\devices\powerTable\Driver
             2 => 10,
         ),
     );
-
+    /**
+    * Returns the driver object
+    *
+    * @return object The driver requested
+    */
+    protected function entryClass()
+    {
+        $dir = dirname(__FILE__)."/../../tables/";
+        $namespace = "\\HUGnet\\devices\\powerTable\\tables\\";
+        $type = $this->getExtra(0);
+        switch ($type) {
+            case self::LEADACID:
+            default:
+                include_once $dir."LeadAcidBatteryTable.php";
+                $class = $namespace."LeadAcidBatteryTable";
+                break;
+        }
+        return $class;
+    }
 }
 
 

@@ -66,7 +66,7 @@ class PowerTable extends \HUGnet\base\XTableBase
     protected $xTable = "PowerTable";
     /** This is the type of tables we have available */
     protected $types = array(
-        "battery" => "Battery",
+        "Lead-Acid Battery" => "LeadAcid",
     );
     /** This is our url */
     protected $url = "/powertable";
@@ -98,10 +98,10 @@ class PowerTable extends \HUGnet\base\XTableBase
         $namespace = "\\HUGnet\\devices\\powerTable\\tables\\";
         $arch = $this->table()->get("arch");
         switch ($arch) {
-        case "battery":
+        case "LeadAcid":
         default:
-            include_once $dir."BatteryTable.php";
-            $class = $namespace."BatteryTable";
+            include_once $dir."LeadAcidBatteryTable.php";
+            $class = $namespace."LeadAcidBatteryTable";
             break;
         }
         return $class;

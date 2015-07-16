@@ -34,7 +34,7 @@
 /** This is the HUGnet namespace */
 namespace HUGnet\devices\powerTable\tables;
 /** This is a required class */
-require_once CODE_BASE.'devices/powerTable/tables/BatteryTable.php';
+require_once CODE_BASE.'devices/powerTable/tables/LeadAcidBatteryTable.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
@@ -52,7 +52,7 @@ require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
  * @version    Release: 0.14.3
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class BatteryTableTest extends \PHPUnit_Framework_TestCase
+class LeadAcidBatteryTableTest extends \PHPUnit_Framework_TestCase
 {
     /**
     * Sets up the fixture, for example, opens a network connection.
@@ -125,7 +125,7 @@ class BatteryTableTest extends \PHPUnit_Framework_TestCase
     {
         $power = new \HUGnet\DummyTable("Power");
         $power->resetMock($mock);
-        $obj = BatteryTable::factory($power, $preload);
+        $obj = LeadAcidBatteryTable::factory($power, $preload);
         $obj->fromArray($array);
         $ret = $obj->encode();
         $this->assertSame($expect, $ret);
@@ -193,7 +193,7 @@ class BatteryTableTest extends \PHPUnit_Framework_TestCase
     {
         $power = new \HUGnet\DummyTable("Power");
         $power->resetMock($mock);
-        $obj = BatteryTable::factory($power, $preload);
+        $obj = LeadAcidBatteryTable::factory($power, $preload);
         $ret = $obj->decode($string);
         $this->assertSame($expect, $ret);
         $this->assertEquals($array, $obj->toArray());
@@ -207,7 +207,7 @@ class BatteryTableTest extends \PHPUnit_Framework_TestCase
     {
         $power = new \HUGnet\DummyTable("Power");
         $power->resetMock(array());
-        $obj = BatteryTable::factory($power, $preload);
+        $obj = LeadAcidBatteryTable::factory($power, $preload);
         $params = (array)$obj->fullArray();
         $return = array();
         foreach ($params as $key => $value) {
@@ -321,10 +321,10 @@ class BatteryTableTest extends \PHPUnit_Framework_TestCase
         } else if (is_string($param["valid"])) {
             $power = new \HUGnet\DummyTable("Power");
             $power->resetMock(array());
-            $obj = BatteryTable::factory($power, $preload);
+            $obj = LeadAcidBatteryTable::factory($power, $preload);
             $this->assertTrue(
                 method_exists($obj, $param["valid"]),
-                $param["valid"]." is not a method of class BatteryTable"
+                $param["valid"]." is not a method of class LeadAcidBatteryTable"
             );
         } else {
             $this->fail(
