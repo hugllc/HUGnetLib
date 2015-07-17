@@ -66,6 +66,20 @@ class LeadAcidBatteryTable
     protected $subdriver = array(
     );
     /**
+     * This is the order we save the values in when encoding/decoding
+     */
+    protected $paramOrder = array(
+        "BulkChargeDwellTime",
+        "BulkChargeCoeff",
+        "BulkChargeVoltage",
+        "BulkChargeTriggerVoltage",
+        "FloatCoeff",
+        "FloatVoltage",
+        "ResumeVoltage",
+        "CutoffVoltage",
+        "MinimumVoltage"
+    );
+    /**
     * This is where we setup the power object
     */
     protected $params = array(
@@ -89,6 +103,26 @@ class LeadAcidBatteryTable
             'min' => -10000,
             'max' => 10000,
         ),
+        "BulkChargeVoltage" => array(
+            "value" => 12500,
+            'signed' => false,
+            "desc"  => "Bulk Charge Voltage (mV)",
+            'longDesc' => "The voltage to hold the battery at when Bulk Charging (mV)",
+            'size'  => 6,
+            'bytes' => 4,
+            'min' => 0,
+            'max' => 18000,
+        ),
+        "BulkChargeTriggerVoltage" => array(
+            "value" => 12500,
+            'signed' => false,
+            "desc"  => "Bulk Charge Trigger Voltage (mV)",
+            'longDesc' => "Bulk charge if below this voltage (mV)",
+            'size'  => 6,
+            'bytes' => 4,
+            'min' => 0,
+            'max' => 18000,
+        ),
         "FloatCoeff" => array(
             "value" => 1,
             'signed' => true,
@@ -99,31 +133,11 @@ class LeadAcidBatteryTable
             'min' => -10000,
             'max' => 10000,
         ),
-        "BulkChargeVoltage" => array(
-            "value" => 12500,
-            'signed' => false,
-            "desc"  => "Bulk Charge Voltage (mV)",
-            'longDesc' => "The voltage to Bulk Charge at (mV)",
-            'size'  => 6,
-            'bytes' => 4,
-            'min' => 0,
-            'max' => 18000,
-        ),
         "FloatVoltage" => array(
             "value" => 13500,
             'signed' => false,
             "desc"  => "Float Voltage (mV)",
-            'longDesc' => "Voltage to float at (mV)",
-            'size'  => 6,
-            'bytes' => 4,
-            'min' => 0,
-            'max' => 18000,
-        ),
-        "BulkChargeTriggerVoltage" => array(
-            "value" => 12500,
-            'signed' => false,
-            "desc"  => "Bulk Charge Trigger Voltage (mV)",
-            'longDesc' => "Charge if below this voltage (mV)",
+            'longDesc' => "Voltage to float at when the battery is fully charged (mV)",
             'size'  => 6,
             'bytes' => 4,
             'min' => 0,
@@ -133,7 +147,7 @@ class LeadAcidBatteryTable
             "value" => 11000,
             'signed' => false,
             "desc"  => "Resume Discharge Voltage (mV)",
-            'longDesc' => "Resume discharge at this voltage (mV)",
+            'longDesc' => "Resume discharge if battery is above this voltage (mV)",
             'size'  => 6,
             'bytes' => 4,
             'min' => 0,
@@ -301,7 +315,8 @@ class LeadAcidBatteryTable
     public function encode()
     {
         $ret  = "";
-        foreach ($this->params as $key => $info) {
+        foreach ($this->paramOrder as $key) {
+            $info = &$this->params[$key];
             $ret .= $this->encodeInt($this->params($key), $info["bytes"]);
         }
         return $ret;
@@ -317,7 +332,8 @@ class LeadAcidBatteryTable
     {
         $ptr = 0;
         $ret = true;
-        foreach ($this->params as $key => $info) {
+        foreach ($this->paramOrder as $key) {
+            $info = &$this->params[$key];
             $value = $this->decodeInt(
                 substr($string, $ptr, ($info["bytes"] * 2)),
                 $info["bytes"],
