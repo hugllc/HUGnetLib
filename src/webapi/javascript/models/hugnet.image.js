@@ -141,6 +141,7 @@ HUGnet.Image = Backbone.Model.extend({
 
             var xhr = new XMLHttpRequest();
             xhr.open('GET', encodeURI(this.url()+'/reading?until='+date+'&type='+type));
+            xhr.setRequestHeader('Accept', 'application/json');
             xhr.onload = function() {
                 if (xhr.status === 200) {
                     var data = xhr.responseText;

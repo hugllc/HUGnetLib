@@ -76,6 +76,7 @@ HUGnet.Datacollector = Backbone.Model.extend({
         } else {
             xhr.open('GET', this.url()+"/run");
         }
+        xhr.setRequestHeader('Accept', 'application/json');
         xhr.onload = function() {
             if (xhr.status === 200) {
                 if (parseInt(xhr.responseText, 10) == 1) {

@@ -56,6 +56,7 @@ HUGnet.DeviceControlChannel = Backbone.Model.extend({
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open('GET', this.url()+'/setting');
+        xhr.setRequestHeader('Accept', 'application/json');
         xhr.onload = function() {
             if ((xhr.status === 200) || (xhr.status === 202)){
                 var data = JSON.parse(xhr.responseText);
@@ -79,6 +80,7 @@ HUGnet.DeviceControlChannel = Backbone.Model.extend({
 
         xhr.open('PUT', this.url()+'/setting');
         xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('Accept', 'application/json');
         xhr.onload = function() {
             if ((xhr.status === 200) || (xhr.status === 202)){
                 var data = JSON.parse(xhr.responseText);

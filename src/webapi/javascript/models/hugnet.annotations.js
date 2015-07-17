@@ -138,6 +138,7 @@ HUGnet.Annotations = Backbone.Collection.extend({
 
         var xhr = new XMLHttpRequest();
         xhr.open('GET', encodeURI(this.url()+'?until='+until+'&since='+since));
+        xhr.setRequestHeader('Accept', 'application/json');
         xhr.onload = function() {
             if (xhr.status === 200) {
                 var data = JSON.parse(xhr.responseText);

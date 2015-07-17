@@ -190,6 +190,7 @@ HUGnet.Histories = Backbone.Collection.extend({
 
         var xhr = new XMLHttpRequest();
         xhr.open('GET', encodeURI(this.url()+'/'+this.type+'?until='+until+'&since='+since+'&limit='+limit+'&order=asc'));
+        xhr.setRequestHeader('Accept', 'application/json');
         xhr.onload = function() {
             if (xhr.status === 200) {
                 var data = JSON.parse(xhr.responseText);

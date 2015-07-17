@@ -114,6 +114,7 @@ HUGnet.DeviceFunctions = Backbone.Collection.extend({
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open('GET', this.url()+"/fcts");
+        xhr.setRequestHeader('Accept', 'application/json');
         xhr.onload = function() {
             if (xhr.status === 200) {
                 var data = JSON.parse(xhr.responseText);
@@ -144,6 +145,7 @@ HUGnet.DeviceFunctions = Backbone.Collection.extend({
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open('PUT', this.url()+"/fcts");
+        xhr.setRequestHeader('Accept', 'application/json');
         xhr.onload = function() {
             if (xhr.status === 200) {
                 var data = JSON.parse(xhr.responseText);
