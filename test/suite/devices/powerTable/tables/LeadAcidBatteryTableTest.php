@@ -105,7 +105,7 @@ class LeadAcidBatteryTableTest extends \PHPUnit_Framework_TestCase
                     'CutoffVoltage' => 11500,
                     'MinimumVoltage' => 2000,
                 ),
-                "08070A000000F6FFFFFFBC340000D4300000BC340000B0360000EC2C0000D0070000",
+                "08070A000000BC340000BC340000F6FFFFFFD4300000B0360000EC2C0000D0070000",
             ),
         );
     }
@@ -142,7 +142,7 @@ class LeadAcidBatteryTableTest extends \PHPUnit_Framework_TestCase
                 array(
                 ),
                 null,
-                "08070A000000F6FFFFFFBC340000D4300000BC340000B0360000EC2C0000D0070000",
+                "08070A000000BC340000BC340000F6FFFFFFD4300000B0360000EC2C0000D0070000",
                 true,
                 array(
                     'BulkChargeDwellTime' => 1800,
@@ -199,6 +199,28 @@ class LeadAcidBatteryTableTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($array, $obj->toArray());
     }
     /**
+    * Tests the order the params are in
+    *
+    * @return null
+    *
+    */
+    public function testParamOrderSet()
+    {
+        $power = new \HUGnet\DummyTable("Power");
+        $power->resetMock(array());
+        $obj = LeadAcidBatteryTable::factory($power, $preload);
+        $paramOrder = $this->readAttribute($obj, "paramOrder");
+        $params = $obj->fullArray();
+        $this->assertInternalType(
+            "array", $paramOrder, "paramOrder must be an array"
+        );
+        foreach($paramOrder as $key) {
+            $this->assertTrue(
+                isset($params[$key]), "$key is not set in params"
+            );
+        }
+    }
+    /**
     * Data provider for testRemove
     *
     * @return array
@@ -234,6 +256,26 @@ class LeadAcidBatteryTableTest extends \PHPUnit_Framework_TestCase
                 "int", $param["value"], "Default value for $name must be an int"
             );
         }
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param string $name  The name of the param
+    * @param array  $param The param array
+    *
+    * @return null
+    *
+    * @dataProvider dataParamTests
+    */
+    public function testParamOrder($name, $param)
+    {
+        $power = new \HUGnet\DummyTable("Power");
+        $power->resetMock(array());
+        $obj = LeadAcidBatteryTable::factory($power, $preload);
+        $paramOrder = (array)$this->readAttribute($obj, "paramOrder");
+        $this->assertTrue(
+            in_array($name, $paramOrder), "Param $name is not in paramOrder"
+        );
     }
     /**
     * Tests the iteration and preload functions
