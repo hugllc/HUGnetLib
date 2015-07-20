@@ -152,6 +152,7 @@ final class Packet implements PacketInterface
         "SENSORCONFIG" => 0x4C,
         "SET_RTC" => 0x50,
         "READ_RTC" => 0x51,
+        "POLLDATA" => 0x53,
         "RAWDATA" => 0x54,
         "SENSORREAD" => 0x55,
         "SETCONFIG" => 0x5B,

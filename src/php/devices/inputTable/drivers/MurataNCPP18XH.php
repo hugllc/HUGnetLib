@@ -33,11 +33,11 @@
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\devices\inputTable\drivers\avr;
+namespace HUGnet\devices\inputTable\drivers;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is my base class */
-require_once dirname(__FILE__)."/../../DriverAVR.php";
+require_once dirname(__FILE__)."/../../Driver.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -54,17 +54,9 @@ require_once dirname(__FILE__)."/../../DriverAVR.php";
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class XMegaMurataNCPP18XH extends \HUGnet\devices\inputTable\DriverAVR
+class MurataNCPP18XH extends \HUGnet\devices\inputTable\Driver
     implements \HUGnet\devices\inputTable\DriverInterface
 {
-    /** This is a constant */
-    const AM = 2047;
-    /** This is a constant */
-    const S = 1;
-    /** This is a constant */
-    const TF = 1;
-    /** This is a constant */
-    const D = 1;
     /**
     * This is the array of sensor information.
     */
@@ -74,19 +66,24 @@ class XMegaMurataNCPP18XH extends \HUGnet\devices\inputTable\DriverAVR
         "unitType" => "Temperature",
         "storageUnit" => '&#176;C',
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
-        "extraText" => array("Bias Resistor (kOhms)"),
+        "extraText" => array(
+            "Bias Resistor (kOhms)",
+            "ADC Max Read",
+        ),
         "extraDesc" => array(
             "The resistance connected between the thermistor and the reference
              voltage",
+            "The max reading of the ADC.  Usually a power of 2",
         ),
         "extraNames" => array(
             "r" => 0,
+            "Am" => 1,
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
-        "extraValues" => array(5),
-        "extraDefault" => array(10),
+        "extraValues" => array(5, 10),
+        "extraDefault" => array(160, 4096),
         "maxDecimals" => 2,
         "requires" => array("AI"),
         "provides" => array("DC"),
@@ -144,14 +141,15 @@ class XMegaMurataNCPP18XH extends \HUGnet\devices\inputTable\DriverAVR
     */
     protected function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
-        $Bias  = $this->getExtra(0);
-        if ($A == self::AM) {
+        $Bias = $this->getExtra(0);
+        $Am   = $this->getExtra(1);
+        if ($A == $Am) {
             return null;
         }
         // self::AM is only half of the voltage the two resistors are connected
-        // between.  Therefore, I need to multiply it by to to get the correct
+        // between.  Therefore, I need to multiply it by two to get the correct
         // reading.
-        $kohms = ($A * $Bias) / ((self::AM * 2) - $A);
+        $kohms = (($A * $Bias) / ($Am - $A));
         $T     = $this->tableInterpolate($kohms, $this->valueTable);
         if (is_null($T)) {
             return null;

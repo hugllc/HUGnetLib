@@ -80,7 +80,9 @@ class Type4 extends \HUGnet\base\Role
         ),
         2 => array(
             "id" => 0x02,
-            "extra" => array(160),
+            // This ADC's reference is half of Vcc, so max read must be multiplied
+            // by 2
+            "extra" => array(160, 4096), // Second arg needs to be 4096
             "location" => "Port 1 Temperature",
             "type" => "MurataNCPP18XH",
         ),
@@ -116,7 +118,7 @@ class Type4 extends \HUGnet\base\Role
         ),
         8 => array(
             "id" => 0x02,
-            "extra" => array(160),
+            "extra" => array(160, 4096), // Second arg needs to be 4096
             "location" => "Port 2 Temperature",
             "type" => "MurataNCPP18XH",
         ),
@@ -152,7 +154,7 @@ class Type4 extends \HUGnet\base\Role
         ),
         14 => array(
             "id" => 0x02,
-            "extra" => array(160),
+            "extra" => array(160, 4096), // Second arg needs to be 4096
             "location" => "Bus Temperature",
             "type" => "MurataNCPP18XH",
         ),
@@ -164,13 +166,13 @@ class Type4 extends \HUGnet\base\Role
         ),
         16 => array(
             "id" => 0x02,
-            "extra" => array(160),
+            "extra" => array(160, 4096), // Second arg needs to be 4096
             "location" => "External Thermistor 1",
             "type" => "MurataNCPP18XH",
         ),
         17 => array(
             "id" => 0x02,
-            "extra" => array(160),
+            "extra" => array(160, 4096), // Second arg needs to be 4096
             "location" => "External Thermistor 2",
             "type" => "MurataNCPP18XH",
         ),
