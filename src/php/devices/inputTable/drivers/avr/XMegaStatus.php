@@ -72,7 +72,7 @@ class XMegaStatus extends \HUGnet\devices\inputTable\DriverAVR
         "longName" => "Xmega Status",
         "shortName" => "XMegaStatus",
         "unitType" => "XMegaStatus",
-        "storageUnit" => '',
+        "storageUnit" => 'Status',
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraText" => array(
         ),
@@ -104,7 +104,16 @@ class XMegaStatus extends \HUGnet\devices\inputTable\DriverAVR
     */
     protected function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
-        return $A;
+        $status  = ($A & 0xF);
+        $error   = ($A & 0x00F0) >> 4;
+        $batstat = ($A & 0xF000) >> 12;
+        if (!empty($batstat)) {
+            $status .= ".".$batstat;
+        }
+        if (!empty($error)) {
+            $status .= ".".$error;
+        }
+        return $status;
     }
     /**
     * Returns the reversed reading
@@ -123,7 +132,19 @@ class XMegaStatus extends \HUGnet\devices\inputTable\DriverAVR
     protected function getRaw(
         $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
     ) {
-        return round($value, 0);
+        if (is_null($value)) {
+            return $null;
+        }
+        $vals = explode(".", (string)$value);
+        
+        $ret = (int)$vals[0] & 0x000F;
+        if (isset($value[1])) {
+            $ret += ((int)$vals[1] & 0x000F) << 12;
+        }
+        if (isset($value[2])) {
+            $ret += ((int)$vals[2] & 0x000F) << 4;
+        }
+        return $ret;
     }
 }
 ?>

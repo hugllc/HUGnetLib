@@ -67,6 +67,14 @@ class XMegaStatus extends \HUGnet\devices\datachan\Driver
         6 => "Error",
     );
     /** @var These are the statuses */
+    private $_batstat = array(
+        1 => "Offline",
+        2 => "Float Charge",
+        3 => "Bulk Charge",
+        4 => "Unknown",
+        5 => "Error",
+    );
+    /** @var These are the statuses */
     private $_errors = array(
         1 => "Overcurrent",
         2 => "Upper MCU Failure",
@@ -90,9 +98,14 @@ class XMegaStatus extends \HUGnet\devices\datachan\Driver
             } else {
                 $data = "Unknown [".$vals[0]."]";
             }
-            if (isset($vals[1]) && !empty($vals[1])) {
-                if (isset($this->_errors[$vals[1]])) {
-                    $data .= " - Error: ".$this->_errors[$vals[1]];
+            if (isset($this->_status[$vals[1]]) && !empty($vals[1])) {
+                $data = " (".$this->_batstat[$vals[1]].")";
+            } else {
+                $data = " (Unknown)";
+            }
+            if (isset($vals[2]) && !empty($vals[2])) {
+                if (isset($this->_errors[$vals[2]])) {
+                    $data .= " - Error: ".$this->_errors[$vals[2]];
                 }
             }
         }
