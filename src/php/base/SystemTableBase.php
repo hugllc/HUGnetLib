@@ -500,7 +500,7 @@ abstract class SystemTableBase
                 'method' => $method,
                 'content' => $data,
                 'timeout' => $timeout,
-                'header'=>'Connection: close\r\n',
+                'header'=>"Connection: close\r\nAccept: application/json\r\n",
             )
         );
         $this->_postError = array();

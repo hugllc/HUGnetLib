@@ -212,7 +212,7 @@ class WebAPI2 extends HTML
             "action" => false,
         ),
         "time" => array(
-            "methods" => "GET",
+            "methods" => "GET,PUT",
             "action" => false,
         ),
         "version" => array(
@@ -575,7 +575,11 @@ class WebAPI2 extends HTML
     {
         $ret = "";
         if ($this->_auth(false)) {
-            $ret = $this->system()->now();
+            if ($this->_method == "GET") {
+                $ret = $this->system()->now();
+            } else {
+                $this->response(501);
+            }
         }
         return $ret;
     }
