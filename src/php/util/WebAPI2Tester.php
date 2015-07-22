@@ -161,7 +161,7 @@ class WebAPI2Tester
         $this->_ui->out($this->_test["case"].": ".$this->_test["desc"]);
         $this->_ui->out($this->_test["tag"]." (".$this->_test["level"].")\t\t".$result);
         foreach ($this->_test["errors"] as $error) {
-            $this->_ui->out($error);
+            $this->_ui->out(" -> ".$error);
         }
         $this->_ui->out();
     }
@@ -289,7 +289,7 @@ class WebAPI2Tester
             }
         }
         if (!$pass) {
-            $this->_test["errors"][] = "$got does not equal expected return code $expect";
+            $this->_test["errors"][] = "'$got' does not equal expected return code '$expect'";
             $this->_test["result"] = false;
         }
     }
@@ -300,11 +300,31 @@ class WebAPI2Tester
     *
     * @return string The left over string
     */
-    protected function checkReturn($expect, $got)
+    protected function checkReturn($expect, $got, $message = null)
     {
+        if (empty($message)) {
+            $message = "'$got' does not equal expected return '$expect'";
+        }
         $pass = (bool)($expect == $got);
         if (!$pass) {
-            $this->_test["errors"][] = "$got does not equal expected return $expect";
+            $this->_test["errors"][] = $message;
+            $this->_test["result"] = false;
+        }
+    }
+    /**
+    * Checks the return code
+    *
+    * @param int    $timeout  The timeout in seconds
+    *
+    * @return string The left over string
+    */
+    protected function checkTrue($check, $message = null)
+    {
+        if (empty($message)) {
+            $message = "Expression is not true";
+        }
+        if (!(bool)$check) {
+            $this->_test["errors"][] = $message;
             $this->_test["result"] = false;
         }
     }
@@ -317,10 +337,14 @@ class WebAPI2Tester
     */
     protected function testDVT2_0()
     {
-        $this->setupTest("2.0", "SW-0002-01", "Return current UNIX timestamp", self::REQUIRED);
-        $ret = $this->get("/time", array());
+        $this->setupTest("2.0", "SW-0002-01", "Return API version", self::REQUIRED);
+        $ret = $this->get("/version", array());
         $this->checkReturnCode(200, $ret["code"]);
-        $this->_test["result"] = $this->_test["result"] && is_numeric($ret["response"]);
+        $this->checkReturn(
+            "1.0", 
+            $ret["response"], 
+            "Version returned '".$ret["response"]."' must return '1.0'"
+        );
     }
     /**
     * Gets the config and saves it
@@ -329,13 +353,35 @@ class WebAPI2Tester
     *
     * @return string The left over string
     */
-    protected function testDVT2_1()
+    protected function testDVT3_0()
     {
-        $this->setupTest("2.1", "SW-0002-02", "Set UNIX timestamp", self::OPTIONAL);
-        $ret = $this->put("/time/1234", array());
+        $this->setupTest("3.0", "SW-0003-01", "Return current UNIX timestamp", self::REQUIRED);
+        $ret = $this->get("/time", array());
+        $this->checkReturnCode(200, $ret["code"]);
+        if (200 == $ret["code"]) {
+            $this->checkTrue(
+                is_numeric($ret["response"]), "Time check response must be an integer"
+            );
+        }
+    }
+    /**
+    * Gets the config and saves it
+    *
+    * @param int    $timeout  The timeout in seconds
+    *
+    * @return string The left over string
+    */
+    protected function testDVT3_1()
+    {
+        $this->setupTest("3.1", "SW-0003-02", "Set UNIX timestamp", self::OPTIONAL);
+        $time = 946688800;
+        $ret = $this->put("/time/".$time, array());
         $this->checkReturnCode(200, $ret["code"]);
         if ($ret["code"] == 200) {
-            $this->checkReturn(1234, $ret["response"]);
+            $this->checkTrue(
+                ($ret["response"] - $time) < 5,
+                "Time was not set properly '$time' != '".$ret["response"]."'"
+            );
         }
     }
 }
