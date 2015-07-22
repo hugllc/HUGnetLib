@@ -104,7 +104,7 @@ class LeadAcidBatteryTable
             'max' => 10000,
         ),
         "BulkChargeVoltage" => array(
-            "value" => 12500,
+            "value" => 13500,
             'signed' => false,
             "desc"  => "Bulk Charge Voltage (mV)",
             'longDesc' => "The voltage to hold the battery at when Bulk Charging (mV)",
@@ -114,7 +114,7 @@ class LeadAcidBatteryTable
             'max' => 18000,
         ),
         "BulkChargeTriggerVoltage" => array(
-            "value" => 12500,
+            "value" => 12000,
             'signed' => false,
             "desc"  => "Bulk Charge Trigger Voltage (mV)",
             'longDesc' => "Bulk charge if below this voltage (mV)",
@@ -134,7 +134,7 @@ class LeadAcidBatteryTable
             'max' => 10000,
         ),
         "FloatVoltage" => array(
-            "value" => 13500,
+            "value" => 12500,
             'signed' => false,
             "desc"  => "Float Voltage (mV)",
             'longDesc' => "Voltage to float at when the battery is fully charged (mV)",
