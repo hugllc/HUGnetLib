@@ -75,7 +75,7 @@ class WebAPIArgs extends HTMLArgs
         "task" => array("name" => "task", "type" => "string", "default" => null),
         "subtask" => array("name" => "subtask", "type" => "string", "default" => null),
         "action" => array("name" => "action", "type" => "string", "default" => null),
-        "format" => array("name" => "action", "type" => "string", 'default' => "JSON"),
+        "format" => array("name" => "format", "type" => "string", 'default' => "JSON"),
         "id" => array("name" => "id", "type" => "string", 'default' => null),
         "sid" => array("name" => "sid", "type" => "string", 'default' => null),
         "object" => array("name" => "object", "type" => "string", 'default' => null),
@@ -156,19 +156,13 @@ class WebAPIArgs extends HTMLArgs
             }
         }
         if (($this->arguments["method"] == "PUT") || ($this->arguments["method"] == "POST")) {
-            $data = file_get_contents("php://input");
-            if (strlen($data) > 0) {
-                switch (trim(strtolower($this->sysargs["CONTENT_TYPE"]))) {
-                    case "application/x-www-form-urlencoded":
-                        $this->arguments["data"] = array();
-                        parse_str($data, $this->arguments["data"]);
-                        break;
-                    case "application/json":
-                    default:
-                    error_log($data);
-                        $this->arguments["data"] = json_decode($data, true);
-                        break;
+            if (trim(strtolower($this->sysargs["CONTENT_TYPE"])) == "application/json") {
+                $data = file_get_contents("php://input");
+                if (strlen($data) > 0) {
+                    $this->arguments["data"] = json_decode($data, true);
                 }
+            } else {
+                $this->arguments["data"] = $this->argv;
             }
         }
         $this->arguments["restextra"] = $args;
