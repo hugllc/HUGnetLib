@@ -338,6 +338,7 @@ class Devices extends \HUGnet\db\Table
             $this->set("id", hexdec($this->get("DeviceID")));
         }
         $did = $this->get("id");
+        $this->set("DeviceID", $did);
         // This is so we don't insert bad DeviceIDs.
         // Group and temporary DeviceIDs are omitted, as well as the default one
         if ((($did >= self::MIN_GROUP_SN) && ($did <= self::MAX_GROUP_SN))

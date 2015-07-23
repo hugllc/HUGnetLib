@@ -148,7 +148,7 @@ class WebInterface2
         $ret = null;
         if ($subobject === "config") {
             $ret = $this->_config($api);
-        } else if ($this->_device->isNew()) {
+        } else if ($this->_device->isNew() && ($method !== "POST")) {
             $api->response(404);
         } else if (($method === "PUT") && empty($subobject)) {
             $ret = $this->_put($api);
@@ -173,28 +173,8 @@ class WebInterface2
                 $ret = $this->_putfcts($args);
             }
         } else {
-            $api->response(401);
+            $api->response(400);
             $api->error(\HUGnet\ui\WebAPI2::NOT_IMPLEMENTED);
-        /*
-        } else if ($subobject === "getraw") {
-            $ret = $this->_getRaw($args);
-        } else if ($subobject === "export") {
-            $ret = $this->_export($args);
-        } else if ($subobject === "import") {
-            $ret = $this->_import($args, false);
-        } else if ($subobject === "sync") {
-            $ret = $this->_import($args, true);
-        } else if ($subobject === "lastdata") {
-            $ret = $this->_lastdata($args);
-        } else if ($subobject === "getfcts") {
-            $ret = $this->_getfcts();
-        } else if ($subobject === "putfcts") {
-            $ret = $this->_putfcts($args);
-        } else if ($subobject === "fctsetup") {
-            $ret = $this->_fctsetup($args);
-        } else if ($subobject === "fctapply") {
-            $ret = $this->_fctapply($args);
-        */
         }
         return $ret;
     }
@@ -246,7 +226,7 @@ class WebInterface2
                 }
                 return $data;
             } else {
-                $api->response(401);
+                $api->response(400);
                 $api->error(\HUGnet\ui\WebAPI2::NO_RESPONSE, "No response getting control channel $sid on board ".sprintf("%06X", $this->device->id()));
             }
         } else if (($method == "PUT") || ($method == "POST")) {
@@ -265,7 +245,7 @@ class WebInterface2
                 $api->response(202);
                 return (int)$data;
             } else {
-                $api->response(401);
+                $api->response(400);
                 $api->error(\HUGnet\ui\WebAPI2::NO_RESPONSE, "No response setting control channel $sid on board ".sprintf("%06X", $this->device->id()));
             }
         }
@@ -299,12 +279,12 @@ class WebInterface2
                     }
                 }
             }
-        } else if (isset($data["id"]) && isset($data["HWPartNum"]) && isset($data["FWPartNum"])) {
+        } else if (isset($data["id"])) {
             if ($this->_device->create($data)) {
                 return $this->_device->toArray(true);
             }
         }
-        $api->response(401);
+        $api->response(400);
         $api->pdoerror($this->_device->lastError(), \HUGnet\ui\WebAPI2::SAVE_FAILED);
         return array();
     }
@@ -317,7 +297,7 @@ class WebInterface2
     */
     private function _put($api)
     {
-
+        $ret = 0;
         $data = (array)$api->args()->get("data");
         $params = (array)$data["params"];
         unset($data["params"]);
@@ -333,11 +313,12 @@ class WebInterface2
         $this->_device->setParam("LastModified", $this->_system->now());
         if ($this->_device->store(true)) {
             $api->response(202);
+            $ret = $this->_device->toArray();
         } else {
             $api->response(400);
             $api->pdoerror($this->_device->lastError(), \HUGnet\ui\WebAPI2::SAVE_FAILED);
         }
-        return "";
+        return $ret;
     }
     /**
     * returns a history object for this device

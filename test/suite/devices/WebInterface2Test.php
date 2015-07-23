@@ -159,7 +159,7 @@ class WebInterface2Test extends \PHPUnit_Framework_TestCase
                 ),
                 false,
                 array(),
-                "",
+                array('Real' => 'array'),
                 array(
                     "Device" => array(
                         "set" => array(
@@ -174,6 +174,7 @@ class WebInterface2Test extends \PHPUnit_Framework_TestCase
                             array(true),
                         ),
                         "isNew" => array(array()),
+                        "toArray" => array(array()),
                     ),
                 ),
             ),
@@ -363,17 +364,9 @@ class WebInterface2Test extends \PHPUnit_Framework_TestCase
                 ),
                 false,
                 array(),
-                array("Real" => "array"),
+                null,
                 array(
                     "Device" => array(
-                        "insertVirtual" => array(
-                            array(
-                                array(),
-                            ),
-                        ),
-                        "setParam" => array(array("Created", 5)),
-                        "store" => array(array()),
-                        "toArray" => array(array(true)),
                         "isNew" => array(array()),
                     ),
                 ),
@@ -416,7 +409,7 @@ class WebInterface2Test extends \PHPUnit_Framework_TestCase
                 ),
                 false,
                 array(),
-                "",
+                0,
                 array(
                     "Device" => array(
                         "set" => array(
@@ -431,6 +424,7 @@ class WebInterface2Test extends \PHPUnit_Framework_TestCase
                             array(true),
                         ),
                         "isNew" => array(array()),
+                        "lastError" => array(array()),
                     ),
                 ),
             ),

@@ -401,7 +401,7 @@ class WebAPI2 extends HTML
         } else {
             $class = "None";
         }
-        return array(
+        $data = array(
             "code" => $code,
             "message" => $message,
             "moreInfo" => "($path) ".(string)$moreInfo,
@@ -413,8 +413,14 @@ class WebAPI2 extends HTML
                 "sid" => $this->_sid,
                 "extra" => $this->args()->get("restextra"),
                 "objectClass" => $class,
+                "data" => $this->args()->get("data"),
             ),
         );
+        $this->_headerJSON();
+        print json_encode($data, JSON_PRETTY_PRINT);
+        if ($this->system()->get("verbose") > 0) {
+            print PHP_EOL.implode(PHP_EOL, $this->debug());
+        }
     }
     /**
     * This gets the ID of the object
@@ -673,6 +679,7 @@ class WebAPI2 extends HTML
             $ret = (int)$this->_obj->change($data);
             if ($ret) {
                 $this->response(202);
+                $ret = $this->_obj->toArray(true);
             } else {
                 $this->response(400);
                 $this->pdoerror($this->_obj->lastError(), self::SAVE_FAILED);

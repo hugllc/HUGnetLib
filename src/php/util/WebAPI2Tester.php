@@ -194,7 +194,7 @@ class WebAPI2Tester
     {
         $url = $this->_api.$url;
         $return = $this->httpMethod(
-            "GET", http_build_query($data), $url, $format, $timeout
+            "GET", http_build_query($data), $url, "text/html", $format, $timeout
         );
         return $return;
 
@@ -211,7 +211,28 @@ class WebAPI2Tester
         $return = false;
         $url = $this->_api.$url;
         $return = $this->httpMethod(
-            "POST", http_build_query($data), $url, $format, $timeout
+            "POST", 
+            http_build_query($data), 
+            $url, 
+            "application/x-www-form-urlencoded", 
+            $format, 
+            $timeout
+        );
+        return $return;
+    }
+    /**
+    * Gets the config and saves it
+    *
+    * @param int    $timeout  The timeout in seconds
+    *
+    * @return string The left over string
+    */
+    public function delete($url, $data, $timeout=10)
+    {
+        $return = false;
+        $url = $this->_api.$url;
+        $return = $this->httpMethod(
+            "DELETE", json_encode($data), $url, "application/json", $format, $timeout
         );
         return $return;
     }
@@ -227,7 +248,7 @@ class WebAPI2Tester
         $return = false;
         $url = $this->_api.$url;
         $return = $this->httpMethod(
-            "PUT", json_encode($data), $url, $format, $timeout
+            "PUT", json_encode($data), $url, "application/json", $format, $timeout
         );
         return $return;
     }
@@ -238,7 +259,7 @@ class WebAPI2Tester
     *
     * @return string The left over string
     */
-    protected function httpMethod($method, $data, $url, $format, $timeout=10)
+    protected function httpMethod($method, $data, $url, $type, $format, $timeout=10)
     {
         $return = array();
         $params = array(
@@ -246,7 +267,7 @@ class WebAPI2Tester
                 'method' => $method,
                 'content' => $data,
                 'timeout' => $timeout,
-                'header'=>"Connection: close\r\n",
+                'header'=>"Connection: close\r\nContent-Type: $type\r\n",
             )
         );
         if (!empty($format)) {
@@ -374,7 +395,7 @@ class WebAPI2Tester
     protected function testDVT3_1()
     {
         $this->setupTest("3.1", "SW-0003-02", "Set UNIX timestamp", self::OPTIONAL);
-        $time = 946688800;
+        $time = time();
         $ret = $this->put("/time/".$time, array());
         $this->checkReturnCode(200, $ret["code"]);
         if ($ret["code"] == 200) {
@@ -383,6 +404,100 @@ class WebAPI2Tester
                 "Time was not set properly '$time' != '".$ret["response"]."'"
             );
         }
+    }
+    /**
+    * Gets the config and saves it
+    *
+    * @param int    $timeout  The timeout in seconds
+    *
+    * @return string The left over string
+    */
+    protected function testDVT4_0()
+    {
+        $this->setupTest("4.0", "SW-0004-01", "Return the device list", self::REQUIRED);
+        $ret = $this->get("/device", array());
+        $this->checkReturnCode(200, $ret["code"]);
+        $data = json_decode((string)$ret["response"], true);
+        $this->checkTrue(
+            is_array($data), "Device list must be an array"
+        );
+    }
+    /**
+    * Gets the config and saves it
+    *
+    * @param int    $timeout  The timeout in seconds
+    *
+    * @return string The left over string
+    */
+    protected function testDVT4_1()
+    {
+        $ret = $this->delete("/device/1", array());
+        $this->setupTest("4.1", "SW-0004-02", "Create a new device", self::REQUIRED);
+        $ret = $this->post("/device", array("id" => 1, "DeviceName" => "hello"));
+        $this->checkReturnCode(200, $ret["code"]);
+        $data = json_decode((string)$ret["response"], true);
+        $this->checkTrue(
+            is_array($data), "Device creation return must be an array"
+        );
+        $this->checkReturn("hello", $data["DeviceName"]);
+        $this->checkReturn(1, $data["id"]);
+    }
+    /**
+    * Gets the config and saves it
+    *
+    * @param int    $timeout  The timeout in seconds
+    *
+    * @return string The left over string
+    */
+    protected function testDVT4_2()
+    {
+        $this->setupTest("4.2", "SW-0004-03", "Retrieve a device", self::REQUIRED);
+        $ret = $this->get("/device/1", array());
+        $this->checkReturnCode(200, $ret["code"]);
+        $data = json_decode((string)$ret["response"], true);
+        $this->checkTrue(
+            is_array($data), "Device creation return must be an array"
+        );
+        $this->checkReturn("hello", $data["DeviceName"]);
+        $this->checkReturn(1, $data["id"]);
+    }
+    /**
+    * Gets the config and saves it
+    *
+    * @param int    $timeout  The timeout in seconds
+    *
+    * @return string The left over string
+    */
+    protected function testDVT4_3()
+    {
+        $this->setupTest("4.3", "SW-0004-04", "Update a device", self::REQUIRED);
+        $ret = $this->put("/device/1", array("DeviceName" => "world"));
+        $this->checkReturnCode(202, $ret["code"]);
+        $data = json_decode((string)$ret["response"], true);
+        $this->checkTrue(
+            is_array($data), "Device creation return must be an array"
+        );
+ 
+        if (is_array($data)) {
+            $this->checkReturn("world", $data["DeviceName"]);
+            $this->checkReturn(1, $data["id"], "The id returned is not 1");
+        }
+    }
+    /**
+    * Gets the config and saves it
+    *
+    * @param int    $timeout  The timeout in seconds
+    *
+    * @return string The left over string
+    */
+    protected function testDVT4_4()
+    {
+        $this->setupTest("4.4", "SW-0004-05", "Delete a device", self::REQUIRED);
+        $ret = $this->delete("/device/1", array());
+        $this->checkReturnCode(202, $ret["code"]);
+        $this->checkTrue(
+            $ret["response"] == 1, "The return is not '1'"
+        );
     }
 }
 

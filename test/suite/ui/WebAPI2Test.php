@@ -129,7 +129,7 @@ class WebAPI2Test extends \PHPUnit_Framework_TestCase
                 ),
                 false,
                 array(),
-                json_encode(array("Real" => "list")),
+                json_encode(array("Real" => "list"), JSON_PRETTY_PRINT),
                 array(
                 ),
             ),
