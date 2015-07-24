@@ -325,7 +325,9 @@ abstract class IOPBase extends SystemTableBase
     public function load($data)
     {
         $ret = parent::load($data);
-        if (!$ret) {
+        if ($this->id() >= $this->count()) {
+            $this->_new = true;
+        } else if (!$ret) {
             $this->_new = true;
             $ret = $this->table()->insertRow();
         }
@@ -487,7 +489,9 @@ abstract class IOPBase extends SystemTableBase
         $method = trim(strtoupper($api->args()->get("method")));
         $extra  = $api->args()->get("restextra");
         $ret = null;
-        if ($method === "PUT") {
+        if ($this->isNew() && ($method === "PUT")) {
+            $api->response(404);
+        } else if ($method === "PUT") {
             if (trim(strtolower($extra[0])) == "settable") {
                 $ret = $this->setEntry((int)$api->args()->get("data"));
                 if ($ret) {
@@ -501,11 +505,11 @@ abstract class IOPBase extends SystemTableBase
                 $api->response(202);
                 $ret = $this->toArray(true);
             } else {
-                $api->response(401);
+                $api->response(400);
                 $api->pdoerror($this->lastError(), \HUGnet\ui\WebAPI2::SAVE_FAILED);
             }
         } else {
-            $api->response(401);
+            $api->response(400);
             $api->error(\HUGnet\ui\WebAPI2::NOT_IMPLEMENTED);
         }
         return $ret;
