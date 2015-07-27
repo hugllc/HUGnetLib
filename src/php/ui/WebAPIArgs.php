@@ -156,7 +156,7 @@ class WebAPIArgs extends HTMLArgs
             }
         }
         if (($this->arguments["method"] == "PUT") || ($this->arguments["method"] == "POST")) {
-            if (trim(strtolower($this->sysargs["CONTENT_TYPE"])) == "application/json") {
+            if (stripos($this->sysargs["CONTENT_TYPE"], "application/json") !== false) {
                 $data = file_get_contents("php://input");
                 if (strlen($data) > 0) {
                     $this->arguments["data"] = json_decode($data, true);
