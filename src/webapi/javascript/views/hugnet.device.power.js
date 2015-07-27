@@ -85,7 +85,6 @@ var DevicePowerPropertiesView = Backbone.View.extend({
     {
         this.setTitle( " [ Saving...] " );
         var data = this.$('form').serializeObject();
-        
         this.model.save(
             data,
             { "success": this.saveSuccess, "error": this.saveFail, wait: true }

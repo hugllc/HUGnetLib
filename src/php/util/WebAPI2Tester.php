@@ -448,7 +448,15 @@ class WebAPI2Tester
     {
         $ret = $this->delete("/device/1", array());
         $this->setupTest("4.1", "SW-0004-02", "Create a new device", self::REQUIRED);
-        $ret = $this->post("/device", array("id" => 1, "DeviceName" => "hello"));
+        $ret = $this->post(
+            "/device", 
+            array(
+                "id" => 1, 
+                "DeviceName" => "hello", 
+                "HWPartNum" => "0039-26-08-P",
+                "Driver" => "E00392608"
+            )
+        );
         $this->checkReturnCode(200, $ret["code"]);
         $data = json_decode((string)$ret["response"], true);
         $this->checkTrue(
@@ -563,7 +571,16 @@ class WebAPI2Tester
     */
     protected function devIOPListTest($type)
     {
-        $ret = $this->post("/device", array("id" => 1, "DeviceName" => "hello"));
+        $this->delete("/device/1", array());
+        $this->post(
+            "/device", 
+            array(
+                "id" => 1, 
+                "DeviceName" => "hello", 
+                "HWPartNum" => "0039-26-08-P",
+                "Driver" => "E00392608"
+            )
+        );
         $ret = $this->get("/device/1/$type", array());
         $this->checkReturnCode(200, $ret["code"]);
         $data = json_decode((string)$ret["response"], true);
@@ -633,7 +650,7 @@ class WebAPI2Tester
     */
     protected function devIOP404Test($type, $fct)
     {
-        $ret = $this->$fct("/device/1/$type/1000", array());
+        $ret = $this->$fct("/device/1/$type/2", array());
         $this->checkReturnCode(404, $ret["code"]);
     }
     /**
@@ -804,6 +821,174 @@ class WebAPI2Tester
     {
         $this->setupTest("6.7", "SW-0006-08", "Delete return 404 if the device output doesn't exist", self::REQUIRED);
         $this->devIOP404Test("output", "delete");
+    }
+    /**
+    * Gets the config and saves it
+    *
+    * @param int    $timeout  The timeout in seconds
+    *
+    * @return string The left over string
+    */
+    protected function testDVT7_0()
+    {
+        $this->setupTest("7.0", "SW-0007-01", "Return the device process list", self::REQUIRED);
+        $this->devIOPListTest("process");
+    }
+    /**
+    * Gets the config and saves it
+    *
+    * @param int    $timeout  The timeout in seconds
+    *
+    * @return string The left over string
+    */
+    protected function testDVT7_2()
+    {
+        $this->setupTest("7.2", "SW-0007-03", "Retrieve a device process", self::REQUIRED);
+        $this->devIOPGetTest("process");
+    }
+    /**
+    * Gets the config and saves it
+    *
+    * @param int    $timeout  The timeout in seconds
+    *
+    * @return string The left over string
+    */
+    protected function testDVT7_3()
+    {
+        $this->setupTest("7.3", "SW-0007-04", "Get return 404 if the device process doesn't exist", self::REQUIRED);
+        $this->devIOP404Test("process", "get");
+    }
+    /**
+    * Gets the config and saves it
+    *
+    * @param int    $timeout  The timeout in seconds
+    *
+    * @return string The left over string
+    */
+    protected function testDVT7_4()
+    {
+        $this->setupTest("7.4", "SW-0007-05", "Update a device process", self::REQUIRED);
+        $this->devIOPPutTest("process");
+    }
+    /**
+    * Gets the config and saves it
+    *
+    * @param int    $timeout  The timeout in seconds
+    *
+    * @return string The left over string
+    */
+    protected function testDVT7_5()
+    {
+        $this->setupTest("7.5", "SW-0007-06", "Update return 404 if the device process doesn't exist", self::REQUIRED);
+        $this->devIOP404Test("process", "put");
+    }
+    /**
+    * Gets the config and saves it
+    *
+    * @param int    $timeout  The timeout in seconds
+    *
+    * @return string The left over string
+    */
+    protected function testDVT7_6()
+    {
+        $this->setupTest("7.6", "SW-0007-07", "Delete a device process", self::REQUIRED);
+        $this->devIOPDeleteTest("process");
+    }
+    /**
+    * Gets the config and saves it
+    *
+    * @param int    $timeout  The timeout in seconds
+    *
+    * @return string The left over string
+    */
+    protected function testDVT7_7()
+    {
+        $this->setupTest("7.7", "SW-0007-08", "Delete return 404 if the device process doesn't exist", self::REQUIRED);
+        $this->devIOP404Test("process", "delete");
+    }
+    /**
+    * Gets the config and saves it
+    *
+    * @param int    $timeout  The timeout in seconds
+    *
+    * @return string The left over string
+    */
+    protected function testDVT8_0()
+    {
+        $this->setupTest("8.0", "SW-0008-01", "Return the device power list", self::REQUIRED);
+        $this->devIOPListTest("power");
+    }
+    /**
+    * Gets the config and saves it
+    *
+    * @param int    $timeout  The timeout in seconds
+    *
+    * @return string The left over string
+    */
+    protected function testDVT8_2()
+    {
+        $this->setupTest("8.2", "SW-0008-03", "Retrieve a device power", self::REQUIRED);
+        $this->devIOPGetTest("power");
+    }
+    /**
+    * Gets the config and saves it
+    *
+    * @param int    $timeout  The timeout in seconds
+    *
+    * @return string The left over string
+    */
+    protected function testDVT8_3()
+    {
+        $this->setupTest("8.3", "SW-0008-04", "Get return 404 if the device power doesn't exist", self::REQUIRED);
+        $this->devIOP404Test("power", "get");
+    }
+    /**
+    * Gets the config and saves it
+    *
+    * @param int    $timeout  The timeout in seconds
+    *
+    * @return string The left over string
+    */
+    protected function testDVT8_4()
+    {
+        $this->setupTest("8.4", "SW-0008-05", "Update a device power", self::REQUIRED);
+        $this->devIOPPutTest("power");
+    }
+    /**
+    * Gets the config and saves it
+    *
+    * @param int    $timeout  The timeout in seconds
+    *
+    * @return string The left over string
+    */
+    protected function testDVT8_5()
+    {
+        $this->setupTest("8.5", "SW-0008-06", "Update return 404 if the device power doesn't exist", self::REQUIRED);
+        $this->devIOP404Test("power", "put");
+    }
+    /**
+    * Gets the config and saves it
+    *
+    * @param int    $timeout  The timeout in seconds
+    *
+    * @return string The left over string
+    */
+    protected function testDVT8_6()
+    {
+        $this->setupTest("8.6", "SW-0008-07", "Delete a device power", self::REQUIRED);
+        $this->devIOPDeleteTest("power");
+    }
+    /**
+    * Gets the config and saves it
+    *
+    * @param int    $timeout  The timeout in seconds
+    *
+    * @return string The left over string
+    */
+    protected function testDVT8_7()
+    {
+        $this->setupTest("8.7", "SW-0008-08", "Delete return 404 if the device power doesn't exist", self::REQUIRED);
+        $this->devIOP404Test("power", "delete");
     }
 
 }

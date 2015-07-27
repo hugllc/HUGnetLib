@@ -328,7 +328,6 @@ abstract class IOPBase extends SystemTableBase
         if ($this->id() >= $this->count()) {
             $this->_new = true;
         } else if (!$ret) {
-            $this->_new = true;
             $ret = $this->table()->insertRow();
         }
         return $ret;
@@ -505,11 +504,11 @@ abstract class IOPBase extends SystemTableBase
                 $api->response(202);
                 $ret = $this->toArray(true);
             } else {
-                $api->response(400);
+                $api->response(500);
                 $api->pdoerror($this->lastError(), \HUGnet\ui\WebAPI2::SAVE_FAILED);
             }
         } else {
-            $api->response(400);
+            $api->response(501);
             $api->error(\HUGnet\ui\WebAPI2::NOT_IMPLEMENTED);
         }
         return $ret;

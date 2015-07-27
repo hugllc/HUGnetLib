@@ -628,6 +628,7 @@ class Device extends \HUGnet\base\SystemTableAction
         $input   = $this->input("new");
         $output  = $this->output("new");
         $process = $this->process("new");
+        $power   = $this->power("new");
         foreach ($iop as $fct => $param) {
             $cnt = (int)$this->get($param);
             for ($i = 0; $i < $cnt; $i++) {

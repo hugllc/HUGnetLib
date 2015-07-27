@@ -331,11 +331,11 @@ class WebAPI2 extends HTML
                     if (is_subclass_of((object)$this->_obj, $interface)) {
                         $ret = $this->_obj->webAPI2($this, $extra);
                     } else {
-                        $this->response(500);
+                        $this->response(501);
                         $ret = $this->error(self::NOT_IMPLEMENTED);
                     }
                 } else if (!$this->_checkMethod()) {
-                    $this->response(400);
+                    $this->response(501);
                     $ret = $this->error(self::NOT_IMPLEMENTED, "This method is not implemented, or does not work with this object");
                 } else if ($this->_object === "version") {
                     $ret = $this->_executeVersion();

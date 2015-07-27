@@ -142,6 +142,11 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         ),
         "0039-37" => array(
         ),
+        "1046-01" => array(
+            0x10 => "Battery",
+            0xA0 => "Load",
+            0xE0 => "Power Supply",
+        ),
         "1046-02" => array(
             0xA0 => "Load",
             0xE0 => "Power Supply",
@@ -152,6 +157,9 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
             0xE0 => "Power Supply",
         ),
         "Linux" => array(
+            0x10 => "Battery",
+            0xA0 => "Load",
+            0xE0 => "Power Supply",
         ),
         "all" => array(
             0xFF => "Empty Slot"
