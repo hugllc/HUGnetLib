@@ -91,8 +91,8 @@ class XMegaStatus extends \HUGnet\devices\datachan\Driver
     */
     public function convert(&$data, $to, $from, $type)
     {
-        if (is_numeric($data)) {
-            $vals = explode(".", $data);
+        $vals = explode(".", $data);
+        if (count($vals) >= 3) {
             if (isset($this->_status[$vals[0]])) {
                 $data = $this->_status[$vals[0]];
             } else {
@@ -106,6 +106,8 @@ class XMegaStatus extends \HUGnet\devices\datachan\Driver
             if (isset($vals[2]) && !empty($vals[2])) {
                 if (isset($this->_errors[$vals[2]])) {
                     $data .= " - Error: ".$this->_errors[$vals[2]];
+                } else {
+                    $data .= " - Error: Unknown (".$vals[2].")";
                 }
             }
         }

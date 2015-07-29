@@ -107,12 +107,8 @@ class XMegaStatus extends \HUGnet\devices\inputTable\DriverAVR
         $status  = ($A & 0xF);
         $error   = ($A & 0x00F0) >> 4;
         $batstat = ($A & 0xF000) >> 12;
-        if (!empty($batstat)) {
-            $status .= ".".$batstat;
-        }
-        if (!empty($error)) {
-            $status .= ".".$error;
-        }
+        $status .= ".".$batstat;
+        $status .= ".".$error;
         return $status;
     }
     /**
