@@ -540,8 +540,13 @@ abstract class IOPBase extends SystemTableBase
     private function _put($args)
     {
         $data = (array)$args->get("data");
-        $entry = $this->driver()->entry($data["tableEntry"]);
-        $data["tableEntry"] = is_object($entry) ? $entry->toArray() : array();
+        $entry = $this->driver()->entry();
+        if (is_object($entry)) {
+            $entry->fromArray($data["tableEntry"]);
+            $data["tableEntry"] = $entry->toArray();
+        } else {
+            $data["tableEntry"] = array();
+        }
         $ret = $this->change($data);
         if ($ret) {
             $this->device()->setParam("LastModified", $this->system()->now());
