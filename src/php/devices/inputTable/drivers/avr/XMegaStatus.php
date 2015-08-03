@@ -72,7 +72,7 @@ class XMegaStatus extends \HUGnet\devices\inputTable\DriverAVR
         "longName" => "Xmega Status",
         "shortName" => "XMegaStatus",
         "unitType" => "XMegaStatus",
-        "storageUnit" => 'Status',
+        "storageUnit" => 'RawStatus',
         "storageType" => \HUGnet\devices\datachan\Driver::TYPE_RAW,
         "extraText" => array(
         ),
