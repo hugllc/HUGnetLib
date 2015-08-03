@@ -80,6 +80,65 @@ class LeadAcidBatteryTableTest extends \PHPUnit_Framework_TestCase
         parent::tearDown();
     }
 
+    /**
+    * Data provider for testRemove
+    *
+    * @return array
+    */
+    public static function dataFromArray()
+    {
+        return array(
+            array( // #0 Array in
+                array(
+                ),
+                array(
+                ),
+                array(
+                    'BulkChargeDwellTime' => 1800,
+                    'BulkChargeCoeff' => 10,
+                    'FloatCoeff' => -10,
+                    'BulkChargeVoltage' => 13600,
+                    'FloatVoltage' => 12500,
+                    'BulkChargeTriggerVoltage' => 13500,
+                    'ResumeVoltage' => 14000,
+                    'CutoffVoltage' => 10500,
+                    'MinimumVoltage' => 2000,
+                ),
+                array(
+                    'BulkChargeDwellTime' => 1800,
+                    'BulkChargeCoeff' => 10,
+                    'FloatCoeff' => -10,
+                    'BulkChargeVoltage' => 13600,
+                    'FloatVoltage' => 12500,
+                    'BulkChargeTriggerVoltage' => 13500,
+                    'ResumeVoltage' => 14000,
+                    'CutoffVoltage' => 10500,
+                    'MinimumVoltage' => 2000,
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param array  $mock    The mocks to preload
+    * @param string $preload The string to give to the class
+    * @param array  $array   The array to load into the class
+    * @param array  $expect  The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataFromArray
+    */
+    public function testFromArray($mock, $preload, $array, $expect)
+    {
+        $power = new \HUGnet\DummyTable("Power");
+        $power->resetMock($mock);
+        $obj = LeadAcidBatteryTable::factory($power, $preload);
+        $obj->fromArray($array);
+        $ret = $obj->toArray();
+        $this->assertEquals($expect, $ret);
+    }
 
     /**
     * Data provider for testRemove
@@ -166,9 +225,9 @@ class LeadAcidBatteryTableTest extends \PHPUnit_Framework_TestCase
                     'BulkChargeDwellTime' => 1,
                     'BulkChargeCoeff' => 1,
                     'FloatCoeff' => 1,
-                    'BulkChargeVoltage' => 12500,
+                    'BulkChargeVoltage' => 14000,
                     'FloatVoltage' => 13500,
-                    'BulkChargeTriggerVoltage' => 12500,
+                    'BulkChargeTriggerVoltage' => 12000,
                     'ResumeVoltage' => 11000,
                     'CutoffVoltage' => 10500,
                     'MinimumVoltage' => 1000,
