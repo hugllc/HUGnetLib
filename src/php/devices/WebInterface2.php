@@ -313,7 +313,7 @@ class WebInterface2
         $this->_device->setParam("LastModified", $this->_system->now());
         if ($this->_device->store(true)) {
             $api->response(202);
-            $ret = $this->_device->toArray();
+            $ret = $this->_device->toArray(true);
         } else {
             $api->response(400);
             $api->pdoerror($this->_device->lastError(), \HUGnet\ui\WebAPI2::SAVE_FAILED);
