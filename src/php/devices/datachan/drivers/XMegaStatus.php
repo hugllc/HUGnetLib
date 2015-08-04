@@ -94,17 +94,18 @@ class XMegaStatus extends \HUGnet\devices\datachan\Driver
         $ret = false;
         if (($from == "RawStatus") && ($to == "BatStatus")) {
             $vals = explode(".", $data);
-            if (count($vals) >= 3) {
-                if (isset($this->_status[$vals[0]])) {
-                    $data = $this->_status[$vals[0]];
-                } else {
-                    $data = "Unknown [".$vals[0]."]";
-                }
+            if (isset($this->_status[$vals[0]])) {
+                $data = $this->_status[$vals[0]];
+            } else {
+                $data = "Unknown [".$vals[0]."]";
+            }
+            if (isset($vals[1])) {
                 if (isset($this->_status[$vals[1]]) && !empty($vals[1])) {
                     $data .= " (".$this->_batstat[$vals[1]].")";
                 } else  if (!empty($vals[1])) {
                     $data .= " (Unknown)";
                 }
+
                 if (isset($vals[2]) && !empty($vals[2])) {
                     if (isset($this->_errors[$vals[2]])) {
                         $data .= " - Error: ".$this->_errors[$vals[2]];
