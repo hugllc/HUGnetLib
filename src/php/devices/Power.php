@@ -121,6 +121,33 @@ class Power extends \HUGnet\base\IOPBase
         return (array)$return;
     }
     /**
+    * Gets the data for this item
+    *
+    * @param object $args The argument object
+    *
+    * @return string
+    */
+    protected function getData($api)
+    {
+        $size   = $this->device()->get("PowerPortDataSize");
+        $starts = $this->device()->get("PowerPortData");
+        $power  = $this->id();
+        $ret    = null;
+        if (!empty($size) && is_array($starts) && isset($starts[$power])) {
+            $start = $starts[$power];
+            $data = $this->device()->getParam("LastPollData");
+            if (is_array($data)) {
+                $ret = array();
+                for ($i = 0; $i < $size; $i++) {
+                    if (isset($data[$start + $i])) {
+                        $ret[$i] = $data[$start + $i];
+                    }
+                }
+            }
+        }
+        return $ret;
+    }
+    /**
     * This builds the class from a setup string
     *
     * @return Array of channel information

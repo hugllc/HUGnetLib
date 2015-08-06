@@ -229,6 +229,15 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
             0x71 => "Digital Input",
             0xF9 => "Input Table Entry",
         ),
+        "1046-01" => array(
+            0x60 => "Control Value Input",
+            0x61 => "Control Sum Input",
+            0x62 => "Difference Input",
+            0x63 => "Noisy Input",
+            0x64 => "Null Input",
+            0x65 => "Memory Input",
+            0x66 => "File Input",
+        ),
         "Linux" => array(
             0x60 => "Control Value Input",
             0x61 => "Control Sum Input",

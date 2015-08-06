@@ -81,6 +81,10 @@ class E10460300 extends \HUGnet\devices\Driver
         "PowerTables" => 2,
         "inputSize" => 2,
         "AddressSize" => 2,
+        "PowerPortDataSize" => 6,
+        "PowerPortData" => array(
+            0, 6
+        ),
         "fixed" => array(
             "InputTables" => true, 
             "OutputTables" => true, 

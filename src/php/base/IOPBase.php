@@ -490,6 +490,12 @@ abstract class IOPBase extends SystemTableBase
         $ret = null;
         if ($this->isNew() && ($method === "PUT")) {
             $api->response(404);
+        } else if ($method === "GET") {
+            if (trim(strtolower($extra[0])) == "data") {
+                $ret = $this->getData($api);
+            } else {
+                $ret = $this->toArray(true);
+            }
         } else if ($method === "PUT") {
             if (trim(strtolower($extra[0])) == "settable") {
                 $ret = $this->setEntry((int)$api->args()->get("data"));
@@ -553,6 +559,19 @@ abstract class IOPBase extends SystemTableBase
             $this->device()->store();
             return "regen";
         }
+        return -1;
+    }
+    /**
+    * Gets the data for this item
+    *
+    * @param object $args The argument object
+    *
+    * @return string
+    */
+    protected function getData($api)
+    {
+        $api->response(501);
+        $api->error(\HUGnet\ui\WebAPI2::NOT_IMPLEMENTED);
         return -1;
     }
     /**

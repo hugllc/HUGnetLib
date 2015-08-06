@@ -83,21 +83,43 @@ class WebAPI2 extends HTML
                 "input" => array(
                     "methods" => "GET,DELETE",
                     "action" => false,
+                    "subobjects" => array(
+                        "settable" => array(
+                            "methods" => "PUT",
+                            "action" => true,
+                        ),
+                    ),
                 ),
                 "output" => array(
-                    "methods" => "GET,DELETE",
-                    "action" => false,
-                ),
-                "process" => array(
-                    "methods" => "GET,DELETE",
-                    "action" => false,
-                ),
-                "power" => array(
                     "methods" => "GET,DELETE",
                     "action" => false,
                     "subobjects" => array(
                         "settable" => array(
                             "methods" => "PUT",
+                            "action" => true,
+                        ),
+                    ),
+                ),
+                "process" => array(
+                    "methods" => "GET,DELETE",
+                    "action" => false,
+                    "subobjects" => array(
+                        "settable" => array(
+                            "methods" => "PUT",
+                            "action" => true,
+                        ),
+                    ),
+                ),
+                "power" => array(
+                    "methods" => "DELETE",
+                    "action" => false,
+                    "subobjects" => array(
+                        "settable" => array(
+                            "methods" => "PUT",
+                            "action" => true,
+                        ),
+                        "data" => array(
+                            "methods" => "GET",
                             "action" => true,
                         ),
                     ),
