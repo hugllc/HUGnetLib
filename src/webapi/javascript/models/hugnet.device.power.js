@@ -59,6 +59,7 @@ HUGnet.DevicePower = Backbone.Model.extend({
         lastTable: "None",
         driver: 'SDEFAULT',
         params: {},
+        data: {},
     },
     idAttribute: 'power',
     /**
@@ -95,6 +96,31 @@ HUGnet.DevicePower = Backbone.Model.extend({
                 }
             } else {
                 self.trigger('savefail');
+            }
+        };
+        xhr.send(JSON.stringify(parseInt(table)));
+    },
+    /**
+     * Gets infomration about a device.  This is retrieved from the database only.
+     *
+     * @param id The id of the device to get
+     *
+     * @return null
+     */
+    getdata: function()
+    {
+        var self = this;
+        var xhr = new XMLHttpRequest();
+
+        xhr.open('GET', this.url()+'/data');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('Accept', 'application/json');
+        xhr.onload = function() {
+            if ((xhr.status === 200) || (xhr.status === 202)){
+                var data = JSON.parse(xhr.responseText);
+                if (_.isObject(data)) {
+                    self.set("data", data);
+                }
             }
         };
         xhr.send(JSON.stringify(parseInt(table)));
