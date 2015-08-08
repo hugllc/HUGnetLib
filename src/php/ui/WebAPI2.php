@@ -81,7 +81,7 @@ class WebAPI2 extends HTML
             "action" => false,
             "subobjects" => array(
                 "input" => array(
-                    "methods" => "GET,DELETE",
+                    "methods" => "DELETE",
                     "action" => false,
                     "subobjects" => array(
                         "settable" => array(
@@ -91,7 +91,7 @@ class WebAPI2 extends HTML
                     ),
                 ),
                 "output" => array(
-                    "methods" => "GET,DELETE",
+                    "methods" => "DELETE",
                     "action" => false,
                     "subobjects" => array(
                         "settable" => array(
@@ -101,7 +101,7 @@ class WebAPI2 extends HTML
                     ),
                 ),
                 "process" => array(
-                    "methods" => "GET,DELETE",
+                    "methods" => "DELETE",
                     "action" => false,
                     "subobjects" => array(
                         "settable" => array(
