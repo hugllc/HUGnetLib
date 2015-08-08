@@ -130,17 +130,20 @@ class Power extends \HUGnet\base\IOPBase
     protected function getData($api)
     {
         $size   = $this->device()->get("PowerPortDataSize");
-        $starts = $this->device()->get("PowerPortData");
+        $starts = $this->device()->get("PowerPortDataStart");
         $power  = $this->id();
         $ret    = null;
-        if (!empty($size) && is_array($starts) && isset($starts[$power])) {
-            $start = $starts[$power];
+        if (!empty($size)) {
+            $start = $starts + ($power * $size);
             $data = $this->device()->getParam("LastPollData");
             if (is_array($data)) {
-                $ret = array();
+                $ret = array("Date" => $data["Date"]);
                 for ($i = 0; $i < $size; $i++) {
                     if (isset($data[$start + $i])) {
-                        $ret[$i] = $data[$start + $i];
+                        $ret[$i] = array(
+                            "value" => $data[$start + $i]["value"],
+                            "channel" => $start + $i,
+                        );
                     }
                 }
             }

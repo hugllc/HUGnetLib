@@ -491,11 +491,8 @@ abstract class IOPBase extends SystemTableBase
         if ($this->isNew() && ($method === "PUT")) {
             $api->response(404);
         } else if ($method === "GET") {
-            if (trim(strtolower($extra[0])) == "data") {
-                $ret = $this->getData($api);
-            } else {
-                $ret = $this->toArray(true);
-            }
+            $ret = $this->toArray(true);
+            $ret["data"] = $this->getData($api);
         } else if ($method === "PUT") {
             if (trim(strtolower($extra[0])) == "settable") {
                 $ret = $this->setEntry((int)$api->args()->get("data"));
@@ -570,9 +567,7 @@ abstract class IOPBase extends SystemTableBase
     */
     protected function getData($api)
     {
-        $api->response(501);
-        $api->error(\HUGnet\ui\WebAPI2::NOT_IMPLEMENTED);
-        return -1;
+        return array();
     }
     /**
     * Returns an array of the pins and stuff this one uses

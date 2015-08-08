@@ -82,9 +82,7 @@ class E10460102 extends \HUGnet\devices\Driver
         "inputSize" => 2,
         "AddressSize" => 2,
         "PowerPortDataSize" => 2,
-        "PowerPortData" => array(
-            0, 2
-        ),
+        "PowerPortDataStart" => 0,
         "fixed" => array(
             "InputTables" => false, 
             "OutputTables" => false, 
