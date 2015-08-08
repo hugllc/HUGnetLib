@@ -491,8 +491,12 @@ abstract class IOPBase extends SystemTableBase
         if ($this->isNew() && ($method === "PUT")) {
             $api->response(404);
         } else if ($method === "GET") {
-            $ret = $this->toArray(true);
-            $ret["data"] = $this->getData($api);
+            if (is_null($api->sid())) {
+                $ret = $this->getList(array(), true);
+            } else {
+                $ret = $this->toArray(true);
+                $ret["data"] = $this->getData($api);
+            }
         } else if ($method === "PUT") {
             if (trim(strtolower($extra[0])) == "settable") {
                 $ret = $this->setEntry((int)$api->args()->get("data"));

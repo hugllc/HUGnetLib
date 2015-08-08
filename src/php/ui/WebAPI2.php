@@ -375,6 +375,24 @@ class WebAPI2 extends HTML
         }
     }
     /**
+    * Returns the id.
+    *
+    * @return The ID
+    */
+    public function id()
+    {
+        return $this->_id;
+    }
+    /**
+    * Returns the id.
+    *
+    * @return The ID
+    */
+    public function sid()
+    {
+        return $this->_sid;
+    }
+    /**
     * This returns a json encoded error object
     *
     * @param mixed  $error    The errorInfo array returned from the PDO object
@@ -632,6 +650,7 @@ class WebAPI2 extends HTML
         }
         return $ret;
     }
+
     /**
     * This function executes the api call.
     *
