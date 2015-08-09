@@ -61,12 +61,18 @@ HUGnet.DevicePower = Backbone.Model.extend({
         params: {},
         data: {},
     },
+    statusChan: null,
+    currentChan: null,
+    voltageChan: null,
     idAttribute: 'power',
+    channels: {},
     /**
     * This function initializes the object
     */
     initialize: function(attrib)
     {
+        _.bindAll(this, "settable", "connected", "current");
+        this.channels = this.collection.device.get("dataChannels");
     },
     /**
     * Gets infomration about a device.  This is retrieved from the database only.
@@ -99,6 +105,44 @@ HUGnet.DevicePower = Backbone.Model.extend({
             }
         };
         xhr.send(JSON.stringify(parseInt(table)));
+    },
+    /**
+     * This function returns whether this power port is connected or not
+     *
+     * @return boolean true if connected, false otherwise
+     */
+    connected: function()
+    {
+        if (this.current() != 0) {
+            return true;
+        }
+        return false;
+    },
+    /**
+     * This function returns whether this power port is connected or not
+     *
+     * @return boolean true if connected, false otherwise
+     */
+    current: function()
+    {
+        var current = 0;
+        if (this.currentChan != null) {
+            var data = this.get("data");
+            if (data.Date) {
+                current = data[this.currentChan];
+            }
+        }
+        return current;
+    },
+    /**
+     * This function returns whether this power port is connected or not
+     *
+     * @return boolean true if connected, false otherwise
+     */
+    currentPerc: function()
+    {
+        var current = this.current();
+        return current/31000;
     },
 });
 
