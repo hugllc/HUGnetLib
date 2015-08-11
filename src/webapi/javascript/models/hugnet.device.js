@@ -179,7 +179,7 @@ HUGnet.Device = Backbone.Model.extend({
                 baseurl: this.url(),
                 device: this
             });
-            fetch = true;
+            //fetch = true;
         }
         if (fetch) {
             this.powerCache.fetch();

@@ -126,6 +126,19 @@ HUGnet.DevicePower = Backbone.Model.extend({
     current: function()
     {
         var current = 0;
+        if (this.currentChan == null) {
+            var chans = this.collection.device.get("DataChannels");
+            var data = this.get("data");
+            for (var i = 0; i < data.length; i++) {
+                if (data[i]) {
+                    if (chans[data[i].channel].type == "Current") {
+                        this.currentChan = i;
+                        break;
+                    }
+                }
+            }
+        }
+        
         if (this.currentChan != null) {
             var data = this.get("data");
             if (data.Date) {
