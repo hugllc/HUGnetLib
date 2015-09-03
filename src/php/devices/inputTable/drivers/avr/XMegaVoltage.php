@@ -94,7 +94,7 @@ class XMegaVoltage extends \HUGnet\devices\inputTable\DriverAVR
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(5, 5, 5),
-        "extraDefault" => array(40.2, 2.0, 1.0),
+        "extraDefault" => array(200, 10, 1.0),
         "maxDecimals" => 4,
         "requires" => array("AI", "ATODREF"),
         "provides" => array("DC"),

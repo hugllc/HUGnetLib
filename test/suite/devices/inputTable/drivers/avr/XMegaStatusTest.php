@@ -113,7 +113,7 @@ class XMegaStatusTest extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                "4.3"
+                0x3004
             ),
             array(
                 array(
@@ -131,40 +131,6 @@ class XMegaStatusTest extends DriverTestBaseAVR
                 ),
                 array(),
                 null
-            ),
-            array(
-                array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "id" => 0x40,
-                            "type" => "XMegaStatus",
-                        ),
-                    ),
-                ),
-                0,
-                1,
-                array(
-                    "timeConstant" => 1,
-                ),
-                array(),
-                "0"
-            ),
-            array(
-                array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "id" => 0x40,
-                            "type" => "XMegaStatus",
-                        ),
-                    ),
-                ),
-                0x2048,
-                1,
-                array(
-                    "timeConstant" => 1,
-                ),
-                array(),
-                "8.2.4",
             ),
         );
     }
@@ -191,7 +157,7 @@ class XMegaStatusTest extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                "4.3"
+                0x3004
             ),
             array(
                 array(
@@ -202,47 +168,13 @@ class XMegaStatusTest extends DriverTestBaseAVR
                         ),
                     ),
                 ),
-                "",
+                '',
                 1,
                 array(
                     "timeConstant" => 1,
                 ),
                 array(),
                 null
-            ),
-            array(
-                array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "id" => 0x40,
-                            "type" => "XMegaStatus",
-                        ),
-                    ),
-                ),
-                '0000',
-                1,
-                array(
-                    "timeConstant" => 1,
-                ),
-                array(),
-                "0"
-            ),
-            array(
-                array(
-                    "Sensor" => array(
-                        "get" => array(
-                            "id" => 0x40,
-                            "type" => "XMegaStatus",
-                        ),
-                    ),
-                ),
-                "4820",
-                1,
-                array(
-                    "timeConstant" => 1,
-                ),
-                array(),
-                "8.2.4",
             ),
         );
     }

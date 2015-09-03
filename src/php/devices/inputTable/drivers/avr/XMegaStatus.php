@@ -104,12 +104,7 @@ class XMegaStatus extends \HUGnet\devices\inputTable\DriverAVR
     */
     protected function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
-        $status  = ($A & 0xF);
-        $error   = ($A & 0x00F0) >> 4;
-        $batstat = ($A & 0xF000) >> 12;
-        $status .= ".".$batstat;
-        $status .= ".".$error;
-        return $status;
+        return $A;
     }
     /**
     * Returns the reversed reading
@@ -128,19 +123,7 @@ class XMegaStatus extends \HUGnet\devices\inputTable\DriverAVR
     protected function getRaw(
         $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
     ) {
-        if (is_null($value)) {
-            return $null;
-        }
-        $vals = explode(".", (string)$value);
-        
-        $ret = (int)$vals[0] & 0x000F;
-        if (isset($value[1])) {
-            $ret += ((int)$vals[1] & 0x000F) << 12;
-        }
-        if (isset($value[2])) {
-            $ret += ((int)$vals[2] & 0x000F) << 4;
-        }
-        return $ret;
+        return $value;
     }
 }
 ?>

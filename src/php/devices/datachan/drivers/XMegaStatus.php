@@ -93,25 +93,28 @@ class XMegaStatus extends \HUGnet\devices\datachan\Driver
     {
         $ret = false;
         if (($from == "RawStatus") && ($to == "BatStatus")) {
-            $vals = explode(".", $data);
-            if (isset($this->_status[$vals[0]])) {
-                $data = $this->_status[$vals[0]];
+
+            $stat    = ($data & 0xF);
+            $error   = ($data & 0x00F0) >> 4;
+            $batstat = ($data & 0xF000) >> 12;
+
+            if (isset($this->_status[$stat])) {
+                $data = $this->_status[$stat];
             } else {
-                $data = "Unknown [".$vals[0]."]";
+                $data = "Unknown [".$stat."]";
             }
-            if (isset($vals[1])) {
-                if (isset($this->_status[$vals[1]]) && !empty($vals[1])) {
-                    $data .= " (".$this->_batstat[$vals[1]].")";
-                } else  if (!empty($vals[1])) {
+            if (!empty($batstat)) {
+                if (isset($this->_status[$batstat]) && !empty($batstat)) {
+                    $data .= " (".$this->_batstat[$batstat].")";
+                } else  if (!empty($batstat)) {
                     $data .= " (Unknown)";
                 }
-
-                if (isset($vals[2]) && !empty($vals[2])) {
-                    if (isset($this->_errors[$vals[2]])) {
-                        $data .= " - Error: ".$this->_errors[$vals[2]];
-                    } else {
-                        $data .= " - Error: Unknown (".$vals[2].")";
-                    }
+            }
+            if (!empty($error) && !empty($error)) {
+                if (isset($this->_errors[$error])) {
+                    $data .= " - Error: ".$this->_errors[$error];
+                } else {
+                    $data .= " - Error: Unknown (".$error.")";
                 }
             }
             $ret = true;
