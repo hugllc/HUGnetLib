@@ -210,16 +210,17 @@ var DevicePropertiesView = Backbone.View.extend({
         data.dataChannels = '<div id="DeviceDataChannelsDiv"></div>';
         data.controlChannels = '<div id="DeviceControlChannelsDiv"></div>';
         this.$el.html(this._template(data));
-        if (this.model.get("PowerTables") == 0) {
+        var fixed = this.model.get("fixed");
+        if ((this.model.get("PowerTables") == 0) || fixed.PowerTables) {
             this.$(".powerList").hide();
         }
-        if (this.model.get("InputTables") == 0) {
+        if ((this.model.get("InputTables") == 0) || fixed.InputTables) {
             this.$(".inputList").hide();
         }
-        if (this.model.get("OutputTables") == 0) {
+        if ((this.model.get("OutputTables") == 0) || fixed.OutputTables) {
             this.$(".outputList").hide();
         }
-        if (this.model.get("ProcessTables") == 0) {
+        if ((this.model.get("ProcessTables") == 0) || fixed.ProcessTables) {
             this.$(".processList").hide();
         }
         this.$("#DeviceDataChannelsDiv").html(this.datachannels.render().el);
