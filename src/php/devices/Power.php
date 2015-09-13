@@ -132,12 +132,12 @@ class Power extends \HUGnet\base\IOPBase
         $size   = $this->device()->get("PowerPortDataSize");
         $starts = $this->device()->get("PowerPortDataStart");
         $power  = $this->id();
-        $ret    = null;
+        $ret    = array('Date' => 0);
         if (!empty($size)) {
             $start = $starts + ($power * $size);
             $data = $this->device()->getParam("LastPollData");
             if (is_array($data)) {
-                $ret = array("Date" => $data["Date"]);
+                $ret["Date"] = $data["Date"];
                 for ($i = 0; $i < $size; $i++) {
                     if (isset($data[$start + $i])) {
                         $ret[$i] = array(
