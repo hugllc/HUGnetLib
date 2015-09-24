@@ -110,7 +110,7 @@ class XMegaStatus extends \HUGnet\devices\datachan\Driver
                     $data .= " (Unknown)";
                 }
             }
-            if (!empty($error) && !empty($error)) {
+            if (!empty($error)) {
                 if (isset($this->_errors[$error])) {
                     $data .= " - Error: ".$this->_errors[$error];
                 } else {
