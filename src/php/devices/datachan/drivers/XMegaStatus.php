@@ -73,6 +73,7 @@ class XMegaStatus extends \HUGnet\devices\datachan\Driver
         3 => "Bulk Charge",
         4 => "Unknown",
         5 => "Error",
+        6 => "Discharging",
     );
     /** @var These are the statuses */
     private $_errors = array(

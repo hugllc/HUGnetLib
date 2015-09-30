@@ -302,7 +302,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         $extra = $this->power()->get("extra");
         $extra[0] = $this->decodeInt(substr($string, 0, 2), 1);
         $extra[1] = $this->decodeInt(substr($string, 2, 2), 1);
-        $extra[2] = $this->decodeInt(substr($string, 4, 8), 4);
+        $extra[2] = $this->decodeCapacity(substr($string, 4, 8));
         $chars = $this->get("chars");
         $loc = stristr((string)pack("H*", substr($string, 12, $chars)), "\0", true); // end at \0
         $loc = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $loc);  // Remove non printing chars
@@ -323,7 +323,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         // Priority
         $string .= $this->encodeInt(($this->getExtra(1) & 0xFF), 1);
         // Capacity
-        $string .= $this->encodeInt($this->getExtra(2), 4);
+        $string .= $this->encodeCapacity($this->getExtra(2));
         // Name
         $loc = $this->power()->get("location");
         $chars = $this->get("chars");
@@ -331,6 +331,24 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         $string .= $this->entry()->encode();
         $string = str_pad($string, (self::POWERPORTSIZE - 1) * 2, "F", STR_PAD_RIGHT);
         return $string;
+    }
+    /**
+    * Encodes this driver as a setup string
+    *
+    * @return array
+    */
+    public function encodeCapacity($capacity)
+    {
+        return $this->encodeInt($capacity, 4);
+    }
+    /**
+    * Encodes this driver as a setup string
+    *
+    * @return array
+    */
+    public function decodeCapacity($string)
+    {
+        return $this->decodeInt($string, 4);
     }
     /**
     * Returns the port this data channel is attached to

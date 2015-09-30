@@ -104,6 +104,24 @@ class Battery extends \HUGnet\devices\powerTable\Driver
         }
         return $class;
     }
+    /**
+    * Encodes this driver as a setup string
+    *
+    * @return array
+    */
+    public function encodeCapacity($capacity)
+    {
+        return $this->encodeInt($capacity * 1000 * 3600, 4);
+    }
+    /**
+    * Encodes this driver as a setup string
+    *
+    * @return array
+    */
+    public function decodeCapacity($string)
+    {
+        return $this->decodeInt($string, 4)/1000/3600;
+    }
 }
 
 

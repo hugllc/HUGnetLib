@@ -110,15 +110,7 @@ class XMegaCharge extends \HUGnet\devices\inputTable\DriverAVR
     */
     protected function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
-        bcscale(6);
-        $max  = $this->getExtra(0);
-        $time = $this->getExtra(1);
-        if (empty($time) || is_null($A)) {
-            return null;
-        }
-        $Amps = (($A * $max)/(self::AM/2.0));
-        $Amph = $Amps / $time; 
-        return round($Amph, 4);
+        return round($A/300, 4);
     }
     /**
     * Returns the reversed reading
@@ -137,14 +129,7 @@ class XMegaCharge extends \HUGnet\devices\inputTable\DriverAVR
     protected function getRaw(
         $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
     ) {
-        bcscale(6);
-        $max  = $this->getExtra(0);
-        $time = $this->getExtra(1);
-        if (($max == 0) || ($time == 0) || ($value < 0)) {
-            return null;
-        }
-        $A = (($value * $time) * (self::AM / 2.0)) / $max;
-        return (int)round($A);
+        return (int)round($A * 300);
     }
 
 }
