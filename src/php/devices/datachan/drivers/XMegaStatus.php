@@ -78,7 +78,7 @@ class XMegaStatus extends \HUGnet\devices\datachan\Driver
     /** @var These are the statuses */
     private $_errors = array(
         1 => "Overcurrent",
-        2 => "Upper MCU Failure",
+        2 => "MCU Failure",
     );
     /**
     * Does the actual conversion

@@ -138,6 +138,14 @@ class Power extends \HUGnet\base\IOPBase
             $data = $this->device()->getParam("LastPollData");
             if (is_array($data)) {
                 $ret["Date"] = $data["Date"];
+                $ret["current"] = (int)($data[$start + 0]["value"] * 1000);
+                $ret["voltage"] = (int)($data[$start + 1]["value"] * 1000);
+                $ret["temperature"] = (int)($data[$start + 2]["value"] * 1000);
+                $ret["charge"] = (int)($data[$start + 3]["value"] * 1000);
+                $ret["capacity"] = (int)($data[$start + 4]["value"] * 1000);
+                $ret["status"] = (int)($data[$start + 5]["value"]);
+                $ret["online"] = (int)(($data[$start + 5]["value"] & 0xF) == 3);
+                /*
                 for ($i = 0; $i < $size; $i++) {
                     if (isset($data[$start + $i])) {
                         $ret[$i] = array(
@@ -146,6 +154,7 @@ class Power extends \HUGnet\base\IOPBase
                         );
                     }
                 }
+                */
             }
         }
         return $ret;

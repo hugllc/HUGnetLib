@@ -110,7 +110,7 @@ class XMegaCharge extends \HUGnet\devices\inputTable\DriverAVR
     */
     protected function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
-        return round($A/300, 4);
+        return round($A/200, 4);
     }
     /**
     * Returns the reversed reading
@@ -129,7 +129,7 @@ class XMegaCharge extends \HUGnet\devices\inputTable\DriverAVR
     protected function getRaw(
         $value, $channel = 0, $deltaT = 0, &$prev = null, &$data = array()
     ) {
-        return (int)round($A * 300);
+        return (int)round($A * 200);
     }
 
 }
