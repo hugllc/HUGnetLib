@@ -143,8 +143,10 @@ class Power extends \HUGnet\base\IOPBase
                 $ret["temperature"] = (int)($data[$start + 2]["value"] * 1000);
                 $ret["charge"] = (int)($data[$start + 3]["value"] * 1000);
                 $ret["capacity"] = (int)($data[$start + 4]["value"] * 1000);
-                $ret["status"] = (int)($data[$start + 5]["value"]);
-                $ret["online"] = (int)(($data[$start + 5]["value"] & 0xF) == 3);
+                $ret["status"] = (int)($data[$start + 5]["value"] & 0x000F);
+                $ret["batstatus"] = (int)(($data[$start + 5]["value"] & 0xF000)>>12);
+                $ret["error"] = (int)(($data[$start + 5]["value"] & 0x00F0)>>4);
+                $ret["online"] = (int)($ret["status"] == 3);
                 /*
                 for ($i = 0; $i < $size; $i++) {
                     if (isset($data[$start + $i])) {

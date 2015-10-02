@@ -111,12 +111,26 @@ HUGnet.DevicePower = Backbone.Model.extend({
      *
      * @return boolean true if connected, false otherwise
      */
+    updated: function()
+    {
+        var data = this.get("data");
+        return ((typeof data == "object") && data.Date);
+    },
+    /**
+     * This function returns whether this power port is connected or not
+     *
+     * @return boolean true if connected, false otherwise
+     */
     connected: function()
     {
-        if (this.current() != 0) {
-            return true;
+        var data = this.get("data");
+        if (this.updated()) {
+            if (data.online) {
+                return true;
+            }
+            return false;
         }
-        return false;
+        return null;
     },
     /**
      * This function returns whether this power port is connected or not
@@ -125,27 +139,89 @@ HUGnet.DevicePower = Backbone.Model.extend({
      */
     current: function()
     {
-        var current = 0;
-        if (this.currentChan == null) {
-            var chans = this.collection.device.get("DataChannels");
-            var data = this.get("data");
-            for (var i = 0; i < data.length; i++) {
-                if (data[i]) {
-                    if (chans[data[i].channel].type == "Current") {
-                        this.currentChan = i;
-                        break;
-                    }
-                }
-            }
+        var data = this.get("data");
+        if ((typeof data == "object") && data.Date) {
+            return parseInt(data.current, 10);
         }
-        
-        if (this.currentChan != null) {
-            var data = this.get("data");
-            if (data.Date) {
-                current = data[this.currentChan];
-            }
+        return null;
+    },
+    /**
+     * This function returns whether this power port is connected or not
+     *
+     * @return boolean true if connected, false otherwise
+     */
+    voltage: function()
+    {
+        var data = this.get("data");
+        if ((typeof data == "object") && data.Date) {
+            return parseInt(data.voltage, 10);
         }
-        return current;
+        return null;
+    },
+    /**
+     * This function returns whether this power port is connected or not
+     *
+     * @return boolean true if connected, false otherwise
+     */
+    capacity: function()
+    {
+        var data = this.get("data");
+        if ((typeof data == "object") && data.Date) {
+            return parseInt(data.capacity, 10);
+        }
+        return null;
+    },
+    /**
+     * This function returns whether this power port is connected or not
+     *
+     * @return boolean true if connected, false otherwise
+     */
+    charge: function()
+    {
+        var data = this.get("data");
+        if ((typeof data == "object") && data.Date) {
+            return parseInt(data.charge, 10);
+        }
+        return null;
+    },
+    /**
+     * This function returns whether this power port is connected or not
+     *
+     * @return boolean true if connected, false otherwise
+     */
+    status: function()
+    {
+        var data = this.get("data");
+        if ((typeof data == "object") && data.Date) {
+            return parseInt(data.status, 10);
+        }
+        return null;
+    },
+    /**
+     * This function returns whether this power port is connected or not
+     *
+     * @return boolean true if connected, false otherwise
+     */
+    batstatus: function()
+    {
+        var data = this.get("data");
+        if ((typeof data == "object") && data.Date) {
+            return parseInt(data.batstatus, 10);
+        }
+        return null;
+    },
+    /**
+     * This function returns whether this power port is connected or not
+     *
+     * @return boolean true if connected, false otherwise
+     */
+    error: function()
+    {
+        var data = this.get("data");
+        if ((typeof data == "object") && data.Date) {
+            return parseInt(data.error, 10);
+        }
+        return null;
     },
     /**
      * This function returns whether this power port is connected or not
