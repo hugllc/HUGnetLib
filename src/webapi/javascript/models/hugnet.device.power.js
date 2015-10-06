@@ -24,7 +24,8 @@
  * @package    HUGnetLib
  * @subpackage Tests
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2014 Hunt Utilities Group, LLC
+ * @author     Simon Goble <sgoble@hugllc.com>
+ * @copyright  2015 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
@@ -35,7 +36,8 @@
 * @package    HUGnetLib
 * @subpackage Tests
 * @author     Scott Price <prices@hugllc.com>
-* @copyright  2014 Hunt Utilities Group, LLC
+* @author     Simon Goble <sgoble@hugllc.com>
+* @copyright  2015 Hunt Utilities Group, LLC
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @version    Release: 0.14.3
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
@@ -198,6 +200,42 @@ HUGnet.DevicePower = Backbone.Model.extend({
         return null;
     },
     /**
+     * This function returns a text description of the status
+     */
+    statustxt: function()
+    {
+       var returnvar = "Unknown";
+
+       switch(this.status()){
+          case 0 :
+             returnvar = "Unknown";
+             break;
+          case 1 :
+             returnvar = "No driver, supplying current to the bus anyway";
+             break;
+          case 2 :
+             returnvar = "No driver";
+             break;
+          case 3 :
+             returnvar = "Online";
+             break;
+          case 4 :
+             returnvar = "Offline";
+             break;
+          case 5 :
+             returnvar = "Empty";
+             break;
+          case 6 :
+             returnvar = "Error";
+             break;
+          default :
+             returnvar = "Unknown";
+             break;
+       }
+
+       return returnvar;
+    },
+    /**
      * This function returns whether this power port is connected or not
      *
      * @return boolean true if connected, false otherwise
@@ -209,6 +247,42 @@ HUGnet.DevicePower = Backbone.Model.extend({
             return parseInt(data.batstatus, 10);
         }
         return null;
+    },
+    /**
+     * This function returns a text description of the bat status
+     */
+    batstatustxt: function()
+    {
+       var returnvar = "Unknown";
+
+       switch(this.batstatus()){
+          case 0 :
+             returnvar = "No Battery";
+             break;
+          case 1 :
+             returnvar = "Offline";
+             break;
+          case 2 :
+             returnvar = "Float Charge";
+             break;
+          case 3 :
+             returnvar = "Bulk Charge";
+             break;
+          case 4 :
+             returnvar = "Unknown";
+             break;
+          case 5 :
+             returnvar = "Error";
+             break;
+          case 6 :
+             returnvar = "Discharging";
+             break;
+          default :
+             returnvar = "Unknown";
+             break;
+       }
+
+       return returnvar;
     },
     /**
      * This function returns whether this power port is connected or not
@@ -223,6 +297,30 @@ HUGnet.DevicePower = Backbone.Model.extend({
         }
         return null;
     },
+    /**
+     * This function returns a text description of the error status on the port
+    */ 
+    errortxt: function()
+    {
+       var returnvar = "Unknown";
+
+       switch(this.error()){
+          case 0 :
+             returnvar = "No Error";
+             break;
+          case 1 :
+             returnvar = "Overcurrent";
+             break;
+          case 2 :
+             returnvar = "MCU Failure";
+             break;
+          default :
+             returnvar = "Unknown";
+             break;
+       }
+
+       return returnvar;
+    }, 
     /**
      * This function returns whether this power port is connected or not
      *
