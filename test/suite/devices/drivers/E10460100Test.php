@@ -36,7 +36,7 @@ namespace HUGnet\devices\drivers;
 /** This is the base class */
 require_once dirname(__FILE__)."/DriverTestBase.php";
 /** This is a required class */
-require_once CODE_BASE.'devices/drivers/E10460400.php';
+require_once CODE_BASE.'devices/drivers/E10460102.php';
 
 /**
  * Test class for HUGnetDB.
@@ -51,10 +51,10 @@ require_once CODE_BASE.'devices/drivers/E10460400.php';
  * @version    Release: 0.14.3
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class E10460400Test extends DriverTestBase
+class E10460102Test extends DriverTestBase
 {
     /** This is the class we are testing */
-    protected $class = "E10460400";
+    protected $class = "E10460102";
     /** This is the device */
     protected $device = null;
     
@@ -71,7 +71,7 @@ class E10460400Test extends DriverTestBase
         parent::setUp();
         $this->device  = new \HUGnet\DummyTable("Device");
         $this->device->resetMock(array());
-        $this->o = \HUGnet\devices\Driver::factory("E10460400", $this->device);
+        $this->o = \HUGnet\devices\Driver::factory("E10460102", $this->device);
     }
 
     /**
@@ -133,18 +133,6 @@ class E10460400Test extends DriverTestBase
                 ),
                 "010203040506",
                 array(
-                    "Device" => array(
-                        "input" => array(
-                            array(0),
-                            array(1),
-                        ),
-                    ),
-                    'Sensor' => array(
-                        'get' => array(
-                            array("type"),
-                            array("type"),
-                        ),
-                    ),
                 ),
             ),
             array( // #1 String not big enough
@@ -155,18 +143,6 @@ class E10460400Test extends DriverTestBase
                 ),
                 "0102030405",
                 array(
-                    "Device" => array(
-                        "input" => array(
-                            array(0),
-                            array(1),
-                        ),
-                    ),
-                    'Sensor' => array(
-                        'get' => array(
-                            array("type"),
-                            array("type"),
-                        ),
-                    ),
                 ),
             ),
             array( // #2 String empty
@@ -242,29 +218,6 @@ class E10460400Test extends DriverTestBase
                 ),
                 "010203040506",
                 array(
-                    "Device" => array(
-                        "input" => array(
-                            array(0),
-                            array(1),
-                        ),
-                    ),
-                    'Sensor0' => array(
-                        'get' => array(
-                            array("type"),
-                        ),
-                    ),
-                    'Sensor1' => array(
-                        'get' => array(
-                            array("type"),
-                        ),
-                        'setExtra' => array(
-                            array(0, 1),
-                            array(1, 770),
-                        ),
-                        'store' => array(
-                            array(),
-                        ),
-                    ),
                 ),
             ),
         );
