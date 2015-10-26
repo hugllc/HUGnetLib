@@ -77,8 +77,17 @@ class XMegaStatus extends \HUGnet\devices\datachan\Driver
     );
     /** @var These are the statuses */
     private $_errors = array(
-        1 => "Overcurrent",
-        2 => "MCU Failure",
+        1 => "Waiting for Calibration",  //ERROR_WAIT_CAL,
+        2 => "MCU Failure", //CPUERROR,
+        3 => "Hardware Overcurrent", //HWOVERCURRENT,
+        4 => "Hardware Overpower", //HWOVERPOWER,
+        5 => "Software Overcurrent", //SWOVERCURRENT,
+        6 => "Software Overpower", //SWOVERPOWER,
+        7 => "Switch Bad", //SWITCHBAD,
+        8 => "Current Sensor Bad", //CURRENTSENSORBAD,
+        9 => "Power Port Error", //POWERPORTERROR,
+        10 => "Power Flowing in the Wrong Direction", //POWER_FLOWING_WRONG_DIR,
+        11 => "Multiple Port Errors", //MULTIPLE_PORT_ERRORS
     );
     /**
     * Does the actual conversion
