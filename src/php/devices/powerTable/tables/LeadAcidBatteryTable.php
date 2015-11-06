@@ -409,6 +409,15 @@ class LeadAcidBatteryTable
             }
         }
     }
+    /**
+    * Returns an array of the pins and stuff this one uses
+    *
+    * @return null
+    */
+    public function uses()
+    {
+        return array();
+    }
 
 }
 
