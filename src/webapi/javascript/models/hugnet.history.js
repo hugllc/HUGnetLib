@@ -178,13 +178,17 @@ HUGnet.Histories = Backbone.Collection.extend({
     *
     * @return null
     */
-    fetch: function ()
+    fetch: function (options)
     {
         var self = this;
         var limit = this.getLimit;
         if ((limit > this.limit) && (this.limit !== 0)) {
             limit = this.limit;
         }
+        if (typeof options != 'object') {
+            options = {};
+        }
+
         var since = Math.round(this.LastHistory / 1000);
         var until = Math.round(this.until / 1000);
 
@@ -193,6 +197,9 @@ HUGnet.Histories = Backbone.Collection.extend({
         xhr.setRequestHeader('Accept', 'application/json');
         xhr.onload = function() {
             if (xhr.status === 200) {
+                if (typeof options.success == 'function') {
+                    options.success();
+                }
                 var data = JSON.parse(xhr.responseText);
                 if ((data !== null) && _.isObject(data)) {
                     self.add(data);
@@ -207,6 +214,9 @@ HUGnet.Histories = Backbone.Collection.extend({
                     self.trigger('fetchfail');
                 }
             } else {
+                if (typeof options.error == 'function') {
+                    options.error();
+                }
             }
         };
         xhr.send();
