@@ -122,6 +122,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "10:DEFAULT"                 => "Battery",
         "A0:DEFAULT"                 => "Load",
         "E0:DEFAULT"                 => "PowerSupply",
+        "FE:DEFAULT"                 => "NullPower",
         "FF:DEFAULT"                 => "EmptyPower",
     );
     /**
@@ -146,6 +147,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
             0x10 => "Battery",
             0xA0 => "Load",
             0xE0 => "Power Supply",
+            0xFE => "Null Power",
         ),
         "1046-02" => array(
             0xA0 => "Load",
@@ -155,11 +157,13 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
             0x10 => "Battery",
             0xA0 => "Load",
             0xE0 => "Power Supply",
+            0xFE => "Null Power",
         ),
         "Linux" => array(
             0x10 => "Battery",
             0xA0 => "Load",
             0xE0 => "Power Supply",
+            0xFE => "Null Power",
         ),
         "all" => array(
             0xFF => "Empty Slot"
