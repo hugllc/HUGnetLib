@@ -83,7 +83,8 @@ HUGnet.Device = Backbone.Model.extend({
         RefreshButtonID: '',
         target: '',
         loadable: false,
-        fixed: { }
+        fixed: { },
+        lastRead: {}
     },
     lock: false,
     inputCache: null,
