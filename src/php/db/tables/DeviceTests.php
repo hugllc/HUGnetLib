@@ -89,19 +89,24 @@ class DeviceTests extends \HUGnet\db\Table
             "Type" => "int",
             "Primary" => true,
         ),
-        "DeviceID" => array(
-            "Name" => "DeviceID",
-            "Type" => "varchar(6)",
-            "Default" => '000000',
-        ),
-        "DeviceName" => array(
-            "Name" => "DeviceName",
-            "Type" => "varchar(128)",
-            "Default" => '',
-        ),
         "HWPartNum" => array(
             "Name" => "HWPartNum",
             "Type" => "varchar(12)",
+            "Default" => '',
+        ),
+        "FWPartNum" => array(
+            "Name" => "FWPartNum",
+            "Type" => "varchar(12)",
+            "Default" => '',
+        ),
+        "FWVersion" => array(
+            "Name" => "FWVersion",
+            "Type" => "varchar(8)",
+            "Default" => '',
+        ),
+        "BtldrVersion" => array(
+            "Name" => "BtldrVersion",
+            "Type" => "varchar(8)",
             "Default" => '',
         ),
         "MicroSN" => array(
@@ -111,23 +116,23 @@ class DeviceTests extends \HUGnet\db\Table
         ),
         "TestDate" => array(
             "Name" => "TestDate",
-            "Type" => "varchar(10)",
-            "Default" => "",
+            "Type" => "bigint",
+            "Default" => 0,
         ),
         "TestResult" => array(
             "Name" => "TestResult",
             "Type" => "varchar(4)",
             "Default" => "FAIL",
         ),
+        "TestData" => array(
+            "Name" => "TestData",
+            "Type" => "longtext",
+            "Default" => "",
+        ),
         "TestsFailed" => array(
             "Name" => "TestsFailed",
             "Type" => "longtext",
             "Default" => "None",
-        ),
-        "RetestTimes" => array(
-            "Name" => "RetestTimes",
-            "Type" => "tinyint(4)",
-            "Default" => 0,
         ),
     );
     /**
@@ -148,12 +153,7 @@ class DeviceTests extends \HUGnet\db\Table
         "id" => array(
             "Name" => "id",
             "Unique" => true,
-            "Columns" => array("id"),
-        ),
-        "name" => array(
-            "Name" => "name",
-            "Unique" => true,
-            "Columns" => array("name"),
+            "Columns" => array("id", "TestDate"),
         ),
     );
 
@@ -179,6 +179,22 @@ class DeviceTests extends \HUGnet\db\Table
      ********  The following are input modification functions  ********
      ******************************************************************
      ******************************************************************/
+    /**
+    * function to set Date
+    *
+    * @param string $value The value to set
+    *
+    * @return null
+    */
+    protected function setTestDate($value)
+    {
+        $this->data["TestDate"] = self::unixDate($value);
+    }
+    
+    /**********************************************************/
+    /* add set functions to json_encode test failure array,   */
+    /* test data array, and test result.                      */
+    /**********************************************************/
 
 }
 ?>
