@@ -241,6 +241,10 @@ class WebAPI2 extends HTML
             "methods" => "GET",
             "action" => false,
         ),
+        "status" => array(
+            "methods" => "GET",
+            "action" => false,
+        ),
     );
     /** This is the id we were given */
     private $_id = null;
@@ -363,6 +367,8 @@ class WebAPI2 extends HTML
                     $ret = $this->_executeVersion();
                 } else if ($this->_object === "time") {
                     $ret = $this->_executeTime();
+                } else if ($this->_object === "status") {
+                    $ret = $this->_executeStatus();
                 } else if (is_a((object)$this->_obj, '\HUGnet\base\SystemTableBase')) {
                     $ret = $this->_executeSystem();
                 } else if (is_a((object)$this->_obj, '\HUGnet\db\Table')) {
@@ -623,6 +629,29 @@ class WebAPI2 extends HTML
         if ($this->_auth(false)) {
             if ($this->_method == "GET") {
                 $ret = $this->system()->now();
+            } else {
+                $this->response(501);
+            }
+        }
+        return $ret;
+    }
+    /**
+    * This function executes the api call.
+    *
+    * @param object $obj The object to work on
+    *
+    * @return null
+    * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+    */
+    private function _executeStatus()
+    {
+        $ret = array();
+        if ($this->_auth(false)) {
+            if ($this->_method == "GET") {
+                $dev = $this->system()->device();
+                $ret["devicesTotal"] = $dev->table()->count(1);
+                $ret["devicesActive"] = $dev->table()->count(array("Active" => 1));
+                $ret["systemType"] = "HUGNET";
             } else {
                 $this->response(501);
             }
