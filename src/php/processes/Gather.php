@@ -315,8 +315,10 @@ class Gather extends \HUGnet\ui\Daemon
             $this->_wait = 0;
         }
         if ($pkt->type() == "DEVICEERROR") {
+            $error = $this->_unsolicited->error();
+            $error->log($pkt->data());
+            $error->out();
             $this->out("Logging error data");
-            $this->_unsolicited->error()->log($pkt->data());
         } else if ($pkt->type() == "DEVICEWARNING") {
             $this->out("Logging error data");
             $this->_unsolicited->error()->logwarn($pkt->data());

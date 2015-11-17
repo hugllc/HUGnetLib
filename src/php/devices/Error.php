@@ -68,6 +68,21 @@ class Error extends \HUGnet\base\SystemTableBase
     private $_device;
     /** This is our url */
     protected $url = "/error";
+    /** This is our error messages */
+    private $_errorMsg = array(
+        1  => "CPU Error",
+        2  => "Hardware Over Current",
+        3  => "Software Over Current",
+        4  => "Hardware Over Power",
+        5  => "Software Over Power",
+        6  => "Bad Switch",
+        7  => "Bad Current Sensor",
+        8  => "Power Port Error",
+        9  => "Power Flowing in the Wrong Direction",
+        10 => "Multiple Port Errors",
+        11 => "Bus Brownout",
+        12 => "Waiting for Calibration"
+    );
     /**
     * This function creates the system.
     *
@@ -140,6 +155,26 @@ class Error extends \HUGnet\base\SystemTableBase
     public function log($error)
     {
         return $this->_log($error, "E");
+    }
+    /**
+    * Logs an error in the database
+    *
+    * @param int    $id    The id of the device
+    * @param string $error The error message
+    *
+    * @return null
+    */
+    public function out()
+    {
+        $id    = sprintf("%06X", $this->get("id"));
+        $errno = $this->get("errno");
+        $extra = $this->get("extra");
+        $port  = hexdec(substr($extra, 0, 2));
+        $msg   = $this->_errorMsg[$errno];
+        if (empty($msg)) {
+            $msg = "Unknown";
+        }
+        $this->system()->out("Error Device $id Port $port (".$errno."): ".$msg);
     }
     /**
     * Logs an error in the database
