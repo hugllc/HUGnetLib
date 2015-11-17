@@ -649,8 +649,17 @@ class WebAPI2 extends HTML
         if ($this->_auth(false)) {
             if ($this->_method == "GET") {
                 $dev = $this->system()->device();
-                $ret["devicesTotal"] = $dev->table()->count(1);
-                $ret["devicesActive"] = $dev->table()->count(array("Active" => 1));
+                $ret["devicesTotal"] = $dev->table()->count(
+                    array(
+                        "id" => array('$lt' => 0xFD0000)
+                    )
+                );
+                $ret["devicesActive"] = $dev->table()->count(
+                    array(
+                        "Active" => 1,
+                        "id" => array('$lt' => 0xFD0000)
+                    )
+                );
                 $ret["systemType"] = "HUGNET";
             } else {
                 $this->response(501);
