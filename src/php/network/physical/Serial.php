@@ -93,6 +93,10 @@ final class Serial implements PhysicalInterface
     */
     private $_wasConnected;
     /**
+    * This is the time of the last byte we got
+    */
+    private $_lastReceived = 0;
+    /**
     * The last time we failed to connect
     */
     private $_lastConnectFail = 0;
@@ -327,6 +331,9 @@ final class Serial implements PhysicalInterface
                 $this->_disconnect();
                 $this->_connect();
             }
+            if (!empty($return)) {
+                $this->_lastReceived = microtime(true);
+            }
         }
         return $return;
     }
@@ -339,11 +346,15 @@ final class Serial implements PhysicalInterface
     */
     private function _write($string)
     {
-        $this->_system->out(
-            $this->_config["name"]."(".$this->_config["driver"].") <- ".$string,
-            6
-        );
-        return @fwrite($this->_port, \HUGnet\Util::binary($string));
+        if ($this->_lastReceived < (microtime(true) - 0.015)) { 
+            $this->_system->out(
+                $this->_config["name"]."(".$this->_config["driver"].") <- ".$string,
+                6
+            );
+            return @fwrite($this->_port, \HUGnet\Util::binary($string));
+        } else {
+            return 0;
+        }
     }
 
     /**
