@@ -186,6 +186,15 @@ class Gather extends \HUGnet\ui\Daemon
     */
     private function _doPoll()
     {
+        if ($this->_device->get("bootloader")) {
+            $this->out(
+                "Not polling ".$this->_device->get("DeviceID")
+                .": Bootloader is running",
+                1
+            );
+            return false;
+        }
+
         if (($this->_runtime["gatherpoll"] === false) || !$this->_doContact()) {
             return false;
         }
