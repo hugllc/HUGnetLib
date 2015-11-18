@@ -862,6 +862,21 @@ class Network
         return false;
     }
     /**
+    * Updates the lock if it is going to expire soon
+    *
+    * @return Null
+    */
+    private function _updateLock()
+    {
+        $lock = $this->_device->getParam("ProgramLock");
+        $now  = $this->_system->now();
+        $diff = $lock - $now;
+        if (($diff > -15) && ($diff < 15)) {
+            $this->_device->setParam("ProgramLock", $now + 60);
+            $this->_device->store();
+        }
+    }
+    /**
     * Writes the Memory into the device specified
     *
     * @param string $buffer    The data to write
@@ -892,6 +907,7 @@ class Network
                 1
             );
             foreach ($buffer as $page => $data) {
+                $this->_updateLock();
                 $data = str_pad($data, $chunkSize*2, $empty);
                 $addr = $start + ($page * $chunkSize);
                 $ret = false;
