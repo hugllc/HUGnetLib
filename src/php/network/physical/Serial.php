@@ -95,7 +95,7 @@ final class Serial implements PhysicalInterface
     /**
     * This is the time of the last byte we got
     */
-    private $_lastReceived = 0;
+    private $_txWait = 0;
     /**
     * The last time we failed to connect
     */
@@ -332,7 +332,7 @@ final class Serial implements PhysicalInterface
                 $this->_connect();
             }
             if (!empty($return)) {
-                $this->_lastReceived = microtime(true);
+                $this->_txWait = microtime(true) + (rand(10, 30)/1000);
             }
         }
         return $return;
@@ -346,7 +346,7 @@ final class Serial implements PhysicalInterface
     */
     private function _write($string)
     {
-        if ($this->_lastReceived < (microtime(true) - 0.015)) { 
+        if ($this->_txWait < microtime(true)) { 
             $this->_system->out(
                 $this->_config["name"]."(".$this->_config["driver"].") <- ".$string,
                 6
