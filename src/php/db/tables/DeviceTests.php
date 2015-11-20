@@ -195,6 +195,63 @@ class DeviceTests extends \HUGnet\db\Table
     /* add set functions to json_encode test failure array,   */
     /* test data array, and test result.                      */
     /**********************************************************/
+    
+    /**
+    * Sets the Test Result
+    *
+    * @param int  $value test result value
+    *
+    * @return null
+    */
+    protected function setTestResult($value)
+    {
+        if ($value == 1) {
+            $this->data["TestResult"] = "PASS";
+        } else if ($value < 1) {
+            $this->data["TestResult"] = "FAIL";
+        }
+    }
+
+    /**********************************************************/
+    /* add set functions to json_encode test failure array,   */
+    /* test data array, and test result.                      */
+    /**********************************************************/
+    
+    /**
+    * Sets the Test Data
+    *
+    * @param mixed $value The value to set
+    *
+    * @return null
+    */
+    protected function setTestData($value)
+    {
+        if (is_array($value)) {
+            $this->data["TestData"] = json_encode($value);
+        } else if (is_string($value)) {
+            $this->data["TestData"] = $value;
+        }
+    }
+    /**********************************************************/
+    /* add set functions to json_encode test failure array,   */
+    /* test data array, and test result.                      */
+    /**********************************************************/
+    
+    /**
+    * Sets the Tests Failed
+    *
+    * @param mixed $value The value to set
+    *
+    * @return null
+    */
+    protected function setTestsFailed($value)
+    {
+        if (is_array($value)) {
+            $this->data["TestsFailed"] = json_encode($value);
+        } else if (is_string($value)) {
+            $this->data["TestsFailed"] = $value;
+        }
+    }
 
 }
 ?>
