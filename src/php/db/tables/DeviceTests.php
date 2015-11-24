@@ -174,11 +174,140 @@ class DeviceTests extends \HUGnet\db\Table
         $this->create();
     }
 
+    /**
+    * Changes the part number into XXXX-XX-XX-X form.
+    *
+    * @param mixed $value The value to set
+    *
+    * @return string PartNumber in ASCII hex
+    */
+    public static function formatPartNum($value)
+    {
+        if (empty($value)) {
+            $value = "";
+        } else if (stripos($value, "-") === false) {
+            $PartNum = strtoupper($value);
+            $str     = array();
+            $str[]   = substr($PartNum, 0, 4);
+            $str[]   = substr($PartNum, 4, 2);
+            $str[]   = substr($PartNum, 6, 2);
+            $assemb  = substr($PartNum, 8, 2);
+            if (is_numeric($assemb)) {
+                $str[] = chr(hexdec($assemb));
+            } else {
+                $str[] = $assemb;
+            }
+            $value   = implode("-", $str);
+        } else {
+            $ret = preg_match(
+                "/[0-9]{4}-[0-9]{2}-[0-9]{2}-[A-Za-z]{1}/",
+                $value,
+                $match
+            );
+            if ($ret > 0) {
+                $value = $match[0];
+            }
+        }
+        return $value;
+    }
+
+    /**
+    * Puts a version number into a standard form
+    *
+    * @param mixed $value The value to set
+    *
+    * @return null
+    */
+    public static function formatVersion($value)
+    {
+        if (empty($value)) {
+            $value = "";
+        } else if (stripos($value, ".") === false) {
+            $version = strtoupper($value);
+            $str     = array();
+            for ($i = 0; $i < 3; $i++) {
+                $str[] .= (int)substr($version, ($i*2), 2);
+            }
+            $value = implode(".", $str);
+        } else {
+            $ret = preg_match(
+                "/[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}/",
+                $value,
+                $match
+            );
+            if ($ret > 0) {
+                $ver = explode(".", $match[0]);
+                $value = ((int)$ver[0]).".".((int)$ver[1]).".".((int)$ver[2]);
+            }
+        }
+        return $value;
+    }
+
     /******************************************************************
      ******************************************************************
      ********  The following are input modification functions  ********
      ******************************************************************
      ******************************************************************/
+    /**
+    * function to set DeviceID
+    *
+    * @param string $value The value to set
+    *
+    * @return null
+    */
+    protected function setId($value)
+    {
+        $this->data["id"] = (int) $value;
+    }
+
+    /**
+    * Sets the part number
+    *
+    * @param mixed $value The value to set
+    *
+    * @return null
+    */
+    protected function setHWPartNum($value)
+    {
+        $this->data["HWPartNum"] = self::formatPartNum($value);
+    }
+
+    /**
+    * Sets the part number
+    *
+    * @param mixed $value The value to set
+    *
+    * @return null
+    */
+    protected function setFWPartNum($value)
+    {
+        $this->data["FWPartNum"] = self::formatPartNum($value);
+    }
+
+    /**
+    * Hexifies a version in x.y.z form.
+    *
+    * @param mixed $value The value to set
+    *
+    * @return null
+    */
+    protected function setFWVersion($value)
+    {
+        $this->data["FWVersion"] = self::formatVersion($value);
+    }
+
+    /**
+    * Hexifies a version in x.y.z form.
+    *
+    * @param mixed $value The value to set
+    *
+    * @return null
+    */
+    protected function setBtldrVersion($value)
+    {
+        $this->data["BtldrVersion"] = self::formatVersion($value);
+    }
+
     /**
     * function to set Date
     *

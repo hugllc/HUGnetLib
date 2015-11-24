@@ -597,7 +597,7 @@ class DevicesTest extends TableTestBase
                     "ActiveSensors" => "0",
                     "DeviceGroup" => "FFFFFF",
                     "dataChannels" => "",
-                        "controlChannels" => "",
+                    "controlChannels" => "",
                     "sensors" => "",
                     "params" => "",
                 ),
