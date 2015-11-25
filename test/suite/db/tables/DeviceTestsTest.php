@@ -307,8 +307,6 @@ class DeviceTestsTest extends TableTestBase
             $this->system, $preload, "DeviceTests", $this->connect
         );
         $ret = $obj->insertRow($replace);
-        print "\n\rret =".$ret."\n\r";
-        print "return =".$return."\n\r";
         $this->assertSame($return, $ret, "Return Wrong");
         $stmt = $this->pdo->query("SELECT * FROM `devicetests`");
         $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
