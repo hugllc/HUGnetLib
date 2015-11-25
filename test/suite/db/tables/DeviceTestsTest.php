@@ -238,7 +238,7 @@ class DeviceTestsTest extends TableTestBase
             // Auto increment
             array(
                 array(
-                    "id" => (string)0x008012,
+                    "id" => 0x008012,
                     "HWPartNum" => "1046-03-01-A",
                     "FWPartNum" => "0039-38-01-C",
                     "FWVersion" => "0.3.1",
@@ -282,7 +282,7 @@ class DeviceTestsTest extends TableTestBase
                     "TestDate" => "0",
                     "TestResult" => "FAIL",
                     "TestData" => "",
-                    "TestsFailed" => "None",
+                    "TestsFailed" => "",
                     ),
                 ),
                 true,

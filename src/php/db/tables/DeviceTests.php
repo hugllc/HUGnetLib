@@ -57,7 +57,7 @@ class DeviceTests extends \HUGnet\db\Table
     /** @var string This is the table we should use */
     public $sqlTable = "deviceTests";
     /** @var string This is the primary key of the table.  Leave blank if none  */
-    public $sqlId = "";
+    public $sqlId = null;
     /**
     * @var array This is the definition of the columns
     *
@@ -131,7 +131,7 @@ class DeviceTests extends \HUGnet\db\Table
         "TestsFailed" => array(
             "Name" => "TestsFailed",
             "Type" => "longtext",
-            "Default" => "None",
+            "Default" => "",
         ),
     );
     /**
