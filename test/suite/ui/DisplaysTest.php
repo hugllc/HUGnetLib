@@ -251,6 +251,83 @@ class DisplaysTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expect, $newHeading);
     }
 
+    /**
+    * data provider for testDisplaySMHeader
+    *
+    * @return array
+    */
+    public static function dataTestDisplaySMHeader()
+    {
+        return array(
+            array(
+                " Test Headings ",
+                "*******************
+*  Test Headings  *
+*******************
+\n\r\n",
+             )
+        );
+    }
+
+    /**
+    * Tests the displaySMHeader function
+    *
+    * @param string $heading   heading string
+    * @param string $expect    The display we are expecting
+    *
+    * @return null
+    *
+    * @dataProvider dataTestDisplaySMHeader()
+    */
+    public function testDisplaySMHeader($heading, $expect)
+    {
+        ob_start();
+        $this->display->displaySMHeader($heading);
+        $newHeading = ob_get_contents();
+        ob_end_clean();
+
+        $this->assertEquals($expect, $newHeading);
+    }
+
+    /**
+    * data provider for testDisplaySMHeader2
+    *
+    * @return array
+    */
+    public static function dataTestDisplaySMHeader2()
+    {
+        return array(
+            array(
+                "This will be part of Test Headings for a really long heading",
+                "************************************************************
+* This will be part of Test Headings for a really long hea *
+************************************************************
+\n\r\n",
+             )
+        );
+    }
+
+    /**
+    * Tests the displaySMHeader function
+    *
+    * @param string $heading   heading string
+    * @param string $expect    The display we are expecting
+    *
+    * @return null
+    *
+    * @dataProvider dataTestDisplaySMHeader2()
+    */
+    public function testDisplaySMHeader2($heading, $expect)
+    {
+        ob_start();
+        $this->display->displaySMHeader($heading);
+        $newHeading = ob_get_contents();
+        ob_end_clean();
+
+        $this->assertEquals($expect, $newHeading);
+    }
+
+
 
     /**
     * data provider for testSetHeaderWidth

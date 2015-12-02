@@ -249,6 +249,39 @@ class Displays extends CLI
     }
 
     /**
+    ***********************************************************
+    * Display Small Header Routine
+    *
+    * This function displays the single line heading in a 
+    * small box of stars.
+    *
+    */
+    public function displaySMHeader($heading)
+    {
+        $length = strlen($heading);
+
+        /* truncate heading if too long */
+        if ($length > 56) {
+            $heading = substr($heading, 0, 56);
+            $length = strlen($heading);
+        }
+        
+        $hwidth = $length + 4;
+        $outstring = "* ";
+
+        $outstring .= $heading;
+        $outstring .= " *";
+
+        $this->_system->out(str_repeat("*", $hwidth));
+        $this->_system->out($outstring);
+        $this->_system->out(str_repeat("*", $hwidth));
+        $this->_system->out("\n\r");
+
+    }
+
+
+
+    /**
     ************************************************************
     * Display Header and Menu Routine
     *
