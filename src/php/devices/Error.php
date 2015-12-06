@@ -164,17 +164,34 @@ class Error extends \HUGnet\base\SystemTableBase
     *
     * @return null
     */
+    public function warning($error)
+    {
+        return $this->_log($error, "W");
+    }
+    /**
+    * Logs an error in the database
+    *
+    * @param int    $id    The id of the device
+    * @param string $error The error message
+    *
+    * @return null
+    */
     public function out()
     {
+        $sev = $this->get("severity");
         $id    = sprintf("%06X", $this->get("id"));
         $errno = $this->get("errno");
         $extra = $this->get("extra");
-        $port  = hexdec(substr($extra, 0, 2));
-        $msg   = $this->_errorMsg[$errno];
-        if (empty($msg)) {
-            $msg = "Unknown";
+        if ($sev == "E") {
+            $port  = hexdec(substr($extra, 0, 2));
+            $msg   = $this->_errorMsg[$errno];
+            if (empty($msg)) {
+                $msg = "Unknown";
+            }
+            $this->system()->out("Error Device $id Port $port (".$errno."): ".$msg);
+        } else {
+            $this->system()->out("Warning Device $id (".$errno."): ".pack("H*", $extra));
         }
-        $this->system()->out("Error Device $id Port $port (".$errno."): ".$msg);
     }
     /**
     * Logs an error in the database
