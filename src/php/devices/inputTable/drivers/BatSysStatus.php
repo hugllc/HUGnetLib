@@ -57,14 +57,6 @@ require_once dirname(__FILE__)."/../Driver.php";
 class BatSysStatus extends \HUGnet\devices\inputTable\Driver
     implements \HUGnet\devices\inputTable\DriverInterface
 {
-    /** This is a constant */
-    const AM = 2048;
-    /** This is a constant */
-    const S = 1;
-    /** This is a constant */
-    const TF = 1;
-    /** This is a constant */
-    const D = 1;
     /**
     * This is the array of sensor information.
     */
