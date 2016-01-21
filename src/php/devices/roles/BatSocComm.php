@@ -67,16 +67,34 @@ class BatSocComm extends \HUGnet\base\Role
     */
     protected $input = array(
         0 => array(
-            "id" => 0x02,
-            "extra" => array(10, 4096),
-            "location" => "External Thermistor 1",
-            "type" => "MurataNCPP18XH",
+            "id" => 0x80,
+            "location" => "System Current",
+            "type" => "Current",
         ),
         1 => array(
-            "id" => 0x02,
-            "extra" => array(10, 4096),
-            "location" => "External Thermistor 2",
-            "type" => "MurataNCPP18XH",
+            "id" => 0x80,
+            "location" => "Bus Voltage",
+            "type" => "Voltage",
+        ),
+        2 => array(
+            "id" => 0x80,
+            "location" => "Bus Temperature",
+            "type" => "Temperature",
+        ),
+        3 => array(
+            "id" => 0x80,
+            "location" => "System Charge",
+            "type" => "BatCapacity",
+        ),
+        4 => array(
+            "id" => 0x80,
+            "location" => "System Capacity",
+            "type" => "BatCapacity",
+        ),
+        5 => array(
+            "id" => 0x80,
+            "location" => "System Status"
+            "type" => "BatSysStatus",
         ),
     );
     /**

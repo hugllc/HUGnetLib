@@ -187,6 +187,12 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "63:DEFAULT"                 => "NoisyInput",
         "65:DEFAULT"                 => "MemInput",
         "66:DEFAULT"                 => "FileInput",
+        // Raw Data
+        "80:Voltage"                 => "RawVoltage",
+        "80:Current"                 => "RawCurrent",
+        "80:BatCapacity"             => "RawBatCapacity",
+        "80:Temperature"             => "RawTemperature",
+        "80:BatSysStatus"            => "BatSysStatus",
         // Virtual
         "FE:DEFAULT"                 => "EmptyVirtual",
         "FE:AlarmVirtual"            => "AlarmVirtual",

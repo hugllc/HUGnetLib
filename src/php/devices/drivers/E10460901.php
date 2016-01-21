@@ -50,13 +50,13 @@ require_once dirname(__FILE__)."/DriverInterface.php";
  * @package    HUGnetLib
  * @subpackage Devices
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2014 Hunt Utilities Group, LLC
+ * @copyright  2016 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.14.3
+ * @version    Release: 0.14.5
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
- * @since      0.9.7
+ * @since      0.14.5
  */
-class E10460400 extends \HUGnet\devices\Driver
+class E10460901 extends \HUGnet\devices\Driver
     implements \HUGnet\devices\drivers\DriverInterface
 {
     /**
@@ -69,90 +69,26 @@ class E10460400 extends \HUGnet\devices\Driver
         "virtualSensors" => 0,
         "historyTable" => "E10460400History",
         "averageTable" => "E10460400Average",
-        "loadable" => false,
-        "packetTimeout" => 5,
         "type" => "controller",
         "job"  => "control",
         "arch" => "1046-04",
-        "InputTables" => 2,
+        "InputTables" => 6,
         "OutputTables" => 0,
-        "DataChannels" => 2,
+        "DataChannels" => 6,
         "ProcessTables" => 0,
         "PowerTables" => 0,
         "inputSize" => 4,
         "AddressSize" => 2,
         "Role" => "BatSocComm",
         "fixed" => array(
-            "InputTables" => true, 
-            "OutputTables" => true, 
+            "InputTables" => true,
+            "OutputTables" => true,
             "ProcessTables" => true,
             "PowerTables" => true,
         ),
         "useCRC" => true,
     );
-    /**
-    * Decodes the sensor string
-    *
-    * @param string $string The string of sensor data
-    *
-    * @return null
-    */
-    public function decodeSensorString($string)
-    {
-        $ret = array(
-            "DataIndex" => hexdec(substr($string, 0, 2)),
-            "String" => substr($string, 2),
-        );
-        return $ret;
-    }
-    /**
-    * Decodes the driver portion of the setup string
-    *
-    * @param string $string The string to decode
-    *
-    * @return array
-    */
-    public function decode($string)
-    {
-    
-        if (strlen($string) < 6) {
-            return;
-        }
-        // This is the temperature constants for the internal temperature.
-        $temp[0] = array(
-            "temp" => hexdec(substr($string, 0, 2)),
-            "set"  => hexdec(substr($string, 2, 2)) + (hexdec(substr($string, 4, 2)) << 8)
-        );
 
-        $index = 0;
-        for ($i = 0; $i < $this->get("InputTables"); $i++) {
-            if (!isset($temp[$index])) {
-                break;
-            }
-            $input = $this->device()->input($i);
-            if ($input->get("type") == "XMegaTemp") {
-                $input->setExtra(0, $temp[$index]["temp"]);
-                $input->setExtra(1, $temp[$index]["set"]);
-                $input->store();
-                $index++;
-            }
-            // Done all that we have.
-            if ($index >= count($temp)) {
-                break;
-            }
-        }
-    }
-    /**
-    * Encodes this driver as a setup string
-    *
-    * @param bool $showFixed Show the fixed portion of the data
-    *
-    * @return array
-    */
-    public function encode($showFixed = true)
-    {
-        return "";
-    }
 }
 
 
