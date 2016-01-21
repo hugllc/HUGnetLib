@@ -93,7 +93,7 @@ class BatSocComm extends \HUGnet\base\Role
         ),
         5 => array(
             "id" => 0x80,
-            "location" => "System Status"
+            "location" => "System Status",
             "type" => "BatSysStatus",
         ),
     );

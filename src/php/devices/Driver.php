@@ -172,6 +172,7 @@ abstract class Driver
         "DEFAULT:1046-02-01-A:DEFAULT"      => "E10460200",
         "DEFAULT:1046-03-01-A:DEFAULT"      => "E10460300",
         "DEFAULT:1046-04-01-A:DEFAULT"      => "E10460400",
+        "DEFAULT:1046-09-01-C:DEFAULT"      => "E10460901",
     );
     /**
     * This function sets up the driver object, and the database object.  The
