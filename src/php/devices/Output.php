@@ -144,7 +144,7 @@ class Output extends \HUGnet\base\IOPBase
     *
     * @return string The left over string
     */
-    public function post($url = null)
+    public function post($url = null, $timeout=60)
     {
         if (!is_string($url) || (strlen($url) == 0)) {
             $master = $this->system()->get("master");
