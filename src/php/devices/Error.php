@@ -81,7 +81,8 @@ class Error extends \HUGnet\base\SystemTableBase
         9  => "Power Flowing in the Wrong Direction",
         10 => "Multiple Port Errors",
         11 => "Bus Brownout",
-        12 => "Waiting for Calibration"
+        12 => "Waiting for Calibration",
+        13 => "FET Over Heat"
     );
     /**
     * This function creates the system.
@@ -183,12 +184,12 @@ class Error extends \HUGnet\base\SystemTableBase
         $errno = $this->get("errno");
         $extra = $this->get("extra");
         if ($sev == "E") {
-            $port  = hexdec(substr($extra, 0, 2));
+            $port  = hexdec(substr($extra, 0, 2)) - 0x30;
             $msg   = $this->_errorMsg[$errno];
             if (empty($msg)) {
                 $msg = "Unknown";
             }
-            $this->system()->out("Error Device $id Port $port (".$errno."): ".$msg);
+            $this->system()->out("Error Device $id Port $port (".$errno."): ".$msg." (".pack("H*", substr($extra, 2)).")");
         } else {
             $this->system()->out("Warning Device $id (".$errno."): ".pack("H*", $extra));
         }
