@@ -79,6 +79,7 @@ class E00393881 extends \HUGnet\devices\Driver
         "ProcessTables" => 0,
         "DataChannels" => 0,
         "useCRC" => true,
+        "packetTimeout" => 2,
     );
 
 }

@@ -467,6 +467,7 @@ class Network
     */
     public function setCRC($config = array())
     {
+        $config["timeout"] = 10;
         $reply = $this->_sendPkt("SETCRC", null, (array)$config);
         if (is_object($reply) && is_string($reply->Reply())) {
             return $reply->Reply();
@@ -511,6 +512,7 @@ class Network
     */
     public function runApplication($config = array())
     {
+        $config["timeout"] = 10;
         $reply = $this->_sendPkt("BOOT", null, $config);
         if (is_object($reply)) {
             if (is_string($reply->Reply())) {
