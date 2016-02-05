@@ -333,6 +333,11 @@ class Gather extends \HUGnet\ui\Daemon
             $error->warning($pkt->data());
             $error->out();
             $this->out("Logging error data");
+        } else if ($pkt->type() == "SENSORREAD") {
+            $this->_unsolicited->action()->storePoll($pkt);
+            $this->out(
+                "Saved unsolicited poll for device ".$this->_unsolicited->get("DeviceID")
+            );
         }
     }
     /**
