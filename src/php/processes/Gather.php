@@ -334,6 +334,8 @@ class Gather extends \HUGnet\ui\Daemon
             $error->out();
             $this->out("Logging error data");
         } else if ($pkt->type() == "SENSORREAD") {
+            // This is because storePoll uses the reply
+            $pkt->reply($pkt->data());
             $this->_unsolicited->action()->storePoll($pkt);
             $this->out(
                 "Saved unsolicited poll for device ".$this->_unsolicited->get("DeviceID")
