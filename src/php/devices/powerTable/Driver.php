@@ -182,6 +182,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     protected function __construct(&$sensor)
     {
         parent::__construct($sensor);
+
     }
     /**
     * This is the destructor
@@ -329,9 +330,15 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         // Capacity
         $string .= $this->encodeCapacity($this->getExtra(2));
         // Name
-        $loc = $this->power()->get("location");
-        $chars = $this->get("chars");
-        $string .= str_pad(strtoupper((string)array_shift(unpack('H*', substr($loc, 0, $chars-1)))), $chars * 2, "0", STR_PAD_RIGHT);
+        $loc     = $this->power()->get("location");
+        $chars   = $this->get("chars");
+        $data    = substr($loc, 0, $chars-1);
+        $data    = unpack('H*', $data);
+        $data    = (string)array_shift($data);
+        $data    = strtoupper($data);
+        $data    = str_pad($data, $chars * 2, "0", STR_PAD_RIGHT);
+        $string .= $data;
+//        $string .= str_pad(strtoupper((string)array_shift(unpack('H*', substr($loc, 0, $chars-1)))), $chars * 2, "0", STR_PAD_RIGHT);
         $string .= $this->entry()->encode();
         $string = str_pad($string, (self::POWERPORTSIZE - 1) * 2, "F", STR_PAD_RIGHT);
         return $string;
