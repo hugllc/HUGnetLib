@@ -171,6 +171,7 @@ abstract class Driver
         "DEFAULT:1046-01-02-C:DEFAULT"      => "E10460102",
         "DEFAULT:1046-02-01-A:DEFAULT"      => "E10460200",
         "DEFAULT:1046-03-01-A:DEFAULT"      => "E10460300",
+        "DEFAULT:1046-03-02-A:DEFAULT"      => "E10460301",
         "DEFAULT:1046-04-01-A:DEFAULT"      => "E10460400",
         "DEFAULT:1046-09-01-C:DEFAULT"      => "E10460901",
     );
