@@ -284,9 +284,11 @@ class Gather extends \HUGnet\ui\Daemon
 
         if (is_null($this->_unsolicited->id())) {
             $this->_unsolicited->set("id", hexdec($pkt->from()));
-            $this->_unsolicited->set("DeviceID", $pkt->from());
-            $this->out("New device.  Getting config immediately");
-            $this->_unsolicited->action()->config();
+            if ($this->_unsolicited->id() < 0xFD0000) {
+                $this->_unsolicited->set("DeviceID", $pkt->from());
+                $this->out("New device.  Getting config immediately");
+                $this->_unsolicited->action()->config();
+            }
         } else if ($pkt->type() == "POWERUP") {
             // Test to see if this is a local script
             if ($this->_unsolicited->get("id") >= 0xFD0000) {
