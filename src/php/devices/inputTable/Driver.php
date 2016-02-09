@@ -193,6 +193,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "80:BatCapacity"             => "RawBatCapacity",
         "80:Temperature"             => "RawTemperature",
         "80:BatSysStatus"            => "BatSysStatus",
+        "80:BatStatus"               => "BatStatus",
         // Virtual
         "FE:DEFAULT"                 => "EmptyVirtual",
         "FE:AlarmVirtual"            => "AlarmVirtual",

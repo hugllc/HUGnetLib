@@ -335,7 +335,7 @@ class Gather extends \HUGnet\ui\Daemon
             $error->warning($pkt->data());
             $error->out();
             $this->out("Logging error data");
-        } else if ($pkt->type() == "SENSORREAD") {
+        } else if ($pkt->type() == "SENSORBROADCAST") {
             // This is because storePoll uses the reply
             $pkt->reply($pkt->data());
             $this->_unsolicited->action()->storePoll($pkt);

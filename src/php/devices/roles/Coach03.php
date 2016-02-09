@@ -94,7 +94,7 @@ class Coach03 extends \HUGnet\base\Role
         5 => array(
             "id" => 0x80,
             "location" => "Port A Status",
-            "type" => "BatSysStatus",
+            "type" => "BatStatus",
         ),
         6 => array(
             "id" => 0x80,
@@ -124,7 +124,7 @@ class Coach03 extends \HUGnet\base\Role
         11 => array(
             "id" => 0x80,
             "location" => "Port B Status",
-            "type" => "BatSysStatus",
+            "type" => "BatStatus",
         ),
         12 => array(
             "id" => 0x80,
@@ -164,13 +164,13 @@ class Coach03 extends \HUGnet\base\Role
         0 => array(
             "id" => 0x40,
             "extra" => array(),
-            "location" => "Power Port 1",
+            "location" => "Power Port A",
             "type" => "FETCtrl104603",
         ),
         1 => array(
             "id" => 0x40,
             "extra" => array(),
-            "location" => "Power Port 2",
+            "location" => "Power Port B",
             "type" => "FETCtrl104603",
         ),
     );

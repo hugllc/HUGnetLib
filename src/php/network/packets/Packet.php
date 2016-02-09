@@ -170,6 +170,7 @@ final class Packet implements PacketInterface
         "READERROR"      => 0x73,
         "DEVICEERROR" => 0x77,
         "DEVICEWARNING" => 0x78,
+        "SENSORBROADCAST" => 0x7C,
         "BAD COMMAND" => 0xFF,
     );
 
