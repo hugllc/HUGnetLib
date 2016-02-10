@@ -336,12 +336,17 @@ class Gather extends \HUGnet\ui\Daemon
             $error->out();
             $this->out("Logging error data");
         } else if ($pkt->type() == "SENSORBROADCAST") {
-            // This is because storePoll uses the reply
-            $pkt->reply($pkt->data());
-            $this->_unsolicited->action()->storePoll($pkt);
-            $this->out(
-                "Saved unsolicited poll for device ".$this->_unsolicited->get("DeviceID")
-            );
+            if ($this->_unsolicited->get("bootloader")) {
+                $this->_unsolicited->setParam("LastConfig", 0);
+                $this->_unsolicited->store();
+            } else {
+                // This is because storePoll uses the reply
+                $pkt->reply($pkt->data());
+                $this->_unsolicited->action()->storePoll($pkt);
+                $this->out(
+                    "Saved unsolicited poll for device ".$this->_unsolicited->get("DeviceID")
+                );
+            }
         }
     }
     /**
