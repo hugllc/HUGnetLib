@@ -80,7 +80,7 @@ class BatStatus extends \HUGnet\devices\inputTable\Driver
         "maxDecimals" => 0,
         "requires" => array("AI", "ATODREF"),
         "provides" => array("DC"),
-        "inputSize" => 2,
+        "inputSize" => 4,
     );
     /**
     * Changes a raw reading into a output value
