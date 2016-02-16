@@ -121,6 +121,7 @@ final class Matcher
         } else {
             $this->_matchOther($pkt);
         }
+        $this->main();
     }
     /**
     * Deals with incoming packets
@@ -147,7 +148,6 @@ final class Matcher
     */
     private function _matchReply(&$pkt)
     {
-        $this->main();
         foreach (array_keys($this->_packets) as $index) {
             $reply = $this->_packets[$index]->reply($pkt);
             if (is_object($reply)) {
