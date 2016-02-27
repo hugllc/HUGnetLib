@@ -490,6 +490,8 @@ class Network
         $this->_sendPkt("BOOTLOADER", null, array("NoReply" => true));
         $config = (array)$config;
         $config["find"] = false;
+        $config["tries"] = 3;
+        $config["timeout"] = 1;
         $reply = $this->_sendPkt("BOOTLOADER", null, $config);
         if (is_object($reply)) {
             if (is_string($reply->Reply())) {
@@ -583,7 +585,7 @@ class Network
     * @return success or failure of the packet sending
     */
     public function writeE2Buffer(
-        $data, $address = 0, $chunkSize = 128, $empty = "FF"
+        $data, $address = 0, $chunkSize = 128, $empty = NULL
     ) {
         return $this->_writeMemBuffer(
             $data, "WRITE_E2", $chunkSize, "config", $address, $empty
@@ -910,7 +912,9 @@ class Network
             );
             foreach ($buffer as $page => $data) {
                 $this->_updateLock();
-                $data = str_pad($data, $chunkSize*2, $empty);
+                if (!is_null($empty)) {
+                    $data = str_pad($data, $chunkSize*2, $empty);
+                }
                 $addr = $start + ($page * $chunkSize);
                 $ret = false;
                 for ($i = 0; ($i < 3) && (!$ret); $i++) {
