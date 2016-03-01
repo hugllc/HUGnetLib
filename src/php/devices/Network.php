@@ -490,8 +490,8 @@ class Network
         $this->_sendPkt("BOOTLOADER", null, array("NoReply" => true));
         $config = (array)$config;
         $config["find"] = false;
-        $config["tries"] = 3;
-        $config["timeout"] = 1;
+        $config["tries"] = 5;
+        $config["timeout"] = 0.5;
         $reply = $this->_sendPkt("BOOTLOADER", null, $config);
         if (is_object($reply)) {
             if (is_string($reply->Reply())) {
