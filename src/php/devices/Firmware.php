@@ -249,7 +249,6 @@ class Firmware extends \HUGnet\base\SystemTableBase
         $srec = explode("\n", $srec);
         $code = array();
         $start = -1;
-        $offset = 0;
         foreach ((array)$srec as $rec) {
             if (substr($rec, 0, 2) == "S0") {
                 if ($start >= 0) {
@@ -258,10 +257,9 @@ class Firmware extends \HUGnet\base\SystemTableBase
                     while (substr($buffer, -2) == $empty) {
                         $buffer = substr($buffer, 0, -2);
                     }
-                    $code[$start+$offset] = $buffer;
+                    $code[$start] = $buffer;
                     $buffer = "";
                 }
-                $offset = 0;
                 $start = -1;
             } else if (substr($rec, 0, 2) == "S1") {
                 // Set up all the stuff to put into the buffer
@@ -305,12 +303,6 @@ class Firmware extends \HUGnet\base\SystemTableBase
                 $buffer = str_pad($buffer, ($addr + $size)*2, $empty, STR_PAD_RIGHT);
                 // Put the data into the buffer
                 $buffer = substr_replace($buffer, $data, $addr*2, $size*2);
-            } else if (substr($rec, 0, 2) == "S7") {
-                $offset  = hexdec(substr($rec, 4, 8));
-            } else if (substr($rec, 0, 2) == "S8") {
-                $offset  = hexdec(substr($rec, 4, 6));
-            } else if (substr($rec, 0, 2) == "S9") {
-                $offset  = hexdec(substr($rec, 4, 4));
             }
         }
         if ($start >= 0) {
@@ -318,7 +310,7 @@ class Firmware extends \HUGnet\base\SystemTableBase
             while (substr($buffer, -2) == $empty) {
                 $buffer = substr($buffer, 0, -2);
             }
-            $code[$start+$offset] = $buffer;
+            $code[$start] = $buffer;
         }
         // return the buffer
         return $code;
