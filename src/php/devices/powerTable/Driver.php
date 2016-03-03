@@ -107,7 +107,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "extraValues" => array(
             array(0 => "None"), array(0 => "Highest"), array(1 => "On", 0 => "Off")
         ),
-        "chars" => 20,
+        "chars" => 23,
         "requires" => array(),
         "provides" => array(),
     );
@@ -308,11 +308,10 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         $extra[0] = $this->decodeInt(substr($string, 0, 2), 1);
         $extra[1] = $this->decodeInt(substr($string, 2, 2), 1);
         $extra[3] = $this->decodeInt(substr($string, 4, 2), 1);
-        // 3 bytes of extra space here
         $chars = $this->get("chars");
-        $loc = stristr((string)pack("H*", substr($string, 12, $chars)), "\0", true); // end at \0
+        $loc = stristr((string)pack("H*", substr($string, 6, $chars)), "\0", true); // end at \0
         $loc = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $loc);  // Remove non printing chars
-        $this->entry()->decode(substr($string, $chars+ 12));
+        $this->entry()->decode(substr($string, $chars+ 6));
         $this->power()->set("location", (string)$loc);
         $this->power()->set("extra", $extra);
     }
@@ -330,8 +329,6 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         $string .= $this->encodeInt(($this->getExtra(1) & 0xFF), 1);
         // Default state
         $string .= $this->encodeInt(($this->getExtra(2) & 0xFF), 1);
-        // Extra space
-        $string .= "FFFFFF";
         // Name
         $loc     = $this->power()->get("location");
         $chars   = $this->get("chars");

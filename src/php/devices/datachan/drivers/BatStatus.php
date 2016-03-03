@@ -116,10 +116,10 @@ class BatStatus extends \HUGnet\devices\datachan\Driver
                 $data = "Unknown [".$stat."]";
             }
             if (!empty($batstat)) {
-                if (isset($this->_status[$batstat]) && !empty($batstat)) {
+                if (isset($this->_batstat[$batstat])) {
                     $data .= " (".$this->_batstat[$batstat].")";
-                } else  if (!empty($batstat)) {
-                    $data .= " (Unknown)";
+                } else {
+                    $data .= " (Unknown [$batstat])";
                 }
             }
             if (!empty($error)) {
