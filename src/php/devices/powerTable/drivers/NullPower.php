@@ -66,6 +66,12 @@ class NullPower extends \HUGnet\devices\powerTable\Driver
     protected $params = array(
         "longName" => "Null Power Driver",
         "shortName" => "Null",
+        "extraText" => array(
+        ),
+        "extraDefault" => array(
+        ),
+        "extraNames" => array(
+        ),
         "extraDesc" => array(
         ),
         // Integer is the size of the field needed to edit

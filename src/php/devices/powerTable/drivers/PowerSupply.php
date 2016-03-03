@@ -69,7 +69,7 @@ class PowerSupply extends \HUGnet\devices\powerTable\Driver
         "extraDesc" => array(
             0 => "The type of power supply this is.",
             1 => "The priority of this power supply",
-            2 => "The capacity of the power supply in mA",
+            2 => "Whether the port is on or off when the device boots up"
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
@@ -77,7 +77,7 @@ class PowerSupply extends \HUGnet\devices\powerTable\Driver
         "extraValues" => array(
             0 => array(0 => "Power", 1 => "Solar", 3 => "Vehicle"),
             1 => array(0 => "Highest", 1 => "1", 2 => "2", 3 => "3", 4 => "4", 5 => "5", 6 => "6", 7 => "Lowest"),
-            2 => 10,
+            2 =>  array(1 => "On", 0 => "Off"),
         ),
     );
 

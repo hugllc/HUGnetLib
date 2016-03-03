@@ -69,7 +69,7 @@ class Load extends \HUGnet\devices\powerTable\Driver
         "extraDesc" => array(
             0 => "The type of load this is",
             1 => "The priority of this load to be powered",
-            2 => "The maximum draw of the battery in mA",
+            2 => "Whether the port is on or off when the device boots up"
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
@@ -80,7 +80,7 @@ class Load extends \HUGnet\devices\powerTable\Driver
                 0 => "Highest", 1 => "1", 2 => "2", 3 => "3", 4 => "4", 
                 5 => "5", 6 => "6", 7 => "Lowest", 8 => "Dump Load",
             ),
-            2 => 10
+            2 =>  array(1 => "On", 0 => "Off")
         ),
     );
 }

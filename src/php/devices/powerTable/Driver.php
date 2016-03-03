@@ -84,28 +84,28 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         "extraText" => array(
             0 => "Type",
             1 => "Priority",
-            2 => "Capacity",
+            2 => "Default State"
         ),
         "extraDesc" => array(
             0 => "The type of this power port",
             1 => "The priority of this power port",
-            2 => "The capacity of this device",
+            2 => "Whether the port is on or off when the device boots up"
         ),
         "extraDefault" => array(
             0 => 0,
             1 => 0,
-            2 => 0,
+            2 => 1,
         ),
         "extraNames" => array(
             "type" => 0,
             "priority" => 1,
-            "capacity" => 2
+            "defstate" => 2
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            array(0 => "None"), array(0 => "Highest"), 10
+            array(0 => "None"), array(0 => "Highest"), array(1 => "On", 0 => "Off")
         ),
         "chars" => 20,
         "requires" => array(),
@@ -307,7 +307,8 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         $extra = $this->power()->get("extra");
         $extra[0] = $this->decodeInt(substr($string, 0, 2), 1);
         $extra[1] = $this->decodeInt(substr($string, 2, 2), 1);
-        $extra[2] = $this->decodeCapacity(substr($string, 4, 8));
+        $extra[3] = $this->decodeInt(substr($string, 4, 2), 1);
+        // 3 bytes of extra space here
         $chars = $this->get("chars");
         $loc = stristr((string)pack("H*", substr($string, 12, $chars)), "\0", true); // end at \0
         $loc = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $loc);  // Remove non printing chars
@@ -327,8 +328,10 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         $string  = $this->encodeInt(($this->getExtra(0) & 0xFF), 1);
         // Priority
         $string .= $this->encodeInt(($this->getExtra(1) & 0xFF), 1);
-        // Capacity
-        $string .= $this->encodeCapacity($this->getExtra(2));
+        // Default state
+        $string .= $this->encodeInt(($this->getExtra(2) & 0xFF), 1);
+        // Extra space
+        $string .= "FFFFFF";
         // Name
         $loc     = $this->power()->get("location");
         $chars   = $this->get("chars");

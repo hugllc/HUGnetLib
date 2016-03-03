@@ -78,7 +78,9 @@ class LeadAcidBatteryTable
         "FloatVoltage",
         "ResumeVoltage",
         "CutoffVoltage",
-        "MinimumVoltage"
+        "MinimumVoltage",
+        "NominalCapacity",
+        "NominalVoltage",
     );
     /**
     * This is where we setup the power object
@@ -115,7 +117,7 @@ class LeadAcidBatteryTable
             'max' => 18000,
         ),
         "BulkChargeTriggerVoltage" => array(
-            "value" => 3000,
+            "value" => 11500,
             'signed' => false,
             "desc"  => "Bulk Charge Trigger Voltage (mV)",
             'longDesc' => "Bulk charge if below this voltage (mV)",
@@ -125,7 +127,7 @@ class LeadAcidBatteryTable
             'max' => 31000,
         ),
         "BulkChargeKickoutCurrent" => array(
-            "value" => 12000,
+            "value" => 300,
             'signed' => false,
             "desc"  => "Bulk Charge Kickout Current (mA)",
             'longDesc' => "Exit bulk charge if the current is below this value (mA)",
@@ -179,6 +181,26 @@ class LeadAcidBatteryTable
             'signed' => false,
             "desc"  => "Minimum Voltage (mV)",
             'longDesc' => "If the port voltage is below this, there is no battery present (mV)",
+            'size'  => 6,
+            'bytes' => 4,
+            'min' => 0,
+            'max' => 18000,
+        ),
+        "NominalCapacity" => array(
+            "value" => 100,
+            'signed' => false,
+            "desc"  => "Nominal Capacity (Ah)",
+            'longDesc' => "The capacity that is printed on the battery (aH)",
+            'size'  => 6,
+            'bytes' => 2,
+            'min' => 0,
+            'max' => 1000,
+        ),
+        "NominalVoltage" => array(
+            "value" => 12500,
+            'signed' => false,
+            "desc"  => "Nominal Voltage (mV)",
+            'longDesc' => "The voltage of the battery when fully charged and resting. (mV)",
             'size'  => 6,
             'bytes' => 4,
             'min' => 0,

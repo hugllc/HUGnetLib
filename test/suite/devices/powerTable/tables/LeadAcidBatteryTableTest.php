@@ -114,6 +114,9 @@ class LeadAcidBatteryTableTest extends \PHPUnit_Framework_TestCase
                     'ResumeVoltage' => 14000,
                     'CutoffVoltage' => 10500,
                     'MinimumVoltage' => 2000,
+                    'BulkChargeKickoutCurrent' => 300,
+                    'NominalCapacity' => 100,
+                    'NominalVoltage'  => 12500
                 ),
             ),
         );
@@ -164,7 +167,7 @@ class LeadAcidBatteryTableTest extends \PHPUnit_Framework_TestCase
                     'CutoffVoltage' => 11500,
                     'MinimumVoltage' => 2000,
                 ),
-                "08070A00BC340000BC340000F6FFD4300000B0360000EC2C0000D0070000",
+                "08070A00BC340000BC3400002C010000F6FFD4300000B0360000EC2C0000D00700006400D4300000",
             ),
         );
     }
@@ -201,7 +204,7 @@ class LeadAcidBatteryTableTest extends \PHPUnit_Framework_TestCase
                 array(
                 ),
                 null,
-                "08070A00BC340000BC340000F6FFD4300000B0360000EC2C0000D0070000",
+                "08070A00BC340000BC3400002C010000F6FFD4300000B0360000EC2C0000D00700006400D4300000",
                 true,
                 array(
                     'BulkChargeDwellTime' => 1800,
@@ -213,6 +216,9 @@ class LeadAcidBatteryTableTest extends \PHPUnit_Framework_TestCase
                     'ResumeVoltage' => 14000,
                     'CutoffVoltage' => 11500,
                     'MinimumVoltage' => 2000,
+                    'BulkChargeKickoutCurrent' => 300,
+                    'NominalCapacity' => 100,
+                    'NominalVoltage'  => 12500
                 ),
             ),
             array( // #1 String too short
@@ -227,10 +233,13 @@ class LeadAcidBatteryTableTest extends \PHPUnit_Framework_TestCase
                     'FloatCoeff' => 1,
                     'BulkChargeVoltage' => 14000,
                     'FloatVoltage' => 13500,
-                    'BulkChargeTriggerVoltage' => 12000,
+                    'BulkChargeTriggerVoltage' => 11500,
                     'ResumeVoltage' => 11000,
                     'CutoffVoltage' => 10500,
                     'MinimumVoltage' => 1000,
+                    'BulkChargeKickoutCurrent' => 300,
+                    'NominalCapacity' => 100,
+                    'NominalVoltage'  => 12500
                 ),
             ),
         );
