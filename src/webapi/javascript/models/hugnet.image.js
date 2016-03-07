@@ -112,7 +112,7 @@ HUGnet.Image = Backbone.Model.extend({
         if (!format) {
             format = "PNG";
         }
-        return this.url()+"/image?until="+date+"&type="+encodeURIComponent(type)+"&format="+encodeURIComponent(format)
+        return this.url()+"/image?until="+date+"&type="+encodeURIComponent(type)+"&"+encodeURIComponent("data[format]")+"="+encodeURIComponent(format)
     },
     inserturl: function()
     {
@@ -144,7 +144,7 @@ HUGnet.Image = Backbone.Model.extend({
             xhr.setRequestHeader('Accept', 'application/json');
             xhr.onload = function() {
                 if (xhr.status === 200) {
-                    var data = xhr.responseText;
+                    var data = JSON.parse(xhr.responseText);
                     if ((data !== null) && _.isObject(data)) {
                         self.set("data", data);
                         self.trigger('datasync', self);

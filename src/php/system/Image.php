@@ -182,7 +182,8 @@ class Image extends \HUGnet\base\SystemTableBase
     */
     private function _getImg($args)
     {
-        $format   = trim(strtoupper($args->get("format")));
+        $data = $args->get("data");
+        $format   = trim(strtoupper($data["format"]));
         $filename = $this->get("name");
         $filename = preg_replace('/[^a-zA-Z0-9-_\.]/', '_', $filename);
         $data     = $args->get("data");
