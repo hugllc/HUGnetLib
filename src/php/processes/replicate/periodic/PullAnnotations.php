@@ -122,7 +122,7 @@ class PullAnnotations extends \HUGnet\processes\replicate\Periodic
                 ),
                 120
             );
-            if (count($ret) > 0) {
+            if (is_array($ret) && count($ret) > 0) {
                 $this->system()->out(
                     "Pulled ".count($ret)." annotations since "
                     .date("Y-m-d H:i:s", $this->_last)
