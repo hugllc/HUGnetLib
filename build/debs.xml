@@ -80,8 +80,8 @@
         <copy todir="${deb.webapistaging}">
             <fileset dir="${deb.webapisetup}" excludes="**/*~"/>
         </copy>
-        <mkdir dir="${deb.webapistaging}/var/www/HUGnetLib"/>
-        <copy todir="${deb.webapistaging}/var/www/HUGnetLib">
+        <mkdir dir="${deb.webapistaging}/var/www/html/HUGnetLib"/>
+        <copy todir="${deb.webapistaging}/var/www/html/HUGnetLib">
             <fileset dir="${deb.webapisrc}" includes="*.php" excludes="**/*~ *.js"/>
         </copy>
         <chmod file="${deb.webapistaging}/DEBIAN/postinst" perm="0755"/>
@@ -90,7 +90,7 @@
                     match="%VERSION%"
                     replace="${deb.version}"
         />
-        <delete file="${deb.webapistaging}/var/www/HUGnetLib/HUGnetLibAPI_RO.php" />
+        <delete file="${deb.webapistaging}/var/www/html/HUGnetLib/HUGnetLibAPI_RO.php" />
     </target>
     <target name="webapirosetup" description="Copy all of the files to build the deb">
         <echo>Setting up for HUGnetLib-rowebapi 'v${deb.version}'</echo>
@@ -99,8 +99,8 @@
         <copy todir="${deb.webapirostaging}">
             <fileset dir="${deb.webapirosetup}" excludes="**/*~ *.js"/>
         </copy>
-        <mkdir dir="${deb.webapirostaging}/var/www/HUGnetLib"/>
-        <copy todir="${deb.webapirostaging}/var/www/HUGnetLib">
+        <mkdir dir="${deb.webapirostaging}/var/www/html/HUGnetLib"/>
+        <copy todir="${deb.webapirostaging}/var/www/html/HUGnetLib">
             <fileset dir="${deb.webapisrc}" includes="*.php"/>
         </copy>
         <chmod file="${deb.webapirostaging}/DEBIAN/postinst" perm="0755"/>
@@ -109,9 +109,9 @@
                     match="%VERSION%"
                     replace="${deb.version}"
         />
-        <delete file="${deb.webapirostaging}/var/www/HUGnetLib/HUGnetLibAPI.php" />
-        <move file="${deb.webapirostaging}/var/www/HUGnetLib/HUGnetLibAPI_RO.php"
-            toFile="${deb.webapirostaging}/var/www/HUGnetLib/HUGnetLibAPI.php"
+        <delete file="${deb.webapirostaging}/var/www/html/HUGnetLib/HUGnetLibAPI.php" />
+        <move file="${deb.webapirostaging}/var/www/html/HUGnetLib/HUGnetLibAPI_RO.php"
+            toFile="${deb.webapirostaging}/var/www/html/HUGnetLib/HUGnetLibAPI.php"
         />
     </target>
     <target name="jssetup" description="Copy all of the files to build the deb">
@@ -121,8 +121,8 @@
         <copy todir="${deb.jsstaging}">
             <fileset dir="${deb.jssetup}" excludes="**/*~"/>
         </copy>
-        <mkdir dir="${deb.jsstaging}/var/www/HUGnetLib"/>
-        <copy todir="${deb.jsstaging}/var/www/HUGnetLib">
+        <mkdir dir="${deb.jsstaging}/var/www/html/HUGnetLib"/>
+        <copy todir="${deb.jsstaging}/var/www/html/HUGnetLib">
             <fileset dir="${deb.webapisrc}" includes="*.js"/>
         </copy>
         <chmod file="${deb.jsstaging}/DEBIAN/postinst" perm="0755"/>
@@ -131,7 +131,7 @@
                     match="%VERSION%"
                     replace="${deb.version}"
         />
-        <delete file="${deb.jsstaging}/var/www/HUGnetLib/HUGnetLibAPI_RO.php" />
+        <delete file="${deb.jsstaging}/var/www/html/HUGnetLib/HUGnetLibAPI_RO.php" />
     </target>
     <target name="imagesetup" description="Copy all of the files to build the deb">
         <echo>Setting up for HUGnetLib-image 'v${deb.version}'</echo>
@@ -140,9 +140,9 @@
         <copy todir="${deb.imagestaging}">
             <fileset dir="${deb.imagesetup}" excludes="**/*~"/>
         </copy>
-        <mkdir dir="${deb.imagestaging}/var/www/HUGnetLib"/>
-        <mkdir dir="${deb.imagestaging}/var/www/HUGnetLib/images"/>
-        <copy todir="${deb.imagestaging}/var/www/HUGnetLib/images">
+        <mkdir dir="${deb.imagestaging}/var/www/html/HUGnetLib"/>
+        <mkdir dir="${deb.imagestaging}/var/www/html/HUGnetLib/images"/>
+        <copy todir="${deb.imagestaging}/var/www/html/HUGnetLib/images">
             <fileset dir="${deb.webapisrc}/images" />
         </copy>
         <chmod file="${deb.imagestaging}/DEBIAN/postinst" perm="0755"/>
