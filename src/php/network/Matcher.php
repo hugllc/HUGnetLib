@@ -116,10 +116,12 @@ final class Matcher
     */
     public function match($pkt)
     {
-        if ($pkt->type() == "REPLY") {
-            $this->_matchReply($pkt);
-        } else {
-            $this->_matchOther($pkt);
+        if ($pkt->to() !== "000000") {
+            if ($pkt->type() == "REPLY") {
+                $this->_matchReply($pkt);
+            } else {
+                $this->_matchOther($pkt);
+            }
         }
         $this->main();
     }
