@@ -148,7 +148,7 @@ class CLI
     */
     public function main()
     {
-        $this->system()->main();
+        return $this->system()->main();
     }
 
     /**

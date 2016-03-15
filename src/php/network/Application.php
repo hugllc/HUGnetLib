@@ -349,7 +349,7 @@ final class Application
     */
     public function main()
     {
-        $this->_main();
+        $ret = $this->_main();
         foreach ($this->_queue as $qid => $pkt) {
             if ($this->_system->quit()) {
                 break;
@@ -360,6 +360,7 @@ final class Application
             }
         }
         $this->_devMain();
+        return $ret;
     }
     /**
     * Runs the device main
@@ -406,7 +407,8 @@ final class Application
                 break;
             }
             $ret = $this->_dealWithUnsolicited();
-        } while (($count++ < self::MAX_UNSOL) && $ret && (time() - $start) < 2);
+        } while (($count++ < self::MAX_UNSOL) && $ret);
+        return $ret;
     }
     /**
     * This is the stuff that must get done no matter how we are looping

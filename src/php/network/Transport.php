@@ -57,7 +57,7 @@ namespace HUGnet\network;
 final class Transport
 {
     /** This is the max number of unsolicited packets that can queue up */
-    const MAX_UNSOL = 100;
+    const MAX_UNSOL = 50;
     /** This is our network */
     private $_network;
     /** This is our system */

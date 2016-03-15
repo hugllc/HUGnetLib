@@ -230,7 +230,7 @@ class Daemon extends CLI
     public function main()
     {
         $this->_checkMemory();
-        parent::main();
+        return parent::main();
     }
     /**
     * Disconnects from the database

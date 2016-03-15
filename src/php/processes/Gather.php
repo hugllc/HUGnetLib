@@ -263,8 +263,9 @@ class Gather extends \HUGnet\ui\Daemon
                 );
             }
             for (; ($this->_wait > 0) && $this->loop(); $this->_wait--) {
-                parent::main();
-                sleep(1);
+                if (!parent::main()) {
+                    sleep(1);
+                }
             }
         }
         $this->_wait = self::WAIT_TIME;
