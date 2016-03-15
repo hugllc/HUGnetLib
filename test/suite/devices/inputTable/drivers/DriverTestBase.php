@@ -287,8 +287,10 @@ abstract class DriverTestBase extends \HUGnet\devices\IOPDriverTestBase
         $deltaT = 0;
         $prev = array();
         $data = array();
+        $chan = 0;
         $ret = $this->o->decodeData(
             $A, 
+            $chan,
             $deltaT, 
             $prev, 
             $data
@@ -314,8 +316,10 @@ abstract class DriverTestBase extends \HUGnet\devices\IOPDriverTestBase
         $deltaT = 0;
         $prev = array();
         $data = array();
+        $chan = 0;
         $ret = $this->o->decodeData(
             $A, 
+            $chan,
             $deltaT, 
             $prev, 
             $data

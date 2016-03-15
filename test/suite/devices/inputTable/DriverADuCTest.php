@@ -1608,7 +1608,7 @@ class DriverADuCTest extends drivers\DriverTestBase
         $obj = &DriverADuC::factory(
             $class, $this->input, $offset, $initchan
         );
-        $ret = $obj->decodeData($string, $deltaT, $prev, $data);
+        $ret = $obj->decodeData($string, $initchan, $deltaT, $prev, $data);
         $this->assertEquals($expect, $ret);
     }
     /**

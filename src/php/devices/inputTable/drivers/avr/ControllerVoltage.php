@@ -175,6 +175,7 @@ class ControllerVoltage extends \HUGnet\devices\inputTable\DriverAVR
     *    Output 5: HUGnet2 Temp
     *
     * @param string &$string The data string
+    * @param int    $chan    The channel this input starts at
     * @param float  $deltaT  The time delta in seconds between this record
     * @param array  &$prev   The previous reading
     * @param array  &$data   The data from the other sensors that were crunched
@@ -184,7 +185,7 @@ class ControllerVoltage extends \HUGnet\devices\inputTable\DriverAVR
     * @SuppressWarnings(PHPMD.ShortVariable)
     */
     public function decodeData(
-        &$string, $deltaT = 0, &$prev = null, &$data = array()
+        &$string, $chan, $deltaT = 0, &$prev = null, &$data = array()
     ) {
         if ($this->input()->id() == 0) {
             $size = $this->get("inputSize") * 2;

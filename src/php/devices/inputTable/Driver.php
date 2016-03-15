@@ -475,6 +475,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     * Gets the direction from a direction sensor made out of a POT.
     *
     * @param string &$string The data string
+    * @param int    $chan    The channel this input starts at
     * @param float  $deltaT  The time delta in seconds between this record
     * @param array  &$prev   The previous reading
     * @param array  &$data   The data from the other sensors that were crunched
@@ -484,12 +485,11 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
     * @SuppressWarnings(PHPMD.ShortVariable)
     */
     public function decodeData(
-        &$string, $deltaT = 0, &$prev = array(), &$data = array()
+        &$string, $chan, $deltaT = 0, &$prev = array(), &$data = array()
     ) {
         $A    = $this->getRawData($string);
         $ret  = $this->channels();
         $type = $this->get("storageType");
-        $chan = (int)$this->input()->channelStart();
         $prev = is_array($prev) ? $prev : array();
         $ret[0]["value"] = $this->decodeDataPoint(
             $A, 0, $deltaT, $prev[$chan], $data

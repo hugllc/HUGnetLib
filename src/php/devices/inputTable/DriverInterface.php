@@ -154,6 +154,7 @@ interface DriverInterface
     * Gets the direction from a direction sensor made out of a POT.
     *
     * @param string &$string The data string
+    * @param int    $chan    The channel this input starts at
     * @param float  $deltaT  The time delta in seconds between this record
     * @param array  &$prev   The previous reading
     * @param array  &$data   The data from the other sensors that were crunched
@@ -161,7 +162,7 @@ interface DriverInterface
     * @return float The direction in degrees
     */
     public function decodeData(
-        &$string, $deltaT = 0, &$prev = null, &$data = array()
+        &$string, $chan, $deltaT = 0, &$prev = null, &$data = array()
     );
     /**
     * Gets the direction from a direction sensor made out of a POT.

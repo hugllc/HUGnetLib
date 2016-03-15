@@ -157,9 +157,12 @@ class Input extends \HUGnet\base\IOPBase
     * @SuppressWarnings(PHPMD.ShortVariable)
     */
     public function decodeData(
-        &$string, $deltaT = 0, &$prev = null, &$data = array()
+        &$string, $deltaT = 0, &$prev = null, &$data = array(), $chan = NULL
     ) {
-        return $this->driver()->decodeData($string, $deltaT, $prev, $data);
+        if (is_null($chan)) {
+            $chan = $this->channelStart();
+        }
+        return $this->driver()->decodeData($string, $chan, $deltaT, $prev, $data);
     }
     /**
     * Gets the direction from a direction input made out of a POT.

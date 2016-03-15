@@ -363,7 +363,8 @@ class AVRAnalogTableTest extends DriverTestBaseAVR
     ) {
         $sen = new \HUGnet\DummyBase("Sensor");
         $sen->resetMock($sensor);
-        $ret = $this->o->decodeData($A, $deltaT, $prev, $data);
+        $chan = 0;
+        $ret = $this->o->decodeData($A, $chan, $deltaT, $prev, $data);
         $this->assertEquals($expect, $ret, 0.00001);
     }
     /**

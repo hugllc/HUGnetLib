@@ -292,6 +292,7 @@ class ADuCACResistance extends \HUGnet\devices\inputTable\DriverADuC
     * Gets the direction from a direction sensor made out of a POT.
     *
     * @param string &$string The data string
+    * @param int    $chan    The channel this input starts at
     * @param float  $deltaT  The time delta in seconds between this record
     * @param array  &$prev   The previous reading
     * @param array  &$data   The data from the other sensors that were crunched
@@ -301,7 +302,7 @@ class ADuCACResistance extends \HUGnet\devices\inputTable\DriverADuC
     * @SuppressWarnings(PHPMD.ShortVariable)
     */
     public function decodeData(
-        &$string, $deltaT = 0, &$prev = null, &$data = array()
+        &$string, $chan, $deltaT = 0, &$prev = null, &$data = array()
     ) {
         $ret = $this->channels();
         foreach (array_keys($ret) as $key) {

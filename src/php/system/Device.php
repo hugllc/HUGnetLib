@@ -666,14 +666,17 @@ class Device extends \HUGnet\base\SystemTableAction
             "rawData" => $string,
         );
         $sensors = $this->get("InputTables");
-
+        $id = $this->id();
+        $chan = 0;
         for ($i = 0; $i < $sensors; $i++) {
+            $input = $this->input($i);
             $ret = array_merge(
                 $ret,
-                (array)$this->input($i)->decodeData(
-                    $data["String"], $deltaT, $prev, $ret
+                (array)$input->decodeData(
+                    $data["String"], $deltaT, $prev, $ret, $chan
                 )
             );
+            $chan += count($input->channels());
         }
         return $ret;
     }

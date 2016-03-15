@@ -389,7 +389,7 @@ class ADuCPower extends \HUGnet\devices\inputTable\DriverADuC
     * @SuppressWarnings(PHPMD.ShortVariable)
     */
     public function decodeData(
-        &$string, $deltaT = 0, &$prev = null, &$data = array()
+        &$string, $chan, $deltaT = 0, &$prev = null, &$data = array()
     ) {
         $ret = $this->channels();
         foreach (array_keys($ret) as $key) {

@@ -932,7 +932,8 @@ class DriverTest extends drivers\DriverTestBase
         $sen = new \HUGnet\DummyBase("Sensor");
         $sen->resetMock($sensor);
         $obj = Driver::factory($class, $sen);
-        $ret = $obj->decodeData($string, $deltaT, $prev, $data);
+        $chan = 0;
+        $ret = $obj->decodeData($string, $chan, $deltaT, $prev, $data);
         $this->assertEquals($expect, $ret, 0.00001);
     }
     /**

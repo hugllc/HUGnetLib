@@ -239,7 +239,8 @@ class DriverVirtualTest extends drivers\DriverTestBase
     ) {
         $sen = new \HUGnet\DummyBase("Sensor");
         $sen->resetMock($sensor);
-        $ret = $this->o->decodeData($A, $deltaT, $data, $prev);
+        $chan = 0;
+        $ret = $this->o->decodeData($A, $chan, $deltaT, $data, $prev);
         $this->assertEquals($expect, $ret, 0.00001);
     }
     /**

@@ -177,6 +177,7 @@ class CloneVirtual extends \HUGnet\devices\inputTable\DriverVirtual
     * Gets the direction from a direction sensor made out of a POT.
     *
     * @param string &$hist  The history object or array
+    * @param int    $chan    The channel this input starts at
     * @param float  $deltaT The time delta in seconds between this record
     * @param array  &$prev  The previous reading
     * @param array  &$data  The data from the other sensors that were crunched
@@ -186,7 +187,7 @@ class CloneVirtual extends \HUGnet\devices\inputTable\DriverVirtual
     * @SuppressWarnings(PHPMD.ShortVariable)
     */
     public function decodeData(
-        &$hist, $deltaT = 0, &$prev = null, &$data = array()
+        &$hist, $chan, $deltaT = 0, &$prev = null, &$data = array()
     ) {
         $ret = $this->channels();
         $oid = $this->_clone()->input()->channelStart();

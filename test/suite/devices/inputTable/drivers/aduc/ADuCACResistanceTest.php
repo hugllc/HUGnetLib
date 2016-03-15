@@ -1150,7 +1150,8 @@ class ADuCACResistanceTest extends DriverTestBaseADuC
         $sensor, $A, $deltaT, $data, $prev, $expect, $leftover = 0
     ) {
         $this->input->load($sensor);
-        $ret = $this->o->decodeData($A, $deltaT, $data, $prev);
+        $chan = 0;
+        $ret = $this->o->decodeData($A, $chan, $deltaT, $data, $prev);
         $this->assertEquals($expect, $ret, 0.00001);
         $this->assertEquals($leftover, strlen($A), "Too much removed from string");
     }
