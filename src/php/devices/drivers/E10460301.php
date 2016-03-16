@@ -175,11 +175,7 @@ class E10460301 extends \HUGnet\devices\Driver
             $str = substr($string, $i*8, $size * 2);
             $value = \HUGnet\Util::decodeInt($str, $size, true);
             switch ($i) {
-                case 3:
-                case 4:
                 case 5:
-                case 9:
-                case 10:
                 case 11:
                     break;
                 default:
