@@ -191,6 +191,51 @@ class Util
         }
         return $data;
     }
+    /**
+    * This builds the string for the levelholder.
+    *
+    * @param string $val    The value to use
+    * @param int    $bytes  The number of bytes to set
+    * @param bool   $signed If the number is signed or not
+    *
+    * @return string The string
+    */
+    public static function decodeInt($val, $bytes = 4, $signed = false)
+    {
+        $int = 0;
+        for ($i = 0; $i < $bytes; $i++) {
+            $int += hexdec(substr($val, ($i * 2), 2))<<($i * 8);
+        }
+        $bits = $bytes * 8;
+        $int = (int)($int & (pow(2, $bits) - 1));
+        if ($signed) {
+            $int = self::signedInt($int, $bytes);
+        }
+        return $int;
+
+    }
+    /**
+    * This builds the string for the levelholder.
+    *
+    * @param int $val   The value to use
+    * @param int $bytes The number of bytes to set
+    *
+    * @return string The string
+    */
+    public static function signedInt($val, $bytes = 4)
+    {
+        $bits = $bytes * 8;
+        /* Calculate the top bit */
+        $topBit = pow(2, ($bits - 1));
+        /* Check to see if the top bit is set */
+        if (($val & $topBit) == $topBit) {
+            /* This is a negative number */
+            $val = -(pow(2, $bits) - $val);
+        }
+        return $val;
+
+    }
+
 }
 
 

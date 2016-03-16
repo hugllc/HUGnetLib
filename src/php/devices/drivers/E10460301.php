@@ -155,6 +155,43 @@ class E10460301 extends \HUGnet\devices\Driver
     {
         return "";
     }
+    /**
+    * Decodes the sensor data
+    *
+    * @param string $string  The string of sensor data
+    * @param string $command The command that was used to get the data
+    * @param float  $deltaT  The time difference between this packet and the next
+    * @param float  $prev    The previous record
+    *
+    * @return null
+    *
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function decodeData($string, $command="", $deltaT = 0, $prev = null)
+    {
+        $ret = array();
+        $size = $this->params["inputSize"];
+        for ($i = 0; $i < $this->params["InputTables"]; $i++) {
+            $str = substr($string, $i*8, $size * 2);
+            $value = \HUGnet\Util::decodeInt($str, $size, true);
+            switch ($i) {
+                case 3:
+                case 4:
+                case 5:
+                case 9:
+                case 10:
+                case 11:
+                    break;
+                default:
+                    $value /= 1000;
+                    break;
+            }
+            $ret[$i] = array(
+                "value" => $value
+            );
+        }
+        return $ret;
+    }
 }
 
 

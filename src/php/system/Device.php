@@ -668,15 +668,24 @@ class Device extends \HUGnet\base\SystemTableAction
         $sensors = $this->get("InputTables");
         $id = $this->id();
         $chan = 0;
-        for ($i = 0; $i < $sensors; $i++) {
-            $input = $this->input($i);
+        if (method_exists($this->driver(), "decodeData")) {
             $ret = array_merge(
                 $ret,
-                (array)$input->decodeData(
-                    $data["String"], $deltaT, $prev, $ret, $chan
+                (array)$this->driver()->decodeData(
+                    $data["String"], $deltaT, $prev, $ret
                 )
             );
-            $chan += count($input->channels());
+        } else {
+            for ($i = 0; $i < $sensors; $i++) {
+                $input = $this->input($i);
+                $ret = array_merge(
+                    $ret,
+                    (array)$input->decodeData(
+                        $data["String"], $deltaT, $prev, $ret, $chan
+                    )
+                );
+                $chan += count($input->channels());
+            }
         }
         return $ret;
     }
