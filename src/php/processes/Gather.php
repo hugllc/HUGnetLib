@@ -338,8 +338,24 @@ class Gather extends \HUGnet\ui\Daemon
             $this->out("Logging error data");
         } else if ($pkt->type() == "SENSORBROADCAST") {
             if ($this->_unsolicited->get("bootloader")) {
-                $this->_unsolicited->setParam("LastConfig", 0);
-                $this->_unsolicited->store();
+                $now = $this->system()->now();
+                if ($this->_unsolicited->getParam("LastConfig") > 0) {
+                    $this->_unsolicited->load($this->_unsolicited->id());
+                    $this->_unsolicited->set("GatewayKey", $this->system()->get("GatewayKey"));
+                    $this->_unsolicited->setParam("LastConfig", 0);
+                    $this->_unsolicited->setParam("Startup", $now);
+                    $this->_unsolicited->setParam("LastStartup", $now);
+                    $this->_unsolicited->setParam("LastContact", time());
+                    $this->_unsolicited->store();
+                    $this->out(
+                        "Setting next config of ".$this->_unsolicited->get("DeviceID")
+                    );
+                    $this->_wait = 0;
+                } else {
+                    $this->out(
+                        "Waiting next config of ".$this->_unsolicited->get("DeviceID")
+                    );
+                }
             } else {
                 // This is because storePoll uses the reply
                 $pkt->reply($pkt->data());
