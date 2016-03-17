@@ -481,6 +481,7 @@ HUGnet.Devices = Backbone.Collection.extend({
         if (options) {
             if (options.baseurl) this.baseurl = options.baseurl;
         }
+        this.fetch();
     },
     url: function ()
     {
