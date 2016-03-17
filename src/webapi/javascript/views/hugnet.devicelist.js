@@ -254,15 +254,17 @@ HUGnet.DeviceListView = Backbone.View.extend({
                 delete filter.GatewayKey;
             } else if (gatewayFilter == "all") {
                 delete filter.GatewayKey;
-                this.model.fetch();
+                //this.model.fetch();
             } else {
                 filter.GatewayKey = parseInt(gatewayFilter, 10);
             }
             this.$(".gatewayFilter").val(gatewayFilter);
         }
+        /*
         if (filter.GatewayKey != undefined) {
             this.model.fetch({ GatewayKey: filter.GatewayKey });
         }
+        */
         for (var view in this.views) {
             var show = this.checkFilter(this.views[view].model, filter);
             this.setView(view, show);
