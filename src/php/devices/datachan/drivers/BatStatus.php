@@ -82,7 +82,7 @@ class BatStatus extends \HUGnet\devices\datachan\Driver
         2 => "MCU Failure", //CPUERROR,
         3 => "Hardware Overcurrent", //HWOVERCURRENT,
         4 => "Hardware Overpower", //HWOVERPOWER,
-        5 => "Software Overcurrent", //SWOVERCURRENT,
+        5 => "Unrecoverable Overcurrent", //SWOVERCURRENT,
         6 => "Software Overpower", //SWOVERPOWER,
         7 => "Switch Bad", //SWITCHBAD,
         8 => "Current Sensor Bad", //CURRENTSENSORBAD,
