@@ -307,7 +307,7 @@ abstract class Driver extends \HUGnet\base\LoadableDriver
         $extra = $this->power()->get("extra");
         $extra[0] = $this->decodeInt(substr($string, 0, 2), 1);
         $extra[1] = $this->decodeInt(substr($string, 2, 2), 1);
-        $extra[3] = $this->decodeInt(substr($string, 4, 2), 1);
+        $extra[2] = $this->decodeInt(substr($string, 4, 2), 1);
         $chars = $this->get("chars");
         $loc = stristr((string)pack("H*", substr($string, 6, $chars)), "\0", true); // end at \0
         $loc = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $loc);  // Remove non printing chars
