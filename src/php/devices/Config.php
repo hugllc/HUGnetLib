@@ -141,8 +141,7 @@ class Config
             $string .= self::hexifyPartNum($device->get("FWPartNum"));
             $string .= self::hexifyVersion($device->get("FWVersion"));
         }
-        $string .= sprintf("%06X", hexdec($device->get("DeviceGroup")));
-        $string .= "FF";
+        $string .= "FFFFFFFF";
         return $string;
     }
 
