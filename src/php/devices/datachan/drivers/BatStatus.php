@@ -75,6 +75,7 @@ class BatStatus extends \HUGnet\devices\datachan\Driver
         5 => "Error",
         6 => "Discharging",
         7 => "Empty",
+        8 => "Testing",
     );
     /** @var These are the statuses */
     private $_errors = array(
