@@ -91,6 +91,7 @@ class BatStatus extends \HUGnet\devices\datachan\Driver
         10 => "Power Flowing in the Wrong Direction", //POWER_FLOWING_WRONG_DIR,
         11 => "Multiple Port Errors", //MULTIPLE_PORT_ERRORS
         12 => "Bus Brownout", // BUSBROWNOUT
+        13 => "Over Temperature", // SWOVERTEMP
     );
     /**
     * Does the actual conversion
