@@ -73,7 +73,7 @@ class E00392100 extends \HUGnet\devices\Driver
         "averageTable" => "E00392100Average",
         "loadable" => true,
         "packetTimeout" => 2,
-        'ConfigInterval' => 600,
+        'ConfigInterval' => 7200,
         "type" => "controller",
         "job"  => "control",
         "arch" => "old",
