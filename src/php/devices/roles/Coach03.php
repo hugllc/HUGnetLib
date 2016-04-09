@@ -138,13 +138,13 @@ class Coach03 extends \HUGnet\base\Role
         ),
         14 => array(
             "id" => 0x80,
-            "location" => "Bus Temperature",
+            "location" => "Bus Temperature Port A",
             "type" => "Temperature",
         ),
         15 => array(
             "id" => 0x80,
-            "location" => "Internal VCC",
-            "type" => "Voltage",
+            "location" => "Bus Temperature Port B",
+            "type" => "Temperature",
         ),
         16 => array(
             "id" => 0x80,
