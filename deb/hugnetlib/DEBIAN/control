@@ -6,7 +6,7 @@ Homepage: http://dev.huglc.com/
 Version: %VERSION%
 Package: hugnetlib
 Architecture: all
-Depends: php5 (>= 5.3.2), php5-sqlite, php5-mysql, php5-gd, php5-json
+Depends: php5 (>= 5.3.2) | php (>= 5.3.2), php5-sqlite | php-sqlite3, php5-mysql | php-mysql, php5-gd | php-gd, php5-json | php-json
 Description: This is the HUGnet Library.
  It provides the core of the HUGnet PHP code.  It is used by all of the
  other HUGnet PHP software.
