@@ -189,10 +189,10 @@ class LeadAcidBatteryTable
         "NominalCapacity" => array(
             "value" => 100,
             'signed' => false,
-            "desc"  => "Nominal Capacity (Ah)",
-            'longDesc' => "The capacity that is printed on the battery (aH)",
+            "desc"  => "Nominal Capacity (mAh)",
+            'longDesc' => "The capacity that is printed on the battery (mAh)",
             'size'  => 6,
-            'bytes' => 2,
+            'bytes' => 4,
             'min' => 0,
             'max' => 1000,
         ),

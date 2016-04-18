@@ -167,7 +167,7 @@ class LeadAcidBatteryTableTest extends \PHPUnit_Framework_TestCase
                     'CutoffVoltage' => 11500,
                     'MinimumVoltage' => 2000,
                 ),
-                "08070A00BC340000BC3400002C010000F6FFD4300000B0360000EC2C0000D00700006400D4300000",
+                "08070A00BC340000BC3400002C010000F6FFD4300000B0360000EC2C0000D007000064000000D4300000",
             ),
         );
     }
@@ -204,7 +204,7 @@ class LeadAcidBatteryTableTest extends \PHPUnit_Framework_TestCase
                 array(
                 ),
                 null,
-                "08070A00BC340000BC3400002C010000F6FFD4300000B0360000EC2C0000D00700006400D4300000",
+                "08070A00BC340000BC3400002C010000F6FFD4300000B0360000EC2C0000D007000064000000D4300000",
                 true,
                 array(
                     'BulkChargeDwellTime' => 1800,
